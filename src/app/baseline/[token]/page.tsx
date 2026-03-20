@@ -1,0 +1,50 @@
+import { createAdminClient } from '@/lib/supabase/admin'
+import BaselineForm from './baseline-form'
+
+export default async function BaselinePage({ params }: { params: Promise<{ token: string }> }) {
+  const { token } = await params
+  const admin = createAdminClient()
+
+  const { data: client } = await admin
+    .from('clients')
+    .select('id, name, baseline_token')
+    .eq('baseline_token', token)
+    .single()
+
+  if (!client) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+        <div className="text-center max-w-sm">
+          <h1 className="text-xl font-semibold text-white mb-2">Link not found</h1>
+          <p className="text-stone-500 text-sm">This baseline link is invalid or has expired. Please contact your coach.</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Check if baseline already submitted
+  const { data: existing } = await admin
+    .from('baselines')
+    .select('id')
+    .eq('client_id', client.id)
+    .eq('re_capture_week', 1)
+    .single()
+
+  if (existing) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+        <div className="text-center max-w-sm">
+          <div className="w-14 h-14 bg-teal-400/10 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h1 className="text-xl font-semibold text-white mb-2">Baseline submitted</h1>
+          <p className="text-stone-500 text-sm">Your baseline documentation has been received. Your coach will be in touch shortly.</p>
+        </div>
+      </div>
+    )
+  }
+
+  return <BaselineForm clientId={client.id} clientName={client.name} />
+}
