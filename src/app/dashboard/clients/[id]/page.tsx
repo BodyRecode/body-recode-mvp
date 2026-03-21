@@ -121,14 +121,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
         <div className="grid grid-cols-2 gap-2">
           {[
-            { label: 'Agreement', done: !!client.agreement_accepted_at },
-            { label: 'Health Declaration', done: !!client.health_declaration_submitted_at },
-            { label: 'Intake', done: latestInvitation?.status === 'complete' },
-            { label: 'Baseline', done: !!baselines?.[0] },
+            { label: 'Agreement', done: !!client.agreement_accepted_at, href: null },
+            { label: 'Health Declaration', done: !!client.health_declaration_submitted_at, href: client.health_declaration_submitted_at ? `/dashboard/clients/${id}/health-declaration` : null },
+            { label: 'Intake', done: latestInvitation?.status === 'complete', href: null },
+            { label: 'Baseline', done: !!baselines?.[0], href: null },
           ].map(item => (
             <div key={item.label} className="flex items-center gap-2">
               <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.done ? 'bg-teal-400' : 'bg-stone-700'}`} />
-              <span className={`text-xs ${item.done ? 'text-stone-300' : 'text-stone-600'}`}>{item.label}</span>
+              {item.href ? (
+                <Link href={item.href} className="text-xs text-teal-400 hover:text-teal-300 transition-colors">{item.label} →</Link>
+              ) : (
+                <span className={`text-xs ${item.done ? 'text-stone-300' : 'text-stone-600'}`}>{item.label}</span>
+              )}
             </div>
           ))}
         </div>
