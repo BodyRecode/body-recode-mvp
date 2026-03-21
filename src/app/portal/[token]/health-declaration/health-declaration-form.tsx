@@ -3,28 +3,25 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-const PARQ_QUESTIONS = [
-  { id: 'q1', text: 'Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor?' },
-  { id: 'q2', text: 'Do you feel pain in your chest when you do physical activity?' },
-  { id: 'q3', text: 'In the past month, have you had chest pain when you were not doing physical activity?' },
-  { id: 'q4', text: 'Do you lose your balance because of dizziness or do you ever lose consciousness?' },
-  { id: 'q5', text: 'Do you have a bone or joint problem that could be made worse by a change in your physical activity?' },
-  { id: 'q6', text: 'Is your doctor currently prescribing drugs (for example, water pills) for your blood pressure or heart condition?' },
-  { id: 'q7', text: 'Do you know of any other reason why you should not do physical activity?' },
+const CARDIO_SYMPTOMS = [
+  'Unusual shortness of breath with light effort',
+  'Chest pain or pressure',
+  'Unexplained pain in arms, jaw, abdomen, or shoulder',
+  'Dizziness or fainting',
+  'Irregular heartbeat or palpitations',
+  'Lower leg pain or cramping relieved by rest',
 ]
 
-const CONDITIONS = [
-  'Cardiovascular disease',
-  'High blood pressure',
-  'Diabetes (Type 1 or 2)',
-  'Asthma or respiratory condition',
-  'Musculoskeletal injury or surgery (past 12 months)',
-  'Thyroid condition',
-  'Hormonal condition (e.g. PCOS, menopause)',
-  'Mental health condition currently managed by a professional',
-  'Pregnancy or recent post-partum (within 12 months)',
-  'Other diagnosed medical condition',
+const BARRIERS = [
+  'Lack of time',
+  'Low motivation',
+  'Injury or pain',
+  'Work or family commitments',
+  'Lack of knowledge',
+  'Other',
 ]
+
+type YesNo = 'yes' | 'no' | ''
 
 export default function HealthDeclarationForm({
   clientId,
@@ -36,40 +33,114 @@ export default function HealthDeclarationForm({
   portalToken: string
 }) {
   const router = useRouter()
-  const [parq, setParq] = useState<Record<string, boolean>>({})
-  const [selectedConditions, setSelectedConditions] = useState<string[]>([])
-  const [otherCondition, setOtherCondition] = useState('')
-  const [acknowledged, setAcknowledged] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
-  const anyParqYes = Object.values(parq).some(v => v === true)
-  const requiresClearance = anyParqYes || selectedConditions.includes('Cardiovascular disease') || selectedConditions.includes('High blood pressure')
+  // Section 1 — Personal Details
+  const [dob, setDob] = useState('')
+  const [phone, setPhone] = useState('')
+  const [address, setAddress] = useState('')
+  const [postcode, setPostcode] = useState('')
 
-  const allAnswered = PARQ_QUESTIONS.every(q => parq[q.id] !== undefined)
+  // Section 2 — Emergency Contact
+  const [emergencyName, setEmergencyName] = useState('')
+  const [emergencyRelationship, setEmergencyRelationship] = useState('')
+  const [emergencyPhone, setEmergencyPhone] = useState('')
 
-  const toggleCondition = (condition: string) => {
-    setSelectedConditions(prev =>
-      prev.includes(condition) ? prev.filter(c => c !== condition) : [...prev, condition]
-    )
-  }
+  // Section 3 — General Health
+  const [healthRating, setHealthRating] = useState<'Excellent' | 'Good' | 'Fair' | 'Poor' | ''>('')
+  const [exercisedBefore, setExercisedBefore] = useState<YesNo>('')
+  const [exerciseType, setExerciseType] = useState('')
+  const [exerciseEnjoy, setExerciseEnjoy] = useState('')
+  const [exerciseDislike, setExerciseDislike] = useState('')
+
+  // Section 4 — Cardiovascular Screening
+  const [cardioSymptoms, setCardioSymptoms] = useState<string[]>([])
+
+  // Section 5 — Medical History
+  const [illnessInjury, setIllnessInjury] = useState<YesNo>('')
+  const [illnessDetails, setIllnessDetails] = useState('')
+  const [receivingTreatment, setReceivingTreatment] = useState<YesNo>('')
+  const [treatmentDetails, setTreatmentDetails] = useState('')
+  const [onMedication, setOnMedication] = useState<YesNo>('')
+  const [medicationList, setMedicationList] = useState('')
+  const [pregnant, setPregnant] = useState<YesNo>('')
+
+  // Section 6 — Musculoskeletal
+  const [painAreas, setPainAreas] = useState('')
+  const [painAggravated, setPainAggravated] = useState<YesNo>('')
+  const [painTreatment, setPainTreatment] = useState<YesNo>('')
+
+  // Section 7 — Lifestyle
+  const [alcohol, setAlcohol] = useState<YesNo>('')
+  const [smoking, setSmoking] = useState<YesNo>('')
+  const [dietPattern, setDietPattern] = useState('')
+  const [eatingHabits, setEatingHabits] = useState<number | null>(null)
+  const [nutritionSupport, setNutritionSupport] = useState<YesNo>('')
+
+  // Section 8 — Barriers & Goals
+  const [barriers, setBarriers] = useState<string[]>([])
+  const [healthGoals, setHealthGoals] = useState('')
+  const [action1, setAction1] = useState('')
+  const [action2, setAction2] = useState('')
+  const [action3, setAction3] = useState('')
+
+  // Section 9 — Health Declaration
+  const [declaredHonest, setDeclaredHonest] = useState(false)
+  const [declaredDisclosed, setDeclaredDisclosed] = useState(false)
+  const [declaredWillNotify, setDeclaredWillNotify] = useState(false)
+  const [declaredRisks, setDeclaredRisks] = useState(false)
+  const [declaredResponsibility, setDeclaredResponsibility] = useState(false)
+  const [declaredFollowGuidance, setDeclaredFollowGuidance] = useState(false)
+  const [declaredNutrition, setDeclaredNutrition] = useState(false)
+  const [declaredLiability, setDeclaredLiability] = useState(false)
+  const [declaredPrivacy, setDeclaredPrivacy] = useState(false)
+  const [declarationName, setDeclarationName] = useState('')
+
+  // Clearance logic
+  const requiresClearance = cardioSymptoms.length > 0 || pregnant === 'yes'
+
+  const allDeclarationsTicked =
+    declaredHonest && declaredDisclosed && declaredWillNotify && declaredRisks &&
+    declaredResponsibility && declaredFollowGuidance && declaredNutrition &&
+    declaredLiability && declaredPrivacy
+
+  const canSubmit =
+    dob && phone && emergencyName && emergencyPhone && emergencyRelationship &&
+    healthRating && exercisedBefore &&
+    illnessInjury && receivingTreatment && onMedication && pregnant &&
+    alcohol && smoking &&
+    allDeclarationsTicked && declarationName.trim().length > 2 &&
+    !submitting
+
+  const toggleBarrier = (b: string) =>
+    setBarriers(prev => prev.includes(b) ? prev.filter(x => x !== b) : [...prev, b])
+
+  const toggleCardio = (s: string) =>
+    setCardioSymptoms(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!allAnswered || !acknowledged) return
+    if (!canSubmit) return
     setSubmitting(true)
     setError('')
+
+    const data = {
+      personalDetails: { dob, phone, address, postcode },
+      emergencyContact: { name: emergencyName, relationship: emergencyRelationship, phone: emergencyPhone },
+      generalHealth: { healthRating, exercisedBefore, exerciseType, exerciseEnjoy, exerciseDislike },
+      cardiovascularScreening: { symptoms: cardioSymptoms },
+      medicalHistory: { illnessInjury, illnessDetails, receivingTreatment, treatmentDetails, onMedication, medicationList, pregnant },
+      musculoskeletal: { painAreas, painAggravated, painTreatment },
+      lifestyle: { alcohol, smoking, dietPattern, eatingHabits, nutritionSupport },
+      barriersAndGoals: { barriers, healthGoals, actions: [action1, action2, action3].filter(Boolean) },
+      declaration: { name: declarationName, date: new Date().toISOString().split('T')[0] },
+    }
 
     const res = await fetch('/api/portal/submit-health-declaration', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        clientId,
-        requiresClearance,
-        parqAnswers: parq,
-        conditions: selectedConditions,
-        otherCondition,
-      }),
+      body: JSON.stringify({ clientId, requiresClearance, data }),
     })
 
     if (!res.ok) {
@@ -87,96 +158,410 @@ export default function HealthDeclarationForm({
         <div className="mb-8">
           <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-3">Body Recode™</p>
           <h1 className="text-2xl font-bold text-white mb-1">Health Declaration</h1>
-          <p className="text-stone-400 text-sm">This screening ensures coaching is structured appropriately for you. Answer honestly.</p>
+          <p className="text-stone-400 text-sm leading-relaxed">This screening ensures your coaching program is structured safely and appropriately for you. Answer all questions honestly and completely.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-          {/* PAR-Q */}
-          <div>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Physical Activity Readiness</p>
-            <div className="space-y-4">
-              {PARQ_QUESTIONS.map((q) => (
-                <div key={q.id} className="bg-stone-900 rounded-xl p-4 border border-stone-800">
-                  <p className="text-sm text-stone-300 mb-3">{q.text}</p>
-                  <div className="flex gap-3">
-                    {(['Yes', 'No'] as const).map(option => (
-                      <button
-                        key={option}
-                        type="button"
-                        onClick={() => setParq(prev => ({ ...prev, [q.id]: option === 'Yes' }))}
-                        className={`px-5 py-2 rounded-xl text-sm font-semibold transition-colors ${
-                          parq[q.id] === (option === 'Yes')
-                            ? option === 'Yes'
-                              ? 'bg-red-500/20 text-red-400 border border-red-500/40'
-                              : 'bg-teal-400/20 text-teal-400 border border-teal-400/40'
-                            : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'
-                        }`}
-                      >
-                        {option}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-10">
 
-          {/* Conditions */}
-          <div>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Current or Recent Health Conditions</p>
-            <p className="text-sm text-stone-400 mb-4">Select any that apply to you:</p>
+          {/* Section 1 — Personal Details */}
+          <section>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Personal Details</p>
+            <div className="space-y-3">
+              <div className="bg-stone-900 rounded-xl border border-stone-800 px-4 py-3">
+                <p className="text-xs text-stone-500 mb-1">Full Name</p>
+                <p className="text-sm text-stone-300">{clientName}</p>
+              </div>
+              <input
+                type="date"
+                value={dob}
+                onChange={e => setDob(e.target.value)}
+                required
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+                placeholder="Date of Birth"
+              />
+              <p className="text-xs text-stone-600 -mt-1 ml-1">Date of Birth</p>
+              <input
+                type="tel"
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
+                required
+                placeholder="Mobile Number"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+              />
+              <input
+                type="text"
+                value={address}
+                onChange={e => setAddress(e.target.value)}
+                placeholder="Address (optional)"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+              />
+              <input
+                type="text"
+                value={postcode}
+                onChange={e => setPostcode(e.target.value)}
+                placeholder="Postcode (optional)"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+              />
+            </div>
+          </section>
+
+          {/* Section 2 — Emergency Contact */}
+          <section>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Emergency Contact</p>
+            <div className="space-y-3">
+              <input
+                type="text"
+                value={emergencyName}
+                onChange={e => setEmergencyName(e.target.value)}
+                required
+                placeholder="Full Name"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+              />
+              <input
+                type="text"
+                value={emergencyRelationship}
+                onChange={e => setEmergencyRelationship(e.target.value)}
+                required
+                placeholder="Relationship (e.g. Partner, Parent)"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+              />
+              <input
+                type="tel"
+                value={emergencyPhone}
+                onChange={e => setEmergencyPhone(e.target.value)}
+                required
+                placeholder="Phone Number"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+              />
+            </div>
+          </section>
+
+          {/* Section 3 — General Health */}
+          <section>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">General Health</p>
+            <div className="space-y-5">
+              <div>
+                <p className="text-sm text-stone-300 mb-3">How would you rate your general health?</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {(['Excellent', 'Good', 'Fair', 'Poor'] as const).map(r => (
+                    <button key={r} type="button"
+                      onClick={() => setHealthRating(r)}
+                      className={`py-2.5 rounded-xl text-sm font-semibold transition-colors ${healthRating === r ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                    >{r}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm text-stone-300 mb-3">Have you done structured exercise before?</p>
+                <div className="flex gap-3">
+                  {(['Yes', 'No'] as const).map(opt => (
+                    <button key={opt} type="button"
+                      onClick={() => setExercisedBefore(opt.toLowerCase() as YesNo)}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${exercisedBefore === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                    >{opt}</button>
+                  ))}
+                </div>
+              </div>
+
+              {exercisedBefore === 'yes' && (
+                <textarea value={exerciseType} onChange={e => setExerciseType(e.target.value)}
+                  placeholder="What type of exercise did you do?"
+                  className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={2} />
+              )}
+
+              <textarea value={exerciseEnjoy} onChange={e => setExerciseEnjoy(e.target.value)}
+                placeholder="Types of exercise you enjoy (optional)"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={2} />
+
+              <textarea value={exerciseDislike} onChange={e => setExerciseDislike(e.target.value)}
+                placeholder="Types of exercise you dislike (optional)"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={2} />
+            </div>
+          </section>
+
+          {/* Section 4 — Cardiovascular Screening */}
+          <section>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-1">Cardiovascular & Respiratory Screening</p>
+            <p className="text-sm text-stone-400 mb-4">Tick any symptoms you currently experience or have experienced recently:</p>
             <div className="space-y-2">
-              {CONDITIONS.map(condition => (
-                <label key={condition} className="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-stone-900 transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={selectedConditions.includes(condition)}
-                    onChange={() => toggleCondition(condition)}
-                    className="w-4 h-4 rounded accent-teal-400"
-                  />
-                  <span className="text-sm text-stone-300">{condition}</span>
+              {CARDIO_SYMPTOMS.map(symptom => (
+                <label key={symptom} className="flex items-start gap-3 cursor-pointer p-3 rounded-xl hover:bg-stone-900 transition-colors">
+                  <input type="checkbox" checked={cardioSymptoms.includes(symptom)} onChange={() => toggleCardio(symptom)}
+                    className="mt-0.5 w-4 h-4 rounded accent-teal-400 flex-shrink-0" />
+                  <span className="text-sm text-stone-300">{symptom}</span>
                 </label>
               ))}
+              <label className="flex items-start gap-3 cursor-pointer p-3 rounded-xl hover:bg-stone-900 transition-colors">
+                <input type="checkbox" checked={cardioSymptoms.includes('None of the above')} onChange={() => toggleCardio('None of the above')}
+                  className="mt-0.5 w-4 h-4 rounded accent-teal-400 flex-shrink-0" />
+                <span className="text-sm text-stone-300">None of the above</span>
+              </label>
             </div>
-            {selectedConditions.includes('Other diagnosed medical condition') && (
-              <textarea
-                value={otherCondition}
-                onChange={e => setOtherCondition(e.target.value)}
-                placeholder="Please describe..."
-                className="mt-3 w-full bg-stone-900 text-white text-sm rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border border-stone-700 resize-none"
-                rows={3}
-              />
-            )}
-          </div>
+          </section>
+
+          {/* Section 5 — Medical History */}
+          <section>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Medical History</p>
+            <div className="space-y-5">
+
+              <div>
+                <p className="text-sm text-stone-300 mb-3">Have you had any major illness or injury in the last 5 years?</p>
+                <div className="flex gap-3">
+                  {(['Yes', 'No'] as const).map(opt => (
+                    <button key={opt} type="button"
+                      onClick={() => setIllnessInjury(opt.toLowerCase() as YesNo)}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${illnessInjury === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                    >{opt}</button>
+                  ))}
+                </div>
+                {illnessInjury === 'yes' && (
+                  <textarea value={illnessDetails} onChange={e => setIllnessDetails(e.target.value)}
+                    placeholder="Please provide details..."
+                    className="mt-3 w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={3} />
+                )}
+              </div>
+
+              <div>
+                <p className="text-sm text-stone-300 mb-3">Are you currently receiving medical treatment for any condition?</p>
+                <div className="flex gap-3">
+                  {(['Yes', 'No'] as const).map(opt => (
+                    <button key={opt} type="button"
+                      onClick={() => setReceivingTreatment(opt.toLowerCase() as YesNo)}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${receivingTreatment === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                    >{opt}</button>
+                  ))}
+                </div>
+                {receivingTreatment === 'yes' && (
+                  <textarea value={treatmentDetails} onChange={e => setTreatmentDetails(e.target.value)}
+                    placeholder="Please provide details..."
+                    className="mt-3 w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={3} />
+                )}
+              </div>
+
+              <div>
+                <p className="text-sm text-stone-300 mb-3">Are you currently taking any prescription medication?</p>
+                <div className="flex gap-3">
+                  {(['Yes', 'No'] as const).map(opt => (
+                    <button key={opt} type="button"
+                      onClick={() => setOnMedication(opt.toLowerCase() as YesNo)}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${onMedication === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                    >{opt}</button>
+                  ))}
+                </div>
+                {onMedication === 'yes' && (
+                  <textarea value={medicationList} onChange={e => setMedicationList(e.target.value)}
+                    placeholder="Please list all medications..."
+                    className="mt-3 w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={3} />
+                )}
+              </div>
+
+              <div>
+                <p className="text-sm text-stone-300 mb-3">Are you currently pregnant or recently postpartum (within 12 months)?</p>
+                <div className="flex gap-3">
+                  {(['Yes', 'No'] as const).map(opt => (
+                    <button key={opt} type="button"
+                      onClick={() => setPregnant(opt.toLowerCase() as YesNo)}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pregnant === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                    >{opt}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Section 6 — Musculoskeletal */}
+          <section>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Musculoskeletal Health</p>
+            <div className="space-y-5">
+              <textarea value={painAreas} onChange={e => setPainAreas(e.target.value)}
+                placeholder="Describe any current pain, injuries, or areas of concern (or write 'None')"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={3} />
+
+              {painAreas && painAreas.toLowerCase() !== 'none' && painAreas.length > 2 && (
+                <>
+                  <div>
+                    <p className="text-sm text-stone-300 mb-3">Is this aggravated by exercise?</p>
+                    <div className="flex gap-3">
+                      {(['Yes', 'No'] as const).map(opt => (
+                        <button key={opt} type="button"
+                          onClick={() => setPainAggravated(opt.toLowerCase() as YesNo)}
+                          className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${painAggravated === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                        >{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-stone-300 mb-3">Are you currently receiving treatment for it?</p>
+                    <div className="flex gap-3">
+                      {(['Yes', 'No'] as const).map(opt => (
+                        <button key={opt} type="button"
+                          onClick={() => setPainTreatment(opt.toLowerCase() as YesNo)}
+                          className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${painTreatment === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                        >{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </section>
+
+          {/* Section 7 — Lifestyle */}
+          <section>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Lifestyle</p>
+            <div className="space-y-5">
+              <div>
+                <p className="text-sm text-stone-300 mb-3">Do you drink alcohol?</p>
+                <div className="flex gap-3">
+                  {(['Yes', 'No'] as const).map(opt => (
+                    <button key={opt} type="button"
+                      onClick={() => setAlcohol(opt.toLowerCase() as YesNo)}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${alcohol === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                    >{opt}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm text-stone-300 mb-3">Do you smoke?</p>
+                <div className="flex gap-3">
+                  {(['Yes', 'No'] as const).map(opt => (
+                    <button key={opt} type="button"
+                      onClick={() => setSmoking(opt.toLowerCase() as YesNo)}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${smoking === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                    >{opt}</button>
+                  ))}
+                </div>
+              </div>
+
+              <textarea value={dietPattern} onChange={e => setDietPattern(e.target.value)}
+                placeholder="Describe your typical diet pattern (optional)"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={2} />
+
+              <div>
+                <p className="text-sm text-stone-300 mb-3">Rate your eating habits (1 = poor, 10 = excellent)</p>
+                <div className="grid grid-cols-5 gap-2">
+                  {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                    <button key={n} type="button"
+                      onClick={() => setEatingHabits(n)}
+                      className={`py-2.5 rounded-xl text-sm font-semibold transition-colors ${eatingHabits === n ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                    >{n}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm text-stone-300 mb-3">Do you need nutrition support?</p>
+                <div className="flex gap-3">
+                  {(['Yes', 'No'] as const).map(opt => (
+                    <button key={opt} type="button"
+                      onClick={() => setNutritionSupport(opt.toLowerCase() as YesNo)}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${nutritionSupport === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                    >{opt}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Section 8 — Barriers & Goals */}
+          <section>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Barriers & Readiness</p>
+            <div className="space-y-5">
+              <div>
+                <p className="text-sm text-stone-300 mb-3">What barriers do you currently face? (select all that apply)</p>
+                <div className="space-y-2">
+                  {BARRIERS.map(b => (
+                    <label key={b} className="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-stone-900 transition-colors">
+                      <input type="checkbox" checked={barriers.includes(b)} onChange={() => toggleBarrier(b)}
+                        className="w-4 h-4 rounded accent-teal-400" />
+                      <span className="text-sm text-stone-300">{b}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <textarea value={healthGoals} onChange={e => setHealthGoals(e.target.value)}
+                placeholder="What are your health and performance goals for the next 3 months? (optional)"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={3} />
+
+              <div>
+                <p className="text-sm text-stone-300 mb-3">List 3 actions you will take to improve your health: (optional)</p>
+                <div className="space-y-2">
+                  {[[action1, setAction1], [action2, setAction2], [action3, setAction3]].map(([val, setter], i) => (
+                    <input key={i} type="text" value={val as string} onChange={e => (setter as (v: string) => void)(e.target.value)}
+                      placeholder={`Action ${i + 1}`}
+                      className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600" />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
 
           {/* Medical clearance notice */}
           {requiresClearance && (
             <div className="bg-amber-400/10 border border-amber-400/30 rounded-xl p-4">
               <p className="text-sm text-amber-400 font-semibold mb-1">Medical clearance required</p>
-              <p className="text-xs text-amber-400/70">Based on your answers, your coach will request a medical clearance letter from your GP before training begins.</p>
+              <p className="text-xs text-amber-400/70">Based on your responses, your coach will request written clearance from your GP before training begins. This is a standard precautionary requirement.</p>
             </div>
           )}
 
-          {/* Acknowledgement */}
-          <label className="flex items-start gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={acknowledged}
-              onChange={e => setAcknowledged(e.target.checked)}
-              className="mt-0.5 w-4 h-4 rounded accent-teal-400"
-            />
-            <span className="text-sm text-stone-300">I confirm that all information provided is accurate and complete. I understand that withholding relevant health information may affect the safety and quality of my coaching program.</span>
-          </label>
+          {/* Section 9 — Health Declaration */}
+          <section>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-1">Health Declaration</p>
+            <p className="text-sm text-stone-400 mb-4">Please read and tick each statement to confirm your understanding:</p>
+            <div className="space-y-3">
+              {[
+                { state: declaredHonest, setter: setDeclaredHonest, text: 'I have completed this form honestly and to the best of my knowledge.' },
+                { state: declaredDisclosed, setter: setDeclaredDisclosed, text: 'I have disclosed all relevant medical conditions, medications, and health history.' },
+                { state: declaredWillNotify, setter: setDeclaredWillNotify, text: 'I will notify Body Recode of any changes to my health status during coaching.' },
+                { state: declaredRisks, setter: setDeclaredRisks, text: 'I understand that exercise carries inherent risks including soreness, strain, fatigue, and the possibility of accidental injury.' },
+                { state: declaredResponsibility, setter: setDeclaredResponsibility, text: 'I accept responsibility for staying within my limits, following guidance, communicating honestly about discomfort, and seeking medical advice when recommended.' },
+                { state: declaredFollowGuidance, setter: setDeclaredFollowGuidance, text: 'I will use proper form and technique, and modify or pause exercises when needed.' },
+                { state: declaredNutrition, setter: setDeclaredNutrition, text: 'I understand that any nutrition guidance provided by Body Recode is general information only and does not constitute medical or dietetic treatment.' },
+                { state: declaredLiability, setter: setDeclaredLiability, text: 'I agree that Body Recode is not liable for injuries or health complications arising from participation, provided coaching is delivered within its professional scope of practice. Nothing in this declaration limits my rights under Australian Consumer Law.' },
+                { state: declaredPrivacy, setter: setDeclaredPrivacy, text: 'I consent to my health information being securely stored and used solely for the purpose of delivering my coaching program. It will not be shared with third parties without my permission.' },
+              ].map(({ state, setter, text }, i) => (
+                <label key={i} className={`flex items-start gap-3 cursor-pointer p-4 rounded-xl border transition-colors ${state ? 'border-teal-400/30 bg-teal-400/5' : 'border-stone-800 bg-stone-900 hover:border-stone-700'}`}>
+                  <input type="checkbox" checked={state} onChange={e => setter(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 rounded accent-teal-400 flex-shrink-0" />
+                  <span className="text-sm text-stone-300 leading-relaxed">{text}</span>
+                </label>
+              ))}
+            </div>
+          </section>
+
+          {/* Declaration */}
+          <section>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Declaration</p>
+            <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 space-y-4">
+              <p className="text-sm text-stone-400">By typing your full name below, you confirm that all information provided in this form is accurate and complete, and that you agree to the declarations above.</p>
+              <input
+                type="text"
+                value={declarationName}
+                onChange={e => setDeclarationName(e.target.value)}
+                placeholder="Type your full name"
+                required
+                className="w-full bg-[#0a0a0a] border border-stone-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+              />
+              <p className="text-xs text-stone-600">Date: {new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            </div>
+          </section>
 
           {error && <p className="text-red-400 text-sm">{error}</p>}
 
           <button
             type="submit"
-            disabled={!allAnswered || !acknowledged || submitting}
+            disabled={!canSubmit}
             className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            {submitting ? 'Saving…' : 'Submit and continue →'}
+            {submitting ? 'Saving…' : 'Submit Health Declaration →'}
           </button>
+
+          {!canSubmit && !submitting && (
+            <p className="text-xs text-stone-600 text-center">Complete all required fields and tick all declarations to continue.</p>
+          )}
         </form>
       </div>
     </div>

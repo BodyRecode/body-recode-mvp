@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST(req: NextRequest) {
-  const { clientId, requiresClearance, parqAnswers, conditions, checks } = await req.json()
+  const { clientId, requiresClearance, data } = await req.json()
   if (!clientId) return NextResponse.json({ error: 'Missing client' }, { status: 400 })
 
   const admin = createAdminClient()
@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
     .update({
       health_declaration_submitted_at: new Date().toISOString(),
       medical_clearance_required: requiresClearance,
+      health_declaration_data: data,
     })
     .eq('id', clientId)
 
