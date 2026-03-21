@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import MarkClearanceButton from './mark-clearance-button'
+import ApproveClearanceButton from './approve-clearance-button'
 
 export default async function MedicalClearancePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -9,14 +10,25 @@ export default async function MedicalClearancePage({ params }: { params: Promise
 
   const { data: client } = await supabase
     .from('clients')
-    .select('id, name, email, medical_clearance_required, medical_clearance_received_at, medical_clearance_conditions, health_declaration_submitted_at')
+    .select('id, name, email, medical_clearance_required, medical_clearance_received_at, medical_clearance_submitted_at, medical_clearance_doc_url')
     .eq('id', id)
     .single()
 
   if (!client) return notFound()
 
   const firstName = client.name?.split(' ')[0] ?? 'there'
-  const received = !!client.medical_clearance_received_at
+  const approved = !!client.medical_clearance_received_at
+  const submitted = !!client.medical_clearance_submitted_at
+
+  // Generate signed URL if doc exists
+  let docSignedUrl: string | null = null
+  if (client.medical_clearance_doc_url) {
+    const admin = createAdminClient()
+    const { data } = await admin.storage
+      .from('clearance-docs')
+      .createSignedUrl(client.medical_clearance_doc_url, 60 * 60) // 1 hour
+    docSignedUrl = data?.signedUrl ?? null
+  }
 
   const whatsappMessage = `Hi ${firstName},
 
@@ -26,9 +38,7 @@ Based on one of your responses, we need to obtain medical clearance before progr
 
 This is a routine precautionary step within our onboarding process. It simply ensures that we are operating safely and within appropriate boundaries before increasing load.
 
-I'll send you a Medical Clearance Request Form for your GP to complete. Please book an appointment, take the form with you, and ask them to confirm exercise participation eligibility.
-
-Once completed, send through a clear photo or PDF copy and we'll move forward from there.
+Head to your portal to download the Medical Clearance Request Form, take it to your GP, and ask them to complete and sign it. Once done, scan or photograph the completed form and upload it directly through your portal.
 
 All other onboarding steps can continue in the meantime.
 
@@ -44,40 +54,60 @@ Kade`
         <p className="text-sm text-stone-400">Medical Clearance — {client.name}</p>
       </div>
 
-      {received ? (
+      {approved ? (
         <div className="bg-teal-400/10 border border-teal-400/20 rounded-xl p-5 mb-6">
-          <p className="text-sm font-semibold text-teal-400 mb-1">Clearance received</p>
-          <p className="text-xs text-stone-400">Received on {new Date(client.medical_clearance_received_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}. Onboarding can proceed.</p>
+          <p className="text-sm font-semibold text-teal-400 mb-1">Clearance approved</p>
+          <p className="text-xs text-stone-400">Approved on {new Date(client.medical_clearance_received_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}. Intake and baseline are unlocked.</p>
         </div>
-      ) : (
+      ) : submitted ? (
         <div className="bg-amber-400/10 border border-amber-400/30 rounded-xl p-5 mb-6 flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-amber-400 mb-1">Medical clearance required</p>
-            <p className="text-xs text-stone-400">Intake and baseline are locked until clearance is received.</p>
+            <p className="text-sm font-semibold text-amber-400 mb-1">Form uploaded — awaiting your approval</p>
+            <p className="text-xs text-stone-400">
+              Submitted {new Date(client.medical_clearance_submitted_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}. Review the document below and approve when satisfied.
+            </p>
           </div>
-          <MarkClearanceButton clientId={id} />
+          <ApproveClearanceButton clientId={id} />
+        </div>
+      ) : (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-6">
+          <p className="text-sm font-semibold text-amber-400 mb-1">Waiting for client upload</p>
+          <p className="text-xs text-stone-400">The client has been notified. This page will update once they upload their completed form.</p>
+        </div>
+      )}
+
+      {/* Uploaded document */}
+      {submitted && docSignedUrl && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-6">
+          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">Uploaded Document</p>
+          {docSignedUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+            <img src={docSignedUrl} alt="Medical clearance form" className="w-full rounded-lg border border-stone-700" />
+          ) : (
+            <a
+              href={docSignedUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-sm text-teal-400 hover:text-teal-300 transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Open uploaded PDF ↗
+            </a>
+          )}
         </div>
       )}
 
       {/* WhatsApp message */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase">WhatsApp Message</p>
-          <button
-            onClick={() => {}}
-            className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
-            id="copy-whatsapp"
-          >
-            Copy
-          </button>
-        </div>
+        <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">WhatsApp Message Template</p>
         <pre className="text-sm text-stone-300 whitespace-pre-wrap leading-relaxed font-sans">{whatsappMessage}</pre>
       </div>
 
       {/* Printable form */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase">Medical Clearance Request Form</p>
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase">Blank Form (Coach Copy)</p>
           <Link
             href={`/dashboard/clients/${id}/medical-clearance/print`}
             target="_blank"
@@ -86,7 +116,7 @@ Kade`
             Open printable form ↗
           </Link>
         </div>
-        <p className="text-xs text-stone-500">Open the printable form, print or save as PDF, and give to the client to take to their GP.</p>
+        <p className="text-xs text-stone-500">Blank form pre-filled with client details, for your records.</p>
       </div>
     </div>
   )

@@ -45,11 +45,11 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     ...(clearanceRequired ? [{
       id: 'clearance',
       title: 'Medical Clearance',
-      description: 'Your coach will send you a form to take to your GP for clearance before training begins.',
+      description: 'Download the clearance form, take it to your GP, and upload the completed form here.',
       done: clearanceReceived,
-      href: null,
+      href: clearanceReceived ? null : `/portal/${token}/medical-clearance`,
       available: healthDone,
-      notice: clearanceReceived ? null : 'Awaiting clearance from your GP. Your coach will be in touch.',
+      notice: null,
     }] : []),
     {
       id: 'intake',
