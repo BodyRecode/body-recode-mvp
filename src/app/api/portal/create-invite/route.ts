@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     const { data, error } = await admin.auth.admin.generateLink({
       type: 'magiclink',
       email: client.email,
-      options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://bodyrecode.au'}/portal/dashboard` },
+      options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://bodyrecode.au'}/auth/callback?next=/portal/dashboard` },
     })
     if (error || !data) return NextResponse.json({ error: 'Failed to generate link' }, { status: 500 })
     return NextResponse.json({ link: data.properties.action_link })
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
   const { data, error } = await admin.auth.admin.generateLink({
     type: 'invite',
     email: client.email,
-    options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://bodyrecode.au'}/portal/dashboard` },
+    options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://bodyrecode.au'}/auth/callback?next=/portal/dashboard` },
   })
 
   if (error || !data) {
