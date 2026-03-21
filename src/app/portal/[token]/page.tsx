@@ -170,6 +170,25 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
+        {/* Client guide */}
+        <div className="mb-10">
+          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Resources</p>
+          <a
+            href="https://klotlednmxhywimztozm.supabase.co/storage/v1/object/public/public-assets/client-guide.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between w-full bg-stone-900 border border-stone-800 rounded-2xl px-5 py-4 hover:border-stone-700 transition-colors"
+          >
+            <div>
+              <p className="text-sm font-semibold text-white">Active Coaching Client Guide</p>
+              <p className="text-xs text-stone-500 mt-0.5">Your reference for the coaching process — view or download</p>
+            </div>
+            <svg className="w-5 h-5 text-stone-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+
         {/* Footer */}
         <p className="text-xs text-stone-700 text-center">Questions? Message Kade on WhatsApp.</p>
       </div>
