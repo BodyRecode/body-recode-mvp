@@ -18,19 +18,49 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
   const approved = !!client.medical_clearance_received_at
   const submitted = !!client.medical_clearance_submitted_at
 
+  // Generate signed URL so client can view their uploaded doc
+  let docSignedUrl: string | null = null
+  if (client.medical_clearance_doc_url) {
+    const { data } = await admin.storage
+      .from('clearance-docs')
+      .createSignedUrl(client.medical_clearance_doc_url, 60 * 60) // 1 hour
+    docSignedUrl = data?.signedUrl ?? null
+  }
+
   if (approved) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
-        <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6">Body Recode™</p>
-          <div className="w-14 h-14 bg-teal-400/10 rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
+      <div className="min-h-screen bg-[#0a0a0a] text-white">
+        <div className="max-w-lg mx-auto px-6 py-12">
+          <Link href={`/portal/${token}`} className="text-xs text-stone-500 hover:text-stone-300 transition-colors mb-8 inline-block">← Back to portal</Link>
+          <div className="text-center mb-8">
+            <div className="w-14 h-14 bg-teal-400/10 rounded-full flex items-center justify-center mx-auto mb-5">
+              <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h1 className="text-xl font-semibold text-white mb-2">Clearance approved</h1>
+            <p className="text-stone-500 text-sm">Your medical clearance has been reviewed and approved.</p>
           </div>
-          <h1 className="text-xl font-semibold text-white mb-2">Clearance approved</h1>
-          <p className="text-stone-500 text-sm">Your medical clearance has been reviewed and approved. Head back to your portal to continue.</p>
-          <Link href={`/portal/${token}`} className="inline-block mt-6 text-sm font-bold text-black bg-teal-400 px-6 py-3 rounded-2xl hover:bg-teal-300 transition-colors">Back to portal →</Link>
+          {docSignedUrl && (
+            <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+              <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">Your submitted form</p>
+              {docSignedUrl.match(/\.(jpg|jpeg|png|gif|webp)(\?|$)/i) ? (
+                <img src={docSignedUrl} alt="Your submitted clearance form" className="w-full rounded-lg" />
+              ) : (
+                <a
+                  href={docSignedUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-sm text-teal-400 hover:text-teal-300 transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  View submitted PDF ↗
+                </a>
+              )}
+            </div>
+          )}
         </div>
       </div>
     )
@@ -38,17 +68,38 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
-        <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6">Body Recode™</p>
-          <div className="w-14 h-14 bg-stone-900 border border-stone-800 rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg className="w-7 h-7 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+      <div className="min-h-screen bg-[#0a0a0a] text-white">
+        <div className="max-w-lg mx-auto px-6 py-12">
+          <Link href={`/portal/${token}`} className="text-xs text-stone-500 hover:text-stone-300 transition-colors mb-8 inline-block">← Back to portal</Link>
+          <div className="text-center mb-8">
+            <div className="w-14 h-14 bg-stone-900 border border-stone-800 rounded-full flex items-center justify-center mx-auto mb-5">
+              <svg className="w-7 h-7 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h1 className="text-xl font-semibold text-white mb-2">Form submitted</h1>
+            <p className="text-stone-500 text-sm">Your completed clearance form has been received. Your coach will review it and confirm approval shortly.</p>
           </div>
-          <h1 className="text-xl font-semibold text-white mb-2">Form submitted</h1>
-          <p className="text-stone-500 text-sm">Your completed clearance form has been received. Your coach will review it and confirm approval shortly.</p>
-          <Link href={`/portal/${token}`} className="inline-block mt-6 text-sm text-stone-400 hover:text-white transition-colors">← Back to portal</Link>
+          {docSignedUrl && (
+            <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+              <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">Your submitted form</p>
+              {docSignedUrl.match(/\.(jpg|jpeg|png|gif|webp)(\?|$)/i) ? (
+                <img src={docSignedUrl} alt="Your submitted clearance form" className="w-full rounded-lg" />
+              ) : (
+                <a
+                  href={docSignedUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-sm text-teal-400 hover:text-teal-300 transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  View submitted PDF ↗
+                </a>
+              )}
+            </div>
+          )}
         </div>
       </div>
     )
