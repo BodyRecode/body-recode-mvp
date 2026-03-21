@@ -117,7 +117,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
           <p className="text-xs uppercase tracking-wider text-stone-500">Onboarding</p>
-          <PortalInviteButton clientId={client.id} />
+          <PortalInviteButton clientId={client.id} onboardingToken={client.onboarding_token} />
         </div>
         <div className="grid grid-cols-2 gap-2">
           {[
