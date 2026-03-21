@@ -19,6 +19,9 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const healthDone = !!client.health_declaration_submitted_at
   const intakeDone = Array.isArray(client.intake_invitations) && client.intake_invitations.some((i: { status: string }) => i.status === 'complete')
   const baselineDone = Array.isArray(client.baselines) && client.baselines.length > 0
+  const clearanceRequired = !!client.medical_clearance_required
+  const clearanceReceived = !!client.medical_clearance_received_at
+  const clearanceBlocking = clearanceRequired && !clearanceReceived
 
   const tasks = [
     {
@@ -28,6 +31,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
       done: agreementDone,
       href: `/portal/${token}/agreement`,
       available: true,
+      notice: null,
     },
     {
       id: 'health',
@@ -36,14 +40,25 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
       done: healthDone,
       href: `/portal/${token}/health-declaration`,
       available: agreementDone,
+      notice: null,
     },
+    ...(clearanceRequired ? [{
+      id: 'clearance',
+      title: 'Medical Clearance',
+      description: 'Your coach will send you a form to take to your GP for clearance before training begins.',
+      done: clearanceReceived,
+      href: null,
+      available: healthDone,
+      notice: clearanceReceived ? null : 'Awaiting clearance from your GP. Your coach will be in touch.',
+    }] : []),
     {
       id: 'intake',
       title: 'Foundational Intake',
       description: 'Complete your full intake — this informs your entire coaching structure.',
       done: intakeDone,
       href: client.intake_token ? `/intake/${client.intake_token}` : null,
-      available: healthDone,
+      available: healthDone && !clearanceBlocking,
+      notice: clearanceBlocking ? 'Unlocks once medical clearance is received.' : null,
     },
     {
       id: 'baseline',
@@ -55,7 +70,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     },
   ]
 
-  const allOnboardingDone = agreementDone && healthDone && intakeDone && baselineDone
+  const allOnboardingDone = agreementDone && healthDone && intakeDone && baselineDone && !clearanceBlocking
 
   const recentCheckins = Array.isArray(client.weekly_checkins)
     ? [...client.weekly_checkins].sort((a: { submitted_at: string }, b: { submitted_at: string }) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime()).slice(0, 3)
@@ -98,7 +113,10 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                     <div className="flex-1 min-w-0">
                       <p className={`text-sm font-semibold mb-0.5 ${task.done ? 'text-teal-400' : 'text-white'}`}>{task.title}</p>
                       <p className="text-xs text-stone-500">{task.description}</p>
-                      {!task.done && task.available && task.href && (
+                      {!task.done && task.notice && (
+                        <p className="mt-2 text-xs text-amber-400/80">{task.notice}</p>
+                      )}
+                      {!task.done && task.available && task.href && !task.notice && (
                         <Link
                           href={task.href}
                           className="inline-block mt-3 text-xs font-bold text-black bg-teal-400 px-4 py-2 rounded-xl hover:bg-teal-300 transition-colors"
@@ -106,7 +124,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                           Start →
                         </Link>
                       )}
-                      {!task.done && task.available && !task.href && (
+                      {!task.done && task.available && !task.href && !task.notice && (
                         <p className="mt-2 text-xs text-stone-600">Your coach will send this link when ready.</p>
                       )}
                     </div>

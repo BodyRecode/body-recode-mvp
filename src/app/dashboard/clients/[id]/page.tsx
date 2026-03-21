@@ -133,8 +133,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           ))}
         </div>
         {client.medical_clearance_required && (
-          <div className="mt-3 pt-3 border-t border-stone-800">
-            <p className="text-xs text-amber-400">⚠ Medical clearance required — awaiting documentation</p>
+          <div className="mt-3 pt-3 border-t border-stone-800 flex items-center justify-between">
+            {client.medical_clearance_received_at ? (
+              <p className="text-xs text-teal-400">Medical clearance received</p>
+            ) : (
+              <>
+                <p className="text-xs text-amber-400">Medical clearance required</p>
+                <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-xs text-amber-400 hover:text-amber-300 underline transition-colors">Manage →</Link>
+              </>
+            )}
           </div>
         )}
       </div>
