@@ -1,5 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
-import { getWeekNumber, getFormType } from '@/lib/weekly-checkin-questions'
+import { getWeekNumber, getCheckInWindowStatus } from '@/lib/weekly-checkin-questions'
 import CheckInForm from './checkin-form'
 
 export default async function CheckInPage({ params }: { params: Promise<{ token: string }> }) {
@@ -8,7 +8,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, coaching_started_at, created_at')
+    .select('id, name, coaching_started_at, created_at, ieep_complete')
     .eq('checkin_token', token)
     .single()
 
@@ -24,11 +24,34 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
     )
   }
 
+  const window = getCheckInWindowStatus()
+
+  // Window is closed — show next open time
+  if (!window.isOpen) {
+    const opensAt = window.opensAt.toLocaleString('en-AU', {
+      timeZone: 'Australia/Brisbane',
+      weekday: 'long',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    })
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+        <div className="text-center max-w-sm">
+          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6">Body Recode™</p>
+          <h1 className="text-xl font-semibold text-white mb-2">Window not open</h1>
+          <p className="text-stone-500 text-sm mb-4">The check-in window opens <span className="text-white">Friday at 6:00pm</span> and closes Sunday at 6:00pm Brisbane time.</p>
+          <p className="text-stone-600 text-xs">Next window opens {opensAt} (Brisbane)</p>
+        </div>
+      </div>
+    )
+  }
+
   const startDate = client.coaching_started_at || client.created_at
   const weekNumber = getWeekNumber(startDate)
-  const formType = getFormType(weekNumber)
+  const { formType } = window
 
-  // Check if already submitted this week
+  // Check if already submitted this window
   const { data: existing } = await admin
     .from('weekly_checkins')
     .select('id')

@@ -311,6 +311,29 @@ export const FORM_B_SECTIONS: CheckInSection[] = [
 ]
 
 /** Determine which week number a client is on (1-indexed) based on coaching start date */
+// Global system anchor: Monday 23 March 2026 = Week A
+// Brisbane timezone = UTC+10 (no DST)
+const SYSTEM_ANCHOR_MS = Date.UTC(2026, 2, 23) - 10 * 60 * 60 * 1000 // 23 Mar 2026 00:00 Brisbane
+const BRISBANE_OFFSET_MS = 10 * 60 * 60 * 1000
+
+function nowBrisbane(): Date {
+  return new Date(Date.now() + BRISBANE_OFFSET_MS)
+}
+
+/** Returns the global system week number (1-based, anchored to 23 Mar 2026) */
+export function getSystemWeekNumber(): number {
+  const nowUtc = Date.now()
+  const diffMs = nowUtc - SYSTEM_ANCHOR_MS
+  return Math.floor(diffMs / (7 * 24 * 60 * 60 * 1000)) + 1
+}
+
+/** Global form type based on system week — Week 1 = A, Week 2 = B, etc. */
+export function getFormType(weekNumber?: number): 'A' | 'B' {
+  const w = weekNumber ?? getSystemWeekNumber()
+  return w % 2 === 1 ? 'A' : 'B'
+}
+
+/** Per-client week number (how many weeks since coaching started) */
 export function getWeekNumber(coachingStartedAt: string): number {
   const start = new Date(coachingStartedAt)
   const now = new Date()
@@ -319,7 +342,43 @@ export function getWeekNumber(coachingStartedAt: string): number {
   return Math.floor(diffDays / 7) + 1
 }
 
-/** Odd weeks = A, Even weeks = B */
-export function getFormType(weekNumber: number): 'A' | 'B' {
-  return weekNumber % 2 === 1 ? 'A' : 'B'
+export interface CheckInWindowStatus {
+  isOpen: boolean
+  formType: 'A' | 'B'
+  opensAt: Date   // next Friday 6pm Brisbane
+  closesAt: Date  // this/next Sunday 6:30pm Brisbane
+}
+
+/** Returns whether the check-in window is currently open and which form is active */
+export function getCheckInWindowStatus(): CheckInWindowStatus {
+  const now = nowBrisbane()
+  const day = now.getUTCDay() // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
+  const hour = now.getUTCHours()
+  const minute = now.getUTCMinutes()
+
+  // Window: Friday 6pm (day=5, hour>=18) through Sunday 6:30pm (day=0, hour<18 or hour==18 && min<=30)
+  const afterFriday6pm = day === 5 && hour >= 18
+  const saturday = day === 6
+  const beforeSunday630pm = day === 0 && (hour < 18 || (hour === 18 && minute <= 30))
+  const isOpen = afterFriday6pm || saturday || beforeSunday630pm
+
+  const systemWeek = getSystemWeekNumber()
+  const formType = getFormType(systemWeek)
+
+  // Calculate next window open (next Friday 6pm Brisbane)
+  const daysUntilFriday = (5 - day + 7) % 7 || 7
+  const nextFriday = new Date(now)
+  nextFriday.setUTCDate(now.getUTCDate() + (isOpen ? 0 : daysUntilFriday))
+  nextFriday.setUTCHours(18, 0, 0, 0)
+  // Convert back from Brisbane to UTC for storage
+  const opensAt = new Date(nextFriday.getTime() - BRISBANE_OFFSET_MS)
+
+  // Calculate window close (Sunday 6:30pm Brisbane)
+  const daysUntilSunday = (0 - day + 7) % 7 || 7
+  const nextSunday = new Date(now)
+  nextSunday.setUTCDate(now.getUTCDate() + (day === 0 ? 0 : daysUntilSunday))
+  nextSunday.setUTCHours(18, 30, 0, 0)
+  const closesAt = new Date(nextSunday.getTime() - BRISBANE_OFFSET_MS)
+
+  return { isOpen, formType, opensAt, closesAt }
 }
