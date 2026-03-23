@@ -6,11 +6,13 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
   const { token } = await params
   const admin = createAdminClient()
 
-  const { data: client } = await admin
+  const { data: client, error: clientError } = await admin
     .from('clients')
     .select('id, name, coaching_started_at, created_at, ieep_complete')
     .eq('checkin_token', token)
-    .single()
+    .maybeSingle()
+
+  if (clientError) console.error('Checkin client fetch error:', clientError)
 
   if (!client) {
     const { data: debugClient, error: debugError } = await admin
