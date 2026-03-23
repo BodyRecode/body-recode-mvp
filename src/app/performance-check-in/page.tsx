@@ -16,7 +16,7 @@ export default function PerformanceCheckInPage() {
       {/* Hero */}
       <section className="bg-black pt-44 pb-28 px-5">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Body Recode™ Performance Coaching</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4"><a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">Body Recode™</a> Performance Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-12">
             Performance Check-In
           </h1>

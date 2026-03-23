@@ -60,7 +60,7 @@ export default function BaselineForm({ clientId, clientName }: Props) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-4">Body Recode™</p>
+          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-4"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-2xl font-bold text-white mb-3">Baseline received.</h1>
           <p className="text-stone-400 text-sm leading-relaxed">Baseline documentation protects interpretive integrity. It allows exposure to be guided by structure rather than emotion. This marks the starting calibration point of your coaching arc.</p>
           <p className="text-stone-500 text-xs mt-4">Your coach will review your documentation and your Deliberate Start Window will begin shortly.</p>
@@ -86,7 +86,7 @@ export default function BaselineForm({ clientId, clientName }: Props) {
 
         {/* Header */}
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-4">Body Recode™</p>
+          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-4"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-2xl font-bold text-white mb-1">Baseline Documentation</h1>
           <p className="text-stone-400 text-sm">Hi {firstName} — this is a formal calibration event, not a cosmetic assessment.</p>
         </div>

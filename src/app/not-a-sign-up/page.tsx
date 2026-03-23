@@ -15,7 +15,7 @@ export default function NotASignUpPage() {
       <section className="bg-black min-h-screen flex items-center px-5 pt-20">
         <div className="max-w-xl mx-auto py-32">
 
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-12">Body Recode™ Performance Coaching</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-12"><a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">Body Recode™</a> Performance Coaching</p>
 
           <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight mb-12">
             Before you start, take a moment.

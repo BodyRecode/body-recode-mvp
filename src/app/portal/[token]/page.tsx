@@ -81,7 +81,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
       <div className="max-w-lg mx-auto px-6 py-12">
         {/* Header */}
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-3">Body Recode™</p>
+          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-3"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-2xl font-bold text-white mb-1">Welcome, {firstName}</h1>
           <p className="text-stone-400 text-sm">Your coaching portal, everything in one place.</p>
         </div>
