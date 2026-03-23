@@ -62,6 +62,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `JSON parse failed: ${jsonMatch[0].slice(0, 100)}` }, { status: 500 })
   }
 
+  // Strip em dashes from all generated text fields
+  cffsData = stripEmDashes(cffsData)
+
   // Archive any existing CFFS for this client
   await supabase
     .from('cffs')
@@ -81,4 +84,13 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json({ cffs })
+}
+
+function stripEmDashes(obj: unknown): unknown {
+  if (typeof obj === 'string') return obj.replace(/\s*—\s*/g, ', ')
+  if (Array.isArray(obj)) return obj.map(stripEmDashes)
+  if (obj && typeof obj === 'object') {
+    return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, stripEmDashes(v)]))
+  }
+  return obj
 }

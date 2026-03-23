@@ -129,7 +129,8 @@ async function generateCFWS(
   const jsonMatch = content.text.match(/\{[\s\S]*\}/)
   if (!jsonMatch) return
 
-  const cfwsData = JSON.parse(jsonMatch[0])
+  const cfwsRaw = JSON.parse(jsonMatch[0])
+  const cfwsData = stripEmDashes(cfwsRaw)
 
   // Archive any existing CFWS for this week (in case of regeneration)
   await admin
@@ -144,4 +145,13 @@ async function generateCFWS(
     rolling_window_weeks: [weekNumber, ...recentPairs.map(p => p.weekNumber)],
     ...cfwsData,
   })
+}
+
+function stripEmDashes(obj: unknown): unknown {
+  if (typeof obj === 'string') return obj.replace(/\s*—\s*/g, ', ')
+  if (Array.isArray(obj)) return obj.map(stripEmDashes)
+  if (obj && typeof obj === 'object') {
+    return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, stripEmDashes(v)]))
+  }
+  return obj
 }
