@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { formatDate, getLeadStatusLabel, getLeadStatusColour, getLeadSourceLabel } from '@/lib/utils'
 import LeadActions from './lead-actions'
 import ConvertButton from './convert-button'
+import CancelSequenceButton from './cancel-sequence-button'
 import Link from 'next/link'
 
 const CHECK_IN_QUESTIONS: Record<string, string> = {
@@ -153,13 +154,21 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               </span>
             )}
           </div>
-          <Link
-            href={`/dashboard/leads/${lead.id}/report`}
-            target="_blank"
-            className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-lg hover:bg-teal-500/20 transition-colors"
-          >
-            View report ↗
-          </Link>
+          <div className="flex items-center justify-between">
+            <Link
+              href={`/dashboard/leads/${lead.id}/report`}
+              target="_blank"
+              className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-lg hover:bg-teal-500/20 transition-colors"
+            >
+              View report ↗
+            </Link>
+            {lead.followup_email_ids && (lead.followup_email_ids as string[]).length > 0 && (
+              <div className="text-right">
+                <p className="text-xs text-stone-500 mb-1">{(lead.followup_email_ids as string[]).length} follow-up{(lead.followup_email_ids as string[]).length > 1 ? 's' : ''} scheduled</p>
+                <CancelSequenceButton leadId={lead.id} />
+              </div>
+            )}
+          </div>
         </div>
       )}
 

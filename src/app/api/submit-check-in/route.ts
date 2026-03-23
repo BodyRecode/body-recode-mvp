@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse, after } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { buildReportEmail, nextMorning9amBrisbane } from '@/lib/generate-report'
+import { buildReportEmail, buildFollowUpEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from '@/lib/generate-report'
 
 export const maxDuration = 60
 
@@ -245,13 +245,43 @@ async function scheduleReport(
     scheduledAt: scheduledAt.toISOString(),
   })
 
-  // Save report to lead record so it's visible in dashboard before it sends
+  // Schedule follow-up sequence
+  const followUps = buildFollowUpEmails(firstName, bookingLink)
+  const followupEmailIds: string[] = []
+
+  const followupSchedules = [
+    { days: 2, ...followUps.email1 },
+    { days: 5, ...followUps.email2 },
+    { days: 9, ...followUps.email3 },
+  ]
+
+  for (const fu of followupSchedules) {
+    try {
+      const sendAt = daysAfter9amBrisbane(scheduledAt, fu.days)
+      const { data } = await resend.emails.send({
+        from: 'Kade Dunstone <kade@send.bodyrecode.au>',
+        to: email,
+        subject: fu.subject,
+        html: fu.html,
+        scheduledAt: sendAt.toISOString(),
+      })
+      if (data?.id) followupEmailIds.push(data.id)
+    } catch (e) {
+      console.error('Follow-up schedule error:', e)
+    }
+  }
+
+  // Save report and follow-up IDs to lead record
   if (leadId) {
     try {
       const supabase = createAdminClient()
       await supabase
         .from('leads')
-        .update({ report_html: html, report_scheduled_at: scheduledAt.toISOString() })
+        .update({
+          report_html: html,
+          report_scheduled_at: scheduledAt.toISOString(),
+          followup_email_ids: followupEmailIds.length > 0 ? followupEmailIds : null,
+        })
         .eq('id', leadId)
     } catch (e) {
       console.error('Report save error:', e)
