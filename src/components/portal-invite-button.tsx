@@ -9,7 +9,7 @@ export default function PortalInviteButton({ clientId, onboardingToken }: { clie
     const token = onboardingToken
     if (!token) return
 
-    const link = `${window.location.origin}/portal/${token}`
+    const link = `https://app.bodyrecode.au/portal/${token}`
     await navigator.clipboard.writeText(link)
     setStatus('copied')
     setTimeout(() => setStatus('idle'), 3000)

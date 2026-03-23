@@ -14,7 +14,7 @@ export default function CopyLinkButton({
   const [copied, setCopied] = useState(false)
 
   function copy() {
-    navigator.clipboard.writeText(`${window.location.origin}${path}/${token}`)
+    navigator.clipboard.writeText(`https://app.bodyrecode.au${path}/${token}`)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
