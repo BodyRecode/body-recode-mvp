@@ -5,6 +5,7 @@ import Link from 'next/link'
 import CopyLinkButton from './copy-link-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
+import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
 
@@ -63,6 +64,16 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const latestIntakeId = intakes?.[0]?.id || null
   const latestCfws = cfwsRecords?.[0] || null
   const checkinToken = client.checkin_token as string | undefined
+
+  // Find the most recent week with both A and B submitted
+  const checkinsByWeek = new Map<number, Set<string>>()
+  for (const ci of recentCheckins || []) {
+    if (!checkinsByWeek.has(ci.week_number)) checkinsByWeek.set(ci.week_number, new Set())
+    checkinsByWeek.get(ci.week_number)!.add(ci.form_type)
+  }
+  const latestCompleteWeek = [...checkinsByWeek.entries()]
+    .filter(([, forms]) => forms.has('A') && forms.has('B'))
+    .sort((a, b) => b[0] - a[0])[0]?.[0] ?? null
   const latestBaseline = baselines?.[0] || null
   const baselineToken = client.baseline_token as string | undefined
 
@@ -382,7 +393,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-3">
             <div className="flex items-center justify-between mb-3">
               <p className="text-xs uppercase tracking-wider text-stone-500">Week {latestCfws.week_number} Synthesis</p>
-              <span className="text-xs text-stone-500">{formatDate(latestCfws.generated_at)}</span>
+              <div className="flex items-center gap-2">
+                {latestCompleteWeek && <RegenerateCFWSButton clientId={id} weekNumber={latestCompleteWeek} />}
+                <span className="text-xs text-stone-500">{formatDate(latestCfws.generated_at)}</span>
+              </div>
             </div>
 
             <div className="grid grid-cols-4 gap-2 mb-4">
@@ -420,7 +434,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         ) : (
           <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-5 mb-3 text-center">
             <p className="text-stone-500 text-sm">No weekly synthesis yet</p>
-            <p className="text-stone-600 text-xs mt-1">Generated after each A+B check-in pair is complete</p>
+            {latestCompleteWeek ? (
+              <div className="mt-3">
+                <RegenerateCFWSButton clientId={id} weekNumber={latestCompleteWeek} />
+              </div>
+            ) : (
+              <p className="text-stone-600 text-xs mt-1">Generated after each A+B check-in pair is complete</p>
+            )}
           </div>
         )}
 
