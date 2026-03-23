@@ -25,7 +25,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
   }
 
   const window = getCheckInWindowStatus()
-  const testMode = process.env.NEXT_PUBLIC_CHECKIN_TEST_MODE === 'true'
+  const testMode = process.env.CHECKIN_TEST_MODE === 'true'
 
   // Window is closed — show next open time
   if (!window.isOpen && !testMode) {
