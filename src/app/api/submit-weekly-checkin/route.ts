@@ -16,12 +16,12 @@ export async function POST(request: NextRequest) {
 
   const admin = createAdminClient()
 
-  // Verify client exists — also fetch IEEP status
+  // Verify client exists
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, ieep_complete')
+    .select('id, name')
     .eq('id', clientId)
-    .single()
+    .maybeSingle()
 
   if (!client) {
     return NextResponse.json({ error: 'Client not found' }, { status: 404 })
