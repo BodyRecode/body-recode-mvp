@@ -25,7 +25,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
   }
 
   const window = getCheckInWindowStatus()
-  const testMode = process.env.CHECKIN_TEST_MODE === 'true'
+  const testMode = process.env.CHECKIN_TEST_MODE?.trim().toLowerCase() === 'true'
 
   // Window is closed — show next open time
   if (!window.isOpen && !testMode) {
@@ -43,7 +43,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
           <h1 className="text-xl font-semibold text-white mb-2">Window not open</h1>
           <p className="text-stone-500 text-sm mb-4">The check-in window opens <span className="text-white">Friday at 6:00pm</span> and closes Sunday at 6:00pm Brisbane time.</p>
           <p className="text-stone-600 text-xs">Next window opens {opensAt} (Brisbane)</p>
-          <p className="text-stone-800 text-xs mt-2">env: {process.env.CHECKIN_TEST_MODE ?? 'undefined'}</p>
+          <p className="text-stone-800 text-xs mt-2">env: {process.env.CHECKIN_TEST_MODE ?? 'undefined'} | testMode: {testMode ? 'true' : 'false'}</p>
         </div>
       </div>
     )
