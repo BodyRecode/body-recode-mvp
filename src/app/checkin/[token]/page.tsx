@@ -25,9 +25,10 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
   }
 
   const window = getCheckInWindowStatus()
+  const testMode = process.env.NEXT_PUBLIC_CHECKIN_TEST_MODE === 'true'
 
   // Window is closed — show next open time
-  if (!window.isOpen) {
+  if (!window.isOpen && !testMode) {
     const opensAt = window.opensAt.toLocaleString('en-AU', {
       timeZone: 'Australia/Brisbane',
       weekday: 'long',
