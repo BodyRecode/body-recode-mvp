@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
   // Save CFFS to database
   const { data: cffs, error: cffsError } = await supabase
     .from('cffs')
-    .insert({ client_id, intake_id, ...cffsData })
+    .insert({ client_id, intake_id, ...(cffsData as Record<string, unknown>) })
     .select()
     .single()
 

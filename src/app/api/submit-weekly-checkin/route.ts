@@ -143,7 +143,7 @@ async function generateCFWS(
     client_id: client.id,
     week_number: weekNumber,
     rolling_window_weeks: [weekNumber, ...recentPairs.map(p => p.weekNumber)],
-    ...cfwsData,
+    ...(cfwsData as Record<string, unknown>),
   })
 }
 
