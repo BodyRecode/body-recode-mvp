@@ -13,12 +13,19 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
     .single()
 
   if (!client) {
+    const { data: debugClient, error: debugError } = await admin
+      .from('clients')
+      .select('id, name, checkin_token')
+      .eq('checkin_token', token)
+      .single()
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
           <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-xl font-semibold text-white mb-2">Link not found</h1>
           <p className="text-stone-500 text-sm">This check-in link is invalid. Please contact your coach.</p>
+          <p className="text-stone-700 text-xs mt-4">token: {token}</p>
+          <p className="text-stone-700 text-xs">debug: {debugClient ? JSON.stringify(debugClient) : debugError?.message ?? 'no data'}</p>
         </div>
       </div>
     )
