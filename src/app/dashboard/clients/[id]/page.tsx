@@ -430,10 +430,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <p className="text-xs uppercase tracking-wider text-stone-500 mb-3">Recent Submissions</p>
             <div className="space-y-2">
               {recentCheckins.map((ci, i) => (
-                <div key={i} className="flex items-center justify-between text-xs">
+                <Link
+                  key={i}
+                  href={`/dashboard/clients/${id}/checkins/${ci.week_number}/${ci.form_type}`}
+                  className="flex items-center justify-between text-xs hover:bg-stone-800/50 -mx-2 px-2 py-1 rounded-lg transition-colors"
+                >
                   <span className="text-stone-400">Week {ci.week_number} · Form {ci.form_type}</span>
                   <span className="text-stone-600">{formatDate(ci.submitted_at)}</span>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
