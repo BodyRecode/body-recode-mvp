@@ -153,6 +153,8 @@ export async function buildReportEmail(
             <td bgcolor="#111111" style="background-color:#111111;padding:36px 40px 8px;">
               <table width="100%" cellpadding="0" cellspacing="0">
 
+                ${bookingSection}
+
                 ${section('Opening Frame', nl2p(FIXED_SECTIONS.openingFrame))}
 
                 <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1e1e1e;"><tr><td height="1" bgcolor="#1e1e1e"></td></tr></table></td></tr>
