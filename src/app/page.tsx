@@ -4,7 +4,7 @@ import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
 
 export const metadata: Metadata = {
-  title: 'Body Recode™ — Performance Coaching Brisbane',
+  title: 'Body Recode™ | Performance Coaching Brisbane',
   description: 'Body Recode™ is a biology-first performance coaching system in Brisbane for high-functioning adults whose bodies have stopped responding to effort. Based at Anytime Fitness Newstead.',
 }
 
@@ -24,7 +24,7 @@ export default function HomePage() {
             The response has gone quiet.
           </h1>
           <p className="text-lg md:text-xl text-white/50 leading-relaxed max-w-2xl mx-auto mb-12">
-            Body Recode™ is a biology-first coaching system built for high-functioning adults whose bodies are signalling something is off — and who want to understand what, before they do anything else.
+            Body Recode™ is a biology-first coaching system built for high-functioning adults whose bodies are signalling something is off. If you want to understand what that is before you do anything else, this is where to start.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -57,7 +57,7 @@ export default function HomePage() {
               'Energy crashes hit the same time every afternoon, every day',
               'You feel capable at work but flat and depleted underneath',
               'Sleep isn\'t restoring you the way it used to',
-              'Your body feels unpredictable — different week to week for no clear reason',
+              'Your body feels unpredictable, different week to week for no clear reason',
               'You\'ve done the programs. You know the habits. It\'s still not working.',
               'Something has shifted. You just don\'t know what.',
             ].map((item, i) => (
@@ -83,13 +83,13 @@ export default function HomePage() {
             Decode. Rewire. Rebuild.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            Most coaching escalates when progress slows. Body Recode™ interprets first. Before any training is prescribed, we establish what your biology is actually doing — and why.
+            Most coaching escalates when progress slows. Body Recode™ interprets first. Before any training is prescribed, we establish what your biology is actually doing and why.
           </p>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { step: '01', title: 'Decode', body: 'A structured assessment across eight biological domains — training history, stress load, sleep, recovery, body pattern signals, nutrition, schedule, and stimulant use. This is not a fitness test. It is a complete picture of your system.' },
+              { step: '01', title: 'Decode', body: 'A structured assessment across eight biological domains: training history, stress load, sleep, recovery, body pattern signals, nutrition, schedule, and stimulant use. This is not a fitness test. It is a complete picture of your system.' },
               { step: '02', title: 'Rewire', body: 'Training, recovery, and lifestyle inputs are redesigned around your individual biological profile. Not a template. Not a generic program. A system built for exactly where you are right now.' },
-              { step: '03', title: 'Rebuild', body: 'Sustained progress built on a foundation that understands your biology. Stronger, leaner, and more resilient — not through pressure, but through precision.' },
+              { step: '03', title: 'Rebuild', body: 'Sustained progress built on a foundation that understands your biology. Stronger, leaner, and more resilient. Not through pressure, but through precision.' },
             ].map(item => (
               <div key={item.step} className="border border-white/10 rounded-2xl p-8">
                 <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">{item.step}</p>
@@ -109,14 +109,14 @@ export default function HomePage() {
             Four biological patterns.<br />One system built around all of them.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            Body Recode™ recognises four distinct biological profiles — each with predictable symptoms and patterns. Understanding which one applies to you changes everything about how coaching should proceed.
+            Body Recode™ recognises four distinct biological profiles, each with predictable symptoms and patterns. Understanding which one applies to you changes everything about how coaching should proceed.
           </p>
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             {[
               {
                 label: 'Stress-Stored',
                 who: 'Male + Female',
-                desc: 'Wired and tired. Abdominal puffiness, morning heaviness, afternoon crashes, broken sleep, and caffeine as a daily coping mechanism. Training happens — results don\'t. The system is overloaded, not undermotivated.',
+                desc: 'Wired and tired. Abdominal puffiness, morning heaviness, afternoon crashes, broken sleep, and caffeine as a daily coping mechanism. Training happens but results don\'t. The system is overloaded, not undermotivated.',
               },
               {
                 label: 'Estrogen-Shift',
@@ -131,7 +131,7 @@ export default function HomePage() {
               {
                 label: 'Androgen-Decline',
                 who: 'Male',
-                desc: 'Capable on the outside. Privately flat. Strength declining quietly. Morning face looks tired. Motivation reduced. The identity built around capability and physical presence is eroding — slowly, and without a clear explanation.',
+                desc: 'Capable on the outside. Privately flat. Strength declining quietly. Morning face looks tired. Motivation reduced. The identity built around capability and physical presence is eroding. Slowly, and without a clear explanation.',
               },
             ].map((item, i) => (
               <div key={i} className="border border-white/10 rounded-2xl p-7">
@@ -157,7 +157,7 @@ export default function HomePage() {
             <span className="text-white/40">It is signalling.</span>
           </h2>
           <p className="text-white/50 text-lg leading-relaxed mb-6 max-w-2xl mx-auto">
-            The patterns you are experiencing — the puffiness, the crashes, the stalled results, the unpredictability — are biological signals. They are not failures of effort or discipline.
+            The patterns you are experiencing: the puffiness, the crashes, the stalled results, the unpredictability. These are biological signals, not failures of effort or discipline.
           </p>
           <p className="text-white/50 text-lg leading-relaxed mb-12 max-w-2xl mx-auto">
             Body Recode™ is built to read those signals, interpret what they mean, and build a coaching structure around them. Not around a template. Around you.
@@ -179,7 +179,7 @@ export default function HomePage() {
             <div>
               <img
                 src="/kade.jpg"
-                alt="Kade Dunstone — Performance Coach, Body Recode™"
+                alt="Kade Dunstone, Performance Coach, Body Recode™"
                 className="w-full rounded-2xl object-cover"
               />
             </div>
@@ -189,7 +189,7 @@ export default function HomePage() {
                 Performance Coach · Founder, Body Recode™ · Anytime Fitness Newstead
               </p>
               <p className="text-white/60 text-base leading-relaxed mb-10">
-                Kade built Body Recode™ because conventional coaching was failing people who were doing everything right. The system exists because effort without biological context produces frustration, not results. Every method inside it is built around interpreting your body — not overriding it.
+                Kade built Body Recode™ because conventional coaching was failing people who were doing everything right. The system exists because effort without biological context produces frustration, not results. Every method inside it is built around interpreting your body, not overriding it.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link

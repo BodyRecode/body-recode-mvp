@@ -54,7 +54,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     {
       id: 'intake',
       title: 'Foundational Intake',
-      description: 'Complete your full intake — this informs your entire coaching structure.',
+      description: 'Complete your full intake. This informs your entire coaching structure.',
       done: intakeDone,
       href: client.intake_token ? `/intake/${client.intake_token}` : null,
       available: healthDone && !clearanceBlocking,
@@ -83,7 +83,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         <div className="mb-10">
           <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-3">Body Recode™</p>
           <h1 className="text-2xl font-bold text-white mb-1">Welcome, {firstName}</h1>
-          <p className="text-stone-400 text-sm">Your coaching portal — everything in one place.</p>
+          <p className="text-stone-400 text-sm">Your coaching portal, everything in one place.</p>
         </div>
 
         {/* Onboarding tasks */}
@@ -181,7 +181,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           >
             <div>
               <p className="text-sm font-semibold text-white">Active Coaching Client Guide</p>
-              <p className="text-xs text-stone-500 mt-0.5">Your reference for the coaching process — view or download</p>
+              <p className="text-xs text-stone-500 mt-0.5">Your reference for the coaching process. View or download.</p>
             </div>
             <svg className="w-5 h-5 text-stone-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

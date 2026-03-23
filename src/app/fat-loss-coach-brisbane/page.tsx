@@ -5,7 +5,7 @@ import MarketingFooter from '@/components/marketing/footer'
 
 export const metadata: Metadata = {
   title: 'Fat Loss Coach Brisbane | Body Recode™',
-  description: 'Looking for a fat loss coach in Brisbane? Body Recode™ uses a biology-first approach to fat loss — addressing the underlying system, not just calories and cardio. Based at Anytime Fitness Newstead.',
+  description: 'Looking for a fat loss coach in Brisbane? Body Recode™ uses a biology-first approach to fat loss, addressing the underlying system rather than just calories and cardio. Based at Anytime Fitness Newstead.',
 }
 
 export default function FatLossCoachBrisbanePage() {
@@ -21,7 +21,7 @@ export default function FatLossCoachBrisbanePage() {
             Fat Loss Coach Brisbane
           </h1>
           <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-12">
-            Fat loss isn&apos;t a willpower problem. It&apos;s a biological one. Body Recode™ addresses the system driving your body composition — not just the calories in and out.
+            Fat loss isn&apos;t a willpower problem. It&apos;s a biological one. Body Recode™ addresses the system driving your body composition, not just the calories in and out.
           </p>
           <Link
             href="/performance-check-in"
@@ -37,13 +37,13 @@ export default function FatLossCoachBrisbanePage() {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Why fat loss is harder than it should be</h2>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
-            Most fat loss programs are built on two assumptions: eat less, move more. This works — up to a point. The problem is that the body is not a simple calculator. When stress is high, sleep is poor, or the regulatory system is under load, the body actively resists fat loss regardless of caloric deficit.
+            Most fat loss programs are built on two assumptions: eat less, move more. This works up to a point. The problem is that the body is not a simple calculator. When stress is high, sleep is poor, or the regulatory system is under load, the body actively resists fat loss regardless of caloric deficit.
           </p>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
             Cortisol elevates. Insulin sensitivity drops. Muscle is broken down for energy while fat storage is preserved. This is not a failure of effort. It is a predictable biological response to a system under strain.
           </p>
           <p className="text-white/60 text-lg leading-relaxed">
-            Body Recode™ starts by identifying whether your system is in a state where fat loss is biologically viable — and if not, what needs to change first.
+            Body Recode™ starts by identifying whether your system is in a state where fat loss is biologically viable, and if not, what needs to change first.
           </p>
         </div>
       </section>
@@ -57,12 +57,12 @@ export default function FatLossCoachBrisbanePage() {
           </p>
           <div className="grid md:grid-cols-2 gap-10 mb-12">
             {[
-              { title: 'Stress and cortisol regulation', desc: 'Chronically elevated cortisol directly inhibits fat oxidation and promotes fat storage — particularly around the abdomen. No amount of extra cardio overcomes this.' },
-              { title: 'Sleep quality and depth', desc: 'Poor sleep disrupts leptin and ghrelin — the hormones that regulate hunger and satiety. One week of poor sleep measurably increases caloric intake and fat storage.' },
+              { title: 'Stress and cortisol regulation', desc: 'Chronically elevated cortisol directly inhibits fat oxidation and promotes fat storage, particularly around the abdomen. No amount of extra cardio overcomes this.' },
+              { title: 'Sleep quality and depth', desc: 'Poor sleep disrupts leptin and ghrelin, the hormones that regulate hunger and satiety. One week of poor sleep measurably increases caloric intake and fat storage.' },
               { title: 'Training load matching', desc: 'Training too hard in a depleted state elevates cortisol further and drives muscle breakdown. The right training load is one your system can actually recover from.' },
-              { title: 'Nutrition pattern — not just calories', desc: 'Meal timing, protein adequacy, and eating behaviour patterns all affect how your body partitions energy. A caloric deficit built on the wrong foods at the wrong times produces poor results.' },
+              { title: 'Nutrition pattern, not just calories', desc: 'Meal timing, protein adequacy, and eating behaviour patterns all affect how your body partitions energy. A caloric deficit built on the wrong foods at the wrong times produces poor results.' },
               { title: 'Hormonal environment', desc: 'Testosterone, oestrogen, thyroid function, and insulin sensitivity all influence how and where your body stores and releases fat. These can\'t be ignored.' },
-              { title: 'Body pattern recognition', desc: 'Where your body distributes fat tells a story about your underlying biology. Body Recode™ uses this as a diagnostic signal — not just an aesthetic concern.' },
+              { title: 'Body pattern recognition', desc: 'Where your body distributes fat tells a story about your underlying biology. Body Recode™ uses this as a diagnostic signal, not just an aesthetic concern.' },
             ].map((item, i) => (
               <div key={i} className="border border-white/10 rounded-xl p-5">
                 <p className="text-base font-bold text-white mb-1">{item.title}</p>
@@ -81,10 +81,10 @@ export default function FatLossCoachBrisbanePage() {
             Before any fat loss prescription is made, Body Recode™ builds a complete picture of your biological state using a structured eight-domain intake. This tells us whether fat loss is viable right now, what is currently working against it, and what needs to change first.
           </p>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
-            For clients whose regulatory system is under stress — the stress-stored pattern is one of the most common — attempting aggressive fat loss is counterproductive. The body fights back. The first phase is stabilisation, not restriction.
+            For clients whose regulatory system is under stress (the stress-stored pattern is one of the most common), attempting aggressive fat loss is counterproductive. The body fights back. The first phase is stabilisation, not restriction.
           </p>
           <p className="text-white/60 text-lg leading-relaxed mb-12">
-            Once the system is stable, fat loss becomes realistic and sustainable. Training load, nutrition structure, and lifestyle adjustments are all calibrated to the individual — not applied from a template.
+            Once the system is stable, fat loss becomes realistic and sustainable. Training load, nutrition structure, and lifestyle adjustments are all calibrated to the individual, not applied from a template.
           </p>
           <Link href="/performance-coach-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">
             Learn about the full Body Recode™ system →
@@ -98,10 +98,10 @@ export default function FatLossCoachBrisbanePage() {
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-6">
             {[
-              { q: 'Is fat loss coaching just about diet?', a: 'No. Diet is one input in a larger biological system. Body Recode™ looks at stress, sleep, training load, hormonal patterns, and body composition signals — and builds a program around all of them.' },
-              { q: 'I\'ve tried cutting calories before and it stopped working. Why?', a: 'When the body is under stress or in a state of chronic sleep deprivation, it actively resists fat loss — regardless of caloric deficit. The intake process identifies what is working against your progress and addresses it directly.' },
-              { q: 'Will I need to follow a strict diet?', a: 'Not necessarily. Body Recode™ works with your current eating behaviour and builds structure around it. Extreme restriction is rarely the right answer — especially in the early phases.' },
-              { q: 'How long before I see results?', a: 'It depends on where your biology is starting from. If your system is under stress, the first phase focuses on stabilisation before fat loss becomes the primary goal. Once the system is stable, measurable changes typically show within the first 4–6 weeks. Everything is built to be sustainable — not fast and short-lived.' },
+              { q: 'Is fat loss coaching just about diet?', a: 'No. Diet is one input in a larger biological system. Body Recode™ looks at stress, sleep, training load, hormonal patterns, and body composition signals, and builds a program around all of them.' },
+              { q: 'I\'ve tried cutting calories before and it stopped working. Why?', a: 'When the body is under stress or in a state of chronic sleep deprivation, it actively resists fat loss regardless of caloric deficit. The intake process identifies what is working against your progress and addresses it directly.' },
+              { q: 'Will I need to follow a strict diet?', a: 'Not necessarily. Body Recode™ works with your current eating behaviour and builds structure around it. Extreme restriction is rarely the right answer, especially in the early phases.' },
+              { q: 'How long before I see results?', a: 'It depends on where your biology is starting from. If your system is under stress, the first phase focuses on stabilisation before fat loss becomes the primary goal. Once the system is stable, measurable changes typically show within the first 4–6 weeks. Everything is built to be sustainable, not fast and short-lived.' },
               { q: 'Where are sessions held?', a: 'All coaching is conducted face-to-face at Anytime Fitness Newstead, Brisbane. Availability is limited.' },
               { q: 'How do I get started?', a: 'The starting point is the free Performance Check-In. It takes a few minutes and gives you a clear picture of where your body is right now and what approach makes sense for you.' },
             ].map((item, i) => (
@@ -121,7 +121,7 @@ export default function FatLossCoachBrisbanePage() {
             Find out what&apos;s actually holding your progress back
           </h2>
           <p className="text-white/50 text-lg leading-relaxed mb-12 max-w-xl mx-auto">
-            The free Performance Check-In takes a few minutes and gives you a real picture of your current body state — and what it means for your fat loss approach.
+            The free Performance Check-In takes a few minutes and gives you a real picture of your current body state and what it means for your fat loss approach.
           </p>
           <Link
             href="/performance-check-in"

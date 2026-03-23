@@ -140,7 +140,7 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
         >
           <div>
             <p className="text-sm font-semibold text-white">Medical Clearance Request Form</p>
-            <p className="text-xs text-stone-500 mt-0.5">Opens in new tab — print or save as PDF</p>
+            <p className="text-xs text-stone-500 mt-0.5">Opens in new tab. Print or save as PDF.</p>
           </div>
           <svg className="w-5 h-5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

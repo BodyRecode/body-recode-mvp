@@ -119,7 +119,7 @@ export async function buildReportEmail(
   const bookingSection = bookingLink
     ? `<tr><td style="padding:0 0 40px;">
         <p style="margin:0 0 8px;font-size:17px;font-weight:700;color:#ffffff;line-height:1.4;">Your pattern has a reason.</p>
-        <p style="margin:0 0 24px;font-size:14px;color:#888888;line-height:1.7;">The report shows what's showing up. A 30-minute conversation is where we work out why — and what it means for how you should actually be training and eating right now.</p>
+        <p style="margin:0 0 24px;font-size:14px;color:#888888;line-height:1.7;">The report shows what's showing up. A 30-minute conversation is where we work out why, and what it means for how you should actually be training and eating right now.</p>
         <a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0a0a0a;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Explore this with Kade →</a>
         <p style="margin:12px 0 0;font-size:13px;color:#555555;">No obligation. Just clarity on what your body is actually doing.</p>
       </td></tr>`
@@ -319,9 +319,9 @@ export function buildFollowUpEmails(firstName: string, bookingLink: string): {
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`Your performance check-in report went out a couple of days ago — not sure if it landed where it should or got buried.`),
+        p(`Your performance check-in report went out a couple of days ago. Not sure if it landed where it should or got buried.`),
         p(`If you had a chance to read it, you'll have seen a pattern summary describing what's currently showing up across your load, recovery, and consistency.`),
-        p(`What the report doesn't cover is what to actually do about it. That's the conversation — 30 minutes, no pitch, just a clear read on what your body is doing and what it means for how you should be training right now.`),
+        p(`What the report doesn't cover is what to actually do about it. That's the conversation: 30 minutes, no pitch, just a clear read on what your body is doing and what it means for how you should be training right now.`),
       ].join(''),
       'Book a call with Kade →',
       bookingLink
@@ -335,8 +335,8 @@ export function buildFollowUpEmails(firstName: string, bookingLink: string): {
       [
         p(`Hi ${firstName},`),
         p(`Most people read a performance report like yours and recognise themselves in it. Then they go back to doing exactly what they've always done.`),
-        p(`The report maps the surface. It shows what's showing up. What it doesn't do is tell you what's driving it — or what to do differently because of it.`),
-        p(`Your pattern has direct implications for how hard you should be training right now, how much recovery you actually need, and why certain approaches may have stalled in the past. That's not guesswork — it's what the signals point to.`),
+        p(`The report maps the surface. It shows what's showing up. What it doesn't do is tell you what's driving it, or what to do differently because of it.`),
+        p(`Your pattern has direct implications for how hard you should be training right now, how much recovery you actually need, and why certain approaches may have stalled in the past. That's not guesswork. It's what the signals point to.`),
         p(`30 minutes to work through it properly. No obligation beyond that.`),
       ].join(''),
       'Book a call with Kade →',
@@ -351,8 +351,8 @@ export function buildFollowUpEmails(firstName: string, bookingLink: string): {
       [
         p(`Hi ${firstName},`),
         p(`I'm not going to keep following up after this.`),
-        p(`If the timing isn't right — that's completely fine. The booking link doesn't expire and you're welcome to use it whenever it makes sense.`),
-        p(`But if you've been sitting on this and wondering whether it's worth the conversation — that's usually the answer.`),
+        p(`If the timing isn't right, that's completely fine. The booking link doesn't expire and you're welcome to use it whenever it makes sense.`),
+        p(`But if you've been sitting on this and wondering whether it's worth the conversation, that's usually the answer.`),
       ].join(''),
       'Book a call when you\'re ready →',
       bookingLink

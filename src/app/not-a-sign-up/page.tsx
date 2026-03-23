@@ -30,7 +30,7 @@ export default function NotASignUpPage() {
             <div>
               <h2 className="text-base font-bold text-white mb-3">What this is</h2>
               <p className="text-white/50 text-base leading-relaxed mb-2">A brief, private snapshot of how things are sitting for you right now.</p>
-              <p className="text-white/50 text-base leading-relaxed">It looks at how training has been feeling, how well you&apos;re recovering, and how stress and life load may be interacting. The aim is clarity — not evaluation.</p>
+              <p className="text-white/50 text-base leading-relaxed">It looks at how training has been feeling, how well you&apos;re recovering, and how stress and life load may be interacting. The aim is clarity, not evaluation.</p>
             </div>
 
             <div>

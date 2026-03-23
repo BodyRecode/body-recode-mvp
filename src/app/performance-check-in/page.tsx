@@ -21,7 +21,7 @@ export default function PerformanceCheckInPage() {
             Performance Check-In
           </h1>
           <p className="text-xl text-white/60 leading-relaxed max-w-2xl mx-auto mb-14">
-            A short, structured snapshot of how things are sitting for you right now — across training, recovery, and how life load is interacting with both.
+            A short, structured snapshot of how things are sitting for you right now, across training, recovery, and how life load is interacting with both.
           </p>
           <Link
             href="/not-a-sign-up"
@@ -42,7 +42,7 @@ export default function PerformanceCheckInPage() {
               {[
                 'A brief, private snapshot of how things are sitting for you right now',
                 'A look at how training has been feeling, how well you\'re recovering, and how stress and life load may be interacting',
-                'A clarity-building instrument — not an evaluation',
+                'A clarity-building instrument, not an evaluation',
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-[#10E1C2]/20 flex items-center justify-center shrink-0 mt-0.5">
@@ -118,7 +118,7 @@ export default function PerformanceCheckInPage() {
             Most coaching escalates when progress slows. Body Recode™ interprets first.
           </p>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
-            The Performance Check-In was built around that distinction. It identifies how effort, recovery, external load, and consistency are currently interacting — before any coaching conversation begins. It creates clarity before prescription.
+            The Performance Check-In was built around that distinction. It identifies how effort, recovery, external load, and consistency are currently interacting, before any coaching conversation begins. It creates clarity before prescription.
           </p>
           <p className="text-white/60 text-lg leading-relaxed">
             It replaces urgency-driven hooks with self-reflection. Authority comes from restraint, not pressure.

@@ -21,7 +21,7 @@ export default function PerformanceCoachBrisbanePage() {
             Performance Coaching Brisbane
           </h1>
           <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-12">
-            Body Recode™ is a biology-first coaching system built for high-functioning adults in Brisbane whose bodies have stopped responding to effort — and who want to understand why before they do anything else.
+            Body Recode™ is a biology-first coaching system built for high-functioning adults in Brisbane whose bodies have stopped responding to effort. If you want to understand why before you do anything else, this is where to start.
           </p>
           <Link
             href="/performance-check-in"
@@ -46,7 +46,7 @@ export default function PerformanceCoachBrisbanePage() {
               'Energy crashes hit at the same time every afternoon',
               'Sleep is not restoring you the way it used to',
               'You feel capable at work but flat and depleted underneath',
-              'Your body feels unpredictable — different week to week for no clear reason',
+              'Your body feels unpredictable, different week to week for no clear reason',
               'You have done the programs. You know the habits. It is still not working.',
               'Something has shifted. You just do not know what.',
             ].map((item, i) => (
@@ -72,13 +72,13 @@ export default function PerformanceCoachBrisbanePage() {
             Biology first. Training second.
           </h2>
           <p className="text-white/60 text-lg leading-relaxed mb-6">
-            Most coaching in Brisbane escalates when progress stalls — more sessions, more intensity, more restriction. Body Recode™ does the opposite. Before any training is prescribed, we establish what your biology is actually doing and why.
+            Most coaching in Brisbane escalates when progress stalls: more sessions, more intensity, more restriction. Body Recode™ does the opposite. Before any training is prescribed, we establish what your biology is actually doing and why.
           </p>
           <p className="text-white/60 text-lg leading-relaxed mb-6">
             This means building a complete picture across eight domains: training history, stress load, sleep and recovery, body pattern signals, nutrition behaviours, schedule, stimulant use, and hormonal context. Not a fitness test. A full read of your system.
           </p>
           <p className="text-white/60 text-lg leading-relaxed">
-            From that picture, everything — training, recovery, lifestyle inputs — is designed around your individual biological profile. Not a template. Not a generic program. A system built for exactly where you are right now.
+            From that picture, everything is designed around your individual biological profile: training, recovery, and lifestyle inputs. Not a template. Not a generic program. A system built for exactly where you are right now.
           </p>
         </div>
       </section>
@@ -91,14 +91,14 @@ export default function PerformanceCoachBrisbanePage() {
             Four biological patterns.<br />One system built around all of them.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            Body Recode™ recognises four distinct biological profiles — each with predictable symptoms and patterns. Understanding which one applies to you changes everything about how coaching should proceed.
+            Body Recode™ recognises four distinct biological profiles, each with predictable symptoms and patterns. Understanding which one applies to you changes everything about how coaching should proceed.
           </p>
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             {[
               {
                 label: 'Stress-Stored',
                 who: 'Male + Female',
-                desc: 'Wired and tired. Abdominal puffiness, morning heaviness, afternoon crashes, broken sleep, and caffeine as a daily coping mechanism. Training happens — results do not. The system is overloaded, not undermotivated.',
+                desc: 'Wired and tired. Abdominal puffiness, morning heaviness, afternoon crashes, broken sleep, and caffeine as a daily coping mechanism. Training happens but results do not. The system is overloaded, not undermotivated.',
               },
               {
                 label: 'Estrogen-Shift',
@@ -113,7 +113,7 @@ export default function PerformanceCoachBrisbanePage() {
               {
                 label: 'Androgen-Decline',
                 who: 'Male',
-                desc: 'Capable on the outside. Privately flat. Strength declining quietly. Morning face looks tired. Motivation reduced. The identity built around capability and physical presence is eroding — slowly, and without a clear explanation.',
+                desc: 'Capable on the outside. Privately flat. Strength declining quietly. Morning face looks tired. Motivation reduced. The identity built around capability and physical presence is eroding. Slowly, and without a clear explanation.',
               },
             ].map((item, i) => (
               <div key={i} className="border border-white/10 rounded-2xl p-7">
@@ -138,9 +138,9 @@ export default function PerformanceCoachBrisbanePage() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-16">Decode. Rewire. Rebuild.</h2>
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {[
-              { step: '01', title: 'Decode', body: 'A structured assessment across eight biological domains — training history, stress load, sleep, recovery, body pattern signals, nutrition, schedule, and stimulant use. This is not a fitness test. It is a complete picture of your system.' },
+              { step: '01', title: 'Decode', body: 'A structured assessment across eight biological domains: training history, stress load, sleep, recovery, body pattern signals, nutrition, schedule, and stimulant use. This is not a fitness test. It is a complete picture of your system.' },
               { step: '02', title: 'Rewire', body: 'Training, recovery, and lifestyle inputs are redesigned around your individual biological profile. Not a template. Not a generic program. A system built for exactly where you are right now.' },
-              { step: '03', title: 'Rebuild', body: 'Sustained progress built on a foundation that understands your biology. Stronger, leaner, and more resilient — not through pressure, but through precision.' },
+              { step: '03', title: 'Rebuild', body: 'Sustained progress built on a foundation that understands your biology. Stronger, leaner, and more resilient. Not through pressure, but through precision.' },
             ].map(item => (
               <div key={item.step} className="border border-white/10 rounded-2xl p-8">
                 <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">{item.step}</p>
@@ -173,7 +173,7 @@ export default function PerformanceCoachBrisbanePage() {
               <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">CFFS</p>
               <h3 className="text-lg font-bold text-white mb-4">Coach-Facing Foundational Synthesis</h3>
               <p className="text-white/50 text-base leading-relaxed mb-4">
-                Produced at intake. Foundational, interpretive, and non-temporal — it does not change week to week. The CFFS establishes what is structurally true about your system: dominant patterns, limiting factors, non-negotiable constraints, and risk signals.
+                Produced at intake. Foundational, interpretive, and non-temporal. It does not change week to week. The CFFS establishes what is structurally true about your system: dominant patterns, limiting factors, non-negotiable constraints, and risk signals.
               </p>
               <p className="text-white/40 text-sm leading-relaxed">
                 Everything that happens in coaching operates within the boundaries defined by the CFFS. No execution decision overrides it.
@@ -183,7 +183,7 @@ export default function PerformanceCoachBrisbanePage() {
               <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">CFWS</p>
               <h3 className="text-lg font-bold text-white mb-4">Coach-Facing Weekly Synthesis</h3>
               <p className="text-white/50 text-base leading-relaxed mb-4">
-                Generated weekly throughout active coaching. Observational, not interpretive — it captures how your system is responding to applied load in real time: changes in recovery, tolerance, regulation, and any emerging risks or patterns.
+                Generated weekly throughout active coaching. Observational, not interpretive. It captures how your system is responding to applied load in real time: changes in recovery, tolerance, regulation, and any emerging risks or patterns.
               </p>
               <p className="text-white/40 text-sm leading-relaxed">
                 The CFWS feeds back into the system as new data. It keeps the coaching picture current without overriding the foundational interpretation.
@@ -193,7 +193,7 @@ export default function PerformanceCoachBrisbanePage() {
 
           <h3 className="text-2xl font-extrabold text-white tracking-tight mb-6">Three body states. One continuous loop.</h3>
           <p className="text-white/50 text-base leading-relaxed mb-10 max-w-2xl">
-            The CFFS places every client into one of three body states. This determines everything about how coaching is structured — what training is appropriate, what recovery demands are real, and what goals are biologically viable right now.
+            The CFFS places every client into one of three body states. This determines everything about how coaching is structured: what training is appropriate, what recovery demands are real, and what goals are biologically viable right now.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-10">
             {[
@@ -201,7 +201,7 @@ export default function PerformanceCoachBrisbanePage() {
                 state: 'Remediation',
                 colour: 'border-red-800/40',
                 label: 'text-red-400',
-                desc: 'The regulatory system is under stress. Before any training escalation, the system needs stabilising. Pushing harder here does not produce better results — it produces setbacks. Remediation is not a failure state. It is a biological reality that must be respected before progress is possible.',
+                desc: 'The regulatory system is under stress. Before any training escalation, the system needs stabilising. Pushing harder here does not produce better results; it produces setbacks. Remediation is not a failure state. It is a biological reality that must be respected before progress is possible.',
               },
               {
                 state: 'Optimisation',
@@ -213,7 +213,7 @@ export default function PerformanceCoachBrisbanePage() {
                 state: 'Post-Optimisation',
                 colour: 'border-[#10E1C2]/30',
                 label: 'text-[#10E1C2]',
-                desc: 'A long-arc performance phase. The system is resilient and capable of sustained high-level output. Built over time — it cannot be forced. This is where the Body Recode™ approach produces its most complete expression.',
+                desc: 'A long-arc performance phase. The system is resilient and capable of sustained high-level output. It is built over time and cannot be forced. This is where the Body Recode™ approach produces its most complete expression.',
               },
             ].map((item) => (
               <div key={item.state} className={`border rounded-2xl p-7 ${item.colour}`}>
@@ -223,7 +223,7 @@ export default function PerformanceCoachBrisbanePage() {
             ))}
           </div>
           <p className="text-white/30 text-sm leading-relaxed max-w-2xl">
-            Body state is not permanent. As the CFWS captures weekly responses and the system re-interprets, the coaching structure updates. The loop is continuous — interpretation informs execution, execution informs interpretation.
+            Body state is not permanent. As the CFWS captures weekly responses and the system re-interprets, the coaching structure updates. The loop is continuous: interpretation informs execution, execution informs interpretation.
           </p>
         </div>
       </section>
@@ -236,7 +236,7 @@ export default function PerformanceCoachBrisbanePage() {
             <div>
               <img
                 src="/kade.jpg"
-                alt="Kade Dunstone — Performance Coach, Body Recode™"
+                alt="Kade Dunstone, Performance Coach, Body Recode™"
                 className="w-full rounded-2xl object-cover"
               />
             </div>
@@ -250,7 +250,7 @@ export default function PerformanceCoachBrisbanePage() {
                   I spent years competing nationally and internationally. Winning titles. Understanding the body at a level most people never reach. I knew how to train. I knew how to eat. I knew how to shape my body with precision.
                 </p>
                 <p>
-                  Then a few years ago, everything changed at once. A relationship ended. A business closed. The structure I had built my life inside — gone, almost overnight.
+                  Then a few years ago, everything changed at once. A relationship ended. A business closed. The structure I had built my life inside was gone, almost overnight.
                 </p>
                 <p>
                   And my body responded in ways I had never seen before.
@@ -259,13 +259,13 @@ export default function PerformanceCoachBrisbanePage() {
                   My rhythm collapsed. Hunger signals I had always trusted became unpredictable. My energy dropped in a way that had nothing to do with sleep or training. I held fat in places my body had never held it. And the harder I pushed, the worse things got.
                 </p>
                 <p>
-                  For someone whose identity was built around knowing how to do this — it was confronting in a way I was not prepared for. Not just physically. It challenged who I thought I was.
+                  For someone whose identity was built around knowing how to do this, it was confronting in a way I was not prepared for. Not just physically. It challenged who I thought I was.
                 </p>
                 <p>
-                  What I had to learn — and what took far longer than it should have — is that my body was not broken. It was signalling. Loudly. And everything I had been trained to do was making it worse, not better.
+                  What I had to learn, and what took far longer than it should have, is that my body was not broken. It was signalling. Loudly. And everything I had been trained to do was making it worse, not better.
                 </p>
                 <p className="text-white/80 font-medium">
-                  Body Recode™ exists because of that experience. Not as a theory. As a system built from understanding what happens when biology stops responding to effort — and what actually has to change first.
+                  Body Recode™ exists because of that experience. Not as a theory. As a system built from understanding what happens when biology stops responding to effort, and what actually has to change first.
                 </p>
               </div>
               <p className="mt-10 text-sm text-white/30 leading-relaxed">
@@ -282,10 +282,10 @@ export default function PerformanceCoachBrisbanePage() {
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-8">
             {[
-              { q: 'What makes Body Recode™ different from a personal trainer in Brisbane?', a: 'Most personal trainers focus on the workout session. Body Recode™ uses a structured biological assessment to understand your body before any training is prescribed. The result is a system built around your current biology — not a generic template applied to everyone.' },
+              { q: 'What makes Body Recode™ different from a personal trainer in Brisbane?', a: 'Most personal trainers focus on the workout session. Body Recode™ uses a structured biological assessment to understand your body before any training is prescribed. The result is a system built around your current biology, not a generic template applied to everyone.' },
               { q: 'How do I get started?', a: 'The starting point is the free Performance Check-In. It identifies the patterns currently showing up across your training, recovery, and how your body is responding to life load. No obligation. Just clarity.' },
               { q: 'Where are you located?', a: 'Body Recode™ operates out of Anytime Fitness Newstead in Brisbane. All coaching is face-to-face.' },
-              { q: 'How many clients do you work with at once?', a: 'Availability is intentionally limited. This is a precision coaching environment — not a high-volume gym model. Each client receives the level of attention the system requires.' },
+              { q: 'How many clients do you work with at once?', a: 'Availability is intentionally limited. This is a precision coaching environment, not a high-volume gym model. Each client receives the level of attention the system requires.' },
               { q: 'Do I need to be an experienced gym-goer?', a: 'No. The system is built to meet you exactly where you are. Your training history and current capacity are assessed through the intake process, and everything is structured accordingly.' },
               { q: 'What does performance coaching involve day-to-day?', a: 'Structured training sessions, recovery monitoring, lifestyle adjustments where relevant, and regular review of how your body is responding. Everything is guided by your biological profile and updated as you progress.' },
             ].map((item, i) => (
