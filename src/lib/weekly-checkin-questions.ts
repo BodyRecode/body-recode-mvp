@@ -313,7 +313,7 @@ export const FORM_B_SECTIONS: CheckInSection[] = [
 /** Determine which week number a client is on (1-indexed) based on coaching start date */
 // Global system anchor: Monday 23 March 2026 = Week A
 // Brisbane timezone = UTC+10 (no DST)
-const SYSTEM_ANCHOR_MS = Date.UTC(2026, 2, 23) - 10 * 60 * 60 * 1000 // 23 Mar 2026 00:00 Brisbane
+const SYSTEM_ANCHOR_MS = Date.UTC(2026, 2, 16) - 10 * 60 * 60 * 1000 // TEST: shifted back 1 week so current week = 2 (Form B) — revert to 23 Mar
 const BRISBANE_OFFSET_MS = 10 * 60 * 60 * 1000
 
 function nowBrisbane(): Date {
