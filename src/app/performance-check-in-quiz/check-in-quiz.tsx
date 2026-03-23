@@ -158,7 +158,7 @@ export default function CheckInQuiz() {
         </div>
 
         <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-white/5 px-5 py-3 flex items-center justify-between">
-          <p className="text-[11px] font-bold tracking-[0.15em] text-white uppercase">Body Recode™</p>
+          <a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.15em] text-white uppercase hover:text-white/70 transition-colors">Body Recode™</a>
           <p className="text-[11px] font-medium text-white/40">Last step</p>
         </div>
 
