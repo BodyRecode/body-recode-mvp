@@ -319,9 +319,10 @@ export function buildFollowUpEmails(firstName: string, bookingLink: string): {
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`Your performance check-in report went out a couple of days ago. Not sure if it landed where it should or got buried.`),
-        p(`If you had a chance to read it, you'll have seen a pattern summary describing what's currently showing up across your load, recovery, and consistency.`),
-        p(`What the report doesn't cover is what to actually do about it. That's the conversation: 30 minutes, no pitch, just a clear read on what your body is doing and what it means for how you should be training right now.`),
+        p(`Most people who fill out that check-in have been at this for a while. Putting in the effort, doing the right things on paper, but something's not quite adding up.`),
+        p(`If that sounds familiar, your report is worth a proper read. It's not a generic summary. It reflects what's actually showing up in your body right now, based on what you told us.`),
+        p(`The next step is a 30-minute conversation where we work out what's driving it and what to actually do about it.`),
+        p(`No pitch. Just clarity.`),
       ].join(''),
       'Book a call with Kade →',
       bookingLink
@@ -329,15 +330,15 @@ export function buildFollowUpEmails(firstName: string, bookingLink: string): {
   }
 
   const email2 = {
-    subject: `What most people miss in their report`,
+    subject: `When the effort doesn't match the result`,
     html: followUpEmail(
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`Most people read a performance report like yours and recognise themselves in it. Then they go back to doing exactly what they've always done.`),
-        p(`The report maps the surface. It shows what's showing up. What it doesn't do is tell you what's driving it, or what to do differently because of it.`),
-        p(`Your pattern has direct implications for how hard you should be training right now, how much recovery you actually need, and why certain approaches may have stalled in the past. That's not guesswork. It's what the signals point to.`),
-        p(`30 minutes to work through it properly. No obligation beyond that.`),
+        p(`There's a specific kind of frustration that comes from doing everything you think you should be doing and still not seeing it reflected back at you.`),
+        p(`It's not laziness. It's not a lack of discipline. It's usually a mismatch between what your body actually needs right now and what you're giving it.`),
+        p(`That's exactly what your check-in results point to. And it's exactly what a conversation with me is designed to untangle.`),
+        p(`30 minutes. No obligation. Just a straight answer on what's going on and where to go from here.`),
       ].join(''),
       'Book a call with Kade →',
       bookingLink
@@ -350,9 +351,9 @@ export function buildFollowUpEmails(firstName: string, bookingLink: string): {
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`I'm not going to keep following up after this.`),
-        p(`If the timing isn't right, that's completely fine. The booking link doesn't expire and you're welcome to use it whenever it makes sense.`),
-        p(`But if you've been sitting on this and wondering whether it's worth the conversation, that's usually the answer.`),
+        p(`I won't keep showing up in your inbox after this.`),
+        p(`But I'll say one thing before I go quiet. The people who get the most out of that first conversation are usually the ones who've been quietly wondering about this stuff for a while. Not new to training. Not giving up. Just stuck in a way they can't quite explain.`),
+        p(`If that's you, the call is worth 30 minutes of your time.`),
       ].join(''),
       'Book a call when you\'re ready →',
       bookingLink
