@@ -35,6 +35,7 @@ export interface Lead {
   zoom_1_date?: string
   zoom_2_date?: string
   zoom_meeting_url?: string
+  orientation_sent_at?: string
   notes?: string
   converted_to_client_id?: string
   converted_at?: string

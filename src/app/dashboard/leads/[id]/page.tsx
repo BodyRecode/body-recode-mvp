@@ -4,6 +4,7 @@ import { formatDate, getLeadStatusLabel, getLeadStatusColour, getLeadSourceLabel
 import LeadActions from './lead-actions'
 import ConvertButton from './convert-button'
 import CancelSequenceButton from './cancel-sequence-button'
+import SendOrientationButton from '@/components/send-orientation-button'
 import Link from 'next/link'
 
 const CHECK_IN_QUESTIONS: Record<string, string> = {
@@ -108,6 +109,21 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               Open Call Companion ↗
             </Link>
           </div>
+        </div>
+      )}
+
+      {/* Orientation */}
+      {answers && Object.keys(answers).length > 0 && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Orientation</h2>
+            <p className="text-stone-500 text-sm">
+              {lead.orientation_sent_at
+                ? `Sent ${new Date(lead.orientation_sent_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                : 'Send the orientation guide for the client to read before Zoom 2.'}
+            </p>
+          </div>
+          <SendOrientationButton leadId={lead.id} alreadySent={!!lead.orientation_sent_at} />
         </div>
       )}
 
