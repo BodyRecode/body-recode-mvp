@@ -84,13 +84,13 @@ Most meaningful patterns don't actually settle until closer to six months - but 
 
 What coaching actually covers is ongoing interpretation across time - governing stress, load, and recovery, and reducing the need to constantly second-guess what you're seeing or feeling. It's not about motivation, intensity, or pushing for outcomes.
 
-Inside Body Recode, coaching is structured weekly and there are two entry options."`,
+The standard entry structure is two one-to-one sessions per week, with ongoing performance coaching and interpretation alongside that. That's $299 per week."`,
     prompts: [
-      'ONLINE - $149/week - "Everything the coaching system includes - weekly check-ins, interpretation, performance synthesis, and ongoing support. No in-person sessions. Same 12-week minimum."',
-      'IN-PERSON - $299/week - "Two one-to-one sessions per week, plus the full coaching and interpretation layer alongside that. This is the standard entry structure."',
       '↳ "Most people who continue do so because things start to make more sense - not because anything dramatic has changed."',
       '↳ "If at any point this stops feeling like the right fit, we stop. That applies on both sides."',
       '↳ "You don\'t need to decide now. Take some time to sit with it."',
+      'IF THEY OBJECT TO PRICE - "There is also an online option - everything the coaching system includes, the same check-ins, interpretation, and ongoing support, just without the in-person sessions. That sits at $149 per week."',
+      '↳ "Same 12-week minimum. Same structure. Just delivered remotely."',
     ],
     tips: 'Present pricing as information. Do not use urgency, scarcity, or pressure. Session frequency is coach-recommended, not client-selected.',
     boundary: 'No discounts. No promotions. No urgency framing. A no or not yet is a complete and valid outcome.',
