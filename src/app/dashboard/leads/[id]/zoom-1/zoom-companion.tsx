@@ -25,7 +25,9 @@ There's nothing you need to decide today. We're just looking at whether the patt
     name: 'Report Reflection',
     duration: '5–7 min',
     goal: 'Allow the member to respond to the report before you offer any interpretation.',
-    script: null,
+    script: `"Before I share any of my own observations, I want to hear from you first.
+
+You had a chance to read the report before today — so just take me through your reaction. What stood out to you when you read it?"`,
     prompts: [
       'When you read the report, what stood out most to you?',
       'Did any part of it feel particularly accurate?',
@@ -39,7 +41,9 @@ There's nothing you need to decide today. We're just looking at whether the patt
     name: 'Context Exploration',
     duration: '10–12 min',
     goal: 'Understand the real training environment behind the report pattern.',
-    script: null,
+    script: `"Thanks for sharing that. What I want to do now is get a clearer picture of what's actually been happening week to week — because the report picks up patterns, but it doesn't know the full context behind them.
+
+So I'm going to ask you a few questions. Just answer as openly as you can — there's no right answer here."`,
     prompts: [
       'Training: "What does your training currently look like week to week?"',
       'Recovery: "How predictable does recovery feel between sessions?"',
