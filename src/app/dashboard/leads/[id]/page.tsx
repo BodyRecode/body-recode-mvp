@@ -125,7 +125,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           </div>
           <div className="flex items-center gap-2">
             <Link
-              href={`/dashboard/leads/${lead.id}/orientation`}
+              href="https://klotlednmxhywimztozm.supabase.co/storage/v1/object/public/assets/Performance%20Coaching%20Orientation.pdf"
               target="_blank"
               className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
             >
