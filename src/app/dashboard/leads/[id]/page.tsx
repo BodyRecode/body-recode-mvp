@@ -53,6 +53,11 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
+          <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
+            <Link href="/dashboard/leads" className="hover:text-stone-300 transition-colors">Leads</Link>
+            <span>/</span>
+            <span className="text-stone-300">{lead.name}</span>
+          </div>
           <div className="flex items-center gap-3 mb-1">
             <h1 className="text-2xl font-semibold">{lead.name}</h1>
             <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${getLeadStatusColour(lead.status)}`}>
