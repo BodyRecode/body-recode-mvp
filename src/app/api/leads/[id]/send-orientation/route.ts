@@ -13,16 +13,17 @@ export async function POST(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
 
-  const admin = createAdminClient()
-  const { data: lead } = await admin
+  // Use RLS-enforced client so coach can only access their own leads
+  const { data: lead } = await supabase
     .from('leads')
-    .select('id, name, email, coach_id')
+    .select('id, name, email')
     .eq('id', id)
     .maybeSingle()
 
   if (!lead) return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
-  if (lead.coach_id !== user.id) return NextResponse.json({ error: 'Unauthorised' }, { status: 403 })
   if (!lead.email) return NextResponse.json({ error: 'No email address for this lead' }, { status: 400 })
+
+  const admin = createAdminClient()
 
   const firstName = lead.name.split(' ')[0]
 
