@@ -78,11 +78,11 @@ What has that been like for you?"`,
     goal: 'Present the coaching structure and packages as information, not persuasion.',
     script: `"Based on what you've described, it might be useful to explain how support is structured - just so you have the full picture. There's no expectation to decide today.
 
-We structure coaching around a minimum 12-week interpretive window.
+Before I go into the numbers, I want to be clear about what Body Recode Performance Coaching actually is. This is not a standard personal training service. You're not paying for sessions. You're entering a structured coaching system that governs how your body is loaded, recovered, and interpreted across time. Most PTs don't operate at this level - and most coaching services don't either.
 
-Most meaningful patterns don't actually settle until closer to six months - but that's not something we ask for upfront. We start with enough time to see clearly, and then decide together whether continuing makes sense.
+We structure coaching around a minimum 12-week interpretive window. Most meaningful patterns don't actually settle until closer to six months - but that's not something we ask for upfront. We start with enough time to see clearly, and then decide together whether continuing makes sense.
 
-What coaching actually covers is ongoing interpretation across time - governing stress, load, and recovery, and reducing the need to constantly second-guess what you're seeing or feeling. It's not about motivation, intensity, or pushing for outcomes.
+What coaching covers is ongoing interpretation across time - governing stress, load, and recovery, and reducing the need to constantly second-guess what you're seeing or feeling. It's not about motivation, intensity, or pushing for outcomes.
 
 The standard entry structure is two one-to-one sessions per week, with ongoing performance coaching and interpretation alongside that. That's $299 per week."`,
     prompts: [
