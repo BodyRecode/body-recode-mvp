@@ -7,66 +7,88 @@ const STAGES = [
     id: 1,
     name: 'Opening Frame',
     duration: '2 min',
-    goal: 'Set tone. Relax the member. Establish curiosity — not evaluation.',
+    goal: 'Create safety and remove pressure. Establish this is not a sales call.',
+    script: `"Thanks for taking the time to jump on today.
+
+The purpose of this conversation is simply to talk through the patterns that showed up in your check-in report and hear a bit more about your training experience.
+
+There's nothing you need to decide today. We're just looking at whether the patterns the report picked up actually match what you've been experiencing."`,
     prompts: [
       'How did you find completing the Performance Check-In?',
       'Was there anything that felt straightforward — or anything you weren\'t quite sure about?',
     ],
-    tips: 'Slow down. Let them land. This is not a sales opener. You\'re just opening a conversation.',
+    tips: 'Slow down. Let them land. Don\'t rush past this stage — the tone you set here carries the whole call.',
     boundary: null,
   },
   {
     id: 2,
     name: 'Report Reflection',
     duration: '5–7 min',
-    goal: 'Understand how they interpreted their own pattern. Let them lead.',
+    goal: 'Allow the member to respond to the report before you offer any interpretation.',
+    script: null,
     prompts: [
-      'When you read through the report, what stood out most?',
-      'Was there anything that felt particularly accurate?',
-      'Anything that surprised you — or that you\'d push back on?',
+      'When you read the report, what stood out most to you?',
+      'Did any part of it feel particularly accurate?',
+      'Was there anything that didn\'t quite land for you?',
     ],
-    tips: 'Don\'t explain the report to them yet. Let them tell you what they noticed. Their language is data.',
+    tips: 'Do not explain the report first. Let them tell you what they noticed — their language is the signal. The strongest friction point usually surfaces here.',
     boundary: null,
   },
   {
     id: 3,
     name: 'Context Exploration',
     duration: '10–12 min',
-    goal: 'Surface the real-life context behind the signals. Understand the full picture.',
+    goal: 'Understand the real training environment behind the report pattern.',
+    script: null,
     prompts: [
-      'Walk me through what a training week typically looks like for you.',
-      'How predictable is your recovery from session to session?',
-      'What does your sleep typically look like — and has that changed recently?',
-      'Is there anything happening outside of training that\'s placing ongoing demands on you?',
-      'How long has this pattern been showing up?',
+      'Training: "What does your training currently look like week to week?"',
+      'Recovery: "How predictable does recovery feel between sessions?"',
+      'Consistency: "Is training fairly stable week to week, or does life move around a lot?"',
+      'Pressure: "Do you feel like you\'re putting pressure on yourself to get results?"',
+      'Duration: "How long has this pattern been showing up for you?"',
     ],
-    tips: 'Ask one question at a time. Let silence do work. You\'re not solving anything here — you\'re listening.',
-    boundary: 'No prescriptions. No "you should try…". Just listening and clarifying.',
+    tips: 'Ask one question at a time. Let silence do work. You\'re listening for SLS, RPS, and RILS signals in their language — not solving anything.',
+    boundary: 'No prescriptions. No "you should try…". No training or nutrition advice. Just listening and clarifying.',
   },
   {
     id: 4,
     name: 'Pattern Interpretation',
     duration: '5–7 min',
-    goal: 'Translate signals into a coherent narrative they can understand. Not a diagnosis — an interpretation.',
+    goal: 'Translate the signals into a coherent explanation. Clarity — not solution.',
+    script: `"Based on what you've described and what showed up in the report, it sounds like your system is managing quite a bit of cumulative demand at the moment.
+
+When training load, recovery rhythm, and life demand overlap like that, the body often prioritises stability over visible progress.
+
+That's not a fitness problem — it's a system response. And it's actually one of the more common patterns we see."`,
     prompts: [
-      'What I\'m noticing across what you\'ve described is…',
-      'The pattern that tends to show up when these signals combine is…',
-      'Your body isn\'t broken — it\'s responding. What we\'re looking at is…',
+      '"What I\'m noticing across what you\'ve described is…"',
+      '"The pattern that tends to show up when these signals combine is…"',
+      '"Your body isn\'t broken — it\'s responding. What we\'re looking at is…"',
     ],
-    tips: 'Use the interpretation language from your signal levels. Keep it observational. No prescriptions.',
-    boundary: 'No medical interpretation. No outcome promises. Identify patterns only.',
+    tips: 'Use the Interpretation Language tab for signal-specific phrases. Keep it observational. The goal is to make the pattern feel understandable — not alarming.',
+    boundary: 'No medical interpretation. No outcome promises. No training adjustments. Pattern identification only.',
   },
   {
     id: 5,
     name: 'Next Step Invitation',
     duration: '2–3 min',
-    goal: 'Open the door to the next conversation without pressure. Intellectual curiosity, not pitch.',
+    goal: 'Offer deeper exploration without pressure. Intellectual curiosity — not pitch.',
+    script: `"What we've talked about today is essentially the surface layer of the pattern.
+
+If you wanted to explore it more deeply, the next step would be an orientation session — where we go through how the Body Recode coaching process works and whether it would actually be useful in your situation.
+
+There's no obligation. It's just a more detailed look at what the system would do with your pattern."
+
+Then ask: "Would you like to explore that further?"
+
+→ If YES: book Zoom 2 before ending the call.
+→ If NO: close cleanly. No follow-up pressure.`,
     prompts: [
-      'Would you like to explore what that would actually look like in practice?',
-      'The next step would be a deeper orientation session — about 60 minutes — where we map out what coaching would actually look like for you specifically.',
-      'There\'s no obligation. It\'s just a more detailed look at what the system would do with your pattern.',
+      '"Would you like to explore what that would actually look like in practice?"',
+      '"The next step is an orientation session — about 30–45 minutes — where we go deeper into the framework."',
+      '"There\'s no commitment involved. It\'s just a clearer look at what support could look like."',
     ],
-    tips: 'Don\'t oversell. Don\'t rush. If they\'re not ready, that\'s information too.',
+    tips: 'Don\'t oversell. Don\'t rush. If they\'re not ready, that\'s valid information. Zoom 2 should be booked before this call ends if they say yes.',
     boundary: null,
   },
 ]
@@ -394,6 +416,12 @@ export default function ZoomCompanion({
 
               {activeTab === 'prompts' && (
                 <div className="space-y-3">
+                  {stage.script && (
+                    <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/30 rounded-xl p-5 mb-2">
+                      <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-3">Script</p>
+                      <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{stage.script}</p>
+                    </div>
+                  )}
                   {stage.prompts.map((p, i) => (
                     <div key={i} className="bg-stone-900 border border-stone-800 rounded-xl p-4">
                       <p className="text-white text-sm leading-relaxed">&ldquo;{p}&rdquo;</p>
