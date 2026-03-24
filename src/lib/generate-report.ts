@@ -362,3 +362,56 @@ export function buildFollowUpEmails(firstName: string, bookingLink: string): {
 
   return { email1, email2, email3 }
 }
+
+export function buildNoShowEmails(firstName: string, bookingLink: string): {
+  email1: { subject: string; html: string }
+  email2: { subject: string; html: string }
+  email3: { subject: string; html: string }
+} {
+  const email1 = {
+    subject: `${firstName} - missed you today`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`Looks like we missed each other today. No problem at all - these things happen.`),
+        p(`When you're ready, the conversation is still available. It's a 30-minute call to talk through what showed up in your report and work out whether there's something useful in it for you.`),
+        p(`No pressure. Just let me know when works.`),
+      ].join(''),
+      'Rebook a time →',
+      bookingLink
+    ),
+  }
+
+  const email2 = {
+    subject: `Still here when you're ready, ${firstName}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`Just a quiet follow-up from me.`),
+        p(`Your report picked up some patterns worth talking through - particularly around ${firstName === firstName ? 'the load and recovery signals' : 'what came up in the check-in'}. That kind of clarity doesn't come from reading the report alone. It comes from a conversation.`),
+        p(`If timing wasn't right last time, happy to find something that works better. The conversation is 30 minutes and there's no obligation on the other side of it.`),
+      ].join(''),
+      'Find a time that works →',
+      bookingLink
+    ),
+  }
+
+  const email3 = {
+    subject: `Leaving the door open, ${firstName}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`Last message from me on this.`),
+        p(`The report is still there and the conversation is still available whenever it feels right - whether that's now or down the track.`),
+        p(`No follow-up after this. Just wanted you to know the door stays open.`),
+      ].join(''),
+      'Book when you\'re ready →',
+      bookingLink
+    ),
+  }
+
+  return { email1, email2, email3 }
+}

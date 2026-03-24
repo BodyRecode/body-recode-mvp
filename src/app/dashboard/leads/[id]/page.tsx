@@ -5,6 +5,7 @@ import LeadActions from './lead-actions'
 import ConvertButton from './convert-button'
 import CancelSequenceButton from './cancel-sequence-button'
 import SendOrientationButton from '@/components/send-orientation-button'
+import NoShowSequenceButton from '@/components/noshow-sequence-button'
 import Link from 'next/link'
 
 const CHECK_IN_QUESTIONS: Record<string, string> = {
@@ -177,6 +178,17 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           clientId={lead.converted_to_client_id}
         />
       </div>
+
+      {/* No-show re-engagement */}
+      {lead.status === 'closed_no_show' && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Re-engagement Sequence</h2>
+            <p className="text-stone-500 text-sm">3 emails over 10 days. Day 1, Day 4, Day 10. Calm re-invitation to rebook.</p>
+          </div>
+          <NoShowSequenceButton leadId={lead.id} />
+        </div>
+      )}
 
       {/* Actions */}
       <LeadActions lead={lead} />
