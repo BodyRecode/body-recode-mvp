@@ -14,22 +14,23 @@ export async function POST(request: NextRequest) {
     // Basic presence check — full HMAC verification can be added later
   }
 
-  // Only handle invitee.created (new booking)
-  if (body.event !== 'invitee.created') {
-    return NextResponse.json({ received: true })
-  }
+  // Support both Zapier format (flat) and native Calendly webhook format
+  const isZapier = !!body.email
+  const email = isZapier
+    ? (body.email as string)?.toLowerCase().trim()
+    : (body.payload?.invitee?.email as string)?.toLowerCase().trim()
 
-  const payload = body.payload
-  const invitee = payload?.invitee
-  const event = payload?.event
+  const zoomUrl = isZapier
+    ? (body.zoom_url as string) ?? null
+    : (body.payload?.event?.location?.join_url as string) ?? null
 
-  if (!invitee?.email) {
+  const scheduledAt = isZapier
+    ? (body.scheduled_at as string) ?? null
+    : (body.payload?.event?.start_time as string) ?? null
+
+  if (!email) {
     return NextResponse.json({ error: 'No email in payload' }, { status: 400 })
   }
-
-  const email = invitee.email.toLowerCase().trim()
-  const zoomUrl = event?.location?.join_url ?? null
-  const scheduledAt = event?.start_time ?? null
 
   const admin = createAdminClient()
 
