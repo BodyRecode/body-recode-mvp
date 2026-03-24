@@ -111,6 +111,34 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         </div>
       )}
 
+      {/* Zoom 2 companion */}
+      {answers && Object.keys(answers).length > 0 && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Zoom 2</h2>
+            <p className="text-stone-500 text-sm">Orientation review, hot spot framing, and pricing conversation.</p>
+          </div>
+          <div className="flex items-center gap-2">
+            {lead.zoom_meeting_url && (
+              <Link
+                href={lead.zoom_meeting_url}
+                target="_blank"
+                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
+              >
+                Join Zoom ↗
+              </Link>
+            )}
+            <Link
+              href={`/dashboard/leads/${lead.id}/zoom-2`}
+              target="_blank"
+              className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
+            >
+              Open Call Companion ↗
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Convert to client */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
         <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">Coaching Entry</h2>
