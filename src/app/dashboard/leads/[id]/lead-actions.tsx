@@ -18,6 +18,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
   const [notes, setNotes] = useState(lead.notes || '')
   const [zoom1, setZoom1] = useState(lead.zoom_1_date ? lead.zoom_1_date.slice(0, 16) : '')
   const [zoom2, setZoom2] = useState(lead.zoom_2_date ? lead.zoom_2_date.slice(0, 16) : '')
+  const [zoomUrl, setZoomUrl] = useState(lead.zoom_meeting_url || '')
   const [saved, setSaved] = useState(false)
 
   async function save() {
@@ -30,6 +31,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
         notes,
         zoom_1_date: zoom1 || null,
         zoom_2_date: zoom2 || null,
+        zoom_meeting_url: zoomUrl || null,
       }),
     })
     setSaving(false)
@@ -54,6 +56,18 @@ export default function LeadActions({ lead }: { lead: Lead }) {
             <option key={s} value={s}>{getLeadStatusLabel(s)}</option>
           ))}
         </select>
+      </div>
+
+      {/* Zoom meeting URL */}
+      <div>
+        <label className="block text-xs text-stone-500 mb-1.5">Zoom meeting URL</label>
+        <input
+          type="url"
+          value={zoomUrl}
+          onChange={e => setZoomUrl(e.target.value)}
+          placeholder="https://zoom.us/j/..."
+          className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-stone-500"
+        />
       </div>
 
       {/* Zoom dates */}

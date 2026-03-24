@@ -34,6 +34,7 @@ export interface Lead {
   check_in_answers?: Record<string, number>
   zoom_1_date?: string
   zoom_2_date?: string
+  zoom_meeting_url?: string
   notes?: string
   converted_to_client_id?: string
   converted_at?: string

@@ -16,6 +16,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       notes: body.notes,
       zoom_1_date: body.zoom_1_date,
       zoom_2_date: body.zoom_2_date,
+      zoom_meeting_url: body.zoom_meeting_url,
     })
     .eq('id', id)
     .select()
