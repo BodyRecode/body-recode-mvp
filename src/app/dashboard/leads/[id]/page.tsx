@@ -123,7 +123,16 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 : 'Send the orientation guide for the client to read before Zoom 2.'}
             </p>
           </div>
-          <SendOrientationButton leadId={lead.id} alreadySent={!!lead.orientation_sent_at} />
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/dashboard/leads/${lead.id}/orientation`}
+              target="_blank"
+              className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
+            >
+              View Guide ↗
+            </Link>
+            <SendOrientationButton leadId={lead.id} alreadySent={!!lead.orientation_sent_at} />
+          </div>
         </div>
       )}
 
