@@ -239,6 +239,20 @@ export default function Zoom2Companion({
   const levelDot = (level: number) =>
     level === 1 ? 'bg-emerald-400' : level === 2 ? 'bg-amber-400' : 'bg-red-400'
 
+  const renderWithLinks = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g
+    const parts = text.split(urlRegex)
+    return parts.map((part, i) =>
+      urlRegex.test(part) ? (
+        <a key={i} href={part} target="_blank" rel="noopener noreferrer"
+          className="text-[#10E1C2] underline underline-offset-2 hover:text-[#0ecfb2] transition-colors break-all"
+        >{part}</a>
+      ) : (
+        <span key={i}>{part}</span>
+      )
+    )
+  }
+
   const saveNotes = async () => {
     setSaving(true)
     await fetch(`/api/leads/${leadId}`, {
@@ -380,7 +394,7 @@ export default function Zoom2Companion({
                       p.includes(' - $') ? 'bg-stone-900 border border-stone-700' :
                       'bg-stone-900 border border-stone-800'
                     }`}>
-                      <p className="text-white text-sm leading-relaxed">{p}</p>
+                      <p className="text-white text-sm leading-relaxed">{renderWithLinks(p)}</p>
                     </div>
                   ))}
                   {stage.tips && (
