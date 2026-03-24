@@ -115,6 +115,51 @@ If not, the report still stands on its own."`,
   },
 ]
 
+const OBJECTIONS = [
+  {
+    objection: '"It\'s too expensive."',
+    response: `"That's a fair thing to sit with. What I'd say is the investment reflects the full system - not just the sessions. You're not paying for two hours of training per week. You're paying for ongoing interpretation, pattern tracking, and a structured process that most people don't have access to. The question is whether that's useful for where you are right now."`,
+    followup: 'If they remain hesitant on price - introduce the online option as a fallback.',
+    dropDown: true,
+  },
+  {
+    objection: '"I need to think about it."',
+    response: `"Of course. Take whatever time you need. The one thing I'd encourage you to be clear on is what specifically you need to think through - because if there's a question I haven't answered, I'd rather address it now than leave you sitting with something unresolved."`,
+    followup: '"What is it you\'re sitting with?"',
+    dropDown: false,
+  },
+  {
+    objection: '"I don\'t have time for two sessions a week."',
+    response: `"That's worth exploring. The sessions are structured - same time each week, built around your schedule. Most people find that having a fixed structure actually reduces the mental load of figuring out when to train."`,
+    followup: 'If time is genuinely the issue and not resolved - introduce the online option.',
+    dropDown: true,
+  },
+  {
+    objection: '"What if it doesn\'t work?"',
+    response: `"That's the right question to ask. The honest answer is - the system is designed to tell you why something isn't working, not just keep pushing harder. If patterns aren't shifting, that becomes visible quickly. And if at any point this stops feeling like the right fit, we stop. That applies on both sides."`,
+    followup: null,
+    dropDown: false,
+  },
+  {
+    objection: '"I\'ve tried coaching before and it didn\'t work."',
+    response: `"What did that look like?"`,
+    followup: '"Most coaching fails because it\'s prescriptive without being interpretive - it tells you what to do without explaining why the body is responding the way it is. That\'s the gap Body Recode is designed to fill. The system doesn\'t assume you haven\'t tried hard enough."',
+    dropDown: false,
+  },
+  {
+    objection: '"Can I try it for a month first?"',
+    response: `"I understand the instinct. The reason we structure around 12 weeks is that meaningful patterns don't emerge in four weeks - they need time to settle. A shorter window would give us data but not enough context to interpret it properly. That's not in your interest. The 12-week minimum is about giving the process enough time to actually work."`,
+    followup: null,
+    dropDown: false,
+  },
+  {
+    objection: '"Can I just do one session a week?"',
+    response: `"One session isn't a structure I offer inside Body Recode. The two-session structure is the minimum that allows for proper load exposure, recovery observation, and pattern tracking across the week. Below that, the coaching layer loses its integrity."`,
+    followup: 'If they still can\'t commit to two sessions - introduce the online option.',
+    dropDown: true,
+  },
+]
+
 const SIGNAL_LABELS = {
   sls: {
     label: 'Stress & Load',
@@ -164,7 +209,7 @@ export default function Zoom2Companion({
   const [running, setRunning] = useState(false)
   const [notes, setNotes] = useState(initialNotes)
   const [saving, setSaving] = useState(false)
-  const [activeTab, setActiveTab] = useState<'prompts' | 'signals'>('prompts')
+  const [activeTab, setActiveTab] = useState<'prompts' | 'signals' | 'objections'>('prompts')
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
@@ -300,15 +345,15 @@ export default function Zoom2Companion({
 
               {/* Tabs */}
               <div className="flex gap-1 mb-5 border-b border-white/10">
-                {(['prompts', 'signals'] as const).map(tab => (
+                {(['prompts', 'objections', 'signals'] as const).map(tab => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`text-xs font-semibold px-3 py-2 capitalize border-b-2 -mb-px transition-colors ${
+                    className={`text-xs font-semibold px-3 py-2 border-b-2 -mb-px transition-colors ${
                       activeTab === tab ? 'border-[#10E1C2] text-[#10E1C2]' : 'border-transparent text-stone-500 hover:text-stone-300'
                     }`}
                   >
-                    {tab === 'prompts' ? 'Script & Prompts' : 'Signal Reference'}
+                    {tab === 'prompts' ? 'Script & Prompts' : tab === 'objections' ? 'Objections' : 'Signal Reference'}
                   </button>
                 ))}
               </div>
@@ -344,6 +389,33 @@ export default function Zoom2Companion({
                       <p className="text-stone-400 text-sm leading-relaxed">{stage.boundary}</p>
                     </div>
                   )}
+                </div>
+              )}
+
+              {activeTab === 'objections' && (
+                <div className="space-y-4">
+                  <p className="text-xs text-stone-500 mb-4">Use these when resistance surfaces. Try to hold the in-person offer first. Only introduce online if you sense you can't hold them.</p>
+                  {OBJECTIONS.map((o, i) => (
+                    <div key={i} className="bg-stone-900 border border-stone-800 rounded-xl p-5 space-y-3">
+                      <p className="text-xs font-bold text-stone-400 uppercase tracking-wider">They say</p>
+                      <p className="text-white text-sm font-medium">{o.objection}</p>
+                      <div className="border-t border-stone-800 pt-3">
+                        <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-2">Your response</p>
+                        <p className="text-stone-300 text-sm leading-relaxed whitespace-pre-line">{o.response}</p>
+                      </div>
+                      {o.followup && (
+                        <div className="bg-stone-800 rounded-lg p-3">
+                          <p className="text-stone-400 text-xs leading-relaxed">{o.followup}</p>
+                        </div>
+                      )}
+                      {o.dropDown && (
+                        <div className="bg-amber-400/5 border border-amber-400/20 rounded-lg p-3">
+                          <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Drop-down trigger</p>
+                          <p className="text-stone-400 text-xs">If unresolved after this response - offer online $149/week.</p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               )}
 
