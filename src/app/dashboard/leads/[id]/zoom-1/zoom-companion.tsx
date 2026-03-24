@@ -16,15 +16,15 @@ function buildStages(leadName: string, slsLevel: SignalLevel, rpsLevel: SignalLe
     : ''
 
   const rpsLanguage = rpsLevel === 3
-    ? 'What I\'m hearing is that your recovery rhythm may not always be predictable between sessions. When recovery varies like that, training sessions can feel inconsistent even when the program itself hasn\'t changed — so the inconsistency you\'re noticing is less about your effort and more about rhythm.'
+    ? 'What I\'m hearing is that your recovery rhythm may not always be predictable between sessions. When recovery varies like that, training sessions can feel inconsistent even when the program itself hasn\'t changed - so the inconsistency you\'re noticing is less about your effort and more about rhythm.'
     : rpsLevel === 2
     ? 'The experience of some sessions feeling strong and others unusually difficult often reflects recovery variability rather than training structure. That variability is itself the signal.'
     : ''
 
   const rilsLanguage = rilsLevel === 3
-    ? 'It also sounds like there may be some internal pressure around seeing progress right now. When expectations become closely tied to results, training can feel mentally heavier than it needs to — and that can amplify fatigue even when the physical training itself hasn\'t changed.'
+    ? 'It also sounds like there may be some internal pressure around seeing progress right now. When expectations become closely tied to results, training can feel mentally heavier than it needs to - and that can amplify fatigue even when the physical training itself hasn\'t changed.'
     : rilsLevel === 2
-    ? 'There\'s also some internal expectation pressure showing up — a sense that results should be coming faster. That kind of pressure adds to the overall load the system is managing.'
+    ? 'There\'s also some internal expectation pressure showing up - a sense that results should be coming faster. That kind of pressure adds to the overall load the system is managing.'
     : ''
 
   // Combo overrides for Stage 4
@@ -45,7 +45,7 @@ function buildStages(leadName: string, slsLevel: SignalLevel, rpsLevel: SignalLe
     ? `\n\n${rilsLanguage}`
     : ''
 
-  // Stage 3 context intro — references their specific signals
+  // Stage 3 context intro - references their specific signals
   const slsContextLabel = slsLevel === 3 ? 'elevated load and stress signals' : slsLevel === 2 ? 'moderate load accumulation' : 'balanced load signals'
   const rpsContextLabel = rpsLevel === 3 ? 'significantly reduced recovery predictability' : rpsLevel === 2 ? 'variable recovery' : 'consistent recovery'
 
@@ -66,7 +66,7 @@ There's nothing you need to decide today. We're just looking at whether the patt
         'Did anything make you stop and think a bit deeper?',
         'Had you ever completed something like that before?',
       ],
-      tips: 'Slow down. Let them land. Don\'t rush past this stage — the tone you set here carries the whole call.',
+      tips: 'Slow down. Let them land. Don\'t rush past this stage - the tone you set here carries the whole call.',
       boundary: null,
     },
     {
@@ -76,7 +76,7 @@ There's nothing you need to decide today. We're just looking at whether the patt
       goal: 'Allow the member to respond to the report before you offer any interpretation.',
       script: `"Before I share any of my own observations, I want to hear from you first.
 
-You had a chance to read the report before today — it flagged ${slsLevel === 3 ? 'elevated' : slsLevel === 2 ? 'moderate' : 'balanced'} stress and load signals, and ${rpsLevel === 3 ? 'reduced' : rpsLevel === 2 ? 'variable' : 'stable'} recovery predictability.
+You had a chance to read the report before today - it flagged ${slsLevel === 3 ? 'elevated' : slsLevel === 2 ? 'moderate' : 'balanced'} stress and load signals, and ${rpsLevel === 3 ? 'reduced' : rpsLevel === 2 ? 'variable' : 'stable'} recovery predictability.
 
 Just take me through your reaction. What stood out to you when you read it?"`,
       prompts: [
@@ -85,7 +85,7 @@ Just take me through your reaction. What stood out to you when you read it?"`,
         'Was there anything that didn\'t quite land for you?',
         'Did it highlight anything you hadn\'t really considered before?',
       ],
-      tips: 'Do not explain the report first. Allow their reaction to surface naturally — their language is the signal. The strongest friction point usually appears here.',
+      tips: 'Do not explain the report first. Allow their reaction to surface naturally - their language is the signal. The strongest friction point usually appears here.',
       boundary: null,
     },
     {
@@ -93,55 +93,55 @@ Just take me through your reaction. What stood out to you when you read it?"`,
       name: 'Context Exploration',
       duration: '10–12 min',
       goal: 'Understand the real training environment behind the report pattern.',
-      script: `"Thanks for sharing that. What I want to do now is get a clearer picture of what's actually been happening week to week — because the report flagged ${slsContextLabel} and ${rpsContextLabel}, but it doesn't know the context behind those numbers.
+      script: `"Thanks for sharing that. What I want to do now is get a clearer picture of what's actually been happening week to week - because the report flagged ${slsContextLabel} and ${rpsContextLabel}, but it doesn't know the context behind those numbers.
 
-So I'm going to ask you a few questions. Just answer as openly as you can — there's no right answer here."`,
+So I'm going to ask you a few questions. Just answer as openly as you can - there's no right answer here."`,
       prompts: [
-        'TRAINING — "In your report there were signals suggesting your training structure might be inconsistent. What does your training normally look like week to week?"',
+        'TRAINING - "In your report there were signals suggesting your training structure might be inconsistent. What does your training normally look like week to week?"',
         '↳ How many sessions do you usually train each week?',
         '↳ Do you follow a structured program or train more by feel?',
         '↳ Has your training changed much over the past few months?',
-        'RECOVERY — "The report hinted that recovery may not always feel predictable. How does recovery normally feel between sessions?"',
+        'RECOVERY - "The report hinted that recovery may not always feel predictable. How does recovery normally feel between sessions?"',
         '↳ Do you usually feel ready to train again by the next session?',
         '↳ Does your energy feel fairly stable across the week?',
         '↳ Are there times where training feels harder than it probably should?',
-        'CONSISTENCY — "Would you say your routine is fairly stable or does life shift things quite a bit?"',
+        'CONSISTENCY - "Would you say your routine is fairly stable or does life shift things quite a bit?"',
         '↳ Do work or life commitments interrupt training often?',
         '↳ Do you find yourself needing to adjust training regularly?',
-        'PRESSURE — "Your responses suggested there may be some pressure to see progress right now. Does that resonate at all?"',
+        'PRESSURE - "Your responses suggested there may be some pressure to see progress right now. Does that resonate at all?"',
         '↳ Do you feel like results should be happening faster?',
         '↳ Has training felt mentally demanding recently?',
       ],
-      tips: 'Ask one question at a time. Let silence do work. You\'re listening for SLS, RPS, and RILS signals in their language — not solving anything.',
+      tips: 'Ask one question at a time. Let silence do work. You\'re listening for SLS, RPS, and RILS signals in their language - not solving anything.',
       boundary: 'No prescriptions. No "you should try…". No training or nutrition advice. Just listening and clarifying.',
     },
     {
       id: 4,
       name: 'Pattern Interpretation',
       duration: '5–7 min',
-      goal: 'Translate the signals into a coherent explanation. Clarity — not solution.',
+      goal: 'Translate the signals into a coherent explanation. Clarity - not solution.',
       script: `"Based on what you've described and what showed up in the report, it sounds like your system is managing a combination of training demand, recovery rhythm, and life load at the moment.
 
 ${stage4Core}${stage4Addendum}
 
-That's not a fitness problem — it's a system response. And it's one of the more common patterns we see."`,
+That's not a fitness problem - it's a system response. And it's one of the more common patterns we see."`,
       prompts: [
         'Does that explanation feel like it reflects what you\'ve been experiencing?',
         'Does that help make sense of what you\'ve noticed in your training?',
         'Did anything in that explanation surprise you?',
         'Has it changed the way you think about your progress?',
       ],
-      tips: 'Use the Interpretation Language tab for signal-specific phrases. Keep it observational. The goal is to make the pattern feel understandable — not alarming.',
+      tips: 'Use the Interpretation Language tab for signal-specific phrases. Keep it observational. The goal is to make the pattern feel understandable - not alarming.',
       boundary: 'No medical interpretation. No outcome promises. No training adjustments. Pattern identification only.',
     },
     {
       id: 5,
       name: 'Next Step Invitation',
       duration: '2–3 min',
-      goal: 'Offer deeper exploration without pressure. Intellectual curiosity — not pitch.',
+      goal: 'Offer deeper exploration without pressure. Intellectual curiosity - not pitch.',
       script: `"What we've talked about today is essentially the surface layer of the pattern.
 
-If you wanted to explore it more deeply, the next step would be an orientation session — where we go through how the Body Recode coaching process works and whether it would actually be useful in your situation.
+If you wanted to explore it more deeply, the next step would be an orientation session - where we go through how the Body Recode coaching process works and whether it would actually be useful in your situation.
 
 There's no obligation. It's just a more detailed look at what the system would do with your pattern."
 
@@ -190,24 +190,24 @@ const SIGNAL_LABELS = {
 
 const PATTERN_LANGUAGE: Record<string, Record<number, string>> = {
   sls: {
-    1: 'Your training load signals are balanced — the system is managing demand well.',
-    2: 'There\'s a cumulative load building up. Effort feels higher relative to what the body is returning. This isn\'t about fitness — it\'s about system demand.',
+    1: 'Your training load signals are balanced - the system is managing demand well.',
+    2: 'There\'s a cumulative load building up. Effort feels higher relative to what the body is returning. This isn\'t about fitness - it\'s about system demand.',
     3: 'The stress and load signals are elevated. The body is in a state where adding more stimulus typically produces less, not more. This pattern usually explains why harder isn\'t working.',
   },
   rps: {
-    1: 'Recovery is tracking well — predictable and consistent from session to session.',
+    1: 'Recovery is tracking well - predictable and consistent from session to session.',
     2: 'Recovery variability is showing up. Some sessions feel fine, others don\'t land the same way. The unpredictability itself is the signal.',
     3: 'Recovery predictability is reduced significantly. When the body can\'t predict its own recovery, it\'s usually managing something underneath that training alone won\'t fix.',
   },
   rils: {
-    1: 'Regulation and identity load is low — adjustments feel manageable and external pressure isn\'t compounding the picture.',
+    1: 'Regulation and identity load is low - adjustments feel manageable and external pressure isn\'t compounding the picture.',
     2: 'There\'s a moderate regulation load present. The uncertainty around adjustments, combined with external demand, is adding to the overall picture.',
-    3: 'Regulation demand is elevated. This often means the body is managing psychological and structural pressures alongside physical ones — and they compound each other.',
+    3: 'Regulation demand is elevated. This often means the body is managing psychological and structural pressures alongside physical ones - and they compound each other.',
   },
 }
 
 const COMBO_PATTERNS: Record<string, string> = {
-  '3-3': 'System Overload: When SLS and RPS are both at Level 3, the body is in a state of significant depletion. More training doesn\'t help here — the system is already operating at capacity.',
+  '3-3': 'System Overload: When SLS and RPS are both at Level 3, the body is in a state of significant depletion. More training doesn\'t help here - the system is already operating at capacity.',
   '3-2': 'Cumulative Accumulation: High load with variable recovery. The body is absorbing demand but recovery can\'t keep pace. Classic frustration pattern.',
   '2-3': 'Recovery Collapse: Moderate load but recovery has become unpredictable. Often means the body is managing something outside of training that\'s using recovery capacity.',
   '2-2': 'Managed Accumulation: Both load and recovery are in moderate territory. System is coping but not thriving. Progress will feel inconsistent.',
@@ -308,7 +308,7 @@ export default function ZoomCompanion({
       <div className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div>
-            <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold mb-0.5">Zoom 1 — Companion</p>
+            <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold mb-0.5">Zoom 1 - Companion</p>
             <p className="text-lg font-bold text-white">{leadName}</p>
           </div>
           <span className={`text-xs font-bold px-3 py-1 rounded-full border ${
@@ -517,7 +517,7 @@ export default function ZoomCompanion({
                       <div key={key} className={`border rounded-xl p-4 ${levelColour(level)}`}>
                         <div className="flex items-center justify-between mb-2">
                           <p className="text-xs font-bold uppercase tracking-wider">{info.label}</p>
-                          <span className="text-xs font-bold">Level {level} — {levelInfo.label}</span>
+                          <span className="text-xs font-bold">Level {level} - {levelInfo.label}</span>
                         </div>
                         <p className="text-sm leading-relaxed opacity-80">{levelInfo.desc}</p>
                       </div>
@@ -534,10 +534,10 @@ export default function ZoomCompanion({
 
               {activeTab === 'language' && (
                 <div className="space-y-4">
-                  <p className="text-xs text-stone-500 mb-4">Pre-written interpretation language based on {leadName}&apos;s signal levels. Use naturally — not verbatim.</p>
+                  <p className="text-xs text-stone-500 mb-4">Pre-written interpretation language based on {leadName}&apos;s signal levels. Use naturally - not verbatim.</p>
                   {signals.map(({ key, level }) => (
                     <div key={key} className="bg-stone-900 border border-stone-800 rounded-xl p-4">
-                      <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">{SIGNAL_LABELS[key].label} — Level {level}</p>
+                      <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">{SIGNAL_LABELS[key].label} - Level {level}</p>
                       <p className="text-stone-300 text-sm leading-relaxed italic">&ldquo;{PATTERN_LANGUAGE[key][level]}&rdquo;</p>
                     </div>
                   ))}
@@ -567,9 +567,9 @@ export default function ZoomCompanion({
               <div className="bg-stone-900 border border-stone-800 rounded-lg p-3">
                 <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Readiness Check</p>
                 <div className="space-y-1.5 text-xs text-stone-500">
-                  <p>A — Ready, wants to proceed</p>
-                  <p>B — Interested but hesitant</p>
-                  <p>C — Not ready / not right fit</p>
+                  <p>A - Ready, wants to proceed</p>
+                  <p>B - Interested but hesitant</p>
+                  <p>C - Not ready / not right fit</p>
                 </div>
               </div>
             </div>
