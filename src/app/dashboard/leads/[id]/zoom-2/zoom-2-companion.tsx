@@ -209,7 +209,7 @@ export default function Zoom2Companion({
   const [running, setRunning] = useState(false)
   const [notes, setNotes] = useState(initialNotes)
   const [saving, setSaving] = useState(false)
-  const [activeTab, setActiveTab] = useState<'prompts' | 'signals' | 'objections'>('prompts')
+  const [activeTab, setActiveTab] = useState<'prompts' | 'objections' | 'online' | 'signals'>('prompts')
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
@@ -345,15 +345,17 @@ export default function Zoom2Companion({
 
               {/* Tabs */}
               <div className="flex gap-1 mb-5 border-b border-white/10">
-                {(['prompts', 'objections', 'signals'] as const).map(tab => (
+                {(['prompts', 'objections', 'online', 'signals'] as const).map(tab => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`text-xs font-semibold px-3 py-2 border-b-2 -mb-px transition-colors ${
-                      activeTab === tab ? 'border-[#10E1C2] text-[#10E1C2]' : 'border-transparent text-stone-500 hover:text-stone-300'
+                      activeTab === tab
+                        ? tab === 'online' ? 'border-amber-400 text-amber-400' : 'border-[#10E1C2] text-[#10E1C2]'
+                        : 'border-transparent text-stone-500 hover:text-stone-300'
                     }`}
                   >
-                    {tab === 'prompts' ? 'Script & Prompts' : tab === 'objections' ? 'Objections' : 'Signal Reference'}
+                    {tab === 'prompts' ? 'Script & Prompts' : tab === 'objections' ? 'Objections' : tab === 'online' ? 'Online Coaching' : 'Signal Reference'}
                   </button>
                 ))}
               </div>
@@ -409,13 +411,67 @@ export default function Zoom2Companion({
                         </div>
                       )}
                       {o.dropDown && (
-                        <div className="bg-amber-400/5 border border-amber-400/20 rounded-lg p-3">
-                          <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Drop-down trigger</p>
-                          <p className="text-stone-400 text-xs">If unresolved after this response - offer online $149/week.</p>
-                        </div>
+                        <button
+                          onClick={() => setActiveTab('online')}
+                          className="w-full text-left bg-amber-400/5 border border-amber-400/20 hover:bg-amber-400/10 rounded-lg p-3 transition-colors"
+                        >
+                          <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Drop-down trigger - tap to open Online Coaching</p>
+                          <p className="text-stone-400 text-xs">If unresolved after this response - present the online option.</p>
+                        </button>
                       )}
                     </div>
                   ))}
+                </div>
+              )}
+
+              {activeTab === 'online' && (
+                <div className="space-y-4">
+                  <div className="bg-amber-400/5 border border-amber-400/20 rounded-xl p-5">
+                    <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-3">Script - Online Coaching Option</p>
+                    <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{`"There is also an online option - and I want to be clear, this is not a lesser version of the system.
+
+Everything that makes Body Recode work is still there. The weekly check-ins, the interpretation, the performance synthesis, the ongoing coaching support. The only difference is that we're not training together in person.
+
+For some people that's actually the right structure - whether it's schedule, location, or just preference.
+
+That sits at $149 per week. Same 12-week minimum. Same standards."`}</p>
+                  </div>
+
+                  <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 space-y-3">
+                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider">Package Details</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <p className="text-white text-sm font-semibold">Online Performance Coaching</p>
+                        <p className="text-amber-400 text-sm font-bold">$149/week</p>
+                      </div>
+                      <div className="border-t border-stone-800 pt-3 space-y-1.5 text-xs text-stone-400">
+                        <p>Weekly Performance Check-Ins</p>
+                        <p>Ongoing coaching interpretation and synthesis</p>
+                        <p>Weekly coaching support and guidance</p>
+                        <p>No in-person sessions</p>
+                        <p>12-week minimum interpretive window</p>
+                        <p>Same commencement fee applies</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 space-y-2">
+                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">Follow-up prompts</p>
+                    {[
+                      '"Does that feel like it would work for your situation?"',
+                      '"The structure and standards are exactly the same - the delivery is just remote."',
+                      '"Same 12-week window, same check-in process, same interpretation layer."',
+                    ].map((p, i) => (
+                      <div key={i} className="bg-stone-800 border border-stone-700 rounded-lg p-3">
+                        <p className="text-stone-300 text-sm">{p}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="bg-red-400/5 border border-red-400/20 rounded-xl p-4">
+                    <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Boundary</p>
+                    <p className="text-stone-400 text-sm">If they decline both options - close cleanly. No further pressure. Move to Stage 5 Path A.</p>
+                  </div>
                 </div>
               )}
 
