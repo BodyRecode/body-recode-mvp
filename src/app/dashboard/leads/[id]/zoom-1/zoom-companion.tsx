@@ -2,84 +2,115 @@
 
 import { useState, useEffect, useRef } from 'react'
 
-const STAGES = [
-  {
-    id: 1,
-    name: 'Opening Frame',
-    duration: '2 min',
-    goal: 'Create safety and remove pressure. Establish this is not a sales call.',
-    script: `"Thanks for taking the time to jump on today.
+type SignalLevel = 1 | 2 | 3
+type SignalKey = 'sls' | 'rps' | 'rils'
 
-The purpose of this conversation is simply to talk through the patterns that showed up in your check-in report and hear a bit more about your training experience.
+function buildStages(leadName: string, slsLevel: SignalLevel, rpsLevel: SignalLevel, rilsLevel: SignalLevel, signalPattern: string) {
+  const firstName = leadName.split(' ')[0]
 
-There's nothing you need to decide today. We're just looking at whether the patterns the report picked up actually match what you've been experiencing."`,
-    prompts: [
-      'How did you find completing the Performance Check-In?',
-      'Was there anything that felt straightforward — or anything you weren\'t quite sure about?',
-    ],
-    tips: 'Slow down. Let them land. Don\'t rush past this stage — the tone you set here carries the whole call.',
-    boundary: null,
-  },
-  {
-    id: 2,
-    name: 'Report Reflection',
-    duration: '5–7 min',
-    goal: 'Allow the member to respond to the report before you offer any interpretation.',
-    script: `"Before I share any of my own observations, I want to hear from you first.
+  // Stage 4 interpretation — tailored to SLS + RPS combo, with RILS addendum
+  const slsDesc = slsLevel === 3
+    ? 'The stress and load signals are elevated — the body is already working hard to maintain baseline.'
+    : slsLevel === 2
+    ? 'There\'s a moderate cumulative load building up — effort is consistently higher than what the body is returning.'
+    : 'The load signals are relatively balanced — the system is coping.'
 
-You had a chance to read the report before today — so just take me through your reaction. What stood out to you when you read it?"`,
-    prompts: [
-      'When you read the report, what stood out most to you?',
-      'Did any part of it feel particularly accurate?',
-      'Was there anything that didn\'t quite land for you?',
-    ],
-    tips: 'Do not explain the report first. Let them tell you what they noticed — their language is the signal. The strongest friction point usually surfaces here.',
-    boundary: null,
-  },
-  {
-    id: 3,
-    name: 'Context Exploration',
-    duration: '10–12 min',
-    goal: 'Understand the real training environment behind the report pattern.',
-    script: `"Thanks for sharing that. What I want to do now is get a clearer picture of what's actually been happening week to week — because the report picks up patterns, but it doesn't know the full context behind them.
+  const rpsDesc = rpsLevel === 3
+    ? 'Recovery has become unpredictable — the body can\'t reliably bounce back between sessions.'
+    : rpsLevel === 2
+    ? 'Recovery is variable — some sessions feel fine, others don\'t land the same way.'
+    : 'Recovery is tracking consistently — predictable session to session.'
+
+  const rilsAddendum = rilsLevel === 3
+    ? '\n\nAnd on top of that, the regulation signals suggest there\'s a psychological and structural load as well — the pressure around adjustments, external demands, maybe identity tied to getting results. Those compound the physical signals. The body doesn\'t separate them.'
+    : rilsLevel === 2
+    ? '\n\nThere\'s also a moderate regulation load showing up — some uncertainty, some external pressure. It\'s not the dominant signal but it\'s adding to the overall picture.'
+    : ''
+
+  const comboOutcome = (slsLevel >= 2 && rpsLevel >= 2)
+    ? 'When those two things overlap, the body shifts into a protective state — it prioritises stability over adaptation. That\'s why effort isn\'t producing the result you\'d expect. It\'s not a fitness problem. It\'s a system response.'
+    : 'The system is managing, but there\'s enough accumulation to explain the pattern showing up in the report.'
+
+  return [
+    {
+      id: 1,
+      name: 'Opening Frame',
+      duration: '2 min',
+      goal: 'Create safety and remove pressure. Establish this is not a sales call.',
+      script: `"Thanks for taking the time to jump on today, ${firstName}.
+
+The purpose of this conversation is to talk through what showed up in your check-in — your report came back as a ${signalPattern} pattern — and hear a bit more about your training experience.
+
+There's nothing you need to decide today. We're just looking at whether what the report picked up actually matches what you've been experiencing."`,
+      prompts: [
+        'How did you find completing the Performance Check-In?',
+        'Was there anything that felt straightforward — or anything you weren\'t quite sure about?',
+      ],
+      tips: 'Slow down. Let them land. Don\'t rush past this stage — the tone you set here carries the whole call.',
+      boundary: null,
+    },
+    {
+      id: 2,
+      name: 'Report Reflection',
+      duration: '5–7 min',
+      goal: 'Allow the member to respond to the report before you offer any interpretation.',
+      script: `"Before I share any of my own observations, I want to hear from you first.
+
+You had a chance to read the report before today — it came back as a ${signalPattern} pattern, with ${slsLevel === 3 ? 'elevated' : slsLevel === 2 ? 'moderate' : 'balanced'} stress and load signals and ${rpsLevel === 3 ? 'reduced' : rpsLevel === 2 ? 'variable' : 'stable'} recovery predictability.
+
+Just take me through your reaction. What stood out to you when you read it?"`,
+      prompts: [
+        'When you read the report, what stood out most to you?',
+        'Did any part of it feel particularly accurate?',
+        'Was there anything that didn\'t quite land for you?',
+      ],
+      tips: 'Do not explain the report first. Let them tell you what they noticed — their language is the signal. The strongest friction point usually surfaces here.',
+      boundary: null,
+    },
+    {
+      id: 3,
+      name: 'Context Exploration',
+      duration: '10–12 min',
+      goal: 'Understand the real training environment behind the report pattern.',
+      script: `"Thanks for sharing that. What I want to do now is get a clearer picture of what's actually been happening week to week — because the report flagged ${slsLevel >= 3 ? 'elevated load and stress signals' : slsLevel === 2 ? 'moderate load accumulation' : 'some signal patterns'} and ${rpsLevel >= 3 ? 'significantly reduced recovery predictability' : rpsLevel === 2 ? 'variable recovery' : 'consistent recovery'}, but it doesn't know the context behind those numbers.
 
 So I'm going to ask you a few questions. Just answer as openly as you can — there's no right answer here."`,
-    prompts: [
-      'Training: "What does your training currently look like week to week?"',
-      'Recovery: "How predictable does recovery feel between sessions?"',
-      'Consistency: "Is training fairly stable week to week, or does life move around a lot?"',
-      'Pressure: "Do you feel like you\'re putting pressure on yourself to get results?"',
-      'Duration: "How long has this pattern been showing up for you?"',
-    ],
-    tips: 'Ask one question at a time. Let silence do work. You\'re listening for SLS, RPS, and RILS signals in their language — not solving anything.',
-    boundary: 'No prescriptions. No "you should try…". No training or nutrition advice. Just listening and clarifying.',
-  },
-  {
-    id: 4,
-    name: 'Pattern Interpretation',
-    duration: '5–7 min',
-    goal: 'Translate the signals into a coherent explanation. Clarity — not solution.',
-    script: `"Based on what you've described and what showed up in the report, it sounds like your system is managing quite a bit of cumulative demand at the moment.
+      prompts: [
+        'Training: "What does your training currently look like week to week?"',
+        'Recovery: "How predictable does recovery feel between sessions?"',
+        'Consistency: "Is training fairly stable week to week, or does life move around a lot?"',
+        'Pressure: "Do you feel like you\'re putting pressure on yourself to get results?"',
+        'Duration: "How long has this pattern been showing up for you?"',
+      ],
+      tips: 'Ask one question at a time. Let silence do work. You\'re listening for SLS, RPS, and RILS signals in their language — not solving anything.',
+      boundary: 'No prescriptions. No "you should try…". No training or nutrition advice. Just listening and clarifying.',
+    },
+    {
+      id: 4,
+      name: 'Pattern Interpretation',
+      duration: '5–7 min',
+      goal: 'Translate the signals into a coherent explanation. Clarity — not solution.',
+      script: `"Based on what you've described and what showed up in the report, here's what I'm seeing.
 
-When training load, recovery rhythm, and life demand overlap like that, the body often prioritises stability over visible progress.
+${slsDesc} ${rpsDesc} ${comboOutcome}${rilsAddendum}
 
-That's not a fitness problem — it's a system response. And it's actually one of the more common patterns we see."`,
-    prompts: [
-      '"What I\'m noticing across what you\'ve described is…"',
-      '"The pattern that tends to show up when these signals combine is…"',
-      '"Your body isn\'t broken — it\'s responding. What we\'re looking at is…"',
-    ],
-    tips: 'Use the Interpretation Language tab for signal-specific phrases. Keep it observational. The goal is to make the pattern feel understandable — not alarming.',
-    boundary: 'No medical interpretation. No outcome promises. No training adjustments. Pattern identification only.',
-  },
-  {
-    id: 5,
-    name: 'Next Step Invitation',
-    duration: '2–3 min',
-    goal: 'Offer deeper exploration without pressure. Intellectual curiosity — not pitch.',
-    script: `"What we've talked about today is essentially the surface layer of the pattern.
+That's what the ${signalPattern} pattern means in practice — and it's actually one of the more common things we see."`,
+      prompts: [
+        '"What I\'m noticing across what you\'ve described is…"',
+        '"The pattern that tends to show up when these signals combine is…"',
+        '"Your body isn\'t broken — it\'s responding. What we\'re looking at is…"',
+      ],
+      tips: 'Use the Interpretation Language tab for signal-specific phrases. Keep it observational. The goal is to make the pattern feel understandable — not alarming.',
+      boundary: 'No medical interpretation. No outcome promises. No training adjustments. Pattern identification only.',
+    },
+    {
+      id: 5,
+      name: 'Next Step Invitation',
+      duration: '2–3 min',
+      goal: 'Offer deeper exploration without pressure. Intellectual curiosity — not pitch.',
+      script: `"What we've talked about today is essentially the surface layer of the ${signalPattern} pattern.
 
-If you wanted to explore it more deeply, the next step would be an orientation session — where we go through how the Body Recode coaching process works and whether it would actually be useful in your situation.
+If you wanted to explore it more deeply, the next step would be an orientation session — where we go through how the Body Recode process actually works and whether it would be useful given what's showing up for you specifically.
 
 There's no obligation. It's just a more detailed look at what the system would do with your pattern."
 
@@ -87,15 +118,16 @@ Then ask: "Would you like to explore that further?"
 
 → If YES: book Zoom 2 before ending the call.
 → If NO: close cleanly. No follow-up pressure.`,
-    prompts: [
-      '"Would you like to explore what that would actually look like in practice?"',
-      '"The next step is an orientation session — about 30–45 minutes — where we go deeper into the framework."',
-      '"There\'s no commitment involved. It\'s just a clearer look at what support could look like."',
-    ],
-    tips: 'Don\'t oversell. Don\'t rush. If they\'re not ready, that\'s valid information. Zoom 2 should be booked before this call ends if they say yes.',
-    boundary: null,
-  },
-]
+      prompts: [
+        '"Would you like to explore what that would actually look like in practice?"',
+        '"The next step is an orientation session — about 30–45 minutes — where we go deeper into the framework."',
+        '"There\'s no commitment involved. It\'s just a clearer look at what support could look like."',
+      ],
+      tips: 'Don\'t oversell. Don\'t rush. If they\'re not ready, that\'s valid information. Zoom 2 should be booked before this call ends if they say yes.',
+      boundary: null,
+    },
+  ]
+}
 
 const SIGNAL_LABELS = {
   sls: {
@@ -148,9 +180,6 @@ const COMBO_PATTERNS: Record<string, string> = {
   '2-3': 'Recovery Collapse: Moderate load but recovery has become unpredictable. Often means the body is managing something outside of training that\'s using recovery capacity.',
   '2-2': 'Managed Accumulation: Both load and recovery are in moderate territory. System is coping but not thriving. Progress will feel inconsistent.',
 }
-
-type SignalLevel = 1 | 2 | 3
-type SignalKey = 'sls' | 'rps' | 'rils'
 
 interface ZoomCompanionProps {
   leadName: string
@@ -229,6 +258,7 @@ export default function ZoomCompanion({
     setSaving(false)
   }
 
+  const STAGES = buildStages(leadName, slsLevel, rpsLevel, rilsLevel, signalPattern)
   const stage = STAGES[currentStage]
   const comboKey = `${slsLevel}-${rpsLevel}`
   const comboPattern = COMBO_PATTERNS[comboKey]
