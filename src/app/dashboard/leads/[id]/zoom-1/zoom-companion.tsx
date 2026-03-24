@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react'
 type SignalLevel = 1 | 2 | 3
 type SignalKey = 'sls' | 'rps' | 'rils'
 
-function buildStages(leadName: string, slsLevel: SignalLevel, rpsLevel: SignalLevel, rilsLevel: SignalLevel, signalPattern: string) {
+function buildStages(leadName: string, slsLevel: SignalLevel, rpsLevel: SignalLevel, rilsLevel: SignalLevel) {
   const firstName = leadName.split(' ')[0]
 
   // Stage 4 interpretation — tailored to SLS + RPS combo, with RILS addendum
@@ -39,7 +39,7 @@ function buildStages(leadName: string, slsLevel: SignalLevel, rpsLevel: SignalLe
       goal: 'Create safety and remove pressure. Establish this is not a sales call.',
       script: `"Thanks for taking the time to jump on today, ${firstName}.
 
-The purpose of this conversation is to talk through what showed up in your check-in — your report came back as a ${signalPattern} pattern — and hear a bit more about your training experience.
+The purpose of this conversation is to talk through the patterns that showed up in your check-in report and hear a bit more about what's been happening for you.
 
 There's nothing you need to decide today. We're just looking at whether what the report picked up actually matches what you've been experiencing."`,
       prompts: [
@@ -56,7 +56,7 @@ There's nothing you need to decide today. We're just looking at whether what the
       goal: 'Allow the member to respond to the report before you offer any interpretation.',
       script: `"Before I share any of my own observations, I want to hear from you first.
 
-You had a chance to read the report before today — it came back as a ${signalPattern} pattern, with ${slsLevel === 3 ? 'elevated' : slsLevel === 2 ? 'moderate' : 'balanced'} stress and load signals and ${rpsLevel === 3 ? 'reduced' : rpsLevel === 2 ? 'variable' : 'stable'} recovery predictability.
+You had a chance to read the report before today — it flagged ${slsLevel === 3 ? 'elevated' : slsLevel === 2 ? 'moderate' : 'balanced'} stress and load signals, and ${rpsLevel === 3 ? 'reduced' : rpsLevel === 2 ? 'variable' : 'stable'} recovery predictability.
 
 Just take me through your reaction. What stood out to you when you read it?"`,
       prompts: [
@@ -94,7 +94,7 @@ So I'm going to ask you a few questions. Just answer as openly as you can — th
 
 ${slsDesc} ${rpsDesc} ${comboOutcome}${rilsAddendum}
 
-That's what the ${signalPattern} pattern means in practice — and it's actually one of the more common things we see."`,
+And it's actually one of the more common patterns we see."`,
       prompts: [
         '"What I\'m noticing across what you\'ve described is…"',
         '"The pattern that tends to show up when these signals combine is…"',
@@ -108,7 +108,7 @@ That's what the ${signalPattern} pattern means in practice — and it's actually
       name: 'Next Step Invitation',
       duration: '2–3 min',
       goal: 'Offer deeper exploration without pressure. Intellectual curiosity — not pitch.',
-      script: `"What we've talked about today is essentially the surface layer of the ${signalPattern} pattern.
+      script: `"What we've talked about today is essentially the surface layer of what's showing up for you.
 
 If you wanted to explore it more deeply, the next step would be an orientation session — where we go through how the Body Recode process actually works and whether it would be useful given what's showing up for you specifically.
 
@@ -258,7 +258,7 @@ export default function ZoomCompanion({
     setSaving(false)
   }
 
-  const STAGES = buildStages(leadName, slsLevel, rpsLevel, rilsLevel, signalPattern)
+  const STAGES = buildStages(leadName, slsLevel, rpsLevel, rilsLevel)
   const stage = STAGES[currentStage]
   const comboKey = `${slsLevel}-${rpsLevel}`
   const comboPattern = COMBO_PATTERNS[comboKey]
