@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import Link from 'next/link'
+import SetStartDate from '@/components/set-start-date'
 import CopyLinkButton from './copy-link-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
@@ -122,6 +123,32 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           clientName={client.name}
           clientEmail={client.email}
         />
+      </div>
+
+      {/* Deliberate Start Window */}
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-stone-500 mb-1">Coaching Start Date</p>
+            {client.coaching_started_at ? (
+              <p className="text-sm text-stone-300">
+                {(() => {
+                  const start = new Date(client.coaching_started_at)
+                  const today = new Date()
+                  today.setHours(0, 0, 0, 0)
+                  start.setHours(0, 0, 0, 0)
+                  const diff = Math.ceil((start.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+                  if (diff > 0) return `Starts in ${diff} day${diff === 1 ? '' : 's'} - ${start.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}`
+                  if (diff === 0) return `Starts today - ${start.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}`
+                  return `Active since ${start.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                })()}
+              </p>
+            ) : (
+              <p className="text-sm text-stone-500">Not set - set a start date to begin the Deliberate Start Window</p>
+            )}
+          </div>
+          <SetStartDate clientId={client.id} currentDate={client.coaching_started_at} />
+        </div>
       </div>
 
       {/* Onboarding status */}

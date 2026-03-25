@@ -21,14 +21,24 @@ export default async function DashboardPage() {
     `)
     .order('created_at', { ascending: false })
 
-  const clientsWithLatestCFFS = (clients || []).map(client => ({
-    ...client,
-    latestCffs: client.cffs
-      ?.filter((c: { is_archived: boolean }) => !c.is_archived)
-      .sort((a: { generated_at: string }, b: { generated_at: string }) =>
-        new Date(b.generated_at).getTime() - new Date(a.generated_at).getTime()
-      )[0] || null
-  }))
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const clientsWithLatestCFFS = (clients || []).map(client => {
+    const startDate = client.coaching_started_at ? new Date(client.coaching_started_at) : null
+    if (startDate) startDate.setHours(0, 0, 0, 0)
+    const daysUntilStart = startDate ? Math.ceil((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : null
+
+    return {
+      ...client,
+      daysUntilStart,
+      latestCffs: client.cffs
+        ?.filter((c: { is_archived: boolean }) => !c.is_archived)
+        .sort((a: { generated_at: string }, b: { generated_at: string }) =>
+          new Date(b.generated_at).getTime() - new Date(a.generated_at).getTime()
+        )[0] || null
+    }
+  })
 
   const flaggedCount = clientsWithLatestCFFS.filter(c => c.latestCffs?.reassessment_flagged).length
 
@@ -88,7 +98,15 @@ export default async function DashboardPage() {
               </div>
 
               <div className="flex items-center gap-3">
-                {client.latestCffs ? (
+                {client.daysUntilStart !== null && client.daysUntilStart > 0 ? (
+                  <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-amber-400/30 text-amber-400 bg-amber-400/10">
+                    Starts in {client.daysUntilStart}d
+                  </span>
+                ) : client.daysUntilStart === 0 ? (
+                  <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-teal-400/30 text-teal-400 bg-teal-400/10">
+                    Starts today
+                  </span>
+                ) : client.latestCffs ? (
                   <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${getStateColour(client.latestCffs.body_state_classification)}`}>
                     {client.latestCffs.body_state_classification}
                   </span>

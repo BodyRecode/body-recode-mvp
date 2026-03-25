@@ -48,6 +48,7 @@ export interface Client {
   coach_id: string
   name: string
   email?: string
+  coaching_started_at?: string
   created_at: string
 }
 
