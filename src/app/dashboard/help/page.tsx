@@ -164,7 +164,12 @@ export default function HelpPage() {
             <li>The active form for this week — ticked if submitted, with a Complete button if not.</li>
             <li>Next window open time if the window is currently closed.</li>
           </ul>
-          <p>When the form is submitted, the <strong>CFWS</strong> (Client Functional Weekly Synthesis) is generated automatically. It follows the same structure as the CFFS but reflects the current week's patterns.</p>
+          <p>When the form is submitted:</p>
+          <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
+            <li>The client receives a confirmation email — "Got it, [name]. Your Week X check-in has been received."</li>
+            <li>You receive a notification email with a link to the client profile.</li>
+            <li>The <strong>CFWS</strong> (Client Functional Weekly Synthesis) is generated automatically using the most recent Form A and Form B available.</li>
+          </ol>
           <p>The client profile shows the latest CFWS and the last 8 check-in submissions.</p>
           <Note>Use the Regenerate button to manually trigger a new CFWS if needed.</Note>
         </Section>
