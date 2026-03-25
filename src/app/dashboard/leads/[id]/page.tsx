@@ -6,6 +6,7 @@ import ConvertButton from './convert-button'
 import CancelSequenceButton from './cancel-sequence-button'
 import SendOrientationButton from '@/components/send-orientation-button'
 import NoShowSequenceButton from '@/components/noshow-sequence-button'
+import CommencementFeeButton from '@/components/commencement-fee-button'
 import Link from 'next/link'
 
 const CHECK_IN_QUESTIONS: Record<string, string> = {
@@ -174,14 +175,27 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
         <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">Coaching Entry</h2>
         <p className="text-stone-500 text-sm mb-4">
-          Once commencement fee is paid and the coaching agreement is signed, convert this lead to an active client. This creates their client profile and generates their intake link.
+          Generate a unique commencement fee link to send to the client. Once paid, their client profile and intake link are created automatically.
         </p>
-        <ConvertButton
-          leadId={lead.id}
-          leadName={lead.name}
-          alreadyConverted={!!lead.converted_to_client_id}
-          clientId={lead.converted_to_client_id}
-        />
+        {!lead.converted_to_client_id ? (
+          <div className="space-y-3">
+            <CommencementFeeButton leadId={lead.id} />
+            <p className="text-xs text-stone-600">Or convert manually once fee is confirmed:</p>
+            <ConvertButton
+              leadId={lead.id}
+              leadName={lead.name}
+              alreadyConverted={!!lead.converted_to_client_id}
+              clientId={lead.converted_to_client_id}
+            />
+          </div>
+        ) : (
+          <ConvertButton
+            leadId={lead.id}
+            leadName={lead.name}
+            alreadyConverted={!!lead.converted_to_client_id}
+            clientId={lead.converted_to_client_id}
+          />
+        )}
       </div>
 
       {/* No-show re-engagement */}
