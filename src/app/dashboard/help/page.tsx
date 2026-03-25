@@ -154,7 +154,8 @@ export default function HelpPage() {
           <p>Three payment links are used in the coaching entry process:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Commencement Fee - $240</strong> - Generated uniquely per lead. Triggers automatic client creation when paid.</li>
-            <li><strong>In-Person 2x - $299/week</strong> - Static link. Send after commencement fee is confirmed.</li>
+            <li><strong>In-Person 2x - $299/week</strong> - Static link. Standard entry package. Send after commencement fee is confirmed.</li>
+            <li><strong>In-Person 3x - $409/week</strong> - Static link. Coach-assessed upgrade, offered during weekly check-ins not at Zoom 2.</li>
             <li><strong>Online - $149/week</strong> - Static link. Fallback if lead objects to in-person pricing.</li>
           </ul>
           <p>Payment links for the weekly subscription are available in the Zoom 2 companion Stage 5 Decision panel.</p>
