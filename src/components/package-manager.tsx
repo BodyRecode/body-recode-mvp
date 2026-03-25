@@ -33,7 +33,8 @@ export default function PackageManager({ clientId, currentPackage }: { clientId:
   const copyLink = async () => {
     const found = PACKAGES.find(p => p.value === pkg)
     if (!found) return
-    await navigator.clipboard.writeText(found.stripe)
+    const url = `${found.stripe}?client_reference_id=${clientId}`
+    await navigator.clipboard.writeText(url)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }

@@ -25,6 +25,17 @@ export async function POST(request: NextRequest) {
   }
 
   const session = event.data.object as Stripe.Checkout.Session
+
+  // Handle weekly subscription payment
+  if (session.mode === 'subscription' && session.client_reference_id) {
+    const admin = createAdminClient()
+    await admin
+      .from('clients')
+      .update({ subscription_active: true })
+      .eq('id', session.client_reference_id)
+    return NextResponse.json({ received: true })
+  }
+
   if (session.metadata?.type !== 'commencement_fee') {
     return NextResponse.json({ received: true })
   }

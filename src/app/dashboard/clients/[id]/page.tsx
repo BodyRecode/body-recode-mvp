@@ -154,7 +154,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
       {/* Package */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
-        <p className="text-xs uppercase tracking-wider text-stone-500 mb-3">Coaching Package</p>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-xs uppercase tracking-wider text-stone-500">Coaching Package</p>
+          {client.subscription_active ? (
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-teal-400/30 text-teal-400 bg-teal-400/10">
+              Subscription Active
+            </span>
+          ) : (
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-stone-700 text-stone-500">
+              Awaiting Payment
+            </span>
+          )}
+        </div>
         <PackageManager clientId={client.id} currentPackage={client.package} />
       </div>
 

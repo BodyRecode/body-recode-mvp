@@ -50,6 +50,7 @@ export interface Client {
   email?: string
   coaching_started_at?: string
   package?: 'online' | '2x' | '3x'
+  subscription_active?: boolean
   created_at: string
 }
 
