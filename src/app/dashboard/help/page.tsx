@@ -90,7 +90,24 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 6 */}
-        <Section title="6. Deliberate Start Window" colour="teal">
+        <Section title="6. Post-Conversion Sequence" colour="teal">
+          <p>Once the commencement fee is paid, the following happens automatically and in order:</p>
+          <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
+            <li>Client profile created in the Clients dashboard.</li>
+            <li>Welcome email sent to the client with their intake link.</li>
+            <li>Client completes the foundational intake (208 questions, 15-20 min).</li>
+            <li>CFFS generated automatically and appears on the client profile.</li>
+          </ol>
+          <p>Your manual steps after conversion:</p>
+          <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
+            <li>Set the <strong>Coaching Start Date</strong> on the client profile (3-7 days out).</li>
+            <li>Set the <strong>Coaching Package</strong> (online, 2x, or 3x) and send the subscription link.</li>
+            <li>Client receives a reminder email the day before coaching begins.</li>
+          </ol>
+          <Note>Coaching does not start until both the commencement fee and the weekly subscription payment are received.</Note>
+        </Section>
+
+        <Section title="7. Deliberate Start Window" colour="teal">
           <p>After conversion, set the <strong>Coaching Start Date</strong> on the client profile. This is the date coaching officially begins - typically 3-7 days after the commencement fee is paid.</p>
           <p>Until the start date:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
@@ -101,7 +118,7 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 7 */}
-        <Section title="7. Client Onboarding" colour="teal">
+        <Section title="8. Client Onboarding" colour="teal">
           <p>After the commencement fee is paid, the client receives an intake link by email. They complete:</p>
           <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
             <li><strong>Coaching Agreement</strong> - signed via the client portal.</li>
@@ -114,7 +131,7 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 8 */}
-        <Section title="8. CFFS - Client Functional Framework Summary" colour="teal">
+        <Section title="9. CFFS - Client Functional Framework Summary" colour="teal">
           <p>The CFFS is generated from the foundational intake. It is a structured interpretation of the client's current body state across 8 signal domains.</p>
           <p>It includes:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
@@ -133,7 +150,7 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 9 */}
-        <Section title="9. Weekly Check-Ins and CFWS" colour="teal">
+        <Section title="10. Weekly Check-Ins and CFWS" colour="teal">
           <p>Each week, clients complete two check-in forms during the Friday 6pm to Sunday 6pm Brisbane window:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Form A</strong> - Training, recovery, and load questions.</li>
@@ -145,7 +162,7 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 10 */}
-        <Section title="10. Coaching Package and Upgrades" colour="teal">
+        <Section title="11. Coaching Package and Upgrades" colour="teal">
           <p>On the client profile, set the client's <strong>Coaching Package</strong> to record which plan they are on:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Online - $149/week</strong></li>
@@ -163,7 +180,7 @@ export default function HelpPage() {
           <Note>The 3x package is coach-assessed. Only offer it during weekly check-ins once you have enough data to confirm the client can sustain three sessions per week.</Note>
         </Section>
 
-        <Section title="11. Clients Dashboard" colour="teal">
+        <Section title="12. Clients Dashboard" colour="teal">
           <p>The clients dashboard shows a live overview of all active clients. For each client in active coaching, the row displays:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Week number</strong> - Current coaching week based on their start date.</li>
