@@ -13,7 +13,7 @@ export async function PATCH(
 
   const body = await request.json()
 
-  const allowed = ['coaching_started_at']
+  const allowed = ['coaching_started_at', 'package']
   const updates: Record<string, unknown> = {}
   for (const key of allowed) {
     if (key in body) updates[key] = body[key]

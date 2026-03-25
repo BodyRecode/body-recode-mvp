@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { formatDate, getStateColour } from '@/lib/utils'
+import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import { AlertTriangle } from 'lucide-react'
+import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -17,6 +18,20 @@ export default async function DashboardPage() {
         reassessment_flagged,
         generated_at,
         is_archived
+      ),
+      cfws (
+        week_number,
+        generated_at,
+        exposure_readiness_capacity,
+        exposure_readiness_schedule,
+        exposure_readiness_regulation,
+        exposure_readiness_behaviour,
+        is_archived
+      ),
+      weekly_checkins (
+        week_number,
+        form_type,
+        submitted_at
       )
     `)
     .order('created_at', { ascending: false })
@@ -24,23 +39,33 @@ export default async function DashboardPage() {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  const clientsWithLatestCFFS = (clients || []).map(client => {
+  const clientsProcessed = (clients || []).map(client => {
     const startDate = client.coaching_started_at ? new Date(client.coaching_started_at) : null
     if (startDate) startDate.setHours(0, 0, 0, 0)
     const daysUntilStart = startDate ? Math.ceil((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : null
 
-    return {
-      ...client,
-      daysUntilStart,
-      latestCffs: client.cffs
-        ?.filter((c: { is_archived: boolean }) => !c.is_archived)
-        .sort((a: { generated_at: string }, b: { generated_at: string }) =>
-          new Date(b.generated_at).getTime() - new Date(a.generated_at).getTime()
-        )[0] || null
-    }
+    const weekNumber = client.coaching_started_at ? getWeekNumber(client.coaching_started_at) : null
+
+    const latestCffs = client.cffs
+      ?.filter((c: { is_archived: boolean }) => !c.is_archived)
+      .sort((a: { generated_at: string }, b: { generated_at: string }) =>
+        new Date(b.generated_at).getTime() - new Date(a.generated_at).getTime()
+      )[0] || null
+
+    const latestCfws = client.cfws
+      ?.filter((c: { is_archived: boolean }) => !c.is_archived)
+      .sort((a: { week_number: number }, b: { week_number: number }) => b.week_number - a.week_number)[0] || null
+
+    const thisWeekCheckins = weekNumber
+      ? (client.weekly_checkins || []).filter((ci: { week_number: number }) => ci.week_number === weekNumber)
+      : []
+    const hasFormA = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'A')
+    const hasFormB = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'B')
+
+    return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB }
   })
 
-  const flaggedCount = clientsWithLatestCFFS.filter(c => c.latestCffs?.reassessment_flagged).length
+  const flaggedCount = clientsProcessed.filter(c => c.latestCffs?.reassessment_flagged).length
 
   return (
     <div>
@@ -66,21 +91,21 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      {clientsWithLatestCFFS.length === 0 ? (
+      {clientsProcessed.length === 0 ? (
         <div className="text-center py-20 text-stone-500">
           <p className="text-lg mb-2">No clients yet</p>
           <p className="text-sm">Add your first client to get started</p>
         </div>
       ) : (
         <div className="grid gap-3">
-          {clientsWithLatestCFFS.map(client => (
+          {clientsProcessed.map(client => (
             <Link
               key={client.id}
               href={`/dashboard/clients/${client.id}`}
               className="bg-stone-900 border border-stone-800 rounded-xl px-5 py-4 flex items-center justify-between hover:border-stone-600 transition-colors group"
             >
               <div className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full bg-stone-700 flex items-center justify-center text-sm font-medium text-stone-300">
+                <div className="w-9 h-9 rounded-full bg-stone-700 flex items-center justify-center text-sm font-medium text-stone-300 shrink-0">
                   {client.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
@@ -90,14 +115,38 @@ export default async function DashboardPage() {
                       <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
                     )}
                   </div>
-                  <p className="text-stone-500 text-xs mt-0.5">
-                    Added {formatDate(client.created_at)}
-                    {client.latestCffs && ` · CFFS ${formatDate(client.latestCffs.generated_at)}`}
-                  </p>
+                  <div className="flex items-center gap-3 mt-0.5">
+                    <p className="text-stone-500 text-xs">
+                      Added {formatDate(client.created_at)}
+                    </p>
+                    {client.weekNumber !== null && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
+                      <>
+                        <span className="text-stone-700 text-xs">·</span>
+                        <span className="text-stone-400 text-xs font-medium">Week {client.weekNumber}</span>
+                        <span className="text-stone-700 text-xs">·</span>
+                        <span className={`text-xs font-semibold ${client.hasFormA ? 'text-teal-400' : 'text-stone-600'}`}>A</span>
+                        <span className={`text-xs font-semibold ${client.hasFormB ? 'text-teal-400' : 'text-stone-600'}`}>B</span>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
+                {/* CFWS readiness dots */}
+                {client.latestCfws && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
+                  <div className="flex items-center gap-1">
+                    {[
+                      client.latestCfws.exposure_readiness_capacity,
+                      client.latestCfws.exposure_readiness_schedule,
+                      client.latestCfws.exposure_readiness_regulation,
+                      client.latestCfws.exposure_readiness_behaviour,
+                    ].map((r, i) => (
+                      <div key={i} className={`w-2 h-2 rounded-full ${getReadinessColour(r)}`} />
+                    ))}
+                  </div>
+                )}
+
                 {client.daysUntilStart !== null && client.daysUntilStart > 0 ? (
                   <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-amber-400/30 text-amber-400 bg-amber-400/10">
                     Starts in {client.daysUntilStart}d

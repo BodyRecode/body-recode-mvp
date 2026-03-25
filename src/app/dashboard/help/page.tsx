@@ -39,6 +39,7 @@ export default function HelpPage() {
             <li><strong>Pattern Interpretation</strong> - Name the dominant pattern using signal-specific language.</li>
             <li><strong>Close</strong> - Confirm the report, next steps, and Zoom 2 booking.</li>
           </ol>
+          <p>At Stage 5, a <strong>Mark Zoom 1 Complete</strong> button appears in the notes panel. Click it after the call to update the lead status automatically.</p>
           <Note>Scripts and prompts are personalised to each lead's signal levels (SLS, RPS, RILS). The companion also has a live notes panel that saves directly to the lead record.</Note>
         </Section>
 
@@ -65,6 +66,12 @@ export default function HelpPage() {
             <li><strong>Objections</strong> - 7 prepared responses to common objections.</li>
             <li><strong>Online Coaching</strong> - Drop-down fallback script if the lead objects to in-person pricing.</li>
             <li><strong>Signal Reference</strong> - Quick view of the lead's SLS, RPS, and RILS levels.</li>
+          </ul>
+          <p>At Stage 5, three decision path buttons appear in the notes panel:</p>
+          <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>Path A - Declined</strong> - Updates lead status to Closed Declined.</li>
+            <li><strong>Path B - Needs Time</strong> - Updates lead status to Zoom 2 Completed.</li>
+            <li><strong>Path C - Proceeding</strong> - Updates lead status to Zoom 2 Completed. Then generate the commencement fee link from the lead detail page.</li>
           </ul>
           <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead objects to the price. The 3x in-person package ($409/week) is not presented at Zoom 2 - it is coach-assessed and offered during weekly check-ins once coaching is underway.</Note>
         </Section>
@@ -138,7 +145,36 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 10 */}
-        <Section title="10. No-Show Re-engagement" colour="amber">
+        <Section title="10. Coaching Package and Upgrades" colour="teal">
+          <p>On the client profile, set the client's <strong>Coaching Package</strong> to record which plan they are on:</p>
+          <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>Online - $149/week</strong></li>
+            <li><strong>In-Person 2x - $299/week</strong></li>
+            <li><strong>In-Person 3x - $409/week</strong></li>
+          </ul>
+          <p>Once a package is selected, a <strong>Copy Subscription Link</strong> button appears. Use this to send the client their Stripe subscription link for the new package.</p>
+          <p>To upgrade a client from 2x to 3x:</p>
+          <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
+            <li>Cancel the existing $299/week subscription in Stripe.</li>
+            <li>Select <strong>In-Person 3x</strong> on the client profile.</li>
+            <li>Copy and send the $409/week subscription link to the client.</li>
+            <li>Update to 3x once they have subscribed.</li>
+          </ol>
+          <Note>The 3x package is coach-assessed. Only offer it during weekly check-ins once you have enough data to confirm the client can sustain three sessions per week.</Note>
+        </Section>
+
+        <Section title="11. Clients Dashboard" colour="teal">
+          <p>The clients dashboard shows a live overview of all active clients. For each client in active coaching, the row displays:</p>
+          <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>Week number</strong> - Current coaching week based on their start date.</li>
+            <li><strong>A / B check-in status</strong> - Teal if submitted this week, grey if not yet submitted.</li>
+            <li><strong>CFWS readiness dots</strong> - Four coloured dots (Capacity, Schedule, Regulation, Behaviour) from the latest weekly synthesis. Green = ready, Amber = caution, Red = flag.</li>
+            <li><strong>Body state badge</strong> - From the latest CFFS.</li>
+          </ul>
+          <p>Clients in the Deliberate Start Window show a <strong>Starts in Xd</strong> amber badge instead.</p>
+        </Section>
+
+        <Section title="13. No-Show Re-engagement" colour="amber">
           <p>If a lead does not attend their Zoom 1, mark their status as <strong>Closed - No Show</strong>. A re-engagement section will appear on their lead detail page.</p>
           <p>Click <strong>Start Re-engagement Sequence</strong> to send 3 scheduled emails:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
@@ -150,7 +186,7 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 11 */}
-        <Section title="11. Stripe Payments" colour="teal">
+        <Section title="14. Stripe Payments" colour="teal">
           <p>Three payment links are used in the coaching entry process:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Commencement Fee - $240</strong> - Generated uniquely per lead. Triggers automatic client creation when paid.</li>

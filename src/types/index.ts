@@ -49,6 +49,7 @@ export interface Client {
   name: string
   email?: string
   coaching_started_at?: string
+  package?: 'online' | '2x' | '3x'
   created_at: string
 }
 

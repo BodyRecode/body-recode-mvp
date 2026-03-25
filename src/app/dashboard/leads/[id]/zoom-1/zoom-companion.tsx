@@ -242,6 +242,7 @@ export default function ZoomCompanion({
   const [transcript, setTranscript] = useState('')
   const [summary, setSummary] = useState('')
   const [generating, setGenerating] = useState(false)
+  const [statusUpdated, setStatusUpdated] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
@@ -288,6 +289,15 @@ export default function ZoomCompanion({
       body: JSON.stringify({ notes }),
     })
     setSaving(false)
+  }
+
+  const markZoom1Complete = async () => {
+    await fetch(`/api/leads/${leadId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'zoom_1_completed' }),
+    })
+    setStatusUpdated(true)
   }
 
   const STAGES = buildStages(leadName, slsLevel, rpsLevel, rilsLevel)
@@ -563,7 +573,7 @@ export default function ZoomCompanion({
               placeholder="Type observations as the call unfolds…"
               className="flex-1 bg-transparent text-stone-300 text-sm p-4 resize-none focus:outline-none placeholder-stone-700 leading-relaxed"
             />
-            <div className="p-4 border-t border-white/10">
+            <div className="p-4 border-t border-white/10 space-y-3">
               <div className="bg-stone-900 border border-stone-800 rounded-lg p-3">
                 <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Readiness Check</p>
                 <div className="space-y-1.5 text-xs text-stone-500">
@@ -572,6 +582,15 @@ export default function ZoomCompanion({
                   <p>C - Not ready / not right fit</p>
                 </div>
               </div>
+              {currentStage === 4 && (
+                <button
+                  onClick={markZoom1Complete}
+                  disabled={statusUpdated}
+                  className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${statusUpdated ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20'}`}
+                >
+                  {statusUpdated ? 'Zoom 1 Marked Complete' : 'Mark Zoom 1 Complete'}
+                </button>
+              )}
             </div>
           </div>
         </div>

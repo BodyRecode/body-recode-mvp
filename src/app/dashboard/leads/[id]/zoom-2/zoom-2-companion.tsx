@@ -214,6 +214,7 @@ export default function Zoom2Companion({
   const [notes, setNotes] = useState(initialNotes)
   const [saving, setSaving] = useState(false)
   const [activeTab, setActiveTab] = useState<'prompts' | 'objections' | 'online' | 'signals'>('prompts')
+  const [decisionPath, setDecisionPath] = useState<'A' | 'B' | 'C' | null>(null)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
@@ -251,6 +252,16 @@ export default function Zoom2Companion({
         <span key={i}>{part}</span>
       )
     )
+  }
+
+  const markDecision = async (path: 'A' | 'B' | 'C') => {
+    const statusMap = { A: 'closed_declined', B: 'zoom_2_completed', C: 'zoom_2_completed' }
+    await fetch(`/api/leads/${leadId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: statusMap[path] }),
+    })
+    setDecisionPath(path)
   }
 
   const saveNotes = async () => {
@@ -531,7 +542,7 @@ That sits at $149 per week. Same 12-week minimum. Same standards."`}</p>
               placeholder="Type observations as the call unfolds..."
               className="flex-1 bg-transparent text-stone-300 text-sm p-4 resize-none focus:outline-none placeholder-stone-700 leading-relaxed"
             />
-            <div className="p-4 border-t border-white/10">
+            <div className="p-4 border-t border-white/10 space-y-3">
               <div className="bg-stone-900 border border-stone-800 rounded-lg p-3">
                 <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Decision Path</p>
                 <div className="space-y-1.5 text-xs text-stone-500">
@@ -540,6 +551,28 @@ That sits at $149 per week. Same 12-week minimum. Same standards."`}</p>
                   <p>C - Proceeding to commencement</p>
                 </div>
               </div>
+              {currentStage === 4 && (
+                <div className="space-y-2">
+                  <p className="text-xs text-stone-600 uppercase tracking-wider font-semibold">Mark outcome</p>
+                  {decisionPath ? (
+                    <div className="text-xs font-bold px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-center">
+                      Path {decisionPath} recorded
+                    </div>
+                  ) : (
+                    <>
+                      <button onClick={() => markDecision('A')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-colors">
+                        Path A - Declined
+                      </button>
+                      <button onClick={() => markDecision('B')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 transition-colors">
+                        Path B - Needs Time
+                      </button>
+                      <button onClick={() => markDecision('C')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20 transition-colors">
+                        Path C - Proceeding
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

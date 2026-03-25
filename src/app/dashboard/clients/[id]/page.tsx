@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import Link from 'next/link'
 import SetStartDate from '@/components/set-start-date'
+import PackageManager from '@/components/package-manager'
 import CopyLinkButton from './copy-link-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
@@ -149,6 +150,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
           <SetStartDate clientId={client.id} currentDate={client.coaching_started_at} />
         </div>
+      </div>
+
+      {/* Package */}
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+        <p className="text-xs uppercase tracking-wider text-stone-500 mb-3">Coaching Package</p>
+        <PackageManager clientId={client.id} currentPackage={client.package} />
       </div>
 
       {/* Onboarding status */}
