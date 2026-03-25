@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
 
   // Notify Kade
   const { error } = await resend.emails.send({
-    from: 'Body Recode™ <kade@send.bodyrecode.au>',
+    from: 'Body Recode™ <kade@bodyrecode.au>',
     to: 'info@bodyrecode.au',
     subject: `New Check-In: ${name} — ${signalPattern}`,
     html: `
@@ -156,7 +156,7 @@ export async function POST(request: NextRequest) {
   // Automated acknowledgement to submitter
   const firstName = name.trim().split(' ')[0]
   await resend.emails.send({
-    from: 'Body Recode™ <kade@send.bodyrecode.au>',
+    from: 'Body Recode™ <kade@bodyrecode.au>',
     to: email,
     subject: 'Performance Check-In received',
     html: `
@@ -238,7 +238,7 @@ async function scheduleReport(
   const scheduledAt = nextMorning9amBrisbane()
 
   await resend.emails.send({
-    from: 'Kade Dunstone <kade@send.bodyrecode.au>',
+    from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: email,
     subject: 'Your Performance Check-In report',
     html,
@@ -259,7 +259,7 @@ async function scheduleReport(
     try {
       const sendAt = daysAfter9amBrisbane(scheduledAt, fu.days)
       const { data } = await resend.emails.send({
-        from: 'Kade Dunstone <kade@send.bodyrecode.au>',
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
         subject: fu.subject,
         html: fu.html,

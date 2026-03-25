@@ -25,7 +25,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     const portalUrl = `https://app.bodyrecode.au/portal/${client.onboarding_token}`
 
     await resend.emails.send({
-      from: 'Kade Dunstone <kade@send.bodyrecode.au>',
+      from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: client.email,
       subject: 'Medical clearance approved — you\'re good to go',
       html: `

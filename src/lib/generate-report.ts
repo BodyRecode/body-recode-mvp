@@ -229,7 +229,7 @@ export async function buildReportEmail(
           <tr>
             <td bgcolor="#0d0d0d" style="background-color:#0d0d0d;padding:20px 40px;border-top:1px solid #1e1e1e;">
               <p style="margin:0 0 8px;font-size:12px;color:#555555;line-height:1.6;">
-                To make sure you receive future emails from Body Recode™, add <strong style="color:#888888;">kade@send.bodyrecode.au</strong> to your contacts.
+                To make sure you receive future emails from Body Recode™, add <strong style="color:#888888;">kade@bodyrecode.au</strong> to your contacts.
               </p>
               <p style="margin:0;font-size:12px;color:#444444;line-height:1.6;">
                 Body Recode™ · Anytime Fitness Newstead, Brisbane<br/>
