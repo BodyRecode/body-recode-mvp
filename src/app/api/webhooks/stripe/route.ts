@@ -20,6 +20,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
+  // Handle subscription cancellation
+  if (event.type === 'customer.subscription.deleted') {
+    const subscription = event.data.object as Stripe.Subscription
+    const clientRefId = subscription.metadata?.client_id
+    if (clientRefId) {
+      const admin = createAdminClient()
+      await admin
+        .from('clients')
+        .update({ subscription_active: false })
+        .eq('id', clientRefId)
+    }
+    return NextResponse.json({ received: true })
+  }
+
   if (event.type !== 'checkout.session.completed') {
     return NextResponse.json({ received: true })
   }
