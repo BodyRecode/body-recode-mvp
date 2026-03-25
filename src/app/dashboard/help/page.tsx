@@ -66,7 +66,7 @@ export default function HelpPage() {
             <li><strong>Online Coaching</strong> - Drop-down fallback script if the lead objects to in-person pricing.</li>
             <li><strong>Signal Reference</strong> - Quick view of the lead's SLS, RPS, and RILS levels.</li>
           </ul>
-          <Note>Lead with in-person ($299/week). Only introduce online ($149/week) if the lead objects to the price.</Note>
+          <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead objects to the price. The 3x in-person package ($409/week) is not presented at Zoom 2 - it is coach-assessed and offered during weekly check-ins once coaching is underway.</Note>
         </Section>
 
         {/* Section 5 */}
