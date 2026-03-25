@@ -100,11 +100,12 @@ export default function HelpPage() {
           </ol>
           <p>Your manual steps after conversion:</p>
           <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
-            <li>Set the <strong>Coaching Start Date</strong> on the client profile (3-7 days out).</li>
-            <li>Set the <strong>Coaching Package</strong> (online, 2x, or 3x) and send the subscription link.</li>
+            <li>Set the <strong>Coaching Package</strong> (online, 2x, or 3x) on the client profile and copy the subscription link to send to the client.</li>
+            <li>When the client pays, the Coaching Package section shows a <strong>Subscription Active</strong> badge automatically.</li>
+            <li>Once both payments are confirmed, set the <strong>Coaching Start Date</strong> (3-7 days out).</li>
             <li>Client receives a reminder email the day before coaching begins.</li>
           </ol>
-          <Note>Coaching does not start until both the commencement fee and the weekly subscription payment are received.</Note>
+          <Note>Coaching does not start until both the commencement fee and the weekly subscription payment are received. Wait for the Subscription Active badge before setting the start date.</Note>
         </Section>
 
         <Section title="7. Deliberate Start Window" colour="teal">
@@ -176,7 +177,7 @@ export default function HelpPage() {
             <li><strong>In-Person 2x - $299/week</strong></li>
             <li><strong>In-Person 3x - $409/week</strong></li>
           </ul>
-          <p>Once a package is selected, a <strong>Copy Subscription Link</strong> button appears. Use this to send the client their Stripe subscription link for the new package.</p>
+          <p>Once a package is selected, a <strong>Copy Subscription Link</strong> button appears. The link includes the client's ID so the system can identify them when they pay. When the client completes payment, the <strong>Subscription Active</strong> badge appears automatically on the client profile.</p>
           <p>To upgrade a client from 2x to 3x:</p>
           <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
             <li>Cancel the existing $299/week subscription in Stripe.</li>
