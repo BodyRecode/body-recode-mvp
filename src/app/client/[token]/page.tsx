@@ -19,14 +19,14 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
   const startDate = client.coaching_started_at || client.created_at
   const weekNumber = getWeekNumber(startDate)
   const window = getCheckInWindowStatus()
+  const activeForm = window.formType
 
   const thisWeekCheckins = (client.weekly_checkins || []).filter(
     (ci: { week_number: number }) => ci.week_number === weekNumber
   )
-  const hasFormA = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'A')
-  const hasFormB = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'B')
-  const bothDone = hasFormA && hasFormB
+  const hasSubmitted = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === activeForm)
 
+  const formLabel = activeForm === 'A' ? 'Training, load, and recovery' : 'Regulation, lifestyle, and context'
   const checkinUrl = `/checkin/${token}`
 
   return (
@@ -58,18 +58,17 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
           {window.isOpen ? (
             <div className="space-y-3">
               <p className="text-stone-400 text-sm">
-                The check-in window is open until Sunday 6pm Brisbane time. Complete both forms before the window closes.
+                The check-in window is open until Sunday 6pm Brisbane time.
               </p>
 
-              {/* Form A */}
-              <div className={`flex items-center justify-between rounded-lg p-4 border ${hasFormA ? 'bg-teal-400/5 border-teal-400/20' : 'bg-stone-800 border-stone-700'}`}>
+              <div className={`flex items-center justify-between rounded-lg p-4 border ${hasSubmitted ? 'bg-teal-400/5 border-teal-400/20' : 'bg-stone-800 border-stone-700'}`}>
                 <div>
-                  <p className={`text-sm font-semibold ${hasFormA ? 'text-teal-400' : 'text-white'}`}>
-                    {hasFormA ? 'Form A - Submitted' : 'Form A - Required'}
+                  <p className={`text-sm font-semibold ${hasSubmitted ? 'text-teal-400' : 'text-white'}`}>
+                    {hasSubmitted ? `Form ${activeForm} - Submitted` : `Form ${activeForm} - Required`}
                   </p>
-                  <p className="text-xs text-stone-500 mt-0.5">Training, load, and recovery</p>
+                  <p className="text-xs text-stone-500 mt-0.5">{formLabel}</p>
                 </div>
-                {hasFormA ? (
+                {hasSubmitted ? (
                   <span className="text-teal-400 text-lg">✓</span>
                 ) : (
                   <Link
@@ -81,29 +80,9 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
                 )}
               </div>
 
-              {/* Form B */}
-              <div className={`flex items-center justify-between rounded-lg p-4 border ${hasFormB ? 'bg-teal-400/5 border-teal-400/20' : 'bg-stone-800 border-stone-700'}`}>
-                <div>
-                  <p className={`text-sm font-semibold ${hasFormB ? 'text-teal-400' : 'text-white'}`}>
-                    {hasFormB ? 'Form B - Submitted' : 'Form B - Required'}
-                  </p>
-                  <p className="text-xs text-stone-500 mt-0.5">Regulation, lifestyle, and context</p>
-                </div>
-                {hasFormB ? (
-                  <span className="text-teal-400 text-lg">✓</span>
-                ) : (
-                  <Link
-                    href={checkinUrl}
-                    className="text-xs font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
-                  >
-                    Complete
-                  </Link>
-                )}
-              </div>
-
-              {bothDone && (
+              {hasSubmitted && (
                 <div className="bg-teal-400/5 border border-teal-400/20 rounded-lg p-4 text-center">
-                  <p className="text-teal-400 text-sm font-semibold">Both forms submitted for Week {weekNumber}</p>
+                  <p className="text-teal-400 text-sm font-semibold">Form {activeForm} submitted for Week {weekNumber}</p>
                   <p className="text-stone-500 text-xs mt-1">Your coach will review and synthesise your responses.</p>
                 </div>
               )}
@@ -122,17 +101,12 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
                   hour12: true,
                 })} Brisbane time.
               </p>
-              {(hasFormA || hasFormB) && (
+              {hasSubmitted && (
                 <div className="mt-4 pt-4 border-t border-stone-800">
-                  <p className="text-xs text-stone-500 mb-2">This week&apos;s submissions:</p>
-                  <div className="flex gap-3">
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${hasFormA ? 'border-teal-400/30 text-teal-400' : 'border-stone-700 text-stone-600'}`}>
-                      Form A {hasFormA ? '✓' : '—'}
-                    </span>
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${hasFormB ? 'border-teal-400/30 text-teal-400' : 'border-stone-700 text-stone-600'}`}>
-                      Form B {hasFormB ? '✓' : '—'}
-                    </span>
-                  </div>
+                  <p className="text-xs text-stone-500 mb-2">This week&apos;s submission:</p>
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-teal-400/30 text-teal-400">
+                    Form {activeForm} ✓
+                  </span>
                 </div>
               )}
             </div>

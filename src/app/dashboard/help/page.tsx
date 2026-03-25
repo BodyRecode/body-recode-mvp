@@ -151,19 +151,19 @@ export default function HelpPage() {
 
         {/* Section 9 */}
         <Section title="10. Weekly Check-Ins and CFWS" colour="teal">
-          <p>Each week, clients complete two check-in forms during the Friday 6pm to Sunday 6pm Brisbane window:</p>
+          <p>Each week, clients complete one check-in form during the Friday 6pm to Sunday 6pm Brisbane window. Forms alternate each week:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-            <li><strong>Form A</strong> - Training, recovery, and load questions.</li>
-            <li><strong>Form B</strong> - Regulation, lifestyle, and context questions.</li>
+            <li><strong>Form A</strong> (odd weeks) - Training, recovery, and load questions.</li>
+            <li><strong>Form B</strong> (even weeks) - Regulation, lifestyle, and context questions.</li>
           </ul>
           <p>Every Friday at 6pm Brisbane time, clients receive an automated email notifying them that the window is open. The email includes a link to their personal client dashboard at <strong>/client/[token]</strong>.</p>
           <p>The client dashboard shows:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li>Current week number and window status (open or closed).</li>
-            <li>Form A and Form B status — ticked if submitted, with a Complete button if not.</li>
+            <li>The active form for this week — ticked if submitted, with a Complete button if not.</li>
             <li>Next window open time if the window is currently closed.</li>
           </ul>
-          <p>When both forms are submitted, the <strong>CFWS</strong> (Client Functional Weekly Synthesis) is generated automatically. It follows the same structure as the CFFS but reflects the current week's patterns.</p>
+          <p>When the form is submitted, the <strong>CFWS</strong> (Client Functional Weekly Synthesis) is generated automatically. It follows the same structure as the CFFS but reflects the current week's patterns.</p>
           <p>The client profile shows the latest CFWS and the last 8 check-in submissions.</p>
           <Note>Use the Regenerate button to manually trigger a new CFWS if needed.</Note>
         </Section>
