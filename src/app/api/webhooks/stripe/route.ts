@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: lead.email,
-      subject: 'Your Body Recode foundational intake',
+      subject: `Welcome to Body Recode, ${firstName}`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -105,21 +105,27 @@ export async function POST(request: NextRequest) {
             <td style="padding:32px 40px;">
               <h1 style="margin:0 0 12px;font-size:22px;font-weight:600;color:#1c1917;line-height:1.3;">Hi ${firstName},</h1>
               <p style="margin:0 0 24px;font-size:15px;color:#57534e;line-height:1.6;">
-                Payment received - welcome to Body Recode Performance Coaching.
+                Your commencement fee has been received - you're officially in.
               </p>
               <p style="margin:0 0 24px;font-size:15px;color:#57534e;line-height:1.6;">
-                Your next step is to complete your foundational intake. It takes around 15-20 minutes and covers your training history, body patterns, sleep, stress, nutrition, and lifestyle. Your responses are used to build an accurate picture of your current body state.
+                Before we begin, I need you to complete your foundational intake. This is how I build an accurate picture of where you're starting from - your training history, recovery patterns, stress load, sleep, and lifestyle. It takes around 15-20 minutes and there are no right or wrong answers. Just answer based on your typical experience, not your best or worst days.
+              </p>
+              <p style="margin:0 0 24px;font-size:15px;color:#57534e;line-height:1.6;">
+                This intake forms the foundation of everything we do together, so take your time with it.
               </p>
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="border-radius:12px;background:#1c1917;">
                     <a href="${intakeUrl}" style="display:inline-block;padding:14px 28px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:12px;">
-                      Start my intake
+                      Complete my intake
                     </a>
                   </td>
                 </tr>
               </table>
-              <p style="margin:24px 0 0;font-size:13px;color:#a8a29e;line-height:1.5;">
+              <p style="margin:24px 0 0;font-size:15px;color:#57534e;line-height:1.6;">
+                Looking forward to getting started.<br/><br/>Kade
+              </p>
+              <p style="margin:16px 0 0;font-size:13px;color:#a8a29e;line-height:1.5;">
                 Or copy this link: <span style="color:#78716c;">${intakeUrl}</span>
               </p>
             </td>
