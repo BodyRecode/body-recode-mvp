@@ -16,7 +16,7 @@ export async function POST(
 
   const { data: lead } = await supabase
     .from('leads')
-    .select('id, name, email')
+    .select('id, name, email, converted_to_client_id')
     .eq('id', id)
     .maybeSingle()
 
