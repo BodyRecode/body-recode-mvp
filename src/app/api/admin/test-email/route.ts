@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY!)
 
   if (type === 'signature') {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
       subject: 'Test — Email signature preview',
@@ -51,5 +51,12 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  return NextResponse.json({ sent: true })
+    console.log('Resend result:', JSON.stringify(result))
+    if (result.error) {
+      return NextResponse.json({ error: result.error }, { status: 500 })
+    }
+    return NextResponse.json({ sent: true, id: result.data?.id })
+  }
+
+  return NextResponse.json({ sent: false, error: 'Unknown type' }, { status: 400 })
 }
