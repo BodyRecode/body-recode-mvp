@@ -1,44 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
-import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
 import { emailSignature } from '@/lib/email-signature'
 
-export async function GET(request: NextRequest) {
-  const authHeader = request.headers.get('authorization')
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
-  }
+export async function POST(request: NextRequest) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
 
-  const admin = createAdminClient()
-  const resend = new Resend(process.env.RESEND_API_KEY)
+  const { type } = await request.json()
+  const resend = new Resend(process.env.RESEND_API_KEY!)
 
-  // Find clients whose coaching starts tomorrow
-  const tomorrow = new Date()
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  const tomorrowStart = new Date(tomorrow)
-  tomorrowStart.setHours(0, 0, 0, 0)
-  const tomorrowEnd = new Date(tomorrow)
-  tomorrowEnd.setHours(23, 59, 59, 999)
-
-  const { data: clients } = await admin
-    .from('clients')
-    .select('id, name, email, coaching_started_at')
-    .gte('coaching_started_at', tomorrowStart.toISOString())
-    .lte('coaching_started_at', tomorrowEnd.toISOString())
-
-  if (!clients || clients.length === 0) {
-    return NextResponse.json({ sent: 0 })
-  }
-
-  let sent = 0
-  for (const client of clients) {
-    if (!client.email) continue
-    const firstName = client.name.split(' ')[0]
-
+  if (type === 'signature') {
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
-      to: client.email,
-      subject: 'Coaching begins tomorrow',
+      to: 'kade@bodyrecode.au',
+      subject: 'Test — Email signature preview',
       html: `
 <!DOCTYPE html>
 <html>
@@ -55,12 +32,9 @@ export async function GET(request: NextRequest) {
           </tr>
           <tr>
             <td style="padding:32px 40px;">
-              <h1 style="margin:0 0 12px;font-size:22px;font-weight:600;color:#1c1917;line-height:1.3;">Hi ${firstName},</h1>
+              <h1 style="margin:0 0 12px;font-size:22px;font-weight:600;color:#1c1917;line-height:1.3;">Hi Kade,</h1>
               <p style="margin:0 0 24px;font-size:15px;color:#57534e;line-height:1.6;">
-                Just a reminder that your coaching begins tomorrow.
-              </p>
-              <p style="margin:0 0 24px;font-size:15px;color:#57534e;line-height:1.6;">
-                I'll be in touch with your session details shortly. If you have any questions before we begin, reply to this email.
+                This is a preview of how the email signature looks at the bottom of outgoing client emails.
               </p>
               <p style="margin:0 0 0;font-size:15px;color:#57534e;line-height:1.6;">
                 Looking forward to it.
@@ -80,8 +54,7 @@ export async function GET(request: NextRequest) {
 </body>
 </html>`,
     })
-    sent++
   }
 
-  return NextResponse.json({ sent })
+  return NextResponse.json({ sent: true })
 }

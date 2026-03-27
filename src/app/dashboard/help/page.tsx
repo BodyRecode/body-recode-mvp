@@ -1,8 +1,40 @@
+'use client'
+
+import { useState } from 'react'
+
+function TestEmailButton() {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
+
+  const send = async () => {
+    setStatus('sending')
+    await fetch('/api/admin/test-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'signature' }),
+    })
+    setStatus('sent')
+    setTimeout(() => setStatus('idle'), 3000)
+  }
+
+  return (
+    <button
+      onClick={send}
+      disabled={status !== 'idle'}
+      className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200 transition-colors disabled:opacity-50"
+    >
+      {status === 'sending' ? 'Sending...' : status === 'sent' ? 'Sent to kade@bodyrecode.au' : 'Send test email'}
+    </button>
+  )
+}
+
 export default function HelpPage() {
   return (
     <div className="max-w-3xl">
       <div className="mb-10">
-        <h1 className="text-2xl font-semibold mb-2">Dashboard Guide</h1>
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <h1 className="text-2xl font-semibold">Dashboard Guide</h1>
+          <TestEmailButton />
+        </div>
         <p className="text-stone-400 text-sm">How the Body Recode Performance Coaching system works end to end.</p>
       </div>
 

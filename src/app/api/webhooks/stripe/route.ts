@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { emailSignature } from '@/lib/email-signature'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -148,8 +149,9 @@ export async function POST(request: NextRequest) {
                 </tr>
               </table>
               <p style="margin:24px 0 0;font-size:15px;color:#57534e;line-height:1.6;">
-                Looking forward to getting started.<br/><br/>Kade
+                Looking forward to getting started.
               </p>
+              ${emailSignature()}
               <p style="margin:16px 0 0;font-size:13px;color:#a8a29e;line-height:1.5;">
                 Or copy this link: <span style="color:#78716c;">${intakeUrl}</span>
               </p>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
+import { emailSignature } from '@/lib/email-signature'
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
@@ -76,6 +77,7 @@ export async function POST(request: NextRequest) {
                 Or copy this link into your browser:<br/>
                 <span style="color:#78716c;">${intakeUrl}</span>
               </p>
+              ${emailSignature()}
             </td>
           </tr>
 

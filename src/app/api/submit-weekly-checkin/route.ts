@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
+import { emailSignature } from '@/lib/email-signature'
 
 export const maxDuration = 60
 
@@ -162,6 +163,7 @@ async function sendNotifications(
               <p style="margin:0 0 0;font-size:15px;color:#57534e;line-height:1.6;">
                 Your Week ${weekNumber} check-in has been received. I'll review it and it'll inform your coaching this week.
               </p>
+              ${emailSignature()}
             </td>
           </tr>
           <tr>

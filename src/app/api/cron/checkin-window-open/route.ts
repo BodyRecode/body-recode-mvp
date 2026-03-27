@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { emailSignature } from '@/lib/email-signature'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -73,6 +74,7 @@ export async function GET(request: NextRequest) {
               <p style="margin:24px 0 0;font-size:13px;color:#a8a29e;line-height:1.5;">
                 Or copy this link: <span style="color:#78716c;">${dashboardUrl}</span>
               </p>
+              ${emailSignature()}
             </td>
           </tr>
           <tr>

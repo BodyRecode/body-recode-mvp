@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { darkEmailSignature } from '@/lib/email-signature'
 
 const ORIENTATION_PDF_URL = 'https://klotlednmxhywimztozm.supabase.co/storage/v1/object/public/assets/Performance%20Coaching%20Orientation.pdf'
 
@@ -61,9 +62,7 @@ export async function POST(
 
   <p>If anything stands out or you have questions before we speak, feel free to reply to this email.</p>
 
-  <p>Kade</p>
-
-  <div class="footer">Body Recode&trade; &middot; Performance Coaching &middot; Brisbane</div>
+  ${darkEmailSignature()}
 </div>
 </body>
 </html>
