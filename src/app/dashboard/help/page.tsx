@@ -3,17 +3,27 @@
 import { useState } from 'react'
 
 function TestEmailButton() {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
   const send = async () => {
     setStatus('sending')
-    await fetch('/api/admin/test-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'signature' }),
-    })
-    setStatus('sent')
-    setTimeout(() => setStatus('idle'), 3000)
+    try {
+      const res = await fetch('/api/admin/test-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'signature' }),
+      })
+      if (!res.ok) {
+        console.error('Test email failed:', await res.text())
+        setStatus('error')
+      } else {
+        setStatus('sent')
+      }
+    } catch (e) {
+      console.error('Test email error:', e)
+      setStatus('error')
+    }
+    setTimeout(() => setStatus('idle'), 4000)
   }
 
   return (
@@ -22,7 +32,7 @@ function TestEmailButton() {
       disabled={status !== 'idle'}
       className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200 transition-colors disabled:opacity-50"
     >
-      {status === 'sending' ? 'Sending...' : status === 'sent' ? 'Sent to kade@bodyrecode.au' : 'Send test email'}
+      {status === 'sending' ? 'Sending...' : status === 'sent' ? 'Sent to kade@bodyrecode.au' : status === 'error' ? 'Failed — check console' : 'Send test email'}
     </button>
   )
 }
