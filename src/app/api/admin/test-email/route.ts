@@ -49,7 +49,6 @@ export async function POST(request: NextRequest) {
 </body>
 </html>`,
     })
-  }
 
     console.log('Resend result:', JSON.stringify(result))
     if (result.error) {
