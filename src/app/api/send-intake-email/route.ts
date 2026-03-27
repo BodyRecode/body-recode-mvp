@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
           <!-- Header -->
           <tr>
             <td style="padding:32px 40px 24px;border-bottom:1px solid #f5f5f4;">
-              <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#a8a29e;">Body Recode™</p>
+              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
 

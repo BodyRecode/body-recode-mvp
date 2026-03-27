@@ -26,8 +26,7 @@ export async function POST(request: NextRequest) {
         <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:520px;background-color:#111111;border-radius:16px;border:1px solid #222222;overflow:hidden;">
           <tr>
             <td bgcolor="#111111" style="background-color:#111111;padding:32px 40px 28px;border-bottom:1px solid #1e1e1e;">
-              <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#10E1C2;">Body Recode™</p>
-              <p style="margin:0;font-size:13px;color:#555555;letter-spacing:0.05em;">Performance Coaching · Brisbane</p>
+              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
