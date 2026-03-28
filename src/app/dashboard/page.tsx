@@ -117,7 +117,7 @@ export default async function DashboardHomePage() {
             <Link href="/dashboard/coaching" className="text-xs text-teal-400 hover:text-teal-300 transition-colors">View coaching →</Link>
           </div>
           <div className="space-y-3">
-            {recentCheckins?.map((ci: { id: string; form_type: string; week_number: number; submitted_at: string; clients: { name: string } | null; client_id: string }) => (
+            {recentCheckins?.map((ci: { id: string; form_type: string; week_number: number; submitted_at: string; clients: { name: string }[] | { name: string } | null; client_id: string }) => (
               <Link
                 key={ci.id}
                 href={`/dashboard/clients/${ci.client_id}`}
@@ -125,7 +125,7 @@ export default async function DashboardHomePage() {
               >
                 <div>
                   <p className="text-sm font-medium text-white group-hover:text-teal-400 transition-colors">
-                    {ci.clients?.name ?? 'Unknown'}
+                    {Array.isArray(ci.clients) ? ci.clients[0]?.name : ci.clients?.name ?? 'Unknown'}
                   </p>
                   <p className="text-xs text-stone-500">
                     Week {ci.week_number} · Form {ci.form_type}
