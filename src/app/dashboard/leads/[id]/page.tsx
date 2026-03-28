@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { formatDate, getLeadStatusLabel, getLeadStatusColour, getLeadSourceLabel } from '@/lib/utils'
 import LeadActions from './lead-actions'
+import LeadDangerActions from './lead-danger-actions'
 import ConvertButton from './convert-button'
 import CancelSequenceButton from './cancel-sequence-button'
 import SendOrientationButton from '@/components/send-orientation-button'
@@ -333,6 +334,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           <p className="text-stone-500 text-sm">No communications logged yet.</p>
         )}
       </div>
+
+      {/* Lead Management */}
+      <LeadDangerActions leadId={lead.id} isActive={lead.active !== false} />
 
       {/* Notes */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">

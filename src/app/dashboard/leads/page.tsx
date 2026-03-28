@@ -13,14 +13,16 @@ const STATUS_GROUPS = [
 export default async function LeadsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; source?: string }>
+  searchParams: Promise<{ status?: string; source?: string; view?: string }>
 }) {
   const supabase = await createClient()
   const params = await searchParams
+  const showInactive = params.view === 'inactive'
 
   let query = supabase
     .from('leads')
     .select('*')
+    .eq('active', !showInactive)
     .order('created_at', { ascending: false })
 
   if (params.status) query = query.eq('status', params.status)
@@ -37,14 +39,30 @@ export default async function LeadsPage({
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-semibold">Leads</h1>
-          <p className="text-stone-400 text-sm mt-1">{allLeads.length} total</p>
+          <p className="text-stone-400 text-sm mt-1">{allLeads.length} {showInactive ? 'inactive' : 'active'}</p>
         </div>
-        <Link
-          href="/dashboard/leads/new"
-          className="bg-white text-stone-950 text-sm font-medium px-4 py-2 rounded-lg hover:bg-stone-100 transition-colors"
-        >
-          + Add Lead
-        </Link>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center bg-stone-900 border border-stone-800 rounded-lg p-0.5">
+            <Link
+              href="/dashboard/leads"
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${!showInactive ? 'bg-teal-500 text-black' : 'text-stone-400 hover:text-white'}`}
+            >
+              Active
+            </Link>
+            <Link
+              href="/dashboard/leads?view=inactive"
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${showInactive ? 'bg-stone-600 text-white' : 'text-stone-400 hover:text-white'}`}
+            >
+              Inactive
+            </Link>
+          </div>
+          <Link
+            href="/dashboard/leads/new"
+            className="bg-white text-stone-950 text-sm font-medium px-4 py-2 rounded-lg hover:bg-stone-100 transition-colors"
+          >
+            + Add Lead
+          </Link>
+        </div>
       </div>
 
       {/* Status filter */}

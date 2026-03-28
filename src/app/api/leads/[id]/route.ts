@@ -15,6 +15,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       status: body.status,
       notes: body.notes,
       source: body.source,
+      active: body.active,
       zoom_1_date: body.zoom_1_date,
       zoom_2_date: body.zoom_2_date,
       zoom_meeting_url: body.zoom_meeting_url,
@@ -25,4 +26,16 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json(data)
+}
+
+export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+
+  const { id } = await params
+  const { error } = await supabase.from('leads').delete().eq('id', id)
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json({ success: true })
 }
