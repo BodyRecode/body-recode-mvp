@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { buildReportEmail } from '@/lib/generate-report'
+import { buildReportEmail, buildFollowUpEmails, daysAfter9amBrisbane } from '@/lib/generate-report'
 import { darkEmailSignature } from '@/lib/email-signature'
 
 const QUESTIONS: Record<string, string> = {
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
   const { data: leads } = await admin
     .from('leads')
-    .select('id, name, email, check_in_answers')
+    .select('id, name, email, check_in_answers, status, followup_email_ids')
     .not('check_in_answers', 'is', null)
     .not('email', 'is', null)
 
@@ -105,12 +105,53 @@ export async function POST(request: NextRequest) {
         </table>
         </body></html>`
 
+      // Cancel any previously scheduled follow-ups from the original report send
+      const existingIds = (lead.followup_email_ids as string[] | null) ?? []
+      for (const emailId of existingIds) {
+        try {
+          await resend.emails.cancel(emailId)
+        } catch (e) {
+          // Ignore — may already be sent or expired
+        }
+      }
+
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: lead.email,
         subject: `${firstName}, your Body Recode performance report`,
-      html: combined,
+        html: combined,
       })
+
+      // Schedule follow-up sequence (skip if already converted)
+      const skipFollowUps = ['commencement_fee_paid', 'closed_declined', 'closed_no_show'].includes(lead.status)
+      if (!skipFollowUps) {
+        const followUps = buildFollowUpEmails(firstName, bookingLink)
+        const now = new Date()
+        const followupSchedules = [
+          { days: 2, ...followUps.email1 },
+          { days: 5, ...followUps.email2 },
+          { days: 9, ...followUps.email3 },
+        ]
+        const followupEmailIds: string[] = []
+        for (const fu of followupSchedules) {
+          try {
+            const sendAt = daysAfter9amBrisbane(now, fu.days)
+            const { data } = await resend.emails.send({
+              from: 'Kade at Body Recode <kade@bodyrecode.au>',
+              to: lead.email,
+              subject: fu.subject,
+              html: fu.html,
+              scheduledAt: sendAt.toISOString(),
+            })
+            if (data?.id) followupEmailIds.push(data.id)
+          } catch (e) {
+            console.error(`Follow-up schedule error for ${lead.email}:`, e)
+          }
+        }
+        if (followupEmailIds.length > 0) {
+          await admin.from('leads').update({ followup_email_ids: followupEmailIds }).eq('id', lead.id)
+        }
+      }
 
       sent++
     } catch (err) {
