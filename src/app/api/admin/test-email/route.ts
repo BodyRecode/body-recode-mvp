@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { buildReportEmail } from '@/lib/generate-report'
-import { emailSignature } from '@/lib/email-signature'
+import { darkEmailSignature } from '@/lib/email-signature'
 
 const SAMPLE_ANSWERS: Record<string, number> = {
   effort_vs_result: 2,
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
               <p style="margin:0 0 20px;font-size:15px;color:#888888;line-height:1.75;">You completed a performance check-in a little while back and I wanted to follow up.</p>
               <p style="margin:0 0 20px;font-size:15px;color:#888888;line-height:1.75;">There is a chance your original report landed in your junk or spam folder so I have included it again below.</p>
               <p style="margin:0 0 0;font-size:15px;color:#888888;line-height:1.75;">If you have any questions about what it means or want to talk through it, just reply to this email.</p>
-              ${emailSignature()}
+              ${darkEmailSignature()}
             </td>
           </tr>
         </table>
