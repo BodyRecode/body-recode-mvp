@@ -204,19 +204,89 @@ export default function HelpPage() {
           <p>Clients in the Deliberate Start Window show a <strong>Starts in Xd</strong> amber badge instead.</p>
         </Section>
 
-        <Section title="13. No-Show Re-engagement" colour="amber">
-          <p>If a lead does not attend their Zoom 1, mark their status as <strong>Closed - No Show</strong>. A re-engagement section will appear on their lead detail page.</p>
-          <p>Click <strong>Start Re-engagement Sequence</strong> to send 3 scheduled emails:</p>
+        <Section title="13. Automated Status Flow" colour="teal">
+          <p>Lead statuses update automatically at these trigger points. You do not need to change them manually.</p>
+          <div className="space-y-2">
+            <FlowRow trigger="Check-in quiz submitted" from="—" to="New Check-In" auto />
+            <FlowRow trigger="Report scheduled and sent" from="New Check-In" to="Report Sent" auto />
+            <FlowRow trigger="Lead books via Calendly" from="Report Sent (or earlier)" to="Zoom 1 Booked" auto />
+            <FlowRow trigger="Lead books via Calendly again" from="Zoom 1 Completed" to="Zoom 2 Booked" auto />
+            <FlowRow trigger="Commencement fee paid via Stripe" from="Any" to="Commencement Fee Paid" auto />
+          </div>
+          <p className="mt-2">These transitions are manual — they require your input after the call or conversation:</p>
+          <div className="space-y-2">
+            <FlowRow trigger="You mark after Zoom 1 call ends" from="Zoom 1 Booked" to="Zoom 1 Completed" auto={false} />
+            <FlowRow trigger="Decision at Zoom 2 (Path B or C)" from="Zoom 2 Booked" to="Zoom 2 Completed" auto={false} />
+            <FlowRow trigger="Lead declines at Zoom 2 (Path A)" from="Zoom 2 Booked" to="Closed - Declined" auto={false} />
+            <FlowRow trigger="Lead did not attend Zoom 1" from="Zoom 1 Booked" to="Closed - No Show" auto={false} />
+            <FlowRow trigger="Report sent but no booking after follow-ups" from="Report Sent" to="Cold - No Booking" auto={false} />
+          </div>
+        </Section>
+
+        <Section title="14. Email Sequences and Automation" colour="teal">
+          <p>The following outbound email sequences run automatically. All emails send from <strong>kade@bodyrecode.au</strong> via Resend.</p>
+
+          <p className="font-semibold text-white mt-2">Performance Report + Follow-Up Sequence</p>
+          <p>Triggered when a lead submits the check-in quiz. The report is scheduled to send the following morning at 9am Brisbane time.</p>
+          <div className="space-y-1">
+            <SeqRow day="Next morning 9am" label="Performance report email" />
+            <SeqRow day="Day 2" label="Follow-up 1 — Re: Your check-in report" />
+            <SeqRow day="Day 5" label="Follow-up 2 — When the effort doesn't match the result" />
+            <SeqRow day="Day 9" label="Follow-up 3 — Last one from me, [name]" />
+          </div>
+          <p className="mt-2">The follow-up sequence is <strong>automatically cancelled</strong> the moment the lead books a Zoom via Calendly. If you need to cancel it manually, use the Cancel Sequence button on the lead detail page.</p>
+
+          <p className="font-semibold text-white mt-4">Re-engagement Blast (Admin Action)</p>
+          <p>A one-time admin action available on the dashboard homepage. Sends the re-engagement email plus a fresh follow-up sequence to all leads who have check-in answers on file. Any previously scheduled follow-ups are cancelled before the new sequence is sent.</p>
+          <p>Leads with statuses <strong>Commencement Fee Paid</strong>, <strong>Closed - Declined</strong>, or <strong>Closed - No Show</strong> do not receive new follow-ups.</p>
+
+          <p className="font-semibold text-white mt-4">Orientation Guide</p>
+          <p>Sent manually from the lead detail page after Zoom 1. Sends the orientation PDF as an email attachment. The date it was sent is shown on the lead page.</p>
+
+          <p className="font-semibold text-white mt-4">No-Show Re-engagement Sequence</p>
+          <p>Triggered manually from the lead detail page when a lead is marked Closed - No Show.</p>
+          <div className="space-y-1">
+            <SeqRow day="Day 1" label="Calm acknowledgement, door left open" />
+            <SeqRow day="Day 4" label="Gentle follow-up" />
+            <SeqRow day="Day 10" label="Final invitation to rebook" />
+          </div>
+
+          <p className="font-semibold text-white mt-4">Welcome Email (Post-Conversion)</p>
+          <p>Sent automatically when the commencement fee is paid. Contains the client's unique intake link. Triggered by the Stripe webhook.</p>
+
+          <p className="font-semibold text-white mt-4">Weekly Check-In Window Open</p>
+          <p>Sent automatically every Friday at 6pm Brisbane time to all active clients. Contains a link to the client dashboard. Triggered by a Vercel cron job.</p>
+
+          <p className="font-semibold text-white mt-4">Coaching Start Reminder</p>
+          <p>Sent automatically the day before a client's coaching start date. Triggered by a Vercel cron job that runs daily.</p>
+        </Section>
+
+        <Section title="15. Communications Timeline" colour="teal">
+          <p>Every lead detail page has a <strong>Communications</strong> panel. It shows a reverse-chronological timeline of all outbound emails logged for that lead.</p>
+          <p>Events logged automatically:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-            <li><strong>Day 1</strong> - Calm acknowledgement, door left open.</li>
-            <li><strong>Day 4</strong> - Gentle follow-up.</li>
-            <li><strong>Day 10</strong> - Final invitation to rebook.</li>
+            <li>Performance report scheduled</li>
+            <li>Follow-up emails scheduled (Day 2, 5, 9) with subject lines</li>
+            <li>Re-engagement blast sent</li>
+            <li>Orientation guide sent</li>
+            <li>Zoom booking confirmed (via Calendly)</li>
+            <li>No-show sequence emails scheduled</li>
           </ul>
-          <p>All emails link to the Calendly booking page. The sequence can be cancelled from the lead detail page if the lead re-engages manually.</p>
+          <p>Each entry shows the event type, subject line, and exact Brisbane timestamp. The timeline is live — it updates as emails go out.</p>
+          <Note>Historical leads (those who submitted before this feature was built) will not have events in the timeline. All new activity is logged going forward.</Note>
+        </Section>
+
+        <Section title="16. Admin Actions" colour="teal">
+          <p>The following actions are available on the <strong>Dashboard Homepage</strong> in the Admin Actions panel.</p>
+          <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>Send preview email</strong> — Sends a sample re-engagement report email to kade@bodyrecode.au. Use this to preview formatting and layout before running the blast.</li>
+            <li><strong>Resend reports to all leads</strong> — Triggers the re-engagement blast. Cancels all existing follow-up sequences and sends a fresh re-engagement email plus a new 3-email follow-up sequence to every lead with check-in data. Requires confirmation before firing.</li>
+          </ul>
+          <Note>The blast is protected by an admin secret and requires confirmation. It will not fire accidentally.</Note>
         </Section>
 
         {/* Section 11 */}
-        <Section title="14. Stripe Payments" colour="teal">
+        <Section title="18. Stripe Payments" colour="teal">
           <p>Three payment links are used in the coaching entry process:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Commencement Fee - $240</strong> - Generated uniquely per lead. Triggers automatic client creation when paid.</li>
@@ -263,6 +333,35 @@ function Note({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-stone-800 border border-stone-700 rounded-lg px-4 py-3 text-xs text-stone-400 leading-relaxed">
       <span className="font-bold text-stone-300">Note: </span>{children}
+    </div>
+  )
+}
+
+function FlowRow({ trigger, from, to, auto }: { trigger: string; from: string; to: string; auto: boolean }) {
+  return (
+    <div className="flex items-start gap-3 bg-stone-800/50 rounded-lg px-3 py-2.5">
+      <span className={`text-xs font-bold shrink-0 mt-0.5 w-16 ${auto ? 'text-teal-400' : 'text-amber-400'}`}>
+        {auto ? 'AUTO' : 'MANUAL'}
+      </span>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs text-stone-300">{trigger}</p>
+        {from !== '—' && (
+          <p className="text-xs text-stone-500 mt-0.5">
+            <span className="text-stone-400">{from}</span>
+            <span className="mx-1.5">→</span>
+            <span className="text-white font-medium">{to}</span>
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function SeqRow({ day, label }: { day: string; label: string }) {
+  return (
+    <div className="flex items-start gap-3 bg-stone-800/40 rounded-lg px-3 py-2">
+      <span className="text-xs font-semibold text-teal-400 shrink-0 w-20">{day}</span>
+      <span className="text-xs text-stone-300">{label}</span>
     </div>
   )
 }
