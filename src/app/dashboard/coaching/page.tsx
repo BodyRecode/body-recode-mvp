@@ -4,12 +4,13 @@ import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import { AlertTriangle } from 'lucide-react'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 
-export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ view?: string }> }) {
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ view?: string; type?: string }> }) {
   const supabase = await createClient()
-  const { view } = await searchParams
+  const { view, type } = await searchParams
   const showInactive = view === 'inactive'
+  const typeFilter = type === 'online' ? 'online' : type === 'face_to_face' ? 'face_to_face' : 'all'
 
-  const { data: clients } = await supabase
+  let query = supabase
     .from('clients')
     .select(`
       *,
@@ -38,6 +39,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     `)
     .eq('active', !showInactive)
     .order('created_at', { ascending: false })
+
+  if (typeFilter === 'online') query = query.eq('package', 'online')
+  if (typeFilter === 'face_to_face') query = query.in('package', ['2x', '3x'])
+
+  const { data: clients } = await query
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -72,32 +78,64 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-semibold">Clients</h1>
           <p className="text-stone-400 text-sm mt-1">{clients?.length || 0} {showInactive ? 'inactive' : 'active'} clients</p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center bg-stone-900 border border-stone-800 rounded-lg p-0.5">
-            <Link
-              href="/dashboard/coaching"
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${!showInactive ? 'bg-teal-500 text-black' : 'text-stone-400 hover:text-white'}`}
-            >
-              Active
-            </Link>
-            <Link
-              href="/dashboard/coaching?view=inactive"
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${showInactive ? 'bg-stone-600 text-white' : 'text-stone-400 hover:text-white'}`}
-            >
-              Inactive
-            </Link>
-          </div>
-          <Link
-            href="/dashboard/clients/new"
-            className="bg-white text-stone-950 text-sm font-medium px-4 py-2 rounded-lg hover:bg-stone-100 transition-colors"
-          >
-            + Add Client
-          </Link>
+        <Link
+          href="/dashboard/clients/new"
+          className="bg-white text-stone-950 text-sm font-medium px-4 py-2 rounded-lg hover:bg-stone-100 transition-colors"
+        >
+          + Add Client
+        </Link>
+      </div>
+
+      {/* Filters */}
+      <div className="flex items-center gap-3 mb-8">
+        {/* Type */}
+        <div className="flex items-center bg-stone-900 border border-stone-800 rounded-lg p-0.5">
+          {[
+            { label: 'All', value: 'all' },
+            { label: 'Face-to-Face', value: 'face_to_face' },
+            { label: 'Online', value: 'online' },
+          ].map(opt => {
+            const href = `/dashboard/coaching${
+              [showInactive ? 'view=inactive' : '', opt.value !== 'all' ? `type=${opt.value}` : ''].filter(Boolean).join('&') ? '?' + [showInactive ? 'view=inactive' : '', opt.value !== 'all' ? `type=${opt.value}` : ''].filter(Boolean).join('&') : ''
+            }`
+            return (
+              <Link
+                key={opt.value}
+                href={href}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${typeFilter === opt.value ? 'bg-teal-500 text-black' : 'text-stone-400 hover:text-white'}`}
+              >
+                {opt.label}
+              </Link>
+            )
+          })}
+        </div>
+
+        <div className="h-4 w-px bg-stone-700" />
+
+        {/* Active / Inactive */}
+        <div className="flex items-center bg-stone-900 border border-stone-800 rounded-lg p-0.5">
+          {[
+            { label: 'Active', inactive: false },
+            { label: 'Inactive', inactive: true },
+          ].map(opt => {
+            const href = `/dashboard/coaching${
+              [opt.inactive ? 'view=inactive' : '', typeFilter !== 'all' ? `type=${typeFilter}` : ''].filter(Boolean).join('&') ? '?' + [opt.inactive ? 'view=inactive' : '', typeFilter !== 'all' ? `type=${typeFilter}` : ''].filter(Boolean).join('&') : ''
+            }`
+            return (
+              <Link
+                key={opt.label}
+                href={href}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${showInactive === opt.inactive ? 'bg-stone-600 text-white' : 'text-stone-400 hover:text-white'}`}
+              >
+                {opt.label}
+              </Link>
+            )
+          })}
         </div>
       </div>
 
