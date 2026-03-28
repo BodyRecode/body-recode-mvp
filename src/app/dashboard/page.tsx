@@ -1,175 +1,155 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
-import { AlertTriangle } from 'lucide-react'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
+import AdminButtons from './admin-buttons'
 
-export default async function DashboardPage() {
+export default async function DashboardHomePage() {
   const supabase = await createClient()
 
-  const { data: clients } = await supabase
-    .from('clients')
-    .select(`
-      *,
-      cffs (
-        id,
-        body_state_classification,
-        resolution_state,
-        reassessment_flagged,
-        generated_at,
-        is_archived
-      ),
-      cfws (
-        week_number,
-        generated_at,
-        exposure_readiness_capacity,
-        exposure_readiness_schedule,
-        exposure_readiness_regulation,
-        exposure_readiness_behaviour,
-        is_archived
-      ),
-      weekly_checkins (
-        week_number,
-        form_type,
-        submitted_at
-      )
-    `)
-    .order('created_at', { ascending: false })
+  const [
+    { data: leads },
+    { data: clients },
+    { data: recentLeads },
+    { data: recentCheckins },
+  ] = await Promise.all([
+    supabase.from('leads').select('id, status'),
+    supabase.from('clients').select('id, name, coaching_started_at'),
+    supabase.from('leads').select('id, name, email, status, created_at').order('created_at', { ascending: false }).limit(5),
+    supabase.from('weekly_checkins').select('id, client_id, form_type, week_number, submitted_at, clients(name)').order('submitted_at', { ascending: false }).limit(5),
+  ])
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  const clientsProcessed = (clients || []).map(client => {
-    const startDate = client.coaching_started_at ? new Date(client.coaching_started_at) : null
-    if (startDate) startDate.setHours(0, 0, 0, 0)
-    const daysUntilStart = startDate ? Math.ceil((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : null
+  const totalLeads = leads?.length || 0
+  const pipelineLeads = leads?.filter(l => !['commencement_fee_paid', 'closed_declined', 'closed_no_show'].includes(l.status)).length || 0
+  const activeClients = clients?.filter(c => {
+    if (!c.coaching_started_at) return false
+    return new Date(c.coaching_started_at) <= today
+  }).length || 0
 
-    const weekNumber = client.coaching_started_at ? getWeekNumber(client.coaching_started_at) : null
+  const checkinsThisWeek = clients?.reduce((count, client) => {
+    if (!client.coaching_started_at) return count
+    const weekNumber = getWeekNumber(client.coaching_started_at)
+    const clientCheckins = (recentCheckins || []).filter(
+      (ci: { client_id: string; week_number: number }) =>
+        ci.client_id === client.id && ci.week_number === weekNumber
+    )
+    return count + clientCheckins.length
+  }, 0) || 0
 
-    const latestCffs = client.cffs
-      ?.filter((c: { is_archived: boolean }) => !c.is_archived)
-      .sort((a: { generated_at: string }, b: { generated_at: string }) =>
-        new Date(b.generated_at).getTime() - new Date(a.generated_at).getTime()
-      )[0] || null
-
-    const latestCfws = client.cfws
-      ?.filter((c: { is_archived: boolean }) => !c.is_archived)
-      .sort((a: { week_number: number }, b: { week_number: number }) => b.week_number - a.week_number)[0] || null
-
-    const thisWeekCheckins = weekNumber
-      ? (client.weekly_checkins || []).filter((ci: { week_number: number }) => ci.week_number === weekNumber)
-      : []
-    const hasFormA = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'A')
-    const hasFormB = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'B')
-
-    return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB }
-  })
-
-  const flaggedCount = clientsProcessed.filter(c => c.latestCffs?.reassessment_flagged).length
+  const statusLabel: Record<string, string> = {
+    new_check_in: 'New Check-In',
+    report_sent: 'Report Sent',
+    cold_no_booking: 'Cold',
+    zoom_1_booked: 'Zoom 1 Booked',
+    zoom_1_completed: 'Zoom 1 Done',
+    closed_no_show: 'No Show',
+    zoom_2_booked: 'Zoom 2 Booked',
+    zoom_2_completed: 'Zoom 2 Done',
+    closed_declined: 'Declined',
+    commencement_fee_paid: 'Fee Paid',
+  }
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-semibold">Clients</h1>
-          <p className="text-stone-400 text-sm mt-1">{clients?.length || 0} active clients</p>
-        </div>
-        <Link
-          href="/dashboard/clients/new"
-          className="bg-white text-stone-950 text-sm font-medium px-4 py-2 rounded-lg hover:bg-stone-100 transition-colors"
-        >
-          + Add Client
-        </Link>
+    <div className="max-w-4xl">
+
+      {/* Header */}
+      <div className="mb-10">
+        <h1 className="text-2xl font-semibold mb-1">Good morning, Kade.</h1>
+        <p className="text-stone-400 text-sm">Here is what is happening in your coaching system.</p>
       </div>
 
-      {flaggedCount > 0 && (
-        <div className="mb-6 bg-amber-950/50 border border-amber-800 rounded-lg px-4 py-3 flex items-center gap-3">
-          <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-          <p className="text-amber-300 text-sm">
-            <span className="font-medium">{flaggedCount} client{flaggedCount > 1 ? 's' : ''}</span> may be appropriate for re-assessment
-          </p>
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Total Leads</p>
+          <p className="text-3xl font-bold text-white">{totalLeads}</p>
         </div>
-      )}
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">In Pipeline</p>
+          <p className="text-3xl font-bold text-white">{pipelineLeads}</p>
+        </div>
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Active Clients</p>
+          <p className="text-3xl font-bold text-white">{activeClients}</p>
+        </div>
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Check-Ins This Week</p>
+          <p className="text-3xl font-bold text-teal-400">{checkinsThisWeek}</p>
+        </div>
+      </div>
 
-      {clientsProcessed.length === 0 ? (
-        <div className="text-center py-20 text-stone-500">
-          <p className="text-lg mb-2">No clients yet</p>
-          <p className="text-sm">Add your first client to get started</p>
-        </div>
-      ) : (
-        <div className="grid gap-3">
-          {clientsProcessed.map(client => (
-            <Link
-              key={client.id}
-              href={`/dashboard/clients/${client.id}`}
-              className="bg-stone-900 border border-stone-800 rounded-xl px-5 py-4 flex items-center justify-between hover:border-stone-600 transition-colors group"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full bg-stone-700 flex items-center justify-center text-sm font-medium text-stone-300 shrink-0">
-                  {client.name.charAt(0).toUpperCase()}
-                </div>
+      <div className="grid md:grid-cols-2 gap-6 mb-10">
+
+        {/* Recent Leads */}
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Recent Leads</h2>
+            <Link href="/dashboard/leads" className="text-xs text-teal-400 hover:text-teal-300 transition-colors">View all →</Link>
+          </div>
+          <div className="space-y-3">
+            {recentLeads?.map(lead => (
+              <Link
+                key={lead.id}
+                href={`/dashboard/leads/${lead.id}`}
+                className="flex items-center justify-between group"
+              >
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-white">{client.name}</span>
-                    {client.latestCffs?.reassessment_flagged && (
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-                    )}
-                  </div>
-                  <div className="flex items-center gap-3 mt-0.5">
-                    <p className="text-stone-500 text-xs">
-                      Added {formatDate(client.created_at)}
-                    </p>
-                    {client.weekNumber !== null && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
-                      <>
-                        <span className="text-stone-700 text-xs">·</span>
-                        <span className="text-stone-400 text-xs font-medium">Week {client.weekNumber}</span>
-                        <span className="text-stone-700 text-xs">·</span>
-                        <span className={`text-xs font-semibold ${client.hasFormA ? 'text-teal-400' : 'text-stone-600'}`}>A</span>
-                        <span className={`text-xs font-semibold ${client.hasFormB ? 'text-teal-400' : 'text-stone-600'}`}>B</span>
-                      </>
-                    )}
-                  </div>
+                  <p className="text-sm font-medium text-white group-hover:text-teal-400 transition-colors">{lead.name}</p>
+                  <p className="text-xs text-stone-500">{lead.email}</p>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                {/* CFWS readiness dots */}
-                {client.latestCfws && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
-                  <div className="flex items-center gap-1">
-                    {[
-                      client.latestCfws.exposure_readiness_capacity,
-                      client.latestCfws.exposure_readiness_schedule,
-                      client.latestCfws.exposure_readiness_regulation,
-                      client.latestCfws.exposure_readiness_behaviour,
-                    ].map((r, i) => (
-                      <div key={i} className={`w-2 h-2 rounded-full ${getReadinessColour(r)}`} />
-                    ))}
-                  </div>
-                )}
-
-                {client.daysUntilStart !== null && client.daysUntilStart > 0 ? (
-                  <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-amber-400/30 text-amber-400 bg-amber-400/10">
-                    Starts in {client.daysUntilStart}d
-                  </span>
-                ) : client.daysUntilStart === 0 ? (
-                  <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-teal-400/30 text-teal-400 bg-teal-400/10">
-                    Starts today
-                  </span>
-                ) : client.latestCffs ? (
-                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${getStateColour(client.latestCffs.body_state_classification)}`}>
-                    {client.latestCffs.body_state_classification}
-                  </span>
-                ) : (
-                  <span className="text-xs text-stone-500 px-2.5 py-1 rounded-full border border-stone-700">
-                    No CFFS
-                  </span>
-                )}
-                <span className="text-stone-600 group-hover:text-stone-400 transition-colors">→</span>
-              </div>
-            </Link>
-          ))}
+                <span className="text-xs text-stone-500 bg-stone-800 px-2 py-0.5 rounded-full">
+                  {statusLabel[lead.status] ?? lead.status}
+                </span>
+              </Link>
+            ))}
+            {(!recentLeads || recentLeads.length === 0) && (
+              <p className="text-stone-500 text-sm">No leads yet.</p>
+            )}
+          </div>
         </div>
-      )}
+
+        {/* Recent Check-Ins */}
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Recent Check-Ins</h2>
+            <Link href="/dashboard/coaching" className="text-xs text-teal-400 hover:text-teal-300 transition-colors">View coaching →</Link>
+          </div>
+          <div className="space-y-3">
+            {recentCheckins?.map((ci: { id: string; form_type: string; week_number: number; submitted_at: string; clients: { name: string } | null; client_id: string }) => (
+              <Link
+                key={ci.id}
+                href={`/dashboard/clients/${ci.client_id}`}
+                className="flex items-center justify-between group"
+              >
+                <div>
+                  <p className="text-sm font-medium text-white group-hover:text-teal-400 transition-colors">
+                    {ci.clients?.name ?? 'Unknown'}
+                  </p>
+                  <p className="text-xs text-stone-500">
+                    Week {ci.week_number} · Form {ci.form_type}
+                  </p>
+                </div>
+                <span className="text-xs text-stone-500">
+                  {new Date(ci.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
+                </span>
+              </Link>
+            ))}
+            {(!recentCheckins || recentCheckins.length === 0) && (
+              <p className="text-stone-500 text-sm">No check-ins yet.</p>
+            )}
+          </div>
+        </div>
+
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
+        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">Admin Actions</h2>
+        <AdminButtons />
+      </div>
+
     </div>
   )
 }

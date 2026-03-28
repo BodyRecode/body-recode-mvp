@@ -17,13 +17,13 @@ export default async function DashboardLayout({
     <div className="min-h-screen bg-stone-950 text-white">
       <header className="border-b border-stone-800 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <div>
-            <p className="text-xs font-bold tracking-widest text-teal-400 uppercase leading-none mb-0.5">Body Recode</p>
-            <p className="text-sm font-semibold text-white leading-none">Performance Coaching</p>
-          </div>
+          <Link href="/dashboard">
+            <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style={{ display: 'block' }} />
+          </Link>
           <nav className="flex items-center gap-1">
+            <Link href="/dashboard" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Home</Link>
             <Link href="/dashboard/leads" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Leads</Link>
-            <Link href="/dashboard" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Clients</Link>
+            <Link href="/dashboard/coaching" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Coaching</Link>
             <Link href="/dashboard/help" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Guide</Link>
           </nav>
         </div>
