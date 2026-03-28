@@ -15,7 +15,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
   const router = useRouter()
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState(lead.status)
-  const [source, setSource] = useState(lead.source || '')
+  const [source, setSource] = useState<string>(lead.source || '')
   const [notes, setNotes] = useState(lead.notes || '')
   const [zoom1, setZoom1] = useState(lead.zoom_1_date ? lead.zoom_1_date.slice(0, 16) : '')
   const [zoom2, setZoom2] = useState(lead.zoom_2_date ? lead.zoom_2_date.slice(0, 16) : '')
