@@ -111,7 +111,12 @@ export async function buildReportEmail(
   bookingLink: string
 ): Promise<string> {
   const { slsLevel, rpsLevel, rilsLevel } = selectBlocks(answers)
-  const narrative = await generateNarrative(signalPattern, slsLevel, rpsLevel, rilsLevel)
+  const rawNarrative = await generateNarrative(signalPattern, slsLevel, rpsLevel, rilsLevel)
+  const narrative = {
+    bandTitle: rawNarrative.bandTitle.replace(/\s*—\s*/g, ', '),
+    patternSnapshot: rawNarrative.patternSnapshot.replace(/\s*—\s*/g, ', '),
+    whatThisIncludes: rawNarrative.whatThisIncludes.replace(/\s*—\s*/g, ', '),
+  }
 
   const sls = SLS_BLOCKS[slsLevel]
   const rps = RPS_BLOCKS[rpsLevel]
