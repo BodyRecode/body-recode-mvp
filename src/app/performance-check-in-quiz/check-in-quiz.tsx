@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 type Answer = 0 | 1 | 2 | 3
 
@@ -74,6 +74,13 @@ export default function CheckInQuiz() {
   const [phone, setPhone] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [source, setSource] = useState('website')
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const s = params.get('source')
+    if (s) setSource(s)
+  }, [])
 
   const question = QUESTIONS[current]
   const progress = stage === 'contact'
@@ -115,7 +122,7 @@ export default function CheckInQuiz() {
       const res = await fetch('/api/submit-check-in', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), phone: phone.trim(), answers }),
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), phone: phone.trim(), answers, source }),
       })
       if (!res.ok) {
         const data = await res.json()
