@@ -4,8 +4,10 @@ import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import { AlertTriangle } from 'lucide-react'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ view?: string }> }) {
   const supabase = await createClient()
+  const { view } = await searchParams
+  const showInactive = view === 'inactive'
 
   const { data: clients } = await supabase
     .from('clients')
@@ -34,7 +36,7 @@ export default async function DashboardPage() {
         submitted_at
       )
     `)
-    .eq('active', true)
+    .eq('active', !showInactive)
     .order('created_at', { ascending: false })
 
   const today = new Date()
@@ -73,14 +75,30 @@ export default async function DashboardPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-semibold">Clients</h1>
-          <p className="text-stone-400 text-sm mt-1">{clients?.length || 0} active clients</p>
+          <p className="text-stone-400 text-sm mt-1">{clients?.length || 0} {showInactive ? 'inactive' : 'active'} clients</p>
         </div>
-        <Link
-          href="/dashboard/clients/new"
-          className="bg-white text-stone-950 text-sm font-medium px-4 py-2 rounded-lg hover:bg-stone-100 transition-colors"
-        >
-          + Add Client
-        </Link>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center bg-stone-900 border border-stone-800 rounded-lg p-0.5">
+            <Link
+              href="/dashboard/coaching"
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${!showInactive ? 'bg-teal-500 text-black' : 'text-stone-400 hover:text-white'}`}
+            >
+              Active
+            </Link>
+            <Link
+              href="/dashboard/coaching?view=inactive"
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${showInactive ? 'bg-stone-600 text-white' : 'text-stone-400 hover:text-white'}`}
+            >
+              Inactive
+            </Link>
+          </div>
+          <Link
+            href="/dashboard/clients/new"
+            className="bg-white text-stone-950 text-sm font-medium px-4 py-2 rounded-lg hover:bg-stone-100 transition-colors"
+          >
+            + Add Client
+          </Link>
+        </div>
       </div>
 
       {flaggedCount > 0 && (
