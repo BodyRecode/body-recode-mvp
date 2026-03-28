@@ -1,17 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
-import { darkEmailSignature } from '@/lib/email-signature'
+import { buildReportEmail } from '@/lib/generate-report'
+import { emailSignature } from '@/lib/email-signature'
+
+const SAMPLE_ANSWERS: Record<string, number> = {
+  effort_vs_result: 2,
+  consistency: 2,
+  training_response: 1,
+  recovery_predictability: 2,
+  planning_vs_reality: 1,
+  week_variability: 2,
+  body_signals: 1,
+  external_load: 2,
+  adjustments: 1,
+  support: 2,
+}
 
 export async function POST(request: NextRequest) {
   const { type } = await request.json()
   const resend = new Resend(process.env.RESEND_API_KEY!)
+  const bookingLink = process.env.BOOKING_LINK ?? ''
 
-  if (type === 'signature') {
-    const result = await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
-      to: 'kade@bodyrecode.au',
-      subject: 'Test — Email signature preview',
-      html: `
+  if (type === 'report-preview') {
+    const firstName = 'Kade'
+    const signalPattern = 'Optimisation'
+
+    const reportHtml = await buildReportEmail(firstName, SAMPLE_ANSWERS, signalPattern, bookingLink)
+
+    const introHtml = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,10 +36,10 @@ export async function POST(request: NextRequest) {
   <meta name="supported-color-schemes" content="dark" />
 </head>
 <body style="margin:0;padding:0;background-color:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#0a0a0a">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:48px 20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:48px 20px 0;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:520px;background-color:#111111;border-radius:16px;border:1px solid #222222;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:580px;background-color:#111111;border-radius:16px 16px 0 0;border:1px solid #222222;border-bottom:none;overflow:hidden;">
           <tr>
             <td bgcolor="#111111" style="background-color:#111111;padding:32px 40px 28px;border-bottom:1px solid #1e1e1e;">
               <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
@@ -31,14 +47,11 @@ export async function POST(request: NextRequest) {
           </tr>
           <tr>
             <td bgcolor="#111111" style="background-color:#111111;padding:36px 40px 40px;">
-              <h1 style="margin:0 0 16px;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;">Hi Kade,</h1>
-              <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">
-                This is a preview of how the email signature looks at the bottom of outgoing client emails.
-              </p>
-              <p style="margin:0;font-size:15px;color:#888888;line-height:1.75;">
-                Looking forward to it.
-              </p>
-              ${darkEmailSignature()}
+              <p style="margin:0 0 20px;font-size:15px;color:#888888;line-height:1.75;">Hey ${firstName},</p>
+              <p style="margin:0 0 20px;font-size:15px;color:#888888;line-height:1.75;">You completed a performance check-in a little while back and I wanted to follow up.</p>
+              <p style="margin:0 0 20px;font-size:15px;color:#888888;line-height:1.75;">There is a chance your original report landed in your junk or spam folder so I have included it again below.</p>
+              <p style="margin:0 0 0;font-size:15px;color:#888888;line-height:1.75;">If you have any questions about what it means or want to talk through it, just reply to this email.</p>
+              ${emailSignature()}
             </td>
           </tr>
         </table>
@@ -46,10 +59,25 @@ export async function POST(request: NextRequest) {
     </tr>
   </table>
 </body>
-</html>`,
+</html>`
+
+    const reportBody = reportHtml
+      .replace(/^[\s\S]*?<body[^>]*>/i, '')
+      .replace(/<\/body>[\s\S]*$/i, '')
+
+    const combined = introHtml.replace('</body>\n</html>', '') +
+      `<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:0 20px 48px;">
+        <tr><td align="center">${reportBody}</td></tr>
+      </table>
+      </body></html>`
+
+    const result = await resend.emails.send({
+      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      to: 'kade@bodyrecode.au',
+      subject: 'Preview — Lead re-engagement report email',
+      html: combined,
     })
 
-    console.log('Resend result:', JSON.stringify(result))
     if (result.error) {
       return NextResponse.json({ error: result.error }, { status: 500 })
     }

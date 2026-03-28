@@ -50,7 +50,7 @@ function TestEmailButton() {
       const res = await fetch('/api/admin/test-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'signature' }),
+        body: JSON.stringify({ type: 'report-preview' }),
       })
       if (!res.ok) {
         console.error('Test email failed:', await res.text())
