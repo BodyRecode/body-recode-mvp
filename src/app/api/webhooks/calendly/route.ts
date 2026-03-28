@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST(request: NextRequest) {
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
   // Find lead by email
   const { data: lead } = await admin
     .from('leads')
-    .select('id, status')
+    .select('id, status, followup_email_ids')
     .ilike('email', email)
     .maybeSingle()
 
@@ -54,8 +55,23 @@ export async function POST(request: NextRequest) {
       zoom_meeting_url: zoomUrl,
       zoom_1_date: scheduledAt,
       status: 'zoom_1_booked',
+      followup_email_ids: null,
     })
     .eq('id', lead.id)
+
+  // Cancel any scheduled follow-up emails
+  const followupIds = (lead.followup_email_ids as string[] | null) ?? []
+  if (followupIds.length > 0) {
+    const resend = new Resend(process.env.RESEND_API_KEY!)
+    for (const emailId of followupIds) {
+      try {
+        await resend.emails.cancel(emailId)
+      } catch (e) {
+        // May already have sent — not an error
+      }
+    }
+    console.log(`Calendly webhook: cancelled ${followupIds.length} follow-up emails for ${email}`)
+  }
 
   console.log(`Calendly webhook: updated lead ${lead.id} for ${email}`)
   return NextResponse.json({ received: true })
