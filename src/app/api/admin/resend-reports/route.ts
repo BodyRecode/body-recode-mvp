@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildReportEmail, buildFollowUpEmails, daysAfter9amBrisbane } from '@/lib/generate-report'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { logLeadEvent } from '@/lib/log-lead-event'
 
 const QUESTIONS: Record<string, string> = {
   effort_vs_result: 'Effort relative to result',
@@ -122,6 +123,12 @@ export async function POST(request: NextRequest) {
         html: combined,
       })
 
+      await logLeadEvent({
+        leadId: lead.id,
+        type: 'reengagement_sent',
+        subject: `${firstName}, your Body Recode performance report`,
+      })
+
       // Schedule follow-up sequence (skip if already converted)
       const skipFollowUps = ['commencement_fee_paid', 'closed_declined', 'closed_no_show'].includes(lead.status)
       if (!skipFollowUps) {
@@ -143,7 +150,16 @@ export async function POST(request: NextRequest) {
               html: fu.html,
               scheduledAt: sendAt.toISOString(),
             })
-            if (data?.id) followupEmailIds.push(data.id)
+            if (data?.id) {
+              followupEmailIds.push(data.id)
+              await logLeadEvent({
+                leadId: lead.id,
+                type: 'followup_scheduled',
+                subject: fu.subject,
+                resendEmailId: data.id,
+                sentAt: sendAt,
+              })
+            }
           } catch (e) {
             console.error(`Follow-up schedule error for ${lead.email}:`, e)
           }

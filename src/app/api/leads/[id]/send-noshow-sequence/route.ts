@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNoShowEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from '@/lib/generate-report'
+import { logLeadEvent } from '@/lib/log-lead-event'
 
 const BOOKING_LINK = process.env.BOOKING_LINK ?? 'https://calendly.com/bodyrecode-info/performance-report-review'
 
@@ -65,6 +66,23 @@ export async function POST(
     .from('leads')
     .update({ followup_email_ids: emailIds })
     .eq('id', id)
+
+  const noShowSchedules = [
+    { id: r1.data?.id, subject: email1.subject, sentAt: email1At },
+    { id: r2.data?.id, subject: email2.subject, sentAt: email2At },
+    { id: r3.data?.id, subject: email3.subject, sentAt: email3At },
+  ]
+  for (const e of noShowSchedules) {
+    if (e.id) {
+      await logLeadEvent({
+        leadId: id,
+        type: 'noshow_sequence_scheduled',
+        subject: e.subject,
+        resendEmailId: e.id,
+        sentAt: e.sentAt,
+      })
+    }
+  }
 
   return NextResponse.json({ sent: true, count: emailIds.length })
 }

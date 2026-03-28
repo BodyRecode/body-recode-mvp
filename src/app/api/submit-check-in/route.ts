@@ -2,6 +2,7 @@ import { NextRequest, NextResponse, after } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildReportEmail, buildFollowUpEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from '@/lib/generate-report'
+import { logLeadEvent } from '@/lib/log-lead-event'
 
 export const maxDuration = 60
 
@@ -236,13 +237,23 @@ async function scheduleReport(
   const html = await buildReportEmail(firstName, answers, signalPattern, bookingLink)
   const scheduledAt = nextMorning9amBrisbane()
 
-  await resend.emails.send({
+  const { data: reportResult } = await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: email,
     subject: 'Your Performance Check-In report',
     html,
     scheduledAt: scheduledAt.toISOString(),
   })
+
+  if (leadId) {
+    await logLeadEvent({
+      leadId,
+      type: 'report_scheduled',
+      subject: 'Your Performance Check-In report',
+      resendEmailId: reportResult?.id,
+      sentAt: scheduledAt,
+    })
+  }
 
   // Schedule follow-up sequence
   const followUps = buildFollowUpEmails(firstName, bookingLink)
@@ -264,7 +275,18 @@ async function scheduleReport(
         html: fu.html,
         scheduledAt: sendAt.toISOString(),
       })
-      if (data?.id) followupEmailIds.push(data.id)
+      if (data?.id) {
+        followupEmailIds.push(data.id)
+        if (leadId) {
+          await logLeadEvent({
+            leadId,
+            type: 'followup_scheduled',
+            subject: fu.subject,
+            resendEmailId: data.id,
+            sentAt: sendAt,
+          })
+        }
+      }
     } catch (e) {
       console.error('Follow-up schedule error:', e)
     }

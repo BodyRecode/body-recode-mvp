@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { logLeadEvent } from '@/lib/log-lead-event'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -72,6 +73,13 @@ export async function POST(request: NextRequest) {
     }
     console.log(`Calendly webhook: cancelled ${followupIds.length} follow-up emails for ${email}`)
   }
+
+  await logLeadEvent({
+    leadId: lead.id,
+    type: 'zoom_booked',
+    notes: scheduledAt ? `Zoom 1 booked for ${new Date(scheduledAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane` : 'Zoom 1 booked',
+    sentAt: new Date(),
+  })
 
   console.log(`Calendly webhook: updated lead ${lead.id} for ${email}`)
   return NextResponse.json({ received: true })

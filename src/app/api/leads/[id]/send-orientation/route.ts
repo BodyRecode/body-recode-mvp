@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { logLeadEvent } from '@/lib/log-lead-event'
 
 const ORIENTATION_PDF_URL = 'https://klotlednmxhywimztozm.supabase.co/storage/v1/object/public/assets/Performance%20Coaching%20Orientation.pdf'
 
@@ -86,6 +87,12 @@ export async function POST(
     .from('leads')
     .update({ orientation_sent_at: new Date().toISOString() })
     .eq('id', id)
+
+  await logLeadEvent({
+    leadId: id,
+    type: 'orientation_sent',
+    subject: `${firstName}, your Body Recode Orientation Guide`,
+  })
 
   return NextResponse.json({ sent: true })
 }

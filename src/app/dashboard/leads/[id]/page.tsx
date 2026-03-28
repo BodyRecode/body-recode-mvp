@@ -35,15 +35,40 @@ const CHECK_IN_OPTIONS: Record<string, string[]> = {
   support: ['I mostly prefer to manage things independently', 'I occasionally look for guidance or input', 'I often benefit from having someone to sense-check decisions', 'I rely on external support to help navigate training'],
 }
 
+const EVENT_LABELS: Record<string, string> = {
+  check_in_submitted: 'Check-in submitted',
+  report_scheduled: 'Performance report scheduled',
+  followup_scheduled: 'Follow-up email scheduled',
+  followup_cancelled: 'Follow-up sequence cancelled',
+  reengagement_sent: 'Re-engagement email sent',
+  orientation_sent: 'Orientation guide sent',
+  zoom_booked: 'Zoom call booked',
+  noshow_sequence_scheduled: 'No-show re-engagement scheduled',
+}
+
+const EVENT_COLOURS: Record<string, string> = {
+  check_in_submitted: 'bg-stone-600',
+  report_scheduled: 'bg-teal-500',
+  followup_scheduled: 'bg-stone-500',
+  followup_cancelled: 'bg-red-500/60',
+  reengagement_sent: 'bg-teal-500',
+  orientation_sent: 'bg-teal-500',
+  zoom_booked: 'bg-green-500',
+  noshow_sequence_scheduled: 'bg-stone-500',
+}
+
 export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
   const { id } = await params
 
-  const { data: lead } = await supabase
-    .from('leads')
-    .select('*')
-    .eq('id', id)
-    .single()
+  const [{ data: lead }, { data: events }] = await Promise.all([
+    supabase.from('leads').select('*').eq('id', id).single(),
+    supabase
+      .from('lead_events')
+      .select('id, type, subject, notes, sent_at')
+      .eq('lead_id', id)
+      .order('sent_at', { ascending: false }),
+  ])
 
   if (!lead) notFound()
 
@@ -268,6 +293,46 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           </div>
         </div>
       )}
+
+      {/* Communications */}
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-5">Communications</h2>
+        {events && events.length > 0 ? (
+          <div className="relative">
+            <div className="absolute left-[7px] top-2 bottom-2 w-px bg-stone-800" />
+            <div className="space-y-5">
+              {events.map((event) => (
+                <div key={event.id} className="flex gap-4 relative">
+                  <div className={`w-3.5 h-3.5 rounded-full mt-0.5 shrink-0 ${EVENT_COLOURS[event.type] ?? 'bg-stone-600'}`} />
+                  <div className="min-w-0">
+                    <p className="text-sm text-white font-medium">{EVENT_LABELS[event.type] ?? event.type}</p>
+                    {event.subject && (
+                      <p className="text-xs text-stone-500 mt-0.5 truncate">{event.subject}</p>
+                    )}
+                    {event.notes && (
+                      <p className="text-xs text-stone-500 mt-0.5">{event.notes}</p>
+                    )}
+                    <p className="text-xs text-stone-600 mt-1">
+                      {new Date(event.sent_at).toLocaleString('en-AU', {
+                        timeZone: 'Australia/Brisbane',
+                        weekday: 'short',
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true,
+                      })}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p className="text-stone-500 text-sm">No communications logged yet.</p>
+        )}
+      </div>
 
       {/* Notes */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
