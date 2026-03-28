@@ -292,7 +292,7 @@ async function scheduleReport(
     }
   }
 
-  // Save report and follow-up IDs to lead record
+  // Save report, follow-up IDs, and advance status new_check_in → report_sent
   if (leadId) {
     try {
       const supabase = createAdminClient()
@@ -302,8 +302,10 @@ async function scheduleReport(
           report_html: html,
           report_scheduled_at: scheduledAt.toISOString(),
           followup_email_ids: followupEmailIds.length > 0 ? followupEmailIds : null,
+          status: 'report_sent',
         })
         .eq('id', leadId)
+        .eq('status', 'new_check_in')
     } catch (e) {
       console.error('Report save error:', e)
     }
