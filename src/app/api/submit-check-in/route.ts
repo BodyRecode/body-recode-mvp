@@ -7,7 +7,7 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 export const maxDuration = 60
 
 export async function POST(request: NextRequest) {
-  const { name, email, phone, answers } = await request.json()
+  const { name, email, phone, answers, source } = await request.json()
 
   if (!name || !email) {
     return NextResponse.json({ error: 'Name and email are required' }, { status: 400 })
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     name,
     email,
     phone: phone || null,
-    source: 'quiz',
+    source: source || 'quiz',
     status: 'new_check_in',
     check_in_answers: answers,
   }).select('id').single()

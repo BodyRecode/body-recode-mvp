@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { getLeadStatusLabel } from '@/lib/utils'
+import { getLeadStatusLabel, LEAD_SOURCES } from '@/lib/utils'
 import type { Lead } from '@/types'
 
 const STATUSES = [
@@ -15,6 +15,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
   const router = useRouter()
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState(lead.status)
+  const [source, setSource] = useState(lead.source || '')
   const [notes, setNotes] = useState(lead.notes || '')
   const [zoom1, setZoom1] = useState(lead.zoom_1_date ? lead.zoom_1_date.slice(0, 16) : '')
   const [zoom2, setZoom2] = useState(lead.zoom_2_date ? lead.zoom_2_date.slice(0, 16) : '')
@@ -28,6 +29,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         status,
+        source,
         notes,
         zoom_1_date: zoom1 || null,
         zoom_2_date: zoom2 || null,
@@ -54,6 +56,21 @@ export default function LeadActions({ lead }: { lead: Lead }) {
         >
           {STATUSES.map(s => (
             <option key={s} value={s}>{getLeadStatusLabel(s)}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Source */}
+      <div>
+        <label className="block text-xs text-stone-500 mb-1.5">Lead source</label>
+        <select
+          value={source}
+          onChange={e => setSource(e.target.value)}
+          className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-stone-500"
+        >
+          <option value="">Unknown</option>
+          {LEAD_SOURCES.map(s => (
+            <option key={s.value} value={s.value}>{s.label}</option>
           ))}
         </select>
       </div>

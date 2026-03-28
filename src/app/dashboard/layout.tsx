@@ -24,6 +24,7 @@ export default async function DashboardLayout({
             <Link href="/dashboard" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Home</Link>
             <Link href="/dashboard/leads" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Leads</Link>
             <Link href="/dashboard/coaching" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Coaching</Link>
+            <Link href="/dashboard/sources" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Sources</Link>
             <Link href="/dashboard/help" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Guide</Link>
           </nav>
         </div>

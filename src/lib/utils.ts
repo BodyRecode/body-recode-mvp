@@ -60,17 +60,38 @@ export function getLeadStatusColour(status: string) {
 
 export function getLeadSourceLabel(source: string) {
   const labels: Record<string, string> = {
-    quiz: 'Quiz',
+    qr_floor_banner: 'QR — Floor Banner',
+    qr_window: 'QR — Window',
+    qr_card: 'QR — Business Card',
+    qr_flyer: 'QR — Flyer',
+    website: 'Website',
     instagram: 'Instagram',
     facebook: 'Facebook',
     google: 'Google',
-    gym_floor: 'Gym Floor',
     referral: 'Referral',
     direct: 'Direct',
+    gym_floor: 'Gym Floor',
+    quiz: 'Quiz (untracked)',
     other: 'Other',
   }
   return labels[source] ?? source
 }
+
+export const LEAD_SOURCES = [
+  { value: 'qr_floor_banner', label: 'QR — Floor Banner' },
+  { value: 'qr_window', label: 'QR — Window' },
+  { value: 'qr_card', label: 'QR — Business Card' },
+  { value: 'qr_flyer', label: 'QR — Flyer' },
+  { value: 'website', label: 'Website' },
+  { value: 'instagram', label: 'Instagram' },
+  { value: 'facebook', label: 'Facebook' },
+  { value: 'google', label: 'Google' },
+  { value: 'referral', label: 'Referral' },
+  { value: 'direct', label: 'Direct' },
+  { value: 'gym_floor', label: 'Gym Floor' },
+  { value: 'quiz', label: 'Quiz (untracked)' },
+  { value: 'other', label: 'Other' },
+]
 
 export function getReadinessColour(status: string) {
   switch (status) {
