@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { getLeadSourceLabel, LEAD_SOURCES } from '@/lib/utils'
 
-const BASE_URL = 'https://bodyrecode.au/check-in'
+const QR_BASE_URL = 'https://bodyrecode.au/not-a-sign-up'
+const DIGITAL_BASE_URL = 'https://bodyrecode.au/performance-check-in-quiz'
 
 const QR_SOURCES = [
   { value: 'qr_floor_banner', label: 'Floor Banner', desc: 'Large QR code on the gym floor banner near the entrance.' },
@@ -55,7 +56,7 @@ export default async function SourcesPage() {
                   {counts[src.value] ?? 0} leads
                 </span>
               </div>
-              <CopyUrl url={`${BASE_URL}?source=${src.value}`} />
+              <CopyUrl url={`${QR_BASE_URL}?source=${src.value}`} />
             </div>
           ))}
         </div>
@@ -76,7 +77,7 @@ export default async function SourcesPage() {
                   {counts[src.value] ?? 0} leads
                 </span>
               </div>
-              <CopyUrl url={`${BASE_URL}?source=${src.value}`} />
+              <CopyUrl url={`${DIGITAL_BASE_URL}?source=${src.value}`} />
             </div>
           ))}
         </div>

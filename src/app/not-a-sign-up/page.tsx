@@ -7,7 +7,10 @@ export const metadata: Metadata = {
   title: 'Before You Start | Body Recode™',
 }
 
-export default function NotASignUpPage() {
+export default async function NotASignUpPage({ searchParams }: { searchParams: Promise<{ source?: string }> }) {
+  const { source } = await searchParams
+  const quizHref = source ? `/performance-check-in-quiz?source=${source}` : '/performance-check-in-quiz'
+
   return (
     <>
       <MarketingNav />
@@ -58,7 +61,7 @@ export default function NotASignUpPage() {
           </div>
 
           <Link
-            href="/performance-check-in-quiz"
+            href={quizHref}
             className="inline-block bg-[#10E1C2] text-black font-bold px-10 py-5 rounded-full text-base hover:bg-[#0ecfb2] transition-colors"
           >
             Begin the performance check-in
