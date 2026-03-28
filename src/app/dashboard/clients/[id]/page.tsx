@@ -10,6 +10,7 @@ import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
+import ClientDangerActions from './client-danger-actions'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -508,6 +509,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
         )}
       </div>
+
+      <ClientDangerActions clientId={id} isActive={client.active !== false} />
 
     </div>
   )

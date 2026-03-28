@@ -13,7 +13,7 @@ export async function PATCH(
 
   const body = await request.json()
 
-  const allowed = ['coaching_started_at', 'package']
+  const allowed = ['coaching_started_at', 'package', 'active']
   const updates: Record<string, unknown> = {}
   for (const key of allowed) {
     if (key in body) updates[key] = body[key]
@@ -26,6 +26,26 @@ export async function PATCH(
   const { error } = await supabase
     .from('clients')
     .update(updates)
+    .eq('id', id)
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  return NextResponse.json({ success: true })
+}
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+
+  const { error } = await supabase
+    .from('clients')
+    .delete()
     .eq('id', id)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })

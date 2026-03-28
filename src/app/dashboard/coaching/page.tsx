@@ -34,6 +34,7 @@ export default async function DashboardPage() {
         submitted_at
       )
     `)
+    .eq('active', true)
     .order('created_at', { ascending: false })
 
   const today = new Date()
