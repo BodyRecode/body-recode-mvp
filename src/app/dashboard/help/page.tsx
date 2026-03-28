@@ -71,7 +71,7 @@ function TestEmailButton() {
       disabled={status !== 'idle'}
       className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200 transition-colors disabled:opacity-50"
     >
-      {status === 'sending' ? 'Sending...' : status === 'sent' ? 'Sent to kade@bodyrecode.au' : status === 'error' ? 'Failed — check console' : 'Send test email'}
+      {status === 'sending' ? 'Sending...' : status === 'sent' ? 'Sent to kade@bodyrecode.au' : status === 'error' ? 'Failed — check console' : 'Send preview email'}
     </button>
   )
 }
