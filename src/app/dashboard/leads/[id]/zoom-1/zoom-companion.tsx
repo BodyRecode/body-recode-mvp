@@ -321,14 +321,6 @@ export default function ZoomCompanion({
             <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold mb-0.5">Zoom 1 - Companion</p>
             <p className="text-lg font-bold text-white">{leadName}</p>
           </div>
-          <span className={`text-xs font-bold px-3 py-1 rounded-full border ${
-            signalPattern === 'Remediation' ? 'text-red-400 border-red-400/30 bg-red-400/10'
-            : signalPattern === 'Optimisation' ? 'text-amber-400 border-amber-400/30 bg-amber-400/10'
-            : 'text-emerald-400 border-emerald-400/30 bg-emerald-400/10'
-          }`}>
-            {signalPattern}
-          </span>
-
           {/* Signal levels */}
           <div className="flex items-center gap-3">
             {signals.map(({ key, level }) => (
