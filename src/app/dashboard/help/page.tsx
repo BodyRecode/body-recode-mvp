@@ -2,6 +2,45 @@
 
 import { useState } from 'react'
 
+function ResendReportsButton() {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
+  const [result, setResult] = useState<{ sent: number; failed: number } | null>(null)
+
+  const run = async () => {
+    if (!confirm('This will send the performance report to ALL leads in the system. Are you sure?')) return
+    setStatus('sending')
+    try {
+      const res = await fetch('/api/admin/resend-reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ secret: process.env.NEXT_PUBLIC_ADMIN_SECRET }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setStatus('error')
+      } else {
+        setResult(data)
+        setStatus('done')
+      }
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      {result && <span className="text-xs text-teal-400">{result.sent} sent, {result.failed} failed</span>}
+      <button
+        onClick={run}
+        disabled={status !== 'idle'}
+        className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-amber-700/50 text-amber-400 hover:border-amber-600 hover:text-amber-300 transition-colors disabled:opacity-50"
+      >
+        {status === 'sending' ? 'Sending...' : status === 'done' ? 'Done' : status === 'error' ? 'Failed' : 'Resend reports to all leads'}
+      </button>
+    </div>
+  )
+}
+
 function TestEmailButton() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
@@ -43,7 +82,10 @@ export default function HelpPage() {
       <div className="mb-10">
         <div className="flex items-start justify-between gap-4 mb-2">
           <h1 className="text-2xl font-semibold">Dashboard Guide</h1>
-          <TestEmailButton />
+          <div className="flex items-center gap-2">
+            <ResendReportsButton />
+            <TestEmailButton />
+          </div>
         </div>
         <p className="text-stone-400 text-sm">How the Body Recode Performance Coaching system works end to end.</p>
       </div>
