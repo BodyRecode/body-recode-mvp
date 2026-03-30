@@ -131,9 +131,13 @@ const OBJECTION_TRIGGERED = {
       label: 'Step 1 — Handle objection first',
       content: `They say: "That's a lot" / "It's too expensive" / "I can't justify that"
 
-Response: "That's a fair thing to sit with. What I'd say is the investment reflects the full system - not just the sessions. You're not paying for two hours of training per week. You're paying for ongoing interpretation, pattern tracking, and a structured process that most people don't have access to. The question is whether that's useful for where you are right now."
+Repeat back: "So the investment feels like a stretch right now — I hear that."
 
-↳ Pause. Let them respond.
+Response: "What I'd say is this isn't a personal training fee. You're not paying for two sessions a week. You're paying for a system that governs how your body is loaded, interpreted, and adjusted across time — and most people don't have access to that at any price.
+
+The question I'd be asking is not whether it's expensive. It's whether what you've been doing up to now has been working. Because if it has, you probably don't need this. But if it hasn't — that has a cost too, it's just not showing up as a line item."
+
+↳ Pause. Let them respond. Don't fill the silence.
 ↳ If they move forward at full rate — go to Stage 5 Path C (Full Rate).
 ↳ If price objection remains — introduce founding client below.`,
     },
