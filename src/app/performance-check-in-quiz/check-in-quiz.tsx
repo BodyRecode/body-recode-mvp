@@ -148,9 +148,15 @@ export default function CheckInQuiz() {
           </div>
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Received</p>
           <h1 className="text-2xl font-extrabold text-white tracking-tight mb-4">Thank you for taking the time.</h1>
-          <p className="text-white/50 text-base leading-relaxed">
+          <p className="text-white/50 text-base leading-relaxed mb-8">
             Your submission is being reviewed. Your report will be sent to your email within one business day. There is nothing further required.
           </p>
+          <a
+            href="https://bodyrecode.au"
+            className="inline-block px-6 py-3 bg-[#10E1C2] text-black text-sm font-bold rounded-lg hover:bg-[#0ecfb2] transition-colors"
+          >
+            Return to home
+          </a>
         </div>
       </div>
     )
