@@ -108,7 +108,7 @@ So I'm going to ask you a few questions. Just answer as openly as you can - ther
         { type: 'sub', text: 'Does your energy feel fairly stable across the week?' },
         { type: 'sub', text: 'Are there times where training feels harder than it probably should?' },
         { type: 'category', text: 'CONSISTENCY' },
-        { type: 'prompt', text: 'Would you say your routine is fairly stable or does life shift things quite a bit?' },
+        { type: 'prompt', text: 'How much does life actually get in the way of training week to week?' },
         { type: 'sub', text: 'Do work or life commitments interrupt training often?' },
         { type: 'sub', text: 'Do you find yourself needing to adjust training regularly?' },
         { type: 'category', text: 'PRESSURE' },
