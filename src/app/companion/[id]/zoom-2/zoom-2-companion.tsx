@@ -45,6 +45,7 @@ The purpose of this work isn't to make that heavier. It's to give you a way to u
     prompts: [
       'Has that been part of your experience - second-guessing yourself?',
       'How long has that been sitting with you?',
+      '↳ TRANSITION → "Good — I want to come back to something specific you mentioned earlier."',
     ],
     tips: 'This is observational, not therapeutic. Name it and move on. Don\'t dwell or invite deep emotional processing.',
     boundary: null,
