@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 const sections = [
+  { id: 'coach', label: 'Note from Your Coach' },
   { id: 'how-to-read', label: 'How to Read This' },
   { id: 'what-this-is', label: 'What This Is' },
   { id: 'how-it-works', label: 'How It Works' },
@@ -13,7 +14,7 @@ const sections = [
 ]
 
 export default function OrientationPage() {
-  const [activeId, setActiveId] = useState<string>(sections[0].id)
+  const [activeId, setActiveId] = useState<string>('coach')
   const observerRef = useRef<IntersectionObserver | null>(null)
 
   useEffect(() => {
@@ -81,6 +82,25 @@ export default function OrientationPage() {
           </div>
 
           <div className="space-y-14 text-stone-300 text-[15px] leading-relaxed">
+
+            <OrientationSection id="coach" title="A Note from Your Coach">
+              <div className="flex items-center gap-5 mb-6">
+                <img
+                  src="https://bodyrecode.au/kade.jpg"
+                  alt="Kade Dunstone"
+                  width={72}
+                  height={72}
+                  className="rounded-full object-cover object-top shrink-0"
+                />
+                <div>
+                  <p className="text-white font-semibold text-sm">Kade Dunstone</p>
+                  <p className="text-stone-500 text-xs mt-0.5">Performance Coach · Founder, Body Recode&trade;</p>
+                </div>
+              </div>
+              <p>I put this together so that when we speak next, we&apos;re not spending that time covering the basics. Orientation exists to give you a clear picture of how this process works, what the relationship looks like, and what to expect — before any decisions are made.</p>
+              <p>There&apos;s nothing to complete, agree to, or figure out as you read. It&apos;s simply context. Read it at your own pace, take what&apos;s useful, and bring any questions to our next conversation.</p>
+              <p>I&apos;ll see you on the call.</p>
+            </OrientationSection>
 
             <OrientationSection id="how-to-read" title="A Note on How to Read This">
               <p>This orientation is not something to get through quickly. It is designed to be read slowly, in your own time, without needing to take notes, make decisions, or figure anything out as you go. You don&apos;t need to agree with everything you read, and you don&apos;t need to be certain about anything by the end.</p>
