@@ -8,6 +8,71 @@ export default function HelpPage() {
 
       <div className="space-y-3">
 
+        {/* Operator Checklist */}
+        <Section title="Operator Flow — Lead to Active Client" colour="violet">
+          <p>Use this as your step-by-step reference for every lead. Every step in order, nothing skipped.</p>
+
+          <div className="space-y-6 mt-2">
+
+            <div>
+              <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 1 — Lead Arrives</p>
+              <div className="space-y-2">
+                <ChecklistItem text="Lead submits the Performance Check-In quiz" />
+                <ChecklistItem text="Performance report is scheduled automatically — no action needed" />
+                <ChecklistItem text="Lead status moves to Report Sent" />
+                <ChecklistItem text="Follow-up email sequence begins automatically" />
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 2 — Zoom 1</p>
+              <div className="space-y-2">
+                <ChecklistItem text="Lead books Zoom 1 via Calendly (or book manually from the lead detail page)" />
+                <ChecklistItem text="Open the Call Companion from the lead detail page before the call" />
+                <ChecklistItem text="Run the call through all 5 stages" />
+                <ChecklistItem text="Book Zoom 2 before ending the call — use the Book Zoom 2 field in the companion notes panel" />
+                <ChecklistItem text="Mark Zoom 1 Complete in the companion notes panel" />
+                <ChecklistItem text="Send the Orientation Guide from the lead detail page immediately after the call" />
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 3 — Zoom 2</p>
+              <div className="space-y-2">
+                <ChecklistItem text="Confirm the lead has read the Orientation Guide before the call" />
+                <ChecklistItem text="Open the Zoom 2 Companion from the lead detail page before the call" />
+                <ChecklistItem text="Run the call through all 5 stages" />
+                <ChecklistItem text="Select the decision path at Stage 5 (A — Declined, B — Needs Time, C — Proceeding)" />
+                <ChecklistItem text="Path C only: select the pricing pathway (Full Rate, Founding Client, or Online)" />
+                <ChecklistItem text="Founding Client only: click Send Case Study Agreement before sending the commencement fee link" />
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 4 — Coaching Entry</p>
+              <div className="space-y-2">
+                <ChecklistItem text="From the lead detail page, click Send to Client under Coaching Entry — this emails the $240 commencement fee link directly" />
+                <ChecklistItem text="Wait for the payment notification email to confirm payment received" />
+                <ChecklistItem text="Client profile, welcome email, and intake link are all created automatically — no action needed" />
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 5 — Client Setup</p>
+              <div className="space-y-2">
+                <ChecklistItem text="Wait for the client to complete the foundational intake (they received the link by email)" />
+                <ChecklistItem text="CFFS generates automatically once intake is submitted — review it on the client profile" />
+                <ChecklistItem text="Set the Coaching Package on the client profile (online, 2x, or 3x) and copy the subscription link" />
+                <ChecklistItem text="Send the subscription link to the client" />
+                <ChecklistItem text="Wait for the Subscription Active badge to appear on the client profile" />
+                <ChecklistItem text="Set the Coaching Start Date (3-7 days out) — do not set it before the subscription is active" />
+                <ChecklistItem text="Client receives a reminder email automatically the day before coaching begins" />
+              </div>
+            </div>
+
+          </div>
+        </Section>
+
         {/* Section 1 */}
         <Section title="1. Lead Pipeline" colour="teal">
           <p>Every potential client enters the system as a <strong>lead</strong>. Leads are created manually or automatically when someone submits the performance check-in quiz.</p>
@@ -335,7 +400,7 @@ export default function HelpPage() {
           <p>Leads with statuses <strong>Commencement Fee Paid</strong>, <strong>Closed - Declined</strong>, or <strong>Closed - No Show</strong> do not receive new follow-ups.</p>
 
           <p className="font-semibold text-white mt-4">Orientation Guide</p>
-          <p>Sent manually from the lead detail page after Zoom 1. Sends the orientation PDF as an email attachment. The date it was sent is shown on the lead page.</p>
+          <p>Sent manually from the lead detail page after Zoom 1. Emails the lead a branded link to the orientation page. The date it was sent is shown on the lead page.</p>
 
           <p className="font-semibold text-white mt-4">No-Show Re-engagement Sequence</p>
           <p>Triggered manually from the lead detail page when a lead is marked Closed - No Show.</p>
@@ -460,15 +525,26 @@ export default function HelpPage() {
   )
 }
 
-function Section({ title, colour, children }: { title: string; colour: 'teal' | 'amber'; children: React.ReactNode }) {
+function Section({ title, colour, children }: { title: string; colour: 'teal' | 'amber' | 'violet'; children: React.ReactNode }) {
+  const headerBg = colour === 'amber' ? 'bg-amber-400/5' : colour === 'violet' ? 'bg-violet-400/5' : ''
+  const titleColour = colour === 'amber' ? 'text-amber-400' : colour === 'violet' ? 'text-violet-400' : 'text-teal-400'
   return (
     <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-      <div className={`px-6 py-4 border-b border-stone-800 ${colour === 'amber' ? 'bg-amber-400/5' : ''}`}>
-        <h2 className={`text-sm font-bold uppercase tracking-wider ${colour === 'amber' ? 'text-amber-400' : 'text-teal-400'}`}>{title}</h2>
+      <div className={`px-6 py-4 border-b border-stone-800 ${headerBg}`}>
+        <h2 className={`text-sm font-bold uppercase tracking-wider ${titleColour}`}>{title}</h2>
       </div>
       <div className="px-6 py-5 space-y-3 text-stone-300 text-sm leading-relaxed">
         {children}
       </div>
+    </div>
+  )
+}
+
+function ChecklistItem({ text }: { text: string }) {
+  return (
+    <div className="flex items-start gap-3">
+      <div className="w-4 h-4 rounded border border-stone-600 shrink-0 mt-0.5" />
+      <p className="text-stone-300 text-sm leading-relaxed">{text}</p>
     </div>
   )
 }
