@@ -22,8 +22,13 @@ export default async function LeadsPage({
   let query = supabase
     .from('leads')
     .select('*')
-    .eq('active', !showInactive)
     .order('created_at', { ascending: false })
+
+  if (showInactive) {
+    query = query.eq('active', false)
+  } else {
+    query = query.or('active.eq.true,active.is.null')
+  }
 
   if (params.status) query = query.eq('status', params.status)
   if (params.source) query = query.eq('source', params.source)
