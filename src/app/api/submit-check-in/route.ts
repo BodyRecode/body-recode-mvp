@@ -91,31 +91,32 @@ export async function POST(request: NextRequest) {
     html: `
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8" /></head>
-<body style="margin:0;padding:0;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#fafafa;padding:48px 20px;">
+<head><meta charset="utf-8" /><meta name="color-scheme" content="dark" /></head>
+<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#0a0a0a">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:16px;border:1px solid #e7e5e4;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:560px;background-color:#111111;border-radius:16px;border:1px solid #222222;overflow:hidden;">
 
           <tr>
-            <td style="padding:28px 40px 20px;background:#1c1917;">
-              <p style="margin:0 0 8px;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#a8a29e;">Body Recode™ — New Check-In</p>
+            <td bgcolor="#111111" style="background-color:#111111;padding:28px 40px 24px;border-bottom:1px solid #1e1e1e;">
+              <img src="https://bodyrecode.au/logo-teal.png" width="120" alt="Body Recode" style="display:block;margin-bottom:20px;" />
+              <p style="margin:0 0 6px;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#555;">New Check-In</p>
               <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;">${name}</h1>
             </td>
           </tr>
 
           <tr>
-            <td style="padding:28px 40px;">
+            <td bgcolor="#111111" style="background-color:#111111;padding:28px 40px;">
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding:0 0 20px;">
-                    <table cellpadding="0" cellspacing="0" style="background:#f5f5f4;border-radius:10px;padding:14px 20px;">
+                    <table cellpadding="0" cellspacing="0" style="background:#1a1a1a;border-radius:10px;padding:14px 20px;border:1px solid #222;">
                       <tr>
                         <td>
-                          <p style="margin:0 0 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#a8a29e;">Signal Pattern</p>
-                          <p style="margin:0;font-size:18px;font-weight:700;color:#1c1917;">${signalPattern}</p>
-                          <p style="margin:4px 0 0;font-size:12px;color:#78716c;">Score: ${totalScore} / ${max}</p>
+                          <p style="margin:0 0 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#555;">Signal Pattern</p>
+                          <p style="margin:0;font-size:18px;font-weight:700;color:#10E1C2;">${signalPattern}</p>
+                          <p style="margin:4px 0 0;font-size:12px;color:#555;">Score: ${totalScore} / ${max}</p>
                         </td>
                       </tr>
                     </table>
@@ -123,16 +124,20 @@ export async function POST(request: NextRequest) {
                 </tr>
                 <tr>
                   <td style="padding:0 0 20px;">
-                    <p style="margin:0 0 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#a8a29e;">Contact</p>
-                    <p style="margin:0;font-size:14px;color:#1c1917;">${email}</p>
-                    ${phone ? `<p style="margin:4px 0 0;font-size:14px;color:#57534e;">${phone}</p>` : ''}
+                    <p style="margin:0 0 6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#555;">Contact</p>
+                    <p style="margin:0;font-size:14px;color:#ccc;">${email}</p>
+                    ${phone ? `<p style="margin:4px 0 0;font-size:14px;color:#888;">${phone}</p>` : ''}
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <p style="margin:0 0 12px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#a8a29e;">Raw Answers</p>
+                    <p style="margin:0 0 12px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#555;">Answers</p>
                     <table width="100%" cellpadding="0" cellspacing="0">
-                      ${answersHtml}
+                      ${Object.entries(QUESTIONS).map(([id, label]) => {
+                        const val = answers[id] as number
+                        const optionText = OPTIONS[id]?.[val] ?? `Option ${val}`
+                        return `<tr><td style="padding:8px 0;border-bottom:1px solid #1e1e1e;"><p style="margin:0 0 3px;font-size:12px;font-weight:600;color:#888;">${label}</p><p style="margin:0;font-size:13px;color:#ccc;">${optionText}</p></td></tr>`
+                      }).join('')}
                     </table>
                   </td>
                 </tr>
@@ -141,8 +146,8 @@ export async function POST(request: NextRequest) {
           </tr>
 
           <tr>
-            <td style="padding:16px 40px 24px;border-top:1px solid #f5f5f4;">
-              <p style="margin:0;font-size:12px;color:#a8a29e;">Submitted via bodyrecode.au performance check-in</p>
+            <td bgcolor="#111111" style="background-color:#111111;padding:20px 40px 28px;border-top:1px solid #1e1e1e;">
+              <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads" style="display:inline-block;padding:11px 22px;background:#10E1C2;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">View in dashboard</a>
             </td>
           </tr>
 
