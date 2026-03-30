@@ -52,7 +52,7 @@ export default function HelpPage() {
 
         {/* Section 4 */}
         <Section title="4. Zoom 2 - Call Companion" colour="teal">
-          <p>Open the <strong>Call Companion</strong> from the lead detail page before Zoom 2. Same structure as Zoom 1 - opens in a new tab.</p>
+          <p>Open the <strong>Call Companion</strong> from the lead detail page before Zoom 2. It opens in a new tab at <strong>/companion/[id]/zoom-2</strong> — outside the dashboard so it runs full screen during the call.</p>
           <p>The companion has 5 stages:</p>
           <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
             <li><strong>Report Review</strong> - Ensure the lead has read and understood the report correctly.</li>
@@ -63,17 +63,19 @@ export default function HelpPage() {
           </ol>
           <p>The companion also has tabs for:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-            <li><strong>Objections</strong> - 7 prepared responses to common objections.</li>
-            <li><strong>Online Coaching</strong> - Drop-down fallback script if the lead objects to in-person pricing.</li>
-            <li><strong>Signal Reference</strong> - Quick view of the lead's SLS, RPS, and RILS levels.</li>
+            <li><strong>Script &amp; Prompts</strong> - Full verbatim script and stage-by-stage coaching prompts for the call.</li>
+            <li><strong>Objection-Triggered</strong> - Three-step script for making the Founding Client offer after a price objection. Step 1: handle the objection. Step 2: introduce the program. Step 3: walk them through it if they want to know more — covers minimum commitment, what gets documented, consent tiers, and the signing sequence.</li>
+            <li><strong>Manual Override</strong> - Script for proactively offering the Founding Client program to a high-suitability lead before any objection arises. Includes a four-point qualification checklist — all four must be true before using this tab.</li>
+            <li><strong>Online Coaching</strong> - Fallback script if the lead objects to in-person pricing and online is appropriate.</li>
+            <li><strong>Signal Reference</strong> - Quick view of the lead's SLS, RPS, and RILS levels. Objections reference removed — use the Objection-Triggered tab instead.</li>
           </ul>
-          <p>At Stage 5, three decision path buttons appear in the notes panel:</p>
+          <p>At Stage 5, three decision path buttons appear in the notes panel on the right:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Path A - Declined</strong> - Updates lead status to Closed Declined.</li>
             <li><strong>Path B - Needs Time</strong> - Updates lead status to Zoom 2 Completed.</li>
-            <li><strong>Path C - Proceeding</strong> - Updates lead status to Zoom 2 Completed. Then generate the commencement fee link from the lead detail page.</li>
+            <li><strong>Path C - Proceeding</strong> - A pathway selector appears. Choose from Full Rate, Founding Client (Objection Triggered), Founding Client (Manual Override), or Online. For Founding Client pathways a <strong>Send Case Study Agreement</strong> button appears — click it to email the signing link to the lead. The commencement fee is sent only after the agreement is signed.</li>
           </ul>
-          <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead objects to the price. The 3x in-person package ($409/week) is not presented at Zoom 2 - it is coach-assessed and offered during weekly check-ins once coaching is underway.</Note>
+          <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead objects to the price. The 3x in-person package ($409/week) is not presented at Zoom 2 — it is coach-assessed and offered during weekly check-ins once coaching is underway. Founding client rates: 2x $149.50/week, 3x $204.50/week, online $74.50/week.</Note>
         </Section>
 
         {/* Section 5 */}
@@ -259,6 +261,9 @@ export default function HelpPage() {
 
           <p className="font-semibold text-white mt-4">Coaching Start Reminder</p>
           <p>Sent automatically the day before a client's coaching start date. Triggered by a Vercel cron job that runs daily.</p>
+
+          <p className="font-semibold text-white mt-4">Founding Client Case Study Agreement</p>
+          <p>Sent manually from the Zoom 2 companion when a Founding Client pathway is selected at Stage 5. Click <strong>Send Case Study Agreement</strong> — the system creates the agreement record, generates a unique signing token, and emails the lead a link to review and sign online. The email is sent from kade@bodyrecode.au. The agreement must be signed before the commencement fee is sent.</p>
         </Section>
 
         <Section title="15. Communications Timeline" colour="teal">
@@ -283,6 +288,46 @@ export default function HelpPage() {
             <li><strong>Resend reports to all leads</strong> — Triggers the re-engagement blast. Cancels all existing follow-up sequences and sends a fresh re-engagement email plus a new 3-email follow-up sequence to every lead with check-in data. Requires confirmation before firing.</li>
           </ul>
           <Note>The blast is protected by an admin secret and requires confirmation. It will not fire accidentally.</Note>
+        </Section>
+
+        <Section title="17. Founding Client Program" colour="teal">
+          <p>The Founding Client Program is a limited, selective participation model. Up to 5 positions are available. The fee is adjusted by 50% in exchange for the client's documented participation in a structured case study process.</p>
+          <p>This is a structured trade, not a discount. The client provides participation of commercial and developmental value to the system. The adjusted fee reflects that exchange.</p>
+
+          <p className="font-semibold text-white mt-2">Two entry triggers</p>
+          <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>Objection-triggered</strong> — The full rate offer is made first. If the lead objects to price, the Founding Client offer is introduced as the second offer. Use the Objection-Triggered tab in the Zoom 2 companion for the full script and qualification checklist.</li>
+            <li><strong>Manual override</strong> — For a high-suitability lead, you may proactively offer the program before any objection arises. Use the Manual Override tab. This requires deliberate intent, not convenience. The positioning criteria must be met.</li>
+          </ul>
+
+          <p className="font-semibold text-white mt-2">Agreement before commencement</p>
+          <p>The Founding Client Case Study Agreement must be signed before the commencement fee is sent. This is non-negotiable. The sequence is:</p>
+          <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
+            <li>Lead accepts the Founding Client offer at Zoom 2.</li>
+            <li>Select Path C → Founding Client pathway in the Zoom 2 decision panel.</li>
+            <li>Click <strong>Send Case Study Agreement</strong> — this creates the agreement record and emails the signing link to the lead.</li>
+            <li>Lead reviews and signs the agreement online, selecting their consent tier.</li>
+            <li>Once signed, generate and send the commencement fee from the lead detail page.</li>
+          </ol>
+
+          <p className="font-semibold text-white mt-2">Consent tiers</p>
+          <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>Tier 1 — Anonymised</strong> — Case study may be published with identity removed.</li>
+            <li><strong>Tier 2 — Named</strong> — Case study may be published with identity, subject to client review of identifying material.</li>
+          </ul>
+
+          <p className="font-semibold text-white mt-2">Founding Client badge and section on client profile</p>
+          <p>Once the agreement is signed and the client converts, their profile shows a <strong>Founding Client</strong> badge in the header and a dedicated section with entry type, consent tier, program start date, and 12-week threshold date.</p>
+          <p>At the bottom of that section is an <strong>Update status</strong> link. Click it to reveal four status buttons — Active, 12 Weeks Complete, Extended, Withdrawn. The current status is highlighted. Click any other to update it immediately. The status badge updates on the page automatically.</p>
+
+          <p className="font-semibold text-white mt-2">Founding client rates</p>
+          <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+            <li>Online — $74.50/week (standard $149)</li>
+            <li>In-Person 2x — $149.50/week (standard $299)</li>
+            <li>In-Person 3x — $204.50/week (standard $409)</li>
+          </ul>
+
+          <Note>Minimum participation is 12 weeks. Ideal engagement is 6–12 months. Status states: Active → 12 Weeks Complete → Extended → Withdrawn. Status is managed manually as the case study progresses.</Note>
         </Section>
 
         {/* Section 11 */}

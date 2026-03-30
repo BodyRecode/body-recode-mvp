@@ -135,7 +135,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               </Link>
             )}
             <Link
-              href={`/dashboard/leads/${lead.id}/zoom-1`}
+              href={`/companion/${lead.id}/zoom-1`}
               target="_blank"
               className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
             >
@@ -187,7 +187,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               </Link>
             )}
             <Link
-              href={`/dashboard/leads/${lead.id}/zoom-2`}
+              href={`/companion/${lead.id}/zoom-2`}
               target="_blank"
               className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
             >

@@ -145,11 +145,33 @@ I'm currently running a small number of founding client positions as part of val
 
 These are clients whose full journey is documented — from interpretation through to outcomes over time. It allows me to validate the system properly across real-world cases.
 
-In exchange for that participation, fees are adjusted by 50% for the duration of the engagement. So instead of [full rate], it would be [adjusted rate].
+In exchange for that participation, fees are adjusted by 50% for the duration of the engagement. So instead of $299/week (2x) or $409/week (3x), it would be $149.50/week (2x) or $204.50/week (3x).
 
 This isn't a discount or a deal. It's a structured exchange — your participation has value, and the adjustment reflects that.
 
 If that feels like it changes things for you, we can walk through what it involves. If not, that's completely fine as well."`,
+    },
+    {
+      label: 'Step 3 — If they want to know more',
+      content: `Walk them through these points in plain language:
+
+MINIMUM COMMITMENT
+"The minimum is 12 weeks. That's the threshold for a valid case study — it needs enough time to see a real pattern. Most founding clients stay 6 to 12 months, but we don't ask for that upfront."
+
+WHAT GETS DOCUMENTED
+"Everything that's already part of the coaching process — your intake, your CFFS interpretation, your weekly check-ins, the synthesis outputs. Nothing extra is required from you. You just participate fully."
+
+CONSENT — TWO OPTIONS
+"Before we start, you sign an agreement that covers how your data can be used externally. You choose one of two tiers:
+- Tier 1: Anonymised — your case study can be published but your identity is removed.
+- Tier 2: Named — your name can be used, but you review anything before it goes public.
+Either way, internal use for system development is part of the agreement regardless of tier."
+
+WHAT IT IS NOT
+"This is not reduced coaching. The sessions, the interpretation, the system — all identical to a full-rate engagement. The only thing that changes is the fee."
+
+SEQUENCE
+"If you want to proceed, I send you the case study agreement to sign before anything else. Once that's signed, I send the commencement fee link. Coaching begins from there."`,
     },
   ],
   followups: [
@@ -187,7 +209,7 @@ You would enter a formal case study agreement before we commence. That agreement
 
 In exchange for that participation, your coaching fees are adjusted by 50% for the full duration of your engagement with me. Not just for the first 12 weeks — for as long as you remain in the program and the agreement is active.
 
-At your package level that means [adjusted rate] per week instead of [full rate].
+At your package level that means $149.50/week instead of $299/week (2x), or $204.50/week instead of $409/week (3x).
 
 This is not a promotional offer. I am not discounting my services. I am making a direct trade — your documented participation has genuine value to the development of this system, and the adjustment reflects that value.
 
@@ -199,7 +221,24 @@ Do you want me to walk you through what the agreement looks like before you deci
     '"There are five positions in total. I\'m selective about who I offer this to."',
     '"The coaching structure and standards are identical to a full-rate engagement. Nothing is reduced except the fee."',
   ],
-  ifAskedWhyYou: 'Answer directly — based on their check-in data, patterns presented, and suitability for the validation cohort. No flattery. No exaggeration.',
+  walkThrough: `MINIMUM COMMITMENT
+"The minimum is 12 weeks. That's the threshold for a valid case study — it needs enough time to see a real pattern. Most founding clients stay 6 to 12 months, but we don't ask for that upfront."
+
+WHAT GETS DOCUMENTED
+"Everything that's already part of the coaching process — your intake, your CFFS interpretation, your weekly check-ins, the synthesis outputs. Nothing extra is required from you. You just participate fully."
+
+CONSENT — TWO OPTIONS
+"Before we start, you sign an agreement that covers how your data can be used externally. You choose one of two tiers:
+- Tier 1: Anonymised — your case study can be published but your identity is removed.
+- Tier 2: Named — your name can be used, but you review anything before it goes public.
+Either way, internal use for system development is part of the agreement regardless of tier."
+
+WHAT IT IS NOT
+"This is not reduced coaching. The sessions, the interpretation, the system — all identical to a full-rate engagement. The only thing that changes is the fee."
+
+SEQUENCE
+"If you want to proceed, I send you the case study agreement to sign before anything else. Once that's signed, I send the commencement fee link. Coaching begins from there."`,
+  ifAskedWhyYou: `"A few reasons. Your check-in data showed a pattern that's genuinely useful to document — it's not a simple case. What came up in Zoom 1 and what you've described today tells me there's something worth tracking properly over time. And from the way you've engaged across both calls, I think you're someone who will participate consistently. That's what makes a case study valid. I'm not offering this to everyone — I'm offering it because I think your case will contribute something real to the system."`,
   exitPath: 'If declined — return to standard decision flow. Offer full rate or online pathway. Do not re-offer.',
   boundary: 'Do not use if a price objection is present. Do not introduce reactively. Do not frame as incentive or cheaper coaching. Do not increase energy or urgency. Do not use both triggers in the same conversation.',
 }
@@ -418,13 +457,13 @@ export default function Zoom2Companion({
   const isFoundingClientPathway = pathwayType === 'founding_client_objection_triggered' || pathwayType === 'founding_client_manual_override'
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col">
+    <div className="h-screen bg-[#0a0a0a] text-white flex flex-col overflow-hidden">
 
       {/* Top bar */}
       <div className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div>
-            <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold mb-0.5">Zoom 2 - Companion</p>
+            <a href={`/dashboard/leads/${leadId}`} className="text-xs text-stone-600 hover:text-stone-400 transition-colors mb-0.5 block">← Back to lead</a>
             <p className="text-lg font-bold text-white">{leadName}</p>
           </div>
           <div className="flex items-center gap-3">
@@ -632,6 +671,10 @@ export default function Zoom2Companion({
                         <p className="text-stone-300 text-sm">{f}</p>
                       </div>
                     ))}
+                  </div>
+                  <div className="bg-violet-400/5 border border-violet-400/20 rounded-xl p-4">
+                    <p className="text-xs font-bold text-violet-400 uppercase tracking-wider mb-2">If they want to know more</p>
+                    <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{MANUAL_OVERRIDE.walkThrough}</p>
                   </div>
                   <div className="bg-stone-800 border border-stone-700 rounded-xl p-4">
                     <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">If asked &quot;why me?&quot;</p>

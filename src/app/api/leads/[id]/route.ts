@@ -19,6 +19,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       zoom_1_date: body.zoom_1_date,
       zoom_2_date: body.zoom_2_date,
       zoom_meeting_url: body.zoom_meeting_url,
+      zoom2_outcome: body.zoom2_outcome,
+      zoom2_pathway_type: body.zoom2_pathway_type,
+      zoom2_trigger_type: body.zoom2_trigger_type,
+      zoom2_completed_at: body.zoom2_completed_at,
     })
     .eq('id', id)
     .select()

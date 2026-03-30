@@ -11,6 +11,7 @@ import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
 import ClientDangerActions from './client-danger-actions'
+import FoundingClientStatusManager from '@/components/founding-client-status-manager'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -117,7 +118,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <span>/</span>
             <span className="text-stone-300">{client.name}</span>
           </div>
-          <h1 className="text-2xl font-semibold">{client.name}</h1>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-2xl font-semibold">{client.name}</h1>
+            {client.is_founding_client && (
+              <span className="text-xs font-bold px-2.5 py-1 rounded-full border border-violet-400/30 text-violet-300 bg-violet-400/10 tracking-wide">
+                Founding Client
+              </span>
+            )}
+          </div>
           <p className="text-stone-400 text-sm mt-1">Added {formatDate(client.created_at)}</p>
         </div>
         <NewIntakeButton
@@ -152,6 +160,71 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <SetStartDate clientId={client.id} currentDate={client.coaching_started_at} />
         </div>
       </div>
+
+      {/* Founding Client */}
+      {client.is_founding_client && (() => {
+        const statusConfig: Record<string, { label: string; colour: string }> = {
+          active: { label: 'Active', colour: 'text-teal-400 bg-teal-400/10 border-teal-400/30' },
+          '12_week_complete': { label: '12 Weeks Complete', colour: 'text-blue-300 bg-blue-400/10 border-blue-400/30' },
+          extended: { label: 'Extended', colour: 'text-violet-300 bg-violet-400/10 border-violet-400/30' },
+          withdrawn: { label: 'Withdrawn', colour: 'text-stone-400 bg-stone-800 border-stone-700' },
+        }
+        const tierLabels: Record<string, string> = {
+          tier_1: 'Tier 1 — External Use (Anonymised)',
+          tier_2: 'Tier 2 — External Use (Named)',
+        }
+        const triggerLabels: Record<string, string> = {
+          objection_triggered: 'Objection-triggered',
+          manual_override: 'Manual override',
+        }
+        const status = statusConfig[client.founding_client_status] ?? { label: client.founding_client_status, colour: 'text-stone-400 bg-stone-800 border-stone-700' }
+
+        const twelveWeekDate = client.founding_client_start_date
+          ? (() => {
+              const d = new Date(client.founding_client_start_date)
+              d.setDate(d.getDate() + 84)
+              return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
+            })()
+          : null
+
+        return (
+          <div className="bg-stone-900 border border-violet-400/20 rounded-xl p-5 mb-4">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs uppercase tracking-wider text-violet-400/70">Founding Client Program</p>
+              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${status.colour}`}>
+                {status.label}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+              {client.founding_client_trigger_type && (
+                <div>
+                  <p className="text-xs text-stone-500 mb-0.5">Entry type</p>
+                  <p className="text-sm text-stone-200">{triggerLabels[client.founding_client_trigger_type] ?? client.founding_client_trigger_type}</p>
+                </div>
+              )}
+              {client.consent_tier && (
+                <div>
+                  <p className="text-xs text-stone-500 mb-0.5">Consent tier</p>
+                  <p className="text-sm text-stone-200">{tierLabels[client.consent_tier] ?? client.consent_tier}</p>
+                </div>
+              )}
+              {client.founding_client_start_date && (
+                <div>
+                  <p className="text-xs text-stone-500 mb-0.5">Program start</p>
+                  <p className="text-sm text-stone-200">{new Date(client.founding_client_start_date).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                </div>
+              )}
+              {twelveWeekDate && (
+                <div>
+                  <p className="text-xs text-stone-500 mb-0.5">12-week threshold</p>
+                  <p className="text-sm text-stone-200">{twelveWeekDate}</p>
+                </div>
+              )}
+            </div>
+            <FoundingClientStatusManager clientId={id} currentStatus={client.founding_client_status} />
+          </div>
+        )
+      })()}
 
       {/* Package */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
