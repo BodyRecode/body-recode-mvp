@@ -23,6 +23,7 @@ Not to go through it line by line - but to make sure it's landed the way it was 
       '↳ Did you notice that when you read it?',
       'EMOTIONAL RESPONSE - "How did it feel to read it? Relief, frustration, confusion, neutral - all valid."',
       'READINESS CHECK - "One last thing - meaningful interpretation requires observation across time. A single report can\'t tell the full story. That\'s why ongoing synthesis exists inside Body Recode."',
+      '↳ TRANSITION → "Good — that\'s exactly what I needed to know. Let\'s keep going."',
     ],
     tips: 'This is a calibration check, not a correctness check. Let them respond freely. Their emotional response usually points toward the primary hot spot.',
     boundary: null,
