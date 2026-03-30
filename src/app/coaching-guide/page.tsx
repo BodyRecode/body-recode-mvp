@@ -20,6 +20,19 @@ export default function CoachingGuidePage() {
 
           {/* Note from Coach */}
           <GuideSection title="A Note from Your Coach">
+            <div className="flex items-center gap-5 mb-6">
+              <img
+                src="https://bodyrecode.au/kade.jpg"
+                alt="Kade Dunstone"
+                width={72}
+                height={72}
+                className="rounded-full object-cover object-top shrink-0"
+              />
+              <div>
+                <p className="text-white font-semibold text-sm">Kade Dunstone</p>
+                <p className="text-stone-500 text-xs mt-0.5">Performance Coach · Founder, Body Recode&trade;</p>
+              </div>
+            </div>
             <p>I have spent more than two decades in the health and performance industry. During that time, I worked within high-intensity models, physique-driven environments, and traditional personal training structures. I have competed nationally and internationally and held multiple titles within the sport. I saw dedication, effort, and discipline in abundance.</p>
             <Emphasis>What I saw far less often was stability.</Emphasis>
             <p>Clients would commit fully, push aggressively, and achieve short-term change. Fatigue would accumulate. Stress would rise. Recovery would decline. Body composition would fluctuate. Motivation would oscillate. The cycle would repeat.</p>
