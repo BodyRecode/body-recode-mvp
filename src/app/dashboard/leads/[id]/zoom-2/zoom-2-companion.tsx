@@ -516,9 +516,9 @@ export default function Zoom2Companion({
                     onClick={() => setActiveTab(tab.key)}
                     className={`text-xs font-semibold px-3 py-2 border-b-2 -mb-px transition-colors ${
                       activeTab === tab.key
-                        ? tab.colour === 'amber'
+                        ? ('colour' in tab && tab.colour === 'amber')
                           ? 'border-amber-400 text-amber-400'
-                          : tab.colour === 'violet'
+                          : ('colour' in tab && tab.colour === 'violet')
                           ? 'border-violet-400 text-violet-400'
                           : 'border-[#10E1C2] text-[#10E1C2]'
                         : 'border-transparent text-stone-500 hover:text-stone-300'
