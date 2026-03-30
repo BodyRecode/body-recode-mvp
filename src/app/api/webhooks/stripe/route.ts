@@ -149,6 +149,9 @@ export async function POST(request: NextRequest) {
                 </tr>
               </table>
               <p style="margin:24px 0 0;font-size:15px;color:#57534e;line-height:1.6;">
+                While you're getting set up, take a read through your <a href="https://app.bodyrecode.au/coaching-guide" style="color:#1c1917;font-weight:600;text-decoration:underline;">Active Coaching Client Guide</a>. It covers how the coaching process works, what to expect each week, and how we build progress together.
+              </p>
+              <p style="margin:16px 0 0;font-size:15px;color:#57534e;line-height:1.6;">
                 Looking forward to getting started.
               </p>
               ${emailSignature()}
