@@ -1,0 +1,83 @@
+import { NextRequest, NextResponse } from 'next/server'
+import Stripe from 'stripe'
+import { Resend } from 'resend'
+import { createClient } from '@/lib/supabase/server'
+import { darkEmailSignature } from '@/lib/email-signature'
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+
+export async function POST(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+
+  const { data: lead } = await supabase
+    .from('leads')
+    .select('id, name, email, converted_to_client_id')
+    .eq('id', id)
+    .maybeSingle()
+
+  if (!lead) return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
+  if (lead.converted_to_client_id) return NextResponse.json({ error: 'Already converted' }, { status: 400 })
+  if (!lead.email) return NextResponse.json({ error: 'No email address for this lead' }, { status: 400 })
+
+  const session = await stripe.checkout.sessions.create({
+    mode: 'payment',
+    payment_method_types: ['card'],
+    customer_email: lead.email,
+    line_items: [
+      {
+        price_data: {
+          currency: 'aud',
+          unit_amount: 24000,
+          product_data: {
+            name: 'Body Recode - Commencement Fee',
+            description: 'One-time commencement fee for Body Recode Performance Coaching.',
+          },
+        },
+        quantity: 1,
+      },
+    ],
+    metadata: {
+      lead_id: id,
+      type: 'commencement_fee',
+    },
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment-success`,
+    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads/${id}`,
+  })
+
+  const firstName = lead.name.split(' ')[0]
+  const resend = new Resend(process.env.RESEND_API_KEY)
+
+  await resend.emails.send({
+    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    to: lead.email,
+    subject: `${firstName}, your Body Recode commencement link`,
+    html: `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="max-width:600px;margin:0 auto;padding:48px 32px;">
+    <div style="margin-bottom:40px;">
+      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+    </div>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Hi ${firstName},</p>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Here is your commencement fee link for Body Recode Performance Coaching.</p>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 28px;">Once payment is confirmed, you will receive a follow-up email with everything you need to get started.</p>
+    <a href="${session.url}" style="display:inline-block;margin:0 0 28px;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">Pay commencement fee</a>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">If you have any questions before paying, just reply to this email.</p>
+    ${darkEmailSignature()}
+    <p style="margin:20px 0 0;font-size:13px;color:#444;line-height:1.5;">Or copy this link: ${session.url}</p>
+  </div>
+</body>
+</html>`,
+  })
+
+  return NextResponse.json({ sent: true })
+}
