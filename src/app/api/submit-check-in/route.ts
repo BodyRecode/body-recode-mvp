@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
   // Save lead first — before any email sending so it's never lost
   const supabase = createAdminClient()
-  const { data: newLead } = await supabase.from('leads').insert({
+  const { data: newLead, error: leadError } = await supabase.from('leads').insert({
     name,
     email,
     phone: phone || null,
@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
     check_in_answers: answers,
     active: true,
   }).select('id').single()
+  if (leadError) console.error('Lead insert error:', leadError)
 
   // Notify Kade
   const { error } = await resend.emails.send({
