@@ -12,6 +12,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   const { data, error } = await supabase
     .from('leads')
     .update({
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
       status: body.status,
       notes: body.notes,
       source: body.source,
