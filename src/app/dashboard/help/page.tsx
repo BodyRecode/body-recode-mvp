@@ -11,6 +11,7 @@ export default function HelpPage() {
         {/* Section 1 */}
         <Section title="1. Lead Pipeline" colour="teal">
           <p>Every potential client enters the system as a <strong>lead</strong>. Leads are created manually or automatically when someone submits the performance check-in quiz.</p>
+          <p>On the lead detail page, the <strong>Contact</strong> section has an <strong>Edit</strong> link that lets you update the lead&apos;s name, email, and phone number directly from the dashboard without going to Supabase.</p>
           <p>Leads move through statuses as they progress:</p>
           <StatusList items={[
             { label: 'New Check-In', desc: 'Quiz submitted, report not yet sent.' },
@@ -44,8 +45,14 @@ export default function HelpPage() {
             <li><strong>Pattern Interpretation</strong> — Name the dominant pattern using signal-specific language.</li>
             <li><strong>Close</strong> — Confirm the report, next steps, and Zoom 2 booking.</li>
           </ol>
-          <p>At Stage 5, a <strong>Mark Zoom 1 Complete</strong> button appears in the notes panel. Click it after the call to update the lead status automatically.</p>
-          <Note>Scripts and prompts are personalised to each lead&apos;s signal levels (SLS, RPS, RILS). The companion also has a live notes panel that saves directly to the lead record.</Note>
+          <p>The notes panel on the right contains three persistent actions available at any stage:</p>
+          <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>Book Zoom 2</strong> — enter the date and confirm directly from the companion. Updates the lead record and status to Zoom 2 Booked without leaving the call.</li>
+            <li><strong>Mark Zoom 1 Complete</strong> — updates lead status. Available at any stage, not just Stage 5.</li>
+            <li><strong>Readiness Check</strong> — A (ready), B (hesitant), C (not right fit). Use it to anchor your read before Stage 5.</li>
+          </ul>
+          <p>After the call, switch to <strong>Post-Call</strong> view, paste the Zoom transcript, and generate an AI summary. Click <strong>Save to lead notes</strong> to persist it to the lead record — it won&apos;t survive a page refresh otherwise.</p>
+          <Note>Scripts and prompts are personalised to each lead&apos;s signal levels (SLS, RPS, RILS). Stage 3 prompts are grouped by category (Training, Recovery, Consistency, Pressure) with sub-questions indented below each.</Note>
           <Training title="What Zoom 1 is actually for">
             <p><strong>Zoom 1 is not a sales call.</strong> There is nothing to sell yet. The only job in this call is to make the lead feel correctly understood and to build the interpretation that the report is based on something real, not generic.</p>
             <p className="mt-2">The reason this matters for Zoom 2 is simple: if a lead doesn&apos;t trust the report, price becomes the only thing they can evaluate. If they do trust the report, they are evaluating whether this is the right intervention — which is a completely different conversation.</p>
@@ -56,9 +63,9 @@ export default function HelpPage() {
 
         {/* Section 3 */}
         <Section title="3. Orientation" colour="teal">
-          <p>After Zoom 1, send the <strong>Orientation Guide</strong> from the lead detail page. This emails the PDF directly to the lead as an attachment.</p>
+          <p>After Zoom 1, send the <strong>Orientation Guide</strong> from the lead detail page. This emails the lead a branded link to the orientation page at <strong>app.bodyrecode.au/orientation</strong> — no PDF attachment.</p>
           <p>The guide covers what Body Recode Performance Coaching is, what to expect, and how to prepare for Zoom 2. The lead should read it before the second call.</p>
-          <p>Once sent, the section shows the date it was sent. You can also click <strong>View Guide</strong> to preview the PDF.</p>
+          <p>Once sent, the section shows the date it was sent. Click <strong>View Guide</strong> to preview the page as the client sees it.</p>
           <Training title="Why this step exists between the two calls">
             <p>Most coaches go straight from a discovery call to a pricing call. The gap between Zoom 1 and Zoom 2 is intentional — it is not dead time.</p>
             <p className="mt-2">The orientation guide does cognitive work that you cannot do live. It explains the framework, sets expectations, and begins the mental shift from &quot;I&apos;m thinking about this&quot; to &quot;I understand what I&apos;m walking into.&quot; A lead who arrives at Zoom 2 having read the guide is in a completely different state than one who hasn&apos;t.</p>
@@ -121,11 +128,16 @@ export default function HelpPage() {
 
         {/* Section 5 */}
         <Section title="5. Coaching Entry" colour="teal">
-          <p>From the lead detail page, click <strong>Generate Commencement Fee Link</strong>. This creates a unique Stripe checkout link for the $240 commencement fee and copies it to your clipboard.</p>
-          <p>Send the link to the client. When they pay:</p>
+          <p>From the lead detail page, the Coaching Entry section has two options:</p>
+          <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>Send to Client</strong> — generates a unique Stripe checkout link and emails it directly to the lead in a branded email. One click.</li>
+            <li><strong>Copy Link</strong> — generates the link and copies it to your clipboard for manual sending.</li>
+          </ul>
+          <p>When the client pays:</p>
           <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
+            <li>You receive an email notification immediately confirming the payment.</li>
             <li>Their client profile is created automatically.</li>
-            <li>Their intake link is generated and emailed to them immediately.</li>
+            <li>Their welcome email and intake link are sent to them immediately.</li>
             <li>The lead status updates to <strong>Commencement Fee Paid</strong>.</li>
           </ol>
           <p>The lead detail page will then show a <strong>View client profile</strong> link.</p>
