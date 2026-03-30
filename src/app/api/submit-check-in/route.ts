@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
     source: source || 'quiz',
     status: 'new_check_in',
     check_in_answers: answers,
+    active: true,
   }).select('id').single()
 
   // Notify Kade
