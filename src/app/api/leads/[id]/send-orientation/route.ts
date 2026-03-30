@@ -39,18 +39,19 @@ export async function POST(
 <style>
   body { margin: 0; padding: 0; background: #0a0a0a; font-family: Georgia, serif; }
   .wrapper { max-width: 600px; margin: 0 auto; padding: 48px 32px; }
-  .logo { font-size: 11px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-bottom: 48px; }
   p { font-size: 15px; color: #aaa; line-height: 1.9; margin: 0 0 20px; }
   .btn { display: inline-block; margin: 8px 0 24px; padding: 14px 28px; background: #10E1C2; color: #000; font-size: 14px; font-weight: 700; text-decoration: none; border-radius: 8px; letter-spacing: 0.02em; }
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div class="logo">Body Recode&trade; &middot; Performance Coaching</div>
+  <div style="margin-bottom: 48px;">
+    <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+  </div>
 
   <p>Hi ${firstName},</p>
 
-  <p>I've put together a short orientation guide for you to read through before we connect again.</p>
+  <p>Before our next Zoom, I'd like you to read through the Body Recode Performance Coaching Orientation Guide.</p>
 
   <p>There's nothing to complete, decide, or action. Just read it at your own pace when you're ready. It covers how the coaching process works, what the relationship looks like, and what to expect from the structure.</p>
 
