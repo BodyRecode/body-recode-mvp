@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
   // Notify Kade
   const { error } = await resend.emails.send({
     from: 'Body Recode™ <kade@bodyrecode.au>',
-    to: 'info@bodyrecode.au',
+    to: 'kade@bodyrecode.au',
     subject: `New Check-In: ${name} — ${signalPattern}`,
     html: `
 <!DOCTYPE html>
