@@ -90,9 +90,8 @@ Three sessions per week is also available where capacity and schedule allow. Tha
 
 I guide that decision based on what your system can actually tolerate - it's not something I leave up to guesswork."`,
     prompts: [
-      '↳ "Most people who continue do so because things start to make more sense - not because anything dramatic has changed."',
-      '↳ "If at any point this stops feeling like the right fit, we stop. That applies on both sides."',
-      '↳ "You don\'t need to decide now. Take some time to sit with it."',
+      '↳ "Most people who continue do so because things start to make more sense — not because anything dramatic has changed."',
+      '↳ TRANSITION → Pause. Let the price land. Do not fill the silence. When they respond — move to Stage 5.',
     ],
     tips: 'Present pricing as information. Do not use urgency, scarcity, or pressure. After presenting pricing — pause and allow response. Do not jump to founding client. Evaluate based on response.',
     boundary: 'Full rate is always Offer 1. No discount framing. No urgency. Founding client is Offer 2 only — via objection-triggered or manual override.',
