@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildReportEmail, buildFollowUpEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from '@/lib/generate-report'
 import { logLeadEvent } from '@/lib/log-lead-event'
+import { darkEmailSignature } from '@/lib/email-signature'
 
 export const maxDuration = 60
 
@@ -195,12 +196,7 @@ export async function POST(request: NextRequest) {
                 You can expect this report within one business day. No further action is required from you at this stage.
               </p>
 
-              <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1e1e1e;margin-bottom:28px;"><tr><td height="1" bgcolor="#1e1e1e"></td></tr></table>
-
-              <p style="margin:0;font-size:13px;color:#444444;line-height:1.6;">
-                Body Recode™ · Anytime Fitness Newstead, Brisbane<br/>
-                <a href="mailto:info@bodyrecode.au" style="color:#10E1C2;text-decoration:none;">info@bodyrecode.au</a>
-              </p>
+              ${darkEmailSignature()}
             </td>
           </tr>
 
