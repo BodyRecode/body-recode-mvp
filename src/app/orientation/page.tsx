@@ -29,7 +29,7 @@ export default function OrientationPage() {
             <p>Rather than chasing outcomes or pushing effort, Body Recode focuses on creating conditions the body can reliably hold, and allowing progress to emerge from stability rather than force.</p>
             <p>This work isn&apos;t about fixing yourself. It doesn&apos;t assume that something is broken or failing. Instead, Body Recode treats the body as a responsive system that adapts continuously to load and context.</p>
             <p>What Body Recode offers is structure, containment, and perspective. It reduces noise, lowers reactivity, and makes it easier to understand what actually matters — without relying on motivation, willpower, or constant self-monitoring.</p>
-            <p>Most importantly, orientation is not a commitment. Its purpose is to introduce you to the Body Recode way of working, so you can decide, calmly and clearly, whether it feels aligned.</p>
+            <p>Orientation is not a deep dive into the specifics of your coaching plan. That conversation happens next. Its purpose here is simply to give you enough context to arrive at that conversation informed rather than uncertain.</p>
           </OrientationSection>
 
           <OrientationSection title="How Body Recode Performance Coaching Works">
@@ -69,11 +69,10 @@ export default function OrientationPage() {
             <p>This approach often feels quieter than more intensive coaching models. There is less urgency to change course quickly and more confidence in staying with a direction long enough to see how the system responds.</p>
           </OrientationSection>
 
-          <OrientationSection title="Completing Orientation and Transitioning Forward">
-            <p>Completing orientation does not require a decision. There is no expectation to move forward immediately, and no pressure to continue simply because time has been invested. Orientation is complete once you feel informed, not when you commit.</p>
-            <p>If you choose to move forward, the transition into coaching is deliberate and measured. Next steps are taken calmly, with attention to readiness rather than urgency.</p>
-            <p>If you choose not to continue, orientation still serves its purpose. Understanding how this framework works can inform future decisions around training, recovery, and pacing — even outside of formal coaching.</p>
-            <p>There is no right outcome to orientation. What matters is that you leave with a clearer understanding of whether this way of working feels aligned for you at this point in time.</p>
+          <OrientationSection title="Before Our Next Conversation">
+            <p>When we speak next, the focus will be on what the report is showing us, what it means for how you&apos;ve been responding, and what a structured coaching approach could look like for you specifically.</p>
+            <p>You don&apos;t need to have prepared anything. You don&apos;t need to have formed opinions or made decisions. What helps is arriving with a clearer sense of what this framework is — which is what this guide is for.</p>
+            <p>If anything in here stands out, prompts a question, or doesn&apos;t sit right — bring it. That&apos;s exactly the kind of conversation worth having before anything moves forward.</p>
           </OrientationSection>
 
           {/* Closing */}
