@@ -132,7 +132,7 @@ export default function CoachingGuidePage() {
             </GuideSection>
 
             <GuideSection id="biology" title="Performance, Biology, and Body Composition">
-              <p>Clients enter Body Recode Performance Coaching for different reasons. For some, body composition is the primary driver — fat loss, improved muscle tone, increased strength, or visible physical change are meaningful and valid goals.</p>
+              <p>Clients enter Body Recode Performance Coaching for different reasons. For some, body composition is the primary driver. Fat loss, improved muscle tone, increased strength, or visible physical change are meaningful and valid goals.</p>
               <p>For others, the motivation is less aesthetic and more structural. They may be seeking biological stability after periods of stress, improved recovery capacity, renewed training rhythm, or a stronger sense of identity around performance. Some arrive because previous methods have produced volatility rather than durability. Others are simply ready for a system that feels sustainable rather than reactive.</p>
               <Emphasis>Within Body Recode&trade;, these drivers are not separated. They are interconnected.</Emphasis>
               <p>Body composition, identity, performance, and biological regulation are expressions of the same underlying processes. When stress exceeds recovery tolerance, the body compensates. When intensity consistently outpaces stability, volatility replaces progress. When behavioural rhythm breaks down, adaptation slows.</p>
@@ -162,7 +162,7 @@ export default function CoachingGuidePage() {
             <GuideSection id="data" title="Structured Data Collection and Baseline Establishment">
               <p>Once your foundational documentation has been completed and reviewed, the system advances to structured data collection. At this stage, you will receive your Foundational Intake form and your Baseline documentation guide.</p>
               <p>These elements work together. The <strong className="text-white">Foundational Intake</strong> captures your training history, injury background, previous dieting patterns, lifestyle load, sleep consistency, recovery capacity, and present objectives. It provides interpretive context around your current stability and tolerance.</p>
-              <p>The <strong className="text-white">Baseline documentation</strong> establishes objective reference anchors — morning bodyweight, defined circumference measurements, and relaxed progress photos captured from standardised positions.</p>
+              <p>The <strong className="text-white">Baseline documentation</strong> establishes objective reference anchors: morning bodyweight, defined circumference measurements, and relaxed progress photos captured from standardised positions.</p>
               <Emphasis>This stage is not about intensity. It is about accuracy.</Emphasis>
               <p>Honest reporting and precise documentation allow the Body Recode&trade; system to function correctly. Overstating capacity or minimising stress does not accelerate progress. It increases volatility. The quality of this data directly influences the integrity of your first exposure phase.</p>
               <p>Once your intake and baseline documentation have been submitted and reviewed, interpretive synthesis can begin. This marks the final step before your Deliberate Start Window opens.</p>
@@ -178,7 +178,7 @@ export default function CoachingGuidePage() {
             </GuideSection>
 
             <GuideSection id="cffs" title="Coach-Facing Foundational Synthesis (CFFS)">
-              <p>During the Deliberate Start Window, your submitted data is synthesised into what is known as the Coach-Facing Foundational Synthesis. This document is not client-facing — it exists as a coaching reference that governs the architecture of your entire program.</p>
+              <p>During the Deliberate Start Window, your submitted data is synthesised into what is known as the Coach-Facing Foundational Synthesis. This document is not client-facing. It exists as a coaching reference that governs the architecture of your entire program.</p>
               <Emphasis>The CFFS identifies your current Body State.</Emphasis>
               <p>Within Body Recode&trade;, Body State is classified across three structural stages:</p>
               <BulletList items={[
@@ -188,7 +188,7 @@ export default function CoachingGuidePage() {
               ]} />
               <p>Once state is clarified, exposure decisions become informed rather than assumed. The question is no longer &ldquo;How hard can we push?&rdquo; It becomes: <strong className="text-white">&ldquo;What does this body currently have the capacity to sustain and adapt to?&rdquo;</strong></p>
               <p>The CFFS determines structural positioning. It informs whether load should stabilise, consolidate, or progress. It defines the boundaries within which adaptation can accumulate safely and predictably.</p>
-              <p>Most training models rely on surface metrics — effort, calorie targets, visible change, or session intensity. Very few systems formally classify biological state before assigning exposure. The CFFS ensures that your program is not generic. It is not reactive. It is not built from assumption.</p>
+              <p>Most training models rely on surface metrics: effort, calorie targets, visible change, or session intensity. Very few systems formally classify biological state before assigning exposure. The CFFS ensures that your program is not generic. It is not reactive. It is not built from assumption.</p>
               <Emphasis>It is constructed from interpretation. Interpretation precedes exposure. The CFFS is that interpretation.</Emphasis>
             </GuideSection>
 
@@ -204,7 +204,7 @@ export default function CoachingGuidePage() {
             </GuideSection>
 
             <GuideSection id="roles" title="Roles and Expectations">
-              <p>Active Coaching operates within defined behavioural boundaries. Structure protects progress. Clarity prevents friction. Roles are not restrictive — they are stabilising.</p>
+              <p>Active Coaching operates within defined behavioural boundaries. Structure protects progress. Clarity prevents friction. Roles are not restrictive. They are stabilising.</p>
               <p><strong className="text-white">Your role</strong> is to execute consistently rather than intensely. This system does not reward dramatic effort spikes. It rewards disciplined repetition. Showing up as prescribed, reporting honestly, and maintaining communication rhythm are the foundations of adaptation.</p>
               <p>You are not expected to override fatigue to prove commitment. You are not required to escalate load independently. Your responsibility is not to push harder than instructed. It is to follow the structure provided.</p>
               <p>Honest reporting is essential. If instability emerges, it must be communicated early. If sleep declines, stress increases, or recovery shifts, that information informs exposure decisions. Withholding data or attempting to compensate through extra effort disrupts the interpretive process.</p>
@@ -267,7 +267,7 @@ export default function CoachingGuidePage() {
               <Emphasis>Body Recode Performance Coaching does not collapse when life becomes unstable. It adjusts deliberately.</Emphasis>
               <p>There are three distinct protective responses inside the system:</p>
               <BulletList items={[
-                { label: 'Containment', desc: 'Occurs when instability signals appear but do not require stopping exposure entirely. May involve temporary reduction in load, reduced density, or simplified structure. Containment can be applied immediately — protection takes priority over progression.' },
+                { label: 'Containment', desc: 'Occurs when instability signals appear but do not require stopping exposure entirely. May involve temporary reduction in load, reduced density, or simplified structure. Containment can be applied immediately. Protection takes priority over progression.' },
                 { label: 'Hold', desc: 'Occurs when exposure remains unchanged despite a desire to escalate. Most commonly happens when check-in pairing requirements are not met or biological signals do not support progression. A hold is not regression. It is structural patience.' },
                 { label: 'Pause', desc: 'More formal. May occur when illness, injury, travel, major life disruption, or regulatory instability make structured training temporarily inappropriate. Pauses are not punishments. They are protective decisions.' },
               ]} />
@@ -278,7 +278,7 @@ export default function CoachingGuidePage() {
 
             <GuideSection id="long-arc" title="The Long Arc of Performance and Body Composition">
               <p>Most clients enter Body Recode Performance Coaching with a clear driver. Regardless of the entry point, the underlying objective is the same: durable change.</p>
-              <p>Body composition change, when pursued through biological stability rather than force, becomes more predictable. Short-term visual shifts can occur quickly in unstable systems — but rapid changes are often followed by regression, volatility, or rebound. Body Recode does not pursue change through intensity spikes. It pursues change through biological stability.</p>
+              <p>Body composition change, when pursued through biological stability rather than force, becomes more predictable. Short-term visual shifts can occur quickly in unstable systems, but rapid changes are often followed by regression, volatility, or rebound. Body Recode does not pursue change through intensity spikes. It pursues change through biological stability.</p>
               <div className="space-y-2 my-4">
                 <PhaseBlock week="Weeks 1–4" desc="Calibration and rhythm stabilisation. Exposure is controlled. Regulation is observed. Patterns begin forming." />
                 <PhaseBlock week="Weeks 4–8" desc="Structural consistency becomes visible. Recovery improves. Load tolerance increases. Behavioural rhythm strengthens. For some, early body composition shifts begin to appear here." />
@@ -363,7 +363,7 @@ function BulletList({ items }: { items: { label: string; desc: string }[] }) {
           <div className="w-1.5 h-1.5 rounded-full bg-teal-400/60 mt-1.5 shrink-0" />
           <div>
             <span className="text-white font-medium text-sm">{item.label}</span>
-            <span className="text-stone-400 text-sm"> — {item.desc}</span>
+            <span className="text-stone-400 text-sm">: {item.desc}</span>
           </div>
         </div>
       ))}
