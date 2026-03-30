@@ -52,24 +52,22 @@ The purpose of this work isn't to make that heavier. It's to give you a way to u
     id: 3,
     name: 'Hot Spot Framing',
     duration: '5-7 min',
-    goal: 'Identify the specific point where effort and response stopped feeling aligned.',
-    script: `"Before we talk about what support could look like, I want to pause on something important.
+    goal: 'Name the hot spot from Zoom 1, confirm it, make them feel understood. Do not move to pricing until this is done.',
+    script: `"Before we talk about what support looks like, I want to come back to something you mentioned earlier.
 
-When you decided to do the check-in, there was probably something that felt unclear or frustrating.
+[Name the specific thing from Zoom 1 — e.g. "You said you've been training consistently but your body isn't responding the way it should." OR "You mentioned you've tried a few different things and nothing has really clicked." OR "You said something shifted — and you're not sure when or why."]
 
-Not a goal - but a point where things stopped making sense.
+That's what I'd call the hot spot. It's not a goal. It's the point where effort and response stopped feeling aligned.
 
-What has that been like for you?"`,
+Is that still the right way to describe it?"`,
     prompts: [
-      'What has that been like for you?',
-      'How long has it felt that way?',
-      'Have you been able to make sense of it on your own?',
-      'IF MOTIVATION COMES UP - "That might be true. Inside Body Recode, we treat motivation as information. What matters is why it feels unreliable right now."',
-      '↳ "For some people, motivation drops because they\'re avoiding effort. For others, it drops because they\'ve been putting effort in without clear feedback or trust. Those require different responses."',
-      'IF ENGAGEMENT APPEARS LOW - "If someone isn\'t in a place to engage consistently right now, coaching doesn\'t change that. What coaching can do is remove confusion so that, when engagement is there, it\'s used well."',
+      '↳ If yes → "Good. That\'s exactly what we\'re going to address. Let me explain how."',
+      '↳ If they add more → let them talk. The more specific they get, the more invested they become.',
+      'IF MOTIVATION COMES UP → "Motivation is information, not the problem. The question is what it\'s telling us about where your system is right now."',
+      'IF THEY MINIMISE IT → "Most people do that — they\'ve been managing it for so long it starts to feel normal. It\'s not."',
     ],
-    tips: 'A hot spot is not a goal or outcome. It is the point where effort and response no longer feel aligned. You need this clearly articulated before moving to pricing.',
-    boundary: 'Do not move to pricing until the hot spot is clearly named and the member feels understood.',
+    tips: 'You already know the hot spot from Zoom 1. This stage is about naming it back precisely and watching them confirm it. You are not fishing — you are reflecting. The goal is for them to feel understood before pricing is introduced.',
+    boundary: 'Do not move to pricing until the hot spot is clearly named and confirmed. Do not ask open questions — name it and confirm it.',
   },
   {
     id: 4,
@@ -363,6 +361,7 @@ export default function Zoom2Companion({
     if (stageScrollRef.current) {
       stageScrollRef.current.scrollTop = 0
     }
+    setActiveTab('prompts')
   }, [currentStage])
 
   useEffect(() => {
