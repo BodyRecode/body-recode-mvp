@@ -10,6 +10,12 @@ const PACKAGES: Record<string, { label: string; price: string; stripe: string }>
   '3x': { label: 'In-Person 3x', price: '$409/week', stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
 }
 
+const FOUNDING_PACKAGES: Record<string, { label: string; price: string; stripe: string }> = {
+  online: { label: 'Online Coaching (Founding Client)', price: '$74.50/week', stripe: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04' },
+  '2x': { label: 'In-Person 2x (Founding Client)', price: '$149.50/week', stripe: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05' },
+  '3x': { label: 'In-Person 3x (Founding Client)', price: '$204.50/week', stripe: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06' },
+}
+
 export async function POST(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -23,7 +29,7 @@ export async function POST(
   const admin = createAdminClient()
   const { data: client, error: clientError } = await admin
     .from('clients')
-    .select('id, name, email, package')
+    .select('id, name, email, package, is_founding_client')
     .eq('id', id)
     .maybeSingle()
 
@@ -32,7 +38,8 @@ export async function POST(
   if (!client.email) return NextResponse.json({ error: 'No email address for this client' }, { status: 400 })
   if (!client.package) { console.error('No package on client:', client); return NextResponse.json({ error: 'No package selected' }, { status: 400 }) }
 
-  const pkg = PACKAGES[client.package]
+  const packageMap = client.is_founding_client ? FOUNDING_PACKAGES : PACKAGES
+  const pkg = packageMap[client.package]
   if (!pkg) { console.error('Invalid package value:', client.package); return NextResponse.json({ error: 'Invalid package' }, { status: 400 }) }
 
   const firstName = client.name.split(' ')[0]

@@ -9,7 +9,13 @@ const PACKAGES = [
   { value: '3x', label: 'In-Person 3x - $409/week', stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
 ]
 
-export default function PackageManager({ clientId, currentPackage }: { clientId: string; currentPackage?: string }) {
+const FOUNDING_PACKAGES = [
+  { value: 'online', label: 'Online - $74.50/week (Founding)', stripe: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04' },
+  { value: '2x', label: 'In-Person 2x - $149.50/week (Founding)', stripe: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05' },
+  { value: '3x', label: 'In-Person 3x - $204.50/week (Founding)', stripe: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06' },
+]
+
+export default function PackageManager({ clientId, currentPackage, isFoundingClient }: { clientId: string; currentPackage?: string; isFoundingClient?: boolean }) {
   const router = useRouter()
   const [pkg, setPkg] = useState(currentPackage ?? '')
   const [saving, setSaving] = useState(false)
@@ -17,6 +23,8 @@ export default function PackageManager({ clientId, currentPackage }: { clientId:
   const [copied, setCopied] = useState(false)
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
+
+  const packages = isFoundingClient ? FOUNDING_PACKAGES : PACKAGES
 
   const save = async (newPkg: string) => {
     setPkg(newPkg)
@@ -33,7 +41,7 @@ export default function PackageManager({ clientId, currentPackage }: { clientId:
   }
 
   const copyLink = async () => {
-    const found = PACKAGES.find(p => p.value === pkg)
+    const found = packages.find(p => p.value === pkg)
     if (!found) return
     const url = `${found.stripe}?client_reference_id=${clientId}`
     await navigator.clipboard.writeText(url)
@@ -51,12 +59,15 @@ export default function PackageManager({ clientId, currentPackage }: { clientId:
     }
   }
 
-  const currentInfo = PACKAGES.find(p => p.value === pkg)
+  const currentInfo = packages.find(p => p.value === pkg)
 
   return (
     <div className="space-y-3">
+      {isFoundingClient && (
+        <p className="text-xs text-violet-400 font-semibold">Founding Client rates (50% adjusted)</p>
+      )}
       <div className="flex flex-wrap gap-2">
-        {PACKAGES.map(p => (
+        {packages.map(p => (
           <button
             key={p.value}
             onClick={() => save(p.value)}

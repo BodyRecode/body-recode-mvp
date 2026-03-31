@@ -243,7 +243,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </span>
           )}
         </div>
-        <PackageManager clientId={client.id} currentPackage={client.package} />
+        <PackageManager clientId={client.id} currentPackage={client.package} isFoundingClient={client.is_founding_client ?? false} />
       </div>
 
       {/* Onboarding status */}
