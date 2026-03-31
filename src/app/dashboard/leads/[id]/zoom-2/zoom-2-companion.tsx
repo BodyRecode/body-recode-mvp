@@ -316,6 +316,7 @@ export default function Zoom2Companion({
   const [pathwayType, setPathwayType] = useState<PathwayType | null>(null)
   const [sendingAgreement, setSendingAgreement] = useState(false)
   const [agreementSent, setAgreementSent] = useState(false)
+  const [agreementSignedConfirmed, setAgreementSignedConfirmed] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const stageScrollRef = useRef<HTMLDivElement | null>(null)
 
@@ -796,9 +797,21 @@ export default function Zoom2Companion({
                         {sendingAgreement ? 'Sending...' : 'Send Case Study Agreement'}
                       </button>
                     </div>
-                  ) : agreementSent ? (
-                    <div className="text-xs font-bold px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-center">
-                      Agreement sent — await signature before payment
+                  ) : agreementSent && !agreementSignedConfirmed ? (
+                    <div className="space-y-2">
+                      <div className="text-xs font-bold px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-center">
+                        Agreement sent. Await signature before payment.
+                      </div>
+                      <button
+                        onClick={() => setAgreementSignedConfirmed(true)}
+                        className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20 transition-colors"
+                      >
+                        Agreement signed. Send commencement fee.
+                      </button>
+                    </div>
+                  ) : agreementSent && agreementSignedConfirmed ? (
+                    <div className="text-xs font-bold px-3 py-2 rounded-lg bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] text-center">
+                      Founding Client — send commencement fee link
                     </div>
                   ) : decisionPath !== 'C' ? (
                     <div className={`text-xs font-bold px-3 py-2 rounded-lg text-center ${
