@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
   try {
     message = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 4000,
+      max_tokens: 8000,
       system: buildProgramSystemPrompt(),
       messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[]) }],
     })
