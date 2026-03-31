@@ -26,7 +26,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   if (clientError) console.error('Client fetch error:', clientError)
   if (!client) notFound()
 
-  const [{ data: cffsRecords }, { data: invitations }, { data: intakes }, { data: cfwsRecords }, { data: recentCheckins }, { data: baselines }] = await Promise.all([
+  const [{ data: cffsRecords }, { data: invitations }, { data: intakes }, { data: cfwsRecords }, { data: recentCheckins }, { data: baselines }, { data: activePrograms }] = await Promise.all([
     admin
       .from('cffs')
       .select('*')
@@ -61,6 +61,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .select('*')
       .eq('client_id', id)
       .order('created_at', { ascending: false }),
+    admin
+      .from('programs')
+      .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, generated_at')
+      .eq('client_id', id)
+      .eq('is_active', true)
+      .maybeSingle(),
   ])
 
   const activeCffs = cffsRecords?.find(c => !c.is_archived) || null
@@ -81,6 +87,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     .sort((a, b) => b[0] - a[0])[0]?.[0] ?? null
   const latestBaseline = baselines?.[0] || null
   const baselineToken = client.baseline_token as string | undefined
+  const activeProgram = activePrograms || null
 
   const readinessItems = activeCffs
     ? [
@@ -632,6 +639,47 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 </Link>
               ))}
             </div>
+          </div>
+        )}
+      </div>
+
+      {/* Training Program Section */}
+      <div className="mt-6">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Training Program <span className="text-stone-600 font-normal">— PTS</span></h2>
+          <Link
+            href={`/dashboard/clients/${id}/program/generate`}
+            className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+          >
+            {activeProgram ? 'Regenerate' : 'Generate Program'}
+          </Link>
+        </div>
+
+        {activeProgram ? (
+          <Link
+            href={`/dashboard/clients/${id}/program`}
+            className="block bg-stone-900 border border-stone-800 rounded-xl p-5 hover:border-stone-600 transition-colors"
+          >
+            <div className="flex items-start justify-between mb-2">
+              <p className="text-sm font-semibold text-stone-200">{activeProgram.block_name}</p>
+              <div className="flex gap-1.5">
+                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">
+                  {activeProgram.progression_phase}
+                </span>
+                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">
+                  {activeProgram.training_goal}
+                </span>
+              </div>
+            </div>
+            <p className="text-xs text-stone-500">
+              {activeProgram.training_frequency}x/week · {activeProgram.week_duration} weeks · Generated {formatDate(activeProgram.generated_at)}
+            </p>
+            <p className="text-xs text-[#10E1C2] mt-2">View full program →</p>
+          </Link>
+        ) : (
+          <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-5 text-center">
+            <p className="text-stone-500 text-sm">No program generated yet</p>
+            <p className="text-stone-600 text-xs mt-1">Generate a program once the CFFS is complete</p>
           </div>
         )}
       </div>
