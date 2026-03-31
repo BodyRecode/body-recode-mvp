@@ -10,6 +10,7 @@ import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
+import SendPortalEmailButton from '@/components/send-portal-email-button'
 import ClientDangerActions from './client-danger-actions'
 import FoundingClientStatusManager from '@/components/founding-client-status-manager'
 
@@ -247,7 +248,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
           <p className="text-xs uppercase tracking-wider text-stone-500">Onboarding</p>
-          <PortalInviteButton clientId={client.id} onboardingToken={client.onboarding_token} />
+          <div className="flex items-center gap-2">
+            <SendPortalEmailButton clientId={client.id} />
+            <PortalInviteButton clientId={client.id} onboardingToken={client.onboarding_token} />
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-2">
           {[
