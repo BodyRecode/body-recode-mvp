@@ -113,6 +113,7 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
         <p className="text-sm text-gray-500 mt-1">
           Set prescription inputs. All doctrine rules will be applied automatically.
         </p>
+        <p className="text-xs text-gray-400 mt-1 font-mono">debug: clientId = {clientId}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
