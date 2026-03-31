@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getCheckInWindowStatus, getWeekNumber } from '@/lib/weekly-checkin-questions'
+import ClientHeader from '@/components/client-header'
 
 export default async function PortalPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -99,10 +100,9 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="max-w-lg mx-auto px-6 py-12">
-        {/* Header */}
+      <ClientHeader />
+      <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-3"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-2xl font-bold text-white mb-1">Welcome, {firstName}</h1>
           <p className="text-stone-400 text-sm">Your coaching portal, everything in one place.</p>
         </div>

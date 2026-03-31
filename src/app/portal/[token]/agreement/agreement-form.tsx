@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AGREEMENT_SECTIONS } from '@/lib/agreement-sections'
+import ClientHeader from '@/components/client-header'
 
 export default function AgreementForm({
   clientId,
@@ -42,9 +43,9 @@ export default function AgreementForm({
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="max-w-lg mx-auto px-6 py-12">
+      <ClientHeader />
+      <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-3"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-2xl font-bold text-white mb-1">Coaching Agreement</h1>
           <p className="text-stone-500 text-xs mb-1">Version 2.5 — Sole Trader, Queensland, Australia</p>
           <p className="text-stone-400 text-sm">Please read the full agreement before signing.</p>

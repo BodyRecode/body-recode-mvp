@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import ClientHeader from '@/components/client-header'
 
 const CARDIO_SYMPTOMS = [
   'Unusual shortness of breath with light effort',
@@ -154,9 +155,9 @@ export default function HealthDeclarationForm({
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="max-w-lg mx-auto px-6 py-12">
+      <ClientHeader />
+      <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-3"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-2xl font-bold text-white mb-1">Health Declaration</h1>
           <p className="text-stone-400 text-sm leading-relaxed">This screening ensures your coaching program is structured safely and appropriately for you. Answer all questions honestly and completely.</p>
         </div>

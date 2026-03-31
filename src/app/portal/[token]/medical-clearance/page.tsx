@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ClearanceUploadForm from './clearance-upload-form'
+import ClientHeader from '@/components/client-header'
 
 export default async function PortalMedicalClearancePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -107,10 +108,10 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="max-w-lg mx-auto px-6 py-12">
+      <ClientHeader />
+      <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
           <Link href={`/portal/${token}`} className="text-xs text-stone-500 hover:text-stone-300 transition-colors mb-6 inline-block">← Back to portal</Link>
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-3"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-2xl font-bold text-white mb-2">Medical Clearance</h1>
           <p className="text-stone-400 text-sm leading-relaxed">Based on your health declaration, we need written confirmation from your GP that you are cleared for supervised progressive exercise before training begins.</p>
         </div>

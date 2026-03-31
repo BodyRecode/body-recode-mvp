@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import ClientHeader from '@/components/client-header'
 
 interface Props {
   clientId: string
@@ -60,7 +61,7 @@ export default function BaselineForm({ clientId, clientName }: Props) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-4"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
+          <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style={{ display: 'block', margin: '0 auto 20px' }} />
           <h1 className="text-2xl font-bold text-white mb-3">Baseline received.</h1>
           <p className="text-stone-400 text-sm leading-relaxed">Baseline documentation protects interpretive integrity. It allows exposure to be guided by structure rather than emotion. This marks the starting calibration point of your coaching arc.</p>
           <p className="text-stone-500 text-xs mt-4">Your coach will review your documentation and your Deliberate Start Window will begin shortly.</p>
@@ -82,11 +83,11 @@ export default function BaselineForm({ clientId, clientName }: Props) {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="max-w-lg mx-auto px-6 py-12">
+      <ClientHeader />
+      <div className="max-w-lg mx-auto px-6 py-10">
 
         {/* Header */}
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-4"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-2xl font-bold text-white mb-1">Baseline Documentation</h1>
           <p className="text-stone-400 text-sm">Hi {firstName} — this is a formal calibration event, not a cosmetic assessment.</p>
         </div>
