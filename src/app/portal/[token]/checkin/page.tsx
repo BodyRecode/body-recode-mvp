@@ -43,7 +43,7 @@ export default async function PortalCheckinPage({ params }: { params: Promise<{ 
 
   const startDate = client.coaching_started_at || client.created_at
   const weekNumber = getWeekNumber(startDate)
-  const { formType } = window
+  let { formType } = window
 
   const { data: existing } = await admin
     .from('weekly_checkins')
@@ -53,7 +53,24 @@ export default async function PortalCheckinPage({ params }: { params: Promise<{ 
     .eq('form_type', formType)
     .single()
 
-  if (existing) {
+  // In test mode: if current form already submitted, flip to the other form
+  if (existing && testMode) {
+    const otherType: 'A' | 'B' = formType === 'A' ? 'B' : 'A'
+    const { data: otherExisting } = await admin
+      .from('weekly_checkins')
+      .select('id')
+      .eq('client_id', client.id)
+      .eq('week_number', weekNumber)
+      .eq('form_type', otherType)
+      .single()
+    if (!otherExisting) {
+      formType = otherType
+    }
+  }
+
+  const alreadyDone = existing && !(testMode && formType !== window.formType)
+
+  if (alreadyDone) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">

@@ -83,12 +83,26 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const windowOpen = checkinWindow.isOpen || testMode
   const startDate = client.coaching_started_at || client.created_at
   const weekNumber = startDate ? getWeekNumber(startDate) : null
-  const thisWeekCheckin = weekNumber && Array.isArray(client.weekly_checkins)
-    ? client.weekly_checkins.find((c: { week_number: number; form_type: string }) =>
-        c.week_number === weekNumber && c.form_type === checkinWindow.formType
-      )
-    : null
-  const checkinDoneThisWeek = !!thisWeekCheckin
+
+  const thisWeekFormADone = weekNumber && Array.isArray(client.weekly_checkins)
+    ? !!client.weekly_checkins.find((c: { week_number: number; form_type: string }) => c.week_number === weekNumber && c.form_type === 'A')
+    : false
+  const thisWeekFormBDone = weekNumber && Array.isArray(client.weekly_checkins)
+    ? !!client.weekly_checkins.find((c: { week_number: number; form_type: string }) => c.week_number === weekNumber && c.form_type === 'B')
+    : false
+
+  // In test mode, both forms need to be submitted before showing "done"
+  // In normal mode, only the current window's form matters
+  const checkinDoneThisWeek = testMode
+    ? (thisWeekFormADone && thisWeekFormBDone)
+    : (checkinWindow.formType === 'A' ? thisWeekFormADone : thisWeekFormBDone)
+
+  // Determine which form to show next in test mode
+  const activeFormType: 'A' | 'B' = testMode && checkinWindow.formType === 'A' && thisWeekFormADone && !thisWeekFormBDone
+    ? 'B'
+    : testMode && checkinWindow.formType === 'B' && thisWeekFormBDone && !thisWeekFormADone
+    ? 'A'
+    : checkinWindow.formType
 
   const opensAt = checkinWindow.opensAt.toLocaleString('en-AU', {
     timeZone: 'Australia/Brisbane',
@@ -170,7 +184,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-teal-400">Check-in submitted</p>
-                    <p className="text-xs text-stone-500 mt-0.5">Week {weekNumber} Form {checkinWindow.formType} — your coach will review shortly.</p>
+                    <p className="text-xs text-stone-500 mt-0.5">Week {weekNumber} — your coach will review shortly.</p>
                   </div>
                 </div>
               </div>
@@ -181,7 +195,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-white mb-1">Weekly check-in — Form {checkinWindow.formType}</p>
+                    <p className="text-sm font-semibold text-white mb-1">Weekly check-in — Form {activeFormType}</p>
                     <p className="text-xs text-stone-400">Week {weekNumber} · Window closes Sunday 6pm Brisbane time.</p>
                   </div>
                   <span className="text-xs font-bold text-teal-400 ml-4">Start →</span>
