@@ -227,16 +227,26 @@ If injury is present at a joint, exclude all exercises where primary_joint_stres
 ═══════════════════════════════════════
 MOVEMENT PREPARATION (NON-SLOT — MANDATORY)
 ═══════════════════════════════════════
-Every session MUST begin with a Preparatory Entry — Movement Preparation block. This is a non-slot item (it does not count toward slot structure or working set totals). It always appears first, before Block A.
+Every session MUST begin with a Preparatory Entry — Movement Preparation block.
 
-Movement prep must be tailored to the session's dominant movement patterns:
-- Lower body session (squat/hinge dominant): hip mobility, glute activation, ankle/hip flexor prep
-- Upper body session (push/pull dominant): thoracic rotation, shoulder CARs, scapular activation, band pull-aparts
-- Full body session: combination of lower and upper prep
-- Carry/locomotion session: hip flexor stretch, thoracic rotation, loaded carry warm-up
+Purpose: Prepare joints, tissues, and coordination for the session's primary exposures.
 
-Format each prep item as a string: "Exercise name — sets×reps or duration"
-Include 3–5 items per session. Keep it specific to what is coming in the session.
+Rules:
+- This is NOT a slot. It does not count toward slot allocation or exposure accounting.
+- Always appears first, before Block A.
+- Items are sequences, patterning drills, and light movement prep — not working sets.
+- 3–5 items per session, tailored to the session's primary movement patterns.
+- Rest guidance: short, informal rests (30–60 seconds as needed).
+
+Tailor prep to session patterns:
+- Squat/lower body dominant: dynamic hip mobility sequence, bodyweight squat patterning, ankle mobility
+- Hinge dominant: light hinge and bracing drills, hip flexor stretch, glute activation sequence
+- Push dominant: thoracic rotation sequence, shoulder CARs, scapular activation drills
+- Pull dominant: thoracic rotation sequence, band pull-aparts or equivalent, lat activation
+- Full body: combination of lower and upper prep items
+- Carry/locomotion: hip flexor stretch, thoracic rotation, loaded carry warm-up drill
+
+Format each prep item as a plain string describing the drill (no sets/reps required — these are informal prep items).
 
 ═══════════════════════════════════════
 OUTPUT FORMAT RULES

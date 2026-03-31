@@ -180,14 +180,19 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
                     {/* Movement Prep — Non-Slot */}
                     {session.movement_prep?.length > 0 && (
                       <div className="px-5 py-4 bg-stone-800/30">
-                        <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-3">
-                          Preparatory Entry — Movement Preparation <span className="text-stone-600 font-normal normal-case tracking-normal">(Non-Slot)</span>
+                        <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-1">
+                          Preparatory Entry — Movement Preparation
                         </p>
-                        <div className="space-y-1.5">
+                        <p className="text-[10px] text-stone-600 mb-3">Non-Slot · Prepare joints, tissues, and coordination for the session&apos;s primary exposures</p>
+                        <div className="space-y-1.5 mb-3">
                           {session.movement_prep.map((item, i) => (
-                            <p key={i} className="text-sm text-stone-400">{item}</p>
+                            <div key={i} className="flex items-start gap-2">
+                              <span className="text-stone-600 mt-0.5">•</span>
+                              <p className="text-sm text-stone-300">{item}</p>
+                            </div>
                           ))}
                         </div>
+                        <p className="text-xs text-stone-600 italic">Rest: short, informal (30–60 seconds as needed)</p>
                       </div>
                     )}
 
