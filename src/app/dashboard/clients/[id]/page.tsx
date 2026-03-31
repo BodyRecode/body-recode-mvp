@@ -518,54 +518,84 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
         {/* Latest CFWS */}
         {latestCfws ? (
-          <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-3">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-xs uppercase tracking-wider text-stone-500">Week {latestCfws.week_number} Synthesis</p>
-              <div className="flex items-center gap-2">
-                {latestCompleteWeek && <RegenerateCFWSButton clientId={id} weekNumber={latestCompleteWeek} />}
-                <Link
-                  href={`/dashboard/clients/${client.id}/cfws-report`}
-                  target="_blank"
-                  className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
-                >
-                  View report ↗
-                </Link>
-                <span className="text-xs text-stone-500">{formatDate(latestCfws.generated_at)}</span>
+          <>
+            {/* Readiness grid */}
+            <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-4">
+              <div className="px-5 pt-5 pb-4 border-b border-stone-800">
+                <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">Exposure Readiness</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { label: 'Capacity', value: latestCfws.exposure_readiness_capacity },
+                    { label: 'Schedule', value: latestCfws.exposure_readiness_schedule },
+                    { label: 'Regulation', value: latestCfws.exposure_readiness_regulation },
+                    { label: 'Behaviour', value: latestCfws.exposure_readiness_behaviour },
+                  ].map(item => (
+                    <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
+                      item.value === 'Green' ? 'bg-green-950/40 border-green-500' :
+                      item.value === 'Amber' ? 'bg-amber-950/40 border-amber-500' :
+                      item.value === 'Red' ? 'bg-red-950/40 border-red-500' :
+                      'bg-stone-800 border-stone-600'
+                    }`}>
+                      <p className={`text-xs font-bold mb-0.5 ${
+                        item.value === 'Green' ? 'text-green-400' :
+                        item.value === 'Amber' ? 'text-amber-400' :
+                        item.value === 'Red' ? 'text-red-400' :
+                        'text-stone-400'
+                      }`}>{item.value}</p>
+                      <p className="text-[10px] text-stone-500 font-medium uppercase tracking-wide">{item.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center justify-between px-5 py-3">
+                <p className="text-stone-600 text-xs">Generated {formatDate(latestCfws.generated_at)}</p>
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={`/dashboard/clients/${client.id}/cfws-report`}
+                    target="_blank"
+                    className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+                  >
+                    Download PDF
+                  </Link>
+                  {latestCompleteWeek && <RegenerateCFWSButton clientId={id} weekNumber={latestCompleteWeek} />}
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-2 mb-4">
-              {[
-                { label: 'Capacity', value: latestCfws.exposure_readiness_capacity },
-                { label: 'Schedule', value: latestCfws.exposure_readiness_schedule },
-                { label: 'Regulation', value: latestCfws.exposure_readiness_regulation },
-                { label: 'Behaviour', value: latestCfws.exposure_readiness_behaviour },
-              ].map(item => (
-                <div key={item.label} className="text-center">
-                  <div className={`w-3 h-3 rounded-full mx-auto mb-1.5 ${getReadinessColour(item.value)}`} />
-                  <p className="text-xs text-stone-500">{item.label}</p>
-                  <p className="text-xs text-stone-300 font-medium">{item.value}</p>
-                </div>
-              ))}
+            {/* About block */}
+            <div className="border-l-2 border-[#10E1C2] bg-stone-900/50 border border-stone-800 rounded-xl p-5 mb-4">
+              <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-3">About This Report</p>
+              <p className="text-sm font-semibold text-stone-200 leading-relaxed mb-3">
+                This is not a summary. It is a structured interpretation of how this client&apos;s system is behaving this week.
+              </p>
+              <p className="text-sm text-stone-500 leading-relaxed">
+                The CFWS translates weekly check-in signals across training load, recovery, regulation, and lifestyle into a coherent picture. Nothing here prescribes or diagnoses — you remain the interpretive authority.
+              </p>
             </div>
 
-            <div className="space-y-3">
+            {/* CFWS Sections */}
+            <div className="space-y-2 mb-6">
               {[
                 { label: 'Context Snapshot', content: latestCfws.client_context_snapshot },
-                { label: 'Dominant Patterns', content: latestCfws.dominant_weekly_patterns },
+                { label: 'Dominant Weekly Patterns', content: latestCfws.dominant_weekly_patterns },
                 { label: 'Capacity Constraints', content: latestCfws.weekly_capacity_constraints },
                 { label: 'Risk Flags', content: latestCfws.weekly_risk_flags },
                 { label: 'Tensions & Trade-Offs', content: latestCfws.weekly_tensions_tradeoffs },
-                { label: 'Non-Directives', content: latestCfws.explicit_weekly_non_directives },
+                { label: 'Explicit Non-Directives', content: latestCfws.explicit_weekly_non_directives },
                 { label: 'Closing Notes', content: latestCfws.closing_weekly_notes },
-              ].filter(s => s.content).map(section => (
-                <div key={section.label} className="border-t border-stone-800 pt-3">
-                  <p className="text-xs uppercase tracking-wider text-stone-600 mb-1">{section.label}</p>
-                  <p className="text-sm text-stone-300 leading-relaxed">{section.content}</p>
+              ].filter(s => s.content).map((section, i) => (
+                <div key={section.label} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+                  <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800 bg-stone-900/80">
+                    <span className="text-[11px] font-black text-[#10E1C2]">{String(i + 1).padStart(2, '0')}</span>
+                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">{section.label}</p>
+                  </div>
+                  <div className="px-5 py-4">
+                    <p className="text-sm text-stone-200 leading-relaxed">{section.content}</p>
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
+          </>
         ) : (
           <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-5 mb-3 text-center">
             <p className="text-stone-500 text-sm">No weekly synthesis yet</p>
