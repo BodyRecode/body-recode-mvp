@@ -33,7 +33,7 @@ export function getLeadStatusLabel(status: string) {
     zoom_2_booked: 'Zoom 2 Booked',
     zoom_2_completed: 'Zoom 2 Done',
     closed_declined: 'Closed — Declined',
-    commencement_fee_paid: 'Fee Paid',
+    commencement_fee_paid: 'Commencement Fee Paid',
     active_deliberate_start: 'Deliberate Start',
     active_coaching: 'Active Coaching',
   }
