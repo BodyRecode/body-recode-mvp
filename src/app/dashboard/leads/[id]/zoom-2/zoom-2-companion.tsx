@@ -834,7 +834,7 @@ export default function Zoom2Companion({
                       Path {decisionPath} recorded
                     </div>
                   ) : (
-                    <CommencementFeeButton leadId={leadId} label={`Send Commencement Fee (${pathwayType === 'full_rate' ? 'Full Rate' : 'Online'})`} />
+                    <CommencementFeeButton leadId={leadId} />
                   )}
                 </div>
               )}
