@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -6,9 +5,9 @@ import ApproveClearanceButton from './approve-clearance-button'
 
 export default async function MedicalClearancePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const supabase = await createClient()
+  const admin = createAdminClient()
 
-  const { data: client } = await supabase
+  const { data: client } = await admin
     .from('clients')
     .select('id, name, email, medical_clearance_required, medical_clearance_received_at, medical_clearance_submitted_at, medical_clearance_doc_url')
     .eq('id', id)
@@ -23,7 +22,6 @@ export default async function MedicalClearancePage({ params }: { params: Promise
   // Generate signed URL if doc exists
   let docSignedUrl: string | null = null
   if (client.medical_clearance_doc_url) {
-    const admin = createAdminClient()
     const { data } = await admin.storage
       .from('clearance-docs')
       .createSignedUrl(client.medical_clearance_doc_url, 60 * 60) // 1 hour

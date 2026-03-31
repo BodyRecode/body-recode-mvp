@@ -1,14 +1,14 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import PrintTrigger from './print-trigger'
 
 export default async function CFFSReportPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const supabase = await createClient()
+  const admin = createAdminClient()
 
   const [{ data: client }, { data: cffsRows }] = await Promise.all([
-    supabase.from('clients').select('*').eq('id', id).maybeSingle(),
-    supabase.from('cffs').select('*').eq('client_id', id).eq('is_archived', false).order('generated_at', { ascending: false }).limit(1),
+    admin.from('clients').select('*').eq('id', id).maybeSingle(),
+    admin.from('cffs').select('*').eq('client_id', id).eq('is_archived', false).order('generated_at', { ascending: false }).limit(1),
   ])
 
   const cffs = cffsRows?.[0] ?? null

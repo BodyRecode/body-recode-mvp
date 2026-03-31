@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
@@ -16,8 +15,6 @@ import FoundingClientStatusManager from '@/components/founding-client-status-man
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const supabase = await createClient()
-
   const admin = createAdminClient()
   const { data: client, error: clientError } = await admin
     .from('clients')

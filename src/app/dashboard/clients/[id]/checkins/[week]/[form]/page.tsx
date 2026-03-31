@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { FORM_A_SECTIONS, FORM_B_SECTIONS } from '@/lib/weekly-checkin-questions'
@@ -14,9 +14,9 @@ export default async function CheckInDetailPage({
 
   if (!['A', 'B'].includes(formType) || isNaN(weekNumber)) notFound()
 
-  const supabase = await createClient()
+  const admin = createAdminClient()
 
-  const { data: client } = await supabase
+  const { data: client } = await admin
     .from('clients')
     .select('id, name')
     .eq('id', id)
@@ -24,7 +24,7 @@ export default async function CheckInDetailPage({
 
   if (!client) notFound()
 
-  const { data: checkin } = await supabase
+  const { data: checkin } = await admin
     .from('weekly_checkins')
     .select('responses, submitted_at')
     .eq('client_id', id)

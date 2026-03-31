@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
@@ -24,9 +24,9 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 export default async function HealthDeclarationViewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const supabase = await createClient()
+  const admin = createAdminClient()
 
-  const { data: client } = await supabase
+  const { data: client } = await admin
     .from('clients')
     .select('id, name, email, health_declaration_submitted_at, health_declaration_data, medical_clearance_required')
     .eq('id', id)
