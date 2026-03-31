@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import CommencementFeeButton from '@/components/commencement-fee-button'
 
 type SignalLevel = 1 | 2 | 3
 type SignalKey = 'sls' | 'rps' | 'rils'
@@ -296,6 +297,8 @@ interface Zoom2CompanionProps {
   rilsLevel: SignalLevel
   leadId: string
   initialNotes: string
+  zoom2TriggerType: string | null
+  agreementStatus: 'pending' | 'signed' | null
 }
 
 export default function Zoom2Companion({
@@ -305,6 +308,8 @@ export default function Zoom2Companion({
   rilsLevel,
   leadId,
   initialNotes,
+  zoom2TriggerType,
+  agreementStatus,
 }: Zoom2CompanionProps) {
   const [currentStage, setCurrentStage] = useState(0)
   const [seconds, setSeconds] = useState(0)
@@ -312,11 +317,20 @@ export default function Zoom2Companion({
   const [notes, setNotes] = useState(initialNotes)
   const [saving, setSaving] = useState(false)
   const [activeTab, setActiveTab] = useState<'prompts' | 'objection_triggered' | 'manual_override' | 'online' | 'signals'>('prompts')
-  const [decisionPath, setDecisionPath] = useState<'A' | 'B' | 'C' | null>(null)
-  const [pathwayType, setPathwayType] = useState<PathwayType | null>(null)
+  const [decisionPath, setDecisionPath] = useState<'A' | 'B' | 'C' | null>(zoom2TriggerType !== undefined && zoom2TriggerType !== null ? 'C' : null)
+  const [pathwayType, setPathwayType] = useState<PathwayType | null>(() => {
+    if (!zoom2TriggerType) return null
+    const map: Record<string, PathwayType> = {
+      null: 'full_rate',
+      objection_triggered: 'founding_client_objection_triggered',
+      manual_override: 'founding_client_manual_override',
+      online: 'online',
+    }
+    return map[zoom2TriggerType] ?? null
+  })
   const [sendingAgreement, setSendingAgreement] = useState(false)
-  const [agreementSent, setAgreementSent] = useState(false)
-  const [agreementSignedConfirmed, setAgreementSignedConfirmed] = useState(false)
+  const [agreementSent, setAgreementSent] = useState(agreementStatus !== null)
+  const [agreementSignedConfirmed, setAgreementSignedConfirmed] = useState(agreementStatus === 'signed')
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const stageScrollRef = useRef<HTMLDivElement | null>(null)
 
@@ -810,9 +824,7 @@ export default function Zoom2Companion({
                       </button>
                     </div>
                   ) : agreementSent && agreementSignedConfirmed ? (
-                    <div className="text-xs font-bold px-3 py-2 rounded-lg bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] text-center">
-                      Founding Client — send commencement fee link
-                    </div>
+                    <CommencementFeeButton leadId={leadId} />
                   ) : decisionPath !== 'C' ? (
                     <div className={`text-xs font-bold px-3 py-2 rounded-lg text-center ${
                       decisionPath === 'A'
@@ -822,9 +834,7 @@ export default function Zoom2Companion({
                       Path {decisionPath} recorded
                     </div>
                   ) : (
-                    <div className="text-xs font-bold px-3 py-2 rounded-lg bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] text-center">
-                      {pathwayType === 'full_rate' ? 'Full Rate' : 'Online'} — send commencement fee link
-                    </div>
+                    <CommencementFeeButton leadId={leadId} label={`Send Commencement Fee (${pathwayType === 'full_rate' ? 'Full Rate' : 'Online'})`} />
                   )}
                 </div>
               )}
