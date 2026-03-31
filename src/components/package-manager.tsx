@@ -15,6 +15,8 @@ export default function PackageManager({ clientId, currentPackage }: { clientId:
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
 
   const save = async (newPkg: string) => {
     setPkg(newPkg)
@@ -39,6 +41,16 @@ export default function PackageManager({ clientId, currentPackage }: { clientId:
     setTimeout(() => setCopied(false), 2000)
   }
 
+  const sendLink = async () => {
+    setSending(true)
+    const res = await fetch(`/api/clients/${clientId}/send-subscription`, { method: 'POST' })
+    setSending(false)
+    if (res.ok) {
+      setSent(true)
+      setTimeout(() => setSent(false), 3000)
+    }
+  }
+
   const currentInfo = PACKAGES.find(p => p.value === pkg)
 
   return (
@@ -61,12 +73,21 @@ export default function PackageManager({ clientId, currentPackage }: { clientId:
       </div>
       {saved && <p className="text-xs text-teal-400">Package updated</p>}
       {currentInfo && (
-        <button
-          onClick={copyLink}
-          className="text-xs font-bold px-4 py-2 bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] rounded-lg hover:bg-[#10E1C2]/20 transition-colors"
-        >
-          {copied ? 'Link Copied!' : `Copy ${currentInfo.label} Subscription Link`}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={sendLink}
+            disabled={sending || sent}
+            className="text-xs font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors disabled:opacity-50"
+          >
+            {sending ? 'Sending...' : sent ? 'Sent!' : 'Send to Client'}
+          </button>
+          <button
+            onClick={copyLink}
+            className="text-xs font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
+          >
+            {copied ? 'Copied!' : 'Copy Link'}
+          </button>
+        </div>
       )}
     </div>
   )
