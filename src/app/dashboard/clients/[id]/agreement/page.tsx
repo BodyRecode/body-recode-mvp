@@ -34,11 +34,22 @@ export default async function AgreementViewPage({ params }: { params: Promise<{ 
           <h1 className="text-xl font-semibold text-white">{client.name}</h1>
           <p className="text-xs text-stone-500 mt-1">Version 2.5 — Sole Trader, Queensland, Australia</p>
         </div>
-        {signedDate && (
-          <span className="text-xs font-semibold text-teal-400 bg-teal-400/10 border border-teal-400/30 px-3 py-1.5 rounded-lg">
-            Signed {signedDate}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {signedDate && (
+            <span className="text-xs font-semibold text-teal-400 bg-teal-400/10 border border-teal-400/30 px-3 py-1.5 rounded-lg">
+              Signed {signedDate}
+            </span>
+          )}
+          {client.agreement_accepted_at && (
+            <Link
+              href={`/dashboard/clients/${id}/agreement/print`}
+              target="_blank"
+              className="text-sm font-medium px-4 py-2.5 rounded-lg border border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200 transition-colors"
+            >
+              Download PDF
+            </Link>
+          )}
+        </div>
       </div>
 
       {!client.agreement_accepted_at ? (
