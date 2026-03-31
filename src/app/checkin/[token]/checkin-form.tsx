@@ -113,7 +113,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-8">
         <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6">Body Recode™</p>
+          <img src="https://bodyrecode.au/logo-teal.png" width="120" alt="Body Recode" style={{ display: 'block', margin: '0 auto 24px' }} />
           <div className="w-14 h-14 bg-teal-500/10 border border-teal-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -140,8 +140,8 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
       </div>
 
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-stone-900 px-5 py-3.5 flex items-center justify-between">
-        <p className="text-[11px] font-bold tracking-[0.15em] text-teal-400 uppercase">Body Recode™</p>
+      <div className="sticky top-0 z-10 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-stone-900 px-5 py-3 flex items-center justify-between">
+        <img src="https://bodyrecode.au/logo-teal.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
         <p className="text-[11px] font-medium text-stone-600">{sectionIndex + 1} / {sections.length}</p>
       </div>
 
