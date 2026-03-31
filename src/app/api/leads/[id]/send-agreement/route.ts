@@ -53,7 +53,7 @@ export async function POST(
 <style>
   body { margin: 0; padding: 0; background: #0a0a0a; font-family: Georgia, serif; }
   .wrapper { max-width: 600px; margin: 0 auto; padding: 48px 32px; }
-  .logo { font-size: 11px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-bottom: 48px; }
+  .logo { display: block; margin-bottom: 40px; }
   p { font-size: 15px; color: #aaa; line-height: 1.9; margin: 0 0 20px; }
   .btn { display: inline-block; margin: 8px 0 24px; padding: 14px 28px; background: #10E1C2; color: #000; text-decoration: none; font-size: 13px; font-weight: bold; letter-spacing: 0.05em; border-radius: 8px; }
   .footer { margin-top: 48px; font-size: 12px; color: #444; letter-spacing: 0.05em; }
@@ -61,7 +61,7 @@ export async function POST(
 </head>
 <body>
 <div class="wrapper">
-  <div class="logo">Body Recode&trade; &middot; Founding Client Program</div>
+  <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" class="logo" />
 
   <p>Hi ${firstName},</p>
 
