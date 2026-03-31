@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
   if (otherForm) {
     const formAResponses = formType === 'A' ? responses : (otherForm.responses as Record<string, string>)
     const formBResponses = formType === 'B' ? responses : (otherForm.responses as Record<string, string>)
-    generateCFWS(admin, client, weekNumber, formAResponses, formBResponses).catch(
+    await generateCFWS(admin, client, weekNumber, formAResponses, formBResponses).catch(
       err => console.error('CFWS generation error:', err)
     )
   }
