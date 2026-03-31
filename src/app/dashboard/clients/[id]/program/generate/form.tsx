@@ -100,17 +100,20 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
     }
   }
 
+  const inputClass = 'w-full bg-stone-800 border border-stone-700 text-stone-100 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#10E1C2] focus:border-transparent'
+  const labelClass = 'block text-xs font-bold text-stone-400 uppercase tracking-wider mb-2'
+
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
-      <div className="mb-6">
+      <div className="mb-8">
         <button
           onClick={() => router.back()}
-          className="text-sm text-gray-500 hover:text-gray-700 mb-4 block"
+          className="text-sm text-stone-500 hover:text-stone-300 mb-4 block transition-colors"
         >
           ← Back
         </button>
-        <h1 className="text-2xl font-bold text-gray-900">Generate Training Program</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-2xl font-bold text-white">Generate Training Program</h1>
+        <p className="text-sm text-stone-400 mt-1">
           Set prescription inputs. All doctrine rules will be applied automatically.
         </p>
       </div>
@@ -118,13 +121,11 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Block Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Block Name
-          </label>
+          <label className={labelClass}>Block Name</label>
           <select
             value={form.block_name}
             onChange={e => setForm(prev => ({ ...prev, block_name: e.target.value }))}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={inputClass}
             required
           >
             <option value="" disabled>Select a block name…</option>
@@ -136,13 +137,11 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
 
         {/* Progression Phase */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Progression Phase
-          </label>
+          <label className={labelClass}>Progression Phase</label>
           <select
             value={form.progression_phase}
             onChange={e => setForm(prev => ({ ...prev, progression_phase: e.target.value }))}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={inputClass}
           >
             <option value="accumulation">Accumulation — volume priority, foundation building</option>
             <option value="intensification">Intensification — intensity priority, load climbs</option>
@@ -153,36 +152,34 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
 
         {/* Training Goal */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Training Goal
-          </label>
+          <label className={labelClass}>Training Goal</label>
           <div className="grid grid-cols-3 gap-2">
             {(['strength', 'hypertrophy', 'capacity'] as const).map(goal => (
               <button
                 key={goal}
                 type="button"
                 onClick={() => setForm(prev => ({ ...prev, training_goal: goal }))}
-                className={`py-2 rounded-md text-sm font-medium border transition-colors ${
+                className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.training_goal === goal
-                    ? 'bg-blue-600 text-white border-blue-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                    ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]'
+                    : 'bg-stone-800 text-stone-300 border-stone-700 hover:border-stone-500'
                 }`}
               >
                 {goal.charAt(0).toUpperCase() + goal.slice(1)}
               </button>
             ))}
           </div>
-          <p className="text-xs text-gray-400 mt-1">
-            {form.training_goal === 'strength' && 'Reps 3–6, RPE 6–8, sets 10–16/session'}
-            {form.training_goal === 'hypertrophy' && 'Reps 6–12, RPE 6–7, sets 14–22/session'}
-            {form.training_goal === 'capacity' && 'Reps 10–20, RPE 5–7, sets 12–18/session'}
+          <p className="text-xs text-stone-500 mt-1.5">
+            {form.training_goal === 'strength' && 'Reps 3–6 · RPE 6–8 · 10–16 sets/session'}
+            {form.training_goal === 'hypertrophy' && 'Reps 6–12 · RPE 6–7 · 14–22 sets/session'}
+            {form.training_goal === 'capacity' && 'Reps 10–20 · RPE 5–7 · 12–18 sets/session'}
           </p>
         </div>
 
         {/* Training Frequency */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Training Frequency — {form.training_frequency} sessions/week
+          <label className={labelClass}>
+            Training Frequency — <span className="text-[#10E1C2]">{form.training_frequency} sessions/week</span>
           </label>
           <input
             type="range"
@@ -190,35 +187,33 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
             max={6}
             value={form.training_frequency}
             onChange={e => setForm(prev => ({ ...prev, training_frequency: parseInt(e.target.value) }))}
-            className="w-full"
+            className="w-full accent-[#10E1C2]"
           />
-          <div className="flex justify-between text-xs text-gray-400 mt-1">
+          <div className="flex justify-between text-xs text-stone-600 mt-1">
             <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
           </div>
         </div>
 
         {/* Training Age */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Training Age
-          </label>
+          <label className={labelClass}>Training Age</label>
           <div className="grid grid-cols-3 gap-2">
             {(['beginner', 'intermediate', 'advanced'] as const).map(age => (
               <button
                 key={age}
                 type="button"
                 onClick={() => setForm(prev => ({ ...prev, training_age: age }))}
-                className={`py-2 rounded-md text-sm font-medium border transition-colors ${
+                className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.training_age === age
-                    ? 'bg-blue-600 text-white border-blue-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                    ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]'
+                    : 'bg-stone-800 text-stone-300 border-stone-700 hover:border-stone-500'
                 }`}
               >
                 {age.charAt(0).toUpperCase() + age.slice(1)}
               </button>
             ))}
           </div>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-stone-500 mt-1.5">
             {form.training_age === 'beginner' && 'Linear progression — load increases each session'}
             {form.training_age === 'intermediate' && 'Double progression — reps then load'}
             {form.training_age === 'advanced' && 'Undulating periodisation — varies session to session'}
@@ -227,19 +222,17 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
 
         {/* Week Duration */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Block Duration
-          </label>
+          <label className={labelClass}>Block Duration</label>
           <div className="grid grid-cols-3 gap-2">
             {([4, 6, 8] as const).map(weeks => (
               <button
                 key={weeks}
                 type="button"
                 onClick={() => setForm(prev => ({ ...prev, week_duration: weeks }))}
-                className={`py-2 rounded-md text-sm font-medium border transition-colors ${
+                className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.week_duration === weeks
-                    ? 'bg-blue-600 text-white border-blue-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                    ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]'
+                    : 'bg-stone-800 text-stone-300 border-stone-700 hover:border-stone-500'
                 }`}
               >
                 {weeks} weeks
@@ -250,26 +243,26 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
 
         {/* Equipment Access */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Equipment Access
-          </label>
+          <label className={labelClass}>Equipment Access</label>
           <div className="grid grid-cols-2 gap-2">
             {EQUIPMENT_OPTIONS.map(opt => (
-              <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
+              <label key={opt.value} className="flex items-center gap-2.5 cursor-pointer group">
                 <input
                   type="checkbox"
                   checked={form.equipment_access.includes(opt.value)}
                   onChange={() => toggleEquipment(opt.value)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="rounded border-stone-600 bg-stone-800 text-[#10E1C2] focus:ring-[#10E1C2]"
                 />
-                <span className="text-sm text-gray-700">{opt.label}</span>
+                <span className={`text-sm transition-colors ${form.equipment_access.includes(opt.value) ? 'text-stone-200' : 'text-stone-500'}`}>
+                  {opt.label}
+                </span>
               </label>
             ))}
           </div>
         </div>
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+          <p className="text-sm text-red-400 bg-red-950/50 border border-red-800 rounded-md px-3 py-2">
             {error}
           </p>
         )}
@@ -277,7 +270,7 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 px-4 bg-[#10E1C2] text-stone-900 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? 'Generating program… this may take 30–60s' : 'Generate Program'}
         </button>
