@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
   const { error } = await resend.emails.send({
     from: 'Body Recode™ <kade@bodyrecode.au>',
     to: 'kade@bodyrecode.au',
-    subject: `New Check-In: ${name} — ${signalPattern}`,
+    subject: `New Check-In: ${name}`,
     html: `
 <!DOCTYPE html>
 <html>
