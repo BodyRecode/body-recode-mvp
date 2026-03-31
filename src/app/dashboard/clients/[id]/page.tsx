@@ -29,36 +29,36 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   if (!client) notFound()
 
   const [{ data: cffsRecords }, { data: invitations }, { data: intakes }, { data: cfwsRecords }, { data: recentCheckins }, { data: baselines }] = await Promise.all([
-    supabase
+    admin
       .from('cffs')
       .select('*')
       .eq('client_id', id)
       .order('generated_at', { ascending: false }),
-    supabase
+    admin
       .from('intake_invitations')
       .select('*')
       .eq('client_id', id)
       .order('created_at', { ascending: false })
       .limit(1),
-    supabase
+    admin
       .from('intakes')
       .select('id')
       .eq('client_id', id)
       .order('submitted_at', { ascending: false })
       .limit(1),
-    supabase
+    admin
       .from('cfws')
       .select('*')
       .eq('client_id', id)
       .order('week_number', { ascending: false })
       .limit(4),
-    supabase
+    admin
       .from('weekly_checkins')
       .select('week_number, form_type, submitted_at')
       .eq('client_id', id)
       .order('week_number', { ascending: false })
       .limit(8),
-    supabase
+    admin
       .from('baselines')
       .select('*')
       .eq('client_id', id)
