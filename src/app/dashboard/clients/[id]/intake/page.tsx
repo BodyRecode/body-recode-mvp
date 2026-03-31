@@ -1,0 +1,132 @@
+import { createAdminClient } from '@/lib/supabase/admin'
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+
+function Row({ label, value }: { label: string; value: unknown }) {
+  if (value === null || value === undefined || value === '') return null
+  let display: string
+  if (Array.isArray(value)) {
+    if (value.length === 0) return null
+    display = value.join(', ')
+  } else if (typeof value === 'boolean') {
+    display = value ? 'Yes' : 'No'
+  } else if (typeof value === 'object') {
+    display = JSON.stringify(value)
+  } else {
+    display = String(value)
+  }
+  return (
+    <div className="flex items-start justify-between gap-4 py-2.5 border-b border-stone-800 last:border-0">
+      <p className="text-xs text-stone-500 flex-shrink-0 w-52">{label}</p>
+      <p className="text-sm text-stone-200 text-right">{display}</p>
+    </div>
+  )
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+      <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">{title}</p>
+      {children}
+    </div>
+  )
+}
+
+function ScaleSection({ title, data }: { title: string; data: Record<string, number> | null }) {
+  if (!data || Object.keys(data).length === 0) return null
+  return (
+    <Section title={title}>
+      {Object.entries(data).map(([key, val]) => (
+        <Row key={key} label={key.replace(/_/g, ' ')} value={`${val} / 4`} />
+      ))}
+    </Section>
+  )
+}
+
+export default async function IntakeViewPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const admin = createAdminClient()
+
+  const { data: client } = await admin
+    .from('clients')
+    .select('id, name')
+    .eq('id', id)
+    .single()
+
+  if (!client) return notFound()
+
+  const { data: intake } = await admin
+    .from('intakes')
+    .select('*')
+    .eq('client_id', id)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  const submittedDate = intake?.created_at
+    ? new Date(intake.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })
+    : null
+
+  return (
+    <div className="max-w-2xl">
+      <div className="flex items-center gap-3 mb-8">
+        <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-white text-sm transition-colors">← Back</Link>
+        <span className="text-stone-700">/</span>
+        <p className="text-sm text-stone-400">Intake — {client.name}</p>
+      </div>
+
+      <div className="mb-6">
+        <h1 className="text-xl font-semibold text-white">{client.name}</h1>
+        {submittedDate && <p className="text-xs text-stone-500 mt-1">Submitted {submittedDate}</p>}
+      </div>
+
+      {!intake ? (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+          <p className="text-stone-500 text-sm">Intake not yet submitted.</p>
+        </div>
+      ) : (
+        <>
+          <Section title="Identity">
+            <Row label="Full name" value={intake.full_name} />
+            <Row label="Date of birth" value={intake.date_of_birth} />
+            <Row label="Gender" value={intake.gender} />
+            <Row label="Occupation" value={intake.occupation} />
+            <Row label="Mobile" value={intake.mobile_number} />
+            <Row label="Emergency contact" value={intake.emergency_contact_name} />
+            <Row label="Emergency phone" value={intake.emergency_contact_phone} />
+            <Row label="How did you hear" value={intake.how_did_you_hear} />
+          </Section>
+
+          <Section title="Goals">
+            <Row label="Primary goal" value={intake.primary_goal} />
+            <Row label="Secondary goals" value={intake.secondary_goals} />
+            <Row label="Desired timeline" value={intake.desired_timeline} />
+            <Row label="Motivator" value={intake.subjective_motivator} />
+          </Section>
+
+          <Section title="Injury">
+            <Row label="Current injury locations" value={intake.injury_location_current} />
+            <Row label="Historical injury locations" value={intake.injury_location_history} />
+            <Row label="Primary concern" value={intake.injury_primary_concern} />
+            <Row label="Aggravating movements" value={intake.injury_aggravating_movements} />
+          </Section>
+
+          <ScaleSection title="Fat Map Responses" data={intake.fat_map_responses} />
+          <ScaleSection title="Training Responses" data={intake.training_responses} />
+          <ScaleSection title="Nutrition Responses" data={intake.nutrition_responses} />
+          <ScaleSection title="Sleep Responses" data={intake.sleep_responses} />
+          <ScaleSection title="Stress Responses" data={intake.stress_responses} />
+          <ScaleSection title="Schedule Responses" data={intake.schedule_responses} />
+          <ScaleSection title="Supplement Responses" data={intake.supplement_responses} />
+          <ScaleSection title="Injury Responses" data={intake.injury_responses} />
+
+          <Section title="Declaration">
+            <Row label="Final disclosure" value={intake.final_disclosure} />
+            <Row label="System alignment confirmed" value={intake.final_system_alignment} />
+            <Row label="Accuracy confirmed" value={intake.final_accuracy} />
+          </Section>
+        </>
+      )}
+    </div>
+  )
+}

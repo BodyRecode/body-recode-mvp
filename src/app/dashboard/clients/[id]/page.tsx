@@ -255,10 +255,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
         <div className="grid grid-cols-2 gap-2">
           {[
-            { label: 'Agreement', done: !!client.agreement_accepted_at, href: null },
+            { label: 'Agreement', done: !!client.agreement_accepted_at, href: client.agreement_accepted_at ? `/dashboard/clients/${id}/agreement` : null },
             { label: 'Health Declaration', done: !!client.health_declaration_submitted_at, href: client.health_declaration_submitted_at ? `/dashboard/clients/${id}/health-declaration` : null },
-            { label: 'Intake', done: latestInvitation?.status === 'complete', href: null },
-            { label: 'Baseline', done: !!baselines?.[0], href: null },
+            { label: 'Intake', done: latestInvitation?.status === 'complete', href: latestInvitation?.status === 'complete' ? `/dashboard/clients/${id}/intake` : null },
+            { label: 'Baseline', done: !!baselines?.[0], href: baselines?.[0] ? `/dashboard/clients/${id}#baseline` : null },
           ].map(item => (
             <div key={item.label} className="flex items-center gap-2">
               <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.done ? 'bg-teal-400' : 'bg-stone-700'}`} />
@@ -443,7 +443,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       )}
 
       {/* Baseline Section */}
-      <div className="mt-6">
+      <div id="baseline" className="mt-6">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Baseline</h2>
           {baselineToken && !latestBaseline && (
