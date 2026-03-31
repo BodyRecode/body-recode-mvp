@@ -94,8 +94,8 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
       }
 
       router.push(`/dashboard/clients/${clientId}/program`)
-    } catch {
-      setError('Unexpected error. Please try again.')
+    } catch (err) {
+      setError(`Unexpected error: ${err instanceof Error ? err.message : String(err)}`)
       setLoading(false)
     }
   }
