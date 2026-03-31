@@ -66,7 +66,7 @@ export default function AgreementForm({ token, firstName }: Props) {
         <div className="mb-10">
           <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-6">Body Recode™ · Founding Client Program</p>
           <h1 className="text-2xl font-bold text-white mb-2">Founding Client Case Study Agreement</h1>
-          <p className="text-stone-400 text-sm">Hi {firstName} — please read through this agreement carefully before signing. If anything is unclear, reply to the email before proceeding.</p>
+          <p className="text-stone-400 text-sm">Hi {firstName}, please read through this agreement carefully before signing. If anything is unclear, reply to the email before proceeding.</p>
         </div>
 
         {/* Agreement text */}
@@ -133,7 +133,7 @@ export default function AgreementForm({ token, firstName }: Props) {
           <section>
             <h2 className="text-white font-semibold mb-2">7. Consent and Case Study Use</h2>
             <p>Participation includes consent to structured internal use of data for system validation and development. Internal use includes analysis, interpretation review, case study generation, cohort comparison, system refinement, and validation reporting.</p>
-            <p className="mt-3">In addition, the client selects one external consent tier for public-facing use of case study material. The difference between tiers is not whether the case study may be used externally — it is how the client is represented within that use.</p>
+            <p className="mt-3">In addition, the client selects one external consent tier for public-facing use of case study material. The difference between tiers is not whether the case study may be used externally. It is how the client is represented within that use.</p>
           </section>
 
           <section>
@@ -143,7 +143,7 @@ export default function AgreementForm({ token, firstName }: Props) {
 
           <section>
             <h2 className="text-white font-semibold mb-2">9. Internal Rights of Use</h2>
-            <p>Body Recode™ retains the right to use all collected data internally for legitimate system purposes. These rights continue regardless of whether the client completes, withdraws, or pauses — subject to applicable law and privacy obligations.</p>
+            <p>Body Recode™ retains the right to use all collected data internally for legitimate system purposes. These rights continue regardless of whether the client completes, withdraws, or pauses, subject to applicable law and privacy obligations.</p>
           </section>
 
           <section>
@@ -158,7 +158,7 @@ export default function AgreementForm({ token, firstName }: Props) {
 
           <section>
             <h2 className="text-white font-semibold mb-2">12. Founding Client Status</h2>
-            <p>Founding client status is conditional and system-controlled. Status may include Active, Paused, Completed, or Withdrawn. Founding client status is not permanent by default — it reflects current system reality and may change if participation breaks down or data becomes insufficient.</p>
+            <p>Founding client status is conditional and system-controlled. Status may include Active, Paused, Completed, or Withdrawn. Founding client status is not permanent by default. It reflects current system reality and may change if participation breaks down or data becomes insufficient.</p>
           </section>
 
           <section>
@@ -212,7 +212,7 @@ export default function AgreementForm({ token, firstName }: Props) {
                     {consentTier === 'tier_1' && <div className="w-2 h-2 rounded-full bg-teal-400" />}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white">Tier 1 — External Use (Anonymised)</p>
+                    <p className="text-sm font-semibold text-white">Tier 1: External Use (Anonymised)</p>
                     <p className="text-xs text-stone-400 mt-1">Your identity is not disclosed. Identifying details are removed or generalised. Case study outputs may be published in anonymised form.</p>
                   </div>
                 </div>
@@ -234,7 +234,7 @@ export default function AgreementForm({ token, firstName }: Props) {
                     {consentTier === 'tier_2' && <div className="w-2 h-2 rounded-full bg-teal-400" />}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white">Tier 2 — External Use (Named)</p>
+                    <p className="text-sm font-semibold text-white">Tier 2: External Use (Named)</p>
                     <p className="text-xs text-stone-400 mt-1">Your identity may be used. Publication remains subject to your review of identifying material. Case study outputs may be published in named form.</p>
                   </div>
                 </div>
