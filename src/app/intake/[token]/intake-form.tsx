@@ -22,7 +22,7 @@ function ScaleInput({
 }) {
   return (
     <div className="py-1">
-      <p className="text-[15px] font-medium text-gray-900 mb-4 leading-snug">{question.text}</p>
+      <p className="text-[15px] font-medium text-white mb-4 leading-snug">{question.text}</p>
       <div className="flex gap-2">
         {[0, 1, 2, 3, 4].map(n => (
           <button
@@ -31,8 +31,8 @@ function ScaleInput({
             onClick={() => onChange(n)}
             className={`flex-1 py-3.5 rounded-2xl text-sm font-bold transition-all duration-150 ${
               value === n
-                ? 'bg-gray-900 text-white shadow-sm'
-                : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
+                ? 'bg-[#10E1C2] text-black shadow-sm'
+                : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
             }`}
           >
             {n}
@@ -41,8 +41,8 @@ function ScaleInput({
       </div>
       {question.scaleLabel && (
         <div className="flex justify-between mt-2">
-          <span className="text-[11px] text-gray-400 font-medium">{question.scaleLabel.low}</span>
-          <span className="text-[11px] text-gray-400 font-medium">{question.scaleLabel.high}</span>
+          <span className="text-[11px] text-stone-500 font-medium">{question.scaleLabel.low}</span>
+          <span className="text-[11px] text-stone-500 font-medium">{question.scaleLabel.high}</span>
         </div>
       )}
     </div>
@@ -73,13 +73,13 @@ function QuestionInput({
   if (question.type === 'text') {
     return (
       <div>
-        <label className="block text-[15px] font-medium text-gray-900 mb-3 leading-snug">{question.text}</label>
+        <label className="block text-[15px] font-medium text-white mb-3 leading-snug">{question.text}</label>
         <textarea
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
           rows={3}
           placeholder="Your answer..."
-          className="w-full bg-gray-50 rounded-2xl px-4 py-3.5 text-[15px] text-gray-900 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:bg-white resize-none transition-all"
+          className="w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 resize-none transition-all border border-stone-700"
         />
       </div>
     )
@@ -88,12 +88,12 @@ function QuestionInput({
   if (question.type === 'date') {
     return (
       <div>
-        <label className="block text-[15px] font-medium text-gray-900 mb-3 leading-snug">{question.text}</label>
+        <label className="block text-[15px] font-medium text-white mb-3 leading-snug">{question.text}</label>
         <input
           type="date"
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
-          className="w-full bg-gray-50 rounded-2xl px-4 py-3.5 text-[15px] text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:bg-white transition-all"
+          className="w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 transition-all border border-stone-700"
         />
       </div>
     )
@@ -102,11 +102,11 @@ function QuestionInput({
   if (question.type === 'select') {
     return (
       <div>
-        <label className="block text-[15px] font-medium text-gray-900 mb-3 leading-snug">{question.text}</label>
+        <label className="block text-[15px] font-medium text-white mb-3 leading-snug">{question.text}</label>
         <select
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
-          className="w-full bg-gray-50 rounded-2xl px-4 py-3.5 text-[15px] text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:bg-white transition-all appearance-none"
+          className="w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 transition-all appearance-none border border-stone-700"
         >
           <option value="">Select an option</option>
           {question.options?.map(opt => (
@@ -121,7 +121,7 @@ function QuestionInput({
     const selected = (value as string[]) || []
     return (
       <div>
-        <p className="text-[15px] font-medium text-gray-900 mb-3 leading-snug">{question.text}</p>
+        <p className="text-[15px] font-medium text-white mb-3 leading-snug">{question.text}</p>
         <div className="flex flex-wrap gap-2">
           {question.options?.map(opt => (
             <button
@@ -130,8 +130,8 @@ function QuestionInput({
               onClick={() => onToggle(opt)}
               className={`text-[13px] font-medium px-4 py-2.5 rounded-2xl transition-all duration-150 ${
                 selected.includes(opt)
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-50 text-gray-500 hover:bg-gray-100'
+                  ? 'bg-[#10E1C2] text-black'
+                  : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
               }`}
             >
               {opt}
@@ -152,16 +152,16 @@ function QuestionInput({
       >
         <span
           className={`mt-0.5 w-5 h-5 rounded-md flex items-center justify-center shrink-0 transition-all duration-150 ${
-            checked ? 'bg-gray-900' : 'bg-gray-100'
+            checked ? 'bg-[#10E1C2]' : 'bg-stone-800 border border-stone-600'
           }`}
         >
           {checked && (
-            <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
             </svg>
           )}
         </span>
-        <span className="text-[14px] text-gray-700 leading-relaxed">{question.text}</span>
+        <span className="text-[14px] text-stone-300 leading-relaxed">{question.text}</span>
       </button>
     )
   }
@@ -220,15 +220,16 @@ export default function IntakeForm({ token, clientName }: Props) {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center p-8">
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-8">
         <div className="text-center max-w-sm">
-          <div className="w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-14 h-14 bg-teal-400/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-7 h-7 text-[#10E1C2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-3 tracking-tight">You&apos;re all done</h1>
-          <p className="text-gray-400 text-[15px] leading-relaxed">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Submitted</p>
+          <h1 className="text-2xl font-bold text-white mb-3 tracking-tight">You&apos;re all done.</h1>
+          <p className="text-stone-400 text-[15px] leading-relaxed">
             Your intake has been submitted. Your coach will review everything and be in touch shortly.
           </p>
         </div>
@@ -237,20 +238,20 @@ export default function IntakeForm({ token, clientName }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#0a0a0a]">
 
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 right-0 h-[3px] bg-gray-100 z-20">
+      <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-800 z-20">
         <div
-          className="h-full bg-gray-900 transition-all duration-500 ease-out"
+          className="h-full bg-[#10E1C2] transition-all duration-500 ease-out"
           style={{ width: `${progressPct}%` }}
         />
       </div>
 
       {/* Sticky header */}
-      <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-sm border-b border-gray-100 px-5 py-3 flex items-center justify-between">
-        <p className="text-[11px] font-bold tracking-[0.15em] text-gray-900 uppercase">Body Recode™</p>
-        <p className="text-[11px] font-medium text-gray-400">{sectionIndex + 1} / {INTAKE_SECTIONS.length}</p>
+      <div className="sticky top-0 z-10 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-stone-800 px-5 py-3 flex items-center justify-between">
+        <img src="https://bodyrecode.au/logo-teal.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
+        <p className="text-[11px] font-medium text-stone-500">{sectionIndex + 1} / {INTAKE_SECTIONS.length}</p>
       </div>
 
       <div className="max-w-lg mx-auto px-5 pt-8 pb-32">
@@ -258,20 +259,20 @@ export default function IntakeForm({ token, clientName }: Props) {
         {/* Section header */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-3">
-            <div className="h-px flex-1 bg-gray-100" />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-gray-400 uppercase">{progressPct}% complete</p>
-            <div className="h-px flex-1 bg-gray-100" />
+            <div className="h-px flex-1 bg-stone-800" />
+            <p className="text-[10px] font-bold tracking-[0.15em] text-stone-600 uppercase">{progressPct}% complete</p>
+            <div className="h-px flex-1 bg-stone-800" />
           </div>
-          <h1 className="text-[22px] font-bold text-gray-900 tracking-tight mb-3">{section.title}</h1>
+          <h1 className="text-[22px] font-bold text-white tracking-tight mb-3">{section.title}</h1>
           {section.description && (
-            <p className="text-[13px] text-gray-400 whitespace-pre-line leading-relaxed">
+            <p className="text-[13px] text-stone-400 whitespace-pre-line leading-relaxed">
               {section.description}
             </p>
           )}
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-gray-100 mb-8" />
+        <div className="h-px bg-stone-800 mb-8" />
 
         {/* Questions */}
         <div className="space-y-8">
@@ -287,19 +288,19 @@ export default function IntakeForm({ token, clientName }: Props) {
         </div>
 
         {error && (
-          <div className="mt-6 bg-red-50 rounded-2xl px-4 py-3">
-            <p className="text-red-600 text-sm">{error}</p>
+          <div className="mt-6 bg-red-950/50 border border-red-800 rounded-2xl px-4 py-3">
+            <p className="text-red-400 text-sm">{error}</p>
           </div>
         )}
       </div>
 
       {/* Fixed bottom navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#0a0a0a] border-t border-stone-800 px-5 py-4 z-10">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
           <button
             type="button"
             onClick={() => goToSection(sectionIndex - 1)}
-            className={`text-[13px] font-semibold text-gray-400 py-2 px-1 transition-colors hover:text-gray-700 ${
+            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-300 ${
               sectionIndex === 0 ? 'invisible' : ''
             }`}
           >
@@ -311,7 +312,7 @@ export default function IntakeForm({ token, clientName }: Props) {
               type="button"
               onClick={handleSubmit}
               disabled={submitting}
-              className="flex-1 bg-gray-900 text-white text-[15px] font-bold py-4 rounded-2xl hover:bg-gray-800 transition-colors disabled:opacity-40 tracking-tight"
+              className="flex-1 bg-[#10E1C2] text-black text-[15px] font-bold py-4 rounded-2xl hover:bg-[#0ecfb2] transition-colors disabled:opacity-40 tracking-tight"
             >
               {submitting ? 'Submitting…' : 'Submit intake'}
             </button>
@@ -319,7 +320,7 @@ export default function IntakeForm({ token, clientName }: Props) {
             <button
               type="button"
               onClick={() => goToSection(sectionIndex + 1)}
-              className="flex-1 bg-gray-900 text-white text-[15px] font-bold py-4 rounded-2xl hover:bg-gray-800 transition-colors tracking-tight"
+              className="flex-1 bg-[#10E1C2] text-black text-[15px] font-bold py-4 rounded-2xl hover:bg-[#0ecfb2] transition-colors tracking-tight"
             >
               Continue
             </button>
@@ -327,7 +328,7 @@ export default function IntakeForm({ token, clientName }: Props) {
         </div>
 
         {sectionIndex === 0 && clientName && (
-          <p className="text-center text-[11px] text-gray-300 mt-2">Prepared for {clientName}</p>
+          <p className="text-center text-[11px] text-stone-600 mt-2">Prepared for {clientName}</p>
         )}
       </div>
 
