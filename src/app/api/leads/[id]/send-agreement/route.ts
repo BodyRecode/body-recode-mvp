@@ -29,7 +29,7 @@ export async function POST(
   const { data: agreement, error: agreementError } = await admin
     .from('founding_client_agreements')
     .insert({
-      client_id: id,
+      lead_id: id,
       status: 'pending',
     })
     .select('token')
