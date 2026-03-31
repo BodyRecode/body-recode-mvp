@@ -39,13 +39,14 @@ export async function POST(request: NextRequest) {
   const admin = createAdminClient()
 
   // Fetch client
-  const { data: client } = await admin
+  const { data: client, error: clientError } = await admin
     .from('clients')
     .select('id, name')
     .eq('id', client_id)
     .maybeSingle()
 
-  if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
+  if (clientError) console.error('Client fetch error:', clientError)
+  if (!client) return NextResponse.json({ error: `Client not found (id: ${client_id}, db error: ${clientError?.message ?? 'none'})` }, { status: 404 })
 
   // Fetch CFFS (body state context) — non-blocking if not present
   let cffs = null
