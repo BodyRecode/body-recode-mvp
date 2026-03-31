@@ -12,11 +12,11 @@ export async function GET(request: NextRequest) {
   const admin = createAdminClient()
   const resend = new Resend(process.env.RESEND_API_KEY)
 
-  // Get all clients with a checkin_token and email
+  // Get all clients with a portal token and email
   const { data: clients } = await admin
     .from('clients')
-    .select('id, name, email, checkin_token, coaching_started_at')
-    .not('checkin_token', 'is', null)
+    .select('id, name, email, onboarding_token, coaching_started_at')
+    .not('onboarding_token', 'is', null)
     .not('email', 'is', null)
 
   if (!clients || clients.length === 0) {
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
 
   let sent = 0
   for (const client of clients) {
-    if (!client.email || !client.checkin_token) continue
+    if (!client.email || !client.onboarding_token) continue
 
     // Only notify clients who have started coaching
     if (!client.coaching_started_at) continue
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     if (startDate > new Date()) continue
 
     const firstName = client.name.split(' ')[0]
-    const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL}/client/${client.checkin_token}`
+    const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL}/portal/${client.onboarding_token}`
 
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
@@ -60,13 +60,13 @@ export async function GET(request: NextRequest) {
                 Your weekly check-in window is now open. It closes Sunday at 6pm Brisbane time.
               </p>
               <p style="margin:0 0 32px;font-size:15px;color:#57534e;line-height:1.6;">
-                Log in to see what's required and complete your check-in forms.
+                Open your portal to complete this week's check-in.
               </p>
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="border-radius:12px;background:#1c1917;">
                     <a href="${dashboardUrl}" style="display:inline-block;padding:14px 28px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:12px;">
-                      Open my dashboard
+                      Open my portal
                     </a>
                   </td>
                 </tr>

@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { getCheckInWindowStatus, getWeekNumber } from '@/lib/weekly-checkin-questions'
 
 export default async function PortalPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -76,6 +77,26 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     ? [...client.weekly_checkins].sort((a: { submitted_at: string }, b: { submitted_at: string }) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime()).slice(0, 3)
     : []
 
+  const checkinWindow = getCheckInWindowStatus()
+  const testMode = process.env.CHECKIN_TEST_MODE?.trim().toLowerCase() === 'true'
+  const windowOpen = checkinWindow.isOpen || testMode
+  const startDate = client.coaching_started_at || client.created_at
+  const weekNumber = startDate ? getWeekNumber(startDate) : null
+  const thisWeekCheckin = weekNumber && Array.isArray(client.weekly_checkins)
+    ? client.weekly_checkins.find((c: { week_number: number; form_type: string }) =>
+        c.week_number === weekNumber && c.form_type === checkinWindow.formType
+      )
+    : null
+  const checkinDoneThisWeek = !!thisWeekCheckin
+
+  const opensAt = checkinWindow.opensAt.toLocaleString('en-AU', {
+    timeZone: 'Australia/Brisbane',
+    weekday: 'long',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  })
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <div className="max-w-lg mx-auto px-6 py-12">
@@ -135,20 +156,42 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
-        {/* Active coaching */}
+        {/* Weekly check-in task */}
         {allOnboardingDone && client.coaching_started_at && (
           <div className="mb-10">
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Weekly check-in</p>
-            {client.checkin_token ? (
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">This week</p>
+            {checkinDoneThisWeek ? (
+              <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-teal-400 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-teal-400">Check-in submitted</p>
+                    <p className="text-xs text-stone-500 mt-0.5">Week {weekNumber} Form {checkinWindow.formType} — your coach will review shortly.</p>
+                  </div>
+                </div>
+              </div>
+            ) : windowOpen ? (
               <Link
-                href={`/checkin/${client.checkin_token}`}
-                className="block rounded-2xl border border-teal-400/30 bg-teal-400/5 p-5 hover:border-teal-400/50 transition-colors"
+                href={`/portal/${token}/checkin`}
+                className="block rounded-2xl border border-stone-700 bg-stone-900 p-5 hover:border-teal-400/40 hover:bg-teal-400/5 transition-colors"
               >
-                <p className="text-sm font-semibold text-white mb-1">Submit this week's check-in</p>
-                <p className="text-xs text-stone-400">Track your progress and keep your coach informed.</p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-white mb-1">Weekly check-in — Form {checkinWindow.formType}</p>
+                    <p className="text-xs text-stone-400">Week {weekNumber} · Window closes Sunday 6pm Brisbane time.</p>
+                  </div>
+                  <span className="text-xs font-bold text-teal-400 ml-4">Start →</span>
+                </div>
               </Link>
             ) : (
-              <p className="text-sm text-stone-500">Your check-in link will appear here once coaching begins.</p>
+              <div className="rounded-2xl border border-stone-800 bg-stone-900/50 p-5">
+                <p className="text-sm font-semibold text-stone-500 mb-1">Check-in window closed</p>
+                <p className="text-xs text-stone-600">Opens {opensAt} (Brisbane time) every Friday.</p>
+              </div>
             )}
           </div>
         )}
