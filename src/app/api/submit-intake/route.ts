@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
+import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFFSSystemPrompt, buildCFFSUserPrompt } from '@/lib/cffs-prompt'
 
@@ -95,6 +96,20 @@ export async function POST(request: NextRequest) {
     .from('intake_invitations')
     .update({ status: 'complete', completed_at: new Date().toISOString() })
     .eq('id', invitation.id)
+
+  // Notify coach
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
+    const clientName = intake.full_name || 'A client'
+    await resend.emails.send({
+      from: 'Body Recode <kade@bodyrecode.au>',
+      to: 'kade@bodyrecode.au',
+      subject: `${clientName} submitted their intake`,
+      html: `<div style="font-family:sans-serif;background:#0a0a0a;color:#aaa;padding:32px;max-width:480px;"><img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:24px;" alt="Body Recode" /><p style="color:#fff;font-size:16px;font-weight:700;margin:0 0 12px;">Intake submitted</p><p style="margin:0;font-size:14px;line-height:1.7;"><strong style="color:#fff;">${clientName}</strong> has completed and submitted their foundational intake. CFFS generation is underway.</p></div>`,
+    })
+  } catch (e) {
+    console.error('Notification email failed:', e)
+  }
 
   // Generate CFFS via Claude — fire and forget with error handling
   try {
