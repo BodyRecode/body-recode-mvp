@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 
 const PACKAGES: Record<string, { label: string; price: string; stripe: string }> = {
@@ -19,7 +20,8 @@ export async function POST(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
 
-  const { data: client, error: clientError } = await supabase
+  const admin = createAdminClient()
+  const { data: client, error: clientError } = await admin
     .from('clients')
     .select('id, name, email, package')
     .eq('id', id)
