@@ -323,6 +323,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
 
+      <div className="flex items-center justify-between mb-3 mt-6">
+        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Foundational Synthesis <span className="text-stone-600 font-normal">— CFFS</span></h2>
+      </div>
+
       {!activeCffs ? (
         <div className="bg-stone-900 border border-stone-800 rounded-xl p-8 text-center">
           <p className="text-stone-400 mb-2">No CFFS generated yet</p>
@@ -510,7 +514,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {/* Weekly Check-In Section */}
       <div className="mt-6">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Weekly Check-Ins</h2>
+          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Weekly Synthesis <span className="text-stone-600 font-normal">— CFWS</span></h2>
           {checkinToken && (
             <CopyLinkButton token={checkinToken} label="Copy check-in link" path="/checkin" />
           )}
@@ -522,7 +526,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             {/* Readiness grid */}
             <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-4">
               <div className="px-5 pt-5 pb-4 border-b border-stone-800">
-                <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">Exposure Readiness</p>
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Exposure Readiness</p>
+                  <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest">Week {latestCfws.week_number}</p>
+                </div>
                 <div className="grid grid-cols-2 gap-2">
                   {[
                     { label: 'Capacity', value: latestCfws.exposure_readiness_capacity },
