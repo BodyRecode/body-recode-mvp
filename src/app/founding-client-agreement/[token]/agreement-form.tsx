@@ -187,6 +187,12 @@ export default function AgreementForm({ token, firstName }: Props) {
             <p>This agreement governs the client's participation in the Founding Client Case Study Program. Where there is conflict between informal verbal discussion and this agreement, this agreement governs.</p>
           </section>
 
+          <section>
+            <h2 className="text-white font-semibold mb-2">18. No Future Compensation Rights</h2>
+            <p>The client acknowledges that participation in the Founding Client Case Study Program constitutes the full and final exchange between the parties. The adjusted coaching fee is the sole consideration provided to the client in exchange for documented participation.</p>
+            <p className="mt-3 text-stone-400">The client waives any and all rights to claim additional compensation, royalties, revenue share, or any other financial benefit arising from the use of their case study data, outputs, or participation records for marketing, system development, product development, or any other commercial purpose, now or in the future. This waiver applies regardless of the commercial value generated from such use.</p>
+          </section>
+
         </div>
 
         {/* Signing form */}
