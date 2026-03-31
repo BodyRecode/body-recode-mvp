@@ -39,6 +39,19 @@ interface Program {
   is_active: boolean
 }
 
+const phaseColour: Record<string, string> = {
+  accumulation: 'text-blue-400 bg-blue-400/10 border-blue-400/30',
+  intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
+  realization: 'text-red-400 bg-red-400/10 border-red-400/30',
+  restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
+}
+
+const goalColour: Record<string, string> = {
+  strength: 'text-violet-400 bg-violet-400/10 border-violet-400/30',
+  hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
+  capacity: 'text-teal-400 bg-teal-400/10 border-teal-400/30',
+}
+
 export default async function ProgramPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const admin = createAdminClient()
@@ -60,152 +73,157 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
   const activeProgram = programs?.find(p => p.is_active) as Program | undefined
   const archivedPrograms = programs?.filter(p => !p.is_active) as Program[]
 
-  const phaseColour: Record<string, string> = {
-    accumulation: 'bg-blue-100 text-blue-800',
-    intensification: 'bg-orange-100 text-orange-800',
-    realization: 'bg-red-100 text-red-800',
-    restoration: 'bg-green-100 text-green-800',
-  }
-
-  const goalColour: Record<string, string> = {
-    strength: 'bg-purple-100 text-purple-800',
-    hypertrophy: 'bg-pink-100 text-pink-800',
-    capacity: 'bg-teal-100 text-teal-800',
-  }
-
   return (
-    <div className="max-w-4xl mx-auto py-10 px-4">
-      <div className="flex items-center justify-between mb-6">
+    <div className="max-w-3xl mx-auto">
+      {/* Header */}
+      <div className="mb-8 flex items-start justify-between">
         <div>
-          <Link href={`/dashboard/clients/${id}`} className="text-sm text-gray-500 hover:text-gray-700">
-            ← {client.name}
-          </Link>
-          <h1 className="text-2xl font-bold text-gray-900 mt-1">Training Program</h1>
+          <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
+            <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-300 transition-colors">{client.name}</Link>
+            <span>/</span>
+            <span className="text-stone-300">Training Program</span>
+          </div>
+          <h1 className="text-2xl font-semibold text-white">Training Program</h1>
         </div>
         <Link
           href={`/dashboard/clients/${id}/program/generate`}
-          className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
+          className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
         >
-          {activeProgram ? 'Regenerate Program' : 'Generate Program'}
+          {activeProgram ? 'Regenerate' : 'Generate Program'}
         </Link>
       </div>
 
       {!activeProgram ? (
-        <div className="text-center py-16 border-2 border-dashed border-gray-200 rounded-lg">
-          <p className="text-gray-500 mb-4">No program generated yet.</p>
+        <div className="text-center py-16 border-2 border-dashed border-stone-800 rounded-xl">
+          <p className="text-stone-500 mb-4">No program generated yet.</p>
           <Link
             href={`/dashboard/clients/${id}/program/generate`}
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
+            className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
           >
             Generate Program
           </Link>
         </div>
       ) : (
-        <div className="space-y-8">
-          {/* Program Header */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <div className="flex items-start justify-between mb-4">
+        <div className="space-y-4">
+
+          {/* Program identity card */}
+          <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+            <div className="flex items-start justify-between mb-3">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">{activeProgram.block_name}</h2>
-                <p className="text-sm text-gray-500 mt-1">
+                <h2 className="text-lg font-semibold text-white">{activeProgram.block_name}</h2>
+                <p className="text-xs text-stone-500 mt-1 capitalize">
                   {activeProgram.training_frequency}x/week · {activeProgram.week_duration} weeks · {activeProgram.training_age}
                 </p>
               </div>
-              <div className="flex gap-2">
-                <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${phaseColour[activeProgram.progression_phase] || 'bg-gray-100 text-gray-700'}`}>
+              <div className="flex gap-1.5">
+                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${phaseColour[activeProgram.progression_phase] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
                   {activeProgram.progression_phase}
                 </span>
-                <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${goalColour[activeProgram.training_goal] || 'bg-gray-100 text-gray-700'}`}>
+                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${goalColour[activeProgram.training_goal] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
                   {activeProgram.training_goal}
                 </span>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-1.5 mb-4">
+            <div className="flex flex-wrap gap-1.5 mb-1">
               {activeProgram.equipment_access.map(eq => (
-                <span key={eq} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+                <span key={eq} className="text-xs bg-stone-800 text-stone-400 px-2 py-0.5 rounded capitalize">
                   {eq}
                 </span>
               ))}
             </div>
 
-            {activeProgram.weekly_pattern_summary && (
-              <div className="text-sm text-gray-700 bg-gray-50 rounded-md p-3 mb-3">
-                <span className="font-medium">Weekly structure: </span>
-                {activeProgram.weekly_pattern_summary}
-              </div>
-            )}
-
-            {activeProgram.progression_notes && (
-              <div className="text-sm text-gray-700 bg-gray-50 rounded-md p-3">
-                <span className="font-medium">Progression: </span>
-                {activeProgram.progression_notes}
-              </div>
-            )}
-
-            <p className="text-xs text-gray-400 mt-4">
+            <p className="text-xs text-stone-600 mt-3">
               Generated {new Date(activeProgram.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
             </p>
           </div>
 
-          {/* Sessions */}
-          {activeProgram.sessions.map((session, sIdx) => (
-            <div key={sIdx} className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-              <div className="bg-gray-50 px-6 py-3 border-b border-gray-200 flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900">{session.day_label}</h3>
-                <span className="text-xs text-gray-400">{session.skeleton}</span>
+          {/* Weekly Structure */}
+          {activeProgram.weekly_pattern_summary && (
+            <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+              <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800 bg-stone-900/80">
+                <span className="text-[11px] font-black text-[#10E1C2]">01</span>
+                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Weekly Structure</p>
               </div>
-
-              <div className="divide-y divide-gray-100">
-                {session.blocks.map((block, bIdx) => (
-                  <div key={bIdx} className="px-6 py-4">
-                    <h4 className="text-sm font-medium text-gray-600 mb-3">{block.block_label}</h4>
-                    <div className="space-y-2">
-                      {block.exercises.map((ex, eIdx) => (
-                        <div key={eIdx} className="flex items-start gap-4 text-sm">
-                          <div className="flex-1 font-medium text-gray-900">{ex.exercise_name}</div>
-                          <div className="text-gray-600 whitespace-nowrap">
-                            {ex.sets}×{ex.reps}
-                            {ex.rpe !== null && ` · RPE ${ex.rpe}`}
-                          </div>
-                          <div className="text-gray-400 whitespace-nowrap text-xs">{ex.rest}</div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Show notes for exercises that have them */}
-                    {block.exercises.some(e => e.notes) && (
-                      <div className="mt-3 space-y-1">
-                        {block.exercises.filter(e => e.notes).map((ex, eIdx) => (
-                          <p key={eIdx} className="text-xs text-gray-500 italic">
-                            {ex.exercise_name}: {ex.notes}
-                          </p>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+              <div className="px-5 py-4">
+                <p className="text-sm text-stone-200 leading-relaxed">{activeProgram.weekly_pattern_summary}</p>
               </div>
             </div>
-          ))}
+          )}
+
+          {/* Progression Notes */}
+          {activeProgram.progression_notes && (
+            <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+              <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800 bg-stone-900/80">
+                <span className="text-[11px] font-black text-[#10E1C2]">02</span>
+                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Progression Strategy</p>
+              </div>
+              <div className="px-5 py-4">
+                <p className="text-sm text-stone-200 leading-relaxed">{activeProgram.progression_notes}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Sessions */}
+          <div className="mt-2">
+            <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 px-1">Sessions</p>
+            <div className="space-y-3">
+              {activeProgram.sessions.map((session, sIdx) => (
+                <div key={sIdx} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+                  <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between">
+                    <h3 className="font-semibold text-stone-100 text-sm">{session.day_label}</h3>
+                    <span className="text-[10px] text-stone-600 uppercase tracking-wide">{session.skeleton}</span>
+                  </div>
+
+                  <div className="divide-y divide-stone-800/60">
+                    {session.blocks.map((block, bIdx) => (
+                      <div key={bIdx} className="px-5 py-4">
+                        <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">{block.block_label}</p>
+                        <div className="space-y-2.5">
+                          {block.exercises.map((ex, eIdx) => (
+                            <div key={eIdx}>
+                              <div className="flex items-center gap-3 text-sm">
+                                <span className="flex-1 text-stone-200 font-medium">{ex.exercise_name}</span>
+                                <span className="text-stone-400 whitespace-nowrap tabular-nums">
+                                  {ex.sets}×{ex.reps}
+                                  {ex.rpe !== null && (
+                                    <span className="text-stone-600"> · RPE {ex.rpe}</span>
+                                  )}
+                                </span>
+                                <span className="text-stone-600 whitespace-nowrap text-xs w-16 text-right">{ex.rest}</span>
+                              </div>
+                              {ex.notes && (
+                                <p className="text-xs text-stone-600 italic mt-0.5 pl-0">{ex.notes}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Archived Programs */}
           {archivedPrograms.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-sm font-medium text-gray-500 mb-3">Previous Programs</h3>
+            <div className="mt-6">
+              <p className="text-stone-500 text-sm mb-3">Previous Programs ({archivedPrograms.length})</p>
               <div className="space-y-2">
                 {archivedPrograms.map(p => (
-                  <div key={p.id} className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-md px-4 py-2 text-sm">
-                    <span className="text-gray-700">{p.block_name}</span>
-                    <span className="text-gray-400 text-xs">
+                  <div key={p.id} className="bg-stone-900/50 border border-stone-800 rounded-lg px-4 py-3 flex items-center justify-between opacity-60">
+                    <span className="text-sm text-stone-400">{p.block_name}</span>
+                    <span className="text-xs text-stone-600">
                       {new Date(p.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
-                      {' · '}{p.progression_phase} · {p.training_goal}
+                      {' · '}<span className="capitalize">{p.progression_phase}</span>{' · '}<span className="capitalize">{p.training_goal}</span>
                     </span>
                   </div>
                 ))}
               </div>
             </div>
           )}
+
         </div>
       )}
     </div>
