@@ -19,6 +19,7 @@ interface Block {
 interface Session {
   day_label: string
   skeleton: string
+  movement_prep: string[]
   blocks: Block[]
 }
 
@@ -176,6 +177,20 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
                   </div>
 
                   <div className="divide-y divide-stone-800/60">
+                    {/* Movement Prep — Non-Slot */}
+                    {session.movement_prep?.length > 0 && (
+                      <div className="px-5 py-4 bg-stone-800/30">
+                        <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-3">
+                          Preparatory Entry — Movement Preparation <span className="text-stone-600 font-normal normal-case tracking-normal">(Non-Slot)</span>
+                        </p>
+                        <div className="space-y-1.5">
+                          {session.movement_prep.map((item, i) => (
+                            <p key={i} className="text-sm text-stone-400">{item}</p>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     {session.blocks.map((block, bIdx) => (
                       <div key={bIdx} className="px-5 py-4">
                         <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">{block.block_label}</p>

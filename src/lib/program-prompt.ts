@@ -225,6 +225,20 @@ For each slot:
 If injury is present at a joint, exclude all exercises where primary_joint_stress = that joint.
 
 ═══════════════════════════════════════
+MOVEMENT PREPARATION (NON-SLOT — MANDATORY)
+═══════════════════════════════════════
+Every session MUST begin with a Preparatory Entry — Movement Preparation block. This is a non-slot item (it does not count toward slot structure or working set totals). It always appears first, before Block A.
+
+Movement prep must be tailored to the session's dominant movement patterns:
+- Lower body session (squat/hinge dominant): hip mobility, glute activation, ankle/hip flexor prep
+- Upper body session (push/pull dominant): thoracic rotation, shoulder CARs, scapular activation, band pull-aparts
+- Full body session: combination of lower and upper prep
+- Carry/locomotion session: hip flexor stretch, thoracic rotation, loaded carry warm-up
+
+Format each prep item as a string: "Exercise name — sets×reps or duration"
+Include 3–5 items per session. Keep it specific to what is coming in the session.
+
+═══════════════════════════════════════
 OUTPUT FORMAT RULES
 ═══════════════════════════════════════
 Output must be valid JSON only — no markdown, no commentary, no preamble.
@@ -304,6 +318,10 @@ Generate the complete ${inputs.week_duration}-week training program. Apply all 9
     {
       "day_label": "Day 1 — [label]",
       "skeleton": "[skeleton name]",
+      "movement_prep": [
+        "Exercise name — sets×reps or duration",
+        "Exercise name — sets×reps or duration"
+      ],
       "blocks": [
         {
           "block_label": "Block A — Primary",
