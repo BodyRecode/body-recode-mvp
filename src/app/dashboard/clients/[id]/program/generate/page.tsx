@@ -3,6 +3,30 @@
 import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 
+const BLOCK_NAME_OPTIONS = [
+  // Accumulation
+  'Foundation Strength Block',
+  'General Strength Accumulation',
+  'Hypertrophy Accumulation Block',
+  'Muscle Building Foundation',
+  'Work Capacity Accumulation',
+  'General Physical Preparation (GPP)',
+  // Intensification
+  'Strength Intensification Block',
+  'Hypertrophy Intensification Block',
+  'Capacity Intensification Block',
+  'Loading Phase Block',
+  'Progressive Overload Block',
+  // Realization
+  'Strength Realization Block',
+  'Peak Performance Block',
+  'Expression Phase Block',
+  // Restoration
+  'Deload / Restoration Block',
+  'Active Recovery Block',
+  'Consolidation Block',
+]
+
 const EQUIPMENT_OPTIONS = [
   { value: 'barbell', label: 'Barbell' },
   { value: 'dumbbell', label: 'Dumbbell' },
@@ -42,7 +66,7 @@ export default function GenerateProgramPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!form.block_name.trim()) {
+    if (!form.block_name) {
       setError('Block name is required.')
       return
     }
@@ -99,14 +123,17 @@ export default function GenerateProgramPage() {
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Block Name
           </label>
-          <input
-            type="text"
+          <select
             value={form.block_name}
             onChange={e => setForm(prev => ({ ...prev, block_name: e.target.value }))}
-            placeholder="e.g. Foundation Strength Block"
             className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
-          />
+          >
+            <option value="" disabled>Select a block name…</option>
+            {BLOCK_NAME_OPTIONS.map(name => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
         </div>
 
         {/* Progression Phase */}
