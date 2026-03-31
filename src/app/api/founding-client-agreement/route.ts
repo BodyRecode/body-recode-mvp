@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   // Fetch agreement by token
   const { data: agreement } = await admin
     .from('founding_client_agreements')
-    .select('id, client_id, status')
+    .select('id, lead_id, status')
     .eq('token', token)
     .maybeSingle()
 
@@ -33,12 +33,12 @@ export async function POST(request: NextRequest) {
     })
     .eq('id', agreement.id)
 
-  // Set founding client flag on lead (client_id is the lead id at this stage)
+  // Set founding client flag on lead (lead_id is the lead id at this stage)
   const triggerTypeMap: Record<string, string> = {}
   const { data: lead } = await admin
     .from('leads')
     .select('zoom2_trigger_type')
-    .eq('id', agreement.client_id)
+    .eq('id', agreement.lead_id)
     .maybeSingle()
 
   await admin
@@ -46,16 +46,16 @@ export async function POST(request: NextRequest) {
     .update({
       // Mark agreement signed — actual client flag set on conversion
     })
-    .eq('id', agreement.client_id)
+    .eq('id', agreement.lead_id)
 
   // If lead has already been converted to a client, flag the client record
   const { data: convertedLead } = await admin
     .from('leads')
-    .select('converted_to_client_id, zoom2_trigger_type')
-    .eq('id', agreement.client_id)
+    .select('converted_to_lead_id, zoom2_trigger_type')
+    .eq('id', agreement.lead_id)
     .maybeSingle()
 
-  if (convertedLead?.converted_to_client_id) {
+  if (convertedLead?.converted_to_lead_id) {
     await admin
       .from('clients')
       .update({
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
         consent_tier,
         founding_client_status: 'active',
       })
-      .eq('id', convertedLead.converted_to_client_id)
+      .eq('id', convertedLead.converted_to_lead_id)
   }
 
   return NextResponse.json({ signed: true })

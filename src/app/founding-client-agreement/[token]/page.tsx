@@ -11,7 +11,7 @@ export default async function FoundingClientAgreementPage({
 
   const { data: agreement } = await admin
     .from('founding_client_agreements')
-    .select('id, status, client_id')
+    .select('id, status, lead_id')
     .eq('token', token)
     .maybeSingle()
 
@@ -48,7 +48,7 @@ export default async function FoundingClientAgreementPage({
   const { data: lead } = await admin
     .from('leads')
     .select('name')
-    .eq('id', agreement.client_id)
+    .eq('id', agreement.lead_id)
     .maybeSingle()
 
   const firstName = lead?.name?.split(' ')[0] ?? 'there'
