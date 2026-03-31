@@ -19,18 +19,19 @@ export async function POST(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
 
-  const { data: client } = await supabase
+  const { data: client, error: clientError } = await supabase
     .from('clients')
     .select('id, name, email, package')
     .eq('id', id)
     .maybeSingle()
 
+  if (clientError) console.error('Client fetch error:', clientError)
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
   if (!client.email) return NextResponse.json({ error: 'No email address for this client' }, { status: 400 })
-  if (!client.package) return NextResponse.json({ error: 'No package selected' }, { status: 400 })
+  if (!client.package) { console.error('No package on client:', client); return NextResponse.json({ error: 'No package selected' }, { status: 400 }) }
 
   const pkg = PACKAGES[client.package]
-  if (!pkg) return NextResponse.json({ error: 'Invalid package' }, { status: 400 })
+  if (!pkg) { console.error('Invalid package value:', client.package); return NextResponse.json({ error: 'Invalid package' }, { status: 400 }) }
 
   const firstName = client.name.split(' ')[0]
   const subscriptionUrl = `${pkg.stripe}?client_reference_id=${id}`
@@ -52,7 +53,7 @@ export async function POST(
     </div>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Hi ${firstName},</p>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Here is your weekly subscription link for Body Recode Performance Coaching.</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 28px;">Package: <strong style="color:#fff;">${pkg.label} — ${pkg.price}</strong></p>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 28px;">Package: <strong style="color:#fff;">${pkg.label} at ${pkg.price}</strong></p>
     <a href="${subscriptionUrl}" style="display:inline-block;margin:0 0 28px;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">Set up subscription</a>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">If you have any questions, reply to this email.</p>
     ${darkEmailSignature()}
@@ -62,5 +63,6 @@ export async function POST(
 </html>`,
   })
 
+  console.log('Subscription email sent to:', client.email, 'package:', client.package)
   return NextResponse.json({ sent: true })
 }
