@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import Link from 'next/link'
@@ -17,7 +18,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const { id } = await params
   const supabase = await createClient()
 
-  const { data: client, error: clientError } = await supabase
+  const admin = createAdminClient()
+  const { data: client, error: clientError } = await admin
     .from('clients')
     .select('*')
     .eq('id', id)
