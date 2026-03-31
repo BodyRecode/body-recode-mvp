@@ -339,36 +339,39 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <>
 
           {/* State + Exposure Readiness */}
-          <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-4">
+            <div className="px-5 pt-5 pb-4 grid grid-cols-2 gap-4 border-b border-stone-800">
               <div>
-                <p className="text-stone-500 text-xs uppercase tracking-wider mb-1">Body State</p>
-                <span
-                  className={`text-sm font-medium px-3 py-1 rounded-full border ${getStateColour(activeCffs.body_state_classification)}`}
-                >
-                  {activeCffs.body_state_classification}
-                </span>
+                <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">Body State Classification</p>
+                <p className="text-lg font-bold text-white leading-tight mb-2">{activeCffs.body_state_classification}</p>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-3.5 bg-[#10E1C2]" />
+                  <p className="text-xs text-stone-400">Resolution: <span className="text-stone-200 font-semibold">{activeCffs.resolution_state}</span></p>
+                </div>
               </div>
-              <div className="text-right">
-                <p className="text-stone-500 text-xs uppercase tracking-wider mb-1">Resolution</p>
-                <p className="text-sm text-stone-300">{activeCffs.resolution_state}</p>
+              <div>
+                <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">Exposure Readiness</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {readinessItems.map(item => (
+                    <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
+                      item.value === 'Green' ? 'bg-green-950/40 border-green-500' :
+                      item.value === 'Amber' ? 'bg-amber-950/40 border-amber-500' :
+                      item.value === 'Red' ? 'bg-red-950/40 border-red-500' :
+                      'bg-stone-800 border-stone-600'
+                    }`}>
+                      <p className={`text-xs font-bold mb-0.5 ${
+                        item.value === 'Green' ? 'text-green-400' :
+                        item.value === 'Amber' ? 'text-amber-400' :
+                        item.value === 'Red' ? 'text-red-400' :
+                        'text-stone-400'
+                      }`}>{item.value}</p>
+                      <p className="text-[10px] text-stone-500 font-medium uppercase tracking-wide">{item.label}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-
-            <div>
-              <p className="text-stone-500 text-xs uppercase tracking-wider mb-3">Exposure Readiness</p>
-              <div className="grid grid-cols-4 gap-2">
-                {readinessItems.map(item => (
-                  <div key={item.label} className="text-center">
-                    <div className={`w-3 h-3 rounded-full mx-auto mb-1.5 ${getReadinessColour(item.value)}`} />
-                    <p className="text-xs text-stone-500">{item.label}</p>
-                    <p className="text-xs text-stone-300 font-medium">{item.value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between mt-4">
+            <div className="flex items-center justify-between px-5 py-3">
               <p className="text-stone-600 text-xs">Generated {formatDate(activeCffs.generated_at)}</p>
               <div className="flex items-center gap-2">
                 <Link
@@ -386,25 +389,27 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
 
           {/* What is a CFFS */}
-          <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-5 mb-4">
-            <p className="text-xs uppercase tracking-wider text-stone-500 mb-3">What You Are Looking At</p>
+          <div className="border-l-2 border-[#10E1C2] bg-stone-900/50 border border-stone-800 rounded-xl p-5 mb-4">
+            <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-3">About This Report</p>
             <p className="text-sm font-semibold text-stone-200 leading-relaxed mb-3">
               This is not a summary. It is a structured interpretation of how this client&apos;s system is currently organising itself.
             </p>
-            <p className="text-sm text-stone-400 leading-relaxed mb-2">
-              The CFFS translates 208 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state — their regulatory load, recovery capacity, training exposure, stress architecture, and behavioural patterns.
-            </p>
-            <p className="text-sm text-stone-400 leading-relaxed">
-              Nothing here prescribes or diagnoses. Every conclusion emerges from convergence across multiple signals. You remain the interpretive authority — this document gives you the foundation.
+            <p className="text-sm text-stone-500 leading-relaxed">
+              The CFFS translates 208 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses — you remain the interpretive authority.
             </p>
           </div>
 
           {/* CFFS Sections */}
-          <div className="space-y-3 mb-6">
-            {cffsSections.map(section => (
-              <div key={section.label} className="bg-stone-900 border border-stone-800 rounded-xl p-5">
-                <p className="text-xs uppercase tracking-wider text-stone-500 mb-2">{section.label}</p>
-                <p className="text-sm text-stone-200 leading-relaxed">{section.content}</p>
+          <div className="space-y-2 mb-6">
+            {cffsSections.map((section, i) => (
+              <div key={section.label} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+                <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800 bg-stone-900/80">
+                  <span className="text-[11px] font-black text-[#10E1C2]">{String(i + 1).padStart(2, '0')}</span>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">{section.label}</p>
+                </div>
+                <div className="px-5 py-4">
+                  <p className="text-sm text-stone-200 leading-relaxed">{section.content}</p>
+                </div>
               </div>
             ))}
           </div>
