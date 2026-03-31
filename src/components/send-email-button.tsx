@@ -49,9 +49,12 @@ export default function SendEmailButton({
 
   if (status === 'sent') {
     return (
-      <span className={`${baseClass} ${variantClass} opacity-60 cursor-default`}>
-        ✓ Sent to {clientEmail}
-      </span>
+      <button
+        onClick={() => setStatus('idle')}
+        className={`${baseClass} ${variantClass} opacity-60`}
+      >
+        ✓ Sent — send again?
+      </button>
     )
   }
 
