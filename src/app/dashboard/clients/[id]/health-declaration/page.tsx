@@ -65,11 +65,20 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
           <h1 className="text-xl font-semibold text-white">{client.name}</h1>
           <p className="text-xs text-stone-500 mt-1">Submitted {submittedDate}</p>
         </div>
-        {client.medical_clearance_required && (
-          <span className="text-xs font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/30 px-3 py-1.5 rounded-lg">
-            Clearance required
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {client.medical_clearance_required && (
+            <span className="text-xs font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/30 px-3 py-1.5 rounded-lg">
+              Clearance required
+            </span>
+          )}
+          <Link
+            href={`/dashboard/clients/${id}/health-declaration/print`}
+            target="_blank"
+            className="text-sm font-medium px-4 py-2.5 rounded-lg border border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200 transition-colors"
+          >
+            Download PDF
+          </Link>
+        </div>
       </div>
 
       {!d ? (

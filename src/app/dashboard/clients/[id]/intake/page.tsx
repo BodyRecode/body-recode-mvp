@@ -75,9 +75,20 @@ export default async function IntakeViewPage({ params }: { params: Promise<{ id:
         <p className="text-sm text-stone-400">Intake — {client.name}</p>
       </div>
 
-      <div className="mb-6">
-        <h1 className="text-xl font-semibold text-white">{client.name}</h1>
-        {submittedDate && <p className="text-xs text-stone-500 mt-1">Submitted {submittedDate}</p>}
+      <div className="flex items-start justify-between mb-6">
+        <div>
+          <h1 className="text-xl font-semibold text-white">{client.name}</h1>
+          {submittedDate && <p className="text-xs text-stone-500 mt-1">Submitted {submittedDate}</p>}
+        </div>
+        {intake && (
+          <Link
+            href={`/dashboard/clients/${id}/intake/print`}
+            target="_blank"
+            className="text-sm font-medium px-4 py-2.5 rounded-lg border border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200 transition-colors"
+          >
+            Download PDF
+          </Link>
+        )}
       </div>
 
       {!intake ? (
