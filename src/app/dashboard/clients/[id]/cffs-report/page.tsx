@@ -39,23 +39,30 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
     Unknown: '#9ca3af',
   }
 
+  const readinessBg: Record<string, string> = {
+    Green: '#f0fdf4',
+    Amber: '#fffbeb',
+    Red: '#fef2f2',
+    Unknown: '#f9fafb',
+  }
+
   const generatedDate = new Date(cffs.generated_at).toLocaleDateString('en-AU', {
     day: 'numeric', month: 'long', year: 'numeric',
   })
 
-  const G = '#1A1A1A'       // Graphite Black
-  const GREY = '#F5F5F5'    // Light neutral grey background
-  const TEAL = '#10E1C2'    // Electric Teal accent
+  const G = '#0f0f0f'
+  const TEAL = '#10E1C2'
   const WHITE = '#FFFFFF'
-  const SUBTLE = '#E8E8E8'  // Hairline border
+  const PAGE_BG = '#f2f2f0'
+  const CARD_BORDER = '#e2e2e0'
 
   return (
     <>
       <PrintTrigger />
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Montserrat', sans-serif; background: ${GREY}; color: ${G}; }
+        body { font-family: 'Montserrat', sans-serif; background: ${PAGE_BG}; color: ${G}; }
         @media print {
           @page { margin: 0; size: A4; }
           body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -63,113 +70,141 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
         }
       `}</style>
 
-      {/* Black header band */}
-      <div style={{ background: '#000000', padding: '40px 48px 44px' }}>
+      {/* Header — full black */}
+      <div style={{ background: '#000000', padding: '44px 52px 0' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo-teal.png" alt="Body Recode" style={{ height: '52px', width: 'auto', display: 'block', marginBottom: '40px' }} />
+        <img src="/logo-teal.png" alt="Body Recode" style={{ height: '48px', width: 'auto', display: 'block', marginBottom: '48px' }} />
 
-        <p style={{ fontSize: '11px', fontWeight: 600, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '10px' }}>
+        <p style={{ fontSize: '10px', fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '12px' }}>
           Coach-Facing Foundational Synthesis
         </p>
-        <p style={{ fontSize: '26px', fontWeight: 800, color: WHITE, letterSpacing: '-0.01em', marginBottom: '4px' }}>
+        <h1 style={{ fontSize: '36px', fontWeight: 900, color: WHITE, letterSpacing: '-0.02em', lineHeight: '1.1', marginBottom: '6px' }}>
           Foundational Intake Report
-        </p>
-        <p style={{ fontSize: '13px', fontWeight: 400, color: '#888888', marginBottom: '36px' }}>
+        </h1>
+        <p style={{ fontSize: '12px', fontWeight: 400, color: '#666666', marginBottom: '44px', letterSpacing: '0.02em' }}>
           Initial Pattern Interpretation · Version 1.0
         </p>
 
-        <div style={{ display: 'flex', gap: '48px', borderTop: '1px solid #222222', paddingTop: '24px' }}>
-          <div>
-            <p style={{ fontSize: '10px', fontWeight: 600, color: '#555555', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '5px' }}>Client</p>
-            <p style={{ fontSize: '14px', fontWeight: 700, color: WHITE }}>{client.name}</p>
-          </div>
-          <div>
-            <p style={{ fontSize: '10px', fontWeight: 600, color: '#555555', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '5px' }}>Generated</p>
-            <p style={{ fontSize: '14px', fontWeight: 400, color: '#cccccc' }}>{generatedDate}</p>
-          </div>
-          <div>
-            <p style={{ fontSize: '10px', fontWeight: 600, color: '#555555', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '5px' }}>Coach</p>
-            <p style={{ fontSize: '14px', fontWeight: 400, color: '#cccccc' }}>Kade Dunstone</p>
-          </div>
+        {/* Meta strip */}
+        <div style={{ display: 'flex', gap: '0', borderTop: '1px solid #1a1a1a' }}>
+          {[
+            { label: 'Client', value: client.name, highlight: true },
+            { label: 'Generated', value: generatedDate, highlight: false },
+            { label: 'Coach', value: 'Kade Dunstone', highlight: false },
+          ].map((item, i) => (
+            <div key={i} style={{ padding: '20px 40px 20px 0', marginRight: '40px', borderRight: i < 2 ? '1px solid #1a1a1a' : 'none', paddingRight: i < 2 ? '40px' : '0' }}>
+              <p style={{ fontSize: '9px', fontWeight: 700, color: '#444444', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '6px' }}>{item.label}</p>
+              <p style={{ fontSize: '15px', fontWeight: item.highlight ? 700 : 400, color: item.highlight ? WHITE : '#aaaaaa' }}>{item.value}</p>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div style={{ background: GREY, padding: '40px 48px', minHeight: '100vh' }}>
+      {/* Teal accent bar */}
+      <div style={{ height: '4px', background: `linear-gradient(90deg, ${TEAL} 0%, #0ecfb2 50%, transparent 100%)` }} />
 
-        {/* Teal rule */}
-        <div style={{ height: '2px', background: TEAL, marginBottom: '36px', width: '40px' }} />
+      <div style={{ background: PAGE_BG, padding: '48px 52px 64px' }}>
 
-        {/* What is a CFFS */}
-        <div style={{ background: WHITE, border: `1px solid ${SUBTLE}`, borderLeft: `3px solid ${TEAL}`, padding: '28px 32px', marginBottom: '32px' }}>
-          <p style={{ fontSize: '10px', fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '16px' }}>What You Are Looking At</p>
-
-          <p style={{ fontSize: '15px', fontWeight: 700, color: G, lineHeight: '1.6', marginBottom: '16px' }}>
+        {/* About this document */}
+        <div style={{ background: G, padding: '36px 40px', marginBottom: '40px' }}>
+          <p style={{ fontSize: '9px', fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '20px' }}>
+            About This Document
+          </p>
+          <p style={{ fontSize: '17px', fontWeight: 700, color: WHITE, lineHeight: '1.55', marginBottom: '20px', letterSpacing: '-0.01em' }}>
             This document is not a summary. It is a structured interpretation of how this client&apos;s system is currently organising itself.
           </p>
-
-          <p style={{ fontSize: '13px', fontWeight: 400, color: '#444444', lineHeight: '1.85', marginBottom: '14px' }}>
+          <div style={{ height: '1px', background: '#222222', marginBottom: '20px' }} />
+          <p style={{ fontSize: '13px', fontWeight: 400, color: '#888888', lineHeight: '1.9', marginBottom: '12px' }}>
             The Coach-Facing Foundational Synthesis (CFFS) is generated by the Body Recode™ interpretation engine following completion of the Foundational Intake. It translates 208 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state — their regulatory load, recovery capacity, training exposure, stress architecture, and behavioural patterns.
           </p>
-
-          <p style={{ fontSize: '13px', fontWeight: 400, color: '#444444', lineHeight: '1.85', marginBottom: '14px' }}>
+          <p style={{ fontSize: '13px', fontWeight: 400, color: '#888888', lineHeight: '1.9', marginBottom: '12px' }}>
             Nothing in this document prescribes, diagnoses, or directs. It does not evaluate effort, willpower, or intention. What it does is give you — the coach — a clear, honest starting position. One that reflects how the client&apos;s body is actually behaving right now, not how they or you might hope it is.
           </p>
-
-          <p style={{ fontSize: '13px', fontWeight: 400, color: '#444444', lineHeight: '1.85' }}>
+          <p style={{ fontSize: '13px', fontWeight: 400, color: '#888888', lineHeight: '1.9' }}>
             Every conclusion here emerges from convergence across multiple signals, not isolated responses. Language is deliberately conservative. Where the data is ambiguous, that ambiguity is preserved. You remain the interpretive authority. This document gives you the foundation — what you build on it is yours.
           </p>
         </div>
 
-        <div style={{ height: '1px', background: SUBTLE, marginBottom: '32px' }} />
+        {/* Classification + Readiness row */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
 
-        {/* Classification + Readiness — white panel */}
-        <div style={{ background: WHITE, border: `1px solid ${SUBTLE}`, padding: '28px 32px', marginBottom: '24px' }}>
-          <div style={{ display: 'flex', gap: '48px', alignItems: 'flex-start' }}>
-
-            <div style={{ flex: 1 }}>
-              <p style={{ fontSize: '10px', fontWeight: 700, color: '#888888', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '10px' }}>Body State Classification</p>
-              <p style={{ fontSize: '16px', fontWeight: 800, color: G, marginBottom: '6px' }}>{cffs.body_state_classification}</p>
-              <p style={{ fontSize: '12px', fontWeight: 400, color: '#555555' }}>Resolution: <span style={{ fontWeight: 600, color: G }}>{cffs.resolution_state}</span></p>
+          {/* Body State Classification */}
+          <div style={{ background: WHITE, border: `1px solid ${CARD_BORDER}`, padding: '32px 36px' }}>
+            <p style={{ fontSize: '9px', fontWeight: 700, color: '#999999', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '20px' }}>
+              Body State Classification
+            </p>
+            <p style={{ fontSize: '22px', fontWeight: 800, color: G, letterSpacing: '-0.02em', lineHeight: '1.2', marginBottom: '12px' }}>
+              {cffs.body_state_classification}
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '3px', height: '14px', background: TEAL }} />
+              <p style={{ fontSize: '12px', fontWeight: 500, color: '#666666' }}>
+                Resolution: <span style={{ fontWeight: 700, color: G }}>{cffs.resolution_state}</span>
+              </p>
             </div>
-
-            <div style={{ flex: 2, borderLeft: `1px solid ${SUBTLE}`, paddingLeft: '48px' }}>
-              <p style={{ fontSize: '10px', fontWeight: 700, color: '#888888', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '16px' }}>Exposure Readiness</p>
-              <div style={{ display: 'flex', gap: '32px' }}>
-                {readinessItems.map(item => (
-                  <div key={item.label}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                      <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: readinessColour[item.value] || '#9ca3af', flexShrink: 0 }} />
-                      <p style={{ fontSize: '12px', fontWeight: 700, color: G }}>{item.value}</p>
-                    </div>
-                    <p style={{ fontSize: '10px', fontWeight: 500, color: '#888888', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{item.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
           </div>
+
+          {/* Exposure Readiness */}
+          <div style={{ background: WHITE, border: `1px solid ${CARD_BORDER}`, padding: '32px 36px' }}>
+            <p style={{ fontSize: '9px', fontWeight: 700, color: '#999999', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '20px' }}>
+              Exposure Readiness
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              {readinessItems.map(item => (
+                <div key={item.label} style={{ background: readinessBg[item.value] || '#f9fafb', padding: '14px 16px', borderLeft: `3px solid ${readinessColour[item.value] || '#9ca3af'}` }}>
+                  <p style={{ fontSize: '13px', fontWeight: 800, color: readinessColour[item.value] || '#9ca3af', marginBottom: '4px' }}>{item.value}</p>
+                  <p style={{ fontSize: '10px', fontWeight: 600, color: '#888888', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{item.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
 
-        {/* CFFS Sections — white panels */}
+        {/* Section divider */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', margin: '40px 0 32px' }}>
+          <div style={{ width: '28px', height: '3px', background: TEAL }} />
+          <p style={{ fontSize: '9px', fontWeight: 700, color: '#aaaaaa', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Interpretive Analysis</p>
+          <div style={{ flex: 1, height: '1px', background: CARD_BORDER }} />
+        </div>
+
+        {/* CFFS Sections */}
         {sections.map((section, i) => (
           <div
             key={i}
-            style={{ background: WHITE, border: `1px solid ${SUBTLE}`, padding: '28px 32px', marginBottom: '16px' }}
+            style={{
+              background: WHITE,
+              border: `1px solid ${CARD_BORDER}`,
+              marginBottom: '12px',
+              overflow: 'hidden',
+            }}
           >
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
-              <div style={{ width: '2px', background: TEAL, alignSelf: 'stretch', flexShrink: 0, minHeight: '100%' }} />
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: '10px', fontWeight: 700, color: '#888888', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '10px' }}>{section.label}</p>
-                <p style={{ fontSize: '13px', fontWeight: 400, color: G, lineHeight: '1.8' }}>{section.content}</p>
-              </div>
+            {/* Section header bar */}
+            <div style={{ background: '#fafaf9', borderBottom: `1px solid ${CARD_BORDER}`, padding: '16px 32px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: TEAL, minWidth: '22px' }}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <p style={{ fontSize: '11px', fontWeight: 700, color: G, textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+                {section.label}
+              </p>
+            </div>
+            {/* Section body */}
+            <div style={{ padding: '24px 32px' }}>
+              <p style={{ fontSize: '13.5px', fontWeight: 400, color: '#2a2a2a', lineHeight: '1.9' }}>
+                {section.content}
+              </p>
             </div>
           </div>
         ))}
 
         {/* Footer */}
-        <div style={{ marginTop: '32px', paddingTop: '20px', borderTop: `1px solid ${SUBTLE}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <p style={{ fontSize: '10px', fontWeight: 500, color: '#888888' }}>© Body Recode™ · www.bodyrecode.au · info@bodyrecode.au</p>
-          <p style={{ fontSize: '10px', fontWeight: 500, color: '#888888' }}>Confidential — Coach Use Only</p>
+        <div style={{ marginTop: '48px', paddingTop: '24px', borderTop: `2px solid ${G}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <p style={{ fontSize: '10px', fontWeight: 600, color: '#888888', letterSpacing: '0.05em' }}>
+            © Body Recode™ · www.bodyrecode.au · info@bodyrecode.au
+          </p>
+          <p style={{ fontSize: '10px', fontWeight: 600, color: '#aaaaaa', letterSpacing: '0.05em' }}>
+            Confidential — Coach Use Only
+          </p>
         </div>
 
       </div>
