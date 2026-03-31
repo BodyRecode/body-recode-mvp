@@ -22,24 +22,19 @@ export default function SendPortalEmailButton({ clientId }: { clientId: string }
     }
   }
 
+  const cls = 'text-sm font-medium px-4 py-2.5 rounded-lg border border-stone-700 text-stone-300 hover:border-stone-500 transition-colors disabled:opacity-50'
+
   if (status === 'sent') {
     return (
-      <button
-        onClick={() => setStatus('idle')}
-        className="text-xs px-3 py-1.5 rounded-lg bg-stone-800 text-teal-400 hover:bg-stone-700 transition-colors"
-      >
+      <button onClick={() => setStatus('idle')} className={cls}>
         ✓ Sent — send again?
       </button>
     )
   }
 
   return (
-    <button
-      onClick={send}
-      disabled={status === 'sending'}
-      className="text-xs px-3 py-1.5 rounded-lg bg-stone-800 text-stone-300 hover:bg-stone-700 hover:text-white transition-colors disabled:opacity-50"
-    >
-      {status === 'sending' ? 'Sending…' : status === 'error' ? 'Error — retry' : 'Send to client'}
+    <button onClick={send} disabled={status === 'sending'} className={cls}>
+      {status === 'sending' ? 'Sending…' : status === 'error' ? 'Error — retry' : 'Send email'}
     </button>
   )
 }
