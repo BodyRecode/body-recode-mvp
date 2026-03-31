@@ -60,7 +60,10 @@ export default function HelpPage() {
             <div>
               <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 5 — Client Setup</p>
               <div className="space-y-2">
-                <ChecklistItem text="Wait for the client to complete the foundational intake (they received the link by email)" />
+                <ChecklistItem text="Send the client their portal link — use the Send to Client button on the client profile, or copy it manually" />
+                <ChecklistItem text="Client completes all 4 onboarding steps via the portal: Coaching Agreement → Health Declaration → Foundational Intake → Baseline Documentation" />
+                <ChecklistItem text="You receive a notification email at each step as the client completes it" />
+                <ChecklistItem text="If medical clearance is required (flagged on health declaration), the portal shows an additional Medical Clearance step before intake unlocks" />
                 <ChecklistItem text="CFFS generates automatically once intake is submitted — review it on the client profile" />
                 <ChecklistItem text="Set the Coaching Package on the client profile (online, 2x, or 3x) and copy the subscription link" />
                 <ChecklistItem text="Send the subscription link to the client" />
@@ -251,16 +254,27 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 7 */}
-        <Section title="8. Client Onboarding" colour="teal">
-          <p>After the commencement fee is paid, the client receives an intake link by email. They complete:</p>
+        <Section title="8. Client Portal" colour="teal">
+          <p>Every client has a personal portal at <strong>/portal/[token]</strong>. This is their single entry point for all onboarding steps and weekly check-ins. The portal link is permanent and token-based — there is no login required.</p>
+          <p>Send the portal link from the client profile using <strong>Send to Client</strong> (emails the client directly) or <strong>Copy Portal Link</strong> (copies to clipboard for manual sending).</p>
+          <p>The portal shows the client exactly where they are in the process — completed steps are ticked, locked steps are greyed out. Once onboarding is complete, the portal transitions to show the weekly check-in task.</p>
+          <p>Every client-facing page (portal, intake, baseline) shows a sticky header with the Body Recode logo and a fixed footer with a WhatsApp link to message you directly.</p>
+          <Training title="Why one portal instead of multiple links">
+            <p>Previous builds sent separate links for intake, baseline, and check-ins. Each link was another thing to track and another point of failure. A single portal link eliminates that. The client bookmarks it once and uses it throughout the entire coaching relationship — onboarding, check-ins, resources. Everything is in one place, in the right order, with the right steps unlocked at the right time.</p>
+          </Training>
+        </Section>
+
+        <Section title="9. Client Onboarding" colour="teal">
+          <p>Onboarding happens entirely through the client portal. The steps unlock in sequence — each step must be completed before the next is available:</p>
           <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
-            <li><strong>Coaching Agreement</strong> — signed via the client portal.</li>
-            <li><strong>Health Declaration</strong> — submitted via the client portal.</li>
-            <li><strong>Foundational Intake</strong> — 208-question intake covering all signal domains.</li>
-            <li><strong>Baseline Measurements</strong> — bodyweight, waist, hips, chest, and optional photos.</li>
+            <li><strong>Coaching Agreement</strong> — reviewed and e-signed in the portal. You receive a notification when signed.</li>
+            <li><strong>Health Declaration</strong> — health and readiness screening. You receive a notification when submitted. If medical clearance is flagged, a Medical Clearance step is automatically inserted before intake unlocks.</li>
+            <li><strong>Medical Clearance</strong> (if required) — client downloads a form from the portal, takes it to their GP, and uploads the completed form. You review it and mark clearance received on the client profile, which unlocks the intake.</li>
+            <li><strong>Foundational Intake</strong> — 208-question intake covering all signal domains. You receive a notification when submitted. CFFS generates automatically.</li>
+            <li><strong>Baseline Documentation</strong> — bodyweight, waist, hips, chest, and three progress photos (front, side, back). You receive a notification when submitted.</li>
           </ol>
-          <p>When the intake is submitted, the <strong>CFFS</strong> (Client Functional Framework Summary) is generated automatically by Claude.</p>
-          <Note>If the CFFS fails to generate, use the Regenerate button on the client profile.</Note>
+          <p>You receive a notification email at every step as the client completes it. All submitted documents (agreement, health declaration, intake, baseline) are viewable and printable from the client profile.</p>
+          <Note>If the CFFS fails to generate after intake submission, use the Regenerate button on the client profile.</Note>
           <Training title="What the intake is building">
             <p>The 208-question intake is not a form. It is the raw material for the CFFS — a structured read of the client&apos;s current body state across all signal domains. The questions exist because body response patterns don&apos;t reveal themselves in a short intake. Depth matters.</p>
             <p className="mt-2">The baseline measurements taken here are the reference point for everything that follows. Week 1 data only becomes meaningful because of what was captured here. Encourage the client to be accurate rather than aspirational with their numbers.</p>
@@ -268,13 +282,13 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 8 */}
-        <Section title="9. CFFS — Client Functional Framework Summary" colour="teal">
-          <p>The CFFS is generated from the foundational intake. It is a structured interpretation of the client&apos;s current body state across 8 signal domains.</p>
+        <Section title="10. CFFS — Coach-Facing Foundational Synthesis" colour="teal">
+          <p>The CFFS is generated automatically from the foundational intake. It is a structured interpretation of the client&apos;s current body state across 8 signal domains, labelled <strong>Foundational Synthesis — CFFS</strong> on the client profile.</p>
           <p>It includes:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li>Body State Classification (Remediation, Optimisation, Post-Optimisation)</li>
             <li>Resolution State</li>
-            <li>Exposure Readiness across 4 dimensions</li>
+            <li>Exposure Readiness across 4 dimensions (Capacity, Schedule, Regulation, Behaviour)</li>
             <li>Client Context Summary</li>
             <li>Primary Patterns and Signals</li>
             <li>Capacity Constraints and Guardrails</li>
@@ -283,6 +297,7 @@ export default function HelpPage() {
             <li>Explicit Non-Directives</li>
             <li>Closing Interpretive Notes</li>
           </ul>
+          <p>Click <strong>Download PDF</strong> on the client profile to open the full formatted CFFS report in a new tab — printable as a PDF.</p>
           <Note>The CFFS is a coaching reference document, not a diagnostic tool. It does not prescribe training changes.</Note>
           <Training title="How to use the CFFS">
             <p>The CFFS is not a report to file away. It is the interpretive framework for your first weeks of coaching. Before you prescribe anything — load, frequency, nutrition adjustments — read the CFFS. The Capacity Constraints and Guardrails section in particular tells you what not to do before it tells you what to do.</p>
@@ -292,36 +307,37 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 9 */}
-        <Section title="10. Weekly Check-Ins and CFWS" colour="teal">
-          <p>Each week, clients complete one check-in form during the Friday 6pm to Sunday 6pm Brisbane window. Forms alternate each week:</p>
+        <Section title="11. Weekly Check-Ins and CFWS" colour="teal">
+          <p>Each week, clients complete one check-in form during the Friday 6pm to Sunday 6:30pm Brisbane window. Forms alternate each week:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-            <li><strong>Form A</strong> (odd weeks) — Training, recovery, and load questions.</li>
-            <li><strong>Form B</strong> (even weeks) — Regulation, lifestyle, and context questions.</li>
+            <li><strong>Form A</strong> (odd system weeks) — Training, load, and recovery questions.</li>
+            <li><strong>Form B</strong> (even system weeks) — Regulation, lifestyle, and context questions.</li>
           </ul>
-          <p>Every Friday at 6pm Brisbane time, clients receive an automated email notifying them that the window is open. The email includes a link to their personal client dashboard at <strong>/client/[token]</strong>.</p>
-          <p>The client dashboard shows:</p>
+          <p>Every Friday at 6pm Brisbane time, clients receive an automated email notifying them that the window is open. The email links directly to their <strong>client portal at /portal/[token]</strong>.</p>
+          <p>Inside the portal, the <strong>This week</strong> section shows:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-            <li>Current week number and window status (open or closed).</li>
-            <li>The active form for this week — ticked if submitted, with a Complete button if not.</li>
-            <li>Next window open time if the window is currently closed.</li>
+            <li>The active form for this week with a Start link — or a ticked state if already submitted.</li>
+            <li>Window closed state with the next open time if outside the Friday-Sunday window.</li>
           </ul>
-          <p>When the form is submitted:</p>
+          <p>Clicking Start takes the client to the check-in form at <strong>/portal/[token]/checkin</strong>.</p>
+          <p>When both Form A and Form B have been submitted for the week:</p>
           <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
-            <li>The client receives a confirmation email — &quot;Got it, [name]. Your Week X check-in has been received.&quot;</li>
+            <li>The client receives a confirmation email.</li>
             <li>You receive a notification email with a link to the client profile.</li>
-            <li>The <strong>CFWS</strong> (Client Functional Weekly Synthesis) is generated automatically using the most recent Form A and Form B available.</li>
+            <li>The <strong>CFWS</strong> (Coach-Facing Weekly Synthesis) generates automatically and appears on the client profile under <strong>Weekly Synthesis — CFWS</strong>.</li>
           </ol>
-          <p>The client profile shows the latest CFWS and the last 8 check-in submissions.</p>
-          <Note>Use the Regenerate button to manually trigger a new CFWS if needed.</Note>
+          <p>The CFWS includes Exposure Readiness across 4 dimensions, plus 7 interpretive sections. Click <strong>Download PDF</strong> on the client profile to open the full formatted CFWS report — printable as a PDF.</p>
+          <p>The client profile also shows the last several check-in submissions under Recent Submissions.</p>
+          <Note>Use the Regenerate button to manually trigger a new CFWS if needed — for example if only one form was submitted and you want to generate from the latest available pair.</Note>
           <Training title="Why this structure exists">
             <p><strong>Alternating forms.</strong> Form A captures load, training, and recovery. Form B captures regulation, lifestyle, and context. Together they produce a complete picture of the week. Running both every week would be 20+ minutes per check-in. Alternating them halves the client burden while keeping the data complete over a two-week cycle. The CFWS is always generated using the most recent Form A and Form B — even if they weren&apos;t from the same week.</p>
-            <p className="mt-2"><strong>The Friday-Sunday window.</strong> Friday 6pm is not arbitrary. It gives the client the full week to have happened before they reflect on it. Sunday 6pm closes it before Monday, so you have the CFWS ready before the new week begins. Read the CFWS before Monday if you can — it will orient your coaching decisions for the week ahead.</p>
-            <p className="mt-2"><strong>The notification to you.</strong> The email you receive links directly to the client profile. The CFWS is there waiting. You don&apos;t need to remember to check — the system tells you when something needs your attention.</p>
+            <p className="mt-2"><strong>The Friday-Sunday window.</strong> Friday 6pm is not arbitrary. It gives the client the full week to have happened before they reflect on it. Sunday 6:30pm closes it before Monday, so you have the CFWS ready before the new week begins. Read the CFWS before Monday if you can — it will orient your coaching decisions for the week ahead.</p>
+            <p className="mt-2"><strong>Everything through the portal.</strong> The check-in notification links to the portal, not a standalone form. The client uses the same URL they used for onboarding. Over time it becomes the single place they associate with their coaching relationship — not a different link each week.</p>
           </Training>
         </Section>
 
         {/* Section 10 */}
-        <Section title="11. Coaching Package and Upgrades" colour="teal">
+        <Section title="12. Coaching Package and Upgrades" colour="teal">
           <p>On the client profile, set the client&apos;s <strong>Coaching Package</strong> to record which plan they are on:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Online — $149/week</strong></li>
@@ -343,7 +359,7 @@ export default function HelpPage() {
           </Training>
         </Section>
 
-        <Section title="12. Clients Dashboard" colour="teal">
+        <Section title="13. Clients Dashboard" colour="teal">
           <p>The clients dashboard shows a live overview of all active clients. For each client in active coaching, the row displays:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Week number</strong> — Current coaching week based on their start date.</li>
@@ -359,7 +375,7 @@ export default function HelpPage() {
           </Training>
         </Section>
 
-        <Section title="13. Automated Status Flow" colour="teal">
+        <Section title="14. Automated Status Flow" colour="teal">
           <p>Lead statuses update automatically at these trigger points. You do not need to change them manually.</p>
           <div className="space-y-2">
             <FlowRow trigger="Check-in quiz submitted" from="—" to="New Check-In" auto />
@@ -382,7 +398,7 @@ export default function HelpPage() {
           </Training>
         </Section>
 
-        <Section title="14. Email Sequences and Automation" colour="teal">
+        <Section title="15. Email Sequences and Automation" colour="teal">
           <p>The following outbound email sequences run automatically. All emails send from <strong>kade@bodyrecode.au</strong> via Resend.</p>
 
           <p className="font-semibold text-white mt-2">Performance Report + Follow-Up Sequence</p>
@@ -411,16 +427,31 @@ export default function HelpPage() {
           </div>
 
           <p className="font-semibold text-white mt-4">Welcome Email (Post-Conversion)</p>
-          <p>Sent automatically when the commencement fee is paid. Contains the client&apos;s unique intake link. Triggered by the Stripe webhook.</p>
+          <p>Sent automatically when the commencement fee is paid. Contains the client&apos;s portal link. Triggered by the Stripe webhook.</p>
+
+          <p className="font-semibold text-white mt-4">Client Onboarding Notifications (to you)</p>
+          <p>You receive a notification email each time a client completes a step in their portal:</p>
+          <div className="space-y-1">
+            <SeqRow day="Step 1" label="Coaching Agreement signed — with client name and portal link" />
+            <SeqRow day="Step 2" label="Health Declaration submitted — flags if medical clearance is required" />
+            <SeqRow day="Step 3" label="Foundational Intake submitted — with portal link" />
+            <SeqRow day="Step 4" label="Baseline Documentation submitted — with portal link" />
+          </div>
 
           <p className="font-semibold text-white mt-4">Weekly Check-In Window Open</p>
-          <p>Sent automatically every Friday at 6pm Brisbane time to all active clients. Contains a link to the client dashboard. Triggered by a Vercel cron job.</p>
+          <p>Sent automatically every Friday at 6pm Brisbane time to all active clients. Links to their portal at /portal/[token]. Triggered by a Vercel cron job.</p>
+
+          <p className="font-semibold text-white mt-4">Weekly Check-In Confirmation (to client)</p>
+          <p>Sent automatically when a client submits a check-in form. Dark-themed branded email confirming receipt.</p>
+
+          <p className="font-semibold text-white mt-4">Weekly Check-In Notification (to you)</p>
+          <p>Sent automatically when a client submits a check-in form. Includes the form type and a link to the client profile.</p>
 
           <p className="font-semibold text-white mt-4">Coaching Start Reminder</p>
           <p>Sent automatically the day before a client&apos;s coaching start date. Triggered by a Vercel cron job that runs daily.</p>
 
           <p className="font-semibold text-white mt-4">Founding Client Case Study Agreement</p>
-          <p>Sent manually from the Zoom 2 companion when a Founding Client pathway is selected at Stage 5. Click <strong>Send Case Study Agreement</strong> — the system creates the agreement record, generates a unique signing token, and emails the lead a link to review and sign online. The email is sent from kade@bodyrecode.au. The agreement must be signed before the commencement fee is sent.</p>
+          <p>Sent manually from the Zoom 2 companion when a Founding Client pathway is selected at Stage 5. Click <strong>Send Case Study Agreement</strong> — the system creates the agreement record, generates a unique signing token, and emails the lead a link to review and sign online. The agreement must be signed before the commencement fee is sent.</p>
 
           <Training title="The logic behind the follow-up timing">
             <p>Day 2, Day 5, Day 9. Not daily. Not weekly. The gaps are intentional. Day 2 is when the report is still fresh. Day 5 is when most people have filed it away but haven&apos;t fully forgotten it. Day 9 is the last reach — the tone shifts to a genuine close. Running them too close together feels like pressure. Too far apart and the thread is lost.</p>
@@ -428,7 +459,7 @@ export default function HelpPage() {
           </Training>
         </Section>
 
-        <Section title="15. Communications Timeline" colour="teal">
+        <Section title="16. Communications Timeline" colour="teal">
           <p>Every lead detail page has a <strong>Communications</strong> panel. It shows a reverse-chronological timeline of all outbound emails logged for that lead.</p>
           <p>Events logged automatically:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
@@ -443,7 +474,7 @@ export default function HelpPage() {
           <Note>Historical leads (those who submitted before this feature was built) will not have events in the timeline. All new activity is logged going forward.</Note>
         </Section>
 
-        <Section title="16. Admin Actions" colour="teal">
+        <Section title="17. Admin Actions" colour="teal">
           <p>The following actions are available on the <strong>Dashboard Homepage</strong> in the Admin Actions panel.</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Send preview email</strong> — Sends a sample re-engagement report email to kade@bodyrecode.au. Use this to preview formatting and layout before running the blast.</li>
@@ -452,7 +483,7 @@ export default function HelpPage() {
           <Note>The blast is protected by an admin secret and requires confirmation. It will not fire accidentally.</Note>
         </Section>
 
-        <Section title="17. Founding Client Program" colour="teal">
+        <Section title="18. Founding Client Program" colour="teal">
           <p>The Founding Client Program is a limited, selective participation model. Up to 5 positions are available. The fee is adjusted by 50% in exchange for the client&apos;s documented participation in a structured case study process.</p>
           <p>This is a structured trade, not a discount. The client provides participation of commercial and developmental value to the system. The adjusted fee reflects that exchange.</p>
 
@@ -508,7 +539,7 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 11 */}
-        <Section title="18. Stripe Payments" colour="teal">
+        <Section title="19. Stripe Payments" colour="teal">
           <p>Three payment links are used in the coaching entry process:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
             <li><strong>Commencement Fee — $240</strong> — Generated uniquely per lead. Triggers automatic client creation when paid.</li>
