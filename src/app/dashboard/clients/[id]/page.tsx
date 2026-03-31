@@ -17,12 +17,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const { id } = await params
   const supabase = await createClient()
 
-  const { data: client } = await supabase
+  const { data: client, error: clientError } = await supabase
     .from('clients')
     .select('*')
     .eq('id', id)
     .single()
 
+  if (clientError) console.error('Client fetch error:', clientError)
   if (!client) notFound()
 
   const [{ data: cffsRecords }, { data: invitations }, { data: intakes }, { data: cfwsRecords }, { data: recentCheckins }, { data: baselines }] = await Promise.all([
