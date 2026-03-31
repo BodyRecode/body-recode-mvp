@@ -64,7 +64,8 @@ export default function AgreementForm({ token, firstName }: Props) {
 
         {/* Header */}
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-6">Body Recode™ · Founding Client Program</p>
+          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style={{ display: 'block', marginBottom: '32px' }} />
+          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-6">Founding Client Program</p>
           <h1 className="text-2xl font-bold text-white mb-2">Founding Client Case Study Agreement</h1>
           <p className="text-stone-400 text-sm">Hi {firstName}, please read through this agreement carefully before signing. If anything is unclear, reply to the email before proceeding.</p>
         </div>
