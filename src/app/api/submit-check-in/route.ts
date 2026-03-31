@@ -111,19 +111,6 @@ export async function POST(request: NextRequest) {
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding:0 0 20px;">
-                    <table cellpadding="0" cellspacing="0" style="background:#1a1a1a;border-radius:10px;padding:14px 20px;border:1px solid #222;">
-                      <tr>
-                        <td>
-                          <p style="margin:0 0 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#555;">Signal Pattern</p>
-                          <p style="margin:0;font-size:18px;font-weight:700;color:#10E1C2;">${signalPattern}</p>
-                          <p style="margin:4px 0 0;font-size:12px;color:#555;">Score: ${totalScore} / ${max}</p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:0 0 20px;">
                     <p style="margin:0 0 6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#555;">Contact</p>
                     <p style="margin:0;font-size:14px;color:#ccc;">${email}</p>
                     ${phone ? `<p style="margin:4px 0 0;font-size:14px;color:#888;">${phone}</p>` : ''}
