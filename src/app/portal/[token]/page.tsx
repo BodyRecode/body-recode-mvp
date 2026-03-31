@@ -232,8 +232,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </a>
         </div>
 
-        {/* Footer */}
-        <p className="text-xs text-stone-700 text-center">Questions? Message Kade on WhatsApp.</p>
+        <div className="h-10" />{/* spacer for fixed footer */}
       </div>
     </div>
   )

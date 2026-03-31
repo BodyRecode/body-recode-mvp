@@ -1,7 +1,21 @@
+const WHATSAPP_NUMBER = '61400336284'
+
 export default function ClientHeader() {
   return (
-    <div className="sticky top-0 z-10 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-stone-900 px-5 py-3">
-      <img src="https://bodyrecode.au/logo-teal.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
-    </div>
+    <>
+      <div className="sticky top-0 z-10 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-stone-900 px-5 py-3">
+        <img src="https://bodyrecode.au/logo-teal.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 z-10 bg-[#0a0a0a]/95 backdrop-blur-sm border-t border-stone-900 px-5 py-3 text-center">
+        <a
+          href={`https://wa.me/${WHATSAPP_NUMBER}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-stone-500 hover:text-teal-400 transition-colors"
+        >
+          Questions? Message Kade on WhatsApp →
+        </a>
+      </div>
+    </>
   )
 }
