@@ -523,6 +523,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <p className="text-xs uppercase tracking-wider text-stone-500">Week {latestCfws.week_number} Synthesis</p>
               <div className="flex items-center gap-2">
                 {latestCompleteWeek && <RegenerateCFWSButton clientId={id} weekNumber={latestCompleteWeek} />}
+                <Link
+                  href={`/dashboard/clients/${client.id}/cfws-report`}
+                  target="_blank"
+                  className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+                >
+                  View report ↗
+                </Link>
                 <span className="text-xs text-stone-500">{formatDate(latestCfws.generated_at)}</span>
               </div>
             </div>
