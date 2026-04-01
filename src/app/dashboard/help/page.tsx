@@ -73,6 +73,19 @@ export default function HelpPage() {
               </div>
             </div>
 
+            <div>
+              <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 6 — Training Program</p>
+              <div className="space-y-2">
+                <ChecklistItem text="Create a Macro Plan on the client profile — set the plan name and macro objective before generating any programs" />
+                <ChecklistItem text="Add the planned block sequence to the macro plan (phases, goals, durations, arcs)" />
+                <ChecklistItem text="Click Generate program → on the first block, or click Generate Program on the client profile" />
+                <ChecklistItem text="Review the Prescription Suggestion — read the reasoning for each field and correct any fields based on your direct assessment" />
+                <ChecklistItem text="Confirm equipment access, then click Approve & Generate Program (takes 30–60 seconds)" />
+                <ChecklistItem text="Review the full draft on the Training Program page — check sessions, blocks, exercises, and progression strategy" />
+                <ChecklistItem text="Click Approve Program to promote the draft to active" />
+              </div>
+            </div>
+
           </div>
         </Section>
 
@@ -539,6 +552,55 @@ export default function HelpPage() {
         </Section>
 
         {/* Section 11 */}
+        {/* Training Program — PTS */}
+        <Section title="20. Training Program — PTS (Performance Training System)" colour="teal">
+          <p>The Training Program section lives on each client profile. It uses the Body Recode™ PTS doctrine and Claude AI to generate structured training programs from your client&apos;s CFFS, intake, and training history. Programs follow the full 9-stage generation pipeline and all doctrine constraints are enforced automatically.</p>
+
+          <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">The Generation Flow</p>
+          <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>Step 1 — Prescription Suggestion.</strong> Click Generate Program on the client profile. The system reads the client&apos;s CFFS, intake, injury context, and training history and produces a suggested prescription — block name, phase, goal, frequency, training age, movement competency, duration — with the reasoning behind every field. You review and edit before anything is generated.</li>
+            <li><strong>Step 2 — Approve &amp; Generate.</strong> Confirm equipment access, adjust any fields if needed, then click Approve &amp; Generate Program. Claude Sonnet generates the full program (30–60 seconds). It is saved as a draft.</li>
+            <li><strong>Step 3 — Draft Review.</strong> The full draft renders on the Training Program page with Discard and Approve Program buttons. Review the program — sessions, blocks, exercises, weekly structure, progression strategy — before promoting it.</li>
+            <li><strong>Step 4 — Approve Program.</strong> Click Approve Program to promote the draft to active. The draft replaces any previously active program. Previous programs are retained as archived history.</li>
+          </ul>
+
+          <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Program Structure</p>
+          <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>01 Weekly Structure</strong> — Explains the program design logic: why each skeleton was chosen, what patterns are in each session, and what constraints were applied (injury, readiness flags, RPE ceilings, eligibility level).</li>
+            <li><strong>02 Progression Strategy</strong> — Week-by-week progression instructions. Permission-based only — each week&apos;s progression is conditional on the client tolerating the previous week cleanly.</li>
+            <li><strong>Sessions</strong> — Each session has a Movement Preparation entry (non-slot, always first), then blocks A through D. Each exercise shows sets × reps, RPE, rest, and coaching notes.</li>
+          </ul>
+
+          <Note>Programs follow doctrine exactly — one PTS phase only, no cross-phase blending, exercise selection from the approved library only, skeleton structure fixed, fatigue adjustments on execution variables only.</Note>
+
+          <Training title="How to read the prescription suggestion">
+            <p>The suggestion is not a recommendation to accept blindly. It is the system&apos;s read of the client&apos;s current state based on available data. Read each reasoning note — if your coaching judgement disagrees with the reasoning, edit the field. The system explains its logic so you can interrogate it, not so you can skip the thinking.</p>
+            <p className="mt-2">Movement competency in particular requires your direct assessment. The system defaults conservatively when no data is available — correct it if you know the client&apos;s actual movement capacity from in-person sessions.</p>
+          </Training>
+        </Section>
+
+        <Section title="21. Macro Training Arc" colour="teal">
+          <p>The Macro Plan sits above individual program blocks. It lets you plan the full training arc for a client — a sequenced series of meso blocks that govern where the client is going over months, not just the next 4 weeks.</p>
+
+          <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">How It Works</p>
+          <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+            <li>Access it via <strong>Macro Plan</strong> on the client profile Training Program section.</li>
+            <li>Create a plan with a name and macro objective (e.g. &quot;Build capacity foundation → strength expression over 6 months&quot;).</li>
+            <li>Add meso blocks in sequence. Each block has a progression phase, training goal, duration, execution arc (Short/Mid/Long), phase category (Layer A), and phase objective (Layer D).</li>
+            <li>Click <strong>Generate program →</strong> on any block to go to the prescription suggestion page — the system pre-fills the prescription from the plan block and passes the full arc context (previous block completed, next block planned, macro objective) to Claude during generation.</li>
+            <li>Block status updates automatically: Planned → In Progress (when generation begins) → Complete (when you update it after the block finishes) → Skipped.</li>
+          </ul>
+
+          <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">The Three Time Horizons</p>
+          <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+            <li><strong>Macro</strong> — The plan itself. Long-term direction (months). Governs which stress profiles are allowable and the overall arc direction.</li>
+            <li><strong>Meso</strong> — Each block in the plan. 4–8 weeks. Sets stress emphasis, density, and deload timing for that window.</li>
+            <li><strong>Micro</strong> — The sessions within each block. Weekly/session expression responsive to current conditions. What the program page shows.</li>
+          </ul>
+
+          <Note>The macro plan gives Claude context it cannot derive from a single block in isolation — it knows where the client has been and where they are going. This produces more accurate phase transitions, better execution arc decisions, and appropriate intensity sequencing across blocks.</Note>
+        </Section>
+
         <Section title="19. Stripe Payments" colour="teal">
           <p>Three payment links are used in the coaching entry process:</p>
           <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
