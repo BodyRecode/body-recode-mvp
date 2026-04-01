@@ -222,7 +222,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
 
                     {session.blocks.map((block, bIdx) => (
                       <div key={bIdx} className="px-5 py-4">
-                        <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">{block.block_label}</p>
+                        <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-3">{block.block_label}</p>
                         <div className="space-y-2.5">
                           {block.exercises.map((ex, eIdx) => (
                             <div key={eIdx}>
