@@ -13,6 +13,7 @@ import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
 import ClientDangerActions from './client-danger-actions'
 import FoundingClientStatusManager from '@/components/founding-client-status-manager'
+import ProfileSidebar from './profile-sidebar'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -26,7 +27,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   if (clientError) console.error('Client fetch error:', clientError)
   if (!client) notFound()
 
-  const [{ data: cffsRecords }, { data: invitations }, { data: intakes }, { data: cfwsRecords }, { data: recentCheckins }, { data: baselines }, { data: activePrograms }, { data: draftPrograms }] = await Promise.all([
+  const [{ data: cffsRecords }, { data: invitations }, { data: intakes }, { data: cfwsRecords }, { data: recentCheckins }, { data: baselines }, { data: activePrograms }, { data: draftPrograms }, { data: activeNutritionPlans }, { data: draftNutritionPlans }] = await Promise.all([
     admin
       .from('cffs')
       .select('*')
@@ -73,6 +74,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .eq('client_id', id)
       .eq('status', 'draft')
       .maybeSingle(),
+    admin
+      .from('nutrition_plans')
+      .select('id, plan_name, entry_state, carb_demand_level, generated_at, current_direction')
+      .eq('client_id', id)
+      .eq('is_active', true)
+      .maybeSingle(),
+    admin
+      .from('nutrition_plans')
+      .select('id, plan_name, entry_state, carb_demand_level, generated_at')
+      .eq('client_id', id)
+      .eq('status', 'draft')
+      .maybeSingle(),
   ])
 
   const activeCffs = cffsRecords?.find(c => !c.is_archived) || null
@@ -95,6 +108,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const baselineToken = client.baseline_token as string | undefined
   const activeProgram = activePrograms || null
   const draftProgram = draftPrograms || null
+  const activeNutritionPlan = activeNutritionPlans || null
+  const draftNutritionPlan = draftNutritionPlans || null
 
   const readinessItems = activeCffs
     ? [
@@ -124,9 +139,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="flex gap-8 max-w-5xl">
+      <ProfileSidebar />
+      <div className="flex-1 min-w-0">
       {/* Header */}
-      <div className="mb-8 flex items-start justify-between">
+      <div id="overview" className="mb-8 flex items-start justify-between scroll-mt-8">
         <div>
           <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
             <Link href="/dashboard" className="hover:text-stone-300 transition-colors">Clients</Link>
@@ -337,7 +354,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
 
-      <div className="flex items-center justify-between mb-3 mt-6">
+      <div id="cffs" className="flex items-center justify-between mb-3 mt-6 scroll-mt-8">
         <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Foundational Synthesis <span className="text-stone-600 font-normal">— CFFS</span></h2>
       </div>
 
@@ -461,7 +478,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       )}
 
       {/* Baseline Section */}
-      <div id="baseline" className="mt-6">
+      <div id="baseline" className="mt-6 scroll-mt-8">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Baseline</h2>
           {baselineToken && !latestBaseline && (
@@ -526,7 +543,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Weekly Check-In Section */}
-      <div className="mt-6">
+      <div id="cfws" className="mt-6 scroll-mt-8">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Weekly Synthesis <span className="text-stone-600 font-normal">— CFWS</span></h2>
           {checkinToken && (
@@ -651,7 +668,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Training Program Section */}
-      <div className="mt-6">
+      <div id="training" className="mt-6 scroll-mt-8">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Training Program <span className="text-stone-600 font-normal">— PTS</span></h2>
           <div className="flex items-center gap-2">
@@ -723,8 +740,73 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       </div>
 
+      {/* Nutrition Plan Section */}
+      <div id="nutrition" className="mt-6 scroll-mt-8">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Nutrition Plan <span className="text-stone-600 font-normal">— HABNS</span></h2>
+          <Link
+            href={`/dashboard/clients/${id}/nutrition/suggest`}
+            className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+          >
+            {activeNutritionPlan ? 'Regenerate' : 'Generate Plan'}
+          </Link>
+        </div>
+
+        <div className="space-y-2">
+          {/* Draft nutrition plan */}
+          {draftNutritionPlan && (
+            <Link
+              href={`/dashboard/clients/${id}/nutrition`}
+              className="block bg-stone-900 border border-stone-800 rounded-xl p-5 hover:border-stone-600 transition-colors"
+            >
+              <div className="flex items-start justify-between mb-2">
+                <p className="text-sm font-semibold text-stone-200">{draftNutritionPlan.plan_name}</p>
+                <div className="flex gap-1.5">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">Draft</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">{draftNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">{draftNutritionPlan.carb_demand_level} carbs</span>
+                </div>
+              </div>
+              <p className="text-xs text-stone-500">Generated {formatDate(draftNutritionPlan.generated_at)}</p>
+              <p className="text-xs text-[#10E1C2] mt-2">Review &amp; approve draft →</p>
+            </Link>
+          )}
+
+          {/* Active nutrition plan */}
+          {activeNutritionPlan ? (
+            <Link
+              href={`/dashboard/clients/${id}/nutrition`}
+              className="block bg-stone-900 border border-stone-800 rounded-xl p-5 hover:border-stone-600 transition-colors"
+            >
+              <div className="flex items-start justify-between mb-2">
+                <p className="text-sm font-semibold text-stone-200">{activeNutritionPlan.plan_name}</p>
+                <div className="flex gap-1.5">
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">{activeNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">{activeNutritionPlan.carb_demand_level} carbs</span>
+                  {activeNutritionPlan.current_direction && (
+                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full capitalize ${
+                      activeNutritionPlan.current_direction === 'progress' ? 'bg-teal-500/10 text-teal-400' :
+                      activeNutritionPlan.current_direction === 'rebuild' ? 'bg-red-500/10 text-red-400' :
+                      'bg-stone-800 text-stone-400'
+                    }`}>{activeNutritionPlan.current_direction}</span>
+                  )}
+                </div>
+              </div>
+              <p className="text-xs text-stone-500">Generated {formatDate(activeNutritionPlan.generated_at)}</p>
+              <p className="text-xs text-[#10E1C2] mt-2">View full nutrition plan →</p>
+            </Link>
+          ) : !draftNutritionPlan ? (
+            <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-5 text-center">
+              <p className="text-stone-500 text-sm">No nutrition plan generated yet</p>
+              <p className="text-stone-600 text-xs mt-1">Generate a plan once the CFFS is complete</p>
+            </div>
+          ) : null}
+        </div>
+      </div>
+
       <ClientDangerActions clientId={id} isActive={client.active !== false} />
 
+      </div>
     </div>
   )
 }

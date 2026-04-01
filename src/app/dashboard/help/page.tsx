@@ -25,6 +25,7 @@ const SECTIONS = [
   { id: 'stripe-payments', title: '19. Stripe Payments', colour: 'teal' as const },
   { id: 'training-program', title: '20. Training Program', colour: 'teal' as const },
   { id: 'macro-arc', title: '21. Macro Training Arc', colour: 'teal' as const },
+  { id: 'nutrition-plan', title: '22. Nutrition Plan', colour: 'teal' as const },
 ]
 
 export default function HelpPage() {
@@ -694,6 +695,38 @@ export default function HelpPage() {
             </ul>
 
             <Note>The macro plan gives Claude context it cannot derive from a single block in isolation — it knows where the client has been and where they are going. This produces more accurate phase transitions, better execution arc decisions, and appropriate intensity sequencing across blocks.</Note>
+          </Section>
+
+          <Section id="nutrition-plan" title="22. Nutrition Plan — HABNS" colour="teal">
+            <p>The Nutrition Plan engine generates a doctrine-compliant daily nutrition prescription under the Hybrid Animal-Based Nutrition System (HABNS) — the 5th pillar of the Body Recode system. Plans follow a two-stage pipeline: draft → active. The same approval flow as the training program.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 1 — Prescription Suggestion</p>
+            <p>From a client profile, click <strong>Generate Plan</strong> in the Nutrition Plan section. This opens the prescription suggestion page. Claude (Haiku) reads the CFFS, intake data, and any previous nutrition plans to recommend a starting prescription. Each field shows a reason. You can edit any field before proceeding.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 2 — Plan Generation</p>
+            <p>Click <strong>Approve &amp; Generate Plan</strong> to send the prescription to Claude (Sonnet). The engine applies all six sequential build layers from doctrine: structure → protein anchor → carb demand → distribution → day variation → food selection. The result is saved as a draft. If you prefer to fill in the prescription manually, use the <strong>Fill in manually instead</strong> link at the bottom of the suggestion page.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 3 — Draft Review</p>
+            <p>The generated plan appears on the client&apos;s Nutrition Plan page under a <strong>Draft — Pending Approval</strong> banner. Review the full output: entry state summary, meal structure (per-meal macros and foods), training day adjustments, execution rules, what not to change, and progression notes. Use <strong>Discard Draft</strong> to delete it or <strong>Approve Plan</strong> to promote it to active.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 4 — Weekly Review</p>
+            <p>Below the active plan, use <strong>Record Review</strong> to log a weekly review. The system enforces doctrine gates before saving:</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Adherence gate</strong> — Any structural or nutritional adjustment requires adherence confirmation first. Behavioural adjustments are exempt.</li>
+              <li><strong>Time gate</strong> — Minimum days under observation: Behavioural (0), Structural (5), Nutritional (7), Advanced (10).</li>
+              <li><strong>Single variable rule</strong> — Only one variable can be changed per review cycle.</li>
+            </ul>
+            <p className="mt-2">Direction options: <strong>Progress</strong> (advance the plan), <strong>Hold</strong> (maintain current prescription), <strong>Rebuild</strong> (generate a new plan from scratch).</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Key Concepts</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Entry State</strong> — The control variable that locks modulation permission. Four states: Stabilisation, Training Support, High Output Support, Recovery Reset.</li>
+              <li><strong>Modulation Permission</strong> — Prohibited (Stabilisation/Recovery Reset), Restricted (Training Support), Permitted (High Output Support). The engine cannot override this boundary.</li>
+              <li><strong>Protein Anchor</strong> — Fixed daily protein target distributed evenly across meals. Non-variable by design.</li>
+              <li><strong>Carb Demand Level</strong> — Must respect the entry state ceiling. Stabilisation/Recovery Reset → Low only. Training Support → up to Moderate. High Output → up to High.</li>
+            </ul>
+
+            <Note>The nutrition plan is coach-facing only. A simplified client-facing version will be added to the client portal in a future build.</Note>
           </Section>
 
         </div>
