@@ -87,6 +87,16 @@ export default function DraftEditor({
       .catch(() => setLibraryLoaded(true))
   }, [program.equipment_access])
 
+  function updateMovementPrep(sessionIdx: number, itemIdx: number, value: string) {
+    setSessions(prev => prev.map((s, si) => {
+      if (si !== sessionIdx) return s
+      const prep = [...s.movement_prep]
+      prep[itemIdx] = value
+      return { ...s, movement_prep: prep }
+    }))
+    setDirty(true)
+  }
+
   function updateExercise(
     sessionIdx: number,
     blockIdx: number,
@@ -339,7 +349,7 @@ export default function DraftEditor({
             </div>
 
             <div className="divide-y divide-stone-800/60">
-              {/* Movement Prep — read-only */}
+              {/* Movement Prep — editable */}
               {session.movement_prep?.length > 0 && (
                 <div className="px-5 py-4 bg-stone-800/30">
                   <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-1">
@@ -348,9 +358,14 @@ export default function DraftEditor({
                   <p className="text-[10px] text-stone-600 mb-3">Non-Slot · Prepare joints, tissues, and coordination</p>
                   <div className="space-y-1.5">
                     {session.movement_prep.map((item, i) => (
-                      <div key={i} className="flex items-start gap-2">
-                        <span className="text-stone-600 mt-0.5">•</span>
-                        <p className="text-sm text-stone-300">{item}</p>
+                      <div key={i} className="flex items-center gap-2">
+                        <span className="text-stone-600">•</span>
+                        <input
+                          type="text"
+                          value={item}
+                          onChange={e => updateMovementPrep(sIdx, i, e.target.value)}
+                          className="flex-1 bg-transparent border-b border-stone-700 text-sm text-stone-300 py-0.5 focus:outline-none focus:border-[#10E1C2] transition-colors"
+                        />
                       </div>
                     ))}
                   </div>
