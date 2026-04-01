@@ -240,7 +240,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           <h1 className="text-2xl font-semibold text-white">Training Program</h1>
         </div>
         <Link
-          href={`/dashboard/clients/${id}/program/generate`}
+          href={`/dashboard/clients/${id}/program/suggest`}
           className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
         >
           {activeProgram || draftProgram ? 'Regenerate' : 'Generate Program'}
@@ -294,7 +294,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
         <div className="text-center py-16 border-2 border-dashed border-stone-800 rounded-xl">
           <p className="text-stone-500 mb-4">No program generated yet.</p>
           <Link
-            href={`/dashboard/clients/${id}/program/generate`}
+            href={`/dashboard/clients/${id}/program/suggest`}
             className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
           >
             Generate Program

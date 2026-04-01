@@ -324,7 +324,7 @@ export default function MacroPlanEditor({
                           </Link>
                         ) : block.status !== 'complete' && block.status !== 'skipped' ? (
                           <Link
-                            href={`/dashboard/clients/${clientId}/program/generate?plan_block_id=${block.id}`}
+                            href={`/dashboard/clients/${clientId}/program/suggest?plan_block_id=${block.id}`}
                             className="text-xs text-[#10E1C2] hover:underline"
                           >
                             Generate program →
