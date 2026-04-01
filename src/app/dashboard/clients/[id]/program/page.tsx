@@ -146,16 +146,24 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
                 <span className="text-[11px] font-black text-[#10E1C2]">01</span>
                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Weekly Structure</p>
               </div>
-              <div className="px-5 py-4 space-y-2">
+              <div className="px-5 py-4 space-y-3">
                 {(Array.isArray(activeProgram.weekly_pattern_summary)
                   ? activeProgram.weekly_pattern_summary
-                  : activeProgram.weekly_pattern_summary.split('. ').filter(Boolean)
-                ).map((line, i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <span className="text-[#10E1C2] mt-1.5 flex-shrink-0">•</span>
-                    <p className="text-sm text-stone-200 leading-relaxed">{line.replace(/\.$/, '')}</p>
-                  </div>
-                ))}
+                  : activeProgram.weekly_pattern_summary.split(/(?=Day \d+|Overall|Constraint)/g).filter(Boolean)
+                ).map((entry, i) => {
+                  const colonIdx = entry.indexOf(':')
+                  const hasLabel = colonIdx > 0 && colonIdx < 40
+                  const label = hasLabel ? entry.slice(0, colonIdx) : null
+                  const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry
+                  return (
+                    <div key={i} className="border-l-2 border-stone-700 pl-3">
+                      {label && (
+                        <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-wider mb-1">{label}</p>
+                      )}
+                      <p className="text-sm text-stone-200 leading-relaxed">{content}</p>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           )}

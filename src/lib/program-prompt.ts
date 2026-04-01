@@ -350,9 +350,11 @@ Generate the complete ${inputs.week_duration}-week training program. Apply all 9
     }
   ],
   "weekly_pattern_summary": [
-    "One sentence per line describing the weekly structure.",
-    "Each session's dominant pattern and intent as its own entry.",
-    "Any constraint or readiness rule enforced across the week as its own entry."
+    "Overall program design: one sentence explaining the overall structure and why it suits this client's goal, phase, and readiness state.",
+    "Day 1 — [label]: Skeleton used = [name]. Why: [reason skeleton was chosen]. What: [dominant patterns]. How: [key execution intent].",
+    "Day 2 — [label]: Skeleton used = [name]. Why: [reason]. What: [dominant patterns]. How: [key execution intent].",
+    "Day 3 — [label]: Skeleton used = [name]. Why: [reason]. What: [dominant patterns]. How: [key execution intent].",
+    "Constraints applied: one entry per major constraint enforced across the week (injury, readiness flags, axial loading limits, RPE ceiling, etc.)."
   ],
   "progression_notes": [
     "Week 1: one entry per week describing exactly what to do that week.",

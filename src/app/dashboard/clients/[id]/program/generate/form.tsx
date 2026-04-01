@@ -251,7 +251,7 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
                   type="checkbox"
                   checked={form.equipment_access.includes(opt.value)}
                   onChange={() => toggleEquipment(opt.value)}
-                  className="rounded border-stone-600 bg-stone-800 text-[#10E1C2] focus:ring-[#10E1C2]"
+                  className="rounded border-stone-600 bg-stone-800 accent-[#10E1C2]"
                 />
                 <span className={`text-sm transition-colors ${form.equipment_access.includes(opt.value) ? 'text-stone-200' : 'text-stone-500'}`}>
                   {opt.label}
