@@ -163,14 +163,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `JSON parse failed: ${jsonMatch[0].slice(0, 100)}` }, { status: 500 })
   }
 
-  // Archive any existing active programs for this client
+  // Archive any existing drafts for this client (only one draft at a time)
   await admin
     .from('programs')
-    .update({ is_active: false })
+    .delete()
     .eq('client_id', client_id)
-    .eq('is_active', true)
+    .eq('status', 'draft')
 
-  // Save program to database
+  // Save program as draft
   const { data: program, error: insertError } = await admin
     .from('programs')
     .insert({
@@ -187,6 +187,8 @@ export async function POST(request: NextRequest) {
       sessions: programData.sessions || [],
       weekly_pattern_summary: programData.weekly_pattern_summary || null,
       progression_notes: programData.progression_notes || null,
+      status: 'draft',
+      is_active: false,
     })
     .select()
     .single()

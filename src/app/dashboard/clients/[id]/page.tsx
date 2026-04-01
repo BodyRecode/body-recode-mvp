@@ -26,7 +26,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   if (clientError) console.error('Client fetch error:', clientError)
   if (!client) notFound()
 
-  const [{ data: cffsRecords }, { data: invitations }, { data: intakes }, { data: cfwsRecords }, { data: recentCheckins }, { data: baselines }, { data: activePrograms }] = await Promise.all([
+  const [{ data: cffsRecords }, { data: invitations }, { data: intakes }, { data: cfwsRecords }, { data: recentCheckins }, { data: baselines }, { data: activePrograms }, { data: draftPrograms }] = await Promise.all([
     admin
       .from('cffs')
       .select('*')
@@ -67,6 +67,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .eq('client_id', id)
       .eq('is_active', true)
       .maybeSingle(),
+    admin
+      .from('programs')
+      .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, generated_at')
+      .eq('client_id', id)
+      .eq('status', 'draft')
+      .maybeSingle(),
   ])
 
   const activeCffs = cffsRecords?.find(c => !c.is_archived) || null
@@ -88,6 +94,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const latestBaseline = baselines?.[0] || null
   const baselineToken = client.baseline_token as string | undefined
   const activeProgram = activePrograms || null
+  const draftProgram = draftPrograms || null
 
   const readinessItems = activeCffs
     ? [
@@ -655,33 +662,57 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </Link>
         </div>
 
-        {activeProgram ? (
-          <Link
-            href={`/dashboard/clients/${id}/program`}
-            className="block bg-stone-900 border border-stone-800 rounded-xl p-5 hover:border-stone-600 transition-colors"
-          >
-            <div className="flex items-start justify-between mb-2">
-              <p className="text-sm font-semibold text-stone-200">{activeProgram.block_name}</p>
-              <div className="flex gap-1.5">
-                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">
-                  {activeProgram.progression_phase}
-                </span>
-                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">
-                  {activeProgram.training_goal}
-                </span>
+        <div className="space-y-2">
+          {/* Draft badge */}
+          {draftProgram && (
+            <Link
+              href={`/dashboard/clients/${id}/program/draft/${draftProgram.id}`}
+              className="block bg-amber-950/20 border border-amber-800/50 rounded-xl p-4 hover:border-amber-700 transition-colors"
+            >
+              <div className="flex items-start justify-between mb-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">Draft</span>
+                  <p className="text-sm font-semibold text-stone-200">{draftProgram.block_name}</p>
+                </div>
+                <div className="flex gap-1.5">
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">{draftProgram.progression_phase}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">{draftProgram.training_goal}</span>
+                </div>
               </div>
+              <p className="text-xs text-stone-500">{draftProgram.training_frequency}x/week · {draftProgram.week_duration} weeks</p>
+              <p className="text-xs text-amber-400 mt-1.5">Review &amp; edit draft →</p>
+            </Link>
+          )}
+
+          {/* Active program */}
+          {activeProgram ? (
+            <Link
+              href={`/dashboard/clients/${id}/program`}
+              className="block bg-stone-900 border border-stone-800 rounded-xl p-5 hover:border-stone-600 transition-colors"
+            >
+              <div className="flex items-start justify-between mb-2">
+                <p className="text-sm font-semibold text-stone-200">{activeProgram.block_name}</p>
+                <div className="flex gap-1.5">
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">
+                    {activeProgram.progression_phase}
+                  </span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">
+                    {activeProgram.training_goal}
+                  </span>
+                </div>
+              </div>
+              <p className="text-xs text-stone-500">
+                {activeProgram.training_frequency}x/week · {activeProgram.week_duration} weeks · Generated {formatDate(activeProgram.generated_at)}
+              </p>
+              <p className="text-xs text-[#10E1C2] mt-2">View full program →</p>
+            </Link>
+          ) : !draftProgram ? (
+            <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-5 text-center">
+              <p className="text-stone-500 text-sm">No program generated yet</p>
+              <p className="text-stone-600 text-xs mt-1">Generate a program once the CFFS is complete</p>
             </div>
-            <p className="text-xs text-stone-500">
-              {activeProgram.training_frequency}x/week · {activeProgram.week_duration} weeks · Generated {formatDate(activeProgram.generated_at)}
-            </p>
-            <p className="text-xs text-[#10E1C2] mt-2">View full program →</p>
-          </Link>
-        ) : (
-          <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-5 text-center">
-            <p className="text-stone-500 text-sm">No program generated yet</p>
-            <p className="text-stone-600 text-xs mt-1">Generate a program once the CFFS is complete</p>
-          </div>
-        )}
+          ) : null}
+        </div>
       </div>
 
       <ClientDangerActions clientId={id} isActive={client.active !== false} />

@@ -38,6 +38,7 @@ interface Program {
   progression_notes: string | string[] | null
   generated_at: string
   is_active: boolean
+  status: 'draft' | 'active'
 }
 
 // Parses a field that may be a string, JSON array string, or already an array
@@ -86,8 +87,9 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
     .eq('client_id', id)
     .order('generated_at', { ascending: false })
 
+  const draftProgram = programs?.find(p => p.status === 'draft') as Program | undefined
   const activeProgram = programs?.find(p => p.is_active) as Program | undefined
-  const archivedPrograms = programs?.filter(p => !p.is_active) as Program[]
+  const archivedPrograms = programs?.filter(p => !p.is_active && p.status !== 'draft') as Program[]
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -108,6 +110,25 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           {activeProgram ? 'Regenerate' : 'Generate Program'}
         </Link>
       </div>
+
+      {/* Draft banner */}
+      {draftProgram && (
+        <div className="mb-4 bg-amber-950/30 border border-amber-800/50 rounded-xl p-4 flex items-start justify-between">
+          <div>
+            <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-0.5">Draft Pending Review</p>
+            <p className="text-sm text-stone-300">{draftProgram.block_name}</p>
+            <p className="text-xs text-stone-500 mt-1 capitalize">
+              {draftProgram.training_frequency}x/week · {draftProgram.week_duration} weeks · {draftProgram.progression_phase} · {draftProgram.training_goal}
+            </p>
+          </div>
+          <Link
+            href={`/dashboard/clients/${id}/program/draft/${draftProgram.id}`}
+            className="text-xs font-semibold px-3 py-1.5 bg-amber-400/10 border border-amber-700 text-amber-400 rounded-lg hover:bg-amber-400/20 transition-colors whitespace-nowrap"
+          >
+            Review Draft →
+          </Link>
+        </div>
+      )}
 
       {!activeProgram ? (
         <div className="text-center py-16 border-2 border-dashed border-stone-800 rounded-xl">
