@@ -349,8 +349,17 @@ Generate the complete ${inputs.week_duration}-week training program. Apply all 9
       ]
     }
   ],
-  "weekly_pattern_summary": "[brief description of weekly pattern structure]",
-  "progression_notes": "[how to progress across the ${inputs.week_duration} weeks given phase and training age]"
+  "weekly_pattern_summary": [
+    "One sentence per line describing the weekly structure.",
+    "Each session's dominant pattern and intent as its own entry.",
+    "Any constraint or readiness rule enforced across the week as its own entry."
+  ],
+  "progression_notes": [
+    "Week 1: one entry per week describing exactly what to do that week.",
+    "Week 2: progression decision logic for that week.",
+    "Week 3: continue or adjust — one entry.",
+    "Week 4: final week strategy — one entry."
+  ]
 }
 
 One JSON object only. No markdown. No commentary. All exercise names must exactly match the approved library.`)
