@@ -663,24 +663,24 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
 
         <div className="space-y-2">
-          {/* Draft badge */}
+          {/* Draft program */}
           {draftProgram && (
             <Link
               href={`/dashboard/clients/${id}/program/draft/${draftProgram.id}`}
-              className="block bg-amber-950/20 border border-amber-800/50 rounded-xl p-4 hover:border-amber-700 transition-colors"
+              className="block bg-stone-900 border border-stone-800 rounded-xl p-5 hover:border-stone-600 transition-colors"
             >
-              <div className="flex items-start justify-between mb-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">Draft</span>
-                  <p className="text-sm font-semibold text-stone-200">{draftProgram.block_name}</p>
-                </div>
+              <div className="flex items-start justify-between mb-2">
+                <p className="text-sm font-semibold text-stone-200">{draftProgram.block_name}</p>
                 <div className="flex gap-1.5">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">Draft</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">{draftProgram.progression_phase}</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-800 text-stone-400 capitalize">{draftProgram.training_goal}</span>
                 </div>
               </div>
-              <p className="text-xs text-stone-500">{draftProgram.training_frequency}x/week · {draftProgram.week_duration} weeks</p>
-              <p className="text-xs text-amber-400 mt-1.5">Review &amp; edit draft →</p>
+              <p className="text-xs text-stone-500">
+                {draftProgram.training_frequency}x/week · {draftProgram.week_duration} weeks · Generated {formatDate(draftProgram.generated_at)}
+              </p>
+              <p className="text-xs text-[#10E1C2] mt-2">Review &amp; edit draft →</p>
             </Link>
           )}
 
