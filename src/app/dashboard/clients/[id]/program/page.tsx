@@ -40,6 +40,21 @@ interface Program {
   is_active: boolean
 }
 
+// Parses a field that may be a string, JSON array string, or already an array
+function parseLines(field: string | string[] | null, fallbackSplit?: RegExp): string[] {
+  if (!field) return []
+  if (Array.isArray(field)) return field.map(s => s.trim()).filter(Boolean)
+  const trimmed = field.trim()
+  if (trimmed.startsWith('[')) {
+    try {
+      const parsed = JSON.parse(trimmed)
+      if (Array.isArray(parsed)) return parsed.map((s: string) => s.trim()).filter(Boolean)
+    } catch {}
+  }
+  if (fallbackSplit) return trimmed.split(fallbackSplit).map(s => s.trim()).filter(Boolean)
+  return [trimmed]
+}
+
 const phaseColour: Record<string, string> = {
   accumulation: 'text-blue-400 bg-blue-400/10 border-blue-400/30',
   intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
@@ -147,14 +162,11 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Weekly Structure</p>
               </div>
               <div className="px-5 py-4 space-y-3">
-                {(Array.isArray(activeProgram.weekly_pattern_summary)
-                  ? activeProgram.weekly_pattern_summary
-                  : activeProgram.weekly_pattern_summary.split(/(?=Day \d+|Overall|Constraint)/g).filter(Boolean)
-                ).map((entry, i) => {
+                {parseLines(activeProgram.weekly_pattern_summary, /(?=Day \d+|Overall program|Constraints applied)/g).map((entry, i) => {
                   const colonIdx = entry.indexOf(':')
-                  const hasLabel = colonIdx > 0 && colonIdx < 40
-                  const label = hasLabel ? entry.slice(0, colonIdx) : null
-                  const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry
+                  const hasLabel = colonIdx > 0 && colonIdx < 80
+                  const label = hasLabel ? entry.slice(0, colonIdx).trim() : null
+                  const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
                   return (
                     <div key={i} className="border-l-2 border-stone-700 pl-3">
                       {label && (
@@ -176,14 +188,11 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Progression Strategy</p>
               </div>
               <div className="px-5 py-4 space-y-3">
-                {(Array.isArray(activeProgram.progression_notes)
-                  ? activeProgram.progression_notes
-                  : activeProgram.progression_notes.split(/(?=Week \d+:)/g).filter(Boolean)
-                ).map((entry, i) => {
+                {parseLines(activeProgram.progression_notes, /(?=Week \d+)/g).map((entry, i) => {
                   const colonIdx = entry.indexOf(':')
-                  const hasLabel = colonIdx > 0 && colonIdx < 12
-                  const label = hasLabel ? entry.slice(0, colonIdx) : null
-                  const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry
+                  const hasLabel = colonIdx > 0 && colonIdx < 80
+                  const label = hasLabel ? entry.slice(0, colonIdx).trim() : null
+                  const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
                   return (
                     <div key={i} className="border-l-2 border-stone-700 pl-3">
                       {label && (
