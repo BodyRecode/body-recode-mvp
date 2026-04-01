@@ -23,16 +23,18 @@ export async function POST(request: NextRequest) {
     client_id,
     cffs_id,
     intake_id,
+    plan_block_id,
     training_frequency,
     training_goal,
     training_age,
+    movement_competency,
     progression_phase,
     equipment_access,
     week_duration,
     block_name,
   } = body
 
-  if (!client_id || !training_frequency || !training_goal || !training_age || !progression_phase || !equipment_access || !week_duration || !block_name) {
+  if (!client_id || !training_frequency || !training_goal || !training_age || !movement_competency || !progression_phase || !equipment_access || !week_duration || !block_name) {
     return NextResponse.json({ error: 'Missing required prescription inputs' }, { status: 400 })
   }
 
@@ -105,6 +107,44 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  // Fetch macro plan context if plan_block_id provided
+  let macroPlanContext = null
+  if (plan_block_id) {
+    const { data: planBlock } = await admin
+      .from('plan_blocks')
+      .select('*, training_plans(plan_name, macro_objective)')
+      .eq('id', plan_block_id)
+      .maybeSingle()
+
+    if (planBlock) {
+      // Fetch all blocks in the plan to give Claude the full arc context
+      const { data: allBlocks } = await admin
+        .from('plan_blocks')
+        .select('position, block_name, progression_phase, training_goal, week_duration, status, execution_arc, phase_objective')
+        .eq('plan_id', planBlock.plan_id)
+        .order('position', { ascending: true })
+
+      // Find previous completed block and next planned block
+      const prevBlock = allBlocks?.filter(b => b.position < planBlock.position && b.status === 'complete').pop() ?? null
+      const nextBlock = allBlocks?.find(b => b.position > planBlock.position) ?? null
+
+      macroPlanContext = {
+        plan_name: (planBlock.training_plans as { plan_name: string; macro_objective: string | null } | null)?.plan_name,
+        macro_objective: (planBlock.training_plans as { plan_name: string; macro_objective: string | null } | null)?.macro_objective,
+        current_block_position: planBlock.position,
+        total_blocks: allBlocks?.length ?? 1,
+        phase_category: planBlock.phase_category,
+        execution_arc: planBlock.execution_arc,
+        phase_objective: planBlock.phase_objective,
+        previous_block: prevBlock ? `Block ${prevBlock.position}: ${prevBlock.block_name} (${prevBlock.progression_phase}, ${prevBlock.training_goal}, ${prevBlock.week_duration}w) — ${prevBlock.status}` : null,
+        next_block: nextBlock ? `Block ${nextBlock.position}: ${nextBlock.block_name} (${nextBlock.progression_phase}, ${nextBlock.training_goal}, ${nextBlock.week_duration}w) — planned` : null,
+      }
+
+      // Mark the plan block as in_progress
+      await admin.from('plan_blocks').update({ status: 'in_progress' }).eq('id', plan_block_id).eq('status', 'planned')
+    }
+  }
+
   // Fetch exercises filtered by equipment access
   const { data: exercises, error: exError } = await admin
     .from('exercises')
@@ -122,6 +162,7 @@ export async function POST(request: NextRequest) {
     training_frequency,
     training_goal,
     training_age,
+    movement_competency,
     progression_phase,
     equipment_access,
     week_duration,
@@ -136,7 +177,7 @@ export async function POST(request: NextRequest) {
       model: 'claude-sonnet-4-6',
       max_tokens: 8000,
       system: buildProgramSystemPrompt(),
-      messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[]) }],
+      messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext) }],
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
@@ -196,6 +237,11 @@ export async function POST(request: NextRequest) {
   if (insertError) {
     console.error('Program insert error:', insertError)
     return NextResponse.json({ error: 'Failed to save program' }, { status: 500 })
+  }
+
+  // Link program back to plan block
+  if (plan_block_id && program) {
+    await admin.from('plan_blocks').update({ program_id: program.id }).eq('id', plan_block_id)
   }
 
   return NextResponse.json({ program })

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 const BLOCK_NAME_OPTIONS = [
@@ -37,21 +37,53 @@ const EQUIPMENT_OPTIONS = [
   { value: 'specialty', label: 'Specialty (trap bar, sleds, etc.)' },
 ]
 
-export default function GenerateProgramForm({ clientId }: { clientId: string }) {
+interface PlanBlock {
+  id: string
+  block_name: string
+  progression_phase: string
+  phase_category: string | null
+  execution_arc: string | null
+  phase_objective: string | null
+  training_goal: string
+  week_duration: number
+  notes: string | null
+}
+
+export default function GenerateProgramForm({
+  clientId,
+  planBlock,
+}: {
+  clientId: string
+  planBlock?: PlanBlock | null
+}) {
   const router = useRouter()
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const [form, setForm] = useState({
-    block_name: '',
-    progression_phase: 'accumulation',
-    training_goal: 'strength',
+    block_name: planBlock?.block_name ?? '',
+    progression_phase: planBlock?.progression_phase ?? 'accumulation',
+    training_goal: planBlock?.training_goal ?? 'strength',
     training_frequency: 3,
     training_age: 'intermediate',
-    week_duration: 4,
+    movement_competency: 'developing',
+    week_duration: planBlock?.week_duration ?? 4,
     equipment_access: ['barbell', 'dumbbell', 'bodyweight'] as string[],
   })
+
+  // If planBlock changes (shouldn't, but just in case), sync
+  useEffect(() => {
+    if (planBlock) {
+      setForm(prev => ({
+        ...prev,
+        block_name: planBlock.block_name,
+        progression_phase: planBlock.progression_phase,
+        training_goal: planBlock.training_goal,
+        week_duration: planBlock.week_duration,
+      }))
+    }
+  }, [planBlock?.id])
 
   function toggleEquipment(value: string) {
     setForm(prev => ({
@@ -82,6 +114,7 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           client_id: clientId,
+          plan_block_id: planBlock?.id ?? null,
           ...form,
         }),
       })
@@ -117,6 +150,20 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
           Set prescription inputs. All doctrine rules will be applied automatically.
         </p>
       </div>
+
+      {planBlock && (
+        <div className="mb-6 bg-[#10E1C2]/5 border border-[#10E1C2]/20 rounded-xl p-4">
+          <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-1">From Macro Plan</p>
+          <p className="text-sm text-stone-200">{planBlock.block_name}</p>
+          <div className="flex flex-wrap gap-2 mt-1.5 text-xs text-stone-500">
+            <span className="capitalize">{planBlock.progression_phase}</span>
+            {planBlock.execution_arc && <span className="capitalize">· {planBlock.execution_arc} arc</span>}
+            {planBlock.phase_category && <span>· {planBlock.phase_category}</span>}
+            {planBlock.phase_objective && <span>· {planBlock.phase_objective}</span>}
+          </div>
+          {planBlock.notes && <p className="text-xs text-stone-600 italic mt-1.5">{planBlock.notes}</p>}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Block Name */}
@@ -217,6 +264,32 @@ export default function GenerateProgramForm({ clientId }: { clientId: string }) 
             {form.training_age === 'beginner' && 'Linear progression — load increases each session'}
             {form.training_age === 'intermediate' && 'Double progression — reps then load'}
             {form.training_age === 'advanced' && 'Undulating periodisation — varies session to session'}
+          </p>
+        </div>
+
+        {/* Movement Competency */}
+        <div>
+          <label className={labelClass}>Movement Competency</label>
+          <div className="grid grid-cols-3 gap-2">
+            {(['limited', 'developing', 'proficient'] as const).map(level => (
+              <button
+                key={level}
+                type="button"
+                onClick={() => setForm(prev => ({ ...prev, movement_competency: level }))}
+                className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
+                  form.movement_competency === level
+                    ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]'
+                    : 'bg-stone-800 text-stone-300 border-stone-700 hover:border-stone-500'
+                }`}
+              >
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-stone-500 mt-1.5">
+            {form.movement_competency === 'limited' && 'Supported, bilateral, low stability — machine and bodyweight base movements'}
+            {form.movement_competency === 'developing' && 'Bilateral preferred, standard compounds permitted, moderate stability'}
+            {form.movement_competency === 'proficient' && 'Full range — unilateral, high stability, all compounds available'}
           </p>
         </div>
 

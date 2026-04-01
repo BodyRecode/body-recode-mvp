@@ -654,12 +654,20 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <div className="mt-6">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Training Program <span className="text-stone-600 font-normal">— PTS</span></h2>
-          <Link
-            href={`/dashboard/clients/${id}/program/generate`}
-            className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
-          >
-            {activeProgram ? 'Regenerate' : 'Generate Program'}
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/dashboard/clients/${id}/plan`}
+              className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+            >
+              Macro Plan
+            </Link>
+            <Link
+              href={`/dashboard/clients/${id}/program/generate`}
+              className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+            >
+              {activeProgram ? 'Regenerate' : 'Generate Program'}
+            </Link>
+          </div>
         </div>
 
         <div className="space-y-2">
