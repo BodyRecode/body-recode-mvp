@@ -86,7 +86,7 @@ export default function OnlineFatLossCoachingPage() {
           <p className="text-white/60 text-lg leading-relaxed mb-12">
             Once the system is stable, fat loss becomes realistic and sustainable. Training load, nutrition structure, and lifestyle adjustments are all calibrated to the individual, not applied from a template.
           </p>
-          <Link href="/online-performance-coaching" className="text-[#10E1C2] text-sm font-semibold hover:underline">
+          <Link href="/performance-coaching/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">
             Learn about the full Body Recode™ system →
           </Link>
         </div>

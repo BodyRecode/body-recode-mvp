@@ -151,9 +151,9 @@ export default function OnlinePerformanceCoachingPage() {
             ))}
           </div>
           <div className="flex flex-wrap gap-6">
-            <Link href="/online-strength-coaching" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online strength coaching →</Link>
-            <Link href="/online-fat-loss-coaching" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online fat loss coaching →</Link>
-            <Link href="/online-personal-trainer" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online personal training →</Link>
+            <Link href="/performance-coaching/strength/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online strength coaching →</Link>
+            <Link href="/performance-coaching/fat-loss/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online fat loss coaching →</Link>
+            <Link href="/performance-coaching/personal-training/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online personal training →</Link>
           </div>
         </div>
       </section>

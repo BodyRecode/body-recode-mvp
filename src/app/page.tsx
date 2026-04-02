@@ -34,7 +34,7 @@ export default function HomePage() {
               Start your free check-in
             </Link>
             <Link
-              href="/online-performance-coaching"
+              href="/performance-coaching/online"
               className="border border-white/20 text-white font-semibold px-8 py-4 rounded-full text-base hover:border-white/40 transition-colors"
             >
               How it works
@@ -186,7 +186,7 @@ export default function HomePage() {
                 ))}
               </ul>
               <Link
-                href="/online-performance-coaching"
+                href="/performance-coaching/online"
                 className="inline-block text-[#10E1C2] text-sm font-semibold hover:underline"
               >
                 Online coaching →
@@ -214,7 +214,7 @@ export default function HomePage() {
                 ))}
               </ul>
               <Link
-                href="/performance-coach-brisbane"
+                href="/performance-coaching/brisbane"
                 className="inline-block text-white/50 text-sm font-semibold hover:text-white transition-colors"
               >
                 Brisbane coaching →
@@ -322,7 +322,7 @@ export default function HomePage() {
                   Work with Kade
                 </Link>
                 <Link
-                  href="/online-performance-coaching#kade"
+                  href="/performance-coaching/online#kade"
                   className="inline-block border border-white/20 text-white/60 font-semibold px-8 py-4 rounded-full text-base hover:border-white/40 hover:text-white transition-colors"
                 >
                   More about Kade

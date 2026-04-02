@@ -131,10 +131,10 @@ export default function PersonalTrainerBrisbanePage() {
             To find out if there is current availability and whether Body Recode™ is the right fit for you, start with the free Performance Check-In.
           </p>
           <div className="flex flex-wrap gap-6">
-            <Link href="/online-personal-trainer" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online personal training →</Link>
-            <Link href="/performance-coach-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Performance coaching →</Link>
-            <Link href="/strength-coach-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Strength coaching →</Link>
-            <Link href="/fat-loss-coach-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Fat loss coaching →</Link>
+            <Link href="/performance-coaching/personal-training/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online personal training →</Link>
+            <Link href="/performance-coaching/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Performance coaching →</Link>
+            <Link href="/performance-coaching/strength/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Strength coaching →</Link>
+            <Link href="/performance-coaching/fat-loss/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Fat loss coaching →</Link>
           </div>
         </div>
       </section>

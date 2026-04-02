@@ -15,17 +15,17 @@ export default function MarketingFooter() {
           </div>
           <div className="flex flex-col gap-3">
             <p className="text-[11px] font-bold tracking-[0.15em] text-white/30 uppercase mb-1">Online Coaching</p>
-            <Link href="/online-performance-coaching" className="text-sm text-white/50 hover:text-white transition-colors">Performance Coaching</Link>
-            <Link href="/online-strength-coaching" className="text-sm text-white/50 hover:text-white transition-colors">Strength Coaching</Link>
-            <Link href="/online-fat-loss-coaching" className="text-sm text-white/50 hover:text-white transition-colors">Fat Loss Coaching</Link>
-            <Link href="/online-personal-trainer" className="text-sm text-white/50 hover:text-white transition-colors">Personal Training</Link>
+            <Link href="/performance-coaching/online" className="text-sm text-white/50 hover:text-white transition-colors">Performance Coaching</Link>
+            <Link href="/performance-coaching/strength/online" className="text-sm text-white/50 hover:text-white transition-colors">Strength Coaching</Link>
+            <Link href="/performance-coaching/fat-loss/online" className="text-sm text-white/50 hover:text-white transition-colors">Fat Loss Coaching</Link>
+            <Link href="/performance-coaching/personal-training/online" className="text-sm text-white/50 hover:text-white transition-colors">Personal Training</Link>
           </div>
           <div className="flex flex-col gap-3">
             <p className="text-[11px] font-bold tracking-[0.15em] text-white/30 uppercase mb-1">Brisbane · Face-to-Face</p>
-            <Link href="/performance-coach-brisbane" className="text-sm text-white/50 hover:text-white transition-colors">Performance Coaching</Link>
-            <Link href="/strength-coach-brisbane" className="text-sm text-white/50 hover:text-white transition-colors">Strength Coaching</Link>
-            <Link href="/fat-loss-coach-brisbane" className="text-sm text-white/50 hover:text-white transition-colors">Fat Loss Coaching</Link>
-            <Link href="/personal-trainer-brisbane" className="text-sm text-white/50 hover:text-white transition-colors">Personal Training</Link>
+            <Link href="/performance-coaching/brisbane" className="text-sm text-white/50 hover:text-white transition-colors">Performance Coaching</Link>
+            <Link href="/performance-coaching/strength/brisbane" className="text-sm text-white/50 hover:text-white transition-colors">Strength Coaching</Link>
+            <Link href="/performance-coaching/fat-loss/brisbane" className="text-sm text-white/50 hover:text-white transition-colors">Fat Loss Coaching</Link>
+            <Link href="/performance-coaching/personal-training/brisbane" className="text-sm text-white/50 hover:text-white transition-colors">Personal Training</Link>
           </div>
           <div className="flex flex-col gap-3">
             <p className="text-[11px] font-bold tracking-[0.15em] text-white/30 uppercase mb-1">Get Started</p>

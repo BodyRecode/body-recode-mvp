@@ -150,10 +150,10 @@ export default function PerformanceCoachBrisbanePage() {
             ))}
           </div>
           <div className="flex flex-wrap gap-6">
-            <Link href="/online-performance-coaching" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online coaching →</Link>
-            <Link href="/strength-coach-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Strength coaching →</Link>
-            <Link href="/fat-loss-coach-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Fat loss coaching →</Link>
-            <Link href="/personal-trainer-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Personal training →</Link>
+            <Link href="/performance-coaching/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online coaching →</Link>
+            <Link href="/performance-coaching/strength/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Strength coaching →</Link>
+            <Link href="/performance-coaching/fat-loss/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Fat loss coaching →</Link>
+            <Link href="/performance-coaching/personal-training/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Personal training →</Link>
           </div>
         </div>
       </section>

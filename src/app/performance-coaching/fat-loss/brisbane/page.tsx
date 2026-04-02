@@ -87,8 +87,8 @@ export default function FatLossCoachBrisbanePage() {
             Once the system is stable, fat loss becomes realistic and sustainable. Training load, nutrition structure, and lifestyle adjustments are all calibrated to the individual, not applied from a template.
           </p>
           <div className="flex flex-wrap gap-6">
-            <Link href="/online-fat-loss-coaching" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online fat loss coaching →</Link>
-            <Link href="/performance-coach-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Full system overview →</Link>
+            <Link href="/performance-coaching/fat-loss/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online fat loss coaching →</Link>
+            <Link href="/performance-coaching/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Full system overview →</Link>
           </div>
         </div>
       </section>
