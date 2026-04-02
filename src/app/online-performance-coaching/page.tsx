@@ -4,11 +4,11 @@ import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
 
 export const metadata: Metadata = {
-  title: 'Performance Coach Brisbane | Body Recode™',
-  description: 'Body Recode™ is a biology-first performance coaching system in Brisbane for high-functioning adults whose bodies have stopped responding to effort. Based at Anytime Fitness Newstead.',
+  title: 'Online Performance Coaching | Body Recode™',
+  description: 'Body Recode™ online performance coaching. A biology-first 1:1 coaching system for high-functioning adults whose bodies have stopped responding to effort. Available worldwide.',
 }
 
-export default function PerformanceCoachBrisbanePage() {
+export default function OnlinePerformanceCoachingPage() {
   return (
     <>
       <MarketingNav />
@@ -16,12 +16,12 @@ export default function PerformanceCoachBrisbanePage() {
       {/* Hero */}
       <section className="bg-black pt-44 pb-32 px-5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Brisbane · Face-to-Face Performance Coaching</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Online · 1:1 Performance Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-8">
-            Performance Coaching Brisbane
+            Online Performance Coaching
           </h1>
           <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-12">
-            Body Recode™ is a biology-first coaching system built for high-functioning adults in Brisbane whose bodies have stopped responding to effort. If you want to understand why before you do anything else, this is where to start.
+            Body Recode™ is a biology-first coaching system built for high-functioning adults whose bodies have stopped responding to effort. Delivered 1:1 online — same system, same depth, available anywhere in the world.
           </p>
           <Link
             href="/performance-check-in"
@@ -64,7 +64,7 @@ export default function PerformanceCoachBrisbanePage() {
         </div>
       </section>
 
-      {/* What performance coaching is */}
+      {/* The approach */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">The Approach</p>
@@ -72,10 +72,10 @@ export default function PerformanceCoachBrisbanePage() {
             Biology first. Training second.
           </h2>
           <p className="text-white/60 text-lg leading-relaxed mb-6">
-            Most coaching in Brisbane escalates when progress stalls: more sessions, more intensity, more restriction. Body Recode™ does the opposite. Before any training is prescribed, we establish what your biology is actually doing and why.
+            Most online coaching sends you a program and checks in once a week. Body Recode™ does something different. Before any training is prescribed, we establish what your biology is actually doing and why.
           </p>
           <p className="text-white/60 text-lg leading-relaxed mb-6">
-            This means building a complete picture across eight domains: training history, stress load, sleep and recovery, body pattern signals, nutrition behaviours, schedule, stimulant use, and hormonal context. Not a fitness test. A full read of your system.
+            This means building a complete picture across eight domains: training history, stress load, sleep and recovery, body pattern signals, nutrition behaviours, schedule, stimulant use, and hormonal context. Not a fitness questionnaire. A full read of your system.
           </p>
           <p className="text-white/60 text-lg leading-relaxed">
             From that picture, everything is designed around your individual biological profile: training, recovery, and lifestyle inputs. Not a template. Not a generic program. A system built for exactly where you are right now.
@@ -83,50 +83,51 @@ export default function PerformanceCoachBrisbanePage() {
         </div>
       </section>
 
-      {/* Four biological patterns */}
+      {/* Client portal */}
       <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Who This Is For</p>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
-            Four biological patterns.<br />One system built around all of them.
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Client Portal</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
+            Everything in one place.<br />Always up to date.
           </h2>
-          <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            Body Recode™ recognises four distinct biological profiles, each with predictable symptoms and patterns. Understanding which one applies to you changes everything about how coaching should proceed.
+          <p className="text-white/50 text-lg leading-relaxed max-w-2xl mb-16">
+            Every client gets access to a dedicated portal from day one. Your program, your data, your synthesis documents, your weekly check-ins — all in one place, updated continuously as you progress through coaching.
           </p>
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
             {[
               {
-                label: 'Stress-Stored',
-                who: 'Male + Female',
-                desc: 'Wired and tired. Abdominal puffiness, morning heaviness, afternoon crashes, broken sleep, and caffeine as a daily coping mechanism. Training happens but results do not. The system is overloaded, not undermotivated.',
+                title: 'Your Training Program',
+                desc: 'Your structured training plan, built around your biological profile and updated as your phase progresses.',
               },
               {
-                label: 'Estrogen-Shift',
-                who: 'Female',
-                desc: 'Lower-body softening, bloating, cycle unpredictability, mood fluctuation. The body feels less predictable. Doing everything right and still not progressing. Something hormonal has shifted.',
+                title: 'Nutrition Guidelines',
+                desc: 'Nutrition structure designed around your current body state. A framework built for your biology, not a generic plan.',
               },
               {
-                label: 'Insulin-Drift',
-                who: 'Male dominant',
-                desc: 'Once felt strong without trying. Now softer across the chest and stomach, energy unstable, training heavier than it should feel. Often a formerly consistent trainer who has lost the biological responsiveness he once had.',
+                title: 'Foundation Synthesis',
+                desc: 'Your CFFS — the complete biological read of your system from intake. The document everything else operates within.',
               },
               {
-                label: 'Androgen-Decline',
-                who: 'Male',
-                desc: 'Capable on the outside. Privately flat. Strength declining quietly. Morning face looks tired. Motivation reduced. The identity built around capability and physical presence is eroding. Slowly, and without a clear explanation.',
+                title: 'Weekly Check-Ins',
+                desc: 'Structured weekly reporting that keeps your coaching current. Your responses are read and interpreted every week.',
+              },
+              {
+                title: 'Progress Tracking',
+                desc: 'Your data tracked over time. How your body is responding, what is changing, and where the system is heading.',
+              },
+              {
+                title: 'Coach Notes',
+                desc: 'Adjustments and observations from your coach. A running record of how the system is being applied to you specifically.',
               },
             ].map((item, i) => (
-              <div key={i} className="border border-white/10 rounded-2xl p-7">
-                <div className="flex items-center justify-between mb-4">
-                  <p className="text-base font-bold text-white">{item.label}</p>
-                  <span className="text-xs font-semibold text-white/30 uppercase tracking-wider">{item.who}</span>
-                </div>
-                <p className="text-white/50 text-base leading-relaxed">{item.desc}</p>
+              <div key={i} className="bg-white/5 rounded-2xl p-6">
+                <h3 className="text-base font-bold text-white mb-3">{item.title}</h3>
+                <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
-          <p className="text-white/30 text-base text-center leading-relaxed max-w-xl mx-auto">
-            If any of these feel accurate, the Performance Check-In is where to start.
+          <p className="text-white/30 text-sm max-w-xl">
+            The portal is not a static document drop. It is an active coaching environment that reflects your current state and evolves as your biology changes.
           </p>
         </div>
       </section>
@@ -150,10 +151,9 @@ export default function PerformanceCoachBrisbanePage() {
             ))}
           </div>
           <div className="flex flex-wrap gap-6">
-            <Link href="/online-performance-coaching" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online coaching →</Link>
-            <Link href="/strength-coach-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Strength coaching →</Link>
-            <Link href="/fat-loss-coach-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Fat loss coaching →</Link>
-            <Link href="/personal-trainer-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Personal training →</Link>
+            <Link href="/online-strength-coaching" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online strength coaching →</Link>
+            <Link href="/online-fat-loss-coaching" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online fat loss coaching →</Link>
+            <Link href="/online-personal-trainer" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online personal training →</Link>
           </div>
         </div>
       </section>
@@ -202,19 +202,19 @@ export default function PerformanceCoachBrisbanePage() {
                 state: 'Remediation',
                 colour: 'border-red-800/40',
                 label: 'text-red-400',
-                desc: 'The regulatory system is under stress. Before any training escalation, the system needs stabilising. Pushing harder here does not produce better results; it produces setbacks. Remediation is not a failure state. It is a biological reality that must be respected before progress is possible.',
+                desc: 'The regulatory system is under stress. Before any training escalation, the system needs stabilising. Pushing harder here does not produce better results; it produces setbacks.',
               },
               {
                 state: 'Optimisation',
                 colour: 'border-amber-300/40',
                 label: 'text-amber-300',
-                desc: 'The system is stable and can be built upon. Training load can be progressively increased. Body composition goals become realistic and sustainable. This is the phase where structured effort produces consistent, measurable output.',
+                desc: 'The system is stable and can be built upon. Training load can be progressively increased. Body composition goals become realistic and sustainable.',
               },
               {
                 state: 'Post-Optimisation',
                 colour: 'border-[#10E1C2]/30',
                 label: 'text-[#10E1C2]',
-                desc: 'A long-arc performance phase. The system is resilient and capable of sustained high-level output. It is built over time and cannot be forced. This is where the Body Recode™ approach produces its most complete expression.',
+                desc: 'A long-arc performance phase. The system is resilient and capable of sustained high-level output. This is where the Body Recode™ approach produces its most complete expression.',
               },
             ].map((item) => (
               <div key={item.state} className={`border rounded-2xl p-7 ${item.colour}`}>
@@ -223,9 +223,51 @@ export default function PerformanceCoachBrisbanePage() {
               </div>
             ))}
           </div>
-          <p className="text-white/30 text-sm leading-relaxed max-w-2xl">
-            Body state is not permanent. As the CFWS captures weekly responses and the system re-interprets, the coaching structure updates. The loop is continuous: interpretation informs execution, execution informs interpretation.
+        </div>
+      </section>
+
+      {/* Four biological patterns */}
+      <section className="bg-black py-32 px-5 border-t border-white/5">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Who This Is For</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
+            Four biological patterns.<br />One system built around all of them.
+          </h2>
+          <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
+            Body Recode™ recognises four distinct biological profiles, each with predictable symptoms and patterns. Understanding which one applies to you changes everything about how coaching should proceed.
           </p>
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            {[
+              {
+                label: 'Stress-Stored',
+                who: 'Male + Female',
+                desc: 'Wired and tired. Abdominal puffiness, morning heaviness, afternoon crashes, broken sleep, and caffeine as a daily coping mechanism. Training happens but results do not. The system is overloaded, not undermotivated.',
+              },
+              {
+                label: 'Estrogen-Shift',
+                who: 'Female',
+                desc: 'Lower-body softening, bloating, cycle unpredictability, mood fluctuation. The body feels less predictable. Doing everything right and still not progressing. Something hormonal has shifted.',
+              },
+              {
+                label: 'Insulin-Drift',
+                who: 'Male dominant',
+                desc: 'Once felt strong without trying. Now softer across the chest and stomach, energy unstable, training heavier than it should feel. Often a formerly consistent trainer who has lost the biological responsiveness he once had.',
+              },
+              {
+                label: 'Androgen-Decline',
+                who: 'Male',
+                desc: 'Capable on the outside. Privately flat. Strength declining quietly. Morning face looks tired. Motivation reduced. The identity built around capability and physical presence is eroding. Slowly, and without a clear explanation.',
+              },
+            ].map((item, i) => (
+              <div key={i} className="border border-white/10 rounded-2xl p-7">
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-base font-bold text-white">{item.label}</p>
+                  <span className="text-xs font-semibold text-white/30 uppercase tracking-wider">{item.who}</span>
+                </div>
+                <p className="text-white/50 text-base leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -244,7 +286,7 @@ export default function PerformanceCoachBrisbanePage() {
             <div>
               <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-3">Kade Dunstone</h2>
               <p className="text-sm text-white/40 uppercase tracking-wider font-semibold mb-10">
-                Performance Coach · Founder, Body Recode™ · Anytime Fitness Newstead
+                Performance Coach · Founder, Body Recode™
               </p>
               <div className="space-y-5 text-white/60 text-base leading-relaxed">
                 <p>
@@ -270,7 +312,7 @@ export default function PerformanceCoachBrisbanePage() {
                 </p>
               </div>
               <p className="mt-10 text-sm text-white/30 leading-relaxed">
-                <a href="https://www.anytimefitness.com/en-au/locations/newstead-queensland-au-1937" target="_blank" rel="noopener noreferrer" className="text-[#10E1C2] hover:underline">Anytime Fitness Newstead</a> · Brisbane · <a href="mailto:info@bodyrecode.au" className="text-[#10E1C2] hover:underline">info@bodyrecode.au</a>
+                <a href="mailto:info@bodyrecode.au" className="text-[#10E1C2] hover:underline">info@bodyrecode.au</a> · Also available face-to-face at <a href="https://www.anytimefitness.com/en-au/locations/newstead-queensland-au-1937" target="_blank" rel="noopener noreferrer" className="text-[#10E1C2] hover:underline">Anytime Fitness Newstead</a>, Brisbane
               </p>
             </div>
           </div>
@@ -283,12 +325,12 @@ export default function PerformanceCoachBrisbanePage() {
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-8">
             {[
-              { q: 'What makes Body Recode™ different from a personal trainer in Brisbane?', a: 'Most personal trainers focus on the workout session. Body Recode™ uses a structured biological assessment to understand your body before any training is prescribed. The result is a system built around your current biology, not a generic template applied to everyone.' },
+              { q: 'How does online coaching work?', a: 'Your full intake is completed online through a structured assessment. From there, your program is built and delivered through your client portal, which holds everything: your training program, nutrition guidelines, synthesis documents, weekly check-ins, and progress data. Coaching communication happens directly with Kade throughout.' },
+              { q: 'What do I get access to as a client?', a: 'Every client gets a dedicated portal from day one. It contains your training program, nutrition guidelines, your Coach-Facing Foundational Synthesis (the complete biological read of your system), weekly check-in tracking, progress data, and coach notes. Everything is updated as you progress.' },
+              { q: 'How is this different from generic online coaching?', a: 'Most online coaching sends a template program and checks in weekly. Body Recode™ begins with a full biological intake across eight domains before anything is prescribed. The program is built around your individual profile, not adjusted to fit a template. Weekly check-ins produce a synthesis document that is read and interpreted, not just filed.' },
+              { q: 'Do I need a gym?', a: 'Your program is designed around your actual training environment. Whether you train at a gym or at home, the system is built around what you have access to and what your biology can currently handle.' },
               { q: 'How do I get started?', a: 'The starting point is the free Performance Check-In. It identifies the patterns currently showing up across your training, recovery, and how your body is responding to life load. No obligation. Just clarity.' },
-              { q: 'Where are you located?', a: 'Face-to-face coaching is based at Anytime Fitness Newstead in Brisbane. Body Recode™ is also available as fully online 1:1 coaching for clients anywhere in the world — the same system, the same depth, delivered remotely through your client portal.' },
-              { q: 'How many clients do you work with at once?', a: 'Availability is intentionally limited. This is a precision coaching environment, not a high-volume gym model. Each client receives the level of attention the system requires.' },
-              { q: 'Do I need to be an experienced gym-goer?', a: 'No. The system is built to meet you exactly where you are. Your training history and current capacity are assessed through the intake process, and everything is structured accordingly.' },
-              { q: 'What does performance coaching involve day-to-day?', a: 'Structured training sessions, recovery monitoring, lifestyle adjustments where relevant, and regular review of how your body is responding. Everything is guided by your biological profile and updated as you progress.' },
+              { q: 'Is the system the same as your face-to-face coaching?', a: 'Yes. The methodology, the intake process, the program design, and the weekly review system are identical. The only difference is delivery. Everything is structured to be just as effective remotely.' },
             ].map((item, i) => (
               <div key={i} className="border-b border-white/10 pb-8">
                 <h3 className="text-base font-bold text-white mb-3">{item.q}</h3>

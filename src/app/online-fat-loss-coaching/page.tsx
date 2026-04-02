@@ -4,11 +4,11 @@ import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
 
 export const metadata: Metadata = {
-  title: 'Fat Loss Coach Brisbane | Body Recode™',
-  description: 'Looking for a fat loss coach in Brisbane? Body Recode™ uses a biology-first approach to fat loss, addressing the underlying system rather than just calories and cardio. Based at Anytime Fitness Newstead.',
+  title: 'Online Fat Loss Coaching | Body Recode™',
+  description: 'Body Recode™ online fat loss coaching. A biology-first approach that addresses the underlying system driving body composition, not just calories and cardio. Available worldwide.',
 }
 
-export default function FatLossCoachBrisbanePage() {
+export default function OnlineFatLossCoachingPage() {
   return (
     <>
       <MarketingNav />
@@ -16,12 +16,12 @@ export default function FatLossCoachBrisbanePage() {
       {/* Hero */}
       <section className="bg-black pt-44 pb-28 px-5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Brisbane · Fat Loss Coaching</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Online · 1:1 Fat Loss Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-12">
-            Fat Loss Coach Brisbane
+            Online Fat Loss Coaching
           </h1>
           <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-12">
-            Fat loss isn&apos;t a willpower problem. It&apos;s a biological one. Body Recode™ addresses the system driving your body composition, not just the calories in and out.
+            Fat loss isn&apos;t a willpower problem. It&apos;s a biological one. Body Recode™ addresses the system driving your body composition, not just the calories in and out. Delivered 1:1, fully online.
           </p>
           <Link
             href="/performance-check-in"
@@ -48,7 +48,7 @@ export default function FatLossCoachBrisbanePage() {
         </div>
       </section>
 
-      {/* The biology of fat loss */}
+      {/* What actually drives fat loss */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">What actually drives fat loss</h2>
@@ -61,7 +61,7 @@ export default function FatLossCoachBrisbanePage() {
               { title: 'Sleep quality and depth', desc: 'Poor sleep disrupts leptin and ghrelin, the hormones that regulate hunger and satiety. One week of poor sleep measurably increases caloric intake and fat storage.' },
               { title: 'Training load matching', desc: 'Training too hard in a depleted state elevates cortisol further and drives muscle breakdown. The right training load is one your system can actually recover from.' },
               { title: 'Nutrition pattern, not just calories', desc: 'Meal timing, protein adequacy, and eating behaviour patterns all affect how your body partitions energy. A caloric deficit built on the wrong foods at the wrong times produces poor results.' },
-              { title: 'Hormonal environment', desc: 'Testosterone, oestrogen, thyroid function, and insulin sensitivity all influence how and where your body stores and releases fat. These can\'t be ignored.' },
+              { title: 'Hormonal environment', desc: 'Testosterone, oestrogen, thyroid function, and insulin sensitivity all influence how and where your body stores and releases fat. These cannot be ignored.' },
               { title: 'Body pattern recognition', desc: 'Where your body distributes fat tells a story about your underlying biology. Body Recode™ uses this as a diagnostic signal, not just an aesthetic concern.' },
             ].map((item, i) => (
               <div key={i} className="border border-white/10 rounded-xl p-5">
@@ -81,20 +81,45 @@ export default function FatLossCoachBrisbanePage() {
             Before any fat loss prescription is made, Body Recode™ builds a complete picture of your biological state using a structured eight-domain intake. This tells us whether fat loss is viable right now, what is currently working against it, and what needs to change first.
           </p>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
-            For clients whose regulatory system is under stress (the stress-stored pattern is one of the most common), attempting aggressive fat loss is counterproductive. The body fights back. The first phase is stabilisation, not restriction.
+            For clients whose regulatory system is under stress, attempting aggressive fat loss is counterproductive. The body fights back. The first phase is stabilisation, not restriction.
           </p>
           <p className="text-white/60 text-lg leading-relaxed mb-12">
             Once the system is stable, fat loss becomes realistic and sustainable. Training load, nutrition structure, and lifestyle adjustments are all calibrated to the individual, not applied from a template.
           </p>
-          <div className="flex flex-wrap gap-6">
-            <Link href="/online-fat-loss-coaching" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online fat loss coaching →</Link>
-            <Link href="/performance-coach-brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Full system overview →</Link>
+          <Link href="/online-performance-coaching" className="text-[#10E1C2] text-sm font-semibold hover:underline">
+            Learn about the full Body Recode™ system →
+          </Link>
+        </div>
+      </section>
+
+      {/* Client portal */}
+      <section className="bg-black py-32 px-5 border-t border-white/5">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Client Portal</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
+            Your program, your data,<br />all in one place.
+          </h2>
+          <p className="text-white/50 text-lg leading-relaxed max-w-2xl mb-12">
+            Every client gets a dedicated portal from day one. Your training program, nutrition guidelines, synthesis documents, weekly check-ins, and progress data — all updated continuously as you move through coaching.
+          </p>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { title: 'Training Program', desc: 'Your structured training plan, designed around your biological profile and calibrated to your real recovery capacity.' },
+              { title: 'Nutrition Guidelines', desc: 'Nutrition structure built around your current body state. Not a generic meal plan — a framework built for your biology specifically.' },
+              { title: 'Weekly Check-Ins', desc: 'Structured weekly reporting that keeps your coaching current and ensures adjustments are made based on how your body is actually responding.' },
+              { title: 'Foundation Synthesis', desc: 'The complete biological read of your system. The document that determines whether fat loss is viable and what approach makes sense for you right now.' },
+            ].map((item, i) => (
+              <div key={i} className="bg-white/5 rounded-2xl p-6">
+                <h3 className="text-base font-bold text-white mb-3">{item.title}</h3>
+                <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="bg-black py-32 px-5 border-t border-white/5">
+      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-6">
@@ -103,7 +128,7 @@ export default function FatLossCoachBrisbanePage() {
               { q: 'I\'ve tried cutting calories before and it stopped working. Why?', a: 'When the body is under stress or in a state of chronic sleep deprivation, it actively resists fat loss regardless of caloric deficit. The intake process identifies what is working against your progress and addresses it directly.' },
               { q: 'Will I need to follow a strict diet?', a: 'Not necessarily. Body Recode™ works with your current eating behaviour and builds structure around it. Extreme restriction is rarely the right answer, especially in the early phases.' },
               { q: 'How long before I see results?', a: 'It depends on where your biology is starting from. If your system is under stress, the first phase focuses on stabilisation before fat loss becomes the primary goal. Once the system is stable, measurable changes typically show within the first 4–6 weeks. Everything is built to be sustainable, not fast and short-lived.' },
-              { q: 'Where are sessions held?', a: 'Face-to-face coaching is conducted at Anytime Fitness Newstead, Brisbane. Body Recode™ is also available as fully online 1:1 coaching for clients anywhere in the world — everything is delivered through your dedicated client portal.' },
+              { q: 'How does online coaching actually work?', a: 'Your full intake is completed through a structured online assessment. Everything else — your program, nutrition guidelines, synthesis documents, weekly check-ins, and progress data — is delivered through your dedicated client portal. Coaching communication happens directly with Kade throughout.' },
               { q: 'How do I get started?', a: 'The starting point is the free Performance Check-In. It takes a few minutes and gives you a clear picture of where your body is right now and what approach makes sense for you.' },
             ].map((item, i) => (
               <div key={i} className="border-b border-white/10 pb-6">
@@ -116,7 +141,7 @@ export default function FatLossCoachBrisbanePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
             Find out what&apos;s actually holding your progress back
