@@ -9,12 +9,6 @@ export default function MarketingNav() {
           <Image src="/logo-teal.png" alt="Body Recode" width={220} height={97} className="h-14 w-auto" />
         </Link>
         <Link
-          href="/performance-coaching"
-          className="text-sm text-white/60 hover:text-white transition-colors font-medium"
-        >
-          Performance Coaching
-        </Link>
-        <Link
           href="/performance-check-in"
           className="text-sm font-bold bg-[#10E1C2] text-black px-5 py-2.5 rounded-full hover:bg-[#0ecfb2] transition-colors tracking-wide"
         >
