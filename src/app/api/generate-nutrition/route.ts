@@ -158,15 +158,7 @@ export async function POST(request: NextRequest) {
       training_day_adjustments: plan.training_day_adjustments || null,
       rest_day_adjustments: plan.rest_day_structure || null,
       food_selection_guidelines: plan.food_selection_guidelines || [],
-      substitution_options: plan.substitution_options
-        ? (Array.isArray(plan.substitution_options)
-            ? plan.substitution_options
-            : [
-                ...((plan.substitution_options as Record<string, string[]>).protein || []),
-                ...((plan.substitution_options as Record<string, string[]>).carbohydrate || []),
-                ...((plan.substitution_options as Record<string, string[]>).fat || []),
-              ])
-        : [],
+      substitution_options: plan.substitution_options || null,
       execution_rules: plan.execution_rules || [],
       what_not_to_change: plan.what_not_to_change || [],
       entry_state_summary: plan.entry_state_summary || null,
@@ -184,7 +176,7 @@ export async function POST(request: NextRequest) {
 
   if (saveError) {
     console.error('Save error:', saveError)
-    return NextResponse.json({ error: `DB error: ${saveError.message} (code: ${saveError.code})` }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to save nutrition plan' }, { status: 500 })
   }
 
   return NextResponse.json({ plan_id: savedPlan.id, client_id })
