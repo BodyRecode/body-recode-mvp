@@ -669,6 +669,14 @@ export default function HelpPage() {
 
             <Note>Programs follow doctrine exactly — one PTS phase only, no cross-phase blending, exercise selection from the approved library only, skeleton structure fixed, fatigue adjustments on execution variables only.</Note>
 
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 5 — Weekly Review</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Below the active program, use <strong>Record Review</strong> to log the weekly coaching review. Select performance signal, signal strength, days under observation, direction, and any adjustment applied.</li>
+              <li><strong>Direction options:</strong> Progress, Hold, Deload, Rebuild.</li>
+              <li><strong>New Block Required</strong> — if ticked during a review, the system automatically marks the current macro arc block as complete and advances the next planned block to In Progress.</li>
+              <li>Doctrine gates are enforced: structural or phase adjustment requires confirmed session adherence; minimum observation days apply per adjustment level.</li>
+            </ul>
+
             <Training title="How to read the prescription suggestion">
               <p>The suggestion is not a recommendation to accept blindly. It is the system&apos;s read of the client&apos;s current state based on available data. Read each reasoning note — if your coaching judgement disagrees with the reasoning, edit the field. The system explains its logic so you can interrogate it, not so you can skip the thinking.</p>
               <p className="mt-2">Movement competency in particular requires your direct assessment. The system defaults conservatively when no data is available — correct it if you know the client&apos;s actual movement capacity from in-person sessions.</p>
@@ -684,7 +692,7 @@ export default function HelpPage() {
               <li>Create a plan with a name and macro objective (e.g. &quot;Build capacity foundation → strength expression over 6 months&quot;).</li>
               <li>Add meso blocks in sequence. Each block has a progression phase, training goal, duration, execution arc (Short/Mid/Long), phase category (Layer A), and phase objective (Layer D).</li>
               <li>Click <strong>Generate program →</strong> on any block to go to the prescription suggestion page — the system pre-fills the prescription from the plan block and passes the full arc context (previous block completed, next block planned, macro objective) to Claude during generation.</li>
-              <li>Block status updates automatically: Planned → In Progress (when generation begins) → Complete (when you update it after the block finishes) → Skipped.</li>
+              <li>Block status updates automatically: Planned → In Progress (when generation begins) → Complete (when the program weekly review marks &quot;New block required&quot;) → Skipped. When a block is marked complete, the next planned block advances to In Progress automatically.</li>
             </ul>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">The Three Time Horizons</p>
@@ -709,14 +717,9 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 3 — Draft Review</p>
             <p>The generated plan appears on the client&apos;s Nutrition Plan page under a <strong>Draft — Pending Approval</strong> banner. Review the full output: entry state summary, meal structure (per-meal macros and foods), training day adjustments, execution rules, what not to change, and progression notes. Use <strong>Discard Draft</strong> to delete it or <strong>Approve Plan</strong> to promote it to active.</p>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 4 — Weekly Review</p>
-            <p>Below the active plan, use <strong>Record Review</strong> to log a weekly review. The system enforces doctrine gates before saving:</p>
-            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Adherence gate</strong> — Any structural or nutritional adjustment requires adherence confirmation first. Behavioural adjustments are exempt.</li>
-              <li><strong>Time gate</strong> — Minimum days under observation: Behavioural (0), Structural (5), Nutritional (7), Advanced (10).</li>
-              <li><strong>Single variable rule</strong> — Only one variable can be changed per review cycle.</li>
-            </ul>
-            <p className="mt-2">Direction options: <strong>Progress</strong> (advance the plan), <strong>Hold</strong> (maintain current prescription), <strong>Rebuild</strong> (generate a new plan from scratch).</p>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 4 — Weekly Review (Client Portal)</p>
+            <p>The weekly nutrition review is submitted by the client through their portal. The client reports how they went — adherence, what they noticed (under-fuelled, over-fuelled, recovery issues, etc.), and how things feel overall (making progress / staying steady / struggling). As the coach, you see the submitted results as a read-only feed on the Nutrition Plan page. No form to fill in — the client does it.</p>
+            <p className="mt-2">Direction options visible to you: <strong>Progress</strong> (client feels on track), <strong>Hold</strong> (steady, no change), <strong>Rebuild</strong> (struggling — consider a new plan).</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Key Concepts</p>
             <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
@@ -726,7 +729,7 @@ export default function HelpPage() {
               <li><strong>Carb Demand Level</strong> — Must respect the entry state ceiling. Stabilisation/Recovery Reset → Low only. Training Support → up to Moderate. High Output → up to High.</li>
             </ul>
 
-            <Note>The nutrition plan is coach-facing only. A simplified client-facing version will be added to the client portal in a future build.</Note>
+            <Note>The weekly review is client-submitted. The client sees a Nutrition Check-In card in their portal whenever they have an active plan. You see results only — no data entry required on the coach side.</Note>
           </Section>
 
         </div>

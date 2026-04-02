@@ -2,6 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import StickyScrollNav from '@/components/sticky-scroll-nav'
+
+const NAV_SECTIONS = [
+  { id: 'rationale', title: 'Rationale' },
+  { id: 'plan-details', title: 'Plan Details' },
+  { id: 'blocks', title: 'Meso Blocks' },
+]
 
 interface SuggestedBlock {
   block_name: string
@@ -190,16 +197,18 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
   const totalWeeks = blocks.reduce((sum, b) => sum + b.week_duration, 0)
 
   return (
-    <div className="space-y-4">
+    <div className="flex gap-8 max-w-5xl">
+      <StickyScrollNav sections={NAV_SECTIONS} />
+      <div className="flex-1 min-w-0 space-y-4">
 
       {/* Overall rationale */}
-      <div className="bg-teal-950/30 border border-teal-800/40 rounded-xl px-5 py-4">
+      <div id="rationale" className="scroll-mt-8 bg-teal-950/30 border border-teal-800/40 rounded-xl px-5 py-4">
         <p className="text-[10px] font-bold text-teal-400 uppercase tracking-widest mb-2">Arc Rationale</p>
         <p className="text-sm text-stone-300 leading-relaxed">{suggestion.overall_rationale}</p>
       </div>
 
       {/* Plan name + objective */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 space-y-4">
+      <div id="plan-details" className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-5 space-y-4">
         <div>
           <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">Plan Name</label>
           <input
@@ -228,7 +237,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       </div>
 
       {/* Meso blocks */}
-      <div>
+      <div id="blocks" className="scroll-mt-8">
         <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3 px-1">Meso Blocks</p>
         <div className="space-y-3">
           {blocks.map((block, i) => (
@@ -374,6 +383,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
         >
           {saving ? 'Saving arc...' : 'Approve Arc'}
         </button>
+      </div>
       </div>
     </div>
   )

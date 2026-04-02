@@ -16,7 +16,7 @@ export default async function MacroPlanSuggestPage({ params }: { params: Promise
   if (!client) notFound()
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-5xl mx-auto">
       <div className="mb-8">
         <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
           <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-300 transition-colors">{client.name}</Link>

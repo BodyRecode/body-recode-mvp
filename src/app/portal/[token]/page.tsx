@@ -14,6 +14,13 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .eq('onboarding_token', token)
     .single()
 
+  const { data: activeNutritionPlan } = await admin
+    .from('nutrition_plans')
+    .select('id, plan_name, last_review_at')
+    .eq('client_id', client?.id ?? '')
+    .eq('status', 'active')
+    .maybeSingle()
+
   if (!client) return notFound()
 
   const firstName = client.name?.split(' ')[0] ?? 'there'
@@ -207,6 +214,30 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 <p className="text-xs text-stone-600">Opens {opensAt} (Brisbane time) every Friday.</p>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Nutrition review */}
+        {allOnboardingDone && activeNutritionPlan && (
+          <div className="mb-10">
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Nutrition</p>
+            <Link
+              href={`/portal/${token}/nutrition`}
+              className="block rounded-2xl border border-stone-700 bg-stone-900 p-5 hover:border-teal-400/40 hover:bg-teal-400/5 transition-colors"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-white mb-1">Weekly nutrition check-in</p>
+                  <p className="text-xs text-stone-400">
+                    {activeNutritionPlan.last_review_at
+                      ? `Last reviewed ${new Date(activeNutritionPlan.last_review_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}`
+                      : 'How are you going with your plan?'
+                    }
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-teal-400 ml-4">Start →</span>
+              </div>
+            </Link>
           </div>
         )}
 
