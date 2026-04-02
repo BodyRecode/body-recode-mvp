@@ -17,7 +17,7 @@ export default function HomePage() {
       <section className="bg-black min-h-screen flex items-center pt-20">
         <div className="max-w-4xl mx-auto px-5 py-32 text-center">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-8">
-            Online 1:1 Coaching · Also available face-to-face in Brisbane
+            Online 1:1 Coaching · Worldwide
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight mb-8">
             The effort is still there.<br />
