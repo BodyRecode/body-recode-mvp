@@ -17,7 +17,7 @@ export default function HomePage() {
       <section className="bg-black min-h-screen flex items-center pt-20">
         <div className="max-w-4xl mx-auto px-5 py-32 text-center">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-8">
-            Body Recode™ — Biological Interpretation System
+            Body Recode™, Biological Interpretation System
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight mb-8">
             Interpretation before prescription.
@@ -51,7 +51,7 @@ export default function HomePage() {
           </h2>
           <div className="max-w-2xl mx-auto space-y-6 text-white/60 text-lg leading-relaxed">
             <p>
-              The conventional model goes — assess goals, prescribe approach, measure output, adjust. This works when the body is in a state to respond. Most of the time, it is not. The model assumes the body is ready. It rarely asks whether it is.
+              The conventional model goes, assess goals, prescribe approach, measure output, adjust. This works when the body is in a state to respond. Most of the time, it is not. The model assumes the body is ready. It rarely asks whether it is.
             </p>
             <p>
               Body Recode™ sits one layer upstream of that. Before any prescription is made, the system asks a different question: what state is this body actually operating in right now, and why is it organised the way it is?
@@ -72,15 +72,15 @@ export default function HomePage() {
           </h2>
           <div className="grid md:grid-cols-2 gap-8 mb-10">
             <div className="border border-[#10E1C2]/30 rounded-2xl p-8 bg-[#10E1C2]/5">
-              <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Layer 1 — Interpretation</p>
+              <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Layer 1, Interpretation</p>
               <p className="text-white/60 text-base leading-relaxed">
-                Takes structured input data across eight signal domains — training load, recovery capacity, stress architecture, hormonal signals, fat distribution patterns, sleep quality, behavioural patterns, and emotional load — and produces the CFFS: the Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation.
+                Takes structured input data across eight signal domains, training load, recovery capacity, stress architecture, hormonal signals, fat distribution patterns, sleep quality, behavioural patterns, and emotional load, and produces the CFFS: the Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation.
               </p>
             </div>
             <div className="border border-white/10 rounded-2xl p-8">
-              <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase mb-4">Layer 2 — Execution</p>
+              <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase mb-4">Layer 2, Execution</p>
               <p className="text-white/60 text-base leading-relaxed">
-                Downstream of the CFFS, the practitioner designs the actual intervention — training, nutrition, load management, clinical protocol, performance strategy. Everything in the execution layer is derived from the interpretation. The interpretation never changes to accommodate the execution.
+                Downstream of the CFFS, the practitioner designs the actual intervention, training, nutrition, load management, clinical protocol, performance strategy. Everything in the execution layer is derived from the interpretation. The interpretation never changes to accommodate the execution.
               </p>
             </div>
           </div>
@@ -98,10 +98,10 @@ export default function HomePage() {
             One interpretive engine. Five environments.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            The interpretive layer does not care what environment the body is operating in. The body responds to load through the same biological mechanisms regardless of context. What changes between environments is not the interpretation — it is what the practitioner does with it.
+            The interpretive layer does not care what environment the body is operating in. The body responds to load through the same biological mechanisms regardless of context. What changes between environments is not the interpretation, it is what the practitioner does with it.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Environment 1 — Live */}
+            {/* Environment 1, Live */}
             <div className="border border-[#10E1C2]/30 rounded-2xl p-8 bg-[#10E1C2]/5">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">Health &amp; Fitness</p>
@@ -109,7 +109,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-bold text-white mb-3">Performance Coaching</h3>
               <p className="text-white/60 text-sm leading-relaxed mb-6">
-                The origin environment and first proof of concept. Clients are general population — people whose bodies have stopped responding to effort. The execution layer is structured training and nutrition design derived entirely from the CFFS.
+                The origin environment and first proof of concept. Clients are general population, people whose bodies have stopped responding to effort. The execution layer is structured training and nutrition design derived entirely from the CFFS.
               </p>
               <Link
                 href="/performance-coaching"
@@ -127,7 +127,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-bold text-white mb-3">Executive Performance</h3>
               <p className="text-white/50 text-sm leading-relaxed">
-                High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress — cortisol elevation, recovery suppression, regulatory disruption.
+                High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress, cortisol elevation, recovery suppression, regulatory disruption.
               </p>
             </div>
 
@@ -151,11 +151,11 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-bold text-white mb-3">Clinical Integration</h3>
               <p className="text-white/50 text-sm leading-relaxed">
-                GPs, physiotherapists, sports medicine practitioners, and allied health professionals. Body Recode™ sits upstream of clinical assessment — providing a structured biological read that informs the clinical picture before the appointment.
+                GPs, physiotherapists, sports medicine practitioners, and allied health professionals. Body Recode™ sits upstream of clinical assessment, providing a structured biological read that informs the clinical picture before the appointment.
               </p>
             </div>
 
-            {/* Environment 5 — centred on last row */}
+            {/* Environment 5, centred on last row */}
             <div className="border border-white/10 rounded-2xl p-8 md:col-span-2 md:max-w-lg md:mx-auto md:w-full">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase">Education &amp; Youth</p>
@@ -178,7 +178,7 @@ export default function HomePage() {
             Fat Map Method™
           </h2>
           <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            One of the core interpretive tools within Body Recode™. Fat accumulation patterns are read as hormonal and metabolic signalling — not simple energy surplus. Where fat accumulates on the body reflects the body&apos;s adaptive response to its current hormonal and regulatory environment.
+            One of the core interpretive tools within Body Recode™. Fat accumulation patterns are read as hormonal and metabolic signalling, not simple energy surplus. Where fat accumulates on the body reflects the body&apos;s adaptive response to its current hormonal and regulatory environment.
           </p>
           <div className="grid md:grid-cols-2 gap-6 mb-10">
             {[
@@ -243,7 +243,7 @@ export default function HomePage() {
             <div className="border border-amber-300/40 rounded-2xl p-7">
               <p className="text-sm font-bold uppercase tracking-wider text-amber-300 mb-4">Optimisation</p>
               <p className="text-white/50 text-base leading-relaxed">
-                The body has stabilised. Capacity exists to pursue body composition and performance goals. This is where most coaching begins — but very few clients are actually here when they arrive.
+                The body has stabilised. Capacity exists to pursue body composition and performance goals. This is where most coaching begins, but very few clients are actually here when they arrive.
               </p>
             </div>
             <div className="border border-[#10E1C2]/30 rounded-2xl p-7">
@@ -264,7 +264,7 @@ export default function HomePage() {
             One engine. Built to scale across industries.
           </h2>
           <p className="text-white/60 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            Body Recode™ is built as one interpretive core with multiple execution layers on top of it. The interpretation engine ingests structured client data, classifies body state, and produces the CFFS. This engine is environment-agnostic. It can be licensed, white-labelled, or integrated into existing practitioner workflows. Each execution layer is a downstream application — its own product, its own interface, its own practitioner tools, calibrated to the demands and language of its environment.
+            Body Recode™ is built as one interpretive core with multiple execution layers on top of it. The interpretation engine ingests structured client data, classifies body state, and produces the CFFS. This engine is environment-agnostic. It can be licensed, white-labelled, or integrated into existing practitioner workflows. Each execution layer is a downstream application, its own product, its own interface, its own practitioner tools, calibrated to the demands and language of its environment.
           </p>
 
           {/* Architecture Diagram */}

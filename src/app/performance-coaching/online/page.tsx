@@ -21,7 +21,7 @@ export default function OnlinePerformanceCoachingPage() {
             Online Performance Coaching
           </h1>
           <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-12">
-            Body Recode™ is a biology-first coaching system built for high-functioning adults whose bodies have stopped responding to effort. Delivered 1:1 online — same system, same depth, available anywhere in the world.
+            Body Recode™ is a biology-first coaching system built for high-functioning adults whose bodies have stopped responding to effort. Delivered 1:1 online, same system, same depth, available anywhere in the world.
           </p>
           <Link
             href="/performance-check-in"
@@ -91,7 +91,7 @@ export default function OnlinePerformanceCoachingPage() {
             Everything in one place.<br />Always up to date.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed max-w-2xl mb-16">
-            Every client gets access to a dedicated portal from day one. Your program, your data, your synthesis documents, your weekly check-ins — all in one place, updated continuously as you progress through coaching.
+            Every client gets access to a dedicated portal from day one. Your program, your data, your synthesis documents, your weekly check-ins, all in one place, updated continuously as you progress through coaching.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             {[
@@ -105,7 +105,7 @@ export default function OnlinePerformanceCoachingPage() {
               },
               {
                 title: 'Foundation Synthesis',
-                desc: 'Your CFFS — the complete biological read of your system from intake. The document everything else operates within.',
+                desc: 'Your CFFS, the complete biological read of your system from intake. The document everything else operates within.',
               },
               {
                 title: 'Weekly Check-Ins',

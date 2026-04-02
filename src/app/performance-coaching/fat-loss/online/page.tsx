@@ -100,12 +100,12 @@ export default function OnlineFatLossCoachingPage() {
             Your program, your data,<br />all in one place.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed max-w-2xl mb-12">
-            Every client gets a dedicated portal from day one. Your training program, nutrition guidelines, synthesis documents, weekly check-ins, and progress data — all updated continuously as you move through coaching.
+            Every client gets a dedicated portal from day one. Your training program, nutrition guidelines, synthesis documents, weekly check-ins, and progress data, all updated continuously as you move through coaching.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
             {[
               { title: 'Training Program', desc: 'Your structured training plan, designed around your biological profile and calibrated to your real recovery capacity.' },
-              { title: 'Nutrition Guidelines', desc: 'Nutrition structure built around your current body state. Not a generic meal plan — a framework built for your biology specifically.' },
+              { title: 'Nutrition Guidelines', desc: 'Nutrition structure built around your current body state. Not a generic meal plan, a framework built for your biology specifically.' },
               { title: 'Weekly Check-Ins', desc: 'Structured weekly reporting that keeps your coaching current and ensures adjustments are made based on how your body is actually responding.' },
               { title: 'Foundation Synthesis', desc: 'The complete biological read of your system. The document that determines whether fat loss is viable and what approach makes sense for you right now.' },
             ].map((item, i) => (
@@ -128,7 +128,7 @@ export default function OnlineFatLossCoachingPage() {
               { q: 'I\'ve tried cutting calories before and it stopped working. Why?', a: 'When the body is under stress or in a state of chronic sleep deprivation, it actively resists fat loss regardless of caloric deficit. The intake process identifies what is working against your progress and addresses it directly.' },
               { q: 'Will I need to follow a strict diet?', a: 'Not necessarily. Body Recode™ works with your current eating behaviour and builds structure around it. Extreme restriction is rarely the right answer, especially in the early phases.' },
               { q: 'How long before I see results?', a: 'It depends on where your biology is starting from. If your system is under stress, the first phase focuses on stabilisation before fat loss becomes the primary goal. Once the system is stable, measurable changes typically show within the first 4–6 weeks. Everything is built to be sustainable, not fast and short-lived.' },
-              { q: 'How does online coaching actually work?', a: 'Your full intake is completed through a structured online assessment. Everything else — your program, nutrition guidelines, synthesis documents, weekly check-ins, and progress data — is delivered through your dedicated client portal. Coaching communication happens directly with Kade throughout.' },
+              { q: 'How does online coaching actually work?', a: 'Your full intake is completed through a structured online assessment. Everything else, your program, nutrition guidelines, synthesis documents, weekly check-ins, and progress data, is delivered through your dedicated client portal. Coaching communication happens directly with Kade throughout.' },
               { q: 'How do I get started?', a: 'The starting point is the free Performance Check-In. It takes a few minutes and gives you a clear picture of where your body is right now and what approach makes sense for you.' },
             ].map((item, i) => (
               <div key={i} className="border-b border-white/10 pb-6">

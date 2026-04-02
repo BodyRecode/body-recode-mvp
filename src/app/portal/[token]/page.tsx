@@ -184,7 +184,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-teal-400">Check-in submitted</p>
-                    <p className="text-xs text-stone-500 mt-0.5">Week {weekNumber} — your coach will review shortly.</p>
+                    <p className="text-xs text-stone-500 mt-0.5">Week {weekNumber}, your coach will review shortly.</p>
                   </div>
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-white mb-1">Weekly check-in — Form {activeFormType}</p>
+                    <p className="text-sm font-semibold text-white mb-1">Weekly check-in, Form {activeFormType}</p>
                     <p className="text-xs text-stone-400">Week {weekNumber} · Window closes Sunday 6pm Brisbane time.</p>
                   </div>
                   <span className="text-xs font-bold text-teal-400 ml-4">Start →</span>
@@ -218,7 +218,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
               {recentCheckins.map((c: { week_number: number; form_type: string; submitted_at: string }, i: number) => (
                 <div key={i} className="flex items-center justify-between rounded-xl bg-stone-900 px-4 py-3">
                   <div>
-                    <p className="text-sm text-white font-medium">Week {c.week_number} — Form {c.form_type}</p>
+                    <p className="text-sm text-white font-medium">Week {c.week_number}, Form {c.form_type}</p>
                   </div>
                   <p className="text-xs text-stone-500">{new Date(c.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
                 </div>

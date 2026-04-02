@@ -21,7 +21,7 @@ export default function OnlinePersonalTrainerPage() {
             Online Personal Trainer
           </h1>
           <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-12">
-            Body Recode™ is not standard personal training. It is a structured, biology-first coaching system that builds around how your body actually works — not a program written for the average person. Delivered 1:1, fully online.
+            Body Recode™ is not standard personal training. It is a structured, biology-first coaching system that builds around how your body actually works, not a program written for the average person. Delivered 1:1, fully online.
           </p>
           <Link
             href="/performance-check-in"
@@ -101,15 +101,15 @@ export default function OnlinePersonalTrainerPage() {
             Everything your coaching needs.<br />In one place.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed max-w-2xl mb-12">
-            Every client gets access to a dedicated portal from day one. Your program, your synthesis documents, your weekly check-ins, and your progress data — all in one place, updated continuously as you progress through coaching.
+            Every client gets access to a dedicated portal from day one. Your program, your synthesis documents, your weekly check-ins, and your progress data, all in one place, updated continuously as you progress through coaching.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { title: 'Training Program', desc: 'Your full program, structured by phase, built around your current biological profile.' },
-              { title: 'Nutrition Guidelines', desc: 'Nutrition structure designed around your body state — not a generic plan.' },
+              { title: 'Nutrition Guidelines', desc: 'Nutrition structure designed around your body state, not a generic plan.' },
               { title: 'Foundation Synthesis', desc: 'The complete biological read of your system. The document every decision is built around.' },
               { title: 'Weekly Check-Ins', desc: 'Structured weekly reporting that keeps your coaching calibrated to how your body is actually responding.' },
-              { title: 'Progress Tracking', desc: 'Your data tracked over time — training responses, body changes, and coaching observations.' },
+              { title: 'Progress Tracking', desc: 'Your data tracked over time, training responses, body changes, and coaching observations.' },
               { title: 'Coach Notes', desc: 'Adjustments and observations from your coach as you move through each phase.' },
             ].map((item, i) => (
               <div key={i} className="bg-white/5 rounded-2xl p-6">

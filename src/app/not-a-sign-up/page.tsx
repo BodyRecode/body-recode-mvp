@@ -40,7 +40,7 @@ export default async function NotASignUpPage({ searchParams }: { searchParams: P
               <h2 className="text-base font-bold text-white mb-3">What this isn&apos;t</h2>
               <ul className="space-y-1">
                 {['An assessment', 'A diagnosis', 'An application', 'A commitment to coaching'].map((item, i) => (
-                  <li key={i} className="text-white/40 text-base leading-relaxed">— {item}</li>
+                  <li key={i} className="text-white/40 text-base leading-relaxed"> {item}</li>
                 ))}
               </ul>
               <p className="text-white/40 text-base leading-relaxed mt-3">Nothing happens unless you choose it.</p>

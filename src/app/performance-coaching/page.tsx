@@ -5,7 +5,7 @@ import MarketingFooter from '@/components/marketing/footer'
 
 export const metadata: Metadata = {
   title: 'Performance Coaching | Body Recode™',
-  description: 'Body Recode™ Performance Coaching — Environment 1 of the Body Recode™ biological interpretation system. Available online worldwide and face-to-face in Brisbane.',
+  description: 'Body Recode™ Performance Coaching, Environment 1 of the Body Recode™ biological interpretation system. Available online worldwide and face-to-face in Brisbane.',
 }
 
 export default function PerformanceCoachingPage() {
@@ -17,7 +17,7 @@ export default function PerformanceCoachingPage() {
       <section className="bg-black pt-44 pb-32 px-5">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">
-            Environment 01 — Health &amp; Fitness
+            Environment 01, Health &amp; Fitness
           </p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-8">
             Performance Coaching
@@ -51,10 +51,10 @@ export default function PerformanceCoachingPage() {
           </h2>
           <div className="max-w-2xl space-y-6 text-white/60 text-lg leading-relaxed">
             <p>
-              Performance Coaching is the downstream application of the Body Recode™ interpretive system in the health and fitness environment. It does not begin with a program. It begins with interpretation. A full biological intake across eight domains produces the CFFS — the Coach-Facing Foundational Synthesis. Every training decision, every nutrition structure, every recovery adjustment operates within the boundaries the CFFS defines.
+              Performance Coaching is the downstream application of the Body Recode™ interpretive system in the health and fitness environment. It does not begin with a program. It begins with interpretation. A full biological intake across eight domains produces the CFFS, the Coach-Facing Foundational Synthesis. Every training decision, every nutrition structure, every recovery adjustment operates within the boundaries the CFFS defines.
             </p>
             <p>
-              The coaching system runs on two parallel documents throughout the entire client relationship: the CFFS (foundational, non-temporal, produced at intake) and the CFWS — the Coach-Facing Weekly Synthesis — which captures how the system is responding to applied load in real time. Both feed a continuous loop: interpretation informs execution, execution informs interpretation.
+              The coaching system runs on two parallel documents throughout the entire client relationship: the CFFS (foundational, non-temporal, produced at intake) and the CFWS, the Coach-Facing Weekly Synthesis, which captures how the system is responding to applied load in real time. Both feed a continuous loop: interpretation informs execution, execution informs interpretation.
             </p>
           </div>
         </div>
@@ -78,7 +78,7 @@ export default function PerformanceCoachingPage() {
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Coach anywhere in the world</h3>
               <p className="text-white/60 text-base leading-relaxed mb-6">
-                Full 1:1 coaching delivered remotely. Same structured intake, same biological assessment, same program design. Everything lives in your client portal — your program, your synthesis documents, your weekly check-ins, your progress data.
+                Full 1:1 coaching delivered remotely. Same structured intake, same biological assessment, same program design. Everything lives in your client portal, your program, your synthesis documents, your weekly check-ins, your progress data.
               </p>
               <ul className="space-y-2 mb-8">
                 {[
@@ -142,7 +142,7 @@ export default function PerformanceCoachingPage() {
             Everything in one place.<br />Always up to date.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed max-w-2xl mb-16">
-            Every client gets access to a dedicated portal from day one. Your program, your data, your synthesis documents, your weekly check-ins — all in one place, updated continuously as you progress through coaching.
+            Every client gets access to a dedicated portal from day one. Your program, your data, your synthesis documents, your weekly check-ins, all in one place, updated continuously as you progress through coaching.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             {[
@@ -156,7 +156,7 @@ export default function PerformanceCoachingPage() {
               },
               {
                 title: 'Foundation Synthesis',
-                desc: 'Your CFFS — the complete biological read of your system from intake. The document everything else operates within.',
+                desc: 'Your CFFS, the complete biological read of your system from intake. The document everything else operates within.',
               },
               {
                 title: 'Weekly Check-Ins',
@@ -183,7 +183,7 @@ export default function PerformanceCoachingPage() {
         </div>
       </section>
 
-      {/* The System — Decode / Rewire / Rebuild */}
+      {/* The System, Decode / Rewire / Rebuild */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">The System</p>

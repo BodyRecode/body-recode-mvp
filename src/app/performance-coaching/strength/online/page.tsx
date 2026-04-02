@@ -21,7 +21,7 @@ export default function OnlineStrengthCoachingPage() {
             Online Strength Coaching
           </h1>
           <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-12">
-            Building strength isn&apos;t just about lifting more weight. It&apos;s about creating the right biological conditions for your body to actually respond to training — and sustaining that over time. Delivered 1:1, fully online.
+            Building strength isn&apos;t just about lifting more weight. It&apos;s about creating the right biological conditions for your body to actually respond to training, and sustaining that over time. Delivered 1:1, fully online.
           </p>
           <Link
             href="/performance-check-in"
@@ -40,7 +40,7 @@ export default function OnlineStrengthCoachingPage() {
             Most people who plateau in the gym aren&apos;t training wrong. They&apos;re training without understanding where their body actually is. Strength is a biological output. If the underlying system is under stress, under-recovered, or hormonally dysregulated, adding more volume or intensity will not produce better results. It will produce worse ones.
           </p>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
-            Hard-working people who train consistently but make slow or no progress — because the training load doesn&apos;t match the body&apos;s actual capacity to adapt — is one of the most common patterns we see.
+            Hard-working people who train consistently but make slow or no progress, because the training load doesn&apos;t match the body&apos;s actual capacity to adapt, is one of the most common patterns we see.
           </p>
           <p className="text-white/60 text-lg leading-relaxed">
             Body Recode™ starts by establishing what that capacity actually is, before any loading decisions are made.
@@ -82,14 +82,14 @@ export default function OnlineStrengthCoachingPage() {
             Your program, your data,<br />all in one place.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed max-w-2xl mb-12">
-            Every client gets a dedicated portal from day one. Your training program, nutrition guidelines, synthesis documents, weekly check-ins, and progress data — all updated continuously as you move through coaching.
+            Every client gets a dedicated portal from day one. Your training program, nutrition guidelines, synthesis documents, weekly check-ins, and progress data, all updated continuously as you move through coaching.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
             {[
               { title: 'Training Program', desc: 'Your full program, structured by phase, built around your current biological profile and training capacity.' },
               { title: 'Weekly Check-Ins', desc: 'Structured weekly reporting that keeps your coaching current and ensures your program is always calibrated to how your body is actually responding.' },
               { title: 'Foundation Synthesis', desc: 'The complete biological read of your system from intake. The document every loading and recovery decision is built around.' },
-              { title: 'Progress Tracking', desc: 'Your data tracked over time. Strength numbers, body responses, and coaching observations — all in one place.' },
+              { title: 'Progress Tracking', desc: 'Your data tracked over time. Strength numbers, body responses, and coaching observations, all in one place.' },
             ].map((item, i) => (
               <div key={i} className="bg-white/5 rounded-2xl p-6">
                 <h3 className="text-base font-bold text-white mb-3">{item.title}</h3>
