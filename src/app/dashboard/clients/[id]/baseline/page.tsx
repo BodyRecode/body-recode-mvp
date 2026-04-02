@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import CopyLinkButton from '@/components/copy-link-button'
+import CopyLinkButton from '../copy-link-button'
 
 export default async function BaselinePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
