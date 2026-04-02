@@ -42,6 +42,10 @@ interface Program {
   status: 'draft' | 'active'
 }
 
+function clean(s: string): string {
+  return s.replace(/ — /g, ' ').replace(/—/g, ' ')
+}
+
 function parseLines(field: string | string[] | null, fallbackSplit?: RegExp): string[] {
   if (!field) return []
   if (Array.isArray(field)) return field.map(s => s.trim()).filter(Boolean)
@@ -115,8 +119,8 @@ function ProgramBody({ program }: { program: Program }) {
               const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
               return (
                 <div key={i} className="border-l-2 border-stone-700 pl-3">
-                  {label && <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-wider mb-1">{label}</p>}
-                  <p className="text-sm text-stone-200 leading-relaxed">{content}</p>
+                  {label && <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-wider mb-1">{clean(label)}</p>}
+                  <p className="text-sm text-stone-200 leading-relaxed">{clean(content)}</p>
                 </div>
               )
             })}
@@ -139,8 +143,8 @@ function ProgramBody({ program }: { program: Program }) {
               const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
               return (
                 <div key={i} className="border-l-2 border-stone-700 pl-3">
-                  {label && <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-wider mb-1">{label}</p>}
-                  <p className="text-sm text-stone-200 leading-relaxed">{content}</p>
+                  {label && <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-wider mb-1">{clean(label)}</p>}
+                  <p className="text-sm text-stone-200 leading-relaxed">{clean(content)}</p>
                 </div>
               )
             })}
@@ -155,7 +159,7 @@ function ProgramBody({ program }: { program: Program }) {
           {program.sessions.map((session, sIdx) => (
             <div key={sIdx} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
               <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between">
-                <h3 className="font-semibold text-stone-100 text-sm">{session.day_label}</h3>
+                <h3 className="font-semibold text-stone-100 text-sm">{clean(session.day_label)}</h3>
                 <span className="text-[10px] text-stone-600 uppercase tracking-wide">{session.skeleton}</span>
               </div>
               <div className="divide-y divide-stone-800/60">
@@ -190,7 +194,7 @@ function ProgramBody({ program }: { program: Program }) {
                             </span>
                             <span className="text-stone-600 whitespace-nowrap text-xs w-16 text-right">{ex.rest}</span>
                           </div>
-                          {ex.notes && <p className="text-xs text-stone-600 italic mt-0.5">{ex.notes}</p>}
+                          {ex.notes && <p className="text-xs text-stone-600 italic mt-0.5">{clean(ex.notes)}</p>}
                         </div>
                       ))}
                     </div>

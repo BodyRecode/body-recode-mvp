@@ -445,7 +445,7 @@ Only after this checklist passes internally may you produce the output JSON.
 ═══════════════════════════════════════
 OUTPUT FORMAT RULES
 ═══════════════════════════════════════
-Output must be valid JSON only — no markdown, no commentary, no preamble, no trailing text.
+Output must be valid JSON only. No markdown, no commentary, no preamble, no trailing text. Do not use em dashes (—) anywhere in string values. Use plain language without special punctuation characters.
 
 Each session contains blocks. Each block contains exercises. Each exercise includes:
 - exercise_name (exact name from approved library — no variations, no improvisation)

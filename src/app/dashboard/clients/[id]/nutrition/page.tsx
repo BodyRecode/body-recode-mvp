@@ -78,6 +78,10 @@ const directionColour: Record<string, string> = {
   rebuild: 'text-red-400 bg-red-400/10 border-red-400/30',
 }
 
+function clean(s: string): string {
+  return s.replace(/ — /g, ' ').replace(/—/g, ' ')
+}
+
 function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
   return (
     <div className="space-y-4">
@@ -121,8 +125,8 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Current Focus</p>
           </div>
           <div className="px-5 py-4 space-y-3">
-            <p className="text-sm text-white font-medium">{plan.entry_state_summary.current_focus}</p>
-            <p className="text-sm text-stone-300 leading-relaxed">{plan.entry_state_summary.what_this_means}</p>
+            <p className="text-sm text-white font-medium">{clean(plan.entry_state_summary.current_focus)}</p>
+            <p className="text-sm text-stone-300 leading-relaxed">{clean(plan.entry_state_summary.what_this_means)}</p>
             {plan.entry_state_summary.prioritise?.length > 0 && (
               <div>
                 <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-wider mb-1.5">Prioritise</p>
@@ -130,7 +134,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
                   {plan.entry_state_summary.prioritise.map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <span className="text-teal-400 mt-0.5">•</span>
-                      <p className="text-sm text-stone-300">{item}</p>
+                      <p className="text-sm text-stone-300">{clean(item)}</p>
                     </div>
                   ))}
                 </div>
@@ -143,7 +147,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
                   {plan.entry_state_summary.avoid.map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <span className="text-stone-600 mt-0.5">•</span>
-                      <p className="text-sm text-stone-400">{item}</p>
+                      <p className="text-sm text-stone-400">{clean(item)}</p>
                     </div>
                   ))}
                 </div>
@@ -161,7 +165,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Structure Logic</p>
           </div>
           <div className="px-5 py-4">
-            <p className="text-sm text-stone-200 leading-relaxed">{plan.weekly_structure_notes}</p>
+            <p className="text-sm text-stone-200 leading-relaxed">{clean(plan.weekly_structure_notes)}</p>
           </div>
         </div>
       )}
@@ -188,12 +192,12 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
                   {meal.foods.map((food, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <span className="text-stone-600 mt-0.5">•</span>
-                      <p className="text-sm text-stone-300">{food}</p>
+                      <p className="text-sm text-stone-300">{clean(food)}</p>
                     </div>
                   ))}
                 </div>
                 {meal.notes && (
-                  <p className="text-xs text-stone-600 italic mt-2">{meal.notes}</p>
+                  <p className="text-xs text-stone-600 italic mt-2">{clean(meal.notes)}</p>
                 )}
               </div>
             </div>
@@ -216,7 +220,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
               )}
             </div>
             {plan.training_day_adjustments.timing_note && (
-              <p className="text-sm text-stone-300">{plan.training_day_adjustments.timing_note}</p>
+              <p className="text-sm text-stone-300">{clean(plan.training_day_adjustments.timing_note)}</p>
             )}
             {plan.training_day_adjustments.meals_affected?.length > 0 && (
               <p className="text-xs text-stone-500">Applies to: {plan.training_day_adjustments.meals_affected.join(', ')}</p>
@@ -236,7 +240,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
             {plan.execution_rules.map((rule, i) => (
               <div key={i} className="flex items-start gap-2">
                 <span className="text-teal-400 mt-0.5 shrink-0">•</span>
-                <p className="text-sm text-stone-300">{rule}</p>
+                <p className="text-sm text-stone-300">{clean(rule)}</p>
               </div>
             ))}
           </div>
@@ -251,7 +255,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
             {plan.what_not_to_change.map((item, i) => (
               <div key={i} className="flex items-start gap-2">
                 <span className="text-stone-600 mt-0.5 shrink-0">—</span>
-                <p className="text-xs text-stone-400">{item}</p>
+                <p className="text-xs text-stone-400">{clean(item)}</p>
               </div>
             ))}
           </div>
@@ -266,7 +270,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Progression Notes</p>
           </div>
           <div className="px-5 py-4">
-            <p className="text-sm text-stone-200 leading-relaxed">{plan.progression_notes}</p>
+            <p className="text-sm text-stone-200 leading-relaxed">{clean(plan.progression_notes)}</p>
           </div>
         </div>
       )}
@@ -282,7 +286,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
                   <p className="text-[10px] font-bold text-stone-600 uppercase tracking-wider mb-2 capitalize">{cat}</p>
                   <div className="space-y-1">
                     {plan.substitution_options![cat].map((item, i) => (
-                      <p key={i} className="text-xs text-stone-400">• {item}</p>
+                      <p key={i} className="text-xs text-stone-400">• {clean(item)}</p>
                     ))}
                   </div>
                 </div>

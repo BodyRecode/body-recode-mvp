@@ -188,7 +188,7 @@ Animal-based foods form the foundation. Plant foods are strategic additions.
 ═══════════════════════════════════════
 OUTPUT FORMAT — REQUIRED JSON STRUCTURE
 ═══════════════════════════════════════
-Return ONLY valid JSON. No markdown, no explanation outside the JSON object.
+Return ONLY valid JSON. No markdown, no explanation outside the JSON object. Do not use em dashes (—) anywhere in string values. Use plain language without special punctuation characters.
 
 {
   "plan_name": "string",
