@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import DraftActions from './draft-actions'
+import ProgramWeeklyReview from './weekly-review'
 
 interface Exercise {
   exercise_name: string
@@ -40,6 +41,8 @@ interface Program {
   generated_at: string
   is_active: boolean
   status: 'draft' | 'active'
+  current_direction: string | null
+  last_review_at: string | null
 }
 
 function clean(s: string): string {
@@ -275,6 +278,15 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             </div>
           )}
           <ProgramBody program={activeProgram} />
+
+          {/* Weekly Review */}
+          <div className="mt-4">
+            <ProgramWeeklyReview
+              programId={activeProgram.id}
+              currentDirection={activeProgram.current_direction}
+              lastReviewAt={activeProgram.last_review_at}
+            />
+          </div>
 
           {/* Archived Programs */}
           {archivedPrograms.length > 0 && (
