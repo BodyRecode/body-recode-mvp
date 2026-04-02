@@ -669,13 +669,8 @@ export default function HelpPage() {
 
             <Note>Programs follow doctrine exactly — one PTS phase only, no cross-phase blending, exercise selection from the approved library only, skeleton structure fixed, fatigue adjustments on execution variables only.</Note>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 5 — Weekly Review</p>
-            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
-              <li>Below the active program, use <strong>Record Review</strong> to log the weekly coaching review. Select performance signal, signal strength, days under observation, direction, and any adjustment applied.</li>
-              <li><strong>Direction options:</strong> Progress, Hold, Deload, Rebuild.</li>
-              <li><strong>New Block Required</strong> — if ticked during a review, the system automatically marks the current macro arc block as complete and advances the next planned block to In Progress.</li>
-              <li>Doctrine gates are enforced: structural or phase adjustment requires confirmed session adherence; minimum observation days apply per adjustment level.</li>
-            </ul>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 5 — Weekly Review (Client Portal)</p>
+            <p>The weekly training review is submitted by the client through their portal. The client reports whether they completed their sessions, how training felt (stronger / struggling / no change / recovering poorly / ticking along), and how things are going overall. As the coach, you see submitted reviews as a read-only feed on the Training Program page — direction, signal, adherence status, and any notes the client added. No form to fill in on the coach side.</p>
 
             <Training title="How to read the prescription suggestion">
               <p>The suggestion is not a recommendation to accept blindly. It is the system&apos;s read of the client&apos;s current state based on available data. Read each reasoning note — if your coaching judgement disagrees with the reasoning, edit the field. The system explains its logic so you can interrogate it, not so you can skip the thinking.</p>
