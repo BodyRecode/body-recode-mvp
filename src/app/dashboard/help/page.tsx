@@ -168,6 +168,19 @@ export default function HelpPage() {
                   <ChecklistItem text="Confirm equipment access, then click Approve & Generate Program (takes 30–60 seconds)" />
                   <ChecklistItem text="Review the full draft on the Training Program page — check sessions, blocks, exercises, and progression strategy" />
                   <ChecklistItem text="Click Approve Program to promote the draft to active" />
+                  <ChecklistItem text="Each week, the client submits their training review via the portal — you see the results as a read-only feed on the Training Program page (direction, signal, adherence, notes). No data entry required on your side." />
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 7 — Nutrition Plan</p>
+                <div className="space-y-2">
+                  <ChecklistItem text="Click Generate Plan in the Nutrition Plan section on the client profile" />
+                  <ChecklistItem text="Review the Prescription Suggestion — entry state, protein anchor, carb demand level, and reasoning. Edit any fields based on your assessment." />
+                  <ChecklistItem text="Click Approve & Generate Plan (or Fill in manually instead if preferred)" />
+                  <ChecklistItem text="Review the full draft on the Nutrition Plan page — meal structure, macros, training day adjustments, execution rules, and progression notes" />
+                  <ChecklistItem text="Click Approve Plan to promote the draft to active" />
+                  <ChecklistItem text="Each week, the client submits their nutrition review via the portal — you see the results as a read-only feed on the Nutrition Plan page. No form to fill in on your side." />
                 </div>
               </div>
 
@@ -355,7 +368,7 @@ export default function HelpPage() {
           <Section id="client-portal" title="8. Client Portal" colour="teal">
             <p>Every client has a personal portal at <strong>/portal/[token]</strong>. This is their single entry point for all onboarding steps and weekly check-ins. The portal link is permanent and token-based — there is no login required.</p>
             <p>Send the portal link from the client profile using <strong>Send to Client</strong> (emails the client directly) or <strong>Copy Portal Link</strong> (copies to clipboard for manual sending).</p>
-            <p>The portal shows the client exactly where they are in the process — completed steps are ticked, locked steps are greyed out. Once onboarding is complete, the portal transitions to show the weekly check-in task.</p>
+            <p>The portal shows the client exactly where they are in the process — completed steps are ticked, locked steps are greyed out. Once onboarding is complete, the portal transitions to show the weekly check-in task. If the client has an active training program, a <strong>Weekly training check-in</strong> card also appears. If they have an active nutrition plan, a <strong>Weekly nutrition check-in</strong> card appears. These are how clients submit their weekly reviews — everything through the same portal URL.</p>
             <p>Every client-facing page (portal, intake, baseline) shows a sticky header with the Body Recode logo and a fixed footer with a WhatsApp link to message you directly.</p>
             <Training title="Why one portal instead of multiple links">
               <p>Previous builds sent separate links for intake, baseline, and check-ins. Each link was another thing to track and another point of failure. A single portal link eliminates that. The client bookmarks it once and uses it throughout the entire coaching relationship — onboarding, check-ins, resources. Everything is in one place, in the right order, with the right steps unlocked at the right time.</p>
