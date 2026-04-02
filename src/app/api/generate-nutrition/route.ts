@@ -176,7 +176,7 @@ export async function POST(request: NextRequest) {
 
   if (saveError) {
     console.error('Save error:', saveError)
-    return NextResponse.json({ error: 'Failed to save nutrition plan' }, { status: 500 })
+    return NextResponse.json({ error: `DB error: ${saveError.message} (code: ${saveError.code})` }, { status: 500 })
   }
 
   return NextResponse.json({ plan_id: savedPlan.id, client_id })
