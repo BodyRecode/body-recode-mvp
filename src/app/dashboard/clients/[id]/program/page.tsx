@@ -47,6 +47,19 @@ interface Program {
   prescription_rationale: string | null
 }
 
+function parseText(text: string): { intro: string | null; points: string[] } {
+  if (/\(\d+\)/.test(text)) {
+    const firstIdx = text.search(/\(\d+\)/)
+    const intro = firstIdx > 0 ? text.slice(0, firstIdx).trim() : null
+    const rest = firstIdx > 0 ? text.slice(firstIdx) : text
+    const points = rest.split(/\s*\(\d+\)\s*/).map((s: string) => s.trim()).filter(Boolean)
+    return { intro, points }
+  }
+  const sentences = text.replace(/([.!?])\s+(?=[A-Z—])/g, '$1|||').split('|||').map((s: string) => s.trim()).filter((s: string) => s.length > 10)
+  if (sentences.length >= 3) return { intro: null, points: sentences }
+  return { intro: null, points: [text] }
+}
+
 function programNavSections(program: Program) {
   return [
     { id: 'identity', title: 'Identity' },
@@ -120,12 +133,28 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
       </div>
 
       {/* Prescription Rationale */}
-      {program.prescription_rationale && (
-        <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-teal-950/30 border border-teal-800/40 rounded-xl px-5 py-4">
-          <p className="text-[10px] font-bold text-teal-400 uppercase tracking-widest mb-2">Prescription Rationale</p>
-          <p className="text-sm text-stone-300 leading-relaxed">{clean(program.prescription_rationale)}</p>
-        </div>
-      )}
+      {program.prescription_rationale && (() => {
+        const { intro, points } = parseText(clean(program.prescription_rationale))
+        return (
+          <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-teal-950/30 border border-teal-800/40 rounded-xl px-5 py-4">
+            <p className="text-[10px] font-bold text-teal-400 uppercase tracking-widest mb-3">Prescription Rationale</p>
+            <div className="space-y-2">
+              {intro && <p className="text-sm text-stone-200 leading-relaxed">{intro}</p>}
+              {points.length > 1 ? (
+                <div className="space-y-2">
+                  {points.map((point, i) => (
+                    <div key={i} className="flex items-start gap-2.5 border-l-2 border-teal-700/30 pl-3">
+                      <p className="text-sm text-stone-300 leading-relaxed">{point}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-stone-300 leading-relaxed">{points[0]}</p>
+              )}
+            </div>
+          </div>
+        )
+      })()}
 
       {/* Weekly Structure */}
       {program.weekly_pattern_summary && (

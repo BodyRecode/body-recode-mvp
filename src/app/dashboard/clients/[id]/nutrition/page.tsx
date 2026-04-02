@@ -60,6 +60,19 @@ interface NutritionPlan {
   last_review_at: string | null
 }
 
+function parseText(text: string): { intro: string | null; points: string[] } {
+  if (/\(\d+\)/.test(text)) {
+    const firstIdx = text.search(/\(\d+\)/)
+    const intro = firstIdx > 0 ? text.slice(0, firstIdx).trim() : null
+    const rest = firstIdx > 0 ? text.slice(firstIdx) : text
+    const points = rest.split(/\s*\(\d+\)\s*/).map((s: string) => s.trim()).filter(Boolean)
+    return { intro, points }
+  }
+  const sentences = text.replace(/([.!?])\s+(?=[A-Z—])/g, '$1|||').split('|||').map((s: string) => s.trim()).filter((s: string) => s.length > 10)
+  if (sentences.length >= 3) return { intro: null, points: sentences }
+  return { intro: null, points: [text] }
+}
+
 function nutritionNavSections(plan: NutritionPlan) {
   return [
     { id: 'identity', title: 'Overview' },
@@ -172,17 +185,25 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
       )}
 
       {/* Weekly Structure Notes */}
-      {plan.weekly_structure_notes && (
-        <div id={`${idPrefix}structure`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
-            <span className="text-[11px] font-black text-[#10E1C2]">02</span>
-            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Structure Logic</p>
+      {plan.weekly_structure_notes && (() => {
+        const { intro, points } = parseText(clean(plan.weekly_structure_notes))
+        return (
+          <div id={`${idPrefix}structure`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
+              <span className="text-[11px] font-black text-[#10E1C2]">02</span>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Structure Logic</p>
+            </div>
+            <div className="px-5 py-4 space-y-2">
+              {intro && <p className="text-sm text-stone-200 leading-relaxed">{intro}</p>}
+              {points.length > 1 ? points.map((point, i) => (
+                <div key={i} className="flex items-start gap-2.5 border-l-2 border-stone-700 pl-3">
+                  <p className="text-sm text-stone-300 leading-relaxed">{point}</p>
+                </div>
+              )) : <p className="text-sm text-stone-200 leading-relaxed">{points[0]}</p>}
+            </div>
           </div>
-          <div className="px-5 py-4">
-            <p className="text-sm text-stone-200 leading-relaxed">{clean(plan.weekly_structure_notes)}</p>
-          </div>
-        </div>
-      )}
+        )
+      })()}
 
       {/* Meals */}
       <div id={`${idPrefix}meals`} className="scroll-mt-8">
@@ -277,17 +298,25 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
       )}
 
       {/* Progression Notes */}
-      {plan.progression_notes && (
-        <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
-            <span className="text-[11px] font-black text-[#10E1C2]">05</span>
-            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Progression Notes</p>
+      {plan.progression_notes && (() => {
+        const { intro, points } = parseText(clean(plan.progression_notes))
+        return (
+          <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
+              <span className="text-[11px] font-black text-[#10E1C2]">05</span>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Progression Notes</p>
+            </div>
+            <div className="px-5 py-4 space-y-2">
+              {intro && <p className="text-sm text-stone-200 leading-relaxed">{intro}</p>}
+              {points.length > 1 ? points.map((point, i) => (
+                <div key={i} className="flex items-start gap-2.5 border-l-2 border-stone-700 pl-3">
+                  <p className="text-sm text-stone-300 leading-relaxed">{point}</p>
+                </div>
+              )) : <p className="text-sm text-stone-200 leading-relaxed">{points[0]}</p>}
+            </div>
           </div>
-          <div className="px-5 py-4">
-            <p className="text-sm text-stone-200 leading-relaxed">{clean(plan.progression_notes)}</p>
-          </div>
-        </div>
-      )}
+        )
+      })()}
 
       {/* Substitutions */}
       {plan.substitution_options && (

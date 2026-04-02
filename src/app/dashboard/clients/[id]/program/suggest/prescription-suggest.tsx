@@ -80,6 +80,35 @@ const goalColour: Record<string, string> = {
 
 const inputCls = 'bg-stone-800 border border-stone-700 text-stone-100 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#10E1C2] focus:border-transparent'
 
+function parseReason(text: string): { intro: string | null; points: string[] } {
+  if (/\(\d+\)/.test(text)) {
+    const firstIdx = text.search(/\(\d+\)/)
+    const intro = firstIdx > 0 ? text.slice(0, firstIdx).trim() : null
+    const rest = firstIdx > 0 ? text.slice(firstIdx) : text
+    const points = rest.split(/\s*\(\d+\)\s*/).map(s => s.trim()).filter(Boolean)
+    return { intro, points }
+  }
+  const sentences = text.replace(/([.!?])\s+(?=[A-Z—])/g, '$1|||').split('|||').map(s => s.trim()).filter(s => s.length > 10)
+  if (sentences.length >= 3) return { intro: null, points: sentences }
+  return { intro: null, points: [text] }
+}
+
+function ReasonText({ text }: { text: string }) {
+  const { intro, points } = parseReason(text)
+  return (
+    <div className="space-y-1.5 mt-2">
+      {intro && <p className="text-xs text-stone-300 leading-relaxed">{intro}</p>}
+      {points.map((point, i) => (
+        <div key={i} className={`flex items-start gap-2 ${points.length > 1 ? '' : ''}`}>
+          {points.length > 1 && <span className="text-[#10E1C2] shrink-0 mt-0.5 text-[10px]">•</span>}
+          {points.length === 1 && <span className="text-[#10E1C2] text-xs mt-0.5 shrink-0">→</span>}
+          <p className="text-xs text-stone-400 leading-relaxed">{point}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function ReasonCard({
   label,
   value,
@@ -112,10 +141,7 @@ function ReasonCard({
           {value}
         </p>
       )}
-      <div className="flex items-start gap-2 mt-2">
-        <span className="text-[#10E1C2] text-xs mt-0.5 shrink-0">→</span>
-        <p className="text-xs text-stone-400 leading-relaxed">{reason}</p>
-      </div>
+      <ReasonText text={reason} />
     </div>
   )
 }
@@ -276,8 +302,26 @@ export default function PrescriptionSuggest({
           <div className="flex-1 min-w-0 space-y-4">
             {/* Overall rationale */}
             <div id="rationale" className="scroll-mt-8 bg-stone-900 border border-[#10E1C2]/20 rounded-xl p-5">
-              <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-2">Prescription Rationale</p>
-              <p className="text-sm text-stone-200 leading-relaxed">{suggestion.overall_rationale}</p>
+              <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-3">Prescription Rationale</p>
+              {(() => {
+                const { intro, points } = parseReason(suggestion.overall_rationale)
+                return (
+                  <div className="space-y-2">
+                    {intro && <p className="text-sm text-stone-200 leading-relaxed">{intro}</p>}
+                    {points.length > 1 ? (
+                      <div className="space-y-2 mt-1">
+                        {points.map((point, i) => (
+                          <div key={i} className="flex items-start gap-2.5 border-l-2 border-[#10E1C2]/20 pl-3">
+                            <p className="text-sm text-stone-300 leading-relaxed">{point}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-stone-200 leading-relaxed">{points[0]}</p>
+                    )}
+                  </div>
+                )
+              })()}
             </div>
 
             {/* Block Name */}
