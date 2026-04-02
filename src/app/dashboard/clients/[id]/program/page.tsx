@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import DraftActions from './draft-actions'
 import ProgramWeeklyReview from './weekly-review'
+import StickyScrollNav from '@/components/sticky-scroll-nav'
 
 interface Exercise {
   exercise_name: string
@@ -43,6 +44,17 @@ interface Program {
   status: 'draft' | 'active'
   current_direction: string | null
   last_review_at: string | null
+  prescription_rationale: string | null
+}
+
+function programNavSections(program: Program) {
+  return [
+    { id: 'identity', title: 'Identity' },
+    ...(program.prescription_rationale ? [{ id: 'rationale', title: 'Rationale' }] : []),
+    ...(program.weekly_pattern_summary ? [{ id: 'weekly-structure', title: 'Weekly Structure' }] : []),
+    ...(program.progression_notes ? [{ id: 'progression', title: 'Progression' }] : []),
+    { id: 'sessions', title: 'Sessions' },
+  ]
 }
 
 function clean(s: string): string {
@@ -76,11 +88,11 @@ const goalColour: Record<string, string> = {
   capacity: 'text-teal-400 bg-teal-400/10 border-teal-400/30',
 }
 
-function ProgramBody({ program }: { program: Program }) {
+function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: string }) {
   return (
     <div className="space-y-4">
       {/* Identity card */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-5">
         <div className="flex items-start justify-between mb-3">
           <div>
             <h2 className="text-lg font-semibold text-white">{program.block_name}</h2>
@@ -107,9 +119,17 @@ function ProgramBody({ program }: { program: Program }) {
         </p>
       </div>
 
+      {/* Prescription Rationale */}
+      {program.prescription_rationale && (
+        <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-teal-950/30 border border-teal-800/40 rounded-xl px-5 py-4">
+          <p className="text-[10px] font-bold text-teal-400 uppercase tracking-widest mb-2">Prescription Rationale</p>
+          <p className="text-sm text-stone-300 leading-relaxed">{clean(program.prescription_rationale)}</p>
+        </div>
+      )}
+
       {/* Weekly Structure */}
       {program.weekly_pattern_summary && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+        <div id={`${idPrefix}weekly-structure`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800 bg-stone-900/80">
             <span className="text-[11px] font-black text-[#10E1C2]">01</span>
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Weekly Structure</p>
@@ -133,7 +153,7 @@ function ProgramBody({ program }: { program: Program }) {
 
       {/* Progression Notes */}
       {program.progression_notes && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+        <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800 bg-stone-900/80">
             <span className="text-[11px] font-black text-[#10E1C2]">02</span>
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Progression Strategy</p>
@@ -156,7 +176,7 @@ function ProgramBody({ program }: { program: Program }) {
       )}
 
       {/* Sessions */}
-      <div className="mt-2">
+      <div id={`${idPrefix}sessions`} className="scroll-mt-8 mt-2">
         <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 px-1">Sessions</p>
         <div className="space-y-3">
           {program.sessions.map((session, sIdx) => (
@@ -235,7 +255,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
   const archivedPrograms = programs?.filter(p => !p.is_active && p.status !== 'draft') as Program[]
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-8 flex items-start justify-between">
         <div>
@@ -263,7 +283,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             </div>
             <DraftActions programId={draftProgram.id} clientId={id} />
           </div>
-          <ProgramBody program={draftProgram} />
+          <ProgramBody program={draftProgram} idPrefix="draft-" />
         </div>
       )}
 
@@ -277,7 +297,13 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               <div className="flex-1 h-px bg-stone-800" />
             </div>
           )}
-          <ProgramBody program={activeProgram} />
+
+          <div className="flex gap-8">
+            <StickyScrollNav sections={programNavSections(activeProgram)} />
+            <div className="flex-1 min-w-0">
+              <ProgramBody program={activeProgram} />
+            </div>
+          </div>
 
           {/* Weekly Review */}
           <div className="mt-4">

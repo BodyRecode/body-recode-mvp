@@ -2,6 +2,21 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import StickyScrollNav from '@/components/sticky-scroll-nav'
+
+const NAV_SECTIONS = [
+  { id: 'rationale', title: 'Rationale' },
+  { id: 'plan-name', title: 'Plan Name' },
+  { id: 'entry-state', title: 'Entry State' },
+  { id: 'body-state', title: 'Body State' },
+  { id: 'pts-phase', title: 'PTS Phase' },
+  { id: 'protein', title: 'Protein' },
+  { id: 'carbs', title: 'Carbs' },
+  { id: 'meals', title: 'Meals' },
+  { id: 'training-days', title: 'Training Days' },
+  { id: 'signals', title: 'Signals' },
+  { id: 'exclusions', title: 'Exclusions' },
+]
 
 interface Suggestion {
   plan_name: string
@@ -219,15 +234,18 @@ export default function NutritionPrescriptionSuggest({
   const toggle = (field: string) => setEditingField(editingField === field ? null : field)
 
   return (
-    <div className="space-y-4">
+    <div className="flex gap-8 max-w-5xl">
+      <StickyScrollNav sections={NAV_SECTIONS} />
+      <div className="flex-1 min-w-0 space-y-4">
 
       {/* Overall rationale */}
-      <div className="bg-teal-950/30 border border-teal-800/40 rounded-xl px-5 py-4">
+      <div id="rationale" className="scroll-mt-8 bg-teal-950/30 border border-teal-800/40 rounded-xl px-5 py-4">
         <p className="text-[10px] font-bold text-teal-400 uppercase tracking-widest mb-2">Overall Rationale</p>
         <p className="text-sm text-stone-300 leading-relaxed">{suggestion.overall_rationale}</p>
       </div>
 
       {/* Plan Name */}
+      <div id="plan-name" className="scroll-mt-8">
       <ReasonCard
         label="Plan Name"
         value={planName}
@@ -241,8 +259,10 @@ export default function NutritionPrescriptionSuggest({
           className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white mb-3"
         />
       </ReasonCard>
+      </div>
 
       {/* Entry State */}
+      <div id="entry-state" className="scroll-mt-8">
       <ReasonCard
         label="Entry State"
         value={entryState}
@@ -267,8 +287,10 @@ export default function NutritionPrescriptionSuggest({
           ))}
         </div>
       </ReasonCard>
+      </div>
 
       {/* Body State */}
+      <div id="body-state" className="scroll-mt-8">
       <ReasonCard
         label="Body State"
         value={bodyState}
@@ -292,8 +314,10 @@ export default function NutritionPrescriptionSuggest({
           ))}
         </div>
       </ReasonCard>
+      </div>
 
       {/* PTS Phase */}
+      <div id="pts-phase" className="scroll-mt-8">
       <ReasonCard
         label="PTS Phase (Training Context)"
         value={ptsPhase}
@@ -307,8 +331,10 @@ export default function NutritionPrescriptionSuggest({
           className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white mb-3"
         />
       </ReasonCard>
+      </div>
 
       {/* Protein Anchor */}
+      <div id="protein" className="scroll-mt-8">
       <ReasonCard
         label="Protein Anchor (g/day)"
         value={`${proteinAnchorG}g`}
@@ -329,8 +355,10 @@ export default function NutritionPrescriptionSuggest({
           <span className="text-stone-500 text-sm">grams/day</span>
         </div>
       </ReasonCard>
+      </div>
 
       {/* Carb Demand Level */}
+      <div id="carbs" className="scroll-mt-8">
       <ReasonCard
         label="Carbohydrate Demand Level"
         value={carbDemandLevel}
@@ -354,8 +382,10 @@ export default function NutritionPrescriptionSuggest({
           ))}
         </div>
       </ReasonCard>
+      </div>
 
       {/* Meal Frequency */}
+      <div id="meals" className="scroll-mt-8">
       <ReasonCard
         label="Meal Frequency"
         value={`${mealFrequency} meals/day`}
@@ -379,8 +409,10 @@ export default function NutritionPrescriptionSuggest({
           ))}
         </div>
       </ReasonCard>
+      </div>
 
       {/* Training Days */}
+      <div id="training-days" className="scroll-mt-8">
       <ReasonCard
         label="Training Days Per Week"
         value={`${trainingDaysPerWeek}x/week`}
@@ -404,9 +436,10 @@ export default function NutritionPrescriptionSuggest({
           ))}
         </div>
       </ReasonCard>
+      </div>
 
       {/* Constraint / Recovery / Uncertainty */}
-      <div className="grid grid-cols-3 gap-3">
+      <div id="signals" className="scroll-mt-8 grid grid-cols-3 gap-3">
         {[
           { label: 'Constraint Level', value: constraintLevel, field: 'constraint', options: CONSTRAINT_OPTIONS, setter: setConstraintLevel, reason: suggestion.constraint_level_reason },
           { label: 'Recovery Status', value: recoveryStatus, field: 'recovery', options: RECOVERY_OPTIONS, setter: setRecoveryStatus, reason: suggestion.recovery_status_reason },
@@ -435,7 +468,7 @@ export default function NutritionPrescriptionSuggest({
       </div>
 
       {/* Food Exclusions */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+      <div id="exclusions" className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-5">
         <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">Food Exclusions</p>
         <input
           value={foodExclusionsText}
@@ -471,6 +504,7 @@ export default function NutritionPrescriptionSuggest({
           <p className="text-red-400 text-sm">{error}</p>
         </div>
       )}
+      </div>
     </div>
   )
 }

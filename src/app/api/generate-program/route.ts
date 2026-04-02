@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
     cffs_id,
     intake_id,
     plan_block_id,
+    prescription_rationale,
     training_frequency,
     training_goal,
     training_age,
@@ -175,7 +176,7 @@ export async function POST(request: NextRequest) {
   try {
     message = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 8000,
+      max_tokens: 6000,
       system: buildProgramSystemPrompt(),
       messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext) }],
     })
@@ -228,6 +229,7 @@ export async function POST(request: NextRequest) {
       sessions: programData.sessions || [],
       weekly_pattern_summary: programData.weekly_pattern_summary || null,
       progression_notes: programData.progression_notes || null,
+      prescription_rationale: prescription_rationale || null,
       status: 'draft',
       is_active: false,
     })

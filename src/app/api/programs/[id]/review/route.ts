@@ -89,6 +89,39 @@ export async function POST(
 
   if (updateError) return NextResponse.json({ error: updateError.message }, { status: 500 })
 
+  // If new block required → advance macro arc: complete current block, activate next
+  if (new_block_required) {
+    const { data: currentBlock } = await admin
+      .from('plan_blocks')
+      .select('id, plan_id, position')
+      .eq('program_id', id)
+      .maybeSingle()
+
+    if (currentBlock) {
+      // Mark current block complete
+      await admin
+        .from('plan_blocks')
+        .update({ status: 'complete' })
+        .eq('id', currentBlock.id)
+
+      // Find next block in same plan by position
+      const { data: nextBlock } = await admin
+        .from('plan_blocks')
+        .select('id')
+        .eq('plan_id', currentBlock.plan_id)
+        .eq('position', currentBlock.position + 1)
+        .eq('status', 'planned')
+        .maybeSingle()
+
+      if (nextBlock) {
+        await admin
+          .from('plan_blocks')
+          .update({ status: 'in_progress' })
+          .eq('id', nextBlock.id)
+      }
+    }
+  }
+
   return NextResponse.json({ ok: true, direction })
 }
 

@@ -3,6 +3,19 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import StickyScrollNav from '@/components/sticky-scroll-nav'
+
+const NAV_SECTIONS = [
+  { id: 'rationale', title: 'Rationale' },
+  { id: 'block-name', title: 'Block Name' },
+  { id: 'phase', title: 'Phase' },
+  { id: 'goal', title: 'Goal' },
+  { id: 'frequency', title: 'Frequency' },
+  { id: 'training-age', title: 'Training Age' },
+  { id: 'competency', title: 'Competency' },
+  { id: 'duration', title: 'Duration' },
+  { id: 'equipment', title: 'Equipment' },
+]
 
 interface Suggestion {
   block_name: string
@@ -188,6 +201,7 @@ export default function PrescriptionSuggest({
         body: JSON.stringify({
           client_id: clientId,
           plan_block_id: planBlockId,
+          prescription_rationale: suggestion?.overall_rationale ?? null,
           ...form,
         }),
       })
@@ -202,7 +216,7 @@ export default function PrescriptionSuggest({
   }
 
   return (
-    <div className="max-w-2xl mx-auto py-10 px-4">
+    <div className="max-w-5xl mx-auto py-10 px-4">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 text-stone-500 text-sm mb-3">
@@ -256,160 +270,143 @@ export default function PrescriptionSuggest({
       )}
 
       {suggestion && !loading && (
-        <div className="space-y-4">
-          {/* Overall rationale */}
-          <div className="bg-stone-900 border border-[#10E1C2]/20 rounded-xl p-5">
-            <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-2">Prescription Rationale</p>
-            <p className="text-sm text-stone-200 leading-relaxed">{suggestion.overall_rationale}</p>
+        <div className="flex gap-8">
+          <StickyScrollNav sections={NAV_SECTIONS} />
+
+          <div className="flex-1 min-w-0 space-y-4">
+            {/* Overall rationale */}
+            <div id="rationale" className="scroll-mt-8 bg-stone-900 border border-[#10E1C2]/20 rounded-xl p-5">
+              <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-2">Prescription Rationale</p>
+              <p className="text-sm text-stone-200 leading-relaxed">{suggestion.overall_rationale}</p>
+            </div>
+
+            {/* Block Name */}
+            <div id="block-name" className="scroll-mt-8">
+              <ReasonCard label="Block Name" value={form.block_name} reason={suggestion.block_name_reason}>
+                <select value={form.block_name} onChange={e => setForm(p => ({ ...p, block_name: e.target.value }))} className={`w-full ${inputCls}`}>
+                  <option value="" disabled>Select…</option>
+                  {BLOCK_NAME_OPTIONS.map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </ReasonCard>
+            </div>
+
+            {/* Progression Phase */}
+            <div id="phase" className="scroll-mt-8">
+              <ReasonCard label="Progression Phase" value={form.progression_phase} reason={suggestion.progression_phase_reason} colour={phaseColour[form.progression_phase]}>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {(['accumulation', 'intensification', 'realization', 'restoration'] as const).map(p => (
+                    <button key={p} type="button" onClick={() => setForm(prev => ({ ...prev, progression_phase: p }))}
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.progression_phase === p ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              </ReasonCard>
+            </div>
+
+            {/* Training Goal */}
+            <div id="goal" className="scroll-mt-8">
+              <ReasonCard label="Training Goal" value={form.training_goal} reason={suggestion.training_goal_reason} colour={goalColour[form.training_goal]}>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {(['strength', 'hypertrophy', 'capacity'] as const).map(g => (
+                    <button key={g} type="button" onClick={() => setForm(prev => ({ ...prev, training_goal: g }))}
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_goal === g ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
+                      {g}
+                    </button>
+                  ))}
+                </div>
+              </ReasonCard>
+            </div>
+
+            {/* Training Frequency */}
+            <div id="frequency" className="scroll-mt-8">
+              <ReasonCard label={`Training Frequency — ${form.training_frequency} sessions/week`} value={`${form.training_frequency}x / week`} reason={suggestion.training_frequency_reason}>
+                <input type="range" min={2} max={6} value={form.training_frequency}
+                  onChange={e => setForm(p => ({ ...p, training_frequency: parseInt(e.target.value) }))}
+                  className="w-full accent-[#10E1C2]" />
+                <div className="flex justify-between text-xs text-stone-600 mt-1">
+                  <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+                </div>
+              </ReasonCard>
+            </div>
+
+            {/* Training Age */}
+            <div id="training-age" className="scroll-mt-8">
+              <ReasonCard label="Training Age" value={form.training_age} reason={suggestion.training_age_reason}>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {(['beginner', 'intermediate', 'advanced'] as const).map(a => (
+                    <button key={a} type="button" onClick={() => setForm(prev => ({ ...prev, training_age: a }))}
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_age === a ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
+                      {a}
+                    </button>
+                  ))}
+                </div>
+              </ReasonCard>
+            </div>
+
+            {/* Movement Competency */}
+            <div id="competency" className="scroll-mt-8">
+              <ReasonCard label="Movement Competency" value={form.movement_competency} reason={suggestion.movement_competency_reason}>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {(['limited', 'developing', 'proficient'] as const).map(c => (
+                    <button key={c} type="button" onClick={() => setForm(prev => ({ ...prev, movement_competency: c }))}
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.movement_competency === c ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              </ReasonCard>
+            </div>
+
+            {/* Week Duration */}
+            <div id="duration" className="scroll-mt-8">
+              <ReasonCard label="Block Duration" value={`${form.week_duration} weeks`} reason={suggestion.week_duration_reason}>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {([4, 6, 8] as const).map(w => (
+                    <button key={w} type="button" onClick={() => setForm(prev => ({ ...prev, week_duration: w }))}
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors ${form.week_duration === w ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
+                      {w} weeks
+                    </button>
+                  ))}
+                </div>
+              </ReasonCard>
+            </div>
+
+            {/* Equipment Access */}
+            <div id="equipment" className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-4">
+              <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">Equipment Access</p>
+              <div className="grid grid-cols-2 gap-2">
+                {EQUIPMENT_OPTIONS.map(opt => (
+                  <label key={opt.value} className="flex items-center gap-2.5 cursor-pointer">
+                    <input type="checkbox" checked={form.equipment_access.includes(opt.value)} onChange={() => toggleEquipment(opt.value)}
+                      className="rounded border-stone-600 bg-stone-800 accent-[#10E1C2]" />
+                    <span className={`text-sm transition-colors ${form.equipment_access.includes(opt.value) ? 'text-stone-200' : 'text-stone-500'}`}>
+                      {opt.label}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {error && (
+              <p className="text-sm text-red-400 bg-red-950/50 border border-red-800 rounded-md px-3 py-2">{error}</p>
+            )}
+
+            <button
+              onClick={handleGenerate}
+              disabled={generating}
+              className="w-full py-3 px-4 bg-[#10E1C2] text-stone-900 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              {generating ? 'Generating program… this may take 30–60s' : 'Approve & Generate Program'}
+            </button>
+
+            <p className="text-xs text-stone-600 text-center">
+              Or{' '}
+              <Link href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`} className="hover:text-stone-400 underline">
+                fill in manually
+              </Link>
+            </p>
           </div>
-
-          {/* Block Name */}
-          <ReasonCard
-            label="Block Name"
-            value={form.block_name}
-            reason={suggestion.block_name_reason}
-          >
-            <select value={form.block_name} onChange={e => setForm(p => ({ ...p, block_name: e.target.value }))} className={`w-full ${inputCls}`}>
-              <option value="" disabled>Select…</option>
-              {BLOCK_NAME_OPTIONS.map(n => <option key={n} value={n}>{n}</option>)}
-            </select>
-          </ReasonCard>
-
-          {/* Progression Phase */}
-          <ReasonCard
-            label="Progression Phase"
-            value={form.progression_phase}
-            reason={suggestion.progression_phase_reason}
-            colour={phaseColour[form.progression_phase]}
-          >
-            <div className="grid grid-cols-2 gap-1.5">
-              {(['accumulation', 'intensification', 'realization', 'restoration'] as const).map(p => (
-                <button key={p} type="button" onClick={() => setForm(prev => ({ ...prev, progression_phase: p }))}
-                  className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.progression_phase === p ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
-                  {p}
-                </button>
-              ))}
-            </div>
-          </ReasonCard>
-
-          {/* Training Goal */}
-          <ReasonCard
-            label="Training Goal"
-            value={form.training_goal}
-            reason={suggestion.training_goal_reason}
-            colour={goalColour[form.training_goal]}
-          >
-            <div className="grid grid-cols-3 gap-1.5">
-              {(['strength', 'hypertrophy', 'capacity'] as const).map(g => (
-                <button key={g} type="button" onClick={() => setForm(prev => ({ ...prev, training_goal: g }))}
-                  className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_goal === g ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
-                  {g}
-                </button>
-              ))}
-            </div>
-          </ReasonCard>
-
-          {/* Training Frequency */}
-          <ReasonCard
-            label={`Training Frequency — ${form.training_frequency} sessions/week`}
-            value={`${form.training_frequency}x / week`}
-            reason={suggestion.training_frequency_reason}
-          >
-            <input type="range" min={2} max={6} value={form.training_frequency}
-              onChange={e => setForm(p => ({ ...p, training_frequency: parseInt(e.target.value) }))}
-              className="w-full accent-[#10E1C2]" />
-            <div className="flex justify-between text-xs text-stone-600 mt-1">
-              <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
-            </div>
-          </ReasonCard>
-
-          {/* Training Age */}
-          <ReasonCard
-            label="Training Age"
-            value={form.training_age}
-            reason={suggestion.training_age_reason}
-          >
-            <div className="grid grid-cols-3 gap-1.5">
-              {(['beginner', 'intermediate', 'advanced'] as const).map(a => (
-                <button key={a} type="button" onClick={() => setForm(prev => ({ ...prev, training_age: a }))}
-                  className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_age === a ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
-                  {a}
-                </button>
-              ))}
-            </div>
-          </ReasonCard>
-
-          {/* Movement Competency */}
-          <ReasonCard
-            label="Movement Competency"
-            value={form.movement_competency}
-            reason={suggestion.movement_competency_reason}
-          >
-            <div className="grid grid-cols-3 gap-1.5">
-              {(['limited', 'developing', 'proficient'] as const).map(c => (
-                <button key={c} type="button" onClick={() => setForm(prev => ({ ...prev, movement_competency: c }))}
-                  className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.movement_competency === c ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
-                  {c}
-                </button>
-              ))}
-            </div>
-          </ReasonCard>
-
-          {/* Week Duration */}
-          <ReasonCard
-            label="Block Duration"
-            value={`${form.week_duration} weeks`}
-            reason={suggestion.week_duration_reason}
-          >
-            <div className="grid grid-cols-3 gap-1.5">
-              {([4, 6, 8] as const).map(w => (
-                <button key={w} type="button" onClick={() => setForm(prev => ({ ...prev, week_duration: w }))}
-                  className={`py-2 rounded-md text-xs font-medium border transition-colors ${form.week_duration === w ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
-                  {w} weeks
-                </button>
-              ))}
-            </div>
-          </ReasonCard>
-
-          {/* Equipment Access — always manual */}
-          <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
-            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">Equipment Access</p>
-            <div className="grid grid-cols-2 gap-2">
-              {EQUIPMENT_OPTIONS.map(opt => (
-                <label key={opt.value} className="flex items-center gap-2.5 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={form.equipment_access.includes(opt.value)}
-                    onChange={() => toggleEquipment(opt.value)}
-                    className="rounded border-stone-600 bg-stone-800 accent-[#10E1C2]"
-                  />
-                  <span className={`text-sm transition-colors ${form.equipment_access.includes(opt.value) ? 'text-stone-200' : 'text-stone-500'}`}>
-                    {opt.label}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {error && (
-            <p className="text-sm text-red-400 bg-red-950/50 border border-red-800 rounded-md px-3 py-2">{error}</p>
-          )}
-
-          {/* Approve */}
-          <button
-            onClick={handleGenerate}
-            disabled={generating}
-            className="w-full py-3 px-4 bg-[#10E1C2] text-stone-900 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          >
-            {generating ? 'Generating program… this may take 30–60s' : 'Approve & Generate Program'}
-          </button>
-
-          <p className="text-xs text-stone-600 text-center">
-            Or{' '}
-            <Link href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`} className="hover:text-stone-400 underline">
-              fill in manually
-            </Link>
-          </p>
         </div>
       )}
     </div>

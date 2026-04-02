@@ -491,9 +491,15 @@ function BlockFormFields({
         <div>
           <label className={labelCls}>Week Duration</label>
           <select value={form.week_duration} onChange={e => setForm(p => ({ ...p, week_duration: parseInt(e.target.value) }))} className={inputCls}>
+            <option value={2}>2 weeks</option>
+            <option value={3}>3 weeks</option>
             <option value={4}>4 weeks</option>
+            <option value={5}>5 weeks</option>
             <option value={6}>6 weeks</option>
+            <option value={7}>7 weeks</option>
             <option value={8}>8 weeks</option>
+            <option value={10}>10 weeks</option>
+            <option value={12}>12 weeks</option>
           </select>
         </div>
         <div>

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import NutritionDraftActions from './draft-actions'
 import NutritionWeeklyReview from './weekly-review'
+import StickyScrollNav from '@/components/sticky-scroll-nav'
 
 interface Meal {
   meal_number: number
@@ -59,6 +60,19 @@ interface NutritionPlan {
   last_review_at: string | null
 }
 
+function nutritionNavSections(plan: NutritionPlan) {
+  return [
+    { id: 'identity', title: 'Overview' },
+    ...(plan.entry_state_summary ? [{ id: 'current-focus', title: 'Current Focus' }] : []),
+    ...(plan.weekly_structure_notes ? [{ id: 'structure', title: 'Structure' }] : []),
+    { id: 'meals', title: 'Meals' },
+    ...(plan.training_day_adjustments ? [{ id: 'adjustments', title: 'Adjustments' }] : []),
+    ...(plan.execution_rules?.length ? [{ id: 'execution', title: 'Execution' }] : []),
+    ...(plan.progression_notes ? [{ id: 'progression', title: 'Progression' }] : []),
+    ...(plan.substitution_options ? [{ id: 'substitutions', title: 'Substitutions' }] : []),
+  ]
+}
+
 const entryStateColour: Record<string, string> = {
   stabilisation: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
   training_support: 'text-teal-400 bg-teal-400/10 border-teal-400/30',
@@ -82,12 +96,12 @@ function clean(s: string): string {
   return s.replace(/ — /g, ' ').replace(/—/g, ' ')
 }
 
-function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
+function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPrefix?: string }) {
   return (
     <div className="space-y-4">
 
       {/* Identity card */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-5">
         <div className="flex items-start justify-between mb-3">
           <div>
             <h2 className="text-lg font-semibold text-white">{plan.plan_name}</h2>
@@ -119,7 +133,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
 
       {/* Entry State Summary */}
       {plan.entry_state_summary && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+        <div id={`${idPrefix}current-focus`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
             <span className="text-[11px] font-black text-[#10E1C2]">01</span>
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Current Focus</p>
@@ -159,7 +173,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
 
       {/* Weekly Structure Notes */}
       {plan.weekly_structure_notes && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+        <div id={`${idPrefix}structure`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
             <span className="text-[11px] font-black text-[#10E1C2]">02</span>
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Structure Logic</p>
@@ -171,7 +185,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
       )}
 
       {/* Meals */}
-      <div>
+      <div id={`${idPrefix}meals`} className="scroll-mt-8">
         <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 px-1">Meal Structure</p>
         <div className="space-y-3">
           {plan.meals.map((meal) => (
@@ -207,7 +221,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
 
       {/* Training Day Adjustments */}
       {plan.training_day_adjustments && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+        <div id={`${idPrefix}adjustments`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
             <span className="text-[11px] font-black text-[#10E1C2]">03</span>
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Training Day Adjustments</p>
@@ -231,7 +245,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
 
       {/* Execution Rules */}
       {plan.execution_rules?.length > 0 && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+        <div id={`${idPrefix}execution`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
             <span className="text-[11px] font-black text-[#10E1C2]">04</span>
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Execution Rules</p>
@@ -264,7 +278,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
 
       {/* Progression Notes */}
       {plan.progression_notes && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+        <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
             <span className="text-[11px] font-black text-[#10E1C2]">05</span>
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Progression Notes</p>
@@ -277,7 +291,7 @@ function NutritionPlanBody({ plan }: { plan: NutritionPlan }) {
 
       {/* Substitutions */}
       {plan.substitution_options && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div id={`${idPrefix}substitutions`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-5">
           <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">Food Substitutions</p>
           <div className="grid grid-cols-3 gap-4">
             {(['protein', 'carbohydrate', 'fat'] as const).map(cat => (
@@ -322,7 +336,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
   const archivedPlans = plans?.filter(p => !p.is_active && p.status !== 'draft') as NutritionPlan[]
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-8 flex items-start justify-between">
         <div>
@@ -350,7 +364,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
             </span>
             <NutritionDraftActions planId={draftPlan.id} clientId={id} />
           </div>
-          <NutritionPlanBody plan={draftPlan} />
+          <NutritionPlanBody plan={draftPlan} idPrefix="draft-" />
         </div>
       )}
 
@@ -365,7 +379,12 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
             </div>
           )}
 
-          <NutritionPlanBody plan={activePlan} />
+          <div className="flex gap-8">
+            <StickyScrollNav sections={nutritionNavSections(activePlan)} />
+            <div className="flex-1 min-w-0">
+              <NutritionPlanBody plan={activePlan} />
+            </div>
+          </div>
 
           {/* Weekly Review */}
           <div className="mt-6">
