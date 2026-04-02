@@ -92,6 +92,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const archivedCffs = cffsRecords?.filter(c => c.is_archived) || []
   const latestInvitation = invitations?.[0] || null
   const latestIntakeId = intakes?.[0]?.id || null
+  const intakeDone = !!latestIntakeId || latestInvitation?.status === 'complete'
   const latestCfws = cfwsRecords?.[0] || null
   const checkinToken = client.checkin_token as string | undefined
 
@@ -288,7 +289,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {[
             { label: 'Agreement', done: !!client.agreement_accepted_at, href: client.agreement_accepted_at ? `/dashboard/clients/${id}/agreement` : null },
             { label: 'Health Declaration', done: !!client.health_declaration_submitted_at, href: client.health_declaration_submitted_at ? `/dashboard/clients/${id}/health-declaration` : null },
-            { label: 'Intake', done: !!latestIntakeId, href: latestIntakeId ? `/dashboard/clients/${id}/intake` : null },
+            { label: 'Intake', done: intakeDone, href: intakeDone ? `/dashboard/clients/${id}/intake` : null },
             { label: 'Baseline', done: !!baselines?.[0], href: baselines?.[0] ? `/dashboard/clients/${id}/baseline` : null },
           ].map(item => (
             <div key={item.label} className="flex items-center gap-2">
