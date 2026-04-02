@@ -10,8 +10,8 @@ export default function DnaHelix({ className = '', opacity = 1 }: DnaHelixProps)
     <Image
       src="/helix-icon.png"
       alt=""
-      width={240}
-      height={573}
+      width={320}
+      height={580}
       className={className}
       style={{ opacity }}
       aria-hidden="true"
