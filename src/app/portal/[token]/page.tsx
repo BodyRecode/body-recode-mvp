@@ -21,6 +21,13 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .eq('status', 'active')
     .maybeSingle()
 
+  const { data: activeProgram } = await admin
+    .from('programs')
+    .select('id, block_name, last_review_at')
+    .eq('client_id', client?.id ?? '')
+    .eq('is_active', true)
+    .maybeSingle()
+
   if (!client) return notFound()
 
   const firstName = client.name?.split(' ')[0] ?? 'there'
@@ -214,6 +221,30 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 <p className="text-xs text-stone-600">Opens {opensAt} (Brisbane time) every Friday.</p>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Training review */}
+        {allOnboardingDone && activeProgram && (
+          <div className="mb-10">
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Training</p>
+            <Link
+              href={`/portal/${token}/training`}
+              className="block rounded-2xl border border-stone-700 bg-stone-900 p-5 hover:border-teal-400/40 hover:bg-teal-400/5 transition-colors"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-white mb-1">Weekly training check-in</p>
+                  <p className="text-xs text-stone-400">
+                    {activeProgram.last_review_at
+                      ? `Last reviewed ${new Date(activeProgram.last_review_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}`
+                      : 'How did your sessions go this week?'
+                    }
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-teal-400 ml-4">Start →</span>
+              </div>
+            </Link>
           </div>
         )}
 
