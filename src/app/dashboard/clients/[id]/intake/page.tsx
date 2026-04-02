@@ -55,13 +55,38 @@ export default async function IntakeViewPage({ params }: { params: Promise<{ id:
 
   if (!client) return notFound()
 
-  const { data: intake } = await admin
+  // Try by client_id first, then fall back to looking up via invitation
+  let intake = null
+  const { data: byClient } = await admin
     .from('intakes')
     .select('*')
     .eq('client_id', id)
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle()
+
+  if (byClient) {
+    intake = byClient
+  } else {
+    // Fallback: find via invitation_id
+    const { data: invitation } = await admin
+      .from('intake_invitations')
+      .select('id')
+      .eq('client_id', id)
+      .eq('status', 'complete')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    if (invitation) {
+      const { data: byInvitation } = await admin
+        .from('intakes')
+        .select('*')
+        .eq('invitation_id', invitation.id)
+        .maybeSingle()
+      intake = byInvitation
+    }
+  }
 
   const submittedDate = intake?.created_at
     ? new Date(intake.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })
