@@ -140,7 +140,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="flex gap-8 max-w-5xl">
-      <ProfileSidebar />
+      <ProfileSidebar clientId={id} />
       <div className="flex-1 min-w-0">
       {/* Header */}
       <div id="overview" className="mb-8 flex items-start justify-between scroll-mt-8">
