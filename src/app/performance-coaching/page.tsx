@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
+import DnaHelix from '@/components/dna-helix'
 
 export const metadata: Metadata = {
   title: 'Performance Coaching | Body Recode™',
@@ -14,8 +15,9 @@ export default function PerformanceCoachingPage() {
       <MarketingNav />
 
       {/* Hero */}
-      <section className="bg-black pt-44 pb-32 px-5">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-black pt-44 pb-32 px-5 overflow-hidden relative">
+        <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs pointer-events-none select-none" opacity={0.06} />
+        <div className="max-w-4xl mx-auto relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">
             Environment 01, Health &amp; Fitness
           </p>

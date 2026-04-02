@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
+import DnaHelix from '@/components/dna-helix'
 
 export const metadata: Metadata = {
   title: 'Body Recode™ | Biological Interpretation System',
@@ -14,8 +15,10 @@ export default function HomePage() {
       <MarketingNav />
 
       {/* Hero */}
-      <section className="bg-black min-h-screen flex items-center pt-20">
-        <div className="max-w-4xl mx-auto px-5 py-32 text-center">
+      <section className="bg-black min-h-screen flex items-center pt-20 overflow-hidden relative">
+        <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs md:max-w-sm pointer-events-none select-none" opacity={0.06} />
+        <DnaHelix className="absolute left-0 bottom-0 h-3/4 w-auto max-w-[160px] pointer-events-none select-none" opacity={0.04} />
+        <div className="max-w-4xl mx-auto px-5 py-32 text-center relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-8">
             Body Recode™, Biological Interpretation System
           </p>
@@ -91,8 +94,9 @@ export default function HomePage() {
       </section>
 
       {/* The Five Environments */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5 overflow-hidden relative">
+        <DnaHelix className="absolute -right-8 top-1/2 -translate-y-1/2 h-[120%] w-auto max-w-[180px] pointer-events-none select-none" opacity={0.05} />
+        <div className="max-w-4xl mx-auto relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Environments</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
             One interpretive engine. Five environments.
@@ -171,8 +175,9 @@ export default function HomePage() {
       </section>
 
       {/* Fat Map Method™ */}
-      <section className="bg-black py-32 px-5 border-t border-white/5">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-black py-32 px-5 border-t border-white/5 overflow-hidden relative">
+        <DnaHelix className="absolute -left-6 top-1/2 -translate-y-1/2 h-[110%] w-auto max-w-[160px] pointer-events-none select-none" opacity={0.05} />
+        <div className="max-w-4xl mx-auto relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Core Methodology</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
             Fat Map Method™
@@ -257,8 +262,9 @@ export default function HomePage() {
       </section>
 
       {/* Platform Architecture */}
-      <section className="bg-black py-32 px-5 border-t border-white/5">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-black py-32 px-5 border-t border-white/5 overflow-hidden relative">
+        <DnaHelix className="absolute -right-6 top-1/2 -translate-y-1/2 h-[110%] w-auto max-w-[160px] pointer-events-none select-none" opacity={0.05} />
+        <div className="max-w-4xl mx-auto relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Platform</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-8">
             One engine. Built to scale across industries.
