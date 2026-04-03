@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { CreditCard, Package, CheckCircle2, Clock, XCircle } from 'lucide-react'
 import CreateProductButton from './create-product-button'
 import RecordPaymentButton from './record-payment-button'
+import GetPaymentLinkButton from './get-payment-link-button'
 import Link from 'next/link'
 
 const statusConfig: Record<string, { label: string; icon: typeof Clock; colour: string }> = {
@@ -85,11 +86,17 @@ export default async function PaymentsPage() {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-semibold text-white">${product.price.toLocaleString('en-AU')}</p>
-                  {product.type === 'subscription' && (
-                    <p className="text-xs text-stone-500">/ {product.billing_interval?.replace('ly', '')}</p>
-                  )}
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-white">${product.price.toLocaleString('en-AU')}</p>
+                    {product.type === 'subscription' && (
+                      <p className="text-xs text-stone-500">/ {product.billing_interval?.replace('ly', '')}</p>
+                    )}
+                  </div>
+                  <GetPaymentLinkButton
+                    productId={product.id}
+                    cachedUrl={product.stripe_payment_link_url ?? null}
+                  />
                 </div>
               </div>
             ))}
