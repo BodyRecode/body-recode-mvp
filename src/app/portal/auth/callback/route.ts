@@ -28,7 +28,11 @@ export async function GET(request: NextRequest) {
       }
     )
 
-    const { data: { session } } = await supabase.auth.exchangeCodeForSession(code)
+    const { data: { session }, error: sessionError } = await supabase.auth.exchangeCodeForSession(code)
+
+    if (sessionError || !session) {
+      return NextResponse.redirect(new URL('/portal/login?error=session_failed', request.url))
+    }
 
     // If a specific redirect was passed (e.g. a token URL), use it
     if (redirect && redirect.startsWith('/portal/')) {
@@ -36,19 +40,19 @@ export async function GET(request: NextRequest) {
     }
 
     // Otherwise look up their portal token and redirect
-    if (session?.user?.email) {
-      const admin = createAdminClient()
-      const { data: client } = await admin
-        .from('clients')
-        .select('onboarding_token')
-        .ilike('email', session.user.email)
-        .maybeSingle()
+    const admin = createAdminClient()
+    const { data: client } = await admin
+      .from('clients')
+      .select('onboarding_token')
+      .ilike('email', session.user.email)
+      .maybeSingle()
 
-      if (client?.onboarding_token) {
-        return NextResponse.redirect(new URL(`/portal/${client.onboarding_token}`, request.url))
-      }
+    if (client?.onboarding_token) {
+      return NextResponse.redirect(new URL(`/portal/${client.onboarding_token}`, request.url))
     }
+
+    return NextResponse.redirect(new URL(`/portal/login?error=no_client&email=${encodeURIComponent(session.user.email)}`, request.url))
   }
 
-  return NextResponse.redirect(new URL('/portal/login', request.url))
+  return NextResponse.redirect(new URL('/portal/login?error=no_code', request.url))
 }
