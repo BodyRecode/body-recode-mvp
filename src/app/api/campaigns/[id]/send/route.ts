@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
+import { sendSms, formatPhone } from '@/lib/twilio'
 
 export async function POST(
   request: NextRequest,
@@ -45,67 +46,55 @@ export async function POST(
   // Resolve recipients
   const admin = createAdminClient()
   const filter = campaign.recipient_filter as Record<string, string> ?? {}
-  let recipients: Array<{ name: string; email: string }> = []
 
-  if (campaign.type === 'email') {
-    if (filter.type === 'all_clients') {
-      const { data } = await admin
-        .from('clients')
-        .select('name, email')
-        .eq('coach_id', user.id)
-        .not('email', 'is', null)
-      recipients = data ?? []
-    } else if (filter.type === 'all_leads') {
-      const { data } = await admin
-        .from('leads')
-        .select('name, email')
-        .eq('coach_id', user.id)
-        .not('email', 'is', null)
-      recipients = data ?? []
-    } else if (filter.type === 'pipeline_stage' && filter.value) {
-      const { data } = await admin
-        .from('leads')
-        .select('name, email')
-        .eq('coach_id', user.id)
-        .eq('status', filter.value)
-        .not('email', 'is', null)
-      recipients = data ?? []
-    } else if (filter.type === 'tag' && filter.value) {
-      const { data: tag } = await admin
-        .from('be_tags')
-        .select('id')
-        .eq('name', filter.value)
-        .eq('coach_id', user.id)
-        .maybeSingle()
-      if (tag) {
-        const { data: taggedLeads } = await admin
-          .from('be_lead_tags')
-          .select('leads(name, email)')
-          .eq('tag_id', tag.id)
-        recipients = (taggedLeads ?? [])
-          .map((r: any) => r.leads)
-          .filter((l: any) => l?.email) as Array<{ name: string; email: string }>
-      }
-    } else {
-      // Default: all leads
-      const { data } = await admin
-        .from('leads')
-        .select('name, email')
-        .eq('coach_id', user.id)
-        .not('email', 'is', null)
-      recipients = data ?? []
-    }
+  type Recipient = { name: string; email: string | null; phone: string | null }
+  let recipients: Recipient[] = []
+
+  const resolveRecipients = async (table: 'leads' | 'clients', extraFilter?: { column: string; value: string }) => {
+    let query = admin.from(table).select('name, email, phone').eq('coach_id', user.id)
+    if (extraFilter) query = query.eq(extraFilter.column, extraFilter.value)
+    const { data } = await query
+    return (data ?? []) as Recipient[]
   }
 
-  // Send emails
+  if (filter.type === 'all_clients') {
+    recipients = await resolveRecipients('clients')
+  } else if (filter.type === 'all_leads') {
+    recipients = await resolveRecipients('leads')
+  } else if (filter.type === 'pipeline_stage' && filter.value) {
+    recipients = await resolveRecipients('leads', { column: 'status', value: filter.value })
+  } else if (filter.type === 'tag' && filter.value) {
+    const { data: tag } = await admin
+      .from('be_tags')
+      .select('id')
+      .eq('name', filter.value)
+      .eq('coach_id', user.id)
+      .maybeSingle()
+    if (tag) {
+      const { data: taggedLeads } = await admin
+        .from('be_lead_tags')
+        .select('leads(name, email, phone)')
+        .eq('tag_id', tag.id)
+      recipients = (taggedLeads ?? [])
+        .map((r: any) => r.leads)
+        .filter(Boolean) as Recipient[]
+    }
+  } else {
+    recipients = await resolveRecipients('leads')
+  }
+
   let sentCount = 0
+
+  // Send emails
   if (campaign.type === 'email' && process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
 
     for (const recipient of recipients) {
+      if (!recipient.email) continue
       try {
         const firstName = recipient.name?.split(' ')[0] ?? 'there'
-        const personalised = (campaign.content ?? '').replace(/\{\{first_name\}\}/g, firstName)
+        const personalised = (campaign.content ?? '')
+          .replace(/\{\{first_name\}\}/g, firstName)
 
         await resend.emails.send({
           from: 'Kade at Body Recode <kade@bodyrecode.au>',
@@ -123,7 +112,27 @@ export async function POST(
         })
         sentCount++
       } catch (err) {
-        console.error(`Failed to send to ${recipient.email}:`, err)
+        console.error(`Failed to send email to ${recipient.email}:`, err)
+      }
+    }
+  }
+
+  // Send SMS
+  if (campaign.type === 'sms') {
+    for (const recipient of recipients) {
+      if (!recipient.phone) continue
+      try {
+        const firstName = recipient.name?.split(' ')[0] ?? 'there'
+        const personalised = (campaign.content ?? '')
+          .replace(/\{\{first_name\}\}/g, firstName)
+
+        await sendSms({
+          to: formatPhone(recipient.phone),
+          message: personalised,
+        })
+        sentCount++
+      } catch (err) {
+        console.error(`Failed to send SMS to ${recipient.phone}:`, err)
       }
     }
   }

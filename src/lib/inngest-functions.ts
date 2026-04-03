@@ -1,6 +1,7 @@
 import { inngest } from './inngest'
 import { createAdminClient } from './supabase/admin'
 import { Resend } from 'resend'
+import { sendSms, formatPhone } from './twilio'
 import type { TriggerContext } from './automation-engine'
 
 interface Contact {
@@ -133,8 +134,11 @@ async function executeAction(
     }
 
     case 'send_sms': {
-      // SMS placeholder — Twilio integration deferred
-      console.log(`[Automation] SMS to ${contact?.phone ?? 'no phone'}: ${interpolate(config.message ?? '', templateVars)}`)
+      if (!contact?.phone) break
+      await sendSms({
+        to: formatPhone(contact.phone),
+        message: interpolate(config.message ?? '', templateVars),
+      })
       break
     }
   }
