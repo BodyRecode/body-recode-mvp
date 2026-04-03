@@ -35,11 +35,40 @@ export async function DELETE(
 ) {
   const { id } = await params
   const admin = createAdminClient()
-  const { error } = await admin
-    .from('clients')
-    .delete()
-    .eq('id', id)
 
+  // Get program and nutrition plan IDs first for cascading child records
+  const [{ data: programs }, { data: nutritionPlans }] = await Promise.all([
+    admin.from('programs').select('id').eq('client_id', id),
+    admin.from('nutrition_plans').select('id').eq('client_id', id),
+  ])
+
+  const programIds = (programs || []).map((p: { id: string }) => p.id)
+  const planIds = (nutritionPlans || []).map((p: { id: string }) => p.id)
+
+  // Delete child records of programs and plans
+  await Promise.all([
+    programIds.length > 0
+      ? admin.from('program_reviews').delete().in('program_id', programIds)
+      : Promise.resolve(),
+    planIds.length > 0
+      ? admin.from('nutrition_reviews').delete().in('plan_id', planIds)
+      : Promise.resolve(),
+  ])
+
+  // Delete client-level records in parallel
+  await Promise.all([
+    admin.from('programs').delete().eq('client_id', id),
+    admin.from('nutrition_plans').delete().eq('client_id', id),
+    admin.from('cffs').delete().eq('client_id', id),
+    admin.from('cfws').delete().eq('client_id', id),
+    admin.from('weekly_checkins').delete().eq('client_id', id),
+    admin.from('baselines').delete().eq('client_id', id),
+    admin.from('intake_invitations').delete().eq('client_id', id),
+    admin.from('macro_plans').delete().eq('client_id', id),
+  ])
+
+  // Now delete the client
+  const { error } = await admin.from('clients').delete().eq('id', id)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
   return NextResponse.json({ success: true })
