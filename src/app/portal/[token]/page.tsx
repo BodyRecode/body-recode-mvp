@@ -1,17 +1,24 @@
 import { createAdminClient } from '@/lib/supabase/admin'
-import { notFound } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { getCheckInWindowStatus, getWeekNumber } from '@/lib/weekly-checkin-questions'
 import ClientHeader from '@/components/client-header'
 
 export default async function PortalPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/portal/login')
+
   const admin = createAdminClient()
 
   const { data: client } = await admin
     .from('clients')
     .select('*, baselines(id), intake_invitations(status), weekly_checkins(week_number, form_type, submitted_at)')
     .eq('onboarding_token', token)
+    .eq('email', user.email!)
     .single()
 
   const { data: activeNutritionPlan } = await admin
