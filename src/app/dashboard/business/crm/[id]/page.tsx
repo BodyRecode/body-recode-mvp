@@ -5,27 +5,28 @@ import { getLeadSourceLabel } from '@/lib/utils'
 import { Phone, Mail, ArrowUpRight, Calendar, FileText } from 'lucide-react'
 import StageMover from './stage-mover'
 import NotesEditor from './notes-editor'
+import ContactEditor from './contact-editor'
 
 const stageOrder = [
-  'new_check_in',
+  'new',
   'report_sent',
   'zoom_1_booked',
   'zoom_1_completed',
   'zoom_2_booked',
   'zoom_2_completed',
   'commencement_fee_paid',
-  'active_coaching',
+  'active_client',
 ]
 
 const stageLabel: Record<string, string> = {
-  new_check_in: 'New Lead',
+  new: 'New Lead',
   report_sent: 'Report Sent',
   zoom_1_booked: 'Zoom 1 Booked',
-  zoom_1_completed: 'Zoom 1 Done',
+  zoom_1_completed: 'Zoom 1 Completed',
   zoom_2_booked: 'Zoom 2 Booked',
-  zoom_2_completed: 'Zoom 2 Done',
-  commencement_fee_paid: 'Fee Paid',
-  active_coaching: 'Active Client',
+  zoom_2_completed: 'Zoom 2 Completed',
+  commencement_fee_paid: 'Commencement Fee Paid',
+  active_client: 'Active Client',
 }
 
 export default async function CRMContactPage({ params }: { params: Promise<{ id: string }> }) {
@@ -95,6 +96,12 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
             <p className="text-stone-500 text-sm">No contact details.</p>
           )}
         </div>
+        <ContactEditor
+          leadId={lead.id}
+          initialName={lead.name}
+          initialEmail={lead.email}
+          initialPhone={lead.phone}
+        />
       </div>
 
       {/* Pipeline stage */}
