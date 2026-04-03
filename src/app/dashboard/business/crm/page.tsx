@@ -78,7 +78,7 @@ export default async function CRMPage() {
                 {cards.map((lead) => (
                   <Link
                     key={lead.id}
-                    href={`/dashboard/leads/${lead.id}`}
+                    href={`/dashboard/business/crm/${lead.id}`}
                     className="block bg-stone-900 border border-stone-800 rounded-lg p-3 hover:border-stone-700 transition-colors group"
                   >
                     <p className="text-sm font-medium text-white group-hover:text-teal-400 transition-colors truncate">
