@@ -1,6 +1,6 @@
 import twilio from 'twilio'
 
-export function sendSms({
+export async function sendSms({
   to,
   message,
 }: {
@@ -9,18 +9,20 @@ export function sendSms({
 }): Promise<void> {
   const accountSid = process.env.TWILIO_ACCOUNT_SID
   const authToken = process.env.TWILIO_AUTH_TOKEN
-  const from = process.env.TWILIO_FROM_NUMBER
+  const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID
 
-  if (!accountSid || !authToken || !from) {
+  if (!accountSid || !authToken || !messagingServiceSid) {
     console.warn('[SMS] Twilio credentials not configured — skipping SMS')
-    return Promise.resolve()
+    return
   }
 
   const client = twilio(accountSid, authToken)
 
-  return client.messages
-    .create({ body: message, from, to })
-    .then(() => undefined)
+  await client.messages.create({
+    body: message,
+    messagingServiceSid,
+    to,
+  })
 }
 
 export function formatPhone(phone: string): string {
