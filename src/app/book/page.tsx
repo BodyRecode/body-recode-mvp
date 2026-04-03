@@ -34,7 +34,7 @@ export default function BookPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch('/api/booking-slots?days=28')
+    fetch('/api/booking-slots?days=7')
       .then(r => r.json())
       .then(data => { setSlots(data); setLoadingSlots(false) })
       .catch(() => setLoadingSlots(false))
