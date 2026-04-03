@@ -21,8 +21,12 @@ export default function ClientDangerActions({ clientId, isActive }: { clientId: 
   async function deleteClient() {
     if (!confirm('Delete this client permanently? This cannot be undone. All their data including intake, CFFS, check-ins, and CFWS will be removed.')) return
     setLoading('delete')
-    await fetch(`/api/clients/${clientId}`, { method: 'DELETE' })
+    const res = await fetch(`/api/clients/${clientId}`, { method: 'DELETE' })
     setLoading(null)
+    if (!res.ok) {
+      alert('Failed to delete client. Please try again.')
+      return
+    }
     router.push('/dashboard/coaching')
   }
 
