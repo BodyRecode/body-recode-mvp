@@ -45,6 +45,9 @@ export async function DELETE(
   const programIds = (programs || []).map((p: { id: string }) => p.id)
   const planIds = (nutritionPlans || []).map((p: { id: string }) => p.id)
 
+  // Null out the lead reference to this client
+  await admin.from('leads').update({ converted_to_client_id: null }).eq('converted_to_client_id', id)
+
   // Delete child records of programs and plans
   await Promise.all([
     programIds.length > 0
