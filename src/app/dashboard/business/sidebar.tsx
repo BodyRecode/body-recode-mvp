@@ -1,0 +1,97 @@
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import {
+  Users,
+  MessageSquare,
+  Calendar,
+  CreditCard,
+  Zap,
+  Layers,
+  Megaphone,
+  BarChart2,
+  TrendingUp,
+  LayoutDashboard,
+} from 'lucide-react'
+
+const sections = [
+  {
+    label: 'Overview',
+    items: [
+      { label: 'Hub', href: '/dashboard/business', icon: LayoutDashboard, exact: true },
+    ],
+  },
+  {
+    label: 'Contacts',
+    items: [
+      { label: 'CRM', href: '/dashboard/business/crm', icon: Users },
+      { label: 'Inbox', href: '/dashboard/business/inbox', icon: MessageSquare },
+    ],
+  },
+  {
+    label: 'Convert',
+    items: [
+      { label: 'Bookings', href: '/dashboard/business/bookings', icon: Calendar },
+      { label: 'Payments', href: '/dashboard/business/payments', icon: CreditCard },
+    ],
+  },
+  {
+    label: 'Grow',
+    items: [
+      { label: 'Funnels', href: '/dashboard/business/funnels', icon: Layers },
+      { label: 'Campaigns', href: '/dashboard/business/campaigns', icon: Megaphone },
+      { label: 'Automations', href: '/dashboard/business/automations', icon: Zap },
+      { label: 'Ads', href: '/dashboard/business/ads', icon: TrendingUp },
+    ],
+  },
+  {
+    label: 'Analyse',
+    items: [
+      { label: 'Analytics', href: '/dashboard/business/analytics', icon: BarChart2 },
+    ],
+  },
+]
+
+export default function BusinessSidebar() {
+  const pathname = usePathname()
+
+  const isActive = (href: string, exact?: boolean) => {
+    if (exact) return pathname === href
+    return pathname.startsWith(href)
+  }
+
+  return (
+    <aside className="w-52 shrink-0 border-r border-stone-800 bg-stone-950 overflow-y-auto">
+      <div className="px-3 py-5 space-y-6">
+        {sections.map((section) => (
+          <div key={section.label}>
+            <p className="px-3 mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-stone-600">
+              {section.label}
+            </p>
+            <div className="space-y-0.5">
+              {section.items.map((item) => {
+                const Icon = item.icon
+                const active = isActive(item.href, item.exact)
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
+                      active
+                        ? 'bg-teal-500/10 text-teal-400 font-medium'
+                        : 'text-stone-400 hover:text-white hover:bg-stone-800'
+                    }`}
+                  >
+                    <Icon size={15} strokeWidth={active ? 2.5 : 1.8} />
+                    {item.label}
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </aside>
+  )
+}
