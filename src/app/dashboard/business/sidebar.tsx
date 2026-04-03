@@ -15,7 +15,19 @@ import {
   LayoutDashboard,
 } from 'lucide-react'
 
-const sections = [
+type NavItem = {
+  label: string
+  href: string
+  icon: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>
+  exact?: boolean
+}
+
+type NavSection = {
+  label: string
+  items: NavItem[]
+}
+
+const sections: NavSection[] = [
   {
     label: 'Overview',
     items: [
