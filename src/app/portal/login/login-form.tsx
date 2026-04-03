@@ -19,19 +19,6 @@ export default function LoginForm({ redirect }: { redirect: string }) {
     const callbackUrl = new URL('/portal/auth/callback', window.location.origin)
     callbackUrl.searchParams.set('redirect', redirect)
 
-    // First check the email exists in clients table
-    const checkRes = await fetch('/api/portal/check-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.trim().toLowerCase() }),
-    })
-
-    if (!checkRes.ok) {
-      setSubmitting(false)
-      setError('No client account found for this email address. Contact your coach if you need help.')
-      return
-    }
-
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim().toLowerCase(),
       options: {
