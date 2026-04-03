@@ -35,6 +35,62 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   }
 
+  // Handle recurring subscription invoice paid (auto-renewal)
+  if (event.type === 'invoice.payment_succeeded') {
+    const invoice = event.data.object as Stripe.Invoice
+    const clientId = invoice.lines?.data?.[0]?.metadata?.client_id
+    if (clientId && invoice.amount_paid > 0) {
+      const admin = createAdminClient()
+      await admin.from('be_payments').insert({
+        client_id: clientId,
+        amount: invoice.amount_paid / 100,
+        status: 'paid',
+        stripe_payment_id: null,
+        paid_at: new Date().toISOString(),
+      })
+    }
+    return NextResponse.json({ received: true })
+  }
+
+  // Handle invoice payment failure
+  if (event.type === 'invoice.payment_failed') {
+    const invoice = event.data.object as Stripe.Invoice
+    const clientId = invoice.lines?.data?.[0]?.metadata?.client_id
+    if (clientId) {
+      const admin = createAdminClient()
+      await admin.from('be_payments').insert({
+        client_id: clientId,
+        amount: invoice.amount_due / 100,
+        status: 'failed',
+        stripe_payment_id: null,
+      })
+
+      // Notify coach of failed payment
+      if (process.env.RESEND_API_KEY) {
+        const { data: client } = await admin
+          .from('clients')
+          .select('name, email')
+          .eq('id', clientId)
+          .single()
+        if (client) {
+          const resend = new Resend(process.env.RESEND_API_KEY)
+          await resend.emails.send({
+            from: 'Body Recode <kade@bodyrecode.au>',
+            to: 'kade@bodyrecode.au',
+            subject: `Payment failed — ${client.name}`,
+            html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0a0a0a;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">Payment failed — ${client.name}</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">A subscription payment for ${client.name} (${client.email}) has failed. Check Stripe for details.</p>
+  <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/business/payments" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Payments</a>
+</div>`,
+          })
+        }
+      }
+    }
+    return NextResponse.json({ received: true })
+  }
+
   if (event.type !== 'checkout.session.completed') {
     return NextResponse.json({ received: true })
   }
@@ -48,6 +104,18 @@ export async function POST(request: NextRequest) {
       .from('clients')
       .update({ subscription_active: true })
       .eq('id', session.client_reference_id)
+
+    // Record subscription commencement payment
+    if (session.amount_total && session.amount_total > 0) {
+      await admin.from('be_payments').insert({
+        client_id: session.client_reference_id,
+        amount: session.amount_total / 100,
+        status: 'paid',
+        stripe_payment_id: session.payment_intent as string ?? null,
+        stripe_subscription_id: session.subscription as string ?? null,
+        paid_at: new Date().toISOString(),
+      })
+    }
     return NextResponse.json({ received: true })
   }
 
@@ -102,6 +170,18 @@ export async function POST(request: NextRequest) {
       status: 'commencement_fee_paid',
     })
     .eq('id', leadId)
+
+  // Record commencement fee payment
+  if (session.amount_total && session.amount_total > 0) {
+    await admin.from('be_payments').insert({
+      lead_id: leadId,
+      client_id: client.id,
+      amount: session.amount_total / 100,
+      status: 'paid',
+      stripe_payment_id: session.payment_intent as string ?? null,
+      paid_at: new Date().toISOString(),
+    })
+  }
 
   // Notify coach
   if (process.env.RESEND_API_KEY) {
