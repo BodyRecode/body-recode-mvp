@@ -36,7 +36,7 @@ export default function NewClientPage() {
     // Create client record
     const { data: client, error: clientError } = await supabase
       .from('clients')
-      .insert({ coach_id: user.id, name: name.trim(), email: email.trim() || null })
+      .insert({ coach_id: user.id, name: name.trim(), email: email.trim() || null, active: true })
       .select()
       .single()
 
