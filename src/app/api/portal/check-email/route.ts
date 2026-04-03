@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   const { data: client } = await admin
     .from('clients')
     .select('id')
-    .eq('email', email.toLowerCase())
+    .ilike('email', email.trim())
     .maybeSingle()
 
   if (!client) return NextResponse.json({ error: 'Not found' }, { status: 404 })

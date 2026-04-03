@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
       const { data: client } = await admin
         .from('clients')
         .select('onboarding_token')
-        .eq('email', session.user.email.toLowerCase())
+        .ilike('email', session.user.email)
         .maybeSingle()
 
       if (client?.onboarding_token) {

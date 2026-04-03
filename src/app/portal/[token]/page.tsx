@@ -18,7 +18,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .from('clients')
     .select('*, baselines(id), intake_invitations(status), weekly_checkins(week_number, form_type, submitted_at)')
     .eq('onboarding_token', token)
-    .eq('email', user.email!)
+    .ilike('email', user.email!)
     .single()
 
   const { data: activeNutritionPlan } = await admin
