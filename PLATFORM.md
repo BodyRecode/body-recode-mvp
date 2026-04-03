@@ -1,9 +1,13 @@
 # Body Recode Platform — Master Reference
 
+This is a custom SaaS platform built for a solo performance coaching business. It is a monorepo Next.js app hosted on Vercel, backed by Supabase. Everything runs through the same codebase — no third-party tools like GHL, Calendly, or Kajabi.
+
+---
+
 ## System Architecture
 
 ```
-Layer 3 → Business Engine + Control Hub     ← BUILDING NOW
+Layer 3 → Business Engine + Control Hub     ✅ BUILT
               ↓
 Layer 2 → Coaching Dashboard (Execution)    ✅ BUILT
               ↓
@@ -12,9 +16,38 @@ Layer 1 → Interpretation Engine (CFFS)      ✅ BUILT
 
 ---
 
-## Layer 1 — Interpretation Engine (CFFS)
+## Development Environment
 
-**What it does:** Takes client intake data → generates the Coach-Facing Foundational Synthesis (CFFS) — a structured clinical interpretation of the client's body state.
+| Tool | Purpose |
+|---|---|
+| **VS Code** | Code editor. Codebase lives at `/Users/kadedunstone/body-recode-mvp/` |
+| **Claude Code** | AI coding assistant running inside VS Code. Handles all code generation, debugging, schema design, and feature building autonomously. Commits and pushes after every change without being asked. |
+| **Claude AI model** | claude-sonnet-4-6 — the model powering Claude Code |
+| **Git + GitHub** | Version control. Repo: `BodyRecode/body-recode-mvp`. Every completed feature committed and pushed to `main`. |
+| **Node.js / npm** | Package management |
+| **macOS** | Development machine (Brisbane, Australia — UTC+10, no DST) |
+
+---
+
+## Tech Stack
+
+| Layer | Tool | Purpose |
+|---|---|---|
+| Framework | Next.js 15 (App Router) | Full-stack — server components, client components, API routes |
+| Database | Supabase (PostgreSQL) | Data + auth + RLS |
+| Styling | Tailwind CSS | Dark theme — stone-900/800 palette, teal-500 accents |
+| Deployment | Vercel | Hosting + env vars + auto-deploy on push to main |
+| Payments | Stripe | One-time fees + weekly subscriptions + webhooks |
+| Email | Resend | All transactional email + campaign broadcasts |
+| Video | Zoom Server-to-Server OAuth | Auto-creates Zoom meetings on every booking |
+| Automation | Inngest | Durable background jobs — handles wait steps in automation sequences |
+| Language | TypeScript | Used throughout |
+
+---
+
+## Layer 1 — Interpretation Engine (CFFS) ✅ Built — Do Not Touch
+
+**What it does:** Takes client intake data → generates the Coach-Facing Foundational Synthesis (CFFS) — a structured clinical interpretation of the client's body state. Weekly check-ins generate the CFWS (weekly synthesis).
 
 **Key tables:** `clients`, `intake_invitations`, `intakes`, `cffs`, `weekly_checkins`, `cfws`
 
@@ -22,7 +55,7 @@ Layer 1 → Interpretation Engine (CFFS)      ✅ BUILT
 - `/intake/[token]` — client-facing intake form (public, no auth)
 - `/dashboard/clients/[id]/cffs-report` — CFFS view
 - `/dashboard/clients/[id]/checkins/[week]/[form]` — weekly check-in
-- `/dashboard/clients/[id]/cfws-report` — CFWS (weekly synthesis) view
+- `/dashboard/clients/[id]/cfws-report` — CFWS view
 
 **Rules:**
 - Do NOT rebuild CFFS logic
@@ -32,7 +65,7 @@ Layer 1 → Interpretation Engine (CFFS)      ✅ BUILT
 
 ---
 
-## Layer 2 — Coaching Dashboard (Execution)
+## Layer 2 — Coaching Dashboard (Execution) ✅ Built — Do Not Touch
 
 **What it does:** The operational interface where the coach delivers the program — programs, nutrition, plans, direction.
 
@@ -56,30 +89,13 @@ Layer 1 → Interpretation Engine (CFFS)      ✅ BUILT
 
 ---
 
-## Layer 3 — Business Engine (BUILDING NOW)
+## Layer 3 — Business Engine ✅ Built
 
-**What it does:** Full business operating system — CRM, pipelines, automation, inbox, bookings, payments, campaigns, ad tracking.
+**What it does:** Full business operating system — CRM, pipelines, automations, bookings, payments, campaigns, inbox, funnels, and analytics — all inside the same platform.
 
-### Modules + Build Order
+All Business Engine tables are prefixed `be_`. All use `coach_id` RLS.
 
-| Priority | Module | Status |
-|---|---|---|
-| 1 | CRM + Pipeline | Schema done |
-| 2 | Funnels + Forms | Schema done |
-| 3 | Automation Engine | Schema done |
-| 4 | Booking System | Schema done |
-| 5 | Payments | Schema done |
-| 6 | Onboarding → CFFS Integration | Not started |
-| 7 | Unified Inbox | Schema done |
-| 8 | Campaigns | Schema done |
-| 9 | Analytics | Not started |
-
-### Database Schema
-
-File: `business-engine-schema.sql`
-Run in Supabase SQL Editor after `supabase-schema.sql` and `leads-schema.sql`.
-
-All Business Engine tables are prefixed `be_`.
+### Database Tables
 
 | Table | Purpose |
 |---|---|
@@ -94,16 +110,46 @@ All Business Engine tables are prefixed `be_`.
 | `be_workflow_steps` | Steps within a workflow |
 | `be_workflow_executions` | Execution log per contact per run |
 | `be_funnels` | Funnel definitions |
-| `be_funnel_pages` | Pages within a funnel |
+| `be_funnel_pages` | Pages within a funnel (content stored as jsonb) |
 | `be_forms` | Form definitions |
 | `be_form_submissions` | Submitted form responses |
-| `be_bookings` | Zoom 1, Zoom 2, other bookings |
+| `be_availability` | Coach availability slots for booking system |
+| `be_bookings` | Zoom 1, Zoom 2, and other bookings |
 | `be_products` | Coaching products (one-time + subscriptions) |
 | `be_payments` | Payment records |
 | `be_campaigns` | Email/SMS/social campaigns |
 | `be_ad_campaigns` | Ad performance tracking (no ad manager) |
 
-### Default Pipeline — Performance Coaching
+### Modules
+
+**CRM** `/dashboard/business/crm`
+Kanban pipeline board. 8 stages: New Lead → Report Sent → Zoom 1 Booked → Zoom 1 Completed → Zoom 2 Booked → Zoom 2 Completed → Commencement Fee Paid → Active Client. Contact detail view with notes editor, stage mover, event history, quick links.
+
+**Bookings** `/dashboard/business/bookings`
+Replaces Calendly entirely. Availability: Mon–Thu 4:30–7:30pm Brisbane, 30 min slots, 15 min gaps. Public booking page at `/book`. Creates Zoom meeting automatically. Sends `.ics` calendar invite to both lead and coach.
+
+**Payments** `/dashboard/business/payments`
+Records all payments — manual entries and Stripe auto-recorded. Product catalogue. Revenue stats.
+
+**Automations** `/dashboard/business/automations`
+Visual workflow builder with drag-to-reorder steps. Trigger types: `lead_created`, `booking_created`, `payment_completed`, `pipeline_stage_changed`, `tag_added`, `form_submitted`. Action types: `send_email`, `send_sms` (Twilio placeholder), `add_tag`, `remove_tag`, `move_pipeline_stage`, `notify_coach`. Wait steps executed durably by Inngest.
+
+**Campaigns** `/dashboard/business/campaigns`
+Email/SMS broadcast builder. Recipient filters: all leads, all clients, by pipeline stage, by tag. `{{first_name}}` personalisation. Send now or schedule.
+
+**Funnels** `/dashboard/business/funnels`
+Public lead capture pages at `/f/[slug]`. Headline, subheadline, body copy, CTA, after-submit action (redirect to `/book` or thank-you message). Submissions create leads in CRM and fire automation triggers.
+
+**Inbox** `/dashboard/business/inbox`
+One email thread per lead. Shows all `lead_events` as a chronological timeline with icons per event type. Compose box sends via Resend and logs back into the thread as an `email_sent` event.
+
+**Analytics** `/dashboard/business/analytics`
+Live metrics: revenue, leads, conversion rate, show-up rate, pipeline stage breakdown, lead source breakdown, bookings summary.
+
+**Ads** `/dashboard/business/ads`
+Ad performance tracking — spend and leads per campaign (Meta/Google). Tracking only, no ad manager.
+
+### Default Pipeline Stages
 
 ```
 1. New Lead
@@ -119,36 +165,51 @@ All Business Engine tables are prefixed `be_`.
 ### Default Products
 
 ```
-- Coaching Commencement Fee   $497    one_time
-- Weekly Coaching 2x          $200    subscription / weekly
-- Weekly Coaching 3x          $280    subscription / weekly
+Coaching Commencement Fee   $497    one_time
+Weekly Coaching 2x          $200    subscription / weekly
+Weekly Coaching 3x          $280    subscription / weekly
 ```
 
 ### Automation Triggers
 
 ```
-form_submitted
-tag_added
+lead_created
 booking_created
 payment_completed
 pipeline_stage_changed
-lead_created
+tag_added
+form_submitted
 ```
 
 ### Automation Actions
 
 ```
-send_sms
 send_email
+send_sms           (Twilio — not yet integrated)
 add_tag
 remove_tag
 move_pipeline_stage
 notify_coach
-trigger_intake
-create_booking
 ```
 
-### Integration Points
+---
+
+## Contact Model
+
+| Type | Table | Stage |
+|---|---|---|
+| Lead | `leads` | Pre-client — moving through pipeline |
+| Client | `clients` | Active coaching |
+
+When a lead converts to a client:
+- `leads.converted_to_client_id` is set
+- `leads.converted_at` is set
+- A `clients` record is created
+- Business Engine continues to reference both via `lead_id` / `client_id` foreign keys
+
+---
+
+## Integration Points
 
 **Business Engine → CFFS:**
 ```
@@ -167,32 +228,43 @@ Active Client stage reached
   → Begin coaching lifecycle
 ```
 
-**CFFS → Business Engine:**
-```
-CFFS output informs:
-  → Messaging tone in campaigns
-  → Automation path decisions
-  → Coaching program direction
-```
+---
+
+## Key File Locations
+
+| File | Purpose |
+|---|---|
+| `src/lib/automation-engine.ts` | `fireTrigger()` — finds matching workflows, sends Inngest events |
+| `src/lib/inngest.ts` | Inngest client initialisation |
+| `src/lib/inngest-functions.ts` | `executeWorkflowFunction` — durable step execution with real waits |
+| `src/lib/zoom.ts` | `createZoomMeeting()`, `deleteZoomMeeting()` |
+| `src/lib/log-lead-event.ts` | `logLeadEvent()` — logs events to lead timeline |
+| `src/app/api/book/route.ts` | Public booking endpoint (no auth required) |
+| `src/app/api/booking-slots/route.ts` | Returns available time slots (Brisbane timezone) |
+| `src/app/api/webhooks/stripe/route.ts` | Stripe webhook handler |
+| `src/app/api/inngest/route.ts` | Inngest serve handler (GET/POST/PUT) |
+| `src/app/f/[slug]/page.tsx` | Public funnel page |
+| `business-engine-schema.sql` | Full DB schema for all `be_` tables |
+| `seed-products.sql` | Seeds 3 default products |
 
 ---
 
-## Contact Model
+## Environment Variables
 
-The platform has two contact types:
-
-| Type | Table | Stage |
-|---|---|---|
-| Lead | `leads` | Pre-client — in pipeline |
-| Client | `clients` | Active coaching |
-
-`leads.status` tracks pipeline position (legacy field — `be_opportunities` + `be_pipeline_stages` is the new pipeline system going forward).
-
-When a lead converts to a client:
-- `leads.converted_to_client_id` is set
-- `leads.converted_at` is set
-- A `clients` record is created
-- Business Engine continues to reference both via `lead_id` / `client_id` foreign keys
+| Variable | Service |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase (admin client) |
+| `STRIPE_SECRET_KEY` | Stripe |
+| `STRIPE_WEBHOOK_SECRET` | Stripe |
+| `RESEND_API_KEY` | Resend |
+| `ZOOM_ACCOUNT_ID` | Zoom |
+| `ZOOM_CLIENT_ID` | Zoom |
+| `ZOOM_CLIENT_SECRET` | Zoom |
+| `INNGEST_EVENT_KEY` | Inngest |
+| `INNGEST_SIGNING_KEY` | Inngest |
+| `NEXT_PUBLIC_APP_URL` | App base URL |
 
 ---
 
@@ -201,42 +273,15 @@ When a lead converts to a client:
 ```
 1. Do NOT rebuild CFFS — it is the interpretation engine
 2. Do NOT rebuild the coaching dashboard — it is the execution layer
-3. Automation must drive everything — manual is the fallback, not the default
-4. CRM (leads table) is single source of truth for pre-client contacts
-5. /dashboard/help must be updated with every new feature
-6. Always commit and push after every code change
-7. Always provide localhost:3000 URLs after UI work
-```
-
----
-
-## Tech Stack
-
-| Layer | Tech |
-|---|---|
-| Framework | Next.js 15 (App Router) |
-| Database | Supabase (PostgreSQL) |
-| Auth | Supabase Auth |
-| Styling | Tailwind CSS |
-| Deployment | Vercel |
-| Payments | Stripe (planned) |
-| Messaging | Twilio SMS / Resend email (planned) |
-
----
-
-## URL Structure (planned — Business Engine)
-
-```
-/dashboard/crm              → CRM + pipeline board
-/dashboard/crm/[id]         → Contact detail
-/dashboard/inbox            → Unified inbox
-/dashboard/bookings         → Booking calendar
-/dashboard/payments         → Payments + products
-/dashboard/campaigns        → Campaign manager
-/dashboard/automations      → Workflow builder
-/dashboard/funnels          → Funnel manager
-/dashboard/analytics        → Business analytics
-/dashboard/ads              → Ad tracking
+3. All be_ tables use coach_id RLS — always filter by coach
+4. Brisbane timezone (UTC+10, no DST) — store UTC, display Brisbane
+5. Automation must drive everything — manual is the fallback, not the default
+6. CRM (leads table) is single source of truth for pre-client contacts
+7. /dashboard/help must be updated with every new feature
+8. Always commit and push after every code change
+9. Always provide localhost:3000 URLs after UI work
+10. Save build artefacts to ~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/
+11. Operate autonomously — only stop when Kade needs to take an external action
 ```
 
 ---
@@ -247,4 +292,17 @@ When a lead converts to a client:
 |---|---|
 | 2026-04-03 | Business Engine spec finalised |
 | 2026-04-03 | `business-engine-schema.sql` — full DB schema for all 9 modules |
-| 2026-04-03 | `PLATFORM.md` — this reference file |
+| 2026-04-03 | `PLATFORM.md` — master reference file created |
+| 2026-04-03 | Business Engine sidebar + layout |
+| 2026-04-03 | CRM — Kanban board + contact detail view + stage mover + notes editor |
+| 2026-04-03 | Bookings — list, create modal, Zoom auto-creation, .ics email |
+| 2026-04-03 | Payments — stats, product list, payment history |
+| 2026-04-03 | Analytics — revenue, leads, conversion, show-up rate, pipeline bars |
+| 2026-04-03 | Stripe webhook — commencement fee + subscription payment recording |
+| 2026-04-03 | Zoom Server-to-Server OAuth — `createZoomMeeting()`, `deleteZoomMeeting()` |
+| 2026-04-03 | Booking system — replaces Calendly. `/book` public page, availability engine, Brisbane timezone, slot conflict detection, .ics to both parties |
+| 2026-04-03 | Automations — visual workflow builder, drag-to-reorder, trigger/action/wait steps, `fireTrigger()` engine |
+| 2026-04-03 | Campaigns — list, editor, send now, schedule, recipient filters, `{{first_name}}` personalisation |
+| 2026-04-03 | Funnels — list, editor, public `/f/[slug]` capture page, lead creation, automation triggers |
+| 2026-04-03 | Inbox — contact list sorted by activity, per-lead event thread, compose + send via Resend |
+| 2026-04-03 | Inngest — durable automation wait steps. `executeWorkflowFunction` with `step.sleep()` and `step.run()`. Replaced inline execution in `automation-engine.ts` |
