@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createZoomMeeting } from '@/lib/zoom'
 import { Resend } from 'resend'
 import { logLeadEvent } from '@/lib/log-lead-event'
+import { fireTrigger } from '@/lib/automation-engine'
 
 function generateIcs({
   title, startTime, durationMinutes, location, description, uid,
@@ -235,6 +236,18 @@ export async function POST(request: NextRequest) {
   <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads/${lead.id}" style="display:inline-block;margin-top:12px;padding:10px 20px;border:1px solid #333;color:#aaa;font-size:13px;text-decoration:none;border-radius:8px;">View Lead →</a>
 </div>`,
     })
+  }
+
+  // Fire automation triggers
+  fireTrigger('booking_created', {
+    leadId: lead.id,
+    bookingId: booking.id,
+    bookingType: bookingType,
+  }, { booking_type: bookingType }).catch(err => console.error('Automation trigger failed:', err))
+
+  if (!existingLead) {
+    fireTrigger('lead_created', { leadId: lead.id })
+      .catch(err => console.error('Automation trigger failed:', err))
   }
 
   return NextResponse.json({ success: true, bookingId: booking.id })

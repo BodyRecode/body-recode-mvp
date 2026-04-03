@@ -145,7 +145,7 @@ export default function HelpPage() {
               <div>
                 <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 5 — Client Setup</p>
                 <div className="space-y-2">
-                  <ChecklistItem text="Send the client their portal link — use the Send to Client button on the client profile, or copy it manually" />
+                  <ChecklistItem text="Send the client their portal link — use the Send to Client button on the client profile, or copy it manually. The client signs in with their email address (magic link — no password)." />
                   <ChecklistItem text="Client completes all 4 onboarding steps via the portal: Coaching Agreement → Health Declaration → Foundational Intake → Baseline Documentation" />
                   <ChecklistItem text="You receive a notification email at each step as the client completes it" />
                   <ChecklistItem text="If medical clearance is required (flagged on health declaration), the portal shows an additional Medical Clearance step before intake unlocks" />
@@ -366,10 +366,23 @@ export default function HelpPage() {
 
           {/* Section 7 */}
           <Section id="client-portal" title="8. Client Portal" colour="teal">
-            <p>Every client has a personal portal at <strong>/portal/[token]</strong>. This is their single entry point for all onboarding steps and weekly check-ins. The portal link is permanent and token-based — there is no login required.</p>
+            <p>Every client has a personal portal at <strong>app.bodyrecode.au/portal/[token]</strong>. This is their single entry point for all onboarding steps, weekly check-ins, and reviewing their program and nutrition plan.</p>
             <p>Send the portal link from the client profile using <strong>Send to Client</strong> (emails the client directly) or <strong>Copy Portal Link</strong> (copies to clipboard for manual sending).</p>
-            <p>The portal shows the client exactly where they are in the process — completed steps are ticked, locked steps are greyed out. Once onboarding is complete, the portal transitions to show the weekly check-in task. If the client has an active training program, a <strong>Weekly training check-in</strong> card also appears. If they have an active nutrition plan, a <strong>Weekly nutrition check-in</strong> card appears. These are how clients submit their weekly reviews — everything through the same portal URL.</p>
-            <p>Every client-facing page (portal, intake, baseline) shows a sticky header with the Body Recode logo and a fixed footer with a WhatsApp link to message you directly.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-2 mb-1">Sign-in</p>
+            <p>The portal is protected by email-based authentication. When a client visits their portal link, they are directed to <strong>/portal/login</strong> where they enter their email address and receive a magic sign-in link. Clicking that link signs them in automatically and lands them on their portal. No password required. A <strong>Sign out</strong> button appears in the portal header at all times.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-2 mb-1">What the portal shows</p>
+            <p>The portal shows the client exactly where they are in the process — completed steps are ticked, locked steps are greyed out. Once onboarding is complete, the portal transitions to show:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li>Weekly check-in (Form A or B, window-gated)</li>
+              <li>Weekly training check-in — if they have an active program</li>
+              <li>Weekly nutrition check-in — if they have an active nutrition plan</li>
+              <li>View your program — full session-by-session program view</li>
+              <li>View your nutrition plan — full meal-by-meal plan view</li>
+              <li>Active Coaching Client Guide link</li>
+            </ul>
+            <p>Every portal page shows a sticky header with the Body Recode logo and sign-out button, and a fixed footer with a WhatsApp link to message you directly.</p>
             <Training title="Why one portal instead of multiple links">
               <p>Previous builds sent separate links for intake, baseline, and check-ins. Each link was another thing to track and another point of failure. A single portal link eliminates that. The client bookmarks it once and uses it throughout the entire coaching relationship — onboarding, check-ins, resources. Everything is in one place, in the right order, with the right steps unlocked at the right time.</p>
             </Training>

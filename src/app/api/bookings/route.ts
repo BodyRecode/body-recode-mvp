@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createZoomMeeting } from '@/lib/zoom'
 import { Resend } from 'resend'
+import { fireTrigger } from '@/lib/automation-engine'
 
 const typeLabel: Record<string, string> = {
   zoom1: 'Zoom 1',
@@ -184,6 +185,14 @@ export async function POST(request: NextRequest) {
       console.error('Failed to send booking email:', err)
     }
   }
+
+  // Fire automation trigger
+  fireTrigger('booking_created', {
+    leadId: body.lead_id || undefined,
+    clientId: body.client_id || undefined,
+    bookingId: booking.id,
+    bookingType: body.type,
+  }, { booking_type: body.type }).catch(err => console.error('Automation trigger failed:', err))
 
   return NextResponse.json({ ...booking, zoom_meeting_id: zoomMeetingId })
 }

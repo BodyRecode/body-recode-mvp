@@ -34,41 +34,19 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL('/portal/login?error=session_failed', request.url))
     }
 
-    // If a specific redirect was passed (e.g. a token URL), use it
+    // If a specific redirect was passed, use it
     if (redirect && redirect.startsWith('/portal/')) {
       return NextResponse.redirect(new URL(redirect, request.url))
     }
 
-    // Otherwise look up their portal token and redirect
+    // Look up their portal token by email
     const userEmail = session.user.email ?? ''
     const admin = createAdminClient()
-
-    // Try exact match first, then case-insensitive
-    let { data: client } = await admin
+    const { data: client } = await admin
       .from('clients')
       .select('onboarding_token')
-      .eq('email', userEmail)
+      .ilike('email', userEmail)
       .maybeSingle()
-
-    if (!client) {
-      const { data: clientIlike } = await admin
-        .from('clients')
-        .select('onboarding_token')
-        .ilike('email', userEmail)
-        .maybeSingle()
-      client = clientIlike
-    }
-
-    if (!client) {
-      // Last resort: fetch all and compare case-insensitively
-      const { data: allClients } = await admin
-        .from('clients')
-        .select('onboarding_token, email')
-      const found = (allClients || []).find(
-        c => c.email?.toLowerCase().trim() === userEmail.toLowerCase().trim()
-      )
-      if (found) client = found
-    }
 
     if (client?.onboarding_token) {
       return NextResponse.redirect(new URL(`/portal/${client.onboarding_token}`, request.url))

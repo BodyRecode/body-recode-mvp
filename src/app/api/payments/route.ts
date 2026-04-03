@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { fireTrigger } from '@/lib/automation-engine'
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
@@ -27,5 +28,14 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  if (body.status === 'paid') {
+    fireTrigger('payment_completed', {
+      leadId: body.lead_id || undefined,
+      clientId: body.client_id || undefined,
+      paymentId: data.id,
+    }).catch(err => console.error('Automation trigger failed:', err))
+  }
+
   return NextResponse.json(data)
 }
