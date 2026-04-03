@@ -5,7 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNoShowEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from '@/lib/generate-report'
 import { logLeadEvent } from '@/lib/log-lead-event'
 
-const BOOKING_LINK = process.env.BOOKING_LINK ?? 'https://calendly.com/bodyrecode-info/performance-report-review'
+const BOOKING_LINK = process.env.BOOKING_LINK ?? `${process.env.NEXT_PUBLIC_APP_URL}/book`
 
 export async function POST(
   _request: NextRequest,
