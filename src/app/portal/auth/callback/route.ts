@@ -40,18 +40,19 @@ export async function GET(request: NextRequest) {
     }
 
     // Otherwise look up their portal token and redirect
+    const userEmail = session.user.email ?? ''
     const admin = createAdminClient()
     const { data: client } = await admin
       .from('clients')
       .select('onboarding_token')
-      .ilike('email', session.user.email)
+      .ilike('email', userEmail)
       .maybeSingle()
 
     if (client?.onboarding_token) {
       return NextResponse.redirect(new URL(`/portal/${client.onboarding_token}`, request.url))
     }
 
-    return NextResponse.redirect(new URL(`/portal/login?error=no_client&email=${encodeURIComponent(session.user.email)}`, request.url))
+    return NextResponse.redirect(new URL(`/portal/login?error=no_client&email=${encodeURIComponent(userEmail)}`, request.url))
   }
 
   return NextResponse.redirect(new URL('/portal/login?error=no_code', request.url))
