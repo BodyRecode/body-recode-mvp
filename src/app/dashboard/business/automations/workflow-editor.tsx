@@ -52,14 +52,14 @@ const TRIGGERS = [
 ]
 
 const PIPELINE_STAGES = [
-  { value: 'new_check_in', label: 'New Lead' },
+  { value: 'new', label: 'New Lead' },
   { value: 'report_sent', label: 'Report Sent' },
   { value: 'zoom_1_booked', label: 'Zoom 1 Booked' },
-  { value: 'zoom_1_completed', label: 'Zoom 1 Done' },
+  { value: 'zoom_1_completed', label: 'Zoom 1 Completed' },
   { value: 'zoom_2_booked', label: 'Zoom 2 Booked' },
-  { value: 'zoom_2_completed', label: 'Zoom 2 Done' },
-  { value: 'commencement_fee_paid', label: 'Fee Paid' },
-  { value: 'active_coaching', label: 'Active Client' },
+  { value: 'zoom_2_completed', label: 'Zoom 2 Completed' },
+  { value: 'commencement_fee_paid', label: 'Commencement Fee Paid' },
+  { value: 'active_client', label: 'Active Client' },
 ]
 
 const ACTION_DEFS: {
