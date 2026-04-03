@@ -26,6 +26,15 @@ const SECTIONS = [
   { id: 'training-program', title: '20. Training Program', colour: 'teal' as const },
   { id: 'macro-arc', title: '21. Macro Training Arc', colour: 'teal' as const },
   { id: 'nutrition-plan', title: '22. Nutrition Plan', colour: 'teal' as const },
+  { id: 'business-engine', title: 'Business Engine', colour: 'amber' as const },
+  { id: 'be-crm', title: '23. CRM & Pipeline', colour: 'amber' as const },
+  { id: 'be-bookings', title: '24. Bookings', colour: 'amber' as const },
+  { id: 'be-automations', title: '25. Automations', colour: 'amber' as const },
+  { id: 'be-campaigns', title: '26. Campaigns', colour: 'amber' as const },
+  { id: 'be-funnels', title: '27. Funnels', colour: 'amber' as const },
+  { id: 'be-inbox', title: '28. Inbox', colour: 'amber' as const },
+  { id: 'be-payments', title: '29. Payments', colour: 'amber' as const },
+  { id: 'be-analytics', title: '30. Analytics', colour: 'amber' as const },
 ]
 
 export default function HelpPage() {
@@ -112,7 +121,7 @@ export default function HelpPage() {
               <div>
                 <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 2 — Zoom 1</p>
                 <div className="space-y-2">
-                  <ChecklistItem text="Lead books Zoom 1 via Calendly (or book manually from the lead detail page)" />
+                  <ChecklistItem text="Lead books Zoom 1 via bodyrecode.au/book — or book manually from Business → Bookings" />
                   <ChecklistItem text="Open the Call Companion from the lead detail page before the call" />
                   <ChecklistItem text="Run the call through all 5 stages" />
                   <ChecklistItem text="Book Zoom 2 before ending the call — use the Book Zoom 2 field in the companion notes panel" />
@@ -751,6 +760,209 @@ export default function HelpPage() {
             </ul>
 
             <Note>The weekly review is client-submitted. The client sees a Nutrition Check-In card in their portal whenever they have an active plan. You see results only — no data entry required on the coach side.</Note>
+          </Section>
+
+          {/* ── BUSINESS ENGINE ─────────────────────────────── */}
+
+          <Section id="business-engine" title="Business Engine — Overview" colour="amber">
+            <p>The Business Engine is the operating layer that runs the business side of Body Recode — everything from lead capture to bookings, payments, automations, campaigns, and analytics. It lives under <strong>Business</strong> in the main nav and replaces all external tools (Calendly, GHL, etc).</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Modules</p>
+            <div className="grid gap-1.5">
+              {[
+                { label: 'CRM', desc: 'Kanban pipeline board — track every lead through the 8-stage conversion pipeline' },
+                { label: 'Bookings', desc: 'Full booking system replacing Calendly — auto-creates Zoom, sends .ics to both parties' },
+                { label: 'Automations', desc: 'Visual workflow builder — trigger sequences on any event with real wait steps' },
+                { label: 'Campaigns', desc: 'Email/SMS broadcast builder — send to filtered contact lists with personalisation' },
+                { label: 'Funnels', desc: 'Public lead capture pages at bodyrecode.au/f/[slug] — leads flow straight into CRM' },
+                { label: 'Inbox', desc: 'One email thread per lead — full event history + compose directly from the platform' },
+                { label: 'Payments', desc: 'Manual + Stripe-recorded payments. Product catalogue. Revenue stats.' },
+                { label: 'Analytics', desc: 'Live business metrics — revenue, leads, conversion rate, show-up rate, pipeline breakdown' },
+              ].map(item => (
+                <div key={item.label} className="flex items-start gap-3 bg-stone-800/50 rounded-lg px-3 py-2">
+                  <span className="text-amber-400 font-semibold text-xs shrink-0 mt-0.5 w-24">{item.label}</span>
+                  <span className="text-stone-400 text-xs">{item.desc}</span>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Section id="be-crm" title="23. CRM & Pipeline" colour="amber">
+            <p>The CRM is a Kanban board showing every lead as a card in one of 8 pipeline stages. It is the single source of truth for all pre-client contacts.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Pipeline Stages</p>
+            <StatusList items={[
+              { label: 'New Lead', desc: 'Just entered — not yet contacted or reported' },
+              { label: 'Report Sent', desc: 'Performance report has been sent' },
+              { label: 'Zoom 1 Booked', desc: 'First call scheduled' },
+              { label: 'Zoom 1 Completed', desc: 'First call done — orientation sent' },
+              { label: 'Zoom 2 Booked', desc: 'Second call scheduled' },
+              { label: 'Zoom 2 Completed', desc: 'Second call done — decision made' },
+              { label: 'Fee Paid', desc: 'Commencement fee received' },
+              { label: 'Active Client', desc: 'Converted — now in coaching dashboard' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Contact Detail</p>
+            <p>Click any lead card to open the contact detail view. From here you can: move pipeline stage, edit notes, view the full event timeline (all bookings, emails sent, check-ins), and quick-link to Zoom companion, inbox, and CRM actions.</p>
+
+            <Note>Pipeline stages update automatically when a booking is made or a Stripe payment completes. You can also move them manually using the stage mover on the contact detail page.</Note>
+          </Section>
+
+          <Section id="be-bookings" title="24. Bookings" colour="amber">
+            <p>The booking system replaces Calendly entirely. All Zoom calls are booked through <strong>bodyrecode.au/book</strong> — a public page showing available slots. When a lead books, a Zoom meeting is created automatically and a calendar invite (.ics) is emailed to both the lead and you.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Availability</p>
+            <p>Monday to Thursday, 4:30pm – 7:30pm Brisbane. 30-minute slots with 15-minute gaps between them. Slots are generated automatically — no manual setup each week.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What Happens on Booking</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Zoom meeting created automatically — join link emailed to both parties</li>
+              <li>.ics calendar file attached — opens in Apple Calendar on click</li>
+              <li>Lead record created or updated in CRM</li>
+              <li>Pipeline stage moves to Zoom 1 Booked (or Zoom 2 Booked for returning leads)</li>
+              <li>Automation trigger fires — any workflows on booking_created will run</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Manual Bookings</p>
+            <p>You can also create bookings from <strong>Business → Bookings → New Booking</strong>. Select the contact, type (Zoom 1, Zoom 2, Other), date/time, and duration. Zoom is created automatically and an email is sent to you (not the lead — use Inbox to send them the link if needed).</p>
+
+            <Note>The booking page is fully public — share the link bodyrecode.au/book anywhere. It shows 7 days of upcoming availability at any time.</Note>
+          </Section>
+
+          <Section id="be-automations" title="25. Automations" colour="amber">
+            <p>Automations let you build sequences that run automatically when something happens — a lead books, a payment comes through, a tag is added. Each automation is a workflow with a trigger and a series of steps.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Triggers</p>
+            <StatusList items={[
+              { label: 'lead_created', desc: 'A new lead enters the system for the first time' },
+              { label: 'booking_created', desc: 'Any booking is made (filter by type: zoom1 or zoom2)' },
+              { label: 'payment_completed', desc: 'A payment is recorded as paid' },
+              { label: 'pipeline_stage_changed', desc: 'A lead moves to a specific stage' },
+              { label: 'tag_added', desc: 'A tag is applied to a lead' },
+              { label: 'form_submitted', desc: 'A funnel form is submitted' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step Types</p>
+            <StatusList items={[
+              { label: 'Send Email', desc: 'Email to the contact — supports {{first_name}}, {{contact_email}}, {{contact_phone}}' },
+              { label: 'Notify Coach', desc: 'Email to kade@bodyrecode.au with a custom message' },
+              { label: 'Wait', desc: 'Pause the sequence — set minutes, hours, or days. Held durably in the cloud.' },
+              { label: 'Add Tag', desc: 'Apply a tag to the lead' },
+              { label: 'Remove Tag', desc: 'Remove a tag from the lead' },
+              { label: 'Move Stage', desc: 'Move the lead to a specific pipeline stage' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Building a Workflow</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Go to <strong>Business → Automations → New Workflow</strong></li>
+              <li>Select a trigger and configure any trigger filters (e.g. only fire on zoom1 bookings)</li>
+              <li>Add steps — drag to reorder</li>
+              <li>Toggle the workflow active when ready</li>
+            </ul>
+
+            <Note>Wait steps are handled by Inngest — a background job service. A "wait 3 days" step will actually wait 3 days, even across server restarts. Execution history is logged per contact under each workflow run.</Note>
+          </Section>
+
+          <Section id="be-campaigns" title="26. Campaigns" colour="amber">
+            <p>Campaigns let you send a one-time email or SMS broadcast to a filtered list of contacts. Unlike automations (which are triggered per contact), a campaign goes out to everyone in the selected audience at once.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Creating a Campaign</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Go to <strong>Business → Campaigns → New Campaign</strong></li>
+              <li>Set a name, type (Email, SMS, Social), and subject line (email only)</li>
+              <li>Write the body — use <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{first_name}}`}</code> to personalise</li>
+              <li>Choose your audience: All Leads, All Clients, a specific Pipeline Stage, or a Tag</li>
+              <li>Save as draft, send now, or schedule for a specific date and time</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Sending</p>
+            <p>Once sent, the campaign status changes to <strong>Sent</strong> and the recipient count is recorded. Sent campaigns are locked — they cannot be edited.</p>
+
+            <Note>Campaigns send via Resend (email). SMS campaigns are not yet active — the field is there for when Twilio is integrated.</Note>
+          </Section>
+
+          <Section id="be-funnels" title="27. Funnels" colour="amber">
+            <p>Funnels are public lead capture pages hosted at <strong>bodyrecode.au/f/[slug]</strong>. Anyone who submits the form is automatically created as a lead in your CRM. Share the link anywhere — social, ads, email.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Creating a Funnel</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Go to <strong>Business → Funnels → New Funnel</strong></li>
+              <li>Set a name — the URL slug is generated automatically (you can edit it)</li>
+              <li>Write the page: headline, subheadline, body copy, CTA button label</li>
+              <li>Choose what happens after submit: redirect to the booking page (/book) or show a thank-you message</li>
+              <li>Toggle it live when ready</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What Happens on Submit</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Lead is created in CRM (or updated if already exists)</li>
+              <li>Source is recorded as &apos;funnel&apos;</li>
+              <li>Automation triggers fire: lead_created + form_submitted</li>
+              <li>Lead is redirected to /book or shown the thank-you screen</li>
+            </ul>
+
+            <Note>Toggle a funnel off at any time to disable the public page without deleting it.</Note>
+          </Section>
+
+          <Section id="be-inbox" title="28. Inbox" colour="amber">
+            <p>The Inbox shows one conversation thread per contact — a full chronological history of everything that has happened with that lead, and a compose box to send emails directly from the platform.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What Shows in the Thread</p>
+            <p>Every lead event is logged to the thread automatically:</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Zoom bookings</li>
+              <li>Emails sent (from automations, campaigns, or inbox)</li>
+              <li>Check-ins submitted</li>
+              <li>Follow-up sequences started or cancelled</li>
+              <li>Re-engagement and orientation emails</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Sending an Email</p>
+            <p>Open a contact from the inbox list, type a subject and message in the compose box at the bottom, and click Send. The email goes via Resend and is logged back into the thread immediately.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Inbox List</p>
+            <p>Contacts are sorted by most recent activity — whoever you last interacted with appears at the top. The preview shows the last event or email subject.</p>
+
+            <Note>The inbox sends outbound email only — it does not receive replies. If a lead replies to your email, you will see it in your kade@bodyrecode.au inbox (Gmail/Apple Mail). Two-way email threading is a future addition.</Note>
+          </Section>
+
+          <Section id="be-payments" title="29. Payments" colour="amber">
+            <p>The Payments module records all revenue — both automatic (Stripe webhooks) and manual entries. It also holds your product catalogue.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Automatic Recording</p>
+            <p>Stripe payments are recorded automatically via webhooks. You do not need to log them manually. The following events are captured:</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Commencement fee paid (one-time checkout)</li>
+              <li>Weekly subscription payment succeeded</li>
+              <li>Weekly subscription payment failed — coach is notified by email</li>
+              <li>Subscription cancelled</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Manual Payments</p>
+            <p>Use <strong>Record Payment</strong> to log cash, bank transfer, or any payment that didn&apos;t come through Stripe. Select the contact, product, amount, and status.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Products</p>
+            <p>Three default products are seeded: Coaching Commencement Fee ($497), Weekly Coaching 2x ($200), Weekly Coaching 3x ($280). Add or edit products from the Payments page.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Failed Payments</p>
+            <p>When a subscription payment fails, the payment is recorded with a <strong>Failed</strong> status and you receive a notification email. Follow up with the client directly — the subscription will retry automatically via Stripe.</p>
+          </Section>
+
+          <Section id="be-analytics" title="30. Analytics" colour="amber">
+            <p>The Analytics page shows live business metrics — no manual data entry required. Everything is calculated from your live CRM, bookings, and payment data.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Metrics</p>
+            <StatusList items={[
+              { label: 'Revenue', desc: 'Total revenue from all paid payments in the selected period' },
+              { label: 'Leads', desc: 'Total leads created' },
+              { label: 'Conversion Rate', desc: 'Leads who reached Active Client stage ÷ total leads' },
+              { label: 'Show-up Rate', desc: 'Zoom calls that were completed ÷ calls that were booked' },
+              { label: 'Pipeline', desc: 'Bar breakdown of how many leads are in each stage right now' },
+              { label: 'Lead Sources', desc: 'Where leads came from — direct booking, funnel, or other source' },
+              { label: 'Bookings', desc: 'Total bookings, split by type (Zoom 1, Zoom 2, Other)' },
+            ]} />
+
+            <Note>All metrics read directly from your live data. The analytics page refreshes on each load — there is no caching delay.</Note>
           </Section>
 
         </div>
