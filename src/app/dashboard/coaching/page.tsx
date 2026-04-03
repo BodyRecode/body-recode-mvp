@@ -1,11 +1,11 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import { AlertTriangle } from 'lucide-react'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ view?: string; type?: string }> }) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { view, type } = await searchParams
   const showInactive = view === 'inactive'
   const typeFilter = type === 'online' ? 'online' : type === 'face_to_face' ? 'face_to_face' : 'all'
