@@ -341,13 +341,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Recent check-ins */}
         {recentCheckins.length > 0 && (
           <div className="mb-10">
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Recent check-ins</p>
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs font-bold tracking-widest text-stone-500 uppercase">Recent check-ins</p>
+              <Link href={`/portal/${token}/checkin-history`} className="text-xs text-teal-500 hover:text-teal-400 transition-colors">View all →</Link>
+            </div>
             <div className="space-y-2">
               {recentCheckins.map((c: { week_number: number; form_type: string; submitted_at: string }, i: number) => (
                 <div key={i} className="flex items-center justify-between rounded-xl bg-stone-900 px-4 py-3">
-                  <div>
-                    <p className="text-sm text-white font-medium">Week {c.week_number}, Form {c.form_type}</p>
-                  </div>
+                  <p className="text-sm text-white font-medium">Week {c.week_number}, Form {c.form_type}</p>
                   <p className="text-xs text-stone-500">{new Date(c.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
                 </div>
               ))}
