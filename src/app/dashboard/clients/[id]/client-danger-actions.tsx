@@ -24,7 +24,8 @@ export default function ClientDangerActions({ clientId, isActive }: { clientId: 
     const res = await fetch(`/api/clients/${clientId}`, { method: 'DELETE' })
     setLoading(null)
     if (!res.ok) {
-      alert('Failed to delete client. Please try again.')
+      const data = await res.json()
+      alert(`Failed to delete client: ${data.error || 'Unknown error'}`)
       return
     }
     router.push('/dashboard/coaching')
