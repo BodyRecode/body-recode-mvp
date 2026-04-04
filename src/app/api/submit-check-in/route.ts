@@ -7,6 +7,16 @@ import { darkEmailSignature } from '@/lib/email-signature'
 
 export const maxDuration = 60
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': 'https://performance.bodyrecode.au',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: CORS_HEADERS })
+}
+
 export async function POST(request: NextRequest) {
   const { name, email, phone, answers, source } = await request.json()
 
@@ -210,7 +220,7 @@ export async function POST(request: NextRequest) {
     )
   })
 
-  return NextResponse.json({ success: true })
+  return NextResponse.json({ success: true }, { headers: CORS_HEADERS })
 }
 
 async function scheduleReport(
