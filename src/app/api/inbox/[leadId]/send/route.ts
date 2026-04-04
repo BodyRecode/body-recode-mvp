@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 
 export async function POST(
@@ -56,8 +57,9 @@ export async function POST(
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Log to lead_events
-  await supabase.from('lead_events').insert({
+  // Log to lead_events (admin client bypasses RLS for legacy null coach_id leads)
+  const admin = createAdminClient()
+  await admin.from('lead_events').insert({
     lead_id: leadId,
     type: 'email_sent',
     subject,
