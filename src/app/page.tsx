@@ -20,7 +20,7 @@ export default function HomePage() {
         <DnaHelix className="absolute left-0 bottom-0 h-3/4 w-auto max-w-[160px] pointer-events-none select-none" opacity={0.04} />
         <div className="max-w-4xl mx-auto px-5 py-32 text-center relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-8">
-            Body Recode™ - Biological Interpretation System
+            Body Recode™: Biological Interpretation System
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight mb-8">
             Interpretation before prescription.
@@ -49,7 +49,7 @@ export default function HomePage() {
               The conventional model goes: assess goals, prescribe approach, measure output, adjust. This works when the body is in a state to respond. Most of the time, it is not. The model assumes the body is ready. It rarely asks whether it is.
             </p>
             <p>
-              The result is effort without response. Training that doesn&apos;t build. Nutrition that doesn&apos;t shift body composition. Recovery that never fully lands. The intervention is not wrong - the sequencing is.
+              The result is effort without response. Training that doesn&apos;t build. Nutrition that doesn&apos;t shift body composition. Recovery that never fully lands. The intervention is not wrong. The sequencing is.
             </p>
           </div>
         </div>
@@ -69,7 +69,7 @@ export default function HomePage() {
             <div className="border border-white/10 rounded-2xl p-6">
               <p className="text-[#10E1C2] text-2xl font-extrabold mb-2">208</p>
               <p className="text-white font-semibold mb-1">Intake questions</p>
-              <p className="text-white/40 text-sm leading-relaxed">Structured across eight signal domains. Not a questionnaire - a biological read.</p>
+              <p className="text-white/40 text-sm leading-relaxed">Structured across eight signal domains. Not a questionnaire. A biological read.</p>
             </div>
             <div className="border border-white/10 rounded-2xl p-6">
               <p className="text-[#10E1C2] text-2xl font-extrabold mb-2">5</p>
@@ -94,15 +94,15 @@ export default function HomePage() {
           </h2>
           <div className="grid md:grid-cols-2 gap-8 mb-10">
             <div className="border border-[#10E1C2]/30 rounded-2xl p-8 bg-[#10E1C2]/5">
-              <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Layer 1 - Interpretation</p>
+              <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Layer 1: Interpretation</p>
               <p className="text-white/60 text-base leading-relaxed">
-                Takes structured input data across eight signal domains - training load, recovery capacity, stress architecture, hormonal signals, fat distribution patterns, sleep quality, behavioural patterns, and emotional load - and produces the CFFS: the Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation.
+                Takes structured input data across eight signal domains (training load, recovery capacity, stress architecture, hormonal signals, fat distribution patterns, sleep quality, behavioural patterns, and emotional load) and produces the CFFS: the Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation.
               </p>
             </div>
             <div className="border border-white/10 rounded-2xl p-8">
-              <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase mb-4">Layer 2 - Execution</p>
+              <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase mb-4">Layer 2: Execution</p>
               <p className="text-white/60 text-base leading-relaxed">
-                Downstream of the CFFS, the practitioner designs the actual intervention - training, nutrition, load management, clinical protocol, performance strategy. Everything in the execution layer is derived from the interpretation. The interpretation never changes to accommodate the execution.
+                Downstream of the CFFS, the practitioner designs the actual intervention: training, nutrition, load management, clinical protocol, performance strategy. Everything in the execution layer is derived from the interpretation. The interpretation never changes to accommodate the execution.
               </p>
             </div>
           </div>
@@ -155,7 +155,7 @@ export default function HomePage() {
             Five pillars. One read.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            The Body Recode™ interpretation engine reads the body across five distinct pillars simultaneously. Each pillar contributes signal data. No single pillar drives the output in isolation - the interpretation is always a synthesis of the full picture.
+            The Body Recode™ interpretation engine reads the body across five distinct pillars simultaneously. Each pillar contributes signal data. No single pillar drives the output in isolation. The interpretation is always a synthesis of the full picture.
           </p>
 
           {/* Pillar 1 - Fat Map Method (featured) */}
@@ -197,7 +197,7 @@ export default function HomePage() {
                 num: '02',
                 name: 'Performance Training System',
                 abbr: 'PTS',
-                desc: 'Reads physical stress exposure, training load, fatigue patterns, and adaptation signals. The PTS does not prescribe training - it interprets the risk and capacity picture that defines what training the body can tolerate right now.',
+                desc: 'Reads physical stress exposure, training load, fatigue patterns, and adaptation signals. The PTS does not prescribe training. It interprets the risk and capacity picture that defines what training the body can tolerate right now.',
               },
               {
                 num: '03',
@@ -209,13 +209,13 @@ export default function HomePage() {
                 num: '04',
                 name: 'Recovery and Regulation System',
                 abbr: 'RRS',
-                desc: 'Reads the system\'s capacity to restore, downregulate, and return to baseline between stress exposures. Distinguishes genuine recovery from suppression - the body that appears stable but is not regenerating.',
+                desc: 'Reads the system\'s capacity to restore, downregulate, and return to baseline between stress exposures. Distinguishes genuine recovery from suppression: the body that appears stable but is not regenerating.',
               },
               {
                 num: '05',
                 name: 'Behaviour, Identity and Rhythm System',
                 abbr: 'BIRS',
-                desc: 'Interprets emotional load, identity constraints, and behavioural patterns as structural biological stressors. Compliance, identity threat, and rhythm disruption are not psychological observations - they are inputs that affect adaptation and regulation.',
+                desc: 'Interprets emotional load, identity constraints, and behavioural patterns as structural biological stressors. Compliance, identity threat, and rhythm disruption are not psychological observations. They are inputs that affect adaptation and regulation.',
               },
             ].map((pillar) => (
               <div key={pillar.num} className="border border-white/10 rounded-2xl p-7">
@@ -273,7 +273,7 @@ export default function HomePage() {
             One engine. Built to scale across industries.
           </h2>
           <p className="text-white/60 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            Body Recode™ is built as one interpretive core with multiple execution layers on top of it. The interpretation engine ingests structured client data, classifies body state, and produces the CFFS. This engine is environment-agnostic. It can be licensed, white-labelled, or integrated into existing practitioner workflows. Each execution layer is a downstream application - its own product, its own interface, its own practitioner tools, calibrated to the demands and language of its environment.
+            Body Recode™ is built as one interpretive core with multiple execution layers on top of it. The interpretation engine ingests structured client data, classifies body state, and produces the CFFS. This engine is environment-agnostic. It can be licensed, white-labelled, or integrated into existing practitioner workflows. Each execution layer is a downstream application: its own product, its own interface, its own practitioner tools, calibrated to the demands and language of its environment.
           </p>
 
           <div className="border border-white/10 rounded-2xl overflow-hidden">
@@ -319,7 +319,7 @@ export default function HomePage() {
             One interpretive engine. Five environments.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            The interpretive layer does not care what environment the body is operating in. The body responds to load through the same biological mechanisms regardless of context. What changes between environments is not the interpretation - it is what the practitioner does with it.
+            The interpretive layer does not care what environment the body is operating in. The body responds to load through the same biological mechanisms regardless of context. What changes between environments is not the interpretation. It is what the practitioner does with it.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
             {/* Environment 1 - Live */}
@@ -330,7 +330,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-bold text-white mb-3">Performance Coaching</h3>
               <p className="text-white/60 text-sm leading-relaxed mb-6">
-                The origin environment and first proof of concept. Clients are general population - people whose bodies have stopped responding to effort. The execution layer is structured training and nutrition design derived entirely from the CFFS.
+                The origin environment and first proof of concept. Clients are general population: people whose bodies have stopped responding to effort. The execution layer is structured training and nutrition design derived entirely from the CFFS.
               </p>
               <Link
                 href="/performance-coaching"
@@ -348,7 +348,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-bold text-white mb-3">Executive Performance</h3>
               <p className="text-white/50 text-sm leading-relaxed">
-                High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress - cortisol elevation, recovery suppression, regulatory disruption.
+                High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress: cortisol elevation, recovery suppression, regulatory disruption.
               </p>
             </div>
 
@@ -394,7 +394,7 @@ export default function HomePage() {
       {/* Closing statement - no CTA */}
       <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Environment 01 - Live</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Environment 01: Live</p>
           <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-6">
             Performance Coaching is live.
           </h2>
