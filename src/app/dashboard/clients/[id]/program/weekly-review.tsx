@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import ReviewCoachNotes from './review-coach-notes'
 
 const directionColour: Record<string, string> = {
   progress: 'text-green-400 bg-green-400/10 border-green-400/30',
@@ -23,6 +24,7 @@ interface Review {
   adherence_confirmed: boolean
   reviewed_at: string
   submitted_by: string | null
+  coach_notes: string | null
 }
 
 export default async function ProgramWeeklyReview({
@@ -37,7 +39,7 @@ export default async function ProgramWeeklyReview({
   const admin = createAdminClient()
   const { data: reviews } = await admin
     .from('program_reviews')
-    .select('id, direction, signal_category, signals_noted, adherence_confirmed, reviewed_at, submitted_by')
+    .select('id, direction, signal_category, signals_noted, adherence_confirmed, reviewed_at, submitted_by, coach_notes')
     .eq('program_id', programId)
     .order('reviewed_at', { ascending: false })
     .limit(5)
@@ -90,6 +92,7 @@ export default async function ProgramWeeklyReview({
               {review.signals_noted && (
                 <p className="text-xs text-stone-400 leading-relaxed">{review.signals_noted}</p>
               )}
+              <ReviewCoachNotes reviewId={review.id} existingNotes={review.coach_notes} />
             </div>
           ))}
         </div>
