@@ -5,7 +5,8 @@ import { ArrowLeft, Mail, Calendar, FileText, Send, AlertCircle, CheckCircle2, R
 import InboxCompose from './inbox-compose'
 
 const EVENT_CONFIG: Record<string, { label: string; icon: typeof Mail; colour: string }> = {
-  email_sent: { label: 'Email sent', icon: Mail, colour: 'text-teal-400' },
+  email_sent: { label: 'You', icon: Mail, colour: 'text-teal-400' },
+  email_received: { label: 'Reply received', icon: Mail, colour: 'text-blue-400' },
   zoom_booked: { label: 'Zoom booked', icon: Calendar, colour: 'text-teal-400' },
   check_in_submitted: { label: 'Check-in submitted', icon: FileText, colour: 'text-stone-400' },
   followup_scheduled: { label: 'Follow-up scheduled', icon: Send, colour: 'text-amber-400' },
@@ -74,7 +75,7 @@ export default async function InboxThreadPage({
             const Icon = cfg.icon
 
             return (
-              <div key={event.id} className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+              <div key={event.id} className={`border rounded-xl p-4 ${event.type === 'email_received' ? 'bg-stone-800/60 border-blue-500/20' : 'bg-stone-900 border-stone-800'}`}>
                 <div className="flex items-start gap-3">
                   <div className="mt-0.5 shrink-0">
                     <Icon size={13} className={cfg.colour} />
