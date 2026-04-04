@@ -88,18 +88,20 @@ export default function PerformanceCoachingPage() {
                 <p className="text-sm font-bold text-[#10E1C2] uppercase tracking-wider">Online 1:1</p>
                 <span className="text-[10px] font-bold text-black bg-[#10E1C2] px-2.5 py-1 rounded-full uppercase tracking-wider">Worldwide</span>
               </div>
-              <p className="text-white/60 text-base leading-relaxed">
+              <p className="text-white/60 text-base leading-relaxed mb-6">
                 Full 1:1 coaching delivered remotely. Same structured intake, same biological assessment, same program design. Everything lives in your client portal: your program, your synthesis documents, your weekly check-ins, your progress data.
               </p>
+              <a href="https://performance-bodyrecode.vercel.app/online" className="text-sm font-semibold text-[#10E1C2] hover:underline">Online Coaching →</a>
             </div>
             <div className="border border-white/10 rounded-2xl p-8">
               <div className="flex items-center justify-between mb-6">
                 <p className="text-sm font-bold text-white/40 uppercase tracking-wider">Face-to-Face</p>
                 <span className="text-[10px] font-bold text-white/30 border border-white/10 px-2.5 py-1 rounded-full uppercase tracking-wider">Brisbane</span>
               </div>
-              <p className="text-white/60 text-base leading-relaxed">
+              <p className="text-white/60 text-base leading-relaxed mb-6">
                 The same Body Recode™ system delivered face-to-face at Anytime Fitness Newstead. One-on-one only. Availability is intentionally limited to maintain the coaching depth the system requires.
               </p>
+              <a href="https://performance-bodyrecode.vercel.app/brisbane" className="text-sm font-semibold text-white/40 hover:text-white/70 transition-colors">Brisbane Coaching →</a>
             </div>
           </div>
         </div>
@@ -116,11 +118,12 @@ export default function PerformanceCoachingPage() {
             Performance Coaching is the first live deployment of the Body Recode™ system. Available online worldwide and face-to-face in Brisbane.
           </p>
           <a
-            href="mailto:info@bodyrecode.au"
-            className="inline-block border border-[#10E1C2]/40 text-[#10E1C2] font-semibold px-8 py-4 rounded-full text-base hover:border-[#10E1C2] transition-colors"
+            href="https://performance-bodyrecode.vercel.app"
+            className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb3] transition-colors mb-4"
           >
-            info@bodyrecode.au
+            Visit Performance Coaching
           </a>
+          <p className="text-white/30 text-sm mt-2">performance.bodyrecode.au</p>
         </div>
       </section>
 
