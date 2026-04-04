@@ -8,6 +8,13 @@ const directionColour: Record<string, string> = {
   deload: 'text-blue-400 bg-blue-400/10 border-blue-400/30',
 }
 
+const directionLabel: Record<string, string> = {
+  progress: 'Making progress',
+  hold: 'Staying steady',
+  rebuild: 'Struggling',
+  deload: 'Deload',
+}
+
 const signalLabel: Record<string, string> = {
   performance_up: 'Feeling stronger',
   performance_down: 'Struggling with sessions',
@@ -50,8 +57,8 @@ export default async function ProgramWeeklyReview({
           <p className="text-sm font-semibold text-stone-300">Weekly Review</p>
           <div className="flex items-center gap-2 mt-1">
             {currentDirection ? (
-              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${directionColour[currentDirection] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
-                {currentDirection}
+              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${directionColour[currentDirection] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
+                {directionLabel[currentDirection] ?? currentDirection}
               </span>
             ) : (
               <span className="text-xs text-stone-600">No review yet</span>
@@ -71,8 +78,8 @@ export default async function ProgramWeeklyReview({
           {(reviews as Review[]).map((review) => (
             <div key={review.id} className="px-5 py-4 space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${directionColour[review.direction] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
-                  {review.direction}
+                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${directionColour[review.direction] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
+                  {directionLabel[review.direction] ?? review.direction}
                 </span>
                 <span className="text-xs text-stone-600">
                   {new Date(review.reviewed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
