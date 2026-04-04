@@ -706,7 +706,10 @@ export default function HelpPage() {
             <Note>Programs follow doctrine exactly — one PTS phase only, no cross-phase blending, exercise selection from the approved library only, skeleton structure fixed, fatigue adjustments on execution variables only.</Note>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 5 — Weekly Review (Client Portal)</p>
-            <p>The weekly training review is submitted by the client through their portal. The client reports whether they completed their sessions, how training felt (stronger / struggling / no change / recovering poorly / ticking along), and how things are going overall. As the coach, you see submitted reviews as a read-only feed on the Training Program page — direction, signal, adherence status, and any notes the client added. No form to fill in on the coach side.</p>
+            <p>The weekly training review is submitted by the client through their portal. The client reports whether they completed their sessions, how training felt (one or more signals), the overall direction, and optional notes. You see the answers as a question/answer feed on the Training Program page.</p>
+            <p className="mt-2"><strong>Direction labels:</strong> <strong>Progress</strong> — client selected &quot;Making progress&quot;. <strong>Hold</strong> — client selected &quot;Staying steady&quot;. <strong>Rebuild</strong> — client selected &quot;Struggling&quot;.</p>
+            <p className="mt-2"><strong>How training felt signals:</strong> Feeling stronger / Struggling with sessions / No change / Recovering poorly / Ticking along. Clients can select multiple.</p>
+            <p className="mt-2"><strong>Coach notes:</strong> After reviewing, click <strong>+ Add feedback for client</strong> under any review entry to write a note. This note appears on the client&apos;s portal home page under &quot;From your coach&quot;. Only the most recent note with content is shown to the client.</p>
 
             <Training title="How to read the prescription suggestion">
               <p>The suggestion is not a recommendation to accept blindly. It is the system&apos;s read of the client&apos;s current state based on available data. Read each reasoning note — if your coaching judgement disagrees with the reasoning, edit the field. The system explains its logic so you can interrogate it, not so you can skip the thinking.</p>
@@ -749,8 +752,10 @@ export default function HelpPage() {
             <p>The generated plan appears on the client&apos;s Nutrition Plan page under a <strong>Draft — Pending Approval</strong> banner. Review the full output: entry state summary, meal structure (per-meal macros and foods), training day adjustments, execution rules, what not to change, and progression notes. Use <strong>Discard Draft</strong> to delete it or <strong>Approve Plan</strong> to promote it to active.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 4 — Weekly Review (Client Portal)</p>
-            <p>The weekly nutrition review is submitted by the client through their portal. The client reports how they went — adherence, what they noticed (under-fuelled, over-fuelled, recovery issues, etc.), and how things feel overall (making progress / staying steady / struggling). As the coach, you see the submitted results as a read-only feed on the Nutrition Plan page. No form to fill in — the client does it.</p>
-            <p className="mt-2">Direction options visible to you: <strong>Progress</strong> (client feels on track), <strong>Hold</strong> (steady, no change), <strong>Rebuild</strong> (struggling — consider a new plan).</p>
+            <p>The weekly nutrition review is submitted by the client through their portal. The client reports adherence, what they noticed (one or more signals), the overall direction, and optional notes. You see the answers as a question/answer feed on the Nutrition Plan page.</p>
+            <p className="mt-2"><strong>Direction labels:</strong> <strong>Progress</strong> — client selected &quot;Making progress&quot;. <strong>Hold</strong> — client selected &quot;Staying steady&quot;. <strong>Rebuild</strong> — client selected &quot;Struggling&quot;.</p>
+            <p className="mt-2"><strong>What they noticed signals:</strong> Under-fuelled / Over-fuelled / Recovery issues / Hard to stick to / Feeling good. Clients can select multiple.</p>
+            <p className="mt-2"><strong>Coach notes:</strong> Click <strong>+ Add feedback for client</strong> under any review entry to write a note back to the client. This appears on their portal home page under &quot;From your coach&quot;.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Key Concepts</p>
             <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
