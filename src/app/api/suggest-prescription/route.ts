@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
     { data: intake },
     { data: previousPrograms },
     { data: planBlock },
+    { data: recentReviews },
   ] = await Promise.all([
     admin.from('clients').select('id, name').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
@@ -43,6 +44,11 @@ export async function POST(request: NextRequest) {
     plan_block_id
       ? admin.from('plan_blocks').select('*, training_plans(plan_name, macro_objective)').eq('id', plan_block_id).maybeSingle()
       : Promise.resolve({ data: null }),
+    admin.from('program_reviews')
+      .select('direction, signal_category, adherence_confirmed, signals_noted, reviewed_at')
+      .eq('client_id', client_id)
+      .order('reviewed_at', { ascending: false })
+      .limit(5),
   ])
 
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
@@ -89,6 +95,22 @@ ${previousPrograms.map((p, i) =>
 ).join('\n')}`)
   } else {
     contextParts.push(`\nPREVIOUS PROGRAMS: None. This is the client's first block.`)
+  }
+
+  if (recentReviews && recentReviews.length > 0) {
+    const directionLabel: Record<string, string> = { progress: 'Making progress', hold: 'Staying steady', rebuild: 'Struggling' }
+    const signalLabel: Record<string, string> = {
+      performance_up: 'Feeling stronger', performance_down: 'Struggling with sessions',
+      stalled: 'No change', recovery_constraint: 'Recovering poorly', neutral_stable: 'Ticking along',
+    }
+    contextParts.push(`
+RECENT TRAINING CHECK-IN HISTORY (most recent first — use this to understand how the client has been responding to training):
+${recentReviews.map((r, i) => {
+  const signals = r.signal_category ? r.signal_category.split(',').map((s: string) => signalLabel[s.trim()] ?? s.trim()).join(', ') : 'Not specified'
+  return `${i + 1}. Direction: ${directionLabel[r.direction] ?? r.direction} | Sessions completed: ${r.adherence_confirmed ? 'Yes' : 'No'} | How training felt: ${signals}${r.signals_noted ? ` | Notes: ${r.signals_noted}` : ''}`
+}).join('\n')}
+
+If the most recent direction is Rebuild, this means the client has been struggling. Factor this heavily into the prescription — do not escalate phase or load. If multiple consecutive Rebuild entries exist, consider whether the current phase is appropriate or whether intervention is needed.`)
   }
 
   if (planBlock) {

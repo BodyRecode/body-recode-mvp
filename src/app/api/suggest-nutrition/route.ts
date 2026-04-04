@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
     { data: intake },
     { data: previousPlans },
     { data: activeProgram },
+    { data: recentReviews },
   ] = await Promise.all([
     admin.from('clients').select('id, name').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
@@ -44,6 +45,11 @@ export async function POST(request: NextRequest) {
       .eq('client_id', client_id)
       .eq('is_active', true)
       .maybeSingle(),
+    admin.from('nutrition_reviews')
+      .select('direction, signal_category, adherence_confirmed, signals_noted, reviewed_at')
+      .eq('client_id', client_id)
+      .order('reviewed_at', { ascending: false })
+      .limit(5),
   ])
 
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
@@ -111,6 +117,22 @@ ${previousPlans.map((p, i) =>
 ).join('\n')}`)
   } else {
     contextParts.push(`\nPREVIOUS NUTRITION PLANS: None. This is the client's first nutrition plan.`)
+  }
+
+  if (recentReviews && recentReviews.length > 0) {
+    const directionLabel: Record<string, string> = { progress: 'Making progress', hold: 'Staying steady', rebuild: 'Struggling' }
+    const signalLabel: Record<string, string> = {
+      under_fuelling: 'Under-fuelled', over_fuelling: 'Over-fuelled',
+      recovery_constraint: 'Recovery issues', adherence_constraint: 'Hard to stick to', neutral_stable: 'Feeling good',
+    }
+    contextParts.push(`
+RECENT NUTRITION CHECK-IN HISTORY (most recent first — use this to understand how the client has been responding to the nutrition plan):
+${recentReviews.map((r, i) => {
+  const signals = r.signal_category ? r.signal_category.split(',').map((s: string) => signalLabel[s.trim()] ?? s.trim()).join(', ') : 'Not specified'
+  return `${i + 1}. Direction: ${directionLabel[r.direction] ?? r.direction} | Followed plan: ${r.adherence_confirmed ? 'Yes' : 'No'} | What they noticed: ${signals}${r.signals_noted ? ` | Notes: ${r.signals_noted}` : ''}`
+}).join('\n')}
+
+If the most recent direction is Rebuild, the client is struggling with the current plan. Do not escalate demands. If multiple consecutive Rebuild entries exist, consider reducing complexity, adjusting macros, or simplifying meal structure.`)
   }
 
   const systemPrompt = `You are the Body Recode™ Nutrition Prescription Intelligence Layer. Your role is to analyse a client's full context and produce a governed nutrition prescription suggestion — with clear reasoning for every field — before nutrition generation begins.
