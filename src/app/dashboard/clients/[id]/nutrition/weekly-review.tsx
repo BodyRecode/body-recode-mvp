@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import NutritionReviewCoachNotes from './review-coach-notes'
 
 const directionColour: Record<string, string> = {
   progress: 'text-green-400 bg-green-400/10 border-green-400/30',
@@ -22,6 +23,7 @@ interface Review {
   adherence_confirmed: boolean
   reviewed_at: string
   submitted_by: string | null
+  coach_notes: string | null
 }
 
 export default async function NutritionWeeklyReview({
@@ -36,7 +38,7 @@ export default async function NutritionWeeklyReview({
   const admin = createAdminClient()
   const { data: reviews } = await admin
     .from('nutrition_reviews')
-    .select('id, direction, signal_category, signals_noted, adherence_confirmed, reviewed_at, submitted_by')
+    .select('id, direction, signal_category, signals_noted, adherence_confirmed, reviewed_at, submitted_by, coach_notes')
     .eq('nutrition_plan_id', planId)
     .order('reviewed_at', { ascending: false })
     .limit(5)
@@ -69,28 +71,36 @@ export default async function NutritionWeeklyReview({
       {reviews && reviews.length > 0 ? (
         <div className="divide-y divide-stone-800/60">
           {(reviews as Review[]).map((review) => (
-            <div key={review.id} className="px-5 py-4">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${directionColour[review.direction] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
-                    {review.direction}
-                  </span>
-                  {review.signal_category && (
-                    <span className="text-xs text-stone-500">{signalLabel[review.signal_category] ?? review.signal_category.replace(/_/g, ' ')}</span>
-                  )}
-                </div>
+            <div key={review.id} className="px-5 py-4 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${directionColour[review.direction] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
+                  {review.direction}
+                </span>
                 <span className="text-xs text-stone-600">
                   {new Date(review.reviewed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </span>
               </div>
-              <div className="flex items-center gap-3 mb-2">
-                <span className={`text-[10px] px-2 py-0.5 rounded border ${review.adherence_confirmed ? 'text-teal-400 border-teal-800 bg-teal-950/30' : 'text-stone-600 border-stone-800 bg-stone-800/30'}`}>
-                  {review.adherence_confirmed ? 'Followed plan' : 'Did not follow plan'}
-                </span>
+              <div className="space-y-1.5">
+                <div className="flex gap-2">
+                  <span className="text-xs text-stone-600 w-36 shrink-0">Followed plan</span>
+                  <span className={`text-xs font-medium ${review.adherence_confirmed ? 'text-teal-400' : 'text-red-400'}`}>
+                    {review.adherence_confirmed ? 'Yes' : 'No'}
+                  </span>
+                </div>
+                {review.signal_category && (
+                  <div className="flex gap-2">
+                    <span className="text-xs text-stone-600 w-36 shrink-0">What they noticed</span>
+                    <span className="text-xs text-stone-300">{signalLabel[review.signal_category] ?? review.signal_category.replace(/_/g, ' ')}</span>
+                  </div>
+                )}
+                {review.signals_noted && (
+                  <div className="flex gap-2">
+                    <span className="text-xs text-stone-600 w-36 shrink-0">Notes</span>
+                    <span className="text-xs text-stone-300 leading-relaxed">{review.signals_noted}</span>
+                  </div>
+                )}
               </div>
-              {review.signals_noted && (
-                <p className="text-xs text-stone-400 leading-relaxed">{review.signals_noted}</p>
-              )}
+              <NutritionReviewCoachNotes reviewId={review.id} existingNotes={review.coach_notes} />
             </div>
           ))}
         </div>
