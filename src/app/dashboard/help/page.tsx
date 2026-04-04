@@ -35,6 +35,7 @@ const SECTIONS = [
   { id: 'be-inbox', title: '28. Inbox', colour: 'amber' as const },
   { id: 'be-payments', title: '29. Payments', colour: 'amber' as const },
   { id: 'be-analytics', title: '30. Analytics', colour: 'amber' as const },
+  { id: 'be-ads', title: '31. Ads', colour: 'amber' as const },
 ]
 
 export default function HelpPage() {
@@ -798,12 +799,19 @@ export default function HelpPage() {
               { label: 'Zoom 1 Completed', desc: 'First call done — orientation sent' },
               { label: 'Zoom 2 Booked', desc: 'Second call scheduled' },
               { label: 'Zoom 2 Completed', desc: 'Second call done — decision made' },
-              { label: 'Fee Paid', desc: 'Commencement fee received' },
+              { label: 'Commencement Fee Paid', desc: 'Payment received — awaiting subscription' },
               { label: 'Active Client', desc: 'Converted — now in coaching dashboard' },
             ]} />
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Contact Detail</p>
-            <p>Click any lead card to open the contact detail view. From here you can: move pipeline stage, edit notes, view the full event timeline (all bookings, emails sent, check-ins), and quick-link to Zoom companion, inbox, and CRM actions.</p>
+            <p>Click any lead card to open the contact detail page. From here you can:</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Edit contact details</strong> — click Edit contact details to update name, email, and phone in-place</li>
+              <li><strong>Move pipeline stage</strong> — use the stage mover to advance or move back through the 8 stages</li>
+              <li><strong>Edit notes</strong> — freeform notes field, auto-saves on blur</li>
+              <li><strong>Quick links</strong> — jump to Performance Report, Zoom 1 Companion, Zoom 2 Companion, or the converted client profile (if applicable)</li>
+              <li><strong>Coaching Tools</strong> — opens the lead detail page in the main coaching dashboard</li>
+            </ul>
 
             <Note>Pipeline stages update automatically when a booking is made or a Stripe payment completes. You can also move them manually using the stage mover on the contact detail page.</Note>
           </Section>
@@ -905,47 +913,55 @@ export default function HelpPage() {
           </Section>
 
           <Section id="be-inbox" title="28. Inbox" colour="amber">
-            <p>The Inbox shows one conversation thread per contact — a full chronological history of everything that has happened with that lead, and a compose box to send emails directly from the platform.</p>
+            <p>The Inbox is a two-way email system — one conversation thread per contact. Every email you send and every reply you receive shows in the same chronological thread.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What Shows in the Thread</p>
             <p>Every lead event is logged to the thread automatically:</p>
             <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Emails you sent — shown in teal</li>
+              <li>Replies from the lead — shown in blue as &quot;Reply received&quot;</li>
               <li>Zoom bookings</li>
-              <li>Emails sent (from automations, campaigns, or inbox)</li>
+              <li>Automations and sequences (orientation, follow-ups, re-engagement)</li>
               <li>Check-ins submitted</li>
-              <li>Follow-up sequences started or cancelled</li>
-              <li>Re-engagement and orientation emails</li>
             </ul>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Sending an Email</p>
-            <p>Open a contact from the inbox list, type a subject and message in the compose box at the bottom, and click Send. The email goes via Resend and is logged back into the thread immediately.</p>
+            <p>Open a contact from the inbox list, type a subject and message in the compose box at the bottom, and click Send. The email goes via Resend with a reply-to of kade@replies.bodyrecode.au and is logged back into the thread immediately.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Receiving Replies</p>
+            <p>When a lead replies to any email from you, their reply routes to replies.bodyrecode.au via Postmark. The platform matches the sender email to their lead record and logs it as a &quot;Reply received&quot; event in their thread. Refresh the thread page to see new replies.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Inbox List</p>
-            <p>Contacts are sorted by most recent activity — whoever you last interacted with appears at the top. The preview shows the last event or email subject.</p>
+            <p>Contacts are sorted by most recent activity — whoever you last interacted with appears at the top. The preview shows the last event or email subject and the event count.</p>
 
-            <Note>The inbox sends outbound email only — it does not receive replies. If a lead replies to your email, you will see it in your kade@bodyrecode.au inbox (Gmail/Apple Mail). Two-way email threading is a future addition.</Note>
+            <Note>Replies are matched by the sender&apos;s email address. If a lead replies from a different address than what&apos;s on their record, the reply will not appear in their thread.</Note>
           </Section>
 
           <Section id="be-payments" title="29. Payments" colour="amber">
-            <p>The Payments module records all revenue — both automatic (Stripe webhooks) and manual entries. It also holds your product catalogue.</p>
+            <p>The Payments module records all revenue — both automatic (Stripe webhooks) and manual entries. It also holds your product catalogue and generates Stripe Payment Links on demand.</p>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Automatic Recording</p>
-            <p>Stripe payments are recorded automatically via webhooks. You do not need to log them manually. The following events are captured:</p>
-            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
-              <li>Commencement fee paid (one-time checkout)</li>
-              <li>Weekly subscription payment succeeded</li>
-              <li>Weekly subscription payment failed — coach is notified by email</li>
-              <li>Subscription cancelled</li>
-            </ul>
-
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Manual Payments</p>
-            <p>Use <strong>Record Payment</strong> to log cash, bank transfer, or any payment that didn&apos;t come through Stripe. Select the contact, product, amount, and status.</p>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Payment Links</p>
+            <p>Each product has a <strong>Get Link</strong> button. Click it once and Stripe generates a permanent payment link for that product — it then flips to <strong>Copy Link</strong>. Paste it anywhere: email, SMS, DM. The link never expires.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Products</p>
-            <p>Three default products are seeded: Coaching Commencement Fee ($497), Weekly Coaching 2x ($200), Weekly Coaching 3x ($280). Add or edit products from the Payments page.</p>
+            <StatusList items={[
+              { label: 'Coaching Commencement Fee', desc: '$240 — one-time. Send to every lead who agrees to proceed at Zoom 2.' },
+              { label: 'Online Coaching', desc: '$149/week recurring' },
+              { label: 'In-Person 2x', desc: '$299/week recurring — lead with this at Zoom 2' },
+              { label: 'In-Person 3x', desc: '$409/week recurring — coach-assessed only, offer during check-ins' },
+              { label: 'Online Coaching (Founding Client)', desc: '$74.50/week — half rate for case study clients' },
+              { label: 'In-Person 2x (Founding Client)', desc: '$149.50/week' },
+              { label: 'In-Person 3x (Founding Client)', desc: '$204.50/week' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Automatic Recording</p>
+            <p>Stripe payments are recorded automatically via webhooks — commencement fee, weekly subscription payments, failures, and cancellations. You do not need to log them manually.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Manual Payments</p>
+            <p>Use <strong>Record Payment</strong> to log cash, bank transfer, or any payment that didn&apos;t come through Stripe.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Failed Payments</p>
-            <p>When a subscription payment fails, the payment is recorded with a <strong>Failed</strong> status and you receive a notification email. Follow up with the client directly — the subscription will retry automatically via Stripe.</p>
+            <p>When a subscription payment fails, the payment is recorded with a <strong>Failed</strong> status and you receive a notification email. Follow up with the client directly — Stripe will retry automatically.</p>
           </Section>
 
           <Section id="be-analytics" title="30. Analytics" colour="amber">
@@ -963,6 +979,26 @@ export default function HelpPage() {
             ]} />
 
             <Note>All metrics read directly from your live data. The analytics page refreshes on each load — there is no caching delay.</Note>
+          </Section>
+
+          <Section id="be-ads" title="31. Ads" colour="amber">
+            <p>The Ads module tracks paid advertising performance — spend, leads generated, and cost-per-lead (CPL) — across Meta and Google campaigns. All data is entered manually.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Adding a Campaign</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Click <strong>Add Campaign</strong></li>
+              <li>Select the platform (Meta or Google)</li>
+              <li>Enter the campaign name, spend (AUD), leads generated, and date range</li>
+              <li>CPL is calculated automatically as you type</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Summary Row</p>
+            <p>At the top of the page, totals across all campaigns are shown: total spend, total leads, and average CPL. Use this to compare Meta vs Google performance over time.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Editing</p>
+            <p>Click the pencil icon on any campaign to edit it inline. Update spend or lead count as final numbers come in from your ad manager dashboard.</p>
+
+            <Note>Automatic sync with Meta Ads and Google Ads APIs is planned once ad accounts are active. For now, pull the numbers from your ad manager and enter them here.</Note>
           </Section>
 
         </div>
