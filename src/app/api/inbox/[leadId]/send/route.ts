@@ -23,7 +23,7 @@ export async function POST(
     .from('leads')
     .select('id, name, email')
     .eq('id', leadId)
-    .eq('coach_id', user.id)
+    .or(`coach_id.eq.${user.id},coach_id.is.null`)
     .single()
 
   if (!lead?.email) {
