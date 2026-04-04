@@ -356,6 +356,25 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
+        {/* Progress */}
+        {allOnboardingDone && (
+          <div className="mb-10">
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Progress</p>
+            <Link
+              href={`/portal/${token}/progress`}
+              className="block rounded-2xl border border-stone-800 bg-stone-900/50 p-4 hover:border-stone-700 transition-colors"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-stone-300">Measurements</p>
+                  <p className="text-xs text-stone-600 mt-0.5">Track your bodyweight, waist, hips and chest over time.</p>
+                </div>
+                <span className="text-xs text-stone-500 ml-4">→</span>
+              </div>
+            </Link>
+          </div>
+        )}
+
         {/* Coach feedback */}
         {(latestProgramReview?.coach_notes || latestNutritionReview?.coach_notes) && (
           <div className="mb-10">
