@@ -31,7 +31,7 @@ export default async function InboxThreadPage({
       .from('leads')
       .select('id, name, email, phone, status')
       .eq('id', leadId)
-      .eq('coach_id', user!.id)
+      .or(`coach_id.eq.${user!.id},coach_id.is.null`)
       .single(),
     supabase
       .from('lead_events')
