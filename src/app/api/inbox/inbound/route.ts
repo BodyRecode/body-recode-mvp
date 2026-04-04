@@ -25,20 +25,26 @@ export async function POST(request: NextRequest) {
 
   const admin = createAdminClient()
 
-  // Find the lead by email
-  const { data: lead } = await admin
+  // Find the lead by email — take most recently created if multiple match
+  const { data: leads } = await admin
     .from('leads')
     .select('id, coach_id')
     .ilike('email', senderEmail)
-    .maybeSingle()
+    .order('created_at', { ascending: false })
+    .limit(1)
+
+  const lead = leads?.[0] ?? null
 
   if (!lead) {
     // Try clients table too
-    const { data: client } = await admin
+    const { data: clients } = await admin
       .from('clients')
       .select('lead_id, coach_id')
       .ilike('email', senderEmail)
-      .maybeSingle()
+      .order('created_at', { ascending: false })
+      .limit(1)
+
+    const client = clients?.[0] ?? null
 
     if (!client?.lead_id) {
       // Unknown sender — log and move on
