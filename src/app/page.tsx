@@ -166,37 +166,88 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Fat Map Method™ */}
+      {/* Interpretive Pillars */}
       <section className="bg-black py-32 px-5 border-t border-white/5 overflow-hidden relative">
         <DnaHelix className="absolute -left-6 top-1/2 -translate-y-1/2 h-[110%] w-auto max-w-[160px] pointer-events-none select-none" opacity={0.05} />
         <div className="max-w-4xl mx-auto relative z-10">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Core Methodology</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Interpretive Pillars</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
-            Fat Map Method™
+            Five pillars. One read.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            One of the core interpretive tools within Body Recode™. Fat accumulation patterns are read as hormonal and metabolic signalling, not simple energy surplus. Where fat accumulates on the body reflects the body&apos;s adaptive response to its current hormonal and regulatory environment.
+            The Body Recode™ interpretation engine reads the body across five distinct pillars simultaneously. Each pillar contributes signal data. No single pillar drives the output in isolation — the interpretation is always a synthesis of the full picture.
           </p>
-          <div className="grid md:grid-cols-2 gap-6 mb-10">
-            {[
-              { zone: 'MZ1', name: 'Stress Belt', location: 'Stomach / Waist', signal: 'Cortisol and adrenaline dominance' },
-              { zone: 'MZ2', name: 'Gut and Bloat', location: 'Digestive region', signal: 'Insulin timing disruption' },
-              { zone: 'MZ3', name: 'Hip and Thigh Conservation', location: 'Hips / Thighs', signal: 'Reproductive hormone and metabolic conservation patterns' },
-              { zone: 'MZ4', name: 'Upper Body Stress Response', location: 'Upper body', signal: 'Nervous system load, adrenaline, sleep retention' },
-            ].map((item) => (
-              <div key={item.zone} className="border border-white/10 rounded-2xl p-7">
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">{item.zone}</p>
-                  <span className="text-xs text-white/30 font-medium">{item.location}</span>
+
+          {/* Pillar 1 — Fat Map Method (featured) */}
+          <div className="border border-[#10E1C2]/30 rounded-2xl p-8 bg-[#10E1C2]/5 mb-6">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">Pillar 01</p>
+              <span className="text-[10px] font-bold text-black bg-[#10E1C2] px-2.5 py-1 rounded-full uppercase tracking-wider">Primary</span>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-3">Fat Map Method™</h3>
+            <p className="text-white/60 text-base leading-relaxed mb-8">
+              Fat accumulation patterns are read as hormonal and metabolic signalling, not simple energy surplus. Where the body stores fat reflects its adaptive response to the current hormonal and regulatory environment. The Fat Map is the most visually observable signal domain and one of the primary inputs to body state classification.
+            </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              {[
+                { zone: 'MZ1', name: 'Stress Belt', location: 'Stomach / Waist', signal: 'Cortisol and adrenaline dominance' },
+                { zone: 'MZ2', name: 'Gut and Bloat', location: 'Digestive region', signal: 'Insulin timing disruption' },
+                { zone: 'MZ3', name: 'Hip and Thigh Conservation', location: 'Hips / Thighs', signal: 'Reproductive hormone and metabolic conservation patterns' },
+                { zone: 'MZ4', name: 'Upper Body Stress Response', location: 'Upper body', signal: 'Nervous system load, adrenaline, sleep retention' },
+              ].map((item) => (
+                <div key={item.zone} className="border border-[#10E1C2]/15 rounded-xl p-5 bg-black/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">{item.zone}</p>
+                    <span className="text-xs text-white/30 font-medium">{item.location}</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-white mb-1">{item.name}</h4>
+                  <p className="text-white/50 text-xs leading-relaxed">{item.signal}</p>
                 </div>
-                <h3 className="text-base font-bold text-white mb-2">{item.name}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{item.signal}</p>
+              ))}
+            </div>
+            <p className="text-white/25 text-sm mt-6">
+              Four macro zones containing eight extended sub-zones. The Fat Map feeds into broader interpretation and never drives outcome independently.
+            </p>
+          </div>
+
+          {/* Pillars 2–5 */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              {
+                num: '02',
+                name: 'Performance Training System',
+                abbr: 'PTS',
+                desc: 'Reads physical stress exposure, training load, fatigue patterns, and adaptation signals. The PTS does not prescribe training — it interprets the risk and capacity picture that defines what training the body can tolerate right now.',
+              },
+              {
+                num: '03',
+                name: 'Hybrid Animal-Based Nutrition System',
+                abbr: 'HABNS',
+                desc: 'Interprets nutritional sufficiency and biological threat signalling. Assesses whether current intake is supporting regulation and adaptation, or reinforcing scarcity and hormonal disruption.',
+              },
+              {
+                num: '04',
+                name: 'Recovery and Regulation System',
+                abbr: 'RRS',
+                desc: 'Reads the system\'s capacity to restore, downregulate, and return to baseline between stress exposures. Distinguishes genuine recovery from suppression — the body that appears stable but is not regenerating.',
+              },
+              {
+                num: '05',
+                name: 'Behaviour, Identity and Rhythm System',
+                abbr: 'BIRS',
+                desc: 'Interprets emotional load, identity constraints, and behavioural patterns as structural biological stressors. Compliance, identity threat, and rhythm disruption are not psychological observations — they are inputs that affect adaptation and regulation.',
+              },
+            ].map((pillar) => (
+              <div key={pillar.num} className="border border-white/10 rounded-2xl p-7">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-[11px] font-bold tracking-[0.2em] text-white/30 uppercase">Pillar {pillar.num}</p>
+                  <span className="text-[10px] font-bold text-white/20 border border-white/10 px-2 py-0.5 rounded-full uppercase tracking-wider">{pillar.abbr}</span>
+                </div>
+                <h3 className="text-base font-bold text-white mb-3">{pillar.name}</h3>
+                <p className="text-white/50 text-sm leading-relaxed">{pillar.desc}</p>
               </div>
             ))}
           </div>
-          <p className="text-white/30 text-base text-center leading-relaxed max-w-2xl mx-auto">
-            These macro zones contain eight extended sub-zones that further refine the read. The Fat Map feeds into broader interpretation and is one of the primary signal sources for body state classification.
-          </p>
         </div>
       </section>
 
