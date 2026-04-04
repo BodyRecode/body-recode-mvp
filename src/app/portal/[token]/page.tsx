@@ -35,6 +35,24 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .eq('is_active', true)
     .maybeSingle()
 
+  const { data: latestProgramReview } = await admin
+    .from('program_reviews')
+    .select('coach_notes, direction, reviewed_at')
+    .eq('client_id', client?.id ?? '')
+    .not('coach_notes', 'is', null)
+    .order('reviewed_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  const { data: latestNutritionReview } = await admin
+    .from('nutrition_reviews')
+    .select('coach_notes, reviewed_at')
+    .eq('client_id', client?.id ?? '')
+    .not('coach_notes', 'is', null)
+    .order('reviewed_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
   if (!client) return notFound()
 
   const firstName = client.name?.split(' ')[0] ?? 'there'
@@ -334,6 +352,33 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   <span className="text-xs text-stone-500 ml-4">→</span>
                 </div>
               </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Coach feedback */}
+        {(latestProgramReview?.coach_notes || latestNutritionReview?.coach_notes) && (
+          <div className="mb-10">
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">From your coach</p>
+            <div className="space-y-3">
+              {latestProgramReview?.coach_notes && (
+                <div className="bg-stone-900 border border-stone-800 rounded-2xl p-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs font-bold text-teal-500 uppercase tracking-widest">Training</p>
+                    <p className="text-xs text-stone-600">{new Date(latestProgramReview.reviewed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
+                  </div>
+                  <p className="text-sm text-stone-300 leading-relaxed">{latestProgramReview.coach_notes}</p>
+                </div>
+              )}
+              {latestNutritionReview?.coach_notes && (
+                <div className="bg-stone-900 border border-stone-800 rounded-2xl p-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs font-bold text-teal-500 uppercase tracking-widest">Nutrition</p>
+                    <p className="text-xs text-stone-600">{new Date(latestNutritionReview.reviewed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
+                  </div>
+                  <p className="text-sm text-stone-300 leading-relaxed">{latestNutritionReview.coach_notes}</p>
+                </div>
+              )}
             </div>
           </div>
         )}
