@@ -85,6 +85,40 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Eight Signal Domains */}
+      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Foundational Intake</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
+            208 questions. Eight signal domains.
+          </h2>
+          <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
+            Before any interpretation begins, the system collects structured data across eight distinct signal domains. This is the raw material the interpretation engine operates on. The depth and specificity of the intake is what makes the output defensible.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { num: '01', name: 'Training Load', desc: 'Physical stress exposure, training history, volume, and fatigue patterns.' },
+              { num: '02', name: 'Recovery Capacity', desc: 'The system\'s ability to restore and return to baseline between stress exposures.' },
+              { num: '03', name: 'Stress Architecture', desc: 'How the body\'s stress response is organised and its capacity to resolve accumulated load.' },
+              { num: '04', name: 'Hormonal Signals', desc: 'Endocrine markers and hormonal regulation patterns affecting body state and adaptation.' },
+              { num: '05', name: 'Fat Distribution Patterns', desc: 'Adaptive fat accumulation read as hormonal and metabolic signalling via the Fat Map Method™.' },
+              { num: '06', name: 'Sleep Quality', desc: 'Sleep depth, recovery patterns, and nervous system restoration during rest.' },
+              { num: '07', name: 'Behavioural Patterns', desc: 'Observable behaviours reflecting underlying biological state, rhythm, and adaptation capacity.' },
+              { num: '08', name: 'Emotional Load', desc: 'Emotional threat, identity load, and over-compliance read as structural stressors affecting regulation.' },
+            ].map((domain) => (
+              <div key={domain.num} className="border border-white/10 rounded-2xl p-6">
+                <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-3">{domain.num}</p>
+                <h3 className="text-sm font-bold text-white mb-2">{domain.name}</h3>
+                <p className="text-white/40 text-xs leading-relaxed">{domain.desc}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-white/25 text-sm text-center mt-10 max-w-xl mx-auto">
+            The 208-question intake is structured, not conversational. Every question maps to a signal domain. The data set is what separates interpretation from assumption.
+          </p>
+        </div>
+      </section>
+
       {/* The Five Environments */}
       <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5 overflow-hidden relative">
         <DnaHelix className="absolute -right-8 top-1/2 -translate-y-1/2 h-[120%] w-auto max-w-[180px] pointer-events-none select-none" opacity={0.05} />
