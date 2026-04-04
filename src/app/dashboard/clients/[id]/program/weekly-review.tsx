@@ -70,28 +70,35 @@ export default async function ProgramWeeklyReview({
       {reviews && reviews.length > 0 ? (
         <div className="divide-y divide-stone-800/60">
           {(reviews as Review[]).map((review) => (
-            <div key={review.id} className="px-5 py-4">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${directionColour[review.direction] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
-                    {review.direction}
-                  </span>
-                  {review.signal_category && (
-                    <span className="text-xs text-stone-500">{signalLabel[review.signal_category] ?? review.signal_category.replace(/_/g, ' ')}</span>
-                  )}
-                </div>
+            <div key={review.id} className="px-5 py-4 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${directionColour[review.direction] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
+                  {review.direction}
+                </span>
                 <span className="text-xs text-stone-600">
                   {new Date(review.reviewed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </span>
               </div>
-              <div className="mb-2">
-                <span className={`text-[10px] px-2 py-0.5 rounded border ${review.adherence_confirmed ? 'text-teal-400 border-teal-800 bg-teal-950/30' : 'text-stone-600 border-stone-800 bg-stone-800/30'}`}>
-                  {review.adherence_confirmed ? 'Completed sessions' : 'Did not complete sessions'}
-                </span>
+              <div className="space-y-1.5">
+                <div className="flex gap-2">
+                  <span className="text-xs text-stone-600 w-36 shrink-0">Sessions completed</span>
+                  <span className={`text-xs font-medium ${review.adherence_confirmed ? 'text-teal-400' : 'text-red-400'}`}>
+                    {review.adherence_confirmed ? 'Yes' : 'No'}
+                  </span>
+                </div>
+                {review.signal_category && (
+                  <div className="flex gap-2">
+                    <span className="text-xs text-stone-600 w-36 shrink-0">How training felt</span>
+                    <span className="text-xs text-stone-300">{signalLabel[review.signal_category] ?? review.signal_category.replace(/_/g, ' ')}</span>
+                  </div>
+                )}
+                {review.signals_noted && (
+                  <div className="flex gap-2">
+                    <span className="text-xs text-stone-600 w-36 shrink-0">Notes</span>
+                    <span className="text-xs text-stone-300 leading-relaxed">{review.signals_noted}</span>
+                  </div>
+                )}
               </div>
-              {review.signals_noted && (
-                <p className="text-xs text-stone-400 leading-relaxed">{review.signals_noted}</p>
-              )}
               <ReviewCoachNotes reviewId={review.id} existingNotes={review.coach_notes} />
             </div>
           ))}
