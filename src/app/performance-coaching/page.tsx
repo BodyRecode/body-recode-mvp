@@ -51,47 +51,23 @@ export default function PerformanceCoachingPage() {
         </div>
       </section>
 
-      {/* Four biological patterns */}
+      {/* Client population */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Who This Is For</p>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
-            Four biological patterns.<br />One system built around all of them.
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Client Population</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-8">
+            General population. High-functioning adults.
           </h2>
-          <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            Body Recode™ recognises four distinct biological profiles, each with predictable symptoms and patterns. Understanding which one applies changes everything about how coaching should proceed.
-          </p>
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              {
-                label: 'Stress-Stored',
-                who: 'Male + Female',
-                desc: 'Wired and tired. Abdominal puffiness, morning heaviness, afternoon crashes, broken sleep, and caffeine as a daily coping mechanism. Training happens but results do not. The system is overloaded, not undermotivated.',
-              },
-              {
-                label: 'Estrogen-Shift',
-                who: 'Female',
-                desc: 'Lower-body softening, bloating, cycle unpredictability, mood fluctuation. The body feels less predictable. Doing everything right and still not progressing. Something hormonal has shifted.',
-              },
-              {
-                label: 'Insulin-Drift',
-                who: 'Male dominant',
-                desc: 'Once felt strong without trying. Now softer across the chest and stomach, energy unstable, training heavier than it should feel. Often a formerly consistent trainer who has lost the biological responsiveness he once had.',
-              },
-              {
-                label: 'Androgen-Decline',
-                who: 'Male',
-                desc: 'Capable on the outside. Privately flat. Strength declining quietly. Morning face looks tired. Motivation reduced. The identity built around capability and physical presence is eroding. Slowly, and without a clear explanation.',
-              },
-            ].map((item, i) => (
-              <div key={i} className="border border-white/10 rounded-2xl p-7">
-                <div className="flex items-center justify-between mb-4">
-                  <p className="text-base font-bold text-white">{item.label}</p>
-                  <span className="text-xs font-semibold text-white/30 uppercase tracking-wider">{item.who}</span>
-                </div>
-                <p className="text-white/50 text-base leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
+          <div className="max-w-2xl space-y-6 text-white/60 text-lg leading-relaxed">
+            <p>
+              The Performance Coaching environment serves general population clients — high-functioning adults whose bodies have stopped responding to effort despite consistent training and nutrition compliance. The common thread is not age, gender, or goal. It is a body operating under load it cannot resolve.
+            </p>
+            <p>
+              The system recognises four distinct biological profiles within this population: Stress-Stored, Estrogen-Shift, Insulin-Drift, and Androgen-Decline. Each presents with predictable signal patterns. Each requires a different execution approach. The interpretation layer identifies which profile applies and defines the boundaries within which coaching proceeds.
+            </p>
+            <p>
+              This is not a corrective or clinical environment. The client population is functioning — training, working, living — but experiencing biological non-response that conventional coaching cannot explain or resolve.
+            </p>
           </div>
         </div>
       </section>
@@ -132,12 +108,12 @@ export default function PerformanceCoachingPage() {
       {/* Closing */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Get Started</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Environment 01 — Live</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
-            Enquire about Performance Coaching
+            Built, validated, and accepting clients.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
-            Online worldwide and face-to-face in Brisbane. Get in touch to discuss availability and whether Performance Coaching is the right fit.
+            Performance Coaching is the first live deployment of the Body Recode™ system. Available online worldwide and face-to-face in Brisbane.
           </p>
           <a
             href="mailto:info@bodyrecode.au"
