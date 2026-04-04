@@ -22,7 +22,6 @@ interface Review {
   signals_noted: string | null
   adherence_confirmed: boolean
   reviewed_at: string
-  submitted_by: string | null
   coach_notes: string | null
 }
 
@@ -38,7 +37,7 @@ export default async function NutritionWeeklyReview({
   const admin = createAdminClient()
   const { data: reviews } = await admin
     .from('nutrition_reviews')
-    .select('id, direction, signal_category, signals_noted, adherence_confirmed, reviewed_at, submitted_by, coach_notes')
+    .select('id, direction, signal_category, signals_noted, adherence_confirmed, reviewed_at, coach_notes')
     .eq('nutrition_plan_id', planId)
     .order('reviewed_at', { ascending: false })
     .limit(5)
