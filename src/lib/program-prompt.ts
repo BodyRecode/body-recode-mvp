@@ -591,7 +591,7 @@ Execute the full 9-stage generation pipeline. Run the pre-delivery QA checklist 
     "Week 3: continue or adjust — one entry.",
     "Week 4: final week strategy — one entry."
   ],
-  "client_note": "2-3 short sentences in plain, direct language explaining what this block is for. Write like a coach talking to a client, not like AI. No em dashes, no flowery language, no phrases like 'genuine chance' or 'right move right now'. No acronyms or system terms. Keep it factual and brief. Example: 'Two sessions this week, both low intensity. We are working around your knee and keeping things simple while your body adjusts. Nothing to push through here, just show up and do the work.'"
+  "client_note": "2-3 sentences maximum. State what the block is, how many sessions, and what the focus is. Use short sentences. No metaphors, no motivational language, no words like 'deliberately', 'primary job', 'system', 'carrying a lot'. Do not over-explain. Example: 'Two sessions per week for six weeks. Low intensity, knee-friendly movements only. Focus is on staying consistent and not making your knee worse.'"
 }
 
 One JSON object only. No markdown. No commentary. All exercise names must exactly match the approved library. Do not add slots. Do not blend phases. Do not improvise exercises.`)
