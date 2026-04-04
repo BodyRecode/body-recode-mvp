@@ -39,7 +39,6 @@ export async function POST(request: NextRequest) {
       days_under_observation: 7,
       signals_noted: signals_noted || null,
       direction,
-      submitted_by: 'client',
     })
 
   if (reviewError) return NextResponse.json({ error: reviewError.message }, { status: 500 })

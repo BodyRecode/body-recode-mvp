@@ -23,7 +23,6 @@ interface Review {
   signals_noted: string | null
   adherence_confirmed: boolean
   reviewed_at: string
-  submitted_by: string | null
   coach_notes: string | null
 }
 
@@ -39,7 +38,7 @@ export default async function ProgramWeeklyReview({
   const admin = createAdminClient()
   const { data: reviews } = await admin
     .from('program_reviews')
-    .select('id, direction, signal_category, signals_noted, adherence_confirmed, reviewed_at, submitted_by, coach_notes')
+    .select('id, direction, signal_category, signals_noted, adherence_confirmed, reviewed_at, coach_notes')
     .eq('program_id', programId)
     .order('reviewed_at', { ascending: false })
     .limit(5)
