@@ -6,7 +6,7 @@ import DnaHelix from '@/components/dna-helix'
 
 export const metadata: Metadata = {
   title: 'Performance Coaching | Body Recode™',
-  description: 'Body Recode™ Performance Coaching — Environment 1 of the Body Recode™ biological interpretation system. Available online worldwide and face-to-face in Brisbane.',
+  description: 'Body Recode™ Performance Coaching - Environment 1 of the Body Recode™ biological interpretation system. Available online worldwide and face-to-face in Brisbane.',
 }
 
 export default function PerformanceCoachingPage() {
@@ -19,13 +19,13 @@ export default function PerformanceCoachingPage() {
         <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs pointer-events-none select-none" opacity={0.06} />
         <div className="max-w-4xl mx-auto relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">
-            Environment 01 — Health &amp; Fitness
+            Environment 01 - Health &amp; Fitness
           </p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-8">
             Performance Coaching
           </h1>
           <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-8">
-            The first execution layer of the Body Recode™ system. 1:1 coaching for high-functioning adults whose bodies have stopped responding to effort. Every training decision, every nutrition structure, every recovery adjustment is derived from the biological interpretation — not from goals, not from preference, not from a template.
+            The first execution layer of the Body Recode™ system. 1:1 coaching for high-functioning adults whose bodies have stopped responding to effort. Every training decision, every nutrition structure, every recovery adjustment is derived from the biological interpretation - not from goals, not from preference, not from a template.
           </p>
           <p className="text-white/40 text-base leading-relaxed max-w-xl">
             Available online worldwide and face-to-face in Brisbane.
@@ -42,10 +42,10 @@ export default function PerformanceCoachingPage() {
           </h2>
           <div className="max-w-2xl space-y-6 text-white/60 text-lg leading-relaxed">
             <p>
-              Performance Coaching is the downstream application of the Body Recode™ interpretive system in the health and fitness environment. It does not begin with a program. It begins with interpretation. A full biological intake across eight domains produces the CFFS — the Coach-Facing Foundational Synthesis. Every decision operates within the boundaries the CFFS defines.
+              Performance Coaching is the downstream application of the Body Recode™ interpretive system in the health and fitness environment. It does not begin with a program. It begins with interpretation. A full biological intake across eight domains produces the CFFS - the Coach-Facing Foundational Synthesis. Every decision operates within the boundaries the CFFS defines.
             </p>
             <p>
-              The coaching system runs on two parallel documents throughout the entire client relationship: the CFFS, foundational and non-temporal, produced at intake; and the CFWS, the Coach-Facing Weekly Synthesis, which captures how the system is responding to applied load in real time. Both feed a continuous loop — interpretation informs execution, execution informs interpretation.
+              The coaching system runs on two parallel documents throughout the entire client relationship: the CFFS, foundational and non-temporal, produced at intake; and the CFWS, the Coach-Facing Weekly Synthesis, which captures how the system is responding to applied load in real time. Both feed a continuous loop - interpretation informs execution, execution informs interpretation.
             </p>
           </div>
         </div>
@@ -60,13 +60,13 @@ export default function PerformanceCoachingPage() {
           </h2>
           <div className="max-w-2xl space-y-6 text-white/60 text-lg leading-relaxed">
             <p>
-              The Performance Coaching environment serves general population clients — high-functioning adults whose bodies have stopped responding to effort despite consistent training and nutrition compliance. The common thread is not age, gender, or goal. It is a body operating under load it cannot resolve.
+              The Performance Coaching environment serves general population clients - high-functioning adults whose bodies have stopped responding to effort despite consistent training and nutrition compliance. The common thread is not age, gender, or goal. It is a body operating under load it cannot resolve.
             </p>
             <p>
               The system recognises four distinct biological profiles within this population: Stress-Stored, Estrogen-Shift, Insulin-Drift, and Androgen-Decline. Each presents with predictable signal patterns. Each requires a different execution approach. The interpretation layer identifies which profile applies and defines the boundaries within which coaching proceeds.
             </p>
             <p>
-              This is not a corrective or clinical environment. The client population is functioning — training, working, living — but experiencing biological non-response that conventional coaching cannot explain or resolve.
+              This is not a corrective or clinical environment. The client population is functioning - training, working, living - but experiencing biological non-response that conventional coaching cannot explain or resolve.
             </p>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function PerformanceCoachingPage() {
                 <span className="text-[10px] font-bold text-black bg-[#10E1C2] px-2.5 py-1 rounded-full uppercase tracking-wider">Worldwide</span>
               </div>
               <p className="text-white/60 text-base leading-relaxed">
-                Full 1:1 coaching delivered remotely. Same structured intake, same biological assessment, same program design. Everything lives in your client portal — your program, your synthesis documents, your weekly check-ins, your progress data.
+                Full 1:1 coaching delivered remotely. Same structured intake, same biological assessment, same program design. Everything lives in your client portal - your program, your synthesis documents, your weekly check-ins, your progress data.
               </p>
             </div>
             <div className="border border-white/10 rounded-2xl p-8">
@@ -108,7 +108,7 @@ export default function PerformanceCoachingPage() {
       {/* Closing */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Environment 01 — Live</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Environment 01 - Live</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
             Built, validated, and accepting clients.
           </h2>
