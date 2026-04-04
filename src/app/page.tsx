@@ -37,7 +37,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* The Premise */}
+      {/* The Problem */}
       <section id="system" className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">The Problem</p>
@@ -49,17 +49,44 @@ export default function HomePage() {
               The conventional model goes: assess goals, prescribe approach, measure output, adjust. This works when the body is in a state to respond. Most of the time, it is not. The model assumes the body is ready. It rarely asks whether it is.
             </p>
             <p>
-              Body Recode™ sits one layer upstream of that. Before any prescription is made, the system asks a different question: what state is this body actually operating in right now, and why is it organised the way it is?
-            </p>
-            <p>
-              The answer to that question changes everything downstream.
+              The result is effort without response. Training that doesn&apos;t build. Nutrition that doesn&apos;t shift body composition. Recovery that never fully lands. The intervention is not wrong — the sequencing is.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Two-Layer Structure */}
+      {/* The Solution */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">The Solution</p>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-8 leading-tight">
+            Read the body first.<br />Then prescribe.
+          </h2>
+          <p className="text-white/60 text-xl leading-relaxed max-w-2xl mx-auto mb-12">
+            Body Recode™ sits one layer upstream of every intervention. Before anything is prescribed, the system asks one question: what state is this body actually in right now, and why is it organised that way?
+          </p>
+          <div className="grid md:grid-cols-3 gap-6 text-left">
+            <div className="border border-white/10 rounded-2xl p-6">
+              <p className="text-[#10E1C2] text-2xl font-extrabold mb-2">208</p>
+              <p className="text-white font-semibold mb-1">Intake questions</p>
+              <p className="text-white/40 text-sm leading-relaxed">Structured across eight signal domains. Not a questionnaire — a biological read.</p>
+            </div>
+            <div className="border border-white/10 rounded-2xl p-6">
+              <p className="text-[#10E1C2] text-2xl font-extrabold mb-2">5</p>
+              <p className="text-white font-semibold mb-1">Interpretive pillars</p>
+              <p className="text-white/40 text-sm leading-relaxed">Each reads a different domain of the body&apos;s state. The output is always a synthesis.</p>
+            </div>
+            <div className="border border-white/10 rounded-2xl p-6">
+              <p className="text-[#10E1C2] text-2xl font-extrabold mb-2">3</p>
+              <p className="text-white font-semibold mb-1">Body state classifications</p>
+              <p className="text-white/40 text-sm leading-relaxed">Every body, every environment. The classification determines everything downstream.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Two-Layer Structure */}
+      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Architecture</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-16">
