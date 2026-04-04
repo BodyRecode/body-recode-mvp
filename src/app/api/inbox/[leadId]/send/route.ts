@@ -39,7 +39,7 @@ export async function POST(
 
   const { data: sent, error } = await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
-    replyTo: 'replies@bodyrecode.au',
+    replyTo: 'kade@replies.bodyrecode.au',
     to: lead.email,
     subject,
     html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
