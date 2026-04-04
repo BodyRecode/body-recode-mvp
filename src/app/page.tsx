@@ -146,87 +146,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* The Five Environments */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5 overflow-hidden relative">
-        <DnaHelix className="absolute -right-8 top-1/2 -translate-y-1/2 h-[120%] w-auto max-w-[180px] pointer-events-none select-none" opacity={0.05} />
-        <div className="max-w-4xl mx-auto relative z-10">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Environments</p>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
-            One interpretive engine. Five environments.
-          </h2>
-          <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            The interpretive layer does not care what environment the body is operating in. The body responds to load through the same biological mechanisms regardless of context. What changes between environments is not the interpretation — it is what the practitioner does with it.
-          </p>
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Environment 1 — Live */}
-            <div className="border border-[#10E1C2]/30 rounded-2xl p-8 bg-[#10E1C2]/5">
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">Health &amp; Fitness</p>
-                <span className="text-[10px] font-bold text-black bg-[#10E1C2] px-2.5 py-1 rounded-full uppercase tracking-wider">Live</span>
-              </div>
-              <h3 className="text-lg font-bold text-white mb-3">Performance Coaching</h3>
-              <p className="text-white/60 text-sm leading-relaxed mb-6">
-                The origin environment and first proof of concept. Clients are general population — people whose bodies have stopped responding to effort. The execution layer is structured training and nutrition design derived entirely from the CFFS.
-              </p>
-              <Link
-                href="/performance-coaching"
-                className="inline-block text-[#10E1C2] text-sm font-semibold hover:underline"
-              >
-                Performance Coaching →
-              </Link>
-            </div>
-
-            {/* Environment 2 */}
-            <div className="border border-white/10 rounded-2xl p-8">
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase">Corporate &amp; Executive</p>
-                <span className="text-[10px] font-bold text-white/30 border border-white/10 px-2.5 py-1 rounded-full uppercase tracking-wider">In Development</span>
-              </div>
-              <h3 className="text-lg font-bold text-white mb-3">Executive Performance</h3>
-              <p className="text-white/50 text-sm leading-relaxed">
-                High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress — cortisol elevation, recovery suppression, regulatory disruption.
-              </p>
-            </div>
-
-            {/* Environment 3 */}
-            <div className="border border-white/10 rounded-2xl p-8">
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase">Military &amp; Tactical</p>
-                <span className="text-[10px] font-bold text-white/30 border border-white/10 px-2.5 py-1 rounded-full uppercase tracking-wider">In Development</span>
-              </div>
-              <h3 className="text-lg font-bold text-white mb-3">Operational Performance</h3>
-              <p className="text-white/50 text-sm leading-relaxed">
-                Defence personnel, law enforcement, and tactical operators. The stakes of misread body state in this environment are operational. An operator in Remediation being pushed through performance-level training is a liability.
-              </p>
-            </div>
-
-            {/* Environment 4 */}
-            <div className="border border-white/10 rounded-2xl p-8">
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase">Medical &amp; Allied Health</p>
-                <span className="text-[10px] font-bold text-white/30 border border-white/10 px-2.5 py-1 rounded-full uppercase tracking-wider">In Development</span>
-              </div>
-              <h3 className="text-lg font-bold text-white mb-3">Clinical Integration</h3>
-              <p className="text-white/50 text-sm leading-relaxed">
-                GPs, physiotherapists, sports medicine practitioners, and allied health professionals. Body Recode™ sits upstream of clinical assessment, providing a structured biological read that informs the clinical picture before the appointment.
-              </p>
-            </div>
-
-            {/* Environment 5 */}
-            <div className="border border-white/10 rounded-2xl p-8 md:col-span-2 md:max-w-lg md:mx-auto md:w-full">
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase">Education &amp; Youth</p>
-                <span className="text-[10px] font-bold text-white/30 border border-white/10 px-2.5 py-1 rounded-full uppercase tracking-wider">In Development</span>
-              </div>
-              <h3 className="text-lg font-bold text-white mb-3">Developmental Performance</h3>
-              <p className="text-white/50 text-sm leading-relaxed">
-                Young athletes, student populations, and development-stage bodies. The earlier a body is read correctly, the less dysfunction accumulates over time.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Interpretive Pillars */}
       <section className="bg-black py-32 px-5 border-t border-white/5 overflow-hidden relative">
         <DnaHelix className="absolute -left-6 top-1/2 -translate-y-1/2 h-[110%] w-auto max-w-[160px] pointer-events-none select-none" opacity={0.05} />
@@ -386,6 +305,87 @@ export default function HomePage() {
                 <p className="text-white/25 text-[10px] font-bold uppercase tracking-wider leading-snug">Developmental Performance</p>
                 <div className="mt-2 w-1.5 h-1.5 rounded-full bg-white/10 mx-auto" />
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Five Environments */}
+      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5 overflow-hidden relative">
+        <DnaHelix className="absolute -right-8 top-1/2 -translate-y-1/2 h-[120%] w-auto max-w-[180px] pointer-events-none select-none" opacity={0.05} />
+        <div className="max-w-4xl mx-auto relative z-10">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Environments</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
+            One interpretive engine. Five environments.
+          </h2>
+          <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
+            The interpretive layer does not care what environment the body is operating in. The body responds to load through the same biological mechanisms regardless of context. What changes between environments is not the interpretation — it is what the practitioner does with it.
+          </p>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Environment 1 — Live */}
+            <div className="border border-[#10E1C2]/30 rounded-2xl p-8 bg-[#10E1C2]/5">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">Health &amp; Fitness</p>
+                <span className="text-[10px] font-bold text-black bg-[#10E1C2] px-2.5 py-1 rounded-full uppercase tracking-wider">Live</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-3">Performance Coaching</h3>
+              <p className="text-white/60 text-sm leading-relaxed mb-6">
+                The origin environment and first proof of concept. Clients are general population — people whose bodies have stopped responding to effort. The execution layer is structured training and nutrition design derived entirely from the CFFS.
+              </p>
+              <Link
+                href="/performance-coaching"
+                className="inline-block text-[#10E1C2] text-sm font-semibold hover:underline"
+              >
+                Performance Coaching →
+              </Link>
+            </div>
+
+            {/* Environment 2 */}
+            <div className="border border-white/10 rounded-2xl p-8">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase">Corporate &amp; Executive</p>
+                <span className="text-[10px] font-bold text-white/30 border border-white/10 px-2.5 py-1 rounded-full uppercase tracking-wider">In Development</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-3">Executive Performance</h3>
+              <p className="text-white/50 text-sm leading-relaxed">
+                High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress — cortisol elevation, recovery suppression, regulatory disruption.
+              </p>
+            </div>
+
+            {/* Environment 3 */}
+            <div className="border border-white/10 rounded-2xl p-8">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase">Military &amp; Tactical</p>
+                <span className="text-[10px] font-bold text-white/30 border border-white/10 px-2.5 py-1 rounded-full uppercase tracking-wider">In Development</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-3">Operational Performance</h3>
+              <p className="text-white/50 text-sm leading-relaxed">
+                Defence personnel, law enforcement, and tactical operators. The stakes of misread body state in this environment are operational. An operator in Remediation being pushed through performance-level training is a liability.
+              </p>
+            </div>
+
+            {/* Environment 4 */}
+            <div className="border border-white/10 rounded-2xl p-8">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase">Medical &amp; Allied Health</p>
+                <span className="text-[10px] font-bold text-white/30 border border-white/10 px-2.5 py-1 rounded-full uppercase tracking-wider">In Development</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-3">Clinical Integration</h3>
+              <p className="text-white/50 text-sm leading-relaxed">
+                GPs, physiotherapists, sports medicine practitioners, and allied health professionals. Body Recode™ sits upstream of clinical assessment, providing a structured biological read that informs the clinical picture before the appointment.
+              </p>
+            </div>
+
+            {/* Environment 5 */}
+            <div className="border border-white/10 rounded-2xl p-8 md:col-span-2 md:max-w-lg md:mx-auto md:w-full">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase">Education &amp; Youth</p>
+                <span className="text-[10px] font-bold text-white/30 border border-white/10 px-2.5 py-1 rounded-full uppercase tracking-wider">In Development</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-3">Developmental Performance</h3>
+              <p className="text-white/50 text-sm leading-relaxed">
+                Young athletes, student populations, and development-stage bodies. The earlier a body is read correctly, the less dysfunction accumulates over time.
+              </p>
             </div>
           </div>
         </div>
