@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Mail, Calendar, FileText, Send, AlertCircle, CheckCircle2, RefreshCw } from 'lucide-react'
@@ -26,6 +27,8 @@ export default async function InboxThreadPage({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
+  const admin = createAdminClient()
+
   const [{ data: lead }, { data: events }] = await Promise.all([
     supabase
       .from('leads')
@@ -33,7 +36,7 @@ export default async function InboxThreadPage({
       .eq('id', leadId)
       .or(`coach_id.eq.${user!.id},coach_id.is.null`)
       .single(),
-    supabase
+    admin
       .from('lead_events')
       .select('*')
       .eq('lead_id', leadId)
