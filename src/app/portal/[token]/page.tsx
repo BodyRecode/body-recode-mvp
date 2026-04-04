@@ -160,6 +160,22 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     hour12: true,
   })
 
+  const closesAt = checkinWindow.closesAt.toLocaleString('en-AU', {
+    timeZone: 'Australia/Brisbane',
+    weekday: 'long',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  })
+
+  // Is it Sunday? (closing day — show urgency)
+  const nowDate = new Date()
+  const brisbaneDay = new Date(nowDate.getTime() + 10 * 60 * 60 * 1000).getUTCDay()
+  const isClosingDay = brisbaneDay === 0 // Sunday
+
+  // Did client miss last week's check-in? Window closed and no submission for current week
+  const missedCheckin = !windowOpen && !checkinDoneThisWeek && weekNumber && weekNumber > 1
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <ClientHeader />
@@ -239,20 +255,34 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             ) : windowOpen ? (
               <Link
                 href={`/portal/${token}/checkin`}
-                className="block rounded-2xl border border-stone-700 bg-stone-900 p-5 hover:border-teal-400/40 hover:bg-teal-400/5 transition-colors"
+                className={`block rounded-2xl border p-5 transition-colors ${isClosingDay ? 'border-amber-500/50 bg-amber-500/5 hover:border-amber-400/60' : 'border-stone-700 bg-stone-900 hover:border-teal-400/40 hover:bg-teal-400/5'}`}
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold text-white mb-1">Weekly check-in, Form {activeFormType}</p>
-                    <p className="text-xs text-stone-400">Week {weekNumber} · Window closes Sunday 6pm Brisbane time.</p>
+                    {isClosingDay ? (
+                      <p className="text-xs text-amber-400 font-medium">Closes today at 6:30pm Brisbane time. Do it now.</p>
+                    ) : (
+                      <p className="text-xs text-stone-400">Week {weekNumber} · Closes {closesAt}.</p>
+                    )}
                   </div>
-                  <span className="text-xs font-bold text-teal-400 ml-4">Start →</span>
+                  <span className={`text-xs font-bold ml-4 ${isClosingDay ? 'text-amber-400' : 'text-teal-400'}`}>Start →</span>
                 </div>
               </Link>
+            ) : missedCheckin ? (
+              <div className="space-y-3">
+                <div className="rounded-2xl border border-red-800/50 bg-red-950/20 p-5">
+                  <p className="text-sm font-semibold text-red-400 mb-1">You missed last week&apos;s check-in</p>
+                  <p className="text-xs text-red-400/70">The window closed without a submission. Your coach won&apos;t have data for this week.</p>
+                </div>
+                <div className="rounded-2xl border border-stone-800 bg-stone-900/50 p-4">
+                  <p className="text-xs text-stone-600">Next window opens {opensAt}.</p>
+                </div>
+              </div>
             ) : (
               <div className="rounded-2xl border border-stone-800 bg-stone-900/50 p-5">
                 <p className="text-sm font-semibold text-stone-500 mb-1">Check-in window closed</p>
-                <p className="text-xs text-stone-600">Opens {opensAt} (Brisbane time) every Friday.</p>
+                <p className="text-xs text-stone-600">Opens {opensAt} every Friday.</p>
               </div>
             )}
           </div>
