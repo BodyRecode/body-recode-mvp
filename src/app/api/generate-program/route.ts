@@ -229,6 +229,7 @@ export async function POST(request: NextRequest) {
       sessions: programData.sessions || [],
       weekly_pattern_summary: programData.weekly_pattern_summary || null,
       progression_notes: programData.progression_notes || null,
+      client_note: programData.client_note || null,
       prescription_rationale: prescription_rationale || null,
       status: 'draft',
       is_active: false,

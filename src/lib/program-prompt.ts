@@ -590,7 +590,8 @@ Execute the full 9-stage generation pipeline. Run the pre-delivery QA checklist 
     "Week 2: progression decision logic for that week — permission-based only.",
     "Week 3: continue or adjust — one entry.",
     "Week 4: final week strategy — one entry."
-  ]
+  ],
+  "client_note": "2–4 sentences written in plain, friendly language for the client explaining what this block is focused on and why. No system terminology, no acronyms, no flags. Write as if speaking directly to the client. Example: 'This block is focused on building a solid base while we work around your knee. Sessions are short and low intensity — we want your body recovering well before we add more. Two sessions a week for now, then we reassess.'"
 }
 
 One JSON object only. No markdown. No commentary. All exercise names must exactly match the approved library. Do not add slots. Do not blend phases. Do not improvise exercises.`)

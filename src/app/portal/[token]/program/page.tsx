@@ -52,7 +52,7 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
   const { data: program } = await admin
     .from('programs')
-    .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, sessions, weekly_pattern_summary, progression_notes, current_direction, last_review_at')
+    .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, sessions, weekly_pattern_summary, progression_notes, client_note, current_direction, last_review_at')
     .eq('client_id', client.id)
     .eq('is_active', true)
     .maybeSingle()
@@ -60,7 +60,7 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <ClientHeader />
-      <div className="max-w-lg mx-auto px-6 py-10">
+      <div className="max-w-2xl mx-auto px-6 py-10">
         <div className="mb-8">
           <Link href={`/portal/${token}`} className="text-stone-500 hover:text-stone-300 text-sm transition-colors">← Back</Link>
           <h1 className="text-2xl font-bold text-white mt-4 mb-1">Your Program</h1>
@@ -73,6 +73,14 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
           </div>
         ) : (
           <div className="space-y-5">
+            {/* Client note */}
+            {program.client_note && (
+              <div className="bg-teal-400/5 border border-teal-400/20 rounded-2xl px-5 py-4">
+                <p className="text-xs font-bold text-teal-500 uppercase tracking-widest mb-2">About this block</p>
+                <p className="text-sm text-stone-300 leading-relaxed">{program.client_note}</p>
+              </div>
+            )}
+
             {/* Block overview */}
             <div className="bg-stone-900 border border-stone-800 rounded-2xl p-5">
               <div className="flex items-start justify-between gap-3 mb-4">
@@ -97,18 +105,6 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
                 </div>
               </div>
             </div>
-
-            {/* Weekly structure note */}
-            {program.weekly_pattern_summary && (
-              <div className="bg-stone-900 border border-stone-800 rounded-2xl p-5">
-                <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">How your week is structured</p>
-                <p className="text-sm text-stone-300 leading-relaxed">
-                  {Array.isArray(program.weekly_pattern_summary)
-                    ? program.weekly_pattern_summary.join(' ')
-                    : program.weekly_pattern_summary}
-                </p>
-              </div>
-            )}
 
             {/* Sessions */}
             {Array.isArray(program.sessions) && program.sessions.length > 0 && (
@@ -160,17 +156,6 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
               </div>
             )}
 
-            {/* Progression notes */}
-            {program.progression_notes && (
-              <div className="bg-stone-900 border border-stone-800 rounded-2xl p-5">
-                <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">Progression</p>
-                <p className="text-sm text-stone-300 leading-relaxed">
-                  {Array.isArray(program.progression_notes)
-                    ? program.progression_notes.join(' ')
-                    : program.progression_notes}
-                </p>
-              </div>
-            )}
 
             <Link
               href={`/portal/${token}/training`}
