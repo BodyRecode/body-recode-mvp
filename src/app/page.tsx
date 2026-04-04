@@ -25,8 +25,11 @@ export default function HomePage() {
           <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight mb-8">
             Interpretation before prescription.
           </h1>
-          <p className="text-lg md:text-xl text-white/50 leading-relaxed max-w-2xl mx-auto mb-12">
-            Body Recode™ is a biological interpretation system. One interpretive engine that reads body state before any intervention is designed. Built to operate across five distinct environments. The IP sits above all of it.
+          <p className="text-lg md:text-xl text-white/50 leading-relaxed max-w-2xl mx-auto mb-4">
+            Body Recode™ is a biological interpretation system built as a platform. One engine that reads body state before any intervention is designed. Licensable across environments. The IP sits above all of it.
+          </p>
+          <p className="text-sm text-[#10E1C2]/60 font-medium tracking-wide mb-12">
+            A licensable interpretation engine for practitioners, clinics, and organisations.
           </p>
           <Link
             href="#system"
@@ -387,6 +390,51 @@ export default function HomePage() {
                 Young athletes, student populations, and development-stage bodies. The earlier a body is read correctly, the less dysfunction accumulates over time.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Platform */}
+      <section className="bg-black py-32 px-5 border-t border-white/5">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">For Practitioners</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
+            The interpretation engine is licensable.
+          </h2>
+          <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
+            Body Recode™ is not a single coaching practice. It is a platform built to be deployed across environments. The interpretation engine, the intake architecture, and the CFFS methodology are available for licensing, white-labelling, or integration into existing practitioner workflows.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
+            <div className="border border-white/10 rounded-2xl p-7">
+              <p className="text-[#10E1C2] font-bold text-sm uppercase tracking-wider mb-3">Licensing</p>
+              <p className="text-white/50 text-sm leading-relaxed">
+                Use the Body Recode™ interpretation system within your practice or organisation. Full access to the intake architecture, the five interpretive pillars, and the CFFS output framework.
+              </p>
+            </div>
+            <div className="border border-white/10 rounded-2xl p-7">
+              <p className="text-[#10E1C2] font-bold text-sm uppercase tracking-wider mb-3">White-Labelling</p>
+              <p className="text-white/50 text-sm leading-relaxed">
+                Deploy the system under your brand. The interpretation engine, intake process, and output documents are built to operate independently of the Body Recode™ identity where required.
+              </p>
+            </div>
+            <div className="border border-white/10 rounded-2xl p-7">
+              <p className="text-[#10E1C2] font-bold text-sm uppercase tracking-wider mb-3">Integration</p>
+              <p className="text-white/50 text-sm leading-relaxed">
+                Embed the interpretation layer into existing clinical, coaching, or organisational workflows. The system sits upstream of whatever the practitioner does with the output.
+              </p>
+            </div>
+          </div>
+          <div className="border border-[#10E1C2]/20 rounded-2xl p-10 bg-[#10E1C2]/5 text-center">
+            <p className="text-white font-bold text-xl mb-3">Enquire about the platform</p>
+            <p className="text-white/50 text-base leading-relaxed max-w-xl mx-auto mb-8">
+              Licensing and integration enquiries are handled directly. If you are a practitioner, clinic, sports organisation, or business interested in deploying the Body Recode™ interpretation system, reach out.
+            </p>
+            <a
+              href="mailto:info@bodyrecode.au"
+              className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb3] transition-colors"
+            >
+              Contact: info@bodyrecode.au
+            </a>
           </div>
         </div>
       </section>
