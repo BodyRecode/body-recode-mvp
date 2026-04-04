@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import { Mail, Clock } from 'lucide-react'
 
@@ -18,7 +19,8 @@ export default async function InboxPage() {
   const supabase = await createClient()
 
   // Leads with their most recent event
-  const { data: leads } = await supabase
+  const admin = createAdminClient()
+  const { data: leads } = await admin
     .from('leads')
     .select('id, name, email, status, lead_events(type, subject, notes, sent_at)')
     .order('created_at', { ascending: false })
