@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { sendSms, formatPhone } from '@/lib/twilio'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -12,20 +13,21 @@ export async function GET(request: NextRequest) {
   const admin = createAdminClient()
   const resend = new Resend(process.env.RESEND_API_KEY)
 
-  // Get all clients with a portal token and email
+  // Get all active clients with a portal token
   const { data: clients } = await admin
     .from('clients')
-    .select('id, name, email, onboarding_token, coaching_started_at')
+    .select('id, name, email, phone, onboarding_token, coaching_started_at')
     .not('onboarding_token', 'is', null)
-    .not('email', 'is', null)
 
   if (!clients || clients.length === 0) {
-    return NextResponse.json({ sent: 0 })
+    return NextResponse.json({ emailsSent: 0, smsSent: 0 })
   }
 
-  let sent = 0
+  let emailsSent = 0
+  let smsSent = 0
+
   for (const client of clients) {
-    if (!client.email || !client.onboarding_token) continue
+    if (!client.onboarding_token) continue
 
     // Only notify clients who have started coaching
     if (!client.coaching_started_at) continue
@@ -35,11 +37,13 @@ export async function GET(request: NextRequest) {
     const firstName = client.name.split(' ')[0]
     const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/portal/${client.onboarding_token}`
 
-    await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
-      to: client.email,
-      subject: 'Your weekly check-in is now open',
-      html: `
+    // Email
+    if (client.email) {
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: client.email,
+        subject: 'Your weekly check-in is now open',
+        html: `
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
@@ -56,9 +60,19 @@ export async function GET(request: NextRequest) {
   </div>
 </body>
 </html>`,
-    })
-    sent++
+      })
+      emailsSent++
+    }
+
+    // SMS
+    if (client.phone) {
+      await sendSms({
+        to: formatPhone(client.phone),
+        message: `Hi ${firstName}, your Body Recode weekly check-in is now open. Close Sunday 6pm. Open your portal: ${portalUrl}`,
+      })
+      smsSent++
+    }
   }
 
-  return NextResponse.json({ sent })
+  return NextResponse.json({ emailsSent, smsSent })
 }

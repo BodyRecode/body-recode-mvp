@@ -12,6 +12,7 @@ export default function NewClientPage() {
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [intakeLink, setIntakeLink] = useState('')
@@ -36,7 +37,7 @@ export default function NewClientPage() {
     // Create client record
     const { data: client, error: clientError } = await supabase
       .from('clients')
-      .insert({ coach_id: user.id, name: name.trim(), email: email.trim() || null, active: true })
+      .insert({ coach_id: user.id, name: name.trim(), email: email.trim() || null, phone: phone.trim() || null, active: true })
       .select()
       .single()
 
@@ -175,6 +176,20 @@ export default function NewClientPage() {
             onChange={e => setEmail(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleCreate()}
             placeholder="e.g. sarah@example.com"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm text-stone-300 mb-1.5">
+            Mobile <span className="text-stone-600 text-xs">(optional — for SMS notifications)</span>
+          </label>
+          <input
+            type="tel"
+            value={phone}
+            onChange={e => setPhone(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleCreate()}
+            placeholder="e.g. +61 400 000 000"
             className={inputClass}
           />
         </div>

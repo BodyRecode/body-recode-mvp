@@ -14,6 +14,7 @@ import SendPortalEmailButton from '@/components/send-portal-email-button'
 import ClientDangerActions from './client-danger-actions'
 import FoundingClientStatusManager from '@/components/founding-client-status-manager'
 import ProfileSidebar from './profile-sidebar'
+import EditClientPhone from '@/components/edit-client-phone'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -159,7 +160,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               </span>
             )}
           </div>
-          <p className="text-stone-400 text-sm mt-1">Added {formatDate(client.created_at)}</p>
+          <div className="flex items-center gap-4 mt-1 flex-wrap">
+            <p className="text-stone-400 text-sm">Added {formatDate(client.created_at)}</p>
+            {client.email && <p className="text-stone-500 text-sm">{client.email}</p>}
+            <EditClientPhone clientId={client.id} currentPhone={client.phone ?? null} />
+          </div>
         </div>
         <NewIntakeButton
           clientId={client.id}
