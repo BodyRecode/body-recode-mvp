@@ -240,16 +240,22 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">This week</p>
             {checkinDoneThisWeek ? (
               <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-5">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 mb-3">
                   <div className="w-5 h-5 rounded-full bg-teal-400 flex items-center justify-center flex-shrink-0">
                     <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-teal-400">Check-in submitted</p>
-                    <p className="text-xs text-stone-500 mt-0.5">Week {weekNumber}, your coach will review shortly.</p>
+                    <p className="text-sm font-semibold text-teal-400">Check-in done for this week</p>
+                    <p className="text-xs text-stone-500 mt-0.5">Week {weekNumber} submitted. Your coach will review shortly.</p>
                   </div>
+                </div>
+                <div className="border-t border-teal-400/10 pt-3 flex items-center justify-between">
+                  <p className="text-xs text-stone-600">Next check-in opens {opensAt}.</p>
+                  {recentCheckins.length > 1 && (
+                    <p className="text-xs text-stone-600">{recentCheckins.length} week streak</p>
+                  )}
                 </div>
               </div>
             ) : windowOpen ? (
@@ -289,100 +295,114 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         )}
 
         {/* Training */}
-        {allOnboardingDone && activeProgram && (
+        {allOnboardingDone && (
           <div className="mb-10">
             <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Training</p>
-            <div className="space-y-3">
-              {programReviewedThisWeek ? (
-                <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-teal-400 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-teal-400">Training check-in submitted</p>
-                      <p className="text-xs text-stone-500 mt-0.5">Reviewed {new Date(activeProgram.last_review_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })} — your coach will review shortly.</p>
+            {activeProgram ? (
+              <div className="space-y-3">
+                {programReviewedThisWeek ? (
+                  <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-5 h-5 rounded-full bg-teal-400 flex items-center justify-center flex-shrink-0">
+                        <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-teal-400">Training check-in submitted</p>
+                        <p className="text-xs text-stone-500 mt-0.5">Your coach will review shortly.</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
+                ) : (
+                  <Link
+                    href={`/portal/${token}/training`}
+                    className="block rounded-2xl border border-stone-700 bg-stone-900 p-5 hover:border-teal-400/40 hover:bg-teal-400/5 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-white mb-1">Weekly training check-in</p>
+                        <p className="text-xs text-stone-400">How did your sessions go this week?</p>
+                      </div>
+                      <span className="text-xs font-bold text-teal-400 ml-4">Start →</span>
+                    </div>
+                  </Link>
+                )}
                 <Link
-                  href={`/portal/${token}/training`}
-                  className="block rounded-2xl border border-stone-700 bg-stone-900 p-5 hover:border-teal-400/40 hover:bg-teal-400/5 transition-colors"
+                  href={`/portal/${token}/program`}
+                  className="block rounded-2xl border border-stone-800 bg-stone-900/50 p-4 hover:border-stone-700 transition-colors"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-semibold text-white mb-1">Weekly training check-in</p>
-                      <p className="text-xs text-stone-400">How did your sessions go this week?</p>
+                      <p className="text-sm font-medium text-stone-300">View your program</p>
+                      <p className="text-xs text-stone-600 mt-0.5">{activeProgram.block_name}</p>
                     </div>
-                    <span className="text-xs font-bold text-teal-400 ml-4">Start →</span>
+                    <span className="text-xs text-stone-500 ml-4">→</span>
                   </div>
                 </Link>
-              )}
-              <Link
-                href={`/portal/${token}/program`}
-                className="block rounded-2xl border border-stone-800 bg-stone-900/50 p-4 hover:border-stone-700 transition-colors"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-stone-300">View your program</p>
-                    <p className="text-xs text-stone-600 mt-0.5">{activeProgram.block_name}</p>
-                  </div>
-                  <span className="text-xs text-stone-500 ml-4">→</span>
-                </div>
-              </Link>
-            </div>
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-stone-800 bg-stone-900/50 p-5">
+                <p className="text-sm font-semibold text-stone-400 mb-1">Your program is being built</p>
+                <p className="text-xs text-stone-600 leading-relaxed">Your coach is putting your training program together based on your intake. You will see it here once it is ready.</p>
+              </div>
+            )}
           </div>
         )}
 
         {/* Nutrition */}
-        {allOnboardingDone && activeNutritionPlan && (
+        {allOnboardingDone && (
           <div className="mb-10">
             <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Nutrition</p>
-            <div className="space-y-3">
-              {nutritionReviewedThisWeek ? (
-                <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-teal-400 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-teal-400">Nutrition check-in submitted</p>
-                      <p className="text-xs text-stone-500 mt-0.5">Reviewed {new Date(activeNutritionPlan.last_review_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })} — your coach will review shortly.</p>
+            {activeNutritionPlan ? (
+              <div className="space-y-3">
+                {nutritionReviewedThisWeek ? (
+                  <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-5 h-5 rounded-full bg-teal-400 flex items-center justify-center flex-shrink-0">
+                        <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-teal-400">Nutrition check-in submitted</p>
+                        <p className="text-xs text-stone-500 mt-0.5">Your coach will review shortly.</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
+                ) : (
+                  <Link
+                    href={`/portal/${token}/nutrition`}
+                    className="block rounded-2xl border border-stone-700 bg-stone-900 p-5 hover:border-teal-400/40 hover:bg-teal-400/5 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-white mb-1">Weekly nutrition check-in</p>
+                        <p className="text-xs text-stone-400">How are you going with your plan?</p>
+                      </div>
+                      <span className="text-xs font-bold text-teal-400 ml-4">Start →</span>
+                    </div>
+                  </Link>
+                )}
                 <Link
-                  href={`/portal/${token}/nutrition`}
-                  className="block rounded-2xl border border-stone-700 bg-stone-900 p-5 hover:border-teal-400/40 hover:bg-teal-400/5 transition-colors"
+                  href={`/portal/${token}/my-plan`}
+                  className="block rounded-2xl border border-stone-800 bg-stone-900/50 p-4 hover:border-stone-700 transition-colors"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-semibold text-white mb-1">Weekly nutrition check-in</p>
-                      <p className="text-xs text-stone-400">How are you going with your plan?</p>
+                      <p className="text-sm font-medium text-stone-300">View your nutrition plan</p>
+                      <p className="text-xs text-stone-600 mt-0.5">{activeNutritionPlan.plan_name}</p>
                     </div>
-                    <span className="text-xs font-bold text-teal-400 ml-4">Start →</span>
+                    <span className="text-xs text-stone-500 ml-4">→</span>
                   </div>
                 </Link>
-              )}
-              <Link
-                href={`/portal/${token}/my-plan`}
-                className="block rounded-2xl border border-stone-800 bg-stone-900/50 p-4 hover:border-stone-700 transition-colors"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-stone-300">View your nutrition plan</p>
-                    <p className="text-xs text-stone-600 mt-0.5">{activeNutritionPlan.plan_name}</p>
-                  </div>
-                  <span className="text-xs text-stone-500 ml-4">→</span>
-                </div>
-              </Link>
-            </div>
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-stone-800 bg-stone-900/50 p-5">
+                <p className="text-sm font-semibold text-stone-400 mb-1">Your nutrition plan is being built</p>
+                <p className="text-xs text-stone-600 leading-relaxed">Your coach is building your nutrition plan. You will see it here once it is ready.</p>
+              </div>
+            )}
           </div>
         )}
 
