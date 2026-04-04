@@ -90,7 +90,7 @@ export default async function NutritionWeeklyReview({
                 {review.signal_category && (
                   <div className="flex gap-2">
                     <span className="text-xs text-stone-600 w-36 shrink-0">What they noticed</span>
-                    <span className="text-xs text-stone-300">{signalLabel[review.signal_category] ?? review.signal_category.replace(/_/g, ' ')}</span>
+                    <span className="text-xs text-stone-300">{review.signal_category.split(',').map(s => signalLabel[s.trim()] ?? s.trim().replace(/_/g, ' ')).join(', ')}</span>
                   </div>
                 )}
                 {review.signals_noted && (

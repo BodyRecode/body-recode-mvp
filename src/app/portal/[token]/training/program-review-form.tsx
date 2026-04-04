@@ -32,7 +32,7 @@ export default function ProgramReviewForm({
   const [error, setError] = useState<string | null>(null)
 
   const [adherenceConfirmed, setAdherenceConfirmed] = useState(false)
-  const [signalCategory, setSignalCategory] = useState('')
+  const [signalCategories, setSignalCategories] = useState<string[]>([])
   const [direction, setDirection] = useState<'progress' | 'hold' | 'rebuild' | ''>('')
   const [signalsNoted, setSignalsNoted] = useState('')
 
@@ -47,7 +47,7 @@ export default function ProgramReviewForm({
       body: JSON.stringify({
         token,
         adherence_confirmed: adherenceConfirmed,
-        signal_category: signalCategory || null,
+        signal_category: signalCategories.length > 0 ? signalCategories.join(',') : null,
         signals_noted: signalsNoted || null,
         direction,
       }),
@@ -124,16 +124,22 @@ export default function ProgramReviewForm({
           {SIGNAL_OPTIONS.map(opt => (
             <button
               key={opt.value}
-              onClick={() => setSignalCategory(signalCategory === opt.value ? '' : opt.value)}
+              onClick={() => setSignalCategories(prev => prev.includes(opt.value) ? prev.filter(v => v !== opt.value) : [...prev, opt.value])}
               className={`flex items-start gap-3 w-full text-left px-4 py-3 rounded-2xl border transition-colors ${
-                signalCategory === opt.value ? 'border-teal-500 bg-teal-500/10' : 'border-stone-800 hover:border-stone-700'
+                signalCategories.includes(opt.value) ? 'border-teal-500 bg-teal-500/10' : 'border-stone-800 hover:border-stone-700'
               }`}
             >
-              <div className={`w-3 h-3 rounded-full border shrink-0 mt-1 ${
-                signalCategory === opt.value ? 'border-teal-500 bg-teal-500' : 'border-stone-600'
-              }`} />
+              <div className={`w-4 h-4 rounded border shrink-0 mt-0.5 flex items-center justify-center ${
+                signalCategories.includes(opt.value) ? 'border-teal-500 bg-teal-500' : 'border-stone-600'
+              }`}>
+                {signalCategories.includes(opt.value) && (
+                  <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </div>
               <div>
-                <p className={`text-sm font-medium ${signalCategory === opt.value ? 'text-teal-300' : 'text-stone-300'}`}>{opt.label}</p>
+                <p className={`text-sm font-medium ${signalCategories.includes(opt.value) ? 'text-teal-300' : 'text-stone-300'}`}>{opt.label}</p>
                 <p className="text-xs text-stone-600 mt-0.5">{opt.desc}</p>
               </div>
             </button>
