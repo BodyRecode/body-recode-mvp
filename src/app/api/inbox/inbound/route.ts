@@ -1,17 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
-// Resend posts inbound emails as JSON to this endpoint
+// Handles inbound email webhooks from Postmark
 export async function POST(request: NextRequest) {
   const body = await request.json()
 
-  const from: string = body.from ?? ''
-  const subject: string = body.subject ?? '(no subject)'
-  const text: string = body.text ?? body.html ?? ''
+  // Postmark format: From, Subject, TextBody, HtmlBody, FromFull.Email
+  // Resend format: from, subject, text, html
+  const from: string = body.From ?? body.from ?? ''
+  const subject: string = body.Subject ?? body.subject ?? '(no subject)'
+  const text: string = body.TextBody ?? body.text ?? body.HtmlBody ?? body.html ?? ''
 
-  // Extract sender email from "Name <email>" format
-  const emailMatch = from.match(/<(.+?)>/)
-  const senderEmail = emailMatch ? emailMatch[1] : from.trim()
+  // Postmark provides parsed email in FromFull
+  const senderEmail: string =
+    body.FromFull?.Email ??
+    (() => {
+      const m = from.match(/<(.+?)>/)
+      return m ? m[1] : from.trim()
+    })()
 
   if (!senderEmail) {
     return NextResponse.json({ error: 'No sender email' }, { status: 400 })
