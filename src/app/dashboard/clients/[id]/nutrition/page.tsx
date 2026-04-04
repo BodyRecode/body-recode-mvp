@@ -105,6 +105,12 @@ const directionColour: Record<string, string> = {
   rebuild: 'text-red-400 bg-red-400/10 border-red-400/30',
 }
 
+const directionLabel: Record<string, string> = {
+  progress: 'Making progress',
+  hold: 'Staying steady',
+  rebuild: 'Struggling',
+}
+
 function clean(s: string): string {
   return s.replace(/ — /g, ' ').replace(/—/g, ' ')
 }
@@ -135,8 +141,8 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
           <p className="text-xs text-stone-500">~{plan.estimated_calorie_band}</p>
         )}
         {plan.current_direction && (
-          <span className={`inline-block mt-2 text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${directionColour[plan.current_direction] || ''}`}>
-            Weekly direction: {plan.current_direction}
+          <span className={`inline-block mt-2 text-xs font-semibold px-2.5 py-1 rounded-full border ${directionColour[plan.current_direction] || ''}`}>
+            {directionLabel[plan.current_direction] ?? plan.current_direction}
           </span>
         )}
         <p className="text-xs text-stone-600 mt-3">

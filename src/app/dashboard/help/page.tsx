@@ -707,8 +707,13 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 5 — Weekly Review (Client Portal)</p>
             <p>The weekly training review is submitted by the client through their portal. The client reports whether they completed their sessions, how training felt (one or more signals), the overall direction, and optional notes. You see the answers as a question/answer feed on the Training Program page.</p>
-            <p className="mt-2"><strong>Direction labels:</strong> <strong>Progress</strong> — client selected &quot;Making progress&quot;. <strong>Hold</strong> — client selected &quot;Staying steady&quot;. <strong>Rebuild</strong> — client selected &quot;Struggling&quot;.</p>
             <p className="mt-2"><strong>How training felt signals:</strong> Feeling stronger / Struggling with sessions / No change / Recovering poorly / Ticking along. Clients can select multiple.</p>
+            <p className="mt-2"><strong>Direction labels — what they mean and what to do:</strong></p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><strong className="text-green-400">Making progress</strong> — sessions are going well, client is adapting. No action needed. Continue the current program.</li>
+              <li><strong className="text-amber-400">Staying steady</strong> — no notable change, client is maintaining. Monitor for a week or two before acting. Consider whether progression variables can be nudged.</li>
+              <li><strong className="text-red-400">Struggling</strong> — client is finding sessions hard, energy low, or performance dropping. Action required. A red banner will appear on the Training Program page. Review the check-in notes, write coach feedback for the client, and consider adjusting the program or generating a new block. When you regenerate, the AI will see this history and prescribe accordingly.</li>
+            </ul>
             <p className="mt-2"><strong>Coach notes:</strong> After reviewing, click <strong>+ Add feedback for client</strong> under any review entry to write a note. This note appears on the client&apos;s portal home page under &quot;From your coach&quot;. Only the most recent note with content is shown to the client.</p>
 
             <Training title="How to read the prescription suggestion">
@@ -753,8 +758,13 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Step 4 — Weekly Review (Client Portal)</p>
             <p>The weekly nutrition review is submitted by the client through their portal. The client reports adherence, what they noticed (one or more signals), the overall direction, and optional notes. You see the answers as a question/answer feed on the Nutrition Plan page.</p>
-            <p className="mt-2"><strong>Direction labels:</strong> <strong>Progress</strong> — client selected &quot;Making progress&quot;. <strong>Hold</strong> — client selected &quot;Staying steady&quot;. <strong>Rebuild</strong> — client selected &quot;Struggling&quot;.</p>
             <p className="mt-2"><strong>What they noticed signals:</strong> Under-fuelled / Over-fuelled / Recovery issues / Hard to stick to / Feeling good. Clients can select multiple.</p>
+            <p className="mt-2"><strong>Direction labels — what they mean and what to do:</strong></p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><strong className="text-green-400">Making progress</strong> — client feels on track, plan is working. No action needed. Continue the current plan.</li>
+              <li><strong className="text-amber-400">Staying steady</strong> — no notable change. Monitor for a week or two. Consider whether macros need a small adjustment.</li>
+              <li><strong className="text-red-400">Struggling</strong> — client is not coping with the plan (hard to follow, under-fuelled, recovery issues). Action required. A red banner will appear on the Nutrition Plan page. Review the check-in notes, write coach feedback, and consider adjusting or regenerating the plan. The AI will factor this history into the new prescription.</li>
+            </ul>
             <p className="mt-2"><strong>Coach notes:</strong> Click <strong>+ Add feedback for client</strong> under any review entry to write a note back to the client. This appears on their portal home page under &quot;From your coach&quot;.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Key Concepts</p>
