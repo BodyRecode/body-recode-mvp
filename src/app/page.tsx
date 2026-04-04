@@ -20,28 +20,20 @@ export default function HomePage() {
         <DnaHelix className="absolute left-0 bottom-0 h-3/4 w-auto max-w-[160px] pointer-events-none select-none" opacity={0.04} />
         <div className="max-w-4xl mx-auto px-5 py-32 text-center relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-8">
-            Body Recode™, Biological Interpretation System
+            Body Recode™ — Biological Interpretation System
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight mb-8">
             Interpretation before prescription.
           </h1>
           <p className="text-lg md:text-xl text-white/50 leading-relaxed max-w-2xl mx-auto mb-12">
-            The body communicates its state through observable patterns. Body Recode™ reads those patterns before anything is prescribed. One interpretive system. Five environments. The IP sits above all of it.
+            Body Recode™ is a biological interpretation system. One interpretive engine that reads body state before any intervention is designed. Built to operate across five distinct environments. The IP sits above all of it.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/performance-coaching"
-              className="bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb2] transition-colors"
-            >
-              Performance Coaching
-            </Link>
-            <Link
-              href="#system"
-              className="border border-white/20 text-white font-semibold px-8 py-4 rounded-full text-base hover:border-white/40 transition-colors"
-            >
-              Read the system
-            </Link>
-          </div>
+          <Link
+            href="#system"
+            className="border border-white/20 text-white font-semibold px-8 py-4 rounded-full text-base hover:border-white/40 transition-colors"
+          >
+            Read the system
+          </Link>
         </div>
       </section>
 
@@ -54,7 +46,7 @@ export default function HomePage() {
           </h2>
           <div className="max-w-2xl mx-auto space-y-6 text-white/60 text-lg leading-relaxed">
             <p>
-              The conventional model goes, assess goals, prescribe approach, measure output, adjust. This works when the body is in a state to respond. Most of the time, it is not. The model assumes the body is ready. It rarely asks whether it is.
+              The conventional model goes: assess goals, prescribe approach, measure output, adjust. This works when the body is in a state to respond. Most of the time, it is not. The model assumes the body is ready. It rarely asks whether it is.
             </p>
             <p>
               Body Recode™ sits one layer upstream of that. Before any prescription is made, the system asks a different question: what state is this body actually operating in right now, and why is it organised the way it is?
@@ -75,15 +67,15 @@ export default function HomePage() {
           </h2>
           <div className="grid md:grid-cols-2 gap-8 mb-10">
             <div className="border border-[#10E1C2]/30 rounded-2xl p-8 bg-[#10E1C2]/5">
-              <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Layer 1, Interpretation</p>
+              <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Layer 1 — Interpretation</p>
               <p className="text-white/60 text-base leading-relaxed">
-                Takes structured input data across eight signal domains, training load, recovery capacity, stress architecture, hormonal signals, fat distribution patterns, sleep quality, behavioural patterns, and emotional load, and produces the CFFS: the Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation.
+                Takes structured input data across eight signal domains — training load, recovery capacity, stress architecture, hormonal signals, fat distribution patterns, sleep quality, behavioural patterns, and emotional load — and produces the CFFS: the Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation.
               </p>
             </div>
             <div className="border border-white/10 rounded-2xl p-8">
-              <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase mb-4">Layer 2, Execution</p>
+              <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase mb-4">Layer 2 — Execution</p>
               <p className="text-white/60 text-base leading-relaxed">
-                Downstream of the CFFS, the practitioner designs the actual intervention, training, nutrition, load management, clinical protocol, performance strategy. Everything in the execution layer is derived from the interpretation. The interpretation never changes to accommodate the execution.
+                Downstream of the CFFS, the practitioner designs the actual intervention — training, nutrition, load management, clinical protocol, performance strategy. Everything in the execution layer is derived from the interpretation. The interpretation never changes to accommodate the execution.
               </p>
             </div>
           </div>
@@ -102,10 +94,10 @@ export default function HomePage() {
             One interpretive engine. Five environments.
           </h2>
           <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            The interpretive layer does not care what environment the body is operating in. The body responds to load through the same biological mechanisms regardless of context. What changes between environments is not the interpretation, it is what the practitioner does with it.
+            The interpretive layer does not care what environment the body is operating in. The body responds to load through the same biological mechanisms regardless of context. What changes between environments is not the interpretation — it is what the practitioner does with it.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Environment 1, Live */}
+            {/* Environment 1 — Live */}
             <div className="border border-[#10E1C2]/30 rounded-2xl p-8 bg-[#10E1C2]/5">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">Health &amp; Fitness</p>
@@ -113,7 +105,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-bold text-white mb-3">Performance Coaching</h3>
               <p className="text-white/60 text-sm leading-relaxed mb-6">
-                The origin environment and first proof of concept. Clients are general population, people whose bodies have stopped responding to effort. The execution layer is structured training and nutrition design derived entirely from the CFFS.
+                The origin environment and first proof of concept. Clients are general population — people whose bodies have stopped responding to effort. The execution layer is structured training and nutrition design derived entirely from the CFFS.
               </p>
               <Link
                 href="/performance-coaching"
@@ -131,7 +123,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-bold text-white mb-3">Executive Performance</h3>
               <p className="text-white/50 text-sm leading-relaxed">
-                High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress, cortisol elevation, recovery suppression, regulatory disruption.
+                High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress — cortisol elevation, recovery suppression, regulatory disruption.
               </p>
             </div>
 
@@ -159,7 +151,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Environment 5, centred on last row */}
+            {/* Environment 5 */}
             <div className="border border-white/10 rounded-2xl p-8 md:col-span-2 md:max-w-lg md:mx-auto md:w-full">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-[11px] font-bold tracking-[0.2em] text-white/40 uppercase">Education &amp; Youth</p>
@@ -187,30 +179,10 @@ export default function HomePage() {
           </p>
           <div className="grid md:grid-cols-2 gap-6 mb-10">
             {[
-              {
-                zone: 'MZ1',
-                name: 'Stress Belt',
-                location: 'Stomach / Waist',
-                signal: 'Cortisol and adrenaline dominance',
-              },
-              {
-                zone: 'MZ2',
-                name: 'Gut and Bloat',
-                location: 'Digestive region',
-                signal: 'Insulin timing disruption',
-              },
-              {
-                zone: 'MZ3',
-                name: 'Hip and Thigh Conservation',
-                location: 'Hips / Thighs',
-                signal: 'Reproductive hormone and metabolic conservation patterns',
-              },
-              {
-                zone: 'MZ4',
-                name: 'Upper Body Stress Response',
-                location: 'Upper body',
-                signal: 'Nervous system load, adrenaline, sleep retention',
-              },
+              { zone: 'MZ1', name: 'Stress Belt', location: 'Stomach / Waist', signal: 'Cortisol and adrenaline dominance' },
+              { zone: 'MZ2', name: 'Gut and Bloat', location: 'Digestive region', signal: 'Insulin timing disruption' },
+              { zone: 'MZ3', name: 'Hip and Thigh Conservation', location: 'Hips / Thighs', signal: 'Reproductive hormone and metabolic conservation patterns' },
+              { zone: 'MZ4', name: 'Upper Body Stress Response', location: 'Upper body', signal: 'Nervous system load, adrenaline, sleep retention' },
             ].map((item) => (
               <div key={item.zone} className="border border-white/10 rounded-2xl p-7">
                 <div className="flex items-center justify-between mb-3">
@@ -270,21 +242,17 @@ export default function HomePage() {
             One engine. Built to scale across industries.
           </h2>
           <p className="text-white/60 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            Body Recode™ is built as one interpretive core with multiple execution layers on top of it. The interpretation engine ingests structured client data, classifies body state, and produces the CFFS. This engine is environment-agnostic. It can be licensed, white-labelled, or integrated into existing practitioner workflows. Each execution layer is a downstream application, its own product, its own interface, its own practitioner tools, calibrated to the demands and language of its environment.
+            Body Recode™ is built as one interpretive core with multiple execution layers on top of it. The interpretation engine ingests structured client data, classifies body state, and produces the CFFS. This engine is environment-agnostic. It can be licensed, white-labelled, or integrated into existing practitioner workflows. Each execution layer is a downstream application — its own product, its own interface, its own practitioner tools, calibrated to the demands and language of its environment.
           </p>
 
-          {/* Architecture Diagram */}
           <div className="border border-white/10 rounded-2xl overflow-hidden">
-            {/* Engine block */}
             <div className="bg-[#10E1C2]/10 border-b border-[#10E1C2]/20 p-6 text-center">
               <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">Body Recode™ Interpretation Engine</p>
               <p className="text-white/40 text-xs mt-1">Intake → Classification → CFFS</p>
             </div>
-            {/* Connector line */}
             <div className="flex justify-center py-4 bg-black/40">
               <div className="w-px h-6 bg-white/10" />
             </div>
-            {/* Five execution layers */}
             <div className="grid grid-cols-5 divide-x divide-white/5">
               <div className="p-4 text-center bg-[#10E1C2]/5 border-t border-[#10E1C2]/20">
                 <p className="text-[#10E1C2] text-[10px] font-bold uppercase tracking-wider leading-snug">Performance Coaching</p>
@@ -311,29 +279,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Final CTA */}
+      {/* Closing statement — no CTA */}
       <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Environment 01 — Live</p>
           <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-6">
             Performance Coaching is live.
           </h2>
-          <p className="text-white/50 text-lg leading-relaxed mb-12 max-w-xl mx-auto">
+          <p className="text-white/50 text-lg leading-relaxed max-w-xl mx-auto mb-10">
             Environment 1 of the Body Recode™ system is built, validated, and accepting clients. Online 1:1 worldwide and face-to-face in Brisbane.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/performance-coaching"
-              className="inline-block bg-[#10E1C2] text-black font-bold px-10 py-5 rounded-full text-lg hover:bg-[#0ecfb2] transition-colors"
-            >
-              Performance Coaching
-            </Link>
-            <Link
-              href="/performance-check-in"
-              className="text-white/50 text-base font-semibold hover:text-white transition-colors"
-            >
-              Start with a free check-in →
-            </Link>
-          </div>
+          <Link
+            href="/performance-coaching"
+            className="inline-block border border-[#10E1C2]/40 text-[#10E1C2] font-semibold px-8 py-4 rounded-full text-base hover:border-[#10E1C2] transition-colors"
+          >
+            Performance Coaching →
+          </Link>
         </div>
       </section>
 
