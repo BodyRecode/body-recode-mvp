@@ -143,7 +143,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          <p className="text-white/25 text-sm text-center mt-10 max-w-xl mx-auto">
+          <p className="text-white/40 text-sm text-center mt-10 max-w-xl mx-auto">
             The 208-question intake is structured, not conversational. Every question maps to a signal domain. The data set is what separates interpretation from assumption.
           </p>
         </div>
@@ -188,7 +188,7 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-            <p className="text-white/25 text-sm mt-6">
+            <p className="text-white/40 text-sm mt-6">
               Four macro zones containing eight extended sub-zones. The Fat Map feeds into broader interpretation and never drives outcome independently.
             </p>
           </div>
@@ -221,13 +221,13 @@ export default function HomePage() {
                 desc: 'Interprets emotional load, identity constraints, and behavioural patterns as structural biological stressors. Compliance, identity threat, and rhythm disruption are not psychological observations. They are inputs that affect adaptation and regulation.',
               },
             ].map((pillar) => (
-              <div key={pillar.num} className="border border-white/10 rounded-2xl p-7">
+              <div key={pillar.num} className="border border-white/20 rounded-2xl p-7">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-[11px] font-bold tracking-[0.2em] text-white/30 uppercase">Pillar {pillar.num}</p>
-                  <span className="text-[10px] font-bold text-white/20 border border-white/10 px-2 py-0.5 rounded-full uppercase tracking-wider">{pillar.abbr}</span>
+                  <p className="text-[11px] font-bold tracking-[0.2em] text-white/50 uppercase">Pillar {pillar.num}</p>
+                  <span className="text-[10px] font-bold text-white/40 border border-white/20 px-2 py-0.5 rounded-full uppercase tracking-wider">{pillar.abbr}</span>
                 </div>
                 <h3 className="text-base font-bold text-white mb-3">{pillar.name}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{pillar.desc}</p>
+                <p className="text-white/60 text-sm leading-relaxed">{pillar.desc}</p>
               </div>
             ))}
           </div>
@@ -293,19 +293,19 @@ export default function HomePage() {
                 <div className="mt-2 w-1.5 h-1.5 rounded-full bg-[#10E1C2] mx-auto" />
               </div>
               <div className="p-4 text-center border-t border-white/5">
-                <p className="text-white/25 text-[10px] font-bold uppercase tracking-wider leading-snug">Executive Performance</p>
+                <p className="text-white/40 text-[10px] font-bold uppercase tracking-wider leading-snug">Executive Performance</p>
                 <div className="mt-2 w-1.5 h-1.5 rounded-full bg-white/10 mx-auto" />
               </div>
               <div className="p-4 text-center border-t border-white/5">
-                <p className="text-white/25 text-[10px] font-bold uppercase tracking-wider leading-snug">Operational Readiness</p>
+                <p className="text-white/40 text-[10px] font-bold uppercase tracking-wider leading-snug">Operational Readiness</p>
                 <div className="mt-2 w-1.5 h-1.5 rounded-full bg-white/10 mx-auto" />
               </div>
               <div className="p-4 text-center border-t border-white/5">
-                <p className="text-white/25 text-[10px] font-bold uppercase tracking-wider leading-snug">Clinical Integration</p>
+                <p className="text-white/40 text-[10px] font-bold uppercase tracking-wider leading-snug">Clinical Integration</p>
                 <div className="mt-2 w-1.5 h-1.5 rounded-full bg-white/10 mx-auto" />
               </div>
               <div className="p-4 text-center border-t border-white/5">
-                <p className="text-white/25 text-[10px] font-bold uppercase tracking-wider leading-snug">Developmental Performance</p>
+                <p className="text-white/40 text-[10px] font-bold uppercase tracking-wider leading-snug">Developmental Performance</p>
                 <div className="mt-2 w-1.5 h-1.5 rounded-full bg-white/10 mx-auto" />
               </div>
             </div>
