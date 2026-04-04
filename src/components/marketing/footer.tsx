@@ -24,6 +24,7 @@ export default function MarketingFooter() {
               </Link>
               <span className="text-[9px] font-bold text-black bg-[#10E1C2] px-1.5 py-0.5 rounded-full uppercase tracking-wider">Live</span>
             </div>
+            <a href="https://performance-bodyrecode.vercel.app" className="text-xs text-white/30 hover:text-white/50 transition-colors pl-0.5">performance.bodyrecode.au →</a>
             <span className="text-sm text-white/20 cursor-default">Executive Performance <span className="text-[10px] text-white/20 ml-1">In Development</span></span>
             <span className="text-sm text-white/20 cursor-default">Operational Performance <span className="text-[10px] text-white/20 ml-1">In Development</span></span>
             <span className="text-sm text-white/20 cursor-default">Clinical Integration <span className="text-[10px] text-white/20 ml-1">In Development</span></span>
