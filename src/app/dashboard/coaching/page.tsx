@@ -45,6 +45,22 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   const { data: clients } = await query
 
+  // Fetch clients with active Rebuild direction on training or nutrition
+  const { data: rebuildPrograms } = await supabase
+    .from('programs')
+    .select('client_id')
+    .eq('is_active', true)
+    .eq('current_direction', 'rebuild')
+
+  const { data: rebuildNutrition } = await supabase
+    .from('nutrition_plans')
+    .select('client_id')
+    .eq('status', 'active')
+    .eq('current_direction', 'rebuild')
+
+  const rebuildTrainingIds = new Set((rebuildPrograms || []).map(r => r.client_id))
+  const rebuildNutritionIds = new Set((rebuildNutrition || []).map(r => r.client_id))
+
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
@@ -71,7 +87,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     const hasFormA = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'A')
     const hasFormB = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'B')
 
-    return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB }
+    return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB, rebuildTraining: rebuildTrainingIds.has(client.id), rebuildNutrition: rebuildNutritionIds.has(client.id) }
   })
 
   const flaggedCount = clientsProcessed.filter(c => c.latestCffs?.reassessment_flagged).length
@@ -138,6 +154,44 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           })}
         </div>
       </div>
+
+      {/* Action queue — clients needing attention */}
+      {clientsProcessed.some(c => c.rebuildTraining || c.rebuildNutrition) && (
+        <div className="mb-6 bg-stone-900 border border-red-800/50 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-red-800/30 flex items-center gap-2">
+            <svg className="w-4 h-4 text-red-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+            </svg>
+            <p className="text-xs font-bold text-red-400 uppercase tracking-widest">Needs attention</p>
+          </div>
+          <div className="divide-y divide-stone-800">
+            {clientsProcessed.filter(c => c.rebuildTraining || c.rebuildNutrition).map(client => (
+              <div key={client.id} className="px-4 py-3 flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm font-semibold text-white">{client.name}</p>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    {client.rebuildTraining && <span className="text-xs text-red-400">Training: Rebuild</span>}
+                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-stone-700 text-xs">·</span>}
+                    {client.rebuildNutrition && <span className="text-xs text-red-400">Nutrition: Rebuild</span>}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  {client.rebuildTraining && (
+                    <Link href={`/dashboard/clients/${client.id}/program`} className="text-xs font-semibold text-red-400 hover:text-red-300 border border-red-800/50 px-2.5 py-1 rounded-lg transition-colors">
+                      Training →
+                    </Link>
+                  )}
+                  {client.rebuildNutrition && (
+                    <Link href={`/dashboard/clients/${client.id}/nutrition`} className="text-xs font-semibold text-red-400 hover:text-red-300 border border-red-800/50 px-2.5 py-1 rounded-lg transition-colors">
+                      Nutrition →
+                    </Link>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {flaggedCount > 0 && (
         <div className="mb-6 bg-amber-950/50 border border-amber-800 rounded-lg px-4 py-3 flex items-center gap-3">
