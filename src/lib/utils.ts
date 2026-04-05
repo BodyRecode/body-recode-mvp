@@ -72,6 +72,7 @@ export function getLeadSourceLabel(source: string) {
     direct: 'Direct',
     gym_floor: 'Gym Floor',
     quiz: 'Quiz (untracked)',
+    founder_program: 'Founder Program',
     other: 'Other',
   }
   return labels[source] ?? source
