@@ -36,6 +36,7 @@ const SECTIONS = [
   { id: 'be-payments', title: '29. Payments', colour: 'amber' as const },
   { id: 'be-analytics', title: '30. Analytics', colour: 'amber' as const },
   { id: 'be-ads', title: '31. Ads', colour: 'amber' as const },
+  { id: 'be-content-engine', title: '32. Content Engine', colour: 'amber' as const },
 ]
 
 export default function HelpPage() {
@@ -609,7 +610,12 @@ export default function HelpPage() {
           </Section>
 
           <Section id="admin-actions" title="17. Admin Actions" colour="teal">
-            <p>The following actions are available on the <strong>Dashboard Homepage</strong> in the Admin Actions panel.</p>
+            <p>The following actions are available on the <strong>Dashboard Homepage</strong>.</p>
+
+            <p className="font-semibold text-white mt-2">Positions Available</p>
+            <p>The <strong>Positions Available</strong> card shows the current number of Founder Client Program spots shown on performance.bodyrecode.au/founder. Use the + and - buttons to adjust the count. The page updates within 60 seconds. Decrement this when you accept an applicant, not when they apply.</p>
+
+            <p className="font-semibold text-white mt-2">Admin Actions panel</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li><strong>Send preview email</strong> — Sends a sample re-engagement report email to kade@bodyrecode.au. Use this to preview formatting and layout before running the blast.</li>
               <li><strong>Resend reports to all leads</strong> — Triggers the re-engagement blast. Cancels all existing follow-up sequences and sends a fresh re-engagement email plus a new 3-email follow-up sequence to every lead with check-in data. Requires confirmation before firing.</li>
@@ -618,30 +624,42 @@ export default function HelpPage() {
           </Section>
 
           <Section id="founding-client" title="18. Founding Client Program" colour="teal">
-            <p>The Founding Client Program is a limited, selective participation model. Up to 5 positions are available. The fee is adjusted by 50% in exchange for the client&apos;s documented participation in a structured case study process.</p>
+            <p>The Founding Client Program is a limited, selective participation model. 20 positions are available for online clients. The fee is reduced by 50% in exchange for the client&apos;s documented participation in a structured case study process.</p>
             <p>This is a structured trade, not a discount. The client provides participation of commercial and developmental value to the system. The adjusted fee reflects that exchange.</p>
 
             <Training title="Why framing matters here">
               <p>The language matters. Calling it a discount frames it as you giving something up. Calling it a trade frames it as an exchange — and it is an exchange. The client gets a reduced fee. You get documented case study data, which has real commercial value for the system&apos;s long-term development.</p>
-              <p className="mt-2">Presenting it as a trade also screens out the wrong leads. Someone who responds well to the framing understands the nature of the program. Someone who immediately treats it as a price negotiation tool is likely the wrong fit for it. The five positions are finite — use them with intent.</p>
+              <p className="mt-2">Presenting it as a trade also screens out the wrong leads. Someone who responds well to the framing understands the nature of the program. Someone who immediately treats it as a price negotiation tool is likely the wrong fit for it. The positions are finite — use them with intent.</p>
             </Training>
 
-            <p className="font-semibold text-white mt-2">Two entry triggers</p>
+            <p className="font-semibold text-white mt-2">Three entry paths</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Objection-triggered</strong> — The full rate offer is made first. If the lead objects to price, the Founding Client offer is introduced as the second offer. Use the Objection-Triggered tab in the Zoom 2 companion for the full script and qualification checklist.</li>
-              <li><strong>Manual override</strong> — For a high-suitability lead, you may proactively offer the program before any objection arises. Use the Manual Override tab. This requires deliberate intent, not convenience. The positioning criteria must be met.</li>
+              <li><strong>Online ad application</strong> — The primary path for online clients. The landing page at performance.bodyrecode.au/founder directs applicants through the Performance Check-In as step one of the application. Applications come in tagged as source: Founder Program in the leads list. Review the check-in answers and set the application status on the lead detail page.</li>
+              <li><strong>Objection-triggered at Zoom 2</strong> — The full rate offer is made first. If the lead objects to price, the Founding Client offer is introduced as the second offer. Use the Objection-Triggered tab in the Zoom 2 companion.</li>
+              <li><strong>Manual override at Zoom 2</strong> — For a high-suitability lead, you may proactively offer the program before any objection arises. Use the Manual Override tab. All four criteria on the checklist must be true before using it.</li>
             </ul>
 
+            <p className="font-semibold text-white mt-2">Managing online applications</p>
+            <p>Applications from the landing page arrive in your leads list with a teal <strong>Founder</strong> badge. Use the <strong>Founder Program</strong> filter at the top of the leads list to view them in isolation.</p>
+            <p className="mt-2">On each founder lead&apos;s detail page, a <strong>Founder Client Application</strong> section appears at the top. Review their check-in answers below it and update the application status using the status button:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><strong>Under Review</strong> — Default state. Application received, not yet assessed.</li>
+              <li><strong>Accepted</strong> — Position offered. Proceed to booking and coaching entry.</li>
+              <li><strong>Declined</strong> — Not a fit for this cohort.</li>
+              <li><strong>Waitlisted</strong> — Suitable but no positions available right now.</li>
+            </ul>
+            <p className="mt-2">When you accept an applicant, decrement the positions counter on the Dashboard Homepage using the Positions Available control. The landing page updates within 60 seconds.</p>
+
             <Training title="Objection-triggered vs manual override — know the difference">
-              <p><strong>Objection-triggered</strong> is the standard pathway. Full rate goes first, always. If the lead objects to price, you handle the objection first (repeat it back, reframe the investment), and if they still need something to move, the Founding Client program becomes the second offer. The script walks you through the steps — use it.</p>
-              <p className="mt-2"><strong>Manual override</strong> is not for when you want to help someone who can&apos;t afford the full rate. That is a misuse of the program and a misuse of a position. Manual override is for a lead where the case study potential is genuinely high — they have a compelling story, a body state that produces useful data, and the willingness to be part of a documented process. All four criteria on the checklist must be true before you use it.</p>
+              <p><strong>Objection-triggered</strong> is the standard Zoom 2 pathway. Full rate goes first, always. If the lead objects to price, you handle the objection first, and if they still need something to move, the Founding Client program becomes the second offer. The script walks you through the steps — use it.</p>
+              <p className="mt-2"><strong>Manual override</strong> is not for when you want to help someone who cannot afford the full rate. That is a misuse of the program and a misuse of a position. Manual override is for a lead where the case study potential is genuinely high. All four criteria on the checklist must be true before you use it.</p>
             </Training>
 
             <p className="font-semibold text-white mt-2">Agreement before commencement</p>
             <p>The Founding Client Case Study Agreement must be signed before the commencement fee is sent. This is non-negotiable. The sequence is:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
-              <li>Lead accepts the Founding Client offer at Zoom 2.</li>
-              <li>Select Path C → Founding Client pathway in the Zoom 2 decision panel.</li>
+              <li>Lead accepts the Founding Client offer (at Zoom 2, or via the online application path).</li>
+              <li>Select Path C and the Founding Client pathway in the Zoom 2 decision panel, or proceed from the lead detail page for online applicants.</li>
               <li>Click <strong>Send Case Study Agreement</strong> — this creates the agreement record and emails the signing link to the lead.</li>
               <li>Lead reviews and signs the agreement online, selecting their consent tier.</li>
               <li>Once signed, generate and send the commencement fee from the lead detail page.</li>
@@ -654,13 +672,13 @@ export default function HelpPage() {
             </ul>
 
             <Training title="Why consent tiers exist">
-              <p>The consent tier is selected by the client at signing — not decided by you. This is important. The agreement is legally and ethically structured around what the client has consented to. Tier 2 gives you more flexibility to publish and use the case study publicly. Tier 1 still produces valuable documented data, but you cannot attach a name or identifying details to it.</p>
-              <p className="mt-2">The tier selection is captured at signing and shown permanently on the client&apos;s profile. It determines what you can do with the case study when the time comes. Don&apos;t assume — check the profile.</p>
+              <p>The consent tier is selected by the client at signing — not decided by you. Tier 2 gives you more flexibility to publish and use the case study publicly. Tier 1 still produces valuable documented data, but you cannot attach a name or identifying details to it.</p>
+              <p className="mt-2">The tier selection is captured at signing and shown permanently on the client&apos;s profile. It determines what you can do with the case study when the time comes. Do not assume — check the profile.</p>
             </Training>
 
             <p className="font-semibold text-white mt-2">Founding Client badge and section on client profile</p>
             <p>Once the agreement is signed and the client converts, their profile shows a <strong>Founding Client</strong> badge in the header and a dedicated section with entry type, consent tier, program start date, and 12-week threshold date.</p>
-            <p>At the bottom of that section is an <strong>Update status</strong> link. Click it to reveal four status buttons — Active, 12 Weeks Complete, Extended, Withdrawn. The current status is highlighted. Click any other to update it immediately. The status badge updates on the page automatically.</p>
+            <p>At the bottom of that section is an <strong>Update status</strong> link. Click it to reveal four status buttons — Active, 12 Weeks Complete, Extended, Withdrawn. The current status is highlighted. Click any other to update it immediately.</p>
 
             <p className="font-semibold text-white mt-2">Founding client rates</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
@@ -669,7 +687,7 @@ export default function HelpPage() {
               <li>In-Person 3x — $204.50/week (standard $409)</li>
             </ul>
 
-            <Note>Minimum participation is 12 weeks. Ideal engagement is 6-12 months. Status states: Active → 12 Weeks Complete → Extended → Withdrawn. Status is managed manually as the case study progresses.</Note>
+            <Note>Minimum participation is 12 weeks. Status states: Active, 12 Weeks Complete, Extended, Withdrawn. Status is managed manually as the case study progresses.</Note>
           </Section>
 
           <Section id="stripe-payments" title="19. Stripe Payments" colour="teal">
@@ -1014,6 +1032,65 @@ export default function HelpPage() {
             <p>Click the pencil icon on any campaign to edit it inline. Update spend or lead count as final numbers come in from your ad manager dashboard.</p>
 
             <Note>Automatic sync with Meta Ads and Google Ads APIs is planned once ad accounts are active. For now, pull the numbers from your ad manager and enter them here.</Note>
+          </Section>
+
+          <Section id="be-content-engine" title="32. Content Engine" colour="amber">
+            <p>The Content Engine generates batches of platform-ready ad copy and reel scripts using a modular hook, message, and CTA library. Everything is generated using Claude AI with the Body Recode brand voice and positioning enforced automatically.</p>
+            <p>Navigate to <strong>Business → Content Engine</strong> to access it. The engine has five tabs: Hooks, Messages, CTAs, Generate, and Outputs.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Hooks</p>
+            <p>A hook is the opening line of a piece of content. It is the first thing the audience reads or hears. Hooks are categorised by awareness level:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Problem Aware</strong> — The audience knows they have the problem but not the solution.</li>
+              <li><strong>Solution Aware</strong> — The audience knows solutions exist but not which one.</li>
+              <li><strong>Unaware</strong> — The audience does not yet know they have the problem.</li>
+              <li><strong>Contrarian</strong> — Challenges a widely-held belief in the space.</li>
+              <li><strong>Curiosity</strong> — Opens a pattern interrupt or unexpected question.</li>
+              <li><strong>Authority</strong> — Leads with credibility, data, or a specific claim.</li>
+            </ul>
+            <p className="mt-2">Add hooks via the inline form. Each hook can be assigned a performance score (Unscored, Losing, Neutral, Winning) after deployment based on real-world results.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Messages</p>
+            <p>A message is the body of the content — the point being made between the hook and the CTA. Message types:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Education</strong> — Explains a concept or mechanism.</li>
+              <li><strong>Myth-busting</strong> — Addresses and corrects a common misconception.</li>
+              <li><strong>Story</strong> — A narrative, personal or client-based.</li>
+              <li><strong>System Explanation</strong> — Explains the Body Recode methodology or process.</li>
+              <li><strong>Authority</strong> — Demonstrates expertise, specificity, or results.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">CTAs</p>
+            <p>A CTA is the desired action at the end of the content. Add CTAs as plain text. Examples: &ldquo;Take the free check-in&rdquo;, &ldquo;Apply for a Founder position&rdquo;, &ldquo;Link in bio&rdquo;.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Generate</p>
+            <p>The Generate tab produces content variants by combining selected hooks, messages, and CTAs. Select one or more from each library, choose a platform, and click Generate. One variant is produced per combination — three hooks times two messages times one CTA produces six outputs.</p>
+            <p className="mt-2">Platforms:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Meta Ad</strong> — Primary text, 125 characters max, punchy.</li>
+              <li><strong>Instagram Caption</strong> — Conversational, 150-200 characters, hook in first line.</li>
+              <li><strong>TikTok Script</strong> — Spoken word, 30-45 seconds, casual and direct.</li>
+              <li><strong>Email Snippet</strong> — Subject line and 2-3 sentence opener.</li>
+              <li><strong>Landing Page</strong> — Headline and subheadline pair.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Outputs</p>
+            <p>All generated content is saved to the Outputs tab as drafts. Each output shows the platform, the hook, message, and CTA it was generated from, and the full content text. Outputs can be copied to clipboard, edited, or have their status updated.</p>
+            <p className="mt-2">Output statuses:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Draft</strong> — Generated, not yet reviewed.</li>
+              <li><strong>Approved</strong> — Reviewed and cleared for deployment.</li>
+              <li><strong>Deployed</strong> — Live in a campaign or published.</li>
+              <li><strong>Winning</strong> — Confirmed strong performer based on results.</li>
+              <li><strong>Removed</strong> — Pulled from use.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">AI Reel Generation</p>
+            <p>TikTok Script outputs can be turned into AI-generated video reels. Click the <strong>Generate Reel</strong> button on a TikTok Script output. The system sends the script to ElevenLabs to generate audio in your cloned voice, then passes the audio to HeyGen to render a vertical video with your AI avatar.</p>
+            <p className="mt-2">The render takes 2-5 minutes. The output row shows a <strong>Rendering</strong> status while processing. When complete, a download link appears. You can then download the video and post it directly.</p>
+            <p className="mt-2">Reel generation requires four environment variables to be set: <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">ELEVENLABS_API_KEY</code>, <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">ELEVENLABS_VOICE_ID</code>, <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">HEYGEN_API_KEY</code>, and <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">HEYGEN_AVATAR_ID</code>. If any are missing, the button will show an error.</p>
+
+            <Note>The Generate function uses Claude Sonnet with the Body Recode brand voice baked into the prompt — no hype language, no long dashes, no exclamation marks, calm authority. You do not need to prompt-engineer the output. Review and approve before deploying.</Note>
           </Section>
 
         </div>
