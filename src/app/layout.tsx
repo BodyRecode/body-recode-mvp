@@ -5,6 +5,7 @@ import "./globals.css";
 const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://bodyrecode.au'),
   title: "Body Recode™",
   description: "Coach Portal",
 };
