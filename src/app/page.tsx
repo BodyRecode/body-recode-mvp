@@ -16,7 +16,7 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="bg-black min-h-screen flex items-center pt-20 overflow-hidden relative">
-        <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs md:max-w-sm pointer-events-none select-none" opacity={0.15} />
+        <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs md:max-w-sm pointer-events-none select-none" opacity={0.10} />
         <DnaHelix className="absolute left-0 bottom-0 h-3/4 w-auto max-w-[160px] pointer-events-none select-none" opacity={0.04} />
         <div className="max-w-4xl mx-auto px-5 py-32 text-center relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-8">
