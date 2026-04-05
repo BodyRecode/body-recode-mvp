@@ -112,7 +112,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </div>
             <FounderApplicationStatus
               leadId={lead.id}
-              current={(lead as Record<string, unknown>).founder_application_status as string | null}
+              current={lead.founder_application_status ?? null}
             />
           </div>
         </div>

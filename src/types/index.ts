@@ -39,6 +39,8 @@ export interface Lead {
   notes?: string
   converted_to_client_id?: string
   converted_at?: string
+  founder_application_status?: 'under_review' | 'accepted' | 'declined' | 'waitlisted'
+  active?: boolean
   created_at: string
   updated_at: string
 }
