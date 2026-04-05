@@ -91,7 +91,7 @@ export default function PerformanceCoachingPage() {
               <p className="text-white/60 text-base leading-relaxed mb-6">
                 Full 1:1 coaching delivered remotely. Same structured intake, same biological assessment, same program design. Everything lives in your client portal: your program, your synthesis documents, your weekly check-ins, your progress data.
               </p>
-              <a href="https://performance-bodyrecode.vercel.app/online" className="text-sm font-semibold text-[#10E1C2] hover:underline">Online Coaching →</a>
+              <a href="https://performance.bodyrecode.au/online" className="text-sm font-semibold text-[#10E1C2] hover:underline">Online Coaching →</a>
             </div>
             <div className="border border-white/10 rounded-2xl p-8">
               <div className="flex items-center justify-between mb-6">
@@ -101,7 +101,7 @@ export default function PerformanceCoachingPage() {
               <p className="text-white/60 text-base leading-relaxed mb-6">
                 The same Body Recode™ system delivered face-to-face at Anytime Fitness Newstead. One-on-one only. Availability is intentionally limited to maintain the coaching depth the system requires.
               </p>
-              <a href="https://performance-bodyrecode.vercel.app/brisbane" className="text-sm font-semibold text-white/40 hover:text-white/70 transition-colors">Brisbane Coaching →</a>
+              <a href="https://performance.bodyrecode.au/brisbane" className="text-sm font-semibold text-white/40 hover:text-white/70 transition-colors">Brisbane Coaching →</a>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function PerformanceCoachingPage() {
             Performance Coaching is the first live deployment of the Body Recode™ system. Available online worldwide and face-to-face in Brisbane.
           </p>
           <a
-            href="https://performance-bodyrecode.vercel.app"
+            href="https://performance.bodyrecode.au"
             className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb3] transition-colors mb-4"
           >
             Visit Performance Coaching

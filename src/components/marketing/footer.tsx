@@ -34,7 +34,7 @@ export default function MarketingFooter() {
           <div className="flex flex-col gap-3">
             <p className="text-[11px] font-bold tracking-[0.15em] text-white/30 uppercase mb-1">Contact</p>
             <a href="mailto:info@bodyrecode.au" className="text-sm text-white/50 hover:text-white transition-colors">info@bodyrecode.au</a>
-            <a href="https://performance-bodyrecode.vercel.app" className="text-sm text-white/30 hover:text-white/50 transition-colors mt-2">performance.bodyrecode.au →</a>
+            <a href="https://performance.bodyrecode.au" className="text-sm text-white/30 hover:text-white/50 transition-colors mt-2">performance.bodyrecode.au →</a>
           </div>
 
         </div>
