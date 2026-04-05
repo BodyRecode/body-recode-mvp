@@ -9,6 +9,7 @@ import CancelSequenceButton from './cancel-sequence-button'
 import SendOrientationButton from '@/components/send-orientation-button'
 import NoShowSequenceButton from '@/components/noshow-sequence-button'
 import CommencementFeeButton from '@/components/commencement-fee-button'
+import FounderApplicationStatus from '@/components/founder-application-status'
 import Link from 'next/link'
 
 const CHECK_IN_QUESTIONS: Record<string, string> = {
@@ -100,6 +101,22 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           </p>
         </div>
       </div>
+
+      {/* Founder Application */}
+      {lead.source === 'founder_program' && (
+        <div className="bg-teal-950/30 border border-teal-800/40 rounded-xl p-6 mb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-semibold text-teal-300 uppercase tracking-wider mb-1">Founder Client Application</h2>
+              <p className="text-stone-400 text-sm">Review the check-in answers below and update the application status.</p>
+            </div>
+            <FounderApplicationStatus
+              leadId={lead.id}
+              current={(lead as Record<string, unknown>).founder_application_status as string | null}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Contact */}
       <EditContact leadId={lead.id} name={lead.name} email={lead.email} phone={lead.phone} />

@@ -144,7 +144,10 @@ export default async function LeadsPage({
               <div className="flex items-center gap-3">
                 {lead.source === 'founder_program' && (
                   <span className="text-xs font-bold px-2.5 py-1 rounded-full border bg-teal-950 text-teal-300 border-teal-800 uppercase tracking-wider">
-                    Founder
+                    {(lead as Record<string, unknown>).founder_application_status === 'accepted' ? 'Accepted'
+                      : (lead as Record<string, unknown>).founder_application_status === 'declined' ? 'Declined'
+                      : (lead as Record<string, unknown>).founder_application_status === 'waitlisted' ? 'Waitlisted'
+                      : 'Founder'}
                   </span>
                 )}
                 <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${getLeadStatusColour(lead.status)}`}>
