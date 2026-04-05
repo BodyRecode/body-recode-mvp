@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 
 const SECTIONS = [
   { id: 'operator-flow', title: 'Operator Flow', colour: 'violet' as const },
+  { id: 'operator-flow-founder', title: 'Founder Operator Flow', colour: 'violet' as const },
   { id: 'lead-pipeline', title: '1. Lead Pipeline', colour: 'teal' as const },
   { id: 'zoom-1', title: '2. Zoom 1 Companion', colour: 'teal' as const },
   { id: 'orientation', title: '3. Orientation', colour: 'teal' as const },
@@ -192,6 +193,74 @@ export default function HelpPage() {
                   <ChecklistItem text="Review the full draft on the Nutrition Plan page — meal structure, macros, training day adjustments, execution rules, and progression notes" />
                   <ChecklistItem text="Click Approve Plan to promote the draft to active" />
                   <ChecklistItem text="Each week, the client submits their nutrition review via the portal — you see the results as a read-only feed on the Nutrition Plan page. No form to fill in on your side." />
+                </div>
+              </div>
+
+            </div>
+          </Section>
+
+          {/* Founder Operator Flow */}
+          <Section id="operator-flow-founder" title="Founder Operator Flow" colour="violet">
+            <p>Two paths lead to a Founder Client conversion. Follow the track that matches how the person entered.</p>
+
+            <div className="space-y-6 mt-2">
+
+              <div>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track A — Online Application</p>
+                <p className="text-sm text-stone-400 mb-3">Person finds the landing page, reads the offer, and applies directly. No Zoom calls are required before entry.</p>
+                <div className="space-y-2">
+                  <ChecklistItem text="Applicant visits performance.bodyrecode.au/founder and clicks Apply" />
+                  <ChecklistItem text="They complete the Performance Check-In quiz (source is tagged as Founder Program automatically)" />
+                  <ChecklistItem text="A lead is created in the dashboard — check the Leads page, filter by Founder Program to find them" />
+                  <ChecklistItem text="Open the lead detail page — the Founder Client Application section appears at the top" />
+                  <ChecklistItem text="Review their check-in answers to assess fit" />
+                  <ChecklistItem text="Set the application status: Under Review (default), Accepted, Declined, or Waitlisted" />
+                  <ChecklistItem text="If accepted: send them a personal message to confirm and arrange a brief onboarding call if needed" />
+                  <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage — do this when you accept, not when they apply" />
+                  <ChecklistItem text="From the lead detail page, send the Case Study Agreement link — it must be signed before the commencement fee is sent" />
+                  <ChecklistItem text="Once signed, send the commencement fee link ($240) from Coaching Entry" />
+                  <ChecklistItem text="Client profile, welcome email, and intake link are created automatically on payment — no action needed" />
+                  <ChecklistItem text="Send the client their portal link via the Send to Client button on the client profile" />
+                  <ChecklistItem text="Client completes onboarding: Coaching Agreement, Health Declaration, Foundational Intake, Baseline Documentation" />
+                  <ChecklistItem text="CFFS generates automatically once intake is submitted — review it on the client profile" />
+                  <ChecklistItem text="Set the Coaching Package to Online (Founding Client) — $74.50/week" />
+                  <ChecklistItem text="Send the subscription link to the client" />
+                  <ChecklistItem text="Wait for Subscription Active badge, then set the Coaching Start Date (3–7 days out)" />
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track B — Zoom 2 Conversion (Price Objection)</p>
+                <p className="text-sm text-stone-400 mb-3">Lead is already in the pipeline. They complete Zoom 1, receive the Orientation Guide, attend Zoom 2, and object to the full rate at Stage 5.</p>
+                <div className="space-y-2">
+                  <ChecklistItem text="Run Zoom 2 as normal through all 5 stages" />
+                  <ChecklistItem text="At Stage 5, lead objects to price — use the Objection-Triggered script in the Zoom 2 companion" />
+                  <ChecklistItem text="Step 1: reflect the objection back. Step 2: reframe the investment. Step 3: introduce the Founding Client program if they still need it." />
+                  <ChecklistItem text="If they accept: select Path C and choose Founding Client (Objection-Triggered) in the decision panel" />
+                  <ChecklistItem text="Click Send Case Study Agreement — agreement must be signed before the commencement fee is sent" />
+                  <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage" />
+                  <ChecklistItem text="Once signed, send the commencement fee link ($240) from Coaching Entry" />
+                  <ChecklistItem text="Client profile, welcome email, and intake link are created automatically on payment — no action needed" />
+                  <ChecklistItem text="Send the client their portal link via the Send to Client button on the client profile" />
+                  <ChecklistItem text="Client completes onboarding: Coaching Agreement, Health Declaration, Foundational Intake, Baseline Documentation" />
+                  <ChecklistItem text="CFFS generates automatically once intake is submitted — review it on the client profile" />
+                  <ChecklistItem text="Set the Coaching Package to the correct Founding Client tier (Online, 2x, or 3x)" />
+                  <ChecklistItem text="Send the subscription link to the client" />
+                  <ChecklistItem text="Wait for Subscription Active badge, then set the Coaching Start Date (3–7 days out)" />
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track C — Zoom 2 Conversion (Manual Override)</p>
+                <p className="text-sm text-stone-400 mb-3">Lead is a strong fit and you proactively offer the program before any price objection. Use the qualification checklist in the Zoom 2 companion before this track — all four criteria must be met.</p>
+                <div className="space-y-2">
+                  <ChecklistItem text="Confirm all four qualification criteria are met before making the offer (check the Manual Override tab in the Zoom 2 companion)" />
+                  <ChecklistItem text="Run Zoom 2 as normal — introduce the offer at Stage 5 before presenting full-rate pricing" />
+                  <ChecklistItem text="If they accept: select Path C and choose Founding Client (Manual Override) in the decision panel" />
+                  <ChecklistItem text="Click Send Case Study Agreement — must be signed before the commencement fee is sent" />
+                  <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage" />
+                  <ChecklistItem text="Once signed, send the commencement fee link ($240) from Coaching Entry" />
+                  <ChecklistItem text="Follow the same steps as Track B from coaching entry onward" />
                 </div>
               </div>
 
