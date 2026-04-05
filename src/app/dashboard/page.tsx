@@ -1,22 +1,29 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import AdminButtons from './admin-buttons'
+import FounderSpotsControl from './founder-spots-control'
 
 export default async function DashboardHomePage() {
   const supabase = await createClient()
 
+  const admin = createAdminClient()
   const [
     { data: leads },
     { data: clients },
     { data: recentLeads },
     { data: recentCheckins },
+    { data: spotsData },
   ] = await Promise.all([
     supabase.from('leads').select('id, status'),
     supabase.from('clients').select('id, name, coaching_started_at'),
     supabase.from('leads').select('id, name, email, status, created_at').order('created_at', { ascending: false }).limit(5),
     supabase.from('weekly_checkins').select('id, client_id, form_type, week_number, submitted_at, clients(name)').order('submitted_at', { ascending: false }).limit(5),
+    admin.from('settings').select('value').eq('key', 'founder_spots_remaining').single(),
   ])
+
+  const founderSpots = spotsData ? parseInt(spotsData.value, 10) : 20
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -142,6 +149,12 @@ export default async function DashboardHomePage() {
           </div>
         </div>
 
+      </div>
+
+      {/* Founder Spots */}
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-6">
+        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">Positions Available</h2>
+        <FounderSpotsControl initial={founderSpots} />
       </div>
 
       {/* Quick Actions */}
