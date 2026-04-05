@@ -65,7 +65,7 @@ export default function HomePage() {
 
       {/* The Solution */}
       <section className="bg-black py-32 px-5 border-t border-white/5 overflow-hidden relative">
-        <DnaHelix className="absolute -right-6 top-1/2 -translate-y-1/2 h-[110%] w-auto max-w-[160px] pointer-events-none select-none" opacity={0.05} />
+        <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs md:max-w-sm pointer-events-none select-none" opacity={0.06} />
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">The Solution</p>
           <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-8 leading-tight">
@@ -123,7 +123,7 @@ export default function HomePage() {
 
       {/* For Practitioners */}
       <section id="platform" className="bg-black py-32 px-5 border-t border-white/5 overflow-hidden relative">
-        <DnaHelix className="absolute -left-6 top-1/2 -translate-y-1/2 h-[110%] w-auto max-w-[160px] pointer-events-none select-none" opacity={0.05} />
+        <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs md:max-w-sm pointer-events-none select-none" opacity={0.06} />
         <div className="max-w-4xl mx-auto relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">For Practitioners</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
@@ -168,9 +168,8 @@ export default function HomePage() {
       </section>
 
       {/* The Five Environments */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5 overflow-hidden relative">
-        <DnaHelix className="absolute -right-8 top-1/2 -translate-y-1/2 h-[120%] w-auto max-w-[180px] pointer-events-none select-none" opacity={0.05} />
-        <div className="max-w-4xl mx-auto relative z-10">
+      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+        <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Environments</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
             One interpretive engine. Five environments.
@@ -250,7 +249,7 @@ export default function HomePage() {
 
       {/* Platform Architecture */}
       <section className="bg-black py-32 px-5 border-t border-white/5 overflow-hidden relative">
-        <DnaHelix className="absolute -right-6 top-1/2 -translate-y-1/2 h-[110%] w-auto max-w-[160px] pointer-events-none select-none" opacity={0.05} />
+        <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs md:max-w-sm pointer-events-none select-none" opacity={0.06} />
         <div className="max-w-4xl mx-auto relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Platform</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-8">
@@ -330,7 +329,7 @@ export default function HomePage() {
 
       {/* Interpretive Pillars */}
       <section className="bg-black py-32 px-5 border-t border-white/5 overflow-hidden relative">
-        <DnaHelix className="absolute -left-6 top-1/2 -translate-y-1/2 h-[110%] w-auto max-w-[160px] pointer-events-none select-none" opacity={0.05} />
+        <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs md:max-w-sm pointer-events-none select-none" opacity={0.06} />
         <div className="max-w-4xl mx-auto relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Interpretive Pillars</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
@@ -448,7 +447,7 @@ export default function HomePage() {
 
       {/* Closing */}
       <section className="bg-black py-32 px-5 border-t border-white/5 overflow-hidden relative">
-        <DnaHelix className="absolute -right-6 bottom-0 h-[90%] w-auto max-w-[160px] pointer-events-none select-none" opacity={0.05} />
+        <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs md:max-w-sm pointer-events-none select-none" opacity={0.06} />
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Environment 01: Live</p>
           <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-6">
