@@ -331,8 +331,8 @@ function Heading({ children }: { children: React.ReactNode }) {
   return <p className="text-sm font-semibold text-white mb-1">{children}</p>
 }
 
-function Body({ children }: { children: React.ReactNode }) {
-  return <p className="text-sm text-stone-400 leading-relaxed">{children}</p>
+function Body({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <p className={`text-sm text-stone-400 leading-relaxed${className ? ` ${className}` : ''}`}>{children}</p>
 }
 
 function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 'teal' | 'amber' | 'red' | 'violet' | 'stone' }) {

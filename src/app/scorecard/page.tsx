@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 const SECTIONS = [
@@ -86,7 +86,7 @@ function getResult(total: number) {
 
 type Step = 'scoring' | 'email' | 'result'
 
-export default function ScorecardPage() {
+function ScorecardInner() {
   const searchParams = useSearchParams()
   const source = searchParams.get('source') ?? 'other'
 
@@ -410,5 +410,13 @@ export default function ScorecardPage() {
 
       </div>
     </div>
+  )
+}
+
+export default function ScorecardPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0c0a09' }} />}>
+      <ScorecardInner />
+    </Suspense>
   )
 }
