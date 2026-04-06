@@ -36,9 +36,10 @@ export async function POST(request: NextRequest) {
       .from('leads')
       .insert({
         coach_id: coachId,
-        first_name: first_name.trim(),
+        name: first_name.trim(),
         email: email.toLowerCase().trim(),
-        source: 'scorecard',
+        source: 'other',
+        source_detail: 'scorecard',
       })
       .select('id')
       .single()
