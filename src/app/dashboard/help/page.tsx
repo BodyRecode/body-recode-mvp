@@ -36,9 +36,10 @@ const SECTIONS = [
   { id: 'be-inbox', title: '28. Inbox', colour: 'amber' as const },
   { id: 'be-payments', title: '29. Payments', colour: 'amber' as const },
   { id: 'be-analytics', title: '30. Analytics', colour: 'amber' as const },
-  { id: 'be-ads', title: '31. Ads', colour: 'amber' as const },
-  { id: 'be-content-engine', title: '32. Content Engine', colour: 'amber' as const },
-  { id: 'be-strategy', title: '33. Strategy Hub', colour: 'amber' as const },
+  { id: 'be-sources', title: '31. Lead Sources', colour: 'amber' as const },
+  { id: 'be-ads', title: '32. Ads', colour: 'amber' as const },
+  { id: 'be-content-engine', title: '33. Content Engine', colour: 'amber' as const },
+  { id: 'be-strategy', title: '34. Strategy Hub', colour: 'amber' as const },
 ]
 
 export default function HelpPage() {
@@ -981,6 +982,14 @@ export default function HelpPage() {
               <li>Toggle the workflow active when ready</li>
             </ul>
 
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Scorecard Follow-up Sequence</p>
+            <p>A pre-built 2-email follow-up sequence is available as a one-click setup. If it has not been created yet, an <strong>Add</strong> button appears at the top of the Automations page. Click it and the workflow is created and activated automatically.</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><strong>Trigger:</strong> form_submitted (scorecard)</li>
+              <li><strong>Email 1:</strong> Sent immediately on scorecard completion — explains the body state result and CTAs to the Performance Check-In</li>
+              <li><strong>Wait:</strong> 2 days</li>
+              <li><strong>Email 2:</strong> Follow-up — reinforces the result and repeats the Check-In CTA</li>
+            </ul>
             <Note>Wait steps are handled by Inngest — a background job service. A "wait 3 days" step will actually wait 3 days, even across server restarts. Execution history is logged per contact under each workflow run.</Note>
           </Section>
 
@@ -1094,7 +1103,39 @@ export default function HelpPage() {
             <Note>All metrics read directly from your live data. The analytics page refreshes on each load — there is no caching delay.</Note>
           </Section>
 
-          <Section id="be-ads" title="31. Ads" colour="amber">
+          <Section id="be-sources" title="31. Lead Sources" colour="amber">
+            <p>The Lead Sources page (<strong>Dashboard → Lead Sources</strong>) gives you source-tracked URLs for every channel. Paste any URL into a QR code generator or link in bio tool and every lead that comes through it is automatically tagged with the correct source in the CRM.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">QR Code URLs</p>
+            <p>For physical print materials. Each URL passes a source tag through to the lead record on submission.</p>
+            <StatusList items={[
+              { label: 'Floor Banner', desc: 'bodyrecode.au/not-a-sign-up?source=qr_floor_banner — routes to the Body State Scorecard' },
+              { label: 'Window Decal', desc: 'bodyrecode.au/not-a-sign-up?source=qr_window' },
+              { label: 'Business Card', desc: 'bodyrecode.au/not-a-sign-up?source=qr_card' },
+              { label: 'Flyer', desc: 'bodyrecode.au/not-a-sign-up?source=qr_flyer — routes to the Body State Scorecard' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Scorecard URLs</p>
+            <p>Use these for Instagram bio and scorecard-specific posts. These link directly to the Body State Scorecard with source tracking — use these as your primary Instagram link in bio.</p>
+            <StatusList items={[
+              { label: 'Instagram', desc: 'bodyrecode.au/scorecard?source=instagram' },
+              { label: 'Website', desc: 'bodyrecode.au/scorecard?source=website' },
+              { label: 'Facebook', desc: 'bodyrecode.au/scorecard?source=facebook' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Digital Channel URLs</p>
+            <p>For the Performance Check-In quiz — use these if sending traffic directly to the longer check-in rather than the scorecard.</p>
+            <StatusList items={[
+              { label: 'Instagram', desc: 'bodyrecode.au/performance-check-in-quiz?source=instagram' },
+              { label: 'Website', desc: 'bodyrecode.au/performance-check-in-quiz?source=website' },
+              { label: 'Facebook', desc: 'bodyrecode.au/performance-check-in-quiz?source=facebook' },
+              { label: 'Google', desc: 'bodyrecode.au/performance-check-in-quiz?source=google' },
+            ]} />
+
+            <Note>The source breakdown at the bottom of the page shows how many leads came from each channel. Use this to evaluate which entry points are producing leads before running ads.</Note>
+          </Section>
+
+          <Section id="be-ads" title="32. Ads" colour="amber">
             <p>The Ads module tracks paid advertising performance — spend, leads generated, and cost-per-lead (CPL) — across Meta and Google campaigns. All data is entered manually.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Adding a Campaign</p>
@@ -1114,7 +1155,7 @@ export default function HelpPage() {
             <Note>Automatic sync with Meta Ads and Google Ads APIs is planned once ad accounts are active. For now, pull the numbers from your ad manager and enter them here.</Note>
           </Section>
 
-          <Section id="be-content-engine" title="32. Content Engine" colour="amber">
+          <Section id="be-content-engine" title="33. Content Engine" colour="amber">
             <p>The Content Engine generates batches of platform-ready ad copy and reel scripts using a modular hook, message, and CTA library. Everything is generated using Claude AI with the Body Recode brand voice and positioning enforced automatically.</p>
             <p>Navigate to <strong>Business → Content Engine</strong> to access it. The engine has five tabs: Hooks, Messages, CTAs, Generate, and Outputs.</p>
 
@@ -1285,7 +1326,7 @@ export default function HelpPage() {
             </ul>
           </Section>
 
-          <Section id="be-strategy" title="33. Strategy Hub" colour="amber">
+          <Section id="be-strategy" title="34. Strategy Hub" colour="amber">
             <p>The Strategy Hub is the central reference for the Body Recode marketing and acquisition strategy. Navigate to <strong>Business → Strategy</strong> to access it.</p>
             <p className="mt-2">It has 8 tabs:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
