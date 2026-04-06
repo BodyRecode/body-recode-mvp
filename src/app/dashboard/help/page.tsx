@@ -1380,7 +1380,7 @@ export default function HelpPage() {
 
               <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
                 <div className="px-4 py-2 border-b border-stone-700"><span className="text-xs font-bold text-stone-400 uppercase tracking-wider">Username</span></div>
-                <div className="px-4 py-3 font-mono text-sm text-white select-all">@bodyrecode</div>
+                <div className="px-4 py-3 font-mono text-sm text-white select-all">@body_recode_</div>
               </div>
 
               <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
