@@ -1307,7 +1307,7 @@ export default function HelpPage() {
               <li>Click <strong>Save</strong>. The post appears as a colour-coded dot on the calendar.</li>
               <li>Click any post dot to view or edit it. Use the pencil icon to edit or the trash icon to delete.</li>
             </ul>
-            <Note>Calendar posts are currently stored in browser memory and reset on page refresh. Supabase persistence is planned — posts will then save permanently and sync across devices.</Note>
+            <Note>Calendar posts are saved to Supabase and persist across page refreshes and devices. Changes take effect immediately.</Note>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">The 5 Topics You Own</p>
             <p>Every piece of content maps to one of these five topics. Nothing outside these.</p>
