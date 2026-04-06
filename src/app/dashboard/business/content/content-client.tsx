@@ -602,14 +602,17 @@ function GenerateTab({
   const [selectedCtas, setSelectedCtas] = useState<string[]>([])
   const [platform, setPlatform] = useState('meta')
   const [generating, setGenerating] = useState(false)
+  const [generatingAll, setGeneratingAll] = useState(false)
   const [result, setResult] = useState<{ generated: number } | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [generateAllProgress, setGenerateAllProgress] = useState<{ platform: string; done: number; total: number } | null>(null)
 
   const toggle = (id: string, list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>) => {
     setList(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
   }
 
   const variantCount = selectedHooks.length * selectedMessages.length * selectedCtas.length
+  const allVariantCount = hooks.length * messages.length * ctas.length * PLATFORMS.length
 
   async function generate() {
     setGenerating(true)
@@ -623,7 +626,6 @@ function GenerateTab({
     if (res.ok) {
       const data = await res.json()
       setResult({ generated: data.generated })
-      // Reload outputs
       const outRes = await fetch('/api/content/outputs')
       if (outRes.ok) setOutputs(await outRes.json())
     } else {
@@ -631,6 +633,38 @@ function GenerateTab({
       setError(data.error ?? 'Generation failed')
     }
     setGenerating(false)
+  }
+
+  async function generateAll() {
+    if (!hooks.length || !messages.length || !ctas.length) return
+    setGeneratingAll(true)
+    setError(null)
+    setResult(null)
+
+    const hookIds = hooks.map(h => h.id)
+    const messageIds = messages.map(m => m.id)
+    const ctaIds = ctas.map(c => c.id)
+    let totalGenerated = 0
+
+    for (let i = 0; i < PLATFORMS.length; i++) {
+      const p = PLATFORMS[i]
+      setGenerateAllProgress({ platform: p.label, done: i, total: PLATFORMS.length })
+      const res = await fetch('/api/content/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hook_ids: hookIds, message_ids: messageIds, cta_ids: ctaIds, platform: p.value }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        totalGenerated += data.generated
+      }
+    }
+
+    setGenerateAllProgress(null)
+    setResult({ generated: totalGenerated })
+    const outRes = await fetch('/api/content/outputs')
+    if (outRes.ok) setOutputs(await outRes.json())
+    setGeneratingAll(false)
   }
 
   return (
@@ -704,7 +738,7 @@ function GenerateTab({
           </div>
           <button
             onClick={generate}
-            disabled={generating || variantCount === 0}
+            disabled={generating || generatingAll || variantCount === 0}
             className="flex items-center gap-2 bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
           >
             <Zap size={15} />
@@ -716,13 +750,53 @@ function GenerateTab({
 
         {result && (
           <div className="flex items-center justify-between bg-teal-500/10 border border-teal-500/20 rounded-lg px-4 py-3">
-            <p className="text-sm text-teal-400 font-medium">{result.generated} pieces of content generated.</p>
+            <p className="text-sm text-teal-400 font-medium">{result.generated.toLocaleString()} pieces of content generated.</p>
             <button onClick={onViewOutputs} className="text-xs text-teal-400 hover:text-teal-300 underline">
               View Outputs
             </button>
           </div>
         )}
       </div>
+
+      {/* Generate All */}
+      {hooks.length > 0 && messages.length > 0 && ctas.length > 0 && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold text-white mb-1">Generate Everything</p>
+              <p className="text-xs text-stone-400 leading-relaxed">
+                Use every hook, message, and CTA across all 5 platforms in one run.
+              </p>
+              <p className="text-xs text-stone-500 mt-1">
+                {hooks.length} hooks × {messages.length} messages × {ctas.length} CTAs × 5 platforms = <span className="text-white font-semibold">{allVariantCount.toLocaleString()} outputs</span>
+              </p>
+            </div>
+            <button
+              onClick={generateAll}
+              disabled={generatingAll || generating}
+              className="shrink-0 flex items-center gap-2 bg-stone-700 hover:bg-stone-600 disabled:opacity-50 text-white font-semibold px-4 py-2.5 rounded-lg transition-colors text-sm"
+            >
+              <Zap size={15} />
+              {generatingAll ? 'Running...' : 'Generate All'}
+            </button>
+          </div>
+
+          {generateAllProgress && (
+            <div className="mt-4">
+              <div className="flex items-center justify-between mb-1.5">
+                <p className="text-xs text-stone-400">Generating {generateAllProgress.platform}...</p>
+                <p className="text-xs text-stone-500">{generateAllProgress.done}/{generateAllProgress.total} platforms</p>
+              </div>
+              <div className="h-1.5 bg-stone-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-teal-500 rounded-full transition-all duration-500"
+                  style={{ width: `${(generateAllProgress.done / generateAllProgress.total) * 100}%` }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Reel generation notice */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
