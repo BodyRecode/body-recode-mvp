@@ -1175,6 +1175,47 @@ export default function HelpPage() {
 
             <p className="mt-4">Reel generation requires four environment variables: <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">ELEVENLABS_API_KEY</code>, <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">ELEVENLABS_VOICE_ID</code>, <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">HEYGEN_API_KEY</code>, and <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">HEYGEN_AVATAR_ID</code>. If any are missing the button will return an error.</p>
 
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Full Reel Production Flow</p>
+            <p>The HeyGen output is a talking head — your avatar speaking the script. For a fully edited reel with b-roll, captions, and music, a post-production step is required. AI cannot reliably generate contextually accurate b-roll matching your brand, clients, and locations. The solution is a hybrid model.</p>
+
+            <p className="mt-3 text-xs font-semibold text-stone-400">Step 1 — Build a B-Roll Library (one-time)</p>
+            <p className="mt-1">Film 1 hour of raw footage on your iPhone. No speaking required. This library is reused across every reel you ever produce.</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-2">
+              <li><strong>You (no speaking)</strong> — walking, training, at desk, reviewing data</li>
+              <li><strong>Coaching context</strong> — client sessions (with permission), gym equipment, measurement setup</li>
+              <li><strong>Brisbane / lifestyle</strong> — outdoor locations, morning routine, city backgrounds</li>
+            </ul>
+            <p className="mt-2">Store all clips in a shared folder. Your editor pulls from this library for every reel.</p>
+
+            <p className="mt-3 text-xs font-semibold text-stone-400">Step 2 — Generate Talking Head (Content Engine)</p>
+            <p className="mt-1">Content Engine generates script → ElevenLabs converts to your voice → HeyGen renders your AI avatar → download MP4.</p>
+
+            <p className="mt-3 text-xs font-semibold text-stone-400">Step 3 — Post-Production</p>
+            <p className="mt-1">Choose based on volume and quality required:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-2">
+              <li><strong>Captions.ai (~$20/mo)</strong> — Upload the HeyGen MP4. Auto-adds animated captions, b-roll suggestions, background music. Best for high-volume organic reels. 5 minutes per reel.</li>
+              <li><strong>CapCut (free)</strong> — Manual assembly. Cut in b-roll from your library, add captions and music. 15–20 minutes per reel. Good quality control.</li>
+              <li><strong>Upwork editor ($15–50/reel)</strong> — Send HeyGen MP4 + b-roll library link + the script text as a brief. 24–48hr turnaround. Best for paid ad creatives and hero content.</li>
+            </ul>
+
+            <p className="mt-3 text-xs font-semibold text-stone-400">Step 4 — Post</p>
+            <p className="mt-1">Upload the finished MP4 manually to Instagram Reels, TikTok, or Meta Ads Manager. Use the copy from the Content Engine output as the caption.</p>
+
+            <p className="mt-3 text-xs font-semibold text-stone-400">Complete Pipeline</p>
+            <div className="mt-2 bg-stone-800/60 rounded-lg p-4 text-xs text-stone-300 font-mono leading-relaxed">
+              Content Engine → script<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;↓<br/>
+              ElevenLabs → Kade&apos;s voice (audio)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;↓<br/>
+              HeyGen → AI avatar talking head (MP4)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;↓<br/>
+              Captions.ai / CapCut / Editor → b-roll + captions + music<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;↓<br/>
+              Finished reel (9:16, 30–60 sec)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;↓<br/>
+              Post → Instagram Reels / TikTok / Meta Ads
+            </div>
+
             <Note>The Generate function uses Claude Sonnet with the Body Recode brand voice baked into the prompt — no hype language, no long dashes, no exclamation marks, calm authority. You do not need to prompt-engineer the output. Review and approve before deploying.</Note>
           </Section>
 
