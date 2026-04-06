@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Zap, Plus, Play, Pause, ChevronRight } from 'lucide-react'
+import SeedScorecardButton from './seed-scorecard-button'
 
 const triggerLabel: Record<string, string> = {
   lead_created: 'Lead created',
@@ -22,6 +23,8 @@ export default async function AutomationsPage() {
   const active = workflows?.filter(w => w.is_active).length || 0
   const total = workflows?.length || 0
 
+  const hasScorecardAutomation = workflows?.some(w => w.name === 'Scorecard — Follow-up Sequence') ?? false
+
   return (
     <div className="max-w-3xl">
       <div className="flex items-center justify-between mb-8">
@@ -37,6 +40,8 @@ export default async function AutomationsPage() {
           New Workflow
         </Link>
       </div>
+
+      {!hasScorecardAutomation && <SeedScorecardButton />}
 
       {workflows && workflows.length > 0 ? (
         <div className="space-y-2">

@@ -17,7 +17,7 @@ export async function OPTIONS() {
 // Creates or finds a lead, logs their scorecard result, fires automation trigger
 
 export async function POST(request: NextRequest) {
-  const { first_name, email, score, body_state } = await request.json()
+  const { first_name, email, score, body_state, source } = await request.json()
 
   if (!first_name?.trim() || !email?.trim()) {
     return NextResponse.json({ error: 'Name and email are required.' }, { status: 400, headers: CORS })
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
         coach_id: coachId,
         name: first_name.trim(),
         email: email.toLowerCase().trim(),
-        source: 'other',
+        source: source ?? 'other',
         source_detail: 'scorecard',
       })
       .select('id')

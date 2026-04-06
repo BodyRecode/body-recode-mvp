@@ -3,6 +3,7 @@ import { getLeadSourceLabel, LEAD_SOURCES } from '@/lib/utils'
 
 const QR_BASE_URL = 'https://bodyrecode.au/not-a-sign-up'
 const DIGITAL_BASE_URL = 'https://bodyrecode.au/performance-check-in-quiz'
+const SCORECARD_BASE_URL = 'https://bodyrecode.au/scorecard'
 
 const QR_SOURCES = [
   { value: 'qr_floor_banner', label: 'Floor Banner', desc: 'Large QR code on the gym floor banner near the entrance.' },
@@ -16,6 +17,12 @@ const DIGITAL_SOURCES = [
   { value: 'instagram', label: 'Instagram', desc: 'Link in bio or story.' },
   { value: 'facebook', label: 'Facebook', desc: 'Facebook post or profile link.' },
   { value: 'google', label: 'Google', desc: 'Google Ads or search.' },
+]
+
+const SCORECARD_SOURCES = [
+  { value: 'instagram', label: 'Instagram', desc: 'Link in bio. Primary scorecard entry point for organic content.' },
+  { value: 'website', label: 'Website', desc: 'Scorecard link on bodyrecode.au' },
+  { value: 'facebook', label: 'Facebook', desc: 'Facebook post or profile link.' },
 ]
 
 export default async function SourcesPage() {
@@ -64,7 +71,8 @@ export default async function SourcesPage() {
 
       {/* Digital Channel URLs */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-6">
-        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-5">Digital Channel URLs</h2>
+        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Digital Channel URLs</h2>
+        <p className="text-xs text-stone-500 mb-5">Performance Check-In Quiz</p>
         <div className="space-y-4">
           {DIGITAL_SOURCES.map(src => (
             <div key={src.value} className="border border-stone-800 rounded-lg p-4">
@@ -78,6 +86,25 @@ export default async function SourcesPage() {
                 </span>
               </div>
               <CopyUrl url={`${DIGITAL_BASE_URL}?source=${src.value}`} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Scorecard URLs */}
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-6">
+        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Scorecard URLs</h2>
+        <p className="text-xs text-stone-500 mb-5">Body State Scorecard — use for Instagram bio and scorecard-specific posts</p>
+        <div className="space-y-4">
+          {SCORECARD_SOURCES.map(src => (
+            <div key={src.value} className="border border-stone-800 rounded-lg p-4">
+              <div className="flex items-start justify-between gap-4 mb-2">
+                <div>
+                  <p className="text-sm font-semibold text-white">{src.label}</p>
+                  <p className="text-xs text-stone-500 mt-0.5">{src.desc}</p>
+                </div>
+              </div>
+              <CopyUrl url={`${SCORECARD_BASE_URL}?source=${src.value}`} />
             </div>
           ))}
         </div>

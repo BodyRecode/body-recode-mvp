@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 const SECTIONS = [
   {
@@ -86,6 +87,9 @@ function getResult(total: number) {
 type Step = 'scoring' | 'email' | 'result'
 
 export default function ScorecardPage() {
+  const searchParams = useSearchParams()
+  const source = searchParams.get('source') ?? 'other'
+
   const [scores, setScores] = useState<Record<string, number>>({})
   const [step, setStep] = useState<Step>('scoring')
   const [firstName, setFirstName] = useState('')
@@ -110,7 +114,7 @@ export default function ScorecardPage() {
       const res = await fetch('/api/scorecard/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ first_name: firstName, email, score: total, body_state: result.label }),
+        body: JSON.stringify({ first_name: firstName, email, score: total, body_state: result.label, source }),
       })
       if (res.ok) {
         setStep('result')

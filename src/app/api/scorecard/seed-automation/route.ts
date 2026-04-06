@@ -46,16 +46,16 @@ export async function POST() {
       type: 'action',
       action_type: 'send_email',
       config: {
-        subject: 'Your Body State Scorecard result',
+        subject: 'Your Body State result',
         body: `Hi {{first_name}},
 
-Thanks for completing the Body State Scorecard.
+Your Scorecard result tells you one specific thing: which state your body is currently operating in.
 
-Your result tells you which state your body is currently operating in — and more importantly, why your training and fat loss may not be responding the way you expect.
+That state determines what works and what makes things worse. Most people apply the same approach regardless of their state. That is the reason most people stay stuck.
 
 The next step is your Performance Check-In.
 
-It takes 3 minutes, it is free, and it gives you a full picture of what your body actually needs right now.
+It takes 3 minutes, it is free, and it identifies what is specifically holding your body back right now based on how you are actually functioning.
 
 Run it here: https://bodyrecode.au/performance-check-in
 
@@ -76,16 +76,18 @@ Body Recode`,
       type: 'action',
       action_type: 'send_email',
       config: {
-        subject: 'Did you run your Check-In?',
+        subject: 'Your Scorecard result, followed up',
         body: `Hi {{first_name}},
 
-Just following up on your Scorecard result.
+Following up on your Scorecard result.
 
-A lot of people find that seeing their body state in black and white is the moment things start to make sense. But the scorecard is just the starting point.
+The most common thing I hear after someone takes it: "That finally explains why nothing has been working."
 
-The Performance Check-In is where you find out exactly what is holding your body back — and what to do about it.
+The Scorecard identifies your state. The Performance Check-In builds on it. It asks the specific questions that show what is limiting your body right now and what to do about it.
 
-It is free and takes 3 minutes: https://bodyrecode.au/performance-check-in
+Free and takes 3 minutes: https://bodyrecode.au/performance-check-in
+
+If now is not the right time, no problem. The link will be there when you are ready.
 
 Kade
 Body Recode`,
