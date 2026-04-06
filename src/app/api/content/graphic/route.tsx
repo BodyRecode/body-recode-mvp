@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
   const label = searchParams.get('label') ?? ''
   const accent = searchParams.get('accent') ?? 'teal' // teal | red | amber
   const style = searchParams.get('style') ?? 'quote'
+  const n = parseInt(searchParams.get('n') ?? '1', 10) // slide number for carousel-slide
 
   const accentColor = accent === 'red' ? '#ef4444' : accent === 'amber' ? '#f59e0b' : '#14b8a6'
 
@@ -228,6 +229,117 @@ export async function GET(request: NextRequest) {
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '72px', objectFit: 'contain' }} />
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
+  }
+
+  // ── CAROUSEL HOOK ─────────────────────────────────────────────
+  // Slide 1 — big bold hook, swipe indicator
+  if (style === 'carousel-hook') {
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '100px', fontFamily: 'sans-serif' }}>
+          {/* Left teal border stripe */}
+          <div style={{ position: 'absolute', left: 0, top: 0, width: '8px', height: '1080px', background: '#14b8a6' }} />
+
+          {/* Label */}
+          {label && (
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '28px' }}>{label}</div>
+          )}
+
+          {/* Hook headline */}
+          <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '40px' }}>{displayText}</div>
+
+          {/* Sub copy */}
+          {sub && (
+            <div style={{ fontSize: '26px', color: '#a8a29e', lineHeight: 1.55, fontWeight: 400, maxWidth: '800px' }}>{sub}</div>
+          )}
+
+          {/* Swipe indicator */}
+          <div style={{ position: 'absolute', bottom: '70px', right: '100px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ fontSize: '16px', fontWeight: 600, color: '#57534e', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Swipe</div>
+            <div style={{ fontSize: '22px', color: '#14b8a6', fontWeight: 700 }}>→</div>
+          </div>
+
+          {/* Logo bottom left */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '36px', objectFit: 'contain' }} />
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
+  }
+
+  // ── CAROUSEL SLIDE ─────────────────────────────────────────────
+  // Interior numbered slide — point + supporting copy
+  if (style === 'carousel-slide') {
+    const slideNum = String(n).padStart(2, '0')
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '100px', fontFamily: 'sans-serif' }}>
+          {/* Left teal border stripe */}
+          <div style={{ position: 'absolute', left: 0, top: 0, width: '8px', height: '1080px', background: '#14b8a6' }} />
+
+          {/* Slide number */}
+          <div style={{ fontSize: '100px', fontWeight: 800, color: '#14b8a6', lineHeight: 1, marginBottom: '40px', letterSpacing: '-0.04em', opacity: 0.25 }}>{slideNum}</div>
+
+          {/* Point headline */}
+          <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '36px' }}>{displayText}</div>
+
+          {/* Supporting copy */}
+          {sub && (
+            <div style={{ fontSize: '26px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400, maxWidth: '820px' }}>{sub}</div>
+          )}
+
+          {/* Logo bottom left */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '36px', objectFit: 'contain' }} />
+
+          {/* Slide number small bottom right */}
+          <div style={{ position: 'absolute', bottom: '68px', right: '100px', fontSize: '14px', fontWeight: 600, color: '#44403c', letterSpacing: '0.08em' }}>{slideNum}</div>
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
+  }
+
+  // ── CAROUSEL CTA ─────────────────────────────────────────────
+  // Final slide — drives to scorecard or check-in
+  if (style === 'carousel-cta') {
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '100px', fontFamily: 'sans-serif', textAlign: 'center' }}>
+          {/* Left teal border stripe */}
+          <div style={{ position: 'absolute', left: 0, top: 0, width: '8px', height: '1080px', background: '#14b8a6' }} />
+
+          {/* Teal accent bar */}
+          <div style={{ width: '48px', height: '4px', background: '#14b8a6', marginBottom: '48px' }} />
+
+          {/* CTA headline */}
+          <div style={{ fontSize: '64px', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '32px' }}>
+            {displayText || 'Find out which state your body is in.'}
+          </div>
+
+          {/* Sub copy */}
+          {sub && (
+            <div style={{ fontSize: '26px', color: '#a8a29e', lineHeight: 1.55, fontWeight: 400, maxWidth: '700px', marginBottom: '56px' }}>{sub}</div>
+          )}
+
+          {/* CTA pill */}
+          <div style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.4)', borderRadius: '100px', padding: '18px 48px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.01em' }}>
+              {label || 'Take the Body State Scorecard'}
+            </div>
+            <div style={{ fontSize: '22px', color: '#14b8a6' }}>→</div>
+          </div>
+
+          <div style={{ fontSize: '16px', color: '#44403c', marginTop: '24px', letterSpacing: '0.04em' }}>Link in bio</div>
+
+          {/* Logo bottom centre */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', height: '36px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
