@@ -292,45 +292,47 @@ export async function GET(request: NextRequest) {
   if (style === 'founder') {
     return new ImageResponse(
       (
-        <div style={{ width: '1080px', height: '1080px', background: '#0a1f1f', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '100px', fontFamily: 'sans-serif' }}>
+        <div style={{ width: '1080px', height: '1080px', background: '#0c1614', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '80px 100px', fontFamily: 'sans-serif' }}>
 
           {/* Subtle teal top border */}
           <div style={{ position: 'absolute', top: 0, left: 0, width: '1080px', height: '4px', background: 'linear-gradient(to right, #14b8a6, transparent)' }} />
 
-          {/* 20 spots badge */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px' }}>
-            <div style={{ background: 'rgba(20,184,166,0.15)', border: '1px solid rgba(20,184,166,0.35)', borderRadius: '100px', padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#14b8a6' }} />
-              <div style={{ fontSize: '20px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Founding Client Program</div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {/* 20 spots badge */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '36px' }}>
+              <div style={{ background: 'rgba(20,184,166,0.15)', border: '1px solid rgba(20,184,166,0.35)', borderRadius: '100px', padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#14b8a6' }} />
+                <div style={{ fontSize: '26px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Founding Client Program</div>
+              </div>
+              <div style={{ fontSize: '26px', fontWeight: 600, color: '#a8a29e', letterSpacing: '0.06em' }}>20 spots only</div>
             </div>
-            <div style={{ fontSize: '20px', fontWeight: 600, color: '#a8a29e', letterSpacing: '0.06em' }}>20 spots only</div>
+
+            {/* Headline */}
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '28px' }}>
+              {displayText || 'This isn\'t a discount. It\'s a trade.'}
+            </div>
+
+            {/* Sub copy */}
+            {sub && (
+              <div style={{ fontSize: '40px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginBottom: '32px' }}>{sub}</div>
+            )}
+
+            {/* Trade detail box */}
+            <div style={{ background: 'rgba(20,184,166,0.06)', border: '1px solid rgba(20,184,166,0.2)', borderRadius: '12px', padding: '24px 32px', display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '820px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+                <div style={{ fontSize: '32px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
+                <div style={{ fontSize: '34px', color: '#d4cfc9', lineHeight: 1.5 }}>Half the standard fee — in exchange for documented participation in a structured case study process.</div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+                <div style={{ fontSize: '32px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
+                <div style={{ fontSize: '34px', color: '#d4cfc9', lineHeight: 1.5 }}>Application only. Not everyone will be selected.</div>
+              </div>
+            </div>
           </div>
 
-          {/* Headline */}
-          <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '32px' }}>
-            {displayText || 'This isn\'t a discount. It\'s a trade.'}
-          </div>
-
-          {/* Sub copy */}
-          {sub && (
-            <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginBottom: '40px' }}>{sub}</div>
-          )}
-
-          {/* Trade detail box */}
-          <div style={{ background: 'rgba(20,184,166,0.06)', border: '1px solid rgba(20,184,166,0.2)', borderRadius: '12px', padding: '28px 32px', display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '820px' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-              <div style={{ fontSize: '32px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
-              <div style={{ fontSize: '34px', color: '#d4cfc9', lineHeight: 1.5 }}>Half the standard fee — in exchange for documented participation in a structured case study process.</div>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-              <div style={{ fontSize: '32px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
-              <div style={{ fontSize: '34px', color: '#d4cfc9', lineHeight: 1.5 }}>Application only. Not everyone will be selected.</div>
-            </div>
-          </div>
-
-          {/* Logo bottom left */}
+          {/* Logo sits below all content */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '120px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ height: '120px', objectFit: 'contain', alignSelf: 'flex-start' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
