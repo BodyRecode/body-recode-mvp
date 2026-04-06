@@ -148,11 +148,11 @@ export async function GET(request: NextRequest) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '80px', height: '72px', objectFit: 'contain' }} />
           </div>
-          {/* Dark fade into photo */}
-          <div style={{ position: 'absolute', right: '360px', top: 0, width: '120px', height: '1080px', background: 'linear-gradient(to left, transparent, #0c0a09)' }} />
           {/* Photo right — portrait, full height, crops from centre */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={photoSrc} style={{ width: '480px', height: '1080px', objectFit: 'cover', flexShrink: 0 }} alt="" />
+          {/* Fade on left edge of photo */}
+          <div style={{ position: 'absolute', right: '360px', top: 0, width: '160px', height: '1080px', background: 'linear-gradient(to right, #0c0a09, transparent)' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
