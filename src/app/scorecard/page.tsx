@@ -129,7 +129,7 @@ export default function ScorecardPage() {
 
       {/* Header */}
       <div style={{ borderBottom: '1px solid #1c1917', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <img src="/logo-teal.png" alt="Body Recode" style={{ height: '28px' }} />
+        <img src="/logo-teal.png" alt="Body Recode" style={{ height: '44px' }} />
       </div>
 
       <div style={{ maxWidth: '560px', margin: '0 auto', padding: '40px 24px 80px' }}>
@@ -150,8 +150,8 @@ export default function ScorecardPage() {
             {/* Progress */}
             <div style={{ marginBottom: '32px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontSize: '12px', color: '#57534e' }}>{totalSelected} of {SECTIONS.length} sections complete</span>
-                <span style={{ fontSize: '12px', color: '#57534e' }}>{Math.round((totalSelected / SECTIONS.length) * 100)}%</span>
+                <span style={{ fontSize: '12px', color: '#d4cfc9' }}>{totalSelected} of {SECTIONS.length} sections complete</span>
+                <span style={{ fontSize: '12px', color: '#d4cfc9' }}>{Math.round((totalSelected / SECTIONS.length) * 100)}%</span>
               </div>
               <div style={{ height: '3px', background: '#1c1917', borderRadius: '99px', overflow: 'hidden' }}>
                 <div style={{ height: '100%', background: '#14b8a6', borderRadius: '99px', width: `${(totalSelected / SECTIONS.length) * 100}%`, transition: 'width 0.3s ease' }} />
