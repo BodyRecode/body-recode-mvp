@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
           {/* Text right half */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 80px 80px 60px' }}>
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
-            {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
+            {label && <div style={{ fontSize: '30px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
         <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
-            {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
+            {label && <div style={{ fontSize: '30px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '780px' }}>{displayText}</div>
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
@@ -123,7 +123,7 @@ export async function GET(request: NextRequest) {
           {/* Dark panel covers bottom ~460px, hides image below face */}
           <div style={{ position: 'absolute', bottom: 0, left: 0, width: '1080px', height: '460px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '36px 80px 48px' }}>
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '20px' }} />
-            {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '14px' }}>{label}</div>}
+            {label && <div style={{ fontSize: '30px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '14px' }}>{label}</div>}
             <div style={{ fontSize: '44px', fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '14px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '38px', color: '#a8a29e', lineHeight: 1.45 }}>{sub.length > 80 ? sub.slice(0, 77) + '...' : sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -143,7 +143,7 @@ export async function GET(request: NextRequest) {
           {/* Text left */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 60px 80px 80px' }}>
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
-            {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
+            {label && <div style={{ fontSize: '30px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -170,7 +170,7 @@ export async function GET(request: NextRequest) {
           <div style={{ width: '48px', height: '4px', background: '#14b8a6', marginBottom: '36px' }} />
           {/* Label */}
           {label && (
-            <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '24px' }}>
+            <div style={{ fontSize: '30px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '24px' }}>
               {label}
             </div>
           )}
@@ -210,7 +210,7 @@ export async function GET(request: NextRequest) {
             {/* State label + range */}
             {label && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '28px' }}>
-                <div style={{ fontSize: '22px', fontWeight: 700, color: accentColor, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '30px', fontWeight: 700, color: accentColor, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
                   {label}
                 </div>
               </div>
@@ -243,7 +243,7 @@ export async function GET(request: NextRequest) {
         <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '100px', fontFamily: 'sans-serif' }}>
 
           {/* Label */}
-          <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '28px' }}>Body State Scorecard</div>
+          <div style={{ fontSize: '30px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '28px' }}>Body State Scorecard</div>
 
           {/* Headline */}
           <div style={{ fontSize: '68px', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '48px' }}>
@@ -260,7 +260,7 @@ export async function GET(request: NextRequest) {
               <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: '20px', background: s.bg, border: `1px solid ${s.border}`, borderRadius: '10px', padding: '18px 24px' }}>
                 <div style={{ width: '4px', height: '36px', background: s.color, borderRadius: '2px', flexShrink: 0 }} />
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ fontSize: '22px', fontWeight: 700, color: s.color, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '4px' }}>{s.label}</div>
+                  <div style={{ fontSize: '30px', fontWeight: 700, color: s.color, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '4px' }}>{s.label}</div>
                   <div style={{ fontSize: '26px', color: '#d4cfc9', fontWeight: 400 }}>{s.desc}</div>
                 </div>
               </div>
@@ -346,7 +346,7 @@ export async function GET(request: NextRequest) {
 
           {/* Label */}
           {label && (
-            <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '28px' }}>{label}</div>
+            <div style={{ fontSize: '30px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '28px' }}>{label}</div>
           )}
 
           {/* Hook headline */}
