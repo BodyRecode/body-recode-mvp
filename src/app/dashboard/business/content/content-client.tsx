@@ -758,6 +758,10 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
   const [pollingIds, setPollingIds] = useState<Set<string>>(new Set())
   const [showGraphicFor, setShowGraphicFor] = useState<string | null>(null)
   const [graphicStyle, setGraphicStyle] = useState<{ [id: string]: string }>({})
+  const [showCarouselFor, setShowCarouselFor] = useState<string | null>(null)
+  const [carouselSlides, setCarouselSlides] = useState<{ [id: string]: { slide: number; text: string; style: string }[] }>({})
+  const [generatingCarousel, setGeneratingCarousel] = useState<string | null>(null)
+  const [downloadingCarousel, setDownloadingCarousel] = useState<string | null>(null)
 
   const GRAPHIC_STYLES = [
     { value: 'quote', label: 'Quote Card' },
@@ -778,6 +782,47 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
     a.download = `body-recode-${style}-${outputId.slice(0, 8)}.png`
     a.click()
     URL.revokeObjectURL(a.href)
+  }
+
+  async function generateCarousel(outputId: string, contentText: string) {
+    setGeneratingCarousel(outputId)
+    const res = await fetch('/api/content/carousel-slides', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content_text: contentText }),
+    })
+    if (res.ok) {
+      const data = await res.json()
+      setCarouselSlides(s => ({ ...s, [outputId]: data.slides }))
+      setShowCarouselFor(outputId)
+      setShowGraphicFor(null)
+    }
+    setGeneratingCarousel(null)
+  }
+
+  async function downloadCarouselZip(outputId: string) {
+    const slides = carouselSlides[outputId]
+    if (!slides?.length) return
+    setDownloadingCarousel(outputId)
+
+    const JSZip = (await import('jszip')).default
+    const zip = new JSZip()
+
+    for (const slide of slides) {
+      const url = graphicUrl(slide.text, slide.style)
+      const res = await fetch(url)
+      const blob = await res.blob()
+      const arrayBuffer = await blob.arrayBuffer()
+      zip.file(`slide-${slide.slide}.png`, arrayBuffer)
+    }
+
+    const zipBlob = await zip.generateAsync({ type: 'blob' })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(zipBlob)
+    a.download = `body-recode-carousel-${outputId.slice(0, 8)}.zip`
+    a.click()
+    URL.revokeObjectURL(a.href)
+    setDownloadingCarousel(null)
   }
 
   const filtered = outputs.filter(o => {
@@ -930,13 +975,57 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                       <Download size={12} /> Download 1080×1080 PNG
                     </button>
                   </div>
+                ) : showCarouselFor === output.id && carouselSlides[output.id] ? (
+                  <div className="space-y-3 mt-2">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-semibold text-stone-400">{carouselSlides[output.id].length} slides</p>
+                      <button onClick={() => setShowCarouselFor(null)} className="text-stone-500 hover:text-stone-300">
+                        <X size={13} />
+                      </button>
+                    </div>
+                    {/* Slide previews */}
+                    <div className="flex gap-2 overflow-x-auto pb-1">
+                      {carouselSlides[output.id].map(slide => (
+                        <div key={slide.slide} className="shrink-0">
+                          <div className="w-28 h-28 rounded-lg overflow-hidden border border-stone-700">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={graphicUrl(slide.text, slide.style)}
+                              alt={`Slide ${slide.slide}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <p className="text-xs text-stone-600 text-center mt-1">{slide.slide}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => downloadCarouselZip(output.id)}
+                      disabled={downloadingCarousel === output.id}
+                      className="flex items-center gap-1.5 bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-1.5 rounded-lg"
+                    >
+                      <Download size={12} />
+                      {downloadingCarousel === output.id ? 'Packaging...' : `Download ${carouselSlides[output.id].length} slides as ZIP`}
+                    </button>
+                  </div>
                 ) : (
-                  <button
-                    onClick={() => setShowGraphicFor(output.id)}
-                    className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-300 transition-colors mt-2"
-                  >
-                    <Image size={12} /> Create Graphic
-                  </button>
+                  <div className="flex items-center gap-3 mt-2">
+                    <button
+                      onClick={() => setShowGraphicFor(output.id)}
+                      className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-300 transition-colors"
+                    >
+                      <Image size={12} /> Create Graphic
+                    </button>
+                    <span className="text-stone-700 text-xs">·</span>
+                    <button
+                      onClick={() => generateCarousel(output.id, output.content_text)}
+                      disabled={generatingCarousel === output.id}
+                      className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-300 transition-colors disabled:opacity-50"
+                    >
+                      <Clapperboard size={12} />
+                      {generatingCarousel === output.id ? 'Building slides...' : 'Create Carousel'}
+                    </button>
+                  </div>
                 )}
               </div>
 
