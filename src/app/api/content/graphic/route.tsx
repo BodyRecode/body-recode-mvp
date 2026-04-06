@@ -240,45 +240,47 @@ export async function GET(request: NextRequest) {
   if (style === 'scorecard-cta') {
     return new ImageResponse(
       (
-        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '100px', fontFamily: 'sans-serif' }}>
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '80px 100px', fontFamily: 'sans-serif' }}>
 
-          {/* Label */}
-          <div style={{ fontSize: '38px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '28px' }}>Body State Scorecard</div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {/* Label */}
+            <div style={{ fontSize: '38px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '24px' }}>Body State Scorecard</div>
 
-          {/* Headline */}
-          <div style={{ fontSize: '68px', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '48px' }}>
-            {displayText || 'Your body is operating in one of three states right now.'}
-          </div>
-
-          {/* Three states stacked */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '52px' }}>
-            {[
-              { color: '#ef4444', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.25)', label: 'Depleted', desc: 'Protection mode. Adding more makes it worse.' },
-              { color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)', label: 'Transitioning', desc: 'Mixed signals. Something is blocking your response.' },
-              { color: '#14b8a6', bg: 'rgba(20,184,166,0.08)', border: 'rgba(20,184,166,0.25)', label: 'Ready', desc: 'Your biology is in a position to respond.' },
-            ].map(s => (
-              <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: '20px', background: s.bg, border: `1px solid ${s.border}`, borderRadius: '10px', padding: '18px 24px' }}>
-                <div style={{ width: '4px', height: '36px', background: s.color, borderRadius: '2px', flexShrink: 0 }} />
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ fontSize: '38px', fontWeight: 700, color: s.color, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '4px' }}>{s.label}</div>
-                  <div style={{ fontSize: '26px', color: '#d4cfc9', fontWeight: 400 }}>{s.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA pill */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.4)', borderRadius: '100px', padding: '16px 36px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ fontSize: '32px', fontWeight: 700, color: '#14b8a6' }}>Find out which state you're in</div>
-              <div style={{ fontSize: '32px', color: '#14b8a6' }}>→</div>
+            {/* Headline */}
+            <div style={{ fontSize: '62px', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '36px' }}>
+              {displayText || 'Your body is operating in one of three states right now.'}
             </div>
-            <div style={{ fontSize: '28px', color: '#a8a29e', letterSpacing: '0.04em' }}>Free · 2 min · Link in bio</div>
+
+            {/* Three states stacked */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '36px' }}>
+              {[
+                { color: '#ef4444', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.25)', label: 'Depleted', desc: 'Protection mode. Adding more makes it worse.' },
+                { color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)', label: 'Transitioning', desc: 'Mixed signals. Something is blocking your response.' },
+                { color: '#14b8a6', bg: 'rgba(20,184,166,0.08)', border: 'rgba(20,184,166,0.25)', label: 'Ready', desc: 'Your biology is in a position to respond.' },
+              ].map(s => (
+                <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: '20px', background: s.bg, border: `1px solid ${s.border}`, borderRadius: '10px', padding: '16px 24px' }}>
+                  <div style={{ width: '4px', height: '36px', background: s.color, borderRadius: '2px', flexShrink: 0 }} />
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ fontSize: '38px', fontWeight: 700, color: s.color, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>{s.label}</div>
+                    <div style={{ fontSize: '26px', color: '#d4cfc9', fontWeight: 400 }}>{s.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA pill */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.4)', borderRadius: '100px', padding: '16px 36px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ fontSize: '32px', fontWeight: 700, color: '#14b8a6' }}>Find out which state you're in</div>
+                <div style={{ fontSize: '32px', color: '#14b8a6' }}>→</div>
+              </div>
+              <div style={{ fontSize: '28px', color: '#a8a29e', letterSpacing: '0.04em' }}>Free · 2 min · Link in bio</div>
+            </div>
           </div>
 
-          {/* Logo bottom left */}
+          {/* Logo sits below all content, never overlaps */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '120px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ height: '120px', objectFit: 'contain', alignSelf: 'flex-start' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
