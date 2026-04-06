@@ -14,6 +14,7 @@ import {
   TrendingUp,
   LayoutDashboard,
   Clapperboard,
+  Compass,
 } from 'lucide-react'
 
 type NavItem = {
@@ -57,6 +58,12 @@ const sections: NavSection[] = [
       { label: 'Content', href: '/dashboard/business/content', icon: Clapperboard },
       { label: 'Automations', href: '/dashboard/business/automations', icon: Zap },
       { label: 'Ads', href: '/dashboard/business/ads', icon: TrendingUp },
+    ],
+  },
+  {
+    label: 'Strategy',
+    items: [
+      { label: 'Strategy', href: '/dashboard/business/strategy', icon: Compass },
     ],
   },
   {
