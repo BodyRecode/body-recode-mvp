@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function NotASignUpPage({ searchParams }: { searchParams: Promise<{ source?: string }> }) {
   const { source } = await searchParams
-  const quizHref = source ? `/performance-check-in-quiz?source=${source}` : '/performance-check-in-quiz'
+  const quizHref = source ? `/scorecard?source=${source}` : '/scorecard'
 
   return (
     <>
@@ -64,10 +64,10 @@ export default async function NotASignUpPage({ searchParams }: { searchParams: P
             href={quizHref}
             className="inline-block bg-[#10E1C2] text-black font-bold px-10 py-5 rounded-full text-base hover:bg-[#0ecfb2] transition-colors"
           >
-            Begin the performance check-in
+            Take the Body State Scorecard
           </Link>
 
-          <p className="text-white/20 text-xs mt-4">About 3–5 minutes.</p>
+          <p className="text-white/20 text-xs mt-4">About 2 minutes.</p>
         </div>
       </section>
     </>
