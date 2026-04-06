@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'ads' | 'founder' | 'timeline' | 'calendar'
 
@@ -56,14 +57,28 @@ function getFirstDayOfMonth(year: number, month: number) {
 }
 
 function ContentCalendar() {
+  const supabase = createClient()
   const today = new Date()
   const [viewYear, setViewYear] = useState(today.getFullYear())
   const [viewMonth, setViewMonth] = useState(today.getMonth())
   const [posts, setPosts] = useState<ScheduledPost[]>([])
-  const [selected, setSelected] = useState<string | null>(null) // YYYY-MM-DD
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [selected, setSelected] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState<Partial<ScheduledPost>>({ type: 'authority', phase: 'prelaunch' })
   const [editId, setEditId] = useState<string | null>(null)
+
+  useEffect(() => {
+    supabase
+      .from('calendar_posts')
+      .select('*')
+      .order('date', { ascending: true })
+      .then(({ data }) => {
+        if (data) setPosts(data as ScheduledPost[])
+        setLoading(false)
+      })
+  }, [])
 
   const daysInMonth = getDaysInMonth(viewYear, viewMonth)
   const firstDay = getFirstDayOfMonth(viewYear, viewMonth)
@@ -86,19 +101,31 @@ function ContentCalendar() {
     return posts.filter(p => p.date === dateStr(day))
   }
 
-  function savePost() {
+  async function savePost() {
     if (!form.date || !form.title || !form.type || !form.phase) return
+    setSaving(true)
     if (editId) {
-      setPosts(ps => ps.map(p => p.id === editId ? { ...p, ...form } as ScheduledPost : p))
+      const { error } = await supabase
+        .from('calendar_posts')
+        .update({ date: form.date, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null })
+        .eq('id', editId)
+      if (!error) setPosts(ps => ps.map(p => p.id === editId ? { ...p, ...form } as ScheduledPost : p))
       setEditId(null)
     } else {
-      setPosts(ps => [...ps, { id: crypto.randomUUID(), ...form } as ScheduledPost])
+      const { data, error } = await supabase
+        .from('calendar_posts')
+        .insert({ date: form.date, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null })
+        .select()
+        .single()
+      if (!error && data) setPosts(ps => [...ps, data as ScheduledPost])
     }
     setForm({ type: 'authority', phase: 'prelaunch' })
     setShowForm(false)
+    setSaving(false)
   }
 
-  function deletePost(id: string) {
+  async function deletePost(id: string) {
+    await supabase.from('calendar_posts').delete().eq('id', id)
     setPosts(ps => ps.filter(p => p.id !== id))
   }
 
@@ -109,6 +136,8 @@ function ContentCalendar() {
   }
 
   const selectedPosts = selected ? posts.filter(p => p.date === selected) : []
+
+  if (loading) return <div className="text-sm text-stone-500 py-8 text-center">Loading calendar...</div>
 
   return (
     <div className="space-y-4">
@@ -268,9 +297,9 @@ function ContentCalendar() {
                 className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500" />
             </div>
             <div className="flex items-center gap-2">
-              <button onClick={savePost} disabled={!form.date || !form.title}
+              <button onClick={savePost} disabled={!form.date || !form.title || saving}
                 className="bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
-                {editId ? 'Save Changes' : 'Schedule Post'}
+                {saving ? 'Saving...' : editId ? 'Save Changes' : 'Schedule Post'}
               </button>
               <button onClick={() => { setShowForm(false); setEditId(null); setForm({ type: 'authority', phase: 'prelaunch' }) }}
                 className="text-xs text-stone-500 hover:text-stone-300 transition-colors">
