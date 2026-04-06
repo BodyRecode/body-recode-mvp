@@ -42,7 +42,7 @@ export default function ScorecardPreview() {
       number: '05',
       title: 'Fat Loss Response',
       rows: [
-        { score: 1, desc: 'Nothing is moving despite effort. Diet is clean, training is consistent — no result.' },
+        { score: 1, desc: 'Nothing is moving despite effort. Diet is clean, training is consistent. No result.' },
         { score: 2, desc: 'Slow or stalled. Some movement but not matching the input.' },
         { score: 3, desc: 'Body is responding. Composition is shifting in the right direction.' },
       ],
@@ -54,19 +54,19 @@ export default function ScorecardPreview() {
       range: '5 – 8',
       label: 'Depleted State',
       color: '#ef4444',
-      desc: 'Your body is in protection mode. Cortisol is elevated, metabolism is suppressed, and your biology is actively resisting fat loss and performance gains. Pushing harder — more training, less food — will make this worse. Your body needs to be brought out of this state first. Prescription without interpretation is the reason you\'re stuck.',
+      desc: 'Your body is in protection mode. Cortisol is elevated, metabolism is suppressed, and your biology is actively resisting fat loss and performance gains. Pushing harder with more training and less food will make this worse. Your body needs to be brought out of this state first. Prescription without interpretation is the reason you\'re stuck.',
     },
     {
       range: '9 – 11',
       label: 'Transitioning State',
       color: '#f59e0b',
-      desc: 'Mixed signals. Your body has capacity but it\'s not consistent. Something is limiting your response — sleep, stress, recovery, or a mismatch between your training load and your current biological state. You\'re close, but you need to identify the specific bottleneck before adding more input.',
+      desc: 'Mixed signals. Your body has capacity but it\'s not consistent. Something is limiting your response: sleep, stress, recovery, or a mismatch between your training load and your current biological state. You\'re close, but you need to identify the specific bottleneck before adding more input.',
     },
     {
       range: '12 – 15',
       label: 'Ready State',
       color: '#14b8a6',
-      desc: 'Your biology is in a position to respond. If fat loss or performance isn\'t happening at this score, the issue is in the prescription — training, nutrition, or both need to be adjusted. You have the foundation. Now it needs to be optimised.',
+      desc: 'Your biology is in a position to respond. If fat loss or performance isn\'t happening at this score, the issue is in the prescription. Training, nutrition, or both need to be adjusted. You have the foundation. Now it needs to be optimised.',
     },
   ]
 
@@ -85,7 +85,7 @@ export default function ScorecardPreview() {
 
       {/* Print button */}
       <div className="no-print" style={{ background: '#0c0a09', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ color: '#a8a29e', fontSize: '13px' }}>Scorecard Preview — Body Recode</span>
+        <span style={{ color: '#a8a29e', fontSize: '13px' }}>Scorecard Preview / Body Recode</span>
         <button
           onClick={() => window.print()}
           style={{ background: '#14b8a6', color: '#0c0a09', fontWeight: 700, fontSize: '13px', padding: '8px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
@@ -105,7 +105,7 @@ export default function ScorecardPreview() {
             The Body State<br />Scorecard
           </h1>
           <p style={{ fontSize: '16px', color: '#a8a29e', lineHeight: 1.6, maxWidth: '480px' }}>
-            Find out why your body isn&apos;t responding — in 2 minutes.<br />
+            Find out why your body isn&apos;t responding. Takes 2 minutes.<br />
             Score each section 1, 2, or 3. Add up your total at the end.
           </p>
         </div>
@@ -184,7 +184,7 @@ export default function ScorecardPreview() {
         {/* CTA Footer */}
         <div style={{ margin: '48px 64px 64px', background: '#0d2d29', border: '1px solid #14b8a6', borderRadius: '14px', padding: '36px 40px' }}>
           <p style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
-            Whatever your score — the next step is the same.
+            Whatever your score, the next step is the same.
           </p>
           <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
             A Performance Check-In gives you a full interpretation of your body state, not a generic program. It&apos;s 20 minutes. It&apos;s free. And it tells you exactly what your body needs right now.
