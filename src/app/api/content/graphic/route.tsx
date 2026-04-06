@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
           )}
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '36px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '72px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -106,7 +106,7 @@ export async function GET(request: NextRequest) {
           </div>
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '36px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '72px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
