@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
+      { source: '/scorecard', destination: 'https://performance.bodyrecode.au/scorecard', permanent: false },
       { source: '/online-performance-coaching', destination: '/performance-coaching/online', permanent: true },
       { source: '/performance-coach-brisbane', destination: '/performance-coaching/brisbane', permanent: true },
       { source: '/online-strength-coaching', destination: '/performance-coaching/strength/online', permanent: true },
