@@ -461,8 +461,8 @@ export default function StrategyPage() {
             </Card>
             <Card>
               <SectionLabel>Posting Frequency</SectionLabel>
-              <p className="text-white font-semibold">4× per week</p>
-              <p className="text-xs text-stone-500 mt-1">Mon / Wed / Fri / Sun</p>
+              <p className="text-white font-semibold">5× per week</p>
+              <p className="text-xs text-stone-500 mt-1">3 graphics / carousels + 2 reels</p>
             </Card>
             <Card>
               <SectionLabel>Ad Budget</SectionLabel>
@@ -549,6 +549,44 @@ export default function StrategyPage() {
                   <span className="text-sm font-semibold text-white">{a}</span>
                   <span className="text-stone-600 text-sm">—</span>
                   <span className="text-sm text-stone-400">{b}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card>
+            <SectionLabel>The 5 Topics You Own</SectionLabel>
+            <Body className="mb-4">Every piece of content maps to one of these five topics. Nothing outside these. This is your intellectual territory.</Body>
+            <div className="space-y-3">
+              {[
+                { n: '1', label: 'Body State', desc: 'Depleted / Transitioning / Ready. Why body state determines everything — training, fat loss, and what the body will and won\'t respond to.' },
+                { n: '2', label: 'Why Effort Isn\'t Working', desc: 'The training harder / eating less trap. Why doing more makes things worse in the wrong state. The effort paradox.' },
+                { n: '3', label: 'Cortisol and Fat Storage', desc: 'Stress belt, protection mode, why the body resists fat loss under load. The mechanism most coaches ignore entirely.' },
+                { n: '4', label: 'Prescription Without Interpretation', desc: 'The fundamental flaw in mainstream fitness. Being told what to do before anyone has read what the body is actually doing.' },
+                { n: '5', label: 'The Intelligent Approach', desc: 'What reading the body first actually looks like. The Body Recode system as the solution — interpretation before prescription.' },
+              ].map(({ n, label, desc }) => (
+                <div key={n} className="flex items-start gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <span className="text-sm font-bold text-teal-500 w-5 shrink-0 mt-0.5">{n}</span>
+                  <div>
+                    <p className="text-sm font-semibold text-white mb-1">{label}</p>
+                    <p className="text-xs text-stone-400 leading-relaxed">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card>
+            <SectionLabel>What Every Piece of Content Must Do</SectionLabel>
+            <div className="space-y-2">
+              {[
+                { label: 'Make them feel', value: '"Finally, someone gets it."' },
+                { label: 'Then make them think', value: '"I need to take that scorecard."' },
+                { label: 'CTA funnel', value: 'Content → Scorecard → Performance Check-In → Booking call' },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex items-start gap-3 py-2 border-b border-stone-800 last:border-0">
+                  <span className="text-xs text-stone-500 w-36 shrink-0 mt-0.5">{label}</span>
+                  <span className="text-sm text-white">{value}</span>
                 </div>
               ))}
             </div>
