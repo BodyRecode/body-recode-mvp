@@ -151,8 +151,8 @@ export async function GET(request: NextRequest) {
           {/* Photo right — portrait, full height, crops from centre */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={photoSrc} style={{ width: '480px', height: '1080px', objectFit: 'cover', flexShrink: 0 }} alt="" />
-          {/* Fade on left edge of photo */}
-          <div style={{ position: 'absolute', right: '360px', top: 0, width: '160px', height: '1080px', background: 'linear-gradient(to right, #0c0a09, transparent)' }} />
+          {/* Fade on left edge of photo — mirrors photo-split exactly */}
+          <div style={{ position: 'absolute', left: '600px', top: 0, width: '120px', height: '1080px', background: 'linear-gradient(to right, #0c0a09, transparent)' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
