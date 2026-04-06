@@ -309,7 +309,7 @@ export async function GET(request: NextRequest) {
           style={{
             width: '1080px',
             height: '1080px',
-            background: '#111827',
+            background: '#0c0a09',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
