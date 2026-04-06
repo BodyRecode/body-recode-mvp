@@ -14,6 +14,14 @@ async function getLogoData(req: NextRequest): Promise<string> {
   return `data:image/png;base64,${base64}`
 }
 
+async function getPhotoData(req: NextRequest): Promise<string> {
+  const baseUrl = new URL(req.url).origin
+  const res = await fetch(`${baseUrl}/kade.jpg`)
+  const buffer = await res.arrayBuffer()
+  const base64 = Buffer.from(buffer).toString('base64')
+  return `data:image/jpeg;base64,${base64}`
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const text = searchParams.get('text') ?? ''
@@ -23,6 +31,9 @@ export async function GET(request: NextRequest) {
   const style = searchParams.get('style') ?? 'quote'
 
   const accentColor = accent === 'red' ? '#ef4444' : accent === 'amber' ? '#f59e0b' : '#14b8a6'
+
+  const isPhotoStyle = style === 'photo-split' || style === 'photo-quote' || style === 'photo-right' || style === 'photo-top'
+  const photoSrc = isPhotoStyle ? await getPhotoData(request) : ''
 
   const logoSrc = await getLogoData(request)
 
@@ -36,6 +47,103 @@ export async function GET(request: NextRequest) {
     if (len <= 100) return '46px'
     if (len <= 120) return '40px'
     return '34px'
+  }
+
+  // Style 1: Photo left, text right
+  if (style === 'photo-split') {
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', fontFamily: 'sans-serif' }}>
+          {/* Photo left half */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={photoSrc} style={{ width: '480px', height: '1080px', objectFit: 'cover', objectPosition: 'center top', flexShrink: 0 }} alt="" />
+          {/* Dark overlay fade */}
+          <div style={{ position: 'absolute', left: '360px', top: 0, width: '120px', height: '1080px', background: 'linear-gradient(to right, transparent, #0c0a09)' }} />
+          {/* Text right half */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 80px 80px 60px' }}>
+            <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
+            {label && <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
+            {sub && <div style={{ fontSize: '22px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400 }}>{sub}</div>}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', right: '80px', height: '72px', objectFit: 'contain' }} />
+          </div>
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
+  }
+
+  // Style 2: Dark card with photo inset bottom-right, text dominant
+  if (style === 'photo-quote') {
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
+            {label && <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '780px' }}>{displayText}</div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={logoSrc} alt="Body Recode" style={{ height: '72px', objectFit: 'contain' }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={photoSrc} style={{ width: '320px', height: '400px', objectFit: 'cover', objectPosition: 'center top', borderRadius: '12px', border: '2px solid #1c1917' }} alt="" />
+          </div>
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
+  }
+
+  // Style 3: Photo top (head visible), dark text panel bottom
+  if (style === 'photo-top') {
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', position: 'relative', display: 'flex', fontFamily: 'sans-serif' }}>
+          {/* Image scaled to 720px wide (= 1080px tall exactly), centred horizontally */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* Image centred within text-width column (920px), scaled down so person appears smaller */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={photoSrc} style={{ position: 'absolute', top: 0, left: '240px', width: '600px', height: '900px' }} alt="" />
+          {/* Dark panel covers bottom ~460px, hides image below face */}
+          <div style={{ position: 'absolute', bottom: 0, left: 0, width: '1080px', height: '460px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '36px 80px 48px' }}>
+            <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '20px' }} />
+            {label && <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '14px' }}>{label}</div>}
+            <div style={{ fontSize: '44px', fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '14px' }}>{displayText}</div>
+            {sub && <div style={{ fontSize: '21px', color: '#a8a29e', lineHeight: 1.5 }}>{sub.length > 100 ? sub.slice(0, 97) + '...' : sub}</div>}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '36px', right: '80px', height: '72px', objectFit: 'contain' }} />
+          </div>
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
+  }
+
+  // Style 3b: Text left, photo right (portrait strip, full height)
+  if (style === 'photo-right') {
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', fontFamily: 'sans-serif' }}>
+          {/* Text left */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 60px 80px 80px' }}>
+            <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
+            {label && <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
+            {sub && <div style={{ fontSize: '22px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400 }}>{sub}</div>}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '80px', height: '72px', objectFit: 'contain' }} />
+          </div>
+          {/* Dark fade into photo */}
+          <div style={{ position: 'absolute', right: '360px', top: 0, width: '120px', height: '1080px', background: 'linear-gradient(to left, transparent, #0c0a09)' }} />
+          {/* Photo right — portrait, full height, crops from centre */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={photoSrc} style={{ width: '480px', height: '1080px', objectFit: 'cover', flexShrink: 0 }} alt="" />
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
   }
 
   // Scorecard insight card — teal bar, label, big headline, body copy
