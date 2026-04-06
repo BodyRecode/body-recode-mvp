@@ -78,9 +78,9 @@ export async function GET(request: NextRequest) {
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
             {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
-            {sub && <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400 }}>{sub}</div>}
+            {sub && <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', right: '80px', height: '72px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', right: '80px', height: '120px', objectFit: 'contain' }} />
           </div>
         </div>
       ),
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ height: '72px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt="Body Recode" style={{ height: '120px', objectFit: 'contain' }} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={photoSrc} style={{ width: '320px', height: '400px', objectFit: 'cover', objectPosition: 'center top', borderRadius: '12px', border: '2px solid #1c1917' }} alt="" />
           </div>
@@ -125,9 +125,9 @@ export async function GET(request: NextRequest) {
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '20px' }} />
             {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '14px' }}>{label}</div>}
             <div style={{ fontSize: '44px', fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '14px' }}>{displayText}</div>
-            {sub && <div style={{ fontSize: '26px', color: '#a8a29e', lineHeight: 1.5 }}>{sub.length > 100 ? sub.slice(0, 97) + '...' : sub}</div>}
+            {sub && <div style={{ fontSize: '38px', color: '#a8a29e', lineHeight: 1.45 }}>{sub.length > 80 ? sub.slice(0, 77) + '...' : sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '36px', right: '80px', height: '72px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '36px', right: '80px', height: '96px', objectFit: 'contain' }} />
           </div>
         </div>
       ),
@@ -145,9 +145,9 @@ export async function GET(request: NextRequest) {
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
             {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
-            {sub && <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400 }}>{sub}</div>}
+            {sub && <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '80px', height: '72px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '80px', height: '120px', objectFit: 'contain' }} />
           </div>
           {/* Photo right — portrait, full height, crops from centre */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -180,13 +180,13 @@ export async function GET(request: NextRequest) {
           </div>
           {/* Body copy */}
           {displaySub && (
-            <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.6, maxWidth: '820px', fontWeight: 400 }}>
+            <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, maxWidth: '820px', fontWeight: 400 }}>
               {displaySub}
             </div>
           )}
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '72px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '120px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -221,14 +221,14 @@ export async function GET(request: NextRequest) {
             </div>
             {/* Description */}
             {displaySub && (
-              <div style={{ fontSize: '28px', color: '#d4cfc9', lineHeight: 1.65, maxWidth: '800px', fontWeight: 400 }}>
+              <div style={{ fontSize: '38px', color: '#d4cfc9', lineHeight: 1.55, maxWidth: '800px', fontWeight: 400 }}>
                 {displaySub}
               </div>
             )}
           </div>
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '72px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '120px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -270,15 +270,15 @@ export async function GET(request: NextRequest) {
           {/* CTA pill */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.4)', borderRadius: '100px', padding: '16px 36px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ fontSize: '26px', fontWeight: 700, color: '#14b8a6' }}>Find out which state you're in</div>
-              <div style={{ fontSize: '26px', color: '#14b8a6' }}>→</div>
+              <div style={{ fontSize: '32px', fontWeight: 700, color: '#14b8a6' }}>Find out which state you're in</div>
+              <div style={{ fontSize: '32px', color: '#14b8a6' }}>→</div>
             </div>
-            <div style={{ fontSize: '24px', color: '#a8a29e', letterSpacing: '0.04em' }}>Free · 2 min · Link in bio</div>
+            <div style={{ fontSize: '28px', color: '#a8a29e', letterSpacing: '0.04em' }}>Free · 2 min · Link in bio</div>
           </div>
 
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '36px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '120px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -311,24 +311,24 @@ export async function GET(request: NextRequest) {
 
           {/* Sub copy */}
           {sub && (
-            <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400, maxWidth: '820px', marginBottom: '52px' }}>{sub}</div>
+            <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginBottom: '40px' }}>{sub}</div>
           )}
 
           {/* Trade detail box */}
           <div style={{ background: 'rgba(20,184,166,0.06)', border: '1px solid rgba(20,184,166,0.2)', borderRadius: '12px', padding: '28px 32px', display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '820px' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-              <div style={{ fontSize: '26px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
-              <div style={{ fontSize: '28px', color: '#d4cfc9', lineHeight: 1.5 }}>Half the standard fee — in exchange for documented participation in a structured case study process.</div>
+              <div style={{ fontSize: '32px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
+              <div style={{ fontSize: '34px', color: '#d4cfc9', lineHeight: 1.5 }}>Half the standard fee — in exchange for documented participation in a structured case study process.</div>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-              <div style={{ fontSize: '26px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
-              <div style={{ fontSize: '28px', color: '#d4cfc9', lineHeight: 1.5 }}>Application only. Not everyone will be selected.</div>
+              <div style={{ fontSize: '32px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
+              <div style={{ fontSize: '34px', color: '#d4cfc9', lineHeight: 1.5 }}>Application only. Not everyone will be selected.</div>
             </div>
           </div>
 
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '36px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '120px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -354,18 +354,18 @@ export async function GET(request: NextRequest) {
 
           {/* Sub copy */}
           {sub && (
-            <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.55, fontWeight: 400, maxWidth: '800px' }}>{sub}</div>
+            <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400, maxWidth: '800px' }}>{sub}</div>
           )}
 
           {/* Swipe indicator */}
-          <div style={{ position: 'absolute', bottom: '70px', right: '100px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ fontSize: '22px', fontWeight: 600, color: '#78716c', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Swipe</div>
-            <div style={{ fontSize: '26px', color: '#14b8a6', fontWeight: 700 }}>→</div>
+          <div style={{ position: 'absolute', bottom: '76px', right: '100px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ fontSize: '26px', fontWeight: 600, color: '#78716c', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Swipe</div>
+            <div style={{ fontSize: '30px', color: '#14b8a6', fontWeight: 700 }}>→</div>
           </div>
 
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '36px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '120px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -390,15 +390,15 @@ export async function GET(request: NextRequest) {
 
           {/* Supporting copy */}
           {sub && (
-            <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400, maxWidth: '820px' }}>{sub}</div>
+            <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400, maxWidth: '820px' }}>{sub}</div>
           )}
 
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '36px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '120px', objectFit: 'contain' }} />
 
           {/* Slide number small bottom right */}
-          <div style={{ position: 'absolute', bottom: '68px', right: '100px', fontSize: '22px', fontWeight: 600, color: '#78716c', letterSpacing: '0.08em' }}>{slideNum}</div>
+          <div style={{ position: 'absolute', bottom: '76px', right: '100px', fontSize: '26px', fontWeight: 600, color: '#78716c', letterSpacing: '0.08em' }}>{slideNum}</div>
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -424,22 +424,22 @@ export async function GET(request: NextRequest) {
 
           {/* Sub copy */}
           {sub && (
-            <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.55, fontWeight: 400, maxWidth: '700px', marginBottom: '56px' }}>{sub}</div>
+            <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400, maxWidth: '700px', marginBottom: '56px' }}>{sub}</div>
           )}
 
           {/* CTA pill */}
-          <div style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.4)', borderRadius: '100px', padding: '18px 48px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.01em' }}>
+          <div style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.4)', borderRadius: '100px', padding: '22px 52px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ fontSize: '36px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.01em' }}>
               {label || 'Take the Body State Scorecard'}
             </div>
-            <div style={{ fontSize: '28px', color: '#14b8a6' }}>→</div>
+            <div style={{ fontSize: '36px', color: '#14b8a6' }}>→</div>
           </div>
 
-          <div style={{ fontSize: '22px', color: '#78716c', marginTop: '24px', letterSpacing: '0.04em' }}>Link in bio</div>
+          <div style={{ fontSize: '28px', color: '#78716c', marginTop: '24px', letterSpacing: '0.04em' }}>Link in bio</div>
 
           {/* Logo bottom centre */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', height: '36px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', height: '120px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
