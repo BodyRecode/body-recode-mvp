@@ -1385,7 +1385,7 @@ export default function HelpPage() {
 
               <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
                 <div className="px-4 py-2 border-b border-stone-700"><span className="text-xs font-bold text-stone-400 uppercase tracking-wider">Bio — Line 1</span></div>
-                <div className="px-4 py-3 font-mono text-sm text-white select-all">Performance coaching for men whose bodies stopped responding.</div>
+                <div className="px-4 py-3 font-mono text-sm text-white select-all">Performance coaching for people whose bodies stopped responding.</div>
               </div>
 
               <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
