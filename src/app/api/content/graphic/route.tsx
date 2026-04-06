@@ -37,6 +37,19 @@ export async function GET(request: NextRequest) {
 
   const logoSrc = await getLogoData(request)
 
+  // Logo only — centred on dark background
+  if (style === 'logo-only') {
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} alt="Body Recode" style={{ width: '520px', objectFit: 'contain' }} />
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
+  }
+
   // Truncate text for display
   const displayText = text.length > 140 ? text.slice(0, 137) + '...' : text
 
