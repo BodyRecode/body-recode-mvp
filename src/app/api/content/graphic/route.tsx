@@ -259,7 +259,7 @@ export async function GET(request: NextRequest) {
 
           {/* Swipe indicator */}
           <div style={{ position: 'absolute', bottom: '70px', right: '100px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ fontSize: '16px', fontWeight: 600, color: '#57534e', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Swipe</div>
+            <div style={{ fontSize: '16px', fontWeight: 600, color: '#78716c', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Swipe</div>
             <div style={{ fontSize: '22px', color: '#14b8a6', fontWeight: 700 }}>→</div>
           </div>
 
@@ -298,7 +298,7 @@ export async function GET(request: NextRequest) {
           <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '36px', objectFit: 'contain' }} />
 
           {/* Slide number small bottom right */}
-          <div style={{ position: 'absolute', bottom: '68px', right: '100px', fontSize: '14px', fontWeight: 600, color: '#44403c', letterSpacing: '0.08em' }}>{slideNum}</div>
+          <div style={{ position: 'absolute', bottom: '68px', right: '100px', fontSize: '14px', fontWeight: 600, color: '#78716c', letterSpacing: '0.08em' }}>{slideNum}</div>
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -335,7 +335,7 @@ export async function GET(request: NextRequest) {
             <div style={{ fontSize: '22px', color: '#14b8a6' }}>→</div>
           </div>
 
-          <div style={{ fontSize: '16px', color: '#44403c', marginTop: '24px', letterSpacing: '0.04em' }}>Link in bio</div>
+          <div style={{ fontSize: '16px', color: '#78716c', marginTop: '24px', letterSpacing: '0.04em' }}>Link in bio</div>
 
           {/* Logo bottom centre */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
