@@ -47,6 +47,29 @@ const EVENT_LABELS: Record<string, string> = {
   orientation_sent: 'Orientation guide sent',
   zoom_booked: 'Zoom call booked',
   noshow_sequence_scheduled: 'No-show re-engagement scheduled',
+  scorecard_completed: 'Body State Scorecard completed',
+  email_sent: 'Email sent',
+}
+
+const BODY_STATE_STYLES: Record<string, { color: string; bg: string; border: string; desc: string }> = {
+  'Depleted State': {
+    color: '#ef4444',
+    bg: 'rgba(239,68,68,0.06)',
+    border: 'rgba(239,68,68,0.2)',
+    desc: 'Body is in protection mode. Cortisol is elevated, metabolism is suppressed, and biology is actively resisting fat loss and performance gains. Pushing harder will make this worse.',
+  },
+  'Transitioning State': {
+    color: '#f59e0b',
+    bg: 'rgba(245,158,11,0.06)',
+    border: 'rgba(245,158,11,0.2)',
+    desc: 'Mixed signals. Has capacity but not consistent. Something is limiting response: sleep, stress, recovery, or a mismatch between training load and current biological state.',
+  },
+  'Ready State': {
+    color: '#14b8a6',
+    bg: 'rgba(20,184,166,0.06)',
+    border: 'rgba(20,184,166,0.2)',
+    desc: 'Biology is in a position to respond. If fat loss or performance isn\'t happening at this score, the issue is in the prescription. Has the foundation — now it needs to be optimised.',
+  },
 }
 
 const EVENT_COLOURS: Record<string, string> = {
@@ -58,6 +81,8 @@ const EVENT_COLOURS: Record<string, string> = {
   orientation_sent: 'bg-teal-500',
   zoom_booked: 'bg-green-500',
   noshow_sequence_scheduled: 'bg-stone-500',
+  scorecard_completed: 'bg-teal-400',
+  email_sent: 'bg-stone-500',
 }
 
 export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -76,6 +101,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   if (!lead) notFound()
 
   const answers = lead.check_in_answers as Record<string, number> | null
+
+  // Extract scorecard result from events
+  const scorecardEvent = events?.find(e => e.type === 'scorecard_completed') ?? null
+  const scorecardScore = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
+  const scorecardState = scorecardEvent?.notes?.match(/Body state: (.+?)\./)?.[1]
+  const scorecardStyle = scorecardState ? BODY_STATE_STYLES[scorecardState] : null
 
   return (
     <div className="max-w-3xl">
@@ -120,6 +151,42 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Contact */}
       <EditContact leadId={lead.id} name={lead.name} email={lead.email} phone={lead.phone} />
+
+      {/* Scorecard Result */}
+      {scorecardEvent && scorecardScore && scorecardState && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+          <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Body State Scorecard</h2>
+          <div className="flex items-start gap-6">
+            <div className="text-center shrink-0">
+              <div className="text-5xl font-black leading-none" style={{ color: scorecardStyle?.color ?? '#a8a29e' }}>
+                {scorecardScore}
+              </div>
+              <div className="text-xs text-stone-500 font-medium mt-1">/ 15</div>
+            </div>
+            <div className="min-w-0">
+              <div
+                className="inline-block text-xs font-bold px-3 py-1 rounded-full mb-2"
+                style={{
+                  color: scorecardStyle?.color ?? '#a8a29e',
+                  background: scorecardStyle?.bg ?? 'rgba(168,162,158,0.06)',
+                  border: `1px solid ${scorecardStyle?.border ?? 'rgba(168,162,158,0.2)'}`,
+                }}
+              >
+                {scorecardState}
+              </div>
+              <p className="text-sm text-stone-400 leading-relaxed">{scorecardStyle?.desc}</p>
+              <p className="text-xs text-stone-600 mt-2">
+                Completed {new Date(scorecardEvent.sent_at).toLocaleString('en-AU', {
+                  timeZone: 'Australia/Brisbane',
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Zoom 1 companion */}
       {answers && Object.keys(answers).length > 0 && (
