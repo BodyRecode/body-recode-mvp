@@ -142,7 +142,7 @@ export default function ScorecardPreview() {
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '16px' }}>
-                <span style={{ fontSize: '12px', color: '#57534e', fontWeight: 500 }}>My score</span>
+                <span style={{ fontSize: '12px', color: '#a8a29e', fontWeight: 500 }}>My score</span>
                 <div style={{ width: '48px', height: '1.5px', background: '#2c2826' }} />
                 <div style={{ width: '32px', height: '32px', borderRadius: '6px', border: '1.5px solid #2c2826' }} />
               </div>
