@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { useState } from 'react'
 import {
   Users,
   MessageSquare,
@@ -9,6 +12,9 @@ import {
   Megaphone,
   BarChart2,
   TrendingUp,
+  Clapperboard,
+  ExternalLink,
+  Check,
 } from 'lucide-react'
 
 const modules = [
@@ -17,75 +23,89 @@ const modules = [
     description: 'Pipeline, contacts, opportunities',
     href: '/dashboard/business/crm',
     icon: Users,
-    status: 'ready',
   },
   {
     label: 'Inbox',
-    description: 'SMS, email, social — one thread',
+    description: 'Email threads per lead',
     href: '/dashboard/business/inbox',
     icon: MessageSquare,
-    status: 'coming',
   },
   {
     label: 'Bookings',
     description: 'Zoom 1, Zoom 2, calendar',
     href: '/dashboard/business/bookings',
     icon: Calendar,
-    status: 'coming',
   },
   {
     label: 'Payments',
     description: 'Products, invoices, subscriptions',
     href: '/dashboard/business/payments',
     icon: CreditCard,
-    status: 'coming',
   },
   {
     label: 'Funnels',
-    description: 'Landing pages, forms, capture',
+    description: 'Landing pages, lead capture',
     href: '/dashboard/business/funnels',
     icon: Layers,
-    status: 'coming',
   },
   {
     label: 'Campaigns',
     description: 'Email and SMS broadcasts',
     href: '/dashboard/business/campaigns',
     icon: Megaphone,
-    status: 'coming',
+  },
+  {
+    label: 'Content',
+    description: 'Generate copy, graphics, reels',
+    href: '/dashboard/business/content',
+    icon: Clapperboard,
   },
   {
     label: 'Automations',
-    description: 'Trigger → condition → action',
+    description: 'Trigger sequences and workflows',
     href: '/dashboard/business/automations',
     icon: Zap,
-    status: 'coming',
   },
   {
     label: 'Ads',
     description: 'Meta + Google performance tracking',
     href: '/dashboard/business/ads',
     icon: TrendingUp,
-    status: 'coming',
   },
   {
     label: 'Analytics',
     description: 'Revenue, leads, conversions',
     href: '/dashboard/business/analytics',
     icon: BarChart2,
-    status: 'coming',
   },
 ]
 
+const publicLinks = [
+  { label: 'Booking page', url: '/book', desc: 'Public Zoom booking' },
+  { label: 'Body State Scorecard', url: '/scorecard', desc: 'Lead magnet — body state quiz' },
+  { label: 'Performance Check-In', url: '/performance-check-in', desc: 'Free 3-min check-in' },
+]
+
 export default function BusinessHubPage() {
+  const [seedingAutomation, setSeedingAutomation] = useState(false)
+  const [automationSeeded, setAutomationSeeded] = useState(false)
+
+  async function seedScorecardAutomation() {
+    setSeedingAutomation(true)
+    const res = await fetch('/api/scorecard/seed-automation', { method: 'POST' })
+    if (res.ok) setAutomationSeeded(true)
+    setSeedingAutomation(false)
+  }
+
   return (
     <div className="max-w-4xl">
-      <div className="mb-10">
+      <div className="mb-8">
         <h1 className="text-2xl font-semibold mb-1">Business Engine</h1>
         <p className="text-stone-400 text-sm">The operating layer that feeds leads into the coaching system.</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+      {/* Modules grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-8">
         {modules.map((mod) => {
           const Icon = mod.icon
           return (
@@ -98,11 +118,6 @@ export default function BusinessHubPage() {
                 <div className="p-2 bg-stone-800 rounded-lg">
                   <Icon size={16} className="text-teal-400" strokeWidth={1.8} />
                 </div>
-                {mod.status === 'coming' && (
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-stone-600 bg-stone-800 px-2 py-0.5 rounded-full">
-                    Soon
-                  </span>
-                )}
               </div>
               <p className="text-sm font-semibold text-white group-hover:text-teal-400 transition-colors mb-0.5">
                 {mod.label}
@@ -111,6 +126,58 @@ export default function BusinessHubPage() {
             </Link>
           )
         })}
+      </div>
+
+      {/* Public links */}
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+        <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Public Links</p>
+        <div className="space-y-2">
+          {publicLinks.map(link => (
+            <div key={link.url} className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-white font-medium">{link.label}</p>
+                <p className="text-xs text-stone-500">{link.desc}</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-stone-600 font-mono">bodyrecode.au{link.url}</span>
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 text-stone-500 hover:text-teal-400 transition-colors"
+                >
+                  <ExternalLink size={13} />
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Scorecard automation setup */}
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-white mb-1">Scorecard Follow-up Automation</p>
+            <p className="text-xs text-stone-400 leading-relaxed">
+              Automatically sends two follow-up emails when someone completes the Body State Scorecard — directing them to the Performance Check-In.
+            </p>
+          </div>
+          {automationSeeded ? (
+            <div className="flex items-center gap-1.5 text-teal-400 text-xs font-semibold shrink-0">
+              <Check size={13} /> Created
+            </div>
+          ) : (
+            <button
+              onClick={seedScorecardAutomation}
+              disabled={seedingAutomation}
+              className="shrink-0 flex items-center gap-2 bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-2 rounded-lg transition-colors"
+            >
+              <Zap size={12} />
+              {seedingAutomation ? 'Creating...' : 'Set Up'}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   )
