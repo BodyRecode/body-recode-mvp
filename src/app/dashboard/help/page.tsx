@@ -1155,9 +1155,25 @@ export default function HelpPage() {
             </ul>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">AI Reel Generation</p>
-            <p>TikTok Script outputs can be turned into AI-generated video reels. Click the <strong>Generate Reel</strong> button on a TikTok Script output. The system sends the script to ElevenLabs to generate audio in your cloned voice, then passes the audio to HeyGen to render a vertical video with your AI avatar.</p>
-            <p className="mt-2">The render takes 2-5 minutes. The output row shows a <strong>Rendering</strong> status while processing. When complete, a download link appears. You can then download the video and post it directly.</p>
-            <p className="mt-2">Reel generation requires four environment variables to be set: <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">ELEVENLABS_API_KEY</code>, <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">ELEVENLABS_VOICE_ID</code>, <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">HEYGEN_API_KEY</code>, and <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">HEYGEN_AVATAR_ID</code>. If any are missing, the button will show an error.</p>
+            <p>Any output can be turned into an AI-generated video reel using your cloned voice and AI avatar — no camera, no editing required. Click <strong>Generate Reel</strong> on any output in the Outputs tab.</p>
+            <p className="mt-2">The pipeline:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-2">
+              <li>The script (editable before submitting) is sent to <strong>ElevenLabs</strong>, which generates audio in your cloned voice.</li>
+              <li>The audio is uploaded to secure storage and passed to <strong>HeyGen</strong>, which renders a vertical 1080×1920 MP4 with your AI avatar lip-synced to the audio.</li>
+              <li>The output row shows <strong>Rendering reel...</strong> while processing (typically 2–5 minutes).</li>
+              <li>When complete, a <strong>Download</strong> link appears. Click it to save the MP4.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Posting the Reel</p>
+            <p>Once downloaded, post the MP4 manually to your chosen platform:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-2">
+              <li><strong>Instagram Reels</strong> — Upload via Instagram app or Meta Business Suite. Add caption from the Outputs tab (copy to clipboard).</li>
+              <li><strong>TikTok</strong> — Upload via TikTok app or TikTok Studio. Paste the script text as the caption or description.</li>
+              <li><strong>Meta Ads</strong> — Upload the MP4 as a video ad in Meta Ads Manager.</li>
+            </ul>
+            <p className="mt-2">Direct one-click publishing from inside the platform is planned once Meta and TikTok API access is approved. For now, download and post — the creation bottleneck is solved, manual upload takes 30 seconds.</p>
+
+            <p className="mt-4">Reel generation requires four environment variables: <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">ELEVENLABS_API_KEY</code>, <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">ELEVENLABS_VOICE_ID</code>, <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">HEYGEN_API_KEY</code>, and <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">HEYGEN_AVATAR_ID</code>. If any are missing the button will return an error.</p>
 
             <Note>The Generate function uses Claude Sonnet with the Body Recode brand voice baked into the prompt — no hype language, no long dashes, no exclamation marks, calm authority. You do not need to prompt-engineer the output. Review and approve before deploying.</Note>
           </Section>
