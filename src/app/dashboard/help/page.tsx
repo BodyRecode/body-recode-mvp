@@ -1368,23 +1368,48 @@ export default function HelpPage() {
           </Section>
 
           <Section id="be-social-profiles" title="35. Social Profiles" colour="amber">
-            <p>The canonical spec for every Body Recode social profile. All profiles must be aligned before any organic content or outreach begins.</p>
+            <p>The canonical spec for every Body Recode social profile. Copy each field directly into Instagram.</p>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Instagram — @bodyrecode</p>
-            <div className="space-y-2">
-              <div className="bg-stone-800 border border-stone-700 rounded-lg p-4 space-y-2 text-sm">
-                <div className="flex gap-3"><span className="text-stone-500 w-24 shrink-0">Username</span><span className="text-white">@bodyrecode</span></div>
-                <div className="flex gap-3"><span className="text-stone-500 w-24 shrink-0">Name field</span><span className="text-white">Body Recode</span></div>
-                <div className="flex gap-3"><span className="text-stone-500 w-24 shrink-0">Account type</span><span className="text-white">Creator or Business (not Personal)</span></div>
-                <div className="flex gap-3"><span className="text-stone-500 w-24 shrink-0">Bio link</span><span className="text-teal-400 font-mono text-xs">bodyrecode.au/scorecard?source=instagram</span></div>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Instagram — Field by Field</p>
+            <div className="space-y-3">
+
+              <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
+                <div className="px-4 py-2 border-b border-stone-700"><span className="text-xs font-bold text-stone-400 uppercase tracking-wider">Name</span></div>
+                <div className="px-4 py-3 font-mono text-sm text-white select-all">Body Recode</div>
               </div>
-            </div>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Bio Copy</p>
-            <div className="bg-stone-800 border border-stone-700 rounded-lg p-4 font-mono text-sm text-stone-200 whitespace-pre-line leading-relaxed">
-              {`Performance coaching for men whose bodies stopped responding.\nBody state interpretation. Training. Nutrition.\n↓ Find out which state you're in (2 min)`}
+              <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
+                <div className="px-4 py-2 border-b border-stone-700"><span className="text-xs font-bold text-stone-400 uppercase tracking-wider">Username</span></div>
+                <div className="px-4 py-3 font-mono text-sm text-white select-all">@bodyrecode</div>
+              </div>
+
+              <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
+                <div className="px-4 py-2 border-b border-stone-700"><span className="text-xs font-bold text-stone-400 uppercase tracking-wider">Bio — Line 1</span></div>
+                <div className="px-4 py-3 font-mono text-sm text-white select-all">Performance coaching for men whose bodies stopped responding.</div>
+              </div>
+
+              <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
+                <div className="px-4 py-2 border-b border-stone-700"><span className="text-xs font-bold text-stone-400 uppercase tracking-wider">Bio — Line 2</span></div>
+                <div className="px-4 py-3 font-mono text-sm text-white select-all">Body state interpretation. Training. Nutrition.</div>
+              </div>
+
+              <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
+                <div className="px-4 py-2 border-b border-stone-700"><span className="text-xs font-bold text-stone-400 uppercase tracking-wider">Bio — Line 3</span></div>
+                <div className="px-4 py-3 font-mono text-sm text-white select-all">↓ Find out which state you&apos;re in (2 min)</div>
+              </div>
+
+              <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
+                <div className="px-4 py-2 border-b border-stone-700"><span className="text-xs font-bold text-stone-400 uppercase tracking-wider">Link in Bio</span></div>
+                <div className="px-4 py-3 font-mono text-sm text-teal-400 select-all">bodyrecode.au/scorecard?source=instagram</div>
+              </div>
+
+              <div className="bg-stone-800 border border-stone-700 rounded-lg overflow-hidden">
+                <div className="px-4 py-2 border-b border-stone-700"><span className="text-xs font-bold text-stone-400 uppercase tracking-wider">Account Type</span></div>
+                <div className="px-4 py-3 text-sm text-white">Creator or Business — not Personal</div>
+              </div>
+
             </div>
-            <Note>3 lines only. No emojis except the arrow. No hashtags. No location. Bio link is the only CTA — one destination, no link-in-bio tools.</Note>
+            <Note>No emojis except the arrow on line 3. No hashtags. No location. One link, one destination. Do not use Linktree or any link-in-bio tool.</Note>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Tracked Source URLs</p>
             <div className="space-y-2">
