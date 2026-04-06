@@ -17,6 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" style={{ background: '#0c0a09' }}>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: 'html,body{background:#0c0a09}' }} />
+      </head>
       <body className={geist.className} style={{ background: '#0c0a09' }}>{children}</body>
     </html>
   );
