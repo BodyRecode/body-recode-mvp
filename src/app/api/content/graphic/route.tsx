@@ -274,7 +274,7 @@ export async function GET(request: NextRequest) {
                 <div style={{ fontSize: '32px', fontWeight: 700, color: '#14b8a6' }}>Find out which state you're in</div>
                 <div style={{ fontSize: '32px', color: '#14b8a6' }}>→</div>
               </div>
-              <div style={{ fontSize: '28px', color: '#a8a29e', letterSpacing: '0.04em' }}>Free · 2 min · Link in bio</div>
+              <div style={{ fontSize: '36px', color: '#a8a29e', letterSpacing: '0.04em' }}>Free · 2 min · Link in bio</div>
             </div>
           </div>
 
