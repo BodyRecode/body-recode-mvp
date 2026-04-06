@@ -10,6 +10,7 @@ export type LeadEventType =
   | 'zoom_booked'
   | 'noshow_sequence_scheduled'
   | 'email_sent'
+  | 'scorecard_completed'
 
 export async function logLeadEvent(params: {
   leadId: string
