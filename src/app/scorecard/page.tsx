@@ -363,10 +363,10 @@ export default function ScorecardPage() {
                 Whatever your score, the next step is the same.
               </p>
               <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
-                A Performance Check-In gives you a full interpretation of your body state. It is 20 minutes, it is free, and it tells you exactly what your body needs right now.
+                Run your Performance Check-In. It takes 3 minutes, it is free, and it tells you exactly what your body needs right now based on how you are actually functioning.
               </p>
               <a
-                href="/book"
+                href="/performance-check-in"
                 style={{
                   display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
                   background: '#14b8a6', color: '#0c0a09',
@@ -374,7 +374,7 @@ export default function ScorecardPage() {
                   textDecoration: 'none',
                 }}
               >
-                Book your Performance Check-In
+                Run your Performance Check-In
               </a>
             </div>
           </>
