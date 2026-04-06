@@ -6,10 +6,10 @@ export const maxDuration = 60
 
 // POST /api/content/generate-reel
 // Body: { output_id: string, script: string }
-// 1. Sends script to ElevenLabs → generates audio with Kade's voice
-// 2. Sends avatar_id + audio_url to HeyGen → renders video
-// 3. Stores video_id and sets video_status = 'rendering' on the output row
-// Caller polls /api/content/outputs/[id] for video_status = 'ready' and video_url
+// 1. ElevenLabs → audio (Kade's cloned voice)
+// 2. Upload audio to Supabase Storage (content-audio bucket) → public URL
+// 3. HeyGen video/generate with avatar + audio_url → video_id
+// 4. Store video_id, set video_status = 'rendering'
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
   const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID
   const heygenKey = process.env.HEYGEN_API_KEY
   const heygenAvatarId = process.env.HEYGEN_AVATAR_ID
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 
   if (!elevenLabsKey || !elevenLabsVoiceId || !heygenKey || !heygenAvatarId) {
     return NextResponse.json(
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'output_id and script are required.' }, { status: 400 })
   }
 
-  // Step 1: ElevenLabs — convert script to audio
+  // Step 1: ElevenLabs — convert script to Kade's voice
   const ttsResponse = await fetch(
     `https://api.elevenlabs.io/v1/text-to-speech/${elevenLabsVoiceId}`,
     {
@@ -52,33 +53,35 @@ export async function POST(request: NextRequest) {
 
   if (!ttsResponse.ok) {
     const err = await ttsResponse.text()
+    console.error('ElevenLabs TTS error:', ttsResponse.status, err)
     return NextResponse.json({ error: `ElevenLabs error: ${err}` }, { status: 502 })
   }
 
-  // Upload audio to ElevenLabs hosted storage so HeyGen can fetch it via URL
-  // ElevenLabs returns raw audio — we need a publicly accessible URL.
-  // We use HeyGen's upload endpoint to get a hosted audio URL.
   const audioBuffer = await ttsResponse.arrayBuffer()
-  const audioBlob = new Blob([audioBuffer], { type: 'audio/mpeg' })
-  const formData = new FormData()
-  formData.append('file', audioBlob, 'voice.mp3')
-  formData.append('type', 'audio')
 
-  const uploadResponse = await fetch('https://upload.heygen.com/v1/asset', {
-    method: 'POST',
-    headers: { 'x-api-key': heygenKey },
-    body: formData,
-  })
+  // Step 2: Upload audio to Supabase Storage → get public URL for HeyGen
+  const adminSupabase = createAdminClient()
+  const fileName = `reel-audio/${output_id}-${Date.now()}.mp3`
 
-  if (!uploadResponse.ok) {
-    const err = await uploadResponse.text()
-    return NextResponse.json({ error: `HeyGen audio upload error: ${err}` }, { status: 502 })
+  const { error: uploadError } = await adminSupabase.storage
+    .from('content-audio')
+    .upload(fileName, Buffer.from(audioBuffer), {
+      contentType: 'audio/mpeg',
+      upsert: true,
+    })
+
+  if (uploadError) {
+    console.error('Supabase storage upload error:', uploadError)
+    return NextResponse.json({ error: `Audio storage error: ${uploadError.message}` }, { status: 502 })
   }
 
-  const { data: uploadData } = await uploadResponse.json()
-  const audioUrl: string = uploadData?.url
+  const { data: publicUrlData } = adminSupabase.storage
+    .from('content-audio')
+    .getPublicUrl(fileName)
 
-  // Step 2: HeyGen — submit video generation job
+  const audioUrl = publicUrlData.publicUrl
+
+  // Step 3: HeyGen — submit video generation job
   const videoPayload = {
     video_inputs: [
       {
@@ -93,9 +96,11 @@ export async function POST(request: NextRequest) {
         },
       },
     ],
-    dimension: { width: 1080, height: 1920 }, // vertical reel format
+    dimension: { width: 1080, height: 1920 },
     aspect_ratio: null,
   }
+
+  console.log('Submitting to HeyGen with audio_url:', audioUrl)
 
   const videoResponse = await fetch('https://api.heygen.com/v2/video/generate', {
     method: 'POST',
@@ -108,14 +113,15 @@ export async function POST(request: NextRequest) {
 
   if (!videoResponse.ok) {
     const err = await videoResponse.text()
+    console.error('HeyGen video generate error:', videoResponse.status, err)
     return NextResponse.json({ error: `HeyGen video error: ${err}` }, { status: 502 })
   }
 
-  const { data: videoData } = await videoResponse.json()
-  const heygenVideoId: string = videoData?.video_id
+  const videoJson = await videoResponse.json()
+  console.log('HeyGen video response:', JSON.stringify(videoJson))
+  const heygenVideoId: string = videoJson?.data?.video_id ?? videoJson?.video_id
 
-  // Step 3: Store video_id and set status = rendering on output row
-  const adminSupabase = createAdminClient()
+  // Step 4: Store video_id and set status = rendering
   await adminSupabase
     .from('be_content_outputs')
     .update({ heygen_video_id: heygenVideoId, video_status: 'rendering' })
