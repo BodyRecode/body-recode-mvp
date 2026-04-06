@@ -6,11 +6,21 @@ export const runtime = 'edge'
 // GET /api/content/graphic?text=...&style=quote|statement|question&sub=...
 // Returns a 1080x1080 PNG graphic in Body Recode brand style
 
+async function getLogoData(req: NextRequest): Promise<string> {
+  const baseUrl = new URL(req.url).origin
+  const res = await fetch(`${baseUrl}/logo-teal.png`)
+  const buffer = await res.arrayBuffer()
+  const base64 = Buffer.from(buffer).toString('base64')
+  return `data:image/png;base64,${base64}`
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const text = searchParams.get('text') ?? ''
   const sub = searchParams.get('sub') ?? ''
   const style = searchParams.get('style') ?? 'quote'
+
+  const logoSrc = await getLogoData(request)
 
   // Truncate text for display
   const displayText = text.length > 120 ? text.slice(0, 117) + '...' : text
@@ -64,22 +74,19 @@ export async function GET(request: NextRequest) {
             </div>
           )}
 
-          {/* Brand tag */}
-          <div
+          {/* Logo bottom left */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={logoSrc}
+            alt="Body Recode"
             style={{
               position: 'absolute',
-              bottom: '64px',
+              bottom: '60px',
               left: '100px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
+              height: '36px',
+              objectFit: 'contain',
             }}
-          >
-            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#14b8a6' }} />
-            <div style={{ fontSize: '22px', color: '#57534e', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              Body Recode
-            </div>
-          </div>
+          />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -136,21 +143,18 @@ export async function GET(request: NextRequest) {
             </div>
           )}
 
-          {/* Brand tag */}
-          <div
+          {/* Logo bottom centre */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={logoSrc}
+            alt="Body Recode"
             style={{
               position: 'absolute',
-              bottom: '64px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
+              bottom: '60px',
+              height: '36px',
+              objectFit: 'contain',
             }}
-          >
-            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#14b8a6' }} />
-            <div style={{ fontSize: '22px', color: '#57534e', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              Body Recode
-            </div>
-          </div>
+          />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -194,21 +198,18 @@ export async function GET(request: NextRequest) {
         {/* Divider */}
         <div style={{ width: '60px', height: '2px', background: '#14b8a6', margin: '48px auto 0' }} />
 
-        {/* Brand tag */}
-        <div
+        {/* Logo bottom centre */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={logoSrc}
+          alt="Body Recode"
           style={{
             position: 'absolute',
-            bottom: '64px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
+            bottom: '60px',
+            height: '36px',
+            objectFit: 'contain',
           }}
-        >
-          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#14b8a6' }} />
-          <div style={{ fontSize: '22px', color: '#57534e', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Body Recode
-          </div>
-        </div>
+        />
       </div>
     ),
     { width: 1080, height: 1080 }
