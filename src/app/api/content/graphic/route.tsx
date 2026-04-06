@@ -23,7 +23,16 @@ export async function GET(request: NextRequest) {
   const logoSrc = await getLogoData(request)
 
   // Truncate text for display
-  const displayText = text.length > 120 ? text.slice(0, 117) + '...' : text
+  const displayText = text.length > 140 ? text.slice(0, 137) + '...' : text
+
+  function fontSize(len: number) {
+    if (len <= 40) return '72px'
+    if (len <= 60) return '62px'
+    if (len <= 80) return '54px'
+    if (len <= 100) return '46px'
+    if (len <= 120) return '40px'
+    return '34px'
+  }
 
   if (style === 'statement') {
     return new ImageResponse(
@@ -47,7 +56,7 @@ export async function GET(request: NextRequest) {
           {/* Main text */}
           <div
             style={{
-              fontSize: displayText.length > 80 ? '52px' : '64px',
+              fontSize: fontSize(displayText.length),
               fontWeight: 700,
               color: '#ffffff',
               lineHeight: 1.25,
@@ -116,7 +125,7 @@ export async function GET(request: NextRequest) {
           {/* Main text */}
           <div
             style={{
-              fontSize: displayText.length > 80 ? '50px' : '60px',
+              fontSize: fontSize(displayText.length),
               fontWeight: 700,
               color: '#ffffff',
               lineHeight: 1.3,
@@ -184,7 +193,7 @@ export async function GET(request: NextRequest) {
         {/* Main text */}
         <div
           style={{
-            fontSize: displayText.length > 80 ? '50px' : '60px',
+            fontSize: fontSize(displayText.length),
             fontWeight: 700,
             color: '#ffffff',
             lineHeight: 1.35,
