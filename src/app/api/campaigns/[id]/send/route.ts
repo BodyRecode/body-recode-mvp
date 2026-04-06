@@ -51,7 +51,9 @@ export async function POST(
   let recipients: Recipient[] = []
 
   const resolveRecipients = async (table: 'leads' | 'clients', extraFilter?: { column: string; value: string }) => {
-    let query = admin.from(table).select('name, email, phone').eq('coach_id', user.id)
+    // coach_id may be null on legacy leads — use or() to catch both
+    let query = admin.from(table).select('name, email, phone')
+      .or(`coach_id.eq.${user.id},coach_id.is.null`)
     if (extraFilter) query = query.eq(extraFilter.column, extraFilter.value)
     const { data } = await query
     return (data ?? []) as Recipient[]
