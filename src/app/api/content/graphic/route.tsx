@@ -76,9 +76,9 @@ export async function GET(request: NextRequest) {
           {/* Text right half */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 80px 80px 60px' }}>
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
-            {label && <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
+            {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
-            {sub && <div style={{ fontSize: '22px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400 }}>{sub}</div>}
+            {sub && <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', right: '80px', height: '72px', objectFit: 'contain' }} />
           </div>
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
         <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
-            {label && <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
+            {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '780px' }}>{displayText}</div>
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
@@ -123,9 +123,9 @@ export async function GET(request: NextRequest) {
           {/* Dark panel covers bottom ~460px, hides image below face */}
           <div style={{ position: 'absolute', bottom: 0, left: 0, width: '1080px', height: '460px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '36px 80px 48px' }}>
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '20px' }} />
-            {label && <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '14px' }}>{label}</div>}
+            {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '14px' }}>{label}</div>}
             <div style={{ fontSize: '44px', fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '14px' }}>{displayText}</div>
-            {sub && <div style={{ fontSize: '21px', color: '#a8a29e', lineHeight: 1.5 }}>{sub.length > 100 ? sub.slice(0, 97) + '...' : sub}</div>}
+            {sub && <div style={{ fontSize: '26px', color: '#a8a29e', lineHeight: 1.5 }}>{sub.length > 100 ? sub.slice(0, 97) + '...' : sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '36px', right: '80px', height: '72px', objectFit: 'contain' }} />
           </div>
@@ -143,9 +143,9 @@ export async function GET(request: NextRequest) {
           {/* Text left */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 60px 80px 80px' }}>
             <div style={{ width: '40px', height: '4px', background: '#14b8a6', marginBottom: '32px' }} />
-            {label && <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
+            {label && <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
-            {sub && <div style={{ fontSize: '22px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400 }}>{sub}</div>}
+            {sub && <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '80px', height: '72px', objectFit: 'contain' }} />
           </div>
@@ -170,7 +170,7 @@ export async function GET(request: NextRequest) {
           <div style={{ width: '48px', height: '4px', background: '#14b8a6', marginBottom: '36px' }} />
           {/* Label */}
           {label && (
-            <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '24px' }}>
+            <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '24px' }}>
               {label}
             </div>
           )}
@@ -180,7 +180,7 @@ export async function GET(request: NextRequest) {
           </div>
           {/* Body copy */}
           {displaySub && (
-            <div style={{ fontSize: '26px', color: '#a8a29e', lineHeight: 1.6, maxWidth: '820px', fontWeight: 400 }}>
+            <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.6, maxWidth: '820px', fontWeight: 400 }}>
               {displaySub}
             </div>
           )}
@@ -210,7 +210,7 @@ export async function GET(request: NextRequest) {
             {/* State label + range */}
             {label && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '28px' }}>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: accentColor, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '22px', fontWeight: 700, color: accentColor, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
                   {label}
                 </div>
               </div>
@@ -221,7 +221,7 @@ export async function GET(request: NextRequest) {
             </div>
             {/* Description */}
             {displaySub && (
-              <div style={{ fontSize: '24px', color: '#d4cfc9', lineHeight: 1.65, maxWidth: '800px', fontWeight: 400 }}>
+              <div style={{ fontSize: '28px', color: '#d4cfc9', lineHeight: 1.65, maxWidth: '800px', fontWeight: 400 }}>
                 {displaySub}
               </div>
             )}
@@ -243,7 +243,7 @@ export async function GET(request: NextRequest) {
         <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '100px', fontFamily: 'sans-serif' }}>
 
           {/* Label */}
-          <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '28px' }}>Body State Scorecard</div>
+          <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '28px' }}>Body State Scorecard</div>
 
           {/* Headline */}
           <div style={{ fontSize: '68px', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '48px' }}>
@@ -260,8 +260,8 @@ export async function GET(request: NextRequest) {
               <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: '20px', background: s.bg, border: `1px solid ${s.border}`, borderRadius: '10px', padding: '18px 24px' }}>
                 <div style={{ width: '4px', height: '36px', background: s.color, borderRadius: '2px', flexShrink: 0 }} />
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ fontSize: '18px', fontWeight: 700, color: s.color, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '4px' }}>{s.label}</div>
-                  <div style={{ fontSize: '22px', color: '#d4cfc9', fontWeight: 400 }}>{s.desc}</div>
+                  <div style={{ fontSize: '22px', fontWeight: 700, color: s.color, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '4px' }}>{s.label}</div>
+                  <div style={{ fontSize: '26px', color: '#d4cfc9', fontWeight: 400 }}>{s.desc}</div>
                 </div>
               </div>
             ))}
@@ -270,10 +270,10 @@ export async function GET(request: NextRequest) {
           {/* CTA pill */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.4)', borderRadius: '100px', padding: '16px 36px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ fontSize: '20px', fontWeight: 700, color: '#14b8a6' }}>Find out which state you're in</div>
-              <div style={{ fontSize: '20px', color: '#14b8a6' }}>→</div>
+              <div style={{ fontSize: '26px', fontWeight: 700, color: '#14b8a6' }}>Find out which state you're in</div>
+              <div style={{ fontSize: '26px', color: '#14b8a6' }}>→</div>
             </div>
-            <div style={{ fontSize: '20px', color: '#a8a29e', letterSpacing: '0.04em' }}>Free · 2 min · Link in bio</div>
+            <div style={{ fontSize: '24px', color: '#a8a29e', letterSpacing: '0.04em' }}>Free · 2 min · Link in bio</div>
           </div>
 
           {/* Logo bottom left */}
@@ -299,9 +299,9 @@ export async function GET(request: NextRequest) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px' }}>
             <div style={{ background: 'rgba(20,184,166,0.15)', border: '1px solid rgba(20,184,166,0.35)', borderRadius: '100px', padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#14b8a6' }} />
-              <div style={{ fontSize: '15px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Founding Client Program</div>
+              <div style={{ fontSize: '20px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Founding Client Program</div>
             </div>
-            <div style={{ fontSize: '15px', fontWeight: 600, color: '#a8a29e', letterSpacing: '0.06em' }}>20 spots only</div>
+            <div style={{ fontSize: '20px', fontWeight: 600, color: '#a8a29e', letterSpacing: '0.06em' }}>20 spots only</div>
           </div>
 
           {/* Headline */}
@@ -311,18 +311,18 @@ export async function GET(request: NextRequest) {
 
           {/* Sub copy */}
           {sub && (
-            <div style={{ fontSize: '26px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400, maxWidth: '820px', marginBottom: '52px' }}>{sub}</div>
+            <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400, maxWidth: '820px', marginBottom: '52px' }}>{sub}</div>
           )}
 
           {/* Trade detail box */}
           <div style={{ background: 'rgba(20,184,166,0.06)', border: '1px solid rgba(20,184,166,0.2)', borderRadius: '12px', padding: '28px 32px', display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '820px' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-              <div style={{ fontSize: '22px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
-              <div style={{ fontSize: '24px', color: '#d4cfc9', lineHeight: 1.5 }}>Half the standard fee — in exchange for documented participation in a structured case study process.</div>
+              <div style={{ fontSize: '26px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
+              <div style={{ fontSize: '28px', color: '#d4cfc9', lineHeight: 1.5 }}>Half the standard fee — in exchange for documented participation in a structured case study process.</div>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-              <div style={{ fontSize: '22px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
-              <div style={{ fontSize: '24px', color: '#d4cfc9', lineHeight: 1.5 }}>Application only. Not everyone will be selected.</div>
+              <div style={{ fontSize: '26px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
+              <div style={{ fontSize: '28px', color: '#d4cfc9', lineHeight: 1.5 }}>Application only. Not everyone will be selected.</div>
             </div>
           </div>
 
@@ -346,7 +346,7 @@ export async function GET(request: NextRequest) {
 
           {/* Label */}
           {label && (
-            <div style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '28px' }}>{label}</div>
+            <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '28px' }}>{label}</div>
           )}
 
           {/* Hook headline */}
@@ -354,13 +354,13 @@ export async function GET(request: NextRequest) {
 
           {/* Sub copy */}
           {sub && (
-            <div style={{ fontSize: '26px', color: '#a8a29e', lineHeight: 1.55, fontWeight: 400, maxWidth: '800px' }}>{sub}</div>
+            <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.55, fontWeight: 400, maxWidth: '800px' }}>{sub}</div>
           )}
 
           {/* Swipe indicator */}
           <div style={{ position: 'absolute', bottom: '70px', right: '100px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ fontSize: '16px', fontWeight: 600, color: '#78716c', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Swipe</div>
-            <div style={{ fontSize: '22px', color: '#14b8a6', fontWeight: 700 }}>→</div>
+            <div style={{ fontSize: '22px', fontWeight: 600, color: '#78716c', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Swipe</div>
+            <div style={{ fontSize: '26px', color: '#14b8a6', fontWeight: 700 }}>→</div>
           </div>
 
           {/* Logo bottom left */}
@@ -390,7 +390,7 @@ export async function GET(request: NextRequest) {
 
           {/* Supporting copy */}
           {sub && (
-            <div style={{ fontSize: '26px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400, maxWidth: '820px' }}>{sub}</div>
+            <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.6, fontWeight: 400, maxWidth: '820px' }}>{sub}</div>
           )}
 
           {/* Logo bottom left */}
@@ -398,7 +398,7 @@ export async function GET(request: NextRequest) {
           <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '36px', objectFit: 'contain' }} />
 
           {/* Slide number small bottom right */}
-          <div style={{ position: 'absolute', bottom: '68px', right: '100px', fontSize: '14px', fontWeight: 600, color: '#78716c', letterSpacing: '0.08em' }}>{slideNum}</div>
+          <div style={{ position: 'absolute', bottom: '68px', right: '100px', fontSize: '22px', fontWeight: 600, color: '#78716c', letterSpacing: '0.08em' }}>{slideNum}</div>
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -424,18 +424,18 @@ export async function GET(request: NextRequest) {
 
           {/* Sub copy */}
           {sub && (
-            <div style={{ fontSize: '26px', color: '#a8a29e', lineHeight: 1.55, fontWeight: 400, maxWidth: '700px', marginBottom: '56px' }}>{sub}</div>
+            <div style={{ fontSize: '30px', color: '#a8a29e', lineHeight: 1.55, fontWeight: 400, maxWidth: '700px', marginBottom: '56px' }}>{sub}</div>
           )}
 
           {/* CTA pill */}
           <div style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.4)', borderRadius: '100px', padding: '18px 48px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.01em' }}>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.01em' }}>
               {label || 'Take the Body State Scorecard'}
             </div>
-            <div style={{ fontSize: '22px', color: '#14b8a6' }}>→</div>
+            <div style={{ fontSize: '28px', color: '#14b8a6' }}>→</div>
           </div>
 
-          <div style={{ fontSize: '16px', color: '#78716c', marginTop: '24px', letterSpacing: '0.04em' }}>Link in bio</div>
+          <div style={{ fontSize: '22px', color: '#78716c', marginTop: '24px', letterSpacing: '0.04em' }}>Link in bio</div>
 
           {/* Logo bottom centre */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -483,7 +483,7 @@ export async function GET(request: NextRequest) {
           {sub && (
             <div
               style={{
-                fontSize: '28px',
+                fontSize: '30px',
                 color: '#a8a29e',
                 marginTop: '40px',
                 fontWeight: 400,
@@ -552,7 +552,7 @@ export async function GET(request: NextRequest) {
           {sub && (
             <div
               style={{
-                fontSize: '26px',
+                fontSize: '30px',
                 color: '#a8a29e',
                 marginTop: '36px',
                 fontWeight: 400,
