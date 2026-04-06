@@ -3,6 +3,7 @@ import Link from 'next/link'
 import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
 import DnaHelix from '@/components/dna-helix'
+import ScorecardPopup from '@/components/marketing/scorecard-popup'
 
 export const metadata: Metadata = {
   title: 'Body Recode™ | Biological Interpretation System',
@@ -461,6 +462,7 @@ export default function HomePage() {
       </section>
 
       <MarketingFooter />
+      <ScorecardPopup />
     </>
   )
 }
