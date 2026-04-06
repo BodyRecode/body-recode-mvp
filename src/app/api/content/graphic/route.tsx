@@ -483,7 +483,7 @@ export async function GET(request: NextRequest) {
           {sub && (
             <div
               style={{
-                fontSize: '30px',
+                fontSize: '36px',
                 color: '#a8a29e',
                 marginTop: '40px',
                 fontWeight: 400,
@@ -504,7 +504,7 @@ export async function GET(request: NextRequest) {
               position: 'absolute',
               bottom: '60px',
               left: '100px',
-              height: '36px',
+              height: '72px',
               objectFit: 'contain',
             }}
           />
@@ -552,7 +552,7 @@ export async function GET(request: NextRequest) {
           {sub && (
             <div
               style={{
-                fontSize: '30px',
+                fontSize: '36px',
                 color: '#a8a29e',
                 marginTop: '36px',
                 fontWeight: 400,
@@ -572,7 +572,7 @@ export async function GET(request: NextRequest) {
             style={{
               position: 'absolute',
               bottom: '60px',
-              height: '36px',
+              height: '72px',
               objectFit: 'contain',
             }}
           />
