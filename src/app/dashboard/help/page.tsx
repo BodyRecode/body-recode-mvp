@@ -40,6 +40,7 @@ const SECTIONS = [
   { id: 'be-ads', title: '32. Ads', colour: 'amber' as const },
   { id: 'be-content-engine', title: '33. Content Engine', colour: 'amber' as const },
   { id: 'be-strategy', title: '34. Strategy Hub', colour: 'amber' as const },
+  { id: 'be-social-profiles', title: '35. Social Profiles', colour: 'amber' as const },
 ]
 
 export default function HelpPage() {
@@ -1364,6 +1365,95 @@ export default function HelpPage() {
             <p><strong>Public-facing (Scorecard + social content):</strong> Depleted / Transitioning / Ready. Use these in all Instagram content and the Body State Scorecard.</p>
             <p className="mt-1"><strong>CFFS classification (coaching system only):</strong> Remediation / Optimisation / Post-Optimisation. These are revealed after the full CFFS assessment — not used in pre-CFFS content or social media.</p>
             <Note>Never conflate the two terminologies. The gap between them is intentional — the scorecard gives a signal, the CFFS gives the real classification. That distinction protects the value of the paid coaching system.</Note>
+          </Section>
+
+          <Section id="be-social-profiles" title="35. Social Profiles" colour="amber">
+            <p>The canonical spec for every Body Recode social profile. All profiles must be aligned before any organic content or outreach begins.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Instagram — @bodyrecode</p>
+            <div className="space-y-2">
+              <div className="bg-stone-800 border border-stone-700 rounded-lg p-4 space-y-2 text-sm">
+                <div className="flex gap-3"><span className="text-stone-500 w-24 shrink-0">Username</span><span className="text-white">@bodyrecode</span></div>
+                <div className="flex gap-3"><span className="text-stone-500 w-24 shrink-0">Name field</span><span className="text-white">Body Recode</span></div>
+                <div className="flex gap-3"><span className="text-stone-500 w-24 shrink-0">Account type</span><span className="text-white">Creator or Business (not Personal)</span></div>
+                <div className="flex gap-3"><span className="text-stone-500 w-24 shrink-0">Bio link</span><span className="text-teal-400 font-mono text-xs">bodyrecode.au/scorecard?source=instagram</span></div>
+              </div>
+            </div>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Bio Copy</p>
+            <div className="bg-stone-800 border border-stone-700 rounded-lg p-4 font-mono text-sm text-stone-200 whitespace-pre-line leading-relaxed">
+              {`Performance coaching for men whose bodies stopped responding.\nBody state interpretation. Training. Nutrition.\n↓ Find out which state you're in (2 min)`}
+            </div>
+            <Note>3 lines only. No emojis except the arrow. No hashtags. No location. Bio link is the only CTA — one destination, no link-in-bio tools.</Note>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Tracked Source URLs</p>
+            <div className="space-y-2">
+              {[
+                { source: 'Instagram bio', url: 'bodyrecode.au/scorecard?source=instagram' },
+                { source: 'Instagram story', url: 'bodyrecode.au/scorecard?source=instagram_story' },
+                { source: 'QR floor banner', url: 'bodyrecode.au/scorecard?source=qr_floor_banner' },
+                { source: 'QR flyer', url: 'bodyrecode.au/scorecard?source=qr_flyer' },
+              ].map(row => (
+                <div key={row.source} className="flex items-center gap-3 bg-stone-800 border border-stone-700 rounded-lg px-4 py-2.5">
+                  <span className="text-stone-400 text-sm w-36 shrink-0">{row.source}</span>
+                  <span className="text-teal-400 font-mono text-xs">{row.url}</span>
+                </div>
+              ))}
+            </div>
+            <Note>All URLs redirect to performance.bodyrecode.au/scorecard with source preserved. Every lead that comes in is tagged by source automatically in the CRM.</Note>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Highlight Covers</p>
+            <p>Set up highlight covers before outreach begins — even if empty. An account with covers looks established.</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><strong>About</strong> — What Body Recode is and who it&apos;s for</li>
+              <li><strong>Body State</strong> — Depleted / Transitioning / Ready explainer content</li>
+              <li><strong>Results</strong> — Client outcomes (add as they come in)</li>
+              <li><strong>Scorecard</strong> — How the scorecard works, CTA to take it</li>
+              <li><strong>Program</strong> — What coaching looks like in practice</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Content Pillars</p>
+            <p>Every post maps to one of five topics. Nothing outside these.</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><strong>Body State</strong> — Depleted / Transitioning / Ready and why state determines everything</li>
+              <li><strong>Why effort isn&apos;t working</strong> — The training harder / eating less trap</li>
+              <li><strong>Cortisol and fat storage</strong> — Stress, protection mode, why the body resists</li>
+              <li><strong>Prescription without interpretation</strong> — The fundamental flaw in mainstream fitness</li>
+              <li><strong>The intelligent approach</strong> — What reading the body first actually looks like</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Posting Cadence</p>
+            <div className="space-y-1">
+              {[
+                { day: 'Monday', type: 'Authority', desc: 'Insight, mechanism, clinical education' },
+                { day: 'Wednesday', type: 'Pattern recognition', desc: '"If you\'re doing X and getting Y"' },
+                { day: 'Friday', type: 'Coach perspective', desc: 'Observation, case principle, direct take' },
+                { day: 'Sunday', type: 'Diagnostic', desc: 'Body state content, scorecard CTA' },
+              ].map(row => (
+                <div key={row.day} className="flex items-center gap-3 bg-stone-800 border border-stone-700 rounded-lg px-4 py-2.5">
+                  <span className="text-stone-400 text-sm w-24 shrink-0">{row.day}</span>
+                  <span className="text-white text-sm font-medium w-40 shrink-0">{row.type}</span>
+                  <span className="text-stone-400 text-sm">{row.desc}</span>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Launch Sequence</p>
+            <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
+              <li>Profile complete and aligned to this spec</li>
+              <li>Warm outreach — 20–30 personal messages to existing contacts</li>
+              <li>Daily engagement — 20–30 min per day in target hashtags</li>
+              <li>Reach 50 followers before posting any founder content</li>
+              <li>5 pre-launch posts in order</li>
+              <li>Founder program series (7 posts, 2–3 days apart)</li>
+              <li>Regular 4x/week cadence begins</li>
+            </ol>
+            <Note>Full cold start strategy and post copy are in the Marketing folder: 07_MARKETING/03_ORGANIC_INSTAGRAM/</Note>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Terminology Rule</p>
+            <p>Public content and the scorecard use: <strong className="text-white">Depleted / Transitioning / Ready</strong></p>
+            <p className="mt-1">The CFFS coaching system uses: <strong className="text-white">Remediation / Optimisation / Post-Optimisation</strong></p>
+            <Note>Never use the CFFS classification terms in public content. The gap is intentional — the scorecard gives a signal, the CFFS gives the real classification. That distinction protects the value of the paid system.</Note>
           </Section>
 
         </div>
