@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import {
   Plus, Trash2, Pencil, X, Check, Zap, Clapperboard,
-  Copy, ChevronDown, Video, RefreshCw, Download,
+  Copy, ChevronDown, Video, RefreshCw, Download, Image,
 } from 'lucide-react'
 
 // ─── Types ─────────────────────────────────────────────────────────────────
@@ -756,6 +756,29 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
   const [reelScript, setReelScript] = useState<{ [id: string]: string }>({})
   const [showScriptFor, setShowScriptFor] = useState<string | null>(null)
   const [pollingIds, setPollingIds] = useState<Set<string>>(new Set())
+  const [showGraphicFor, setShowGraphicFor] = useState<string | null>(null)
+  const [graphicStyle, setGraphicStyle] = useState<{ [id: string]: string }>({})
+
+  const GRAPHIC_STYLES = [
+    { value: 'quote', label: 'Quote Card' },
+    { value: 'statement', label: 'Statement Card' },
+    { value: 'question', label: 'Question Card' },
+  ]
+
+  function graphicUrl(text: string, style: string) {
+    return `/api/content/graphic?style=${style}&text=${encodeURIComponent(text)}`
+  }
+
+  async function downloadGraphic(text: string, style: string, outputId: string) {
+    const url = graphicUrl(text, style)
+    const res = await fetch(url)
+    const blob = await res.blob()
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = `body-recode-${style}-${outputId.slice(0, 8)}.png`
+    a.click()
+    URL.revokeObjectURL(a.href)
+  }
 
   const filtered = outputs.filter(o => {
     if (filterPlatform !== 'all' && o.platform !== filterPlatform) return false
@@ -867,6 +890,55 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
 
               {/* Content */}
               <p className="text-sm text-white whitespace-pre-wrap mb-3">{output.content_text}</p>
+
+              {/* Graphic section */}
+              <div className="pt-2 border-t border-stone-800 mb-2">
+                {showGraphicFor === output.id ? (
+                  <div className="space-y-3 mt-2">
+                    {/* Style picker */}
+                    <div className="flex items-center gap-2">
+                      {GRAPHIC_STYLES.map(s => (
+                        <button
+                          key={s.value}
+                          onClick={() => setGraphicStyle(g => ({ ...g, [output.id]: s.value }))}
+                          className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
+                            (graphicStyle[output.id] ?? 'quote') === s.value
+                              ? 'bg-teal-500/10 border-teal-500/40 text-teal-400'
+                              : 'bg-stone-800 border-stone-700 text-stone-400 hover:text-white'
+                          }`}
+                        >
+                          {s.label}
+                        </button>
+                      ))}
+                      <button onClick={() => setShowGraphicFor(null)} className="ml-auto text-xs text-stone-500 hover:text-stone-300">
+                        <X size={13} />
+                      </button>
+                    </div>
+                    {/* Preview */}
+                    <div className="rounded-xl overflow-hidden border border-stone-700 w-64 h-64">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={graphicUrl(output.content_text, graphicStyle[output.id] ?? 'quote')}
+                        alt="Graphic preview"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <button
+                      onClick={() => downloadGraphic(output.content_text, graphicStyle[output.id] ?? 'quote', output.id)}
+                      className="flex items-center gap-1.5 bg-teal-500 hover:bg-teal-400 text-stone-950 text-xs font-semibold px-3 py-1.5 rounded-lg"
+                    >
+                      <Download size={12} /> Download 1080×1080 PNG
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setShowGraphicFor(output.id)}
+                    className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-300 transition-colors mt-2"
+                  >
+                    <Image size={12} /> Create Graphic
+                  </button>
+                )}
+              </div>
 
               {/* Reel section */}
               {output.video_status === 'ready' && output.video_url ? (
