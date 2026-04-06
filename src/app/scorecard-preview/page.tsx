@@ -99,7 +99,7 @@ export default function ScorecardPreview() {
 
         {/* Header */}
         <div style={{ background: '#111110', borderBottom: '1px solid #1c1917', padding: '56px 64px 48px' }}>
-          <img src="/logo-teal.png" alt="Body Recode" style={{ height: '32px', marginBottom: '40px', display: 'block' }} />
+          <img src="/logo-teal.png" alt="Body Recode" style={{ height: '52px', marginBottom: '40px', display: 'block' }} />
           <div style={{ width: '40px', height: '3px', background: '#14b8a6', marginBottom: '24px' }} />
           <h1 style={{ fontSize: '42px', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
             The Body State<br />Scorecard
