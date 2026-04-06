@@ -363,23 +363,47 @@ export default function ScorecardPage() {
 
             {/* CTA */}
             <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.3)', borderRadius: '14px', padding: '28px 28px 24px' }}>
-              <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>
-                Whatever your score, the next step is the same.
-              </p>
-              <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
-                Run your Performance Check-In. It takes 3 minutes, it is free, and it tells you exactly what your body needs right now based on how you are actually functioning.
-              </p>
-              <a
-                href="/performance-check-in"
-                style={{
-                  display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
-                  background: '#14b8a6', color: '#0c0a09',
-                  fontSize: '15px', fontWeight: 700, textAlign: 'center',
-                  textDecoration: 'none',
-                }}
-              >
-                Run your Performance Check-In
-              </a>
+              {source === 'founder' ? (
+                <>
+                  <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>
+                    You now know which state your body is in.
+                  </p>
+                  <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
+                    That is the starting point. The Founding Client Program builds on it. Complete the application and your body state will be on file before we speak.
+                  </p>
+                  <a
+                    href="https://performance.bodyrecode.au/check-in?source=founder_program"
+                    style={{
+                      display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
+                      background: '#14b8a6', color: '#0c0a09',
+                      fontSize: '15px', fontWeight: 700, textAlign: 'center',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    Apply for the Founding Client Program
+                  </a>
+                </>
+              ) : (
+                <>
+                  <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>
+                    Whatever your score, the next step is the same.
+                  </p>
+                  <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
+                    Run your Performance Check-In. It takes 3 minutes, it is free, and it tells you exactly what your body needs right now based on how you are actually functioning.
+                  </p>
+                  <a
+                    href="/performance-check-in"
+                    style={{
+                      display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
+                      background: '#14b8a6', color: '#0c0a09',
+                      fontSize: '15px', fontWeight: 700, textAlign: 'center',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    Run your Performance Check-In
+                  </a>
+                </>
+              )}
             </div>
           </>
         )}
