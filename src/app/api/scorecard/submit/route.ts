@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
@@ -89,6 +90,52 @@ export async function POST(request: NextRequest) {
   // Fire form_submitted trigger for scorecard-specific automations
   await fireTrigger('form_submitted', { leadId }, { form: 'scorecard' })
   console.log('[scorecard/submit] Automation triggered for lead:', leadId)
+
+  // Notify coach
+  if (process.env.RESEND_API_KEY) {
+    const resend = new Resend(process.env.RESEND_API_KEY)
+    await resend.emails.send({
+      from: 'Body Recode <kade@bodyrecode.au>',
+      to: 'kade@bodyrecode.au',
+      subject: `New Scorecard — ${first_name} (${body_state}, ${score}/15)`,
+      html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background-color:#0a0a0a;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:48px 20px;">
+    <tr>
+      <td align="center">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:480px;background-color:#111111;border-radius:16px;border:1px solid #222222;overflow:hidden;">
+          <tr>
+            <td bgcolor="#111111" style="background-color:#111111;padding:28px 40px;border-bottom:1px solid #1e1e1e;">
+              <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;" />
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#111111" style="background-color:#111111;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+              <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#ffffff;">${first_name} just completed the scorecard.</p>
+              <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;">${email}</p>
+              <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;width:100%;">
+                <tr>
+                  <td style="padding:14px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;">
+                    <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#57534e;letter-spacing:0.08em;text-transform:uppercase;">Score</p>
+                    <p style="margin:0;font-size:24px;font-weight:900;color:#ffffff;">${score}<span style="font-size:14px;color:#57534e;font-weight:500;"> / 15</span></p>
+                  </td>
+                  <td style="width:12px;"></td>
+                  <td style="padding:14px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;">
+                    <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#57534e;letter-spacing:0.08em;text-transform:uppercase;">Body State</p>
+                    <p style="margin:0;font-size:16px;font-weight:700;color:#14b8a6;">${body_state}</p>
+                  </td>
+                </tr>
+              </table>
+              <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads" style="display:inline-block;padding:12px 24px;background:#14b8a6;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">View in dashboard</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body></html>`,
+    })
+  }
 
   return NextResponse.json({ success: true, lead_id: leadId }, { headers: CORS })
 }
