@@ -6,6 +6,8 @@ export default function AdminButtons() {
   const [previewStatus, setPreviewStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [blastStatus, setBlastStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
   const [blastResult, setBlastResult] = useState<{ sent: number; failed: number } | null>(null)
+  const [retriggerStatus, setRetriggerStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
+  const [retriggerResult, setRetriggerResult] = useState<{ triggered: number; failed: number; skipped: number } | null>(null)
 
   const sendPreview = async () => {
     setPreviewStatus('sending')
@@ -39,6 +41,19 @@ export default function AdminButtons() {
     }
   }
 
+  const retriggerScorecard = async () => {
+    if (!confirm('This will send the scorecard follow-up emails to any leads who completed the scorecard but never received the automation. Are you sure?')) return
+    setRetriggerStatus('sending')
+    try {
+      const res = await fetch('/api/admin/retrigger-scorecard', { method: 'POST' })
+      const data = await res.json()
+      setRetriggerResult(data)
+      setRetriggerStatus(res.ok ? 'done' : 'error')
+    } catch {
+      setRetriggerStatus('error')
+    }
+  }
+
   return (
     <div className="flex flex-wrap items-center gap-3">
       <button
@@ -58,6 +73,18 @@ export default function AdminButtons() {
           className="text-sm font-semibold px-4 py-2 rounded-lg border border-amber-700/50 text-amber-400 hover:border-amber-600 hover:text-amber-300 transition-colors disabled:opacity-50"
         >
           {blastStatus === 'sending' ? 'Sending...' : blastStatus === 'done' ? 'Done' : blastStatus === 'error' ? 'Failed' : 'Resend reports to all leads'}
+        </button>
+      </div>
+      <div className="flex items-center gap-3">
+        {retriggerResult && (
+          <span className="text-xs text-teal-400">{retriggerResult.triggered} triggered, {retriggerResult.skipped} already had it, {retriggerResult.failed} failed</span>
+        )}
+        <button
+          onClick={retriggerScorecard}
+          disabled={retriggerStatus !== 'idle'}
+          className="text-sm font-semibold px-4 py-2 rounded-lg border border-amber-700/50 text-amber-400 hover:border-amber-600 hover:text-amber-300 transition-colors disabled:opacity-50"
+        >
+          {retriggerStatus === 'sending' ? 'Sending...' : retriggerStatus === 'done' ? 'Done' : retriggerStatus === 'error' ? 'Failed' : 'Send scorecard emails to missed leads'}
         </button>
       </div>
     </div>
