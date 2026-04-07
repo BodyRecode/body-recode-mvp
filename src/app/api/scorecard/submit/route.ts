@@ -17,7 +17,15 @@ export async function OPTIONS() {
 // Creates or finds a lead, logs their scorecard result, fires automation trigger
 
 export async function POST(request: NextRequest) {
-  const { first_name, email, score, body_state, source } = await request.json()
+  let body: Record<string, unknown>
+  try {
+    body = await request.json()
+  } catch (e) {
+    console.error('[scorecard/submit] Failed to parse JSON body:', e)
+    return NextResponse.json({ error: 'Invalid request body.' }, { status: 400, headers: CORS })
+  }
+  const { first_name, email, score, body_state, source } = body as { first_name: string; email: string; score: number; body_state: string; source: string }
+  console.log('[scorecard/submit] Received:', { first_name, email, score, body_state, source })
 
   if (!first_name?.trim() || !email?.trim()) {
     return NextResponse.json({ error: 'Name and email are required.' }, { status: 400, headers: CORS })
