@@ -25,17 +25,19 @@ export async function POST(request: NextRequest) {
 
   const supabase = createAdminClient()
 
-  // Find or create lead
-  const { data: existing, error: lookupError } = await supabase
+  // Find or create lead — use limit(1) to handle duplicate emails gracefully
+  const { data: existingRows, error: lookupError } = await supabase
     .from('leads')
     .select('id, coach_id')
     .eq('email', email.toLowerCase().trim())
-    .maybeSingle()
+    .limit(1)
 
   if (lookupError) {
     console.error('[scorecard/submit] Lead lookup error:', lookupError)
     return NextResponse.json({ error: 'Database error.' }, { status: 500, headers: CORS })
   }
+
+  const existing = existingRows?.[0] ?? null
 
   let leadId: string
 
