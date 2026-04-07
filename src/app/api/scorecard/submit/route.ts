@@ -69,6 +69,7 @@ export async function POST(request: NextRequest) {
         email: email.toLowerCase().trim(),
         source: source ?? 'other',
         source_detail: 'scorecard',
+        active: true,
       })
       .select('id')
       .single()
