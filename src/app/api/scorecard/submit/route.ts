@@ -33,12 +33,11 @@ export async function POST(request: NextRequest) {
 
   const supabase = createAdminClient()
 
-  // Find or create lead — use limit(1) to handle duplicate emails gracefully
+  // Find or create lead — fetch all rows by email, take first in JS to avoid PostgREST single-row errors
   const { data: existingRows, error: lookupError } = await supabase
     .from('leads')
     .select('id, coach_id')
     .eq('email', email.toLowerCase().trim())
-    .limit(1)
 
   if (lookupError) {
     console.error('[scorecard/submit] Lead lookup error:', lookupError)
