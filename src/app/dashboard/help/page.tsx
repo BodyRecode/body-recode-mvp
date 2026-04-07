@@ -1158,7 +1158,7 @@ export default function HelpPage() {
 
           <Section id="be-content-engine" title="33. Content Engine" colour="amber">
             <p>The Content Engine generates batches of platform-ready ad copy and reel scripts using a modular hook, message, and CTA library. Everything is generated using Claude AI with the Body Recode brand voice and positioning enforced automatically.</p>
-            <p>Navigate to <strong>Business → Content Engine</strong> to access it. The engine has five tabs: Hooks, Messages, CTAs, Generate, and Outputs.</p>
+            <p>Navigate to <strong>Business → Content Engine</strong> to access it. The engine has six tabs: Hooks, Messages, CTAs, Generate, Outputs, and Card Library.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Hooks</p>
             <p>A hook is the opening line of a piece of content. It is the first thing the audience reads or hears. Hooks are categorised by awareness level:</p>
@@ -1292,6 +1292,9 @@ export default function HelpPage() {
             </div>
 
             <Note>The Generate function uses Claude Sonnet with the Body Recode brand voice baked into the prompt — no hype language, no long dashes, no exclamation marks, calm authority. You do not need to prompt-engineer the output. Review and approve before deploying.</Note>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Card Library Tab</p>
+            <p>The Card Library tab shows all 16 pre-made card templates as a preview grid. Click <strong>Download PNG</strong> on any card to save it as a 1080×1080 PNG ready to post. On mobile, open the dashboard in your browser, go to Business → Content Engine → Card Library, and download directly to your camera roll.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Card Styles</p>
             <p>The graphic API generates 1080×1080 PNG cards. All styles use the brand dark background (<code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">#0c0a09</code>) except the Founder card which uses deep teal. A full visual reference with example images is saved at <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">Dropbox/01_BODY_RECODE/07_MARKETING/04_CONTENT_LIBRARY/card-designs/card-designs-reference.html</code>.</p>
