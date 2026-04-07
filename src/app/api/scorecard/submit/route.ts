@@ -26,19 +26,29 @@ export async function POST(request: NextRequest) {
   const supabase = createAdminClient()
 
   // Find or create lead
-  const { data: existing } = await supabase
+  const { data: existing, error: lookupError } = await supabase
     .from('leads')
     .select('id, coach_id')
     .eq('email', email.toLowerCase().trim())
     .maybeSingle()
 
+  if (lookupError) {
+    console.error('[scorecard/submit] Lead lookup error:', lookupError)
+    return NextResponse.json({ error: 'Database error.' }, { status: 500, headers: CORS })
+  }
+
   let leadId: string
 
   if (existing) {
     leadId = existing.id
+    console.log('[scorecard/submit] Found existing lead:', leadId)
   } else {
     // Get the first coach via auth.users (single-coach app)
-    const { data: users } = await supabase.auth.admin.listUsers()
+    const { data: users, error: usersError } = await supabase.auth.admin.listUsers()
+    if (usersError) {
+      console.error('[scorecard/submit] listUsers error:', usersError)
+      return NextResponse.json({ error: 'Auth error.' }, { status: 500, headers: CORS })
+    }
     const coachId = users?.users?.[0]?.id
     if (!coachId) return NextResponse.json({ error: 'No coach found.' }, { status: 500, headers: CORS })
 
@@ -55,10 +65,12 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (leadError || !newLead) {
+      console.error('[scorecard/submit] Lead insert error:', leadError)
       return NextResponse.json({ error: 'Failed to create lead.' }, { status: 500, headers: CORS })
     }
 
     leadId = newLead.id
+    console.log('[scorecard/submit] Created new lead:', leadId)
 
     // Fire lead_created automation
     await fireTrigger('lead_created', { leadId })
@@ -71,9 +83,11 @@ export async function POST(request: NextRequest) {
     subject: 'Scorecard completed',
     notes: `Score: ${score}/15. Body state: ${body_state}.`,
   })
+  console.log('[scorecard/submit] Event logged for lead:', leadId)
 
   // Fire form_submitted trigger for scorecard-specific automations
   await fireTrigger('form_submitted', { leadId }, { form: 'scorecard' })
+  console.log('[scorecard/submit] Automation triggered for lead:', leadId)
 
   return NextResponse.json({ success: true, lead_id: leadId }, { headers: CORS })
 }
