@@ -52,23 +52,14 @@ export async function POST(request: NextRequest) {
     leadId = existing.id
     console.log('[scorecard/submit] Found existing lead:', leadId)
   } else {
-    // Get the first coach via auth.users (single-coach app)
-    const { data: users, error: usersError } = await supabase.auth.admin.listUsers()
-    if (usersError) {
-      console.error('[scorecard/submit] listUsers error:', usersError)
-      return NextResponse.json({ error: 'Auth error.' }, { status: 500, headers: CORS })
-    }
-    const coachId = users?.users?.[0]?.id
-    if (!coachId) return NextResponse.json({ error: 'No coach found.' }, { status: 500, headers: CORS })
-
     const { data: newLead, error: leadError } = await supabase
       .from('leads')
       .insert({
-        coach_id: coachId,
         name: first_name.trim(),
         email: email.toLowerCase().trim(),
         source: source ?? 'other',
         source_detail: 'scorecard',
+        status: 'new_check_in',
         active: true,
       })
       .select('id')
