@@ -133,7 +133,7 @@ function platformLabel(p: string) {
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export default function ContentClient({ initialHooks, initialMessages, initialCtas, initialOutputs }: Props) {
-  const [tab, setTab] = useState<'hooks' | 'messages' | 'ctas' | 'generate' | 'outputs'>('hooks')
+  const [tab, setTab] = useState<'hooks' | 'messages' | 'ctas' | 'generate' | 'outputs' | 'cards'>('hooks')
 
   const [hooks, setHooks] = useState<Hook[]>(initialHooks)
   const [messages, setMessages] = useState<Message[]>(initialMessages)
@@ -146,6 +146,7 @@ export default function ContentClient({ initialHooks, initialMessages, initialCt
     { key: 'ctas', label: `CTAs (${ctas.length})` },
     { key: 'generate', label: 'Generate' },
     { key: 'outputs', label: `Outputs (${outputs.length})` },
+    { key: 'cards', label: 'Card Library' },
   ] as const
 
   return (
@@ -197,6 +198,9 @@ export default function ContentClient({ initialHooks, initialMessages, initialCt
       )}
       {tab === 'outputs' && (
         <OutputsTab outputs={outputs} setOutputs={setOutputs} />
+      )}
+      {tab === 'cards' && (
+        <CardsTab />
       )}
     </div>
   )
@@ -1284,6 +1288,66 @@ function SelectableList({
           })}
         </div>
       )}
+    </div>
+  )
+}
+
+
+// ─── Cards Tab ──────────────────────────────────────────────────────────────
+
+const CARDS = [
+  { file: '01-logo-only.png', label: 'Logo Only' },
+  { file: '02-statement.png', label: 'Statement' },
+  { file: '03-question.png', label: 'Question' },
+  { file: '04-insight.png', label: 'Insight' },
+  { file: '05-body-state-red.png', label: 'Body State — Depleted' },
+  { file: '06-body-state-amber.png', label: 'Body State — Transitioning' },
+  { file: '07-body-state-teal.png', label: 'Body State — Ready' },
+  { file: '08-photo-split.png', label: 'Photo Split' },
+  { file: '09-photo-quote.png', label: 'Photo Quote' },
+  { file: '10-photo-top.png', label: 'Photo Top' },
+  { file: '11-photo-right.png', label: 'Photo Right' },
+  { file: '12-carousel-hook.png', label: 'Carousel Hook' },
+  { file: '13-carousel-slide.png', label: 'Carousel Slide' },
+  { file: '14-carousel-cta.png', label: 'Carousel CTA' },
+  { file: '15-scorecard-cta.png', label: 'Scorecard CTA' },
+  { file: '16-founder.png', label: 'Founder' },
+]
+
+function CardsTab() {
+  function handleDownload(file: string) {
+    const a = document.createElement('a')
+    a.href = `/cards/${file}`
+    a.download = `body-recode-${file}`
+    a.click()
+  }
+
+  return (
+    <div>
+      <p className="text-stone-400 text-sm mb-6">16 card templates. Download any card as a 1080×1080 PNG ready to post.</p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {CARDS.map(card => (
+          <div key={card.file} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+            <div className="aspect-square bg-stone-950 overflow-hidden">
+              <img
+                src={`/cards/${card.file}`}
+                alt={card.label}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-3">
+              <p className="text-xs text-stone-400 mb-2 truncate">{card.label}</p>
+              <button
+                onClick={() => handleDownload(card.file)}
+                className="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-lg text-xs text-stone-300 transition-colors"
+              >
+                <Download size={11} />
+                Download PNG
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
