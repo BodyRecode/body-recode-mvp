@@ -77,6 +77,24 @@ export async function fireTrigger(
     first_name: contact?.name?.split(' ')[0] ?? '',
   }
 
+  // Add scorecard data if available for this lead
+  if (ctx.leadId) {
+    const { data: scorecardEvent } = await admin
+      .from('lead_events')
+      .select('notes')
+      .eq('lead_id', ctx.leadId)
+      .eq('type', 'scorecard_completed')
+      .order('sent_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    if (scorecardEvent?.notes) {
+      const scoreMatch = scorecardEvent.notes.match(/Score: (\d+)\/15/)
+      const stateMatch = scorecardEvent.notes.match(/Body state: (.+?)\./)
+      if (scoreMatch) templateVars.scorecard_score = scoreMatch[1]
+      if (stateMatch) templateVars.scorecard_state = stateMatch[1]
+    }
+  }
+
   for (const workflow of workflows) {
     // Check trigger config matches (e.g. specific booking type, pipeline stage)
     const trigConfig = workflow.trigger_config as Record<string, string>
