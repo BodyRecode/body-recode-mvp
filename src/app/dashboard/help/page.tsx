@@ -305,8 +305,12 @@ export default function HelpPage() {
             <p>When someone completes the Body State Scorecard on performance.bodyrecode.au, a lead is <strong>automatically created</strong> in the CRM — no manual entry required. Their name, email, score, body state, and section scores are all captured. You receive a branded notification email immediately on every scorecard submission.</p>
             <p className="mt-2">Leads created this way are tagged with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">source_detail: scorecard</code>. This is now the primary lead entry path.</p>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Body Decode Report ($37)</p>
-            <p>After completing the scorecard, leads are offered a <strong>$37 Body Decode Report</strong> — a personalised web-based analysis of their body state, section scores, and what to stop and start doing. The report is purchased via Stripe and delivered automatically by email as a unique link at <strong>app.bodyrecode.au/report/[token]</strong>.</p>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Post-Scorecard CTAs</p>
+            <p>After completing the scorecard, leads are shown two options on the result page:</p>
+            <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm mt-1">
+              <li><strong>Book a free call</strong> — links to bodyrecode.au/book. Primary CTA. A 30-minute Zoom to review their results and map out what needs to change first.</li>
+              <li><strong>Get my Body Decode Report — $37</strong> — upsell below the primary CTA. A personalised web-based analysis of their body state, section scores, and what to stop and start doing. Purchased via Stripe and delivered automatically by email as a unique link at app.bodyrecode.au/report/[token].</li>
+            </ol>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
               <li>Personalised to their exact body state (Depleted / Transitioning / Ready)</li>
               <li>Section-by-section breakdown with interpretations for each score level</li>
@@ -972,7 +976,10 @@ export default function HelpPage() {
             <p>The booking system replaces Calendly entirely. All Zoom calls are booked through <strong>bodyrecode.au/book</strong> — a public page showing available slots. When a lead books, a Zoom meeting is created automatically and a calendar invite (.ics) is emailed to both the lead and you.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Availability</p>
-            <p>Zoom availability is set in the <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">be_availability</code> table with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">session_type = zoom</code>. Face-to-face availability is a separate set of rules with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">session_type = face_to_face</code>. Each session type has its own day-of-week rules, time windows, slot durations, and buffer gaps.</p>
+            <p>Manage your Zoom availability at <strong>Business → Availability</strong>. You can add or remove day-of-week rules, set start/end times, slot duration, and buffer gaps. Toggle a rule active or paused without deleting it. Changes take effect immediately — the public booking page at bodyrecode.au/book shows slots for the next 14 days.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Blocked Times</p>
+            <p>If something comes up in your diary, use <strong>Business → Availability → Block out time</strong> to block a specific date and time range. Blocked times are excluded from the public booking page so leads cannot book those slots. Add an optional reason for your own reference. The calendar feed sync is one-way — personal diary events don&apos;t automatically block platform slots, so manually add a block here when needed.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What Happens on Zoom Booking</p>
             <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
@@ -996,7 +1003,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Manual Bookings</p>
             <p>You can also create bookings from <strong>Business → Bookings → New Booking</strong>. Select the contact, type (Zoom 1, Zoom 2, Other), date/time, and duration. Zoom is created automatically and an email is sent to you (not the lead — use Inbox to send them the link if needed).</p>
 
-            <Note>The Zoom booking page is fully public — share the link bodyrecode.au/book anywhere. It shows available times for the next 7 days. After booking, the lead is redirected to performance.bodyrecode.au.</Note>
+            <Note>The Zoom booking page is fully public — share the link bodyrecode.au/book anywhere. It shows available times for the next 14 days. After booking, the lead is redirected to performance.bodyrecode.au.</Note>
           </Section>
 
           <Section id="be-automations" title="25. Automations" colour="amber">
@@ -1031,13 +1038,18 @@ export default function HelpPage() {
             </ul>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Scorecard Follow-up Sequence</p>
-            <p>A pre-built follow-up sequence triggers automatically when someone completes the Body State Scorecard. Configure it in <strong>Business → Automations</strong>. Emails support scorecard-specific template variables:</p>
+            <p>A pre-built 2-email follow-up sequence fires automatically when someone completes the Body State Scorecard. It is seeded via <strong>Business → Automations → Reseed Scorecard Sequence</strong>. The sequence uses trigger <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">form_submitted</code> with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{ form: 'scorecard' }`}</code>.</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-2">
+              <li><strong>Email 1 (immediate)</strong> — Surfaces their score and body state, invites them to book a free call at bodyrecode.au/book</li>
+              <li><strong>Email 2 (3 days later)</strong> — Follow-up nudge, links back to the booking page</li>
+            </ul>
+            <p className="mt-2">Emails support scorecard-specific template variables:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
               <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_score}}`}</code> — e.g. 7</li>
               <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_state}}`}</code> — e.g. Transitioning</li>
               <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{first_name}}`}</code> — lead&apos;s first name</li>
             </ul>
-            <p className="mt-2">The sequence should be configured with trigger <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">scorecard_completed</code>. All sequence emails use the branded dark card template.</p>
+            <p className="mt-2">To update the email copy: edit the steps in <strong>Business → Automations</strong>, then hit <strong>Reseed</strong> to rewrite the sequence. Reseeding deletes and recreates the workflow steps — it does not affect in-progress sequences already running for existing leads.</p>
             <Note>Wait steps are handled by Inngest — a background job service. A "wait 3 days" step will actually wait 3 days, even across server restarts. Execution history is logged per contact under each workflow run.</Note>
           </Section>
 
