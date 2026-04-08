@@ -89,6 +89,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .maybeSingle(),
   ])
 
+  const { data: upcomingClientSessions } = await admin
+    .from('client_sessions')
+    .select('id, scheduled_at, duration_minutes, status')
+    .eq('client_id', id)
+    .eq('status', 'scheduled')
+    .gte('scheduled_at', new Date().toISOString())
+    .order('scheduled_at', { ascending: true })
+    .limit(6)
+
   const activeCffs = cffsRecords?.find(c => !c.is_archived) || null
   const archivedCffs = cffsRecords?.filter(c => c.is_archived) || []
   const latestInvitation = invitations?.[0] || null
@@ -219,6 +228,28 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
         ) : (
           <p className="text-sm text-stone-600">No fixed slot assigned yet.</p>
+        )}
+        {(upcomingClientSessions ?? []).length > 0 && (
+          <div className="mt-4 pt-4 border-t border-stone-800 space-y-2">
+            <p className="text-xs text-stone-600 uppercase tracking-wider mb-2">Booked sessions</p>
+            {(upcomingClientSessions ?? []).map(s => (
+              <div key={s.id} className="flex items-center justify-between">
+                <div>
+                  <span className="text-xs text-stone-300">
+                    {new Date(s.scheduled_at).toLocaleDateString('en-AU', {
+                      timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short',
+                    })}
+                  </span>
+                  <span className="text-xs text-stone-600 ml-2">
+                    {new Date(s.scheduled_at).toLocaleTimeString('en-AU', {
+                      timeZone: 'Australia/Brisbane', hour: 'numeric', minute: '2-digit', hour12: true,
+                    })} · {s.duration_minutes} min
+                  </span>
+                </div>
+                <span className="text-xs text-teal-400">Confirmed</span>
+              </div>
+            ))}
+          </div>
         )}
       </div>
 

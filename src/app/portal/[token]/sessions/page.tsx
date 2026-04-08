@@ -6,14 +6,13 @@ import ClientHeader from '@/components/client-header'
 import SessionsClient from './sessions-client'
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-const DAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-function getUpcomingSessions(
+function getFixedSlotDates(
   dayOfWeek: number,
   sessionTime: string,
   durationMinutes: number,
   count = 8
-): { date: string; startUtc: string; endUtc: string; displayDate: string; displayTime: string }[] {
+): { startUtc: string; displayDate: string; displayTime: string }[] {
   const BRISBANE_OFFSET_MS = 10 * 60 * 60 * 1000
   const now = new Date()
   const sessions = []
@@ -23,29 +22,20 @@ function getUpcomingSessions(
     const candidate = new Date(now.getTime() + checked * 24 * 60 * 60 * 1000)
     const brisbaneMidnight = new Date(candidate.getTime() + BRISBANE_OFFSET_MS)
     brisbaneMidnight.setUTCHours(0, 0, 0, 0)
-    const candidateDow = brisbaneMidnight.getUTCDay()
 
-    if (candidateDow === dayOfWeek) {
+    if (brisbaneMidnight.getUTCDay() === dayOfWeek) {
       const [h, m] = sessionTime.split(':').map(Number)
-      const sessionBrisbaneMs = brisbaneMidnight.getTime() + (h * 60 + m) * 60 * 1000
-      const startUtc = new Date(sessionBrisbaneMs - BRISBANE_OFFSET_MS)
-      const endUtc = new Date(startUtc.getTime() + durationMinutes * 60 * 1000)
+      const startUtc = new Date(brisbaneMidnight.getTime() + (h * 60 + m) * 60 * 1000 - BRISBANE_OFFSET_MS)
 
       if (startUtc.getTime() > now.getTime() + 60 * 60 * 1000) {
-        const displayDate = startUtc.toLocaleDateString('en-AU', {
-          timeZone: 'Australia/Brisbane',
-          weekday: 'short', day: 'numeric', month: 'short',
-        })
-        const displayTime = startUtc.toLocaleTimeString('en-AU', {
-          timeZone: 'Australia/Brisbane',
-          hour: 'numeric', minute: '2-digit', hour12: true,
-        })
         sessions.push({
-          date: brisbaneMidnight.toISOString().slice(0, 10),
           startUtc: startUtc.toISOString(),
-          endUtc: endUtc.toISOString(),
-          displayDate,
-          displayTime,
+          displayDate: startUtc.toLocaleDateString('en-AU', {
+            timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short',
+          }),
+          displayTime: startUtc.toLocaleTimeString('en-AU', {
+            timeZone: 'Australia/Brisbane', hour: 'numeric', minute: '2-digit', hour12: true,
+          }),
         })
       }
     }
@@ -70,30 +60,58 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
 
   if (!client) return notFound()
 
-  const firstName = client.name?.split(' ')[0] ?? 'there'
   const hasFixedSlot = client.fixed_session_day !== null && client.fixed_session_time !== null
+  const duration = client.fixed_session_duration ?? 60
 
-  const upcomingSessions = hasFixedSlot
-    ? getUpcomingSessions(
-        client.fixed_session_day!,
-        client.fixed_session_time!,
-        client.fixed_session_duration ?? 60,
-      )
-    : []
-
-  // Get existing bookings for this client
-  const { data: existingBookings } = await admin
+  // All confirmed bookings for this client
+  const { data: confirmedBookings } = await admin
     .from('client_sessions')
-    .select('id, scheduled_at, status')
+    .select('id, scheduled_at, duration_minutes')
     .eq('client_id', client.id)
     .eq('status', 'scheduled')
     .gte('scheduled_at', new Date().toISOString())
+    .order('scheduled_at', { ascending: true })
 
-  const bookedSlots = new Set((existingBookings ?? []).map(b => b.scheduled_at))
+  const confirmedSet = new Set((confirmedBookings ?? []).map(b => {
+    // Normalise to minute precision for matching
+    return new Date(b.scheduled_at).toISOString().slice(0, 16)
+  }))
 
-  // Separate: bookings that fall on the fixed slot pattern vs rescheduled bookings at other times
-  const fixedSlotStartUtcs = new Set(upcomingSessions.map(s => s.startUtc))
-  const rescheduledBookings = (existingBookings ?? []).filter(b => !fixedSlotStartUtcs.has(b.scheduled_at))
+  // Build unified upcoming list: confirmed bookings + fixed slot dates not yet booked
+  const fixedDates = hasFixedSlot
+    ? getFixedSlotDates(client.fixed_session_day!, client.fixed_session_time!, duration, 8)
+    : []
+
+  const fixedDateKeys = new Set(fixedDates.map(s => s.startUtc.slice(0, 16)))
+
+  // Confirmed bookings that are NOT fixed slot dates (extra sessions)
+  const extraBookings = (confirmedBookings ?? []).filter(
+    b => !fixedDateKeys.has(new Date(b.scheduled_at).toISOString().slice(0, 16))
+  )
+
+  // Merge: fixed slot rows (with confirmed flag) + extra bookings
+  type SessionRow = { startUtc: string; displayDate: string; displayTime: string; confirmed: boolean; durMin: number }
+
+  const allSessions: SessionRow[] = [
+    ...fixedDates.map(s => ({
+      startUtc: s.startUtc,
+      displayDate: s.displayDate,
+      displayTime: s.displayTime,
+      confirmed: confirmedSet.has(s.startUtc.slice(0, 16)),
+      durMin: duration,
+    })),
+    ...extraBookings.map(b => ({
+      startUtc: b.scheduled_at,
+      displayDate: new Date(b.scheduled_at).toLocaleDateString('en-AU', {
+        timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short',
+      }),
+      displayTime: new Date(b.scheduled_at).toLocaleTimeString('en-AU', {
+        timeZone: 'Australia/Brisbane', hour: 'numeric', minute: '2-digit', hour12: true,
+      }),
+      confirmed: true,
+      durMin: b.duration_minutes ?? duration,
+    })),
+  ].sort((a, b) => new Date(a.startUtc).getTime() - new Date(b.startUtc).getTime())
 
   const dayLabel = hasFixedSlot ? DAYS[client.fixed_session_day!] : null
   const timeLabel = hasFixedSlot
@@ -125,61 +143,28 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
             <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-5 mb-8">
               <p className="text-xs font-bold tracking-widest text-teal-500 uppercase mb-3">Your fixed slot</p>
               <p className="text-lg font-bold text-white">{dayLabel}s · {timeLabel}</p>
-              <p className="text-sm text-stone-400 mt-1">{client.fixed_session_duration ?? 60} minutes · AF Newstead</p>
+              <p className="text-sm text-stone-400 mt-1">{duration} minutes · AF Newstead</p>
             </div>
 
-            {/* Upcoming sessions */}
+            {/* All upcoming sessions */}
             <div className="mb-8">
               <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Upcoming sessions</p>
               <div className="space-y-2">
-                {upcomingSessions.slice(0, 4).map((session, i) => {
-                  const isBooked = bookedSlots.has(session.startUtc)
-                  return (
-                    <div key={i} className="flex items-center justify-between rounded-xl bg-stone-900 border border-stone-800 px-4 py-3">
-                      <div>
-                        <p className="text-sm font-medium text-white">{session.displayDate}</p>
-                        <p className="text-xs text-stone-500 mt-0.5">{session.displayTime} · {client.fixed_session_duration ?? 60} min</p>
-                      </div>
-                      {isBooked ? (
-                        <span className="text-xs font-bold text-teal-400 bg-teal-400/10 px-2.5 py-1 rounded-full">Confirmed</span>
-                      ) : (
-                        <span className="text-xs text-stone-600">Scheduled</span>
-                      )}
+                {allSessions.slice(0, 8).map((session, i) => (
+                  <div key={i} className="flex items-center justify-between rounded-xl bg-stone-900 border border-stone-800 px-4 py-3">
+                    <div>
+                      <p className="text-sm font-medium text-white">{session.displayDate}</p>
+                      <p className="text-xs text-stone-500 mt-0.5">{session.displayTime} · {session.durMin} min</p>
                     </div>
-                  )
-                })}
+                    {session.confirmed ? (
+                      <span className="text-xs font-bold text-teal-400 bg-teal-400/10 px-2.5 py-1 rounded-full">Confirmed</span>
+                    ) : (
+                      <span className="text-xs text-stone-600">Scheduled</span>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
-
-            {/* Rescheduled / additional booked sessions */}
-            {rescheduledBookings.length > 0 && (
-              <div className="mb-8">
-                <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Additional booked sessions</p>
-                <div className="space-y-2">
-                  {rescheduledBookings
-                    .sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime())
-                    .map(booking => {
-                      const displayDate = new Date(booking.scheduled_at).toLocaleDateString('en-AU', {
-                        timeZone: 'Australia/Brisbane',
-                        weekday: 'short', day: 'numeric', month: 'short',
-                      })
-                      const displayTime = new Date(booking.scheduled_at).toLocaleTimeString('en-AU', {
-                        timeZone: 'Australia/Brisbane',
-                        hour: 'numeric', minute: '2-digit', hour12: true,
-                      })
-                      return (
-                        <div key={booking.id} className="flex items-center justify-between rounded-xl bg-stone-900 border border-stone-800 px-4 py-3">
-                          <div>
-                            <p className="text-sm font-medium text-white">{displayDate}</p>
-                            <p className="text-xs text-stone-500 mt-0.5">{displayTime} · {client.fixed_session_duration ?? 60} min</p>
-                          </div>
-                          <span className="text-xs font-bold text-teal-400 bg-teal-400/10 px-2.5 py-1 rounded-full">Confirmed</span>
-                        </div>
-                      )
-                    })}
-                </div>
-              </div>
-            )}
 
             {/* Book a session */}
             <SessionsClient token={token} clientId={client.id} />
