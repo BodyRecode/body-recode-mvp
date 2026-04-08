@@ -92,6 +92,10 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
 
   const bookedSlots = new Set((existingBookings ?? []).map(b => b.scheduled_at))
 
+  // Separate: bookings that fall on the fixed slot pattern vs rescheduled bookings at other times
+  const fixedSlotStartUtcs = new Set(upcomingSessions.map(s => s.startUtc))
+  const rescheduledBookings = (existingBookings ?? []).filter(b => !fixedSlotStartUtcs.has(b.scheduled_at))
+
   const dayLabel = hasFixedSlot ? DAYS[client.fixed_session_day!] : null
   const timeLabel = hasFixedSlot
     ? new Date(`1970-01-01T${client.fixed_session_time}`).toLocaleTimeString('en-AU', {
@@ -148,7 +152,37 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
               </div>
             </div>
 
-            {/* Reschedule */}
+            {/* Rescheduled / additional booked sessions */}
+            {rescheduledBookings.length > 0 && (
+              <div className="mb-8">
+                <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Additional booked sessions</p>
+                <div className="space-y-2">
+                  {rescheduledBookings
+                    .sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime())
+                    .map(booking => {
+                      const displayDate = new Date(booking.scheduled_at).toLocaleDateString('en-AU', {
+                        timeZone: 'Australia/Brisbane',
+                        weekday: 'short', day: 'numeric', month: 'short',
+                      })
+                      const displayTime = new Date(booking.scheduled_at).toLocaleTimeString('en-AU', {
+                        timeZone: 'Australia/Brisbane',
+                        hour: 'numeric', minute: '2-digit', hour12: true,
+                      })
+                      return (
+                        <div key={booking.id} className="flex items-center justify-between rounded-xl bg-stone-900 border border-stone-800 px-4 py-3">
+                          <div>
+                            <p className="text-sm font-medium text-white">{displayDate}</p>
+                            <p className="text-xs text-stone-500 mt-0.5">{displayTime} · {client.fixed_session_duration ?? 60} min</p>
+                          </div>
+                          <span className="text-xs font-bold text-teal-400 bg-teal-400/10 px-2.5 py-1 rounded-full">Confirmed</span>
+                        </div>
+                      )
+                    })}
+                </div>
+              </div>
+            )}
+
+            {/* Book a session */}
             <SessionsClient token={token} clientId={client.id} />
           </>
         )}

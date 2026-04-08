@@ -1,8 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+import { useState } from 'react'
 
 function groupByDay(slots: string[]): Record<string, string[]> {
   const map: Record<string, string[]> = {}
@@ -29,21 +27,30 @@ function formatSlotTime(slot: string): string {
   })
 }
 
+function formatSlotFull(slot: string): string {
+  return new Date(slot).toLocaleDateString('en-AU', {
+    timeZone: 'Australia/Brisbane',
+    weekday: 'short', day: 'numeric', month: 'short',
+  }) + ' · ' + formatSlotTime(slot)
+}
+
 export default function SessionsClient({ token, clientId }: { token: string; clientId: string }) {
   const [open, setOpen] = useState(false)
   const [slots, setSlots] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [selected, setSelected] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
-  const [done, setDone] = useState(false)
   const [error, setError] = useState('')
+  // Track all bookings made this session so they show immediately without a reload
+  const [recentlyBooked, setRecentlyBooked] = useState<string[]>([])
 
   async function loadSlots() {
     setLoading(true)
     try {
       const res = await fetch('/api/booking-slots?days=21&session_type=face_to_face')
       const data = await res.json()
-      setSlots(data)
+      // Filter out slots already booked this session
+      setSlots(data.filter((s: string) => !recentlyBooked.includes(s)))
     } finally {
       setLoading(false)
     }
@@ -65,7 +72,10 @@ export default function SessionsClient({ token, clientId }: { token: string; cli
         body: JSON.stringify({ slot: selected, clientId, token }),
       })
       if (res.ok) {
-        setDone(true)
+        // Record the booking locally and reset the picker for another booking
+        setRecentlyBooked(prev => [...prev, selected])
+        setSlots(prev => prev.filter(s => s !== selected))
+        setSelected(null)
       } else {
         const data = await res.json()
         setError(data.error ?? 'Something went wrong.')
@@ -76,21 +86,28 @@ export default function SessionsClient({ token, clientId }: { token: string; cli
     setSubmitting(false)
   }
 
-  if (done) {
-    return (
-      <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-5">
-        <p className="text-sm font-semibold text-teal-400 mb-1">Session booked</p>
-        <p className="text-xs text-stone-400">Your coach has been notified. Check your email for confirmation.</p>
-      </div>
-    )
-  }
-
   const grouped = groupByDay(slots)
   const days = Object.keys(grouped).sort()
 
   return (
     <div>
-      <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Need to reschedule?</p>
+      <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Book a session</p>
+
+      {/* Show any sessions booked this page load */}
+      {recentlyBooked.length > 0 && (
+        <div className="space-y-2 mb-4">
+          {recentlyBooked.map(slot => (
+            <div key={slot} className="rounded-xl border border-teal-400/20 bg-teal-400/5 px-4 py-3 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-white">{formatSlotFull(slot)}</p>
+                <p className="text-xs text-stone-500 mt-0.5">Confirmation email sent</p>
+              </div>
+              <span className="text-xs font-bold text-teal-400 bg-teal-400/10 px-2.5 py-1 rounded-full">Booked</span>
+            </div>
+          ))}
+        </div>
+      )}
+
       {!open ? (
         <button
           onClick={handleOpen}
