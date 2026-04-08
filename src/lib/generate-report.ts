@@ -126,7 +126,7 @@ export async function buildReportEmail(
     ? `<tr><td style="padding:0 0 40px;">
         <p style="margin:0 0 8px;font-size:17px;font-weight:700;color:#ffffff;line-height:1.4;">Your pattern has a reason.</p>
         <p style="margin:0 0 24px;font-size:14px;color:#888888;line-height:1.7;">The report shows what's showing up. A 30-minute conversation is where we work out why, and what it means for how you should actually be training and eating right now.</p>
-        <a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0a0a0a;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Explore this with Kade →</a>
+        <a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Explore this with Kade →</a>
         <p style="margin:12px 0 0;font-size:13px;color:#555555;">No obligation. Just clarity on what your body is actually doing.</p>
       </td></tr>`
     : ''
@@ -138,15 +138,15 @@ export async function buildReportEmail(
   <meta name="color-scheme" content="dark" />
   <meta name="supported-color-schemes" content="dark" />
 </head>
-<body style="margin:0;padding:0;background-color:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#0a0a0a">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#0c0a09">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:580px;background-color:#111111;border-radius:16px;border:1px solid #222222;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:580px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
 
           <!-- Header -->
           <tr>
-            <td bgcolor="#111111" style="background-color:#111111;padding:32px 40px 28px;border-bottom:1px solid #1e1e1e;">
+            <td bgcolor="#111110" style="background-color:#111110;padding:32px 40px 28px;border-bottom:1px solid #1c1917;">
               <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
               <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;">Initial Performance Check-In Report</p>
               <p style="margin:6px 0 0;font-size:13px;color:#555555;">Prepared for ${firstName}</p>
@@ -155,18 +155,18 @@ export async function buildReportEmail(
 
           <!-- Body -->
           <tr>
-            <td bgcolor="#111111" style="background-color:#111111;padding:36px 40px 8px;">
+            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 8px;">
               <table width="100%" cellpadding="0" cellspacing="0">
 
                 ${bookingSection}
 
                 ${section('Opening Frame', nl2p(FIXED_SECTIONS.openingFrame))}
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1e1e1e;"><tr><td height="1" bgcolor="#1e1e1e"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
 
                 ${section('How to Read This Report', nl2p(FIXED_SECTIONS.howToRead))}
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1e1e1e;"><tr><td height="1" bgcolor="#1e1e1e"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
 
                 <!-- Pattern Snapshot -->
                 <tr>
@@ -186,7 +186,7 @@ export async function buildReportEmail(
                   </td>
                 </tr>
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1e1e1e;"><tr><td height="1" bgcolor="#1e1e1e"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
 
                 <!-- Signal Blocks -->
                 <tr>
@@ -199,12 +199,12 @@ export async function buildReportEmail(
                 ${signalBlock('Recovery Predictability Signals', rps.title, rps.text)}
                 ${signalBlock('Regulation and Identity Load Signals', rils.title, rils.text)}
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1e1e1e;"><tr><td height="1" bgcolor="#1e1e1e"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
 
                 ${section('Stability Note', nl2p(FIXED_SECTIONS.stabilityNote))}
                 ${section('Agency Reminder', nl2p(FIXED_SECTIONS.agencyReminder))}
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1e1e1e;"><tr><td height="1" bgcolor="#1e1e1e"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
 
                 <!-- Exploring Further -->
                 <tr>
@@ -216,7 +216,7 @@ export async function buildReportEmail(
 
                 ${bookingSection}
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1e1e1e;"><tr><td height="1" bgcolor="#1e1e1e"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
 
                 <!-- Structural Clarification -->
                 <tr>
@@ -232,7 +232,7 @@ export async function buildReportEmail(
 
           <!-- Footer -->
           <tr>
-            <td bgcolor="#0d0d0d" style="background-color:#0d0d0d;padding:20px 40px;border-top:1px solid #1e1e1e;">
+            <td bgcolor="#0d0d0d" style="background-color:#0d0d0d;padding:20px 40px;border-top:1px solid #1c1917;">
               <p style="margin:0 0 8px;font-size:12px;color:#555555;line-height:1.6;">
                 To make sure you receive future emails from Body Recode™, add <strong style="color:#888888;">kade@bodyrecode.au</strong> to your contacts.
               </p>
@@ -279,21 +279,21 @@ function followUpEmail(firstName: string, body: string, ctaText: string, booking
   <meta name="color-scheme" content="dark" />
   <meta name="supported-color-schemes" content="dark" />
 </head>
-<body style="margin:0;padding:0;background-color:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#0a0a0a">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#0c0a09">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:520px;background-color:#111111;border-radius:16px;border:1px solid #222222;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
           <tr>
-            <td bgcolor="#111111" style="background-color:#111111;padding:28px 40px;border-bottom:1px solid #1e1e1e;">
+            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
               <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
-            <td bgcolor="#111111" style="background-color:#111111;padding:36px 40px 40px;">
+            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;">
               ${body}
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0a0a0a;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">${ctaText}</a></td></tr>
+                <tr><td><a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">${ctaText}</a></td></tr>
               </table>
               ${darkEmailSignature()}
             </td>

@@ -202,17 +202,17 @@ export async function POST(request: NextRequest) {
       subject: `Your Zoom call is confirmed — ${dateStr}`,
       attachments: [{ filename: 'booking.ics', content: Buffer.from(ics).toString('base64') }],
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0a0a0a;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:520px;background-color:#111111;border-radius:16px;border:1px solid #222222;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
         <tr>
-          <td bgcolor="#111111" style="background-color:#111111;padding:28px 40px;border-bottom:1px solid #1e1e1e;">
+          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
             <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
         <tr>
-          <td bgcolor="#111111" style="background-color:#111111;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
             <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
             <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your Zoom call with Kade is confirmed.</p>
             <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
@@ -241,17 +241,17 @@ export async function POST(request: NextRequest) {
       subject: `Zoom ${isZoom2 ? '2' : '1'} booked — ${lead.name}`,
       attachments: [{ filename: 'booking.ics', content: Buffer.from(ics).toString('base64') }],
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0a0a0a;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:480px;background-color:#111111;border-radius:16px;border:1px solid #222222;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:480px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
         <tr>
-          <td bgcolor="#111111" style="background-color:#111111;padding:28px 40px;border-bottom:1px solid #1e1e1e;">
+          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
             <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
         <tr>
-          <td bgcolor="#111111" style="background-color:#111111;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+          <td bgcolor="#111110" style="background-color:#111110;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
             <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#ffffff;">Zoom ${isZoom2 ? '2' : '1'} booked — ${lead.name}</p>
             <p style="margin:0 0 20px;font-size:14px;color:#a8a29e;">${lead.email}</p>
             <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;width:100%;">

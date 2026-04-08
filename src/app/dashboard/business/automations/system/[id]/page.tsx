@@ -217,70 +217,101 @@ export default async function SystemAutomationDetailPage({
   if (!automation) notFound()
 
   return (
-    <div className="max-w-2xl">
-      <div className="flex items-center gap-2 text-stone-500 text-sm mb-6">
-        <Link href="/dashboard/business/automations" className="hover:text-stone-300 transition-colors">
+    <div style={{ maxWidth: '680px', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+
+      {/* Breadcrumb */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#57534e', marginBottom: '32px' }}>
+        <Link href="/dashboard/business/automations" style={{ color: '#57534e', textDecoration: 'none' }} className="hover:text-white transition-colors">
           Automations
         </Link>
         <span>/</span>
-        <span className="text-stone-300">{automation.name}</span>
+        <span style={{ color: '#d4cfc9' }}>{automation.name}</span>
       </div>
 
       {/* Header */}
-      <div className="flex items-start gap-4 mb-8">
-        <div className="p-3 bg-teal-500/10 rounded-xl shrink-0">
-          <Zap size={18} className="text-teal-400" strokeWidth={1.8} />
+      <div style={{ marginBottom: '32px' }}>
+        <div style={{ width: '28px', height: '3px', background: '#14b8a6', borderRadius: '2px', marginBottom: '20px' }} />
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '16px' }}>
+          <div>
+            <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '6px' }}>
+              {automation.name}
+            </h1>
+            <p style={{ fontSize: '14px', color: '#a8a29e', lineHeight: 1.6 }}>{automation.description}</p>
+          </div>
+          <span style={{
+            flexShrink: 0, display: 'flex', alignItems: 'center', gap: '6px',
+            fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em',
+            color: '#14b8a6', background: 'rgba(20,184,166,0.08)',
+            border: '1px solid rgba(20,184,166,0.25)',
+            padding: '5px 12px', borderRadius: '999px',
+          }}>
+            <Zap size={10} />
+            Always active
+          </span>
         </div>
-        <div>
-          <h1 className="text-xl font-semibold text-white mb-1">{automation.name}</h1>
-          <p className="text-sm text-stone-400">{automation.description}</p>
-        </div>
-        <span className="ml-auto shrink-0 flex items-center gap-1.5 text-xs font-medium text-teal-400 bg-teal-500/10 px-3 py-1.5 rounded-full">
-          <Zap size={10} />
-          Always active
-        </span>
       </div>
 
       {/* Trigger */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-6">
-        <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Trigger</p>
-        <p className="text-sm font-medium text-white mb-1">{automation.trigger}</p>
-        <p className="text-xs text-stone-500">{automation.triggerDetail}</p>
+      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '20px 24px', marginBottom: '32px' }}>
+        <p style={{ fontSize: '10px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>Trigger</p>
+        <p style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', marginBottom: '4px' }}>{automation.trigger}</p>
+        <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.6 }}>{automation.triggerDetail}</p>
       </div>
 
       {/* Steps */}
-      <div className="relative">
-        <div className="absolute left-[19px] top-8 bottom-8 w-px bg-stone-800" />
-        <div className="space-y-4">
+      <p style={{ fontSize: '10px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+        Email Sequence - {automation.steps.length} emails
+      </p>
+
+      <div style={{ position: 'relative' }}>
+        <div style={{ position: 'absolute', left: '19px', top: '40px', bottom: '40px', width: '1px', background: '#1c1917' }} />
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {automation.steps.map((step, i) => (
-            <div key={i} className="flex gap-4">
-              <div className="w-10 h-10 rounded-full bg-stone-900 border border-stone-700 flex items-center justify-center shrink-0 z-10">
-                <span className="text-xs font-bold text-stone-400">{i + 1}</span>
+            <div key={i} style={{ display: 'flex', gap: '16px' }}>
+              {/* Step number */}
+              <div style={{
+                width: '40px', height: '40px', borderRadius: '50%', flexShrink: 0,
+                background: '#111110', border: '1px solid #1c1917',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                position: 'relative', zIndex: 1,
+              }}>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#57534e' }}>{i + 1}</span>
               </div>
-              <div className="flex-1 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-1">
+
+              {/* Card */}
+              <div style={{ flex: 1, background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', overflow: 'hidden', marginBottom: '4px' }}>
+
                 {/* Step header */}
-                <div className="flex items-center justify-between px-5 py-3 border-b border-stone-800 bg-stone-800/40">
-                  <span className="text-xs font-medium text-teal-400">{step.day}</span>
-                  <span className="text-xs text-stone-600">Email</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 18px', borderBottom: '1px solid #1c1917', background: '#0f0e0d' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#14b8a6' }}>{step.day}</span>
+                  <span style={{ fontSize: '11px', color: '#57534e', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Email</span>
                 </div>
+
                 {/* Subject */}
-                <div className="px-5 pt-4 pb-3 border-b border-stone-800/60">
-                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">Subject</p>
-                  <p className="text-sm font-medium text-white">{step.subject}</p>
+                <div style={{ padding: '16px 18px 14px', borderBottom: '1px solid #1c1917' }}>
+                  <p style={{ fontSize: '10px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>Subject</p>
+                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#ffffff' }}>{step.subject}</p>
                 </div>
+
                 {/* Body */}
-                <div className="px-5 pt-4 pb-3 border-b border-stone-800/60">
-                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Body</p>
-                  <div className="space-y-2.5">
+                <div style={{ padding: '16px 18px 14px', borderBottom: '1px solid #1c1917' }}>
+                  <p style={{ fontSize: '10px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>Body</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {step.paragraphs.map((para, j) => (
-                      <p key={j} className="text-sm text-stone-300 leading-relaxed">{para}</p>
+                      <p key={j} style={{ fontSize: '13px', color: '#a8a29e', lineHeight: 1.75 }}>{para}</p>
                     ))}
                   </div>
                 </div>
+
                 {/* CTA */}
-                <div className="px-5 py-3">
-                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">CTA</p>
-                  <span className="inline-block text-xs font-semibold text-stone-950 bg-[#10E1C2] px-3 py-1.5 rounded-lg">
+                <div style={{ padding: '14px 18px' }}>
+                  <p style={{ fontSize: '10px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>CTA</p>
+                  <span style={{
+                    display: 'inline-block', padding: '8px 16px',
+                    background: '#14b8a6', color: '#0c0a09',
+                    fontSize: '12px', fontWeight: 700, borderRadius: '8px',
+                  }}>
                     {step.cta}
                   </span>
                 </div>

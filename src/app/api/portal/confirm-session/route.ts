@@ -61,8 +61,8 @@ export async function GET(request: NextRequest) {
       to: 'kade@bodyrecode.au',
       subject: `${(client as { name: string }).name} confirmed their session — ${displayDate}`,
       html: `
-        <div style="background:#0a0a0a;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-          <div style="max-width:480px;margin:0 auto;background:#111111;border-radius:16px;padding:36px;">
+        <div style="background:#0c0a09;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+          <div style="max-width:480px;margin:0 auto;background:#111110;border-radius:16px;padding:36px;">
             <img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:28px;" alt="Body Recode" />
             <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#ffffff;">Session confirmed</p>
             <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;"><strong style="color:#fff;">${(client as { name: string }).name}</strong> confirmed their attendance.</p>
@@ -93,7 +93,7 @@ function confirmPage(message: string, success: boolean): string {
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Session ${success ? 'Confirmed' : 'Not Found'} — Body Recode</title>
 </head>
-<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;">
+<body style="margin:0;padding:0;background:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;">
   <div style="max-width:440px;margin:0 auto;padding:48px 24px;text-align:center;">
     <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin:0 auto 40px;"/>
     <div style="width:56px;height:56px;border-radius:50%;background:${success ? '#0d2d29' : '#1c1010'};display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">

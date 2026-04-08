@@ -77,8 +77,8 @@ export async function POST(req: NextRequest) {
       to: client.email,
       subject: `Session booked — ${displayDate} at ${displayTime}`,
       html: `
-        <div style="background:#0a0a0a;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-          <div style="max-width:480px;margin:0 auto;background:#111111;border-radius:16px;padding:36px;">
+        <div style="background:#0c0a09;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+          <div style="max-width:480px;margin:0 auto;background:#111110;border-radius:16px;padding:36px;">
             <img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:28px;" alt="Body Recode" />
             <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#ffffff;">Session confirmed</p>
             <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;line-height:1.6;">Hey ${firstName}, your session has been booked.</p>
@@ -101,8 +101,8 @@ export async function POST(req: NextRequest) {
       to: 'kade@bodyrecode.au',
       subject: `${client.name} booked a session — ${displayDate} at ${displayTime}`,
       html: `
-        <div style="background:#0a0a0a;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-          <div style="max-width:480px;margin:0 auto;background:#111111;border-radius:16px;padding:36px;">
+        <div style="background:#0c0a09;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+          <div style="max-width:480px;margin:0 auto;background:#111110;border-radius:16px;padding:36px;">
             <img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:28px;" alt="Body Recode" />
             <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#ffffff;">Session booked via portal</p>
             <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;line-height:1.6;"><strong style="color:#fff;">${client.name}</strong> has booked a face-to-face session.</p>

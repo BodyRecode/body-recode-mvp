@@ -18,7 +18,7 @@ export function emailSignature(): string {
 
 export function darkEmailSignature(): string {
   return `
-    <table cellpadding="0" cellspacing="0" style="margin-top:32px;padding-top:24px;border-top:1px solid #1e1e1e;">
+    <table cellpadding="0" cellspacing="0" style="margin-top:32px;padding-top:24px;border-top:1px solid #1c1917;">
       <tr>
         <td style="padding-right:16px;vertical-align:middle;">
           <img src="https://bodyrecode.au/kade.jpg" width="48" height="48"

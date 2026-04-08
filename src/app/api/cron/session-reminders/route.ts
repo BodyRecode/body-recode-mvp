@@ -57,12 +57,12 @@ export async function GET(request: NextRequest) {
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
-<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background:#0a0a0a;padding:48px 20px;">
+<body style="margin:0;padding:0;background:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background:#0c0a09;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:520px;background:#111111;border-radius:16px;border:1px solid #222;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background:#111110;border-radius:16px;border:1px solid #222;overflow:hidden;">
         <tr>
-          <td style="padding:28px 40px;border-bottom:1px solid #1e1e1e;">
+          <td style="padding:28px 40px;border-bottom:1px solid #1c1917;">
             <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>

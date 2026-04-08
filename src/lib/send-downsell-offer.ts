@@ -84,24 +84,24 @@ export async function sendDownsellOffer(
     to: lead.email,
     subject: `Your ${stateLabel} State Program - $97`,
     html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0a0a0a;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:520px;background-color:#111111;border-radius:16px;border:1px solid #222222;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
           <tr>
-            <td bgcolor="#111111" style="background-color:#111111;padding:28px 40px;border-bottom:1px solid #1e1e1e;">
+            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
               <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
-            <td bgcolor="#111111" style="background-color:#111111;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
               <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
               <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Your scorecard came back as ${stateLabel} State. That tells me specifically how your body is handling stress and recovery right now, and what it can actually respond to.</p>
               <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">I have built a 12-week program specifically for ${stateLabel} State. Not a generic plan. Every decision in it, the training volume, intensity, rest periods, and nutrition, is designed around where you are right now.</p>
               <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">It is $97. One-time. Yours to keep.</p>
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${checkoutUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0a0a0a;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Get the Program - $97</a></td></tr>
+                <tr><td><a href="${checkoutUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Get the Program - $97</a></td></tr>
               </table>
               <p style="margin:0 0 18px;font-size:13px;color:#555555;line-height:1.75;">Or copy this link: ${checkoutUrl}</p>
               ${darkEmailSignature()}
