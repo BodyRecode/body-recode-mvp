@@ -1,40 +1,60 @@
-import { buildReportEmail } from '@/lib/generate-report'
+import ReportClient from '../report/[token]/report-client'
 
-export const dynamic = 'force-dynamic'
-
-// Sample answers representing a moderate load profile for preview
-const SAMPLE_ANSWERS: Record<string, number> = {
-  effort_vs_result: 2,
-  consistency: 1,
-  training_response: 2,
-  recovery_predictability: 2,
-  planning_vs_reality: 1,
-  week_variability: 2,
-  body_signals: 1,
-  external_load: 2,
-  adjustments: 1,
-  support: 2,
+const PREVIEWS = {
+  depleted: {
+    name: 'Kade Dunstone',
+    score: 6,
+    body_state: 'Depleted State',
+    section_scores: { '01': 1, '02': 1, '03': 1, '04': 2, '05': 1 },
+  },
+  transitioning: {
+    name: 'Kade Dunstone',
+    score: 10,
+    body_state: 'Transitioning State',
+    section_scores: { '01': 2, '02': 2, '03': 1, '04': 2, '05': 3 },
+  },
+  ready: {
+    name: 'Kade Dunstone',
+    score: 14,
+    body_state: 'Ready State',
+    section_scores: { '01': 3, '02': 3, '03': 3, '04': 3, '05': 2 },
+  },
 }
 
-export default async function ReportPreviewPage() {
-  const html = await buildReportEmail(
-    'Sample',
-    SAMPLE_ANSWERS,
-    'Optimisation',
-    process.env.BOOKING_LINK ?? 'https://bodyrecode.au/book-a-conversation'
-  )
+export default async function ReportPreviewPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ state?: string }>
+}) {
+  const { state } = await searchParams
+  const key = (state === 'transitioning' || state === 'ready') ? state : 'depleted'
+  const report = PREVIEWS[key]
 
   return (
-    <div>
-      <div style={{ background: '#1c1917', padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <span style={{ color: '#10E1C2', fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: 'sans-serif' }}>
-          Body Recode™ — Report Preview
-        </span>
-        <span style={{ color: '#78716c', fontSize: '12px', fontFamily: 'sans-serif' }}>
-          Sample answers · Optimisation band · This is exactly what the scheduled email will look like
-        </span>
+    <>
+      <div style={{
+        position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)',
+        display: 'flex', gap: '8px', zIndex: 9999,
+        background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '8px',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.6)',
+      }}>
+        {(['depleted', 'transitioning', 'ready'] as const).map(s => (
+          <a
+            key={s}
+            href={`/report-preview?state=${s}`}
+            style={{
+              padding: '8px 16px', borderRadius: '8px', fontSize: '12px', fontWeight: 700,
+              textDecoration: 'none',
+              background: key === s ? '#14b8a6' : 'transparent',
+              color: key === s ? '#0c0a09' : '#78716c',
+              textTransform: 'capitalize',
+            }}
+          >
+            {s}
+          </a>
+        ))}
       </div>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
-    </div>
+      <ReportClient report={{ ...report, token: 'preview' }} />
+    </>
   )
 }
