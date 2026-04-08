@@ -15,6 +15,7 @@ function brisbaneToUtc(brisbaneMs: number): Date {
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
   const days = Math.min(parseInt(searchParams.get('days') ?? '7'), 60)
+  const sessionType = searchParams.get('session_type') ?? 'zoom'
 
   const admin = createAdminClient()
 
@@ -22,6 +23,7 @@ export async function GET(request: NextRequest) {
     .from('be_availability')
     .select('*')
     .eq('is_active', true)
+    .eq('session_type', sessionType)
 
   if (!availability || availability.length === 0) {
     return NextResponse.json([])

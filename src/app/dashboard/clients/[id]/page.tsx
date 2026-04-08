@@ -199,6 +199,29 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       </div>
 
+      {/* Fixed Session Slot */}
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-xs uppercase tracking-wider text-stone-500">Face-to-Face Session</p>
+          <Link
+            href={`/dashboard/clients/${id}/fixed-session`}
+            className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
+          >
+            {client.fixed_session_day !== null ? 'Edit →' : 'Set up →'}
+          </Link>
+        </div>
+        {client.fixed_session_day !== null && client.fixed_session_time ? (
+          <div>
+            <p className="text-sm text-white font-medium">
+              {['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][client.fixed_session_day as number]}s · {new Date(`1970-01-01T${client.fixed_session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })}
+            </p>
+            <p className="text-xs text-stone-500 mt-0.5">{client.fixed_session_duration ?? 60} min · AF Newstead</p>
+          </div>
+        ) : (
+          <p className="text-sm text-stone-600">No fixed slot assigned yet.</p>
+        )}
+      </div>
+
       {/* Founding Client */}
       {client.is_founding_client && (() => {
         const statusConfig: Record<string, { label: string; colour: string }> = {

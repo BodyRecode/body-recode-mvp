@@ -16,7 +16,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const { data: client } = await admin
     .from('clients')
-    .select('*, baselines(id), intake_invitations(status), weekly_checkins(week_number, form_type, submitted_at)')
+    .select('*, baselines(id), intake_invitations(status), weekly_checkins(week_number, form_type, submitted_at), fixed_session_day, fixed_session_time, fixed_session_duration, session_type')
     .eq('onboarding_token', token)
     .ilike('email', user.email!)
     .single()
@@ -231,6 +231,31 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Sessions — face-to-face clients */}
+        {allOnboardingDone && client.session_type === 'face_to_face' && (
+          <div className="mb-10">
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Sessions</p>
+            <Link
+              href={`/portal/${token}/sessions`}
+              className="block rounded-2xl border border-stone-700 bg-stone-900 p-5 hover:border-teal-400/40 hover:bg-teal-400/5 transition-colors"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-white mb-1">Your face-to-face sessions</p>
+                  {client.fixed_session_day !== null && client.fixed_session_time ? (
+                    <p className="text-xs text-stone-400">
+                      {['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][client.fixed_session_day]}s · {new Date(`1970-01-01T${client.fixed_session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })} · AF Newstead
+                    </p>
+                  ) : (
+                    <p className="text-xs text-stone-600">Fixed slot not yet assigned</p>
+                  )}
+                </div>
+                <span className="text-xs font-bold text-teal-400 ml-4">View →</span>
+              </div>
+            </Link>
           </div>
         )}
 
