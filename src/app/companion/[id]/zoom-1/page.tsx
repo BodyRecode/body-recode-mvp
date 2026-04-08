@@ -1,12 +1,12 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import ZoomCompanion from './zoom-companion'
 
 export default async function Zoom1CompanionPage({ params }: { params: Promise<{ id: string }> }) {
-  const supabase = await createClient()
+  const admin = createAdminClient()
   const { id } = await params
 
-  const { data: lead } = await supabase
+  const { data: lead } = await admin
     .from('leads')
     .select('*')
     .eq('id', id)
@@ -15,7 +15,7 @@ export default async function Zoom1CompanionPage({ params }: { params: Promise<{
   if (!lead) notFound()
 
   // Get scorecard data from lead events
-  const { data: events } = await supabase
+  const { data: events } = await admin
     .from('lead_events')
     .select('type, notes')
     .eq('lead_id', id)
@@ -27,8 +27,8 @@ export default async function Zoom1CompanionPage({ params }: { params: Promise<{
   const scorecardScore = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
   const scorecardState = scorecardEvent?.notes?.match(/Body state: (.+?)\./)?.[1]
 
-  // Section scores from scorecard_reports if available
-  const { data: report } = await supabase
+  // Section scores from scorecard_reports if available (only if they purchased the $37 report)
+  const { data: report } = await admin
     .from('scorecard_reports')
     .select('section_scores, score, body_state')
     .eq('email', lead.email ?? '')
