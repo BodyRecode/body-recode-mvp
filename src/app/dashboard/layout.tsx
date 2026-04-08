@@ -18,7 +18,7 @@ export default async function DashboardLayout({
       <header className="border-b border-stone-800 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <Link href="/dashboard">
-            <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style={{ display: 'block' }} />
+            <img src="https://bodyrecode.au/logo-teal.png" width="140" alt="Body Recode" style={{ display: 'block' }} />
           </Link>
           <nav className="flex items-center gap-1">
             <Link href="/dashboard" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Home</Link>
