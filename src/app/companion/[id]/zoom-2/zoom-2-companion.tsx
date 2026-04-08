@@ -2,18 +2,15 @@
 
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 
-type SignalLevel = 1 | 2 | 3
-type SignalKey = 'sls' | 'rps' | 'rils'
-
 const STAGES = [
   {
     id: 1,
     name: 'Report Review',
     duration: '5-7 min',
     goal: 'Ensure the member is reading the report correctly and safely.',
-    script: `"Before we get into anything else, I want to briefly revisit the report you received.
+    script: `"Before we get into anything else, I want to briefly revisit what you received after our first call — the orientation guide and your scorecard results.
 
-Not to go through it line by line - but to make sure it's landed the way it was intended."`,
+Not to go through them line by line - but to make sure everything has landed the way it was intended."`,
     prompts: [
       'INTERPRETIVE BOUNDARIES - "The report is a single-point snapshot. It is not a verdict, a diagnosis, or a directive. It does not prescribe training changes or assess readiness."',
       '↳ Does that make sense in terms of how you read it?',
@@ -299,49 +296,22 @@ const OBJECTIONS = [
   },
 ]
 
-const SIGNAL_LABELS = {
-  sls: {
-    label: 'Stress & Load',
-    levels: {
-      1: { label: 'Balanced', desc: 'Training and external load are manageable.' },
-      2: { label: 'Moderate Cumulative', desc: 'Demand accumulating. Effort higher than result.' },
-      3: { label: 'Elevated', desc: 'High cumulative demand. System prioritising stability.' },
-    },
-  },
-  rps: {
-    label: 'Recovery Predictability',
-    levels: {
-      1: { label: 'Stable', desc: 'Recovery consistent and predictable session to session.' },
-      2: { label: 'Variable', desc: 'Some sessions fine, others harder to bounce back from.' },
-      3: { label: 'Reduced', desc: 'Recovery unpredictable. Hard to know how body will respond.' },
-    },
-  },
-  rils: {
-    label: 'Regulation & Identity Load',
-    levels: {
-      1: { label: 'Low', desc: 'External and psychological load well managed.' },
-      2: { label: 'Moderate', desc: 'Some uncertainty and external pressure adding to picture.' },
-      3: { label: 'Elevated', desc: 'High regulation demand. Identity may be tied to performance.' },
-    },
-  },
-}
-
 type PathwayType = 'full_rate' | 'founding_client_objection_triggered' | 'founding_client_manual_override' | 'online'
 
 interface Zoom2CompanionProps {
   leadName: string
-  slsLevel: SignalLevel
-  rpsLevel: SignalLevel
-  rilsLevel: SignalLevel
+  bodyState: string
+  totalScore: number | null
+  sectionScores: Record<string, number> | null
   leadId: string
   initialNotes: string
 }
 
 export default function Zoom2Companion({
   leadName,
-  slsLevel,
-  rpsLevel,
-  rilsLevel,
+  bodyState,
+  totalScore,
+  sectionScores,
   leadId,
   initialNotes,
 }: Zoom2CompanionProps) {
@@ -379,14 +349,6 @@ export default function Zoom2Companion({
     const sec = s % 60
     return `${m}:${sec.toString().padStart(2, '0')}`
   }
-
-  const levelColour = (level: number) =>
-    level === 1 ? 'text-emerald-400 border-emerald-400/30 bg-emerald-400/10'
-    : level === 2 ? 'text-amber-400 border-amber-400/30 bg-amber-400/10'
-    : 'text-red-400 border-red-400/30 bg-red-400/10'
-
-  const levelDot = (level: number) =>
-    level === 1 ? 'bg-emerald-400' : level === 2 ? 'bg-amber-400' : 'bg-red-400'
 
   const renderWithLinks = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g
@@ -451,12 +413,17 @@ export default function Zoom2Companion({
   }
 
   const stage = STAGES[currentStage]
-  const signals: { key: SignalKey; level: SignalLevel }[] = [
-    { key: 'sls', level: slsLevel },
-    { key: 'rps', level: rpsLevel },
-    { key: 'rils', level: rilsLevel },
-  ]
   const firstName = leadName.split(' ')[0]
+  const scoreDisplay = totalScore ? ` — ${totalScore}/15` : ''
+
+  const SECTION_LABELS: Record<string, string> = {
+    '01': 'Energy', '02': 'Sleep', '03': 'Stress Load',
+    '04': 'Training Response', '05': 'Fat Loss Response',
+  }
+  const sectionColour = (score: number) =>
+    score === 1 ? 'text-red-400 border-red-400/30 bg-red-400/10'
+    : score === 2 ? 'text-amber-400 border-amber-400/30 bg-amber-400/10'
+    : 'text-emerald-400 border-emerald-400/30 bg-emerald-400/10'
 
   const isFoundingClientPathway = pathwayType === 'founding_client_objection_triggered' || pathwayType === 'founding_client_manual_override'
 
@@ -471,12 +438,9 @@ export default function Zoom2Companion({
             <p className="text-lg font-bold text-white">{leadName}</p>
           </div>
           <div className="flex items-center gap-3">
-            {signals.map(({ key, level }) => (
-              <div key={key} className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border ${levelColour(level)}`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${levelDot(level)}`} />
-                {SIGNAL_LABELS[key].label} {level}
-              </div>
-            ))}
+            <div className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border text-[#10E1C2] border-[#10E1C2]/30 bg-[#10E1C2]/10">
+              {bodyState}{scoreDisplay}
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -552,7 +516,7 @@ export default function Zoom2Companion({
                   { key: 'objection_triggered', label: 'Objection-Triggered', colour: 'amber' },
                   { key: 'manual_override', label: 'Manual Override', colour: 'violet' },
                   { key: 'online', label: 'Online Coaching', colour: 'amber' },
-                  { key: 'signals', label: 'Signal Reference' },
+                  { key: 'signals', label: 'Scorecard Breakdown' },
                 ] as const).map(tab => (
                   <button
                     key={tab.key}
@@ -735,24 +699,30 @@ export default function Zoom2Companion({
                 </div>
               )}
 
-              {/* Signals tab */}
+              {/* Scorecard Breakdown tab */}
               {activeTab === 'signals' && (
                 <div className="space-y-4">
-                  <p className="text-xs text-stone-500 mb-2">{firstName}&apos;s signal profile from the Initial Performance Check-In.</p>
-                  {signals.map(({ key, level }) => {
-                    const info = SIGNAL_LABELS[key]
-                    const levelInfo = info.levels[level as 1 | 2 | 3]
-                    return (
-                      <div key={key} className={`border rounded-xl p-4 ${levelColour(level)}`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <p className="text-xs font-bold uppercase tracking-wider">{info.label}</p>
-                          <span className="text-xs font-bold">Level {level} - {levelInfo.label}</span>
+                  <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/20 rounded-xl p-4">
+                    <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-1">Body State</p>
+                    <p className="text-white text-sm font-semibold">{bodyState}{scoreDisplay}</p>
+                  </div>
+                  {sectionScores ? (
+                    Object.entries(SECTION_LABELS).map(([key, label]) => {
+                      const score = sectionScores[key] ?? null
+                      if (score === null) return null
+                      return (
+                        <div key={key} className={`border rounded-xl p-4 ${sectionColour(score)}`}>
+                          <div className="flex items-center justify-between">
+                            <p className="text-xs font-bold uppercase tracking-wider">{label}</p>
+                            <span className="text-xs font-bold">{score}/3</span>
+                          </div>
                         </div>
-                        <p className="text-sm leading-relaxed opacity-80">{levelInfo.desc}</p>
-                      </div>
-                    )
-                  })}
-                  <div className="mt-2 bg-stone-900/50 border border-stone-800 rounded-xl p-4">
+                      )
+                    })
+                  ) : (
+                    <p className="text-xs text-stone-500">Section scores not available — lead did not purchase the Body Decode Report.</p>
+                  )}
+                  <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-4">
                     <p className="text-xs text-stone-500 leading-relaxed">For objection handling, use the <button onClick={() => setActiveTab('objection_triggered')} className="text-amber-400 font-semibold hover:text-amber-300 transition-colors">Objection-Triggered tab</button>.</p>
                   </div>
                 </div>
