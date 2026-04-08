@@ -72,6 +72,60 @@ Kade
 Body Recode`,
       },
     },
+    {
+      position: 4,
+      type: 'wait',
+      action_type: null,
+      config: { unit: 'days', value: 4 },
+    },
+    {
+      position: 5,
+      type: 'action',
+      action_type: 'send_email',
+      config: {
+        subject: 'What your {{scorecard_state}} result actually means',
+        body: `Hi {{first_name}},
+
+Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state doesn't factor into it at all.
+
+Your scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.
+
+A program built for a Ready state will not work for a Depleted state. That is not a motivation problem. That is a prescription problem.
+
+That is exactly what the call addresses. Building the approach around your actual state, not a generic template.
+
+Book here: https://bodyrecode.au/book
+
+Kade
+Body Recode`,
+      },
+    },
+    {
+      position: 6,
+      type: 'wait',
+      action_type: null,
+      config: { unit: 'days', value: 5 },
+    },
+    {
+      position: 7,
+      type: 'action',
+      action_type: 'send_email',
+      config: {
+        subject: 'Last one from me, {{first_name}}',
+        body: `Hi {{first_name}},
+
+Last email from me on this.
+
+Your scorecard result is still there whenever you want to act on it. The call is still available. No follow-up after this.
+
+Just wanted you to know the door stays open.
+
+Book here: https://bodyrecode.au/book
+
+Kade
+Body Recode`,
+      },
+    },
   ]
 
   if (existing) {

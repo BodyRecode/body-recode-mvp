@@ -9,9 +9,9 @@ const SYSTEM_AUTOMATIONS = [
   {
     id: 'scorecard-followup',
     name: 'Scorecard Follow-up Sequence',
-    description: '2-email sequence triggered when someone completes the Body State Scorecard',
+    description: '4-email sequence triggered when someone completes the Body State Scorecard',
     trigger: 'Scorecard completed',
-    steps: 2,
+    steps: 4,
     canReseed: true,
   },
   {
