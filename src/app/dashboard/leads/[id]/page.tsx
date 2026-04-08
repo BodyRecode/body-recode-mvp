@@ -104,6 +104,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
   // Extract scorecard result from events
   const scorecardEvent = events?.find(e => e.type === 'scorecard_completed') ?? null
+
+  // Show flow sections for any lead with a scorecard OR old check-in answers
+  const hasLeadData = !!scorecardEvent || (!!answers && Object.keys(answers).length > 0)
   const scorecardScore = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
   const scorecardState = scorecardEvent?.notes?.match(/Body state: (.+?)\./)?.[1]
   const scorecardStyle = scorecardState ? BODY_STATE_STYLES[scorecardState] : null
@@ -189,7 +192,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       )}
 
       {/* Zoom 1 companion */}
-      {answers && Object.keys(answers).length > 0 && (
+      {hasLeadData && (
         <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
           <div>
             <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Zoom 1</h2>
@@ -219,7 +222,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       )}
 
       {/* Orientation */}
-      {answers && Object.keys(answers).length > 0 && (
+      {hasLeadData && (
         <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
           <div>
             <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Orientation</h2>
@@ -243,11 +246,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       )}
 
       {/* Zoom 2 companion */}
-      {answers && Object.keys(answers).length > 0 && (
+      {hasLeadData && (
         <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
           <div>
             <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Zoom 2</h2>
             <p className="text-stone-500 text-sm">Orientation review, hot spot framing, and pricing conversation.</p>
+            <p className="text-xs text-stone-600 mt-1">Send the lead <strong className="text-stone-500">bodyrecode.au/book</strong> to rebook — they&apos;ll be detected as a returning lead and booked as Zoom 2.</p>
           </div>
           <div className="flex items-center gap-2">
             {lead.zoom_meeting_url && (
@@ -312,14 +316,14 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <LeadActions lead={lead} />
 
       {/* Check-in answers */}
-      {answers && Object.keys(answers).length > 0 && (
+      {hasLeadData && (
         <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
-          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">Performance Check-In Answers</h2>
+          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">Performance Check-In</h2>
           <div className="space-y-4">
             {Object.entries(CHECK_IN_QUESTIONS).map(([key, label]) => {
-              const val = answers[key]
-              const optionText = CHECK_IN_OPTIONS[key]?.[val]
+              const val = answers?.[key]
               if (val === undefined) return null
+              const optionText = CHECK_IN_OPTIONS[key]?.[val]
               return (
                 <div key={key} className="border-b border-stone-800 pb-4 last:border-0 last:pb-0">
                   <p className="text-xs text-stone-400 mb-1">{label}</p>
