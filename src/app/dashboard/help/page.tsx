@@ -117,9 +117,10 @@ export default function HelpPage() {
               <div>
                 <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 1 — Lead Arrives</p>
                 <div className="space-y-2">
-                  <ChecklistItem text="Lead submits the Performance Check-In quiz" />
-                  <ChecklistItem text="Performance report is scheduled automatically — no action needed" />
-                  <ChecklistItem text="Lead status moves to Report Sent" />
+                  <ChecklistItem text="Lead completes the Body State Scorecard at performance.bodyrecode.au" />
+                  <ChecklistItem text="Lead is automatically created in the CRM — no action needed" />
+                  <ChecklistItem text="You receive a scorecard submission notification email immediately" />
+                  <ChecklistItem text="Lead is offered the $37 Body Decode Report post-scorecard" />
                   <ChecklistItem text="Follow-up email sequence begins automatically" />
                 </div>
               </div>
@@ -273,7 +274,7 @@ export default function HelpPage() {
 
           {/* Section 1 */}
           <Section id="lead-pipeline" title="1. Lead Pipeline" colour="teal">
-            <p>Every potential client enters the system as a <strong>lead</strong>. Leads are created manually or automatically when someone submits the performance check-in quiz.</p>
+            <p>Every potential client enters the system as a <strong>lead</strong>. Leads are created manually or automatically when someone completes the Body State Scorecard at performance.bodyrecode.au.</p>
             <p>On the lead detail page, the <strong>Contact</strong> section has an <strong>Edit</strong> link that lets you update the lead&apos;s name, email, and phone number directly from the dashboard without going to Supabase.</p>
             <p>Leads move through statuses as they progress:</p>
             <StatusList items={[
@@ -298,11 +299,11 @@ export default function HelpPage() {
               <li>A one-line description of what that state means</li>
               <li>The date the scorecard was completed</li>
             </ul>
-            <p className="mt-2">This card only appears if the lead has a scorecard_completed event. Leads who came in via the check-in form without taking the scorecard will not show this card.</p>
+            <p className="mt-2">This card only appears if the lead has a scorecard_completed event. Legacy leads who entered before the scorecard was the lead magnet will not show this card.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Scorecard Lead Creation</p>
             <p>When someone completes the Body State Scorecard on performance.bodyrecode.au, a lead is <strong>automatically created</strong> in the CRM — no manual entry required. Their name, email, score, body state, and section scores are all captured. You receive a branded notification email immediately on every scorecard submission.</p>
-            <p className="mt-2">Leads created this way are tagged with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">source_detail: scorecard</code> so they are distinguishable from check-in leads in your pipeline.</p>
+            <p className="mt-2">Leads created this way are tagged with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">source_detail: scorecard</code>. This is now the primary lead entry path.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Body Decode Report ($37)</p>
             <p>After completing the scorecard, leads are offered a <strong>$37 Body Decode Report</strong> — a personalised web-based analysis of their body state, section scores, and what to stop and start doing. The report is purchased via Stripe and delivered automatically by email as a unique link at <strong>app.bodyrecode.au/report/[token]</strong>.</p>
@@ -328,7 +329,7 @@ export default function HelpPage() {
             <p>The companion has 5 stages:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
               <li><strong>Opening</strong> — Set context, explain the purpose of the call.</li>
-              <li><strong>Check-In Review</strong> — Walk through the lead&apos;s quiz responses.</li>
+              <li><strong>Scorecard Review</strong> — Walk through the lead&apos;s scorecard results and body state.</li>
               <li><strong>Signal Exploration</strong> — Explore SLS, RPS, and RILS signal areas using structured prompts.</li>
               <li><strong>Pattern Interpretation</strong> — Name the dominant pattern using signal-specific language.</li>
               <li><strong>Close</strong> — Confirm the report, next steps, and Zoom 2 booking.</li>
@@ -652,7 +653,7 @@ export default function HelpPage() {
             <p>Sent automatically when a lead purchases the $37 Body Decode Report via Stripe. Contains a unique link to their personalised report at app.bodyrecode.au/report/[token]. Triggered by the Stripe webhook — no manual handling required.</p>
 
             <p className="font-semibold text-white mt-2">Performance Report + Follow-Up Sequence</p>
-            <p>Triggered when a lead submits the check-in quiz. The report is scheduled to send the following morning at 9am Brisbane time.</p>
+            <p>Triggered when a lead completes the Body State Scorecard. The report is scheduled to send the following morning at 9am Brisbane time.</p>
             <div className="space-y-1">
               <SeqRow day="Next morning 9am" label="Performance report email" />
               <SeqRow day="Day 2" label="Follow-up 1 — Re: Your check-in report" />
@@ -662,7 +663,7 @@ export default function HelpPage() {
             <p className="mt-2">The follow-up sequence is <strong>automatically cancelled</strong> the moment the lead books a Zoom via Calendly. If you need to cancel it manually, use the Cancel Sequence button on the lead detail page.</p>
 
             <p className="font-semibold text-white mt-4">Re-engagement Blast (Admin Action)</p>
-            <p>A one-time admin action available on the dashboard homepage. Sends the re-engagement email plus a fresh follow-up sequence to all leads who have check-in answers on file. Any previously scheduled follow-ups are cancelled before the new sequence is sent.</p>
+            <p>A one-time admin action available on the dashboard homepage. Sends the re-engagement email plus a fresh follow-up sequence to all leads who have scorecard data on file. Any previously scheduled follow-ups are cancelled before the new sequence is sent.</p>
             <p>Leads with statuses <strong>Commencement Fee Paid</strong>, <strong>Closed - Declined</strong>, or <strong>Closed - No Show</strong> do not receive new follow-ups.</p>
 
             <p className="font-semibold text-white mt-4">Orientation Guide</p>
@@ -736,7 +737,7 @@ export default function HelpPage() {
             <p className="font-semibold text-white mt-2">Admin Actions panel</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li><strong>Send preview email</strong> — Sends a sample re-engagement report email to kade@bodyrecode.au. Use this to preview formatting and layout before running the blast.</li>
-              <li><strong>Resend reports to all leads</strong> — Triggers the re-engagement blast. Cancels all existing follow-up sequences and sends a fresh re-engagement email plus a new 3-email follow-up sequence to every lead with check-in data. Requires confirmation before firing.</li>
+              <li><strong>Resend reports to all leads</strong> — Triggers the re-engagement blast. Cancels all existing follow-up sequences and sends a fresh re-engagement email plus a new 3-email follow-up sequence to every lead with scorecard data. Requires confirmation before firing.</li>
             </ul>
             <Note>The blast is protected by an admin secret and requires confirmation. It will not fire accidentally.</Note>
           </Section>
@@ -752,14 +753,14 @@ export default function HelpPage() {
 
             <p className="font-semibold text-white mt-2">Three entry paths</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Online ad application</strong> — The primary path for online clients. The landing page at performance.bodyrecode.au/founder directs applicants through the Performance Check-In as step one of the application. Applications come in tagged as source: Founder Program in the leads list. Review the check-in answers and set the application status on the lead detail page.</li>
+              <li><strong>Online ad application</strong> — The primary path for online clients. The landing page at performance.bodyrecode.au/founder directs applicants through the Body State Scorecard as step one of the application. Applications come in tagged as source: Founder Program in the leads list. Review the scorecard results and set the application status on the lead detail page.</li>
               <li><strong>Objection-triggered at Zoom 2</strong> — The full rate offer is made first. If the lead objects to price, the Founding Client offer is introduced as the second offer. Use the Objection-Triggered tab in the Zoom 2 companion.</li>
               <li><strong>Manual override at Zoom 2</strong> — For a high-suitability lead, you may proactively offer the program before any objection arises. Use the Manual Override tab. All four criteria on the checklist must be true before using it.</li>
             </ul>
 
             <p className="font-semibold text-white mt-2">Managing online applications</p>
             <p>Applications from the landing page arrive in your leads list with a teal <strong>Founder</strong> badge. Use the <strong>Founder Program</strong> filter at the top of the leads list to view them in isolation.</p>
-            <p className="mt-2">On each founder lead&apos;s detail page, a <strong>Founder Client Application</strong> section appears at the top. Review their check-in answers below it and update the application status using the status button:</p>
+            <p className="mt-2">On each founder lead&apos;s detail page, a <strong>Founder Client Application</strong> section appears at the top. Review their scorecard results below it and update the application status using the status button:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
               <li><strong>Under Review</strong> — Default state. Application received, not yet assessed.</li>
               <li><strong>Accepted</strong> — Position offered. Proceed to booking and coaching entry.</li>
