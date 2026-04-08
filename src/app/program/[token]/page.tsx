@@ -66,10 +66,10 @@ export default async function ProgramPage({
 
       {/* Welcome */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '48px 24px 0' }}>
-        <p style={{ color: '#888888', fontSize: '15px', lineHeight: 1.75, marginBottom: '8px' }}>
+        <p style={{ color: '#cccccc', fontSize: '15px', lineHeight: 1.75, marginBottom: '8px' }}>
           Hi {firstName},
         </p>
-        <p style={{ color: '#aaaaaa', fontSize: '15px', lineHeight: 1.75, marginBottom: '40px' }}>
+        <p style={{ color: '#dddddd', fontSize: '15px', lineHeight: 1.75, marginBottom: '40px' }}>
           Your 12-week program is below. Bookmark this page. You can return to it any time.
         </p>
       </div>
@@ -83,7 +83,7 @@ export default async function ProgramPage({
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: #6b7280;
+            color: #d1d5db;
             margin: 48px 0 16px;
             padding-bottom: 8px;
             border-bottom: 1px solid #1e1e1e;
@@ -103,7 +103,7 @@ export default async function ProgramPage({
           }
           .program-content p {
             font-size: 14px;
-            color: #9ca3af;
+            color: #d1d5db;
             line-height: 1.8;
             margin: 0 0 14px;
           }
@@ -113,7 +113,7 @@ export default async function ProgramPage({
           }
           .program-content ul li {
             font-size: 14px;
-            color: #9ca3af;
+            color: #d1d5db;
             line-height: 1.8;
             margin-bottom: 4px;
           }
@@ -123,7 +123,7 @@ export default async function ProgramPage({
           }
           .program-content ol li {
             font-size: 14px;
-            color: #9ca3af;
+            color: #d1d5db;
             line-height: 1.8;
             margin-bottom: 8px;
           }
@@ -137,7 +137,7 @@ export default async function ProgramPage({
             text-align: left;
             padding: 10px 14px;
             background: #161616;
-            color: #6b7280;
+            color: #d1d5db;
             font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.05em;
@@ -164,7 +164,7 @@ export default async function ProgramPage({
             padding: 12px 16px;
             margin: 16px 0;
             font-size: 13px;
-            color: #6b7280;
+            color: #d1d5db;
             border-radius: 0 8px 8px 0;
           }
           .program-content a { color: #10E1C2; text-decoration: none; }
@@ -188,7 +188,7 @@ export default async function ProgramPage({
           <p style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', margin: '0 0 8px' }}>
             Want a more complete picture?
           </p>
-          <p style={{ fontSize: '14px', color: '#888888', lineHeight: 1.75, margin: '0 0 24px' }}>
+          <p style={{ fontSize: '14px', color: '#cccccc', lineHeight: 1.75, margin: '0 0 24px' }}>
             This program is built for your state right now. If you want weekly interpretation of your signals, ongoing load adjustment, and a full coaching picture, the next step is a conversation.
           </p>
           <a
