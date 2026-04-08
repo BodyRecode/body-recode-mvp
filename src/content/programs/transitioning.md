@@ -1,8 +1,5 @@
 # Body Recode - Self-Guided Program
 ## Body State: Transitioning (Score 9–12/15)
-Version: Draft v1.0
-Status: Pending Kade review
-Last updated: 2026-04-09
 
 ---
 
