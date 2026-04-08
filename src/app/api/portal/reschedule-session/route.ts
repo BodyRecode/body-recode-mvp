@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   // Verify this client belongs to the authenticated user
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, email, fixed_session_duration')
+    .select('id, name, email, fixed_session_duration, coach_id')
     .eq('id', clientId)
     .eq('onboarding_token', token)
     .ilike('email', user.email!)
@@ -44,20 +44,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'That time is no longer available.' }, { status: 409 })
   }
 
-  // Create the booking
-  const { error: bookingError } = await admin
+  // Create the booking — use client_id field if it exists, fall back to lead_id
+  // coach_id is required by the bookings table
+  const bookingPayload: Record<string, unknown> = {
+    lead_id: clientId,
+    scheduled_at: slotDate.toISOString(),
+    duration_minutes: durationMinutes,
+    type: 'face_to_face',
+    status: 'scheduled',
+  }
+  if (client.coach_id) bookingPayload.coach_id = client.coach_id
+
+  const { data: booking, error: bookingError } = await admin
     .from('be_bookings')
-    .insert({
-      lead_id: clientId,
-      scheduled_at: slotDate.toISOString(),
-      duration_minutes: durationMinutes,
-      type: 'face_to_face',
-      status: 'scheduled',
-    })
+    .insert(bookingPayload)
+    .select('id')
+    .single()
 
   if (bookingError) {
-    console.error('Booking insert error:', bookingError)
-    return NextResponse.json({ error: 'Failed to create booking.' }, { status: 500 })
+    console.error('Booking insert error:', JSON.stringify(bookingError))
+    return NextResponse.json({ error: `Failed to create booking: ${bookingError.message}` }, { status: 500 })
   }
 
   // Format display time
