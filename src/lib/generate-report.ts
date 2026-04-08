@@ -371,12 +371,12 @@ export function buildNoShowEmails(firstName: string, bookingLink: string): {
   email3: { subject: string; html: string }
 } {
   const email1 = {
-    subject: `${firstName} - missed you today`,
+    subject: `${firstName} - missed you yesterday`,
     html: followUpEmail(
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`Looks like we missed each other today. No problem at all - these things happen.`),
+        p(`Looks like we missed each other yesterday. No problem at all - these things happen.`),
         p(`When you're ready, the conversation is still available. It's a 30-minute call to talk through what showed up in your report and work out whether there's something useful in it for you.`),
         p(`No pressure. Just let me know when works.`),
       ].join(''),

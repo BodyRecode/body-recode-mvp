@@ -129,10 +129,10 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
     steps: [
       {
         day: 'Next morning (9am Brisbane)',
-        subject: '{firstName} - missed you today',
+        subject: '{firstName} - missed you yesterday',
         paragraphs: [
           'Hi {firstName},',
-          'Looks like we missed each other today. No problem at all - these things happen.',
+          'Looks like we missed each other yesterday. No problem at all - these things happen.',
           'When you\'re ready, the conversation is still available. It\'s a 30-minute call to talk through what showed up in your report and work out whether there\'s something useful in it for you.',
           'No pressure. Just let me know when works.',
         ],
