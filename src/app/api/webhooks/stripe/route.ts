@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
           <tr>
             <td bgcolor="#111111" style="background-color:#111111;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
               <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Your Body Decode Report is ready. It breaks down exactly what your scorecard results mean — what your body state tells us, what is working against you right now, and what to focus on first.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Your Body Decode Report is ready. It breaks down what your scorecard results mean, what your body state tells us, what is working against you right now, and what to focus on first.</p>
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
                 <tr><td><a href="${reportUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0a0a0a;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">View My Report</a></td></tr>
               </table>
