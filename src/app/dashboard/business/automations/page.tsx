@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Zap, Plus, Play, Pause, ChevronRight } from 'lucide-react'
-import SeedScorecardButton from './seed-scorecard-button'
+import SystemAutomationsPanel from './system-automations-panel'
 
 const triggerLabel: Record<string, string> = {
   lead_created: 'Lead created',
@@ -41,11 +41,13 @@ export default async function AutomationsPage() {
         </Link>
       </div>
 
-      <SeedScorecardButton />
+      <SystemAutomationsPanel />
 
       {workflows && workflows.length > 0 ? (
-        <div className="space-y-2">
-          {workflows.map((workflow) => {
+        <div>
+          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Custom Workflows</p>
+          <div className="space-y-2">
+            {workflows.map((workflow) => {
             const stepCount = Array.isArray(workflow.be_workflow_steps)
               ? workflow.be_workflow_steps.length
               : 0
@@ -87,7 +89,8 @@ export default async function AutomationsPage() {
                 </div>
               </Link>
             )
-          })}
+            })}
+          </div>
         </div>
       ) : (
         <div className="bg-stone-900 border border-dashed border-stone-800 rounded-xl p-12 text-center">
