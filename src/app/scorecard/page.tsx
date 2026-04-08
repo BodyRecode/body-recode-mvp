@@ -86,6 +86,66 @@ function getResult(total: number) {
 
 type Step = 'scoring' | 'email' | 'result'
 
+function ReportUpsell({ firstName, email, score, bodyState, scores }: {
+  firstName: string
+  email: string
+  score: number
+  bodyState: string
+  scores: Record<string, number>
+}) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  async function handlePurchase() {
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/scorecard-report/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: firstName, email, score, body_state: bodyState, section_scores: scores }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
+    } catch {
+      setError('Something went wrong. Please try again.')
+    }
+    setLoading(false)
+  }
+
+  return (
+    <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '14px', padding: '28px 28px 24px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, color: '#57534e', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>
+        Body Decode Report · $37
+      </p>
+      <p style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', marginBottom: '10px', lineHeight: 1.3 }}>
+        Get the full breakdown of your results.
+      </p>
+      <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.7, marginBottom: '24px' }}>
+        A personalised written report covering what your body state means, what is working against you right now, and exactly what to stop and start doing. Delivered to your inbox instantly.
+      </p>
+      {error && <p style={{ fontSize: '13px', color: '#ef4444', marginBottom: '12px' }}>{error}</p>}
+      <button
+        onClick={handlePurchase}
+        disabled={loading}
+        style={{
+          display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
+          background: 'transparent', color: '#a8a29e',
+          fontSize: '15px', fontWeight: 700, textAlign: 'center',
+          border: '1.5px solid #2c2826', cursor: loading ? 'not-allowed' : 'pointer',
+          opacity: loading ? 0.6 : 1,
+        }}
+      >
+        {loading ? 'Loading...' : 'Get my Body Decode Report — $37'}
+      </button>
+    </div>
+  )
+}
+
 function ScorecardInner() {
   const searchParams = useSearchParams()
   const source = searchParams.get('source') ?? 'other'
@@ -362,48 +422,36 @@ function ScorecardInner() {
             </div>
 
             {/* CTA */}
-            <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.3)', borderRadius: '14px', padding: '28px 28px 24px' }}>
-              {source === 'founder' ? (
-                <>
-                  <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>
-                    You now know which state your body is in.
-                  </p>
-                  <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
-                    That is the starting point. The Founding Client Program builds on it. Complete the application and your body state will be on file before we speak.
-                  </p>
-                  <a
-                    href="https://performance.bodyrecode.au/check-in?source=founder_program"
-                    style={{
-                      display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
-                      background: '#14b8a6', color: '#0c0a09',
-                      fontSize: '15px', fontWeight: 700, textAlign: 'center',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    Apply for the Founding Client Program
-                  </a>
-                </>
-              ) : (
-                <>
-                  <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>
-                    Whatever your score, the next step is the same.
-                  </p>
-                  <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
-                    Run your Performance Check-In. It takes 3 minutes, it is free, and it tells you exactly what your body needs right now based on how you are actually functioning.
-                  </p>
-                  <a
-                    href="/performance-check-in"
-                    style={{
-                      display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
-                      background: '#14b8a6', color: '#0c0a09',
-                      fontSize: '15px', fontWeight: 700, textAlign: 'center',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    Run your Performance Check-In
-                  </a>
-                </>
-              )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {/* Primary: Book a call */}
+              <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.3)', borderRadius: '14px', padding: '28px 28px 24px' }}>
+                <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>
+                  The score tells you the state. A call tells you the fix.
+                </p>
+                <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
+                  We go through your results together, identify the specific driver behind what is not working, and map out exactly what needs to change first. Free. 30 minutes. No pitch.
+                </p>
+                <a
+                  href="https://bodyrecode.au/book"
+                  style={{
+                    display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
+                    background: '#14b8a6', color: '#0c0a09',
+                    fontSize: '15px', fontWeight: 700, textAlign: 'center',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Book a free call
+                </a>
+              </div>
+
+              {/* Secondary: Body Decode Report */}
+              <ReportUpsell
+                firstName={firstName}
+                email={email}
+                score={total}
+                bodyState={result.label}
+                scores={scores}
+              />
             </div>
           </>
         )}
