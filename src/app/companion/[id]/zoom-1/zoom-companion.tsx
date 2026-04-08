@@ -183,15 +183,28 @@ There\'s no obligation. It\'s just a more detailed look at what the system would
 
 Then ask: "Would you like to explore that further?"
 
-If YES: book Zoom 2 before ending the call.
-If NO: close cleanly. No follow-up pressure.`,
+──────────────────────────────────────
+
+IF YES → Book Zoom 2 before ending the call. Use the panel on the right.
+
+──────────────────────────────────────
+
+IF NO → Use this close:
+
+"Completely understood. These things only work when the timing is right for you, not when they fit someone else\'s timeline.
+
+The patterns we talked through today don\'t go anywhere. If anything shifts — whether that\'s in a few weeks or further down the track — the conversation is still here.
+
+I\'ll send you a quick email after this just to close the loop. No pressure, no follow-up after that unless you reach out."
+
+Then use the "Send declined follow-up" button in the panel on the right.`,
       prompts: [
         { type: 'prompt', text: 'Would you like to explore that further?' },
         { type: 'prompt', text: 'Would it be helpful to see how the coaching process works?' },
         { type: 'prompt', text: 'Are you open to walking through the Body Recode approach?' },
         { type: 'prompt', text: 'Would you like to book that second conversation?' },
       ],
-      tips: 'Don\'t oversell. Don\'t rush. If they\'re not ready, that\'s valid information. Zoom 2 should be booked before this call ends if they say yes.',
+      tips: 'Don\'t oversell. Don\'t rush. If they\'re not ready, that\'s valid information. Zoom 2 should be booked before this call ends if they say yes. If no, close warmly and trigger the declined sequence.',
       boundary: null,
     },
   ]
@@ -231,6 +244,8 @@ export default function ZoomCompanion({
   const [statusUpdated, setStatusUpdated] = useState(false)
   const [zoom2Date, setZoom2Date] = useState('')
   const [zoom2Saved, setZoom2Saved] = useState(false)
+  const [declinedSent, setDeclinedSent] = useState(false)
+  const [sendingDeclined, setSendingDeclined] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
@@ -301,6 +316,13 @@ export default function ZoomCompanion({
       body: JSON.stringify({ status: 'zoom_1_completed' }),
     })
     setStatusUpdated(true)
+  }
+
+  const sendDeclinedSequence = async () => {
+    setSendingDeclined(true)
+    await fetch(`/api/leads/${leadId}/send-zoom1-declined`, { method: 'POST' })
+    setDeclinedSent(true)
+    setSendingDeclined(false)
   }
 
   const bookZoom2 = async () => {
@@ -672,6 +694,15 @@ export default function ZoomCompanion({
                 className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${statusUpdated ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-stone-800 border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white'}`}
               >
                 {statusUpdated ? 'Zoom 1 Marked Complete' : 'Mark Zoom 1 Complete'}
+              </button>
+
+              {/* Declined follow-up */}
+              <button
+                onClick={sendDeclinedSequence}
+                disabled={declinedSent || sendingDeclined}
+                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${declinedSent ? 'bg-stone-900 border border-stone-800 text-stone-600' : 'bg-stone-800 border border-stone-700 text-amber-400 hover:border-amber-500/40 hover:text-amber-300'}`}
+              >
+                {declinedSent ? 'Declined sequence sent' : sendingDeclined ? 'Sending...' : 'Send declined follow-up'}
               </button>
             </div>
           </div>

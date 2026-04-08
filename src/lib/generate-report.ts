@@ -417,3 +417,56 @@ export function buildNoShowEmails(firstName: string, bookingLink: string): {
 
   return { email1, email2, email3 }
 }
+
+export function buildZoom1DeclinedEmails(firstName: string, bookingLink: string): {
+  email1: { subject: string; html: string }
+  email2: { subject: string; html: string }
+  email3: { subject: string; html: string }
+} {
+  const email1 = {
+    subject: `Good to speak today, ${firstName}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`Good speaking with you today. I appreciate you taking the time.`),
+        p(`Completely understood that the timing isn't right. These things only work when they're right for you — not when they fit someone else's schedule.`),
+        p(`What we talked through today doesn't expire. The patterns we identified are still there, and so is the conversation if you ever want to pick it up again.`),
+      ].join(''),
+      "Book a time when you're ready →",
+      bookingLink
+    ),
+  }
+
+  const email2 = {
+    subject: `Still here if the timing changes, ${firstName}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`Just a quiet follow-up from me.`),
+        p(`No pitch here. I just wanted to say the door stays open. What came up in your scorecard and our conversation doesn't change — and sometimes the right time to act on something comes a few weeks after the conversation, not during it.`),
+        p(`If anything has shifted and you'd like to talk it through properly, I'm here.`),
+      ].join(''),
+      'Book a call →',
+      bookingLink
+    ),
+  }
+
+  const email3 = {
+    subject: `Last one from me, ${firstName}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`Last message from me on this.`),
+        p(`The conversation is still available whenever it makes sense — whether that's soon or down the track. No follow-up after this.`),
+        p(`Just wanted you to know the door stays open.`),
+      ].join(''),
+      "Book when you're ready →",
+      bookingLink
+    ),
+  }
+
+  return { email1, email2, email3 }
+}
