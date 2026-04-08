@@ -275,10 +275,10 @@ export default function ReportClient({ report }: { report: {
         {/* CTA */}
         <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.3)', borderRadius: '16px', padding: '32px' }}>
           <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
-            The report tells you what state you are in. A conversation tells you exactly what to do about it.
+            The report tells you the state. A call tells you the fix.
           </h3>
           <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
-            Book a free 30-minute call. We will go through your results, identify the specific driver behind what is happening in your body, and map out the first steps. No pitch. Just clarity.
+            We go through your results together, identify the specific driver behind what is not working, and map out exactly what needs to change first. Free. 30 minutes. No pitch.
           </p>
           <a
             href="https://bodyrecode.au/book"
@@ -288,7 +288,7 @@ export default function ReportClient({ report }: { report: {
               fontSize: '14px', fontWeight: 700, textDecoration: 'none',
             }}
           >
-            Book a call with Kade
+            Book a free call
           </a>
         </div>
 
