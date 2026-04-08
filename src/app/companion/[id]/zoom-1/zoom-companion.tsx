@@ -327,10 +327,10 @@ export default function ZoomCompanion({
 
   const bookZoom2 = async () => {
     if (!zoom2Date) return
-    await fetch(`/api/leads/${leadId}`, {
-      method: 'PATCH',
+    await fetch(`/api/leads/${leadId}/book-zoom2`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ zoom_2_date: zoom2Date, status: 'zoom_2_booked' }),
+      body: JSON.stringify({ scheduledAt: new Date(zoom2Date).toISOString() }),
     })
     setZoom2Saved(true)
     setTimeout(() => setZoom2Saved(false), 3000)
