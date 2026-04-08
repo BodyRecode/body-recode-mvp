@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Zap } from 'lucide-react'
+import { Zap, ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const SYSTEM_AUTOMATIONS = [
   {
@@ -59,9 +60,10 @@ export default function SystemAutomationsPanel() {
       <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">System Automations</p>
       <div className="space-y-2">
         {SYSTEM_AUTOMATIONS.map((a) => (
-          <div
+          <Link
             key={a.id}
-            className="flex items-center gap-4 bg-stone-900 border border-stone-800 rounded-xl p-4"
+            href={`/dashboard/business/automations/system/${a.id}`}
+            className="flex items-center gap-4 bg-stone-900 border border-stone-800 rounded-xl p-4 hover:border-stone-700 transition-colors group"
           >
             <div className="p-2 bg-teal-500/10 rounded-lg shrink-0">
               <Zap size={14} className="text-teal-400" strokeWidth={1.8} />
@@ -85,8 +87,9 @@ export default function SystemAutomationsPanel() {
                 <Zap size={10} />
                 Active
               </span>
+              <ChevronRight size={14} className="text-stone-600 group-hover:text-stone-400 transition-colors" />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
