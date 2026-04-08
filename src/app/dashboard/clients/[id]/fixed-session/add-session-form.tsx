@@ -3,10 +3,15 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+function todayBrisbane(): string {
+  // Returns YYYY-MM-DD in Brisbane time
+  return new Date(Date.now() + 10 * 60 * 60 * 1000).toISOString().slice(0, 10)
+}
+
 export default function AddSessionForm({ clientId, defaultDuration }: { clientId: string; defaultDuration: number }) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(todayBrisbane)
   const [time, setTime] = useState('07:00')
   const [duration, setDuration] = useState(defaultDuration)
   const [saving, setSaving] = useState(false)
@@ -17,7 +22,6 @@ export default function AddSessionForm({ clientId, defaultDuration }: { clientId
     setSaving(true)
     setError('')
     try {
-      // Convert Brisbane date+time to UTC ISO
       const brisbaneIso = `${date}T${time}:00+10:00`
       const utcIso = new Date(brisbaneIso).toISOString()
 
@@ -28,7 +32,7 @@ export default function AddSessionForm({ clientId, defaultDuration }: { clientId
       })
       if (res.ok) {
         setOpen(false)
-        setDate('')
+        setDate(todayBrisbane())
         setTime('07:00')
         router.refresh()
       } else {
@@ -54,36 +58,37 @@ export default function AddSessionForm({ clientId, defaultDuration }: { clientId
 
   return (
     <div className="mt-4 pt-4 border-t border-stone-800 space-y-3">
-      <p className="text-xs text-stone-500 uppercase tracking-wider">Book a session</p>
-      <div className="flex gap-2">
+      <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Book a session</p>
+      <div className="grid grid-cols-3 gap-2">
         <input
           type="date"
           value={date}
+          min={todayBrisbane()}
           onChange={e => setDate(e.target.value)}
-          className="flex-1 bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500"
+          className="col-span-1 bg-stone-800 border border-stone-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-teal-500 w-full"
         />
         <input
           type="time"
           value={time}
           onChange={e => setTime(e.target.value)}
-          className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500"
+          className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-teal-500"
         />
         <select
           value={duration}
           onChange={e => setDuration(Number(e.target.value))}
-          className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500"
+          className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-teal-500"
         >
-          {[45, 60, 75, 90].map(d => <option key={d} value={d}>{d}m</option>)}
+          {[45, 60, 75, 90].map(d => <option key={d} value={d}>{d} min</option>)}
         </select>
       </div>
       {error && <p className="text-xs text-red-400">{error}</p>}
       <div className="flex gap-2">
         <button
           onClick={handleSave}
-          disabled={!date || saving}
+          disabled={saving}
           className="px-4 py-2 bg-teal-500 text-black text-xs font-bold rounded-lg disabled:opacity-40 hover:bg-teal-400 transition-colors"
         >
-          {saving ? 'Saving...' : 'Confirm'}
+          {saving ? 'Saving...' : 'Confirm booking'}
         </button>
         <button
           onClick={() => { setOpen(false); setError('') }}
