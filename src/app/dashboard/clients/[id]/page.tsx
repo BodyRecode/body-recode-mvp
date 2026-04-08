@@ -91,7 +91,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   const { data: upcomingClientSessions } = await admin
     .from('client_sessions')
-    .select('id, scheduled_at, duration_minutes, status')
+    .select('id, scheduled_at, duration_minutes, status, confirmed_at')
     .eq('client_id', id)
     .eq('status', 'scheduled')
     .gte('scheduled_at', new Date().toISOString())
@@ -246,7 +246,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     })} · {s.duration_minutes} min
                   </span>
                 </div>
-                <span className="text-xs text-teal-400">Confirmed</span>
+                <span className={`text-xs ${s.confirmed_at ? 'text-teal-400' : 'text-stone-500'}`}>
+                  {s.confirmed_at ? 'Confirmed' : 'Pending'}
+                </span>
               </div>
             ))}
           </div>
