@@ -81,12 +81,11 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
       )
     : []
 
-  // Get existing bookings for this client to mark as confirmed/rescheduled
+  // Get existing bookings for this client
   const { data: existingBookings } = await admin
-    .from('be_bookings')
-    .select('id, scheduled_at, status, type')
-    .eq('lead_id', client.id)
-    .eq('type', 'face_to_face')
+    .from('client_sessions')
+    .select('id, scheduled_at, status')
+    .eq('client_id', client.id)
     .eq('status', 'scheduled')
     .gte('scheduled_at', new Date().toISOString())
 

@@ -4,8 +4,6 @@ import { createClient } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
 
-const BRISBANE_OFFSET_MS = 10 * 60 * 60 * 1000
-
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -21,7 +19,7 @@ export async function POST(req: NextRequest) {
   // Verify this client belongs to the authenticated user
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, email, fixed_session_duration, coach_id')
+    .select('id, name, email, fixed_session_duration')
     .eq('id', clientId)
     .eq('onboarding_token', token)
     .ilike('email', user.email!)
@@ -32,9 +30,9 @@ export async function POST(req: NextRequest) {
   const slotDate = new Date(slot)
   const durationMinutes = client.fixed_session_duration ?? 60
 
-  // Check slot is not already booked
+  // Check slot is not already taken by another client
   const { data: existing } = await admin
-    .from('be_bookings')
+    .from('client_sessions')
     .select('id')
     .eq('scheduled_at', slotDate.toISOString())
     .eq('status', 'scheduled')
@@ -44,22 +42,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'That time is no longer available.' }, { status: 409 })
   }
 
-  // Create the booking — use client_id field if it exists, fall back to lead_id
-  // coach_id is required by the bookings table
-  const bookingPayload: Record<string, unknown> = {
-    lead_id: clientId,
-    scheduled_at: slotDate.toISOString(),
-    duration_minutes: durationMinutes,
-    type: 'face_to_face',
-    status: 'scheduled',
-  }
-  if (client.coach_id) bookingPayload.coach_id = client.coach_id
-
-  const { data: booking, error: bookingError } = await admin
-    .from('be_bookings')
-    .insert(bookingPayload)
-    .select('id')
-    .single()
+  // Create the booking
+  const { error: bookingError } = await admin
+    .from('client_sessions')
+    .insert({
+      client_id: clientId,
+      scheduled_at: slotDate.toISOString(),
+      duration_minutes: durationMinutes,
+      status: 'scheduled',
+    })
 
   if (bookingError) {
     console.error('Booking insert error:', JSON.stringify(bookingError))
@@ -81,7 +72,6 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    // Email to client
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: client.email,
@@ -106,7 +96,6 @@ export async function POST(req: NextRequest) {
       `,
     })
 
-    // Notification to coach
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
@@ -116,7 +105,7 @@ export async function POST(req: NextRequest) {
           <div style="max-width:480px;margin:0 auto;background:#111111;border-radius:16px;padding:36px;">
             <img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:28px;" alt="Body Recode" />
             <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#ffffff;">Session booked via portal</p>
-            <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;line-height:1.6;"><strong style="color:#fff;">${client.name}</strong> has rescheduled a face-to-face session.</p>
+            <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;line-height:1.6;"><strong style="color:#fff;">${client.name}</strong> has booked a face-to-face session.</p>
             <div style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:24px;">
               <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#2dd4bf;text-transform:uppercase;letter-spacing:0.08em;">Booking Details</p>
               <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#ffffff;">${displayDate}</p>

@@ -39,8 +39,10 @@ export async function GET(request: NextRequest) {
   const windowStartUtc = new Date()
   const windowEndUtc = new Date(windowStartUtc.getTime() + days * 24 * 60 * 60 * 1000)
 
+  // Zoom sessions use be_bookings; face-to-face sessions use client_sessions
+  const bookingsTable = sessionType === 'face_to_face' ? 'client_sessions' : 'be_bookings'
   const { data: existingBookings } = await admin
-    .from('be_bookings')
+    .from(bookingsTable)
     .select('scheduled_at, duration_minutes')
     .eq('status', 'scheduled')
     .gte('scheduled_at', windowStartUtc.toISOString())
