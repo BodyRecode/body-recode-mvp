@@ -424,14 +424,14 @@ export function buildZoom1DeclinedEmails(firstName: string, bookingLink: string)
   email3: { subject: string; html: string }
 } {
   const email1 = {
-    subject: `Good speaking yesterday, ${firstName}`,
+    subject: `Good to speak today, ${firstName}`,
     html: followUpEmail(
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`Good speaking with you yesterday. I appreciate you taking the time.`),
+        p(`Good speaking with you today. I appreciate you taking the time.`),
         p(`Completely understood that the timing isn't right. These things only work when they're right for you — not when they fit someone else's schedule.`),
-        p(`What we talked through doesn't expire. The patterns we identified are still there, and so is the conversation if you ever want to pick it up again.`),
+        p(`What we talked through today doesn't expire. The patterns we identified are still there, and so is the conversation if you ever want to pick it up again.`),
       ].join(''),
       "Book a time when you're ready →",
       bookingLink
