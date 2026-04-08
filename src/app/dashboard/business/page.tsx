@@ -15,6 +15,7 @@ import {
   Clapperboard,
   ExternalLink,
   Check,
+  Clock,
 } from 'lucide-react'
 
 const modules = [
@@ -35,6 +36,12 @@ const modules = [
     description: 'Zoom 1, Zoom 2, calendar',
     href: '/dashboard/business/bookings',
     icon: Calendar,
+  },
+  {
+    label: 'Availability',
+    description: 'Set days and times leads can book',
+    href: '/dashboard/business/availability',
+    icon: Clock,
   },
   {
     label: 'Payments',
