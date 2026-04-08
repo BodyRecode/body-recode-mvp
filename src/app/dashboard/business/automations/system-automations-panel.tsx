@@ -46,6 +46,14 @@ const SYSTEM_AUTOMATIONS = [
     steps: 1,
     canReseed: false,
   },
+  {
+    id: 'program-buyer-nurture',
+    name: 'Program Buyer Nurture',
+    description: '3-email sequence to bring self-guided program buyers back into coaching',
+    trigger: 'Self-guided program purchased',
+    steps: 3,
+    canReseed: false,
+  },
 ]
 
 export default function SystemAutomationsPanel() {

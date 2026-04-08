@@ -470,3 +470,56 @@ export function buildZoom1DeclinedEmails(firstName: string, bookingLink: string)
 
   return { email1, email2, email3 }
 }
+
+export function buildProgramBuyerEmails(firstName: string, bookingLink: string): {
+  email1: { subject: string; html: string }
+  email2: { subject: string; html: string }
+  email3: { subject: string; html: string }
+} {
+  const email1 = {
+    subject: `Four weeks in, ${firstName}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`By now you've worked through Phase 1 of your program.`),
+        p(`Check in with yourself - how training is feeling, energy levels, recovery. If things are moving in the right direction, that's the program doing its job.`),
+        p(`If you want to go further - with someone reading what your body is doing and adjusting the approach in real time - that's what the call is for. 30 minutes. No obligation.`),
+      ].join(''),
+      'Book a call →',
+      bookingLink
+    ),
+  }
+
+  const email2 = {
+    subject: `The compounding point, ${firstName}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`Week 8 is where it gets interesting. Phase 2 loads the foundation you built in Phase 1.`),
+        p(`This is also when coaching makes the biggest difference. Your body is different now from where it was at the start. The approach should reflect that - not just follow a fixed plan.`),
+        p(`If you want that level of input on what you're doing, the call is 30 minutes.`),
+      ].join(''),
+      'Book a call →',
+      bookingLink
+    ),
+  }
+
+  const email3 = {
+    subject: `End of the program, ${firstName}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`You're at the end of 12 weeks. Most people don't finish. That matters.`),
+        p(`The question now is what it told you, and what comes next. Your body state shifts as your capacity builds. The next phase looks different from where you started - and it should be built around that.`),
+        p(`If you want to work out what that next phase looks like with proper support, book a call. 30 minutes. No obligation. Just a straight conversation about where you are and where you could go.`),
+      ].join(''),
+      "Book a call →",
+      bookingLink
+    ),
+  }
+
+  return { email1, email2, email3 }
+}

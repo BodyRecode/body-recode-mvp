@@ -3,6 +3,7 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { buildProgramBuyerEmails, daysAfter9amBrisbane } from '@/lib/generate-report'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -203,6 +204,46 @@ export async function POST(request: NextRequest) {
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">$97. Program delivered to ${email}. They are in the downsell funnel.</p>
   <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads/${lead_id}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Lead</a>
 </div>`,
+      })
+
+      // Schedule program buyer nurture sequence (Week 4, 8, 12)
+      const BOOKING_LINK = process.env.BOOKING_LINK ?? `${process.env.NEXT_PUBLIC_APP_URL}/book`
+      const { email1: n1, email2: n2, email3: n3 } = buildProgramBuyerEmails(firstName, BOOKING_LINK)
+      const now = new Date()
+      const week4 = daysAfter9amBrisbane(now, 28)
+      const week8 = daysAfter9amBrisbane(now, 56)
+      const week12 = daysAfter9amBrisbane(now, 84)
+
+      await Promise.all([
+        resend.emails.send({
+          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          to: email,
+          subject: n1.subject,
+          html: n1.html,
+          scheduledAt: week4.toISOString(),
+        }),
+        resend.emails.send({
+          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          to: email,
+          subject: n2.subject,
+          html: n2.html,
+          scheduledAt: week8.toISOString(),
+        }),
+        resend.emails.send({
+          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          to: email,
+          subject: n3.subject,
+          html: n3.html,
+          scheduledAt: week12.toISOString(),
+        }),
+      ])
+
+      await admin.from('lead_events').insert({
+        lead_id,
+        type: 'email_sent',
+        subject: 'Program buyer nurture sequence scheduled (Week 4, 8, 12)',
+        notes: 'Auto-scheduled on program purchase.',
+        sent_at: new Date().toISOString(),
       })
     }
 

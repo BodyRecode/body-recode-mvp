@@ -226,6 +226,49 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
       },
     ],
   },
+
+  'program-buyer-nurture': {
+    id: 'program-buyer-nurture',
+    name: 'Program Buyer Nurture',
+    description: '3-email sequence to bring self-guided program buyers back into coaching',
+    trigger: 'Self-guided program purchased',
+    triggerDetail: 'Fires automatically via Stripe webhook when a lead purchases the $97 self-guided program',
+    steps: [
+      {
+        day: 'Week 4 (Day 28, 9am Brisbane)',
+        subject: 'Four weeks in, {firstName}',
+        paragraphs: [
+          'Hi {firstName},',
+          'By now you\'ve worked through Phase 1 of your program.',
+          'Check in with yourself - how training is feeling, energy levels, recovery. If things are moving in the right direction, that\'s the program doing its job.',
+          'If you want to go further - with someone reading what your body is doing and adjusting the approach in real time - that\'s what the call is for. 30 minutes. No obligation.',
+        ],
+        cta: 'Book a call →',
+      },
+      {
+        day: 'Week 8 (Day 56, 9am Brisbane)',
+        subject: 'The compounding point, {firstName}',
+        paragraphs: [
+          'Hi {firstName},',
+          'Week 8 is where it gets interesting. Phase 2 loads the foundation you built in Phase 1.',
+          'This is also when coaching makes the biggest difference. Your body is different now from where it was at the start. The approach should reflect that - not just follow a fixed plan.',
+          'If you want that level of input on what you\'re doing, the call is 30 minutes.',
+        ],
+        cta: 'Book a call →',
+      },
+      {
+        day: 'Week 12 (Day 84, 9am Brisbane)',
+        subject: 'End of the program, {firstName}',
+        paragraphs: [
+          'Hi {firstName},',
+          'You\'re at the end of 12 weeks. Most people don\'t finish. That matters.',
+          'The question now is what it told you, and what comes next. Your body state shifts as your capacity builds. The next phase looks different from where you started - and it should be built around that.',
+          'If you want to work out what that next phase looks like with proper support, book a call. 30 minutes. No obligation. Just a straight conversation about where you are and where you could go.',
+        ],
+        cta: 'Book a call →',
+      },
+    ],
+  },
 }
 
 export default async function SystemAutomationDetailPage({
