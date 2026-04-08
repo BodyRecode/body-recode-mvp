@@ -2,158 +2,214 @@
 
 import { useState, useEffect, useRef } from 'react'
 
-type SignalLevel = 1 | 2 | 3
-type SignalKey = 'sls' | 'rps' | 'rils'
+type BodyState = 'Depleted State' | 'Transitioning State' | 'Ready State'
 
-function buildStages(leadName: string, slsLevel: SignalLevel, rpsLevel: SignalLevel, rilsLevel: SignalLevel) {
+const SECTION_LABELS: Record<string, string> = {
+  '01': 'Energy',
+  '02': 'Sleep',
+  '03': 'Stress Load',
+  '04': 'Training Response',
+  '05': 'Fat Loss Response',
+}
+
+const SECTION_INTERPRETATIONS: Record<string, Record<number, string>> = {
+  '01': {
+    1: 'Energy is significantly depleted — relying on caffeine, crashing through the day. This is a core signal that the body is running on reserves.',
+    2: 'Energy is inconsistent day to day. Not reliably low, but not reliably high either. The variation itself is the signal.',
+    3: 'Energy is steady and self-sustaining. Not a limiting factor right now.',
+  },
+  '02': {
+    1: 'Sleep quality is poor — waking through the night, not rested. This is the single biggest recovery suppressor when it\'s compromised.',
+    2: 'Sleep is okay most nights but not consistently restorative. Some nights fine, others not.',
+    3: 'Sleep is solid and consistently restorative. Recovery rhythm is intact.',
+  },
+  '03': {
+    1: 'Stress load is high and ongoing. Work, life, or emotional demands are significant. This directly suppresses fat loss and training response.',
+    2: 'Stress is moderate — manageable most of the time but not low. Has an ongoing background effect.',
+    3: 'Stress load is low to moderate. Not a significant driver in the current picture.',
+  },
+  '04': {
+    1: 'Training response has stalled or regressed. Performance flat or declining. Body feels beaten up. Classic depletion-state training pattern.',
+    2: 'Training response is inconsistent. Some progress but hard to build momentum. Hit and miss.',
+    3: 'Training response is good — getting stronger, fitter, recovering between sessions.',
+  },
+  '05': {
+    1: 'Fat loss has stopped despite effort. Diet clean, training consistent — nothing moving. This is a biology problem, not a behaviour problem.',
+    2: 'Fat loss is slow or stalled. Some movement but not matching the input.',
+    3: 'Body is responding. Composition is shifting in the right direction.',
+  },
+}
+
+const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string; opening: string; interpretation: string; pattern: string }> = {
+  'Depleted State': {
+    colour: 'text-red-400 border-red-400/30 bg-red-400/10',
+    badge: 'bg-red-400',
+    opening: 'Their scorecard came back as Depleted State. This means the body is in protection mode — cortisol elevated, metabolism suppressed, biology actively working against fat loss and performance. The scorecard gave us the signal. This call is about understanding what\'s driving it.',
+    interpretation: 'What you\'re experiencing is a biological response, not a willpower or effort problem. When the body registers sustained demand — poor sleep, high stress, inconsistent recovery, training that isn\'t producing results — it shifts into a state where it protects rather than performs. That\'s what the scorecard picked up. It\'s not a coincidence that fat loss has stalled and training feels harder than it should. Those are two symptoms of the same underlying state.',
+    pattern: 'Depleted State: The body is in protection mode. Cortisol elevated, metabolism suppressed. Adding more training stimulus typically makes this worse. The fix is not harder — it\'s smarter management of the system.',
+  },
+  'Transitioning State': {
+    colour: 'text-amber-400 border-amber-400/30 bg-amber-400/10',
+    badge: 'bg-amber-400',
+    opening: 'Their scorecard came back as Transitioning State. They have capacity but something is limiting consistent response. Could be sleep, stress, recovery rhythm, or a mismatch between training load and current biological state. The call is about identifying which.',
+    interpretation: 'The Transitioning State means the body has capacity but isn\'t consistently expressing it. Some weeks things click, other weeks they don\'t. That inconsistency is the signal. It usually means there\'s one or two limiting factors keeping the system from settling into a reliable response pattern. The scorecard narrowed down where those are — the section scores point to what\'s holding things back.',
+    pattern: 'Transitioning State: Has capacity but not consistency. Something is limiting the response — usually one or two sections dragging the overall picture. The work is identifying the specific drivers and addressing them in order.',
+  },
+  'Ready State': {
+    colour: 'text-teal-400 border-teal-400/30 bg-teal-400/10',
+    badge: 'bg-teal-400',
+    opening: 'Their scorecard came back as Ready State. Biology is in a position to respond well. If fat loss or performance isn\'t happening at this score, the issue is in the prescription — the what and how of training and nutrition, not the biological foundation. This call is about identifying where the prescription gap is.',
+    interpretation: 'A Ready State score means the biology is in a good position — energy, sleep, stress, and recovery are not the limiting factors. When someone in this state isn\'t getting results, it\'s typically a prescription problem. The training or nutrition approach isn\'t matched to what the body needs right now. That\'s actually good news — because it\'s a much more solvable problem than trying to fix depleted biology.',
+    pattern: 'Ready State: Biology is responding well. If results aren\'t happening, the issue is in the prescription — not the foundation. Focus the conversation on the training and nutrition approach.',
+  },
+}
+
+function buildStages(leadName: string, bodyState: string, totalScore: number | null, sectionScores: Record<string, number> | null) {
   const firstName = leadName.split(' ')[0]
+  const stateInfo = BODY_STATE_LANGUAGE[bodyState] ?? BODY_STATE_LANGUAGE['Transitioning State']
 
-  // Signal-specific interpretation language (from Pattern Interpretation Language Bank)
-  const slsLanguage = slsLevel === 3
-    ? 'When training load, life stress, and recovery demand overlap like that, the body often shifts toward protecting stability rather than pushing progress. So what you\'re experiencing can sometimes be less about effort and more about cumulative load.'
-    : slsLevel === 2
-    ? 'It sounds like the total demand on your system may currently be a little higher than what your recovery rhythm can consistently support. That can create the experience of progress slowing or sessions gradually feeling harder.'
-    : ''
+  // Find lowest scoring sections for context exploration
+  const lowSections = sectionScores
+    ? Object.entries(sectionScores)
+        .filter(([, v]) => v <= 2)
+        .sort(([, a], [, b]) => a - b)
+        .slice(0, 3)
+        .map(([k]) => k)
+    : []
 
-  const rpsLanguage = rpsLevel === 3
-    ? 'What I\'m hearing is that your recovery rhythm may not always be predictable between sessions. When recovery varies like that, training sessions can feel inconsistent even when the program itself hasn\'t changed - so the inconsistency you\'re noticing is less about your effort and more about rhythm.'
-    : rpsLevel === 2
-    ? 'The experience of some sessions feeling strong and others unusually difficult often reflects recovery variability rather than training structure. That variability is itself the signal.'
-    : ''
-
-  const rilsLanguage = rilsLevel === 3
-    ? 'It also sounds like there may be some internal pressure around seeing progress right now. When expectations become closely tied to results, training can feel mentally heavier than it needs to - and that can amplify fatigue even when the physical training itself hasn\'t changed.'
-    : rilsLevel === 2
-    ? 'There\'s also some internal expectation pressure showing up - a sense that results should be coming faster. That kind of pressure adds to the overall load the system is managing.'
-    : ''
-
-  // Combo overrides for Stage 4
-  const comboLanguage = (slsLevel === 3 && rpsLevel === 3)
-    ? 'When training demand and recovery instability overlap, the body prioritises stability rather than performance. So what you\'re experiencing may simply be the system trying to manage cumulative demand rather than push further forward.'
-    : (slsLevel === 2 && rpsLevel === 2)
-    ? 'What you\'re describing often appears when training demand slowly accumulates over time. The system is still functioning, but the margin between demand and recovery rhythm becomes smaller. That creates the experience of progress slowing and sessions gradually feeling harder.'
-    : ''
-
-  const dominantSignal = slsLevel >= rpsLevel && slsLevel >= rilsLevel ? 'sls'
-    : rpsLevel >= slsLevel && rpsLevel >= rilsLevel ? 'rps'
-    : 'rils'
-
-  const stage4Core = comboLanguage
-    || (dominantSignal === 'sls' ? slsLanguage : dominantSignal === 'rps' ? rpsLanguage : rilsLanguage)
-
-  const stage4Addendum = (rilsLevel >= 2 && dominantSignal !== 'rils' && rilsLanguage)
-    ? `\n\n${rilsLanguage}`
-    : ''
-
-  // Stage 3 context intro - references their specific signals
-  const slsContextLabel = slsLevel === 3 ? 'elevated load and stress signals' : slsLevel === 2 ? 'moderate load accumulation' : 'balanced load signals'
-  const rpsContextLabel = rpsLevel === 3 ? 'significantly reduced recovery predictability' : rpsLevel === 2 ? 'variable recovery' : 'consistent recovery'
+  const scoreDisplay = totalScore ? `${totalScore}/15` : 'their result'
 
   return [
     {
       id: 1,
       name: 'Opening Frame',
-      duration: '2–3 min',
+      duration: '2-3 min',
       goal: 'Create safety and remove pressure. Establish this is not a sales call.',
-      script: `"Thanks for taking the time to jump on today, ${firstName}.
+      script: `"Thanks for jumping on today, ${firstName}.
 
-The purpose of this conversation is simply to talk through the patterns that showed up in your check-in report and hear a bit more about your training experience.
+The purpose of this conversation is to talk through what showed up in your scorecard and hear a bit more about what\'s actually been happening for you.
 
-There's nothing you need to decide today. We're just looking at whether the patterns the report picked up actually match what you've been experiencing."`,
+There\'s nothing you need to decide today. I just want to make sure the patterns the scorecard picked up actually match what you\'ve been experiencing."`,
       prompts: [
-        'How did you find completing the Performance Check-In?',
-        'Was it straightforward?',
-        'Did anything make you stop and think a bit deeper?',
-        'Had you ever completed something like that before?',
+        { type: 'prompt', text: 'How did you find doing the scorecard?' },
+        { type: 'prompt', text: 'Was it straightforward to answer?' },
+        { type: 'prompt', text: 'Did anything make you stop and think?' },
       ],
-      tips: 'Slow down. Let them land. Don\'t rush past this stage - the tone you set here carries the whole call.',
+      tips: 'Slow down. Let them land. The tone you set here carries the whole call.',
       boundary: null,
     },
     {
       id: 2,
-      name: 'Report Reflection',
-      duration: '5–7 min',
-      goal: 'Allow the member to respond to the report before you offer any interpretation.',
-      script: `"Before I share any of my own observations, I want to hear from you first.
+      name: 'Scorecard Reflection',
+      duration: '4-6 min',
+      goal: 'Let them respond to their result before you interpret it. Their reaction is the signal.',
+      script: `"Before I share anything, I want to hear your take first.
 
-You had a chance to read the report before today - it flagged ${slsLevel === 3 ? 'elevated' : slsLevel === 2 ? 'moderate' : 'balanced'} stress and load signals, and ${rpsLevel === 3 ? 'reduced' : rpsLevel === 2 ? 'variable' : 'stable'} recovery predictability.
+Your scorecard came back as ${bodyState} — ${scoreDisplay}. You\'ve had a chance to sit with that.
 
-Just take me through your reaction. What stood out to you when you read it?"`,
+What was your reaction when you saw the result?"`,
       prompts: [
-        'When you read through the report, what stood out to you most?',
-        'Did any part of it feel particularly accurate?',
-        'Was there anything that didn\'t quite land for you?',
-        'Did it highlight anything you hadn\'t really considered before?',
+        { type: 'prompt', text: 'What stood out to you most when you saw your result?' },
+        { type: 'prompt', text: 'Did it feel accurate to where you\'re at right now?' },
+        { type: 'prompt', text: 'Was there anything that surprised you, or anything that didn\'t land?' },
+        { type: 'prompt', text: 'Had you considered any of those areas as a factor before?' },
       ],
-      tips: 'Do not explain the report first. Allow their reaction to surface naturally - their language is the signal. The strongest friction point usually appears here.',
+      tips: 'Do not explain the result first. Their reaction surfaces the real friction point. The strongest insight usually appears here.',
       boundary: null,
     },
     {
       id: 3,
       name: 'Context Exploration',
-      duration: '10–12 min',
-      goal: 'Understand the real training environment behind the report pattern.',
-      script: `"Thanks for sharing that. What I want to do now is get a clearer picture of what's actually been happening week to week - because the report flagged ${slsContextLabel} and ${rpsContextLabel}, but it doesn't know the context behind those numbers.
+      duration: '10-12 min',
+      goal: 'Understand the real picture behind the section scores. The scorecard gives the signal — the conversation gives the context.',
+      script: `"What I want to do now is get a clearer picture of what\'s actually been going on — because the scorecard shows the pattern, but it doesn\'t know the context behind it.
 
-So I'm going to ask you a few questions. Just answer as openly as you can - there's no right answer here."`,
+I\'m going to ask you a few questions. Just answer as openly as you can."`,
       prompts: [
-        'TRAINING - "In your report there were signals suggesting your training structure might be inconsistent. What does your training normally look like week to week?"',
-        '↳ How many sessions do you usually train each week?',
-        '↳ Do you follow a structured program or train more by feel?',
-        '↳ Has your training changed much over the past few months?',
-        'RECOVERY - "The report hinted that recovery may not always feel predictable. How does recovery normally feel between sessions?"',
-        '↳ Do you usually feel ready to train again by the next session?',
-        '↳ Does your energy feel fairly stable across the week?',
-        '↳ Are there times where training feels harder than it probably should?',
-        'CONSISTENCY - "Would you say your routine is fairly stable or does life shift things quite a bit?"',
-        '↳ Do work or life commitments interrupt training often?',
-        '↳ Do you find yourself needing to adjust training regularly?',
-        'PRESSURE - "Your responses suggested there may be some pressure to see progress right now. Does that resonate at all?"',
-        '↳ Do you feel like results should be happening faster?',
-        '↳ Has training felt mentally demanding recently?',
+        ...(lowSections.includes('01') ? [
+          { type: 'category', text: 'ENERGY' },
+          { type: 'prompt', text: 'Your energy score was low. Walk me through what a typical day looks like for you energy-wise.' },
+          { type: 'sub', text: 'Do you rely on caffeine to get through the day?' },
+          { type: 'sub', text: 'When does the energy drop usually hit?' },
+          { type: 'sub', text: 'How does energy feel after training specifically?' },
+        ] : []),
+        ...(lowSections.includes('02') ? [
+          { type: 'category', text: 'SLEEP' },
+          { type: 'prompt', text: 'Your sleep score flagged as an issue. What does sleep actually look like for you right now?' },
+          { type: 'sub', text: 'Are you waking through the night?' },
+          { type: 'sub', text: 'Do you wake feeling rested?' },
+          { type: 'sub', text: 'Has this been going on long or is it a recent thing?' },
+        ] : []),
+        ...(lowSections.includes('03') ? [
+          { type: 'category', text: 'STRESS LOAD' },
+          { type: 'prompt', text: 'Your stress load score was significant. What\'s actually driving that right now — is it work, life, or something else?' },
+          { type: 'sub', text: 'Is the demand ongoing or more situational?' },
+          { type: 'sub', text: 'Do you find yourself carrying it into training?' },
+          { type: 'sub', text: 'Is there any period of genuine downtime in a typical week?' },
+        ] : []),
+        ...(lowSections.includes('04') ? [
+          { type: 'category', text: 'TRAINING RESPONSE' },
+          { type: 'prompt', text: 'Your training response score was low. What does progress actually look like right now compared to what you\'re putting in?' },
+          { type: 'sub', text: 'Are you getting stronger over time?' },
+          { type: 'sub', text: 'How do you feel during sessions compared to 6-12 months ago?' },
+          { type: 'sub', text: 'Does the body feel beaten up or recovered between sessions?' },
+        ] : []),
+        ...(lowSections.includes('05') ? [
+          { type: 'category', text: 'FAT LOSS RESPONSE' },
+          { type: 'prompt', text: 'Fat loss response was flagged. Walk me through what you\'ve tried and what\'s actually happened.' },
+          { type: 'sub', text: 'Is the diet consistent?' },
+          { type: 'sub', text: 'Has anything worked in the past? What changed?' },
+          { type: 'sub', text: 'How long has it felt stuck?' },
+        ] : []),
+        // Always ask about training structure
+        { type: 'category', text: 'TRAINING STRUCTURE' },
+        { type: 'prompt', text: 'What does your training actually look like week to week right now?' },
+        { type: 'sub', text: 'How many sessions per week?' },
+        { type: 'sub', text: 'Do you follow a structured program or train more by feel?' },
+        { type: 'sub', text: 'Has the structure changed recently?' },
       ],
-      tips: 'Ask one question at a time. Let silence do work. You\'re listening for SLS, RPS, and RILS signals in their language - not solving anything.',
-      boundary: 'No prescriptions. No "you should try…". No training or nutrition advice. Just listening and clarifying.',
+      tips: 'Ask one question at a time. Let silence do work. You\'re building context — not solving anything yet.',
+      boundary: 'No prescriptions. No "you should try...". No training or nutrition advice. Just listening and clarifying.',
     },
     {
       id: 4,
       name: 'Pattern Interpretation',
-      duration: '5–7 min',
-      goal: 'Translate the signals into a coherent explanation. Clarity - not solution.',
-      script: `"Based on what you've described and what showed up in the report, it sounds like your system is managing a combination of training demand, recovery rhythm, and life load at the moment.
+      duration: '5-7 min',
+      goal: 'Name the pattern clearly. Clarity — not solution. Make it feel understandable, not alarming.',
+      script: `"Based on what you\'ve just described and what showed up in the scorecard, here\'s what I\'m hearing.
 
-${stage4Core}${stage4Addendum}
+${stateInfo.interpretation}
 
-That's not a fitness problem - it's a system response. And it's one of the more common patterns we see."`,
+That\'s not a personal failing — it\'s a system response. And it\'s one of the more common patterns we see."`,
       prompts: [
-        'Does that explanation feel like it reflects what you\'ve been experiencing?',
-        'Does that help make sense of what you\'ve noticed in your training?',
-        'Did anything in that explanation surprise you?',
-        'Has it changed the way you think about your progress?',
+        { type: 'prompt', text: 'Does that explanation feel like it reflects what you\'ve been experiencing?' },
+        { type: 'prompt', text: 'Does it help make sense of what you\'ve noticed?' },
+        { type: 'prompt', text: 'Did anything in that surprise you?' },
+        { type: 'prompt', text: 'Has it changed the way you\'re thinking about it?' },
       ],
-      tips: 'Use the Interpretation Language tab for signal-specific phrases. Keep it observational. The goal is to make the pattern feel understandable - not alarming.',
+      tips: 'Keep it observational. The goal is to make the pattern feel understandable — not alarming, not overwhelming.',
       boundary: 'No medical interpretation. No outcome promises. No training adjustments. Pattern identification only.',
     },
     {
       id: 5,
       name: 'Next Step Invitation',
-      duration: '2–3 min',
-      goal: 'Offer deeper exploration without pressure. Intellectual curiosity - not pitch.',
-      script: `"What we've talked about today is essentially the surface layer of the pattern.
+      duration: '2-3 min',
+      goal: 'Offer deeper exploration without pressure. Intellectual curiosity — not pitch.',
+      script: `"What we\'ve covered today is essentially the surface layer of the pattern.
 
-If you wanted to explore it more deeply, the next step would be an orientation session - where we go through how the Body Recode coaching process works and whether it would actually be useful in your situation.
+If you wanted to explore it more deeply, the next step would be a second conversation where we go through how the Body Recode coaching process works and what it would actually look like for your situation specifically.
 
-There's no obligation. It's just a more detailed look at what the system would do with your pattern."
+There\'s no obligation. It\'s just a more detailed look at what the system would do with your pattern."
 
 Then ask: "Would you like to explore that further?"
 
-→ If YES: book Zoom 2 before ending the call.
-→ If NO: close cleanly. No follow-up pressure.`,
+If YES: book Zoom 2 before ending the call.
+If NO: close cleanly. No follow-up pressure.`,
       prompts: [
-        'Would you like to explore that further?',
-        'Would it be helpful to see how the coaching process works?',
-        'Are you open to walking through the Body Recode approach?',
-        'Would you like to book that orientation session?',
+        { type: 'prompt', text: 'Would you like to explore that further?' },
+        { type: 'prompt', text: 'Would it be helpful to see how the coaching process works?' },
+        { type: 'prompt', text: 'Are you open to walking through the Body Recode approach?' },
+        { type: 'prompt', text: 'Would you like to book that second conversation?' },
       ],
       tips: 'Don\'t oversell. Don\'t rush. If they\'re not ready, that\'s valid information. Zoom 2 should be booked before this call ends if they say yes.',
       boundary: null,
@@ -161,74 +217,22 @@ Then ask: "Would you like to explore that further?"
   ]
 }
 
-const SIGNAL_LABELS = {
-  sls: {
-    label: 'Stress & Load',
-    levels: {
-      1: { label: 'Balanced', desc: 'Training and external load are manageable. System is coping well.' },
-      2: { label: 'Moderate Cumulative', desc: 'Some accumulation of load signals. Training effort doesn\'t always match result.' },
-      3: { label: 'Elevated Cumulative', desc: 'High cumulative demand. System is working hard to keep up. Push harder = worse.' },
-    },
-  },
-  rps: {
-    label: 'Recovery Predictability',
-    levels: {
-      1: { label: 'Stable', desc: 'Recovery is consistent and predictable session to session.' },
-      2: { label: 'Variable', desc: 'Recovery varies. Some sessions fine, others harder to bounce back from.' },
-      3: { label: 'Reduced', desc: 'Recovery is unpredictable. Hard to know how the body will respond.' },
-    },
-  },
-  rils: {
-    label: 'Regulation & Identity Load',
-    levels: {
-      1: { label: 'Low', desc: 'External and psychological load is well managed. Adjustments feel comfortable.' },
-      2: { label: 'Moderate', desc: 'Some uncertainty around adjustments. External demands creating pressure.' },
-      3: { label: 'Elevated', desc: 'High regulation demand. Relies on external support. Identity may be tied to performance.' },
-    },
-  },
-}
-
-const PATTERN_LANGUAGE: Record<string, Record<number, string>> = {
-  sls: {
-    1: 'Your training load signals are balanced - the system is managing demand well.',
-    2: 'There\'s a cumulative load building up. Effort feels higher relative to what the body is returning. This isn\'t about fitness - it\'s about system demand.',
-    3: 'The stress and load signals are elevated. The body is in a state where adding more stimulus typically produces less, not more. This pattern usually explains why harder isn\'t working.',
-  },
-  rps: {
-    1: 'Recovery is tracking well - predictable and consistent from session to session.',
-    2: 'Recovery variability is showing up. Some sessions feel fine, others don\'t land the same way. The unpredictability itself is the signal.',
-    3: 'Recovery predictability is reduced significantly. When the body can\'t predict its own recovery, it\'s usually managing something underneath that training alone won\'t fix.',
-  },
-  rils: {
-    1: 'Regulation and identity load is low - adjustments feel manageable and external pressure isn\'t compounding the picture.',
-    2: 'There\'s a moderate regulation load present. The uncertainty around adjustments, combined with external demand, is adding to the overall picture.',
-    3: 'Regulation demand is elevated. This often means the body is managing psychological and structural pressures alongside physical ones - and they compound each other.',
-  },
-}
-
-const COMBO_PATTERNS: Record<string, string> = {
-  '3-3': 'System Overload: When SLS and RPS are both at Level 3, the body is in a state of significant depletion. More training doesn\'t help here - the system is already operating at capacity.',
-  '3-2': 'Cumulative Accumulation: High load with variable recovery. The body is absorbing demand but recovery can\'t keep pace. Classic frustration pattern.',
-  '2-3': 'Recovery Collapse: Moderate load but recovery has become unpredictable. Often means the body is managing something outside of training that\'s using recovery capacity.',
-  '2-2': 'Managed Accumulation: Both load and recovery are in moderate territory. System is coping but not thriving. Progress will feel inconsistent.',
-}
+type Prompt = { type: 'prompt' | 'sub' | 'category'; text: string }
 
 interface ZoomCompanionProps {
   leadName: string
-  signalPattern: string
-  slsLevel: SignalLevel
-  rpsLevel: SignalLevel
-  rilsLevel: SignalLevel
+  bodyState: string
+  totalScore: number | null
+  sectionScores: Record<string, number> | null
   leadId: string
   initialNotes: string
 }
 
 export default function ZoomCompanion({
   leadName,
-  signalPattern,
-  slsLevel,
-  rpsLevel,
-  rilsLevel,
+  bodyState,
+  totalScore,
+  sectionScores,
   leadId,
   initialNotes,
 }: ZoomCompanionProps) {
@@ -237,12 +241,16 @@ export default function ZoomCompanion({
   const [running, setRunning] = useState(false)
   const [notes, setNotes] = useState(initialNotes)
   const [saving, setSaving] = useState(false)
-  const [activeTab, setActiveTab] = useState<'prompts' | 'signals' | 'language'>('prompts')
+  const [activeTab, setActiveTab] = useState<'prompts' | 'scorecard' | 'language'>('prompts')
   const [view, setView] = useState<'live' | 'postcall'>('live')
   const [transcript, setTranscript] = useState('')
   const [summary, setSummary] = useState('')
   const [generating, setGenerating] = useState(false)
+  const [savingSummary, setSavingSummary] = useState(false)
+  const [summarySaved, setSummarySaved] = useState(false)
   const [statusUpdated, setStatusUpdated] = useState(false)
+  const [zoom2Date, setZoom2Date] = useState('')
+  const [zoom2Saved, setZoom2Saved] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
@@ -260,13 +268,13 @@ export default function ZoomCompanion({
     return `${m}:${sec.toString().padStart(2, '0')}`
   }
 
-  const levelColour = (level: number) =>
-    level === 1 ? 'text-emerald-400 border-emerald-400/30 bg-emerald-400/10'
-    : level === 2 ? 'text-amber-400 border-amber-400/30 bg-amber-400/10'
-    : 'text-red-400 border-red-400/30 bg-red-400/10'
+  const sectionColour = (score: number) =>
+    score === 1 ? 'text-red-400 border-red-400/30 bg-red-400/10'
+    : score === 2 ? 'text-amber-400 border-amber-400/30 bg-amber-400/10'
+    : 'text-teal-400 border-teal-400/30 bg-teal-400/10'
 
-  const levelDot = (level: number) =>
-    level === 1 ? 'bg-emerald-400' : level === 2 ? 'bg-amber-400' : 'bg-red-400'
+  const sectionDot = (score: number) =>
+    score === 1 ? 'bg-red-400' : score === 2 ? 'bg-amber-400' : 'bg-teal-400'
 
   const generateSummary = async () => {
     if (!transcript.trim()) return
@@ -274,11 +282,26 @@ export default function ZoomCompanion({
     const res = await fetch(`/api/leads/${leadId}/zoom-summary`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ transcript, memberName: leadName, signalPattern, slsLevel, rpsLevel, rilsLevel }),
+      body: JSON.stringify({ transcript, memberName: leadName, bodyState, totalScore, sectionScores }),
     })
     const data = await res.json()
     setSummary(data.summary ?? '')
     setGenerating(false)
+  }
+
+  const saveSummaryToNotes = async () => {
+    if (!summary) return
+    setSavingSummary(true)
+    const combined = notes ? `${notes}\n\n--- Zoom 1 AI Summary ---\n${summary}` : `--- Zoom 1 AI Summary ---\n${summary}`
+    await fetch(`/api/leads/${leadId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ notes: combined }),
+    })
+    setNotes(combined)
+    setSavingSummary(false)
+    setSummarySaved(true)
+    setTimeout(() => setSummarySaved(false), 3000)
   }
 
   const saveNotes = async () => {
@@ -300,16 +323,48 @@ export default function ZoomCompanion({
     setStatusUpdated(true)
   }
 
-  const STAGES = buildStages(leadName, slsLevel, rpsLevel, rilsLevel)
-  const stage = STAGES[currentStage]
-  const comboKey = `${slsLevel}-${rpsLevel}`
-  const comboPattern = COMBO_PATTERNS[comboKey]
+  const bookZoom2 = async () => {
+    if (!zoom2Date) return
+    await fetch(`/api/leads/${leadId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ zoom_2_date: zoom2Date, status: 'zoom_2_booked' }),
+    })
+    setZoom2Saved(true)
+    setTimeout(() => setZoom2Saved(false), 3000)
+  }
 
-  const signals: { key: SignalKey; level: SignalLevel }[] = [
-    { key: 'sls', level: slsLevel },
-    { key: 'rps', level: rpsLevel },
-    { key: 'rils', level: rilsLevel },
-  ]
+  const STAGES = buildStages(leadName, bodyState, totalScore, sectionScores)
+  const stage = STAGES[currentStage]
+  const stateInfo = BODY_STATE_LANGUAGE[bodyState] ?? BODY_STATE_LANGUAGE['Transitioning State']
+
+  const sectionEntries = sectionScores
+    ? Object.entries(sectionScores).sort(([a], [b]) => a.localeCompare(b))
+    : null
+
+  function renderPrompt(p: Prompt, i: number) {
+    if (p.type === 'category') {
+      return (
+        <div key={i} className="flex items-center gap-3 pt-2">
+          <div className="h-px flex-1 bg-stone-800" />
+          <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{p.text}</span>
+          <div className="h-px flex-1 bg-stone-800" />
+        </div>
+      )
+    }
+    if (p.type === 'sub') {
+      return (
+        <div key={i} className="bg-stone-900/50 border border-stone-800/50 rounded-lg px-4 py-2.5 ml-4">
+          <p className="text-stone-400 text-sm leading-relaxed">{p.text}</p>
+        </div>
+      )
+    }
+    return (
+      <div key={i} className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+        <p className="text-white text-sm leading-relaxed">&ldquo;{p.text}&rdquo;</p>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col">
@@ -318,17 +373,20 @@ export default function ZoomCompanion({
       <div className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div>
-            <a href={`/dashboard/leads/${leadId}`} className="text-xs text-stone-600 hover:text-stone-400 transition-colors mb-0.5 block">← Back to lead</a>
+            <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold mb-0.5">Zoom 1 - Companion</p>
             <p className="text-lg font-bold text-white">{leadName}</p>
           </div>
-          {/* Signal levels */}
+          {/* Body state + score */}
           <div className="flex items-center gap-3">
-            {signals.map(({ key, level }) => (
-              <div key={key} className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border ${levelColour(level)}`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${levelDot(level)}`} />
-                {SIGNAL_LABELS[key].label} {level}
+            <div className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border ${stateInfo.colour}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${stateInfo.badge}`} />
+              {bodyState}
+            </div>
+            {totalScore && (
+              <div className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border border-stone-700 text-stone-400">
+                {totalScore} / 15
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -378,7 +436,7 @@ export default function ZoomCompanion({
                 <textarea
                   value={transcript}
                   onChange={e => setTranscript(e.target.value)}
-                  placeholder="Paste your Zoom transcript here…"
+                  placeholder="Paste your Zoom transcript here..."
                   className="w-full h-72 bg-stone-900 border border-stone-800 rounded-xl p-4 text-stone-300 text-sm leading-relaxed resize-none focus:outline-none focus:border-stone-600 placeholder-stone-700"
                 />
                 <button
@@ -386,7 +444,7 @@ export default function ZoomCompanion({
                   disabled={!transcript.trim() || generating}
                   className="bg-[#10E1C2] text-black font-bold px-6 py-3 rounded-lg text-sm hover:bg-[#0ecfb2] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  {generating ? 'Generating summary…' : 'Generate Summary'}
+                  {generating ? 'Generating summary...' : 'Generate Summary'}
                 </button>
               </div>
             ) : (
@@ -402,6 +460,13 @@ export default function ZoomCompanion({
                   </div>
                 </div>
                 <div className="flex gap-3">
+                  <button
+                    onClick={saveSummaryToNotes}
+                    disabled={savingSummary || summarySaved}
+                    className="bg-[#10E1C2] text-black font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-[#0ecfb2] transition-colors disabled:opacity-50"
+                  >
+                    {summarySaved ? 'Saved to notes' : savingSummary ? 'Saving...' : 'Save to lead notes'}
+                  </button>
                   <button
                     onClick={() => { setSummary(''); setTranscript('') }}
                     className="text-xs text-stone-500 hover:text-white border border-stone-800 hover:border-stone-600 px-4 py-2 rounded-lg transition-colors"
@@ -442,12 +507,12 @@ export default function ZoomCompanion({
             <div className="flex gap-2">
               {currentStage > 0 && (
                 <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-white py-1.5 rounded-lg border border-white/10 hover:border-white/20 transition-colors">
-                  ← Back
+                  Back
                 </button>
               )}
               {currentStage < STAGES.length - 1 && (
                 <button onClick={() => setCurrentStage(s => s + 1)} className="flex-1 text-xs text-[#10E1C2] py-1.5 rounded-lg border border-[#10E1C2]/30 hover:bg-[#10E1C2]/10 transition-colors">
-                  Next →
+                  Next
                 </button>
               )}
             </div>
@@ -469,7 +534,7 @@ export default function ZoomCompanion({
 
               {/* Tabs */}
               <div className="flex gap-1 mb-5 border-b border-white/10">
-                {(['prompts', 'signals', 'language'] as const).map(tab => (
+                {(['prompts', 'scorecard', 'language'] as const).map(tab => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
@@ -477,24 +542,20 @@ export default function ZoomCompanion({
                       activeTab === tab ? 'border-[#10E1C2] text-[#10E1C2]' : 'border-transparent text-stone-500 hover:text-stone-300'
                     }`}
                   >
-                    {tab === 'prompts' ? 'Prompts' : tab === 'signals' ? 'Signal Cheat Sheet' : 'Interpretation Language'}
+                    {tab === 'prompts' ? 'Prompts' : tab === 'scorecard' ? 'Scorecard Breakdown' : 'Interpretation Language'}
                   </button>
                 ))}
               </div>
 
               {activeTab === 'prompts' && (
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {stage.script && (
-                    <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/30 rounded-xl p-5 mb-2">
+                    <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/30 rounded-xl p-5 mb-4">
                       <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-3">Script</p>
                       <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{stage.script}</p>
                     </div>
                   )}
-                  {stage.prompts.map((p, i) => (
-                    <div key={i} className="bg-stone-900 border border-stone-800 rounded-xl p-4">
-                      <p className="text-white text-sm leading-relaxed">&ldquo;{p}&rdquo;</p>
-                    </div>
-                  ))}
+                  {(stage.prompts as Prompt[]).map((p, i) => renderPrompt(p, i))}
                   {stage.tips && (
                     <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/20 rounded-xl p-4 mt-4">
                       <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-1">Coach note</p>
@@ -510,39 +571,59 @@ export default function ZoomCompanion({
                 </div>
               )}
 
-              {activeTab === 'signals' && (
-                <div className="space-y-4">
-                  {signals.map(({ key, level }) => {
-                    const info = SIGNAL_LABELS[key]
-                    const levelInfo = info.levels[level as 1 | 2 | 3]
-                    return (
-                      <div key={key} className={`border rounded-xl p-4 ${levelColour(level)}`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <p className="text-xs font-bold uppercase tracking-wider">{info.label}</p>
-                          <span className="text-xs font-bold">Level {level} - {levelInfo.label}</span>
-                        </div>
-                        <p className="text-sm leading-relaxed opacity-80">{levelInfo.desc}</p>
-                      </div>
-                    )
-                  })}
-                  {comboPattern && (
-                    <div className="bg-stone-900 border border-stone-700 rounded-xl p-4">
-                      <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">Combined Pattern</p>
-                      <p className="text-stone-300 text-sm leading-relaxed">{comboPattern}</p>
+              {activeTab === 'scorecard' && (
+                <div className="space-y-3">
+                  {/* Body state summary */}
+                  <div className={`border rounded-xl p-4 ${stateInfo.colour}`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-xs font-bold uppercase tracking-wider">{bodyState}</p>
+                      {totalScore && <span className="text-xs font-bold">{totalScore} / 15</span>}
                     </div>
+                    <p className="text-sm leading-relaxed opacity-80">{stateInfo.opening}</p>
+                  </div>
+
+                  {/* Section scores */}
+                  {sectionEntries ? sectionEntries.map(([key, score]) => (
+                    <div key={key} className={`border rounded-xl p-4 ${sectionColour(score)}`}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-center gap-2">
+                          <span className={`w-1.5 h-1.5 rounded-full ${sectionDot(score)}`} />
+                          <p className="text-xs font-bold uppercase tracking-wider">{SECTION_LABELS[key] ?? key}</p>
+                        </div>
+                        <span className="text-xs font-bold">{score} / 3</span>
+                      </div>
+                      <p className="text-sm leading-relaxed opacity-80">{SECTION_INTERPRETATIONS[key]?.[score] ?? ''}</p>
+                    </div>
+                  )) : (
+                    <p className="text-stone-500 text-sm">Section scores not available — lead may not have purchased the Body Decode Report. Body state and total score are pulled from the scorecard event.</p>
                   )}
                 </div>
               )}
 
               {activeTab === 'language' && (
                 <div className="space-y-4">
-                  <p className="text-xs text-stone-500 mb-4">Pre-written interpretation language based on {leadName}&apos;s signal levels. Use naturally - not verbatim.</p>
-                  {signals.map(({ key, level }) => (
-                    <div key={key} className="bg-stone-900 border border-stone-800 rounded-xl p-4">
-                      <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">{SIGNAL_LABELS[key].label} - Level {level}</p>
-                      <p className="text-stone-300 text-sm leading-relaxed italic">&ldquo;{PATTERN_LANGUAGE[key][level]}&rdquo;</p>
+                  <p className="text-xs text-stone-500 mb-4">Pre-written interpretation language based on {leadName}&apos;s body state. Use naturally — not verbatim.</p>
+                  <div className={`border rounded-xl p-4 ${stateInfo.colour}`}>
+                    <p className="text-xs font-bold uppercase tracking-wider mb-3">{bodyState} — Pattern</p>
+                    <p className="text-sm leading-relaxed opacity-90 mb-3">{stateInfo.pattern}</p>
+                  </div>
+                  <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+                    <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">Interpretation Script</p>
+                    <p className="text-stone-300 text-sm leading-relaxed italic">&ldquo;{stateInfo.interpretation}&rdquo;</p>
+                  </div>
+                  {sectionEntries && sectionEntries.filter(([, s]) => s === 1).length > 0 && (
+                    <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+                      <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">Low Section Language</p>
+                      <div className="space-y-3">
+                        {sectionEntries.filter(([, s]) => s === 1).map(([key]) => (
+                          <div key={key}>
+                            <p className="text-xs font-semibold text-red-400 mb-1">{SECTION_LABELS[key]}</p>
+                            <p className="text-stone-400 text-sm leading-relaxed italic">&ldquo;{SECTION_INTERPRETATIONS[key]?.[1]}&rdquo;</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
+                  )}
                 </div>
               )}
             </div>
@@ -556,33 +637,62 @@ export default function ZoomCompanion({
                 onClick={saveNotes}
                 className="text-xs text-[#10E1C2] hover:text-white transition-colors font-semibold"
               >
-                {saving ? 'Saving…' : 'Save'}
+                {saving ? 'Saving...' : 'Save'}
               </button>
             </div>
             <textarea
               value={notes}
               onChange={e => setNotes(e.target.value)}
-              placeholder="Type observations as the call unfolds…"
+              placeholder="Type observations as the call unfolds..."
               className="flex-1 bg-transparent text-stone-300 text-sm p-4 resize-none focus:outline-none placeholder-stone-700 leading-relaxed"
             />
             <div className="p-4 border-t border-white/10 space-y-3">
+
+              {/* Readiness Check */}
               <div className="bg-stone-900 border border-stone-800 rounded-lg p-3">
-                <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Readiness Check</p>
-                <div className="space-y-1.5 text-xs text-stone-500">
-                  <p>A - Ready, wants to proceed</p>
-                  <p>B - Interested but hesitant</p>
-                  <p>C - Not ready / not right fit</p>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2.5">Readiness</p>
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[10px] font-bold text-emerald-400">A</span>
+                    <span className="text-xs text-stone-400">Ready, wants to proceed</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-5 h-5 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-[10px] font-bold text-amber-400">B</span>
+                    <span className="text-xs text-stone-400">Interested but hesitant</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-5 h-5 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-[10px] font-bold text-red-400">C</span>
+                    <span className="text-xs text-stone-400">Not ready / not right fit</span>
+                  </div>
                 </div>
               </div>
-              {currentStage === 4 && (
+
+              {/* Zoom 2 booking */}
+              <div className="bg-stone-900 border border-stone-800 rounded-lg p-3">
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">Book Zoom 2</p>
+                <input
+                  type="datetime-local"
+                  value={zoom2Date}
+                  onChange={e => setZoom2Date(e.target.value)}
+                  className="w-full bg-stone-800 border border-stone-700 rounded-md px-2.5 py-1.5 text-white text-xs focus:outline-none focus:border-stone-500 mb-2"
+                />
                 <button
-                  onClick={markZoom1Complete}
-                  disabled={statusUpdated}
-                  className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${statusUpdated ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20'}`}
+                  onClick={bookZoom2}
+                  disabled={!zoom2Date || zoom2Saved}
+                  className={`w-full text-xs font-bold px-3 py-1.5 rounded-md transition-colors ${zoom2Saved ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20 disabled:opacity-40'}`}
                 >
-                  {statusUpdated ? 'Zoom 1 Marked Complete' : 'Mark Zoom 1 Complete'}
+                  {zoom2Saved ? 'Zoom 2 Booked' : 'Confirm Zoom 2'}
                 </button>
-              )}
+              </div>
+
+              {/* Mark complete */}
+              <button
+                onClick={markZoom1Complete}
+                disabled={statusUpdated}
+                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${statusUpdated ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-stone-800 border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white'}`}
+              >
+                {statusUpdated ? 'Zoom 1 Marked Complete' : 'Mark Zoom 1 Complete'}
+              </button>
             </div>
           </div>
         </div>

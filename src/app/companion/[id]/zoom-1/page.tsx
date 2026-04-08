@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
-import { selectBlocks, getSignalPattern } from '@/lib/report-blocks'
 import ZoomCompanion from './zoom-companion'
 
 export default async function Zoom1CompanionPage({ params }: { params: Promise<{ id: string }> }) {
@@ -15,19 +14,38 @@ export default async function Zoom1CompanionPage({ params }: { params: Promise<{
 
   if (!lead) notFound()
 
-  const answers = (lead.check_in_answers as Record<string, number>) ?? {}
-  const { slsLevel, rpsLevel, rilsLevel } = selectBlocks(answers)
+  // Get scorecard data from lead events
+  const { data: events } = await supabase
+    .from('lead_events')
+    .select('type, notes')
+    .eq('lead_id', id)
+    .eq('type', 'scorecard_completed')
+    .order('sent_at', { ascending: false })
+    .limit(1)
 
-  const totalScore = Object.values(answers).reduce((a, b) => a + b, 0)
-  const signalPattern = getSignalPattern(totalScore, Object.keys(answers).length * 3)
+  const scorecardEvent = events?.[0] ?? null
+  const scorecardScore = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
+  const scorecardState = scorecardEvent?.notes?.match(/Body state: (.+?)\./)?.[1]
+
+  // Section scores from scorecard_reports if available
+  const { data: report } = await supabase
+    .from('scorecard_reports')
+    .select('section_scores, score, body_state')
+    .eq('email', lead.email ?? '')
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  const bodyState = (report?.body_state ?? scorecardState ?? 'Transitioning State') as string
+  const totalScore = report?.score ?? (scorecardScore ? parseInt(scorecardScore) : null)
+  const sectionScores = (report?.section_scores as Record<string, number> | null) ?? null
 
   return (
     <ZoomCompanion
       leadName={lead.name}
-      signalPattern={signalPattern}
-      slsLevel={slsLevel}
-      rpsLevel={rpsLevel}
-      rilsLevel={rilsLevel}
+      bodyState={bodyState}
+      totalScore={totalScore}
+      sectionScores={sectionScores}
       leadId={id}
       initialNotes={lead.notes ?? ''}
     />
