@@ -193,7 +193,7 @@ function ScorecardInner() {
 
       {/* Header */}
       <div style={{ borderBottom: '1px solid #1c1917', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <img src="/logo-teal.png" alt="Body Recode" style={{ height: '44px' }} />
+        <img src="/logo-teal.png" alt="Body Recode" style={{ height: '64px' }} />
       </div>
 
       <div style={{ maxWidth: '560px', margin: '0 auto', padding: '40px 24px 80px' }}>
