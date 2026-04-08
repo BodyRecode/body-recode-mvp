@@ -26,7 +26,9 @@ export async function POST() {
         subject: 'Your Body State result',
         body: `Hi {{first_name}},
 
-Your scorecard result tells you one specific thing: which state your body is currently in.
+Your scorecard result: {{scorecard_score}}/15. Body state: {{scorecard_state}}.
+
+That result tells you one specific thing: which state your body is currently in.
 
 That state determines what works. It also determines what makes things worse. Most people apply the same approach regardless of their state. That is why most people stay stuck.
 
