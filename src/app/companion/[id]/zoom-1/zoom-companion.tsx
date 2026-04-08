@@ -704,6 +704,11 @@ export default function ZoomCompanion({
               >
                 {declinedSent ? 'Declined sequence sent' : sendingDeclined ? 'Sending...' : 'Send declined follow-up'}
               </button>
+              {!declinedSent && (
+                <p className="text-xs text-stone-600 text-center leading-relaxed">
+                  Sends 3-email re-engagement sequence + $97 self-guided program offer automatically
+                </p>
+              )}
             </div>
           </div>
         </div>
