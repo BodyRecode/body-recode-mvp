@@ -119,6 +119,96 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   }
 
+  // Handle Self-Guided Program (downsell) purchase
+  if (session.metadata?.type === 'self_guided_program') {
+    const { lead_id, body_state, name, email } = session.metadata
+    const admin = createAdminClient()
+
+    const token = crypto.randomUUID()
+
+    await admin
+      .from('leads')
+      .update({
+        downsell_purchased: true,
+        downsell_state: body_state,
+        downsell_purchased_at: new Date().toISOString(),
+        downsell_program_token: token,
+      })
+      .eq('id', lead_id)
+
+    await admin.from('lead_events').insert({
+      lead_id,
+      type: 'downsell_purchased',
+      subject: `Self-Guided Program purchased (${body_state} state)`,
+      notes: `$97 one-time. Program token: ${token}`,
+      sent_at: new Date().toISOString(),
+    })
+
+    const programUrl = `${process.env.NEXT_PUBLIC_APP_URL}/program/${token}`
+    const firstName = name.split(' ')[0]
+
+    if (email && process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY)
+
+      const stateLabels: Record<string, string> = {
+        depleted: 'Depleted',
+        transitioning: 'Transitioning',
+        ready: 'Ready',
+      }
+      const stateLabel = stateLabels[body_state] ?? body_state
+
+      // Delivery email to customer
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `Your ${stateLabel} State Program`,
+        html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+<body style="margin:0;padding:0;background-color:#0a0a0a;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:48px 20px;">
+    <tr>
+      <td align="center">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111111" style="max-width:520px;background-color:#111111;border-radius:16px;border:1px solid #222222;overflow:hidden;">
+          <tr>
+            <td bgcolor="#111111" style="background-color:#111111;padding:28px 40px;border-bottom:1px solid #1e1e1e;">
+              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#111111" style="background-color:#111111;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Your 12-week ${stateLabel} State Program is ready. Everything is in there: the full training protocol, nutrition targets, priority foods, and what to expect each phase.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Bookmark the page so you can come back to it any time.</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+                <tr><td><a href="${programUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0a0a0a;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">View My Program</a></td></tr>
+              </table>
+              <p style="margin:0 0 18px;font-size:13px;color:#555555;line-height:1.75;">Or copy this link: ${programUrl}</p>
+              ${darkEmailSignature()}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body></html>`,
+      })
+
+      // Notify Kade
+      await resend.emails.send({
+        from: 'Body Recode <kade@bodyrecode.au>',
+        to: 'kade@bodyrecode.au',
+        subject: `Self-Guided Program sold - ${name}`,
+        html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0a0a0a;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${name} purchased the ${stateLabel} State Program</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">$97. Program delivered to ${email}. They are in the downsell funnel.</p>
+  <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads/${lead_id}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Lead</a>
+</div>`,
+      })
+    }
+
+    return NextResponse.json({ received: true })
+  }
+
   // Handle Body Decode Report purchase
   if (session.metadata?.type === 'scorecard_report') {
     const { name, email, score, body_state, section_scores } = session.metadata

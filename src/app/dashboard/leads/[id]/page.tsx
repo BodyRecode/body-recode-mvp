@@ -9,6 +9,7 @@ import CancelSequenceButton from './cancel-sequence-button'
 import SendOrientationButton from '@/components/send-orientation-button'
 import NoShowSequenceButton from '@/components/noshow-sequence-button'
 import CommencementFeeButton from '@/components/commencement-fee-button'
+import DownsellButton from '@/components/downsell-button'
 import FounderApplicationStatus from '@/components/founder-application-status'
 import Link from 'next/link'
 
@@ -50,6 +51,8 @@ const EVENT_LABELS: Record<string, string> = {
   noshow_sequence_scheduled: 'No-show re-engagement scheduled',
   scorecard_completed: 'Body State Scorecard completed',
   email_sent: 'Email sent',
+  downsell_purchased: 'Self-Guided Program purchased',
+  downsell_reentry: 'Re-entered funnel via Self-Guided Program',
 }
 
 const BODY_STATE_STYLES: Record<string, { color: string; bg: string; border: string; desc: string }> = {
@@ -79,6 +82,8 @@ const EVENT_COLOURS: Record<string, string> = {
   followup_scheduled: 'bg-stone-500',
   followup_cancelled: 'bg-red-500/60',
   zoom_1_declined: 'bg-red-400/60',
+  downsell_purchased: 'bg-teal-500',
+  downsell_reentry: 'bg-teal-400',
   reengagement_sent: 'bg-teal-500',
   orientation_sent: 'bg-teal-500',
   zoom_booked: 'bg-green-500',
@@ -302,6 +307,32 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           />
         )}
       </div>
+
+      {/* Self-Guided Program (Downsell) */}
+      {scorecardEvent && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+          <div className="flex items-start justify-between mb-3">
+            <div>
+              <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Self-Guided Program</h2>
+              <p className="text-stone-500 text-sm">
+                {lead.downsell_purchased
+                  ? `${lead.downsell_state ? lead.downsell_state.charAt(0).toUpperCase() + lead.downsell_state.slice(1) : ''} State Program purchased.`
+                  : 'Send the $97 12-week downsell offer. Program is specific to their body state.'}
+              </p>
+              {lead.downsell_purchased && lead.downsell_program_token && (
+                <a
+                  href={`/program/${lead.downsell_program_token}`}
+                  target="_blank"
+                  className="text-xs text-teal-400 hover:text-teal-300 transition-colors mt-1 inline-block"
+                >
+                  View program page ↗
+                </a>
+              )}
+            </div>
+          </div>
+          <DownsellButton leadId={lead.id} alreadyPurchased={!!lead.downsell_purchased} />
+        </div>
+      )}
 
       {/* No-show re-engagement */}
       {lead.status === 'closed_no_show' && (
