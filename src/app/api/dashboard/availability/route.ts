@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
       end_time: endTime,
       slot_duration_minutes: slotDurationMinutes,
       buffer_minutes: bufferMinutes,
-      session_type: sessionType ?? 'zoom',
       is_active: true,
     })
 

@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
     .from('be_availability')
     .select('*')
     .eq('is_active', true)
-    .eq('session_type', sessionType)
 
   if (!availability || availability.length === 0) {
     return NextResponse.json([])
