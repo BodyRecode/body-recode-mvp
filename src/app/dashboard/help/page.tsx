@@ -168,6 +168,7 @@ export default function HelpPage() {
                   <ChecklistItem text="Set the Coaching Package on the client profile (online, 2x, or 3x) and copy the subscription link" />
                   <ChecklistItem text="Send the subscription link to the client" />
                   <ChecklistItem text="Wait for the Subscription Active badge to appear on the client profile" />
+                  <ChecklistItem text="For face-to-face clients: go to the client profile and click Set up → next to the Face-to-Face Session card. Set the fixed day, time, duration, and session type. This unlocks the Sessions page in the client portal." />
                   <ChecklistItem text="Set the Coaching Start Date (3-7 days out) — do not set it before the subscription is active" />
                   <ChecklistItem text="Client receives a reminder email automatically the day before coaching begins" />
                 </div>
@@ -298,6 +299,21 @@ export default function HelpPage() {
               <li>The date the scorecard was completed</li>
             </ul>
             <p className="mt-2">This card only appears if the lead has a scorecard_completed event. Leads who came in via the check-in form without taking the scorecard will not show this card.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Scorecard Lead Creation</p>
+            <p>When someone completes the Body State Scorecard on performance.bodyrecode.au, a lead is <strong>automatically created</strong> in the CRM — no manual entry required. Their name, email, score, body state, and section scores are all captured. You receive a branded notification email immediately on every scorecard submission.</p>
+            <p className="mt-2">Leads created this way are tagged with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">source_detail: scorecard</code> so they are distinguishable from check-in leads in your pipeline.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Body Decode Report ($37)</p>
+            <p>After completing the scorecard, leads are offered a <strong>$37 Body Decode Report</strong> — a personalised web-based analysis of their body state, section scores, and what to stop and start doing. The report is purchased via Stripe and delivered automatically by email as a unique link at <strong>app.bodyrecode.au/report/[token]</strong>.</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li>Personalised to their exact body state (Depleted / Transitioning / Ready)</li>
+              <li>Section-by-section breakdown with interpretations for each score level</li>
+              <li>Stop doing / start doing lists specific to their state</li>
+              <li>Book a call CTA at the bottom</li>
+              <li>PDF download via print</li>
+            </ul>
+            <p className="mt-2">Report purchases are recorded as <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">scorecard_reports</code> rows in the database. No manual handling required — Stripe webhook creates the report and sends the email automatically.</p>
 
             <Training title="Why statuses matter">
               <p>The pipeline exists to tell you exactly where every lead is at a glance — and where the system is getting stuck. If you have 12 leads sitting at Report Sent with no Zoom 1 booked, that is a data point, not a coincidence. It means the report landed but didn&apos;t create enough pull to book the call.</p>
@@ -468,6 +484,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-2 mb-1">What the portal shows</p>
             <p>The portal shows the client exactly where they are in the process — completed steps are ticked, locked steps are greyed out. Once onboarding is complete, the portal transitions to show:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li>Sessions — for face-to-face clients only (see below)</li>
               <li>Weekly check-in (Form A or B, window-gated)</li>
               <li>Weekly training check-in — if they have an active program</li>
               <li>Weekly nutrition check-in — if they have an active nutrition plan</li>
@@ -475,6 +492,15 @@ export default function HelpPage() {
               <li>View your nutrition plan — full meal-by-meal plan view</li>
               <li>Active Coaching Client Guide link</li>
             </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Sessions (Face-to-Face Clients)</p>
+            <p>Face-to-face clients see a <strong>Sessions</strong> section in their portal home that links to <strong>/portal/[token]/sessions</strong>. This page shows:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li>Their fixed weekly slot (day, time, duration)</li>
+              <li>Their next 4 upcoming sessions — with a <strong>Confirmed</strong> badge if a booking exists in the system, or <strong>Scheduled</strong> if it is a regular occurrence with no explicit booking yet</li>
+              <li>A reschedule section — shows available face-to-face slots for the next 21 days. The client selects a time and confirms the booking. You and the client both receive a branded confirmation email.</li>
+            </ul>
+            <p className="mt-2">To set up a client&apos;s fixed session, go to their client profile on the dashboard and click <strong>Set up →</strong> next to the Face-to-Face Session card. Set the day, time, duration, and session type, then save.</p>
             <p>Every portal page shows a sticky header with the Body Recode logo and sign-out button, and a fixed footer with a WhatsApp link to message you directly.</p>
             <Training title="Why one portal instead of multiple links">
               <p>Previous builds sent separate links for intake, baseline, and check-ins. Each link was another thing to track and another point of failure. A single portal link eliminates that. The client bookmarks it once and uses it throughout the entire coaching relationship — onboarding, check-ins, resources. Everything is in one place, in the right order, with the right steps unlocked at the right time.</p>
@@ -616,7 +642,13 @@ export default function HelpPage() {
           </Section>
 
           <Section id="email-sequences" title="15. Email Sequences and Automation" colour="teal">
-            <p>The following outbound email sequences run automatically. All emails send from <strong>kade@bodyrecode.au</strong> via Resend.</p>
+            <p>The following outbound email sequences run automatically. All emails send from <strong>kade@bodyrecode.au</strong> via Resend. All automated emails use a <strong>dark card template</strong> — black outer background, #111111 inner card, Body Recode logo header, Kade signature with photo at the bottom.</p>
+
+            <p className="font-semibold text-white mt-4">Scorecard Submission Notification (to you)</p>
+            <p>Sent to kade@bodyrecode.au <strong>every time</strong> someone completes the Body State Scorecard. Shows the lead&apos;s name, email, score, and body state. No action required — the lead is already created in the CRM automatically.</p>
+
+            <p className="font-semibold text-white mt-4">Body Decode Report Delivery (to lead)</p>
+            <p>Sent automatically when a lead purchases the $37 Body Decode Report via Stripe. Contains a unique link to their personalised report at app.bodyrecode.au/report/[token]. Triggered by the Stripe webhook — no manual handling required.</p>
 
             <p className="font-semibold text-white mt-2">Performance Report + Follow-Up Sequence</p>
             <p>Triggered when a lead submits the check-in quiz. The report is scheduled to send the following morning at 9am Brisbane time.</p>
@@ -663,6 +695,9 @@ export default function HelpPage() {
 
             <p className="font-semibold text-white mt-4">Weekly Check-In Notification (to you)</p>
             <p>Sent automatically when a client submits a check-in form. Includes the form type and a link to the client profile.</p>
+
+            <p className="font-semibold text-white mt-4">Face-to-Face Session Booked (to client + to you)</p>
+            <p>Sent when a client books a reschedule slot from their portal Sessions page. The client receives a branded confirmation with date, time, and duration. You receive a notification showing who booked and when.</p>
 
             <p className="font-semibold text-white mt-4">Coaching Start Reminder</p>
             <p>Sent automatically the day before a client&apos;s coaching start date. Triggered by a Vercel cron job that runs daily.</p>
@@ -935,21 +970,28 @@ export default function HelpPage() {
             <p>The booking system replaces Calendly entirely. All Zoom calls are booked through <strong>bodyrecode.au/book</strong> — a public page showing available slots. When a lead books, a Zoom meeting is created automatically and a calendar invite (.ics) is emailed to both the lead and you.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Availability</p>
-            <p>Monday to Thursday, 4:30pm – 7:30pm Brisbane. 30-minute slots with 15-minute gaps between them. Slots are generated automatically — no manual setup each week.</p>
+            <p>Zoom availability is set in the <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">be_availability</code> table with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">session_type = zoom</code>. Face-to-face availability is a separate set of rules with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">session_type = face_to_face</code>. Each session type has its own day-of-week rules, time windows, slot durations, and buffer gaps.</p>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What Happens on Booking</p>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What Happens on Zoom Booking</p>
             <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
-              <li>Zoom meeting created automatically — join link emailed to both parties</li>
-              <li>.ics calendar file attached — opens in Apple Calendar on click</li>
+              <li>Zoom meeting created automatically — join link emailed to both parties via branded dark email</li>
               <li>Lead record created or updated in CRM</li>
               <li>Pipeline stage moves to Zoom 1 Booked (or Zoom 2 Booked for returning leads)</li>
               <li>Automation trigger fires — any workflows on booking_created will run</li>
             </ul>
 
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Face-to-Face Session Booking (from Client Portal)</p>
+            <p>Face-to-face clients can reschedule a session directly from their portal. When they book a slot, a <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">be_bookings</code> record is created with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">type = face_to_face</code>, and a branded confirmation email goes to both the client and you. Booked slots are blocked and won&apos;t appear for other clients.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Calendar Auto-Sync (Mac Calendar)</p>
+            <p>All scheduled bookings sync automatically to your Mac Calendar via a <strong>webcal subscription</strong>. The feed URL is:</p>
+            <p className="mt-1 font-mono text-xs text-teal-300 bg-stone-900 rounded-lg px-4 py-2">webcal://bodyrecode.au/api/calendar/feed?key=CALENDAR_FEED_KEY</p>
+            <p className="mt-2">To subscribe: open Calendar on your Mac → File → New Calendar Subscription → paste the webcal:// URL → set auto-refresh to Every 15 Minutes. The calendar updates automatically as bookings are made or changed. No manual export needed.</p>
+
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Manual Bookings</p>
             <p>You can also create bookings from <strong>Business → Bookings → New Booking</strong>. Select the contact, type (Zoom 1, Zoom 2, Other), date/time, and duration. Zoom is created automatically and an email is sent to you (not the lead — use Inbox to send them the link if needed).</p>
 
-            <Note>The booking page is fully public — share the link bodyrecode.au/book anywhere. It shows 7 days of upcoming availability at any time.</Note>
+            <Note>The Zoom booking page is fully public — share the link bodyrecode.au/book anywhere. It shows available times for the next 7 days. After booking, the lead is redirected to performance.bodyrecode.au.</Note>
           </Section>
 
           <Section id="be-automations" title="25. Automations" colour="amber">
@@ -984,13 +1026,13 @@ export default function HelpPage() {
             </ul>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Scorecard Follow-up Sequence</p>
-            <p>A pre-built 2-email follow-up sequence is available as a one-click setup. If it has not been created yet, an <strong>Add</strong> button appears at the top of the Automations page. Click it and the workflow is created and activated automatically.</p>
+            <p>A pre-built follow-up sequence triggers automatically when someone completes the Body State Scorecard. Configure it in <strong>Business → Automations</strong>. Emails support scorecard-specific template variables:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
-              <li><strong>Trigger:</strong> form_submitted (scorecard)</li>
-              <li><strong>Email 1:</strong> Sent immediately on scorecard completion — explains the body state result and CTAs to the Performance Check-In</li>
-              <li><strong>Wait:</strong> 2 days</li>
-              <li><strong>Email 2:</strong> Follow-up — reinforces the result and repeats the Check-In CTA</li>
+              <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_score}}`}</code> — e.g. 7</li>
+              <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_state}}`}</code> — e.g. Transitioning</li>
+              <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{first_name}}`}</code> — lead&apos;s first name</li>
             </ul>
+            <p className="mt-2">The sequence should be configured with trigger <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">scorecard_completed</code>. All sequence emails use the branded dark card template.</p>
             <Note>Wait steps are handled by Inngest — a background job service. A "wait 3 days" step will actually wait 3 days, even across server restarts. Execution history is logged per contact under each workflow run.</Note>
           </Section>
 
