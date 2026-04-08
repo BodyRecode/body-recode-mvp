@@ -4,6 +4,8 @@ import { useState } from 'react'
 
 export default function AdminButtons() {
   const [previewStatus, setPreviewStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [reportEmailStatus, setReportEmailStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [reportBodyState, setReportBodyState] = useState('Depleted State')
   const [blastStatus, setBlastStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
   const [blastResult, setBlastResult] = useState<{ sent: number; failed: number } | null>(null)
   const [retriggerStatus, setRetriggerStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
@@ -22,6 +24,21 @@ export default function AdminButtons() {
       setPreviewStatus('error')
     }
     setTimeout(() => setPreviewStatus('idle'), 4000)
+  }
+
+  const sendTestReportEmail = async () => {
+    setReportEmailStatus('sending')
+    try {
+      const res = await fetch('/api/admin/test-report-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ secret: process.env.NEXT_PUBLIC_ADMIN_SECRET, body_state: reportBodyState }),
+      })
+      setReportEmailStatus(res.ok ? 'sent' : 'error')
+    } catch {
+      setReportEmailStatus('error')
+    }
+    setTimeout(() => setReportEmailStatus('idle'), 4000)
   }
 
   const sendBlast = async () => {
@@ -56,6 +73,24 @@ export default function AdminButtons() {
 
   return (
     <div className="flex flex-wrap items-center gap-3">
+      <div className="flex items-center gap-2">
+        <select
+          value={reportBodyState}
+          onChange={e => setReportBodyState(e.target.value)}
+          className="text-sm bg-stone-800 border border-stone-700 text-stone-300 rounded-lg px-3 py-2 focus:outline-none focus:border-teal-500"
+        >
+          <option>Depleted State</option>
+          <option>Transitioning State</option>
+          <option>Ready State</option>
+        </select>
+        <button
+          onClick={sendTestReportEmail}
+          disabled={reportEmailStatus !== 'idle'}
+          className="text-sm font-semibold px-4 py-2 rounded-lg border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white transition-colors disabled:opacity-50"
+        >
+          {reportEmailStatus === 'sending' ? 'Sending...' : reportEmailStatus === 'sent' ? 'Sent to your inbox' : reportEmailStatus === 'error' ? 'Failed' : 'Test report email'}
+        </button>
+      </div>
       <button
         onClick={sendPreview}
         disabled={previewStatus !== 'idle'}
