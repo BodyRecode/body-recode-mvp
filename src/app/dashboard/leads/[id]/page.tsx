@@ -43,6 +43,7 @@ const EVENT_LABELS: Record<string, string> = {
   report_scheduled: 'Performance report scheduled',
   followup_scheduled: 'Follow-up email scheduled',
   followup_cancelled: 'Follow-up sequence cancelled',
+  zoom_1_declined: 'Declined Zoom 2',
   reengagement_sent: 'Re-engagement email sent',
   orientation_sent: 'Orientation guide sent',
   zoom_booked: 'Zoom call booked',
@@ -77,6 +78,7 @@ const EVENT_COLOURS: Record<string, string> = {
   report_scheduled: 'bg-teal-500',
   followup_scheduled: 'bg-stone-500',
   followup_cancelled: 'bg-red-500/60',
+  zoom_1_declined: 'bg-red-400/60',
   reengagement_sent: 'bg-teal-500',
   orientation_sent: 'bg-teal-500',
   zoom_booked: 'bg-green-500',
@@ -362,12 +364,19 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             >
               View report ↗
             </Link>
-            {lead.followup_email_ids && (lead.followup_email_ids as string[]).length > 0 && (
-              <div className="text-right">
-                <p className="text-xs text-stone-500 mb-1">{(lead.followup_email_ids as string[]).length} follow-up{(lead.followup_email_ids as string[]).length > 1 ? 's' : ''} scheduled</p>
-                <CancelSequenceButton leadId={lead.id} />
-              </div>
-            )}
+          </div>
+        </div>
+      )}
+
+      {/* Scheduled Follow-ups */}
+      {lead.followup_email_ids && (lead.followup_email_ids as string[]).length > 0 && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Scheduled Follow-ups</h2>
+              <p className="text-xs text-stone-500 mt-1">{(lead.followup_email_ids as string[]).length} email{(lead.followup_email_ids as string[]).length > 1 ? 's' : ''} queued</p>
+            </div>
+            <CancelSequenceButton leadId={lead.id} />
           </div>
         </div>
       )}
