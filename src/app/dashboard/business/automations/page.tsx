@@ -41,7 +41,7 @@ export default async function AutomationsPage() {
         </Link>
       </div>
 
-      {!hasScorecardAutomation && <SeedScorecardButton />}
+      <SeedScorecardButton />
 
       {workflows && workflows.length > 0 ? (
         <div className="space-y-2">

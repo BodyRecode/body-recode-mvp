@@ -19,8 +19,6 @@ export default function SeedScorecardButton() {
     setLoading(false)
   }
 
-  if (done) return null
-
   return (
     <div className="bg-teal-500/5 border border-teal-500/20 rounded-xl p-4 flex items-center justify-between gap-4 mb-6">
       <div className="flex items-center gap-3">
@@ -37,7 +35,7 @@ export default function SeedScorecardButton() {
         disabled={loading}
         className="shrink-0 bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
       >
-        {loading ? 'Setting up...' : 'Add'}
+        {loading ? 'Updating...' : done ? 'Updated' : 'Reseed'}
       </button>
     </div>
   )
