@@ -68,15 +68,6 @@ function buildStages(leadName: string, bodyState: string, totalScore: number | n
   const firstName = leadName.split(' ')[0]
   const stateInfo = BODY_STATE_LANGUAGE[bodyState] ?? BODY_STATE_LANGUAGE['Transitioning State']
 
-  // Find lowest scoring sections for context exploration
-  const lowSections = sectionScores
-    ? Object.entries(sectionScores)
-        .filter(([, v]) => v <= 2)
-        .sort(([, a], [, b]) => a - b)
-        .slice(0, 3)
-        .map(([k]) => k)
-    : []
-
   const scoreDisplay = totalScore ? ` — ${totalScore}/15` : ''
 
   return [
@@ -126,42 +117,31 @@ What was your reaction when you saw the result?"`,
 
 I\'m going to ask you a few questions. Just answer as openly as you can."`,
       prompts: [
-        ...(lowSections.includes('01') ? [
-          { type: 'category', text: 'ENERGY' },
-          { type: 'prompt', text: 'Your energy score was low. Walk me through what a typical day looks like for you energy-wise.' },
-          { type: 'sub', text: 'Do you rely on caffeine to get through the day?' },
-          { type: 'sub', text: 'When does the energy drop usually hit?' },
-          { type: 'sub', text: 'How does energy feel after training specifically?' },
-        ] : []),
-        ...(lowSections.includes('02') ? [
-          { type: 'category', text: 'SLEEP' },
-          { type: 'prompt', text: 'Your sleep score flagged as an issue. What does sleep actually look like for you right now?' },
-          { type: 'sub', text: 'Are you waking through the night?' },
-          { type: 'sub', text: 'Do you wake feeling rested?' },
-          { type: 'sub', text: 'Has this been going on long or is it a recent thing?' },
-        ] : []),
-        ...(lowSections.includes('03') ? [
-          { type: 'category', text: 'STRESS LOAD' },
-          { type: 'prompt', text: 'Your stress load score was significant. What\'s actually driving that right now — is it work, life, or something else?' },
-          { type: 'sub', text: 'Is the demand ongoing or more situational?' },
-          { type: 'sub', text: 'Do you find yourself carrying it into training?' },
-          { type: 'sub', text: 'Is there any period of genuine downtime in a typical week?' },
-        ] : []),
-        ...(lowSections.includes('04') ? [
-          { type: 'category', text: 'TRAINING RESPONSE' },
-          { type: 'prompt', text: 'Your training response score was low. What does progress actually look like right now compared to what you\'re putting in?' },
-          { type: 'sub', text: 'Are you getting stronger over time?' },
-          { type: 'sub', text: 'How do you feel during sessions compared to 6-12 months ago?' },
-          { type: 'sub', text: 'Does the body feel beaten up or recovered between sessions?' },
-        ] : []),
-        ...(lowSections.includes('05') ? [
-          { type: 'category', text: 'FAT LOSS RESPONSE' },
-          { type: 'prompt', text: 'Fat loss response was flagged. Walk me through what you\'ve tried and what\'s actually happened.' },
-          { type: 'sub', text: 'Is the diet consistent?' },
-          { type: 'sub', text: 'Has anything worked in the past? What changed?' },
-          { type: 'sub', text: 'How long has it felt stuck?' },
-        ] : []),
-        // Always ask about training structure
+        { type: 'category', text: 'ENERGY' },
+        { type: 'prompt', text: 'Walk me through what a typical day looks like for you energy-wise.' },
+        { type: 'sub', text: 'Do you rely on caffeine to get through the day?' },
+        { type: 'sub', text: 'When does the energy drop usually hit?' },
+        { type: 'sub', text: 'How does energy feel after training specifically?' },
+        { type: 'category', text: 'SLEEP' },
+        { type: 'prompt', text: 'What does sleep actually look like for you right now?' },
+        { type: 'sub', text: 'Are you waking through the night?' },
+        { type: 'sub', text: 'Do you wake feeling rested?' },
+        { type: 'sub', text: 'Has this been going on long or is it a recent thing?' },
+        { type: 'category', text: 'STRESS LOAD' },
+        { type: 'prompt', text: 'What\'s the stress load like right now — is it work, life, or something else driving it?' },
+        { type: 'sub', text: 'Is the demand ongoing or more situational?' },
+        { type: 'sub', text: 'Do you find yourself carrying it into training?' },
+        { type: 'sub', text: 'Is there any period of genuine downtime in a typical week?' },
+        { type: 'category', text: 'TRAINING RESPONSE' },
+        { type: 'prompt', text: 'What does progress actually look like right now compared to what you\'re putting in?' },
+        { type: 'sub', text: 'Are you getting stronger over time?' },
+        { type: 'sub', text: 'How do you feel during sessions compared to 6-12 months ago?' },
+        { type: 'sub', text: 'Does the body feel beaten up or recovered between sessions?' },
+        { type: 'category', text: 'FAT LOSS RESPONSE' },
+        { type: 'prompt', text: 'Walk me through what you\'ve tried in terms of fat loss and what\'s actually happened.' },
+        { type: 'sub', text: 'Is the diet consistent?' },
+        { type: 'sub', text: 'Has anything worked in the past? What changed?' },
+        { type: 'sub', text: 'How long has it felt stuck?' },
         { type: 'category', text: 'TRAINING STRUCTURE' },
         { type: 'prompt', text: 'What does your training actually look like week to week right now?' },
         { type: 'sub', text: 'How many sessions per week?' },
