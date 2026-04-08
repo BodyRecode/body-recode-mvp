@@ -38,6 +38,14 @@ const SYSTEM_AUTOMATIONS = [
     steps: 3,
     canReseed: false,
   },
+  {
+    id: 'downsell-offer',
+    name: 'Self-Guided Program Offer',
+    description: '$97 self-guided program offer sent automatically on Zoom 1 decline',
+    trigger: 'Declined after Zoom 1',
+    steps: 1,
+    canReseed: false,
+  },
 ]
 
 export default function SystemAutomationsPanel() {

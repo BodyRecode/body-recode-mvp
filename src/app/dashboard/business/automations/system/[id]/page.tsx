@@ -205,6 +205,27 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
       },
     ],
   },
+
+  'downsell-offer': {
+    id: 'downsell-offer',
+    name: 'Self-Guided Program Offer',
+    description: '$97 self-guided program offer sent automatically when a lead declines after Zoom 1',
+    trigger: 'Declined after Zoom 1',
+    triggerDetail: 'Fires automatically alongside the Zoom 1 Declined Follow-up sequence - no manual action required',
+    steps: [
+      {
+        day: 'Immediately on decline',
+        subject: 'Your {state} State Program - $97',
+        paragraphs: [
+          'Hi {firstName},',
+          'Your scorecard came back as {state} State. That tells me specifically how your body is handling stress and recovery right now, and what it can actually respond to.',
+          'I have built a 12-week program specifically for {state} State. Not a generic plan. Every decision in it - the training volume, intensity, rest periods, and nutrition - is designed around where you are right now.',
+          'It is $97. One-time. Yours to keep.',
+        ],
+        cta: 'Get the Program - $97',
+      },
+    ],
+  },
 }
 
 export default async function SystemAutomationDetailPage({
