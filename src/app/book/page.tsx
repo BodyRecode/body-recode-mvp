@@ -107,8 +107,7 @@ export default function BookPage() {
             <div className="mb-10">
               <h1 className="text-3xl font-bold mb-3">Book a Zoom Call</h1>
               <p className="text-stone-400 text-base leading-relaxed">
-                A 30-minute conversation to review your Performance Check-In results and see
-                if Body Recode Performance Coaching is the right fit for you.
+                A free 30-minute call to go through your scorecard results, identify what is specifically holding your body back, and map out what needs to change first.
               </p>
             </div>
 
@@ -119,7 +118,7 @@ export default function BookPage() {
               </div>
               <div className="flex items-center gap-1.5">
                 <Calendar size={14} className="text-teal-400" />
-                Mon – Thu, Brisbane
+                Brisbane time
               </div>
             </div>
 
