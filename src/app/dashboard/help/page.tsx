@@ -168,7 +168,7 @@ export default function HelpPage() {
                   <ChecklistItem text="Set the Coaching Package on the client profile (online, 2x, or 3x) and copy the subscription link" />
                   <ChecklistItem text="Send the subscription link to the client" />
                   <ChecklistItem text="Wait for the Subscription Active badge to appear on the client profile" />
-                  <ChecklistItem text="For face-to-face clients: go to the client profile and click Set up → next to the Face-to-Face Session card. Set the fixed day, time, duration, and session type. This unlocks the Sessions page in the client portal." />
+                  <ChecklistItem text="For face-to-face clients: go to the client profile and click Set up → next to the Face-to-Face Session card, then click + Add slot to set each recurring weekly day and time (e.g. Mon 7:00 am, Wed 7:00 am, Thu 7:00 am). Each slot is saved independently. This unlocks the Sessions page in the client portal." />
                   <ChecklistItem text="Set the Coaching Start Date (3-7 days out) — do not set it before the subscription is active" />
                   <ChecklistItem text="Client receives a reminder email automatically the day before coaching begins" />
                 </div>
@@ -496,11 +496,12 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Sessions (Face-to-Face Clients)</p>
             <p>Face-to-face clients see a <strong>Sessions</strong> section in their portal home that links to <strong>/portal/[token]/sessions</strong>. This page shows:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
-              <li>Their fixed weekly slot (day, time, duration)</li>
-              <li>Their next 4 upcoming sessions — with a <strong>Confirmed</strong> badge if a booking exists in the system, or <strong>Scheduled</strong> if it is a regular occurrence with no explicit booking yet</li>
+              <li>All their fixed weekly slots (e.g. Mondays · 7:00 am · 60 min, Wednesdays · 7:00 am · 60 min)</li>
+              <li>Upcoming session occurrences across all slots — with a <strong>Confirmed</strong> badge if the session has been confirmed, or <strong>Scheduled</strong> for regular upcoming occurrences</li>
               <li>A reschedule section — shows available face-to-face slots for the next 21 days. The client selects a time and confirms the booking. You and the client both receive a branded confirmation email.</li>
             </ul>
-            <p className="mt-2">To set up a client&apos;s fixed session, go to their client profile on the dashboard and click <strong>Set up →</strong> next to the Face-to-Face Session card. Set the day, time, duration, and session type, then save.</p>
+            <p className="mt-2">To set up a client&apos;s fixed sessions, go to their client profile and click <strong>Set up →</strong> next to the Face-to-Face Session card. Click <strong>+ Add slot</strong> for each recurring day — pick the day, time, and duration. Slots appear as a list and can be removed individually with the ✕ button.</p>
+            <p className="mt-2">To book an individual session from the dashboard, go to the Face-to-Face Sessions page and use the <strong>Book a session</strong> form in the Booked Sessions panel. Pick the date, time, and duration — this creates a <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">client_sessions</code> record. The session then shows as <strong>Confirmed</strong> in the client portal once the client confirms attendance via the reminder email.</p>
             <p>Every portal page shows a sticky header with the Body Recode logo and sign-out button, and a fixed footer with a WhatsApp link to message you directly.</p>
             <Training title="Why one portal instead of multiple links">
               <p>Previous builds sent separate links for intake, baseline, and check-ins. Each link was another thing to track and another point of failure. A single portal link eliminates that. The client bookmarks it once and uses it throughout the entire coaching relationship — onboarding, check-ins, resources. Everything is in one place, in the right order, with the right steps unlocked at the right time.</p>
@@ -981,7 +982,10 @@ export default function HelpPage() {
             </ul>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Face-to-Face Session Booking (from Client Portal)</p>
-            <p>Face-to-face clients can reschedule a session directly from their portal. When they book a slot, a <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">be_bookings</code> record is created with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">type = face_to_face</code>, and a branded confirmation email goes to both the client and you. Booked slots are blocked and won&apos;t appear for other clients.</p>
+            <p>Face-to-face clients can reschedule a session directly from their portal. When they book a slot, a <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">client_sessions</code> record is created with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">status = scheduled</code>, and a branded confirmation email goes to both the client and you. Booked slots are blocked and won&apos;t appear for other clients.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Session Reminder Emails</p>
+            <p>Every day at 8:00 am Brisbane time, a cron job scans for sessions scheduled in the next 20–28 hours that haven&apos;t had a reminder sent yet. The client receives a branded email with a <strong>Confirm attendance →</strong> button. Clicking that link marks the session as confirmed (<code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">confirmed_at</code> is set) and notifies you by email. The session then shows a <strong>Confirmed</strong> badge in the portal and on the dashboard client profile. If the session is already confirmed, the link shows a friendly &quot;already confirmed&quot; message instead.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Calendar Auto-Sync (Mac Calendar)</p>
             <p>All scheduled bookings sync automatically to your Mac Calendar via a <strong>webcal subscription</strong>. The feed URL is:</p>
