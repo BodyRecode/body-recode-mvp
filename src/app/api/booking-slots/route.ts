@@ -47,12 +47,25 @@ export async function GET(request: NextRequest) {
     .gte('scheduled_at', windowStartUtc.toISOString())
     .lte('scheduled_at', windowEndUtc.toISOString())
 
-  const blockedRanges = (existingBookings ?? []).map(b => {
-    const rule = availability[0]
-    const start = new Date(b.scheduled_at).getTime()
-    const end = start + (b.duration_minutes + rule.buffer_minutes) * 60 * 1000
-    return { start, end }
-  })
+  // Also load manually blocked times
+  const { data: blockedTimes } = await admin
+    .from('be_blocked_times')
+    .select('start_at, end_at')
+    .gte('end_at', windowStartUtc.toISOString())
+    .lte('start_at', windowEndUtc.toISOString())
+
+  const blockedRanges = [
+    ...(existingBookings ?? []).map(b => {
+      const rule = availability[0]
+      const start = new Date(b.scheduled_at).getTime()
+      const end = start + (b.duration_minutes + rule.buffer_minutes) * 60 * 1000
+      return { start, end }
+    }),
+    ...(blockedTimes ?? []).map(b => ({
+      start: new Date(b.start_at).getTime(),
+      end: new Date(b.end_at).getTime(),
+    })),
+  ]
 
   const slots: string[] = []
 
