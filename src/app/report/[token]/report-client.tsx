@@ -147,7 +147,7 @@ export default function ReportClient({ report }: { report: {
 
       {/* Header */}
       <div style={{ borderBottom: '1px solid #1c1917', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <img src="/logo-teal.png" alt="Body Recode" style={{ height: '56px' }} />
+        <img src="/logo-teal.png" alt="Body Recode" style={{ height: '80px' }} />
         <button
           className="no-print"
           onClick={handleDownload}
