@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildZoom1DeclinedEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from '@/lib/generate-report'
 import { logLeadEvent } from '@/lib/log-lead-event'
+import { sendDownsellOffer } from '@/lib/send-downsell-offer'
 
 const BOOKING_LINK = `https://bodyrecode.au/book`
 
@@ -79,6 +80,9 @@ export async function POST(
       })
     }
   }
+
+  // Auto-send downsell offer
+  await sendDownsellOffer(id, lead, admin)
 
   return NextResponse.json({ sent: true, count: emailIds.length })
 }
