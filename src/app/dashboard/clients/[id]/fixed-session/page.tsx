@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import FixedSessionForm from './fixed-session-form'
+import FixedSlotsManager from './fixed-slots-manager'
 import AddSessionForm from './add-session-form'
 
 export default async function FixedSessionPage({ params }: { params: Promise<{ id: string }> }) {
@@ -10,11 +10,17 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, fixed_session_day, fixed_session_time, fixed_session_duration, session_type')
+    .select('id, name, fixed_session_duration')
     .eq('id', id)
     .single()
 
   if (!client) return notFound()
+
+  const { data: slots } = await admin
+    .from('client_fixed_slots')
+    .select('id, day_of_week, session_time, duration_minutes')
+    .eq('client_id', id)
+    .order('day_of_week', { ascending: true })
 
   const { data: sessions } = await admin
     .from('client_sessions')
@@ -24,6 +30,8 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
     .gte('scheduled_at', new Date().toISOString())
     .order('scheduled_at', { ascending: true })
 
+  const defaultDuration = slots?.[0]?.duration_minutes ?? client.fixed_session_duration ?? 60
+
   return (
     <div className="max-w-lg">
       <div className="mb-6">
@@ -31,17 +39,11 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
           ← Back to {client.name}
         </Link>
         <h1 className="text-xl font-semibold text-white">Face-to-Face Sessions</h1>
-        <p className="text-stone-400 text-sm mt-1">Set the recurring weekly slot and manage individual bookings.</p>
+        <p className="text-stone-400 text-sm mt-1">Set recurring weekly slots and manage individual bookings.</p>
       </div>
 
-      {/* Recurring slot */}
-      <FixedSessionForm
-        clientId={id}
-        currentDay={client.fixed_session_day}
-        currentTime={client.fixed_session_time}
-        currentDuration={client.fixed_session_duration ?? 60}
-        currentSessionType={client.session_type}
-      />
+      {/* Fixed recurring slots */}
+      <FixedSlotsManager clientId={id} slots={slots ?? []} />
 
       {/* Individual session bookings */}
       <div className="mt-6 bg-stone-900 border border-stone-800 rounded-xl p-5">
@@ -75,7 +77,7 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
           </div>
         )}
 
-        <AddSessionForm clientId={id} defaultDuration={client.fixed_session_duration ?? 60} />
+        <AddSessionForm clientId={id} defaultDuration={defaultDuration} />
       </div>
     </div>
   )

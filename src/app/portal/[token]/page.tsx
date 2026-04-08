@@ -16,7 +16,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const { data: client } = await admin
     .from('clients')
-    .select('*, baselines(id), intake_invitations(status), weekly_checkins(week_number, form_type, submitted_at), fixed_session_day, fixed_session_time, fixed_session_duration, session_type')
+    .select('*, baselines(id), intake_invitations(status), weekly_checkins(week_number, form_type, submitted_at), session_type')
     .eq('onboarding_token', token)
     .ilike('email', user.email!)
     .single()
@@ -54,6 +54,13 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .maybeSingle()
 
   if (!client) return notFound()
+
+  // Load fixed slots for sessions card
+  const { data: fixedSlots } = await admin
+    .from('client_fixed_slots')
+    .select('id, day_of_week, session_time, duration_minutes')
+    .eq('client_id', client.id)
+    .order('day_of_week', { ascending: true })
 
   const firstName = client.name?.split(' ')[0] ?? 'there'
   const agreementDone = !!client.agreement_accepted_at
@@ -245,10 +252,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold text-white mb-1">Your face-to-face sessions</p>
-                  {client.fixed_session_day !== null && client.fixed_session_time ? (
-                    <p className="text-xs text-stone-400">
-                      {['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][client.fixed_session_day]}s · {new Date(`1970-01-01T${client.fixed_session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })} · AF Newstead
-                    </p>
+                  {(fixedSlots ?? []).length > 0 ? (
+                    <div className="space-y-0.5 mt-1">
+                      {(fixedSlots ?? []).map(slot => (
+                        <p key={slot.id} className="text-xs text-stone-400">
+                          {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][slot.day_of_week]}s · {new Date(`1970-01-01T${slot.session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })} · {slot.duration_minutes} min
+                        </p>
+                      ))}
+                    </div>
                   ) : (
                     <p className="text-xs text-stone-600">Fixed slot not yet assigned</p>
                   )}

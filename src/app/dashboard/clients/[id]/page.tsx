@@ -98,6 +98,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     .order('scheduled_at', { ascending: true })
     .limit(6)
 
+  const { data: clientFixedSlots } = await admin
+    .from('client_fixed_slots')
+    .select('id, day_of_week, session_time, duration_minutes')
+    .eq('client_id', id)
+    .order('day_of_week', { ascending: true })
+
   const activeCffs = cffsRecords?.find(c => !c.is_archived) || null
   const archivedCffs = cffsRecords?.filter(c => c.is_archived) || []
   const latestInvitation = invitations?.[0] || null
@@ -216,18 +222,24 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             href={`/dashboard/clients/${id}/fixed-session`}
             className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
           >
-            {client.fixed_session_day !== null ? 'Edit →' : 'Set up →'}
+            {(clientFixedSlots ?? []).length > 0 ? 'Manage →' : 'Set up →'}
           </Link>
         </div>
-        {client.fixed_session_day !== null && client.fixed_session_time ? (
-          <div>
-            <p className="text-sm text-white font-medium">
-              {['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][client.fixed_session_day as number]}s · {new Date(`1970-01-01T${client.fixed_session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })}
-            </p>
-            <p className="text-xs text-stone-500 mt-0.5">{client.fixed_session_duration ?? 60} min · AF Newstead</p>
+        {(clientFixedSlots ?? []).length > 0 ? (
+          <div className="space-y-1">
+            {(clientFixedSlots ?? []).map(slot => (
+              <div key={slot.id}>
+                <span className="text-sm text-white font-medium">
+                  {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][slot.day_of_week]}s
+                </span>
+                <span className="text-xs text-stone-500 ml-2">
+                  · {new Date(`1970-01-01T${slot.session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })} · {slot.duration_minutes} min
+                </span>
+              </div>
+            ))}
           </div>
         ) : (
-          <p className="text-sm text-stone-600">No fixed slot assigned yet.</p>
+          <p className="text-sm text-stone-600">No fixed slots assigned yet.</p>
         )}
         {(upcomingClientSessions ?? []).length > 0 && (
           <div className="mt-4 pt-4 border-t border-stone-800 space-y-2">
