@@ -87,26 +87,26 @@ export default async function PreviewProgramPage({
         <style>{`
           .program-content h1 { display: none; }
           .program-content h2 {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: #d1d5db;
-            margin: 48px 0 16px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #1e1e1e;
+            color: ${stateColour.color};
+            margin: 52px 0 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid ${stateColour.border};
           }
           .program-content h2:first-of-type { margin-top: 0; }
           .program-content h3 {
             font-size: 15px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #10E1C2;
             margin: 28px 0 10px;
           }
           .program-content h4 {
             font-size: 13px;
             font-weight: 600;
-            color: #d1d5db;
+            color: #e5e7eb;
             margin: 20px 0 8px;
           }
           .program-content p {
@@ -140,17 +140,19 @@ export default async function PreviewProgramPage({
             border-collapse: collapse;
             margin: 16px 0 20px;
             font-size: 13px;
+            border-radius: 8px;
+            overflow: hidden;
           }
           .program-content th {
             text-align: left;
             padding: 10px 14px;
-            background: #161616;
-            color: #d1d5db;
+            background: rgba(16,225,194,0.06);
+            color: #10E1C2;
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-            border-bottom: 1px solid #222222;
+            border-bottom: 1px solid rgba(16,225,194,0.15);
           }
           .program-content td {
             padding: 10px 14px;
@@ -160,15 +162,15 @@ export default async function PreviewProgramPage({
             line-height: 1.6;
           }
           .program-content tr:last-child td { border-bottom: none; }
-          .program-content strong { color: #f3f4f6; font-weight: 600; }
+          .program-content strong { color: #ffffff; font-weight: 600; }
           .program-content hr {
             border: none;
             border-top: 1px solid #1e1e1e;
             margin: 40px 0;
           }
           .program-content blockquote {
-            background: #111111;
-            border-left: 3px solid #374151;
+            background: ${stateColour.bg};
+            border-left: 3px solid ${stateColour.color};
             padding: 12px 16px;
             margin: 16px 0;
             font-size: 13px;
@@ -181,7 +183,7 @@ export default async function PreviewProgramPage({
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 12px;
-            color: #d1d5db;
+            color: #10E1C2;
           }
         `}</style>
         <div className="program-content" dangerouslySetInnerHTML={{ __html: html }} />
