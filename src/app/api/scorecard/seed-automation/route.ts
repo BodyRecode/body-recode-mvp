@@ -44,7 +44,7 @@ Body Recode`,
       position: 2,
       type: 'wait',
       action_type: null,
-      config: { unit: 'days', value: 2 },
+      config: { unit: 'days', value: 3 },
     },
     {
       position: 3,
