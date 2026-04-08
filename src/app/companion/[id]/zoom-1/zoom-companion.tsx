@@ -77,7 +77,7 @@ function buildStages(leadName: string, bodyState: string, totalScore: number | n
         .map(([k]) => k)
     : []
 
-  const scoreDisplay = totalScore ? `${totalScore}/15` : 'their result'
+  const scoreDisplay = totalScore ? ` — ${totalScore}/15` : ''
 
   return [
     {
@@ -105,7 +105,7 @@ There\'s nothing you need to decide today. I just want to make sure the patterns
       goal: 'Let them respond to their result before you interpret it. Their reaction is the signal.',
       script: `"Before I share anything, I want to hear your take first.
 
-Your scorecard came back as ${bodyState} — ${scoreDisplay}. You\'ve had a chance to sit with that.
+Your scorecard came back as ${bodyState}${scoreDisplay}. You\'ve had a chance to sit with that.
 
 What was your reaction when you saw the result?"`,
       prompts: [
