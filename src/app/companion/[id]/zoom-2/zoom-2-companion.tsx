@@ -152,7 +152,18 @@ The real question isn't whether it's expensive. It's whether what you've been do
 ↳ If price objection holds — move to Step 2.`,
     },
     {
-      label: 'Step 2 — Introduce Founding Client',
+      label: 'Step 2 — Introduce Online',
+      content: `"The other thing worth knowing is that there's an online option. Same system, same interpretation, same weekly check-ins and direct access - just remote instead of face to face.
+
+That's $149 a week. Same commencement fee to get started.
+
+If the in-person format was part of the hesitation, that might be worth considering."
+
+↳ If online works — Stage 5, Path C (Online).
+↳ If price still holds — move to Step 3.`,
+    },
+    {
+      label: 'Step 3 — Introduce Founding Client',
       content: `"There's one other option I want to put in front of you — I'll explain it properly so you can decide if it's relevant.
 
 I have a small number of founding client positions open. These are clients whose full coaching journey gets documented — intake, interpretation, weekly data, outcomes. It's how I formally validate the system across real cases.
@@ -164,7 +175,7 @@ That's not a discount. It's a trade — your participation has genuine value to 
 If that changes things for you, I can walk you through what's involved."`,
     },
     {
-      label: 'Step 3 — If they want the detail',
+      label: 'Step 4 — If they want the detail',
       content: `COMMITMENT
 "Minimum 12 weeks. That's what makes it a valid case study. Most founding clients stay 6 to 12 months, but we don't ask for that upfront."
 
