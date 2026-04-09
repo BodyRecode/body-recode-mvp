@@ -2,50 +2,61 @@
 
 import { useState, useEffect } from 'react'
 
+type Category = 'flows' | 'coaching' | 'business' | 'content'
+
 const SECTIONS = [
-  { id: 'operator-flow', title: 'Operator Flow', colour: 'violet' as const },
-  { id: 'operator-flow-founder', title: 'Founder Operator Flow', colour: 'violet' as const },
-  { id: 'lead-pipeline', title: '1. Lead Pipeline', colour: 'teal' as const },
-  { id: 'zoom-1', title: '2. Zoom 1 Companion', colour: 'teal' as const },
-  { id: 'orientation', title: '3. Orientation', colour: 'teal' as const },
-  { id: 'zoom-2', title: '4. Zoom 2 Companion', colour: 'teal' as const },
-  { id: 'coaching-entry', title: '5. Coaching Entry', colour: 'teal' as const },
-  { id: 'post-conversion', title: '6. Post-Conversion', colour: 'teal' as const },
-  { id: 'deliberate-start', title: '7. Deliberate Start', colour: 'teal' as const },
-  { id: 'client-portal', title: '8. Client Portal', colour: 'teal' as const },
-  { id: 'client-onboarding', title: '9. Client Onboarding', colour: 'teal' as const },
-  { id: 'cffs', title: '10. CFFS', colour: 'teal' as const },
-  { id: 'weekly-checkins', title: '11. Weekly Check-Ins', colour: 'teal' as const },
-  { id: 'coaching-package', title: '12. Coaching Package', colour: 'teal' as const },
-  { id: 'clients-dashboard', title: '13. Clients Dashboard', colour: 'teal' as const },
-  { id: 'automated-status', title: '14. Automated Status', colour: 'teal' as const },
-  { id: 'email-sequences', title: '15. Email Sequences', colour: 'teal' as const },
-  { id: 'communications', title: '16. Communications', colour: 'teal' as const },
-  { id: 'assets', title: '16b. Assets', colour: 'teal' as const },
-  { id: 'admin-actions', title: '17. Admin Actions', colour: 'teal' as const },
-  { id: 'founding-client', title: '18. Founding Client', colour: 'teal' as const },
-  { id: 'stripe-payments', title: '19. Stripe Payments', colour: 'teal' as const },
-  { id: 'training-program', title: '20. Training Program', colour: 'teal' as const },
-  { id: 'macro-arc', title: '21. Macro Training Arc', colour: 'teal' as const },
-  { id: 'nutrition-plan', title: '22. Nutrition Plan', colour: 'teal' as const },
-  { id: 'business-engine', title: 'Business Engine', colour: 'amber' as const },
-  { id: 'be-crm', title: '23. CRM & Pipeline', colour: 'amber' as const },
-  { id: 'be-bookings', title: '24. Bookings', colour: 'amber' as const },
-  { id: 'be-automations', title: '25. Automations', colour: 'amber' as const },
-  { id: 'be-campaigns', title: '26. Campaigns', colour: 'amber' as const },
-  { id: 'be-funnels', title: '27. Funnels', colour: 'amber' as const },
-  { id: 'be-inbox', title: '28. Inbox', colour: 'amber' as const },
-  { id: 'be-payments', title: '29. Payments', colour: 'amber' as const },
-  { id: 'be-analytics', title: '30. Analytics', colour: 'amber' as const },
-  { id: 'be-sources', title: '31. Lead Sources', colour: 'amber' as const },
-  { id: 'be-ads', title: '32. Ads', colour: 'amber' as const },
-  { id: 'be-content-engine', title: '33. Content Engine', colour: 'amber' as const },
-  { id: 'be-strategy', title: '34. Strategy Hub', colour: 'amber' as const },
-  { id: 'be-social-profiles', title: '35. Social Profiles', colour: 'amber' as const },
+  { id: 'operator-flow',         title: 'Operator Flow',         colour: 'violet' as const, category: 'flows' as Category },
+  { id: 'operator-flow-founder', title: 'Founder Operator Flow', colour: 'violet' as const, category: 'flows' as Category },
+  { id: 'lead-pipeline',    title: '1. Lead Pipeline',       colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'zoom-1',           title: '2. Zoom 1 Companion',    colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'orientation',      title: '3. Orientation',         colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'zoom-2',           title: '4. Zoom 2 Companion',    colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'coaching-entry',   title: '5. Coaching Entry',      colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'post-conversion',  title: '6. Post-Conversion',     colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'deliberate-start', title: '7. Deliberate Start',    colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'client-portal',    title: '8. Client Portal',       colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'client-onboarding',title: '9. Client Onboarding',   colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'cffs',             title: '10. CFFS',               colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'weekly-checkins',  title: '11. Weekly Check-Ins',   colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'coaching-package', title: '12. Coaching Package',   colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'clients-dashboard',title: '13. Clients Dashboard',  colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'automated-status', title: '14. Automated Status',   colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'email-sequences',  title: '15. Email Sequences',    colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'communications',   title: '16. Communications',     colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'assets',           title: '16b. Assets',            colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'admin-actions',    title: '17. Admin Actions',      colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'founding-client',  title: '18. Founding Client',    colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'stripe-payments',  title: '19. Stripe Payments',    colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'training-program', title: '20. Training Program',   colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'macro-arc',        title: '21. Macro Training Arc', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'nutrition-plan',   title: '22. Nutrition Plan',     colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'business-engine',  title: 'Business Engine',        colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-crm',           title: '23. CRM & Pipeline',     colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-bookings',      title: '24. Bookings',           colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-automations',   title: '25. Automations',        colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-campaigns',     title: '26. Campaigns',          colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-funnels',       title: '27. Funnels',            colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-inbox',         title: '28. Inbox',              colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-payments',      title: '29. Payments',           colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-analytics',     title: '30. Analytics',          colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-sources',       title: '31. Lead Sources',       colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-ads',           title: '32. Ads',                colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-content-engine',title: '33. Content Engine',     colour: 'amber' as const, category: 'content' as Category },
+  { id: 'be-strategy',      title: '34. Strategy Hub',       colour: 'amber' as const, category: 'content' as Category },
+  { id: 'be-social-profiles',title: '35. Social Profiles',   colour: 'amber' as const, category: 'content' as Category },
+  { id: 'be-website',       title: '36. Website Analytics',  colour: 'amber' as const, category: 'content' as Category },
+]
+
+const CATEGORIES: { id: Category; label: string }[] = [
+  { id: 'flows',    label: 'Flows' },
+  { id: 'coaching', label: 'Coaching' },
+  { id: 'business', label: 'Business' },
+  { id: 'content',  label: 'Content' },
 ]
 
 export default function HelpPage() {
   const [activeSection, setActiveSection] = useState<string>('operator-flow')
+  const [activeTab, setActiveTab] = useState<Category>('flows')
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -75,9 +86,29 @@ export default function HelpPage() {
   return (
     <div className="max-w-6xl">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6">
         <h1 className="text-2xl font-semibold mb-2">Dashboard Guide</h1>
         <p className="text-stone-400 text-sm">How the Body Recode Performance Coaching system works — and why each part is structured the way it is.</p>
+        {/* Category tabs */}
+        <div className="flex gap-2 mt-4">
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => {
+                setActiveTab(cat.id)
+                const first = SECTIONS.find(s => s.category === cat.id)
+                if (first) scrollTo(first.id)
+              }}
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors border ${
+                activeTab === cat.id
+                  ? 'bg-teal-500/20 text-teal-400 border-teal-500/30'
+                  : 'bg-stone-800 text-stone-400 border-stone-700 hover:text-white'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="flex gap-8 items-start">
@@ -85,9 +116,9 @@ export default function HelpPage() {
         {/* Sidebar */}
         <nav className="w-48 shrink-0 sticky top-8 self-start overflow-y-auto max-h-[calc(100vh-8rem)]">
           <ul className="space-y-0.5">
-            {SECTIONS.map(({ id, title, colour }) => {
+            {SECTIONS.filter(s => s.category === activeTab).map(({ id, title, colour }) => {
               const isActive = activeSection === id
-              const activeColour = colour === 'violet' ? 'text-violet-400' : 'text-teal-400'
+              const activeColour = colour === 'violet' ? 'text-violet-400' : colour === 'amber' ? 'text-amber-400' : 'text-teal-400'
               return (
                 <li key={id}>
                   <button
@@ -1604,6 +1635,29 @@ export default function HelpPage() {
             <p>Public content and the scorecard use: <strong className="text-white">Depleted / Transitioning / Ready</strong></p>
             <p className="mt-1">The CFFS coaching system uses: <strong className="text-white">Remediation / Optimisation / Post-Optimisation</strong></p>
             <Note>Never use the CFFS classification terms in public content. The gap is intentional — the scorecard gives a signal, the CFFS gives the real classification. That distinction protects the value of the paid system.</Note>
+          </Section>
+
+          <Section id="be-website" title="36. Website Analytics" colour="amber">
+            <p>Found at <strong>Business → Website</strong>. Shows traffic data from performance.bodyrecode.au pulled directly from Vercel Analytics.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Stats</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Visitors</strong> — unique devices that landed on the site in the selected period</li>
+              <li><strong>Page Views</strong> — total pages loaded across all visits</li>
+              <li><strong>Scorecard Submissions</strong> — pulled from the leads database for the same period. The percentage underneath is your visitor-to-submission conversion rate</li>
+              <li><strong>Bounce Rate</strong> — percentage of visitors who left without interacting</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Daily Chart</p>
+            <p>Bar chart showing page views per day. Today is highlighted in teal. Hover any bar to see exact views and visitors for that day. Use this to correlate traffic spikes with posts — you&apos;ll see immediately which content is driving people to the site.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Time Range</p>
+            <p>Switch between 7, 30, and 90 day views using the buttons at the top right. The scorecard submission count and conversion rate update to match the same window.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Live Pages</p>
+            <p>Quick links to open any page on performance.bodyrecode.au directly from the dashboard without having to type the URL.</p>
+
+            <Note>Analytics data starts from when Vercel Analytics was enabled (April 2026). No historical data before that date exists.</Note>
           </Section>
 
         </div>
