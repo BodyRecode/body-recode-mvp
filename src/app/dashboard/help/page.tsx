@@ -1101,8 +1101,8 @@ export default function HelpPage() {
             <StatusList items={[
               { label: 'Scorecard Follow-up Sequence', desc: '4-email sequence triggered when someone completes the Body State Scorecard' },
               { label: 'Performance Report Follow-up', desc: '3-email sequence sent after a performance report is delivered to a lead' },
-              { label: 'Zoom 1 Booking Confirmation', desc: 'Branded confirmation email + .ics calendar invite sent to the lead immediately on Zoom 1 booking, plus a coach notification to kade@bodyrecode.au' },
-              { label: 'Zoom 2 Booking Confirmation', desc: 'Same as Zoom 1 - branded confirmation + .ics + coach notification, fired automatically when a returning lead books their second call' },
+              { label: 'Zoom 1 Booking Confirmation', desc: 'Confirmation + .ics sent to lead on booking, 2-hour reminder, 30-minute reminder, plus coach notification to kade@bodyrecode.au (4 emails total)' },
+              { label: 'Zoom 2 Booking Confirmation', desc: 'Same as Zoom 1 - confirmation + 2-hour reminder + 30-minute reminder + coach notification, fired when a returning lead books their second call' },
               { label: 'No-show Re-engagement', desc: '3-email sequence for leads who missed their scheduled Zoom call' },
               { label: 'Zoom 1 Declined Follow-up', desc: '3-email re-engagement sequence sent when a lead declines after Zoom 1' },
               { label: 'Self-Guided Program Offer', desc: '$97 program offer email sent automatically alongside the Zoom 1 declined sequence' },
@@ -1158,8 +1158,10 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Zoom Booking Confirmation Emails</p>
             <p>These are system-level emails that fire automatically every time a Zoom 1 or Zoom 2 is booked - no configuration required. Both fire from the same booking endpoint the moment a slot is confirmed.</p>
             <StatusList items={[
-              { label: 'Lead Confirmation Email', desc: 'Branded dark card email with booking date, time (AEST), Zoom join link, and a .ics calendar attachment - sent to the lead immediately on booking' },
-              { label: 'Coach Notification Email', desc: "Sent to kade@bodyrecode.au with the lead's name, email, booking date/time, Zoom link, and a direct link to their CRM record" },
+              { label: 'Confirmation Email', desc: 'Branded dark card with date, time (AEST), Zoom join link, and .ics calendar attachment - sent to the lead immediately on booking' },
+              { label: '2-Hour Reminder', desc: 'Scheduled email to the lead with Zoom join link, fires 2 hours before the call start time' },
+              { label: '30-Minute Reminder', desc: 'Final reminder to the lead with Zoom join link, fires 30 minutes before the call' },
+              { label: 'Coach Notification', desc: "Sent to kade@bodyrecode.au immediately on booking with the lead's name, email, date/time, Zoom link, and a link to their CRM record" },
             ]} />
             <p className="mt-2">The system detects whether the booking is a Zoom 1 or Zoom 2 based on the lead&apos;s current pipeline stage. Both email types use the approved dark card template: black outer, #111111 inner card, Body Recode logo, and the coach signature with photo.</p>
             <Note>No setup needed - these emails are always active for every booking made via bodyrecode.au/book or the manual booking tool in Business → Bookings.</Note>

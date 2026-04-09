@@ -247,6 +247,28 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
         cta: 'Join Zoom ↗',
       },
       {
+        day: '2 hours before — to lead (scheduled)',
+        subject: 'Your Zoom call is in 2 hours — {time} Brisbane',
+        paragraphs: [
+          'Hi {firstName},',
+          'Your Zoom call with Kade is in 2 hours.',
+          '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
+          '[Coach signature with photo]',
+        ],
+        cta: 'Join Zoom ↗',
+      },
+      {
+        day: '30 minutes before — to lead (scheduled)',
+        subject: 'Your Zoom call is in 30 minutes — {time} Brisbane',
+        paragraphs: [
+          'Hi {firstName},',
+          'Your Zoom call with Kade is in 30 minutes.',
+          '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
+          '[Coach signature with photo]',
+        ],
+        cta: 'Join Zoom ↗',
+      },
+      {
         day: 'Immediately — to coach (kade@bodyrecode.au)',
         subject: 'Zoom 1 booked — {name}',
         paragraphs: [
@@ -275,6 +297,28 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
           'Your Zoom call with Kade is confirmed.',
           '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
           'Open the attached file to add this to your calendar.',
+          '[Coach signature with photo]',
+        ],
+        cta: 'Join Zoom ↗',
+      },
+      {
+        day: '2 hours before — to lead (scheduled)',
+        subject: 'Your Zoom call is in 2 hours — {time} Brisbane',
+        paragraphs: [
+          'Hi {firstName},',
+          'Your Zoom call with Kade is in 2 hours.',
+          '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
+          '[Coach signature with photo]',
+        ],
+        cta: 'Join Zoom ↗',
+      },
+      {
+        day: '30 minutes before — to lead (scheduled)',
+        subject: 'Your Zoom call is in 30 minutes — {time} Brisbane',
+        paragraphs: [
+          'Hi {firstName},',
+          'Your Zoom call with Kade is in 30 minutes.',
+          '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
           '[Coach signature with photo]',
         ],
         cta: 'Join Zoom ↗',
