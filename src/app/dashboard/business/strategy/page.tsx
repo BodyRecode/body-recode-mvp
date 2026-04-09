@@ -1141,7 +1141,7 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Weekly Action Plan</SectionLabel>
             <div className="flex items-start gap-3 mb-3 p-3 rounded-lg bg-amber-400/5 border border-amber-400/20">
-              <p className="text-xs text-amber-300 leading-relaxed">This rhythm starts <strong>after the pre-launch is complete</strong> (after Post 5 on April 15). Don&apos;t try to force it during pre-launch — those posts run on their own Day 1/2/4/6/8 schedule. First Monday of this rhythm: <strong>April 21</strong>.</p>
+              <p className="text-xs text-amber-300 leading-relaxed">This rhythm starts <strong>after the pre-launch is complete</strong> (after Post 5 on April 15). Don&apos;t try to force it during pre-launch — those posts run on their own Day 1/2/4/6/8 schedule. First Monday of this rhythm: <strong>April 20</strong>.</p>
             </div>
             <p className="text-stone-500 text-xs mb-3">What to do each week — beyond just posting.</p>
             <div className="space-y-2">
