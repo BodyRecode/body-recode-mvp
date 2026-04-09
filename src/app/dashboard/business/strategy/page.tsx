@@ -168,15 +168,15 @@ function ContentCalendar() {
 
         {/* Day headers */}
         <div className="grid grid-cols-7 mb-1">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
             <div key={d} className="text-center text-[10px] font-semibold text-stone-600 uppercase tracking-wider py-1">{d}</div>
           ))}
         </div>
 
         {/* Days grid */}
         <div className="grid grid-cols-7 gap-px bg-stone-800">
-          {/* Empty cells for first day */}
-          {Array.from({ length: firstDay }).map((_, i) => (
+          {/* Empty cells for first day — Monday-first: Sun(0)→6, Mon(1)→0, Tue(2)→1... */}
+          {Array.from({ length: (firstDay + 6) % 7 }).map((_, i) => (
             <div key={`empty-${i}`} className="bg-stone-950 min-h-[80px]" />
           ))}
           {Array.from({ length: daysInMonth }).map((_, i) => {
