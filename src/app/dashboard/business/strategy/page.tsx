@@ -433,8 +433,45 @@ function PostBlock({ number, title, day, format, graphic, caption, hashtags }: {
   )
 }
 
+type PostStatus = 'not_started' | 'drafted' | 'scheduled' | 'published'
+
+const POST_STATUS_CYCLE: PostStatus[] = ['not_started', 'drafted', 'scheduled', 'published']
+
+const POST_STATUS_CONFIG: Record<PostStatus, { label: string; color: string; bg: string; border: string }> = {
+  not_started: { label: 'Not Started', color: 'text-stone-500',  bg: 'bg-stone-800/50',    border: 'border-stone-700' },
+  drafted:     { label: 'Drafted',     color: 'text-amber-400',  bg: 'bg-amber-400/10',    border: 'border-amber-400/30' },
+  scheduled:   { label: 'Scheduled',   color: 'text-blue-400',   bg: 'bg-blue-400/10',     border: 'border-blue-400/30' },
+  published:   { label: 'Published',   color: 'text-teal-400',   bg: 'bg-teal-400/10',     border: 'border-teal-400/30' },
+}
+
+const PRELAUNCH_POSTS = [
+  { id: 'post1', post: 'Post 1', day: 'Day 1', title: 'Brand Arrival',       temp: 'Cold' as const },
+  { id: 'post2', post: 'Post 2', day: 'Day 2', title: 'Who You Are',         temp: 'Cold' as const },
+  { id: 'post3', post: 'Post 3', day: 'Day 4', title: 'The Problem',         temp: 'Cold' as const },
+  { id: 'post4', post: 'Post 4', day: 'Day 6', title: 'The Three States',    temp: 'Cold' as const },
+  { id: 'post5', post: 'Post 5', day: 'Day 8', title: 'Scorecard CTA',       temp: 'Hot'  as const },
+]
+
 export default function StrategyPage() {
   const [tab, setTab] = useState<Tab>('overview')
+  const [postStatuses, setPostStatuses] = useState<Record<string, PostStatus>>({})
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('prelaunch_post_statuses')
+      if (saved) setPostStatuses(JSON.parse(saved))
+    } catch {}
+  }, [])
+
+  function cycleStatus(id: string) {
+    setPostStatuses(prev => {
+      const current = prev[id] ?? 'not_started'
+      const nextIndex = (POST_STATUS_CYCLE.indexOf(current) + 1) % POST_STATUS_CYCLE.length
+      const next = { ...prev, [id]: POST_STATUS_CYCLE[nextIndex] }
+      try { localStorage.setItem('prelaunch_post_statuses', JSON.stringify(next)) } catch {}
+      return next
+    })
+  }
 
   return (
     <div className="max-w-4xl">
@@ -904,6 +941,53 @@ export default function StrategyPage() {
       {/* ── PRE-LAUNCH ── */}
       {tab === 'prelaunch' && (
         <div className="space-y-4">
+
+          {/* Tracker */}
+          {(() => {
+            const publishedCount = PRELAUNCH_POSTS.filter(p => (postStatuses[p.id] ?? 'not_started') === 'published').length
+            const allDone = publishedCount === PRELAUNCH_POSTS.length
+            return (
+              <Card>
+                <div className="flex items-center justify-between mb-4">
+                  <SectionLabel>Pre-Launch Tracker</SectionLabel>
+                  <div className="flex items-center gap-2">
+                    <div className="w-32 h-1.5 bg-stone-800 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-teal-500 rounded-full transition-all duration-300"
+                        style={{ width: `${(publishedCount / PRELAUNCH_POSTS.length) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-stone-500">{publishedCount}/{PRELAUNCH_POSTS.length}</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {PRELAUNCH_POSTS.map(p => {
+                    const status = postStatuses[p.id] ?? 'not_started'
+                    const cfg = POST_STATUS_CONFIG[status]
+                    return (
+                      <div key={p.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-stone-950 border border-stone-800">
+                        <span className="text-stone-600 text-xs w-10 shrink-0">{p.day}</span>
+                        <span className={`text-xs font-bold px-1.5 py-0.5 rounded border shrink-0 ${p.temp === 'Hot' ? 'text-red-400 bg-red-400/10 border-red-400/20' : 'text-blue-400 bg-blue-400/10 border-blue-400/20'}`}>{p.temp}</span>
+                        <span className="text-stone-300 text-sm flex-1">{p.title}</span>
+                        <button
+                          onClick={() => cycleStatus(p.id)}
+                          className={`text-xs font-semibold px-2.5 py-1 rounded-full border transition-colors cursor-pointer ${cfg.bg} ${cfg.color} ${cfg.border}`}
+                        >
+                          {cfg.label}
+                        </button>
+                      </div>
+                    )
+                  })}
+                </div>
+                {allDone && (
+                  <div className="mt-3 p-3 bg-teal-500/10 border border-teal-500/30 rounded-lg">
+                    <p className="text-xs text-teal-400 font-semibold">All 5 posts published. Ready to drop the Founding Client offer and launch ads.</p>
+                  </div>
+                )}
+              </Card>
+            )
+          })()}
+
           <Card>
             <SectionLabel>Pre-Launch Goal</SectionLabel>
             <Body>Post 5 times over 8 days before any ads or the Founder Program offer goes live. Goal: profile looks established and intentional. No hashtags until Post 5. No CTA until Post 5.</Body>
