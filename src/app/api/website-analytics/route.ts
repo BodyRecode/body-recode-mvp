@@ -21,10 +21,9 @@ export async function GET(request: Request) {
   const base = `https://vercel.com/api/web-analytics`
   const params = new URLSearchParams({ teamId: TEAM_ID, projectId: PROJECT_ID, from: fromStr, to: toStr })
 
-  const [overviewRes, pagesRes, referrersRes] = await Promise.all([
+  const [overviewRes, timeseriesRes] = await Promise.all([
     fetch(`${base}/overview?${params}`, { headers, next: { revalidate: 300 } }),
-    fetch(`${base}/pages?${params}&limit=10`, { headers, next: { revalidate: 300 } }),
-    fetch(`${base}/referrers?${params}&limit=10`, { headers, next: { revalidate: 300 } }),
+    fetch(`${base}/timeseries?${params}`, { headers, next: { revalidate: 300 } }),
   ])
 
   if (!overviewRes.ok) {
@@ -32,11 +31,17 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: err?.error?.message ?? 'Vercel API error' }, { status: 502 })
   }
 
-  const [overview, pages, referrers] = await Promise.all([
+  const [overview, timeseries] = await Promise.all([
     overviewRes.json(),
-    pagesRes.ok ? pagesRes.json() : { data: [] },
-    referrersRes.ok ? referrersRes.json() : { data: [] },
+    timeseriesRes.ok ? timeseriesRes.json() : { data: { groups: { all: [] } } },
   ])
 
-  return NextResponse.json({ overview, pages: pages.data ?? [], referrers: referrers.data ?? [] })
+  const daily: { date: string; views: number; visitors: number }[] =
+    (timeseries?.data?.groups?.all ?? []).map((d: { key: string; total: number; devices: number }) => ({
+      date: d.key,
+      views: d.total,
+      visitors: d.devices,
+    }))
+
+  return NextResponse.json({ overview, daily })
 }

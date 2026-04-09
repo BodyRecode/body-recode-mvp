@@ -3,40 +3,68 @@
 import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
+type DayData = { date: string; views: number; visitors: number }
+
 type AnalyticsData = {
-  overview: {
-    visitors: { value: number; previousValue?: number }
-    pageViews: { value: number; previousValue?: number }
-    bounceRate?: { value: number }
-    visitDuration?: { value: number }
-  }
-  pages: { path: string; visitors: number; pageViews: number }[]
-  referrers: { referrer: string; visitors: number }[]
+  overview: { total: number; devices: number; bounceRate: number }
+  daily: DayData[]
 }
 
-function StatCard({ label, value, prev, format = 'number' }: {
+function StatCard({ label, value, sub, highlight }: {
   label: string
-  value: number | undefined
-  prev?: number
-  format?: 'number' | 'percent' | 'duration'
+  value: string | number
+  sub?: string
+  highlight?: boolean
 }) {
-  const display = value == null ? '—' :
-    format === 'percent' ? `${(value * 100).toFixed(1)}%` :
-    format === 'duration' ? `${Math.round(value)}s` :
-    value.toLocaleString()
+  return (
+    <div className={`bg-[#111110] border rounded-xl p-5 ${highlight ? 'border-teal-500/40' : 'border-stone-800'}`}>
+      <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</p>
+      <p className={`text-3xl font-black ${highlight ? 'text-teal-400' : 'text-white'}`}>{value}</p>
+      {sub && <p className="text-xs mt-1 font-medium text-stone-500">{sub}</p>}
+    </div>
+  )
+}
 
-  const change = value != null && prev != null && prev > 0
-    ? Math.round(((value - prev) / prev) * 100)
-    : null
+function DailyChart({ data }: { data: DayData[] }) {
+  const max = Math.max(...data.map(d => d.views), 1)
+  const hasData = data.some(d => d.views > 0)
 
   return (
     <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
-      <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</p>
-      <p className="text-3xl font-black text-white">{display}</p>
-      {change != null && (
-        <p className={`text-xs mt-1 font-medium ${change >= 0 ? 'text-teal-400' : 'text-red-400'}`}>
-          {change >= 0 ? '+' : ''}{change}% vs prev period
-        </p>
+      <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-5">Daily Page Views</p>
+      {!hasData ? (
+        <p className="text-sm text-stone-600 py-4">No data yet for this period.</p>
+      ) : (
+        <div className="flex items-end gap-1 h-32">
+          {data.map((d) => {
+            const height = max > 0 ? Math.max((d.views / max) * 100, d.views > 0 ? 4 : 0) : 0
+            const date = new Date(d.date + 'T00:00:00')
+            const label = date.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
+            const isToday = d.date === new Date().toISOString().split('T')[0]
+            return (
+              <div key={d.date} className="flex-1 flex flex-col items-center gap-1 group relative">
+                {d.views > 0 && (
+                  <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-stone-800 border border-stone-700 rounded px-1.5 py-0.5 text-[10px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                    {d.views} views · {d.visitors} visitors
+                  </div>
+                )}
+                <div
+                  className={`w-full rounded-sm transition-all ${isToday ? 'bg-teal-500' : d.views > 0 ? 'bg-stone-500 group-hover:bg-stone-400' : 'bg-stone-900'}`}
+                  style={{ height: `${height}%`, minHeight: d.views > 0 ? '4px' : '2px' }}
+                />
+                {data.length <= 14 && (
+                  <span className="text-[9px] text-stone-600 rotate-0 truncate w-full text-center">{label}</span>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+      {data.length > 14 && (
+        <div className="flex justify-between mt-2">
+          <span className="text-[10px] text-stone-600">{data[0]?.date}</span>
+          <span className="text-[10px] text-stone-600">{data[data.length - 1]?.date}</span>
+        </div>
       )}
     </div>
   )
@@ -55,11 +83,8 @@ export default function WebsitePage() {
     try {
       const res = await fetch(`/api/website-analytics?days=${days}`)
       const json = await res.json()
-      if (!res.ok) {
-        setError(json.error ?? 'Failed to load analytics')
-      } else {
-        setData(json)
-      }
+      if (!res.ok) setError(json.error ?? 'Failed to load analytics')
+      else setData(json)
     } catch {
       setError('Failed to load analytics')
     }
@@ -78,8 +103,11 @@ export default function WebsitePage() {
       .then(({ count }) => setLeadCount(count ?? 0))
   }, [days])
 
-  const conversionRate = data?.overview?.visitors?.value && leadCount != null && leadCount > 0
-    ? ((leadCount / data.overview.visitors.value) * 100).toFixed(1)
+  const visitors = data?.overview?.devices ?? 0
+  const pageViews = data?.overview?.total ?? 0
+  const bounceRate = data?.overview?.bounceRate ?? 0
+  const conversionRate = visitors > 0 && leadCount != null && leadCount > 0
+    ? ((leadCount / visitors) * 100).toFixed(1)
     : null
 
   return (
@@ -112,107 +140,41 @@ export default function WebsitePage() {
         </div>
       </div>
 
-      {loading && (
-        <p className="text-sm text-stone-500 py-8 text-center">Loading analytics...</p>
-      )}
+      {loading && <p className="text-sm text-stone-500 py-8 text-center">Loading analytics...</p>}
 
       {error && (
         <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-5">
           <p className="text-sm font-semibold text-red-400 mb-1">Analytics unavailable</p>
           <p className="text-xs text-stone-400">{error}</p>
-          {error.includes('not enabled') && (
-            <p className="text-xs text-stone-500 mt-2">
-              Enable Web Analytics in the Vercel dashboard: <span className="text-teal-400">vercel.com → performance-bodyrecode → Analytics → Enable</span>
-            </p>
-          )}
         </div>
       )}
 
       {!loading && data && (
         <>
-          {/* Overview stats */}
+          {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <StatCard label="Visitors" value={visitors.toLocaleString()} />
+            <StatCard label="Page Views" value={pageViews.toLocaleString()} />
             <StatCard
-              label="Visitors"
-              value={data.overview?.visitors?.value}
-              prev={data.overview?.visitors?.previousValue}
+              label="Scorecard Submissions"
+              value={leadCount ?? '—'}
+              sub={conversionRate ? `${conversionRate}% conversion` : undefined}
+              highlight
             />
-            <StatCard
-              label="Page Views"
-              value={data.overview?.pageViews?.value}
-              prev={data.overview?.pageViews?.previousValue}
-            />
-            <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
-              <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Scorecard Submissions</p>
-              <p className="text-3xl font-black text-white">{leadCount ?? '—'}</p>
-              {conversionRate && (
-                <p className="text-xs mt-1 font-medium text-teal-400">{conversionRate}% conversion</p>
-              )}
-            </div>
             <StatCard
               label="Bounce Rate"
-              value={data.overview?.bounceRate?.value}
-              format="percent"
+              value={`${(bounceRate * 100).toFixed(0)}%`}
             />
           </div>
 
-          {/* Top pages */}
-          {data.pages.length > 0 && (
-            <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
-              <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-4">Top Pages</p>
-              <div className="space-y-2">
-                {data.pages.map((p) => {
-                  const max = data.pages[0]?.pageViews ?? 1
-                  const pct = Math.round((p.pageViews / max) * 100)
-                  return (
-                    <div key={p.path} className="flex items-center gap-3">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm text-stone-300 truncate">{p.path || '/'}</span>
-                          <span className="text-xs text-stone-500 shrink-0 ml-2">{p.pageViews.toLocaleString()} views · {p.visitors.toLocaleString()} visitors</span>
-                        </div>
-                        <div className="h-1 bg-stone-800 rounded-full overflow-hidden">
-                          <div className="h-full bg-teal-500/60 rounded-full" style={{ width: `${pct}%` }} />
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Referrers */}
-          {data.referrers.length > 0 && (
-            <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
-              <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-4">Traffic Sources</p>
-              <div className="space-y-2">
-                {data.referrers.map((r) => {
-                  const max = data.referrers[0]?.visitors ?? 1
-                  const pct = Math.round((r.visitors / max) * 100)
-                  return (
-                    <div key={r.referrer} className="flex items-center gap-3">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm text-stone-300 truncate">{r.referrer || 'Direct'}</span>
-                          <span className="text-xs text-stone-500 shrink-0 ml-2">{r.visitors.toLocaleString()} visitors</span>
-                        </div>
-                        <div className="h-1 bg-stone-800 rounded-full overflow-hidden">
-                          <div className="h-full bg-violet-500/60 rounded-full" style={{ width: `${pct}%` }} />
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
+          {/* Daily chart */}
+          <DailyChart data={data.daily} />
         </>
       )}
 
-      {/* Quick links */}
+      {/* Pages */}
       <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
-        <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-4">Pages</p>
+        <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-4">Live Pages</p>
         <div className="grid sm:grid-cols-2 gap-2">
           {[
             { label: 'Homepage', path: '/' },
