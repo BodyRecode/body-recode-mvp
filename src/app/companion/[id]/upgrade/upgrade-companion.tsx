@@ -9,44 +9,32 @@ const STAGES = [
     name: 'Performance Check',
     duration: '3-5 min',
     goal: 'Confirm the client is progressing and consistently engaged before raising the conversation.',
-    script: `"Before I get into your check-in this week, I want to take a step back and look at the bigger picture for a second.
-
-You've been in this long enough now that I can see some clear patterns - in your training, your check-ins, how your body is responding.
-
-I want to share what I'm seeing and get your read on it too."`,
     prompts: [
-      'How are you feeling about the consistency you\'ve been bringing to sessions lately?',
+      'How are they feeling about their consistency lately?',
       '↳ What has felt easiest to hold? What has taken more effort?',
-      'Looking back from when you started - what\'s the most noticeable shift for you?',
-      '↳ Not just physical. Energy, clarity, how you\'re approaching things.',
-      'IF THEY ARE POSITIVE → "That\'s consistent with what I\'m seeing in the data. That\'s actually what I wanted to talk to you about."',
-      'IF THEY HAVE CONCERNS → Acknowledge them, note them. Address in Stage 3 if relevant. Don\'t skip to the offer until they feel heard.',
+      'Looking back from when they started - what is the most noticeable shift?',
+      '↳ Not just physical. Energy, clarity, approach to training.',
+      'IF POSITIVE → they are showing the patterns you want to see before continuing.',
+      'IF CONCERNS → acknowledge, note, address in Stage 3 if relevant. Do not move forward until they feel heard.',
     ],
-    tips: 'This is not a setup for the pitch. You are genuinely assessing whether they are ready for more volume. If they are struggling to complete 2 sessions, this is not the right time. The conversation should only continue if the client is genuinely progressing.',
+    tips: 'This is a genuine readiness check, not a setup. If they are struggling to complete 2 sessions consistently, this is not the right time. Only continue if they are clearly progressing.',
     boundary: 'Do not raise the upgrade if the client is inconsistent, stressed, or flagging capacity issues.',
   },
   {
     id: 2,
     name: 'The Case for More',
     duration: '3-5 min',
-    goal: 'Frame additional training volume as the natural next step for someone who is responding and ready — not a sales pitch.',
-    script: `"Here\'s what I\'m seeing.
-
-You\'re recovering well, your compliance is high, and the body state data is showing the kind of consistency that means your system is adapting.
-
-When that happens, there\'s usually a window - and it\'s not permanent - where adding a third session compounds what\'s already working faster than anything else we could change.
-
-More frequency at the right time isn\'t just more work. It\'s a different category of result."`,
+    goal: 'Frame additional training volume as the natural next step for someone who is responding and ready.',
     prompts: [
-      'Have you noticed anything in the last few weeks that suggests you\'re recovering faster than early on?',
-      '↳ Sleep, soreness, energy between sessions - any of those.',
-      'IF YES → "That\'s a physiological signal. It\'s telling us the capacity is there."',
-      'IF UNSURE → "That\'s fair - let me look at the CFWS data together with you and show you what I mean."',
-      'How do you feel about where your results are heading at the current pace?',
-      '↳ IF SATISFIED → "Good. A third session is about compounding that faster, not about something being broken."',
-      '↳ IF WANTING MORE → "That\'s exactly what I\'d expect. Let\'s talk about what that looks like."',
+      'Have they noticed faster recovery over the last few weeks?',
+      '↳ Sleep quality, soreness between sessions, energy levels.',
+      'IF YES → point to it as a physiological signal - capacity is there.',
+      'IF UNSURE → walk through the CFWS readiness data together.',
+      'How do they feel about where results are heading at the current pace?',
+      '↳ IF SATISFIED → a third session is about compounding that faster.',
+      '↳ IF WANTING MORE → that is exactly what more frequency addresses.',
     ],
-    tips: 'Lead with the data, not the desire to sell. If you can point to CFWS readiness scores or check-in trends, do it. The case is strongest when it comes from observation, not opinion.',
+    tips: 'Lead with the data, not the desire to sell. Point to CFWS readiness scores or check-in trends. The case is strongest when it comes from observation, not opinion.',
     boundary: null,
   },
   {
@@ -54,21 +42,17 @@ More frequency at the right time isn\'t just more work. It\'s a different catego
     name: 'Present the Offer',
     duration: '2-3 min',
     goal: 'State the upgrade clearly - what changes, what it costs, what it compounds.',
-    script: `"The way this works inside Body Recode is straightforward.
-
-You\'re currently on the 2-session-per-week structure - that\'s $299 per week.
-
-Moving to three sessions is $409 per week. The extra $110 covers the additional session and keeps everything else - the interpretation, the nutrition, the check-ins - exactly as it is. Nothing is removed. You just get more training contact and faster compounding.
-
-There\'s no lock-in. If it doesn\'t feel right at any point, we scale back. But in my experience, once people make this move at the right time, they don\'t go back."`,
     prompts: [
+      'State the current package and what moves to 3x.',
+      'Cover: what stays the same (check-ins, interpretation, nutrition), what changes (session frequency).',
+      'Mention no lock-in - if it does not feel right, they scale back.',
       '↳ PAUSE. Let them respond.',
-      'IF IMMEDIATE INTEREST → "Good. I can schedule the third slot this week if there\'s a time that works."',
-      'IF HESITATION → Move to Stage 4.',
-      'IF THEY ASK WHAT CHANGES → "Just the session frequency. Everything else stays the same - same check-ins, same interpretation cycle, same access."',
+      'IF IMMEDIATE INTEREST → lock in the third slot.',
+      'IF HESITATION → move to Stage 4.',
+      'IF THEY ASK WHAT CHANGES → session frequency only. Everything else stays identical.',
     ],
-    tips: 'Keep this short. State the current price, the new price, the difference. Don\'t over-explain. The case was made in Stage 2 - this is just the number.',
-    boundary: 'Do not justify the price increase by listing features they already have. They know what they\'re getting.',
+    tips: 'Keep this short. State the current package, the new package, the difference. The case was made in Stage 2 - this is just the clarity conversation.',
+    boundary: 'Do not justify the upgrade by listing features they already have. They know what they are getting.',
   },
   {
     id: 4,
@@ -76,13 +60,13 @@ There\'s no lock-in. If it doesn\'t feel right at any point, we scale back. But 
     duration: '3-5 min',
     goal: 'Address hesitation with honest, specific responses. Do not oversell or pressure.',
     prompts: [
-      '💬 COST - "The $110 difference per week - over a month that\'s $440. I\'d ask you to weigh that against what an extra year at the current pace costs you in time."',
-      '💬 TIME - "Three sessions doesn\'t necessarily mean a longer week. We can swap one of your current slots to a shorter format if that helps the schedule."',
-      '💬 NOT SURE IF READY - "I wouldn\'t be raising it if I didn\'t think you were. That\'s why I looked at the data first. You don\'t have to decide today - but I wanted you to know the option is on the table."',
-      '💬 WANTING TO STAY AT 2X - "That\'s completely valid. The 2-session structure is a real result-producing model. I just wanted you to know what\'s available when you\'re ready."',
+      '💬 COST - Reframe weekly cost increase against the time cost of a slower result.',
+      '💬 TIME - Three sessions does not necessarily mean a longer week. One slot can be shortened.',
+      '💬 NOT SURE IF READY - You would not raise this if the data did not support it. They do not have to decide today.',
+      '💬 WANTING TO STAY AT 2X - Completely valid. The 2x model produces results. This is just an option when they are ready.',
     ],
-    tips: 'The goal is not to close at all costs. If they are not ready, accept it gracefully. A client who feels pressured churns. A client who feels respected and informed upgrades when they are ready.',
-    boundary: 'Do not use Founding Client framing here. This is an upgrade for an active, paying client - not a discount mechanism.',
+    tips: 'The goal is not to close at all costs. A client who feels pressured churns. A client who feels respected and informed upgrades when they are ready.',
+    boundary: 'Do not use Founding Client framing here. This is an upgrade for an active client, not a discount mechanism.',
   },
   {
     id: 5,
@@ -91,18 +75,18 @@ There\'s no lock-in. If it doesn\'t feel right at any point, we scale back. But 
     goal: 'Get a clear outcome - yes, or a defined revisit point. Do not leave it open-ended.',
     prompts: [
       'PATH A - THEY ARE IN',
-      '↳ "Good. I\'ll get the third slot added and update your billing this week."',
+      '↳ Lock in the third session slot and update billing.',
       '↳ Action: Update package to 3x in the dashboard. Schedule additional session.',
       '',
       'PATH B - NOT YET',
-      '↳ "No problem. I\'ll flag this in your notes and we\'ll revisit at week [X + 4]."',
+      '↳ Acknowledge it and set a specific revisit point (4 weeks).',
       '↳ Action: Add a note in the client record. Revisit in 4 weeks.',
       '',
       'PATH C - NEEDS TO THINK',
-      '↳ "Take a few days. I\'ll send you a message by [day] so you don\'t have to remember."',
-      '↳ Action: Set a follow-up in the CRM.',
+      '↳ Give them a few days and commit to following up by a specific day.',
+      '↳ Action: Set a follow-up reminder.',
     ],
-    tips: 'Always leave with a defined next action, even if the answer is no. "Think about it" without a revisit point disappears.',
+    tips: 'Always leave with a defined next action, even if the answer is no. An open-ended "think about it" disappears.',
     boundary: null,
   },
 ]
@@ -204,14 +188,6 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
         </div>
 
         <div className="grid gap-5">
-          {/* Script */}
-          {stage.script && (
-            <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
-              <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">Script</p>
-              <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{stage.script}</p>
-            </div>
-          )}
-
           {/* Prompts */}
           {stage.prompts && stage.prompts.length > 0 && (
             <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
