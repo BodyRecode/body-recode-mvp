@@ -467,14 +467,14 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Mission</SectionLabel>
             <p className="text-lg font-semibold text-white leading-snug mb-2">Interpretation before prescription.</p>
-            <Body>Social media is not the funnel — it feeds the funnel. Every piece of content drives curiosity. The Performance Check-In converts that curiosity into qualified leads.</Body>
+            <Body>Social media is not the funnel — it feeds the funnel. Every piece of content drives curiosity. The scorecard converts that curiosity into qualified leads.</Body>
           </Card>
 
           {/* Funnel flow */}
           <Card>
             <SectionLabel>The Funnel</SectionLabel>
             <div className="flex items-center gap-2 flex-wrap">
-              {['Content / Ad', 'Curiosity', 'Scorecard', 'Performance Check-In', 'Consultation', 'Client'].map((step, i, arr) => (
+              {['Content / Ad', 'Curiosity', 'Scorecard', 'Zoom 1 Booking', 'Zoom 1 → Zoom 2', 'Client'].map((step, i, arr) => (
                 <div key={step} className="flex items-center gap-2">
                   <div className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-xs font-medium text-stone-300">{step}</div>
                   {i < arr.length - 1 && <span className="text-stone-600 text-xs">→</span>}
@@ -507,7 +507,7 @@ export default function StrategyPage() {
               <div>
                 <div className="flex items-center gap-2 mb-2"><Tag color="teal">Objective 1</Tag></div>
                 <Heading>Performance Coaching — Ongoing Acquisition</Heading>
-                <Body>Cold traffic → Performance Check-In → consultation → client. Driven by Meta ads and organic content simultaneously.</Body>
+                <Body>Cold traffic → Scorecard → Zoom 1 booking → Zoom 2 → client. Organic first. Ads added once organic conversion is proven.</Body>
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-2"><Tag color="violet">Objective 2</Tag></div>
@@ -612,7 +612,7 @@ export default function StrategyPage() {
               {[
                 { label: 'Make them feel', value: '"Finally, someone gets it."' },
                 { label: 'Then make them think', value: '"I need to take that scorecard."' },
-                { label: 'CTA funnel', value: 'Content → Scorecard → Performance Check-In → Booking call' },
+                { label: 'One CTA per post', value: 'Take the scorecard. That\'s it. One job per post.' },
               ].map(({ label, value }) => (
                 <div key={label} className="flex items-start gap-3 py-2 border-b border-stone-800 last:border-0">
                   <span className="text-xs text-stone-500 w-36 shrink-0 mt-0.5">{label}</span>
@@ -681,13 +681,37 @@ export default function StrategyPage() {
       {tab === 'content' && (
         <div className="space-y-4">
           <Card>
+            <SectionLabel>Content Temperature — Hormozi Engagement Ladder</SectionLabel>
+            <Body className="mb-4">Every post targets one temperature level. Cold content moves people from unaware to problem aware. Warm content moves them from problem aware to solution aware. Hot content pushes them to act. The ratio should be roughly 60% cold, 30% warm, 10% hot.</Body>
+            <div className="space-y-2">
+              {[
+                { temp: 'Cold', colour: 'text-blue-400', bg: 'bg-blue-400/5 border-blue-400/20', ratio: '~60% of posts', desc: 'Unaware → Problem aware. Education and pattern recognition. No CTA or soft "does this sound familiar?" Never ask for action.', types: 'Authority, Pattern Recognition, Coach Perspective' },
+                { temp: 'Warm', colour: 'text-amber-400', bg: 'bg-amber-400/5 border-amber-400/20', ratio: '~30% of posts', desc: 'Problem aware → Solution aware. Introduce the system. "There is a reason for this and it can be read." Soft CTA — link in bio.', types: 'Coach Perspective, Diagnostic (soft)' },
+                { temp: 'Hot', colour: 'text-red-400', bg: 'bg-red-400/5 border-red-400/20', ratio: '~10% of posts', desc: 'Solution aware → Ready to act. Direct CTA. "Take the scorecard. 2 minutes. Free. Find out your state." One job: get them to the scorecard.', types: 'Diagnostic / Funnel' },
+              ].map(row => (
+                <div key={row.temp} className={`p-3 rounded-lg border ${row.bg}`}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className={`text-xs font-bold uppercase tracking-wider ${row.colour}`}>{row.temp}</span>
+                    <span className="text-xs text-stone-500">{row.ratio}</span>
+                  </div>
+                  <p className="text-sm text-stone-300 leading-relaxed mb-1">{row.desc}</p>
+                  <p className="text-xs text-stone-500">Post types: {row.types}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 p-3 bg-teal-500/5 border border-teal-500/20 rounded-lg">
+              <p className="text-xs text-teal-400 font-medium">Primary lead getter: organic Instagram → scorecard. Go deep here before ads. Ads are the multiplier on a system that already converts.</p>
+            </div>
+          </Card>
+
+          <Card>
             <SectionLabel>Weekly Structure</SectionLabel>
             <div className="space-y-2">
               {[
                 { day: 'Monday', type: 'Authority', goal: 'Make people think differently about their body', format: 'Carousel (5–7 slides) or short video', cta: 'None — plant the idea' },
                 { day: 'Wednesday', type: 'Pattern Recognition', goal: 'Trigger self-recognition — "that\'s exactly me"', format: 'Carousel or graphic card', cta: 'Soft — "this might be you"' },
                 { day: 'Friday', type: 'Coach Perspective', goal: 'Build personal authority and trust', format: 'Talking video or photo card', cta: 'Soft — credibility build' },
-                { day: 'Sunday', type: 'Diagnostic / Funnel', goal: 'Drive people into the check-in', format: 'Graphic card or reel', cta: 'Hard — link in bio → Scorecard / Check-In' },
+                { day: 'Sunday', type: 'Diagnostic / Funnel', goal: 'Drive people to the scorecard', format: 'Graphic card or reel', cta: 'Hard — link in bio → Scorecard' },
               ].map(row => (
                 <div key={row.day} className="grid grid-cols-4 gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800 text-xs">
                   <div><p className="text-stone-600 mb-0.5">Day</p><p className="font-semibold text-white">{row.day}</p></div>
@@ -754,13 +778,13 @@ export default function StrategyPage() {
               type: 'Type 4 — Diagnostic / Funnel',
               day: 'Sunday',
               color: 'red' as const,
-              goal: 'Drive people into the funnel. Introduce the Scorecard or Performance Check-In without pressure. This is the conversion post.',
+              goal: 'Drive people to the scorecard. One job: get them to take it. This is the conversion post.',
               topics: [
                 '"Your body is operating in one of three states right now. Find out which one."',
-                '"If your body feels inconsistent despite effort — run the free Performance Check-In."',
-                '"I built a free tool that tells you exactly what your body needs right now."',
+                '"I built a free tool that tells you which state your body is in. 2 minutes. Link in bio."',
                 '"The Body State Scorecard. 2 minutes. Free. Find out why you\'re stuck."',
                 '"Before I prescribe anything, I read the body first. You can do the same — link in bio."',
+                '"Find out your body state in 2 minutes. Free. No email until you see your result."',
               ],
               format: 'Single graphic (photo card or scorecard-style card) + strong caption. Can also be a short reel.',
             },
@@ -868,6 +892,11 @@ export default function StrategyPage() {
       {/* ── ADS ── */}
       {tab === 'ads' && (
         <div className="space-y-4">
+          <Card className="border-amber-500/20 bg-amber-500/5">
+            <SectionLabel>Sequence Rule</SectionLabel>
+            <Body>Organic first. Ads second. Ads are a multiplier on a system that already converts — not a replacement for proving the funnel works. Run organic until you have consistent scorecard submissions from content. Then add ads to scale what's working.</Body>
+          </Card>
+
           <div className="grid sm:grid-cols-3 gap-3">
             <Card>
               <SectionLabel>Daily Budget</SectionLabel>
@@ -889,7 +918,7 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Ad Objective & Audience</SectionLabel>
             <div className="space-y-3">
-              <div><Heading>Objective</Heading><Body>Cold traffic → Performance Check-In. Never direct to purchase.</Body></div>
+              <div><Heading>Objective</Heading><Body>Cold traffic → Scorecard. Never direct to purchase.</Body></div>
               <div><Heading>Audience</Heading><Body>Cold — women and men 35–55. Interests: health, fitness, fat loss, body composition, wellness, personal development.</Body></div>
               <div><Heading>Placement</Heading><Body>Instagram feed + Reels + Facebook feed. Start broad, let Meta optimise.</Body></div>
               <div><Heading>Traffic type</Heading><Body>Cold only for now. Retargeting layer added at Day 30+ once pixel has enough data.</Body></div>
@@ -914,21 +943,21 @@ export default function StrategyPage() {
               angle="Silent Frustration"
               hook="You're training. You're eating well. Nothing is moving. Here's why."
               duration="~22 sec"
-              script="If you're training consistently, eating well, and your body has stopped responding — that's not a discipline problem. That's a body state problem. Your biology is in protection mode. And when it's there, adding more training and cutting more food makes it worse. Before I give anyone a program, I read their body first. Run the free Performance Check-In — link in bio. It takes three minutes and tells you exactly what your body needs right now."
+              script="If you're training consistently, eating well, and your body has stopped responding — that's not a discipline problem. That's a body state problem. Your biology is in protection mode. And when it's there, adding more training and cutting more food makes it worse. Before I give anyone a program, I read their body first. Take the free Body State Scorecard — link in bio. Two minutes. Find out which state your body is in."
             />
             <ScriptBlock
               number={2}
               angle="Contrarian"
               hook="More training and less food is making it worse."
               duration="~20 sec"
-              script="The standard advice when fat loss stalls — train harder, eat less. That's also the advice that drives cortisol up, suppresses your metabolism, and locks your body into a state where it actively resists fat loss. I've seen it hundreds of times. The problem was never effort. The problem was that nobody read the body before prescribing to it. Run the free Performance Check-In — link in bio."
+              script="The standard advice when fat loss stalls — train harder, eat less. That's also the advice that drives cortisol up, suppresses your metabolism, and locks your body into a state where it actively resists fat loss. I've seen it hundreds of times. The problem was never effort. The problem was that nobody read the body before prescribing to it. Take the free Body State Scorecard — link in bio. Two minutes."
             />
             <ScriptBlock
               number={3}
               angle="Diagnosis"
               hook="Your body is in one of three states right now. Find out which one."
               duration="~23 sec"
-              script="Your body is operating in one of three states right now. Ready — it can respond to training and nutrition. Transitioning — mixed signals, inconsistent results. Or Depleted — in protection mode, actively resisting fat loss and performance. Most people who feel stuck are in Depleted and don't know it. Find out which state you're in. Run the free Performance Check-In — link in bio. Three minutes. No cost."
+              script="Your body is operating in one of three states right now. Ready — it can respond to training and nutrition. Transitioning — mixed signals, inconsistent results. Or Depleted — in protection mode, actively resisting fat loss and performance. Most people who feel stuck are in Depleted and don't know it. Find out which state you're in. Take the free Body State Scorecard — link in bio. Two minutes. No cost."
             />
           </div>
 
@@ -1005,7 +1034,7 @@ export default function StrategyPage() {
             <div className="space-y-4">
               <div>
                 <div className="flex items-center gap-2 mb-1"><Tag color="teal">Path A</Tag><Heading>Online Application</Heading></div>
-                <Body>Person finds the landing page at performance.bodyrecode.au/founder, reads the offer, completes the Performance Check-In as step one of the application. Lead arrives tagged as Founder Program. Review check-in answers on lead detail page. Set application status: Under Review → Accepted / Declined / Waitlisted.</Body>
+                <Body>Person finds the landing page at performance.bodyrecode.au/founder, reads the offer, completes the Body State Scorecard as step one of the application. Lead arrives tagged as Founder Program. Review scorecard results on lead detail page. Set application status: Under Review → Accepted / Declined / Waitlisted.</Body>
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1"><Tag color="amber">Path B</Tag><Heading>Objection-Triggered at Zoom 2</Heading></div>
