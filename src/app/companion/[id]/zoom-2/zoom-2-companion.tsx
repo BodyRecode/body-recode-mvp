@@ -95,7 +95,11 @@ Three sessions a week is available where your schedule and capacity allow - that
     prompts: [
       '↳ PAUSE after stating the price. Do not fill the silence. Let it land.',
       '↳ IF they go quiet → stay quiet. The first person to speak loses the frame.',
-      '↳ "Most people who continue do so because things start to make more sense - not because anything dramatic has changed."',
+      'REFRAME — pick one if hesitation shows:',
+      '💬 CONFIDENCE: "Most people feel clearer after the first two weeks than they have in years. Not because everything has changed - because nothing is guesswork anymore."',
+      '💬 RESULTS: "The guys who get the most out of this aren\'t the ones who try the hardest - they\'re the ones who finally stopped fighting their body state."',
+      '💬 SIMPLE: "It works when you stop trying to override your body and start working with it. That\'s all this is."',
+      '💬 STAKES: "The cost of staying where you are is higher than the cost of this. You\'ve already proven that by being here."',
       '↳ TRANSITION → When they respond, move to Stage 5.',
     ],
     tips: 'Present pricing as information. Do not use urgency, scarcity, or pressure. After presenting pricing — pause and allow response. Do not jump to founding client. Evaluate based on response.',
@@ -595,10 +599,19 @@ export default function Zoom2Companion({
                       p.startsWith('PATH') ? 'bg-amber-400/5 border border-amber-400/20' :
                       p.startsWith('IF ') ? 'bg-stone-800 border border-stone-700' :
                       p.startsWith('↳') ? 'bg-transparent border border-stone-800 ml-4' :
+                      p.startsWith('REFRAME') ? 'bg-violet-500/5 border border-violet-500/20' :
+                      p.startsWith('💬') ? 'bg-violet-500/5 border border-violet-500/15 ml-4' :
                       p.includes(' - $') ? 'bg-stone-900 border border-stone-700' :
                       'bg-stone-900 border border-stone-800'
                     }`}>
-                      <p className="text-white text-sm leading-relaxed">{renderWithLinks(p)}</p>
+                      <p className={`text-sm leading-relaxed ${
+                        p.startsWith('REFRAME') ? 'text-violet-400 font-bold uppercase tracking-wider text-xs' :
+                        p.startsWith('💬') ? 'text-stone-200' :
+                        'text-white'
+                      }`}>{renderWithLinks(p.startsWith('💬') ? p.replace(/^💬 \w+: /, '') : p)}</p>
+                      {p.startsWith('💬') && (
+                        <p className="text-xs text-violet-400 font-semibold mt-1 uppercase tracking-wider">{p.match(/^💬 (\w+):/)?.[1]}</p>
+                      )}
                     </div>
                   ))}
                   {stage.tips && (
