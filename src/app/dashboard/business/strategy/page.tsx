@@ -3,13 +3,14 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
-type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'ads' | 'founder' | 'timeline' | 'pages' | 'calendar'
+type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'organic' | 'ads' | 'founder' | 'timeline' | 'pages' | 'calendar'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'positioning', label: 'Positioning' },
   { id: 'content', label: 'Content System' },
   { id: 'prelaunch', label: 'Pre-Launch' },
+  { id: 'organic', label: 'Organic → Ads' },
   { id: 'ads', label: 'Paid Ads' },
   { id: 'founder', label: 'Founder Program' },
   { id: 'timeline', label: 'Launch Timeline' },
@@ -1059,6 +1060,160 @@ export default function StrategyPage() {
         </div>
       )}
 
+      {/* ── ORGANIC → ADS ── */}
+      {tab === 'organic' && (
+        <div className="space-y-4">
+
+          {/* Goal */}
+          <Card className="border-teal-500/20 bg-teal-500/5">
+            <SectionLabel>The Goal</SectionLabel>
+            <p className="text-teal-300 font-semibold text-sm">3 scorecard submissions per week from organic, for 2 consecutive weeks. That&apos;s the signal that the funnel converts. Then ads go on.</p>
+            <p className="text-stone-400 text-sm mt-2">Ads placed on a funnel that doesn&apos;t convert waste money. Ads placed on a funnel that already converts multiply what&apos;s working. Organic proves the model first.</p>
+          </Card>
+
+          {/* Three levers */}
+          <Card>
+            <SectionLabel>The Three Conversion Levers</SectionLabel>
+            <div className="grid sm:grid-cols-3 gap-3 mt-1">
+              {[
+                {
+                  num: '1',
+                  title: 'Content',
+                  color: 'text-blue-400',
+                  border: 'border-blue-400/20',
+                  bg: 'bg-blue-400/5',
+                  items: [
+                    '5x/week — Cold builds audience, Hot converts',
+                    'Sunday Diagnostic post always drives to scorecard',
+                    'Hook quality determines reach — first line is everything',
+                    'Consistency over 4 weeks before judging results',
+                  ],
+                },
+                {
+                  num: '2',
+                  title: 'Profile',
+                  color: 'text-amber-400',
+                  border: 'border-amber-400/20',
+                  bg: 'bg-amber-400/5',
+                  items: [
+                    'Bio link goes directly to the scorecard — not homepage',
+                    'Bio copy: one problem statement, one action',
+                    'Highlight covers: Body States, Method, Scorecard',
+                    'Profile photo: clear face, not a logo',
+                  ],
+                },
+                {
+                  num: '3',
+                  title: 'Warm Outreach',
+                  color: 'text-teal-400',
+                  border: 'border-teal-400/20',
+                  bg: 'bg-teal-400/5',
+                  items: [
+                    'Reply to every comment within 1 hour of posting',
+                    'DM every new follower — short welcome, no pitch',
+                    'DM anyone who replies to a story or saves a post',
+                    'DM story viewers who have watched 3+ stories',
+                  ],
+                },
+              ].map(l => (
+                <div key={l.num} className={`border ${l.border} ${l.bg} rounded-xl p-4`}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${l.color} bg-stone-800`}>{l.num}</span>
+                    <p className={`text-sm font-semibold ${l.color}`}>{l.title}</p>
+                  </div>
+                  <ul className="space-y-1.5">
+                    {l.items.map((item, i) => (
+                      <li key={i} className="text-xs text-stone-400 leading-relaxed flex gap-2">
+                        <span className="text-stone-700 shrink-0">·</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* Weekly action plan */}
+          <Card>
+            <SectionLabel>Weekly Action Plan</SectionLabel>
+            <p className="text-stone-500 text-xs mb-3">What to do each week — beyond just posting.</p>
+            <div className="space-y-2">
+              {[
+                { day: 'Mon', post: true,  action: 'Post (Pattern Recognition — Cold). Reply to all weekend comments within 1hr.' },
+                { day: 'Tue', post: true,  action: 'Post (Contrarian — Cold). DM the last 5 new followers — soft intro, no pitch.' },
+                { day: 'Wed', post: true,  action: 'Post (Coach Perspective — Warm). Check story viewers from last 48hrs — DM anyone warm.' },
+                { day: 'Thu', post: false, action: 'No post. DM anyone who saved a post this week. Review engagement on last 3 posts — note what performed.' },
+                { day: 'Fri', post: true,  action: 'Post (Authority — Cold). Reply to all comments. DM anyone who replies to stories.' },
+                { day: 'Sat', post: false, action: 'No post. Review the week: profile visits, scorecard submissions, follower growth. Note in weekly log.' },
+                { day: 'Sun', post: true,  action: 'Post (Diagnostic/Funnel — Hot → Scorecard CTA). Actively DM anyone who comments asking how to do it.' },
+              ].map(r => (
+                <div key={r.day} className="flex items-start gap-3 p-2.5 rounded-lg bg-stone-950 border border-stone-800">
+                  <span className="text-xs font-bold text-stone-500 w-7 shrink-0 pt-0.5">{r.day}</span>
+                  {r.post
+                    ? <span className="text-xs font-semibold text-teal-500 shrink-0 pt-0.5">Post</span>
+                    : <span className="text-xs font-semibold text-stone-700 shrink-0 pt-0.5">Rest</span>
+                  }
+                  <p className="text-xs text-stone-400 leading-relaxed">{r.action}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* Conversion milestones */}
+          <Card>
+            <SectionLabel>Conversion Milestones</SectionLabel>
+            <p className="text-stone-500 text-xs mb-3">What the numbers should look like over 6 weeks. Track scorecard submissions per week in the CRM.</p>
+            <div className="space-y-2">
+              {[
+                { weeks: 'Week 1–2', subs: '0–1/week', label: 'Normal', color: 'text-stone-400', bg: 'bg-stone-800/50', border: 'border-stone-700', note: 'Profile is new. No audience yet. Keep posting and doing outreach.' },
+                { weeks: 'Week 3–4', subs: '1–2/week', label: 'Traction', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20', note: 'Content is landing. Warm outreach is working. Dial in hook quality.' },
+                { weeks: 'Week 5–6', subs: '3+/week', label: 'Converting', color: 'text-teal-400', bg: 'bg-teal-400/10', border: 'border-teal-400/20', note: 'Funnel is proven. Hold for 2 consecutive weeks at this level, then launch ads.' },
+              ].map(m => (
+                <div key={m.weeks} className={`border ${m.border} ${m.bg} rounded-xl p-4`}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-stone-500">{m.weeks}</span>
+                      <span className={`text-sm font-bold ${m.color}`}>{m.subs}</span>
+                    </div>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${m.border} ${m.color}`}>{m.label}</span>
+                  </div>
+                  <p className="text-xs text-stone-500 leading-relaxed">{m.note}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* If not converting */}
+          <Card>
+            <SectionLabel>If You&apos;re Not Converting by Week 6</SectionLabel>
+            <p className="text-stone-400 text-sm mb-3">Don&apos;t launch ads. Diagnose first.</p>
+            <div className="space-y-2">
+              {[
+                { check: 'Hook quality', fix: 'Read back your last 10 first lines. If they don\'t stop your own scroll, they won\'t stop anyone else\'s. Rewrite the weakest 3.' },
+                { check: 'Profile link', fix: 'Check the bio link goes directly to the scorecard. Open it yourself on mobile. If there\'s friction, fix it.' },
+                { check: 'Outreach frequency', fix: 'Are you actually DMing new followers and story viewers? If you\'re only posting without outreach, the posts alone won\'t convert in week 5.' },
+                { check: 'CTA clarity', fix: 'Every Sunday post must have one clear action: take the scorecard. Not "follow", not "save" — one action. Check the last 4 Sunday posts.' },
+                { check: 'Content temperature mix', fix: 'If every post is Cold (educational), there\'s nothing pulling people toward an action. Hot posts (Sunday Diagnostic) must run every week without exception.' },
+              ].map(r => (
+                <div key={r.check} className="p-3 rounded-lg bg-stone-950 border border-stone-800">
+                  <p className="text-xs font-semibold text-white mb-1">{r.check}</p>
+                  <p className="text-xs text-stone-500 leading-relaxed">{r.fix}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* The trigger */}
+          <Card className="border-teal-500/20 bg-teal-500/5">
+            <SectionLabel>The Ads Trigger</SectionLabel>
+            <p className="text-teal-300 font-semibold text-sm mb-2">3 scorecard submissions/week for 2 consecutive weeks. Then go to the Paid Ads tab and launch.</p>
+            <p className="text-stone-500 text-xs">At that point you have proof that cold traffic can find you, the profile converts them, and the scorecard holds attention. Ads buy more of that. Without those two weeks of data, you&apos;re paying to test whether the funnel works instead of to scale what already does.</p>
+          </Card>
+
+        </div>
+      )}
+
       {/* ── ADS ── */}
       {tab === 'ads' && (
         <div className="space-y-4">
@@ -1281,7 +1436,7 @@ export default function StrategyPage() {
               items: [
                 'Start Meta ads at $20–30/day AUD',
                 '3 ad angles running simultaneously (Silent Frustration / Contrarian / Diagnosis)',
-                'All ads send to Performance Check-In',
+                'All ads send to the Body State Scorecard',
                 'Film gym reel session before this phase starts',
                 'Continue 4×/week organic posting',
               ],
