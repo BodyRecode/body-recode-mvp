@@ -314,12 +314,12 @@ function ContentCalendar() {
             <div className="grid sm:grid-cols-2 gap-5 items-start">
 
               {/* Left — graphic */}
-              <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800 aspect-square flex items-center justify-center">
+              <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '280px' }}>
                 {isGraphicUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={activePost.graphic} alt={activePost.title} className="w-full h-full object-cover" />
+                  <img src={activePost.graphic} alt={activePost.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                  <div className="text-center p-6">
+                  <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
                     {activePost.graphic ? (
                       <>
                         <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">Graphic Brief</p>
