@@ -1101,6 +1101,8 @@ export default function HelpPage() {
             <StatusList items={[
               { label: 'Scorecard Follow-up Sequence', desc: '4-email sequence triggered when someone completes the Body State Scorecard' },
               { label: 'Performance Report Follow-up', desc: '3-email sequence sent after a performance report is delivered to a lead' },
+              { label: 'Zoom 1 Booking Confirmation', desc: 'Branded confirmation email + .ics calendar invite sent to the lead immediately on Zoom 1 booking, plus a coach notification to kade@bodyrecode.au' },
+              { label: 'Zoom 2 Booking Confirmation', desc: 'Same as Zoom 1 - branded confirmation + .ics + coach notification, fired automatically when a returning lead books their second call' },
               { label: 'No-show Re-engagement', desc: '3-email sequence for leads who missed their scheduled Zoom call' },
               { label: 'Zoom 1 Declined Follow-up', desc: '3-email re-engagement sequence sent when a lead declines after Zoom 1' },
               { label: 'Self-Guided Program Offer', desc: '$97 program offer email sent automatically alongside the Zoom 1 declined sequence' },
