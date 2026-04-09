@@ -227,6 +227,64 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
     ],
   },
 
+  'zoom1-confirmation': {
+    id: 'zoom1-confirmation',
+    name: 'Zoom 1 Booking Confirmation',
+    description: 'Branded confirmation email with Zoom link and .ics calendar invite sent to the lead, plus a coach notification - fires automatically on every Zoom 1 booking',
+    trigger: 'Zoom 1 booked',
+    triggerDetail: 'Fires automatically whenever a lead books a Zoom 1 call via bodyrecode.au/book or a manual booking is created in Business → Bookings',
+    steps: [
+      {
+        day: 'Immediately on booking',
+        subject: 'Your Zoom call is confirmed',
+        paragraphs: [
+          'Sent to the lead\'s email address.',
+          'Contains: booking date and time (AEST), Zoom join link as a button, and a .ics calendar file attached so they can add it to their calendar in one click.',
+          'Uses the approved dark card template: black outer, #111111 inner card, Body Recode logo, and the coach signature with photo.',
+        ],
+        cta: 'Join Zoom Call',
+      },
+      {
+        day: 'Immediately on booking',
+        subject: 'New Zoom 1 booking - {firstName}',
+        paragraphs: [
+          'Sent to kade@bodyrecode.au.',
+          'Contains: lead name, email, booking date and time, Zoom join link, and a direct button to the lead\'s CRM record.',
+        ],
+        cta: 'View Lead in CRM',
+      },
+    ],
+  },
+
+  'zoom2-confirmation': {
+    id: 'zoom2-confirmation',
+    name: 'Zoom 2 Booking Confirmation',
+    description: 'Same as Zoom 1 - branded confirmation + .ics + coach notification, fired automatically when a returning lead books their second call',
+    trigger: 'Zoom 2 booked',
+    triggerDetail: 'Fires automatically when a lead with status "zoom_1_completed" books a call via bodyrecode.au/book or a manual Zoom 2 booking is created',
+    steps: [
+      {
+        day: 'Immediately on booking',
+        subject: 'Your Zoom call is confirmed',
+        paragraphs: [
+          'Sent to the lead\'s email address.',
+          'Contains: booking date and time (AEST), Zoom join link as a button, and a .ics calendar file attached so they can add it to their calendar in one click.',
+          'Uses the approved dark card template: black outer, #111111 inner card, Body Recode logo, and the coach signature with photo.',
+        ],
+        cta: 'Join Zoom Call',
+      },
+      {
+        day: 'Immediately on booking',
+        subject: 'New Zoom 2 booking - {firstName}',
+        paragraphs: [
+          'Sent to kade@bodyrecode.au.',
+          'Contains: lead name, email, booking date and time, Zoom join link, and a direct button to the lead\'s CRM record.',
+        ],
+        cta: 'View Lead in CRM',
+      },
+    ],
+  },
+
   'program-buyer-nurture': {
     id: 'program-buyer-nurture',
     name: 'Program Buyer Nurture',

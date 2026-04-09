@@ -23,6 +23,22 @@ const SYSTEM_AUTOMATIONS = [
     canReseed: false,
   },
   {
+    id: 'zoom1-confirmation',
+    name: 'Zoom 1 Booking Confirmation',
+    description: 'Branded confirmation email with Zoom link and .ics calendar invite sent to the lead on booking, plus a coach notification',
+    trigger: 'Zoom 1 booked',
+    steps: 2,
+    canReseed: false,
+  },
+  {
+    id: 'zoom2-confirmation',
+    name: 'Zoom 2 Booking Confirmation',
+    description: 'Same as Zoom 1 - branded confirmation + .ics + coach notification, fired when a returning lead books their second call',
+    trigger: 'Zoom 2 booked',
+    steps: 2,
+    canReseed: false,
+  },
+  {
     id: 'no-show',
     name: 'No-show Re-engagement',
     description: '3-email sequence for leads who missed their scheduled Zoom call',
