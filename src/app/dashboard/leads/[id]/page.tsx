@@ -117,6 +117,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const scorecardScore = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
   const scorecardState = scorecardEvent?.notes?.match(/Body state: (.+?)\./)?.[1]
   const scorecardStyle = scorecardState ? BODY_STATE_STYLES[scorecardState] : null
+  const scorecardSectionsMatch = scorecardEvent?.notes?.match(/Sections: ({.+})/)
+  const scorecardSections: Record<string, number> | null = scorecardSectionsMatch ? JSON.parse(scorecardSectionsMatch[1]) : null
+
+  const SCORECARD_SECTIONS: Record<string, string> = {
+    '01': 'Energy', '02': 'Sleep', '03': 'Stress Load', '04': 'Training Response', '05': 'Fat Loss Response',
+  }
 
   return (
     <div className="max-w-3xl">
@@ -195,6 +201,25 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               </p>
             </div>
           </div>
+          {scorecardSections && (
+            <div className="mt-4 pt-4 border-t border-stone-800">
+              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Section Breakdown</p>
+              <div className="grid grid-cols-5 gap-2">
+                {Object.entries(SCORECARD_SECTIONS).map(([key, title]) => {
+                  const s = scorecardSections[key]
+                  const color = s === 1 ? '#ef4444' : s === 2 ? '#f59e0b' : s === 3 ? '#14b8a6' : '#57534e'
+                  const bg = s === 1 ? 'rgba(239,68,68,0.08)' : s === 2 ? 'rgba(245,158,11,0.08)' : s === 3 ? 'rgba(20,184,166,0.08)' : 'rgba(87,83,78,0.08)'
+                  const border = s === 1 ? 'rgba(239,68,68,0.25)' : s === 2 ? 'rgba(245,158,11,0.25)' : s === 3 ? 'rgba(20,184,166,0.25)' : 'rgba(87,83,78,0.25)'
+                  return (
+                    <div key={key} className="rounded-lg p-2 text-center" style={{ background: bg, border: `1px solid ${border}` }}>
+                      <div className="text-lg font-black" style={{ color }}>{s ?? '—'}</div>
+                      <div className="text-[10px] font-medium text-stone-500 mt-0.5 leading-tight">{title}</div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
 

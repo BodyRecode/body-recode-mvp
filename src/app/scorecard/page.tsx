@@ -174,7 +174,7 @@ function ScorecardInner() {
       const res = await fetch('/api/scorecard/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ first_name: firstName, email, score: total, body_state: result.label, source }),
+        body: JSON.stringify({ first_name: firstName, email, score: total, body_state: result.label, source, section_scores: scores }),
       })
       if (res.ok) {
         setStep('result')

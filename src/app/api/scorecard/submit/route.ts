@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     console.error('[scorecard/submit] Failed to parse JSON body:', e)
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400, headers: CORS })
   }
-  const { first_name, email, score, body_state, source } = body as { first_name: string; email: string; score: number; body_state: string; source: string }
+  const { first_name, email, score, body_state, source, section_scores } = body as { first_name: string; email: string; score: number; body_state: string; source: string; section_scores?: Record<string, number> }
   console.log('[scorecard/submit] Received:', { first_name, email, score, body_state, source })
 
   if (!first_name?.trim() || !email?.trim()) {
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
     leadId,
     type: 'scorecard_completed',
     subject: 'Scorecard completed',
-    notes: `Score: ${score}/15. Body state: ${body_state}.`,
+    notes: `Score: ${score}/15. Body state: ${body_state}.${section_scores ? ' Sections: ' + JSON.stringify(section_scores) : ''}`,
   })
   console.log('[scorecard/submit] Event logged for lead:', leadId)
 
