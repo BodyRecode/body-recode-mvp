@@ -26,7 +26,8 @@ function StatCard({ label, value, sub, highlight }: {
 }
 
 function DailyChart({ data }: { data: DayData[] }) {
-  const max = Math.max(...data.map(d => d.views), 1)
+  if (!data || data.length === 0) return <div className="bg-[#111110] border border-stone-800 rounded-xl p-5"><p className="text-sm text-stone-600">No data yet.</p></div>
+  const max = data.reduce((m, d) => Math.max(m, d.views), 1)
   const hasData = data.some(d => d.views > 0)
 
   return (
@@ -38,8 +39,8 @@ function DailyChart({ data }: { data: DayData[] }) {
         <div className="flex items-end gap-1 h-32">
           {data.map((d) => {
             const height = max > 0 ? Math.max((d.views / max) * 100, d.views > 0 ? 4 : 0) : 0
-            const date = new Date(d.date + 'T00:00:00')
-            const label = date.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
+            const date = new Date(d.date + 'T12:00:00')
+            const label = isNaN(date.getTime()) ? d.date : date.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
             const isToday = d.date === new Date().toISOString().split('T')[0]
             return (
               <div key={d.date} className="flex-1 flex flex-col items-center gap-1 group relative">
@@ -105,7 +106,7 @@ export default function WebsitePage() {
 
   const visitors = data?.overview?.devices ?? 0
   const pageViews = data?.overview?.total ?? 0
-  const bounceRate = data?.overview?.bounceRate ?? 0
+  const bounceRate = Number(data?.overview?.bounceRate ?? 0)
   const conversionRate = visitors > 0 && leadCount != null && leadCount > 0
     ? ((leadCount / visitors) * 100).toFixed(1)
     : null
