@@ -91,7 +91,9 @@ Add that up and you're well over $1,000 a month for the individual pieces - befo
 
 The investment for all of that is $299 a week. That's where most people start - two sessions.
 
-Three sessions is available where your schedule and capacity allow. $409. I'll guide that decision based on what your system can actually handle."`,
+Three sessions is available where your schedule and capacity allow. $409. I'll guide that decision based on what your system can actually handle.
+
+There's also a one-time commencement fee of $240 to get started. That covers the setup work on my end before coaching begins."`,
     prompts: [
       '↳ PAUSE after stating the price. Do not fill the silence. Let it land.',
       '↳ IF they go quiet → stay quiet. The first person to speak loses the frame.',
