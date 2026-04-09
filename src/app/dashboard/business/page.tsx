@@ -85,6 +85,12 @@ const modules = [
     href: '/dashboard/business/analytics',
     icon: BarChart2,
   },
+  {
+    label: 'Website',
+    description: 'Traffic, conversions, page performance',
+    href: '/dashboard/business/website',
+    icon: ExternalLink,
+  },
 ]
 
 const publicLinks = [
