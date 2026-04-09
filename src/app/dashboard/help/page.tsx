@@ -1152,6 +1152,15 @@ export default function HelpPage() {
             </ul>
             <p className="mt-2">To update the email copy: edit the steps in <strong>Business → Automations</strong>, then hit <strong>Reseed</strong> to rewrite the sequence. Reseeding deletes and recreates the workflow steps — it does not affect in-progress sequences already running for existing leads.</p>
             <Note>Wait steps are handled by Inngest — a background job service. A "wait 3 days" step will actually wait 3 days, even across server restarts. Execution history is logged per contact under each workflow run.</Note>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Zoom Booking Confirmation Emails</p>
+            <p>These are system-level emails that fire automatically every time a Zoom 1 or Zoom 2 is booked - no configuration required. Both fire from the same booking endpoint the moment a slot is confirmed.</p>
+            <StatusList items={[
+              { label: 'Lead Confirmation Email', desc: 'Branded dark card email with booking date, time (AEST), Zoom join link, and a .ics calendar attachment - sent to the lead immediately on booking' },
+              { label: 'Coach Notification Email', desc: "Sent to kade@bodyrecode.au with the lead's name, email, booking date/time, Zoom link, and a direct link to their CRM record" },
+            ]} />
+            <p className="mt-2">The system detects whether the booking is a Zoom 1 or Zoom 2 based on the lead&apos;s current pipeline stage. Both email types use the approved dark card template: black outer, #111111 inner card, Body Recode logo, and the coach signature with photo.</p>
+            <Note>No setup needed - these emails are always active for every booking made via bodyrecode.au/book or the manual booking tool in Business → Bookings.</Note>
           </Section>
 
           <Section id="be-campaigns" title="26. Campaigns" colour="amber">
