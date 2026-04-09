@@ -52,12 +52,12 @@ interface Props {
 // ─── Constants ──────────────────────────────────────────────────────────────
 
 const HOOK_CATEGORIES = [
-  { value: 'problem_aware', label: 'Problem Aware' },
-  { value: 'solution_aware', label: 'Solution Aware' },
-  { value: 'unaware', label: 'Unaware' },
-  { value: 'contrarian', label: 'Contrarian' },
-  { value: 'curiosity', label: 'Curiosity' },
-  { value: 'authority', label: 'Authority' },
+  { value: 'unaware', label: 'Unaware — Cold' },
+  { value: 'problem_aware', label: 'Problem Aware — Cold' },
+  { value: 'contrarian', label: 'Contrarian — Cold' },
+  { value: 'curiosity', label: 'Curiosity — Cold/Warm' },
+  { value: 'solution_aware', label: 'Solution Aware — Warm' },
+  { value: 'authority', label: 'Authority — Warm' },
 ]
 
 const MESSAGE_TYPES = [

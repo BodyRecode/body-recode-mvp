@@ -708,14 +708,16 @@ export default function StrategyPage() {
             <SectionLabel>Weekly Structure</SectionLabel>
             <div className="space-y-2">
               {[
-                { day: 'Monday', type: 'Authority', goal: 'Make people think differently about their body', format: 'Carousel (5–7 slides) or short video', cta: 'None — plant the idea' },
-                { day: 'Wednesday', type: 'Pattern Recognition', goal: 'Trigger self-recognition — "that\'s exactly me"', format: 'Carousel or graphic card', cta: 'Soft — "this might be you"' },
-                { day: 'Friday', type: 'Coach Perspective', goal: 'Build personal authority and trust', format: 'Talking video or photo card', cta: 'Soft — credibility build' },
-                { day: 'Sunday', type: 'Diagnostic / Funnel', goal: 'Drive people to the scorecard', format: 'Graphic card or reel', cta: 'Hard — link in bio → Scorecard' },
+                { day: 'Monday', type: 'Authority', temp: 'Cold', goal: 'Make people think differently about their body', format: 'Carousel (5–7 slides) or short video', cta: 'None' },
+                { day: 'Tuesday', type: 'Contrarian', temp: 'Cold', goal: 'Challenge the standard fitness narrative', format: 'Short video or statement graphic', cta: 'None' },
+                { day: 'Wednesday', type: 'Pattern Recognition', temp: 'Cold', goal: 'Trigger self-recognition — "that\'s exactly me"', format: 'Carousel or graphic card', cta: 'Soft' },
+                { day: 'Friday', type: 'Coach Perspective', temp: 'Warm', goal: 'Build trust, introduce the system', format: 'Talking video or photo card', cta: 'Soft' },
+                { day: 'Sunday', type: 'Diagnostic / Funnel', temp: 'Hot', goal: 'Drive to the scorecard', format: 'Graphic card or reel', cta: 'Hard — scorecard link' },
               ].map(row => (
-                <div key={row.day} className="grid grid-cols-4 gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800 text-xs">
+                <div key={row.day} className="grid grid-cols-5 gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800 text-xs">
                   <div><p className="text-stone-600 mb-0.5">Day</p><p className="font-semibold text-white">{row.day}</p></div>
                   <div><p className="text-stone-600 mb-0.5">Type</p><p className="font-medium text-teal-400">{row.type}</p></div>
+                  <div><p className="text-stone-600 mb-0.5">Temp</p><p className={row.temp === 'Hot' ? 'text-red-400' : row.temp === 'Warm' ? 'text-amber-400' : 'text-blue-400'}>{row.temp}</p></div>
                   <div><p className="text-stone-600 mb-0.5">Format</p><p className="text-stone-400">{row.format}</p></div>
                   <div><p className="text-stone-600 mb-0.5">CTA</p><p className="text-stone-400">{row.cta}</p></div>
                 </div>
@@ -728,7 +730,10 @@ export default function StrategyPage() {
               type: 'Type 1 — Authority',
               day: 'Monday',
               color: 'teal' as const,
-              goal: 'Position Body Recode as a different philosophy from the fitness industry. Make people think: "This coach understands the body differently."',
+              temp: 'Cold',
+              tempColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+              tempDesc: 'Unaware → Problem aware',
+              goal: 'Position Body Recode as a different philosophy from the fitness industry. Make people think: "This coach understands the body differently." No CTA — plant the idea.',
               topics: [
                 'Why fat loss is not just calories',
                 'Why stress influences metabolism and fat storage',
@@ -745,7 +750,10 @@ export default function StrategyPage() {
               type: 'Type 2 — Pattern Recognition',
               day: 'Wednesday',
               color: 'amber' as const,
-              goal: 'Show people the patterns they are already stuck in. They read it and think: "That\'s exactly me." Recognition creates engagement.',
+              temp: 'Cold',
+              tempColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+              tempDesc: 'Unaware → Problem aware',
+              goal: 'Show people the patterns they are already stuck in. They read it and think: "That\'s exactly me." Recognition creates engagement. Soft CTA at most — "does this sound familiar?"',
               topics: [
                 '"If your stomach fat won\'t move despite training consistently…"',
                 '"If you gain fat easily when life gets stressful…"',
@@ -762,7 +770,10 @@ export default function StrategyPage() {
               type: 'Type 3 — Coach Perspective',
               day: 'Friday',
               color: 'violet' as const,
-              goal: 'Build personal authority and trust. People buy the person guiding the system, not just the system. Experience-based storytelling.',
+              temp: 'Warm',
+              tempColor: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
+              tempDesc: 'Problem aware → Solution aware',
+              goal: 'Build personal authority and trust. Introduce the system through experience-based storytelling. People buy the person guiding the system. Soft CTA — link in bio.',
               topics: [
                 '"After years of coaching, I keep seeing the same pattern…"',
                 '"The biggest mistake people make when trying to lose fat"',
@@ -775,10 +786,31 @@ export default function StrategyPage() {
               format: 'Talking-head video (face to camera, gym or clean background) or photo card with caption',
             },
             {
-              type: 'Type 4 — Diagnostic / Funnel',
+              type: 'Type 4 — Contrarian',
+              day: 'Tuesday (5th post)',
+              color: 'amber' as const,
+              temp: 'Cold / Warm',
+              tempColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+              tempDesc: 'Unaware → Problem aware (challenges existing belief)',
+              goal: 'Challenge the standard fitness narrative. Make people question what they\'ve been told. Highest share potential. No direct CTA — let the idea do the work.',
+              topics: [
+                '"More training and less food is making it worse."',
+                '"Discipline is not the problem. The prescription is."',
+                '"Your body isn\'t broken. It\'s being misread."',
+                '"The reason your results stopped has nothing to do with effort."',
+                '"Most coaches are trained to prescribe. Nobody trained them to read the body first."',
+                '"Losing fat has almost nothing to do with how hard you train."',
+              ],
+              format: 'Short talking video (15–30 sec) or bold statement graphic card',
+            },
+            {
+              type: 'Type 5 — Diagnostic / Funnel',
               day: 'Sunday',
               color: 'red' as const,
-              goal: 'Drive people to the scorecard. One job: get them to take it. This is the conversion post.',
+              temp: 'Hot',
+              tempColor: 'text-red-400 bg-red-400/10 border-red-400/20',
+              tempDesc: 'Solution aware → Ready to act',
+              goal: 'Drive people to the scorecard. One job: get them to take it. This is the conversion post. Hard CTA — link in bio.',
               topics: [
                 '"Your body is operating in one of three states right now. Find out which one."',
                 '"I built a free tool that tells you which state your body is in. 2 minutes. Link in bio."',
@@ -790,9 +822,10 @@ export default function StrategyPage() {
             },
           ].map(ct => (
             <Card key={ct.type}>
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <Tag color={ct.color}>{ct.type}</Tag>
                 <span className="text-xs text-stone-600">{ct.day}</span>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${ct.tempColor}`}>{ct.temp} — {ct.tempDesc}</span>
               </div>
               <Body>{ct.goal}</Body>
               <div className="mt-4">
@@ -836,7 +869,22 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Pre-Launch Goal</SectionLabel>
             <Body>Post 5 times over 8 days before any ads or the Founder Program offer goes live. Goal: profile looks established and intentional. No hashtags until Post 5. No CTA until Post 5.</Body>
-            <div className="mt-4 p-3 bg-teal-500/5 border border-teal-500/20 rounded-lg">
+            <div className="mt-3 space-y-1.5">
+              {[
+                { post: 'Post 1', temp: 'Cold', desc: 'Brand arrival — no CTA, no explanation yet. Intrigue only.' },
+                { post: 'Post 2', temp: 'Cold', desc: 'Who you are — introduce the philosophy, not the offer.' },
+                { post: 'Post 3', temp: 'Cold', desc: 'The problem — name the pain. Body state problem, not effort problem.' },
+                { post: 'Post 4', temp: 'Cold', desc: 'The three states — educate. Still no CTA.' },
+                { post: 'Post 5', temp: 'Hot', desc: 'Scorecard CTA — first time asking for action. Profile is now established.' },
+              ].map(r => (
+                <div key={r.post} className="flex items-center gap-3 text-xs p-2 rounded-lg bg-stone-950 border border-stone-800">
+                  <span className="text-stone-500 w-10 shrink-0">{r.post}</span>
+                  <span className={`font-bold px-1.5 py-0.5 rounded border shrink-0 ${r.temp === 'Hot' ? 'text-red-400 bg-red-400/10 border-red-400/20' : 'text-blue-400 bg-blue-400/10 border-blue-400/20'}`}>{r.temp}</span>
+                  <span className="text-stone-400">{r.desc}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 p-3 bg-teal-500/5 border border-teal-500/20 rounded-lg">
               <p className="text-xs text-teal-400 font-medium">After Post 5 — drop the Founding Client Program offer. Then launch ads.</p>
             </div>
           </Card>
