@@ -320,6 +320,16 @@ export default function HelpPage() {
             </ul>
             <p className="mt-2">Report purchases are recorded as <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">scorecard_reports</code> rows in the database. No manual handling required — Stripe webhook creates the report and sends the email automatically.</p>
 
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Self-Guided Program (Downsell)</p>
+            <p>Any lead with scorecard data will show a <strong>Self-Guided Program</strong> section on their detail page. This shows whether they have purchased the $97 program and lets you manually send the offer or copy the checkout link.</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><strong>Send Offer Email</strong> — creates a Stripe checkout session and sends a branded offer email immediately. Use this if you want to send the offer outside of the automated flow.</li>
+              <li><strong>Copy Link</strong> — copies the Stripe checkout URL to clipboard without sending an email.</li>
+              <li>If the lead has already purchased, a <strong>Program purchased</strong> badge shows instead of the buttons.</li>
+            </ul>
+            <p className="mt-2">The offer is automatically sent when you click <strong>Send declined follow-up</strong> on the Zoom 1 companion — no manual trigger needed for the standard flow.</p>
+            <p className="mt-2">After purchase, the lead receives a unique program URL at app.bodyrecode.au/program/[token]. The program is tailored to their body state (Depleted / Transitioning / Ready) and includes a full 12-week training and nutrition protocol. To preview what a client sees, go to <strong>Dashboard → Preview → Program</strong>.</p>
+
             <Training title="Why statuses matter">
               <p>The pipeline exists to tell you exactly where every lead is at a glance — and where the system is getting stuck. If you have 12 leads sitting at Report Sent with no Zoom 1 booked, that is a data point, not a coincidence. It means the report landed but didn&apos;t create enough pull to book the call.</p>
               <p className="mt-2">Cold - No Booking is not a failure status. It means the timing wasn&apos;t right when the sequence ran. These leads still have their data on file — they&apos;re candidates for the re-engagement blast when you&apos;re ready to run it.</p>
@@ -345,6 +355,7 @@ export default function HelpPage() {
               <li><strong>Readiness Check</strong> — A (ready), B (hesitant), C (not right fit). Use it to anchor your read before Stage 5.</li>
             </ul>
             <p>After the call, switch to <strong>Post-Call</strong> view, paste the Zoom transcript, and generate an AI summary. Click <strong>Save to lead notes</strong> to persist it to the lead record — it won&apos;t survive a page refresh otherwise.</p>
+            <p>At the bottom of the companion, <strong>Send declined follow-up</strong> fires two things simultaneously: the 3-email re-engagement sequence and the $97 self-guided program offer email. Both are automatic — no further action required.</p>
             <Note>Scripts and prompts are personalised to each lead&apos;s signal levels (SLS, RPS, RILS). Stage 3 prompts are grouped by category (Training, Recovery, Consistency, Pressure) with sub-questions indented below each.</Note>
             <Training title="What Zoom 1 is actually for">
               <p><strong>Zoom 1 is not a sales call.</strong> There is nothing to sell yet. The only job in this call is to make the lead feel correctly understood and to build the interpretation that the report is based on something real, not generic.</p>
@@ -664,7 +675,7 @@ export default function HelpPage() {
               <SeqRow day="Day 5" label="Follow-up 2 — When the effort doesn't match the result" />
               <SeqRow day="Day 9" label="Follow-up 3 — Last one from me, [name]" />
             </div>
-            <p className="mt-2">The follow-up sequence is <strong>automatically cancelled</strong> the moment the lead books a Zoom via Calendly. If you need to cancel it manually, use the Cancel Sequence button on the lead detail page.</p>
+            <p className="mt-2">The follow-up sequence is <strong>automatically cancelled</strong> the moment the lead books a Zoom. If you need to cancel it manually, use the Cancel Sequence button on the lead detail page.</p>
 
             <p className="font-semibold text-white mt-4">Re-engagement Blast (Admin Action)</p>
             <p>A one-time admin action available on the dashboard homepage. Sends the re-engagement email plus a fresh follow-up sequence to all leads who have scorecard data on file. Any previously scheduled follow-ups are cancelled before the new sequence is sent.</p>
@@ -676,9 +687,31 @@ export default function HelpPage() {
             <p className="font-semibold text-white mt-4">No-Show Re-engagement Sequence</p>
             <p>Triggered manually from the lead detail page when a lead is marked Closed - No Show.</p>
             <div className="space-y-1">
-              <SeqRow day="Day 1" label="Calm acknowledgement, door left open" />
-              <SeqRow day="Day 4" label="Gentle follow-up" />
-              <SeqRow day="Day 10" label="Final invitation to rebook" />
+              <SeqRow day="Next morning 9am" label="Missed you yesterday — door left open" />
+              <SeqRow day="Day 5" label="Gentle follow-up — patterns worth talking through" />
+              <SeqRow day="Day 12" label="Final invitation — leaving the door open" />
+            </div>
+
+            <p className="font-semibold text-white mt-4">Zoom 1 Declined Follow-up Sequence</p>
+            <p>Triggered automatically when you click <strong>Send declined follow-up</strong> on the Zoom 1 companion page. Fires a 3-email re-engagement sequence alongside the self-guided program offer (see below).</p>
+            <div className="space-y-1">
+              <SeqRow day="Next morning 9am" label="Good speaking yesterday — timing understood, door open" />
+              <SeqRow day="Day 5" label="Still here if the timing changes" />
+              <SeqRow day="Day 12" label="Last one from me" />
+            </div>
+
+            <p className="font-semibold text-white mt-4">Self-Guided Program Offer (Downsell)</p>
+            <p>Fires automatically alongside the Zoom 1 declined sequence. Sends a branded offer email with a Stripe checkout link for the $97 12-week self-guided program tailored to the lead&apos;s body state. No manual action required — the offer is created and sent the moment decline is triggered.</p>
+
+            <p className="font-semibold text-white mt-4">Self-Guided Program Delivery</p>
+            <p>Triggered automatically by the Stripe webhook when a lead purchases the $97 program. Sends a branded delivery email with a unique, token-gated link to their program page at app.bodyrecode.au/program/[token]. You also receive a notification email with a link to the lead profile.</p>
+
+            <p className="font-semibold text-white mt-4">Program Buyer Nurture Sequence</p>
+            <p>Scheduled automatically at the moment of program purchase. Three emails spaced across the 12-week program to nurture buyers back toward a coaching conversation. All emails land on a call booking — no pricing or product is mentioned.</p>
+            <div className="space-y-1">
+              <SeqRow day="Week 4 (Day 28)" label="Four weeks in — Phase 1 check-in, soft coaching mention" />
+              <SeqRow day="Week 8 (Day 56)" label="The compounding point — coaching makes the biggest difference here" />
+              <SeqRow day="Week 12 (Day 84)" label="End of the program — what comes next?" />
             </div>
 
             <p className="font-semibold text-white mt-4">Welcome Email (Post-Conversion)</p>
@@ -1007,6 +1040,20 @@ export default function HelpPage() {
           </Section>
 
           <Section id="be-automations" title="25. Automations" colour="amber">
+            <p>Automations run sequences automatically when something happens. There are two types: <strong>System Automations</strong> (pre-built, always active, cannot be edited) and <strong>Custom Workflows</strong> (user-built via the workflow editor).</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">System Automations</p>
+            <p>These run without any configuration. They are always active. Click any entry to see the full email sequence, copy, and timing.</p>
+            <StatusList items={[
+              { label: 'Scorecard Follow-up Sequence', desc: '4-email sequence triggered when someone completes the Body State Scorecard' },
+              { label: 'Performance Report Follow-up', desc: '3-email sequence sent after a performance report is delivered to a lead' },
+              { label: 'No-show Re-engagement', desc: '3-email sequence for leads who missed their scheduled Zoom call' },
+              { label: 'Zoom 1 Declined Follow-up', desc: '3-email re-engagement sequence sent when a lead declines after Zoom 1' },
+              { label: 'Self-Guided Program Offer', desc: '$97 program offer email sent automatically alongside the Zoom 1 declined sequence' },
+              { label: 'Program Buyer Nurture', desc: '3-email sequence (Week 4, 8, 12) to bring program buyers back into coaching' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Custom Workflows</p>
             <p>Automations let you build sequences that run automatically when something happens — a lead books, a payment comes through, a tag is added. Each automation is a workflow with a trigger and a series of steps.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Triggers</p>
