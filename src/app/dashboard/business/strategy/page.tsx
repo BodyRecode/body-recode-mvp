@@ -292,9 +292,10 @@ function ContentCalendar() {
         const s = POST_TYPE_STYLES[activePost.type]
         const ph = PHASE_STYLES[activePost.phase]
         const dateLabel = new Date(activePost.date + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+        const isGraphicUrl = activePost.graphic?.startsWith('/api/')
         return (
           <Card>
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex items-start justify-between mb-5">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs font-bold px-2 py-0.5 rounded border" style={{ color: s.color, background: s.bg, borderColor: s.border }}>{s.label}</span>
@@ -303,40 +304,74 @@ function ContentCalendar() {
                 </div>
                 <p className="text-base font-semibold text-white">{activePost.title}</p>
               </div>
-              <button onClick={() => setActivePost(null)} className="text-stone-500 hover:text-white transition-colors text-lg leading-none">×</button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => { setActivePost(null); startEdit(activePost) }} className="text-xs text-stone-500 hover:text-stone-300 transition-colors">Edit</button>
+                <button onClick={() => setActivePost(null)} className="text-stone-500 hover:text-white transition-colors text-xl leading-none">×</button>
+              </div>
             </div>
 
-            <div className="space-y-4">
-              {activePost.graphic && (
-                <div className="bg-stone-950 border border-stone-800 rounded-xl p-4">
-                  <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Graphic Brief</p>
-                  <p className="text-sm text-stone-300 leading-relaxed">{activePost.graphic}</p>
-                </div>
-              )}
+            {/* Instagram-style post preview */}
+            <div className="grid sm:grid-cols-2 gap-5 items-start">
 
-              {activePost.caption ? (
-                <div className="bg-stone-950 border border-stone-800 rounded-xl p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-bold text-stone-500 uppercase tracking-widest">Caption</p>
-                    <button
-                      onClick={() => navigator.clipboard.writeText(activePost.caption ?? '')}
-                      className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
-                    >Copy</button>
+              {/* Left — graphic */}
+              <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800 aspect-square flex items-center justify-center">
+                {isGraphicUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={activePost.graphic} alt={activePost.title} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="text-center p-6">
+                    {activePost.graphic ? (
+                      <>
+                        <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">Graphic Brief</p>
+                        <p className="text-sm text-stone-400 leading-relaxed">{activePost.graphic}</p>
+                      </>
+                    ) : (
+                      <p className="text-sm text-stone-700">No graphic set</p>
+                    )}
                   </div>
-                  <p className="text-sm text-stone-200 leading-relaxed whitespace-pre-line">{activePost.caption}</p>
-                  {activePost.notes && (
-                    <p className="text-xs text-stone-500 mt-3 pt-3 border-t border-stone-800">{activePost.notes}</p>
-                  )}
+                )}
+              </div>
+
+              {/* Right — caption */}
+              <div className="space-y-3">
+                {/* Instagram profile row */}
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center shrink-0">
+                    <span className="text-teal-400 text-xs font-bold">K</span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-white">body_recode_</p>
+                    <p className="text-xs text-stone-600">Brisbane, Australia</p>
+                  </div>
                 </div>
-              ) : (
-                <div className="bg-stone-950 border border-stone-700/50 border-dashed rounded-xl p-4 text-center">
-                  <p className="text-sm text-stone-600">No caption written yet.</p>
-                  <button
-                    onClick={() => { setActivePost(null); startEdit(activePost) }}
-                    className="text-xs text-teal-400 hover:text-teal-300 transition-colors mt-1"
-                  >Add caption →</button>
-                </div>
-              )}
+
+                {activePost.caption ? (
+                  <div className="bg-stone-950 border border-stone-800 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-xs font-bold text-stone-600 uppercase tracking-widest">Caption</p>
+                      <button
+                        onClick={() => {
+                          const full = [activePost.caption, activePost.notes].filter(Boolean).join('\n\n')
+                          navigator.clipboard.writeText(full)
+                        }}
+                        className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium"
+                      >Copy all</button>
+                    </div>
+                    <p className="text-sm text-stone-200 leading-relaxed whitespace-pre-line">{activePost.caption}</p>
+                    {activePost.notes && (
+                      <p className="text-xs text-stone-500 mt-3 pt-3 border-t border-stone-800 leading-relaxed">{activePost.notes}</p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="bg-stone-950 border border-stone-700/40 border-dashed rounded-xl p-5 text-center">
+                    <p className="text-sm text-stone-600 mb-1">No caption written yet.</p>
+                    <button
+                      onClick={() => { setActivePost(null); startEdit(activePost) }}
+                      className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
+                    >Add caption →</button>
+                  </div>
+                )}
+              </div>
             </div>
           </Card>
         )
