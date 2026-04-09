@@ -73,24 +73,30 @@ Is that still the right way to describe it?"`,
     name: 'Pricing',
     duration: '5-10 min',
     goal: 'Present the coaching structure and packages as information, not persuasion. Full rate is always Offer 1. No mention of founding client program unless objection held or manual override selected.',
-    script: `"Based on what you've described, it might be useful to explain how support is structured - just so you have the full picture. There's no expectation to decide today.
+    script: `"Let me walk you through what's actually included - because the number only makes sense once you understand what you're getting.
 
-Before I go into the numbers, I want to be clear about what Body Recode Performance Coaching actually is. This is not a standard personal training service. You're not paying for sessions. You're entering a structured coaching system that governs how your body is loaded, recovered, and interpreted across time. Most PTs don't operate at this level - and most coaching services don't either.
+The CFFS diagnostic we ran - that's a $297 service on its own. That's the full body state interpretation, the signal mapping, everything we used to understand why your body is responding the way it is.
 
-We structure coaching around a minimum 12-week interpretive window. Most meaningful patterns don't actually settle until closer to six months - but that's not something we ask for upfront. We start with enough time to see clearly, and then decide together whether continuing makes sense.
+From that, I build your training program - written specifically for your state, not a template. That's another $200.
 
-What's covered across that window is substantial. You get the full CFFS diagnostic - that's the interpretive framework we used to read your body state. You get a custom training program built specifically for your state, and a nutrition protocol aligned to it. Every week I'm reading your check-in data and interpreting what your body is actually doing - not just tracking numbers. You have direct access to me between sessions. And the whole system is governed by your state - what you can actually handle right now, not what a generic plan says you should be doing.
+Nutrition protocol on top of that - what to eat, how much, what to prioritise based on where your body is right now. $150.
 
-If you were to price each of those pieces out separately, you'd be looking at well over $1,000 a month. That's not the pitch - it's just context for what the number actually represents.
+Every single week, I'm reading your check-in data and interpreting it. Not just looking at numbers - actually working out what your body is doing and adjusting the approach accordingly. That's $150 a week of ongoing interpretation work.
 
-Most people start with two in-person sessions per week. That's $299 per week.
+Between sessions you've got direct access to me. If something comes up, you're not waiting for the next session to ask. That's worth $100 a week to most people.
 
-Three sessions per week is also available where capacity and schedule allow. That's $409 per week.
+And then the sessions themselves - two per week, face to face. $150 each.
 
-I guide that decision based on what your system can actually tolerate - it's not something I leave up to guesswork."`,
+When you add that up you're well over $1,000 a month - just for the individual pieces. And that's before you factor in the compounding effect of having all of it working together under one system that's actually reading your body.
+
+The investment for all of that is $299 a week for two sessions. Most people start there.
+
+Three sessions a week is available where your schedule and capacity allow - that's $409. I'll make that call based on what your body can actually handle, not what you think you want."`,
     prompts: [
-      '↳ "Most people who continue do so because things start to make more sense — not because anything dramatic has changed."',
-      '↳ TRANSITION → Pause. Let the price land. Do not fill the silence. When they respond — move to Stage 5.',
+      '↳ PAUSE after stating the price. Do not fill the silence. Let it land.',
+      '↳ IF they go quiet → stay quiet. The first person to speak loses the frame.',
+      '↳ "Most people who continue do so because things start to make more sense - not because anything dramatic has changed."',
+      '↳ TRANSITION → When they respond, move to Stage 5.',
     ],
     tips: 'Present pricing as information. Do not use urgency, scarcity, or pressure. After presenting pricing — pause and allow response. Do not jump to founding client. Evaluate based on response.',
     boundary: 'Full rate is always Offer 1. No discount framing. No urgency. Founding client is Offer 2 only — via objection-triggered or manual override.',
