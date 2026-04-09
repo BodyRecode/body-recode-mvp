@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
-type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'ads' | 'founder' | 'timeline' | 'calendar'
+type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'ads' | 'founder' | 'timeline' | 'pages' | 'calendar'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
@@ -13,6 +13,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'ads', label: 'Paid Ads' },
   { id: 'founder', label: 'Founder Program' },
   { id: 'timeline', label: 'Launch Timeline' },
+  { id: 'pages', label: 'Pages' },
   { id: 'calendar', label: 'Content Calendar' },
 ]
 
@@ -1124,6 +1125,181 @@ export default function StrategyPage() {
             <SectionLabel>The Rule</SectionLabel>
             <p className="text-sm text-teal-300 font-medium">You don&apos;t need to be consistent forever. You need to be consistent for 60–90 days while the funnel launches. After that, the ads carry acquisition and content maintains trust.</p>
           </Card>
+        </div>
+      )}
+
+      {/* ── PAGES ── */}
+      {tab === 'pages' && (
+        <div className="space-y-4">
+
+          {/* Status Tracker */}
+          <Card>
+            <SectionLabel>Page Status</SectionLabel>
+            <div className="space-y-2">
+              {[
+                {
+                  platform: 'Instagram',
+                  handle: '@body_recode_',
+                  status: 'Live',
+                  bioUpdated: true,
+                  linkSet: 'bodyrecode.au/scorecard?source=instagram',
+                  statusColor: 'teal' as const,
+                },
+                {
+                  platform: 'Facebook',
+                  handle: 'Body Recode',
+                  status: 'Live',
+                  bioUpdated: true,
+                  linkSet: 'bodyrecode.au/scorecard?source=facebook',
+                  statusColor: 'teal' as const,
+                },
+              ].map(row => (
+                <div key={row.platform} className="grid grid-cols-4 gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800 text-xs">
+                  <div>
+                    <p className="text-stone-600 mb-0.5">Platform</p>
+                    <p className="font-semibold text-white">{row.platform}</p>
+                    <p className="text-stone-500 mt-0.5">{row.handle}</p>
+                  </div>
+                  <div>
+                    <p className="text-stone-600 mb-0.5">Status</p>
+                    <Tag color={row.statusColor}>{row.status}</Tag>
+                  </div>
+                  <div>
+                    <p className="text-stone-600 mb-0.5">Bio</p>
+                    <p className={row.bioUpdated ? 'text-teal-400 font-medium' : 'text-red-400 font-medium'}>{row.bioUpdated ? 'Updated' : 'Needs update'}</p>
+                  </div>
+                  <div>
+                    <p className="text-stone-600 mb-0.5">Link</p>
+                    <p className="text-stone-400 break-all">{row.linkSet}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* Instagram */}
+          <Card>
+            <SectionLabel>Instagram Profile</SectionLabel>
+            <div className="space-y-4">
+              <div>
+                <Heading>Current Bio</Heading>
+                <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-sm text-stone-300 leading-relaxed whitespace-pre-line font-mono">
+                  {`Performance coaching for people whose bodies stopped responding.\nBody state interpretation. Training. Nutrition.\n↓ Find out which state you're in (2 min)`}
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <p className="text-stone-600 mb-1">Username</p>
+                  <p className="text-white font-medium">@body_recode_</p>
+                </div>
+                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <p className="text-stone-600 mb-1">Bio link</p>
+                  <p className="text-teal-400">bodyrecode.au/scorecard?source=instagram</p>
+                </div>
+                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <p className="text-stone-600 mb-1">Account type</p>
+                  <p className="text-white">Creator or Business</p>
+                </div>
+                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <p className="text-stone-600 mb-1">Link tool</p>
+                  <p className="text-white">None — one link, one destination</p>
+                </div>
+              </div>
+              <div>
+                <Heading>Highlight Covers</Heading>
+                <div className="space-y-1.5">
+                  {[
+                    { name: 'About', purpose: 'What Body Recode is, who it\'s for' },
+                    { name: 'Body State', purpose: 'Explainer on Depleted / Transitioning / Ready' },
+                    { name: 'Results', purpose: 'Client outcomes — add as they come in' },
+                    { name: 'Scorecard', purpose: 'How it works, CTA to take it' },
+                    { name: 'Program', purpose: 'What coaching looks like' },
+                  ].map(h => (
+                    <div key={h.name} className="flex items-center gap-3 text-xs p-2 bg-stone-950 rounded-lg border border-stone-800">
+                      <span className="text-teal-400 font-semibold w-20 shrink-0">{h.name}</span>
+                      <span className="text-stone-400">{h.purpose}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-stone-600 mt-2">Set up covers even if empty at launch. Dark background, teal icon or text.</p>
+              </div>
+            </div>
+          </Card>
+
+          {/* Facebook */}
+          <Card>
+            <SectionLabel>Facebook Page</SectionLabel>
+            <div className="space-y-4">
+              <div>
+                <Heading>Current Bio (About field)</Heading>
+                <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-sm text-stone-300 leading-relaxed">
+                  Performance coaching for people whose bodies stopped responding. Body state interpretation. Training. Nutrition. Find out which state you&apos;re in — 2-min scorecard linked below.
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <p className="text-stone-600 mb-1">Page name</p>
+                  <p className="text-white font-medium">Body Recode</p>
+                </div>
+                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <p className="text-stone-600 mb-1">Website field</p>
+                  <p className="text-teal-400">performance.bodyrecode.au</p>
+                </div>
+                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <p className="text-stone-600 mb-1">CTA / scorecard link</p>
+                  <p className="text-teal-400">bodyrecode.au/scorecard?source=facebook</p>
+                </div>
+                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <p className="text-stone-600 mb-1">Bio updated</p>
+                  <p className="text-white">9 Apr 2026</p>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Terminology rule */}
+          <Card className="border-amber-500/20 bg-amber-500/5">
+            <SectionLabel>Public-Facing Terminology Rule</SectionLabel>
+            <div className="space-y-2">
+              {[
+                { context: 'Instagram + scorecard (public)', terms: 'Depleted / Transitioning / Ready' },
+                { context: 'CFFS coaching system (internal)', terms: 'Remediation / Optimisation / Post-Optimisation' },
+              ].map(row => (
+                <div key={row.context} className="flex items-start gap-3 text-xs py-2 border-b border-amber-500/10 last:border-0">
+                  <span className="text-stone-500 w-52 shrink-0">{row.context}</span>
+                  <span className="text-amber-300 font-medium">{row.terms}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-stone-600 mt-3">Never use CFFS classification terms in public content. The scorecard gives a signal — the CFFS gives the real classification. That gap protects the value of the paid system.</p>
+          </Card>
+
+          {/* Launch checklist */}
+          <Card>
+            <SectionLabel>Pre-Launch Checklist</SectionLabel>
+            <div className="space-y-1.5">
+              {[
+                { item: 'Username is @body_recode_', done: true },
+                { item: 'Instagram bio matches spec exactly', done: true },
+                { item: 'Bio link set to bodyrecode.au/scorecard?source=instagram', done: false },
+                { item: 'Profile photo on-brand and high contrast', done: false },
+                { item: 'Highlight covers set up (can be empty)', done: false },
+                { item: 'Account is Creator or Business (not Personal)', done: false },
+                { item: 'At least 1 post live before warm outreach begins', done: false },
+                { item: 'Facebook bio updated', done: true },
+                { item: 'Facebook website field set to performance.bodyrecode.au', done: false },
+                { item: 'Facebook CTA button pointing to scorecard', done: false },
+              ].map(({ item, done }) => (
+                <div key={item} className="flex items-center gap-2.5 text-xs py-1.5 border-b border-stone-800 last:border-0">
+                  <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${done ? 'bg-teal-500/20 border-teal-500/40' : 'bg-stone-900 border-stone-700'}`}>
+                    {done && <span className="text-teal-400 text-[10px] font-bold">✓</span>}
+                  </div>
+                  <span className={done ? 'text-stone-400 line-through' : 'text-stone-300'}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+
         </div>
       )}
 
