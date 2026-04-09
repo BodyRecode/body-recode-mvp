@@ -136,54 +136,47 @@ const OBJECTION_TRIGGERED = {
   when: 'Use only when: pricing has been presented → price objection raised → objection handled → resistance remains.',
   steps: [
     {
-      label: 'Step 1 — Handle objection first',
+      label: 'Step 1 — Handle the objection',
       content: `They say: "That's a lot" / "It's too expensive" / "I can't justify that"
 
-Repeat back: "So the investment feels like a stretch right now — I hear that."
+Repeat back: "So the investment feels like a stretch — got it."
 
-Response: "What I'd say is this isn't a personal training fee. You're not paying for two sessions a week. You're paying for a system that governs how your body is loaded, interpreted, and adjusted across time — and most people don't have access to that at any price.
+"Here's how I'd look at it. You're not paying for two sessions a week. You're paying for a system that's reading your body the whole time — loading it, recovering it, interpreting what's happening and adjusting. Most people don't have access to that at any price point.
 
-The question I'd be asking is not whether it's expensive. It's whether what you've been doing up to now has been working. Because if it has, you probably don't need this. But if it hasn't — that has a cost too, it's just not showing up as a line item."
+The real question isn't whether it's expensive. It's whether what you've been doing has been working. If it has, you don't need this. But if it hasn't — that has a cost too. It's just not showing up as a line item."
 
-↳ Pause. Let them respond. Don't fill the silence.
-↳ If they move forward at full rate — go to Stage 5 Path C (Full Rate).
-↳ If price objection remains — introduce founding client below.`,
+↳ Pause. Let them sit with it. Don't fill the silence.
+↳ If they move forward — Stage 5, Path C (Full Rate).
+↳ If price objection holds — move to Step 2.`,
     },
     {
-      label: 'Step 2 — Introduce Founding Client (objection held)',
-      content: `"Just based on what you've said, I want to raise something that might make this more workable — but I'll explain it properly so you can decide.
+      label: 'Step 2 — Introduce Founding Client',
+      content: `"There's one other option I want to put in front of you — I'll explain it properly so you can decide if it's relevant.
 
-I'm currently running a small number of founding client positions as part of validating the Body Recode™ system.
+I have a small number of founding client positions open. These are clients whose full coaching journey gets documented — intake, interpretation, weekly data, outcomes. It's how I formally validate the system across real cases.
 
-These are clients whose full journey is documented — from interpretation through to outcomes over time. It allows me to validate the system properly across real-world cases.
+In exchange for that, fees are adjusted by 50% for the full engagement. So $149.50 a week instead of $299 for two sessions, or $204.50 instead of $409 for three.
 
-In exchange for that participation, fees are adjusted by 50% for the duration of the engagement. So instead of $299/week (2x) or $409/week (3x), it would be $149.50/week (2x) or $204.50/week (3x).
+That's not a discount. It's a trade — your participation has genuine value to the system, and the fee reflects that.
 
-This isn't a discount or a deal. It's a structured exchange — your participation has value, and the adjustment reflects that.
-
-If that feels like it changes things for you, we can walk through what it involves. If not, that's completely fine as well."`,
+If that changes things for you, I can walk you through what's involved."`,
     },
     {
-      label: 'Step 3 — If they want to know more',
-      content: `Walk them through these points in plain language:
-
-MINIMUM COMMITMENT
-"The minimum is 12 weeks. That's the threshold for a valid case study — it needs enough time to see a real pattern. Most founding clients stay 6 to 12 months, but we don't ask for that upfront."
+      label: 'Step 3 — If they want the detail',
+      content: `COMMITMENT
+"Minimum 12 weeks. That's what makes it a valid case study. Most founding clients stay 6 to 12 months, but we don't ask for that upfront."
 
 WHAT GETS DOCUMENTED
-"Everything that's already part of the coaching process — your intake, your CFFS interpretation, your weekly check-ins, the synthesis outputs. Nothing extra is required from you. You just participate fully."
+"Everything that's already happening — your intake, CFFS interpretation, weekly check-ins, synthesis outputs. Nothing extra from you. You just show up and do the work."
 
-CONSENT — TWO OPTIONS
-"Before we start, you sign an agreement that covers how your data can be used externally. You choose one of two tiers:
-- Tier 1: Anonymised — your case study can be published but your identity is removed.
-- Tier 2: Named — your name can be used, but you review anything before it goes public.
-Either way, internal use for system development is part of the agreement regardless of tier."
+CONSENT
+"You sign an agreement before we start. Two options — anonymised, where your identity is removed from anything published, or named, where you review anything before it goes public. Internal use for system development is covered either way."
 
-WHAT IT IS NOT
-"This is not reduced coaching. The sessions, the interpretation, the system — all identical to a full-rate engagement. The only thing that changes is the fee."
+NOT REDUCED COACHING
+"Same sessions, same interpretation, same system. The only thing that changes is the fee."
 
-SEQUENCE
-"If you want to proceed, I send you the case study agreement to sign before anything else. Once that's signed, I send the commencement fee link. Coaching begins from there."`,
+NEXT STEP
+"If you want to go ahead — I send the case study agreement first. Once that's signed, I send the commencement fee link. That's it."`,
     },
   ],
   followups: [
