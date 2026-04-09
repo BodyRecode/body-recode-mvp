@@ -20,7 +20,7 @@ const TABS: { id: Tab; label: string }[] = [
 
 // ── CALENDAR ────────────────────────────────────────────────
 
-type PostType = 'authority' | 'pattern' | 'coach' | 'diagnostic' | 'founder' | 'ad' | 'prelaunch'
+type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'founder' | 'ad' | 'prelaunch'
 type CampaignPhase = 'prelaunch' | 'founder' | 'ads' | 'optimise' | 'scale'
 
 interface ScheduledPost {
@@ -35,6 +35,7 @@ interface ScheduledPost {
 const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: string; border: string }> = {
   authority:   { label: 'Authority',    color: '#14b8a6', bg: 'rgba(20,184,166,0.12)',  border: 'rgba(20,184,166,0.3)' },
   pattern:     { label: 'Pattern',      color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.3)' },
+  contrarian:  { label: 'Contrarian',   color: '#fb923c', bg: 'rgba(251,146,60,0.12)',  border: 'rgba(251,146,60,0.3)' },
   coach:       { label: 'Coach',        color: '#a78bfa', bg: 'rgba(167,139,250,0.12)', border: 'rgba(167,139,250,0.3)' },
   diagnostic:  { label: 'Diagnostic',   color: '#f87171', bg: 'rgba(248,113,113,0.12)', border: 'rgba(248,113,113,0.3)' },
   founder:     { label: 'Founder',      color: '#c084fc', bg: 'rgba(192,132,252,0.12)', border: 'rgba(192,132,252,0.3)' },
@@ -48,6 +49,19 @@ const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
   ads:       { label: 'Ads Launch',    color: 'text-blue-400' },
   optimise:  { label: 'Optimise',      color: 'text-amber-400' },
   scale:     { label: 'Scale',         color: 'text-teal-400' },
+}
+
+// Phase date ranges for calendar highlighting
+const PHASE_RANGES: { phase: CampaignPhase; start: string; end: string; topBorder: string }[] = [
+  { phase: 'prelaunch', start: '2026-04-08', end: '2026-04-15', topBorder: 'border-t-2 border-t-stone-500/60' },
+  { phase: 'founder',   start: '2026-04-16', end: '2026-04-21', topBorder: 'border-t-2 border-t-violet-500/60' },
+  { phase: 'ads',       start: '2026-04-22', end: '2026-05-06', topBorder: 'border-t-2 border-t-blue-500/60' },
+  { phase: 'optimise',  start: '2026-05-07', end: '2026-05-23', topBorder: 'border-t-2 border-t-amber-500/60' },
+  { phase: 'scale',     start: '2026-05-24', end: '2026-12-31', topBorder: 'border-t-2 border-t-teal-500/60' },
+]
+
+function getPhaseForDate(ds: string): string {
+  return PHASE_RANGES.find(r => ds >= r.start && ds <= r.end)?.topBorder ?? ''
 }
 
 function getDaysInMonth(year: number, month: number) {
@@ -166,6 +180,22 @@ function ContentCalendar() {
           <button onClick={nextMonth} className="p-1.5 text-stone-500 hover:text-stone-300 transition-colors text-lg">›</button>
         </div>
 
+        {/* Phase legend strip */}
+        <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 pb-3 border-b border-stone-800">
+          {PHASE_RANGES.map(r => {
+            const style = PHASE_STYLES[r.phase]
+            const start = new Date(r.start + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
+            const end = r.phase === 'scale' ? 'onwards' : new Date(r.end + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
+            return (
+              <div key={r.phase} className="flex items-center gap-1.5">
+                <div className={`w-2.5 h-2.5 rounded-sm border-t-2 ${r.topBorder.replace('border-t-2 ', '')} bg-stone-800`} />
+                <span className={`text-xs ${style.color}`}>{style.label}</span>
+                <span className="text-xs text-stone-700">{start}{r.phase !== 'scale' ? ` – ${end}` : '+'}</span>
+              </div>
+            )
+          })}
+        </div>
+
         {/* Day headers */}
         <div className="grid grid-cols-7 mb-1">
           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
@@ -189,7 +219,7 @@ function ContentCalendar() {
               <div
                 key={day}
                 onClick={() => setSelected(isSelected ? null : ds)}
-                className={`bg-stone-950 min-h-[80px] p-1.5 cursor-pointer transition-colors hover:bg-stone-900 ${isSelected ? 'ring-1 ring-teal-500 ring-inset' : ''}`}
+                className={`bg-stone-950 min-h-[80px] p-1.5 cursor-pointer transition-colors hover:bg-stone-900 ${getPhaseForDate(ds)} ${isSelected ? 'ring-1 ring-teal-500 ring-inset' : ''}`}
               >
                 <div className={`text-xs font-semibold mb-1 w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'bg-teal-500 text-stone-950' : 'text-stone-500'}`}>
                   {day}
