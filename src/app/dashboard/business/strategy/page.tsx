@@ -314,6 +314,16 @@ function ContentCalendar() {
             <div className="grid sm:grid-cols-2 gap-5 items-start">
 
               {/* Left — graphic */}
+              <div>
+              {isGraphicUrl && (
+                <a
+                  href={activePost.graphic}
+                  download={`${activePost.title.replace(/\s+/g, '-').toLowerCase()}.png`}
+                  className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-lg text-xs font-medium text-stone-300 transition-colors"
+                >
+                  ↓ Download graphic
+                </a>
+              )}
               <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '280px' }}>
                 {isGraphicUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -330,6 +340,7 @@ function ContentCalendar() {
                     )}
                   </div>
                 )}
+              </div>
               </div>
 
               {/* Right — caption */}
