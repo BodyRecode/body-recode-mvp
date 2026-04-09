@@ -30,6 +30,8 @@ interface ScheduledPost {
   phase: CampaignPhase
   title: string
   notes?: string
+  caption?: string
+  graphic?: string
 }
 
 const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: string; border: string }> = {
@@ -81,6 +83,7 @@ function ContentCalendar() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [selected, setSelected] = useState<string | null>(null)
+  const [activePost, setActivePost] = useState<ScheduledPost | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState<Partial<ScheduledPost>>({ type: 'authority', phase: 'prelaunch' })
   const [editId, setEditId] = useState<string | null>(null)
@@ -123,14 +126,14 @@ function ContentCalendar() {
     if (editId) {
       const { error } = await supabase
         .from('calendar_posts')
-        .update({ date: form.date, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null })
+        .update({ date: form.date, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
         .eq('id', editId)
       if (!error) setPosts(ps => ps.map(p => p.id === editId ? { ...p, ...form } as ScheduledPost : p))
       setEditId(null)
     } else {
       const { data, error } = await supabase
         .from('calendar_posts')
-        .insert({ date: form.date, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null })
+        .insert({ date: form.date, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
         .select()
         .single()
       if (!error && data) setPosts(ps => [...ps, data as ScheduledPost])
@@ -263,16 +266,16 @@ function ContentCalendar() {
                 const s = POST_TYPE_STYLES[p.type]
                 const ph = PHASE_STYLES[p.phase]
                 return (
-                  <div key={p.id} className="flex items-start justify-between gap-3 p-3 rounded-lg border" style={{ background: s.bg, borderColor: s.border }}>
-                    <div>
+                  <div key={p.id} className="flex items-start justify-between gap-3 p-3 rounded-lg border cursor-pointer hover:opacity-90 transition-opacity" style={{ background: s.bg, borderColor: s.border }} onClick={() => setActivePost(p)}>
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-xs font-bold" style={{ color: s.color }}>{s.label}</span>
                         <span className={`text-xs ${ph.color}`}>· {ph.label}</span>
                       </div>
                       <p className="text-sm font-medium text-white">{p.title}</p>
-                      {p.notes && <p className="text-xs text-stone-400 mt-0.5">{p.notes}</p>}
+                      {p.caption && <p className="text-xs text-stone-400 mt-1 line-clamp-2">{p.caption}</p>}
                     </div>
-                    <div className="flex items-center gap-1 shrink-0">
+                    <div className="flex items-center gap-1 shrink-0" onClick={e => e.stopPropagation()}>
                       <button onClick={() => startEdit(p)} className="text-xs text-stone-500 hover:text-stone-300 transition-colors px-2 py-1">Edit</button>
                       <button onClick={() => deletePost(p.id)} className="text-xs text-stone-500 hover:text-red-400 transition-colors px-2 py-1">Delete</button>
                     </div>
@@ -283,6 +286,61 @@ function ContentCalendar() {
           )}
         </Card>
       )}
+
+      {/* Full post detail */}
+      {activePost && (() => {
+        const s = POST_TYPE_STYLES[activePost.type]
+        const ph = PHASE_STYLES[activePost.phase]
+        const dateLabel = new Date(activePost.date + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+        return (
+          <Card>
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-bold px-2 py-0.5 rounded border" style={{ color: s.color, background: s.bg, borderColor: s.border }}>{s.label}</span>
+                  <span className={`text-xs font-medium ${ph.color}`}>{ph.label}</span>
+                  <span className="text-xs text-stone-600">{dateLabel}</span>
+                </div>
+                <p className="text-base font-semibold text-white">{activePost.title}</p>
+              </div>
+              <button onClick={() => setActivePost(null)} className="text-stone-500 hover:text-white transition-colors text-lg leading-none">×</button>
+            </div>
+
+            <div className="space-y-4">
+              {activePost.graphic && (
+                <div className="bg-stone-950 border border-stone-800 rounded-xl p-4">
+                  <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Graphic Brief</p>
+                  <p className="text-sm text-stone-300 leading-relaxed">{activePost.graphic}</p>
+                </div>
+              )}
+
+              {activePost.caption ? (
+                <div className="bg-stone-950 border border-stone-800 rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-bold text-stone-500 uppercase tracking-widest">Caption</p>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(activePost.caption ?? '')}
+                      className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
+                    >Copy</button>
+                  </div>
+                  <p className="text-sm text-stone-200 leading-relaxed whitespace-pre-line">{activePost.caption}</p>
+                  {activePost.notes && (
+                    <p className="text-xs text-stone-500 mt-3 pt-3 border-t border-stone-800">{activePost.notes}</p>
+                  )}
+                </div>
+              ) : (
+                <div className="bg-stone-950 border border-stone-700/50 border-dashed rounded-xl p-4 text-center">
+                  <p className="text-sm text-stone-600">No caption written yet.</p>
+                  <button
+                    onClick={() => { setActivePost(null); startEdit(activePost) }}
+                    className="text-xs text-teal-400 hover:text-teal-300 transition-colors mt-1"
+                  >Add caption →</button>
+                </div>
+              )}
+            </div>
+          </Card>
+        )
+      })()}
 
       {/* Add/Edit form */}
       {showForm && (
@@ -323,9 +381,21 @@ function ContentCalendar() {
               </div>
             </div>
             <div>
-              <label className="block text-xs text-stone-500 mb-1">Notes (optional)</label>
+              <label className="block text-xs text-stone-500 mb-1">Graphic Brief</label>
+              <input type="text" value={form.graphic ?? ''} onChange={e => setForm(f => ({ ...f, graphic: e.target.value }))}
+                placeholder="e.g. Insight card. Label: The Real Problem. Text: Your body isn't broken."
+                className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500" />
+            </div>
+            <div>
+              <label className="block text-xs text-stone-500 mb-1">Caption</label>
+              <textarea rows={6} value={form.caption ?? ''} onChange={e => setForm(f => ({ ...f, caption: e.target.value }))}
+                placeholder="Write the full post caption here..."
+                className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 resize-none" />
+            </div>
+            <div>
+              <label className="block text-xs text-stone-500 mb-1">Hashtags (optional)</label>
               <input type="text" value={form.notes ?? ''} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                placeholder="e.g. Use body-state graphic cards, red/amber/teal"
+                placeholder="#bodyrecode #bodystate ..."
                 className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500" />
             </div>
             <div className="flex items-center gap-2">
