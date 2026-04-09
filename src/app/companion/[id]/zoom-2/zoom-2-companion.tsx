@@ -73,25 +73,25 @@ Is that still the right way to describe it?"`,
     name: 'Pricing',
     duration: '5-10 min',
     goal: 'Present the coaching structure and packages as information, not persuasion. Full rate is always Offer 1. No mention of founding client program unless objection held or manual override selected.',
-    script: `"Let me walk you through what's actually included - because the number only makes sense once you understand what you're getting.
+    script: `"Before I give you the number, let me walk you through what's included and what each piece costs on its own - just so the price makes sense in context. This is not what you'll pay. I just want you to understand what you're actually getting.
 
-The CFFS diagnostic we ran - that's a $297 service on its own. That's the full body state interpretation, the signal mapping, everything we used to understand why your body is responding the way it is.
+The CFFS diagnostic - the body state interpretation, the signal mapping, everything we used to understand what's actually going on with you - that's a $297 service.
 
-From that, I build your training program - written specifically for your state, not a template. That's another $200.
+From that I build your training program. Written for your state specifically, not a template. $200.
 
-Nutrition protocol on top of that - what to eat, how much, what to prioritise based on where your body is right now. $150.
+Nutrition protocol - what to eat, how much, what to prioritise right now. $150.
 
-Every single week, I'm reading your check-in data and interpreting it. Not just looking at numbers - actually working out what your body is doing and adjusting the approach accordingly. That's $150 a week of ongoing interpretation work.
+Every week I'm reading your check-in data and interpreting it. Not tracking - interpreting. Working out what your body is doing and adjusting accordingly. That's $150 a week on its own.
 
-Between sessions you've got direct access to me. If something comes up, you're not waiting for the next session to ask. That's worth $100 a week to most people.
+You've got direct access to me between sessions. Something comes up, you don't wait. $100 a week.
 
-And then the sessions themselves - two per week, face to face. $120 each.
+And the sessions themselves - two per week, face to face. $120 each.
 
-When you add that up you're well over $1,000 a month - just for the individual pieces. And that's before you factor in the compounding effect of having all of it working together under one system that's actually reading your body.
+Add that up and you're well over $1,000 a month for the individual pieces - before you factor in the fact that it's all running under one system that's reading your body the whole time.
 
-The investment for all of that is $299 a week for two sessions. Most people start there.
+The investment for all of that is $299 a week. That's where most people start - two sessions.
 
-Three sessions a week is available where your schedule and capacity allow - that's $409. I'll make that call based on what your body can actually handle, not what you think you want."`,
+Three sessions is available where your schedule and capacity allow. $409. I'll guide that decision based on what your system can actually handle."`,
     prompts: [
       '↳ PAUSE after stating the price. Do not fill the silence. Let it land.',
       '↳ IF they go quiet → stay quiet. The first person to speak loses the frame.',
