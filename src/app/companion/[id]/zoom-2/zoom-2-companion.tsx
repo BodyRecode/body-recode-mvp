@@ -85,7 +85,7 @@ Every single week, I'm reading your check-in data and interpreting it. Not just 
 
 Between sessions you've got direct access to me. If something comes up, you're not waiting for the next session to ask. That's worth $100 a week to most people.
 
-And then the sessions themselves - two per week, face to face. $150 each.
+And then the sessions themselves - two per week, face to face. $120 each.
 
 When you add that up you're well over $1,000 a month - just for the individual pieces. And that's before you factor in the compounding effect of having all of it working together under one system that's actually reading your body.
 
@@ -569,7 +569,7 @@ export default function Zoom2Companion({
                           { item: 'Nutrition Protocol', value: '$150', solves: 'I don\'t know what to eat' },
                           { item: 'Weekly CFWS Interpretation', value: '$150/wk', solves: 'I don\'t know if what I\'m doing is working' },
                           { item: 'Direct coach access', value: '$100/wk', solves: 'I\'ll get stuck and have no one to ask' },
-                          { item: 'Zoom check-ins', value: '$150/session', solves: 'I need accountability' },
+                          { item: 'Zoom check-ins', value: '$120/session', solves: 'I need accountability' },
                         ].map((row, i) => (
                           <div key={i} className="flex items-start gap-4 px-5 py-3">
                             <div className="flex-1 min-w-0">
