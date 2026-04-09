@@ -229,7 +229,7 @@ function ContentCalendar() {
                 </div>
                 <div className="space-y-0.5">
                   {dayPosts.slice(0, 3).map(p => {
-                    const s = POST_TYPE_STYLES[p.type]
+                    const s = POST_TYPE_STYLES[p.type] ?? POST_TYPE_STYLES['authority']
                     return (
                       <div key={p.id} className="text-[10px] font-medium px-1 py-0.5 rounded truncate" style={{ color: s.color, background: s.bg }}>
                         {p.title}
@@ -263,8 +263,8 @@ function ContentCalendar() {
           ) : (
             <div className="space-y-2">
               {selectedPosts.map(p => {
-                const s = POST_TYPE_STYLES[p.type]
-                const ph = PHASE_STYLES[p.phase]
+                const s = POST_TYPE_STYLES[p.type] ?? POST_TYPE_STYLES['authority']
+                const ph = PHASE_STYLES[p.phase] ?? PHASE_STYLES['prelaunch']
                 return (
                   <div key={p.id} className="flex items-start justify-between gap-3 p-3 rounded-lg border cursor-pointer hover:opacity-90 transition-opacity" style={{ background: s.bg, borderColor: s.border }} onClick={() => setActivePost(p)}>
                     <div className="flex-1 min-w-0">
@@ -289,8 +289,8 @@ function ContentCalendar() {
 
       {/* Full post detail */}
       {activePost && (() => {
-        const s = POST_TYPE_STYLES[activePost.type]
-        const ph = PHASE_STYLES[activePost.phase]
+        const s = POST_TYPE_STYLES[activePost.type] ?? POST_TYPE_STYLES['authority']
+        const ph = PHASE_STYLES[activePost.phase] ?? PHASE_STYLES['prelaunch']
         const dateLabel = new Date(activePost.date + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
         const isGraphicUrl = activePost.graphic?.startsWith('/api/')
         return (
