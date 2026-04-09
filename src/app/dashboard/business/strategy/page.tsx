@@ -502,6 +502,44 @@ export default function StrategyPage() {
           </div>
 
           <Card>
+            <SectionLabel>Revenue Sequence</SectionLabel>
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
+                {[
+                  { label: 'Attraction', value: 'Scorecard', note: 'Free', color: 'text-stone-300' },
+                  { label: 'Upsell', value: '$37 Report', note: 'Immediate', color: 'text-amber-400' },
+                  { label: 'Commencement', value: '$240 Fee', note: 'On conversion', color: 'text-teal-400' },
+                  { label: 'Continuity', value: '$299–$409/wk', note: 'Recurring', color: 'text-teal-400' },
+                  { label: 'Downsell', value: '$97 Program', note: 'Zoom 1 decline', color: 'text-violet-400' },
+                ].map(item => (
+                  <div key={item.label} className="bg-stone-800/50 border border-stone-700 rounded-lg px-3 py-2.5 text-center">
+                    <p className="text-xs text-stone-500 mb-1">{item.label}</p>
+                    <p className={`text-sm font-semibold ${item.color}`}>{item.value}</p>
+                    <p className="text-xs text-stone-600 mt-0.5">{item.note}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-stone-800/30 border border-stone-700/50 rounded-lg px-4 py-3">
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">LTV Optimisation — 2x to 3x Upgrade</p>
+                <div className="grid sm:grid-cols-3 gap-3 text-sm">
+                  <div>
+                    <p className="text-stone-400 text-xs font-semibold mb-1">When</p>
+                    <p className="text-stone-300 text-xs">Week 8+ on 2x package. Client recovering well, consistently completing sessions, body state progressing.</p>
+                  </div>
+                  <div>
+                    <p className="text-stone-400 text-xs font-semibold mb-1">The offer</p>
+                    <p className="text-stone-300 text-xs">Move from 2 to 3 sessions per week. $299 → $409/week. Same check-ins, same interpretation. More training contact, faster compounding.</p>
+                  </div>
+                  <div>
+                    <p className="text-stone-400 text-xs font-semibold mb-1">How</p>
+                    <p className="text-stone-300 text-xs">Use the Upgrade Companion (linked from client profile). Raise it in a regular session. Data-led, not sales-led.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card>
             <SectionLabel>Two Parallel Objectives</SectionLabel>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>

@@ -4,6 +4,7 @@ import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import Link from 'next/link'
 import SetStartDate from '@/components/set-start-date'
 import PackageManager from '@/components/package-manager'
+import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import CopyLinkButton from './copy-link-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
@@ -347,6 +348,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           )}
         </div>
         <PackageManager clientId={client.id} currentPackage={client.package} isFoundingClient={client.is_founding_client ?? false} />
+        {(() => {
+          const weekNumber = client.coaching_started_at ? getWeekNumber(client.coaching_started_at) : null
+          const isUpgradeCandidate = client.package === '2x' && (weekNumber ?? 0) >= 8
+          if (!isUpgradeCandidate) return null
+          return (
+            <div className="mt-3 pt-3 border-t border-stone-800 flex items-center justify-between">
+              <p className="text-xs text-teal-400">Eligible for 2x to 3x upgrade (Week {weekNumber})</p>
+              <Link
+                href={`/companion/${id}/upgrade`}
+                className="text-xs font-semibold text-teal-400 hover:text-teal-300 border border-teal-800/50 px-3 py-1.5 rounded-lg transition-colors"
+              >
+                Upgrade Companion →
+              </Link>
+            </div>
+          )
+        })()}
       </div>
 
       {/* Onboarding status */}

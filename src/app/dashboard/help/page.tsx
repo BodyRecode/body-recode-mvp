@@ -614,8 +614,11 @@ export default function HelpPage() {
               <li>Update to 3x once they have subscribed.</li>
             </ol>
             <Note>The 3x package is coach-assessed. Only offer it during weekly check-ins once you have enough data to confirm the client can sustain three sessions per week.</Note>
+            <p className="font-semibold text-white mt-4">Upgrade Companion</p>
+            <p>When a 2x client reaches Week 8 and is consistently progressing, a teal <strong>Upgrade Companion</strong> link appears in the Coaching Package card on their profile. This opens a 5-stage conversation guide that walks through how to raise and present the upgrade in a session. The client dashboard also surfaces an <strong>Upgrade</strong> badge next to eligible clients and shows a teal banner at the top of the clients list.</p>
+            <p>The upgrade companion covers: performance check (is the client actually ready?), making the case using their data, presenting the $299 to $409 price difference, handling objections, and closing with a clear yes/defer/no outcome.</p>
             <Training title="Why 3x is not offered at Zoom 2">
-              <p>At Zoom 2, you have a report, one consultation, and whatever they told you about themselves. That is not enough data to know whether a client can sustain three sessions per week on top of their life. Offering 3x too early sets up a client for a load they can&apos;t maintain — and when they struggle with it, they attribute the problem to the program rather than the prescription.</p>
+              <p>At Zoom 2, you have a report, one consultation, and whatever they told you about themselves. That is not enough data to know whether a client can sustain three sessions per week on top of their life. Offering 3x too early sets up a client for a load they cannot maintain - and when they struggle with it, they attribute the problem to the program rather than the prescription.</p>
               <p className="mt-2">The 3x upgrade should come from the CFWS data. Several weeks of check-ins will show you whether a client&apos;s recovery, regulation, and schedule can support a third session. When the data says yes, you make the offer from a position of evidence. The client will feel the difference between being sold a bigger package at the start and being assessed for one after you&apos;ve watched them closely for weeks.</p>
             </Training>
           </Section>
@@ -627,6 +630,7 @@ export default function HelpPage() {
               <li><strong>A / B check-in status</strong> — Teal if submitted this week, grey if not yet submitted.</li>
               <li><strong>CFWS readiness dots</strong> — Four coloured dots (Capacity, Schedule, Regulation, Behaviour) from the latest weekly synthesis. Green = ready, Amber = caution, Red = flag.</li>
               <li><strong>Body state badge</strong> — From the latest CFFS.</li>
+              <li><strong>Upgrade badge</strong> — Teal badge shown on any 2x client at Week 8+. Indicates they are eligible for the upgrade conversation. A banner also appears at the top of the clients list when one or more clients are eligible.</li>
             </ul>
             <p>Clients in the Deliberate Start Window show a <strong>Starts in Xd</strong> amber badge instead.</p>
             <Training title="How to read the clients dashboard">

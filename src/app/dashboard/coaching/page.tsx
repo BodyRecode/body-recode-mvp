@@ -87,10 +87,13 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     const hasFormA = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'A')
     const hasFormB = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'B')
 
-    return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB, rebuildTraining: rebuildTrainingIds.has(client.id), rebuildNutrition: rebuildNutritionIds.has(client.id) }
+    const upgradeCandidate = client.package === '2x' && (weekNumber ?? 0) >= 8 && (daysUntilStart ?? 0) <= 0
+
+    return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB, rebuildTraining: rebuildTrainingIds.has(client.id), rebuildNutrition: rebuildNutritionIds.has(client.id), upgradeCandidate }
   })
 
   const flaggedCount = clientsProcessed.filter(c => c.latestCffs?.reassessment_flagged).length
+  const upgradeCandidateCount = clientsProcessed.filter(c => c.upgradeCandidate).length
 
   return (
     <div>
@@ -202,6 +205,17 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </div>
       )}
 
+      {upgradeCandidateCount > 0 && (
+        <div className="mb-6 bg-teal-950/40 border border-teal-800/50 rounded-lg px-4 py-3 flex items-center gap-3">
+          <svg className="w-4 h-4 text-teal-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          <p className="text-teal-300 text-sm">
+            <span className="font-medium">{upgradeCandidateCount} client{upgradeCandidateCount > 1 ? 's' : ''}</span> eligible for the 2x to 3x upgrade conversation
+          </p>
+        </div>
+      )}
+
       {clientsProcessed.length === 0 ? (
         <div className="text-center py-20 text-stone-500">
           <p className="text-lg mb-2">No clients yet</p>
@@ -244,6 +258,13 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               </div>
 
               <div className="flex items-center gap-3">
+                {/* Upgrade candidate badge */}
+                {client.upgradeCandidate && (
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-teal-700/50 text-teal-400 bg-teal-900/20">
+                    Upgrade
+                  </span>
+                )}
+
                 {/* CFWS readiness dots */}
                 {client.latestCfws && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
                   <div className="flex items-center gap-1">
