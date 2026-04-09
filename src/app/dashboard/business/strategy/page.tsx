@@ -446,11 +446,11 @@ const POST_STATUS_CONFIG: Record<PostStatus, { label: string; color: string; bg:
 }
 
 const PRELAUNCH_POSTS = [
-  { id: 'post1', post: 'Post 1', day: 'Day 1', title: 'Brand Arrival',       temp: 'Cold' as const },
-  { id: 'post2', post: 'Post 2', day: 'Day 2', title: 'Who You Are',         temp: 'Cold' as const },
-  { id: 'post3', post: 'Post 3', day: 'Day 4', title: 'The Problem',         temp: 'Cold' as const },
-  { id: 'post4', post: 'Post 4', day: 'Day 6', title: 'The Three States',    temp: 'Cold' as const },
-  { id: 'post5', post: 'Post 5', day: 'Day 8', title: 'Scorecard CTA',       temp: 'Hot'  as const },
+  { id: 'post1', post: 'Post 1', day: 'Day 1', date: 'Wed 8 Apr',  title: 'Brand Arrival',    temp: 'Cold' as const },
+  { id: 'post2', post: 'Post 2', day: 'Day 2', date: 'Thu 9 Apr',  title: 'Who You Are',      temp: 'Cold' as const },
+  { id: 'post3', post: 'Post 3', day: 'Day 4', date: 'Sat 11 Apr', title: 'The Problem',      temp: 'Cold' as const },
+  { id: 'post4', post: 'Post 4', day: 'Day 6', date: 'Mon 13 Apr', title: 'The Three States', temp: 'Cold' as const },
+  { id: 'post5', post: 'Post 5', day: 'Day 8', date: 'Wed 15 Apr', title: 'Scorecard CTA',    temp: 'Hot'  as const },
 ]
 
 export default function StrategyPage() {
@@ -967,7 +967,10 @@ export default function StrategyPage() {
                     const cfg = POST_STATUS_CONFIG[status]
                     return (
                       <div key={p.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-stone-950 border border-stone-800">
-                        <span className="text-stone-600 text-xs w-10 shrink-0">{p.day}</span>
+                        <div className="shrink-0 w-24">
+                          <p className="text-stone-300 text-xs font-medium">{p.date}</p>
+                          <p className="text-stone-600 text-xs">{p.day}</p>
+                        </div>
                         <span className={`text-xs font-bold px-1.5 py-0.5 rounded border shrink-0 ${p.temp === 'Hot' ? 'text-red-400 bg-red-400/10 border-red-400/20' : 'text-blue-400 bg-blue-400/10 border-blue-400/20'}`}>{p.temp}</span>
                         <span className="text-stone-300 text-sm flex-1">{p.title}</span>
                         <button
@@ -1137,6 +1140,9 @@ export default function StrategyPage() {
           {/* Weekly action plan */}
           <Card>
             <SectionLabel>Weekly Action Plan</SectionLabel>
+            <div className="flex items-start gap-3 mb-3 p-3 rounded-lg bg-amber-400/5 border border-amber-400/20">
+              <p className="text-xs text-amber-300 leading-relaxed">This rhythm starts <strong>after the pre-launch is complete</strong> (after Post 5 on April 15). Don&apos;t try to force it during pre-launch — those posts run on their own Day 1/2/4/6/8 schedule. First Monday of this rhythm: <strong>April 21</strong>.</p>
+            </div>
             <p className="text-stone-500 text-xs mb-3">What to do each week — beyond just posting.</p>
             <div className="space-y-2">
               {[
