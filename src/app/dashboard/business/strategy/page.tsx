@@ -221,7 +221,7 @@ function ContentCalendar() {
             return (
               <div
                 key={day}
-                onClick={() => setSelected(isSelected ? null : ds)}
+                onClick={() => { setSelected(isSelected ? null : ds); setActivePost(null) }}
                 className={`bg-stone-950 min-h-[80px] p-1.5 cursor-pointer transition-colors hover:bg-stone-900 ${getPhaseForDate(ds)} ${isSelected ? 'ring-1 ring-teal-500 ring-inset' : ''}`}
               >
                 <div className={`text-xs font-semibold mb-1 w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'bg-teal-500 text-stone-950' : 'text-stone-500'}`}>
