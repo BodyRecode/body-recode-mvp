@@ -79,7 +79,9 @@ Before I go into the numbers, I want to be clear about what Body Recode Performa
 
 We structure coaching around a minimum 12-week interpretive window. Most meaningful patterns don't actually settle until closer to six months - but that's not something we ask for upfront. We start with enough time to see clearly, and then decide together whether continuing makes sense.
 
-What coaching covers is ongoing interpretation across time - governing stress, load, and recovery, and reducing the need to constantly second-guess what you're seeing or feeling. It's not about motivation, intensity, or pushing for outcomes.
+What's covered across that window is substantial. You get the full CFFS diagnostic - that's the interpretive framework we used to read your body state. You get a custom training program built specifically for your state, and a nutrition protocol aligned to it. Every week I'm reading your check-in data and interpreting what your body is actually doing - not just tracking numbers. You have direct access to me between sessions. And the whole system is governed by your state - what you can actually handle right now, not what a generic plan says you should be doing.
+
+If you were to price each of those pieces out separately, you'd be looking at well over $1,000 a month. That's not the pitch - it's just context for what the number actually represents.
 
 Most people start with two in-person sessions per week. That's $299 per week.
 
@@ -543,6 +545,43 @@ export default function Zoom2Companion({
                     <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/30 rounded-xl p-5 mb-2">
                       <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-3">Script</p>
                       <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{stage.script}</p>
+                    </div>
+                  )}
+
+                  {/* Value Stack — shown only on Pricing stage */}
+                  {stage.id === 4 && (
+                    <div className="bg-stone-900 border border-stone-700 rounded-xl overflow-hidden mb-2">
+                      <div className="px-5 py-3 border-b border-stone-700 flex items-center justify-between">
+                        <p className="text-xs font-bold text-stone-400 uppercase tracking-wider">Grand Slam Value Stack</p>
+                        <p className="text-xs text-stone-500">Reference — not a script</p>
+                      </div>
+                      <div className="divide-y divide-stone-800">
+                        {[
+                          { item: 'Body State Scorecard', value: '$97', solves: 'I don\'t know where I\'m starting from' },
+                          { item: 'CFFS Full Diagnostic', value: '$297', solves: 'I don\'t know why my body isn\'t responding' },
+                          { item: 'Custom Training Program', value: '$200', solves: 'I don\'t know how to train for my state' },
+                          { item: 'Nutrition Protocol', value: '$150', solves: 'I don\'t know what to eat' },
+                          { item: 'Weekly CFWS Interpretation', value: '$150/wk', solves: 'I don\'t know if what I\'m doing is working' },
+                          { item: 'Direct coach access', value: '$100/wk', solves: 'I\'ll get stuck and have no one to ask' },
+                          { item: 'Zoom check-ins', value: '$150/session', solves: 'I need accountability' },
+                        ].map((row, i) => (
+                          <div key={i} className="flex items-start gap-4 px-5 py-3">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-white">{row.item}</p>
+                              <p className="text-xs text-stone-500 mt-0.5">{row.solves}</p>
+                            </div>
+                            <span className="text-xs font-bold text-teal-400 shrink-0 mt-0.5">{row.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="px-5 py-3 border-t border-stone-700 flex items-center justify-between bg-stone-800/50">
+                        <p className="text-xs font-bold text-white">Total perceived value</p>
+                        <p className="text-sm font-bold text-teal-400">$1,000+/mo</p>
+                      </div>
+                      <div className="px-5 py-3 border-t border-stone-700 flex items-center justify-between">
+                        <p className="text-xs font-bold text-white">Actual price (2x in-person)</p>
+                        <p className="text-sm font-bold text-white">$299/wk (~$1,196/mo)</p>
+                      </div>
                     </div>
                   )}
                   {stage.prompts.map((p, i) => (
