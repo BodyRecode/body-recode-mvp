@@ -21,6 +21,7 @@ const SECTIONS = [
   { id: 'automated-status', title: '14. Automated Status', colour: 'teal' as const },
   { id: 'email-sequences', title: '15. Email Sequences', colour: 'teal' as const },
   { id: 'communications', title: '16. Communications', colour: 'teal' as const },
+  { id: 'assets', title: '16b. Assets', colour: 'teal' as const },
   { id: 'admin-actions', title: '17. Admin Actions', colour: 'teal' as const },
   { id: 'founding-client', title: '18. Founding Client', colour: 'teal' as const },
   { id: 'stripe-payments', title: '19. Stripe Payments', colour: 'teal' as const },
@@ -763,6 +764,17 @@ export default function HelpPage() {
             </ul>
             <p>Each entry shows the event type, subject line, and exact Brisbane timestamp. The timeline is live — it updates as emails go out.</p>
             <Note>Historical leads (those who submitted before this feature was built) will not have events in the timeline. All new activity is logged going forward.</Note>
+          </Section>
+
+          <Section id="assets" title="16b. Assets" colour="teal">
+            <p>The <strong>Assets</strong> page (nav bar) is a central library of everything that goes out to leads and clients. Use it to review any asset before or after it is sent.</p>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What is listed</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Self-Guided Programs</strong> — Depleted, Transitioning, and Ready. Click any to see the full 12-week program exactly as the client sees it at app.bodyrecode.au/program/[token].</li>
+              <li><strong>Downsell Emails</strong> — Per state: the offer email (sent on Zoom 1 decline) and the delivery email (sent after Stripe purchase). Both shown as rendered previews.</li>
+              <li><strong>Client-Facing Pages</strong> — Scorecard, booking page, orientation guide, coaching guide. All open in a new tab.</li>
+            </ul>
+            <Note>Program preview pages use a placeholder name. The real program page is token-gated and personalised to the lead. To see a live example, find a lead who has purchased and click their program token on the lead detail page.</Note>
           </Section>
 
           <Section id="admin-actions" title="17. Admin Actions" colour="teal">
