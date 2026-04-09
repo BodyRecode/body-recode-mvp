@@ -117,16 +117,68 @@ There's also a one-time commencement fee of $240 to get started. That covers the
 If it feels like the right fit, we can talk next steps.
 
 If not, the report still stands on its own."`,
-    prompts: [
-      'PATH A - NOT PROCEEDING: Acknowledge without persuasion. Reinforce the clarity gained. Leave the door open professionally. "That\'s completely fine. The report still stands — you now have a clearer read on what\'s actually going on. If anything changes, the door\'s open."',
-      'PATH B - NEEDS TIME: "That\'s fine — take the time you need. Before we wrap up, can I ask what\'s sitting with you? Is it the investment, whether this is the right fit, or something else?"\n↳ If it\'s the money → "Understood. If the investment is the sticking point, there is one other option I haven\'t mentioned yet. It\'s not available to everyone — do you want me to explain it?" [→ move to Founding Client if appropriate]\n↳ If it\'s whether it\'ll work → "That\'s a fair concern — especially if you\'ve tried things before. What I\'d say is the report you already have is the first output of the system working. That wasn\'t a pitch. That was the system reading your data. Whether coaching is right is a separate question — but the read is already done."\n↳ If they need permission → "Makes sense. Is there someone else who needs to be part of this decision? I\'m happy to jump on a call with both of you if that helps."\n↳ Set a specific follow-up → "When would be a good time to pick this back up? I\'d rather have a date than leave it open-ended."',
-      'PATH C - PROCEEDING (FULL RATE): Confirm the package. Send commencement fee link first ($240). Once paid, send weekly subscription link. Confirm Deliberate Start Window (3-7 days). Send intake link after fee received.',
-      'PATH C - PROCEEDING (FOUNDING CLIENT): Confirm the founding client program. Send case study agreement link first. Once signed, send commencement fee ($240). Once paid, send subscription at founding rate. Confirm Deliberate Start Window. Send intake link.',
-      'PATH C - PROCEEDING (ONLINE): Send commencement fee first ($240). Once paid, send online subscription link ($149/week). Confirm Deliberate Start Window. Send intake link.',
-      'COMMENCEMENT FEE - $240 (one-time): https://buy.stripe.com/6oUbJ392W3L02sn00T5ZC01',
-      'ONLINE $149/week: https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02',
-      'IN-PERSON 2x $299/week: https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00',
-      'IN-PERSON 3x $409/week: https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03',
+    prompts: [],
+    paths: [
+      {
+        label: 'PATH A — Not proceeding',
+        colour: 'red' as const,
+        lines: [
+          'Acknowledge without persuasion. Reinforce the clarity gained. Leave the door open.',
+          '"That\'s completely fine. The report still stands — you now have a clearer read on what\'s actually going on. If anything changes, the door\'s open."',
+        ],
+        subItems: [],
+      },
+      {
+        label: 'PATH B — Needs time',
+        colour: 'amber' as const,
+        lines: [
+          '"That\'s fine — take the time you need. Before we wrap up, can I ask what\'s sitting with you? Is it the investment, the fit, or something else?"',
+        ],
+        subItems: [
+          { trigger: 'It\'s the money', response: '"Understood. There is one other option I haven\'t mentioned yet — it\'s not available to everyone. Do you want me to explain it?" → move to Founding Client if appropriate.' },
+          { trigger: 'Whether it\'ll work', response: '"That\'s fair — especially if you\'ve tried things before. The report you already have is the first output of the system working. That wasn\'t a pitch, that was the system reading your data. Whether coaching is right is a separate question — but the read is already done."' },
+          { trigger: 'Needs permission', response: '"Makes sense. Is there someone else who needs to be part of this? I\'m happy to jump on a call with both of you if that helps."' },
+          { trigger: 'Follow-up', response: '"When would be a good time to pick this back up? I\'d rather have a date than leave it open-ended."' },
+        ],
+      },
+      {
+        label: 'PATH C — Proceeding (Full Rate)',
+        colour: 'teal' as const,
+        lines: [
+          'Send commencement fee first. Once paid, send weekly subscription link. Confirm Deliberate Start Window (3-7 days). Send intake link.',
+        ],
+        subItems: [],
+        links: [
+          { label: 'Commencement Fee — $240', url: 'https://buy.stripe.com/6oUbJ392W3L02sn00T5ZC01' },
+          { label: 'In-Person 2x — $299/week', url: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00' },
+          { label: 'In-Person 3x — $409/week', url: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
+        ],
+      },
+      {
+        label: 'PATH C — Proceeding (Online)',
+        colour: 'teal' as const,
+        lines: [
+          'Send commencement fee first. Once paid, send online subscription link. Confirm Deliberate Start Window. Send intake link.',
+        ],
+        subItems: [],
+        links: [
+          { label: 'Commencement Fee — $240', url: 'https://buy.stripe.com/6oUbJ392W3L02sn00T5ZC01' },
+          { label: 'Online — $149/week', url: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02' },
+        ],
+      },
+      {
+        label: 'PATH C — Proceeding (Founding Client)',
+        colour: 'violet' as const,
+        lines: [
+          'Send case study agreement first. Once signed, send commencement fee. Once paid, send subscription at founding rate. Confirm Deliberate Start Window. Send intake link.',
+        ],
+        subItems: [],
+        links: [
+          { label: 'Commencement Fee — $240', url: 'https://buy.stripe.com/6oUbJ392W3L02sn00T5ZC01' },
+          { label: 'In-Person 2x Founding — $149.50/week', url: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00' },
+          { label: 'In-Person 3x Founding — $204.50/week', url: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
+        ],
+      },
     ],
     tips: 'Founding client: agreement must be signed before any payment link is sent. Standard and online: commencement fee first, then subscription.',
     boundary: 'No urgency manipulation. No discount framing. Non-enrolment is an acceptable outcome.',
@@ -620,6 +672,49 @@ export default function Zoom2Companion({
                       )}
                     </div>
                   ))}
+
+                  {'paths' in stage && stage.paths && stage.paths.map((path, i) => {
+                    const colourMap = {
+                      red: { border: 'border-red-500/30', bg: 'bg-red-500/5', label: 'text-red-400', subBg: 'bg-red-500/5 border-red-500/15' },
+                      amber: { border: 'border-amber-400/30', bg: 'bg-amber-400/5', label: 'text-amber-400', subBg: 'bg-amber-400/5 border-amber-400/15' },
+                      teal: { border: 'border-teal-400/30', bg: 'bg-teal-400/5', label: 'text-teal-400', subBg: 'bg-teal-400/5 border-teal-400/15' },
+                      violet: { border: 'border-violet-400/30', bg: 'bg-violet-400/5', label: 'text-violet-400', subBg: 'bg-violet-400/5 border-violet-400/15' },
+                    }
+                    const c = colourMap[path.colour]
+                    return (
+                      <div key={i} className={`rounded-xl overflow-hidden border ${c.border}`}>
+                        <div className={`px-4 py-2.5 ${c.bg}`}>
+                          <p className={`text-xs font-bold uppercase tracking-wider ${c.label}`}>{path.label}</p>
+                        </div>
+                        <div className="px-4 py-3 space-y-2">
+                          {path.lines.map((line, j) => (
+                            <p key={j} className="text-sm text-stone-200 leading-relaxed">{line}</p>
+                          ))}
+                          {path.subItems && path.subItems.length > 0 && (
+                            <div className="space-y-2 mt-2">
+                              {path.subItems.map((sub, j) => (
+                                <div key={j} className={`rounded-lg p-3 border ${c.subBg} ml-2`}>
+                                  <p className={`text-xs font-bold uppercase tracking-wider mb-1 ${c.label}`}>If — {sub.trigger}</p>
+                                  <p className="text-sm text-stone-300 leading-relaxed">{sub.response}</p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {'links' in path && path.links && path.links.length > 0 && (
+                            <div className="space-y-1.5 mt-2 pt-2 border-t border-stone-800">
+                              {path.links.map((link, j) => (
+                                <a key={j} href={link.url} target="_blank" rel="noopener noreferrer"
+                                  className={`flex items-center justify-between text-sm font-medium ${c.label} hover:underline`}>
+                                  <span>{link.label}</span>
+                                  <span className="text-xs text-stone-500">↗</span>
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
                   {stage.tips && (
                     <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/20 rounded-xl p-4 mt-4">
                       <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-1">Coach note</p>
