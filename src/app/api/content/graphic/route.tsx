@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', right: '80px', height: '160px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', right: '80px', height: '136px', objectFit: 'contain' }} />
           </div>
         </div>
       ),
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ height: '160px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt="Body Recode" style={{ height: '136px', objectFit: 'contain' }} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={photoSrc} style={{ width: '320px', height: '400px', objectFit: 'cover', objectPosition: 'center top', borderRadius: '12px', border: '2px solid #1c1917' }} alt="" />
           </div>
@@ -147,7 +147,7 @@ export async function GET(request: NextRequest) {
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '80px', height: '160px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '80px', height: '136px', objectFit: 'contain' }} />
           </div>
           {/* Photo right — portrait, full height, crops from centre */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -186,7 +186,7 @@ export async function GET(request: NextRequest) {
           )}
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '160px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '136px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -228,7 +228,7 @@ export async function GET(request: NextRequest) {
           </div>
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '160px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '136px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -280,7 +280,7 @@ export async function GET(request: NextRequest) {
 
           {/* Logo sits below all content, never overlaps */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ height: '160px', objectFit: 'contain', alignSelf: 'flex-start' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ height: '136px', objectFit: 'contain', alignSelf: 'flex-start' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -332,7 +332,7 @@ export async function GET(request: NextRequest) {
 
           {/* Logo sits below all content */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ height: '160px', objectFit: 'contain', alignSelf: 'flex-start' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ height: '136px', objectFit: 'contain', alignSelf: 'flex-start' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -369,7 +369,7 @@ export async function GET(request: NextRequest) {
 
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '160px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '136px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -399,7 +399,7 @@ export async function GET(request: NextRequest) {
 
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '160px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '136px', objectFit: 'contain' }} />
 
           {/* Slide number small bottom right */}
           <div style={{ position: 'absolute', bottom: '76px', right: '100px', fontSize: '26px', fontWeight: 600, color: '#78716c', letterSpacing: '0.08em' }}>{slideNum}</div>
@@ -443,7 +443,7 @@ export async function GET(request: NextRequest) {
 
           {/* Logo bottom centre */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', height: '160px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', height: '136px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
