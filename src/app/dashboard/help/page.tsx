@@ -84,7 +84,14 @@ export default function HelpPage() {
   }
 
   return (
-    <div className="max-w-6xl">
+    <div className="max-w-6xl relative">
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed bottom-6 right-6 z-50 w-9 h-9 flex items-center justify-center bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-full text-stone-400 hover:text-white transition-colors shadow-lg"
+        aria-label="Back to top"
+      >
+        ↑
+      </button>
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-semibold mb-2">Dashboard Guide</h1>
