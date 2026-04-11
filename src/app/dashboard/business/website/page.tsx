@@ -150,6 +150,12 @@ export default function WebsitePage() {
         </div>
       )}
 
+      {!loading && data && visitors < 50 && (
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3">
+          <p className="text-xs text-amber-400/80">Analytics tracking was enabled recently - visitor data only covers the last few days. Conversion rate and bounce rate will stabilise as more data accumulates.</p>
+        </div>
+      )}
+
       {!loading && data && (
         <>
           {/* Stats */}
@@ -164,7 +170,7 @@ export default function WebsitePage() {
             />
             <StatCard
               label="Bounce Rate"
-              value={`${(bounceRate * 100).toFixed(0)}%`}
+              value={`${bounceRate.toFixed(0)}%`}
             />
           </div>
 
