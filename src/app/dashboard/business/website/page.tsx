@@ -25,6 +25,17 @@ function StatCard({ label, value, sub, highlight }: {
   )
 }
 
+function Insight({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
+      <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">{title}</p>
+      <div className="space-y-2 text-sm text-stone-400 leading-relaxed">
+        {children}
+      </div>
+    </div>
+  )
+}
+
 function DailyChart({ data }: { data: DayData[] }) {
   if (!data || data.length === 0) return <div className="bg-[#111110] border border-stone-800 rounded-xl p-5"><p className="text-sm text-stone-600">No data yet.</p></div>
   const max = data.reduce((m, d) => Math.max(m, d.views), 1)
@@ -110,6 +121,8 @@ export default function WebsitePage() {
   const conversionRate = visitors > 0 && leadCount != null && leadCount > 0
     ? ((leadCount / visitors) * 100).toFixed(1)
     : null
+  const pagesPerVisit = visitors > 0 ? (pageViews / visitors).toFixed(1) : null
+  const isSparse = visitors < 50
 
   return (
     <div className="max-w-4xl space-y-6">
@@ -150,9 +163,9 @@ export default function WebsitePage() {
         </div>
       )}
 
-      {!loading && data && visitors < 50 && (
+      {!loading && data && isSparse && (
         <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3">
-          <p className="text-xs text-amber-400/80">Analytics tracking was enabled recently - visitor data only covers the last few days. Conversion rate and bounce rate will stabilise as more data accumulates.</p>
+          <p className="text-xs text-amber-400/80">Analytics tracking was enabled in April 2026 - visitor data only covers the last few days. Conversion rate and bounce rate will stabilise as more traffic accumulates over the coming weeks.</p>
         </div>
       )}
 
@@ -174,36 +187,93 @@ export default function WebsitePage() {
             />
           </div>
 
+          {/* Stats insight */}
+          <Insight title="What these numbers mean">
+            <p>
+              <span className="text-white font-medium">Visitors</span> is the number that matters most right now. Every visitor is someone who found the site - from a post, a DM, a Google search, or a direct link. At this stage, growing this number is the primary job. The site exists to convert visitors into scorecard submissions, but you can&apos;t convert visitors you don&apos;t have.
+            </p>
+            <p>
+              <span className="text-white font-medium">Scorecard submissions</span> is the conversion event - the moment a visitor becomes a lead in the system. The conversion rate is submissions divided by visitors. A healthy benchmark for a warm audience (Instagram followers landing from a post) is 10-20%. Cold traffic converts lower. Right now, the goal is to get the scorecard in front of people who already have context on who you are.
+            </p>
+            {pagesPerVisit && (
+              <p>
+                <span className="text-white font-medium">Pages per visit: {pagesPerVisit}.</span>{' '}
+                {parseFloat(pagesPerVisit) >= 2
+                  ? 'Visitors are exploring beyond the first page - the site is holding attention.'
+                  : 'Most visitors are only viewing one page. This is normal at early traffic volumes and from direct scorecard links, but worth watching as traffic grows.'}
+              </p>
+            )}
+            <p>
+              <span className="text-white font-medium">Bounce rate</span> measures sessions where the visitor left without going to a second page. A high bounce rate on a scorecard-focused site isn&apos;t necessarily bad - if someone lands directly on /scorecard and completes it, that counts as a bounce even though it was a conversion. Context matters more than the raw number.
+            </p>
+          </Insight>
+
           {/* Daily chart */}
           <DailyChart data={data.daily} />
+
+          {/* Chart insight */}
+          <Insight title="How to read the traffic pattern">
+            <p>
+              Each bar is one day of page views. Today is highlighted in teal. Hover any bar to see exact views and unique visitors for that day.
+            </p>
+            <p>
+              <span className="text-white font-medium">What to look for:</span> spikes that line up with posts or DMs you sent that day. If a post goes out on Monday and traffic jumps Tuesday, that&apos;s the post working. If traffic is flat across the week with no spikes, content is either not reaching people or not compelling them to click through.
+            </p>
+            <p>
+              <span className="text-white font-medium">What needs to keep happening:</span> daily Instagram activity - posts, stories, and direct outreach - is what drives consistent traffic. The chart should start showing a rhythm that maps to your posting schedule. Weeks without posts will show up as flatlines.
+            </p>
+            {isSparse && (
+              <p className="text-amber-400/70">The chart currently only has a few days of data. It will fill out over the coming weeks and become much more useful as a pattern-recognition tool once there are 14+ days of activity to compare.</p>
+            )}
+          </Insight>
         </>
       )}
 
       {/* Pages */}
       <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
-        <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-4">Live Pages</p>
+        <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Live Pages</p>
+        <p className="text-sm text-stone-500 mb-4">All six pages are live. The scorecard is the primary conversion point - every other page should funnel toward it. The Founder Program page is the current active offer.</p>
         <div className="grid sm:grid-cols-2 gap-2">
           {[
-            { label: 'Homepage', path: '/' },
-            { label: 'How It Works', path: '/how-it-works' },
-            { label: 'Online Coaching', path: '/online' },
-            { label: 'Brisbane', path: '/brisbane' },
-            { label: 'Body State Scorecard', path: '/scorecard' },
-            { label: 'Founder Program', path: '/founder' },
+            { label: 'Homepage', path: '/', note: 'Top of funnel — positions the approach, drives to scorecard' },
+            { label: 'How It Works', path: '/how-it-works', note: 'Explains the Body Recode method and the two-layer system' },
+            { label: 'Online Coaching', path: '/online', note: 'Service page for online clients — links to scorecard' },
+            { label: 'Brisbane', path: '/brisbane', note: 'Geo-targeted page for face-to-face clients' },
+            { label: 'Body State Scorecard', path: '/scorecard', note: 'Primary conversion point — lead capture via quiz' },
+            { label: 'Founder Program', path: '/founder', note: 'Active offer page — current primary CTA destination' },
           ].map(p => (
             <a
               key={p.path}
               href={`https://performance.bodyrecode.au${p.path}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between px-3 py-2.5 bg-stone-900 hover:bg-stone-800 border border-stone-800 rounded-lg transition-colors group"
+              className="flex items-start justify-between px-3 py-3 bg-stone-900 hover:bg-stone-800 border border-stone-800 rounded-lg transition-colors group"
             >
-              <span className="text-sm text-stone-300 group-hover:text-white transition-colors">{p.label}</span>
-              <span className="text-xs text-stone-600 group-hover:text-stone-400 transition-colors">{p.path} ↗</span>
+              <div>
+                <span className="text-sm text-stone-300 group-hover:text-white transition-colors block">{p.label}</span>
+                <span className="text-xs text-stone-600 mt-0.5 block">{p.note}</span>
+              </div>
+              <span className="text-xs text-stone-600 group-hover:text-stone-400 transition-colors shrink-0 ml-3 mt-0.5">{p.path} ↗</span>
             </a>
           ))}
         </div>
       </div>
+
+      {/* What needs to happen */}
+      <Insight title="What needs to keep happening">
+        <p>
+          <span className="text-white font-medium">Content drives traffic.</span> The website does not rank organically yet and there are no paid ads running. Every visitor right now is coming from Instagram - either from posts, stories, or direct links you send in DMs. The number one lever is posting consistently and directing people to the scorecard.
+        </p>
+        <p>
+          <span className="text-white font-medium">The scorecard is the only metric that matters right now.</span> Visitors are a means to an end. A visitor who doesn&apos;t submit the scorecard doesn&apos;t enter the system. Focus content and outreach on getting people to /scorecard - that is where traffic becomes pipeline.
+        </p>
+        <p>
+          <span className="text-white font-medium">As traffic grows, watch the chart for content-traffic correlation.</span> Once there are 30+ days of data, patterns will become clear. Posts that spike traffic are your highest-performing content - double down on those formats and topics. Posts with no visible traffic effect need to be reconsidered.
+        </p>
+        <p>
+          <span className="text-white font-medium">SEO is a longer-term play.</span> The site copy is strong and structured well. Over 3-6 months, search visibility for relevant terms (online fitness coaching Brisbane, body composition coaching, etc.) will build. This will layer organic traffic on top of the social-driven traffic you are building now.
+        </p>
+      </Insight>
 
     </div>
   )
