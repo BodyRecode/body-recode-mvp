@@ -1658,26 +1658,29 @@ export default function HelpPage() {
           </Section>
 
           <Section id="be-website" title="36. Website Analytics" colour="amber">
-            <p>Found at <strong>Business → Website</strong>. Shows traffic data from performance.bodyrecode.au pulled directly from Vercel Analytics.</p>
+            <p>Found at <strong>Business → Website</strong>. Shows traffic data from performance.bodyrecode.au pulled directly from Vercel Analytics. The page header links directly to the live site.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Stats</p>
-            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Visitors</strong> — unique devices that landed on the site in the selected period</li>
-              <li><strong>Page Views</strong> — total pages loaded across all visits</li>
-              <li><strong>Scorecard Submissions</strong> — pulled from the leads database for the same period. The percentage underneath is your visitor-to-submission conversion rate</li>
-              <li><strong>Bounce Rate</strong> — percentage of visitors who left without interacting</li>
-            </ul>
+            <StatusList items={[
+              { label: 'Visitors', desc: 'Unique devices that landed on the site in the selected period — tracked by Vercel Analytics' },
+              { label: 'Page Views', desc: 'Total pages loaded across all visits in the period' },
+              { label: 'Scorecard Submissions', desc: 'Pulled from the leads database for the same time window. Shows visitor-to-submission conversion rate if both are non-zero' },
+              { label: 'Bounce Rate', desc: 'Percentage of sessions where the visitor left without navigating to a second page' },
+            ]} />
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Daily Chart</p>
-            <p>Bar chart showing page views per day. Today is highlighted in teal. Hover any bar to see exact views and visitors for that day. Use this to correlate traffic spikes with posts — you&apos;ll see immediately which content is driving people to the site.</p>
+            <p>Bar chart showing page views per day across the selected range. Today is highlighted in teal. Hover any bar to see exact views and unique visitors for that day. Use this to correlate traffic spikes with posts - you will see immediately which content drove people to the site.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Time Range</p>
-            <p>Switch between 7, 30, and 90 day views using the buttons at the top right. The scorecard submission count and conversion rate update to match the same window.</p>
+            <p>Switch between 7, 30, and 90 day views using the buttons at the top right. All four stats and the daily chart update to match the selected window.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Live Pages</p>
-            <p>Quick links to open any page on performance.bodyrecode.au directly from the dashboard without having to type the URL.</p>
+            <p>Quick links to open any page on performance.bodyrecode.au directly from the dashboard - Homepage, How It Works, Online Coaching, Brisbane, Body State Scorecard, Founder Program.</p>
 
-            <Note>Analytics data starts from when Vercel Analytics was enabled (April 2026). No historical data before that date exists.</Note>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Data Accuracy Note</p>
+            <p>Vercel Analytics was enabled in April 2026 - no historical traffic data exists before that date. In the early weeks, visitor counts are low and conversion rate will appear inflated or misleading because scorecard submissions (from the leads DB) span a longer window than visitor data. A warning banner appears automatically while visitor data is sparse. Numbers will stabilise and become meaningful once 4-6 weeks of tracking data has accumulated.</p>
+
+            <Note>Analytics data is sourced from the Vercel API using the VERCEL_API_TOKEN, VERCEL_PERFORMANCE_PROJECT_ID, and VERCEL_TEAM_ID environment variables. If the page shows an error, check those vars are set in Vercel → Project Settings → Environment Variables.</Note>
           </Section>
 
         </div>
