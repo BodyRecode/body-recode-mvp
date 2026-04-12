@@ -283,9 +283,11 @@ function ContentCalendar() {
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-xs font-bold" style={{ color: s.color }}>{s.label}</span>
                         <span className={`text-xs ${ph.color}`}>· {ph.label}</span>
-                        {p.time && <span className="text-xs text-stone-500">· {p.time}</span>}
                       </div>
-                      <p className="text-sm font-medium text-white">{p.title}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium text-white">{p.title}</p>
+                        <span className="text-xs font-semibold text-teal-400 bg-teal-500/10 border border-teal-500/20 px-2 py-0.5 rounded-full shrink-0">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type]}</span>
+                      </div>
                       {p.caption && <p className="text-xs text-stone-400 mt-1 line-clamp-2">{p.caption}</p>}
                     </div>
                     <div className="flex items-center gap-1 shrink-0" onClick={e => e.stopPropagation()}>
@@ -314,7 +316,7 @@ function ContentCalendar() {
                   <span className="text-xs font-bold px-2 py-0.5 rounded border" style={{ color: s.color, background: s.bg, borderColor: s.border }}>{s.label}</span>
                   <span className={`text-xs font-medium ${ph.color}`}>{ph.label}</span>
                   <span className="text-xs text-stone-600">{dateLabel}</span>
-                  {activePost.time && <span className="text-xs text-stone-500">{activePost.time}</span>}
+                  <span className="text-xs font-semibold text-teal-400 bg-teal-500/10 border border-teal-500/20 px-2 py-0.5 rounded-full">{activePost.time ?? POST_TYPE_DEFAULT_TIMES[activePost.type]}</span>
                 </div>
                 <p className="text-base font-semibold text-white">{activePost.title}</p>
               </div>
