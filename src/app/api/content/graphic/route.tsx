@@ -196,18 +196,19 @@ export async function GET(request: NextRequest) {
   // Body state card — left coloured border, state label, headline, description
   if (style === 'body-state') {
     const displaySub = sub.length > 220 ? sub.slice(0, 217) + '...' : sub
-    return new ImageResponse(
+    const resp = new ImageResponse(
       (
         <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '100px', fontFamily: 'sans-serif' }}>
-          {/* Inner card with left border */}
+          {/* Inner card with left border — fixed size so logo position is identical across all three cards */}
           <div style={{
             background: '#111110',
             borderRadius: '16px',
             borderLeft: `6px solid ${accentColor}`,
-            padding: '60px 64px 48px 64px',
+            padding: '60px 64px 140px 64px',
             display: 'flex', flexDirection: 'column',
             height: '760px',
             overflow: 'hidden',
+            position: 'relative',
           }}>
             {/* State label */}
             {label && (
@@ -227,14 +228,16 @@ export async function GET(request: NextRequest) {
                 {displaySub}
               </div>
             )}
-            {/* Logo pinned to bottom of card */}
+            {/* Logo — absolutely anchored to bottom-left of card, same position on all three */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ marginTop: 'auto', height: '80px', objectFit: 'contain', alignSelf: 'flex-start' }} />
+            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '48px', left: '64px', height: '80px', objectFit: 'contain' }} />
           </div>
         </div>
       ),
       { width: 1080, height: 1080 }
     )
+    resp.headers.set('Cache-Control', 'no-store, max-age=0')
+    return resp
   }
 
   // ── SCORECARD CTA ─────────────────────────────────────────────
