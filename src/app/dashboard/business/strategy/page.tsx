@@ -26,12 +26,24 @@ type CampaignPhase = 'prelaunch' | 'founder' | 'ads' | 'optimise' | 'scale'
 interface ScheduledPost {
   id: string
   date: string // YYYY-MM-DD
+  time?: string // HH:MM
   type: PostType
   phase: CampaignPhase
   title: string
   notes?: string
   caption?: string
   graphic?: string
+}
+
+const POST_TYPE_DEFAULT_TIMES: Record<PostType, string> = {
+  authority:  '07:00', // Monday pre-work — high attention, sets the tone for the week
+  pattern:    '12:00', // Wednesday lunch — scrolling during a break, self-recognition content lands here
+  contrarian: '07:00', // Morning disruption hook — works best when people are freshly alert
+  coach:      '18:00', // Friday wind-down — end of week reflection, lower guard
+  diagnostic: '08:00', // Sunday morning — relaxed scroll, higher intent to take action
+  founder:    '07:00', // Morning — high-intent audience, early engagement window
+  ad:         '07:00', // Peak algorithm window for professional demographic
+  prelaunch:  '07:00', // Establishment posts — morning for maximum early reach
 }
 
 const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: string; border: string }> = {
@@ -85,7 +97,7 @@ function ContentCalendar() {
   const [selected, setSelected] = useState<string | null>(null)
   const [activePost, setActivePost] = useState<ScheduledPost | null>(null)
   const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState<Partial<ScheduledPost>>({ type: 'authority', phase: 'prelaunch' })
+  const [form, setForm] = useState<Partial<ScheduledPost>>({ type: 'authority', phase: 'prelaunch', time: POST_TYPE_DEFAULT_TIMES['authority'] })
   const [editId, setEditId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -126,19 +138,19 @@ function ContentCalendar() {
     if (editId) {
       const { error } = await supabase
         .from('calendar_posts')
-        .update({ date: form.date, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
+        .update({ date: form.date, time: form.time ?? null, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
         .eq('id', editId)
       if (!error) setPosts(ps => ps.map(p => p.id === editId ? { ...p, ...form } as ScheduledPost : p))
       setEditId(null)
     } else {
       const { data, error } = await supabase
         .from('calendar_posts')
-        .insert({ date: form.date, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
+        .insert({ date: form.date, time: form.time ?? null, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
         .select()
         .single()
       if (!error && data) setPosts(ps => [...ps, data as ScheduledPost])
     }
-    setForm({ type: 'authority', phase: 'prelaunch' })
+    setForm({ type: 'authority', phase: 'prelaunch', time: POST_TYPE_DEFAULT_TIMES['authority'] })
     setShowForm(false)
     setSaving(false)
   }
@@ -232,7 +244,7 @@ function ContentCalendar() {
                     const s = POST_TYPE_STYLES[p.type] ?? POST_TYPE_STYLES['authority']
                     return (
                       <div key={p.id} className="text-[10px] font-medium px-1 py-0.5 rounded truncate" style={{ color: s.color, background: s.bg }}>
-                        {p.title}
+                        {p.time && <span className="opacity-70 mr-1">{p.time}</span>}{p.title}
                       </div>
                     )
                   })}
@@ -252,7 +264,7 @@ function ContentCalendar() {
               {new Date(selected + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
             <button
-              onClick={() => { setForm({ type: 'authority', phase: 'prelaunch', date: selected }); setEditId(null); setShowForm(true) }}
+              onClick={() => { setForm({ type: 'authority', phase: 'prelaunch', date: selected, time: POST_TYPE_DEFAULT_TIMES['authority'] }); setEditId(null); setShowForm(true) }}
               className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium"
             >
               + Add post
@@ -271,6 +283,7 @@ function ContentCalendar() {
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-xs font-bold" style={{ color: s.color }}>{s.label}</span>
                         <span className={`text-xs ${ph.color}`}>· {ph.label}</span>
+                        {p.time && <span className="text-xs text-stone-500">· {p.time}</span>}
                       </div>
                       <p className="text-sm font-medium text-white">{p.title}</p>
                       {p.caption && <p className="text-xs text-stone-400 mt-1 line-clamp-2">{p.caption}</p>}
@@ -301,6 +314,7 @@ function ContentCalendar() {
                   <span className="text-xs font-bold px-2 py-0.5 rounded border" style={{ color: s.color, background: s.bg, borderColor: s.border }}>{s.label}</span>
                   <span className={`text-xs font-medium ${ph.color}`}>{ph.label}</span>
                   <span className="text-xs text-stone-600">{dateLabel}</span>
+                  {activePost.time && <span className="text-xs text-stone-500">{activePost.time}</span>}
                 </div>
                 <p className="text-base font-semibold text-white">{activePost.title}</p>
               </div>
@@ -393,15 +407,23 @@ function ContentCalendar() {
         <Card>
           <p className="text-sm font-semibold text-white mb-4">{editId ? 'Edit Post' : 'Schedule Post'}</p>
           <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Date</label>
                 <input type="date" value={form.date ?? ''} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
                   className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500" />
               </div>
               <div>
+                <label className="block text-xs text-stone-500 mb-1">Post Time</label>
+                <input type="time" value={form.time ?? '07:00'} onChange={e => setForm(f => ({ ...f, time: e.target.value }))}
+                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500" />
+              </div>
+              <div>
                 <label className="block text-xs text-stone-500 mb-1">Content Type</label>
-                <select value={form.type ?? 'authority'} onChange={e => setForm(f => ({ ...f, type: e.target.value as PostType }))}
+                <select value={form.type ?? 'authority'} onChange={e => {
+                  const t = e.target.value as PostType
+                  setForm(f => ({ ...f, type: t, time: f.time && f.time !== POST_TYPE_DEFAULT_TIMES[f.type as PostType] ? f.time : POST_TYPE_DEFAULT_TIMES[t] }))
+                }}
                   className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500">
                   {(Object.entries(POST_TYPE_STYLES) as [PostType, typeof POST_TYPE_STYLES[PostType]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
@@ -449,7 +471,7 @@ function ContentCalendar() {
                 className="bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
                 {saving ? 'Saving...' : editId ? 'Save Changes' : 'Schedule Post'}
               </button>
-              <button onClick={() => { setShowForm(false); setEditId(null); setForm({ type: 'authority', phase: 'prelaunch' }) }}
+              <button onClick={() => { setShowForm(false); setEditId(null); setForm({ type: 'authority', phase: 'prelaunch', time: POST_TYPE_DEFAULT_TIMES['authority'] }) }}
                 className="text-xs text-stone-500 hover:text-stone-300 transition-colors">
                 Cancel
               </button>
