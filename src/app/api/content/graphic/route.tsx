@@ -206,7 +206,8 @@ export async function GET(request: NextRequest) {
             borderLeft: `6px solid ${accentColor}`,
             padding: '60px 64px',
             display: 'flex', flexDirection: 'column',
-            minHeight: '720px',
+            height: '760px',
+            overflow: 'hidden',
           }}>
             {/* State label + range */}
             {label && (
