@@ -204,12 +204,12 @@ export async function GET(request: NextRequest) {
             background: '#111110',
             borderRadius: '16px',
             borderLeft: `6px solid ${accentColor}`,
-            padding: '60px 64px',
+            padding: '60px 64px 48px 64px',
             display: 'flex', flexDirection: 'column',
             height: '760px',
             overflow: 'hidden',
           }}>
-            {/* State label + range */}
+            {/* State label */}
             {label && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '28px' }}>
                 <div style={{ fontSize: '38px', fontWeight: 700, color: accentColor, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
@@ -227,10 +227,10 @@ export async function GET(request: NextRequest) {
                 {displaySub}
               </div>
             )}
+            {/* Logo pinned to bottom of card */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={logoSrc} alt="Body Recode" style={{ marginTop: 'auto', height: '80px', objectFit: 'contain', alignSelf: 'flex-start' }} />
           </div>
-          {/* Logo bottom left */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '80px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
