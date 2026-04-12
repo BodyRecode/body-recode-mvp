@@ -213,12 +213,12 @@ export async function POST(request: NextRequest) {
     `,
   })
 
-  // Run after response is sent — keeps the function alive until report is generated
-  after(async () => {
-    await scheduleReport(resend, newLead?.id ?? null, name, email, answers, signalPattern).catch(err =>
-      console.error('Report generation error:', err)
-    )
-  })
+  // Check-in emails are paused — do not schedule report or follow-ups until flow is finalised
+  // after(async () => {
+  //   await scheduleReport(resend, newLead?.id ?? null, name, email, answers, signalPattern).catch(err =>
+  //     console.error('Report generation error:', err)
+  //   )
+  // })
 
   return NextResponse.json({ success: true }, { headers: CORS_HEADERS })
 }
