@@ -307,7 +307,13 @@ function ContentCalendar() {
         const s = POST_TYPE_STYLES[activePost.type] ?? POST_TYPE_STYLES['authority']
         const ph = PHASE_STYLES[activePost.phase] ?? PHASE_STYLES['prelaunch']
         const dateLabel = new Date(activePost.date + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
-        const isGraphicUrl = activePost.graphic?.startsWith('/api/')
+        const graphicUrls = activePost.graphic
+          ? activePost.graphic.split(',').map((u: string) => u.trim()).filter((u: string) => u.startsWith('/api/'))
+          : []
+        const isCarousel = graphicUrls.length > 1
+        const isSingleGraphic = graphicUrls.length === 1
+        const isGraphicUrl = graphicUrls.length > 0
+        const CAROUSEL_LABELS = ['Slide 1 — Depleted', 'Slide 2 — Transitioning', 'Slide 3 — Ready']
         return (
           <Card>
             <div className="flex items-start justify-between mb-5">
@@ -329,34 +335,58 @@ function ContentCalendar() {
             {/* Instagram-style post preview */}
             <div className="grid sm:grid-cols-2 gap-5 items-start">
 
-              {/* Left — graphic */}
+              {/* Left — graphic(s) */}
               <div>
-              {isGraphicUrl && (
-                <a
-                  href={activePost.graphic}
-                  download={`${activePost.title.replace(/\s+/g, '-').toLowerCase()}.png`}
-                  className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-lg text-xs font-medium text-stone-300 transition-colors"
-                >
-                  ↓ Download graphic
-                </a>
-              )}
-              <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '280px' }}>
-                {isGraphicUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={activePost.graphic} alt={activePost.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-                    {activePost.graphic ? (
-                      <>
-                        <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">Graphic Brief</p>
-                        <p className="text-sm text-stone-400 leading-relaxed">{activePost.graphic}</p>
-                      </>
-                    ) : (
-                      <p className="text-sm text-stone-700">No graphic set</p>
-                    )}
-                  </div>
+              {isCarousel ? (
+                // Carousel — multiple slides
+                <div className="space-y-3">
+                  <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">{graphicUrls.length} slides — download each</p>
+                  {graphicUrls.map((url: string, i: number) => (
+                    <div key={i}>
+                      <a
+                        href={url}
+                        download={`${activePost.title.replace(/\s+/g, '-').toLowerCase()}-slide-${i + 1}.png`}
+                        className="flex items-center justify-center gap-1.5 w-full mb-1.5 px-3 py-2 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-lg text-xs font-medium text-stone-300 transition-colors"
+                      >
+                        ↓ {CAROUSEL_LABELS[i] ?? `Slide ${i + 1}`}
+                      </a>
+                      <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '180px' }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={url} alt={`Slide ${i + 1}`} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <>
+                {isSingleGraphic && (
+                  <a
+                    href={graphicUrls[0]}
+                    download={`${activePost.title.replace(/\s+/g, '-').toLowerCase()}.png`}
+                    className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-lg text-xs font-medium text-stone-300 transition-colors"
+                  >
+                    ↓ Download graphic
+                  </a>
                 )}
-              </div>
+                <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '280px' }}>
+                  {isSingleGraphic ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={graphicUrls[0]} alt={activePost.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+                      {activePost.graphic ? (
+                        <>
+                          <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">Graphic Brief</p>
+                          <p className="text-sm text-stone-400 leading-relaxed">{activePost.graphic}</p>
+                        </>
+                      ) : (
+                        <p className="text-sm text-stone-700">No graphic set</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+                </>
+              )}
               </div>
 
               {/* Right — caption */}
