@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
     equipment_access,
     week_duration,
     block_name,
+    preferred_training_days,
   } = body
 
   if (!client_id || !training_frequency || !training_goal || !training_age || !movement_competency || !progression_phase || !equipment_access || !week_duration || !block_name) {
@@ -71,16 +72,20 @@ export async function POST(request: NextRequest) {
     cffs = data
   }
 
-  // Fetch injury context from intake
+  // Fetch injury context and training days from intake
   let injuryContext = {
     injury_location_current: [] as string[],
     injury_primary_concern: '',
     injury_aggravating_movements: '',
   }
+  let intakeTrainingDays: string[] = []
+
+  const intakeSelectFields = 'injury_location_current, injury_primary_concern, injury_aggravating_movements, training_days_available'
+
   if (intake_id) {
     const { data: intake } = await admin
       .from('intakes')
-      .select('injury_location_current, injury_primary_concern, injury_aggravating_movements')
+      .select(intakeSelectFields)
       .eq('id', intake_id)
       .maybeSingle()
     if (intake) {
@@ -89,12 +94,13 @@ export async function POST(request: NextRequest) {
         injury_primary_concern: intake.injury_primary_concern || '',
         injury_aggravating_movements: intake.injury_aggravating_movements || '',
       }
+      intakeTrainingDays = intake.training_days_available || []
     }
   } else {
     // Use most recent intake
     const { data: intake } = await admin
       .from('intakes')
-      .select('injury_location_current, injury_primary_concern, injury_aggravating_movements')
+      .select(intakeSelectFields)
       .eq('client_id', client_id)
       .order('submitted_at', { ascending: false })
       .limit(1)
@@ -105,8 +111,14 @@ export async function POST(request: NextRequest) {
         injury_primary_concern: intake.injury_primary_concern || '',
         injury_aggravating_movements: intake.injury_aggravating_movements || '',
       }
+      intakeTrainingDays = intake.training_days_available || []
     }
   }
+
+  // Use preferred_training_days from request body if provided, otherwise fall back to intake data
+  const resolvedTrainingDays: string[] = (preferred_training_days && preferred_training_days.length > 0)
+    ? preferred_training_days
+    : intakeTrainingDays
 
   // Fetch macro plan context if plan_block_id provided
   let macroPlanContext = null
@@ -168,6 +180,7 @@ export async function POST(request: NextRequest) {
     equipment_access,
     week_duration,
     block_name,
+    preferred_training_days: resolvedTrainingDays,
     ...injuryContext,
   }
 

@@ -66,6 +66,8 @@ export async function POST(request: NextRequest) {
     // Injury special fields (multiselect + open text)
     injury_location_current: (formData.inj_21 as string[]) || [],
     injury_location_history: (formData.inj_22 as string[]) || [],
+    // Schedule structured field (multiselect)
+    training_days_available: (formData.sch_days as string[]) || [],
     injury_primary_concern: (formData.inj_23 as string) || '',
     injury_aggravating_movements: (formData.inj_24 as string) || '',
     // Goals

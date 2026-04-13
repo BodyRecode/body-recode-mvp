@@ -164,7 +164,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Weekly Structure</p>
           </div>
           <div className="px-5 py-4 space-y-3">
-            {parseLines(program.weekly_pattern_summary, /(?=Day \d+|Overall program|Constraints applied)/g).map((entry, i) => {
+            {parseLines(program.weekly_pattern_summary, /(?=(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Day \d+)[^a-z]|Overall program|Constraints applied)/g).map((entry, i) => {
               const colonIdx = entry.indexOf(':')
               const hasLabel = colonIdx > 0 && colonIdx < 80
               const label = hasLabel ? entry.slice(0, colonIdx).trim() : null

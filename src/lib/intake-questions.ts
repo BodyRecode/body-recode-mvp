@@ -205,6 +205,7 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'sch_23', text: 'I need flexibility week to week.', type: 'scale', scaleLabel: { low: 'Never', high: 'Consistently' } },
       { id: 'sch_24', text: 'I value predictability over flexibility.', type: 'scale', scaleLabel: { low: 'Never', high: 'Consistently' } },
       { id: 'sch_25', text: 'My schedule limits recovery opportunities.', type: 'scale', scaleLabel: { low: 'Never', high: 'Consistently' } },
+      { id: 'sch_days', text: 'Which days of the week are you typically available to train? Select all that apply.', type: 'multiselect', options: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], required: false },
     ]
   },
   {

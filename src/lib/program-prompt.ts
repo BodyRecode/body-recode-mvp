@@ -12,6 +12,7 @@ export interface ProgramPrescriptionInputs {
   injury_location_current: string[]
   injury_primary_concern: string
   injury_aggravating_movements: string
+  preferred_training_days: string[] // e.g. ['Monday', 'Thursday'] — exact days to assign sessions to
 }
 
 export interface ExerciseRow {
@@ -334,6 +335,20 @@ Weekly integrity check (before producing output — all must pass):
 ✓ Volume within prescribed range for goal
 
 ═══════════════════════════════════════
+DAY-OF-WEEK ASSIGNMENT RULES
+═══════════════════════════════════════
+When preferred_training_days is provided (non-empty list):
+1. Use ONLY the days in the preferred_training_days list — do not assign sessions to any other day.
+2. The number of days in the list equals training_frequency. Assign exactly one session per day.
+3. Apply session ordering principles to the provided days: assign higher neural-demand sessions to earlier days in the week.
+4. Verify spacing: if any two consecutive days appear in the list (e.g. Monday and Tuesday), this is acceptable for 4x/week or higher. For 2x or 3x/week, flag in weekly_pattern_summary but still use the days as given — the coach has confirmed this schedule.
+5. Output each session's day_label using the actual day name from the list, not an abstract "Day 1" label.
+
+When preferred_training_days is empty or not provided:
+- Use abstract labels: "Day 1", "Day 2", etc.
+- Include a note in weekly_pattern_summary: "Training days not specified. Sessions are labelled abstractly. Assign to non-consecutive days with at least 48 hours between sessions."
+
+═══════════════════════════════════════
 PROGRESSION STRATEGY BY PHASE
 ═══════════════════════════════════════
 Accumulation: Volume priority. Sets build over weeks. Reps at lower end of range. Intensity held steady. Frequency constrained.
@@ -493,6 +508,16 @@ PRESCRIPTION INPUTS:
 - Week duration: ${inputs.week_duration} weeks
 - Equipment access: ${inputs.equipment_access.join(', ')}`)
 
+  // TRAINING DAYS
+  if (inputs.preferred_training_days && inputs.preferred_training_days.length > 0) {
+    parts.push(`
+SCHEDULED TRAINING DAYS: ${inputs.preferred_training_days.join(', ')}
+Assign each session to one of these days in the order above. Apply session ordering principles (higher neural demand earlier in week). Use the actual day name as the day_label.`)
+  } else {
+    parts.push(`
+SCHEDULED TRAINING DAYS: Not specified. Use abstract labels (Day 1, Day 2, etc.).`)
+  }
+
   // INJURY / MOVEMENT LIMITATIONS
   parts.push(`
 MOVEMENT LIMITATIONS:
@@ -555,7 +580,7 @@ Execute the full 9-stage generation pipeline. Run the pre-delivery QA checklist 
   "week_duration": ${inputs.week_duration},
   "sessions": [
     {
-      "day_label": "Day 1 — [label]",
+      "day_label": "[Monday or Day 1] — [label]",
       "skeleton": "[skeleton archetype name]",
       "movement_prep": [
         "Drill description — sets×reps or duration",
@@ -581,8 +606,8 @@ Execute the full 9-stage generation pipeline. Run the pre-delivery QA checklist 
   "weekly_pattern_summary": [
     "Phase architecture: Layer A = [category], Layer B = [intent], Layer C = [arc], Layer D = [objective]. Eligibility level = [0–4]. One sentence rationale.",
     "Overall program design: one sentence explaining the overall structure and why it suits this client's goal, phase, and readiness state.",
-    "Day 1 — [label]: Skeleton = [archetype]. Why: [reason skeleton was chosen]. What: [dominant patterns]. How: [key execution intent].",
-    "Day 2 — [label]: Skeleton = [archetype]. Why: [reason]. What: [dominant patterns]. How: [key execution intent].",
+    "[DayOfWeek or Day 1] — [label]: Skeleton = [archetype]. Why: [reason skeleton was chosen]. What: [dominant patterns]. How: [key execution intent].",
+    "[DayOfWeek or Day 2] — [label]: Skeleton = [archetype]. Why: [reason]. What: [dominant patterns]. How: [key execution intent].",
     "Constraints applied: one entry per major constraint enforced across the week (injury, readiness flags, axial loading limits, RPE ceiling, eligibility level, etc.)."
   ],
   "progression_notes": [

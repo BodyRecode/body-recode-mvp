@@ -37,6 +37,8 @@ const EQUIPMENT_OPTIONS = [
   { value: 'specialty', label: 'Specialty (trap bar, sleds, etc.)' },
 ]
 
+const ALL_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
 interface PlanBlock {
   id: string
   block_name: string
@@ -52,9 +54,11 @@ interface PlanBlock {
 export default function GenerateProgramForm({
   clientId,
   planBlock,
+  intakeTrainingDays = [],
 }: {
   clientId: string
   planBlock?: PlanBlock | null
+  intakeTrainingDays?: string[]
 }) {
   const router = useRouter()
 
@@ -71,6 +75,8 @@ export default function GenerateProgramForm({
     week_duration: planBlock?.week_duration ?? 4,
     equipment_access: ['barbell', 'dumbbell', 'bodyweight'] as string[],
   })
+
+  const [trainingDays, setTrainingDays] = useState<string[]>(intakeTrainingDays)
 
   // If planBlock changes (shouldn't, but just in case), sync
   useEffect(() => {
@@ -94,6 +100,12 @@ export default function GenerateProgramForm({
     }))
   }
 
+  function toggleDay(day: string) {
+    setTrainingDays(prev =>
+      prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+    )
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!form.block_name) {
@@ -115,6 +127,7 @@ export default function GenerateProgramForm({
         body: JSON.stringify({
           client_id: clientId,
           plan_block_id: planBlock?.id ?? null,
+          preferred_training_days: trainingDays,
           ...form,
         }),
       })
@@ -239,6 +252,48 @@ export default function GenerateProgramForm({
           <div className="flex justify-between text-xs text-stone-600 mt-1">
             <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
           </div>
+        </div>
+
+        {/* Training Days */}
+        <div>
+          <label className={labelClass}>
+            Training Days
+            {trainingDays.length > 0 && (
+              <span className="ml-2 text-[#10E1C2] normal-case font-normal">
+                {trainingDays.length} selected
+                {trainingDays.length < form.training_frequency && (
+                  <span className="text-amber-400 ml-1">— select at least {form.training_frequency}</span>
+                )}
+              </span>
+            )}
+          </label>
+          {intakeTrainingDays.length > 0 && (
+            <p className="text-xs text-stone-500 mb-2">Pre-filled from intake. Adjust as needed.</p>
+          )}
+          <div className="grid grid-cols-7 gap-1">
+            {ALL_DAYS.map(day => (
+              <button
+                key={day}
+                type="button"
+                onClick={() => toggleDay(day)}
+                className={`py-2 rounded-md text-xs font-medium border transition-colors ${
+                  trainingDays.includes(day)
+                    ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]'
+                    : 'bg-stone-800 text-stone-400 border-stone-700 hover:border-stone-500'
+                }`}
+              >
+                {day.slice(0, 3)}
+              </button>
+            ))}
+          </div>
+          {trainingDays.length === 0 && (
+            <p className="text-xs text-stone-600 mt-1.5">No days selected. Sessions will use abstract labels (Day 1, Day 2).</p>
+          )}
+          {trainingDays.length > 0 && trainingDays.length >= form.training_frequency && (
+            <p className="text-xs text-stone-500 mt-1.5">
+              Sessions assigned to: {trainingDays.join(', ')}
+            </p>
+          )}
         </div>
 
         {/* Training Age */}
