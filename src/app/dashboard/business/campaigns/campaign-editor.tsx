@@ -44,6 +44,9 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
   const [saving, setSaving] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
+  const [testPhone, setTestPhone] = useState('')
+  const [testSending, setTestSending] = useState(false)
+  const [testResult, setTestResult] = useState<'sent' | 'error' | null>(null)
 
   const recipientFilter = { type: recipientType, ...(recipientValue ? { value: recipientValue } : {}) }
 
@@ -192,6 +195,27 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
     }
   }
 
+  async function sendTestSms() {
+    if (!testPhone.trim() || !content.trim()) return
+    setTestSending(true)
+    setTestResult(null)
+    try {
+      const res = await fetch('/api/campaigns/test-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: testPhone.trim(), message: content }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
+      setTestResult('sent')
+    } catch (e: any) {
+      setError(e.message)
+      setTestResult('error')
+    } finally {
+      setTestSending(false)
+    }
+  }
+
   async function deleteCampaign() {
     if (!campaign?.id) return
     if (!confirm('Delete this campaign?')) return
@@ -319,6 +343,33 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
             className="w-full bg-stone-900 border border-stone-800 rounded-lg px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 resize-none disabled:opacity-50"
           />
         </div>
+
+        {/* Test Send (SMS only) */}
+        {type === 'sms' && (
+          <div className="border border-stone-800 rounded-lg p-4">
+            <p className="text-xs font-medium text-stone-400 mb-3">Test Send</p>
+            <div className="flex gap-2">
+              <input
+                type="tel"
+                value={testPhone}
+                onChange={e => { setTestPhone(e.target.value); setTestResult(null) }}
+                placeholder="04xx xxx xxx"
+                className="flex-1 bg-stone-900 border border-stone-800 rounded-lg px-4 py-2.5 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500"
+              />
+              <button
+                onClick={sendTestSms}
+                disabled={testSending || !testPhone.trim() || !content.trim()}
+                className="flex items-center gap-2 px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-300 text-sm font-medium rounded-lg transition-colors disabled:opacity-40"
+              >
+                <Send size={13} />
+                {testSending ? 'Sending...' : 'Send Test'}
+              </button>
+            </div>
+            {testResult === 'sent' && (
+              <p className="text-xs text-teal-400 mt-2">Test SMS sent successfully.</p>
+            )}
+          </div>
+        )}
 
         {/* Recipients */}
         {!isSent && (
