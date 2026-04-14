@@ -708,6 +708,32 @@ export default function StrategyPage() {
             <Body>Social media is not the funnel — it feeds the funnel. Every piece of content drives curiosity. The scorecard converts that curiosity into qualified leads.</Body>
           </Card>
 
+          {/* Current phase */}
+          <Card className="border-violet-500/30 bg-violet-500/5">
+            <SectionLabel>Current Phase</SectionLabel>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-xs font-bold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2.5 py-1 rounded-full">Phase 2 — Founder Launch</span>
+              <span className="text-xs text-stone-500">14 Apr – 24 Apr 2026</span>
+            </div>
+            <div className="space-y-1.5">
+              {[
+                { date: 'Tue 14 Apr', title: 'Post 1 — What Body Recode Is', done: true },
+                { date: 'Thu 17 Apr', title: 'Post 2 — The Offer', done: false },
+                { date: 'Sat 18 Apr', title: 'Post 3 — Why Founder', done: false },
+                { date: 'Mon 20 Apr', title: 'Post 4 — What They Get', done: false },
+                { date: 'Wed 22 Apr', title: 'Post 5 — Authority', done: false },
+                { date: 'Thu 24 Apr', title: 'Post 6 — Scarcity', done: false },
+              ].map(p => (
+                <div key={p.date} className="flex items-center gap-3 text-xs">
+                  <span className="text-stone-600 w-20 shrink-0">{p.date}</span>
+                  <span className={p.done ? 'text-teal-400 line-through' : 'text-stone-300'}>{p.title}</span>
+                  {p.done && <span className="text-teal-500 text-[10px] font-bold">POSTED</span>}
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-stone-500 mt-3">Organic only. No ads until Phase 3 (from 25 Apr). Update Post 6 scarcity count before posting.</p>
+          </Card>
+
           {/* Funnel flow */}
           <Card>
             <SectionLabel>The Funnel</SectionLabel>
