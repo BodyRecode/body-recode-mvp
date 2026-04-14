@@ -244,7 +244,7 @@ function ContentCalendar() {
                     const s = POST_TYPE_STYLES[p.type] ?? POST_TYPE_STYLES['authority']
                     return (
                       <div key={p.id} className="text-[10px] font-medium px-1 py-0.5 rounded truncate" style={{ color: s.color, background: s.bg }}>
-                        {p.time && <span className="opacity-70 mr-1">{p.time}</span>}{p.title}
+                        <span className="opacity-70 mr-1">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type as PostType] ?? '07:00'}</span>{p.title}
                       </div>
                     )
                   })}
