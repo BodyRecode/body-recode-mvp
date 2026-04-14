@@ -312,7 +312,6 @@ function ContentCalendar() {
           : []
         const isCarousel = graphicUrls.length > 1
         const isSingleGraphic = graphicUrls.length === 1
-        const isGraphicUrl = graphicUrls.length > 0
         const CAROUSEL_LABELS = ['Slide 1 — Depleted', 'Slide 2 — Transitioning', 'Slide 3 — Ready']
         return (
           <Card>
@@ -1436,6 +1435,116 @@ export default function StrategyPage() {
                 </div>
               ))}
             </div>
+          </Card>
+
+          {/* Daily engagement routine */}
+          <Card>
+            <SectionLabel>Daily Engagement Routine — 20 Min/Day</SectionLabel>
+            <p className="text-stone-500 text-xs mb-4">Do this every day, separate from posting. The algorithm reads engagement signal — an account that only posts but never interacts gets suppressed. This is how you grow without ads.</p>
+            <div className="space-y-3">
+
+              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                <p className="text-xs font-semibold text-white mb-2">Step 1 — Comment on hashtag posts (10 min)</p>
+                <p className="text-xs text-stone-500 mb-2">Browse these hashtags and leave 5–8 genuine comments on recent posts. Comments that add value get profile clicks.</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <p className="text-[10px] font-semibold text-stone-600 uppercase tracking-widest mb-1.5">Primary</p>
+                    <div className="flex flex-wrap gap-1">
+                      {['#performancecoaching','#fatlosscoachin','#strengthcoaching','#bodyrecode','#brisbanefitness','#brisbanept','#brisbanecoach'].map(h => (
+                        <span key={h} className="text-[10px] text-teal-400 bg-teal-500/10 border border-teal-500/20 px-1.5 py-0.5 rounded">{h}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold text-stone-600 uppercase tracking-widest mb-1.5">Secondary</p>
+                    <div className="flex flex-wrap gap-1">
+                      {['#fatlosstips','#trainingplateau','#metabolichealth','#compositioncoach','#hormonehealth','#womenshealth35','#cortisol'].map(h => (
+                        <span key={h} className="text-[10px] text-stone-400 bg-stone-800 border border-stone-700 px-1.5 py-0.5 rounded">{h}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                <p className="text-xs font-semibold text-white mb-2">Step 2 — Engage with target accounts (5 min)</p>
+                <p className="text-xs text-stone-500 mb-2">Follow and comment on accounts your target client already follows. Your comment appears in their feed — that&apos;s a free impression on a warm audience.</p>
+                <div className="space-y-1.5">
+                  {[
+                    { type: 'Brisbane PTs and coaches', why: 'Your direct audience watches these accounts' },
+                    { type: 'Functional medicine practitioners', why: 'Cortisol, hormones, metabolic health — adjacent content' },
+                    { type: "Women's health coaches (35–50)", why: 'Your primary demographic is already engaged here' },
+                    { type: 'Exercise science and sports nutrition accounts', why: 'Establishes you as a peer, not a follower' },
+                    { type: 'Corporate wellness and productivity accounts', why: 'High-functioning professionals in your target income bracket' },
+                  ].map(r => (
+                    <div key={r.type} className="flex items-start gap-2 text-xs">
+                      <span className="text-teal-500 shrink-0 mt-0.5">—</span>
+                      <div>
+                        <span className="text-stone-300 font-medium">{r.type}</span>
+                        <span className="text-stone-600"> — {r.why}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                <p className="text-xs font-semibold text-white mb-2">Step 3 — React to stories (5 min)</p>
+                <p className="text-xs text-stone-500">React to stories from people in your target audience. A reaction opens a DM thread — low friction, high visibility. Don&apos;t force a conversation. Just a reaction is enough to put your name in front of them.</p>
+              </div>
+
+              <div className="p-3 bg-red-500/5 rounded-lg border border-red-500/20">
+                <p className="text-xs font-semibold text-red-400 mb-2">Comment quality rules — non-negotiable</p>
+                <div className="space-y-1">
+                  {[
+                    { bad: '"Great post!" / "Love this!" / "So true!"', good: 'Never. Generic comments are invisible and signal a bot.' },
+                    { bad: 'Always add something real', good: 'A point of agreement, a related insight, a question — 2–3 sentences. Comments that show expertise get profile clicks.' },
+                    { bad: 'Example of a good comment', good: '"The cortisol-fat loss connection is underrated. Most people push harder when they\'re stuck and wonder why nothing moves. Usually the opposite is needed."' },
+                  ].map((r, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs py-1 border-b border-red-500/10 last:border-0">
+                      <span className="text-red-400 shrink-0 mt-0.5">—</span>
+                      <div>
+                        <span className="text-stone-400 font-medium">{r.bad}: </span>
+                        <span className="text-stone-500">{r.good}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </Card>
+
+          {/* Content designed to grow */}
+          <Card>
+            <SectionLabel>Content Designed to Grow — Not Just Post</SectionLabel>
+            <p className="text-stone-500 text-xs mb-3">The algorithm rewards saves and shares above all else. These signals tell Instagram the post is worth distributing beyond your followers.</p>
+            <div className="space-y-2">
+              {[
+                { signal: 'Saves', how: 'Reference content — "save this for next time your fat loss stalls". The body states carousel is a save magnet. Any post with a framework, checklist, or explainer gets saved.' },
+                { signal: 'Shares', how: 'Pattern recognition content — "if you know someone doing everything right and getting nothing back, send this". People share content that describes someone they know.' },
+                { signal: 'Reels', how: 'Reels get 3–5x the reach of static posts on a new account. One 20-second talking head reel per week minimum once the pre-launch is done. Low production — face to camera, gym background, one clear point.' },
+                { signal: 'Comments', how: 'Posts that ask a direct question at the end get more comments. More comments = more reach. End every Pattern Recognition post with one question.' },
+                { signal: 'Story polls', how: 'Use Instagram Stories polls 2–3x per week. Simple yes/no questions about symptoms ("Do you train consistently but feel like nothing is changing?"). Each response is a warm signal — that person is your audience.' },
+              ].map(r => (
+                <div key={r.signal} className="flex items-start gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <span className="text-xs font-bold text-teal-400 w-14 shrink-0 pt-0.5">{r.signal}</span>
+                  <p className="text-xs text-stone-400 leading-relaxed">{r.how}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* What NOT to do */}
+          <Card className="border-red-500/20 bg-red-500/5">
+            <SectionLabel>What Not to Do</SectionLabel>
+            <BulletList items={[
+              'Follow/unfollow strategy — it works short-term and destroys trust long-term. Your audience is intelligent. They notice.',
+              'Engagement pods — fake reciprocal engagement inflates vanity metrics, not real reach or leads.',
+              'Buying followers — dead weight. Kills your engagement rate and signals the algorithm to suppress you.',
+              'Commenting on competitor accounts to poach their followers — it reads as desperate, not authoritative.',
+              'Posting the same content twice to get more reach — Instagram suppresses reposted content.',
+            ]} />
           </Card>
 
           {/* If not converting */}
