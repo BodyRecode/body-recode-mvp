@@ -35,7 +35,7 @@ export default function GetReportPage() {
       <div style={{ maxWidth: '480px', width: '100%', padding: '40px 24px' }}>
 
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <img src="/logo-teal.png" alt="Body Recode" style={{ height: '64px', marginBottom: '48px', display: 'block', margin: '0 auto 48px' }} />
+          <img src="/logo-teal.png" alt="Body Recode" style={{ height: '80px', marginBottom: '48px', display: 'block', margin: '0 auto 48px' }} />
           <div style={{ width: '32px', height: '3px', background: '#14b8a6', margin: '0 auto 24px' }} />
           <h1 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '12px' }}>
             Body Decode Report
