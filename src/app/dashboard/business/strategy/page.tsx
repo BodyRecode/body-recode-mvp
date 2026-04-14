@@ -1579,18 +1579,22 @@ export default function StrategyPage() {
           </Card>
 
           <Card>
-            <SectionLabel>Founder Content Angles</SectionLabel>
+            <SectionLabel>6-Post Founder Series</SectionLabel>
             <div className="space-y-3">
               {[
-                { title: 'The Offer', copy: '"I\'m taking 20 people through Body Recode at a founder rate. Here\'s exactly what that means."' },
-                { title: 'Why Founder', copy: '"This isn\'t a discount. It\'s a trade. I want the right 20 people — not just 20 people. Your case study becomes part of how the system is validated."' },
-                { title: 'What They Get', copy: 'Full 1:1 coaching system, direct access, founder participation trade — rate locked as long as active.' },
-                { title: 'Authority', copy: '"Here\'s what I\'ve seen happen when the body is read correctly before a program is written…"' },
-                { title: 'Scarcity', copy: '"X of 20 positions taken." Post as spots fill. Never fake urgency — update it as it actually happens.' },
-              ].map(angle => (
-                <div key={angle.title} className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <p className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">{angle.title}</p>
-                  <p className="text-sm text-stone-300 italic">{angle.copy}</p>
+                { date: 'Tue 14 Apr', title: 'Post 1 — What Body Recode Is', copy: 'Context-setting post. Explains the three states, the six pillars, and why interpretation has to come before prescription. Ends with a teaser: "Something is opening this week." Drives to the scorecard.' },
+                { date: 'Thu 17 Apr', title: 'Post 2 — The Offer', copy: 'Founding Client Program announced. 20 positions, application-based, structured. Half the standard rate in exchange for documented case study participation. Not a discount — a trade. Application link in bio.' },
+                { date: 'Sat 18 Apr', title: 'Post 3 — Why Founder', copy: 'Addresses the assumption that this is a discount. Explains the trade in full. Sets the standard for who the 20 positions are for — people who want the outcome badly enough to document it.' },
+                { date: 'Mon 20 Apr', title: 'Post 4 — What They Get', copy: 'Full breakdown of the system. Body State assessment, program built around current state, weekly check-in and response, direct access, real-time adjustments. The only difference is rate and participation requirement.' },
+                { date: 'Wed 22 Apr', title: 'Post 5 — Authority', copy: 'Prescription vs interpretation. Why programs fail when they ignore body state. Depleted bodies in stress-driven holding patterns do not respond to more load or less calories — they respond to addressing the cortisol-recovery-sleep loop.' },
+                { date: 'Thu 24 Apr', title: 'Post 6 — Scarcity', copy: 'Update X before posting. "X of 20 positions taken." Not a waitlist. When positions fill, the founding rate closes permanently. Update the number as applications are accepted — never fake the count.' },
+              ].map(post => (
+                <div key={post.title} className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold text-violet-400">{post.date}</span>
+                    <p className="text-xs font-semibold text-stone-300 uppercase tracking-widest">{post.title}</p>
+                  </div>
+                  <p className="text-sm text-stone-400">{post.copy}</p>
                 </div>
               ))}
             </div>
@@ -1625,14 +1629,17 @@ export default function StrategyPage() {
             },
             {
               phase: 'Phase 2 — Founder Launch',
-              days: 'Days 9–14',
+              days: 'Days 9–17 (14–24 Apr)',
               color: 'violet' as const,
               items: [
-                'Drop the Founding Client Program offer post',
-                'Organic only — no ads yet',
+                'Post 1 (14 Apr) — What Body Recode Is. Context-setting with teaser line. Drives to scorecard.',
+                'Post 2 (17 Apr) — The Offer. Founding Client Program announced. 20 positions, the trade explained.',
+                'Post 3 (18 Apr) — Why Founder. Not a discount. A trade. Who the 20 positions are for.',
+                'Post 4 (20 Apr) — What They Get. Full system breakdown. Same process as every client.',
+                'Post 5 (22 Apr) — Authority. Prescription vs interpretation. Why body state determines everything.',
+                'Post 6 (24 Apr) — Scarcity. Update X before posting. Positions closing as they fill.',
+                'Organic only throughout — no ads yet',
                 'Applications open at performance.bodyrecode.au/founder',
-                'Post 1–2 founder-specific posts (the offer, why founder)',
-                'Begin regular 4×/week posting rhythm',
               ],
             },
             {
