@@ -14,6 +14,7 @@ import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
 import ClientDangerActions from './client-danger-actions'
 import FoundingClientStatusManager from '@/components/founding-client-status-manager'
+import MarkAsFoundingClientButton from '@/components/mark-as-founding-client-button'
 import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
 
@@ -332,6 +333,19 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
         )
       })()}
+
+      {/* Founding Client — manual assignment (bypassed funnel) */}
+      {!client.is_founding_client && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-stone-500 mb-1">Founding Client Program</p>
+              <p className="text-sm text-stone-600">Not enrolled</p>
+            </div>
+            <MarkAsFoundingClientButton clientId={id} />
+          </div>
+        </div>
+      )}
 
       {/* Package */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">

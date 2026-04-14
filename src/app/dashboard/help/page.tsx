@@ -245,9 +245,23 @@ export default function HelpPage() {
 
           {/* Founder Operator Flow */}
           <Section id="operator-flow-founder" title="Founder Operator Flow" colour="violet">
-            <p>Two paths lead to a Founder Client conversion. Follow the track that matches how the person entered.</p>
+            <p>Three paths lead to a Founder Client conversion. Follow the track that matches how the person entered.</p>
 
             <div className="space-y-6 mt-2">
+
+              <div>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track D — Direct Entry (Bypassed Funnel)</p>
+                <p className="text-sm text-stone-400 mb-3">Client signed directly without going through the scorecard or Zoom calls. They were created manually and an intake link was sent to them.</p>
+                <div className="space-y-2">
+                  <ChecklistItem text="Open the client profile" />
+                  <ChecklistItem text="In the Founding Client Program card, click Mark as Founding Client — this sets Manual Override as the entry type" />
+                  <ChecklistItem text="Confirm when prompted — the card will update immediately to show the program as Active" />
+                  <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage" />
+                  <ChecklistItem text="Set the Coaching Package to the correct Founding Client tier" />
+                  <ChecklistItem text="Send the subscription link to the client" />
+                  <ChecklistItem text="Wait for Subscription Active badge, then set the Coaching Start Date" />
+                </div>
+              </div>
 
               <div>
                 <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track A — Online Application</p>
