@@ -591,6 +591,26 @@ export async function GET(request: NextRequest) {
     )
   }
 
+  // ── AUTHORITY ─────────────────────────────────────────────
+  // Clean dark card — teal accent bar, label, bold headline
+  if (style === 'authority') {
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ width: '48px', height: '4px', background: '#14b8a6', marginBottom: '36px' }} />
+            {label && <div style={{ fontSize: '38px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '24px' }}>{label}</div>}
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px' }}>{displayText}</div>
+            {sub && <div style={{ fontSize: '52px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginTop: '32px' }}>{sub}</div>}
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} alt="Body Recode" style={{ height: '110px', objectFit: 'contain', alignSelf: 'flex-start' }} />
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
+  }
+
   // Default: quote card
   return new ImageResponse(
     (
@@ -636,7 +656,7 @@ export async function GET(request: NextRequest) {
           style={{
             position: 'absolute',
             bottom: '60px',
-            height: '36px',
+            height: '110px',
             objectFit: 'contain',
           }}
         />
