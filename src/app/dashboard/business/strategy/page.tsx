@@ -1582,7 +1582,7 @@ export default function StrategyPage() {
             <SectionLabel>6-Post Founder Series</SectionLabel>
             <div className="space-y-3">
               {[
-                { date: 'Tue 14 Apr', title: 'Post 1 — What Body Recode Is', copy: 'Context-setting post. Explains the three states, the six pillars, and why interpretation has to come before prescription. Ends with a teaser: "Something is opening this week." Drives to the scorecard.' },
+                { date: 'Tue 14 Apr', title: 'Post 1 — What Body Recode Is', copy: 'Context-setting post. Explains the three states, the six pillars, and why interpretation has to come before prescription. Ends with a teaser: "Something is opening this week. More this week." Drives to the scorecard.' },
                 { date: 'Thu 17 Apr', title: 'Post 2 — The Offer', copy: 'Founding Client Program announced. 20 positions, application-based, structured. Half the standard rate in exchange for documented case study participation. Not a discount — a trade. Application link in bio.' },
                 { date: 'Sat 18 Apr', title: 'Post 3 — Why Founder', copy: 'Addresses the assumption that this is a discount. Explains the trade in full. Sets the standard for who the 20 positions are for — people who want the outcome badly enough to document it.' },
                 { date: 'Mon 20 Apr', title: 'Post 4 — What They Get', copy: 'Full breakdown of the system. Body State assessment, program built around current state, weekly check-in and response, direct access, real-time adjustments. The only difference is rate and participation requirement.' },
