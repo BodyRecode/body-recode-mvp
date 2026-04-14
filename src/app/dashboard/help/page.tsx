@@ -256,9 +256,10 @@ export default function HelpPage() {
                   <ChecklistItem text="Open the client profile" />
                   <ChecklistItem text="In the Founding Client Program card, click Mark as Founding Client — this sets Manual Override as the entry type" />
                   <ChecklistItem text="Confirm when prompted — the card will update immediately to show the program as Active" />
+                  <ChecklistItem text="Click Send Info Package — this emails the client a full breakdown of what the Founder Client Program is, what participation involves, the fee structure, and the two consent tiers. Replaces the explanation that normally happens in Zoom 2." />
                   <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage" />
                   <ChecklistItem text="Set the Coaching Package to the correct Founding Client tier" />
-                  <ChecklistItem text="Send the subscription link to the client" />
+                  <ChecklistItem text="Send the subscription link to the client — or use Schedule Send to queue it for a specific date" />
                   <ChecklistItem text="Wait for Subscription Active badge, then set the Coaching Start Date" />
                 </div>
               </div>

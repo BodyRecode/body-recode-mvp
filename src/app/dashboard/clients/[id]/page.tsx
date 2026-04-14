@@ -15,6 +15,7 @@ import SendPortalEmailButton from '@/components/send-portal-email-button'
 import ClientDangerActions from './client-danger-actions'
 import FoundingClientStatusManager from '@/components/founding-client-status-manager'
 import MarkAsFoundingClientButton from '@/components/mark-as-founding-client-button'
+import SendFounderInfoButton from '@/components/send-founder-info-button'
 import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
 
@@ -329,7 +330,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 </div>
               )}
             </div>
-            <FoundingClientStatusManager clientId={id} currentStatus={client.founding_client_status} />
+            <div className="mt-4 pt-4 border-t border-stone-800/60 flex items-center justify-between">
+              <FoundingClientStatusManager clientId={id} currentStatus={client.founding_client_status} />
+              <SendFounderInfoButton clientId={id} sentAt={client.founder_info_sent_at ?? null} />
+            </div>
           </div>
         )
       })()}
