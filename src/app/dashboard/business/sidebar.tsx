@@ -15,6 +15,7 @@ import {
   LayoutDashboard,
   Clapperboard,
   Compass,
+  FlaskConical,
 } from 'lucide-react'
 
 type NavItem = {
@@ -70,6 +71,12 @@ const sections: NavSection[] = [
     label: 'Analyse',
     items: [
       { label: 'Analytics', href: '/dashboard/business/analytics', icon: BarChart2 },
+    ],
+  },
+  {
+    label: 'System Development',
+    items: [
+      { label: 'Peer Review', href: '/dashboard/business/peer-review', icon: FlaskConical },
     ],
   },
 ]
