@@ -657,7 +657,9 @@ export default function HelpPage() {
               <li><strong>In-Person 2x — $299/week</strong></li>
               <li><strong>In-Person 3x — $409/week</strong></li>
             </ul>
-            <p>Once a package is selected, a <strong>Copy Subscription Link</strong> button appears. The link includes the client&apos;s ID so the system can identify them when they pay. When the client completes payment, the <strong>Subscription Active</strong> badge appears automatically on the client profile.</p>
+            <p>Once a package is selected, three options appear: <strong>Send to Client</strong> (sends immediately), <strong>Copy Link</strong> (copies to clipboard), and <strong>Schedule Send</strong>. The link includes the client&apos;s ID so the system can identify them when they pay. When the client completes payment, the <strong>Subscription Active</strong> badge appears automatically on the client profile.</p>
+            <p className="font-semibold text-white mt-4">Scheduling a delayed send</p>
+            <p>If you want to queue the subscription link now but have it land in the client&apos;s inbox on a specific date, click <strong>Schedule Send</strong>, pick a date, and confirm. The system will send it automatically at 8am Brisbane time on that day. A yellow <em>Scheduled for [date]</em> badge appears on the profile — click Cancel next to it to remove the scheduled send before it fires. Once sent, the badge is replaced with the sent date.</p>
             <p>To upgrade a client from 2x to 3x:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
               <li>Cancel the existing $299/week subscription in Stripe.</li>

@@ -361,7 +361,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </span>
           )}
         </div>
-        <PackageManager clientId={client.id} currentPackage={client.package} isFoundingClient={client.is_founding_client ?? false} />
+        <PackageManager
+          clientId={client.id}
+          currentPackage={client.package}
+          isFoundingClient={client.is_founding_client ?? false}
+          subscriptionLinkSendAt={client.subscription_link_send_at ?? null}
+          subscriptionLinkSentAt={client.subscription_link_sent_at ?? null}
+        />
         {(() => {
           const weekNumber = client.coaching_started_at ? getWeekNumber(client.coaching_started_at) : null
           const isUpgradeCandidate = client.package === '2x' && (weekNumber ?? 0) >= 8
