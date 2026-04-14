@@ -126,6 +126,16 @@ const DEFAULT_REVIEWERS: Reviewer[] = [
     feedback: '',
     notes: 'Met at Melbourne expo. Attended his seminar. Lead with personal connection.',
   },
+  {
+    id: 'kenji-doma',
+    name: 'Kenji Doma',
+    field: 'Exercise Science Academic',
+    organisation: 'James Cook University',
+    contactDate: '',
+    status: 'Not contacted',
+    feedback: '',
+    notes: 'Used to work out of Kade\'s PT studio. Strong personal connection. Academic framing - rigorous research perspective.',
+  },
 ]
 
 export default function PeerReviewPage() {
