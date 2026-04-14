@@ -656,13 +656,26 @@ const PRELAUNCH_POSTS = [
 export default function StrategyPage() {
   const [tab, setTab] = useState<Tab>('overview')
   const [postStatuses, setPostStatuses] = useState<Record<string, PostStatus>>({})
+  const [founderPosted, setFounderPosted] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem('prelaunch_post_statuses')
       if (saved) setPostStatuses(JSON.parse(saved))
     } catch {}
+    try {
+      const saved = localStorage.getItem('founder_series_posted')
+      if (saved) setFounderPosted(JSON.parse(saved))
+    } catch {}
   }, [])
+
+  function toggleFounderPosted(date: string) {
+    setFounderPosted(prev => {
+      const next = { ...prev, [date]: !prev[date] }
+      try { localStorage.setItem('founder_series_posted', JSON.stringify(next)) } catch {}
+      return next
+    })
+  }
 
   function cycleStatus(id: string) {
     setPostStatuses(prev => {
@@ -717,19 +730,28 @@ export default function StrategyPage() {
             </div>
             <div className="space-y-1.5">
               {[
-                { date: 'Wed 15 Apr', title: 'Post 1 — What Body Recode Is', done: false },
-                { date: 'Thu 17 Apr', title: 'Post 2 — The Offer', done: false },
-                { date: 'Sat 18 Apr', title: 'Post 3 — Why Founder', done: false },
-                { date: 'Mon 20 Apr', title: 'Post 4 — What They Get', done: false },
-                { date: 'Wed 22 Apr', title: 'Post 5 — Authority', done: false },
-                { date: 'Thu 24 Apr', title: 'Post 6 — Scarcity', done: false },
-              ].map(p => (
-                <div key={p.date} className="flex items-center gap-3 text-xs">
-                  <span className="text-stone-600 w-20 shrink-0">{p.date}</span>
-                  <span className={p.done ? 'text-teal-400 line-through' : 'text-stone-300'}>{p.title}</span>
-                  {p.done && <span className="text-teal-500 text-[10px] font-bold">POSTED</span>}
-                </div>
-              ))}
+                { date: 'Wed 15 Apr', title: 'Post 1 — What Body Recode Is' },
+                { date: 'Thu 17 Apr', title: 'Post 2 — The Offer' },
+                { date: 'Sat 18 Apr', title: 'Post 3 — Why Founder' },
+                { date: 'Mon 20 Apr', title: 'Post 4 — What They Get' },
+                { date: 'Wed 22 Apr', title: 'Post 5 — Authority' },
+                { date: 'Thu 24 Apr', title: 'Post 6 — Scarcity' },
+              ].map(p => {
+                const done = !!founderPosted[p.date]
+                return (
+                  <div key={p.date} className="flex items-center gap-3 text-xs">
+                    <span className="text-stone-600 w-20 shrink-0">{p.date}</span>
+                    <button
+                      onClick={() => toggleFounderPosted(p.date)}
+                      className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border transition-colors ${done ? 'bg-teal-500/20 border-teal-500/40' : 'bg-stone-900 border-stone-700 hover:border-stone-500'}`}
+                    >
+                      {done && <span className="text-teal-400 text-[10px] font-bold">✓</span>}
+                    </button>
+                    <span className={done ? 'text-stone-500 line-through' : 'text-stone-300'}>{p.title}</span>
+                    {done && <span className="text-teal-500 text-[10px] font-bold">POSTED</span>}
+                  </div>
+                )
+              })}
             </div>
             <p className="text-xs text-stone-500 mt-3">Organic only. No ads until Phase 3 (from 25 Apr). Update Post 6 scarcity count before posting.</p>
           </Card>
