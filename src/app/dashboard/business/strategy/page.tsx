@@ -1649,6 +1649,78 @@ export default function StrategyPage() {
             />
           </div>
 
+          {/* Ad Graphics */}
+          <Card>
+            <SectionLabel>Image Ad Graphics — Download</SectionLabel>
+            <p className="text-stone-500 text-xs mb-4">Ready-to-use 1080×1080 graphics for Meta image ads. Download and upload directly to Ads Manager. All point to the Body State Scorecard.</p>
+            <div className="space-y-6">
+
+              {/* Graphic 1 — Statement card */}
+              <div>
+                <p className="text-xs font-semibold text-white mb-1">Ad 1 — Statement</p>
+                <p className="text-xs text-stone-500 mb-3">Angle: Silent Frustration. Clean text card, no photo.</p>
+                <div className="grid sm:grid-cols-2 gap-3 items-start">
+                  <div className="rounded-xl overflow-hidden border border-stone-800 bg-stone-950" style={{ aspectRatio: '1/1' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/api/content/graphic?style=insight&label=Body+State+Problem&text=Your+body+stopped+responding.+Here%27s+why.&sub=Training+consistently.+Eating+well.+Nothing+moving.+That%27s+not+a+discipline+problem.+Take+the+free+Body+State+Scorecard+%E2%80%94+link+in+bio." alt="Ad 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  <div className="space-y-2">
+                    <a href="/api/content/graphic?style=insight&label=Body+State+Problem&text=Your+body+stopped+responding.+Here%27s+why.&sub=Training+consistently.+Eating+well.+Nothing+moving.+That%27s+not+a+discipline+problem.+Take+the+free+Body+State+Scorecard+%E2%80%94+link+in+bio." download="ad-statement.png" className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-xs font-semibold rounded-lg transition-colors">↓ Download 1080×1080</a>
+                    <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-xs text-stone-400 leading-relaxed">
+                      <p className="text-stone-600 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
+                      Your body stopped responding. Here&apos;s why.<br /><br />Training consistently. Eating well. Nothing moving. That&apos;s not a discipline problem — that&apos;s a body state problem.<br /><br />Take the free Body State Scorecard — link in bio. Two minutes.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Graphic 2 — Photo card */}
+              <div>
+                <p className="text-xs font-semibold text-white mb-1">Ad 2 — Photo</p>
+                <p className="text-xs text-stone-500 mb-3">Angle: Contrarian. Face + statement. Higher trust signal.</p>
+                <div className="grid sm:grid-cols-2 gap-3 items-start">
+                  <div className="rounded-xl overflow-hidden border border-stone-800 bg-stone-950" style={{ aspectRatio: '1/1' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/api/content/graphic?style=photo-split&text=More+training+and+less+food+is+making+it+worse.&sub=Take+the+free+Body+State+Scorecard+%E2%80%94+link+in+bio." alt="Ad 2" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  <div className="space-y-2">
+                    <a href="/api/content/graphic?style=photo-split&text=More+training+and+less+food+is+making+it+worse.&sub=Take+the+free+Body+State+Scorecard+%E2%80%94+link+in+bio." download="ad-photo.png" className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-xs font-semibold rounded-lg transition-colors">↓ Download 1080×1080</a>
+                    <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-xs text-stone-400 leading-relaxed">
+                      <p className="text-stone-600 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
+                      More training and less food is making it worse.<br /><br />The standard advice when fat loss stalls drives cortisol up and locks your body into a state where it actively resists change.<br /><br />Take the free Body State Scorecard — link in bio. Two minutes.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Graphic 3 — Body states carousel */}
+              <div>
+                <p className="text-xs font-semibold text-white mb-1">Ad 3 — Body States (3 slides)</p>
+                <p className="text-xs text-stone-500 mb-3">Angle: Diagnosis. Carousel ad — swipe to find your state.</p>
+                <div className="grid grid-cols-3 gap-2 mb-3">
+                  {[
+                    { accent: 'red', label: 'Depleted State | Score 5–8', text: 'Your body is in protection mode.', sub: 'Cortisol is elevated, metabolism is suppressed. Adding more training and less food will make this worse.' },
+                    { accent: 'amber', label: 'Transitioning State | Score 9–11', text: 'Mixed signals. Something is blocking your response.', sub: 'Sleep, stress, or a mismatch between training load and current biological state.' },
+                    { accent: 'teal', label: 'Ready State | Score 12–15', text: 'Your biology is in a position to respond.', sub: 'If fat loss or performance isn\'t happening at this score, the issue is in the prescription.' },
+                  ].map((s, i) => (
+                    <div key={i} className="space-y-1">
+                      <div className="rounded-xl overflow-hidden border border-stone-800" style={{ aspectRatio: '1/1' }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={`/api/content/graphic?style=body-state&accent=${s.accent}&label=${encodeURIComponent(s.label)}&text=${encodeURIComponent(s.text)}&sub=${encodeURIComponent(s.sub)}`} alt={`Slide ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
+                      <a href={`/api/content/graphic?style=body-state&accent=${s.accent}&label=${encodeURIComponent(s.label)}&text=${encodeURIComponent(s.text)}&sub=${encodeURIComponent(s.sub)}`} download={`ad-body-state-slide-${i + 1}.png`} className="flex items-center justify-center w-full px-2 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 text-[10px] font-semibold rounded-lg transition-colors">↓ Slide {i + 1}</a>
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-xs text-stone-400 leading-relaxed">
+                  <p className="text-stone-600 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
+                  Your body is operating in one of three states right now. Swipe to find out which one — and what it means for your training and fat loss.<br /><br />Take the free Body State Scorecard — link in bio. Two minutes. No cost.
+                </div>
+              </div>
+
+            </div>
+          </Card>
+
           <Card>
             <SectionLabel>Filming Guide — Gym Session</SectionLabel>
             <BulletList items={[
