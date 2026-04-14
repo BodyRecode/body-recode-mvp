@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
   const isZoom2 = lead.status === 'zoom_1_completed'
   const bookingType = isZoom2 ? 'zoom2' : 'zoom1'
   const newStatus = isZoom2 ? 'zoom_2_booked' : 'zoom_1_booked'
-  const sessionTitle = `Body Recode — Zoom ${isZoom2 ? '2' : '1'} — ${lead.name}`
+  const sessionTitle = `Body Recode — ${isZoom2 ? 'Strategy Call' : 'Scorecard Review'} — ${lead.name}`
 
   // Create Zoom meeting
   let meetingLink: string | null = null
