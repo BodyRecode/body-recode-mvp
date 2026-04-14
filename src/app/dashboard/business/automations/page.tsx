@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Zap, Plus, Play, Pause, ChevronRight } from 'lucide-react'
 import SystemAutomationsPanel from './system-automations-panel'
+import ReseedScorecardButton from './reseed-scorecard-button'
 
 const triggerLabel: Record<string, string> = {
   lead_created: 'Lead created',
@@ -77,6 +78,9 @@ export default async function AutomationsPage() {
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
+                  {workflow.name === 'Scorecard — Follow-up Sequence' && (
+                    <ReseedScorecardButton />
+                  )}
                   <span className={`flex items-center gap-1 text-xs font-medium ${
                     workflow.is_active ? 'text-teal-400' : 'text-stone-500'
                   }`}>
