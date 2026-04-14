@@ -32,11 +32,15 @@ That result tells you one specific thing: which state your body is currently in.
 
 That state determines what works. It also determines what makes things worse. Most people apply the same approach regardless of their state. That is why most people stay stuck.
 
-If you want to understand exactly what is driving your result and what needs to change first, book a free 30-minute call.
-
-We go through your scorecard together, identify the specific bottleneck, and map out the first steps.
+If you want to understand exactly what is driving your result and what needs to change first, book a free 30-minute call. We go through your scorecard together, identify the specific bottleneck, and map out the first steps.
 
 Book here: https://bodyrecode.au/book
+
+---
+
+Want the written breakdown first? The Body Decode Report ($37) covers what your {{scorecard_state}} result means biologically, what is actively working against you right now, and what needs to change first.
+
+Get your report here: https://bodyrecode.au/get-report
 
 Kade
 Body Recode`,
@@ -46,10 +50,40 @@ Body Recode`,
       position: 2,
       type: 'wait',
       action_type: null,
-      config: { unit: 'days', value: 3 },
+      config: { unit: 'days', value: 2 },
     },
     {
       position: 3,
+      type: 'action',
+      action_type: 'send_email',
+      config: {
+        subject: 'What your {{scorecard_state}} result actually means',
+        body: `Hi {{first_name}},
+
+Your score was {{scorecard_score}}/15. Body state: {{scorecard_state}}.
+
+Most people look at that result and think they need to train harder or eat less. That is usually the wrong call.
+
+Your body state is a biological signal. It tells you how your body is currently handling load, how well it is recovering, and how much capacity it has to respond right now. The right prescription depends entirely on that state.
+
+The Body Decode Report goes through exactly what {{scorecard_state}} means for your training, your nutrition, and your fat loss. It is written specifically to your result, not a generic guide.
+
+$37. Delivered to your inbox within minutes.
+
+Get your report here: https://bodyrecode.au/get-report
+
+Kade
+Body Recode`,
+      },
+    },
+    {
+      position: 4,
+      type: 'wait',
+      action_type: null,
+      config: { unit: 'days', value: 2 },
+    },
+    {
+      position: 5,
       type: 'action',
       action_type: 'send_email',
       config: {
@@ -73,17 +107,17 @@ Body Recode`,
       },
     },
     {
-      position: 4,
+      position: 6,
       type: 'wait',
       action_type: null,
       config: { unit: 'days', value: 4 },
     },
     {
-      position: 5,
+      position: 7,
       type: 'action',
       action_type: 'send_email',
       config: {
-        subject: 'What your {{scorecard_state}} result actually means',
+        subject: 'The prescription problem',
         body: `Hi {{first_name}},
 
 Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state doesn't factor into it at all.
@@ -101,13 +135,13 @@ Body Recode`,
       },
     },
     {
-      position: 6,
+      position: 8,
       type: 'wait',
       action_type: null,
       config: { unit: 'days', value: 5 },
     },
     {
-      position: 7,
+      position: 9,
       type: 'action',
       action_type: 'send_email',
       config: {
@@ -116,11 +150,12 @@ Body Recode`,
 
 Last email from me on this.
 
-Your scorecard result is still there whenever you want to act on it. The call is still available. No follow-up after this.
+Your scorecard result is still there whenever you want to act on it. The call is still available. The report is still there if you want the written breakdown first.
 
-Just wanted you to know the door stays open.
+No follow-up after this.
 
-Book here: https://bodyrecode.au/book
+Book a call: https://bodyrecode.au/book
+Get the report: https://bodyrecode.au/get-report
 
 Kade
 Body Recode`,
