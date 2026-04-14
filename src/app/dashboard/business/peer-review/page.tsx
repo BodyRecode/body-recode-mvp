@@ -136,6 +136,16 @@ const DEFAULT_REVIEWERS: Reviewer[] = [
     feedback: '',
     notes: 'Used to work out of Kade\'s PT studio. Strong personal connection. Academic framing - rigorous research perspective.',
   },
+  {
+    id: 'richard-arnot',
+    name: 'Richard Arnot',
+    field: 'Retired Surgeon',
+    organisation: '',
+    contactDate: '',
+    status: 'Not contacted',
+    feedback: '',
+    notes: 'Former client, same era as Kenji. Retired - no scope-of-practice defensiveness. Lead with "you saw how I worked back then."',
+  },
 ]
 
 export default function PeerReviewPage() {
