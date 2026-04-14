@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ExternalLink, Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { ExternalLink, Plus, Trash2, ChevronDown, ChevronUp, Copy, Check } from 'lucide-react'
 
 type ReviewerStatus = 'Not contacted' | 'Contacted' | 'Accessed site' | 'Responded' | 'Call booked' | 'Complete'
 
@@ -14,6 +14,7 @@ type Reviewer = {
   status: ReviewerStatus
   feedback: string
   notes: string
+  socialDm: string
 }
 
 const STATUS_COLOURS: Record<ReviewerStatus, string> = {
@@ -95,6 +96,7 @@ const DEFAULT_REVIEWERS: Reviewer[] = [
     status: 'Not contacted',
     feedback: '',
     notes: '',
+    socialDm: `Hey Jim, been meaning to reach out for a while.\n\nI've spent the last few years building a biological interpretation system called Body Recode - it reads the body's hormonal and regulatory state before any training or nutrition is prescribed. You're one of the few people I know who operates at the level of science I've tried to build this to.\n\nI'm putting together a small founding advisor group and I'd genuinely like you to be part of it. Would you be up for taking a look at what I've built?`,
   },
   {
     id: 'danny',
@@ -105,6 +107,7 @@ const DEFAULT_REVIEWERS: Reviewer[] = [
     status: 'Not contacted',
     feedback: '',
     notes: '',
+    socialDm: `Hey Danny, hope you're well.\n\nI've built a biological interpretation system called Body Recode - designed to sit alongside clinical assessment and give practitioners a structured hormonal read before intervention. One of the intended use environments is clinical integration.\n\nI'm looking for a small group of clinical professionals to review it honestly and your background makes your perspective particularly valuable. Would you be open to taking a look?`,
   },
   {
     id: 'tom',
@@ -115,6 +118,7 @@ const DEFAULT_REVIEWERS: Reviewer[] = [
     status: 'Not contacted',
     feedback: '',
     notes: '',
+    socialDm: `Hey Tom, hope the Taipans are going well.\n\nI've been building a biological interpretation system called Body Recode - it reads the body's state before any load or intervention is prescribed, and flags when referral is warranted. It sits alongside practitioner assessment, not replacing it.\n\nYour experience working with elite athletes under sustained load makes your perspective on this exactly what I need. Would you be up for taking a look?`,
   },
   {
     id: 'layne-norton',
@@ -125,6 +129,7 @@ const DEFAULT_REVIEWERS: Reviewer[] = [
     status: 'Not contacted',
     feedback: '',
     notes: 'Met at Melbourne expo. Attended his seminar. Lead with personal connection.',
+    socialDm: `Hey Layne, we met briefly at [EXPO NAME] in Melbourne - I sat in on your seminar.\n\nI've spent the last few years building a biological interpretation system called Body Recode. One of the central frameworks is the Fat Map Method - reading regional fat distribution as hormonal and metabolic signalling. I know that's exactly the kind of claim you'd want to pull apart, and that's precisely why I'm reaching out.\n\nWould you be open to reviewing it?`,
   },
   {
     id: 'kenji-doma',
@@ -134,7 +139,8 @@ const DEFAULT_REVIEWERS: Reviewer[] = [
     contactDate: '',
     status: 'Not contacted',
     feedback: '',
-    notes: 'Used to work out of Kade\'s PT studio. Strong personal connection. Academic framing - rigorous research perspective.',
+    notes: "Used to work out of Kade's PT studio. Strong personal connection. Academic framing - rigorous research perspective.",
+    socialDm: `Hey Kenji, it's been a long time - hope things are going well at JCU.\n\nI've been building on everything I was working through back at the studio - it's now a full biological interpretation system called Body Recode. I'm at the stage where I want academic eyes on it and your background in exercise physiology makes you exactly the right person.\n\nWould you be up for taking a look?`,
   },
   {
     id: 'richard-arnot',
@@ -144,14 +150,15 @@ const DEFAULT_REVIEWERS: Reviewer[] = [
     contactDate: '',
     status: 'Not contacted',
     feedback: '',
-    notes: 'Former client, same era as Kenji. Retired - no scope-of-practice defensiveness. Lead with "you saw how I worked back then."',
+    notes: "Former client, same era as Kenji. Retired - no scope-of-practice defensiveness. Lead with \"you saw how I worked back then.\"",
+    socialDm: `Hey Richard, it's been a long time - hope you're keeping well.\n\nYou were a client of mine when I was still developing the foundations of how I think about the body. I've now built that into a full biological interpretation system called Body Recode.\n\nI'm putting together a small founding advisor group and I'd genuinely value your medical perspective on it. Would you be open to taking a look?`,
   },
 ]
 
 export default function PeerReviewPage() {
   const [reviewers, setReviewers] = useState<Reviewer[]>([])
   const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [copiedTemplate, setCopiedTemplate] = useState<string | null>(null)
+  const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const [activeTemplate, setActiveTemplate] = useState<'outreach' | 'followup' | 'agenda'>('outreach')
 
   useEffect(() => {
@@ -160,7 +167,12 @@ export default function PeerReviewPage() {
       const existing: Reviewer[] = JSON.parse(saved)
       const existingIds = new Set(existing.map(r => r.id))
       const merged = [
-        ...existing,
+        ...existing.map(r => ({
+          socialDm: '',
+          ...r,
+          // Backfill socialDm from defaults if missing
+          ...((!r.socialDm) ? { socialDm: DEFAULT_REVIEWERS.find(d => d.id === r.id)?.socialDm ?? '' } : {}),
+        })),
         ...DEFAULT_REVIEWERS.filter(r => !existingIds.has(r.id)),
       ]
       setReviewers(merged)
@@ -186,6 +198,7 @@ export default function PeerReviewPage() {
       status: 'Not contacted',
       feedback: '',
       notes: '',
+      socialDm: '',
     }
     save([...reviewers, newReviewer])
     setExpandedId(newReviewer.id)
@@ -200,10 +213,10 @@ export default function PeerReviewPage() {
     if (expandedId === id) setExpandedId(null)
   }
 
-  const copyTemplate = (text: string, key: string) => {
+  const copy = (text: string, key: string) => {
     navigator.clipboard.writeText(text)
-    setCopiedTemplate(key)
-    setTimeout(() => setCopiedTemplate(null), 2000)
+    setCopiedKey(key)
+    setTimeout(() => setCopiedKey(null), 2000)
   }
 
   const stats = {
@@ -292,10 +305,10 @@ export default function PeerReviewPage() {
             </pre>
             {activeTemplate !== 'agenda' && (
               <button
-                onClick={() => copyTemplate(activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : FOLLOWUP_TEMPLATE, activeTemplate)}
+                onClick={() => copy(activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : FOLLOWUP_TEMPLATE, activeTemplate)}
                 className="mt-4 px-4 py-2 text-xs font-medium rounded-lg bg-stone-800 text-stone-300 hover:bg-stone-700 transition-colors"
               >
-                {copiedTemplate === activeTemplate ? 'Copied' : 'Copy to clipboard'}
+                {copiedKey === activeTemplate ? 'Copied' : 'Copy to clipboard'}
               </button>
             )}
           </div>
@@ -376,26 +389,30 @@ export default function PeerReviewPage() {
 
                 {/* Expanded */}
                 {expandedId === reviewer.id && (
-                  <div className="px-4 pb-4 border-t border-stone-800 pt-4 grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs text-stone-500 mb-1.5 block">Organisation</label>
-                      <input
-                        value={reviewer.organisation}
-                        onChange={e => updateReviewer(reviewer.id, 'organisation', e.target.value)}
-                        placeholder="Practice / hospital / gym"
-                        className="w-full bg-stone-800 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 outline-none"
-                      />
+                  <div className="px-4 pb-4 border-t border-stone-800 pt-4 space-y-4">
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs text-stone-500 mb-1.5 block">Organisation</label>
+                        <input
+                          value={reviewer.organisation}
+                          onChange={e => updateReviewer(reviewer.id, 'organisation', e.target.value)}
+                          placeholder="Practice / hospital / gym"
+                          className="w-full bg-stone-800 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs text-stone-500 mb-1.5 block">Feedback Summary</label>
+                        <input
+                          value={reviewer.feedback}
+                          onChange={e => updateReviewer(reviewer.id, 'feedback', e.target.value)}
+                          placeholder="Key feedback points"
+                          className="w-full bg-stone-800 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 outline-none"
+                        />
+                      </div>
                     </div>
+
                     <div>
-                      <label className="text-xs text-stone-500 mb-1.5 block">Feedback Summary</label>
-                      <input
-                        value={reviewer.feedback}
-                        onChange={e => updateReviewer(reviewer.id, 'feedback', e.target.value)}
-                        placeholder="Key feedback points"
-                        className="w-full bg-stone-800 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 outline-none"
-                      />
-                    </div>
-                    <div className="col-span-2">
                       <label className="text-xs text-stone-500 mb-1.5 block">Call Notes</label>
                       <textarea
                         value={reviewer.notes}
@@ -405,6 +422,30 @@ export default function PeerReviewPage() {
                         className="w-full bg-stone-800 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 outline-none resize-none"
                       />
                     </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="text-xs text-stone-500">Social DM</label>
+                        {reviewer.socialDm && (
+                          <button
+                            onClick={() => copy(reviewer.socialDm, `dm-${reviewer.id}`)}
+                            className="flex items-center gap-1 text-xs text-stone-500 hover:text-teal-400 transition-colors"
+                          >
+                            {copiedKey === `dm-${reviewer.id}` ? <Check size={11} /> : <Copy size={11} />}
+                            {copiedKey === `dm-${reviewer.id}` ? 'Copied' : 'Copy'}
+                          </button>
+                        )}
+                      </div>
+                      <textarea
+                        value={reviewer.socialDm}
+                        onChange={e => updateReviewer(reviewer.id, 'socialDm', e.target.value)}
+                        placeholder="Short DM for Facebook / Instagram outreach..."
+                        rows={5}
+                        className="w-full bg-stone-800 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 outline-none resize-none"
+                      />
+                      <p className="text-xs text-stone-600 mt-1">Short opener only. Goal is a reply, not a full read. Send full message once they respond.</p>
+                    </div>
+
                   </div>
                 )}
 
