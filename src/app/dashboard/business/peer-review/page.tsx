@@ -116,6 +116,16 @@ const DEFAULT_REVIEWERS: Reviewer[] = [
     feedback: '',
     notes: '',
   },
+  {
+    id: 'layne-norton',
+    name: 'Layne Norton',
+    field: 'PhD Nutritional Sciences / Bodybuilder',
+    organisation: 'Carbon Diet Coach',
+    contactDate: '',
+    status: 'Not contacted',
+    feedback: '',
+    notes: 'Met at Melbourne expo. Attended his seminar. Lead with personal connection.',
+  },
 ]
 
 export default function PeerReviewPage() {
@@ -127,7 +137,14 @@ export default function PeerReviewPage() {
   useEffect(() => {
     const saved = localStorage.getItem('br_peer_reviewers')
     if (saved) {
-      setReviewers(JSON.parse(saved))
+      const existing: Reviewer[] = JSON.parse(saved)
+      const existingIds = new Set(existing.map(r => r.id))
+      const merged = [
+        ...existing,
+        ...DEFAULT_REVIEWERS.filter(r => !existingIds.has(r.id)),
+      ]
+      setReviewers(merged)
+      localStorage.setItem('br_peer_reviewers', JSON.stringify(merged))
     } else {
       setReviewers(DEFAULT_REVIEWERS)
       localStorage.setItem('br_peer_reviewers', JSON.stringify(DEFAULT_REVIEWERS))
