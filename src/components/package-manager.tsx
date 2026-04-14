@@ -163,6 +163,7 @@ export default function PackageManager({
           {alreadySent && (
             <div className="text-xs text-stone-500">
               Subscription link sent {new Date(subscriptionLinkSentAt!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Brisbane' })}
+              {subscriptionLinkSendAt && <span className="ml-1 text-stone-600">(scheduled send)</span>}
             </div>
           )}
 
