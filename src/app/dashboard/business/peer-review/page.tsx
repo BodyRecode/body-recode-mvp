@@ -67,15 +67,71 @@ The link is still live at https://review.bodyrecode.au if you'd like to take a l
 
 [YOUR NAME]`
 
+const CALL_AGENDA = `CALL AGENDA - 30 minutes
+
+Use this as a loose guide, not a script.
+
+1. Thank them for their time and their feedback (5 min)
+2. Ask what landed well and what raised questions (10 min)
+3. Dig into their specific area: how they see it interfacing with their practice (10 min)
+4. Explain where the system is headed and what their advisor role looks like in practice (5 min)
+
+---
+
+Key things to listen for:
+
+- Scientific objections to the Fat Map Method zones
+- Scope of practice concerns (are they worried it overlaps with clinical diagnosis?)
+- Genuine interest in using or integrating it
+- Names of other people they think should see it`
+
+const DEFAULT_REVIEWERS: Reviewer[] = [
+  {
+    id: 'jim',
+    name: 'Jim',
+    field: 'Pro Bodybuilder / Health Science',
+    organisation: '',
+    contactDate: '',
+    status: 'Not contacted',
+    feedback: '',
+    notes: '',
+  },
+  {
+    id: 'danny',
+    name: 'Danny',
+    field: 'Sports Medicine Doctor',
+    organisation: '',
+    contactDate: '',
+    status: 'Not contacted',
+    feedback: '',
+    notes: '',
+  },
+  {
+    id: 'tom',
+    name: 'Tom',
+    field: 'Physiotherapist',
+    organisation: 'Cairns Taipans NBL',
+    contactDate: '',
+    status: 'Not contacted',
+    feedback: '',
+    notes: '',
+  },
+]
+
 export default function PeerReviewPage() {
   const [reviewers, setReviewers] = useState<Reviewer[]>([])
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [copiedTemplate, setCopiedTemplate] = useState<string | null>(null)
-  const [activeTemplate, setActiveTemplate] = useState<'outreach' | 'followup'>('outreach')
+  const [activeTemplate, setActiveTemplate] = useState<'outreach' | 'followup' | 'agenda'>('outreach')
 
   useEffect(() => {
     const saved = localStorage.getItem('br_peer_reviewers')
-    if (saved) setReviewers(JSON.parse(saved))
+    if (saved) {
+      setReviewers(JSON.parse(saved))
+    } else {
+      setReviewers(DEFAULT_REVIEWERS)
+      localStorage.setItem('br_peer_reviewers', JSON.stringify(DEFAULT_REVIEWERS))
+    }
   }, [])
 
   const save = (updated: Reviewer[]) => {
@@ -177,28 +233,34 @@ export default function PeerReviewPage() {
         <h2 className="text-sm font-semibold text-stone-300 mb-3">Outreach Templates</h2>
         <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
           <div className="flex border-b border-stone-800">
-            {(['outreach', 'followup'] as const).map(tab => (
+            {([
+              { key: 'outreach', label: 'Initial Outreach' },
+              { key: 'followup', label: '2-Week Follow-Up' },
+              { key: 'agenda', label: 'Call Agenda' },
+            ] as const).map(tab => (
               <button
-                key={tab}
-                onClick={() => setActiveTemplate(tab)}
+                key={tab.key}
+                onClick={() => setActiveTemplate(tab.key)}
                 className={`px-5 py-3 text-xs font-medium transition-colors ${
-                  activeTemplate === tab ? 'text-teal-400 border-b-2 border-teal-500' : 'text-stone-500 hover:text-stone-300'
+                  activeTemplate === tab.key ? 'text-teal-400 border-b-2 border-teal-500' : 'text-stone-500 hover:text-stone-300'
                 }`}
               >
-                {tab === 'outreach' ? 'Initial Outreach' : '2-Week Follow-Up'}
+                {tab.label}
               </button>
             ))}
           </div>
           <div className="p-4">
             <pre className="text-xs text-stone-400 whitespace-pre-wrap leading-relaxed font-sans">
-              {activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : FOLLOWUP_TEMPLATE}
+              {activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : activeTemplate === 'followup' ? FOLLOWUP_TEMPLATE : CALL_AGENDA}
             </pre>
-            <button
-              onClick={() => copyTemplate(activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : FOLLOWUP_TEMPLATE, activeTemplate)}
-              className="mt-4 px-4 py-2 text-xs font-medium rounded-lg bg-stone-800 text-stone-300 hover:bg-stone-700 transition-colors"
-            >
-              {copiedTemplate === activeTemplate ? 'Copied' : 'Copy to clipboard'}
-            </button>
+            {activeTemplate !== 'agenda' && (
+              <button
+                onClick={() => copyTemplate(activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : FOLLOWUP_TEMPLATE, activeTemplate)}
+                className="mt-4 px-4 py-2 text-xs font-medium rounded-lg bg-stone-800 text-stone-300 hover:bg-stone-700 transition-colors"
+              >
+                {copiedTemplate === activeTemplate ? 'Copied' : 'Copy to clipboard'}
+              </button>
+            )}
           </div>
         </div>
       </div>
