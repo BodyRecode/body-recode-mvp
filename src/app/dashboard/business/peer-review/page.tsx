@@ -29,7 +29,7 @@ const STATUSES: ReviewerStatus[] = ['Not contacted', 'Contacted', 'Accessed site
 
 const ASSETS = [
   { label: 'Review Site', url: 'https://review.bodyrecode.au', description: 'Landing page for reviewers' },
-  { label: 'System Overview', url: 'https://review.bodyrecode.au/doctrine/overview', description: 'Peer review document — 6,400 words, 13 sections' },
+  { label: 'System Overview', url: 'https://review.bodyrecode.au/doctrine/overview', description: 'Peer review document. 6,400 words, 13 sections' },
   { label: 'Full Doctrine', url: 'https://review.bodyrecode.au/doctrine/full', description: '433 source files, 6 system layers' },
 ]
 
@@ -37,7 +37,7 @@ const OUTREACH_TEMPLATE = `Hi [NAME],
 
 I wanted to reach out directly because I think what I'm building is relevant to your work, and I'd genuinely value your perspective on it.
 
-I've spent the last few years developing a biological interpretation system called Body Recode™. The core premise is that most coaching and clinical interventions fail not because they're wrong in absolute terms, but because they're applied without first reading the hormonal and regulatory state the body is actually in. The system sits upstream of intervention — it reads the body before anything is prescribed.
+I've spent the last few years developing a biological interpretation system called Body Recode™. The core premise is that most coaching and clinical interventions fail not because they're wrong in absolute terms, but because they're applied without first reading the hormonal and regulatory state the body is actually in. The system sits upstream of intervention. It reads the body before anything is prescribed.
 
 I'm now at the stage where I want external professional eyes on it. I'm building a small founding advisor group whose feedback will directly shape how the system develops.
 
