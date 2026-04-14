@@ -9,9 +9,9 @@ const SYSTEM_AUTOMATIONS = [
   {
     id: 'scorecard-followup',
     name: 'Scorecard Follow-up Sequence',
-    description: '4-email sequence triggered when someone completes the Body State Scorecard',
+    description: '5-email sequence triggered when someone completes the Body State Scorecard',
     trigger: 'Scorecard completed',
-    steps: 4,
+    steps: 5,
     canReseed: true,
   },
   {
@@ -108,7 +108,7 @@ export default function SystemAutomationsPanel() {
             <div className="flex items-center gap-3 shrink-0">
               {a.canReseed && (
                 <button
-                  onClick={reseedScorecard}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); reseedScorecard() }}
                   disabled={reseeding}
                   className="bg-stone-800 hover:bg-stone-700 disabled:opacity-50 text-stone-300 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
                 >
