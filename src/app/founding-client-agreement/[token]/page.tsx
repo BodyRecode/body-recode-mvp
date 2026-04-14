@@ -11,7 +11,7 @@ export default async function FoundingClientAgreementPage({
 
   const { data: agreement } = await admin
     .from('founding_client_agreements')
-    .select('id, status, lead_id')
+    .select('id, status, lead_id, client_id')
     .eq('token', token)
     .maybeSingle()
 
@@ -44,14 +44,24 @@ export default async function FoundingClientAgreementPage({
     )
   }
 
-  // Get lead name
-  const { data: lead } = await admin
-    .from('leads')
-    .select('name')
-    .eq('id', agreement.lead_id)
-    .maybeSingle()
+  // Resolve first name — direct entry uses client_id, funnel entry uses lead_id
+  let firstName = 'there'
 
-  const firstName = lead?.name?.split(' ')[0] ?? 'there'
+  if (agreement.client_id) {
+    const { data: client } = await admin
+      .from('clients')
+      .select('name')
+      .eq('id', agreement.client_id)
+      .maybeSingle()
+    firstName = client?.name?.split(' ')[0] ?? 'there'
+  } else if (agreement.lead_id) {
+    const { data: lead } = await admin
+      .from('leads')
+      .select('name')
+      .eq('id', agreement.lead_id)
+      .maybeSingle()
+    firstName = lead?.name?.split(' ')[0] ?? 'there'
+  }
 
   return <AgreementForm token={token} firstName={firstName} />
 }

@@ -16,6 +16,7 @@ import ClientDangerActions from './client-danger-actions'
 import FoundingClientStatusManager from '@/components/founding-client-status-manager'
 import MarkAsFoundingClientButton from '@/components/mark-as-founding-client-button'
 import SendFounderInfoButton from '@/components/send-founder-info-button'
+import SendAgreementButton from '@/components/send-agreement-button'
 import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
 
@@ -92,14 +93,23 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .maybeSingle(),
   ])
 
-  const { data: upcomingClientSessions } = await admin
-    .from('client_sessions')
-    .select('id, scheduled_at, duration_minutes, status, confirmed_at')
-    .eq('client_id', id)
-    .eq('status', 'scheduled')
-    .gte('scheduled_at', new Date().toISOString())
-    .order('scheduled_at', { ascending: true })
-    .limit(6)
+  const [{ data: upcomingClientSessions }, { data: clientAgreement }] = await Promise.all([
+    admin
+      .from('client_sessions')
+      .select('id, scheduled_at, duration_minutes, status, confirmed_at')
+      .eq('client_id', id)
+      .eq('status', 'scheduled')
+      .gte('scheduled_at', new Date().toISOString())
+      .order('scheduled_at', { ascending: true })
+      .limit(6),
+    admin
+      .from('founding_client_agreements')
+      .select('status, created_at')
+      .eq('client_id', id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ])
 
   const { data: clientFixedSlots } = await admin
     .from('client_fixed_slots')
@@ -330,9 +340,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 </div>
               )}
             </div>
-            <div className="mt-4 pt-4 border-t border-stone-800/60 flex items-center justify-between">
-              <FoundingClientStatusManager clientId={id} currentStatus={client.founding_client_status} />
-              <SendFounderInfoButton clientId={id} sentAt={client.founder_info_sent_at ?? null} />
+            <div className="mt-4 pt-4 border-t border-stone-800/60 space-y-3">
+              <div className="flex items-center justify-between">
+                <FoundingClientStatusManager clientId={id} currentStatus={client.founding_client_status} />
+                <SendFounderInfoButton clientId={id} sentAt={client.founder_info_sent_at ?? null} />
+              </div>
+              <div className="flex items-center justify-between">
+                <SendAgreementButton
+                  clientId={id}
+                  agreementStatus={clientAgreement?.status === 'signed' ? 'signed' : clientAgreement ? 'pending' : 'none'}
+                  agreementSentAt={clientAgreement?.created_at ?? null}
+                />
+              </div>
             </div>
           </div>
         )
