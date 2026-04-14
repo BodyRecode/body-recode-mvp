@@ -168,10 +168,8 @@ export default function PeerReviewPage() {
       const existingIds = new Set(existing.map(r => r.id))
       const merged = [
         ...existing.map(r => ({
-          socialDm: '',
           ...r,
-          // Backfill socialDm from defaults if missing
-          ...((!r.socialDm) ? { socialDm: DEFAULT_REVIEWERS.find(d => d.id === r.id)?.socialDm ?? '' } : {}),
+          socialDm: r.socialDm ?? DEFAULT_REVIEWERS.find(d => d.id === r.id)?.socialDm ?? '',
         })),
         ...DEFAULT_REVIEWERS.filter(r => !existingIds.has(r.id)),
       ]
