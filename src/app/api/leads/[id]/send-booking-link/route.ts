@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { logLeadEvent } from '@/lib/log-lead-event'
 
 export async function POST(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
@@ -49,6 +50,14 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
     </td></tr>
   </table>
 </body></html>`,
+  })
+
+  await logLeadEvent({
+    leadId: id,
+    type: 'email_sent',
+    subject: 'Booking link sent',
+    notes: 'Booking link email sent manually from lead profile.',
+    sentAt: new Date(),
   })
 
   return NextResponse.json({ success: true })
