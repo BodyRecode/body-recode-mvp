@@ -125,8 +125,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         .maybeSingle()
     : { data: null }
 
-  const scorecardScore = scorecardScoreFromEvent ?? (scorecardReport?.score != null ? String(scorecardReport.score) : null)
-  const scorecardState = scorecardStateFromEvent ?? scorecardReport?.body_state ?? null
+  const scorecardScore = lead.scorecard_score != null ? String(lead.scorecard_score) : scorecardScoreFromEvent ?? (scorecardReport?.score != null ? String(scorecardReport.score) : null)
+  const scorecardState = lead.scorecard_body_state ?? scorecardStateFromEvent ?? scorecardReport?.body_state ?? null
   const scorecardSections: Record<string, number> | null = scorecardSectionsFromEvent ?? (scorecardReport?.section_scores as Record<string, number> | null) ?? null
 
   const scorecardStyle = scorecardState ? BODY_STATE_STYLES[scorecardState] : null
@@ -183,7 +183,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <EditContact leadId={lead.id} name={lead.name} email={lead.email} phone={lead.phone} />
 
       {/* Scorecard Result */}
-      {scorecardEvent && scorecardScore && scorecardState && (
+      {scorecardScore && scorecardState && (
         <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
           <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Body State Scorecard</h2>
           <div className="flex items-start gap-6">
@@ -206,12 +206,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               </div>
               <p className="text-sm text-stone-400 leading-relaxed">{scorecardStyle?.desc}</p>
               <p className="text-xs text-stone-600 mt-2">
-                Completed {new Date(scorecardEvent.sent_at).toLocaleString('en-AU', {
+                {scorecardEvent ? `Completed ${new Date(scorecardEvent.sent_at).toLocaleString('en-AU', {
                   timeZone: 'Australia/Brisbane',
                   day: 'numeric',
                   month: 'short',
                   year: 'numeric',
-                })}
+                })}` : 'Scorecard completed'}
               </p>
             </div>
           </div>

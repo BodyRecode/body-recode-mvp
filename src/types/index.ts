@@ -37,6 +37,8 @@ export interface Lead {
   converted_at?: string
   founder_application_status?: 'under_review' | 'accepted' | 'declined' | 'waitlisted'
   active?: boolean
+  scorecard_score?: number
+  scorecard_body_state?: string
   created_at: string
   updated_at: string
 }

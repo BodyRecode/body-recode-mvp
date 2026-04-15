@@ -78,6 +78,12 @@ export async function POST(request: NextRequest) {
     await fireTrigger('lead_created', { leadId })
   }
 
+  // Persist scorecard result directly on the lead record
+  await supabase
+    .from('leads')
+    .update({ scorecard_score: score, scorecard_body_state: body_state })
+    .eq('id', leadId)
+
   // Log scorecard result as a lead event
   await logLeadEvent({
     leadId,
