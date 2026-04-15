@@ -10,6 +10,7 @@ import NoShowSequenceButton from '@/components/noshow-sequence-button'
 import CommencementFeeButton from '@/components/commencement-fee-button'
 import DownsellButton from '@/components/downsell-button'
 import FounderApplicationStatus from '@/components/founder-application-status'
+import BookingActionButtons from '@/components/booking-action-buttons'
 import Link from 'next/link'
 
 const CHECK_IN_QUESTIONS: Record<string, string> = {
@@ -394,35 +395,41 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       )}
 
       {/* Zoom companion */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
-        <div>
-          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Zoom</h2>
-          <p className="text-stone-500 text-sm">
-            {lead.zoom_meeting_url ? 'Opens companion screen and Zoom call.' : 'Open the call companion screen for this call.'}
-          </p>
-          {lead.zoom_date && (
-            <p className="text-xs text-stone-600 mt-1">
-              {new Date(lead.zoom_date).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane
+      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Zoom</h2>
+            <p className="text-stone-500 text-sm">
+              {lead.zoom_meeting_url ? 'Opens companion screen and Zoom call.' : 'Open the call companion screen for this call.'}
             </p>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          {lead.zoom_meeting_url && (
+            {lead.zoom_date && (
+              <p className="text-xs text-stone-600 mt-1">
+                {new Date(lead.zoom_date).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane
+              </p>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            {lead.zoom_meeting_url && (
+              <Link
+                href={lead.zoom_meeting_url}
+                target="_blank"
+                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
+              >
+                Join Zoom ↗
+              </Link>
+            )}
             <Link
-              href={lead.zoom_meeting_url}
+              href={`/companion/${lead.id}/zoom`}
               target="_blank"
-              className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
             >
-              Join Zoom ↗
+              Open Call Companion ↗
             </Link>
-          )}
-          <Link
-            href={`/companion/${lead.id}/zoom`}
-            target="_blank"
-            className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
-          >
-            Open Call Companion ↗
-          </Link>
+          </div>
+        </div>
+        <div className="border-t border-stone-800 pt-4">
+          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Booking</p>
+          <BookingActionButtons leadId={lead.id} hasZoomDate={!!lead.zoom_date} />
         </div>
       </div>
 
