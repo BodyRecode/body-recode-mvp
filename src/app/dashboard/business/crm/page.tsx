@@ -5,10 +5,8 @@ import { Users, Plus } from 'lucide-react'
 const stageOrder = [
   'new_check_in',
   'report_sent',
-  'zoom_1_booked',
-  'zoom_1_completed',
-  'zoom_2_booked',
-  'zoom_2_completed',
+  'zoom_booked',
+  'zoom_completed',
   'commencement_fee_paid',
   'active_coaching',
 ]
@@ -17,10 +15,8 @@ const stageLabel: Record<string, string> = {
   new_check_in: 'New Lead',
   report_sent: 'Report Sent',
   cold_no_booking: 'Cold',
-  zoom_1_booked: 'Zoom 1 Booked',
-  zoom_1_completed: 'Zoom 1 Done',
-  zoom_2_booked: 'Zoom 2 Booked',
-  zoom_2_completed: 'Zoom 2 Done',
+  zoom_booked: 'Zoom Booked',
+  zoom_completed: 'Zoom Done',
   commencement_fee_paid: 'Fee Paid',
   active_coaching: 'Active Client',
 }

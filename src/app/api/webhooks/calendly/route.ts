@@ -49,18 +49,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   }
 
-  // Determine which zoom is being booked based on current status
-  const isZoom2 = lead.status === 'zoom_1_completed'
-  const statusUpdate = isZoom2 ? 'zoom_2_booked' : 'zoom_1_booked'
-  const dateField = isZoom2 ? { zoom_2_date: scheduledAt } : { zoom_1_date: scheduledAt }
-
   // Update lead with Zoom URL, date, and status
   await admin
     .from('leads')
     .update({
       zoom_meeting_url: zoomUrl,
-      ...dateField,
-      status: statusUpdate,
+      zoom_date: scheduledAt,
+      status: 'zoom_booked',
       followup_email_ids: null,
     })
     .eq('id', lead.id)
@@ -83,8 +78,8 @@ export async function POST(request: NextRequest) {
     leadId: lead.id,
     type: 'zoom_booked',
     notes: scheduledAt
-      ? `Zoom ${isZoom2 ? '2' : '1'} booked for ${new Date(scheduledAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane`
-      : `Zoom ${isZoom2 ? '2' : '1'} booked`,
+      ? `Zoom booked for ${new Date(scheduledAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane`
+      : 'Zoom booked',
     sentAt: new Date(),
   })
 

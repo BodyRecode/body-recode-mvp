@@ -51,10 +51,8 @@ export default async function AnalyticsPage() {
   const stageOrder = [
     { key: 'new_check_in', label: 'New Lead' },
     { key: 'report_sent', label: 'Report Sent' },
-    { key: 'zoom_1_booked', label: 'Zoom 1 Booked' },
-    { key: 'zoom_1_completed', label: 'Zoom 1 Done' },
-    { key: 'zoom_2_booked', label: 'Zoom 2 Booked' },
-    { key: 'zoom_2_completed', label: 'Zoom 2 Done' },
+    { key: 'zoom_booked', label: 'Zoom Booked' },
+    { key: 'zoom_completed', label: 'Zoom Done' },
     { key: 'commencement_fee_paid', label: 'Fee Paid' },
     { key: 'active_coaching', label: 'Active Client' },
   ]

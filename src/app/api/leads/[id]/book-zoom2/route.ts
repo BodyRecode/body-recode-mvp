@@ -51,7 +51,7 @@ export async function POST(
   if (!lead) return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
 
   const slotStart = new Date(scheduledAt)
-  const sessionTitle = `Body Recode — Zoom 2 — ${lead.name}`
+  const sessionTitle = `Body Recode — Zoom — ${lead.name}`
 
   // Create Zoom meeting
   let meetingLink: string | null = null
@@ -74,7 +74,7 @@ export async function POST(
     .insert({
       coach_id: lead.coach_id,
       lead_id: lead.id,
-      type: 'zoom2',
+      type: 'zoom',
       scheduled_at: slotStart.toISOString(),
       duration_minutes: 30,
       meeting_link: meetingLink,
@@ -91,16 +91,16 @@ export async function POST(
   await admin
     .from('leads')
     .update({
-      status: 'zoom_2_booked',
+      status: 'zoom_booked',
       zoom_meeting_url: meetingLink,
-      zoom_2_date: slotStart.toISOString(),
+      zoom_date: slotStart.toISOString(),
     })
     .eq('id', id)
 
   await logLeadEvent({
     leadId: id,
     type: 'zoom_booked',
-    notes: `Zoom 2 booked for ${slotStart.toLocaleString('en-AU', {
+    notes: `Zoom booked for ${slotStart.toLocaleString('en-AU', {
       timeZone: 'Australia/Brisbane',
       weekday: 'short', day: 'numeric', month: 'short',
       hour: 'numeric', minute: '2-digit', hour12: true,
@@ -134,7 +134,7 @@ export async function POST(
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: lead.email,
-      subject: `Zoom 2 confirmed — ${dateStr}`,
+      subject: `Zoom confirmed — ${dateStr}`,
       attachments: [{ filename: 'booking.ics', content: Buffer.from(ics).toString('base64') }],
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
 <body style="margin:0;padding:0;background-color:#0c0a09;">
@@ -149,7 +149,7 @@ export async function POST(
         <tr>
           <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
             <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your Zoom 2 with Kade is confirmed.</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your Zoom with Kade is confirmed.</p>
             <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
               <tr>
                 <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
@@ -173,7 +173,7 @@ export async function POST(
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
-      subject: `Zoom 2 booked — ${lead.name}`,
+      subject: `Zoom booked — ${lead.name}`,
       attachments: [{ filename: 'booking.ics', content: Buffer.from(ics).toString('base64') }],
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
 <body style="margin:0;padding:0;background-color:#0c0a09;">
@@ -187,7 +187,7 @@ export async function POST(
         </tr>
         <tr>
           <td bgcolor="#111110" style="background-color:#111110;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#ffffff;">Zoom 2 booked — ${lead.name}</p>
+            <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#ffffff;">Zoom booked — ${lead.name}</p>
             <p style="margin:0 0 20px;font-size:14px;color:#a8a29e;">${lead.email}</p>
             <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;width:100%;">
               <tr>

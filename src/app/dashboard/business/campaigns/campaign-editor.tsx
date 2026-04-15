@@ -7,10 +7,8 @@ import { Mail, MessageSquare, Megaphone, ChevronDown, Send, Clock, Save, Trash2,
 const PIPELINE_STAGES = [
   { value: 'new', label: 'New Lead' },
   { value: 'report_sent', label: 'Report Sent' },
-  { value: 'zoom_1_booked', label: 'Zoom 1 Booked' },
-  { value: 'zoom_1_completed', label: 'Zoom 1 Completed' },
-  { value: 'zoom_2_booked', label: 'Zoom 2 Booked' },
-  { value: 'zoom_2_completed', label: 'Zoom 2 Completed' },
+  { value: 'zoom_booked', label: 'Zoom Booked' },
+  { value: 'zoom_completed', label: 'Zoom Completed' },
   { value: 'commencement_fee_paid', label: 'Commencement Fee Paid' },
   { value: 'active_client', label: 'Active Client' },
 ]

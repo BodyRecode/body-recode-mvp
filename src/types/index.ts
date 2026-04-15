@@ -12,11 +12,9 @@ export type LeadStatus =
   | 'new_check_in'
   | 'report_sent'
   | 'cold_no_booking'
-  | 'zoom_1_booked'
-  | 'zoom_1_completed'
+  | 'zoom_booked'
+  | 'zoom_completed'
   | 'closed_no_show'
-  | 'zoom_2_booked'
-  | 'zoom_2_completed'
   | 'closed_declined'
   | 'commencement_fee_paid'
   | 'active_deliberate_start'
@@ -32,10 +30,8 @@ export interface Lead {
   source_detail?: string
   status: LeadStatus
   check_in_answers?: Record<string, number>
-  zoom_1_date?: string
-  zoom_2_date?: string
+  zoom_date?: string
   zoom_meeting_url?: string
-  orientation_sent_at?: string
   notes?: string
   converted_to_client_id?: string
   converted_at?: string

@@ -6,7 +6,6 @@ import LeadDangerActions from './lead-danger-actions'
 import EditContact from './edit-contact'
 import ConvertButton from './convert-button'
 import CancelSequenceButton from './cancel-sequence-button'
-import SendOrientationButton from '@/components/send-orientation-button'
 import NoShowSequenceButton from '@/components/noshow-sequence-button'
 import CommencementFeeButton from '@/components/commencement-fee-button'
 import DownsellButton from '@/components/downsell-button'
@@ -44,9 +43,8 @@ const EVENT_LABELS: Record<string, string> = {
   report_scheduled: 'Performance report scheduled',
   followup_scheduled: 'Follow-up email scheduled',
   followup_cancelled: 'Follow-up sequence cancelled',
-  zoom_1_declined: 'Declined Zoom 2',
+  zoom_declined: 'Declined after Zoom',
   reengagement_sent: 'Re-engagement email sent',
-  orientation_sent: 'Orientation guide sent',
   zoom_booked: 'Zoom call booked',
   noshow_sequence_scheduled: 'No-show re-engagement scheduled',
   scorecard_completed: 'Body State Scorecard completed',
@@ -81,11 +79,10 @@ const EVENT_COLOURS: Record<string, string> = {
   report_scheduled: 'bg-teal-500',
   followup_scheduled: 'bg-stone-500',
   followup_cancelled: 'bg-red-500/60',
-  zoom_1_declined: 'bg-red-400/60',
+  zoom_declined: 'bg-red-400/60',
   downsell_purchased: 'bg-teal-500',
   downsell_reentry: 'bg-teal-400',
   reengagement_sent: 'bg-teal-500',
-  orientation_sent: 'bg-teal-500',
   zoom_booked: 'bg-green-500',
   noshow_sequence_scheduled: 'bg-stone-500',
   scorecard_completed: 'bg-teal-400',
@@ -223,13 +220,18 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         </div>
       )}
 
-      {/* Zoom 1 companion */}
+      {/* Zoom companion */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
         <div>
-          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Zoom 1</h2>
+          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Zoom</h2>
           <p className="text-stone-500 text-sm">
-            {lead.zoom_meeting_url ? 'Opens companion screen and Zoom call.' : 'Open the consultation companion screen for this call.'}
+            {lead.zoom_meeting_url ? 'Opens companion screen and Zoom call.' : 'Open the call companion screen for this call.'}
           </p>
+          {lead.zoom_date && (
+            <p className="text-xs text-stone-600 mt-1">
+              {new Date(lead.zoom_date).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane
+            </p>
+          )}
         </div>
         <div className="flex items-center gap-2">
           {lead.zoom_meeting_url && (
@@ -242,56 +244,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </Link>
           )}
           <Link
-            href={`/companion/${lead.id}/zoom-1`}
-            target="_blank"
-            className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
-          >
-            Open Call Companion ↗
-          </Link>
-        </div>
-      </div>
-
-      {/* Orientation */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
-        <div>
-          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Orientation</h2>
-          <p className="text-stone-500 text-sm">
-            {lead.orientation_sent_at
-              ? `Sent ${new Date(lead.orientation_sent_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}`
-              : 'Send the orientation guide for the client to read before Zoom 2.'}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link
-            href="https://app.bodyrecode.au/orientation"
-            target="_blank"
-            className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
-          >
-            View Guide ↗
-          </Link>
-          <SendOrientationButton leadId={lead.id} alreadySent={!!lead.orientation_sent_at} />
-        </div>
-      </div>
-
-      {/* Zoom 2 companion */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
-        <div>
-          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Zoom 2</h2>
-          <p className="text-stone-500 text-sm">Orientation review, hot spot framing, and pricing conversation.</p>
-          <p className="text-xs text-stone-600 mt-1">Send the lead <strong className="text-stone-500">bodyrecode.au/book</strong> to rebook — they&apos;ll be detected as a returning lead and booked as Zoom 2.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          {lead.zoom_meeting_url && (
-            <Link
-              href={lead.zoom_meeting_url}
-              target="_blank"
-              className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
-            >
-              Join Zoom ↗
-            </Link>
-          )}
-          <Link
-            href={`/companion/${lead.id}/zoom-2`}
+            href={`/companion/${lead.id}/zoom`}
             target="_blank"
             className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
           >

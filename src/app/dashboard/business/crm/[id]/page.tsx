@@ -10,10 +10,8 @@ import ContactEditor from './contact-editor'
 const stageOrder = [
   'new',
   'report_sent',
-  'zoom_1_booked',
-  'zoom_1_completed',
-  'zoom_2_booked',
-  'zoom_2_completed',
+  'zoom_booked',
+  'zoom_completed',
   'commencement_fee_paid',
   'active_client',
 ]
@@ -21,10 +19,8 @@ const stageOrder = [
 const stageLabel: Record<string, string> = {
   new: 'New Lead',
   report_sent: 'Report Sent',
-  zoom_1_booked: 'Zoom 1 Booked',
-  zoom_1_completed: 'Zoom 1 Completed',
-  zoom_2_booked: 'Zoom 2 Booked',
-  zoom_2_completed: 'Zoom 2 Completed',
+  zoom_booked: 'Zoom Booked',
+  zoom_completed: 'Zoom Completed',
   commencement_fee_paid: 'Commencement Fee Paid',
   active_client: 'Active Client',
 }

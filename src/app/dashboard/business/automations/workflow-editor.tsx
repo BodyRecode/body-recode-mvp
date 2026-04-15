@@ -44,7 +44,7 @@ export interface WorkflowData {
 
 const TRIGGERS = [
   { value: 'lead_created', label: 'Lead Created', description: 'Fires when a new lead enters the CRM' },
-  { value: 'booking_created', label: 'Booking Created', description: 'Fires when a Zoom 1 or Zoom 2 is booked' },
+  { value: 'booking_created', label: 'Booking Created', description: 'Fires when a Zoom is booked' },
   { value: 'payment_completed', label: 'Payment Completed', description: 'Fires when a payment is marked paid' },
   { value: 'pipeline_stage_changed', label: 'Pipeline Stage Changed', description: 'Fires when a lead moves to a new stage' },
   { value: 'tag_added', label: 'Tag Added', description: 'Fires when a tag is applied to a contact' },
@@ -54,10 +54,8 @@ const TRIGGERS = [
 const PIPELINE_STAGES = [
   { value: 'new', label: 'New Lead' },
   { value: 'report_sent', label: 'Report Sent' },
-  { value: 'zoom_1_booked', label: 'Zoom 1 Booked' },
-  { value: 'zoom_1_completed', label: 'Zoom 1 Completed' },
-  { value: 'zoom_2_booked', label: 'Zoom 2 Booked' },
-  { value: 'zoom_2_completed', label: 'Zoom 2 Completed' },
+  { value: 'zoom_booked', label: 'Zoom Booked' },
+  { value: 'zoom_completed', label: 'Zoom Completed' },
   { value: 'commencement_fee_paid', label: 'Commencement Fee Paid' },
   { value: 'active_client', label: 'Active Client' },
 ]

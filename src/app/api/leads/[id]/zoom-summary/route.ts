@@ -16,9 +16,9 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   const systemPrompt = `You are an internal documentation assistant for Body Recode™, a biology-first performance coaching system.
 
-Your role is to analyse Zoom 1 consultation transcripts and produce structured internal summaries for the coach (Kade Dunstone). These summaries are coach-facing only — never shared with the member.
+Your role is to analyse Zoom consultation transcripts and produce structured internal summaries for the coach (Kade Dunstone). These summaries are coach-facing only — never shared with the member.
 
-Zoom 1 is a 25–30 minute pattern clarification call. It is NOT a sales call, diagnosis, or coaching intervention. The goal is: the member moves from "I'm being evaluated" → "This person understands me" → "I want to understand this properly."
+The Zoom is a 45–60 minute call split into two halves: the first half covers pattern clarification (not a sales call, diagnosis, or coaching intervention), and the second half covers pricing and decision. The goal is: the member moves from "I'm being evaluated" → "This person understands me" → "I want to proceed."
 
 Your summary must be observational, precise, and clinically neutral. Do not add commentary or suggestions beyond what the transcript supports. Do not invent details not present in the transcript.`
 
@@ -29,7 +29,7 @@ SLS Level: ${slsLevel} | RPS Level: ${rpsLevel} | RILS Level: ${rilsLevel}
 TRANSCRIPT:
 ${transcript}
 
-Generate a structured Zoom 1 consultation summary with the following sections. Be specific and quote from the transcript where useful.
+Generate a structured Zoom consultation summary with the following sections. Be specific and quote from the transcript where useful.
 
 ## Opening Frame
 How did the member respond when the call opened? Tone, energy, any notable first impressions.
@@ -58,10 +58,10 @@ Brief explanation of your assessment.
 Any practical or psychological barriers mentioned (cost, time, past experiences, scepticism, partner/family considerations).
 
 ## Next Step Outcome
-What was agreed or discussed at the close? (Zoom 2 booked / follow-up scheduled / left open / not proceeding)
+What was agreed or discussed at the close? (Commencement fee paid / follow-up scheduled / left open / not proceeding)
 
 ## Follow-Up Actions
-Any specific actions required before or after Zoom 2. Include anything you said you'd send or look into.
+Any specific actions required after the call. Include anything you said you'd send or look into.
 
 ## Governance Note
 Did the consultation stay within Zoom 1 doctrine bounds? (No prescriptions, no programming, no medical interpretation, no outcome promises.) Note any moments that approached the boundary.`
@@ -77,7 +77,7 @@ Did the consultation stay within Zoom 1 doctrine bounds? (No prescriptions, no p
 
   await supabase
     .from('leads')
-    .update({ zoom_1_transcript: transcript, zoom_1_summary: summary })
+    .update({ zoom_transcript: transcript, zoom_summary: summary })
     .eq('id', id)
 
   return NextResponse.json({ summary })

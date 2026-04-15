@@ -5,14 +5,16 @@ import { Resend } from 'resend'
 import { fireTrigger } from '@/lib/automation-engine'
 
 const typeLabel: Record<string, string> = {
-  zoom1: 'Zoom 1',
-  zoom2: 'Zoom 2',
+  zoom: 'Zoom',
+  zoom1: 'Zoom',
+  zoom2: 'Zoom',
   other: 'Session',
 }
 
 const pipelineStageOnBooking: Record<string, string> = {
-  zoom1: 'zoom_1_booked',
-  zoom2: 'zoom_2_booked',
+  zoom: 'zoom_booked',
+  zoom1: 'zoom_booked',
+  zoom2: 'zoom_booked',
 }
 
 function generateIcs({

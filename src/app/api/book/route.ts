@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
         email: email.trim().toLowerCase(),
         phone: phone?.trim() || null,
         source: 'direct',
-        status: 'zoom_1_booked',
+        status: 'zoom_booked',
       })
       .select()
       .single()
@@ -109,11 +109,7 @@ export async function POST(request: NextRequest) {
     lead = newLead
   }
 
-  // Determine zoom type based on lead status
-  const isZoom2 = lead.status === 'zoom_1_completed'
-  const bookingType = isZoom2 ? 'zoom2' : 'zoom1'
-  const newStatus = isZoom2 ? 'zoom_2_booked' : 'zoom_1_booked'
-  const sessionTitle = `Body Recode — ${isZoom2 ? 'Strategy Call' : 'Scorecard Review'} — ${lead.name}`
+  const sessionTitle = `Body Recode — Scorecard Review — ${lead.name}`
 
   // Create Zoom meeting
   let meetingLink: string | null = null
@@ -136,7 +132,7 @@ export async function POST(request: NextRequest) {
     .insert({
       coach_id: lead.coach_id,
       lead_id: lead.id,
-      type: bookingType,
+      type: 'zoom',
       scheduled_at: slotStart.toISOString(),
       duration_minutes: 30,
       meeting_link: meetingLink,
@@ -153,10 +149,9 @@ export async function POST(request: NextRequest) {
   await admin
     .from('leads')
     .update({
-      status: newStatus,
+      status: 'zoom_booked',
       zoom_meeting_url: meetingLink,
-      zoom_1_date: !isZoom2 ? slotStart.toISOString() : undefined,
-      zoom_2_date: isZoom2 ? slotStart.toISOString() : undefined,
+      zoom_date: slotStart.toISOString(),
       followup_email_ids: null,
     })
     .eq('id', lead.id)
@@ -165,7 +160,7 @@ export async function POST(request: NextRequest) {
   await logLeadEvent({
     leadId: lead.id,
     type: 'zoom_booked',
-    notes: `Zoom ${isZoom2 ? '2' : '1'} booked for ${slotStart.toLocaleString('en-AU', {
+    notes: `Zoom booked for ${slotStart.toLocaleString('en-AU', {
       timeZone: 'Australia/Brisbane',
       weekday: 'short', day: 'numeric', month: 'short',
       hour: 'numeric', minute: '2-digit', hour12: true,

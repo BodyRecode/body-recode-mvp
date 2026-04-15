@@ -8,10 +8,8 @@ const SECTIONS = [
   { id: 'operator-flow',         title: 'Operator Flow',         colour: 'violet' as const, category: 'flows' as Category },
   { id: 'operator-flow-founder', title: 'Founder Operator Flow', colour: 'violet' as const, category: 'flows' as Category },
   { id: 'lead-pipeline',    title: '1. Lead Pipeline',       colour: 'teal' as const, category: 'coaching' as Category },
-  { id: 'zoom-1',           title: '2. Zoom 1 Companion',    colour: 'teal' as const, category: 'coaching' as Category },
-  { id: 'orientation',      title: '3. Orientation',         colour: 'teal' as const, category: 'coaching' as Category },
-  { id: 'zoom-2',           title: '4. Zoom 2 Companion',    colour: 'teal' as const, category: 'coaching' as Category },
-  { id: 'coaching-entry',   title: '5. Coaching Entry',      colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'zoom-1',           title: '2. Zoom Companion',      colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'coaching-entry',   title: '3. Coaching Entry',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'post-conversion',  title: '6. Post-Conversion',     colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'deliberate-start', title: '7. Deliberate Start',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'client-portal',    title: '8. Client Portal',       colour: 'teal' as const, category: 'coaching' as Category },
@@ -165,31 +163,21 @@ export default function HelpPage() {
               </div>
 
               <div>
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 2 — Zoom 1</p>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 2 — Zoom</p>
                 <div className="space-y-2">
-                  <ChecklistItem text="Lead books Zoom 1 via bodyrecode.au/book — or book manually from Business → Bookings" />
-                  <ChecklistItem text="Open the Call Companion from the lead detail page before the call" />
-                  <ChecklistItem text="Run the call through all 5 stages" />
-                  <ChecklistItem text="Book Zoom 2 before ending the call — use the Book Zoom 2 field in the companion notes panel" />
-                  <ChecklistItem text="Mark Zoom 1 Complete in the companion notes panel" />
-                  <ChecklistItem text="Send the Orientation Guide from the lead detail page immediately after the call" />
-                </div>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 3 — Zoom 2</p>
-                <div className="space-y-2">
-                  <ChecklistItem text="Confirm the lead has read the Orientation Guide before the call" />
-                  <ChecklistItem text="Open the Zoom 2 Companion from the lead detail page before the call" />
-                  <ChecklistItem text="Run the call through all 5 stages" />
-                  <ChecklistItem text="Select the decision path at Stage 5 (A — Declined, B — Needs Time, C — Proceeding)" />
+                  <ChecklistItem text="Lead books Zoom via bodyrecode.au/book — or book manually from Business → Bookings" />
+                  <ChecklistItem text="Open the Zoom Companion from the lead detail page before the call" />
+                  <ChecklistItem text="First half: run through Opening Frame, Scorecard Reflection, Context Exploration, Pattern Interpretation (stages 1-4)" />
+                  <ChecklistItem text="Second half: run through Hot Spot Framing, Emotional Acknowledgement, Pricing, and Decision (stages 5-8)" />
+                  <ChecklistItem text="Select the decision path at Stage 8 (A — Declined, B — Needs Time, C — Proceeding)" />
                   <ChecklistItem text="Path C only: select the pricing pathway (Full Rate, Founding Client, or Online)" />
                   <ChecklistItem text="Founding Client only: click Send Case Study Agreement before sending the commencement fee link" />
+                  <ChecklistItem text="Mark Call Complete in the companion notes panel" />
                 </div>
               </div>
 
               <div>
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 4 — Coaching Entry</p>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 3 — Coaching Entry</p>
                 <div className="space-y-2">
                   <ChecklistItem text="From the lead detail page, click Send to Client under Coaching Entry — this emails the $240 commencement fee link directly" />
                   <ChecklistItem text="Wait for the payment notification email to confirm payment received" />
@@ -256,7 +244,7 @@ export default function HelpPage() {
                   <ChecklistItem text="Open the client profile" />
                   <ChecklistItem text="In the Founding Client Program card, click Mark as Founding Client — this sets Manual Override as the entry type" />
                   <ChecklistItem text="Confirm when prompted — the card will update immediately to show the program as Active" />
-                  <ChecklistItem text="Click Send Info Package — this emails the client a full breakdown of what the Founder Client Program is, what participation involves, the fee structure, and the two consent tiers. Replaces the explanation that normally happens in Zoom 2." />
+                  <ChecklistItem text="Click Send Info Package — this emails the client a full breakdown of what the Founder Client Program is, what participation involves, the fee structure, and the two consent tiers. Replaces the explanation that normally happens in the second half of the Zoom call." />
                   <ChecklistItem text="Click Send Case Study Agreement — the client receives a signing link via email. They select their consent tier and sign online. Once signed, their consent tier appears on the profile and the button shows Agreement Signed." />
                   <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage" />
                   <ChecklistItem text="Set the Coaching Package to the correct Founding Client tier" />
@@ -290,11 +278,11 @@ export default function HelpPage() {
               </div>
 
               <div>
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track B — Zoom 2 Conversion (Price Objection)</p>
-                <p className="text-sm text-stone-400 mb-3">Lead is already in the pipeline. They complete Zoom 1, receive the Orientation Guide, attend Zoom 2, and object to the full rate at Stage 5.</p>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track B — Zoom Conversion (Price Objection)</p>
+                <p className="text-sm text-stone-400 mb-3">Lead is already in the pipeline. They book the Zoom call, and object to the full rate at Stage 7.</p>
                 <div className="space-y-2">
-                  <ChecklistItem text="Run Zoom 2 as normal through all 5 stages" />
-                  <ChecklistItem text="At Stage 5, lead objects to price — use the Objection-Triggered script in the Zoom 2 companion" />
+                  <ChecklistItem text="Run the Zoom through all 8 stages" />
+                  <ChecklistItem text="At Stage 7, lead objects to price — use the Objection-Triggered script in the Zoom companion" />
                   <ChecklistItem text="Step 1: reflect the objection back. Step 2: reframe the investment. Step 3: introduce the Founding Client program if they still need it." />
                   <ChecklistItem text="If they accept: select Path C and choose Founding Client (Objection-Triggered) in the decision panel" />
                   <ChecklistItem text="Click Send Case Study Agreement — agreement must be signed before the commencement fee is sent" />
@@ -311,11 +299,11 @@ export default function HelpPage() {
               </div>
 
               <div>
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track C — Zoom 2 Conversion (Manual Override)</p>
-                <p className="text-sm text-stone-400 mb-3">Lead is a strong fit and you proactively offer the program before any price objection. Use the qualification checklist in the Zoom 2 companion before this track — all four criteria must be met.</p>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track C — Zoom Conversion (Manual Override)</p>
+                <p className="text-sm text-stone-400 mb-3">Lead is a strong fit and you proactively offer the program before any price objection. Use the qualification checklist in the Zoom companion before this track — all four criteria must be met.</p>
                 <div className="space-y-2">
-                  <ChecklistItem text="Confirm all four qualification criteria are met before making the offer (check the Manual Override tab in the Zoom 2 companion)" />
-                  <ChecklistItem text="Run Zoom 2 as normal — introduce the offer at Stage 5 before presenting full-rate pricing" />
+                  <ChecklistItem text="Confirm all four qualification criteria are met before making the offer (check the Manual Override tab in the Zoom companion)" />
+                  <ChecklistItem text="Run the Zoom as normal — introduce the offer at Stage 7 before presenting full-rate pricing" />
                   <ChecklistItem text="If they accept: select Path C and choose Founding Client (Manual Override) in the decision panel" />
                   <ChecklistItem text="Click Send Case Study Agreement — must be signed before the commencement fee is sent" />
                   <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage" />
@@ -335,12 +323,10 @@ export default function HelpPage() {
             <StatusList items={[
               { label: 'New Check-In', desc: 'Quiz submitted, report not yet sent.' },
               { label: 'Report Sent', desc: 'Performance report scheduled and sent to the lead.' },
-              { label: 'Cold - No Booking', desc: 'Report sent but no Zoom 1 booked after follow-ups.' },
-              { label: 'Zoom 1 Booked', desc: 'First consultation booked.' },
-              { label: 'Zoom 1 Completed', desc: 'First consultation done.' },
+              { label: 'Cold - No Booking', desc: 'Report sent but no Zoom booked after follow-ups.' },
+              { label: 'Zoom Booked', desc: 'Consultation booked.' },
+              { label: 'Zoom Completed', desc: 'Consultation done — decision made.' },
               { label: 'Closed - No Show', desc: 'Lead did not attend. Re-engagement sequence available.' },
-              { label: 'Zoom 2 Booked', desc: 'Orientation review and pricing call booked.' },
-              { label: 'Zoom 2 Completed', desc: 'Pricing conversation completed.' },
               { label: 'Closed - Declined', desc: 'Lead decided not to proceed.' },
               { label: 'Commencement Fee Paid', desc: 'Payment received. Client profile created automatically.' },
               { label: 'Active - Deliberate Start', desc: 'In the 3-7 day window before coaching begins.' },
@@ -382,111 +368,63 @@ export default function HelpPage() {
               <li><strong>Copy Link</strong> — copies the Stripe checkout URL to clipboard without sending an email.</li>
               <li>If the lead has already purchased, a <strong>Program purchased</strong> badge shows instead of the buttons.</li>
             </ul>
-            <p className="mt-2">The offer is automatically sent when you click <strong>Send declined follow-up</strong> on the Zoom 1 companion — no manual trigger needed for the standard flow.</p>
+            <p className="mt-2">The offer is automatically sent when you click <strong>Send declined follow-up</strong> on the Zoom companion — no manual trigger needed for the standard flow.</p>
             <p className="mt-2">After purchase, the lead receives a unique program URL at app.bodyrecode.au/program/[token]. The program is tailored to their body state (Depleted / Transitioning / Ready) and includes a full 12-week training and nutrition protocol. To preview what a client sees, go to <strong>Dashboard → Preview → Program</strong>.</p>
 
             <Training title="Why statuses matter">
-              <p>The pipeline exists to tell you exactly where every lead is at a glance — and where the system is getting stuck. If you have 12 leads sitting at Report Sent with no Zoom 1 booked, that is a data point, not a coincidence. It means the report landed but didn&apos;t create enough pull to book the call.</p>
+              <p>The pipeline exists to tell you exactly where every lead is at a glance — and where the system is getting stuck. If you have 12 leads sitting at Report Sent with no Zoom booked, that is a data point, not a coincidence. It means the report landed but didn&apos;t create enough pull to book the call.</p>
               <p className="mt-2">Cold - No Booking is not a failure status. It means the timing wasn&apos;t right when the sequence ran. These leads still have their data on file — they&apos;re candidates for the re-engagement blast when you&apos;re ready to run it.</p>
               <p className="mt-2">Closed - Declined and Closed - No Show are both recoverable. They go into the re-engagement pool. Don&apos;t treat them as dead.</p>
             </Training>
           </Section>
 
           {/* Section 2 */}
-          <Section id="zoom-1" title="2. Zoom 1 - Call Companion" colour="teal">
-            <p>Open the <strong>Call Companion</strong> from the lead detail page before or during Zoom 1. It opens in a new tab so you can run it alongside the Zoom call.</p>
-            <p>The companion has 5 stages:</p>
+          <Section id="zoom-1" title="2. Zoom - Call Companion" colour="teal">
+            <p>Open the <strong>Call Companion</strong> from the lead detail page before the Zoom call. It opens in a new tab so you can run it alongside the call.</p>
+            <p>The companion has 8 stages split across two halves:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
-              <li><strong>Opening</strong> — Set context, explain the purpose of the call.</li>
-              <li><strong>Scorecard Review</strong> — Walk through the lead&apos;s scorecard results and body state.</li>
-              <li><strong>Signal Exploration</strong> — Explore SLS, RPS, and RILS signal areas using structured prompts.</li>
+              <li><strong>Opening Frame</strong> — Set context, explain the purpose of the call.</li>
+              <li><strong>Scorecard Reflection</strong> — Walk through the lead&apos;s scorecard results and body state.</li>
+              <li><strong>Context Exploration</strong> — Explore SLS, RPS, and RILS signal areas using structured prompts.</li>
               <li><strong>Pattern Interpretation</strong> — Name the dominant pattern using signal-specific language.</li>
-              <li><strong>Close</strong> — Confirm the report, next steps, and Zoom 2 booking.</li>
+              <li><strong>Hot Spot Framing</strong> — Name the specific point where effort and response stopped aligning.</li>
+              <li><strong>Emotional Acknowledgement</strong> — Normalise confusion and confidence erosion.</li>
+              <li><strong>Pricing</strong> — Present the coaching structure and packages as information, not persuasion.</li>
+              <li><strong>Decision</strong> — Identify the path and close cleanly.</li>
             </ol>
-            <p>The notes panel on the right contains three persistent actions available at any stage:</p>
+            <p>The first four stages are the consultation half. The last four are the pricing and decision half. The companion nav shows &quot;First Half&quot; and &quot;Second Half&quot; labels to keep you oriented.</p>
+            <p>The notes panel on the right contains two persistent actions available at any stage:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Book Zoom 2</strong> — enter the date and confirm directly from the companion. Updates the lead record and status to Zoom 2 Booked without leaving the call.</li>
-              <li><strong>Mark Zoom 1 Complete</strong> — updates lead status. Available at any stage, not just Stage 5.</li>
-              <li><strong>Readiness Check</strong> — A (ready), B (hesitant), C (not right fit). Use it to anchor your read before Stage 5.</li>
+              <li><strong>Mark Call Complete</strong> — updates lead status to Zoom Completed. Available at any stage.</li>
+              <li><strong>Readiness Check</strong> — A (ready), B (hesitant), C (not right fit). Use it to anchor your read before Stage 8.</li>
             </ul>
             <p>After the call, switch to <strong>Post-Call</strong> view, paste the Zoom transcript, and generate an AI summary. Click <strong>Save to lead notes</strong> to persist it to the lead record — it won&apos;t survive a page refresh otherwise.</p>
             <p>At the bottom of the companion, <strong>Send declined follow-up</strong> fires two things simultaneously: the 3-email re-engagement sequence and the $97 self-guided program offer email. Both are automatic — no further action required.</p>
             <Note>Scripts and prompts are personalised to each lead&apos;s signal levels (SLS, RPS, RILS). Stage 3 prompts are grouped by category (Training, Recovery, Consistency, Pressure) with sub-questions indented below each.</Note>
-            <Training title="What Zoom 1 is actually for">
-              <p><strong>Zoom 1 is not a sales call.</strong> There is nothing to sell yet. The only job in this call is to make the lead feel correctly understood and to build the interpretation that the report is based on something real, not generic.</p>
-              <p className="mt-2">The reason this matters for Zoom 2 is simple: if a lead doesn&apos;t trust the report, price becomes the only thing they can evaluate. If they do trust the report, they are evaluating whether this is the right intervention — which is a completely different conversation.</p>
-              <p className="mt-2">The signal exploration in Stage 3 gives you the language for Stage 3 of Zoom 2. The hot spot you name in Zoom 2 should come directly from what surfaced in Zoom 1. Keep your notes panel updated — those notes are what you&apos;ll reference two calls later.</p>
-              <p className="mt-2">The Close in Stage 5 has one goal: get Zoom 2 booked before the call ends. The orientation guide you send after Zoom 1 is not a follow-up — it&apos;s a warm handoff that does cognitive work for you before Zoom 2 even happens.</p>
+            <p>The companion tabs change based on which half you are in. In the first half: Prompts, Signals, Language. In the second half: Prompts, Objection-Triggered, Manual Override, Online, Signals.</p>
+            <p className="mt-1">At Stage 8, three decision path buttons appear in the notes panel:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Path A — Declined</strong> — Updates lead status to Closed Declined.</li>
+              <li><strong>Path B — Needs Time</strong> — Updates lead status to Zoom Completed.</li>
+              <li><strong>Path C — Proceeding</strong> — A pathway selector appears. Choose from Full Rate, Founding Client (Objection Triggered), Founding Client (Manual Override), or Online. For Founding Client pathways a <strong>Send Case Study Agreement</strong> button appears — click it to email the signing link to the lead. The commencement fee is sent only after the agreement is signed.</li>
+            </ul>
+            <Training title="What the Zoom call is for">
+              <p><strong>The first half is not a sales call.</strong> There is nothing to sell yet. The only job in the first half is to make the lead feel correctly understood and to build the interpretation that their scorecard and report are based on something real, not generic.</p>
+              <p className="mt-2">If a lead doesn&apos;t trust the scorecard, price becomes the only thing they can evaluate. If they do trust it, they are evaluating whether this is the right intervention — which is a completely different conversation.</p>
+              <p className="mt-2">The signal exploration in Stage 3 gives you the language for the Hot Spot Framing in Stage 5. The hot spot you name should come directly from what surfaced in the context exploration. Keep your notes panel updated — those notes are what you&apos;ll reference when you pivot to pricing.</p>
             </Training>
+
+            <Training title="The pricing half">
+              <p><strong>Stage 5 — Hot Spot Framing.</strong> This is the bridge between &quot;I understand my situation&quot; and &quot;I understand why I need help with it.&quot; Name the specific thing that surfaced in the first half. This is not a generic pitch — it should sound like you were listening. If you named it right, they&apos;ll feel seen. That feeling is what makes pricing land differently. Do not move to pricing until this is done.</p>
+              <p className="mt-2"><strong>Stage 7 — Pricing.</strong> Lead with in-person 2x ($299/week). Present it as information, not a pitch. After you say the number: pause. Let it land. Do not fill the silence. The silence is not awkward — it is the lead processing.</p>
+              <p className="mt-2"><strong>Stage 8 — Decision.</strong> Three possible paths. Know which one you&apos;re in before you respond. Path A closes cleanly — don&apos;t re-pitch. Path B diagnoses what&apos;s sitting with them and sets a specific follow-up date. Path C selects the pathway and sends the agreement if Founding Client.</p>
+            </Training>
+
+            <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead objects to the price. The 3x in-person package ($409/week) is not presented on the Zoom — it is coach-assessed and offered during weekly check-ins once coaching is underway. Founding client rates: 2x $149.50/week, 3x $204.50/week, online $74.50/week.</Note>
           </Section>
 
           {/* Section 3 */}
-          <Section id="orientation" title="3. Orientation" colour="teal">
-            <p>After Zoom 1, send the <strong>Orientation Guide</strong> from the lead detail page. This emails the lead a branded link to the orientation page at <strong>app.bodyrecode.au/orientation</strong> — no PDF attachment.</p>
-            <p>The guide covers what Body Recode Performance Coaching is, what to expect, and how to prepare for Zoom 2. The lead should read it before the second call.</p>
-            <p>Once sent, the section shows the date it was sent. Click <strong>View Guide</strong> to preview the page as the client sees it.</p>
-            <Training title="Why this step exists between the two calls">
-              <p>Most coaches go straight from a discovery call to a pricing call. The gap between Zoom 1 and Zoom 2 is intentional — it is not dead time.</p>
-              <p className="mt-2">The orientation guide does cognitive work that you cannot do live. It explains the framework, sets expectations, and begins the mental shift from &quot;I&apos;m thinking about this&quot; to &quot;I understand what I&apos;m walking into.&quot; A lead who arrives at Zoom 2 having read the guide is in a completely different state than one who hasn&apos;t.</p>
-              <p className="mt-2">If a lead comes into Zoom 2 not understanding what the program actually is, the pricing conversation becomes a negotiation about cost rather than a decision about fit. The guide removes that friction before it can happen.</p>
-              <p className="mt-2">Send it the same day as Zoom 1 while the conversation is fresh in their mind.</p>
-            </Training>
-          </Section>
-
-          {/* Section 4 */}
-          <Section id="zoom-2" title="4. Zoom 2 - Call Companion" colour="teal">
-            <p>Open the <strong>Call Companion</strong> from the lead detail page before Zoom 2. It opens in a new tab at <strong>/companion/[id]/zoom-2</strong> — outside the dashboard so it runs full screen during the call.</p>
-            <p>The companion has 5 stages:</p>
-            <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
-              <li><strong>Report Review</strong> — Ensure the lead has read and understood the report correctly.</li>
-              <li><strong>Emotional Acknowledgement</strong> — Normalise confusion and confidence erosion.</li>
-              <li><strong>Hot Spot Framing</strong> — Name the specific point from Zoom 1 where effort and response stopped aligning.</li>
-              <li><strong>Pricing</strong> — Present the coaching structure and packages as information, not persuasion.</li>
-              <li><strong>Decision</strong> — Identify the path and close cleanly.</li>
-            </ol>
-
-            <Training title="The sales logic behind each stage">
-              <p><strong>Stage 1 — Report Review.</strong> Don&apos;t assume they read it, or that they understood it correctly. A lead who misread the report will evaluate everything that follows against the wrong mental model. You&apos;re checking comprehension, not quizzing them. If they interpreted something incorrectly, correct it now — before pricing. The transition out of Stage 1 is: &quot;Good — that&apos;s exactly what I needed to know. Let&apos;s keep going.&quot;</p>
-              <p className="mt-2"><strong>Stage 2 — Emotional Acknowledgement.</strong> Before pricing lands, the lead needs to feel heard. Confusion and confidence erosion are common in people who have been trying and not getting results. If you skip this stage, the lead feels like you ran through a report and jumped straight to selling. This stage doesn&apos;t need to be long — but it must be done. The transition is: &quot;Good — I want to come back to something specific you mentioned earlier.&quot;</p>
-              <p className="mt-2"><strong>Stage 3 — Hot Spot Framing.</strong> This is the bridge between &quot;I understand my situation&quot; and &quot;I understand why I need help with it.&quot; Name the specific thing from Zoom 1. This is not a generic pitch — it should sound like you were listening. If you named it right, they&apos;ll feel seen. That feeling is what makes pricing land differently. Do not move to pricing until this is done.</p>
-              <p className="mt-2"><strong>Stage 4 — Pricing.</strong> Lead with in-person 2x ($299/week). Present it as information, not a pitch. You&apos;re telling them what the structure looks like — not trying to convince them. After you say the number: pause. Let it land. Do not fill the silence. The silence is not awkward — it is the lead processing. The moment you start talking to fill it, you&apos;ve signalled that you&apos;re nervous about the price, and they will take their cue from you.</p>
-              <p className="mt-2"><strong>Stage 5 — Decision.</strong> Three possible paths. Know which one you&apos;re in before you respond.</p>
-            </Training>
-
-            <p className="mt-1">The companion has five tabs:</p>
-            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Script &amp; Prompts</strong> — Full verbatim script and stage-by-stage prompts for the call.</li>
-              <li><strong>Objection-Triggered</strong> — Three-step script for making the Founding Client offer after a price objection. Step 1: handle the objection. Step 2: introduce the program. Step 3: walk them through the details if they want to know more — covers minimum commitment, what gets documented, consent tiers, and the signing sequence.</li>
-              <li><strong>Manual Override</strong> — Script for proactively offering the Founding Client program to a high-suitability lead before any objection arises. Includes a four-point qualification checklist — all four must be true before using this tab.</li>
-              <li><strong>Online Coaching</strong> — Fallback script if the lead objects to in-person pricing and online is appropriate.</li>
-              <li><strong>Signal Reference</strong> — Quick view of the lead&apos;s SLS, RPS, and RILS levels mid-call.</li>
-            </ul>
-
-            <Training title="When to use each tab">
-              <p><strong>Objection-Triggered.</strong> The script in this tab exists so you don&apos;t have to improvise a price objection response live. Improvising usually ends in one of two places: you discount, or you retreat. The script holds the position. The first move is always to repeat the objection back — so the lead knows you heard them, and so you both agree on what you&apos;re actually responding to. Then you reframe the investment. Then, if they still need it, introduce the Founding Client program as the second offer.</p>
-              <p className="mt-2"><strong>Manual Override.</strong> This tab is not a convenience tool for leads who can&apos;t afford the full rate. It is for a specific type of lead where the data capture value is genuinely high and the case study potential is strong. The four-point checklist exists because the program has limited positions — using them on the wrong person closes the door on the right one. Read the checklist carefully before using it.</p>
-              <p className="mt-2"><strong>Online Coaching.</strong> Online is a real product, not a consolation offer. If a lead&apos;s situation genuinely calls for it, present it that way. Don&apos;t frame it as second-best.</p>
-              <p className="mt-2"><strong>Signal Reference.</strong> Use this if you need a quick reminder of the lead&apos;s signal levels mid-call without switching away from the companion.</p>
-            </Training>
-
-            <p className="mt-1">At Stage 5, three decision path buttons appear in the notes panel:</p>
-            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Path A — Declined</strong> — Updates lead status to Closed Declined.</li>
-              <li><strong>Path B — Needs Time</strong> — Updates lead status to Zoom 2 Completed.</li>
-              <li><strong>Path C — Proceeding</strong> — A pathway selector appears. Choose from Full Rate, Founding Client (Objection Triggered), Founding Client (Manual Override), or Online. For Founding Client pathways a <strong>Send Case Study Agreement</strong> button appears — click it to email the signing link to the lead. The commencement fee is sent only after the agreement is signed.</li>
-            </ul>
-
-            <Training title="How to handle each decision path">
-              <p><strong>Path A — Declined.</strong> Clean close. Do not re-pitch. Say what the script says — the report still stands, they now have a clearer read on what&apos;s going on, the door is open if anything changes. Do not undersell yourself or your time to keep them interested. A clean exit is better than a desperate one.</p>
-              <p className="mt-2"><strong>Path B — Needs Time.</strong> The most important thing here is diagnosing what&apos;s actually sitting with them. &quot;I need to think about it&quot; is not a decision — it&apos;s a pause with a reason behind it. The script asks directly: is it the investment, whether this is the right fit, or something else? Each answer takes you to a different response. And you set a specific follow-up date before the call ends. &quot;I&apos;ll check back in with you&quot; is not a follow-up. A date is a follow-up.</p>
-              <p className="mt-2"><strong>Path C — Proceeding.</strong> Select the correct pathway before clicking anything. The pathway you select determines what gets recorded on the lead&apos;s profile and what the Founding Client section on their client profile will show. For Founding Client pathways, send the agreement before the commencement fee. This is the order. Do not deviate from it.</p>
-            </Training>
-
-            <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead objects to the price. The 3x in-person package ($409/week) is not presented at Zoom 2 — it is coach-assessed and offered during weekly check-ins once coaching is underway. Founding client rates: 2x $149.50/week, 3x $204.50/week, online $74.50/week.</Note>
-          </Section>
-
-          {/* Section 5 */}
-          <Section id="coaching-entry" title="5. Coaching Entry" colour="teal">
+          <Section id="coaching-entry" title="3. Coaching Entry" colour="teal">
             <p>From the lead detail page, the Coaching Entry section has two options:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li><strong>Send to Client</strong> — generates a unique Stripe checkout link and emails it directly to the lead in a branded email. One click.</li>
@@ -673,8 +611,8 @@ export default function HelpPage() {
             <p className="font-semibold text-white mt-4">Upgrade Companion</p>
             <p>When a 2x client reaches Week 8 and is consistently progressing, a teal <strong>Upgrade Companion</strong> link appears in the Coaching Package card on their profile. This opens a 5-stage conversation guide that walks through how to raise and present the upgrade in a session. The client dashboard also surfaces an <strong>Upgrade</strong> badge next to eligible clients and shows a teal banner at the top of the clients list.</p>
             <p>The upgrade companion covers: performance check (is the client actually ready?), making the case using their data, presenting the $299 to $409 price difference, handling objections, and closing with a clear yes/defer/no outcome.</p>
-            <Training title="Why 3x is not offered at Zoom 2">
-              <p>At Zoom 2, you have a report, one consultation, and whatever they told you about themselves. That is not enough data to know whether a client can sustain three sessions per week on top of their life. Offering 3x too early sets up a client for a load they cannot maintain - and when they struggle with it, they attribute the problem to the program rather than the prescription.</p>
+            <Training title="Why 3x is not offered on the Zoom">
+              <p>On the Zoom call, you have a report, one conversation, and whatever they told you about themselves. That is not enough data to know whether a client can sustain three sessions per week on top of their life. Offering 3x too early sets up a client for a load they cannot maintain - and when they struggle with it, they attribute the problem to the program rather than the prescription.</p>
               <p className="mt-2">The 3x upgrade should come from the CFWS data. Several weeks of check-ins will show you whether a client&apos;s recovery, regulation, and schedule can support a third session. When the data says yes, you make the offer from a position of evidence. The client will feel the difference between being sold a bigger package at the start and being assessed for one after you&apos;ve watched them closely for weeks.</p>
             </Training>
           </Section>
@@ -701,20 +639,18 @@ export default function HelpPage() {
             <div className="space-y-2">
               <FlowRow trigger="Check-in quiz submitted" from="—" to="New Check-In" auto />
               <FlowRow trigger="Report scheduled and sent" from="New Check-In" to="Report Sent" auto />
-              <FlowRow trigger="Lead books via Calendly" from="Report Sent (or earlier)" to="Zoom 1 Booked" auto />
-              <FlowRow trigger="Lead books via Calendly again" from="Zoom 1 Completed" to="Zoom 2 Booked" auto />
+              <FlowRow trigger="Lead books via Calendly" from="Report Sent (or earlier)" to="Zoom Booked" auto />
               <FlowRow trigger="Commencement fee paid via Stripe" from="Any" to="Commencement Fee Paid" auto />
             </div>
             <p className="mt-2">These transitions are manual — they require your input after the call or conversation:</p>
             <div className="space-y-2">
-              <FlowRow trigger="You mark after Zoom 1 call ends" from="Zoom 1 Booked" to="Zoom 1 Completed" auto={false} />
-              <FlowRow trigger="Decision at Zoom 2 (Path B or C)" from="Zoom 2 Booked" to="Zoom 2 Completed" auto={false} />
-              <FlowRow trigger="Lead declines at Zoom 2 (Path A)" from="Zoom 2 Booked" to="Closed - Declined" auto={false} />
-              <FlowRow trigger="Lead did not attend Zoom 1" from="Zoom 1 Booked" to="Closed - No Show" auto={false} />
+              <FlowRow trigger="Decision at Zoom (Path B or C)" from="Zoom Booked" to="Zoom Completed" auto={false} />
+              <FlowRow trigger="Lead declines at Zoom (Path A)" from="Zoom Booked" to="Closed - Declined" auto={false} />
+              <FlowRow trigger="Lead did not attend Zoom" from="Zoom Booked" to="Closed - No Show" auto={false} />
               <FlowRow trigger="Report sent but no booking after follow-ups" from="Report Sent" to="Cold - No Booking" auto={false} />
             </div>
             <Training title="What requires your attention vs what runs itself">
-              <p>The automations handle the objective triggers — payment, quiz submission, Calendly booking. You handle the human judgements — whether a Zoom 1 is complete, which path a Zoom 2 conversation ended on, whether a lead genuinely went cold or just needs more time.</p>
+              <p>The automations handle the objective triggers — payment, quiz submission, Calendly booking. You handle the human judgements — whether the Zoom is complete, which path the Zoom conversation ended on, whether a lead genuinely went cold or just needs more time.</p>
               <p className="mt-2">The manual transitions are not admin tasks. They are your interpretive decisions about where a lead is in the process. Keeping them accurate keeps the pipeline data trustworthy. If statuses drift, you lose visibility into where the real friction is.</p>
             </Training>
           </Section>
@@ -742,9 +678,6 @@ export default function HelpPage() {
             <p>A one-time admin action available on the dashboard homepage. Sends the re-engagement email plus a fresh follow-up sequence to all leads who have scorecard data on file. Any previously scheduled follow-ups are cancelled before the new sequence is sent.</p>
             <p>Leads with statuses <strong>Commencement Fee Paid</strong>, <strong>Closed - Declined</strong>, or <strong>Closed - No Show</strong> do not receive new follow-ups.</p>
 
-            <p className="font-semibold text-white mt-4">Orientation Guide</p>
-            <p>Sent manually from the lead detail page after Zoom 1. Emails the lead a branded link to the orientation page. The date it was sent is shown on the lead page.</p>
-
             <p className="font-semibold text-white mt-4">No-Show Re-engagement Sequence</p>
             <p>Triggered manually from the lead detail page when a lead is marked Closed - No Show.</p>
             <div className="space-y-1">
@@ -753,8 +686,8 @@ export default function HelpPage() {
               <SeqRow day="Day 12" label="Final invitation — leaving the door open" />
             </div>
 
-            <p className="font-semibold text-white mt-4">Zoom 1 Declined Follow-up Sequence</p>
-            <p>Triggered automatically when you click <strong>Send declined follow-up</strong> on the Zoom 1 companion page. Fires a 3-email re-engagement sequence alongside the self-guided program offer (see below).</p>
+            <p className="font-semibold text-white mt-4">Zoom Declined Follow-up Sequence</p>
+            <p>Triggered automatically when you click <strong>Send declined follow-up</strong> on the Zoom companion page. Fires a 3-email re-engagement sequence alongside the self-guided program offer (see below).</p>
             <div className="space-y-1">
               <SeqRow day="Next morning 9am" label="Good speaking yesterday — timing understood, door open" />
               <SeqRow day="Day 5" label="Still here if the timing changes" />
@@ -762,7 +695,7 @@ export default function HelpPage() {
             </div>
 
             <p className="font-semibold text-white mt-4">Self-Guided Program Offer (Downsell)</p>
-            <p>Fires automatically alongside the Zoom 1 declined sequence. Sends a branded offer email with a Stripe checkout link for the $97 12-week self-guided program tailored to the lead&apos;s body state. No manual action required — the offer is created and sent the moment decline is triggered.</p>
+            <p>Fires automatically alongside the Zoom declined sequence. Sends a branded offer email with a Stripe checkout link for the $97 12-week self-guided program tailored to the lead&apos;s body state. No manual action required — the offer is created and sent the moment decline is triggered.</p>
 
             <p className="font-semibold text-white mt-4">Self-Guided Program Delivery</p>
             <p>Triggered automatically by the Stripe webhook when a lead purchases the $97 program. Sends a branded delivery email with a unique, token-gated link to their program page at app.bodyrecode.au/program/[token]. You also receive a notification email with a link to the lead profile.</p>
@@ -803,11 +736,11 @@ export default function HelpPage() {
             <p>Sent automatically the day before a client&apos;s coaching start date. Triggered by a Vercel cron job that runs daily.</p>
 
             <p className="font-semibold text-white mt-4">Founding Client Case Study Agreement</p>
-            <p>Sent manually from the Zoom 2 companion when a Founding Client pathway is selected at Stage 5. Click <strong>Send Case Study Agreement</strong> — the system creates the agreement record, generates a unique signing token, and emails the lead a link to review and sign online. The agreement must be signed before the commencement fee is sent.</p>
+            <p>Sent manually from the Zoom companion when a Founding Client pathway is selected at Stage 8. Click <strong>Send Case Study Agreement</strong> — the system creates the agreement record, generates a unique signing token, and emails the lead a link to review and sign online. The agreement must be signed before the commencement fee is sent.</p>
 
             <Training title="The logic behind the follow-up timing">
               <p>Day 2, Day 5, Day 9. Not daily. Not weekly. The gaps are intentional. Day 2 is when the report is still fresh. Day 5 is when most people have filed it away but haven&apos;t fully forgotten it. Day 9 is the last reach — the tone shifts to a genuine close. Running them too close together feels like pressure. Too far apart and the thread is lost.</p>
-              <p className="mt-2">The sequence cancels automatically on booking because the goal of the sequence is a Zoom 1. Once that happens, the follow-ups would be noise. They don&apos;t just stop — they are actively cancelled so nothing goes out while the lead is already in the pipeline.</p>
+              <p className="mt-2">The sequence cancels automatically on booking because the goal of the sequence is a Zoom. Once that happens, the follow-ups would be noise. They don&apos;t just stop — they are actively cancelled so nothing goes out while the lead is already in the pipeline.</p>
             </Training>
           </Section>
 
@@ -831,7 +764,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What is listed</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li><strong>Self-Guided Programs</strong> — Depleted, Transitioning, and Ready. Click any to see the full 12-week program exactly as the client sees it at app.bodyrecode.au/program/[token].</li>
-              <li><strong>Downsell Emails</strong> — Per state: the offer email (sent on Zoom 1 decline) and the delivery email (sent after Stripe purchase). Both shown as rendered previews.</li>
+              <li><strong>Downsell Emails</strong> — Per state: the offer email (sent on Zoom decline) and the delivery email (sent after Stripe purchase). Both shown as rendered previews.</li>
               <li><strong>Client-Facing Pages</strong> — Scorecard, booking page, orientation guide, coaching guide. All open in a new tab.</li>
             </ul>
             <Note>Program preview pages use a placeholder name. The real program page is token-gated and personalised to the lead. To see a live example, find a lead who has purchased and click their program token on the lead detail page.</Note>
@@ -863,8 +796,8 @@ export default function HelpPage() {
             <p className="font-semibold text-white mt-2">Three entry paths</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li><strong>Online ad application</strong> — The primary path for online clients. The landing page at performance.bodyrecode.au/founder directs applicants through the Body State Scorecard as step one of the application. Applications come in tagged as source: Founder Program in the leads list. Review the scorecard results and set the application status on the lead detail page.</li>
-              <li><strong>Objection-triggered at Zoom 2</strong> — The full rate offer is made first. If the lead objects to price, the Founding Client offer is introduced as the second offer. Use the Objection-Triggered tab in the Zoom 2 companion.</li>
-              <li><strong>Manual override at Zoom 2</strong> — For a high-suitability lead, you may proactively offer the program before any objection arises. Use the Manual Override tab. All four criteria on the checklist must be true before using it.</li>
+              <li><strong>Objection-triggered on Zoom</strong> — The full rate offer is made first. If the lead objects to price, the Founding Client offer is introduced as the second offer. Use the Objection-Triggered tab in the Zoom companion.</li>
+              <li><strong>Manual override on Zoom</strong> — For a high-suitability lead, you may proactively offer the program before any objection arises. Use the Manual Override tab. All four criteria on the checklist must be true before using it.</li>
             </ul>
 
             <p className="font-semibold text-white mt-2">Managing online applications</p>
@@ -879,15 +812,15 @@ export default function HelpPage() {
             <p className="mt-2">When you accept an applicant, decrement the positions counter on the Dashboard Homepage using the Positions Available control. The landing page updates within 60 seconds.</p>
 
             <Training title="Objection-triggered vs manual override — know the difference">
-              <p><strong>Objection-triggered</strong> is the standard Zoom 2 pathway. Full rate goes first, always. If the lead objects to price, you handle the objection first, and if they still need something to move, the Founding Client program becomes the second offer. The script walks you through the steps — use it.</p>
+              <p><strong>Objection-triggered</strong> is the standard Zoom pathway. Full rate goes first, always. If the lead objects to price, you handle the objection first, and if they still need something to move, the Founding Client program becomes the second offer. The script walks you through the steps — use it.</p>
               <p className="mt-2"><strong>Manual override</strong> is not for when you want to help someone who cannot afford the full rate. That is a misuse of the program and a misuse of a position. Manual override is for a lead where the case study potential is genuinely high. All four criteria on the checklist must be true before you use it.</p>
             </Training>
 
             <p className="font-semibold text-white mt-2">Agreement before commencement</p>
             <p>The Founding Client Case Study Agreement must be signed before the commencement fee is sent. This is non-negotiable. The sequence is:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
-              <li>Lead accepts the Founding Client offer (at Zoom 2, or via the online application path).</li>
-              <li>Select Path C and the Founding Client pathway in the Zoom 2 decision panel, or proceed from the lead detail page for online applicants.</li>
+              <li>Lead accepts the Founding Client offer (at the Zoom call, or via the online application path).</li>
+              <li>Select Path C and the Founding Client pathway in the Zoom decision panel, or proceed from the lead detail page for online applicants.</li>
               <li>Click <strong>Send Case Study Agreement</strong> — this creates the agreement record and emails the signing link to the lead.</li>
               <li>Lead reviews and signs the agreement online, selecting their consent tier.</li>
               <li>Once signed, generate and send the commencement fee from the lead detail page.</li>
@@ -923,10 +856,10 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li><strong>Commencement Fee — $240</strong> — Generated uniquely per lead. Triggers automatic client creation when paid.</li>
               <li><strong>In-Person 2x — $299/week</strong> — Static link. Standard entry package. Send after commencement fee is confirmed.</li>
-              <li><strong>In-Person 3x — $409/week</strong> — Static link. Coach-assessed upgrade, offered during weekly check-ins not at Zoom 2.</li>
+              <li><strong>In-Person 3x — $409/week</strong> — Static link. Coach-assessed upgrade, offered during weekly check-ins not on the Zoom.</li>
               <li><strong>Online — $149/week</strong> — Static link. Fallback if lead objects to in-person pricing.</li>
             </ul>
-            <p>Payment links for the weekly subscription are available in the Zoom 2 companion Stage 5 Decision panel.</p>
+            <p>Payment links for the weekly subscription are available in the Zoom companion Stage 8 Decision panel.</p>
             <Note>Always send the commencement fee first. Coaching does not start until both the commencement fee and the first weekly subscription payment are received.</Note>
           </Section>
 
@@ -1056,10 +989,8 @@ export default function HelpPage() {
             <StatusList items={[
               { label: 'New Lead', desc: 'Just entered — not yet contacted or reported' },
               { label: 'Report Sent', desc: 'Performance report has been sent' },
-              { label: 'Zoom 1 Booked', desc: 'First call scheduled' },
-              { label: 'Zoom 1 Completed', desc: 'First call done — orientation sent' },
-              { label: 'Zoom 2 Booked', desc: 'Second call scheduled' },
-              { label: 'Zoom 2 Completed', desc: 'Second call done — decision made' },
+              { label: 'Zoom Booked', desc: 'Zoom call scheduled' },
+              { label: 'Zoom Completed', desc: 'Zoom done — decision made' },
               { label: 'Commencement Fee Paid', desc: 'Payment received — awaiting subscription' },
               { label: 'Active Client', desc: 'Converted — now in coaching dashboard' },
             ]} />
@@ -1070,7 +1001,7 @@ export default function HelpPage() {
               <li><strong>Edit contact details</strong> — click Edit contact details to update name, email, and phone in-place</li>
               <li><strong>Move pipeline stage</strong> — use the stage mover to advance or move back through the 8 stages</li>
               <li><strong>Edit notes</strong> — freeform notes field, auto-saves on blur</li>
-              <li><strong>Quick links</strong> — jump to Performance Report, Zoom 1 Companion, Zoom 2 Companion, or the converted client profile (if applicable)</li>
+              <li><strong>Quick links</strong> — jump to Performance Report, Zoom Companion, or the converted client profile (if applicable)</li>
               <li><strong>Coaching Tools</strong> — opens the lead detail page in the main coaching dashboard</li>
             </ul>
 
@@ -1090,7 +1021,7 @@ export default function HelpPage() {
             <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
               <li>Zoom meeting created automatically — join link emailed to both parties via branded dark email</li>
               <li>Lead record created or updated in CRM</li>
-              <li>Pipeline stage moves to Zoom 1 Booked (or Zoom 2 Booked for returning leads)</li>
+              <li>Pipeline stage moves to Zoom Booked</li>
               <li>Automation trigger fires — any workflows on booking_created will run</li>
             </ul>
 
@@ -1106,7 +1037,7 @@ export default function HelpPage() {
             <p className="mt-2">To subscribe: open Calendar on your Mac → File → New Calendar Subscription → paste the webcal:// URL → set auto-refresh to Every 15 Minutes. The calendar updates automatically as bookings are made or changed. No manual export needed.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Manual Bookings</p>
-            <p>You can also create bookings from <strong>Business → Bookings → New Booking</strong>. Select the contact, type (Zoom 1, Zoom 2, Other), date/time, and duration. Zoom is created automatically and an email is sent to you (not the lead — use Inbox to send them the link if needed).</p>
+            <p>You can also create bookings from <strong>Business → Bookings → New Booking</strong>. Select the contact, type (Zoom, Other), date/time, and duration. Zoom is created automatically and an email is sent to you (not the lead — use Inbox to send them the link if needed).</p>
 
             <Note>The Zoom booking page is fully public — share the link bodyrecode.au/book anywhere. It shows available times for the next 14 days. After booking, the lead is redirected to performance.bodyrecode.au.</Note>
           </Section>
@@ -1119,11 +1050,10 @@ export default function HelpPage() {
             <StatusList items={[
               { label: 'Scorecard Follow-up Sequence', desc: '4-email sequence triggered when someone completes the Body State Scorecard' },
               { label: 'Performance Report Follow-up', desc: '3-email sequence sent after a performance report is delivered to a lead' },
-              { label: 'Zoom 1 Booking Confirmation', desc: 'Confirmation + .ics sent to lead on booking, 2-hour reminder, 30-minute reminder, plus coach notification to kade@bodyrecode.au (4 emails total)' },
-              { label: 'Zoom 2 Booking Confirmation', desc: 'Same as Zoom 1 - confirmation + 2-hour reminder + 30-minute reminder + coach notification, fired when a returning lead books their second call' },
+              { label: 'Zoom Booking Confirmation', desc: 'Confirmation + .ics sent to lead on booking, 2-hour reminder, 30-minute reminder, plus coach notification to kade@bodyrecode.au (4 emails total)' },
               { label: 'No-show Re-engagement', desc: '3-email sequence for leads who missed their scheduled Zoom call' },
-              { label: 'Zoom 1 Declined Follow-up', desc: '3-email re-engagement sequence sent when a lead declines after Zoom 1' },
-              { label: 'Self-Guided Program Offer', desc: '$97 program offer email sent automatically alongside the Zoom 1 declined sequence' },
+              { label: 'Zoom Declined Follow-up', desc: '3-email re-engagement sequence sent when a lead declines after the Zoom call' },
+              { label: 'Self-Guided Program Offer', desc: '$97 program offer email sent automatically alongside the Zoom declined sequence' },
               { label: 'Program Buyer Nurture', desc: '3-email sequence (Week 4, 8, 12) to bring program buyers back into coaching' },
             ]} />
 
@@ -1133,7 +1063,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Triggers</p>
             <StatusList items={[
               { label: 'lead_created', desc: 'A new lead enters the system for the first time' },
-              { label: 'booking_created', desc: 'Any booking is made (filter by type: zoom1 or zoom2)' },
+              { label: 'booking_created', desc: 'Any booking is made (filter by type: zoom)' },
               { label: 'payment_completed', desc: 'A payment is recorded as paid' },
               { label: 'pipeline_stage_changed', desc: 'A lead moves to a specific stage' },
               { label: 'tag_added', desc: 'A tag is applied to a lead' },
@@ -1174,14 +1104,14 @@ export default function HelpPage() {
             <Note>Wait steps are handled by Inngest — a background job service. A "wait 3 days" step will actually wait 3 days, even across server restarts. Execution history is logged per contact under each workflow run.</Note>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Zoom Booking Confirmation Emails</p>
-            <p>These are system-level emails that fire automatically every time a Zoom 1 or Zoom 2 is booked - no configuration required. Both fire from the same booking endpoint the moment a slot is confirmed.</p>
+            <p>These are system-level emails that fire automatically every time a Zoom is booked - no configuration required. They fire from the same booking endpoint the moment a slot is confirmed.</p>
             <StatusList items={[
               { label: 'Confirmation Email', desc: 'Branded dark card with date, time (AEST), Zoom join link, and .ics calendar attachment - sent to the lead immediately on booking' },
               { label: '2-Hour Reminder', desc: 'Scheduled email to the lead with Zoom join link, fires 2 hours before the call start time' },
               { label: '30-Minute Reminder', desc: 'Final reminder to the lead with Zoom join link, fires 30 minutes before the call' },
               { label: 'Coach Notification', desc: "Sent to kade@bodyrecode.au immediately on booking with the lead's name, email, date/time, Zoom link, and a link to their CRM record" },
             ]} />
-            <p className="mt-2">The system detects whether the booking is a Zoom 1 or Zoom 2 based on the lead&apos;s current pipeline stage. Both email types use the approved dark card template: black outer, #111111 inner card, Body Recode logo, and the coach signature with photo.</p>
+            <p className="mt-2">All booking emails use the approved dark card template: black outer, #111111 inner card, Body Recode logo, and the coach signature with photo.</p>
             <Note>No setup needed - these emails are always active for every booking made via bodyrecode.au/book or the manual booking tool in Business → Bookings.</Note>
           </Section>
 
@@ -1259,9 +1189,9 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Products</p>
             <StatusList items={[
-              { label: 'Coaching Commencement Fee', desc: '$240 — one-time. Send to every lead who agrees to proceed at Zoom 2.' },
+              { label: 'Coaching Commencement Fee', desc: '$240 — one-time. Send to every lead who agrees to proceed at the Zoom call.' },
               { label: 'Online Coaching', desc: '$149/week recurring' },
-              { label: 'In-Person 2x', desc: '$299/week recurring — lead with this at Zoom 2' },
+              { label: 'In-Person 2x', desc: '$299/week recurring — lead with this on the Zoom' },
               { label: 'In-Person 3x', desc: '$409/week recurring — coach-assessed only, offer during check-ins' },
               { label: 'Online Coaching (Founding Client)', desc: '$74.50/week — half rate for case study clients' },
               { label: 'In-Person 2x (Founding Client)', desc: '$149.50/week' },
@@ -1289,7 +1219,7 @@ export default function HelpPage() {
               { label: 'Show-up Rate', desc: 'Zoom calls that were completed ÷ calls that were booked' },
               { label: 'Pipeline', desc: 'Bar breakdown of how many leads are in each stage right now' },
               { label: 'Lead Sources', desc: 'Where leads came from — direct booking, funnel, or other source' },
-              { label: 'Bookings', desc: 'Total bookings, split by type (Zoom 1, Zoom 2, Other)' },
+              { label: 'Bookings', desc: 'Total bookings, split by type (Zoom, Other)' },
             ]} />
 
             <Note>All metrics read directly from your live data. The analytics page refreshes on each load — there is no caching delay.</Note>

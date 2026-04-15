@@ -27,11 +27,9 @@ export function getLeadStatusLabel(status: string) {
     new_check_in: 'New — Check-In',
     report_sent: 'Report Sent',
     cold_no_booking: 'Cold — No Booking',
-    zoom_1_booked: 'Zoom 1 Booked',
-    zoom_1_completed: 'Zoom 1 Done',
+    zoom_booked: 'Zoom Booked',
+    zoom_completed: 'Zoom Done',
     closed_no_show: 'Closed — No Show',
-    zoom_2_booked: 'Zoom 2 Booked',
-    zoom_2_completed: 'Zoom 2 Done',
     closed_declined: 'Closed — Declined',
     commencement_fee_paid: 'Commencement Fee Paid',
     active_deliberate_start: 'Deliberate Start',
@@ -45,11 +43,9 @@ export function getLeadStatusColour(status: string) {
     case 'new_check_in': return 'bg-blue-950 text-blue-300 border-blue-800'
     case 'report_sent': return 'bg-violet-950 text-violet-300 border-violet-800'
     case 'cold_no_booking': return 'bg-stone-800 text-stone-400 border-stone-700'
-    case 'zoom_1_booked': return 'bg-amber-950 text-amber-300 border-amber-800'
-    case 'zoom_1_completed': return 'bg-amber-950 text-amber-200 border-amber-700'
+    case 'zoom_booked': return 'bg-amber-950 text-amber-300 border-amber-800'
+    case 'zoom_completed': return 'bg-amber-950 text-amber-200 border-amber-700'
     case 'closed_no_show': return 'bg-stone-800 text-stone-500 border-stone-700'
-    case 'zoom_2_booked': return 'bg-orange-950 text-orange-300 border-orange-800'
-    case 'zoom_2_completed': return 'bg-orange-950 text-orange-200 border-orange-700'
     case 'closed_declined': return 'bg-stone-800 text-stone-500 border-stone-700'
     case 'commencement_fee_paid': return 'bg-emerald-950 text-emerald-300 border-emerald-800'
     case 'active_deliberate_start': return 'bg-emerald-950 text-emerald-200 border-emerald-700'

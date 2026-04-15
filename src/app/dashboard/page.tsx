@@ -49,11 +49,9 @@ export default async function DashboardHomePage() {
     new_check_in: 'New Check-In',
     report_sent: 'Report Sent',
     cold_no_booking: 'Cold',
-    zoom_1_booked: 'Zoom 1 Booked',
-    zoom_1_completed: 'Zoom 1 Done',
+    zoom_booked: 'Zoom Booked',
+    zoom_completed: 'Zoom Done',
     closed_no_show: 'No Show',
-    zoom_2_booked: 'Zoom 2 Booked',
-    zoom_2_completed: 'Zoom 2 Done',
     closed_declined: 'Declined',
     commencement_fee_paid: 'Fee Paid',
   }

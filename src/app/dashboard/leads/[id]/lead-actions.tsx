@@ -6,9 +6,8 @@ import type { Lead } from '@/types'
 
 const STATUSES = [
   'new_check_in', 'report_sent', 'cold_no_booking',
-  'zoom_1_booked', 'zoom_1_completed', 'closed_no_show',
-  'zoom_2_booked', 'zoom_2_completed', 'closed_declined',
-  'commencement_fee_paid', 'active_deliberate_start', 'active_coaching',
+  'zoom_booked', 'zoom_completed', 'closed_no_show',
+  'closed_declined', 'commencement_fee_paid', 'active_deliberate_start', 'active_coaching',
 ]
 
 export default function LeadActions({ lead }: { lead: Lead }) {
@@ -17,8 +16,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
   const [status, setStatus] = useState(lead.status)
   const [source, setSource] = useState<string>(lead.source || '')
   const [notes, setNotes] = useState(lead.notes || '')
-  const [zoom1, setZoom1] = useState(lead.zoom_1_date ? lead.zoom_1_date.slice(0, 16) : '')
-  const [zoom2, setZoom2] = useState(lead.zoom_2_date ? lead.zoom_2_date.slice(0, 16) : '')
+  const [zoomDate, setZoomDate] = useState(lead.zoom_date ? lead.zoom_date.slice(0, 16) : '')
   const [zoomUrl, setZoomUrl] = useState(lead.zoom_meeting_url || '')
   const [saved, setSaved] = useState(false)
 
@@ -31,8 +29,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
         status,
         source,
         notes,
-        zoom_1_date: zoom1 || null,
-        zoom_2_date: zoom2 || null,
+        zoom_date: zoomDate || null,
         zoom_meeting_url: zoomUrl || null,
       }),
     })
@@ -87,26 +84,15 @@ export default function LeadActions({ lead }: { lead: Lead }) {
         />
       </div>
 
-      {/* Zoom dates */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs text-stone-500 mb-1.5">Zoom 1 date</label>
-          <input
-            type="datetime-local"
-            value={zoom1}
-            onChange={e => setZoom1(e.target.value)}
-            className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-stone-500"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-stone-500 mb-1.5">Zoom 2 date</label>
-          <input
-            type="datetime-local"
-            value={zoom2}
-            onChange={e => setZoom2(e.target.value)}
-            className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-stone-500"
-          />
-        </div>
+      {/* Zoom date */}
+      <div>
+        <label className="block text-xs text-stone-500 mb-1.5">Zoom date</label>
+        <input
+          type="datetime-local"
+          value={zoomDate}
+          onChange={e => setZoomDate(e.target.value)}
+          className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-stone-500"
+        />
       </div>
 
       {/* Notes */}

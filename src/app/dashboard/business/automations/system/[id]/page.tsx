@@ -125,7 +125,7 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
     name: 'No-show Re-engagement',
     description: '3-email sequence for leads who missed their scheduled Zoom call',
     trigger: 'Zoom no-show marked',
-    triggerDetail: 'Manually triggered from the lead detail page when a lead misses their Zoom 1 call',
+    triggerDetail: 'Manually triggered from the lead detail page when a lead misses their Zoom call',
     steps: [
       {
         day: 'Next morning (9am Brisbane)',
@@ -165,10 +165,10 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
 
   'zoom1-declined': {
     id: 'zoom1-declined',
-    name: 'Zoom 1 Declined Follow-up',
-    description: '3-email sequence sent when a lead declines to proceed after Zoom 1',
-    trigger: 'Declined after Zoom 1',
-    triggerDetail: 'Manually triggered from the Zoom 1 companion page using the "Send declined follow-up" button',
+    name: 'Zoom Declined Follow-up',
+    description: '3-email sequence sent when a lead declines to proceed after the Zoom call',
+    trigger: 'Declined after Zoom',
+    triggerDetail: 'Manually triggered from the Zoom companion page using the "Send declined follow-up" button',
     steps: [
       {
         day: 'Next morning (9am Brisbane)',
@@ -209,9 +209,9 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
   'downsell-offer': {
     id: 'downsell-offer',
     name: 'Self-Guided Program Offer',
-    description: '$97 self-guided program offer sent automatically when a lead declines after Zoom 1',
-    trigger: 'Declined after Zoom 1',
-    triggerDetail: 'Fires automatically alongside the Zoom 1 Declined Follow-up sequence - no manual action required',
+    description: '$97 self-guided program offer sent automatically when a lead declines after the Zoom call',
+    trigger: 'Declined after Zoom',
+    triggerDetail: 'Fires automatically alongside the Zoom Declined Follow-up sequence - no manual action required',
     steps: [
       {
         day: 'Immediately on decline',
@@ -229,10 +229,10 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
 
   'zoom1-confirmation': {
     id: 'zoom1-confirmation',
-    name: 'Zoom 1 Booking Confirmation',
-    description: 'Branded confirmation email with Zoom link and .ics calendar invite sent to the lead, plus a coach notification - fires automatically on every Zoom 1 booking',
-    trigger: 'Zoom 1 booked',
-    triggerDetail: 'Fires automatically whenever a lead books a Zoom 1 call via bodyrecode.au/book or a manual booking is created in Business → Bookings',
+    name: 'Zoom Booking Confirmation',
+    description: 'Branded confirmation email with Zoom link and .ics calendar invite sent to the lead, plus a coach notification - fires automatically on every Zoom booking',
+    trigger: 'Zoom booked',
+    triggerDetail: 'Fires automatically whenever a lead books a Zoom call via bodyrecode.au/book or a manual booking is created in Business → Bookings',
     steps: [
       {
         day: 'Immediately — to lead',
@@ -270,9 +270,9 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
       },
       {
         day: 'Immediately — to coach (kade@bodyrecode.au)',
-        subject: 'Zoom 1 booked — {name}',
+        subject: 'Zoom booked — {name}',
         paragraphs: [
-          'Zoom 1 booked — {name}',
+          'Zoom booked — {name}',
           '{email}',
           '[Date & Time card: {date} · {time} Brisbane]',
           '[Join Zoom button + View Lead button]',
@@ -284,10 +284,10 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
 
   'zoom2-confirmation': {
     id: 'zoom2-confirmation',
-    name: 'Zoom 2 Booking Confirmation',
-    description: 'Same as Zoom 1 - branded confirmation + .ics + coach notification, fired automatically when a returning lead books their second call',
-    trigger: 'Zoom 2 booked',
-    triggerDetail: 'Fires automatically when a lead with status "zoom_1_completed" books a call via bodyrecode.au/book or a manual Zoom 2 booking is created',
+    name: 'Zoom Booking Confirmation (legacy)',
+    description: 'Legacy entry - merged into the main Zoom Booking Confirmation automation',
+    trigger: 'Zoom booked',
+    triggerDetail: 'This entry is preserved for reference. All Zoom bookings now use the single Zoom Booking Confirmation automation.',
     steps: [
       {
         day: 'Immediately — to lead',
@@ -325,9 +325,9 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
       },
       {
         day: 'Immediately — to coach (kade@bodyrecode.au)',
-        subject: 'Zoom 2 booked — {name}',
+        subject: 'Zoom booked — {name}',
         paragraphs: [
-          'Zoom 2 booked — {name}',
+          'Zoom booked — {name}',
           '{email}',
           '[Date & Time card: {date} · {time} Brisbane]',
           '[Join Zoom button + View Lead button]',
