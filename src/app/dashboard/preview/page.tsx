@@ -45,6 +45,17 @@ const ASSET_GROUPS: AssetGroup[] = [
     ],
   },
   {
+    title: 'Booking Emails',
+    icon: <Mail size={14} className="text-teal-400" />,
+    assets: [
+      {
+        label: 'Booking Link + Confirmation Emails',
+        description: 'Emails sent from the lead profile — booking link and manual booking confirmation',
+        href: '/dashboard/preview/email',
+      },
+    ],
+  },
+  {
     title: 'Downsell Emails',
     icon: <Mail size={14} className="text-teal-400" />,
     assets: [
