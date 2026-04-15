@@ -179,6 +179,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
   const answers = lead.check_in_answers as Record<string, number> | null
 
+  // Booking link sent event
+  const bookingLinkSentEvent = events?.find(e => e.type === 'email_sent' && e.subject === 'Booking link sent') ?? null
+
   // Extract scorecard result from events
   const scorecardEvent = events?.find(e => e.type === 'scorecard_completed') ?? null
   const scorecardScoreFromEvent = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
@@ -430,6 +433,15 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <div className="border-t border-stone-800 pt-4">
           <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Booking</p>
           <BookingActionButtons leadId={lead.id} hasZoomDate={!!lead.zoom_date} />
+          {bookingLinkSentEvent && (
+            <p className="text-xs text-stone-600 mt-3">
+              Booking link sent {new Date(bookingLinkSentEvent.sent_at).toLocaleString('en-AU', {
+                timeZone: 'Australia/Brisbane',
+                weekday: 'short', day: 'numeric', month: 'short',
+                hour: 'numeric', minute: '2-digit', hour12: true,
+              })} Brisbane
+            </p>
+          )}
         </div>
       </div>
 
