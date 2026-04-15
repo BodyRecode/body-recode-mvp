@@ -108,14 +108,31 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
   // Extract scorecard result from events
   const scorecardEvent = events?.find(e => e.type === 'scorecard_completed') ?? null
+  const scorecardScoreFromEvent = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
+  const scorecardStateFromEvent = scorecardEvent?.notes?.match(/Body state: (.+?)\./)?.[1]
+  const scorecardSectionsMatch = scorecardEvent?.notes?.match(/Sections: ({.+})/)
+  const scorecardSectionsFromEvent: Record<string, number> | null = scorecardSectionsMatch ? JSON.parse(scorecardSectionsMatch[1]) : null
+
+  // Fallback: check scorecard_reports table by email (covers leads who purchased the $37 report
+  // or whose scorecard_completed event failed to log)
+  const { data: scorecardReport } = lead.email
+    ? await supabase
+        .from('scorecard_reports')
+        .select('score, body_state, section_scores')
+        .eq('email', lead.email)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+    : { data: null }
+
+  const scorecardScore = scorecardScoreFromEvent ?? (scorecardReport?.score != null ? String(scorecardReport.score) : null)
+  const scorecardState = scorecardStateFromEvent ?? scorecardReport?.body_state ?? null
+  const scorecardSections: Record<string, number> | null = scorecardSectionsFromEvent ?? (scorecardReport?.section_scores as Record<string, number> | null) ?? null
+
+  const scorecardStyle = scorecardState ? BODY_STATE_STYLES[scorecardState] : null
 
   // Show flow sections for any lead with a scorecard OR old check-in answers
-  const hasLeadData = !!scorecardEvent || (!!answers && Object.keys(answers).length > 0)
-  const scorecardScore = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
-  const scorecardState = scorecardEvent?.notes?.match(/Body state: (.+?)\./)?.[1]
-  const scorecardStyle = scorecardState ? BODY_STATE_STYLES[scorecardState] : null
-  const scorecardSectionsMatch = scorecardEvent?.notes?.match(/Sections: ({.+})/)
-  const scorecardSections: Record<string, number> | null = scorecardSectionsMatch ? JSON.parse(scorecardSectionsMatch[1]) : null
+  const hasLeadData = !!(scorecardScore && scorecardState) || (!!answers && Object.keys(answers).length > 0)
 
   const SCORECARD_SECTIONS: Record<string, string> = {
     '01': 'Energy', '02': 'Sleep', '03': 'Stress Load', '04': 'Training Response', '05': 'Fat Loss Response',
