@@ -53,14 +53,9 @@ export async function POST(request: NextRequest) {
     leadId = existing.id
     console.log('[scorecard/submit] Found existing lead:', leadId)
   } else {
-    // Get coach_id so RLS policies can resolve the lead correctly
-    const { data: avail } = await supabase.from('be_availability').select('coach_id').limit(1).single()
-    const coachId = avail?.coach_id ?? null
-
     const { data: newLead, error: leadError } = await supabase
       .from('leads')
       .insert({
-        coach_id: coachId,
         name: first_name.trim(),
         email: email.toLowerCase().trim(),
         source: source ?? 'other',

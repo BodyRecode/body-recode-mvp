@@ -74,26 +74,9 @@ export async function POST(request: NextRequest) {
     }
   } else {
     // Create new lead
-    const { data: coach } = await admin
-      .from('clients')
-      .select('coach_id')
-      .limit(1)
-      .single()
-
-    // Get coach_id from availability table
-    const { data: avail } = await admin
-      .from('be_availability')
-      .select('coach_id')
-      .limit(1)
-      .single()
-
-    const coachId = avail?.coach_id
-    if (!coachId) return NextResponse.json({ error: 'No coach configured' }, { status: 500 })
-
     const { data: newLead, error: leadError } = await admin
       .from('leads')
       .insert({
-        coach_id: coachId,
         name: name.trim(),
         email: email.trim().toLowerCase(),
         phone: phone?.trim() || null,
