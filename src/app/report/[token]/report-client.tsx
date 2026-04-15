@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect } from 'react'
+
 const SECTIONS = ['Energy', 'Sleep', 'Stress Load', 'Training Response', 'Fat Loss Response']
 const SECTION_KEYS = ['01', '02', '03', '04', '05']
 
@@ -122,6 +124,12 @@ export default function ReportClient({ report }: { report: {
   section_scores: Record<string, number>
   token: string
 } }) {
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', 'Lead')
+    }
+  }, [])
+
   const firstName = report.name.split(' ')[0]
   const state = STATE_CONTENT[report.body_state] ?? STATE_CONTENT['Transitioning State']
   const scores = report.section_scores as Record<string, number>
