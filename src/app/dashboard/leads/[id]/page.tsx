@@ -74,6 +74,78 @@ const BODY_STATE_STYLES: Record<string, { color: string; bg: string; border: str
   },
 }
 
+const SECTION_INTERPRETATIONS: Record<string, Record<number, string>> = {
+  'Energy': {
+    1: 'Caffeine dependency and afternoon crashes indicate the body is running on stress hormones rather than metabolic efficiency. Cortisol rhythm is dysregulated, which directly suppresses fat loss and blunts training adaptation.',
+    2: 'Some days feel fine, others do not. This variability usually points to fluctuating blood sugar, incomplete recovery, or a stress load that spikes and dips. Inconsistency is a signal that something is interfering.',
+    3: 'Stable energy without caffeine dependency is a strong indicator that cortisol rhythm is functioning well and metabolism is not suppressed. The body is in a position to respond to training and nutrition inputs.',
+  },
+  'Sleep': {
+    1: 'Sleep is not restoring adequately. Growth hormone release, testosterone production, and cortisol clearance all occur during deep sleep. Without it, recovery is incomplete, hunger signals are disrupted, and the system stays under stress.',
+    2: 'Sleep is inconsistent. Most nights are okay but not reliably restorative. The body cannot consistently clear the stress load from training and daily life, creating inconsistent results even when other inputs are on point.',
+    3: 'Sleeping well and waking rested. This is the foundation everything else is built on. Consistent quality sleep means the recovery system is functioning and the body has the capacity to adapt to training stimuli.',
+  },
+  'Stress Load': {
+    1: 'Chronic stress keeps cortisol continuously elevated, directly competing with fat loss, muscle retention, and recovery. High stress is often the hidden driver behind plateaus that do not respond to changes in training or nutrition.',
+    2: 'Stress load is moderate - manageable most of the time but not low. This level of background stress creates inconsistency in results, particularly in fat loss response and recovery.',
+    3: 'Stress load is low to moderate. When the system is not under chronic stress pressure, it can allocate resources toward adaptation - fat loss, muscle development, and performance improvement.',
+  },
+  'Training Response': {
+    1: 'Training is not producing adaptation. Flat or declining performance and a body that feels beaten up are signs of accumulated fatigue, incomplete recovery, or a mismatch between training load and current biological capacity.',
+    2: 'Training response is inconsistent - some progress but cannot build momentum. This usually indicates recovery is not keeping pace with training demand, or stress load is interfering with adaptation.',
+    3: 'Responding well to training. Consistent progress, increasing performance, and recovering between sessions are hallmarks of a responsive system. Training load and recovery capacity are aligned.',
+  },
+  'Fat Loss Response': {
+    1: 'Body is actively resisting fat loss. When someone is doing everything right and the body is not responding, it is almost always a biological state issue. The body in a depleted or high-stress state suppresses fat oxidation as a survival mechanism.',
+    2: 'Fat loss is slow or stalled - inconsistent relative to effort. This gap usually points to metabolic adaptation from dieting history, training load exceeding recovery, or a hormonal imbalance blunting response.',
+    3: 'Body is responding and composition is shifting. The system is not in resistance mode. The focus should be on precision - making sure the programme is specific enough to drive the outcome at the rate desired.',
+  },
+}
+
+const STATE_GUIDANCE: Record<string, { stopDoing: string[]; startDoing: string[]; primaryFocus: string }> = {
+  'Depleted State': {
+    primaryFocus: 'Restore before you push. First priority is reducing biological stress load: sleep quality, recovery between sessions, and removing inputs keeping cortisol elevated. Fat loss and performance follow - they do not lead.',
+    stopDoing: [
+      'Training at high intensity when recovery is incomplete',
+      'Cutting calories below maintenance - this deepens the depletion',
+      'Using stimulants to push through energy crashes',
+      'Treating symptoms (low energy, stalled fat loss) without addressing the cause',
+    ],
+    startDoing: [
+      'Prioritise 7-9 hours of sleep above all other interventions',
+      'Reduce training intensity and volume temporarily, not permanently',
+      'Eat at or above maintenance for 2-4 weeks to restore metabolic function',
+      'Identify and reduce the primary chronic stress source',
+    ],
+  },
+  'Transitioning State': {
+    primaryFocus: 'Identify the limiting factor. Lowest-scoring sections are the bottlenecks. Fix the constraint, not the symptom. If sleep score is low, better nutrition will not unlock the result.',
+    stopDoing: [
+      'Adding more inputs (more sessions, more tracking, more supplements) before fixing the basics',
+      'Switching programs when the issue is recovery, not programming',
+      'Ignoring the inconsistency and hoping it resolves on its own',
+    ],
+    startDoing: [
+      'Audit the lowest-scoring area and address it specifically',
+      'Establish a consistent sleep and recovery baseline before intensifying training',
+      'Align training load with actual recovery capacity, not ideal capacity',
+    ],
+  },
+  'Ready State': {
+    primaryFocus: 'Optimise the prescription. The body is ready to respond - make sure what it is being given is accurate enough to produce results. Vague protocols do not produce precise outcomes. At this state, specificity is everything.',
+    stopDoing: [
+      'Running generic programmes not calibrated to specific goals',
+      'Maintaining the same approach because it used to work - adapt as you progress',
+      'Underestimating recovery - even in a ready state, overreaching will erode it',
+    ],
+    startDoing: [
+      'Dial in the training stimulus - progressive overload, frequency, and specificity',
+      'Audit nutrition: total intake, protein target, and meal timing relative to training',
+      'Track response over 4-6 week blocks and adjust based on data',
+    ],
+  },
+}
+
 const EVENT_COLOURS: Record<string, string> = {
   check_in_submitted: 'bg-stone-600',
   report_scheduled: 'bg-teal-500',
@@ -118,7 +190,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const { data: scorecardReport } = lead.email
     ? await supabase
         .from('scorecard_reports')
-        .select('score, body_state, section_scores')
+        .select('score, body_state, section_scores, token')
         .eq('email', lead.email)
         .order('created_at', { ascending: false })
         .limit(1)
@@ -231,6 +303,90 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                     </div>
                   )
                 })}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Body Decode Report */}
+      {scorecardScore && scorecardState && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider">Body Decode Report</h2>
+            {scorecardReport?.token && (
+              <Link
+                href={`/report/${scorecardReport.token}`}
+                target="_blank"
+                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
+              >
+                Open Scorecard Report ↗
+              </Link>
+            )}
+          </div>
+
+          {scorecardSections && (
+            <div className="space-y-2 mb-5">
+              {Object.entries(SCORECARD_SECTIONS).map(([key, title]) => {
+                const s = scorecardSections[key] as number | undefined
+                const color = s === 1 ? '#ef4444' : s === 2 ? '#f59e0b' : s === 3 ? '#14b8a6' : '#57534e'
+                const bg = s === 1 ? 'rgba(239,68,68,0.05)' : s === 2 ? 'rgba(245,158,11,0.05)' : s === 3 ? 'rgba(20,184,166,0.05)' : 'rgba(87,83,78,0.05)'
+                const border = s === 1 ? 'rgba(239,68,68,0.2)' : s === 2 ? 'rgba(245,158,11,0.2)' : s === 3 ? 'rgba(20,184,166,0.2)' : 'rgba(87,83,78,0.2)'
+                const label = s === 1 ? 'Needs attention' : s === 2 ? 'Developing' : s === 3 ? 'Functioning well' : null
+                const interpretation = s != null ? SECTION_INTERPRETATIONS[title]?.[s] : null
+                return (
+                  <div key={key} className="rounded-lg p-3" style={{ background: bg, border: `1px solid ${border}` }}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-sm font-semibold text-white">{title}</span>
+                      <div className="flex items-center gap-2 shrink-0">
+                        {label && <span className="text-xs font-semibold" style={{ color }}>{label}</span>}
+                        <div className="flex gap-1">
+                          {[1, 2, 3].map(n => (
+                            <div key={n} className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold"
+                              style={{
+                                background: n === s ? bg : 'rgba(28,25,23,1)',
+                                border: `1.5px solid ${n === s ? color : '#2c2826'}`,
+                                color: n === s ? color : '#3c3835',
+                              }}>
+                              {n}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    {interpretation && <p className="text-xs text-stone-500 leading-relaxed">{interpretation}</p>}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+
+          {STATE_GUIDANCE[scorecardState] && (
+            <div className="space-y-3">
+              <p className="text-sm text-stone-400 leading-relaxed border-t border-stone-800 pt-4">{STATE_GUIDANCE[scorecardState].primaryFocus}</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-lg p-3 bg-red-950/20 border border-red-900/30">
+                  <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">Stop doing</p>
+                  <ul className="space-y-1.5">
+                    {STATE_GUIDANCE[scorecardState].stopDoing.map((item, i) => (
+                      <li key={i} className="flex gap-2 items-start">
+                        <span className="text-red-500 mt-0.5 shrink-0">·</span>
+                        <span className="text-xs text-stone-400 leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-lg p-3 bg-teal-950/20 border border-teal-900/30">
+                  <p className="text-xs font-bold text-teal-400 uppercase tracking-wider mb-2">Start doing</p>
+                  <ul className="space-y-1.5">
+                    {STATE_GUIDANCE[scorecardState].startDoing.map((item, i) => (
+                      <li key={i} className="flex gap-2 items-start">
+                        <span className="text-teal-500 mt-0.5 shrink-0">·</span>
+                        <span className="text-xs text-stone-400 leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           )}
