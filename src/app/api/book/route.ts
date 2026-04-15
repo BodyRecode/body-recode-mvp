@@ -289,7 +289,7 @@ export async function POST(request: NextRequest) {
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
-      subject: `Zoom ${isZoom2 ? '2' : '1'} booked — ${lead.name}`,
+      subject: `Zoom booked — ${lead.name}`,
       attachments: [{ filename: 'booking.ics', content: Buffer.from(ics).toString('base64') }],
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
 <body style="margin:0;padding:0;background-color:#0c0a09;">
@@ -303,7 +303,7 @@ export async function POST(request: NextRequest) {
         </tr>
         <tr>
           <td bgcolor="#111110" style="background-color:#111110;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#ffffff;">Zoom ${isZoom2 ? '2' : '1'} booked — ${lead.name}</p>
+            <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#ffffff;">Zoom booked — ${lead.name}</p>
             <p style="margin:0 0 20px;font-size:14px;color:#a8a29e;">${lead.email}</p>
             <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;width:100%;">
               <tr>
@@ -330,8 +330,8 @@ export async function POST(request: NextRequest) {
   fireTrigger('booking_created', {
     leadId: lead.id,
     bookingId: booking.id,
-    bookingType: bookingType,
-  }, { booking_type: bookingType }).catch(err => console.error('Automation trigger failed:', err))
+    bookingType: 'zoom',
+  }, { booking_type: 'zoom' }).catch(err => console.error('Automation trigger failed:', err))
 
   if (!existingLead) {
     fireTrigger('lead_created', { leadId: lead.id })
