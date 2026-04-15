@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
   // Persist scorecard result directly on the lead record
   await supabase
     .from('leads')
-    .update({ scorecard_score: score, scorecard_body_state: body_state })
+    .update({ scorecard_score: score, scorecard_body_state: body_state, scorecard_section_scores: section_scores ?? null })
     .eq('id', leadId)
 
   // Log scorecard result as a lead event

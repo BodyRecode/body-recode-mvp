@@ -199,7 +199,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
   const scorecardScore = lead.scorecard_score != null ? String(lead.scorecard_score) : scorecardScoreFromEvent ?? (scorecardReport?.score != null ? String(scorecardReport.score) : null)
   const scorecardState = lead.scorecard_body_state ?? scorecardStateFromEvent ?? scorecardReport?.body_state ?? null
-  const scorecardSections: Record<string, number> | null = scorecardSectionsFromEvent ?? (scorecardReport?.section_scores as Record<string, number> | null) ?? null
+  const scorecardSections: Record<string, number> | null = lead.scorecard_section_scores ?? scorecardSectionsFromEvent ?? (scorecardReport?.section_scores as Record<string, number> | null) ?? null
 
   const scorecardStyle = scorecardState ? BODY_STATE_STYLES[scorecardState] : null
 

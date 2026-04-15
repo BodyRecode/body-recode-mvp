@@ -39,6 +39,7 @@ export interface Lead {
   active?: boolean
   scorecard_score?: number
   scorecard_body_state?: string
+  scorecard_section_scores?: Record<string, number>
   created_at: string
   updated_at: string
 }
