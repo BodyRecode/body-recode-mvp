@@ -195,6 +195,23 @@ export default function ChallengePage() {
           <p style={{ fontSize: '18px', color: '#a8a29e', lineHeight: 1.65, marginBottom: '40px' }}>
             The 14-Day Body Decode Challenge is a structured reset designed to lower biological noise, stabilise your energy, and let your body start responding again.
           </p>
+          {/* Stats strip */}
+          <div style={{ display: 'flex', gap: '12px', marginBottom: '32px', flexWrap: 'wrap' as const }}>
+            {[
+              { value: '14', label: 'Days' },
+              { value: 'Free', label: 'No credit card' },
+              { value: 'Day 1', label: 'Instant access' },
+            ].map(stat => (
+              <div key={stat.label} style={{
+                flex: '1 1 80px', background: '#111110', border: '1px solid #1c1917',
+                borderRadius: '12px', padding: '16px 20px',
+              }}>
+                <p style={{ fontSize: '20px', fontWeight: 900, color: '#14b8a6', margin: '0 0 2px', letterSpacing: '-0.02em' }}>{stat.value}</p>
+                <p style={{ fontSize: '12px', color: '#57534e', margin: 0, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
           <div ref={formRef}>
             <SignupForm position="hero" />
           </div>
@@ -308,8 +325,30 @@ export default function ChallengePage() {
         <div style={s.inner}>
           <p style={s.label}>The coach behind Body Recode</p>
           <h2 style={s.h2}>Built from the same reset that helped me rebuild.</h2>
+
+          {/* Photo */}
+          <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', marginBottom: '28px' }}>
+            <img
+              src="/kade.jpg"
+              alt="Kade Dunstone — Body Recode"
+              style={{ width: '100%', display: 'block', filter: 'brightness(0.92)' }}
+            />
+            <div style={{
+              position: 'absolute', bottom: 0, left: 0, right: 0,
+              background: 'linear-gradient(to top, rgba(12,10,9,0.95) 0%, rgba(12,10,9,0.4) 60%, transparent 100%)',
+              padding: '32px 24px 20px',
+            }}>
+              <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
+                Kade Dunstone
+              </p>
+              <p style={{ fontSize: '13px', color: '#14b8a6', margin: 0, fontWeight: 600 }}>
+                Founder, Body Recode · Exercise Scientist · National and International Competitor
+              </p>
+            </div>
+          </div>
+
           <p style={s.body}>
-            My name is Kade. Body Recode was built during one of the hardest seasons of my life. My relationship ended, I stepped away from the business I had built, and the structure I had relied on disappeared overnight.
+            Body Recode was built during one of the hardest seasons of my life. My relationship ended, I stepped away from the business I had built, and the structure I had relied on disappeared overnight.
           </p>
           <p style={s.body}>
             My body changed fast. I woke puffy. I held fat in new places. My appetite shifted. My energy dropped. And none of it made sense, because I had spent decades in fitness and competed nationally and internationally. This was not a knowledge problem.
