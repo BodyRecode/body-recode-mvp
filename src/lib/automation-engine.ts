@@ -119,15 +119,19 @@ export async function fireTrigger(
       .single()
 
     // Enqueue Inngest job — Inngest handles wait steps durably
-    await inngest.send({
-      name: 'automation/workflow.triggered',
-      data: {
-        workflowId: workflow.id,
-        executionId: execution?.id ?? null,
-        ctx,
-        contact,
-        templateVars,
-      },
-    })
+    try {
+      await inngest.send({
+        name: 'automation/workflow.triggered',
+        data: {
+          workflowId: workflow.id,
+          executionId: execution?.id ?? null,
+          ctx,
+          contact,
+          templateVars,
+        },
+      })
+    } catch (e) {
+      console.error('[automation-engine] inngest.send failed (dev server may not be running):', e)
+    }
   }
 }
