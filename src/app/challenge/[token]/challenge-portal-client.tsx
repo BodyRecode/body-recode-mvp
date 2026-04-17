@@ -61,20 +61,20 @@ const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
   },
 }
 
-const RESOURCES = [
+const RESOURCES_STATIC = [
   {
     id: 'training',
     title: '14-Day Training Plan',
     desc: 'Your session-by-session training structure for all 14 days.',
     icon: '🏋️',
-    href: '/challenge-training-plan.pdf',
+    href: '__training__',
   },
   {
     id: 'nutrition',
     title: 'Nutrition Guide',
     desc: 'Simple whole foods, meal timing, and digestion-friendly choices.',
     icon: '🥗',
-    href: '/challenge-nutrition-guide.pdf',
+    href: '__nutrition__',
   },
   {
     id: 'morning',
@@ -199,7 +199,7 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES[0] }) {
               whiteSpace: 'nowrap',
             }}
           >
-            Open PDF
+            View
           </a>
         ) : (
           <span style={{ fontSize: '13px', color: '#57534e', flexShrink: 0 }}>
@@ -357,6 +357,12 @@ export default function ChallengePortalClient({
   const todayNote = DAILY_NOTES[currentDay]
   const progress = Math.round((currentDay / 14) * 100)
   const quizUnlocked = currentDay >= 7
+
+  const RESOURCES = RESOURCES_STATIC.map(r =>
+    r.id === 'training' ? { ...r, href: `/challenge/${token}/training` }
+    : r.id === 'nutrition' ? { ...r, href: `/challenge/${token}/nutrition` }
+    : r
+  )
 
   return (
     <div style={{
