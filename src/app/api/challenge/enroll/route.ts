@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
       .insert({
         name: first_name.trim(),
         email: email.toLowerCase().trim(),
-        source: 'challenge',
-        source_detail: '14-day-body-decode',
+        source: 'other',
+        source_detail: '14-day-body-decode-challenge',
         status: 'new_check_in',
         active: true,
       })
