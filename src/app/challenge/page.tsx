@@ -261,7 +261,7 @@ export default function ChallengePage() {
         <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, color: '#57534e', marginBottom: '24px' }}>
           They are signals.
         </h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0', borderTop: '1px solid #1c1917' }}>
           {[
             'Waking up puffy or swollen',
             'Energy that crashes in the afternoon',
@@ -272,14 +272,12 @@ export default function ChallengePage() {
             'Constantly starting over',
           ].map(item => (
             <div key={item} style={{
-              background: '#111110',
-              border: '1px solid #1c1917',
-              borderLeft: '3px solid #14b8a6',
-              borderRadius: '10px',
-              padding: '14px 18px',
-              display: 'flex', alignItems: 'center', gap: '12px',
+              display: 'flex', alignItems: 'center', gap: '16px',
+              padding: '16px 0',
+              borderBottom: '1px solid #1c1917',
             }}>
-              <p style={{ fontSize: '15px', color: '#d4cfc9', margin: 0, lineHeight: 1.4 }}>{item}</p>
+              <span style={{ fontSize: '16px', flexShrink: 0 }}>⚡</span>
+              <p style={{ fontSize: '16px', color: '#d4cfc9', margin: 0, lineHeight: 1.4 }}>{item}</p>
             </div>
           ))}
         </div>
