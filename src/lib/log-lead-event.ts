@@ -11,6 +11,7 @@ export type LeadEventType =
   | 'noshow_sequence_scheduled'
   | 'email_sent'
   | 'scorecard_completed'
+  | 'challenge_enrolled'
 
 export async function logLeadEvent(params: {
   leadId: string

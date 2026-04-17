@@ -159,7 +159,7 @@ const QUIZ_QUESTIONS = [
   },
 ]
 
-function ExpandableResource({ resource }: { resource: typeof RESOURCES[0] }) {
+function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0] }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -362,7 +362,7 @@ export default function ChallengePortalClient({
     r.id === 'training' ? { ...r, href: `/challenge/${token}/training` }
     : r.id === 'nutrition' ? { ...r, href: `/challenge/${token}/nutrition` }
     : r
-  )
+  ) as typeof RESOURCES_STATIC
 
   return (
     <div style={{
