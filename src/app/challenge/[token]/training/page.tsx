@@ -221,25 +221,26 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
           <p style={label}>The Schedule</p>
           <p style={sectionTitle}>Weekly overview</p>
           <p style={{ fontSize: '14px', color: '#78716c', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
-            4 sessions in week one, 3 sessions in week two. This is intentional - volume decreases as intensity and adaptation increase.
+            The challenge starts on Sunday. Day 1 is an orientation day - no training. First session is Monday. 4 sessions in week one, 3 in week two.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {[
               {
                 week: 'Week 1',
                 days: [
-                  { day: 'Day 1 - Mon', session: 'Session A', type: 'Foundation Strength' },
-                  { day: 'Day 3 - Wed', session: 'Session B', type: 'Conditioning Focus' },
-                  { day: 'Day 5 - Fri', session: 'Session A', type: 'Foundation Strength' },
-                  { day: 'Day 6 - Sat', session: 'Session C', type: 'Volume and Density' },
+                  { day: 'Day 1 - Sun', session: 'Orientation', type: 'No training - read your guides and set up' },
+                  { day: 'Day 2 - Mon', session: 'Session A', type: 'Foundation Strength' },
+                  { day: 'Day 4 - Wed', session: 'Session B', type: 'Conditioning Focus' },
+                  { day: 'Day 6 - Fri', session: 'Session A', type: 'Foundation Strength' },
+                  { day: 'Day 7 - Sat', session: 'Session C', type: 'Volume and Density' },
                 ],
               },
               {
                 week: 'Week 2',
                 days: [
-                  { day: 'Day 8 - Mon', session: 'Session B', type: 'Conditioning Focus' },
-                  { day: 'Day 10 - Wed', session: 'Session A', type: 'Foundation Strength' },
-                  { day: 'Day 12 - Fri', session: 'Session C', type: 'Volume and Density' },
+                  { day: 'Day 9 - Mon', session: 'Session B', type: 'Conditioning Focus' },
+                  { day: 'Day 11 - Wed', session: 'Session A', type: 'Foundation Strength' },
+                  { day: 'Day 13 - Fri', session: 'Session C', type: 'Volume and Density' },
                 ],
               },
             ].map(w => (

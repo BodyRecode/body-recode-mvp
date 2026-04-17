@@ -4,12 +4,12 @@ import { useState } from 'react'
 
 const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
   1: {
-    focus: 'Setting your rhythm',
-    note: 'Today is about one thing: starting. Do not try to be perfect. Just complete the training session, follow the nutrition guide, and do the morning reset. Your body responds to consistency, not intensity. One day done is the beginning of a pattern.',
+    focus: 'Orientation day',
+    note: 'No training today. Day 1 is for getting set up. Read your training plan and nutrition guide in full. Do the morning reset sequence. Eat clean. Go for a walk. Your first training session is tomorrow. Starting with one calm, structured day before the work begins is part of the design.',
   },
   2: {
-    focus: 'Your first morning',
-    note: 'Notice how your body feels when you wake up today. Puffy? Heavy? Tired? That is baseline. Write it down mentally. Over the next 14 days you will have something to compare it to. The morning reset is doing more than you think right now.',
+    focus: 'First training session',
+    note: 'Session A today. Notice how your body feels when you wake up - puffy, heavy, tired? That is your baseline. Write it down mentally. Over the next 14 days you will have something to compare it to. Do the morning reset before you train. Keep the session controlled. RIR is your guide, not max effort.',
   },
   3: {
     focus: 'Digestion and inflammation',
@@ -20,8 +20,8 @@ const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
     note: 'Pay attention to your afternoon energy today. Do you crash at the same time? That pattern has a biological cause. The structure you are building right now is directly targeting it. Stay the course.',
   },
   5: {
-    focus: 'Halfway through week one + Live Session tonight',
-    note: 'Five days in. That is not nothing. Most people quit before this. Your body is already recalibrating, even if you cannot feel it yet. Complete your Session B training today as scheduled. Tonight I am running a live 30-minute session for everyone in the challenge - check the Live Session card below for the details.',
+    focus: 'Live Session tonight',
+    note: 'Today is a rest day from training - walk 30 to 60 minutes as usual. But tonight I am running a live 30-minute session for everyone in the challenge. We will break down what your body has been doing this week, decode the signals you have been feeling, and talk about what is coming in Week 2. Check the Live Session card below for the Zoom link.',
   },
   6: {
     focus: 'Recovery and sleep',
