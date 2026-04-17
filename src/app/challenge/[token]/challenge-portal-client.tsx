@@ -20,8 +20,8 @@ const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
     note: 'Pay attention to your afternoon energy today. Do you crash at the same time? That pattern has a biological cause. The structure you are building right now is directly targeting it. Stay the course.',
   },
   5: {
-    focus: 'Halfway through week one',
-    note: 'Five days in. That is not nothing. Most people quit before this. Your body is already recalibrating, even if you cannot feel it yet. The shifts happen under the surface first, then they become visible. Keep going.',
+    focus: 'Halfway through week one + Live Session tonight',
+    note: 'Five days in. That is not nothing. Most people quit before this. Your body is already recalibrating, even if you cannot feel it yet. Complete your Session B training today as scheduled. Tonight I am running a live 30-minute session for everyone in the challenge - check the Live Session card below for the details.',
   },
   6: {
     focus: 'Recovery and sleep',
