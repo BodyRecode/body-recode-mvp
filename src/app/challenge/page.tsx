@@ -174,67 +174,55 @@ export default function ChallengePage() {
 
       {/* HERO */}
       <div style={{ position: 'relative', overflow: 'hidden' }}>
-        {/* Teal glow */}
+        {/* Teal glow top-right */}
         <div style={{
-          position: 'absolute', top: '-80px', right: '-80px',
-          width: '400px', height: '400px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(20,184,166,0.12) 0%, transparent 70%)',
+          position: 'absolute', top: '-120px', right: '-120px',
+          width: '500px', height: '500px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(20,184,166,0.1) 0%, transparent 65%)',
+          pointerEvents: 'none',
+        }} />
+        {/* Teal glow bottom-left */}
+        <div style={{
+          position: 'absolute', bottom: '0', left: '-100px',
+          width: '340px', height: '340px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(20,184,166,0.05) 0%, transparent 70%)',
           pointerEvents: 'none',
         }} />
 
-        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '0 24px 0' }}>
-          {/* Kade photo — hero placement */}
+        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '48px 24px 64px' }}>
+
+          {/* Badge */}
           <div style={{
-            position: 'relative', borderRadius: '20px', overflow: 'hidden',
-            marginBottom: '40px',
-            boxShadow: '0 0 0 1px rgba(20,184,166,0.15), 0 32px 64px rgba(0,0,0,0.6)',
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            background: 'rgba(20,184,166,0.08)', border: '1px solid rgba(20,184,166,0.25)',
+            borderRadius: '99px', padding: '7px 16px', marginBottom: '32px',
           }}>
-            <img
-              src="/kade.jpg"
-              alt="Kade Dunstone"
-              style={{ width: '100%', display: 'block', maxHeight: '480px', objectFit: 'cover', objectPosition: 'top' }}
-            />
-            {/* Gradient overlay */}
-            <div style={{
-              position: 'absolute', inset: 0,
-              background: 'linear-gradient(to bottom, transparent 40%, rgba(12,10,9,0.5) 70%, rgba(12,10,9,0.95) 100%)',
-            }} />
-            {/* Badge */}
-            <div style={{
-              position: 'absolute', top: '20px', left: '20px',
-              background: 'rgba(12,10,9,0.8)', backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(20,184,166,0.3)',
-              borderRadius: '99px', padding: '6px 14px',
-              display: 'flex', alignItems: 'center', gap: '6px',
-            }}>
-              <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#14b8a6' }} />
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                Free Challenge
-              </span>
-            </div>
-            {/* Name overlay */}
-            <div style={{ position: 'absolute', bottom: '20px', left: '24px' }}>
-              <p style={{ fontSize: '15px', fontWeight: 800, color: '#ffffff', margin: '0 0 2px' }}>Kade Dunstone</p>
-              <p style={{ fontSize: '12px', color: '#14b8a6', margin: 0, fontWeight: 600 }}>Founder, Body Recode</p>
-            </div>
+            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#14b8a6' }} />
+            <span style={{ fontSize: '12px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Free 14-Day Challenge
+            </span>
           </div>
 
           {/* Headline */}
           <h1 style={{
-            fontSize: 'clamp(32px, 6vw, 48px)',
+            fontSize: 'clamp(36px, 7vw, 54px)',
             fontWeight: 900,
             letterSpacing: '-0.03em',
-            lineHeight: 1.1,
-            marginBottom: '20px',
+            lineHeight: 1.08,
+            marginBottom: '24px',
           }}>
             Your body is not broken.
             <br />
             <span style={{ color: '#14b8a6' }}>It is stuck in the wrong state.</span>
           </h1>
-          <p style={{ fontSize: '18px', color: '#a8a29e', lineHeight: 1.7, marginBottom: '16px' }}>
+
+          {/* Divider line */}
+          <div style={{ width: '48px', height: '3px', background: '#14b8a6', borderRadius: '2px', marginBottom: '24px' }} />
+
+          <p style={{ fontSize: '19px', color: '#a8a29e', lineHeight: 1.7, marginBottom: '14px' }}>
             You are doing the work. You are not getting the result. That is not a discipline problem. That is a biology problem.
           </p>
-          <p style={{ fontSize: '18px', color: '#a8a29e', lineHeight: 1.7, marginBottom: '36px' }}>
+          <p style={{ fontSize: '19px', color: '#a8a29e', lineHeight: 1.7, marginBottom: '40px' }}>
             The 14-Day Body Decode Challenge is a structured reset designed to lower biological noise, stabilise your energy, and let your body start responding again.
           </p>
 
@@ -393,6 +381,30 @@ export default function ChallengePage() {
         <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '24px' }}>
           Built from the same reset that helped me rebuild.
         </h2>
+
+        {/* Photo */}
+        <div style={{
+          position: 'relative', borderRadius: '18px', overflow: 'hidden',
+          marginBottom: '28px',
+          boxShadow: '0 0 0 1px rgba(20,184,166,0.12), 0 24px 48px rgba(0,0,0,0.5)',
+        }}>
+          <img
+            src="/kade.jpg"
+            alt="Kade Dunstone"
+            style={{ width: '100%', display: 'block', maxHeight: '460px', objectFit: 'cover', objectPosition: 'top center', filter: 'brightness(0.9)' }}
+          />
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to bottom, transparent 50%, rgba(12,10,9,0.92) 100%)',
+          }} />
+          <div style={{ position: 'absolute', bottom: '22px', left: '24px', right: '24px' }}>
+            <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', margin: '0 0 3px' }}>Kade Dunstone</p>
+            <p style={{ fontSize: '13px', color: '#14b8a6', margin: 0, fontWeight: 600 }}>
+              Founder, Body Recode · Exercise Scientist · National and International Competitor
+            </p>
+          </div>
+        </div>
+
         <p style={{ fontSize: '16px', color: '#a8a29e', lineHeight: 1.7, marginBottom: '16px' }}>
           Body Recode was built during one of the hardest seasons of my life. My relationship ended, I stepped away from the business I had built, and the structure I had relied on disappeared overnight.
         </p>
@@ -404,7 +416,8 @@ export default function ChallengePage() {
         </p>
         <div style={{
           background: '#111110', border: '1px solid #1c1917',
-          borderRadius: '14px', padding: '20px 22px', marginBottom: '0',
+          borderLeft: '3px solid #14b8a6',
+          borderRadius: '14px', padding: '20px 22px',
         }}>
           <p style={{ fontSize: '16px', color: '#d4cfc9', fontWeight: 600, lineHeight: 1.65, margin: 0 }}>
             When I simplified everything and gave my body the right environment, it recalibrated. The patterns from that season became the foundation of Body Recode. This challenge is built from the same structure that helped me come back.
