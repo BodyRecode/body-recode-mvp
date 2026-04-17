@@ -5,6 +5,209 @@ import { sendSms, formatPhone } from './twilio'
 import { darkEmailSignature } from './email-signature'
 import type { TriggerContext } from './automation-engine'
 
+// ─── Challenge Email Helpers ────────────────────────────────────────────────
+
+function challengeEmailShell(body: string): string {
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr>
+      <td align="center">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+          <tr>
+            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+              ${body}
+              ${darkEmailSignature()}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body></html>`
+}
+
+// ─── Challenge Sequence Function ─────────────────────────────────────────────
+
+export const challengeSequenceFunction = inngest.createFunction(
+  {
+    id: 'challenge-sequence',
+    retries: 2,
+    triggers: [{ event: 'challenge/enrolled' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const { leadId, token, email, firstName } = event.data as {
+      leadId: string
+      token: string
+      email: string
+      firstName: string
+    }
+
+    const portalUrl = `https://bodyrecode.au/challenge/${token}`
+    const zoomUrl = process.env.CHALLENGE_ZOOM_URL ?? 'https://bodyrecode.au/challenge-session'
+    const resend = new Resend(process.env.RESEND_API_KEY)
+
+    // ── Step 1: Welcome email ──────────────────────────────────────────────
+    await step.run('send-welcome-email', async () => {
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `You're in, ${firstName}. Day 1 starts now.`,
+        html: challengeEmailShell(`
+          <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
+            Welcome to the 14-Day Body Decode Challenge.
+          </p>
+          <p>Hi ${firstName},</p>
+          <p>You are in. Day 1 starts today.</p>
+          <p>Over the next 14 days you will follow a simple structure designed to calm your system, rebuild your baseline, and help you understand what is actually driving the way your body looks and feels.</p>
+          <p>Your challenge portal has everything you need:</p>
+          <ul style="padding-left:20px;color:#888888;">
+            <li style="margin-bottom:6px;">Your daily coaching note - opens each morning</li>
+            <li style="margin-bottom:6px;">Your 14-day training plan</li>
+            <li style="margin-bottom:6px;">Your HABNS nutrition guide</li>
+            <li style="margin-bottom:6px;">Your morning and evening reset sequences</li>
+            <li style="margin-bottom:6px;">The Mini Hormone Quiz - unlocks on Day 7</li>
+          </ul>
+          <p>Start simple. Follow the structure. Do not try to be perfect on Day 1.</p>
+          <p>
+            <a href="${portalUrl}" style="display:inline-block;padding:13px 24px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
+              Open your challenge portal
+            </a>
+          </p>
+          <p style="font-size:13px;color:#57534e;">
+            Bookmark this link. It is your personal portal for the full 14 days.<br/>
+            <a href="${portalUrl}" style="color:#57534e;">${portalUrl}</a>
+          </p>
+        `),
+      })
+    })
+
+    // ── Step 2: Notify coach ───────────────────────────────────────────────
+    await step.run('notify-coach-enrollment', async () => {
+      await resend.emails.send({
+        from: 'Body Recode <kade@bodyrecode.au>',
+        to: 'kade@bodyrecode.au',
+        subject: `New challenge enrollment - ${firstName}`,
+        html: challengeEmailShell(`
+          <p style="color:#ffffff;font-size:16px;font-weight:700;margin:0 0 16px;">New Challenge Enrollment</p>
+          <p><strong style="color:#ffffff;">${firstName}</strong> just enrolled in the 14-Day Body Decode Challenge.</p>
+          <p style="color:#888888;">Email: ${email}</p>
+          <p style="color:#888888;">Portal token: ${token}</p>
+          <p>
+            <a href="${portalUrl}" style="display:inline-block;padding:10px 18px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:13px;border-radius:8px;text-decoration:none;">
+              View their portal
+            </a>
+          </p>
+        `),
+      })
+    })
+
+    // ── Step 3: Wait 4 days → Day 5 Zoom invite ───────────────────────────
+    await step.sleep('wait-for-day-5', '4d')
+
+    await step.run('send-day5-zoom-invite', async () => {
+      // Check enrollment is still active before sending
+      const admin = createAdminClient()
+      const { data: enrollment } = await admin
+        .from('challenge_enrollments')
+        .select('status')
+        .eq('token', token)
+        .single()
+      if (!enrollment || enrollment.status !== 'active') return
+
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `Day 5 - Your Week One Progress Session is tonight`,
+        html: challengeEmailShell(`
+          <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
+            Week One Progress Session
+          </p>
+          <p>Hi ${firstName},</p>
+          <p>You have made it to Day 5. That puts you ahead of most people who started.</p>
+          <p>Tonight I am running a live 30-minute session for everyone in the challenge. It is called the Week One Progress Session.</p>
+          <p style="color:#ffffff;font-weight:600;">Here is what we will cover:</p>
+          <ul style="padding-left:20px;color:#888888;">
+            <li style="margin-bottom:6px;">What your body has been doing this week (it is more than you think)</li>
+            <li style="margin-bottom:6px;">How to decode the signals you are feeling - energy, digestion, puffiness, mood</li>
+            <li style="margin-bottom:6px;">Why rhythm matters more than restriction</li>
+            <li style="margin-bottom:6px;">What Week 2 is building toward</li>
+            <li style="margin-bottom:6px;">The next step after the challenge for those who want to go deeper</li>
+          </ul>
+          <p>This is not a hard sell. It is a biology education session. I will also share the story behind how I built this system and why it works the way it does.</p>
+          <div style="background:#0d2d29;border:1px solid rgba(20,184,166,0.2);border-radius:10px;padding:20px;margin:20px 0;">
+            <p style="color:#14b8a6;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Live Zoom Session</p>
+            <p style="color:#ffffff;font-weight:700;font-size:16px;margin:0 0 4px;">Week One Progress Session</p>
+            <p style="color:#a8a29e;font-size:13px;margin:0 0 16px;">30 minutes - Tonight</p>
+            <a href="${zoomUrl}" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
+              Join the session
+            </a>
+          </div>
+          <p style="font-size:13px;color:#57534e;">Can not make it live? Reply to this email and I will send you the recording.</p>
+        `),
+      })
+    })
+
+    // ── Step 4: Wait 9 more days → Day 14 ascension ───────────────────────
+    await step.sleep('wait-for-day-14', '9d')
+
+    await step.run('send-day14-ascension', async () => {
+      const admin = createAdminClient()
+      const { data: enrollment } = await admin
+        .from('challenge_enrollments')
+        .select('status')
+        .eq('token', token)
+        .single()
+      if (!enrollment || enrollment.status !== 'active') return
+
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `${firstName}, you finished the 14 days.`,
+        html: challengeEmailShell(`
+          <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
+            14 days done.
+          </p>
+          <p>Hi ${firstName},</p>
+          <p>You finished the challenge. That is not nothing.</p>
+          <p>Most people who start something like this quit before Day 5. You made it to Day 14. That means your body has had 14 consecutive days of structured rhythm - consistent training, real food, better sleep, predictable timing.</p>
+          <p style="color:#ffffff;font-weight:600;">What that should have done:</p>
+          <ul style="padding-left:20px;color:#888888;">
+            <li style="margin-bottom:6px;">Reduced the daily puffiness and inflammation</li>
+            <li style="margin-bottom:6px;">Stabilised your energy across the day</li>
+            <li style="margin-bottom:6px;">Calmed the afternoon cravings</li>
+            <li style="margin-bottom:6px;">Improved your sleep quality</li>
+            <li style="margin-bottom:6px;">Given your digestion a cleaner baseline</li>
+          </ul>
+          <p>This is your baseline now. The question is: what do you build on top of it?</p>
+          <p>The 6-Week Body Recode Blueprint takes everything you have started and adds structure, progressive training, signal-guided nutrition, and real accountability. It is where the results become visible.</p>
+          <div style="background:#0d2d29;border:1px solid rgba(20,184,166,0.2);border-radius:10px;padding:20px;margin:20px 0;">
+            <p style="color:#14b8a6;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Next Step</p>
+            <p style="color:#ffffff;font-weight:700;font-size:16px;margin:0 0 4px;">6-Week Body Recode Blueprint</p>
+            <p style="color:#a8a29e;font-size:13px;margin:0 0 16px;">Where rhythm becomes results.</p>
+            <a href="https://bodyrecode.au/scorecard" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
+              Take the full Body State Scorecard
+            </a>
+          </div>
+          <p style="font-size:13px;color:#57534e;">Or just reply to this email and I will personally help you figure out the right next step.</p>
+        `),
+      })
+
+      // Log completion
+      await admin
+        .from('challenge_enrollments')
+        .update({ status: 'completed' })
+        .eq('token', token)
+    })
+  }
+)
+
 interface Contact {
   name: string
   email: string | null

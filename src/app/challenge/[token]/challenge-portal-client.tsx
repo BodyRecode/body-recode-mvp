@@ -448,6 +448,61 @@ export default function ChallengePortalClient({
           </div>
         </div>
 
+        {/* Day 5 Live Session */}
+        {currentDay >= 5 && (
+          <div style={{ marginBottom: '48px' }}>
+            <p style={{ fontSize: '11px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+              Live Session
+            </p>
+            <div style={{
+              background: 'linear-gradient(135deg, #0d2d29 0%, #0a2320 100%)',
+              border: '1px solid rgba(20,184,166,0.25)',
+              borderRadius: '16px', padding: '24px',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                <div style={{
+                  width: '8px', height: '8px', borderRadius: '50%',
+                  background: '#14b8a6', boxShadow: '0 0 0 3px rgba(20,184,166,0.25)',
+                }} />
+                <span style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                  Week One Progress Session
+                </span>
+              </div>
+              <p style={{ fontSize: '19px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em', margin: '0 0 10px', lineHeight: 1.3 }}>
+                Decode what your body has been doing this week.
+              </p>
+              <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, margin: '0 0 20px' }}>
+                A live 30-minute session where we break down exactly what is happening in your biology during Week 1. What the signals mean. Why rhythm works. And what comes next.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+                {[
+                  'Understanding your Week 1 biological signals',
+                  'Why rhythm beats restriction every time',
+                  'The shift from reset to results',
+                  'What the 6-Week Blueprint builds on top of this',
+                ].map(item => (
+                  <div key={item} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                    <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#14b8a6', flexShrink: 0, marginTop: '7px' }} />
+                    <p style={{ fontSize: '13px', color: '#99d6d0', margin: 0, lineHeight: 1.55 }}>{item}</p>
+                  </div>
+                ))}
+              </div>
+              <a
+                href={process.env.NEXT_PUBLIC_CHALLENGE_ZOOM_URL ?? 'https://bodyrecode.au/challenge-session'}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-block', padding: '13px 24px', borderRadius: '10px',
+                  background: '#14b8a6', color: '#0c0a09',
+                  fontSize: '14px', fontWeight: 800, textDecoration: 'none',
+                }}
+              >
+                Join the live session
+              </a>
+            </div>
+          </div>
+        )}
+
         {/* Mini Hormone Quiz */}
         <div style={{ marginBottom: '48px' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>

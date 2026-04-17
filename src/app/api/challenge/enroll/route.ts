@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
+import { inngest } from '@/lib/inngest'
 
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
@@ -94,6 +95,21 @@ export async function POST(request: NextRequest) {
 
     // Fire automation trigger for challenge welcome sequence
     await fireTrigger('form_submitted', { leadId }, { form: 'challenge_signup' })
+
+    // Fire dedicated challenge sequence (welcome email + Day 5 Zoom + Day 14 ascension)
+    try {
+      await inngest.send({
+        name: 'challenge/enrolled',
+        data: {
+          leadId,
+          token,
+          email: email.toLowerCase().trim(),
+          firstName: first_name.trim().split(' ')[0],
+        },
+      })
+    } catch (e) {
+      console.error('[challenge/enroll] inngest.send failed:', e)
+    }
   }
 
   return NextResponse.json({ success: true, token })
