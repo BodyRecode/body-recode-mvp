@@ -20,8 +20,8 @@ const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
     note: 'Pay attention to your afternoon energy today. Do you crash at the same time? That pattern has a biological cause. The structure you are building right now is directly targeting it. Stay the course.',
   },
   5: {
-    focus: 'Live Session tonight',
-    note: 'Today is a rest day from training - walk 30 to 60 minutes as usual. But tonight I am running a live 30-minute session for everyone in the challenge. We will break down what your body has been doing this week, decode the signals you have been feeling, and talk about what is coming in Week 2. Check the Live Session card below for the Zoom link.',
+    focus: 'Week One Progress Session',
+    note: 'Today is a rest day from training - walk 30 to 60 minutes as usual. Your Week One Progress Session is now available below. Watch it today while you are in the middle of the reset. It will help you understand what your body has been doing this week and make Week 2 feel much clearer.',
   },
   6: {
     focus: 'Recovery and sleep',
@@ -472,14 +472,14 @@ export default function ChallengePortalClient({
                 Decode what your body has been doing this week.
               </p>
               <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, margin: '0 0 20px' }}>
-                A live 30-minute session where we break down exactly what is happening in your biology during Week 1. What the signals mean. Why rhythm works. And what comes next.
+                Your Week One Progress Session is now available. Watch this 30-minute session to understand exactly what has been happening in your biology, what the signals mean, and what Week 2 is building toward.
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
                 {[
-                  'Understanding your Week 1 biological signals',
+                  'What your body has been doing this week',
+                  'How to decode your biological signals',
                   'Why rhythm beats restriction every time',
                   'The shift from reset to results',
-                  'What the 6-Week Blueprint builds on top of this',
                 ].map(item => (
                   <div key={item} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                     <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#14b8a6', flexShrink: 0, marginTop: '7px' }} />
@@ -488,7 +488,7 @@ export default function ChallengePortalClient({
                 ))}
               </div>
               <a
-                href={process.env.NEXT_PUBLIC_CHALLENGE_ZOOM_URL ?? 'https://bodyrecode.au/challenge-session'}
+                href={process.env.NEXT_PUBLIC_CHALLENGE_SESSION_VIDEO_URL ?? '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -497,7 +497,7 @@ export default function ChallengePortalClient({
                   fontSize: '14px', fontWeight: 800, textDecoration: 'none',
                 }}
               >
-                Join the live session
+                Watch the session
               </a>
             </div>
           </div>

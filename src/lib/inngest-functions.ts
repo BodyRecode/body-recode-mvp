@@ -50,7 +50,6 @@ export const challengeSequenceFunction = inngest.createFunction(
     }
 
     const portalUrl = `https://bodyrecode.au/challenge/${token}`
-    const zoomUrl = process.env.CHALLENGE_ZOOM_URL ?? 'https://bodyrecode.au/challenge-session'
     const resend = new Resend(process.env.RESEND_API_KEY)
 
     // ── Step 1: Welcome email ──────────────────────────────────────────────
@@ -121,35 +120,36 @@ export const challengeSequenceFunction = inngest.createFunction(
         .single()
       if (!enrollment || enrollment.status !== 'active') return
 
+      const sessionVideoUrl = process.env.CHALLENGE_SESSION_VIDEO_URL ?? portalUrl
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
-        subject: `Day 5 - Your Week One Progress Session is tonight`,
+        subject: `Day 5 - Your Week One Progress Session is ready`,
         html: challengeEmailShell(`
           <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
             Week One Progress Session
           </p>
           <p>Hi ${firstName},</p>
           <p>You have made it to Day 5. That puts you ahead of most people who started.</p>
-          <p>Tonight I am running a live 30-minute session for everyone in the challenge. It is called the Week One Progress Session.</p>
-          <p style="color:#ffffff;font-weight:600;">Here is what we will cover:</p>
+          <p>Your Week One Progress Session is now available to watch. It is a 30-minute session I recorded specifically for this point in the challenge.</p>
+          <p style="color:#ffffff;font-weight:600;">In this session:</p>
           <ul style="padding-left:20px;color:#888888;">
-            <li style="margin-bottom:6px;">What your body has been doing this week (it is more than you think)</li>
-            <li style="margin-bottom:6px;">How to decode the signals you are feeling - energy, digestion, puffiness, mood</li>
+            <li style="margin-bottom:6px;">What your body has actually been doing this week</li>
+            <li style="margin-bottom:6px;">How to decode the signals you have been feeling - energy, digestion, puffiness, mood</li>
             <li style="margin-bottom:6px;">Why rhythm matters more than restriction</li>
             <li style="margin-bottom:6px;">What Week 2 is building toward</li>
             <li style="margin-bottom:6px;">The next step after the challenge for those who want to go deeper</li>
           </ul>
-          <p>This is not a hard sell. It is a biology education session. I will also share the story behind how I built this system and why it works the way it does.</p>
+          <p>I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset - it will make Week 2 feel much clearer.</p>
           <div style="background:#0d2d29;border:1px solid rgba(20,184,166,0.2);border-radius:10px;padding:20px;margin:20px 0;">
-            <p style="color:#14b8a6;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Live Zoom Session</p>
+            <p style="color:#14b8a6;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Now Available</p>
             <p style="color:#ffffff;font-weight:700;font-size:16px;margin:0 0 4px;">Week One Progress Session</p>
-            <p style="color:#a8a29e;font-size:13px;margin:0 0 16px;">30 minutes - Tonight</p>
-            <a href="${zoomUrl}" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
-              Join the session
+            <p style="color:#a8a29e;font-size:13px;margin:0 0 16px;">30 minutes</p>
+            <a href="${sessionVideoUrl}" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
+              Watch the session
             </a>
           </div>
-          <p style="font-size:13px;color:#57534e;">Can not make it live? Reply to this email and I will send you the recording.</p>
+          <p style="font-size:13px;color:#57534e;">You can also find this in your portal under the Live Session section.</p>
         `),
       })
     })
