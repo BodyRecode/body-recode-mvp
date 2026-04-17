@@ -118,15 +118,15 @@ function ReportUpsell({ firstName, email, score, bodyState, scores }: {
   }
 
   return (
-    <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '14px', padding: '28px 28px 24px' }}>
-      <p style={{ fontSize: '13px', fontWeight: 700, color: '#57534e', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>
+    <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.3)', borderRadius: '14px', padding: '28px 28px 24px' }}>
+      <p style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>
         Body Decode Report · $37
       </p>
-      <p style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', marginBottom: '10px', lineHeight: 1.3 }}>
-        Get the full breakdown of your results.
+      <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>
+        Get the full breakdown of what this means for you.
       </p>
-      <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.7, marginBottom: '24px' }}>
-        A personalised written report covering what your body state means, what is working against you right now, and exactly what to stop and start doing. Delivered to your inbox instantly.
+      <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
+        A written report covering your exact body state, what is specifically working against you right now, and what to stop and start doing. Delivered to your inbox instantly.
       </p>
       {error && <p style={{ fontSize: '13px', color: '#ef4444', marginBottom: '12px' }}>{error}</p>}
       <button
@@ -134,9 +134,9 @@ function ReportUpsell({ firstName, email, score, bodyState, scores }: {
         disabled={loading}
         style={{
           display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
-          background: 'transparent', color: '#a8a29e',
+          background: '#14b8a6', color: '#0c0a09',
           fontSize: '15px', fontWeight: 700, textAlign: 'center',
-          border: '1.5px solid #2c2826', cursor: loading ? 'not-allowed' : 'pointer',
+          border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
           opacity: loading ? 0.6 : 1,
         }}
       >
@@ -207,7 +207,7 @@ function ScorecardInner() {
                 The Body State Scorecard
               </h1>
               <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.6 }}>
-                Find out why your body is not responding. Takes 2 minutes. Select one score per section.
+                You're putting in the effort. Something is working against you. This tells you what.
               </p>
             </div>
 
@@ -423,28 +423,7 @@ function ScorecardInner() {
 
             {/* CTA */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {/* Primary: Book a call */}
-              <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.3)', borderRadius: '14px', padding: '28px 28px 24px' }}>
-                <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>
-                  The score tells you the state. A call tells you the fix.
-                </p>
-                <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
-                  We go through your results together, identify the specific driver behind what is not working, and map out exactly what needs to change first. Free. 30 minutes. No pitch.
-                </p>
-                <a
-                  href="https://bodyrecode.au/book"
-                  style={{
-                    display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
-                    background: '#14b8a6', color: '#0c0a09',
-                    fontSize: '15px', fontWeight: 700, textAlign: 'center',
-                    textDecoration: 'none',
-                  }}
-                >
-                  Book a free call
-                </a>
-              </div>
-
-              {/* Secondary: Body Decode Report */}
+              {/* Primary: Body Decode Report */}
               <ReportUpsell
                 firstName={firstName}
                 email={email}
@@ -452,6 +431,27 @@ function ScorecardInner() {
                 bodyState={result.label}
                 scores={scores}
               />
+
+              {/* Secondary: Book a call */}
+              <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.15)', borderRadius: '14px', padding: '24px 28px' }}>
+                <p style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.3 }}>
+                  Want to talk through your result?
+                </p>
+                <p style={{ fontSize: '13px', color: '#99d6d0', lineHeight: 1.6, marginBottom: '20px' }}>
+                  Free 30-minute call. We go through exactly what is driving your situation and map out what needs to change first. No pitch.
+                </p>
+                <a
+                  href="https://bodyrecode.au/book"
+                  style={{
+                    display: 'block', width: '100%', padding: '14px', borderRadius: '10px',
+                    background: 'transparent', color: '#14b8a6',
+                    fontSize: '14px', fontWeight: 700, textAlign: 'center',
+                    textDecoration: 'none', border: '1.5px solid rgba(20,184,166,0.4)',
+                  }}
+                >
+                  Book a free call
+                </a>
+              </div>
             </div>
           </>
         )}

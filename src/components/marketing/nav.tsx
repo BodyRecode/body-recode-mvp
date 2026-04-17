@@ -7,12 +7,20 @@ export default function MarketingNav() {
         <a href="/" className="cursor-pointer block">
           <Image src="/logo-teal.png" alt="Body Recode" width={220} height={97} className="h-16 w-auto" />
         </a>
-        <a
-          href="mailto:info@bodyrecode.au"
-          className="text-sm font-semibold text-white/50 hover:text-white transition-colors tracking-wide"
-        >
-          info@bodyrecode.au
-        </a>
+        <div className="flex items-center gap-6">
+          <a
+            href="/scorecard"
+            className="text-sm font-semibold text-[#10E1C2] hover:text-[#0ecfb3] transition-colors tracking-wide"
+          >
+            Take the Scorecard
+          </a>
+          <a
+            href="mailto:info@bodyrecode.au"
+            className="text-sm font-semibold text-white/50 hover:text-white transition-colors tracking-wide"
+          >
+            info@bodyrecode.au
+          </a>
+        </div>
       </div>
     </nav>
   )

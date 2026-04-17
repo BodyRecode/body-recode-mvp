@@ -105,9 +105,9 @@ export default function BookPage() {
         {step === 'slots' && (
           <>
             <div className="mb-10">
-              <h1 className="text-3xl font-bold mb-3">Book a Zoom Call</h1>
+              <h1 className="text-3xl font-bold mb-3">Let&apos;s go through your results.</h1>
               <p className="text-stone-400 text-base leading-relaxed">
-                A free 30-minute call to go through your scorecard results, identify what is specifically holding your body back, and map out what needs to change first.
+                30 minutes. We identify the specific driver behind what is not working and map out exactly what needs to change first. Free. No pitch.
               </p>
             </div>
 
