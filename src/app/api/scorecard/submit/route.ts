@@ -97,6 +97,12 @@ export async function POST(request: NextRequest) {
   await fireTrigger('form_submitted', { leadId }, { form: 'scorecard' })
   console.log('[scorecard/submit] Automation triggered for lead:', leadId)
 
+  // Map body state to its display color
+  const stateColor =
+    body_state === 'Depleted State' ? '#ef4444' :
+    body_state === 'Transitioning State' ? '#f59e0b' :
+    '#14b8a6' // Ready State
+
   // Notify coach
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
@@ -128,7 +134,7 @@ export async function POST(request: NextRequest) {
                   <td style="width:12px;"></td>
                   <td style="padding:14px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;">
                     <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#57534e;letter-spacing:0.08em;text-transform:uppercase;">Body State</p>
-                    <p style="margin:0;font-size:16px;font-weight:700;color:#14b8a6;">${body_state}</p>
+                    <p style="margin:0;font-size:16px;font-weight:700;color:${stateColor};">${body_state}</p>
                   </td>
                 </tr>
               </table>
