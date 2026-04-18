@@ -28,8 +28,8 @@ const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
     note: 'Focus on the evening rhythm tonight. Sleep quality is one of the biggest drivers of every symptom you felt at the start. Cortisol, appetite, inflammation, energy. They all trace back to overnight recovery. Give the wind-down sequence your full attention.',
   },
   7: {
-    focus: 'Halfway point - Mini Hormone Quiz',
-    note: 'You have reached Day 7. Today the Mini Hormone Quiz unlocks below. Complete it now while your body is mid-reset. Your answers will reflect real patterns. The personalised report you receive will give you your first clear look at what is driving your biology.',
+    focus: 'Halfway point - Body Decode Check-In',
+    note: 'You have reached Day 7. Today the Body Decode Check-In unlocks below. Rate how 8 biological markers have changed since Day 1, then answer 2 pattern questions. Do it now while your body is mid-reset - your answers will reflect what is actually happening in your biology right now.',
   },
   8: {
     focus: 'Your second week begins',
@@ -106,58 +106,82 @@ const RESOURCES_STATIC = [
   },
 ]
 
-const QUIZ_QUESTIONS = [
+const PROGRESS_MARKERS = [
+  { id: 'morning_energy',  label: 'Morning energy',            sub: 'How you feel when you wake up' },
+  { id: 'afternoon_energy',label: 'Afternoon energy',          sub: 'The 2-4pm window' },
+  { id: 'puffiness',       label: 'Puffiness and bloating',    sub: 'Through the day' },
+  { id: 'sleep',           label: 'Sleep quality',             sub: 'How rested you feel' },
+  { id: 'cravings',        label: 'Food cravings and hunger',  sub: 'Predictability and intensity' },
+  { id: 'clarity',         label: 'Mental clarity and focus',  sub: 'Sharpness across the day' },
+  { id: 'mood',            label: 'Mood stability',            sub: 'Consistency and evenness' },
+  { id: 'digestion',       label: 'Digestion',                 sub: 'Comfort and regularity' },
+]
+
+const SIGNAL_QUESTIONS = [
   {
-    id: 'q1',
-    question: 'How would you describe your energy across the day?',
+    id: 'sq1',
+    question: 'Where do you most notice excess puffiness or softness in your body?',
     options: [
-      { value: 'a', label: 'Consistently low, especially in the afternoon' },
-      { value: 'b', label: 'Wired at night, slow in the morning' },
-      { value: 'c', label: 'Stable with occasional dips' },
-      { value: 'd', label: 'Unpredictable, hard to plan around' },
+      { value: 'a', label: 'Stomach and waist — above and below the navel' },
+      { value: 'b', label: 'Lower gut and abdomen — even when you have not eaten much' },
+      { value: 'c', label: 'Hips, thighs, and lower body' },
+      { value: 'd', label: 'Upper back, chest, or arms' },
     ],
   },
   {
-    id: 'q2',
-    question: 'Where do you tend to hold or gain weight most noticeably?',
+    id: 'sq2',
+    question: 'Which of these fits most closely right now?',
     options: [
-      { value: 'a', label: 'Stomach and lower abdomen' },
-      { value: 'b', label: 'Hips, thighs, and lower body' },
-      { value: 'c', label: 'Chest, upper back, and arms' },
-      { value: 'd', label: 'Evenly distributed but not shifting' },
-    ],
-  },
-  {
-    id: 'q3',
-    question: 'How do you typically feel in the morning?',
-    options: [
-      { value: 'a', label: 'Puffy, swollen, or heavy' },
-      { value: 'b', label: 'Anxious or wired before you have done anything' },
-      { value: 'c', label: 'Slow to start but okay once moving' },
-      { value: 'd', label: 'Rested and ready most mornings' },
-    ],
-  },
-  {
-    id: 'q4',
-    question: 'How would you describe your hunger and cravings?',
-    options: [
-      { value: 'a', label: 'Strong cravings for sugar or carbs, especially afternoon and evening' },
-      { value: 'b', label: 'Low appetite in the morning, hard to stop at night' },
-      { value: 'c', label: 'Hunger feels unpredictable, hard to read' },
-      { value: 'd', label: 'Relatively stable but cravings during stress' },
-    ],
-  },
-  {
-    id: 'q5',
-    question: 'How does your body respond to exercise?',
-    options: [
-      { value: 'a', label: 'Feel worse or more inflamed after hard sessions' },
-      { value: 'b', label: 'Slow recovery, still sore days later' },
-      { value: 'c', label: 'Good during training but energy crashes afterwards' },
-      { value: 'd', label: 'Decent response but no body composition change' },
+      { value: 'a', label: 'Exhausted but wired — tired but cannot switch off at night' },
+      { value: 'b', label: 'Heavy and sluggish — especially after meals or in the afternoon' },
+      { value: 'c', label: 'Hormonally inconsistent — mood shifts, water retention, or cycle disruption' },
+      { value: 'd', label: 'Flat and stalled — not depleted, just not changing or responding' },
     ],
   },
 ]
+
+const CHECKIN_PATTERNS: Record<string, { label: string; color: string; desc: string; actions: string[] }> = {
+  a: {
+    label: 'Stress-Stored Pattern',
+    color: '#ef4444',
+    desc: 'Your body is storing and retaining in response to a chronic stress load. Cortisol and adrenaline are keeping your system in a state of low-grade alert, which signals your body to hold fat around the midsection as an energy reserve. The reset you have done this week is directly targeting this — but the full picture requires understanding exactly how your stress hormones are behaving across the day.',
+    actions: [
+      'Sleep is your highest leverage point. Cortisol resets overnight — prioritise sleep quality above everything else this week.',
+      'Keep training intensity moderate. Hard sessions spike cortisol further and can slow progress in this pattern.',
+      'Eat breakfast within 60 minutes of waking. This supports your morning cortisol curve and begins the process of hormonal regulation for the day.',
+    ],
+  },
+  b: {
+    label: 'Metabolic-Drift Pattern',
+    color: '#f59e0b',
+    desc: 'Your body\'s ability to manage blood sugar has drifted. Insulin is staying elevated longer than it should, which drives energy crashes, persistent cravings, and the heaviness you feel after meals. The nutrition structure you have been following this week is designed specifically for this — restricting starchy carbohydrates to the post-training window forces your body to rebuild insulin sensitivity over time.',
+    actions: [
+      'Never skip breakfast. Blood sugar stability starts with your first meal — skipping it creates a deficit that drives cravings throughout the rest of the day.',
+      'Walk after your evening meal. Even 15-20 minutes significantly lowers post-meal blood sugar.',
+      'Keep starchy carbohydrates strictly to the post-training window. Fruit is fine throughout the day — it metabolises differently to refined carbohydrates.',
+    ],
+  },
+  c: {
+    label: 'Hormonal-Shift Pattern',
+    color: '#8b5cf6',
+    desc: 'Your body is in a hormonal conservation state — storing and retaining as a protective mechanism driven by reproductive hormone signalling. This pattern is strongly influenced by stress load, sleep quality, and eating consistency. It is one of the most common patterns and one of the most mismanaged — typically treated with more restriction, which makes it worse.',
+    actions: [
+      'Avoid under-eating. This pattern responds poorly to caloric restriction — the body conserves harder when it perceives scarcity.',
+      'Prioritise sleep and recovery. Reproductive hormone balance is deeply tied to overnight restoration.',
+      'Be consistent with meal timing. Irregular eating disrupts the hormonal signals your body uses to decide whether to conserve or release stored energy.',
+    ],
+  },
+  d: {
+    label: 'System-Overload Pattern',
+    color: '#14b8a6',
+    desc: 'Your nervous system is carrying more load than it can adequately process. This is not about emotional stress alone — it is the total demand being placed on your system: training, decision-making, sleep disruption, inconsistent eating, environmental stimulation. Your body has adapted to this load by becoming unresponsive. Progress requires reducing total system demand, not increasing it.',
+    actions: [
+      'Do not train harder. This pattern does not respond to intensity — it responds to recovery. Keep training controlled and within RIR targets.',
+      'Prioritise the evening rhythm sequence every night. Wind-down is not optional for this pattern.',
+      'Reduce decision fatigue around food. Repeat the same 2-3 meals daily. The simplicity reduces neurological load and allows your system to stabilise.',
+    ],
+  },
+}
 
 function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0] & { locked?: boolean } }) {
   const [open, setOpen] = useState(false)
@@ -234,55 +258,72 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
   )
 }
 
-const QUIZ_RESULTS: Record<string, { label: string; desc: string; color: string }> = {
-  a: {
-    label: 'Cortisol-Dominant Pattern',
-    color: '#ef4444',
-    desc: 'Your responses suggest a cortisol-dominant pattern. Your body is likely in a state of chronic low-grade stress, which drives inflammation, fluid retention, and stubborn fat storage around the abdomen. The structure you have built this week is directly targeting this. The next step is understanding how to manage your stress load alongside your training and nutrition.',
-  },
-  b: {
-    label: 'Rhythm-Disrupted Pattern',
-    color: '#f59e0b',
-    desc: 'Your responses suggest a disrupted circadian and hormonal rhythm. Wired at night, slow in the morning, low morning appetite - these are classic signs of a reversed cortisol curve. Sleep timing and morning light exposure are your highest leverage points right now.',
-  },
-  c: {
-    label: 'Insulin-Sensitivity Pattern',
-    color: '#8b5cf6',
-    desc: 'Your responses suggest blood sugar and insulin sensitivity are the primary driver. Energy crashes, afternoon cravings, and poor training response all point here. Meal timing, carbohydrate quality, and training type are the levers that will move your results the most.',
-  },
-  d: {
-    label: 'Adaptation-Stalled Pattern',
-    color: '#14b8a6',
-    desc: 'Your responses suggest your body has adapted to its current environment and stopped responding. You are not in a depleted state - you are in a plateau. Your biology needs a new signal. Progressive overload, nutrition periodisation, and recovery emphasis are the next steps.',
-  },
-}
-
-function QuizResult({ resultKey }: { resultKey: string }) {
-  const result = QUIZ_RESULTS[resultKey]
-  if (!result) return null
+function CheckInResult({ resultKey, progressScore }: { resultKey: string; progressScore: number }) {
+  const pattern = CHECKIN_PATTERNS[resultKey]
+  if (!pattern) return null
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{
-        background: '#111110', border: `1px solid ${result.color}40`,
-        borderLeft: `3px solid ${result.color}`,
-        borderRadius: '12px', padding: '24px',
-      }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: result.color, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
-          Your Pattern
+
+      {/* Progress summary */}
+      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '20px 22px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
+          Your 7-Day Progress
         </p>
-        <p style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginBottom: '16px', letterSpacing: '-0.01em' }}>
-          {result.label}
-        </p>
-        <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.7, margin: 0 }}>
-          {result.desc}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '10px' }}>
+          <span style={{ fontSize: '32px', fontWeight: 900, color: '#14b8a6', letterSpacing: '-0.02em' }}>{progressScore}</span>
+          <span style={{ fontSize: '14px', color: '#57534e' }}>of 8 markers improving</span>
+        </div>
+        <div style={{ height: '6px', background: '#1c1917', borderRadius: '99px', overflow: 'hidden' }}>
+          <div style={{ height: '100%', background: '#14b8a6', borderRadius: '99px', width: `${(progressScore / 8) * 100}%`, transition: 'width 0.6s ease' }} />
+        </div>
+        <p style={{ fontSize: '13px', color: '#57534e', marginTop: '10px', lineHeight: 1.6 }}>
+          {progressScore >= 6
+            ? 'Strong week. Your system is responding well to the structure.'
+            : progressScore >= 4
+            ? 'Solid progress. The markers that have not shifted yet will often follow in week two.'
+            : 'Your body is still adjusting. Week two is typically where the clearer shifts happen — stay consistent.'}
         </p>
       </div>
+
+      {/* Pattern result */}
       <div style={{
-        background: '#0d2d29', border: '1px solid rgba(20,184,166,0.2)',
-        borderRadius: '12px', padding: '20px',
+        background: '#111110',
+        border: `1px solid ${pattern.color}30`,
+        borderLeft: `3px solid ${pattern.color}`,
+        borderRadius: '12px', padding: '24px',
       }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: pattern.color, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
+          Your Biological Pattern
+        </p>
+        <p style={{ fontSize: '21px', fontWeight: 800, color: '#ffffff', marginBottom: '14px', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
+          {pattern.label}
+        </p>
+        <p style={{ fontSize: '14px', color: '#a8a29e', lineHeight: 1.75, margin: 0 }}>
+          {pattern.desc}
+        </p>
+      </div>
+
+      {/* Actions */}
+      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '22px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+          What to focus on this week
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          {pattern.actions.map((action, i) => (
+            <div key={i} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: pattern.color, minWidth: '20px', paddingTop: '2px' }}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <p style={{ fontSize: '14px', color: '#a8a29e', lineHeight: 1.7, margin: 0 }}>{action}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.2)', borderRadius: '12px', padding: '22px' }}>
         <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, margin: '0 0 16px' }}>
-          This is the beginning of understanding your biology. The full picture - your Fat Map, your specific hormone drivers, and your personalised prescription - comes in the next phase.
+          This is the beginning. The full picture — your complete biological map, your specific hormone drivers, and what is structurally driving your pattern — comes through the Body State Scorecard.
         </p>
         <a
           href="https://bodyrecode.au/scorecard"
@@ -299,23 +340,22 @@ function QuizResult({ resultKey }: { resultKey: string }) {
   )
 }
 
-function HormoneQuiz({ token, savedResult }: { token: string; savedResult: string | null }) {
-  const [answers, setAnswers] = useState<Record<string, string>>({})
+function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult: string | null }) {
+  const [step, setStep] = useState<'progress' | 'signal' | 'result'>(savedResult ? 'result' : 'progress')
+  const [progress, setProgress] = useState<Record<string, string>>({})
+  const [signals, setSignals] = useState<Record<string, string>>({})
   const [resultKey, setResultKey] = useState<string | null>(savedResult)
   const [submitting, setSubmitting] = useState(false)
 
-  const allAnswered = QUIZ_QUESTIONS.every(q => answers[q.id])
-
-  function computeResult() {
-    const counts: Record<string, number> = { a: 0, b: 0, c: 0, d: 0 }
-    Object.values(answers).forEach(v => counts[v]++)
-    return Object.entries(counts).sort((x, y) => y[1] - x[1])[0][0]
-  }
+  const allProgressDone = PROGRESS_MARKERS.every(m => progress[m.id])
+  const allSignalsDone = SIGNAL_QUESTIONS.every(q => signals[q.id])
+  const progressScore = Object.values(progress).filter(v => v === 'better').length
 
   async function handleSubmit() {
-    if (!allAnswered || submitting) return
+    if (!allSignalsDone || submitting) return
     setSubmitting(true)
-    const result = computeResult()
+    const result = signals['sq2'] // Q2 is primary determinant
+    const answers = { ...progress, ...signals }
     try {
       await fetch('/api/challenge/quiz', {
         method: 'POST',
@@ -326,55 +366,141 @@ function HormoneQuiz({ token, savedResult }: { token: string; savedResult: strin
       // still show result even if save fails
     }
     setResultKey(result)
+    setStep('result')
     setSubmitting(false)
   }
 
-  if (resultKey) {
-    return <QuizResult resultKey={resultKey} />
+  if (step === 'result' && resultKey) {
+    return <CheckInResult resultKey={resultKey} progressScore={progressScore} />
+  }
+
+  const progressOptions = [
+    { value: 'better',    label: 'Improving',         color: '#14b8a6' },
+    { value: 'same',      label: 'About the same',    color: '#57534e' },
+    { value: 'challenge', label: 'Still a challenge', color: '#78716c' },
+  ]
+
+  if (step === 'progress') {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
+          <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.7, margin: 0 }}>
+            Rate each marker honestly based on how it has changed since Day 1. There is no right answer — this is a reflection, not a test.
+          </p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
+          {PROGRESS_MARKERS.map(marker => (
+            <div key={marker.id} style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '16px 18px' }}>
+              <div style={{ marginBottom: '12px' }}>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: '#ffffff', margin: '0 0 2px' }}>{marker.label}</p>
+                <p style={{ fontSize: '12px', color: '#57534e', margin: 0 }}>{marker.sub}</p>
+              </div>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {progressOptions.map(opt => (
+                  <button
+                    key={opt.value}
+                    onClick={() => setProgress(p => ({ ...p, [marker.id]: opt.value }))}
+                    style={{
+                      flex: 1, padding: '8px 6px', borderRadius: '8px', border: 'none',
+                      background: progress[marker.id] === opt.value
+                        ? opt.value === 'better' ? 'rgba(20,184,166,0.12)' : '#222220'
+                        : '#1c1917',
+                      color: progress[marker.id] === opt.value
+                        ? opt.value === 'better' ? '#14b8a6' : '#ffffff'
+                        : '#57534e',
+                      fontSize: '12px', fontWeight: 600, cursor: 'pointer',
+                      outline: progress[marker.id] === opt.value
+                        ? opt.value === 'better' ? '1px solid rgba(20,184,166,0.3)' : '1px solid #44403c'
+                        : 'none',
+                      transition: 'all 0.12s ease', lineHeight: 1.3, textAlign: 'center',
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={() => setStep('signal')}
+          disabled={!allProgressDone}
+          style={{
+            width: '100%', padding: '15px', borderRadius: '10px', border: 'none',
+            background: allProgressDone ? '#14b8a6' : '#1c1917',
+            color: allProgressDone ? '#0c0a09' : '#57534e',
+            fontSize: '15px', fontWeight: 700,
+            cursor: allProgressDone ? 'pointer' : 'not-allowed',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          Continue to Pattern Check
+        </button>
+      </div>
+    )
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      {QUIZ_QUESTIONS.map((q, qi) => (
-        <div key={q.id}>
-          <p style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', marginBottom: '12px', lineHeight: 1.5 }}>
-            <span style={{ color: '#14b8a6', marginRight: '8px' }}>{String(qi + 1).padStart(2, '0')}</span>
-            {q.question}
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {q.options.map(opt => (
-              <button
-                key={opt.value}
-                onClick={() => setAnswers(a => ({ ...a, [q.id]: opt.value }))}
-                style={{
-                  width: '100%', padding: '12px 16px', borderRadius: '10px',
-                  border: answers[q.id] === opt.value ? '1px solid rgba(20,184,166,0.5)' : '1px solid #1c1917',
-                  background: answers[q.id] === opt.value ? 'rgba(20,184,166,0.08)' : '#111110',
-                  color: answers[q.id] === opt.value ? '#ffffff' : '#78716c',
-                  fontSize: '14px', textAlign: 'left', cursor: 'pointer',
-                  transition: 'all 0.15s ease', lineHeight: 1.5,
-                }}
-              >
-                {opt.label}
-              </button>
-            ))}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
+        <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.7, margin: 0 }}>
+          Two more questions. These help identify the biological pattern most active in your body right now.
+        </p>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '24px' }}>
+        {SIGNAL_QUESTIONS.map((q, qi) => (
+          <div key={q.id}>
+            <p style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', marginBottom: '12px', lineHeight: 1.5 }}>
+              <span style={{ color: '#14b8a6', marginRight: '8px' }}>{qi + 1}.</span>
+              {q.question}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {q.options.map(opt => (
+                <button
+                  key={opt.value}
+                  onClick={() => setSignals(s => ({ ...s, [q.id]: opt.value }))}
+                  style={{
+                    width: '100%', padding: '13px 16px', borderRadius: '10px',
+                    border: signals[q.id] === opt.value ? '1px solid rgba(20,184,166,0.4)' : '1px solid #1c1917',
+                    background: signals[q.id] === opt.value ? 'rgba(20,184,166,0.07)' : '#111110',
+                    color: signals[q.id] === opt.value ? '#ffffff' : '#78716c',
+                    fontSize: '14px', textAlign: 'left', cursor: 'pointer',
+                    transition: 'all 0.15s ease', lineHeight: 1.5,
+                  }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-      <button
-        onClick={handleSubmit}
-        disabled={!allAnswered || submitting}
-        style={{
-          width: '100%', padding: '16px', borderRadius: '10px', border: 'none',
-          background: allAnswered ? '#14b8a6' : '#1c1917',
-          color: allAnswered ? '#0c0a09' : '#57534e',
-          fontSize: '15px', fontWeight: 700,
-          cursor: allAnswered && !submitting ? 'pointer' : 'not-allowed',
-          transition: 'all 0.2s ease',
-        }}
-      >
-        {submitting ? 'Saving your result...' : 'Get My Hormone Pattern Result'}
-      </button>
+        ))}
+      </div>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button
+          onClick={() => setStep('progress')}
+          style={{
+            padding: '15px 20px', borderRadius: '10px', border: '1px solid #1c1917',
+            background: 'transparent', color: '#57534e',
+            fontSize: '14px', fontWeight: 600, cursor: 'pointer',
+          }}
+        >
+          Back
+        </button>
+        <button
+          onClick={handleSubmit}
+          disabled={!allSignalsDone || submitting}
+          style={{
+            flex: 1, padding: '15px', borderRadius: '10px', border: 'none',
+            background: allSignalsDone ? '#14b8a6' : '#1c1917',
+            color: allSignalsDone ? '#0c0a09' : '#57534e',
+            fontSize: '15px', fontWeight: 700,
+            cursor: allSignalsDone && !submitting ? 'pointer' : 'not-allowed',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          {submitting ? 'Saving your result...' : 'Get My Pattern Result'}
+        </button>
+      </div>
     </div>
   )
 }
@@ -860,22 +986,24 @@ export default function ChallengePortalClient({
           </div>
         )}
 
-        {/* Mini Hormone Quiz */}
+        {/* Day 7 Body Decode Check-In */}
         <div style={{ marginBottom: '48px' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-            Mini Hormone Quiz
+            Body Decode Check-In
           </p>
           {quizUnlocked ? (
             <div>
-              <div style={{ marginBottom: '20px' }}>
-                <p style={{ fontSize: '17px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>
-                  Identify your hormone pattern.
-                </p>
-                <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.6, margin: 0 }}>
-                  5 questions. Takes 2 minutes. Your result will tell you which biological pattern is most active in your body right now.
-                </p>
-              </div>
-              <HormoneQuiz token={token} savedResult={savedQuizResult} />
+              {!savedQuizResult && (
+                <div style={{ marginBottom: '20px' }}>
+                  <p style={{ fontSize: '17px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>
+                    How has your body responded this week?
+                  </p>
+                  <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.6, margin: 0 }}>
+                    Rate 8 biological markers, then answer 2 signal questions. Your result identifies the pattern most active in your body right now — and what to do about it.
+                  </p>
+                </div>
+              )}
+              <BodyDecodeCheckIn token={token} savedResult={savedQuizResult} />
             </div>
           ) : (
             <div style={{

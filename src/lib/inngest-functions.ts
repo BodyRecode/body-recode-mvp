@@ -39,7 +39,7 @@ const SMS_MESSAGES: Record<number, { morning: string; afternoon: string; evening
     evening: `Day 6 usually ends with a calmer evening.\n\nIf you notice you are a little less bloated or your cravings are slightly easier tonight, that is a good sign. Your system is responding to your routine.\n\nKeep your evening quiet and steady.\n\nDay 6 is complete. You are doing well.`,
   },
   7: {
-    morning: `Morning.\n\nDay 7 often feels clearer. Your body has settled more than it has all week and you may notice steadier energy or a lighter feeling through your morning.\n\nYou have already done a full week of work. Just stay steady with the basics.\n\nThe Mini Hormone Quiz is now unlocked in your portal. Complete it today.`,
+    morning: `Morning.\n\nDay 7 often feels clearer. Your body has settled more than it has all week and you may notice steadier energy or a lighter feeling through your morning.\n\nYou have already done a full week of work. Just stay steady with the basics.\n\nThe Body Decode Check-In is now unlocked in your portal. Complete it today.`,
     afternoon: `Checking in.\n\nIf you feel a softer dip this afternoon or feel a little reflective about the week, that is normal for Day 7.\n\nYou have done a full week of consistent work. Your system is calmer, your cravings should be easier and your energy waves usually feel more predictable today.`,
     evening: `You have reached the end of week one.\n\nTake a quiet moment tonight to notice anything that feels different, even if the changes are small.\n\nClearer hunger. Fewer afternoon crashes. Less bloating. More predictable moods.\n\nThese are all signs your system is responding. You have done well this week.`,
   },

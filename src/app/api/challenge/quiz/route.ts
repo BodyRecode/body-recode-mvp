@@ -3,49 +3,45 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
 
-const RESULTS: Record<string, { label: string; desc: string; color: string; nextSteps: string[] }> = {
+const PATTERNS: Record<string, { label: string; desc: string; color: string; actions: string[] }> = {
   a: {
-    label: 'Cortisol-Dominant Pattern',
+    label: 'Stress-Stored Pattern',
     color: '#ef4444',
-    desc: 'Your responses suggest a cortisol-dominant pattern. Your body is likely in a state of chronic low-grade stress, which drives inflammation, fluid retention, and stubborn fat storage around the abdomen. The structure you have built this week is directly targeting this pattern.',
-    nextSteps: [
-      'Prioritise sleep quality above everything else - cortisol resets overnight',
-      'Keep training intensity moderate - hard sessions elevate cortisol further',
-      'Eat breakfast within 60 minutes of waking to support your morning cortisol curve',
-      'Remove caffeine after midday to allow your evening cortisol to drop naturally',
+    desc: 'Your body is storing and retaining in response to a chronic stress load. Cortisol and adrenaline are keeping your system in a state of low-grade alert, which signals your body to hold fat around the midsection as an energy reserve. The reset you have done this week is directly targeting this — but the full picture requires understanding exactly how your stress hormones are behaving across the day.',
+    actions: [
+      'Sleep is your highest leverage point. Cortisol resets overnight — prioritise sleep quality above everything else this week.',
+      'Keep training intensity moderate. Hard sessions spike cortisol further and can slow progress in this pattern.',
+      'Eat breakfast within 60 minutes of waking. This supports your morning cortisol curve and begins the process of hormonal regulation for the day.',
     ],
   },
   b: {
-    label: 'Rhythm-Disrupted Pattern',
+    label: 'Metabolic-Drift Pattern',
     color: '#f59e0b',
-    desc: 'Your responses suggest a disrupted circadian and hormonal rhythm. Wired at night, slow in the morning, low morning appetite - these are classic signs of a reversed cortisol curve. Sleep timing and morning light exposure are your highest leverage points right now.',
-    nextSteps: [
-      'Get outside within 20 minutes of waking - morning light resets your cortisol curve',
-      'Set a fixed sleep time and stick to it, even on weekends',
-      'Avoid screens and bright lights after 8pm',
-      'Eat a protein-rich breakfast even if you are not hungry - it anchors your rhythm',
+    desc: 'Your body\'s ability to manage blood sugar has drifted. Insulin is staying elevated longer than it should, which drives energy crashes, persistent cravings, and the heaviness you feel after meals. The nutrition structure you have been following this week is designed specifically for this — restricting starchy carbohydrates to the post-training window forces your body to rebuild insulin sensitivity over time.',
+    actions: [
+      'Never skip breakfast. Blood sugar stability starts with your first meal — skipping it creates a deficit that drives cravings throughout the rest of the day.',
+      'Walk after your evening meal. Even 15-20 minutes significantly lowers post-meal blood sugar.',
+      'Keep starchy carbohydrates strictly to the post-training window. Fruit is fine throughout the day — it metabolises differently to refined carbohydrates.',
     ],
   },
   c: {
-    label: 'Insulin-Sensitivity Pattern',
+    label: 'Hormonal-Shift Pattern',
     color: '#8b5cf6',
-    desc: 'Your responses suggest blood sugar and insulin sensitivity are the primary driver. Energy crashes, afternoon cravings, and poor training response all point here. Meal timing, carbohydrate quality, and training type are the levers that will move your results the most.',
-    nextSteps: [
-      'Never skip breakfast - blood sugar stability starts with the first meal',
-      'Keep starchy carbohydrates to the post-training window only',
-      'Include resistance training - it is the most effective tool for improving insulin sensitivity',
-      'Walk after meals, especially after dinner, to lower post-meal blood sugar',
+    desc: 'Your body is in a hormonal conservation state — storing and retaining as a protective mechanism driven by reproductive hormone signalling. This pattern is strongly influenced by stress load, sleep quality, and eating consistency. It is one of the most common patterns and one of the most mismanaged — typically treated with more restriction, which makes it worse.',
+    actions: [
+      'Avoid under-eating. This pattern responds poorly to caloric restriction — the body conserves harder when it perceives scarcity.',
+      'Prioritise sleep and recovery. Reproductive hormone balance is deeply tied to overnight restoration.',
+      'Be consistent with meal timing. Irregular eating disrupts the hormonal signals your body uses to decide whether to conserve or release stored energy.',
     ],
   },
   d: {
-    label: 'Adaptation-Stalled Pattern',
+    label: 'System-Overload Pattern',
     color: '#14b8a6',
-    desc: 'Your responses suggest your body has adapted to its current environment and stopped responding. You are not in a depleted state - you are in a plateau. Your biology needs a new signal. Progressive overload, nutrition periodisation, and recovery emphasis are the next steps.',
-    nextSteps: [
-      'Introduce progressive overload to your training - your body needs a new stimulus',
-      'Cycle your nutrition - higher carb on training days, lower on rest days',
-      'Prioritise recovery as hard as you train - this is where adaptation happens',
-      'Consider a deload week - sometimes the body needs permission to reset',
+    desc: 'Your nervous system is carrying more load than it can adequately process. This is not about emotional stress alone — it is the total demand being placed on your system: training, decision-making, sleep disruption, inconsistent eating, environmental stimulation. Your body has adapted to this load by becoming unresponsive. Progress requires reducing total system demand, not increasing it.',
+    actions: [
+      'Do not train harder. This pattern does not respond to intensity — it responds to recovery. Keep training controlled and within RIR targets.',
+      'Prioritise the evening rhythm sequence every night. Wind-down is not optional for this pattern.',
+      'Reduce decision fatigue around food. Repeat the same 2-3 meals daily. The simplicity reduces neurological load and allows your system to stabilise.',
     ],
   },
 }
@@ -106,7 +102,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Enrollment not found.' }, { status: 404 })
   }
 
-  // Save result
   const { error: updateError } = await admin
     .from('challenge_enrollments')
     .update({
@@ -121,55 +116,74 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to save result.' }, { status: 500 })
   }
 
-  // Send result email
+  // Calculate progress score from answers
+  const progressScore = Object.entries(answers)
+    .filter(([key, val]) => !key.startsWith('sq') && val === 'better')
+    .length
+
   const lead = Array.isArray(enrollment.leads) ? enrollment.leads[0] : enrollment.leads
   const firstName = lead?.name?.split(' ')[0] ?? 'there'
   const email = lead?.email
 
-  if (email && RESULTS[result]) {
-    const r = RESULTS[result]
+  if (email && PATTERNS[result]) {
+    const p = PATTERNS[result]
     try {
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
-        subject: `Your hormone pattern result - ${r.label}`,
+        subject: `Your Day 7 Body Decode Check-In result`,
         html: emailShell(`
           <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
-            Your Mini Hormone Quiz Result
+            Your Body Decode Check-In
           </p>
           <p>Hi ${firstName},</p>
-          <p>You completed the Mini Hormone Quiz inside your challenge portal. Here is your result.</p>
-          <div style="background:#1a1a19;border:1px solid ${r.color}30;border-left:3px solid ${r.color};border-radius:12px;padding:20px 24px;margin:24px 0;">
-            <p style="font-size:11px;font-weight:700;color:${r.color};letter-spacing:0.1em;text-transform:uppercase;margin:0 0 6px;">Your Pattern</p>
-            <p style="font-size:19px;font-weight:800;color:#ffffff;margin:0 0 14px;letter-spacing:-0.01em;">${r.label}</p>
-            <p style="font-size:14px;color:#a8a29e;line-height:1.75;margin:0;">${r.desc}</p>
+          <p>You completed the Day 7 Body Decode Check-In. Here is your result.</p>
+
+          <div style="background:#1a1a19;border:1px solid #2a2826;border-radius:12px;padding:18px 22px;margin:20px 0;">
+            <p style="font-size:11px;font-weight:700;color:#57534e;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 8px;">Your 7-Day Progress</p>
+            <p style="font-size:28px;font-weight:900;color:#14b8a6;margin:0 0 4px;letter-spacing:-0.02em;">${progressScore}<span style="font-size:15px;font-weight:500;color:#57534e;letter-spacing:0;"> of 8 markers improving</span></p>
+            <p style="font-size:13px;color:#57534e;margin:0;line-height:1.6;">
+              ${progressScore >= 6
+                ? 'Strong week. Your system is responding well to the structure.'
+                : progressScore >= 4
+                ? 'Solid progress. The markers that have not shifted yet will often follow in week two.'
+                : 'Your body is still adjusting. Week two is typically where the clearer shifts happen.'}
+            </p>
           </div>
-          <p style="color:#ffffff;font-size:16px;font-weight:700;margin:24px 0 12px;">What this means for you right now</p>
+
+          <div style="background:#1a1a19;border:1px solid ${p.color}25;border-left:3px solid ${p.color};border-radius:12px;padding:20px 24px;margin:20px 0;">
+            <p style="font-size:11px;font-weight:700;color:${p.color};letter-spacing:0.1em;text-transform:uppercase;margin:0 0 6px;">Your Biological Pattern</p>
+            <p style="font-size:19px;font-weight:800;color:#ffffff;margin:0 0 14px;letter-spacing:-0.01em;line-height:1.2;">${p.label}</p>
+            <p style="font-size:14px;color:#a8a29e;line-height:1.75;margin:0;">${p.desc}</p>
+          </div>
+
+          <p style="color:#ffffff;font-size:15px;font-weight:700;margin:24px 0 12px;">What to focus on this week</p>
           <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-            ${r.nextSteps.map((step, i) => `
+            ${p.actions.map((action, i) => `
               <tr>
                 <td style="padding:8px 0;vertical-align:top;width:28px;">
-                  <span style="font-size:11px;font-weight:800;color:${r.color};font-family:monospace;">${String(i + 1).padStart(2, '0')}</span>
+                  <span style="font-size:11px;font-weight:800;color:${p.color};font-family:monospace;">${String(i + 1).padStart(2, '0')}</span>
                 </td>
-                <td style="padding:8px 0;font-size:14px;color:#a8a29e;line-height:1.65;">${step}</td>
+                <td style="padding:8px 0;font-size:14px;color:#a8a29e;line-height:1.65;">${action}</td>
               </tr>
             `).join('')}
           </table>
+
           <div style="background:#0d2d29;border:1px solid rgba(20,184,166,0.2);border-radius:12px;padding:20px 24px;margin:24px 0;">
             <p style="font-size:14px;color:#99d6d0;line-height:1.7;margin:0 0 16px;">
-              This is your starting point. The full picture - your Fat Map, your specific biological drivers, and your personalised prescription - comes through the Body State Scorecard.
+              This is the beginning. The full picture — your complete biological map, your specific hormone drivers, and what is structurally driving your pattern — comes through the Body State Scorecard.
             </p>
             <a href="https://bodyrecode.au/scorecard" style="display:inline-block;padding:12px 22px;border-radius:8px;background:#14b8a6;color:#0c0a09;font-size:13px;font-weight:700;text-decoration:none;">
               Take the Full Body State Scorecard
             </a>
           </div>
-          <p>Keep going. You are doing well.</p>
+
+          <p>Keep going. Week two is where the clearer changes happen.</p>
         `),
       })
     } catch (e) {
       console.error('[challenge/quiz] email error:', e)
-      // Don't fail the request if email fails
     }
   }
 
