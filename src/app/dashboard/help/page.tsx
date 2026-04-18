@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-type Category = 'flows' | 'coaching' | 'business' | 'content'
+type Category = 'flows' | 'coaching' | 'business' | 'content' | 'challenge'
 
 const SECTIONS = [
   { id: 'operator-flow',         title: 'Operator Flow',         colour: 'violet' as const, category: 'flows' as Category },
@@ -43,13 +43,26 @@ const SECTIONS = [
   { id: 'be-strategy',      title: '34. Strategy Hub',       colour: 'amber' as const, category: 'content' as Category },
   { id: 'be-social-profiles',title: '35. Social Profiles',   colour: 'amber' as const, category: 'content' as Category },
   { id: 'be-website',       title: '36. Website Analytics',  colour: 'amber' as const, category: 'content' as Category },
+
+  { id: 'ch-overview',      title: 'Challenge Overview',     colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-landing',       title: 'Landing Page',           colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-enrollment',    title: 'Enrollment Flow',        colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-portal',        title: 'Participant Portal',     colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-forms',         title: 'PAR-Q and Health Dec',   colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-resources',     title: 'Training and Nutrition', colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-quiz',          title: 'Mini Hormone Quiz',      colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-automation',    title: 'Automation Sequence',    colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-sms',           title: 'SMS Coaching Sequence',  colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-database',      title: 'Database and Supabase',  colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-prelaunch',     title: 'Pre-Launch Checklist',   colour: 'teal' as const, category: 'challenge' as Category },
 ]
 
 const CATEGORIES: { id: Category; label: string }[] = [
-  { id: 'flows',    label: 'Flows' },
-  { id: 'coaching', label: 'Coaching' },
-  { id: 'business', label: 'Business' },
-  { id: 'content',  label: 'Content' },
+  { id: 'flows',     label: 'Flows' },
+  { id: 'coaching',  label: 'Coaching' },
+  { id: 'business',  label: 'Business' },
+  { id: 'content',   label: 'Content' },
+  { id: 'challenge', label: 'Challenge' },
 ]
 
 export default function HelpPage() {
@@ -1629,6 +1642,283 @@ export default function HelpPage() {
             <p>Vercel Analytics was enabled in April 2026 - no historical traffic data exists before that date. In the early weeks, visitor counts are low and conversion rate will appear inflated or misleading because scorecard submissions (from the leads DB) span a longer window than visitor data. A warning banner appears automatically while visitor data is sparse. Numbers will stabilise and become meaningful once 4-6 weeks of tracking data has accumulated.</p>
 
             <Note>Analytics data is sourced from the Vercel API using the VERCEL_API_TOKEN, VERCEL_PERFORMANCE_PROJECT_ID, and VERCEL_TEAM_ID environment variables. If the page shows an error, check those vars are set in Vercel → Project Settings → Environment Variables.</Note>
+          </Section>
+
+          {/* ── CHALLENGE SECTIONS ── */}
+
+          <Section id="ch-overview" title="Challenge Overview" colour="teal">
+            <p>The 14-Day Body Decode Challenge is a standalone consumer product that runs entirely independently of the Performance Coaching platform. Participants sign up at <strong>bodyrecode.au/challenge</strong>, receive a personal portal link, and move through a 14-day structured reset with daily coaching, training, nutrition, and automated SMS support.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Model</p>
+            <p>Evergreen and self-paced. Every participant starts on their own Day 1 at the point of enrollment. All timing is relative to their enrollment date - not a fixed cohort calendar. There are no live sessions, no join windows, and no group structure. Everything is automated.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Purpose in the funnel</p>
+            <p>The challenge sits at the top of the Body Recode funnel. It is a free-entry product designed to demonstrate the method, build biological understanding, and ascend participants toward the 6-Week Body Recode Blueprint. The Day 14 email and SMS transition sequence drives this ascension.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Key URLs</p>
+            <StatusList items={[
+              { label: 'Landing page', desc: 'bodyrecode.au/challenge — signup form, what you get, about the challenge' },
+              { label: 'Participant portal', desc: 'bodyrecode.au/challenge/[token] — unique per participant, accessed via their personal link' },
+              { label: 'Training page', desc: 'bodyrecode.au/challenge/[token]/training — 3 session plans with full exercise detail' },
+              { label: 'Nutrition page', desc: 'bodyrecode.au/challenge/[token]/nutrition — HABNS guide, meal builder, shopping list' },
+              { label: 'Privacy Policy', desc: 'bodyrecode.au/privacy' },
+              { label: 'Terms', desc: 'bodyrecode.au/terms' },
+            ]} />
+          </Section>
+
+          <Section id="ch-landing" title="Landing Page" colour="teal">
+            <p>Found at <strong>bodyrecode.au/challenge</strong>. Built as a light-theme page (white background, teal accents) — separate from the dark portal experience. The landing page is the public-facing entry point for the challenge.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Sections on the page</p>
+            <StatusList items={[
+              { label: 'Hero', desc: 'Headline, subheading, and primary CTA button that jumps to the signup form' },
+              { label: 'What you get', desc: '7 items including training plan, nutrition guide, morning/evening sequences, Day 5 progress session, Mini Hormone Quiz, and daily SMS coaching' },
+              { label: 'How it works', desc: '3-step process: sign up, follow the structure, understand your biology' },
+              { label: 'Mid-CTA', desc: 'Mint gradient section with secondary signup prompt' },
+              { label: 'Signup form', desc: 'First name, email, and phone (all required). Submits to the enrollment API.' },
+              { label: 'Footer', desc: 'Copyright, Privacy Policy, Terms, and contact links' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Signup form behaviour</p>
+            <p>On submission the form calls <strong>POST /api/challenge/enroll</strong>. If successful, the form is replaced with a success message confirming enrollment and telling the participant to check their email and phone. The portal link is emailed immediately via the welcome email.</p>
+
+            <Note>The landing page links to /privacy and /terms. Both pages are built and live. They are light-theme pages matching the landing page aesthetic.</Note>
+          </Section>
+
+          <Section id="ch-enrollment" title="Enrollment Flow" colour="teal">
+            <p>Enrollment is handled by <strong>POST /api/challenge/enroll</strong>. It runs the following steps in order:</p>
+
+            <div className="space-y-3 mt-2">
+              <ChecklistItem text="Find or create a lead in the leads table using the email address. If the lead exists, update their phone number." />
+              <ChecklistItem text="Fire the lead_created automation trigger for new leads only." />
+              <ChecklistItem text="Check for an existing active challenge enrollment for this lead. If one exists, return the existing token — no duplicate enrollment." />
+              <ChecklistItem text="Create a new challenge_enrollments row with status active, current_day 1, and enrolled_at set to now." />
+              <ChecklistItem text="Log a challenge_enrolled event in lead_events." />
+              <ChecklistItem text="Fire the form_submitted automation trigger with form: challenge_signup." />
+              <ChecklistItem text="Send the challenge/enrolled Inngest event, which triggers the email sequence and SMS sequence in parallel." />
+            </div>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Duplicate enrollment handling</p>
+            <p>If someone signs up again with the same email, they receive their existing token back. The portal link in the welcome email will take them back to their current enrollment. No new enrollment is created.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Token</p>
+            <p>Each enrollment has a UUID token generated by Supabase (default value on the column). This token is the participant's permanent unique identifier for their challenge. It never changes and never expires. The portal URL is <strong>bodyrecode.au/challenge/[token]</strong>.</p>
+          </Section>
+
+          <Section id="ch-portal" title="Participant Portal" colour="teal">
+            <p>Found at <strong>bodyrecode.au/challenge/[token]</strong>. Dark theme matching the Body Recode brand. The portal is the participant's home for the full 14 days. It is a server-rendered Next.js page that fetches the enrollment from Supabase on every load.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What the portal shows</p>
+            <StatusList items={[
+              { label: 'Day counter', desc: 'Calculated from enrolled_at — shows which day the participant is on (1-14), capped at 14' },
+              { label: 'Progress bar', desc: 'Visual percentage of the challenge completed' },
+              { label: 'Today note', desc: 'Day-specific focus and coaching note — 14 unique entries, one per day' },
+              { label: 'PAR-Q and Health Dec forms', desc: 'Shown until both are complete. Training and nutrition are locked behind form completion.' },
+              { label: 'Cleared for training banner', desc: 'Shown once both forms are complete. Training and nutrition cards unlock.' },
+              { label: 'Resources', desc: 'Training Plan, Nutrition Guide, Morning Reset Sequence, Evening Rhythm Sequence' },
+              { label: 'Week One Progress Session', desc: 'Unlocks on Day 5. Video session embedded via NEXT_PUBLIC_CHALLENGE_SESSION_VIDEO_URL env var.' },
+              { label: 'Mini Hormone Quiz', desc: 'Unlocks on Day 7. Saved result shown on return visits.' },
+              { label: 'Day 14 CTA', desc: 'Shown from Day 14 onward. Links to the 6-Week Blueprint at bodyrecode.au.' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Day calculation</p>
+            <p>Day is calculated server-side on every page load as <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">Math.floor((now - enrolledAt) / 86400000) + 1</code>, clamped between 1 and 14. Day 1 is the day of enrollment. Day 2 starts 24 hours after enrollment.</p>
+
+            <Note>The portal does not require a login. Anyone with the token URL can access the portal. Tokens are UUID format (32 hex characters) — they are not guessable by brute force.</Note>
+          </Section>
+
+          <Section id="ch-forms" title="PAR-Q and Health Declaration" colour="teal">
+            <p>Both forms are required before the participant can access the training plan and nutrition guide. They appear at the top of the portal on Day 1 and persist until complete. Once complete, they never appear again.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">PAR-Q</p>
+            <p>7 standard physical activity readiness questions. All answers must be NO to proceed. If any answer is YES, a medical clearance message is shown directing the participant to consult a doctor and contact kade@bodyrecode.au before training. The form cannot be submitted with a YES answer.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Health Declaration</p>
+            <p>5 tick-box declarations: over 18, not pregnant or post-partum, not medical advice, personal responsibility, consult a doctor if symptoms arise. All 5 must be checked to submit.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">How completions are saved</p>
+            <p>Both forms call <strong>POST /api/challenge/forms</strong> with the token and form type. The API saves a timestamp to <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">parq_completed_at</code> or <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">health_dec_completed_at</code> on the enrollment. PAR-Q answers are also saved as JSON to <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">parq_responses</code>.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">UX flow</p>
+            <p>PAR-Q loads first. On completion it auto-advances to the Health Declaration tab. On Health Dec completion the forms section is replaced by a green cleared confirmation banner. Training and Nutrition resource cards unlock immediately without a page reload.</p>
+
+            <Note>Required Supabase columns: parq_completed_at (timestamptz), parq_responses (jsonb), health_dec_completed_at (timestamptz) on challenge_enrollments.</Note>
+          </Section>
+
+          <Section id="ch-resources" title="Training and Nutrition Pages" colour="teal">
+            <p>Both pages are dark-theme, token-gated, and accessible only from the participant portal. They verify the enrollment token against Supabase on every load — if the token is invalid or the enrollment is inactive, the page returns 404.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Training Plan — /challenge/[token]/training</p>
+            <StatusList items={[
+              { label: 'How to approach this', desc: 'RIR explanation, tempo guidance, rest periods, walking on rest days' },
+              { label: 'Warm-up sequence', desc: '6-step warm-up to run before every session' },
+              { label: 'Weekly schedule', desc: 'Week 1 (4 sessions: Days 2, 4, 6, 7) and Week 2 (3 sessions: Days 9, 11, 13)' },
+              { label: 'Session A', desc: 'Foundation Strength — 5 exercises with sets, RIR, and coaching cue for each' },
+              { label: 'Session B', desc: 'Conditioning Focus — 4 strength exercises + conditioning finisher' },
+              { label: 'Session C', desc: 'Volume and Density — 4 exercises + core circuit' },
+              { label: 'RIR explainer', desc: 'Defines 1, 2, and 3 RIR so participants understand the effort scale' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Nutrition Guide — /challenge/[token]/nutrition</p>
+            <StatusList items={[
+              { label: 'HABNS system', desc: 'Hybrid Animal-Based Nutrition System overview and principles' },
+              { label: 'What to eat', desc: 'Protein, fat, fruit, and vegetable categories with examples' },
+              { label: 'What to remove', desc: '8 food categories to avoid for the 14 days' },
+              { label: 'Carbohydrate strategy', desc: 'Rest day vs training day carb timing, post-training carb options' },
+              { label: 'Daily rhythm', desc: 'Full training day meal timeline from waking to evening' },
+              { label: 'Meal builder', desc: '4-step meal construction framework' },
+              { label: 'Example meals', desc: 'Breakfast, rest day lunch/dinner, and post-training meal options' },
+              { label: 'Hydration and electrolytes', desc: 'Daily targets and why salt matters' },
+              { label: 'Supplements', desc: 'Electrolytes, whey, FocusFuel, creatine, magnesium with timing' },
+              { label: 'Shopping list', desc: '6 categories covering everything needed for 14 days' },
+            ]} />
+          </Section>
+
+          <Section id="ch-quiz" title="Mini Hormone Quiz" colour="teal">
+            <p>Unlocks in the portal on Day 7. A 5-question quiz that identifies the participant's dominant hormone pattern and gives them a personalised result with next steps. Results are saved to Supabase and a result email is sent automatically.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">The four patterns</p>
+            <StatusList items={[
+              { label: 'Cortisol-Dominant', desc: 'Chronic stress driver — inflammation, fluid retention, abdominal fat. Colour: red.' },
+              { label: 'Rhythm-Disrupted', desc: 'Reversed cortisol curve — wired at night, slow in the morning. Colour: amber.' },
+              { label: 'Insulin-Sensitivity', desc: 'Blood sugar instability — afternoon crashes, cravings, poor training response. Colour: purple.' },
+              { label: 'Adaptation-Stalled', desc: 'Plateau state — body has adapted and stopped responding. Colour: teal.' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">On submission</p>
+            <p>The result is calculated client-side by counting dominant answer letters (a/b/c/d). The result key, all answers, and a timestamp are saved to Supabase via <strong>POST /api/challenge/quiz</strong>. A result email is sent to the participant with their pattern name, description, 4 personalised next steps, and a CTA to the Body State Scorecard.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Return visits</p>
+            <p>The portal server page fetches <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">quiz_result</code> from Supabase and passes it to the client. If a result exists, it is shown immediately — the quiz form never appears again.</p>
+
+            <Note>Required Supabase columns: quiz_completed_at (timestamptz), quiz_result (text), quiz_answers (jsonb) on challenge_enrollments.</Note>
+          </Section>
+
+          <Section id="ch-automation" title="Automation Sequence" colour="teal">
+            <p>Handled by two Inngest functions that both listen to the <strong>challenge/enrolled</strong> event. They run in parallel and independently of each other. Both are registered in <strong>src/app/api/inngest/route.ts</strong>.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">challengeSequenceFunction — email sequence</p>
+            <div className="space-y-2 mt-1">
+              <ChecklistItem text="Step 1 (immediate): Welcome email to participant — confirms enrollment, lists what is in the portal, includes their personal portal link. Subject: You're in, [name]. Day 1 starts now." />
+              <ChecklistItem text="Step 2 (immediate): Coach notification email to kade@bodyrecode.au — participant name, email, phone, enrollment time (AEST), and a View their portal button." />
+              <ChecklistItem text="Step 3 (Day 5, 4-day sleep): Week One Progress Session email — announces the session is ready, links to CHALLENGE_SESSION_VIDEO_URL env var. Checks enrollment is still active before sending." />
+              <ChecklistItem text="Step 4 (Day 14, 9-day sleep after Day 5): Ascension email — acknowledges completion, lists what should have shifted, pitches the 6-Week Blueprint. Marks enrollment status as completed in Supabase." />
+            </div>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Environment variables required</p>
+            <StatusList items={[
+              { label: 'RESEND_API_KEY', desc: 'Used for all email sends. Set in Vercel environment variables.' },
+              { label: 'CHALLENGE_SESSION_VIDEO_URL', desc: 'Server-side URL for the Day 5 email link. Set after recording the session.' },
+              { label: 'NEXT_PUBLIC_CHALLENGE_SESSION_VIDEO_URL', desc: 'Client-side URL shown in the portal Week One Progress Session card.' },
+            ]} />
+
+            <Note>All emails use the dark branded template — black outer (#0c0a09), dark card (#111110), logo, and the darkEmailSignature with photo. Sent from kade@bodyrecode.au via Resend.</Note>
+          </Section>
+
+          <Section id="ch-sms" title="SMS Coaching Sequence" colour="teal">
+            <p>Handled by <strong>challengeSmsFunction</strong> in Inngest. Fires on the <strong>challenge/enrolled</strong> event in parallel with the email sequence. Sends 3 SMS messages per day for 14 days plus a 3-day transition sequence (Days 15-17). All messages are sent via Twilio.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Timing structure</p>
+            <StatusList items={[
+              { label: 'Initial wait', desc: '1 hour after enrollment before the first message — gives participant time to check their email first' },
+              { label: 'Morning message', desc: 'First message of each day' },
+              { label: '7-hour gap', desc: 'Between morning and afternoon messages' },
+              { label: 'Afternoon message', desc: 'Second message — check-in, pattern observation' },
+              { label: '5-hour gap', desc: 'Between afternoon and evening messages' },
+              { label: 'Evening message', desc: 'Third message — wind-down, close the day' },
+              { label: '12-hour gap', desc: 'Overnight gap before next day morning message' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Special days</p>
+            <StatusList items={[
+              { label: 'Day 1 morning', desc: 'Includes the portal link so the participant can bookmark it' },
+              { label: 'Day 5', desc: 'Rest day. Afternoon message references the Week One Progress Session in their portal. Evening message reminds them if not watched.' },
+              { label: 'Day 7 morning', desc: 'Includes the Mini Hormone Quiz unlock — "The Mini Hormone Quiz is now unlocked in your portal. Complete it today."' },
+              { label: 'Day 14 evening', desc: 'Closing message — directs to portal and email for next step.' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Transition sequence (Days 15-17)</p>
+            <p>After Day 14 the function sends 3 more single daily messages. Day 16 includes the Blueprint CTA: "Reply NEXT if you want the details." The sequence ends after Day 17.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Environment variables required</p>
+            <StatusList items={[
+              { label: 'TWILIO_ACCOUNT_SID', desc: 'Twilio account identifier' },
+              { label: 'TWILIO_AUTH_TOKEN', desc: 'Twilio authentication token' },
+              { label: 'TWILIO_FROM_NUMBER', desc: 'The Twilio phone number SMS is sent from' },
+            ]} />
+
+            <Note>Phone numbers are formatted via the formatPhone utility before sending. If no phone is provided at enrollment, the SMS function exits immediately with no messages sent.</Note>
+          </Section>
+
+          <Section id="ch-database" title="Database and Supabase" colour="teal">
+            <p>The challenge uses two Supabase tables: <strong>leads</strong> (existing) and <strong>challenge_enrollments</strong> (challenge-specific).</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">challenge_enrollments columns</p>
+            <StatusList items={[
+              { label: 'id', desc: 'UUID primary key' },
+              { label: 'lead_id', desc: 'Foreign key to leads table' },
+              { label: 'token', desc: 'UUID — the participant portal identifier. Used in all portal URLs.' },
+              { label: 'status', desc: "active | completed. Set to active on enrollment, updated to completed by the Day 14 Inngest step." },
+              { label: 'current_day', desc: 'Stored but not used for day calculation — day is computed from enrolled_at on every page load' },
+              { label: 'enrolled_at', desc: 'Timestamp of enrollment — used to calculate current day' },
+              { label: 'parq_completed_at', desc: 'Timestamp when PAR-Q form was submitted (nullable)' },
+              { label: 'parq_responses', desc: 'JSON object of all 7 PAR-Q answers (nullable)' },
+              { label: 'health_dec_completed_at', desc: 'Timestamp when Health Declaration was submitted (nullable)' },
+              { label: 'quiz_completed_at', desc: 'Timestamp when Mini Hormone Quiz was submitted (nullable)' },
+              { label: 'quiz_result', desc: 'Pattern key: a (cortisol), b (rhythm), c (insulin), d (adaptation) (nullable)' },
+              { label: 'quiz_answers', desc: 'JSON object of all 5 quiz answers (nullable)' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Required SQL migrations</p>
+            <p>If setting up from scratch or adding to an existing challenge_enrollments table, run the following in the Supabase SQL editor:</p>
+            <pre className="text-xs bg-stone-800 text-teal-300 rounded-lg p-4 mt-2 overflow-x-auto whitespace-pre-wrap">{`ALTER TABLE challenge_enrollments
+  ADD COLUMN IF NOT EXISTS parq_completed_at timestamptz,
+  ADD COLUMN IF NOT EXISTS parq_responses jsonb,
+  ADD COLUMN IF NOT EXISTS health_dec_completed_at timestamptz,
+  ADD COLUMN IF NOT EXISTS quiz_completed_at timestamptz,
+  ADD COLUMN IF NOT EXISTS quiz_result text,
+  ADD COLUMN IF NOT EXISTS quiz_answers jsonb;`}</pre>
+          </Section>
+
+          <Section id="ch-prelaunch" title="Pre-Launch Checklist" colour="teal">
+            <p>Everything that needs to be in place before the challenge is open to the public.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Recording</p>
+            <div className="space-y-2">
+              <ChecklistItem text="Record the Day 5 Week One Progress Session (30 minutes). Script is saved at 06_Platform_Build/01_Pages/day5-session-script.md in Dropbox." />
+              <ChecklistItem text="Upload the recording to a hosting platform (Vimeo or YouTube unlisted recommended)." />
+            </div>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Environment Variables (Vercel)</p>
+            <div className="space-y-2">
+              <ChecklistItem text="Set CHALLENGE_SESSION_VIDEO_URL — the direct video URL for the Day 5 email link." />
+              <ChecklistItem text="Set NEXT_PUBLIC_CHALLENGE_SESSION_VIDEO_URL — the same URL for the portal Watch the session button." />
+              <ChecklistItem text="Confirm RESEND_API_KEY is set and the kade@bodyrecode.au sending domain is verified." />
+              <ChecklistItem text="Confirm TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_FROM_NUMBER are set." />
+              <ChecklistItem text="Confirm INNGEST_EVENT_KEY and INNGEST_SIGNING_KEY are set for production Inngest." />
+            </div>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Supabase</p>
+            <div className="space-y-2">
+              <ChecklistItem text="Run the SQL migration to add parq_completed_at, parq_responses, health_dec_completed_at, quiz_completed_at, quiz_result, quiz_answers columns to challenge_enrollments." />
+              <ChecklistItem text="Confirm challenge_enrollments table exists with token column defaulting to gen_random_uuid()." />
+            </div>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">End-to-end test</p>
+            <div className="space-y-2">
+              <ChecklistItem text="Complete the signup form at bodyrecode.au/challenge with a real name, email, and phone." />
+              <ChecklistItem text="Confirm welcome email arrives with correct portal link." />
+              <ChecklistItem text="Confirm coach notification email arrives at kade@bodyrecode.au with name, email, phone, and time." />
+              <ChecklistItem text="Open the portal link and confirm PAR-Q and Health Dec forms appear." />
+              <ChecklistItem text="Complete both forms and confirm training and nutrition unlock." />
+              <ChecklistItem text="Backdate enrollment in Supabase to Day 5 and confirm the Week One Progress Session card appears." />
+              <ChecklistItem text="Backdate to Day 7 and confirm the Mini Hormone Quiz unlocks." />
+              <ChecklistItem text="Complete the quiz and confirm the result email arrives." />
+              <ChecklistItem text="Backdate to Day 14 and confirm the ascension CTA appears in the portal." />
+              <ChecklistItem text="Confirm SMS messages are sending via Twilio (check Twilio logs)." />
+            </div>
+
+            <Note>To backdate enrollment for testing: UPDATE challenge_enrollments SET enrolled_at = NOW() - INTERVAL '7 days' WHERE token = '[your-token]';</Note>
           </Section>
 
         </div>
