@@ -180,7 +180,7 @@ export default function ChallengePage() {
       {/* Nav */}
       <div style={{ padding: '20px 24px', position: 'relative', zIndex: 10 }}>
         <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-          <img src="https://bodyrecode.au/logo-teal.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
+          <img src="https://bodyrecode.au/logo-teal.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
         </div>
       </div>
 

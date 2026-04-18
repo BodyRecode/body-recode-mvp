@@ -153,7 +153,7 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
       {/* Header */}
       <div style={{ borderBottom: '1px solid #e7e5e0', padding: '18px 24px', background: '#ffffff' }}>
         <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style={{ display: 'block' }} />
+          <img src="https://bodyrecode.au/logo-teal.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
           <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#0f766e', textDecoration: 'none', fontWeight: 500 }}>
             Back to portal
           </Link>

@@ -31,7 +31,7 @@ export default function TermsPage() {
       <div style={{ borderBottom: '1px solid #e7e5e0', padding: '18px 24px', background: '#ffffff' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link href="/">
-            <img src="https://bodyrecode.au/logo-teal.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
+            <img src="https://bodyrecode.au/logo-teal.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
           </Link>
           <Link href="/challenge" style={{ fontSize: '13px', color: '#0f766e', textDecoration: 'none', fontWeight: 500 }}>
             Back to challenge

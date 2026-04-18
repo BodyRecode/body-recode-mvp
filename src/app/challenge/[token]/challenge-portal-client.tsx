@@ -373,7 +373,7 @@ export default function ChallengePortalClient({
       {/* Header */}
       <div style={{ borderBottom: '1px solid #1c1917', padding: '18px 24px' }}>
         <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style={{ display: 'block' }} />
+          <img src="https://bodyrecode.au/logo-teal.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
           <div style={{
             background: 'rgba(20,184,166,0.08)', border: '1px solid rgba(20,184,166,0.2)',
             borderRadius: '99px', padding: '5px 14px',
