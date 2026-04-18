@@ -110,6 +110,14 @@ export default function BusinessHubPage() {
     setSeedingAutomation(false)
   }
 
+  async function resyncScorecardAutomation() {
+    setSeedingAutomation(true)
+    setAutomationSeeded(false)
+    await fetch('/api/scorecard/seed-automation', { method: 'POST' })
+    setSeedingAutomation(false)
+    setAutomationSeeded(true)
+  }
+
   return (
     <div className="max-w-4xl">
       <div className="mb-8">
@@ -173,23 +181,24 @@ export default function BusinessHubPage() {
           <div>
             <p className="text-sm font-semibold text-white mb-1">Scorecard Follow-up Automation</p>
             <p className="text-xs text-stone-400 leading-relaxed">
-              Automatically sends two follow-up emails when someone completes the Body State Scorecard — directing them to the Performance Check-In.
+              A 4-email sequence that fires when someone completes the Body State Scorecard. Directs leads to book a free call or get the $37 Body Decode Report.
             </p>
           </div>
-          {automationSeeded ? (
-            <div className="flex items-center gap-1.5 text-teal-400 text-xs font-semibold shrink-0">
-              <Check size={13} /> Created
-            </div>
-          ) : (
+          <div className="flex items-center gap-2 shrink-0">
+            {automationSeeded && (
+              <div className="flex items-center gap-1.5 text-teal-400 text-xs font-semibold">
+                <Check size={13} /> Synced
+              </div>
+            )}
             <button
-              onClick={seedScorecardAutomation}
+              onClick={automationSeeded ? resyncScorecardAutomation : seedScorecardAutomation}
               disabled={seedingAutomation}
-              className="shrink-0 flex items-center gap-2 bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-2 rounded-lg transition-colors"
+              className="flex items-center gap-2 bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-2 rounded-lg transition-colors"
             >
               <Zap size={12} />
-              {seedingAutomation ? 'Creating...' : 'Set Up'}
+              {seedingAutomation ? 'Syncing...' : automationSeeded ? 'Re-sync' : 'Set Up'}
             </button>
-          )}
+          </div>
         </div>
       </div>
     </div>
