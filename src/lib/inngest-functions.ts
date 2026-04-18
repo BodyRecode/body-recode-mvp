@@ -123,11 +123,12 @@ export const challengeSequenceFunction = inngest.createFunction(
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async ({ event, step }: { event: any; step: any }) => {
-    const { leadId, token, email, firstName } = event.data as {
+    const { leadId, token, email, firstName, phone } = event.data as {
       leadId: string
       token: string
       email: string
       firstName: string
+      phone?: string
     }
 
     const portalUrl = `https://bodyrecode.au/challenge/${token}`
@@ -170,20 +171,22 @@ export const challengeSequenceFunction = inngest.createFunction(
 
     // ── Step 2: Notify coach ───────────────────────────────────────────────
     await step.run('notify-coach-enrollment', async () => {
+      const enrolledAt = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', dateStyle: 'medium', timeStyle: 'short' })
       await resend.emails.send({
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
-        subject: `New challenge enrollment - ${firstName}`,
+        subject: `New enrollment - ${firstName}`,
         html: challengeEmailShell(`
-          <p style="color:#ffffff;font-size:16px;font-weight:700;margin:0 0 16px;">New Challenge Enrollment</p>
-          <p><strong style="color:#ffffff;">${firstName}</strong> just enrolled in the 14-Day Body Decode Challenge.</p>
-          <p style="color:#888888;">Email: ${email}</p>
-          <p style="color:#888888;">Portal token: ${token}</p>
-          <p>
-            <a href="${portalUrl}" style="display:inline-block;padding:10px 18px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:13px;border-radius:8px;text-decoration:none;">
-              View their portal
-            </a>
-          </p>
+          <p style="color:#ffffff;font-size:18px;font-weight:800;letter-spacing:-0.01em;margin:0 0 20px;">New Challenge Enrollment</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+            <tr><td style="padding:10px 0;border-bottom:1px solid #1c1917;width:110px;font-size:13px;color:#57534e;">Name</td><td style="padding:10px 0;border-bottom:1px solid #1c1917;font-size:13px;color:#ffffff;font-weight:600;">${firstName}</td></tr>
+            <tr><td style="padding:10px 0;border-bottom:1px solid #1c1917;font-size:13px;color:#57534e;">Email</td><td style="padding:10px 0;border-bottom:1px solid #1c1917;font-size:13px;color:#ffffff;">${email}</td></tr>
+            <tr><td style="padding:10px 0;border-bottom:1px solid #1c1917;font-size:13px;color:#57534e;">Phone</td><td style="padding:10px 0;border-bottom:1px solid #1c1917;font-size:13px;color:#ffffff;">${phone ?? 'Not provided'}</td></tr>
+            <tr><td style="padding:10px 0;font-size:13px;color:#57534e;">Enrolled</td><td style="padding:10px 0;font-size:13px;color:#ffffff;">${enrolledAt} (AEST)</td></tr>
+          </table>
+          <a href="${portalUrl}" style="display:inline-block;padding:11px 20px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:13px;border-radius:8px;text-decoration:none;">
+            View their portal
+          </a>
         `),
       })
     })
