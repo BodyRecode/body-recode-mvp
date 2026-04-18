@@ -139,6 +139,11 @@ const WHAT_YOU_GET = [
     desc: 'Short daily notes delivered inside your portal each morning. Context and focus for every day of the challenge.',
   },
   {
+    icon: '🎥',
+    title: 'Week One Progress Session',
+    desc: 'A 30-minute recorded coaching session unlocks on Day 5. Breaks down what your body has been doing and what comes next.',
+  },
+  {
     icon: '🧬',
     title: 'Mini Hormone Quiz',
     desc: 'Complete on Day 7 inside your portal. Identifies the patterns shaping your biology.',
@@ -322,7 +327,7 @@ export default function ChallengePage() {
           Everything delivered to your portal on Day 1.
         </h2>
         <p style={{ fontSize: '16px', color: '#78716c', lineHeight: 1.7, marginBottom: '28px' }}>
-          No external apps. No WhatsApp groups. Everything lives in your challenge portal from the moment you sign up.
+          No external apps. Everything lives in your challenge portal from the moment you sign up.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {WHAT_YOU_GET.map((item, i) => (
