@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
         email: email.trim().toLowerCase(),
         phone: phone?.trim() || null,
         source: 'direct',
-        status: 'zoom_booked',
+        status: 'zoom_1_booked',
       })
       .select()
       .single()
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
   await admin
     .from('leads')
     .update({
-      status: 'zoom_booked',
+      status: 'zoom_1_booked',
       zoom_meeting_url: meetingLink,
       zoom_date: slotStart.toISOString(),
       followup_email_ids: null,
