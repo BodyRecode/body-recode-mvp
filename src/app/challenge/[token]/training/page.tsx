@@ -102,7 +102,7 @@ const SESSION_C = [
 ]
 
 const card: React.CSSProperties = {
-  background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '18px 20px',
+  background: '#ffffff', border: '1px solid #e7e5e0', borderRadius: '12px', padding: '18px 20px',
 }
 
 const label: React.CSSProperties = {
@@ -111,7 +111,7 @@ const label: React.CSSProperties = {
 }
 
 const sectionTitle: React.CSSProperties = {
-  fontSize: '20px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em', margin: '4px 0 0',
+  fontSize: '20px', fontWeight: 800, color: '#1c1917', letterSpacing: '-0.01em', margin: '4px 0 0',
 }
 
 function ExerciseCard({ ex, index }: { ex: { name: string; sets: string; rir: string; cue: string }; index: number }) {
@@ -121,13 +121,13 @@ function ExerciseCard({ ex, index }: { ex: { name: string; sets: string; rir: st
         <span style={{ fontSize: '11px', fontWeight: 800, color: '#14b8a6', minWidth: '20px', paddingTop: '3px' }}>
           {String(index + 1).padStart(2, '0')}
         </span>
-        <p style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', margin: 0, lineHeight: 1.3 }}>{ex.name}</p>
+        <p style={{ fontSize: '16px', fontWeight: 700, color: '#1c1917', margin: 0, lineHeight: 1.3 }}>{ex.name}</p>
       </div>
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' as const, paddingLeft: '32px' }}>
-        <span style={{ fontSize: '13px', color: '#a8a29e', background: '#1c1917', borderRadius: '6px', padding: '4px 10px' }}>{ex.sets}</span>
+        <span style={{ fontSize: '13px', color: '#78716c', background: '#f0efed', borderRadius: '6px', padding: '4px 10px' }}>{ex.sets}</span>
         <span style={{ fontSize: '13px', color: '#14b8a6', background: 'rgba(20,184,166,0.08)', border: '1px solid rgba(20,184,166,0.15)', borderRadius: '6px', padding: '4px 10px' }}>{ex.rir}</span>
       </div>
-      <div style={{ paddingLeft: '32px', borderTop: '1px solid #1c1917', paddingTop: '10px' }}>
+      <div style={{ paddingLeft: '32px', borderTop: '1px solid #e7e5e0', paddingTop: '10px' }}>
         <p style={{ fontSize: '13px', color: '#78716c', margin: 0, lineHeight: 1.65 }}>{ex.cue}</p>
       </div>
     </div>
@@ -147,14 +147,14 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#0c0a09', color: '#ffffff',
+      minHeight: '100vh', background: '#fafaf9', color: '#1c1917',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #1c1917', padding: '18px 24px' }}>
+      <div style={{ borderBottom: '1px solid #e7e5e0', padding: '18px 24px', background: '#ffffff' }}>
         <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style={{ display: 'block' }} />
-          <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#57534e', textDecoration: 'none' }}>
+          <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#0f766e', textDecoration: 'none', fontWeight: 500 }}>
             Back to portal
           </Link>
         </div>
@@ -165,8 +165,8 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
         {/* Title */}
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>14-Day Body Decode Challenge</p>
-          <h1 style={{ fontSize: '28px', fontWeight: 900, letterSpacing: '-0.02em', margin: '6px 0 12px' }}>Training Plan</h1>
-          <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.75, margin: 0 }}>
+          <h1 style={{ fontSize: '28px', fontWeight: 900, letterSpacing: '-0.02em', margin: '6px 0 12px', color: '#1c1917' }}>Training Plan</h1>
+          <p style={{ fontSize: '15px', color: '#57534e', lineHeight: 1.75, margin: 0 }}>
             This plan is not about intensity. It is about rhythm. Your goal is to give your nervous system consistent, structured stimulus so your body starts adapting and rebuilding its baseline. Three to four sessions across two weeks.
           </p>
         </div>
@@ -183,7 +183,7 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
               { heading: 'Walk on rest days', body: '30 to 60 minutes of low-intensity walking on every non-training day. This is not optional. Walking is active recovery and directly supports cortisol regulation.' },
             ].map(p => (
               <div key={p.heading} style={{ ...card }}>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: '#ffffff', margin: '0 0 5px' }}>{p.heading}</p>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: '#1c1917', margin: '0 0 5px' }}>{p.heading}</p>
                 <p style={{ fontSize: '13px', color: '#78716c', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
               </div>
             ))}
@@ -210,7 +210,7 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
                 <span style={{ fontSize: '11px', fontWeight: 800, color: '#14b8a6', minWidth: '18px' }}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <p style={{ fontSize: '13px', color: '#d4cfc9', margin: 0 }}>{step}</p>
+                <p style={{ fontSize: '13px', color: '#44403c', margin: 0 }}>{step}</p>
               </div>
             ))}
           </div>
@@ -245,14 +245,14 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
               },
             ].map(w => (
               <div key={w.week}>
-                <p style={{ fontSize: '13px', fontWeight: 700, color: '#ffffff', marginBottom: '10px' }}>{w.week}</p>
+                <p style={{ fontSize: '13px', fontWeight: 700, color: '#1c1917', marginBottom: '10px' }}>{w.week}</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {w.days.map(d => (
                     <div key={d.day} style={{ ...card, display: 'flex', alignItems: 'center', padding: '12px 16px', gap: '0' }}>
-                      <span style={{ fontSize: '12px', color: '#57534e', fontWeight: 600, minWidth: '120px' }}>{d.day}</span>
+                      <span style={{ fontSize: '12px', color: '#a8a29e', fontWeight: 600, minWidth: '120px' }}>{d.day}</span>
                       <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span style={{ fontSize: '13px', color: '#14b8a6', fontWeight: 700 }}>{d.session}</span>
-                        <span style={{ fontSize: '12px', color: '#57534e' }}>{d.type}</span>
+                        <span style={{ fontSize: '12px', color: '#a8a29e' }}>{d.type}</span>
                       </div>
                     </div>
                   ))}
@@ -260,8 +260,8 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
               </div>
             ))}
           </div>
-          <div style={{ ...card, marginTop: '12px', background: 'rgba(20,184,166,0.05)', border: '1px solid rgba(20,184,166,0.15)' }}>
-            <p style={{ fontSize: '14px', color: '#99d6d0', margin: 0, lineHeight: 1.65 }}>
+          <div style={{ ...card, marginTop: '12px', background: 'rgba(20,184,166,0.07)', border: '1px solid rgba(20,184,166,0.2)' }}>
+            <p style={{ fontSize: '14px', color: '#0f766e', margin: 0, lineHeight: 1.65 }}>
               <strong style={{ color: '#14b8a6' }}>All other days:</strong> Walk 30 to 60 minutes. Light, low intensity. This is active recovery, not optional rest.
             </p>
           </div>
@@ -310,9 +310,9 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
         </div>
 
         {/* RIR Explainer */}
-        <div style={{ ...card, background: '#111110', borderColor: '#1c1917' }}>
+        <div style={{ ...card }}>
           <p style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', marginBottom: '8px' }}>What does RIR mean?</p>
-          <p style={{ fontSize: '14px', color: '#a8a29e', lineHeight: 1.7, margin: '0 0 12px' }}>
+          <p style={{ fontSize: '14px', color: '#57534e', lineHeight: 1.7, margin: '0 0 12px' }}>
             RIR stands for Reps In Reserve. It tells you how close to failure to go on each set.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -331,7 +331,7 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
               </div>
             ))}
           </div>
-          <p style={{ fontSize: '13px', color: '#57534e', margin: '12px 0 0', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '13px', color: '#a8a29e', margin: '12px 0 0', lineHeight: 1.6 }}>
             Staying within these ranges keeps intensity productive and recovery manageable across the full 14 days.
           </p>
         </div>
