@@ -159,7 +159,7 @@ const QUIZ_QUESTIONS = [
   },
 ]
 
-function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0] }) {
+function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0] & { locked?: boolean } }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -186,7 +186,15 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
           <p style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', margin: '0 0 3px' }}>{resource.title}</p>
           <p style={{ fontSize: '13px', color: '#78716c', margin: 0, lineHeight: 1.4 }}>{resource.desc}</p>
         </div>
-        {resource.href ? (
+        {resource.locked ? (
+          <span style={{
+            flexShrink: 0, padding: '8px 14px', borderRadius: '8px',
+            background: '#1c1917', color: '#44403c',
+            fontSize: '12px', fontWeight: 700, whiteSpace: 'nowrap',
+          }}>
+            🔒 Locked
+          </span>
+        ) : resource.href ? (
           <a
             href={resource.href}
             target="_blank"
@@ -346,23 +354,267 @@ function HormoneQuiz() {
   )
 }
 
+const PARQ_QUESTIONS = [
+  {
+    id: 'q1',
+    text: 'Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor?',
+  },
+  {
+    id: 'q2',
+    text: 'Do you feel pain in your chest when you do physical activity?',
+  },
+  {
+    id: 'q3',
+    text: 'In the past month, have you had chest pain when you were not doing physical activity?',
+  },
+  {
+    id: 'q4',
+    text: 'Do you lose your balance because of dizziness, or do you ever lose consciousness?',
+  },
+  {
+    id: 'q5',
+    text: 'Do you have a bone or joint problem (for example, back, knee or hip) that could be made worse by a change in your physical activity?',
+  },
+  {
+    id: 'q6',
+    text: 'Is your doctor currently prescribing medication for your blood pressure or a heart condition?',
+  },
+  {
+    id: 'q7',
+    text: 'Do you know of any other reason why you should not participate in physical activity?',
+  },
+]
+
+function ParqForm({ token, onComplete }: { token: string; onComplete: () => void }) {
+  const [answers, setAnswers] = useState<Record<string, 'yes' | 'no'>>({})
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  const allAnswered = PARQ_QUESTIONS.every(q => answers[q.id])
+  const anyYes = Object.values(answers).some(v => v === 'yes')
+
+  async function handleSubmit() {
+    if (!allAnswered || anyYes) return
+    setSubmitting(true)
+    setError('')
+    try {
+      const res = await fetch('/api/challenge/forms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, formType: 'parq', responses: answers }),
+      })
+      if (!res.ok) throw new Error('Failed to submit')
+      onComplete()
+    } catch {
+      setError('Something went wrong. Please try again.')
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '20px' }}>
+        <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.7, margin: 0 }}>
+          The PAR-Q is a standard physical activity readiness questionnaire. Please answer all questions honestly. If you answer YES to any question, you must consult a doctor before beginning the training component of this challenge.
+        </p>
+      </div>
+
+      {PARQ_QUESTIONS.map((q, i) => (
+        <div key={q.id}>
+          <p style={{ fontSize: '14px', fontWeight: 600, color: '#d4cfc9', lineHeight: 1.6, marginBottom: '12px' }}>
+            <span style={{ color: '#14b8a6', marginRight: '8px', fontWeight: 800 }}>{i + 1}.</span>
+            {q.text}
+          </p>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {(['no', 'yes'] as const).map(val => (
+              <button
+                key={val}
+                onClick={() => setAnswers(a => ({ ...a, [q.id]: val }))}
+                style={{
+                  flex: 1, padding: '10px', borderRadius: '8px', border: 'none',
+                  background: answers[q.id] === val
+                    ? val === 'no' ? 'rgba(20,184,166,0.12)' : 'rgba(239,68,68,0.12)'
+                    : '#1c1917',
+                  color: answers[q.id] === val
+                    ? val === 'no' ? '#14b8a6' : '#ef4444'
+                    : '#57534e',
+                  fontSize: '14px', fontWeight: 700, cursor: 'pointer',
+                  outline: answers[q.id] === val
+                    ? val === 'no' ? '1px solid rgba(20,184,166,0.3)' : '1px solid rgba(239,68,68,0.3)'
+                    : '1px solid transparent',
+                  textTransform: 'uppercase', letterSpacing: '0.05em',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                {val === 'yes' ? 'Yes' : 'No'}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {anyYes && allAnswered && (
+        <div style={{
+          background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)',
+          borderRadius: '12px', padding: '20px',
+        }}>
+          <p style={{ fontSize: '14px', color: '#ef4444', fontWeight: 700, marginBottom: '8px' }}>
+            Medical clearance required
+          </p>
+          <p style={{ fontSize: '13px', color: '#a8a29e', lineHeight: 1.7, margin: 0 }}>
+            You have answered YES to one or more questions. Please consult your doctor before beginning the physical training component of this challenge. You can still access all other challenge resources. If your doctor clears you, please contact us at kade@bodyrecode.au.
+          </p>
+        </div>
+      )}
+
+      {error && (
+        <p style={{ fontSize: '13px', color: '#ef4444', margin: 0 }}>{error}</p>
+      )}
+
+      <button
+        onClick={handleSubmit}
+        disabled={!allAnswered || anyYes || submitting}
+        style={{
+          width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
+          background: allAnswered && !anyYes ? '#14b8a6' : '#1c1917',
+          color: allAnswered && !anyYes ? '#0c0a09' : '#57534e',
+          fontSize: '15px', fontWeight: 700,
+          cursor: allAnswered && !anyYes && !submitting ? 'pointer' : 'not-allowed',
+          transition: 'all 0.2s ease',
+        }}
+      >
+        {submitting ? 'Saving...' : 'I confirm all answers are NO - continue'}
+      </button>
+    </div>
+  )
+}
+
+function HealthDecForm({ token, onComplete }: { token: string; onComplete: () => void }) {
+  const [checks, setChecks] = useState<Record<string, boolean>>({
+    age: false,
+    notPregnant: false,
+    notMedical: false,
+    responsibility: false,
+    doctorConsult: false,
+  })
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  const declarations = [
+    { id: 'age', text: 'I am 18 years of age or older.' },
+    { id: 'notPregnant', text: 'I am not currently pregnant or in the first 6 weeks post-partum.' },
+    { id: 'notMedical', text: 'I understand that the Body Recode challenge is not a medical program and does not constitute medical advice, diagnosis, or treatment.' },
+    { id: 'responsibility', text: 'I accept personal responsibility for my participation in this challenge and any physical activity I undertake as part of it.' },
+    { id: 'doctorConsult', text: 'I agree to consult a qualified medical professional if I experience any pain, discomfort, or symptoms during the challenge.' },
+  ]
+
+  const allChecked = declarations.every(d => checks[d.id])
+
+  async function handleSubmit() {
+    if (!allChecked) return
+    setSubmitting(true)
+    setError('')
+    try {
+      const res = await fetch('/api/challenge/forms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, formType: 'health_dec' }),
+      })
+      if (!res.ok) throw new Error('Failed to submit')
+      onComplete()
+    } catch {
+      setError('Something went wrong. Please try again.')
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '20px' }}>
+        <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.7, margin: 0 }}>
+          Please read and confirm each declaration below. By submitting this form you acknowledge and agree to the following statements.
+        </p>
+      </div>
+
+      {declarations.map(d => (
+        <div
+          key={d.id}
+          onClick={() => setChecks(c => ({ ...c, [d.id]: !c[d.id] }))}
+          style={{
+            display: 'flex', gap: '14px', alignItems: 'flex-start',
+            background: checks[d.id] ? 'rgba(20,184,166,0.06)' : '#111110',
+            border: checks[d.id] ? '1px solid rgba(20,184,166,0.25)' : '1px solid #1c1917',
+            borderRadius: '10px', padding: '16px', cursor: 'pointer',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <div style={{
+            width: '20px', height: '20px', borderRadius: '5px', flexShrink: 0, marginTop: '1px',
+            background: checks[d.id] ? '#14b8a6' : '#1c1917',
+            border: checks[d.id] ? 'none' : '1px solid #44403c',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.15s ease',
+          }}>
+            {checks[d.id] && (
+              <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
+                <path d="M1 4L4.5 7.5L11 1" stroke="#0c0a09" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
+          </div>
+          <p style={{ fontSize: '14px', color: checks[d.id] ? '#d4cfc9' : '#78716c', lineHeight: 1.6, margin: 0, transition: 'color 0.15s ease' }}>
+            {d.text}
+          </p>
+        </div>
+      ))}
+
+      {error && (
+        <p style={{ fontSize: '13px', color: '#ef4444', margin: 0 }}>{error}</p>
+      )}
+
+      <button
+        onClick={handleSubmit}
+        disabled={!allChecked || submitting}
+        style={{
+          width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
+          background: allChecked ? '#14b8a6' : '#1c1917',
+          color: allChecked ? '#0c0a09' : '#57534e',
+          fontSize: '15px', fontWeight: 700,
+          cursor: allChecked && !submitting ? 'pointer' : 'not-allowed',
+          transition: 'all 0.2s ease',
+        }}
+      >
+        {submitting ? 'Saving...' : 'Submit Health Declaration'}
+      </button>
+    </div>
+  )
+}
+
 export default function ChallengePortalClient({
-  token, firstName, currentDay, enrolledAt,
+  token, firstName, currentDay, enrolledAt, parqCompleted, healthDecCompleted,
 }: {
   token: string
   firstName: string
   currentDay: number
   enrolledAt: string
+  parqCompleted: boolean
+  healthDecCompleted: boolean
 }) {
+  const [parqDone, setParqDone] = useState(parqCompleted)
+  const [healthDecDone, setHealthDecDone] = useState(healthDecCompleted)
+  const [activeForm, setActiveForm] = useState<'parq' | 'health_dec' | null>(
+    !parqCompleted ? 'parq' : !healthDecCompleted ? 'health_dec' : null
+  )
+
+  const formsComplete = parqDone && healthDecDone
   const todayNote = DAILY_NOTES[currentDay]
   const progress = Math.round((currentDay / 14) * 100)
   const quizUnlocked = currentDay >= 7
 
   const RESOURCES = RESOURCES_STATIC.map(r =>
-    r.id === 'training' ? { ...r, href: `/challenge/${token}/training` }
-    : r.id === 'nutrition' ? { ...r, href: `/challenge/${token}/nutrition` }
+    r.id === 'training' ? { ...r, href: formsComplete ? `/challenge/${token}/training` : null, locked: !formsComplete }
+    : r.id === 'nutrition' ? { ...r, href: formsComplete ? `/challenge/${token}/nutrition` : null, locked: !formsComplete }
     : r
-  ) as typeof RESOURCES_STATIC
+  ) as (typeof RESOURCES_STATIC[0] & { locked?: boolean })[]
 
   return (
     <div style={{
@@ -414,6 +666,85 @@ export default function ChallengePortalClient({
             <span style={{ fontSize: '11px', color: '#2a2826' }}>Day 14</span>
           </div>
         </div>
+
+        {/* Required Forms */}
+        {!formsComplete && (
+          <div style={{ marginBottom: '48px' }}>
+            <div style={{
+              background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.25)',
+              borderRadius: '12px', padding: '16px 20px', marginBottom: '20px',
+              display: 'flex', gap: '12px', alignItems: 'flex-start',
+            }}>
+              <span style={{ fontSize: '18px', flexShrink: 0 }}>⚠️</span>
+              <div>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: '#fbbf24', marginBottom: '4px' }}>
+                  Required before training
+                </p>
+                <p style={{ fontSize: '13px', color: '#a8a29e', lineHeight: 1.6, margin: 0 }}>
+                  Complete your PAR-Q and Health Declaration to unlock the training and nutrition resources. This takes 2 minutes.
+                </p>
+              </div>
+            </div>
+
+            {/* Form tabs */}
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+              {[
+                { key: 'parq' as const, label: 'PAR-Q', done: parqDone },
+                { key: 'health_dec' as const, label: 'Health Declaration', done: healthDecDone },
+              ].map(tab => (
+                <button
+                  key={tab.key}
+                  onClick={() => !tab.done && setActiveForm(tab.key)}
+                  style={{
+                    flex: 1, padding: '10px 14px', borderRadius: '8px', border: 'none',
+                    background: tab.done
+                      ? 'rgba(20,184,166,0.1)'
+                      : activeForm === tab.key ? '#1c1917' : '#111110',
+                    color: tab.done ? '#14b8a6' : activeForm === tab.key ? '#ffffff' : '#57534e',
+                    fontSize: '13px', fontWeight: 700,
+                    cursor: tab.done ? 'default' : 'pointer',
+                    outline: activeForm === tab.key && !tab.done ? '1px solid #44403c' : 'none',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  {tab.done ? '✓ ' : ''}{tab.label}
+                </button>
+              ))}
+            </div>
+
+            {activeForm === 'parq' && !parqDone && (
+              <ParqForm
+                token={token}
+                onComplete={() => {
+                  setParqDone(true)
+                  setActiveForm('health_dec')
+                }}
+              />
+            )}
+            {(activeForm === 'health_dec' || (parqDone && !healthDecDone && activeForm !== 'parq')) && !healthDecDone && (
+              <HealthDecForm
+                token={token}
+                onComplete={() => {
+                  setHealthDecDone(true)
+                  setActiveForm(null)
+                }}
+              />
+            )}
+          </div>
+        )}
+
+        {formsComplete && (
+          <div style={{
+            background: 'rgba(20,184,166,0.06)', border: '1px solid rgba(20,184,166,0.2)',
+            borderRadius: '10px', padding: '14px 18px', marginBottom: '32px',
+            display: 'flex', gap: '10px', alignItems: 'center',
+          }}>
+            <span style={{ fontSize: '16px' }}>✓</span>
+            <p style={{ fontSize: '13px', color: '#14b8a6', fontWeight: 600, margin: 0 }}>
+              You are cleared for training. All resources are unlocked.
+            </p>
+          </div>
+        )}
 
         {/* Today's note */}
         {todayNote && (
