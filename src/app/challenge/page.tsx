@@ -160,13 +160,13 @@ const WHAT_YOU_GET = [
   },
   {
     icon: '🧬',
-    title: 'Mini Hormone Quiz',
-    desc: 'Complete on Day 7 inside your portal. Identifies the patterns shaping your biology.',
+    title: 'Body Decode Check-In',
+    desc: 'Unlocks on Day 7. A structured audit of 8 biological markers combined with a pattern identification tool that identifies what your body has been doing and why.',
   },
   {
     icon: '📊',
-    title: 'Mini Hormone Report',
-    desc: 'Your personalised quiz result delivered automatically. Your first look at what your body is telling you.',
+    title: 'Body Decode Result',
+    desc: 'Your personalised result delivered automatically. Your biological pattern, what is driving it, and three specific actions for the next 7 days.',
   },
 ]
 
