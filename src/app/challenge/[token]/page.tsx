@@ -8,7 +8,7 @@ export default async function ChallengePortalPage({ params }: { params: Promise<
 
   const { data: enrollment } = await admin
     .from('challenge_enrollments')
-    .select('id, current_day, enrolled_at, status, parq_completed_at, health_dec_completed_at, leads(name, email)')
+    .select('id, current_day, enrolled_at, status, parq_completed_at, health_dec_completed_at, quiz_completed_at, quiz_result, leads(name, email)')
     .eq('token', token)
     .eq('status', 'active')
     .single()
@@ -32,6 +32,7 @@ export default async function ChallengePortalPage({ params }: { params: Promise<
       enrolledAt={enrollment.enrolled_at}
       parqCompleted={!!enrollment.parq_completed_at}
       healthDecCompleted={!!enrollment.health_dec_completed_at}
+      savedQuizResult={enrollment.quiz_result ?? null}
     />
   )
 }

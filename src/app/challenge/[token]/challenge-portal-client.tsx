@@ -234,79 +234,103 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
   )
 }
 
-function HormoneQuiz() {
+const QUIZ_RESULTS: Record<string, { label: string; desc: string; color: string }> = {
+  a: {
+    label: 'Cortisol-Dominant Pattern',
+    color: '#ef4444',
+    desc: 'Your responses suggest a cortisol-dominant pattern. Your body is likely in a state of chronic low-grade stress, which drives inflammation, fluid retention, and stubborn fat storage around the abdomen. The structure you have built this week is directly targeting this. The next step is understanding how to manage your stress load alongside your training and nutrition.',
+  },
+  b: {
+    label: 'Rhythm-Disrupted Pattern',
+    color: '#f59e0b',
+    desc: 'Your responses suggest a disrupted circadian and hormonal rhythm. Wired at night, slow in the morning, low morning appetite - these are classic signs of a reversed cortisol curve. Sleep timing and morning light exposure are your highest leverage points right now.',
+  },
+  c: {
+    label: 'Insulin-Sensitivity Pattern',
+    color: '#8b5cf6',
+    desc: 'Your responses suggest blood sugar and insulin sensitivity are the primary driver. Energy crashes, afternoon cravings, and poor training response all point here. Meal timing, carbohydrate quality, and training type are the levers that will move your results the most.',
+  },
+  d: {
+    label: 'Adaptation-Stalled Pattern',
+    color: '#14b8a6',
+    desc: 'Your responses suggest your body has adapted to its current environment and stopped responding. You are not in a depleted state - you are in a plateau. Your biology needs a new signal. Progressive overload, nutrition periodisation, and recovery emphasis are the next steps.',
+  },
+}
+
+function QuizResult({ resultKey }: { resultKey: string }) {
+  const result = QUIZ_RESULTS[resultKey]
+  if (!result) return null
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{
+        background: '#111110', border: `1px solid ${result.color}40`,
+        borderLeft: `3px solid ${result.color}`,
+        borderRadius: '12px', padding: '24px',
+      }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: result.color, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
+          Your Pattern
+        </p>
+        <p style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginBottom: '16px', letterSpacing: '-0.01em' }}>
+          {result.label}
+        </p>
+        <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.7, margin: 0 }}>
+          {result.desc}
+        </p>
+      </div>
+      <div style={{
+        background: '#0d2d29', border: '1px solid rgba(20,184,166,0.2)',
+        borderRadius: '12px', padding: '20px',
+      }}>
+        <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, margin: '0 0 16px' }}>
+          This is the beginning of understanding your biology. The full picture - your Fat Map, your specific hormone drivers, and your personalised prescription - comes in the next phase.
+        </p>
+        <a
+          href="https://bodyrecode.au/scorecard"
+          style={{
+            display: 'inline-block', padding: '12px 22px', borderRadius: '8px',
+            background: '#14b8a6', color: '#0c0a09',
+            fontSize: '13px', fontWeight: 700, textDecoration: 'none',
+          }}
+        >
+          Take the Full Body State Scorecard
+        </a>
+      </div>
+    </div>
+  )
+}
+
+function HormoneQuiz({ token, savedResult }: { token: string; savedResult: string | null }) {
   const [answers, setAnswers] = useState<Record<string, string>>({})
-  const [submitted, setSubmitted] = useState(false)
+  const [resultKey, setResultKey] = useState<string | null>(savedResult)
+  const [submitting, setSubmitting] = useState(false)
 
   const allAnswered = QUIZ_QUESTIONS.every(q => answers[q.id])
 
-  function getResult() {
+  function computeResult() {
     const counts: Record<string, number> = { a: 0, b: 0, c: 0, d: 0 }
     Object.values(answers).forEach(v => counts[v]++)
-    const dominant = Object.entries(counts).sort((x, y) => y[1] - x[1])[0][0]
-    const results: Record<string, { label: string; desc: string; color: string }> = {
-      a: {
-        label: 'Cortisol-Dominant Pattern',
-        color: '#ef4444',
-        desc: 'Your responses suggest a cortisol-dominant pattern. Your body is likely in a state of chronic low-grade stress, which drives inflammation, fluid retention, and stubborn fat storage around the abdomen. The structure you have built this week is directly targeting this. The next step is understanding how to manage your stress load alongside your training and nutrition.',
-      },
-      b: {
-        label: 'Rhythm-Disrupted Pattern',
-        color: '#f59e0b',
-        desc: 'Your responses suggest a disrupted circadian and hormonal rhythm. Wired at night, slow in the morning, low morning appetite - these are classic signs of a reversed cortisol curve. Sleep timing and morning light exposure are your highest leverage points right now.',
-      },
-      c: {
-        label: 'Insulin-Sensitivity Pattern',
-        color: '#8b5cf6',
-        desc: 'Your responses suggest blood sugar and insulin sensitivity are the primary driver. Energy crashes, afternoon cravings, and poor training response all point here. Meal timing, carbohydrate quality, and training type are the levers that will move your results the most.',
-      },
-      d: {
-        label: 'Adaptation-Stalled Pattern',
-        color: '#14b8a6',
-        desc: 'Your responses suggest your body has adapted to its current environment and stopped responding. You are not in a depleted state - you are in a plateau. Your biology needs a new signal. Progressive overload, nutrition periodisation, and recovery emphasis are the next steps.',
-      },
-    }
-    return results[dominant]
+    return Object.entries(counts).sort((x, y) => y[1] - x[1])[0][0]
   }
 
-  if (submitted) {
-    const result = getResult()
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <div style={{
-          background: '#111110', border: `1px solid ${result.color}40`,
-          borderRadius: '12px', padding: '24px',
-        }}>
-          <p style={{ fontSize: '11px', fontWeight: 700, color: result.color, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
-            Your Pattern
-          </p>
-          <p style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginBottom: '16px', letterSpacing: '-0.01em' }}>
-            {result.label}
-          </p>
-          <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.7, margin: 0 }}>
-            {result.desc}
-          </p>
-        </div>
-        <div style={{
-          background: '#0d2d29', border: '1px solid rgba(20,184,166,0.2)',
-          borderRadius: '12px', padding: '20px',
-        }}>
-          <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, margin: '0 0 16px' }}>
-            This is the beginning of understanding your biology. The full picture - your Fat Map, your specific hormone drivers, and your personalised prescription - comes in the next phase.
-          </p>
-          <a
-            href="https://bodyrecode.au/scorecard"
-            style={{
-              display: 'inline-block', padding: '12px 22px', borderRadius: '8px',
-              background: '#14b8a6', color: '#0c0a09',
-              fontSize: '13px', fontWeight: 700, textDecoration: 'none',
-            }}
-          >
-            Take the Full Body State Scorecard
-          </a>
-        </div>
-      </div>
-    )
+  async function handleSubmit() {
+    if (!allAnswered || submitting) return
+    setSubmitting(true)
+    const result = computeResult()
+    try {
+      await fetch('/api/challenge/quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, result, answers }),
+      })
+    } catch {
+      // still show result even if save fails
+    }
+    setResultKey(result)
+    setSubmitting(false)
+  }
+
+  if (resultKey) {
+    return <QuizResult resultKey={resultKey} />
   }
 
   return (
@@ -338,17 +362,18 @@ function HormoneQuiz() {
         </div>
       ))}
       <button
-        onClick={() => setSubmitted(true)}
-        disabled={!allAnswered}
+        onClick={handleSubmit}
+        disabled={!allAnswered || submitting}
         style={{
           width: '100%', padding: '16px', borderRadius: '10px', border: 'none',
           background: allAnswered ? '#14b8a6' : '#1c1917',
           color: allAnswered ? '#0c0a09' : '#57534e',
-          fontSize: '15px', fontWeight: 700, cursor: allAnswered ? 'pointer' : 'not-allowed',
+          fontSize: '15px', fontWeight: 700,
+          cursor: allAnswered && !submitting ? 'pointer' : 'not-allowed',
           transition: 'all 0.2s ease',
         }}
       >
-        Get My Hormone Pattern Result
+        {submitting ? 'Saving your result...' : 'Get My Hormone Pattern Result'}
       </button>
     </div>
   )
@@ -590,7 +615,7 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
 }
 
 export default function ChallengePortalClient({
-  token, firstName, currentDay, enrolledAt, parqCompleted, healthDecCompleted,
+  token, firstName, currentDay, enrolledAt, parqCompleted, healthDecCompleted, savedQuizResult,
 }: {
   token: string
   firstName: string
@@ -598,6 +623,7 @@ export default function ChallengePortalClient({
   enrolledAt: string
   parqCompleted: boolean
   healthDecCompleted: boolean
+  savedQuizResult: string | null
 }) {
   const [parqDone, setParqDone] = useState(parqCompleted)
   const [healthDecDone, setHealthDecDone] = useState(healthDecCompleted)
@@ -849,7 +875,7 @@ export default function ChallengePortalClient({
                   5 questions. Takes 2 minutes. Your result will tell you which biological pattern is most active in your body right now.
                 </p>
               </div>
-              <HormoneQuiz />
+              <HormoneQuiz token={token} savedResult={savedQuizResult} />
             </div>
           ) : (
             <div style={{
