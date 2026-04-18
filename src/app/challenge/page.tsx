@@ -108,6 +108,13 @@ function SignupForm({ position, teal }: { position: string; teal?: boolean }) {
       <p style={{ fontSize: '12px', color: '#a8a29e', textAlign: 'center', margin: 0 }}>
         Free. No credit card. Instant portal access.
       </p>
+      <p style={{ fontSize: '12px', color: '#a8a29e', textAlign: 'center', margin: 0, lineHeight: 1.6 }}>
+        By signing up you agree to our{' '}
+        <a href="/privacy" style={{ color: '#0f766e', textDecoration: 'underline' }}>Privacy Policy</a>
+        {' '}and{' '}
+        <a href="/terms" style={{ color: '#0f766e', textDecoration: 'underline' }}>Terms</a>.
+        You will receive challenge emails from Body Recode.
+      </p>
     </form>
   )
 }
@@ -479,6 +486,20 @@ export default function ChallengePage() {
           When your rhythm returns, your system becomes more responsive and your body begins to shift. This challenge gives your biology the environment it needs to settle and reset.
         </p>
         <SignupForm position="footer" />
+      </div>
+
+      {/* Footer */}
+      <div style={{ borderTop: '1px solid #e7e5e0', padding: '28px 24px' }}>
+        <div style={{ maxWidth: '680px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', justifyContent: 'space-between' }}>
+          <p style={{ fontSize: '13px', color: '#a8a29e', margin: 0 }}>
+            &copy; {new Date().getFullYear()} Body Recode. All rights reserved.
+          </p>
+          <div style={{ display: 'flex', gap: '20px' }}>
+            <a href="/privacy" style={{ fontSize: '13px', color: '#78716c', textDecoration: 'none' }}>Privacy Policy</a>
+            <a href="/terms" style={{ fontSize: '13px', color: '#78716c', textDecoration: 'none' }}>Terms</a>
+            <a href="mailto:info@bodyrecode.au" style={{ fontSize: '13px', color: '#78716c', textDecoration: 'none' }}>Contact</a>
+          </div>
+        </div>
       </div>
 
     </div>
