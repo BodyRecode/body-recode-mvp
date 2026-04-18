@@ -12,10 +12,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 })
   }
 
-  const { first_name, email } = body as { first_name: string; email: string }
+  const { first_name, email, phone } = body as { first_name: string; email: string; phone: string }
 
-  if (!first_name?.trim() || !email?.trim()) {
-    return NextResponse.json({ error: 'Name and email are required.' }, { status: 400 })
+  if (!first_name?.trim() || !email?.trim() || !phone?.trim()) {
+    return NextResponse.json({ error: 'Name, email and mobile number are required.' }, { status: 400 })
   }
 
   const admin = createAdminClient()
@@ -30,12 +30,15 @@ export async function POST(request: NextRequest) {
 
   if (existingRows && existingRows.length > 0) {
     leadId = existingRows[0].id
+    // Update phone if provided
+    await admin.from('leads').update({ phone: phone.trim() }).eq('id', leadId)
   } else {
     const { data: newLead, error: leadError } = await admin
       .from('leads')
       .insert({
         name: first_name.trim(),
         email: email.toLowerCase().trim(),
+        phone: phone.trim(),
         source: 'other',
         source_detail: '14-day-body-decode-challenge',
         status: 'new_check_in',
@@ -105,6 +108,7 @@ export async function POST(request: NextRequest) {
           token,
           email: email.toLowerCase().trim(),
           firstName: first_name.trim().split(' ')[0],
+          phone: phone.trim(),
         },
       })
     } catch (e) {

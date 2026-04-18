@@ -3,14 +3,14 @@
 import { useState, useRef } from 'react'
 
 function SignupForm({ position, teal }: { position: string; teal?: boolean }) {
-  const [form, setForm] = useState({ first_name: '', email: '' })
+  const [form, setForm] = useState({ first_name: '', email: '', phone: '' })
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
-    if (!form.first_name.trim() || !form.email.trim()) return
+    if (!form.first_name.trim() || !form.email.trim() || !form.phone.trim()) return
     setSubmitting(true)
     setError(null)
     try {
@@ -54,7 +54,7 @@ function SignupForm({ position, teal }: { position: string; teal?: boolean }) {
           You are in.
         </p>
         <p style={{ fontSize: '15px', color: '#0f766e', lineHeight: 1.6, margin: 0 }}>
-          Check your email for your welcome message and portal access. Day 1 starts now.
+          Check your email for portal access. Daily coaching messages will arrive on your phone. Day 1 starts now.
         </p>
       </div>
     )
@@ -88,12 +88,20 @@ function SignupForm({ position, teal }: { position: string; teal?: boolean }) {
           style={inputStyle}
         />
       </div>
+      <input
+        type="tel"
+        placeholder="Mobile number (for daily coaching messages)"
+        value={form.phone}
+        onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+        required
+        style={inputStyle}
+      />
       {error && (
         <p style={{ fontSize: '13px', color: '#dc2626', margin: 0 }}>{error}</p>
       )}
       <button
         type="submit"
-        disabled={submitting || !form.first_name.trim() || !form.email.trim()}
+        disabled={submitting || !form.first_name.trim() || !form.email.trim() || !form.phone.trim()}
         style={{
           width: '100%', padding: '17px', borderRadius: '10px', border: 'none',
           background: submitting ? 'rgba(20,184,166,0.6)' : '#14b8a6',
