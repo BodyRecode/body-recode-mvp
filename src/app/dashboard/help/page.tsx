@@ -50,7 +50,7 @@ const SECTIONS = [
   { id: 'ch-portal',        title: 'Participant Portal',     colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-forms',         title: 'PAR-Q and Health Dec',   colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-resources',     title: 'Training and Nutrition', colour: 'teal' as const, category: 'challenge' as Category },
-  { id: 'ch-quiz',          title: 'Mini Hormone Quiz',      colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-quiz',          title: 'Body Decode Check-In',   colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-automation',    title: 'Automation Sequence',    colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-sms',           title: 'SMS Coaching Sequence',  colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-database',      title: 'Database and Supabase',  colour: 'teal' as const, category: 'challenge' as Category },
@@ -1774,23 +1774,30 @@ export default function HelpPage() {
             ]} />
           </Section>
 
-          <Section id="ch-quiz" title="Mini Hormone Quiz" colour="teal">
-            <p>Unlocks in the portal on Day 7. A 5-question quiz that identifies the participant's dominant hormone pattern and gives them a personalised result with next steps. Results are saved to Supabase and a result email is sent automatically.</p>
+          <Section id="ch-quiz" title="Body Decode Check-In" colour="teal">
+            <p>Unlocks in the portal on Day 7. Not a quiz — a biological signal audit. Participants rate 8 body markers on their 7-day progress, then answer 2 pattern questions. The result identifies their dominant biological pattern and gives them specific actions for the next 7 days. Results are saved to Supabase and a result email is sent automatically.</p>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">The four patterns</p>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Structure</p>
             <StatusList items={[
-              { label: 'Cortisol-Dominant', desc: 'Chronic stress driver — inflammation, fluid retention, abdominal fat. Colour: red.' },
-              { label: 'Rhythm-Disrupted', desc: 'Reversed cortisol curve — wired at night, slow in the morning. Colour: amber.' },
-              { label: 'Insulin-Sensitivity', desc: 'Blood sugar instability — afternoon crashes, cravings, poor training response. Colour: purple.' },
-              { label: 'Adaptation-Stalled', desc: 'Plateau state — body has adapted and stopped responding. Colour: teal.' },
+              { label: 'Part 1 — Progress Scan', desc: '8 biological markers (morning energy, afternoon energy, puffiness, sleep quality, cravings, mental clarity, mood stability, digestion). Each rated: Improving / About the same / Still a challenge. Score out of 8 is shown in the result.' },
+              { label: 'Part 2 — Signal Pattern', desc: '2 questions: Q1 identifies where excess puffiness or softness is most noticeable (body region). Q2 identifies the lived experience pattern. Q2 is the primary determinant — if Q1 and Q2 diverge, Q2 takes priority.' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">The four biological patterns</p>
+            <StatusList items={[
+              { label: 'Stress-Stored (a)', desc: 'Cortisol and adrenaline driving storage around the midsection. Maps to Fat Map MZ1. Colour: red #ef4444.' },
+              { label: 'Metabolic-Drift (b)', desc: 'Insulin staying elevated too long — blood sugar instability, cravings, post-meal heaviness. Maps to Fat Map MZ2. Colour: amber #f59e0b.' },
+              { label: 'Hormonal-Shift (c)', desc: 'Reproductive hormone conservation state — lower body retention, cycle disruption. Maps to Fat Map MZ3. Colour: purple #8b5cf6.' },
+              { label: 'System-Overload (d)', desc: 'Nervous system carrying total load it cannot process — body has become unresponsive. Maps to Fat Map MZ4. Colour: teal #14b8a6.' },
             ]} />
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">On submission</p>
-            <p>The result is calculated client-side by counting dominant answer letters (a/b/c/d). The result key, all answers, and a timestamp are saved to Supabase via <strong>POST /api/challenge/quiz</strong>. A result email is sent to the participant with their pattern name, description, 4 personalised next steps, and a CTA to the Body State Scorecard.</p>
+            <p>Pattern is determined client-side from Q2 answer (a/b/c/d maps directly to pattern). Progress score counts markers answered as "better" (keys not prefixed with "sq"). The result key, all answers, and a timestamp are saved via <strong>POST /api/challenge/quiz</strong>. A result email is sent with: progress score, pattern name and description, 3 action points, and a CTA to the Body State Scorecard at bodyrecode.au/scorecard.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Return visits</p>
-            <p>The portal server page fetches <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">quiz_result</code> from Supabase and passes it to the client. If a result exists, it is shown immediately — the quiz form never appears again.</p>
+            <p>The portal server page fetches <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">quiz_result</code> from Supabase and passes it to the client. If a result exists, it is shown immediately — the check-in form never appears again.</p>
 
+            <Note>Stage 1 language only — no Fat Map zone names, no "MZ" codes, no diagnostic framing. The check-in creates awareness of the pattern. The full Fat Map diagnostic is introduced in Stage 3 (Transformation Membership). Framework documentation in Dropbox: 06_Platform_Build/01_Pages/day7-body-decode-checkin.md</Note>
             <Note>Required Supabase columns: quiz_completed_at (timestamptz), quiz_result (text), quiz_answers (jsonb) on challenge_enrollments.</Note>
           </Section>
 
@@ -1833,7 +1840,7 @@ export default function HelpPage() {
             <StatusList items={[
               { label: 'Day 1 morning', desc: 'Includes the portal link so the participant can bookmark it' },
               { label: 'Day 5', desc: 'Rest day. Afternoon message references the Week One Progress Session in their portal. Evening message reminds them if not watched.' },
-              { label: 'Day 7 morning', desc: 'Includes the Mini Hormone Quiz unlock — "The Mini Hormone Quiz is now unlocked in your portal. Complete it today."' },
+              { label: 'Day 7 morning', desc: 'Includes the Body Decode Check-In unlock — "Your Body Decode Check-In is now live in your portal. This takes about 5 minutes and shows you exactly what has shifted in your body this week."' },
               { label: 'Day 14 evening', desc: 'Closing message — directs to portal and email for next step.' },
             ]} />
 
