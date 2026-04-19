@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ApproveClearanceButton from './approve-clearance-button'
+import RemoveClearanceButton from './remove-clearance-button'
 
 export default async function MedicalClearancePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -101,6 +102,17 @@ Kade`
         <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">WhatsApp Message Template</p>
         <pre className="text-sm text-stone-300 whitespace-pre-wrap leading-relaxed font-sans">{whatsappMessage}</pre>
       </div>
+
+      {/* Remove clearance requirement */}
+      {!approved && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-6 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-1">Remove Requirement</p>
+            <p className="text-xs text-stone-500">If the clearance was flagged in error, remove it to clear this client's file.</p>
+          </div>
+          <RemoveClearanceButton clientId={id} />
+        </div>
+      )}
 
       {/* Printable form */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
