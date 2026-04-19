@@ -99,7 +99,7 @@ export default function HealthDeclarationForm({
   const [declarationName, setDeclarationName] = useState('')
 
   // Clearance logic
-  const requiresClearance = cardioSymptoms.length > 0 || pregnant === 'yes'
+  const requiresClearance = cardioSymptoms.filter(s => s !== 'None of the above').length > 0 || pregnant === 'yes'
 
   const allDeclarationsTicked =
     declaredHonest && declaredDisclosed && declaredWillNotify && declaredRisks &&
