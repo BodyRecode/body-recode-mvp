@@ -153,7 +153,7 @@ export const challengeSequenceFunction = inngest.createFunction(
             <li style="margin-bottom:6px;">Your 14-day training plan</li>
             <li style="margin-bottom:6px;">Your HABNS nutrition guide</li>
             <li style="margin-bottom:6px;">Your morning and evening reset sequences</li>
-            <li style="margin-bottom:6px;">The Mini Hormone Quiz - unlocks on Day 7</li>
+            <li style="margin-bottom:6px;">The Body Decode Check-In - unlocks on Day 7</li>
           </ul>
           <p>Start simple. Follow the structure. Do not try to be perfect on Day 1.</p>
           <p>
