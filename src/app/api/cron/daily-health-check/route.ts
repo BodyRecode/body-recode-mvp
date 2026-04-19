@@ -63,17 +63,13 @@ async function checkZoom(): Promise<CheckResult> {
 }
 
 async function checkResend(): Promise<CheckResult> {
-  try {
-    if (!process.env.RESEND_API_KEY) {
-      return { name: 'Email (Resend)', ok: false, detail: 'RESEND_API_KEY env var missing' }
-    }
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    const { error } = await resend.domains.list()
-    if (error) return { name: 'Email (Resend)', ok: false, detail: error.message }
-    return { name: 'Email (Resend)', ok: true, detail: 'API key valid' }
-  } catch (e) {
-    return { name: 'Email (Resend)', ok: false, detail: String(e) }
+  // The API key is send-only (restricted) — management calls like domains.list() will fail.
+  // Just verify the key is present and non-empty. Actual sending is proven by the health
+  // check email itself arriving in the inbox each morning.
+  if (!process.env.RESEND_API_KEY) {
+    return { name: 'Email (Resend)', ok: false, detail: 'RESEND_API_KEY env var missing' }
   }
+  return { name: 'Email (Resend)', ok: true, detail: 'API key present (send-only key — delivery confirmed by this email)' }
 }
 
 async function checkRecentBookingErrors(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
@@ -85,7 +81,7 @@ async function checkRecentBookingErrors(admin: ReturnType<typeof createAdminClie
       .from('lead_events')
       .select('lead_id, type, created_at')
       .eq('type', 'scorecard_completed')
-      .gte('created_at', since)
+      .gte('sent_at', since)
     if (error) return { name: 'Funnel Activity (24h)', ok: true, detail: 'Could not query events (non-critical)' }
     const count = data?.length ?? 0
     return {
