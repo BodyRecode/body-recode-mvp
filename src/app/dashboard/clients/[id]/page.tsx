@@ -19,6 +19,7 @@ import SendFounderInfoButton from '@/components/send-founder-info-button'
 import SendAgreementButton from '@/components/send-agreement-button'
 import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
+import OverrideSubscriptionButton from '@/components/override-subscription-button'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -379,9 +380,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               Subscription Active
             </span>
           ) : (
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-stone-700 text-stone-500">
-              Awaiting Payment
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-stone-700 text-stone-500">
+                Awaiting Payment
+              </span>
+              <OverrideSubscriptionButton clientId={client.id} />
+            </div>
           )}
         </div>
         <PackageManager
