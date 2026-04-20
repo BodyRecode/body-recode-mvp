@@ -1499,6 +1499,101 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
               </div>
             )}
 
+            {/* Midpoint reflection - Week 3 only */}
+            {currentWeek === 3 && (() => {
+              const reflections: Record<string, string[]> = {
+                'stress-stored': [
+                  'Is your afternoon energy crash less severe than Week 1?',
+                  'Are you falling asleep faster or staying asleep longer?',
+                  'Has the late-night hunger or restlessness reduced?',
+                  'Does your morning energy feel less forced?',
+                ],
+                'metabolic-drift': [
+                  'Is the 3pm crash softer or gone compared to Week 1?',
+                  'Is hunger between meals more predictable and less urgent?',
+                  'Have sugar cravings after meals reduced?',
+                  'Is your energy more stable across the day?',
+                ],
+                'hormonal-shift': [
+                  'Has your mood been more stable or consistent?',
+                  'Is there less water retention or puffiness?',
+                  'Is energy through the day more even?',
+                  'Has motivation to train been easier to access?',
+                ],
+                'system-overload': [
+                  'Does your energy feel less flat than Week 1?',
+                  'Are you recovering between sessions faster?',
+                  'Is sleep feeling more restorative?',
+                  'Is the general heaviness or depletion lifting?',
+                ],
+              }
+              const questions = reflections[pattern] ?? reflections['stress-stored']
+              return (
+                <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
+                    Midpoint Reflection
+                  </div>
+                  <p style={{ fontSize: 14, color: '#a8a29e', margin: '0 0 16px', lineHeight: 1.75 }}>
+                    You are halfway through. The Adapt phase starts this week. Before you move into higher intensity, take a moment to notice what has already shifted since Week 1.
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+                    {questions.map((q, i) => (
+                      <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
+                        <span style={{ fontSize: 13, color: '#78716c', lineHeight: 1.65 }}>{q}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p style={{ fontSize: 13, color: '#57534e', margin: 0, lineHeight: 1.7 }}>
+                    These are the markers your pattern moves first. Physical changes come later. If any of these are shifting, the programme is working exactly as it should.
+                  </p>
+                </div>
+              )
+            })()}
+
+            {/* Week 6 ascension CTA */}
+            {currentWeek === 6 && (
+              <div style={{ background: '#111110', border: '1px solid #14b8a6', borderRadius: 12, padding: '24px', marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #14b8a6, #8b5cf6)' }} />
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  Stage 3 - What Comes Next
+                </div>
+                <div style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 12 }}>
+                  You built the foundation. Now build the result.
+                </div>
+                <p style={{ fontSize: 14, color: '#a8a29e', margin: '0 0 20px', lineHeight: 1.8 }}>
+                  Six weeks of regulated rhythm, progressive training, and hormonal correction has created a system that can now respond properly. Stage 3 is where that system gets challenged and where body composition changes become visible and permanent.
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+                  {[
+                    '12 weeks of progressive training built on your current capacity',
+                    'Pattern-specific nutrition evolved for performance, not just regulation',
+                    'Fortnightly check-ins with direct coaching feedback',
+                    'Full accountability structure across the full 12 weeks',
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#14b8a6', marginTop: 6, flexShrink: 0 }} />
+                      <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                  <a
+                    href="mailto:kade@bodyrecode.au?subject=Stage 3 - I want to continue"
+                    style={{ display: 'inline-block', padding: '13px 24px', background: '#14b8a6', color: '#0c0a09', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none' }}
+                  >
+                    Start Stage 3
+                  </a>
+                  <a
+                    href="mailto:kade@bodyrecode.au?subject=Blueprint complete - what next?"
+                    style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#14b8a6', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #14b8a6' }}
+                  >
+                    Ask a question first
+                  </a>
+                </div>
+              </div>
+            )}
+
             <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '24px', marginBottom: 24 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                 Current Phase
