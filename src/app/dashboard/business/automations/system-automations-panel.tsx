@@ -1,10 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import { Zap, ChevronRight } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
 
 const SYSTEM_AUTOMATIONS = [
   {
@@ -13,7 +10,6 @@ const SYSTEM_AUTOMATIONS = [
     description: '9-step sequence triggered when someone completes the Body State Scorecard',
     trigger: 'Scorecard completed',
     steps: 9,
-    canReseed: true,
   },
   {
     id: 'report-followup',
@@ -21,7 +17,6 @@ const SYSTEM_AUTOMATIONS = [
     description: '3-email sequence sent after a performance report is delivered to a lead',
     trigger: 'Report sent',
     steps: 3,
-    canReseed: false,
   },
   {
     id: 'zoom1-confirmation',
@@ -29,7 +24,6 @@ const SYSTEM_AUTOMATIONS = [
     description: 'Confirmation + 2-hour and 30-minute reminder emails to the lead, plus a coach notification on booking',
     trigger: 'Zoom 1 booked',
     steps: 4,
-    canReseed: false,
   },
   {
     id: 'zoom2-confirmation',
@@ -37,7 +31,6 @@ const SYSTEM_AUTOMATIONS = [
     description: 'Confirmation + 2-hour and 30-minute reminder emails to the lead, plus a coach notification on booking',
     trigger: 'Zoom 2 booked',
     steps: 4,
-    canReseed: false,
   },
   {
     id: 'no-show',
@@ -45,7 +38,6 @@ const SYSTEM_AUTOMATIONS = [
     description: '3-email sequence for leads who missed their scheduled Zoom call',
     trigger: 'Zoom no-show marked',
     steps: 3,
-    canReseed: false,
   },
   {
     id: 'zoom1-declined',
@@ -53,7 +45,6 @@ const SYSTEM_AUTOMATIONS = [
     description: '3-email sequence sent when a lead declines to proceed after Zoom 1',
     trigger: 'Declined after Zoom 1',
     steps: 3,
-    canReseed: false,
   },
   {
     id: 'downsell-offer',
@@ -61,7 +52,6 @@ const SYSTEM_AUTOMATIONS = [
     description: '$97 self-guided program offer sent automatically on Zoom 1 decline',
     trigger: 'Declined after Zoom 1',
     steps: 1,
-    canReseed: false,
   },
   {
     id: 'program-buyer-nurture',
@@ -69,33 +59,10 @@ const SYSTEM_AUTOMATIONS = [
     description: '3-email sequence to bring self-guided program buyers back into coaching',
     trigger: 'Self-guided program purchased',
     steps: 3,
-    canReseed: false,
   },
 ]
 
 export default function SystemAutomationsPanel() {
-  const router = useRouter()
-  const [reseeding, setReseeding] = useState(false)
-  const [reseeded, setReseeded] = useState(false)
-
-  async function reseedScorecard() {
-    setReseeding(true)
-    try {
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      const res = await fetch('/api/admin/resync-scorecard-workflow', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ coachId: user?.id }),
-      })
-      if (res.ok) {
-        setReseeded(true)
-        router.refresh()
-      }
-    } catch {}
-    setReseeding(false)
-  }
-
   return (
     <div className="mb-8">
       <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">System Automations</p>
@@ -115,15 +82,6 @@ export default function SystemAutomationsPanel() {
               <p className="text-xs text-stone-600 mt-1">{a.trigger} · {a.steps} emails</p>
             </div>
             <div className="flex items-center gap-3 shrink-0">
-              {a.canReseed && (
-                <button
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); reseedScorecard() }}
-                  disabled={reseeding}
-                  className="bg-stone-800 hover:bg-stone-700 disabled:opacity-50 text-stone-300 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
-                >
-                  {reseeding ? 'Updating...' : reseeded ? 'Updated' : 'Reseed'}
-                </button>
-              )}
               <span className="flex items-center gap-1 text-xs font-medium text-teal-400">
                 <Zap size={10} />
                 Active
