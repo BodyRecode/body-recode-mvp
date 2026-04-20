@@ -284,6 +284,355 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
   )
 }
 
+const FOUNDATION_FOODS = [
+  { category: 'Protein', examples: 'Beef, chicken, eggs, pork, lamb, turkey, seafood, yoghurt, cottage cheese', note: 'Anchor every meal with protein first' },
+  { category: 'Fat', examples: 'Butter, ghee, coconut oil, avocado, cheese, egg yolks, tallow', note: 'Your energy source between meals' },
+  { category: 'Fruit', examples: 'Bananas, berries, pineapple, apples, oranges, grapes, mango', note: 'Primary carbohydrate source every day' },
+  { category: 'Post-Training Carbs', examples: 'White rice, potatoes, sweet potato, honey', note: 'Post-training window only' },
+]
+
+const REMOVE_FOODS = [
+  'Seed oils (canola, sunflower, vegetable)',
+  'Processed and packaged foods',
+  'Refined sugar',
+  'Bread, pasta, cereals, wraps',
+  'Alcohol',
+  'Flavoured drinks and juice',
+  'Protein bars and diet foods',
+  'Fast food and takeaway',
+]
+
+const PATTERN_NUTRITION: Record<string, {
+  headline: string
+  rules: string[]
+  avoid: string[]
+  phaseNotes: { phase: string; weeks: string; note: string }[]
+}> = {
+  'stress-stored': {
+    headline: 'Cortisol is the driver. Your nutrition strategy is built around keeping it calm - not spiking it further with restriction, skipped meals, or caffeine.',
+    rules: [
+      'Eat breakfast within 1 hour of waking - skipping breakfast spikes morning cortisol',
+      'Never train fasted - eat a small meal before every session',
+      'No caffeine after 12pm - afternoon caffeine elevates cortisol into the evening',
+      'Do not skip meals - undereating is a physiological stressor',
+      'Evening meal is protein and fat only - no stimulants, no sugar',
+      'Salt and water on waking every morning - supports adrenal function',
+      'Prioritise magnesium-rich foods: pumpkin seeds, leafy greens, dark chocolate',
+    ],
+    avoid: [
+      'Fasted training',
+      'Caffeine after 12pm',
+      'Skipped meals or intentional restriction',
+      'Alcohol - elevates cortisol and disrupts sleep architecture',
+      'Late-night carbohydrates',
+    ],
+    phaseNotes: [
+      { phase: 'Regulate', weeks: '1-2', note: 'Remove the foods list. Establish the three-meal rhythm. Do not restrict calories - focus on food quality only.' },
+      { phase: 'Adapt', weeks: '3-4', note: 'Post-training carb window is active. Tighten the meal rhythm. Assess sleep quality - nutrition adjustments should follow sleep.' },
+      { phase: 'Embed', weeks: '5-6', note: 'Maintain the structure. Week 6 deload: reduce overall food volume slightly in line with reduced training output.' },
+    ],
+  },
+  'metabolic-drift': {
+    headline: 'Insulin sensitivity is the target. Every nutrition decision is made through the lens of blood glucose - when you eat carbs, how much, and what you do after.',
+    rules: [
+      'Train fasted or semi-fasted where possible - improves insulin response',
+      'Post-training carb window is 90 minutes maximum - strict for this pattern',
+      'Walk 15-20 minutes after every meal - clears post-meal blood glucose significantly',
+      'Protein first at every meal - always eat protein before carbohydrates',
+      'Eliminate snacking - longer fasting gaps between meals restore insulin sensitivity',
+      'Rest days: protein, fat, and fruit only - no starchy carbs',
+      'Choose lower-GI fruit on rest days: berries, apples, pears over banana or mango',
+    ],
+    avoid: [
+      'Snacking between meals',
+      'Starchy carbs on rest days',
+      'Fruit juice - spikes glucose without fibre',
+      'High-GI fruit outside the training window',
+      'Eating carbohydrates before protein at any meal',
+    ],
+    phaseNotes: [
+      { phase: 'Regulate', weeks: '1-2', note: 'Remove the foods list. Establish the two-meal or three-meal rhythm with no snacking. Post-training carb window begins immediately.' },
+      { phase: 'Adapt', weeks: '3-4', note: 'Tighten carb timing. Increase post-training carb volume if performance is improving. Continue walking after meals.' },
+      { phase: 'Embed', weeks: '5-6', note: 'Carb flexibility increases slightly. Introduce one extra starchy carb meal per week if energy and recovery support it.' },
+    ],
+  },
+  'hormonal-shift': {
+    headline: 'Restriction makes this pattern worse. Your nutrition strategy is built around adequacy - enough fat, enough calories, and enough consistency to support hormone production.',
+    rules: [
+      'Dietary fat is non-negotiable - hormones are synthesised from cholesterol, never go low-fat',
+      'Do not restrict calories significantly - the hormonal axis responds badly to sustained restriction',
+      'Include carbohydrates regularly - not just post-training, hormonal health requires consistent glucose availability',
+      'Prioritise omega-3 rich foods: salmon, sardines, eggs, grass-fed beef',
+      'Weeks 3-4 may require more fat and carbohydrates if cycle timing creates energy demands - listen and adjust',
+      'Full-fat dairy is encouraged: yoghurt, cheese, butter',
+      'Eat three full meals per day - do not skip',
+    ],
+    avoid: [
+      'Low-fat or fat-free products',
+      'Calorie restriction or intentional undereating',
+      'Skipped meals',
+      'Alcohol - disrupts oestrogen metabolism',
+      'Excess caffeine - over 2 cups per day adds hormonal load',
+    ],
+    phaseNotes: [
+      { phase: 'Regulate', weeks: '1-2', note: 'Remove the foods list. Prioritise food quality and three consistent meals. Fat intake should be generous from day one.' },
+      { phase: 'Adapt', weeks: '3-4', note: 'If cycle timing is disrupting energy in this phase, increase fat and carbohydrate volume. Do not reduce - this is a recovery input.' },
+      { phase: 'Embed', weeks: '5-6', note: 'Maintain the structure. Week 6 deload: food volume stays the same - do not reduce nutrition because training volume drops.' },
+    ],
+  },
+  'system-overload': {
+    headline: 'Your nervous system is under load. Nutrition is a recovery tool - the goal is nutrient density and adequacy, not restriction or optimisation.',
+    rules: [
+      'Always eat before training - never fasted, the nervous system needs fuel',
+      'Prioritise red meat: beef and lamb are highest in zinc and iron, both critical for neurological recovery',
+      'Magnesium every evening - food sources or supplement: pumpkin seeds, dark chocolate, leafy greens',
+      'Limit caffeine to one coffee, before noon - excess caffeine increases neurological load',
+      'Three meals minimum per day - undereating is a stressor your system cannot currently manage',
+      'Post-training carb window is active and important - do not skip it',
+      'Protein at every meal without exception',
+    ],
+    avoid: [
+      'Fasted training',
+      'Calorie restriction of any kind',
+      'Skipped meals',
+      'Caffeine after 12pm or more than one coffee per day',
+      'Alcohol - neurological recovery is already compromised',
+    ],
+    phaseNotes: [
+      { phase: 'Regulate', weeks: '1-2', note: 'Remove the foods list. Focus on consistency and adequacy. Do not attempt to reduce food volume - the goal is quality, not restriction.' },
+      { phase: 'Adapt', weeks: '3-4', note: 'Post-training carb window becomes more important as training load gradually increases. Prioritise sleep and magnesium alongside nutrition.' },
+      { phase: 'Embed', weeks: '5-6', note: 'Maintain full food volume through the deload week. Recovery is the stimulus - nutrition supports it.' },
+    ],
+  },
+}
+
+function NutritionTab({ pattern }: { pattern: string }) {
+  const [section, setSection] = useState<'overview' | 'foundation' | 'meals'>('overview')
+  const config = PATTERN_CONFIG[pattern] ?? PATTERN_CONFIG['stress-stored']
+  const nutritionData = PATTERN_NUTRITION[pattern] ?? PATTERN_NUTRITION['stress-stored']
+
+  return (
+    <div>
+      <div style={{ marginBottom: 28 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>Nutrition Framework</h2>
+        <p style={{ fontSize: 14, color: '#78716c', margin: 0, lineHeight: 1.7 }}>
+          Built on the HABNS foundation with {config.label} pattern emphasis applied across all 6 weeks.
+        </p>
+      </div>
+
+      {/* Section nav */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
+        {([
+          { id: 'overview', label: 'Your Pattern' },
+          { id: 'foundation', label: 'Foundation Foods' },
+          { id: 'meals', label: 'Meal Builder' },
+        ] as const).map(s => (
+          <button
+            key={s.id}
+            onClick={() => setSection(s.id)}
+            style={{ padding: '9px 16px', fontSize: 13, fontWeight: 600, color: section === s.id ? '#0c0a09' : '#57534e', background: section === s.id ? '#14b8a6' : '#111110', border: `1px solid ${section === s.id ? '#14b8a6' : '#292524'}`, borderRadius: 8, cursor: 'pointer' }}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {section === 'overview' && (
+        <div>
+          {/* Pattern headline */}
+          <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
+              {config.label} - Nutrition Strategy
+            </div>
+            <p style={{ fontSize: 14, color: '#a8a29e', margin: 0, lineHeight: 1.75 }}>{nutritionData.headline}</p>
+          </div>
+
+          {/* Pattern rules */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+              Rules for Your Pattern
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {nutritionData.rules.map((rule, i) => (
+                <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{rule}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Avoid */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+              Avoid for 6 Weeks
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {nutritionData.avoid.map((item, i) => (
+                <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 3, background: '#1c1917', border: '1px solid #292524', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontSize: 10, color: '#ef4444' }}>✕</span>
+                  </div>
+                  <span style={{ fontSize: 13, color: '#78716c', lineHeight: 1.6 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Phase notes */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+              Phase Adjustments
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+              {nutritionData.phaseNotes.map((row, i) => (
+                <div key={i} style={{ paddingBottom: i < 2 ? 16 : 0, marginBottom: i < 2 ? 16 : 0, borderBottom: i < 2 ? '1px solid #1c1917' : 'none' }}>
+                  <div style={{ display: 'flex', gap: 10, alignItems: 'baseline', marginBottom: 6 }}>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>{row.phase}</span>
+                    <span style={{ fontSize: 12, color: '#57534e' }}>Weeks {row.weeks}</span>
+                  </div>
+                  <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.65 }}>{row.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {section === 'foundation' && (
+        <div>
+          {/* Foundation foods */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+              Foundation Foods
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+              {FOUNDATION_FOODS.map((food, i) => (
+                <div key={i} style={{ paddingBottom: i < FOUNDATION_FOODS.length - 1 ? 16 : 0, marginBottom: i < FOUNDATION_FOODS.length - 1 ? 16 : 0, borderBottom: i < FOUNDATION_FOODS.length - 1 ? '1px solid #1c1917' : 'none' }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 4 }}>{food.category}</div>
+                  <div style={{ fontSize: 13, color: '#a8a29e', marginBottom: 4, lineHeight: 1.6 }}>{food.examples}</div>
+                  <div style={{ fontSize: 12, color: '#57534e' }}>{food.note}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Remove list */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+              Remove for 6 Weeks (All Patterns)
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {REMOVE_FOODS.map((item, i) => (
+                <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 3, background: '#1c1917', border: '1px solid #292524', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontSize: 10, color: '#ef4444' }}>✕</span>
+                  </div>
+                  <span style={{ fontSize: 13, color: '#78716c', lineHeight: 1.6 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Hydration */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+              Hydration
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {[
+                '2-3 litres of water daily',
+                'Pinch of salt in your first glass every morning',
+                'Electrolytes during training',
+                'Coffee is fine - maximum 2 cups, before noon',
+                'No flavoured drinks, juice, or soft drinks',
+              ].map((item, i) => (
+                <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#14b8a6', marginTop: 6, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.6 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {section === 'meals' && (
+        <div>
+          {/* Meal builder */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+              Meal Builder
+            </div>
+            <p style={{ fontSize: 13, color: '#78716c', margin: '0 0 16px', lineHeight: 1.7 }}>Every meal follows the same structure. Build each meal in this order.</p>
+            {[
+              { step: '1', label: 'Protein', detail: 'Always first. Beef, chicken, eggs, pork, lamb, seafood, yoghurt.', required: true },
+              { step: '2', label: 'Fat', detail: 'Every meal. Butter, ghee, avocado, cheese, egg yolks, coconut oil.', required: true },
+              { step: '3', label: 'Fruit', detail: 'Daily carbohydrate base. Any fruit you enjoy. Eat freely.', required: true },
+              { step: '4', label: 'Starchy Carbs', detail: 'Post-training window only. Rice, potato, sweet potato, honey.', required: false },
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', gap: 16, paddingBottom: i < 3 ? 16 : 0, marginBottom: i < 3 ? 16 : 0, borderBottom: i < 3 ? '1px solid #1c1917' : 'none' }}>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: item.required ? '#14b8a6' : '#1c1917', border: `2px solid ${item.required ? '#14b8a6' : '#292524'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: item.required ? '#0c0a09' : '#57534e' }}>{item.step}</span>
+                </div>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: '#fff', marginBottom: 3 }}>
+                    {item.label}
+                    {!item.required && <span style={{ fontSize: 11, color: '#57534e', marginLeft: 8, fontWeight: 400 }}>post-training only</span>}
+                  </div>
+                  <div style={{ fontSize: 13, color: '#78716c', lineHeight: 1.6 }}>{item.detail}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Example meals */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+              Example Meals
+            </div>
+            {[
+              { label: 'Breakfast (every day)', items: ['3 eggs scrambled in butter + half an avocado', 'Cottage cheese + mixed berries + honey', 'Greek yoghurt + banana + pinch of salt'] },
+              { label: 'Lunch or Dinner - Rest Day', items: ['Beef mince + avocado + salt + side of fruit', 'Chicken thighs cooked in butter + side of fruit', 'Salmon fillet + cucumber + avocado'] },
+              { label: 'Post-Training Meal', items: ['Beef mince + white rice', 'Chicken thighs + potato + butter', 'Ground turkey + sweet potato', 'Whey protein + banana immediately post-session'] },
+            ].map((group, i) => (
+              <div key={i} style={{ paddingBottom: i < 2 ? 16 : 0, marginBottom: i < 2 ? 16 : 0, borderBottom: i < 2 ? '1px solid #1c1917' : 'none' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#57534e', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 8 }}>{group.label}</div>
+                {group.items.map((item, j) => (
+                  <div key={j} style={{ display: 'flex', gap: 10, marginBottom: j < group.items.length - 1 ? 6 : 0 }}>
+                    <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#3d3935', marginTop: 7, flexShrink: 0 }} />
+                    <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.6 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          {/* Shopping list */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+              Shopping List
+            </div>
+            {[
+              { label: 'Proteins', items: 'Beef mince, chicken thighs, eggs, salmon, pork, lamb, Greek yoghurt, cottage cheese, whey protein' },
+              { label: 'Fats', items: 'Butter, ghee, coconut oil, avocados, cheddar cheese, egg yolks' },
+              { label: 'Fruit', items: 'Bananas, mixed berries (fresh or frozen), pineapple, apples, oranges, mango' },
+              { label: 'Post-Training Carbs', items: 'White rice, potatoes, sweet potato, raw honey' },
+              { label: 'Hydration', items: 'Quality sea salt or Himalayan salt, electrolyte powder (no sugar)' },
+              { label: 'Kitchen', items: 'Bone broth, herbs, spices, garlic, lemon' },
+            ].map((row, i) => (
+              <div key={i} style={{ display: 'flex', gap: 12, paddingBottom: i < 5 ? 12 : 0, marginBottom: i < 5 ? 12 : 0, borderBottom: i < 5 ? '1px solid #1c1917' : 'none' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#57534e', minWidth: 120, paddingTop: 1 }}>{row.label}</div>
+                <div style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.6 }}>{row.items}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: number }) {
   const [activeSession, setActiveSession] = useState('A')
   const [mode, setMode] = useState<'gym' | 'home' | 'bodyweight'>('gym')
@@ -579,13 +928,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
         )}
 
         {activeTab === 'nutrition' && (
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '32px 24px', textAlign: 'center' }}>
-            <h2 style={{ fontSize: 20, fontWeight: 700, color: '#fff', margin: '0 0 12px' }}>Nutrition Framework</h2>
-            <p style={{ fontSize: 14, color: '#78716c', lineHeight: 1.75, margin: '0 0 8px' }}>
-              Nutrition guide with {config.label} pattern emphasis.
-            </p>
-            <p style={{ fontSize: 13, color: '#57534e' }}>Content coming soon.</p>
-          </div>
+          <NutritionTab pattern={pattern} />
         )}
 
         {activeTab === 'education' && (
