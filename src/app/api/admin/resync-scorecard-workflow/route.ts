@@ -1,5 +1,19 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+
+// GET /api/admin/resync-scorecard-workflow
+// Visit this URL in the browser while logged in — reads your user ID from
+// the session, resyncs the workflow, then redirects back to automations.
+export async function GET() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const coachId = user?.id ?? null
+
+  await runResync(coachId)
+  redirect('/dashboard/business/automations')
+}
 
 // POST /api/admin/resync-scorecard-workflow
 // Uses the admin client (bypasses RLS) to upsert the scorecard follow-up workflow.
@@ -123,10 +137,8 @@ Body Recode`,
   },
 ]
 
-export async function POST(request: Request) {
+async function runResync(coachId: string | null): Promise<{ ok: boolean; error?: string; workflowId?: string; action?: string }> {
   const admin = createAdminClient()
-  const body = await request.json().catch(() => ({}))
-  const coachId: string | null = body.coachId ?? null
 
   // Fetch ALL matching workflows — duplicates may exist from prior failed seeds
   const { data: allMatching, error: findError } = await admin
@@ -137,7 +149,7 @@ export async function POST(request: Request) {
     .order('created_at', { ascending: true })
 
   if (findError) {
-    return NextResponse.json({ error: findError.message }, { status: 500 })
+    return { ok: false, error: findError.message }
   }
 
   let workflowId: string
@@ -168,7 +180,7 @@ export async function POST(request: Request) {
       .single()
 
     if (createError || !created) {
-      return NextResponse.json({ error: createError?.message ?? 'Failed to create workflow' }, { status: 500 })
+      return { ok: false, error: createError?.message ?? 'Failed to create workflow' }
     }
     workflowId = created.id
   }
@@ -180,8 +192,16 @@ export async function POST(request: Request) {
     .insert(STEPS.map(s => ({ ...s, workflow_id: workflowId })))
 
   if (stepsError) {
-    return NextResponse.json({ error: stepsError.message }, { status: 500 })
+    return { ok: false, error: stepsError.message }
   }
 
-  return NextResponse.json({ ok: true, workflowId, action: allMatching && allMatching.length > 0 ? 'updated' : 'created' })
+  return { ok: true, workflowId, action: allMatching && allMatching.length > 0 ? 'updated' : 'created' }
+}
+
+export async function POST(request: NextRequest) {
+  const body = await request.json().catch(() => ({}))
+  const coachId: string | null = body.coachId ?? null
+  const result = await runResync(coachId)
+  if (!result.ok) return NextResponse.json({ error: result.error }, { status: 500 })
+  return NextResponse.json(result)
 }
