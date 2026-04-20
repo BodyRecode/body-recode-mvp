@@ -91,7 +91,7 @@ export async function POST(
   await admin
     .from('leads')
     .update({
-      status: 'zoom_booked',
+      status: 'zoom_1_booked',
       zoom_meeting_url: meetingLink,
       zoom_date: slotStart.toISOString(),
     })

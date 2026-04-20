@@ -6,7 +6,7 @@ import type { Lead } from '@/types'
 
 const STATUS_GROUPS = [
   { label: 'Pipeline', statuses: ['new_check_in', 'report_sent', 'cold_no_booking'] },
-  { label: 'Zoom', statuses: ['zoom_booked', 'zoom_completed', 'closed_no_show', 'closed_declined'] },
+  { label: 'Zoom', statuses: ['zoom_booked', 'zoom_1_booked', 'zoom_completed', 'closed_no_show', 'closed_declined'] },
   { label: 'Entry', statuses: ['commencement_fee_paid', 'active_deliberate_start', 'active_coaching'] },
 ]
 

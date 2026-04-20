@@ -28,6 +28,7 @@ export function getLeadStatusLabel(status: string) {
     report_sent: 'Report Sent',
     cold_no_booking: 'Cold — No Booking',
     zoom_booked: 'Zoom Booked',
+    zoom_1_booked: 'Zoom Booked',
     zoom_completed: 'Zoom Done',
     closed_no_show: 'Closed — No Show',
     closed_declined: 'Closed — Declined',
@@ -44,6 +45,7 @@ export function getLeadStatusColour(status: string) {
     case 'report_sent': return 'bg-violet-950 text-violet-300 border-violet-800'
     case 'cold_no_booking': return 'bg-stone-800 text-stone-400 border-stone-700'
     case 'zoom_booked': return 'bg-amber-950 text-amber-300 border-amber-800'
+    case 'zoom_1_booked': return 'bg-amber-950 text-amber-300 border-amber-800'
     case 'zoom_completed': return 'bg-amber-950 text-amber-200 border-amber-700'
     case 'closed_no_show': return 'bg-stone-800 text-stone-500 border-stone-700'
     case 'closed_declined': return 'bg-stone-800 text-stone-500 border-stone-700'

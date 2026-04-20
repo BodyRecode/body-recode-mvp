@@ -12,9 +12,9 @@ const typeLabel: Record<string, string> = {
 }
 
 const pipelineStageOnBooking: Record<string, string> = {
-  zoom: 'zoom_booked',
-  zoom1: 'zoom_booked',
-  zoom2: 'zoom_booked',
+  zoom: 'zoom_1_booked',
+  zoom1: 'zoom_1_booked',
+  zoom2: 'zoom_1_booked',
 }
 
 function generateIcs({

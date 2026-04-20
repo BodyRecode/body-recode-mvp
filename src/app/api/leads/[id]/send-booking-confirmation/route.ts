@@ -107,8 +107,8 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
 </body></html>`,
   })
 
-  // Update lead status to zoom_booked
-  await admin.from('leads').update({ status: 'zoom_booked', updated_at: new Date().toISOString() }).eq('id', lead.id)
+  // Update lead status to zoom_1_booked
+  await admin.from('leads').update({ status: 'zoom_1_booked', updated_at: new Date().toISOString() }).eq('id', lead.id)
 
   await logLeadEvent({
     leadId: lead.id,

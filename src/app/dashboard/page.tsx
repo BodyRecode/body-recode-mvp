@@ -50,6 +50,7 @@ export default async function DashboardHomePage() {
     report_sent: 'Report Sent',
     cold_no_booking: 'Cold',
     zoom_booked: 'Zoom Booked',
+    zoom_1_booked: 'Zoom Booked',
     zoom_completed: 'Zoom Done',
     closed_no_show: 'No Show',
     closed_declined: 'Declined',

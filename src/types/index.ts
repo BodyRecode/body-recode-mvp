@@ -13,6 +13,7 @@ export type LeadStatus =
   | 'report_sent'
   | 'cold_no_booking'
   | 'zoom_booked'
+  | 'zoom_1_booked'
   | 'zoom_completed'
   | 'closed_no_show'
   | 'closed_declined'

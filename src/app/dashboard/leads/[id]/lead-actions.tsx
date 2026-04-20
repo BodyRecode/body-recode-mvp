@@ -6,7 +6,7 @@ import type { Lead } from '@/types'
 
 const STATUSES = [
   'new_check_in', 'report_sent', 'cold_no_booking',
-  'zoom_booked', 'zoom_completed', 'closed_no_show',
+  'zoom_1_booked', 'zoom_completed', 'closed_no_show',
   'closed_declined', 'commencement_fee_paid', 'active_deliberate_start', 'active_coaching',
 ]
 
