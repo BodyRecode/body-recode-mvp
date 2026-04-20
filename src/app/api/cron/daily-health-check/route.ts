@@ -145,7 +145,7 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
   try {
     const { data: workflow, error } = await admin
       .from('be_workflows')
-      .select('id, is_active, be_workflow_steps(id)')
+      .select('id, is_active')
       .eq('name', 'Scorecard — Follow-up Sequence')
       .eq('trigger_type', 'form_submitted')
       .maybeSingle()
@@ -154,7 +154,7 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
       return {
         name: 'Scorecard Automation',
         status: 'failed',
-        detail: 'Could not query workflows table.',
+        detail: `Could not query workflows table: ${error.message}`,
         manualFix: 'Go to Dashboard → Business and click Re-sync on the Scorecard Follow-up Automation.',
       }
     }
@@ -189,7 +189,10 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
       }
     }
 
-    const stepCount = Array.isArray(workflow.be_workflow_steps) ? workflow.be_workflow_steps.length : 0
+    const { count: stepCount } = await admin
+      .from('be_workflow_steps')
+      .select('id', { count: 'exact', head: true })
+      .eq('workflow_id', workflow.id)
 
     // Wrong step count means stale content — resync
     if (stepCount !== 9) {
