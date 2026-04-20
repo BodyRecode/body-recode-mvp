@@ -161,7 +161,7 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
 
     // Missing entirely — create it
     if (!workflow) {
-      const seeded = await reseedScorecardWorkflow(admin)
+      const seeded = await resyncScorecardWorkflow(admin)
       if (seeded) {
         return {
           name: 'Scorecard Automation',
@@ -196,7 +196,7 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
 
     // Wrong step count means stale content — resync
     if (stepCount !== 9) {
-      const seeded = await reseedScorecardWorkflow(admin, workflow.id)
+      const seeded = await resyncScorecardWorkflow(admin, workflow.id)
       if (seeded) {
         return {
           name: 'Scorecard Automation',
@@ -222,7 +222,7 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
   }
 }
 
-async function reseedScorecardWorkflow(
+async function resyncScorecardWorkflow(
   admin: ReturnType<typeof createAdminClient>,
   existingId?: string
 ): Promise<boolean> {

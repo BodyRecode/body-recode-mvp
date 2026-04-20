@@ -8,13 +8,23 @@ export default function SeedScorecardButton() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
+  const [error, setError] = useState('')
 
-  async function seed() {
+  async function sync() {
     setLoading(true)
-    const res = await fetch('/api/scorecard/seed-automation', { method: 'POST' })
-    if (res.ok) {
-      setDone(true)
-      router.refresh()
+    setDone(false)
+    setError('')
+    try {
+      const res = await fetch('/api/admin/resync-scorecard-workflow', { method: 'POST' })
+      if (res.ok) {
+        setDone(true)
+        router.refresh()
+      } else {
+        const data = await res.json().catch(() => ({}))
+        setError(data.error ?? `Error ${res.status}`)
+      }
+    } catch (e) {
+      setError(String(e))
     }
     setLoading(false)
   }
@@ -27,15 +37,16 @@ export default function SeedScorecardButton() {
         </div>
         <div>
           <p className="text-sm font-medium text-white">Scorecard Follow-up Sequence</p>
-          <p className="text-xs text-stone-500 mt-0.5">2-email sequence triggered when someone completes the Body State Scorecard</p>
+          <p className="text-xs text-stone-500 mt-0.5">9-step sequence triggered when someone completes the Body State Scorecard</p>
+          {error && <p className="text-xs text-red-400 mt-1">{error}</p>}
         </div>
       </div>
       <button
-        onClick={seed}
+        onClick={sync}
         disabled={loading}
         className="shrink-0 bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
       >
-        {loading ? 'Updating...' : done ? 'Updated' : 'Reseed'}
+        {loading ? 'Syncing...' : done ? 'Synced' : 'Re-sync'}
       </button>
     </div>
   )

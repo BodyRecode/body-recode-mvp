@@ -105,7 +105,7 @@ export default function BusinessHubPage() {
 
   async function seedScorecardAutomation() {
     setSeedingAutomation(true)
-    const res = await fetch('/api/scorecard/seed-automation', { method: 'POST' })
+    const res = await fetch('/api/admin/resync-scorecard-workflow', { method: 'POST' })
     if (res.ok) setAutomationSeeded(true)
     setSeedingAutomation(false)
   }
@@ -113,9 +113,9 @@ export default function BusinessHubPage() {
   async function resyncScorecardAutomation() {
     setSeedingAutomation(true)
     setAutomationSeeded(false)
-    await fetch('/api/scorecard/seed-automation', { method: 'POST' })
+    const res = await fetch('/api/admin/resync-scorecard-workflow', { method: 'POST' })
     setSeedingAutomation(false)
-    setAutomationSeeded(true)
+    if (res.ok) setAutomationSeeded(true)
   }
 
   return (
