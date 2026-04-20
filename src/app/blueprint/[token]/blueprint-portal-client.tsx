@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 type Enrollment = {
   id: string
@@ -1192,6 +1192,204 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
   )
 }
 
+const CHECKIN_MARKERS: { key: string; label: string; low: string; high: string }[] = [
+  { key: 'energy_levels', label: 'Overall energy through the day', low: 'Flat and exhausted', high: 'Consistent and clear' },
+  { key: 'morning_energy', label: 'Morning energy on waking', low: 'Heavy and reluctant', high: 'Ready and alert' },
+  { key: 'sleep_quality', label: 'Sleep quality', low: 'Poor or broken', high: 'Deep and restful' },
+  { key: 'afternoon_crash', label: 'Afternoon energy crash', low: 'Severe crash', high: 'No crash at all' },
+  { key: 'hunger_cravings', label: 'Hunger and cravings between meals', low: 'Constant and urgent', high: 'Predictable and calm' },
+  { key: 'training_recovery', label: 'Recovery between training sessions', low: 'Still sore and depleted', high: 'Ready and recovered' },
+  { key: 'mood_stability', label: 'Mood and emotional stability', low: 'Reactive or flat', high: 'Stable and even' },
+  { key: 'physical_changes', label: 'Physical changes noticed', low: 'None visible', high: 'Clear progress' },
+]
+
+type CheckIn = {
+  id: string
+  week_number: number
+  energy_levels: number
+  morning_energy: number
+  sleep_quality: number
+  afternoon_crash: number
+  hunger_cravings: number
+  training_recovery: number
+  mood_stability: number
+  physical_changes: number
+  notes: string | null
+  submitted_at: string
+}
+
+function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentWeek: number; token: string }) {
+  const config = PATTERN_CONFIG[pattern] ?? PATTERN_CONFIG['stress-stored']
+  const [checkins, setCheckins] = useState<CheckIn[]>([])
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
+
+  const defaultMarkers = Object.fromEntries(CHECKIN_MARKERS.map(m => [m.key, 3]))
+  const [markers, setMarkers] = useState<Record<string, number>>(defaultMarkers)
+  const [notes, setNotes] = useState('')
+
+  useEffect(() => {
+    fetch(`/api/blueprint/checkin?token=${token}`)
+      .then(r => r.json())
+      .then(d => { setCheckins(d.checkins ?? []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [token])
+
+  const alreadySubmittedThisWeek = checkins.some(c => c.week_number === currentWeek)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setSubmitting(true)
+    setError('')
+    const res = await fetch('/api/blueprint/checkin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, week_number: currentWeek, notes, ...markers }),
+    })
+    if (res.ok) {
+      const newCheckin: CheckIn = {
+        id: crypto.randomUUID(),
+        week_number: currentWeek,
+        notes: notes || null,
+        submitted_at: new Date().toISOString(),
+        ...Object.fromEntries(CHECKIN_MARKERS.map(m => [m.key, markers[m.key]])),
+      } as CheckIn
+      setCheckins(prev => [...prev, newCheckin])
+      setSubmitted(true)
+    } else {
+      const d = await res.json()
+      setError(d.error ?? 'Something went wrong.')
+    }
+    setSubmitting(false)
+  }
+
+  const scoreAvg = (c: CheckIn) => {
+    const vals = CHECKIN_MARKERS.map(m => c[m.key as keyof CheckIn] as number)
+    return (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1)
+  }
+
+  return (
+    <div>
+      <div style={{ marginBottom: 28 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>Weekly Check-In</h2>
+        <p style={{ fontSize: 14, color: '#78716c', margin: 0, lineHeight: 1.7 }}>
+          8 biological markers. Rated 1-5. Takes about 2 minutes. Submit once per week.
+        </p>
+      </div>
+
+      {/* This week's form */}
+      {loading ? (
+        <div style={{ padding: '40px', textAlign: 'center', color: '#57534e', fontSize: 13 }}>Loading...</div>
+      ) : alreadySubmittedThisWeek || submitted ? (
+        <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Week {currentWeek} - Submitted</div>
+          <p style={{ fontSize: 14, color: '#78716c', margin: 0, lineHeight: 1.7 }}>Check-in for this week is complete. The next one will be available at Week {Math.min(currentWeek + 1, 6)}.</p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
+              Week {currentWeek} Check-In
+            </div>
+            <p style={{ fontSize: 13, color: '#57534e', margin: '0 0 24px', lineHeight: 1.6 }}>
+              Rate each marker for how this week has felt overall. 1 = poor, 5 = excellent.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              {CHECKIN_MARKERS.map((marker, i) => (
+                <div key={marker.key} style={{ paddingBottom: i < CHECKIN_MARKERS.length - 1 ? 24 : 0, borderBottom: i < CHECKIN_MARKERS.length - 1 ? '1px solid #1c1917' : 'none' }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: '#d4d0cc', marginBottom: 12 }}>{marker.label}</div>
+                  <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+                    {[1, 2, 3, 4, 5].map(val => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setMarkers(prev => ({ ...prev, [marker.key]: val }))}
+                        style={{
+                          flex: 1,
+                          padding: '10px 0',
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: markers[marker.key] === val ? '#0c0a09' : '#57534e',
+                          background: markers[marker.key] === val ? config.colour : '#1c1917',
+                          border: `1px solid ${markers[marker.key] === val ? config.colour : '#292524'}`,
+                          borderRadius: 8,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {val}
+                      </button>
+                    ))}
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: 11, color: '#3d3935' }}>{marker.low}</span>
+                    <span style={{ fontSize: 11, color: '#3d3935' }}>{marker.high}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: 24 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#d4d0cc', marginBottom: 8 }}>Anything else to flag this week? <span style={{ fontWeight: 400, color: '#57534e' }}>(optional)</span></div>
+              <textarea
+                value={notes}
+                onChange={e => setNotes(e.target.value)}
+                placeholder="Symptoms, energy patterns, anything unexpected..."
+                rows={3}
+                style={{ width: '100%', background: '#0c0a09', border: '1px solid #292524', borderRadius: 8, padding: '12px 14px', fontSize: 13, color: '#a8a29e', resize: 'vertical', fontFamily: 'system-ui, sans-serif', boxSizing: 'border-box' }}
+              />
+            </div>
+
+            {error && <p style={{ fontSize: 13, color: '#ef4444', margin: '12px 0 0' }}>{error}</p>}
+
+            <button
+              type="submit"
+              disabled={submitting}
+              style={{ marginTop: 20, width: '100%', padding: '14px', background: config.colour, color: '#0c0a09', fontWeight: 700, fontSize: 14, borderRadius: 8, border: 'none', cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.7 : 1 }}
+            >
+              {submitting ? 'Saving...' : `Submit Week ${currentWeek} Check-In`}
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* History */}
+      {checkins.length > 0 && (
+        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
+            Check-In History
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+            {[...checkins].sort((a, b) => b.week_number - a.week_number).map((c, i) => (
+              <div key={c.id} style={{ paddingBottom: i < checkins.length - 1 ? 16 : 0, marginBottom: i < checkins.length - 1 ? 16 : 0, borderBottom: i < checkins.length - 1 ? '1px solid #1c1917' : 'none' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>Week {c.week_number}</span>
+                  <span style={{ fontSize: 12, color: '#57534e' }}>Avg {scoreAvg(c)} / 5</span>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6 }}>
+                  {CHECKIN_MARKERS.map(m => (
+                    <div key={m.key} style={{ background: '#0c0a09', borderRadius: 6, padding: '8px 10px' }}>
+                      <div style={{ fontSize: 10, color: '#3d3935', marginBottom: 3, lineHeight: 1.3 }}>{m.label.split(' ').slice(0, 3).join(' ')}</div>
+                      <div style={{ fontSize: 16, fontWeight: 700, color: (c[m.key as keyof CheckIn] as number) >= 4 ? config.colour : (c[m.key as keyof CheckIn] as number) <= 2 ? '#ef4444' : '#a8a29e' }}>
+                        {c[m.key as keyof CheckIn]}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {c.notes && (
+                  <p style={{ fontSize: 13, color: '#78716c', margin: '10px 0 0', lineHeight: 1.6, fontStyle: 'italic' }}>{c.notes}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function BlueprintPortalClient({ enrollment }: { enrollment: Enrollment }) {
   const [pattern, setPattern] = useState(enrollment.pattern)
   const [activeTab, setActiveTab] = useState('home')
@@ -1310,13 +1508,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
         )}
 
         {activeTab === 'checkin' && (
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '32px 24px', textAlign: 'center' }}>
-            <h2 style={{ fontSize: 20, fontWeight: 700, color: '#fff', margin: '0 0 12px' }}>Weekly Check-In</h2>
-            <p style={{ fontSize: 14, color: '#78716c', lineHeight: 1.75, margin: '0 0 8px' }}>
-              Weekly progress tracking across 8 biological markers.
-            </p>
-            <p style={{ fontSize: 13, color: '#57534e' }}>Content coming soon.</p>
-          </div>
+          <CheckInTab pattern={pattern} currentWeek={currentWeek} token={enrollment.token} />
         )}
 
       </div>
