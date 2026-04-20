@@ -41,6 +41,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Enrollment not found.' }, { status: 404 })
   }
 
+
   // Only allow check-in for current or past weeks
   if (week_number > enrollment.current_week) {
     return NextResponse.json({ error: 'Week not yet unlocked.' }, { status: 403 })
