@@ -126,13 +126,13 @@ Body Recode`,
 export async function POST() {
   const admin = createAdminClient()
 
-  // Find existing workflow (any coach_id — admin bypasses RLS)
-  const { data: existing, error: findError } = await admin
+  // Fetch ALL matching workflows — duplicates may exist from prior failed seeds
+  const { data: allMatching, error: findError } = await admin
     .from('be_workflows')
     .select('id')
     .eq('name', WORKFLOW_NAME)
     .eq('trigger_type', 'form_submitted')
-    .maybeSingle()
+    .order('created_at', { ascending: true })
 
   if (findError) {
     return NextResponse.json({ error: findError.message }, { status: 500 })
@@ -140,9 +140,13 @@ export async function POST() {
 
   let workflowId: string
 
-  if (existing) {
-    workflowId = existing.id
-    // Ensure active
+  if (allMatching && allMatching.length > 0) {
+    // Keep the oldest, delete the rest
+    workflowId = allMatching[0].id
+    const duplicateIds = allMatching.slice(1).map(w => w.id)
+    if (duplicateIds.length > 0) {
+      await admin.from('be_workflows').delete().in('id', duplicateIds)
+    }
     await admin.from('be_workflows').update({ is_active: true }).eq('id', workflowId)
   } else {
     // Create fresh
