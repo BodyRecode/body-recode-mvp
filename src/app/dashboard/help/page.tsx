@@ -650,20 +650,20 @@ export default function HelpPage() {
           <Section id="automated-status" title="14. Automated Status Flow" colour="teal">
             <p>Lead statuses update automatically at these trigger points. You do not need to change them manually.</p>
             <div className="space-y-2">
-              <FlowRow trigger="Check-in quiz submitted" from="—" to="New Check-In" auto />
-              <FlowRow trigger="Report scheduled and sent" from="New Check-In" to="Report Sent" auto />
-              <FlowRow trigger="Lead books via Calendly" from="Report Sent (or earlier)" to="Zoom Booked" auto />
+              <FlowRow trigger="Scorecard completed" from="—" to="New Check-In" auto />
+              <FlowRow trigger="Body Decode Report purchased via Stripe" from="Any" to="Report Sent" auto />
+              <FlowRow trigger="Lead books via bodyrecode.au/book" from="Any" to="Zoom Booked" auto />
               <FlowRow trigger="Commencement fee paid via Stripe" from="Any" to="Commencement Fee Paid" auto />
             </div>
             <p className="mt-2">These transitions are manual — they require your input after the call or conversation:</p>
             <div className="space-y-2">
-              <FlowRow trigger="Decision at Zoom (Path B or C)" from="Zoom Booked" to="Zoom Completed" auto={false} />
-              <FlowRow trigger="Lead declines at Zoom (Path A)" from="Zoom Booked" to="Closed - Declined" auto={false} />
+              <FlowRow trigger="Call completed — Path B or C" from="Zoom Booked" to="Zoom Completed" auto={false} />
+              <FlowRow trigger="Lead declines after Zoom 1" from="Zoom Booked" to="Closed - Declined" auto={false} />
               <FlowRow trigger="Lead did not attend Zoom" from="Zoom Booked" to="Closed - No Show" auto={false} />
-              <FlowRow trigger="Report sent but no booking after follow-ups" from="Report Sent" to="Cold - No Booking" auto={false} />
+              <FlowRow trigger="Lead goes cold — no booking after follow-ups" from="Report Sent" to="Cold - No Booking" auto={false} />
             </div>
             <Training title="What requires your attention vs what runs itself">
-              <p>The automations handle the objective triggers — payment, quiz submission, Calendly booking. You handle the human judgements — whether the Zoom is complete, which path the Zoom conversation ended on, whether a lead genuinely went cold or just needs more time.</p>
+              <p>The system handles the objective triggers — payment, scorecard submission, booking. You handle the human judgements — whether the Zoom went ahead, which path it ended on, whether a lead genuinely went cold or just needs more time.</p>
               <p className="mt-2">The manual transitions are not admin tasks. They are your interpretive decisions about where a lead is in the process. Keeping them accurate keeps the pipeline data trustworthy. If statuses drift, you lose visibility into where the real friction is.</p>
             </Training>
           </Section>
@@ -671,50 +671,61 @@ export default function HelpPage() {
           <Section id="email-sequences" title="15. Email Sequences and Automation" colour="teal">
             <p>The following outbound email sequences run automatically. All emails send from <strong>kade@bodyrecode.au</strong> via Resend. All automated emails use a <strong>dark card template</strong> — black outer background, #111111 inner card, Body Recode logo header, Kade signature with photo at the bottom.</p>
 
-            <p className="font-semibold text-white mt-4">Scorecard Submission Notification (to you)</p>
-            <p>Sent to kade@bodyrecode.au <strong>every time</strong> someone completes the Body State Scorecard. Shows the lead&apos;s name, email, score, and body state. No action required — the lead is already created in the CRM automatically.</p>
-
-            <p className="font-semibold text-white mt-4">Body Decode Report Delivery (to lead)</p>
-            <p>Sent automatically when a lead purchases the $37 Body Decode Report via Stripe. Contains a unique link to their personalised report at app.bodyrecode.au/report/[token]. Triggered by the Stripe webhook — no manual handling required.</p>
-
-            <p className="font-semibold text-white mt-2">Performance Report + Follow-Up Sequence</p>
-            <p>Triggered when a lead completes the Body State Scorecard. The report is scheduled to send the following morning at 9am Brisbane time.</p>
+            <p className="font-semibold text-white mt-4">Scorecard Follow-up Sequence (automatic)</p>
+            <p>Fires when someone completes the Body State Scorecard. 9 emails over 13 days. Each email is personalised to the lead&apos;s score and body state using <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_score}}`}</code>, <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_state}}`}</code>, and <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{first_name}}`}</code>. Every email pushes toward booking a call at bodyrecode.au/book or purchasing the $37 report.</p>
             <div className="space-y-1">
-              <SeqRow day="Next morning 9am" label="Performance report email" />
-              <SeqRow day="Day 2" label="Follow-up 1 — Re: Your check-in report" />
-              <SeqRow day="Day 5" label="Follow-up 2 — When the effort doesn't match the result" />
-              <SeqRow day="Day 9" label="Follow-up 3 — Last one from me, [name]" />
-            </div>
-            <p className="mt-2">The follow-up sequence is <strong>automatically cancelled</strong> the moment the lead books a Zoom. If you need to cancel it manually, use the Cancel Sequence button on the lead detail page.</p>
-
-            <p className="font-semibold text-white mt-4">Re-engagement Blast (Admin Action)</p>
-            <p>A one-time admin action available on the dashboard homepage. Sends the re-engagement email plus a fresh follow-up sequence to all leads who have scorecard data on file. Any previously scheduled follow-ups are cancelled before the new sequence is sent.</p>
-            <p>Leads with statuses <strong>Commencement Fee Paid</strong>, <strong>Closed - Declined</strong>, or <strong>Closed - No Show</strong> do not receive new follow-ups.</p>
-
-            <p className="font-semibold text-white mt-4">No-Show Re-engagement Sequence</p>
-            <p>Triggered manually from the lead detail page when a lead is marked Closed - No Show.</p>
-            <div className="space-y-1">
-              <SeqRow day="Next morning 9am" label="Missed you yesterday — door left open" />
-              <SeqRow day="Day 5" label="Gentle follow-up — patterns worth talking through" />
-              <SeqRow day="Day 12" label="Final invitation — leaving the door open" />
+              <SeqRow day="Immediate" label="Email 1 — Your Body State result + book a call or get the report" />
+              <SeqRow day="Day 2" label="Email 2 — What your body state result actually means" />
+              <SeqRow day="Day 4" label="Email 3 — Following up on your scorecard" />
+              <SeqRow day="Day 8" label="Email 4 — The prescription problem" />
+              <SeqRow day="Day 13" label="Email 5 — Last one from me" />
             </div>
 
-            <p className="font-semibold text-white mt-4">Zoom Declined Follow-up Sequence</p>
-            <p>Triggered automatically when you click <strong>Send declined follow-up</strong> on the Zoom companion page. Fires a 3-email re-engagement sequence alongside the self-guided program offer (see below).</p>
+            <p className="font-semibold text-white mt-4">Body Decode Report Delivery + Follow-up Sequence (automatic)</p>
+            <p>Fires when a lead purchases the $37 Body Decode Report via Stripe. The delivery email goes out immediately with a unique link to their report. The scorecard follow-up sequence is cancelled at this point and replaced with a 3-email report-specific follow-up.</p>
             <div className="space-y-1">
-              <SeqRow day="Next morning 9am" label="Good speaking yesterday — timing understood, door open" />
+              <SeqRow day="Immediate" label="Report delivery — unique link to their report at app.bodyrecode.au/report/[token]" />
+              <SeqRow day="Day 2" label="Your report is the starting point — call as the next step" />
+              <SeqRow day="Day 5" label="One thing worth noting about [body state]" />
+              <SeqRow day="Day 10" label="Last one from me" />
+            </div>
+
+            <p className="font-semibold text-white mt-4">Zoom 1 Booking Confirmation (automatic)</p>
+            <p>Fires automatically when a lead books via bodyrecode.au/book. No action required.</p>
+            <div className="space-y-1">
+              <SeqRow day="Immediate" label="Confirmation email with date, time, Zoom join link, and .ics calendar attachment" />
+              <SeqRow day="2 hours before" label="Reminder — Zoom call is in 2 hours" />
+              <SeqRow day="30 min before" label="Reminder — Zoom call is in 30 minutes" />
+              <SeqRow day="Immediate (to you)" label="Coach notification with lead name, email, date/time, and Zoom link" />
+            </div>
+
+            <p className="font-semibold text-white mt-4">Zoom 2 Booking Confirmation (automatic)</p>
+            <p>Same 4-step sequence as Zoom 1. Fires automatically when Zoom 2 is booked from the companion screen.</p>
+
+            <p className="font-semibold text-white mt-4">No-Show Re-engagement Sequence (manual trigger)</p>
+            <p>Does not fire automatically. To trigger it: set the lead status to <strong>Closed - No Show</strong>, save, then click <strong>Start Re-engagement Sequence</strong> on the lead detail page. The button only appears when the status is Closed - No Show.</p>
+            <div className="space-y-1">
+              <SeqRow day="Next morning 9am" label="Missed you — door left open, rebook when ready" />
+              <SeqRow day="Day 4" label="Still here — patterns from your report worth talking through" />
+              <SeqRow day="Day 10" label="Final — leaving the door open, no follow-up after this" />
+            </div>
+
+            <p className="font-semibold text-white mt-4">Zoom 1 Declined Follow-up Sequence (manual trigger)</p>
+            <p>Does not fire automatically. To trigger it: set the lead status to <strong>Closed - Declined</strong>, save, then click <strong>Start Declined Follow-up</strong> on the lead detail page. The $97 self-guided program offer fires automatically as part of this sequence — no second action needed.</p>
+            <div className="space-y-1">
+              <SeqRow day="Next morning 9am" label="Good speaking — timing understood, door stays open" />
               <SeqRow day="Day 5" label="Still here if the timing changes" />
               <SeqRow day="Day 12" label="Last one from me" />
             </div>
 
-            <p className="font-semibold text-white mt-4">Self-Guided Program Offer (Downsell)</p>
-            <p>Fires automatically alongside the Zoom declined sequence. Sends a branded offer email with a Stripe checkout link for the $97 12-week self-guided program tailored to the lead&apos;s body state. No manual action required — the offer is created and sent the moment decline is triggered.</p>
+            <p className="font-semibold text-white mt-4">Self-Guided Program Offer (automatic on decline)</p>
+            <p>Fires automatically as part of the Zoom 1 Declined sequence above. Sends a branded offer email with a Stripe checkout link for the $97 12-week self-guided program tailored to the lead&apos;s body state. No separate action required.</p>
 
-            <p className="font-semibold text-white mt-4">Self-Guided Program Delivery</p>
-            <p>Triggered automatically by the Stripe webhook when a lead purchases the $97 program. Sends a branded delivery email with a unique, token-gated link to their program page at app.bodyrecode.au/program/[token]. You also receive a notification email with a link to the lead profile.</p>
+            <p className="font-semibold text-white mt-4">Self-Guided Program Delivery (automatic)</p>
+            <p>Triggered by the Stripe webhook when a lead purchases the $97 program. Sends a delivery email with a unique token-gated link to their program at app.bodyrecode.au/program/[token]. You also receive a notification with a link to the lead profile.</p>
 
-            <p className="font-semibold text-white mt-4">Program Buyer Nurture Sequence</p>
-            <p>Scheduled automatically at the moment of program purchase. Three emails spaced across the 12-week program to nurture buyers back toward a coaching conversation. All emails land on a call booking — no pricing or product is mentioned.</p>
+            <p className="font-semibold text-white mt-4">Program Buyer Nurture Sequence (automatic)</p>
+            <p>Scheduled automatically at the moment of program purchase. Three emails spaced across the 12-week program to nurture buyers back toward a coaching conversation.</p>
             <div className="space-y-1">
               <SeqRow day="Week 4 (Day 28)" label="Four weeks in — Phase 1 check-in, soft coaching mention" />
               <SeqRow day="Week 8 (Day 56)" label="The compounding point — coaching makes the biggest difference here" />
@@ -722,7 +733,7 @@ export default function HelpPage() {
             </div>
 
             <p className="font-semibold text-white mt-4">Welcome Email (Post-Conversion)</p>
-            <p>Sent automatically when the commencement fee is paid. Contains the client&apos;s portal link. Triggered by the Stripe webhook.</p>
+            <p>Sent automatically when the commencement fee is paid. Contains the client&apos;s intake link and coaching guide link. Triggered by the Stripe webhook.</p>
 
             <p className="font-semibold text-white mt-4">Client Onboarding Notifications (to you)</p>
             <p>You receive a notification email each time a client completes a step in their portal:</p>
@@ -750,11 +761,6 @@ export default function HelpPage() {
 
             <p className="font-semibold text-white mt-4">Founding Client Case Study Agreement</p>
             <p>Sent manually from the Zoom companion when a Founding Client pathway is selected at Stage 8. Click <strong>Send Case Study Agreement</strong> — the system creates the agreement record, generates a unique signing token, and emails the lead a link to review and sign online. The agreement must be signed before the commencement fee is sent.</p>
-
-            <Training title="The logic behind the follow-up timing">
-              <p>Day 2, Day 5, Day 9. Not daily. Not weekly. The gaps are intentional. Day 2 is when the report is still fresh. Day 5 is when most people have filed it away but haven&apos;t fully forgotten it. Day 9 is the last reach — the tone shifts to a genuine close. Running them too close together feels like pressure. Too far apart and the thread is lost.</p>
-              <p className="mt-2">The sequence cancels automatically on booking because the goal of the sequence is a Zoom. Once that happens, the follow-ups would be noise. They don&apos;t just stop — they are actively cancelled so nothing goes out while the lead is already in the pipeline.</p>
-            </Training>
           </Section>
 
           <Section id="communications" title="16. Communications Timeline" colour="teal">
@@ -1056,22 +1062,28 @@ export default function HelpPage() {
           </Section>
 
           <Section id="be-automations" title="25. Automations" colour="amber">
-            <p>Automations run sequences automatically when something happens. There are two types: <strong>System Automations</strong> (pre-built, always active, cannot be edited) and <strong>Custom Workflows</strong> (user-built via the workflow editor).</p>
+            <p>The Automations page (<strong>Business → Automations</strong>) has three sections: <strong>System Automations</strong> (fire without any action from you), <strong>Manual Triggers</strong> (fire when you explicitly trigger them from the lead page), and <strong>Custom Workflows</strong> (user-built sequences via the workflow editor).</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">System Automations</p>
-            <p>These run without any configuration. They are always active. Click any entry to see the full email sequence, copy, and timing.</p>
+            <p>These run automatically. You cannot break them by doing nothing — they are always active.</p>
             <StatusList items={[
-              { label: 'Scorecard Follow-up Sequence', desc: '4-email sequence triggered when someone completes the Body State Scorecard' },
-              { label: 'Performance Report Follow-up', desc: '3-email sequence sent after a performance report is delivered to a lead' },
-              { label: 'Zoom Booking Confirmation', desc: 'Confirmation + .ics sent to lead on booking, 2-hour reminder, 30-minute reminder, plus coach notification to kade@bodyrecode.au (4 emails total)' },
-              { label: 'No-show Re-engagement', desc: '3-email sequence for leads who missed their scheduled Zoom call' },
-              { label: 'Zoom Declined Follow-up', desc: '3-email re-engagement sequence sent when a lead declines after the Zoom call' },
-              { label: 'Self-Guided Program Offer', desc: '$97 program offer email sent automatically alongside the Zoom declined sequence' },
-              { label: 'Program Buyer Nurture', desc: '3-email sequence (Week 4, 8, 12) to bring program buyers back into coaching' },
+              { label: 'Scorecard Follow-up Sequence', desc: '9-email sequence over 13 days. Fires when someone completes the Body State Scorecard. Emails are personalised to score and body state.' },
+              { label: 'Performance Report Follow-up', desc: '3-email sequence. Fires when someone purchases the $37 Body Decode Report via Stripe. Cancels the scorecard follow-up and replaces it with report-specific copy.' },
+              { label: 'Zoom 1 Booking Confirmation', desc: 'Confirmation + .ics, 2-hour reminder, 30-minute reminder, coach notification. Fires automatically when a lead books via bodyrecode.au/book.' },
+              { label: 'Zoom 2 Booking Confirmation', desc: 'Same 4-step sequence as Zoom 1. Fires when Zoom 2 is booked from the companion screen.' },
+              { label: 'Self-Guided Program Offer', desc: '$97 program offer email. Fires automatically as part of the Zoom 1 Declined sequence below — no second action needed.' },
+              { label: 'Program Buyer Nurture', desc: '3-email sequence at Week 4, 8, and 12. Fires automatically when the $97 program is purchased via Stripe.' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Manual Triggers</p>
+            <p>These require a judgement call from you. Set the lead status first, save, then the trigger button appears on the lead detail page.</p>
+            <StatusList items={[
+              { label: 'No-show Re-engagement', desc: 'Set status to Closed - No Show → save → click Start Re-engagement Sequence on the lead page. 3 emails: Day 1, Day 4, Day 10.' },
+              { label: 'Zoom 1 Declined Follow-up', desc: 'Set status to Closed - Declined → save → click Start Declined Follow-up on the lead page. 3 emails: Day 1, Day 5, Day 12. The $97 downsell offer fires automatically alongside it.' },
             ]} />
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Custom Workflows</p>
-            <p>Automations let you build sequences that run automatically when something happens — a lead books, a payment comes through, a tag is added. Each automation is a workflow with a trigger and a series of steps.</p>
+            <p>Build your own sequences triggered by any event. The Scorecard Follow-up Sequence lives here as a custom workflow — it is listed under System Automations for reference but executed as a DB workflow via the Inngest background job engine.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Triggers</p>
             <StatusList items={[
@@ -1101,31 +1113,15 @@ export default function HelpPage() {
               <li>Toggle the workflow active when ready</li>
             </ul>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Scorecard Follow-up Sequence</p>
-            <p>A pre-built 2-email follow-up sequence fires automatically when someone completes the Body State Scorecard. It is seeded via <strong>Business → Automations → Reseed Scorecard Sequence</strong>. The sequence uses trigger <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">form_submitted</code> with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{ form: 'scorecard' }`}</code>.</p>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Scorecard Follow-up Sequence (Custom Workflow)</p>
+            <p>The 9-step sequence lives as a custom workflow in the DB. It uses trigger <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">form_submitted</code> with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{ form: 'scorecard' }`}</code>. Emails are personalised using:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-2">
-              <li><strong>Email 1 (immediate)</strong> — Surfaces their score and body state, invites them to book a free call at bodyrecode.au/book</li>
-              <li><strong>Email 2 (3 days later)</strong> — Follow-up nudge, links back to the booking page</li>
-            </ul>
-            <p className="mt-2">Emails support scorecard-specific template variables:</p>
-            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
               <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_score}}`}</code> — e.g. 7</li>
-              <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_state}}`}</code> — e.g. Transitioning</li>
+              <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_state}}`}</code> — e.g. Transitioning State</li>
               <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{first_name}}`}</code> — lead&apos;s first name</li>
             </ul>
-            <p className="mt-2">To update the email copy: edit the steps in <strong>Business → Automations</strong>, then hit <strong>Reseed</strong> to rewrite the sequence. Reseeding deletes and recreates the workflow steps — it does not affect in-progress sequences already running for existing leads.</p>
-            <Note>Wait steps are handled by Inngest — a background job service. A "wait 3 days" step will actually wait 3 days, even across server restarts. Execution history is logged per contact under each workflow run.</Note>
-
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Zoom Booking Confirmation Emails</p>
-            <p>These are system-level emails that fire automatically every time a Zoom is booked - no configuration required. They fire from the same booking endpoint the moment a slot is confirmed.</p>
-            <StatusList items={[
-              { label: 'Confirmation Email', desc: 'Branded dark card with date, time (AEST), Zoom join link, and .ics calendar attachment - sent to the lead immediately on booking' },
-              { label: '2-Hour Reminder', desc: 'Scheduled email to the lead with Zoom join link, fires 2 hours before the call start time' },
-              { label: '30-Minute Reminder', desc: 'Final reminder to the lead with Zoom join link, fires 30 minutes before the call' },
-              { label: 'Coach Notification', desc: "Sent to kade@bodyrecode.au immediately on booking with the lead's name, email, date/time, Zoom link, and a link to their CRM record" },
-            ]} />
-            <p className="mt-2">All booking emails use the approved dark card template: black outer, #111111 inner card, Body Recode logo, and the coach signature with photo.</p>
-            <Note>No setup needed - these emails are always active for every booking made via bodyrecode.au/book or the manual booking tool in Business → Bookings.</Note>
+            <p className="mt-2">The <strong>Re-sync</strong> button on the workflow row rewrites the steps with the latest copy. It does not affect sequences already running for existing leads.</p>
+            <Note>Wait steps are handled by Inngest — a background job service. A "wait 3 days" step will actually wait 3 days, even across server restarts.</Note>
           </Section>
 
           <Section id="be-campaigns" title="26. Campaigns" colour="amber">
