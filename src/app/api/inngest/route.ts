@@ -1,8 +1,8 @@
 import { serve } from 'inngest/next'
 import { inngest } from '@/lib/inngest'
-import { executeWorkflowFunction, challengeSequenceFunction, challengeSmsFunction, blueprintWeekAdvanceFunction } from '@/lib/inngest-functions'
+import { executeWorkflowFunction, challengeSequenceFunction, challengeSmsFunction, blueprintWeekAdvanceFunction, blueprintEmailSequenceFunction } from '@/lib/inngest-functions'
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
-  functions: [executeWorkflowFunction, challengeSequenceFunction, challengeSmsFunction, blueprintWeekAdvanceFunction],
+  functions: [executeWorkflowFunction, challengeSequenceFunction, challengeSmsFunction, blueprintWeekAdvanceFunction, blueprintEmailSequenceFunction],
 })
