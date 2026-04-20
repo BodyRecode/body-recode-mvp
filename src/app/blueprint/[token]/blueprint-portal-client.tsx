@@ -820,6 +820,184 @@ function NutritionTab({ pattern }: { pattern: string }) {
   )
 }
 
+const LESSONS = [
+  {
+    week: 1,
+    title: 'Cortisol and the Stress Response',
+    loomUrl: '', // paste Loom embed URL here e.g. https://www.loom.com/embed/abc123
+    summary: [
+      'Cortisol is your primary stress hormone, released by the adrenal glands. It has a natural daily curve - high in the morning to get you moving, low at night to allow recovery.',
+      'When stress is chronic, that curve flattens. Cortisol stays elevated all day. The body interprets this as a survival threat and responds by storing fat, breaking down muscle, disrupting sleep, and suppressing other hormones.',
+      'The training intensity limits, meal timing, and sleep priority in your programme are all working to restore this curve.',
+    ],
+    patternCallouts: {
+      'stress-stored': 'Cortisol is your primary driver. The controlled training intensity, sleep focus, and eating rhythm in your programme are specifically designed to bring this curve back down.',
+      'metabolic-drift': 'Cortisol raises blood sugar even without eating. Lowering chronic stress load is a secondary lever for improving your insulin sensitivity.',
+      'hormonal-shift': 'Cortisol competes with reproductive hormones for the same building blocks. High cortisol directly suppresses oestrogen and progesterone production.',
+      'system-overload': 'Your total load is keeping cortisol elevated. Every recovery action in your programme - controlled training, rest days, sleep - is directly targeting this.',
+    },
+  },
+  {
+    week: 2,
+    title: 'Insulin and Blood Sugar Control',
+    loomUrl: '', // paste Loom embed URL here
+    summary: [
+      'Insulin is released by the pancreas every time blood glucose rises. Its job is to shuttle that glucose into cells for energy or store it as fat. This system works well when it is not overloaded.',
+      'Repeated blood sugar spikes reduce how sensitive cells are to insulin. The pancreas produces more to compensate. Fat storage increases, energy becomes unstable, and hunger signals break down.',
+      'The carbohydrate timing strategy in your programme controls when glucose enters your system so insulin is working with you, not against you.',
+    ],
+    patternCallouts: {
+      'stress-stored': 'Cortisol raises blood sugar directly through a process called gluconeogenesis. As cortisol normalises through the programme, insulin sensitivity improves alongside it.',
+      'metabolic-drift': 'Insulin sensitivity is your primary target. Your carb timing window, post-meal walks, and fasted or semi-fasted training are all directly addressing this.',
+      'hormonal-shift': 'Insulin resistance drives oestrogen excess and progesterone suppression. Improving insulin sensitivity helps restore the hormone balance your pattern needs.',
+      'system-overload': 'Poor sleep - common in this pattern - reduces insulin sensitivity by 20-30% the following day. Sleep quality is directly tied to your metabolic function.',
+    },
+  },
+  {
+    week: 3,
+    title: 'Testosterone and Muscle Signal',
+    loomUrl: '', // paste Loom embed URL here
+    summary: [
+      'Testosterone drives muscle protein synthesis, fat metabolism, energy, and motivation. It is present in both men and women at different levels, and both are affected when it drops.',
+      'Chronic stress, poor sleep, over-training, and calorie restriction all suppress testosterone output. Less testosterone means a weaker signal to build and maintain muscle, which reduces your capacity to burn fat at rest.',
+      'The RIR-controlled training in your programme is calibrated to stimulate testosterone without the suppression that comes from training too hard for your current recovery capacity.',
+    ],
+    patternCallouts: {
+      'stress-stored': 'Cortisol and testosterone have an inverse relationship. As your cortisol curve normalises through the programme, testosterone signal will recover alongside it.',
+      'metabolic-drift': 'Improving insulin sensitivity directly increases testosterone availability. The training intensity in your programme is specifically calibrated to support this.',
+      'hormonal-shift': 'For women, testosterone balance relative to oestrogen and progesterone is the key variable. Over-training and restriction suppress it further - which is why your programme protects both.',
+      'system-overload': 'Chronic overload is one of the fastest ways to suppress testosterone. Recovery and adequate nutrition are the primary tools for restoring it in your pattern.',
+    },
+  },
+  {
+    week: 4,
+    title: 'Thyroid and Metabolic Rate',
+    loomUrl: '', // paste Loom embed URL here
+    summary: [
+      'Thyroid hormones - primarily T3 and T4 - regulate how fast your body burns energy at rest. Your metabolic rate is largely determined by how well your thyroid is functioning.',
+      'Chronic calorie restriction, high stress, and inflammation all suppress thyroid output. The body responds to perceived scarcity by slowing metabolism. This is why cutting calories harder rarely works long-term.',
+      'The nutrition structure in your programme - adequate food volume, no restriction - protects thyroid function while the training drives adaptation.',
+    ],
+    patternCallouts: {
+      'stress-stored': 'Cortisol suppresses the conversion of T4 to the active T3 form. Lowering your stress load through the programme supports thyroid function directly.',
+      'metabolic-drift': 'Thyroid function improves as insulin sensitivity is restored and systemic inflammation drops. Both are targets of your programme.',
+      'hormonal-shift': 'Oestrogen excess can block thyroid hormone at the receptor level. Restoring hormone balance through the programme directly supports your metabolic rate.',
+      'system-overload': 'This pattern is often associated with subclinical thyroid suppression from chronic load. Adequate food volume and recovery are the two primary levers here.',
+    },
+  },
+  {
+    week: 5,
+    title: 'Sleep Hormones and Recovery',
+    loomUrl: '', // paste Loom embed URL here
+    summary: [
+      'Sleep is governed by melatonin at onset and growth hormone during deep sleep. Recovery, muscle repair, fat metabolism, and the reset of every hormone in this series all happen during this window.',
+      'One poor night of sleep raises cortisol, impairs insulin sensitivity, suppresses testosterone, and reduces growth hormone output the following day. It compounds quickly.',
+      'By Week 5 of the programme, biological rhythm should be more stable. The habits built in the Regulate and Adapt phases are protecting this window.',
+    ],
+    patternCallouts: {
+      'stress-stored': 'Sleep is treated as a training variable in your programme because it is. Poor sleep is the single fastest way to spike cortisol and undo the work of the week.',
+      'metabolic-drift': 'One night of disrupted sleep reduces insulin sensitivity by 20-30% the next day. Sleep quality is non-negotiable for your pattern\'s primary target.',
+      'hormonal-shift': 'Deep sleep is when growth hormone peaks and reproductive hormones reset. Protecting sleep is protecting the hormones your programme is trying to balance.',
+      'system-overload': 'Sleep is the primary recovery stimulus for your nervous system. It outranks training in your programme. Protecting this window is the highest-leverage action available to you.',
+    },
+  },
+]
+
+function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: number }) {
+  const [openLesson, setOpenLesson] = useState<number | null>(null)
+  const config = PATTERN_CONFIG[pattern] ?? PATTERN_CONFIG['stress-stored']
+
+  return (
+    <div>
+      <div style={{ marginBottom: 28 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>Education Hub</h2>
+        <p style={{ fontSize: 14, color: '#78716c', margin: 0, lineHeight: 1.7 }}>
+          One lesson unlocks each week. Each covers the biology behind your pattern and what the programme is doing about it.
+        </p>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {LESSONS.map((lesson) => {
+          const unlocked = currentWeek >= lesson.week
+          const isOpen = openLesson === lesson.week
+          const callout = lesson.patternCallouts[pattern as keyof typeof lesson.patternCallouts]
+
+          return (
+            <div key={lesson.week} style={{ background: '#111110', border: `1px solid ${isOpen ? '#292524' : '#1c1917'}`, borderRadius: 12, overflow: 'hidden', opacity: unlocked ? 1 : 0.45 }}>
+              {/* Header row */}
+              <button
+                onClick={() => unlocked && setOpenLesson(isOpen ? null : lesson.week)}
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 20px', background: 'none', border: 'none', cursor: unlocked ? 'pointer' : 'default', textAlign: 'left' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: unlocked ? config.colour : '#1c1917', border: `2px solid ${unlocked ? config.colour : '#292524'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: unlocked ? '#0c0a09' : '#57534e' }}>{lesson.week}</span>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: unlocked ? '#fff' : '#57534e' }}>{lesson.title}</div>
+                    <div style={{ fontSize: 12, color: '#57534e', marginTop: 2 }}>{unlocked ? `Week ${lesson.week}` : `Unlocks Week ${lesson.week}`}</div>
+                  </div>
+                </div>
+                {unlocked && (
+                  <div style={{ fontSize: 18, color: '#57534e', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0 }}>
+                    ↓
+                  </div>
+                )}
+              </button>
+
+              {/* Expanded content */}
+              {isOpen && (
+                <div style={{ borderTop: '1px solid #1c1917' }}>
+                  {/* Video */}
+                  <div style={{ padding: '20px 20px 0' }}>
+                    {lesson.loomUrl ? (
+                      <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, borderRadius: 10, overflow: 'hidden', marginBottom: 20 }}>
+                        <iframe
+                          src={lesson.loomUrl}
+                          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+                          allowFullScreen
+                        />
+                      </div>
+                    ) : (
+                      <div style={{ background: '#1c1917', border: '1px dashed #292524', borderRadius: 10, padding: '40px 20px', textAlign: 'center', marginBottom: 20 }}>
+                        <div style={{ fontSize: 13, color: '#57534e', marginBottom: 6 }}>Video coming soon</div>
+                        <div style={{ fontSize: 12, color: '#3d3935' }}>Paste Loom embed URL into LESSONS[{lesson.week - 1}].loomUrl</div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Summary */}
+                  <div style={{ padding: '0 20px 20px' }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>
+                      Key Points
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
+                      {lesson.summary.map((point, i) => (
+                        <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
+                          <p style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.7, margin: 0 }}>{point}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Pattern callout */}
+                    <div style={{ background: '#0c0a09', border: `1px solid ${config.colour}30`, borderLeft: `3px solid ${config.colour}`, borderRadius: 8, padding: '14px 16px' }}>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+                        Your Pattern - {config.label}
+                      </div>
+                      <p style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.7, margin: 0 }}>{callout}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: number }) {
   const [activeSession, setActiveSession] = useState('A')
   const [mode, setMode] = useState<'gym' | 'home' | 'bodyweight'>('gym')
@@ -1119,28 +1297,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
         )}
 
         {activeTab === 'education' && (
-          <div>
-            <h2 style={{ fontSize: 20, fontWeight: 700, color: '#fff', margin: '0 0 24px' }}>Education Hub</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {[
-                { title: 'Cortisol and the Stress Response', week: 'Week 1' },
-                { title: 'Insulin and Blood Sugar Control', week: 'Week 2' },
-                { title: 'Testosterone and Muscle Signal', week: 'Week 3' },
-                { title: 'Thyroid and Metabolic Rate', week: 'Week 4' },
-                { title: 'Sleep Hormones and Recovery', week: 'Week 5' },
-              ].map((lesson, i) => (
-                <div key={i} style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 10, padding: '18px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: '#fff', marginBottom: 4 }}>{lesson.title}</div>
-                    <div style={{ fontSize: 12, color: '#57534e' }}>Unlocks {lesson.week}</div>
-                  </div>
-                  <div style={{ fontSize: 12, color: '#3d3935', background: '#1c1917', padding: '4px 10px', borderRadius: 6 }}>
-                    Coming soon
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <EducationTab pattern={pattern} currentWeek={currentWeek} />
         )}
 
         {activeTab === 'checkin' && (
