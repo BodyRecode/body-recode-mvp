@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { getLeadSourceLabel, LEAD_SOURCES } from '@/lib/utils'
 
-const QR_BASE_URL = 'https://bodyrecode.au/not-a-sign-up'
+const QR_BASE_URL = 'https://bodyrecode.au/scorecard'
 const DIGITAL_BASE_URL = 'https://bodyrecode.au/performance-check-in-quiz'
 const SCORECARD_BASE_URL = 'https://bodyrecode.au/scorecard'
 
