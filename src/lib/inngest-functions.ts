@@ -532,6 +532,42 @@ async function executeAction(
   }
 }
 
+// ─── Blueprint Week Advance Function ─────────────────────────────────────────
+
+export const blueprintWeekAdvanceFunction = inngest.createFunction(
+  {
+    id: 'blueprint-week-advance',
+    retries: 2,
+    triggers: [{ event: 'blueprint/enrolled' }],
+  },
+  async ({ event, step }: { event: any; step: any }) => {
+    const { token } = event.data as { token: string }
+
+    for (let week = 2; week <= 6; week++) {
+      await step.sleep(`wait-for-week-${week}`, '7d')
+
+      await step.run(`advance-to-week-${week}`, async () => {
+        const admin = createAdminClient()
+        const { data } = await admin
+          .from('blueprint_enrollments')
+          .select('current_week, status')
+          .eq('token', token)
+          .single()
+
+        if (!data || data.status !== 'active') return
+        if (data.current_week !== week - 1) return
+
+        await admin
+          .from('blueprint_enrollments')
+          .update({ current_week: week })
+          .eq('token', token)
+      })
+    }
+  }
+)
+
+// ─── Execute Workflow Function ────────────────────────────────────────────────
+
 export const executeWorkflowFunction = inngest.createFunction(
   {
     id: 'execute-workflow',

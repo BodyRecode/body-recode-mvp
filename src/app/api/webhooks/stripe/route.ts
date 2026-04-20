@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { buildProgramBuyerEmails, buildReportFollowUpEmails, daysAfter9amBrisbane, nextMorning9amBrisbane } from '@/lib/generate-report'
+import { inngest } from '@/lib/inngest'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -441,6 +442,12 @@ export async function POST(request: NextRequest) {
     </td></tr>
   </table>
 </body></html>`,
+      })
+
+      // Fire week-advance sequence
+      await inngest.send({
+        name: 'blueprint/enrolled',
+        data: { token: enrollment.token, email, firstName },
       })
 
       // Coach notification
