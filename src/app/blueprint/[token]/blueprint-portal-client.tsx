@@ -1562,14 +1562,14 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
                   You built the foundation. Now build the result.
                 </div>
                 <p style={{ fontSize: 14, color: '#a8a29e', margin: '0 0 20px', lineHeight: 1.8 }}>
-                  Six weeks of regulated rhythm, progressive training, and hormonal correction has created a system that can now respond properly. Stage 3 is where that system gets challenged and where body composition changes become visible and permanent.
+                  Six weeks of regulated rhythm, progressive training, and hormonal correction has created a system that can now respond properly. Stage 3 is the Body Recode membership - ongoing progressive coaching built on what you have established here.
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
                   {[
-                    '12 weeks of progressive training built on your current capacity',
+                    'Progressive training built on your current capacity and pattern',
                     'Pattern-specific nutrition evolved for performance, not just regulation',
                     'Fortnightly check-ins with direct coaching feedback',
-                    'Full accountability structure across the full 12 weeks',
+                    'Ongoing accountability with a coach who knows your biology',
                   ].map((item, i) => (
                     <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                       <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#14b8a6', marginTop: 6, flexShrink: 0 }} />
