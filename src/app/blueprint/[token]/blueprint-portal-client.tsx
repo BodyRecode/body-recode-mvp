@@ -51,7 +51,7 @@ const NAV_ITEMS = [
 ]
 
 type Exercise = { name: string; sets: number; reps: string; notes: string }
-type Session = { id: string; name: string; subtitle: string; gym: Exercise[]; home: Exercise[] }
+type Session = { id: string; name: string; subtitle: string; gym: Exercise[]; home: Exercise[]; bodyweight: Exercise[] }
 
 const SESSIONS: Session[] = [
   {
@@ -69,7 +69,14 @@ const SESSIONS: Session[] = [
       { name: 'DB Goblet Squat', sets: 4, reps: '10', notes: 'Hold one DB at chest. Focus on depth and control.' },
       { name: 'Push-Up', sets: 4, reps: '10-12', notes: 'Hands shoulder-width. Full chest to floor range.' },
       { name: 'Bent Over DB Row', sets: 3, reps: '12/side', notes: 'Hinge at hips, row to hip. Squeeze shoulder blade.' },
-      { name: 'Reverse Lunge', sets: 3, reps: '12/leg', notes: 'Bodyweight or hold DBs at sides. Stay balanced.' },
+      { name: 'Reverse Lunge', sets: 3, reps: '12/leg', notes: 'Hold DBs at sides. Stay balanced.' },
+      { name: 'Plank', sets: 3, reps: '30 sec', notes: 'Brace core and breathe.' },
+    ],
+    bodyweight: [
+      { name: 'Tempo Squat', sets: 4, reps: '12', notes: '3 seconds down, pause at the bottom, drive up. Makes bodyweight challenging.' },
+      { name: 'Push-Up', sets: 4, reps: '10-12', notes: 'Hands shoulder-width. Full chest to floor range.' },
+      { name: 'Table Inverted Row', sets: 3, reps: '10-12', notes: 'Lie under a sturdy table, grip the edge, pull chest up to it. Keep body straight.' },
+      { name: 'Reverse Lunge', sets: 3, reps: '12/leg', notes: 'Slow and controlled. Pause at the bottom of each rep.' },
       { name: 'Plank', sets: 3, reps: '30 sec', notes: 'Brace core and breathe.' },
     ],
   },
@@ -91,6 +98,13 @@ const SESSIONS: Session[] = [
       { name: 'DB Pullover', sets: 3, reps: '12', notes: 'Lie on floor, hold one DB overhead. Pull to chest slowly.' },
       { name: 'Finisher: High Knees', sets: 5, reps: '45s hard / 75s easy', notes: 'See pattern rules below' },
     ],
+    bodyweight: [
+      { name: 'Single Leg Hip Hinge', sets: 3, reps: '10/leg', notes: 'Balance on one leg, hinge forward until torso is parallel to the floor. Control the return.' },
+      { name: 'Pike Push-Up', sets: 3, reps: '10', notes: 'Hips high, head between arms. Lower crown toward floor, press back up.' },
+      { name: 'Step-Ups', sets: 3, reps: '12/leg', notes: 'Use a sturdy chair or step. Drive through the front leg.' },
+      { name: 'Superman Hold', sets: 3, reps: '12', notes: 'Lie face down. Lift chest and legs off the floor simultaneously. Hold 2 seconds at the top.' },
+      { name: 'Finisher: Burpees', sets: 5, reps: '45s hard / 75s easy', notes: 'See pattern rules below' },
+    ],
   },
   {
     id: 'C',
@@ -107,7 +121,14 @@ const SESSIONS: Session[] = [
       { name: 'DB Goblet Squat', sets: 3, reps: '8', notes: 'Hold DB at chest. Elbows inside knees at the bottom.' },
       { name: 'Decline Push-Up', sets: 3, reps: '10', notes: 'Feet elevated on a chair. Controlled descent, full range.' },
       { name: 'DB Row', sets: 3, reps: '10/side', notes: 'Brace on a chair or knee. Elbow drives back.' },
-      { name: 'Walking Lunge', sets: 3, reps: '12/leg', notes: 'Bodyweight or DBs at sides. Step smooth, upright torso.' },
+      { name: 'Walking Lunge', sets: 3, reps: '12/leg', notes: 'DBs at sides. Step smooth, upright torso.' },
+      { name: 'Lying Knee Raise', sets: 3, reps: '10-12', notes: 'Flat on floor. Pull knees to chest with control, lower slow.' },
+    ],
+    bodyweight: [
+      { name: 'Bulgarian Split Squat', sets: 3, reps: '8/leg', notes: 'Rear foot elevated on a chair. Lower slowly, drive up through the front leg.' },
+      { name: 'Decline Push-Up', sets: 3, reps: '10', notes: 'Feet elevated on a chair. Controlled descent, full range.' },
+      { name: 'Table Inverted Row', sets: 3, reps: '10/side', notes: 'Lie under a sturdy table, grip the edge, pull chest up to it. Keep body straight.' },
+      { name: 'Walking Lunge', sets: 3, reps: '12/leg', notes: 'Slow and controlled. Pause at the bottom. Upright torso.' },
       { name: 'Lying Knee Raise', sets: 3, reps: '10-12', notes: 'Flat on floor. Pull knees to chest with control, lower slow.' },
     ],
   },
@@ -265,7 +286,7 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
 
 function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: number }) {
   const [activeSession, setActiveSession] = useState('A')
-  const [mode, setMode] = useState<'gym' | 'home'>('gym')
+  const [mode, setMode] = useState<'gym' | 'home' | 'bodyweight'>('gym')
   const config = PATTERN_CONFIG[pattern] ?? PATTERN_CONFIG['stress-stored']
   const trainingData = PATTERN_TRAINING[pattern] ?? PATTERN_TRAINING['stress-stored']
   const currentPhaseRow = currentWeek <= 2 ? trainingData.progression[0] : currentWeek <= 4 ? trainingData.progression[1] : currentWeek === 5 ? trainingData.progression[2] : trainingData.progression[3]
@@ -360,15 +381,19 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
           <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
             Session Templates
           </div>
-          {/* Gym / Home toggle */}
+          {/* Gym / Home / Bodyweight toggle */}
           <div style={{ display: 'flex', background: '#1c1917', borderRadius: 8, padding: 3, gap: 2 }}>
-            {(['gym', 'home'] as const).map(m => (
+            {([
+              { id: 'gym', label: 'Gym' },
+              { id: 'home', label: 'Home (DBs)' },
+              { id: 'bodyweight', label: 'No Equipment' },
+            ] as const).map(m => (
               <button
-                key={m}
-                onClick={() => setMode(m)}
-                style={{ padding: '6px 14px', fontSize: 12, fontWeight: 600, color: mode === m ? '#0c0a09' : '#57534e', background: mode === m ? '#14b8a6' : 'transparent', border: 'none', borderRadius: 6, cursor: 'pointer', textTransform: 'capitalize' }}
+                key={m.id}
+                onClick={() => setMode(m.id)}
+                style={{ padding: '6px 12px', fontSize: 12, fontWeight: 600, color: mode === m.id ? '#0c0a09' : '#57534e', background: mode === m.id ? '#14b8a6' : 'transparent', border: 'none', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}
               >
-                {m === 'gym' ? 'Gym' : 'Home'}
+                {m.label}
               </button>
             ))}
           </div>
@@ -391,9 +416,9 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
               <div style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>{activeSessionData.name}</div>
               <div style={{ fontSize: 12, color: '#57534e', marginTop: 2 }}>{activeSessionData.subtitle}</div>
             </div>
-            {mode === 'home' && (
+            {mode !== 'gym' && (
               <div style={{ fontSize: 11, color: '#57534e', background: '#1c1917', padding: '4px 10px', borderRadius: 6, whiteSpace: 'nowrap' }}>
-                DBs + bodyweight
+                {mode === 'home' ? 'DBs + bodyweight' : 'No equipment needed'}
               </div>
             )}
           </div>
