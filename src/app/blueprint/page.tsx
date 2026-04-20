@@ -74,7 +74,7 @@ function CheckoutForm({ position, teal }: { position: string; teal?: boolean }) 
           boxSizing: 'border-box',
         }}
       >
-        {loading ? 'Redirecting to checkout...' : 'Start the Rewire — $97 AUD'}
+        {loading ? 'Redirecting to checkout...' : 'Start the Rewire - $97 AUD'}
       </button>
       <p style={{ fontSize: '12px', color: '#a8a29e', textAlign: 'center', margin: 0 }}>
         Secure checkout via Stripe. Instant portal access on payment.
@@ -87,17 +87,17 @@ const WHAT_YOU_GET = [
   {
     icon: '🧬',
     title: 'Pattern-specific programme',
-    desc: 'Every part of this programme is built around your biological pattern — not a generic template adapted after the fact.',
+    desc: 'Every part of this programme is built around your biological pattern. Not a generic template adapted after the fact.',
   },
   {
     icon: '🏋️',
     title: '6-week training blueprint',
-    desc: 'Progressive sessions across three phases matched to your pattern. Gym, home with dumbbells, or no equipment — every session has a version for your setup.',
+    desc: 'Progressive sessions across three phases matched to your pattern. Gym, home with dumbbells, or no equipment. Every session has a version for your setup.',
   },
   {
     icon: '🥗',
     title: 'Nutrition framework',
-    desc: 'A whole foods nutrition structure aligned to your pattern. Includes portion guidance, meal timing, and an early morning training adaptation — no tracking or calorie counting required.',
+    desc: 'A whole foods nutrition structure aligned to your pattern. Includes portion guidance, meal timing, and an early morning training adaptation. No tracking or calorie counting required.',
   },
   {
     icon: '📚',
@@ -122,7 +122,7 @@ const WHAT_YOU_GET = [
   {
     icon: '→',
     title: 'Ascension to Stage 3',
-    desc: 'Week 6 bridges directly to the Body Rebuild Membership — the next stage of the system. No gap between stages.',
+    desc: 'Week 6 bridges directly to the Body Rebuild Membership. The next stage of the system with no gap between stages.',
   },
 ]
 
@@ -220,7 +220,7 @@ export default function BlueprintPage() {
           }}>
             <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#14b8a6' }} />
             <span style={{ fontSize: '12px', fontWeight: 700, color: '#0f766e', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              Stage 2 — 6-Week Body Rewire Blueprint
+              Stage 2 - 6-Week Body Rewire Blueprint
             </span>
           </div>
 
@@ -240,7 +240,7 @@ export default function BlueprintPage() {
           <div style={{ width: '48px', height: '3px', background: '#14b8a6', borderRadius: '2px', marginBottom: '24px' }} />
 
           <p style={{ fontSize: '19px', color: '#57534e', lineHeight: 1.7, marginBottom: '14px' }}>
-            The 14-day challenge identified what your body has been doing and why. The Rewire Blueprint is the next step — 6 weeks built specifically around your biological pattern.
+            The 14-day challenge identified what your body has been doing and why. The Rewire Blueprint is the next step. 6 weeks built specifically around your biological pattern.
           </p>
           <p style={{ fontSize: '19px', color: '#57534e', lineHeight: 1.7, marginBottom: '40px' }}>
             Not a generic programme. Not an adapted template. Built from the pattern your body showed you.
@@ -283,7 +283,7 @@ export default function BlueprintPage() {
           Fourteen days of structured reset gives your biology room to stabilise. But stabilising is not correcting. Your Body Decode result showed you which pattern is most active. The Rewire Blueprint is 6 weeks of direct work against it.
         </p>
         <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '24px' }}>
-          The training emphasis, nutrition structure, and weekly coaching notes are all built around your specific pattern — not a generic template with minor adjustments.
+          The training emphasis, nutrition structure, and weekly coaching notes are all built around your specific pattern. Not a generic template with minor adjustments.
         </p>
         <div style={{
           background: 'rgba(20,184,166,0.08)', border: '1px solid rgba(20,184,166,0.2)',
@@ -312,7 +312,7 @@ export default function BlueprintPage() {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                 <span style={{ fontSize: '14px', fontWeight: 800, color: '#1c1917' }}>{p.name}</span>
-                <span style={{ fontSize: '12px', color: '#a8a29e' }}>— {p.driver}</span>
+                <span style={{ fontSize: '12px', color: '#a8a29e' }}>- {p.driver}</span>
               </div>
               <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.6, margin: 0 }}>{p.focus}</p>
             </div>
@@ -335,7 +335,7 @@ export default function BlueprintPage() {
             Regulate. Adapt. Embed.
           </h2>
           <p style={{ fontSize: '16px', color: '#78716c', lineHeight: 1.7, marginBottom: '32px' }}>
-            Each phase has a specific biological purpose. The progression is not arbitrary — it follows how the body actually adapts.
+            Each phase has a specific biological purpose. The progression is not arbitrary. It follows how the body actually adapts.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {PHASES.map((phase, i) => (
