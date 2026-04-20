@@ -491,7 +491,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
 
       {/* Top bar */}
       <div style={{ borderBottom: '1px solid #1c1917', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <img src="https://bodyrecode.au/logo-teal.png" width={100} alt="Body Recode" />
+        <img src="https://bodyrecode.au/logo-teal.png" width={140} alt="Body Recode" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: config.colour }} />
           <span style={{ fontSize: 13, color: '#78716c', fontWeight: 600 }}>{config.label}</span>
