@@ -92,12 +92,12 @@ const WHAT_YOU_GET = [
   {
     icon: '🏋️',
     title: '6-week training blueprint',
-    desc: 'Progressive sessions across three phases. Intensity, volume, and training emphasis matched to what your pattern needs.',
+    desc: 'Progressive sessions across three phases matched to your pattern. Gym, home with dumbbells, or no equipment — every session has a version for your setup.',
   },
   {
     icon: '🥗',
     title: 'Nutrition framework',
-    desc: 'A whole foods nutrition structure aligned to your pattern. Simplified, sustainable, and built around the timing and composition your biology responds to.',
+    desc: 'A whole foods nutrition structure aligned to your pattern. Includes portion guidance, meal timing, and an early morning training adaptation — no tracking or calorie counting required.',
   },
   {
     icon: '📚',
@@ -430,6 +430,7 @@ export default function BlueprintPage() {
             'You completed the challenge and want to take the next step',
             'You know your biological pattern and want a programme built around it',
             'You want structured progression, not a generic plan to adapt yourself',
+            'You train at a gym, at home, or with no equipment at all',
             'You want to understand why your body works the way it does',
             'You are ready to move from stabilising to actually correcting',
           ].map(item => (
