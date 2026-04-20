@@ -50,6 +50,108 @@ const NAV_ITEMS = [
   { id: 'checkin', label: 'Check-In' },
 ]
 
+const SESSIONS = [
+  {
+    id: 'A',
+    name: 'Session A',
+    subtitle: 'Strength Base',
+    exercises: [
+      { name: 'Goblet Squat', sets: 4, reps: '10', notes: 'Focus on depth and control' },
+      { name: 'DB Bench Press', sets: 4, reps: '10', notes: 'Stable grip, full range' },
+      { name: 'Seated Row', sets: 3, reps: '12', notes: 'Squeeze shoulder blades' },
+      { name: 'Reverse Lunge', sets: 3, reps: '12/leg', notes: 'Stay balanced' },
+      { name: 'Plank', sets: 3, reps: '30 sec', notes: 'Brace core and breathe' },
+    ],
+  },
+  {
+    id: 'B',
+    name: 'Session B',
+    subtitle: 'Conditioning and Volume',
+    exercises: [
+      { name: 'Trap Bar Deadlift', sets: 3, reps: '8', notes: 'Neutral spine, drive through heels' },
+      { name: 'Overhead Press', sets: 3, reps: '10', notes: 'Control tempo' },
+      { name: 'Step-Ups', sets: 3, reps: '12/leg', notes: 'Explode through front leg' },
+      { name: 'Lat Pulldown', sets: 3, reps: '12', notes: 'Smooth pull, full stretch' },
+      { name: 'Finisher: Row or Bike', sets: 5, reps: '45s hard / 75s easy', notes: 'See pattern rules below' },
+    ],
+  },
+  {
+    id: 'C',
+    name: 'Session C',
+    subtitle: 'Balance and Stability',
+    exercises: [
+      { name: 'Front Squat', sets: 3, reps: '8', notes: 'Keep upright posture' },
+      { name: 'Incline DB Bench', sets: 3, reps: '10', notes: 'Controlled descent' },
+      { name: 'DB Row', sets: 3, reps: '10/side', notes: 'Elbow drives back' },
+      { name: 'Walking Lunge', sets: 3, reps: '12/leg', notes: 'Step smooth, upright torso' },
+      { name: 'Hanging Knee Raise', sets: 3, reps: '10-12', notes: 'Controlled lift, no swing' },
+    ],
+  },
+]
+
+const PATTERN_TRAINING: Record<string, {
+  progression: { phase: string; weeks: string; rir: string; notes: string }[]
+  rules: string[]
+}> = {
+  'stress-stored': {
+    progression: [
+      { phase: 'Regulate', weeks: '1-2', rir: '3 RIR', notes: 'Technique only. Never push through fatigue.' },
+      { phase: 'Adapt', weeks: '3-4', rir: '3 RIR', notes: 'Load increases are slow and deliberate. No chasing.' },
+      { phase: 'Embed', weeks: '5', rir: '2-3 RIR', notes: 'No peak effort week. Keep controlled throughout.' },
+      { phase: 'Embed (Deload)', weeks: '6', rir: '4 RIR', notes: 'Extended deload. Reduce sets by 30%.' },
+    ],
+    rules: [
+      'Skip the Session B finisher - no conditioning work',
+      'Optional Zone 2 only (walk 20-30 min) - never high intensity cardio',
+      'Sleep outranks training. If sleep was poor, reduce session intensity further.',
+      'Rest between sets: minimum 90 seconds',
+    ],
+  },
+  'metabolic-drift': {
+    progression: [
+      { phase: 'Regulate', weeks: '1-2', rir: '3 RIR', notes: 'Technique and consistency.' },
+      { phase: 'Adapt', weeks: '3-4', rir: '2 RIR', notes: 'Progressive load. Add weight when RIR feels comfortable.' },
+      { phase: 'Embed', weeks: '5', rir: '1-2 RIR', notes: 'Push intensity. Record best sets.' },
+      { phase: 'Embed (Deload)', weeks: '6', rir: '3-4 RIR', notes: 'Deload. Reduce sets by 30%.' },
+    ],
+    rules: [
+      'Include the Session B finisher every session - it is not optional for this pattern',
+      'Walk 15-20 minutes after every session - lowers post-session blood sugar significantly',
+      'Train before eating where possible - fasted or semi-fasted training improves insulin response',
+      'Carbohydrate intake timed to within 90 minutes post-session only',
+    ],
+  },
+  'hormonal-shift': {
+    progression: [
+      { phase: 'Regulate', weeks: '1-2', rir: '3 RIR', notes: 'Establish consistent attendance. Never miss a session.' },
+      { phase: 'Adapt', weeks: '3-4', rir: '2-3 RIR', notes: 'Add load slowly. Do not push to 2 RIR if recovery is compromised.' },
+      { phase: 'Embed', weeks: '5', rir: '2 RIR', notes: 'No 1 RIR sets. Intensity is secondary to showing up.' },
+      { phase: 'Embed (Deload)', weeks: '6', rir: '3-4 RIR', notes: 'Deload. Reduce sets by 30%.' },
+    ],
+    rules: [
+      'Session B finisher: optional, effort level 6/10 only - never hard conditioning',
+      'Never miss a session because motivation is low - consistency is the adaptation signal',
+      'Never add extra sessions - three days is the prescription, not a minimum',
+      'If cycle timing is disrupting recovery in Weeks 3-4, hold intensity rather than pushing through',
+    ],
+  },
+  'system-overload': {
+    progression: [
+      { phase: 'Regulate', weeks: '1-2', rir: '3 RIR', notes: 'Drop set count to 2 sets per exercise if fatigue is present.' },
+      { phase: 'Adapt', weeks: '3-4', rir: '3 RIR', notes: 'Very gradual load increase only. Never chase numbers.' },
+      { phase: 'Embed', weeks: '5', rir: '2-3 RIR', notes: 'No peak effort week. Controlled throughout.' },
+      { phase: 'Embed (Deload)', weeks: '6', rir: '4 RIR', notes: 'Extended deload. Reduce sets by 40%.' },
+    ],
+    rules: [
+      'Skip the Session B finisher - no conditioning work',
+      'No additional cardio - walking only, and only if it feels genuinely restorative',
+      'Rest between sets: 2-3 minutes minimum',
+      'If energy is significantly depleted on any day, reduce to 2 working sets per exercise',
+      'This pattern does not respond to volume - it responds to quality and recovery',
+    ],
+  },
+}
+
 type PatternAssessmentProps = {
   onComplete: (pattern: string) => void
   token: string
@@ -78,7 +180,6 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
     e.preventDefault()
     if (!q1 || !q2) return
     setSubmitting(true)
-    // Q2 is the primary determinant (same logic as Body Decode Check-In)
     const pattern = q2
     await fetch('/api/blueprint/set-pattern', {
       method: 'POST',
@@ -138,11 +239,145 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
   )
 }
 
+function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: number }) {
+  const [activeSession, setActiveSession] = useState('A')
+  const config = PATTERN_CONFIG[pattern] ?? PATTERN_CONFIG['stress-stored']
+  const trainingData = PATTERN_TRAINING[pattern] ?? PATTERN_TRAINING['stress-stored']
+  const currentPhaseRow = currentWeek <= 2 ? trainingData.progression[0] : currentWeek <= 4 ? trainingData.progression[1] : currentWeek === 5 ? trainingData.progression[2] : trainingData.progression[3]
+  const activeSessionData = SESSIONS.find(s => s.id === activeSession)!
+
+  return (
+    <div>
+      <div style={{ marginBottom: 28 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>Training Programme</h2>
+        <p style={{ fontSize: 14, color: '#78716c', margin: 0, lineHeight: 1.7 }}>
+          3 days per week. Full body hybrid split. Sessions A, B, and C rotate each week.
+        </p>
+      </div>
+
+      {/* Current week target */}
+      <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+          Week {currentWeek} Target - {currentPhaseRow.phase}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
+          <span style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>{currentPhaseRow.rir}</span>
+        </div>
+        <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.6 }}>{currentPhaseRow.notes}</p>
+      </div>
+
+      {/* Pattern rules */}
+      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+          {config.label} - Training Rules
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {trainingData.rules.map((rule, i) => (
+            <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
+              <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{rule}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Full progression table */}
+      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+          Phase Progression
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 60px 80px', gap: 12, padding: '8px 0', borderBottom: '1px solid #1c1917', marginBottom: 4 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Phase</span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Weeks</span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>RIR</span>
+          </div>
+          {trainingData.progression.map((row, i) => {
+            const isActive = row === currentPhaseRow
+            return (
+              <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 60px 80px', gap: 12, padding: '12px 0', borderBottom: i < 3 ? '1px solid #1c1917' : 'none', background: isActive ? 'rgba(20,184,166,0.04)' : 'transparent', borderRadius: isActive ? 6 : 0 }}>
+                <span style={{ fontSize: 13, color: isActive ? '#fff' : '#78716c', fontWeight: isActive ? 600 : 400 }}>{row.phase}</span>
+                <span style={{ fontSize: 13, color: isActive ? '#a8a29e' : '#57534e' }}>{row.weeks}</span>
+                <span style={{ fontSize: 13, color: isActive ? config.colour : '#57534e', fontWeight: isActive ? 600 : 400 }}>{row.rir}</span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Session tabs */}
+      <div style={{ marginBottom: 16 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>
+          Session Templates
+        </div>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+          {SESSIONS.map(s => (
+            <button
+              key={s.id}
+              onClick={() => setActiveSession(s.id)}
+              style={{ padding: '10px 18px', fontSize: 13, fontWeight: 600, color: activeSession === s.id ? '#0c0a09' : '#57534e', background: activeSession === s.id ? '#14b8a6' : '#111110', border: `1px solid ${activeSession === s.id ? '#14b8a6' : '#292524'}`, borderRadius: 8, cursor: 'pointer' }}
+            >
+              Session {s.id}
+            </button>
+          ))}
+        </div>
+
+        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, overflow: 'hidden' }}>
+          <div style={{ padding: '18px 20px', borderBottom: '1px solid #1c1917' }}>
+            <div style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>{activeSessionData.name}</div>
+            <div style={{ fontSize: 12, color: '#57534e', marginTop: 2 }}>{activeSessionData.subtitle}</div>
+          </div>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #1c1917' }}>
+                  <th style={{ padding: '10px 20px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Exercise</th>
+                  <th style={{ padding: '10px 12px', textAlign: 'center', fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Sets</th>
+                  <th style={{ padding: '10px 12px', textAlign: 'center', fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Reps</th>
+                  <th style={{ padding: '10px 20px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {activeSessionData.exercises.map((ex, i) => {
+                  const isFinisher = ex.name.startsWith('Finisher')
+                  const finisherSkipped = isFinisher && (pattern === 'stress-stored' || pattern === 'system-overload')
+                  return (
+                    <tr key={i} style={{ borderBottom: i < activeSessionData.exercises.length - 1 ? '1px solid #1c1917' : 'none', opacity: finisherSkipped ? 0.4 : 1 }}>
+                      <td style={{ padding: '14px 20px', fontSize: 14, color: finisherSkipped ? '#57534e' : '#d4d0cc', fontWeight: isFinisher ? 600 : 400 }}>
+                        {ex.name}
+                        {finisherSkipped && <span style={{ fontSize: 11, color: '#57534e', marginLeft: 8 }}>(skipped)</span>}
+                      </td>
+                      <td style={{ padding: '14px 12px', fontSize: 14, color: '#78716c', textAlign: 'center' }}>{ex.sets}</td>
+                      <td style={{ padding: '14px 12px', fontSize: 13, color: '#78716c', textAlign: 'center', whiteSpace: 'nowrap' }}>{ex.reps}</td>
+                      <td style={{ padding: '14px 20px', fontSize: 13, color: '#57534e', lineHeight: 1.5 }}>{ex.notes}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* RIR explainer */}
+      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '18px 20px' }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: '#57534e', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
+          What is RIR?
+        </div>
+        <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.7 }}>
+          RIR stands for Reps in Reserve. It is how many more reps you could have done before reaching failure.
+          3 RIR means you stop when you have 3 reps left. 1 RIR means you stop when you have 1 rep left.
+          This is how the programme manages intensity across each phase without requiring a 1-rep max test.
+        </p>
+      </div>
+    </div>
+  )
+}
+
 export default function BlueprintPortalClient({ enrollment }: { enrollment: Enrollment }) {
   const [pattern, setPattern] = useState(enrollment.pattern)
   const [activeTab, setActiveTab] = useState('home')
 
-  // Show pattern assessment gate for Type B buyers
   if (pattern === 'pending') {
     return (
       <PatternAssessment
@@ -185,7 +420,6 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
 
         {activeTab === 'home' && (
           <div>
-            {/* Welcome */}
             <div style={{ marginBottom: 32 }}>
               <h1 style={{ fontSize: 26, fontWeight: 700, color: '#fff', margin: '0 0 8px' }}>
                 Welcome, {enrollment.first_name}
@@ -195,7 +429,6 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
               </p>
             </div>
 
-            {/* Pattern card */}
             <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                 Your Pattern
@@ -204,20 +437,18 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
               <p style={{ fontSize: 14, color: '#78716c', lineHeight: 1.75, margin: 0 }}>{config.description}</p>
             </div>
 
-            {/* Current phase */}
             <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '24px', marginBottom: 24 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                 Current Phase
               </div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
-                <span style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>Phase {currentPhase.number} — {currentPhase.name}</span>
+                <span style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>Phase {currentPhase.number} - {currentPhase.name}</span>
                 <span style={{ fontSize: 13, color: '#57534e' }}>Weeks {currentPhase.weeks}</span>
               </div>
               <p style={{ fontSize: 14, color: '#78716c', margin: '0 0 16px', lineHeight: 1.7 }}>{currentPhase.description}</p>
               <div style={{ fontSize: 13, color: '#57534e' }}>Week {currentWeek} of 6</div>
             </div>
 
-            {/* Phase overview */}
             <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '24px' }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
                 Programme Phases
@@ -236,7 +467,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
                       </div>
                       <div style={{ paddingTop: 4, paddingBottom: i < 2 ? 8 : 0 }}>
                         <div style={{ fontSize: 14, fontWeight: 600, color: isActive ? '#fff' : '#57534e', marginBottom: 2 }}>
-                          {phase.name} <span style={{ fontWeight: 400, color: '#3d3935' }}>— Weeks {phase.weeks}</span>
+                          {phase.name} <span style={{ fontWeight: 400, color: '#3d3935' }}>- Weeks {phase.weeks}</span>
                         </div>
                         <div style={{ fontSize: 13, color: isActive ? '#78716c' : '#3d3935', lineHeight: 1.6 }}>{phase.description}</div>
                       </div>
@@ -249,19 +480,11 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
         )}
 
         {activeTab === 'training' && (
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '32px 24px', textAlign: 'center' }}>
-            <div style={{ fontSize: 32, marginBottom: 16 }}>🏋️</div>
-            <h2 style={{ fontSize: 20, fontWeight: 700, color: '#fff', margin: '0 0 12px' }}>Training Programme</h2>
-            <p style={{ fontSize: 14, color: '#78716c', lineHeight: 1.75, margin: '0 0 8px' }}>
-              6-week training blueprint — pattern-specific emphasis for the {config.label} pattern.
-            </p>
-            <p style={{ fontSize: 13, color: '#57534e' }}>Content coming soon.</p>
-          </div>
+          <TrainingTab pattern={pattern} currentWeek={currentWeek} />
         )}
 
         {activeTab === 'nutrition' && (
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '32px 24px', textAlign: 'center' }}>
-            <div style={{ fontSize: 32, marginBottom: 16 }}>🥗</div>
             <h2 style={{ fontSize: 20, fontWeight: 700, color: '#fff', margin: '0 0 12px' }}>Nutrition Framework</h2>
             <p style={{ fontSize: 14, color: '#78716c', lineHeight: 1.75, margin: '0 0 8px' }}>
               Nutrition guide with {config.label} pattern emphasis.
@@ -297,7 +520,6 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
 
         {activeTab === 'checkin' && (
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '32px 24px', textAlign: 'center' }}>
-            <div style={{ fontSize: 32, marginBottom: 16 }}>📋</div>
             <h2 style={{ fontSize: 20, fontWeight: 700, color: '#fff', margin: '0 0 12px' }}>Weekly Check-In</h2>
             <p style={{ fontSize: 14, color: '#78716c', lineHeight: 1.75, margin: '0 0 8px' }}>
               Weekly progress tracking across 8 biological markers.
