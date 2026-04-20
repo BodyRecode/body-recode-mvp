@@ -542,7 +542,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
 
           {/* Pattern rules */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Rules for Your Pattern
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -557,7 +557,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
 
           {/* Avoid */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Avoid for 6 Weeks
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -574,7 +574,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
 
           {/* Phase notes */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Phase Adjustments
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
@@ -596,7 +596,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
         <div>
           {/* How to measure */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
               How to Measure
             </div>
             <p style={{ fontSize: 13, color: '#78716c', margin: '0 0 16px', lineHeight: 1.7 }}>
@@ -649,7 +649,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
         <div>
           {/* Foundation foods */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Foundation Foods
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
@@ -665,7 +665,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
 
           {/* Remove list */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Remove for 6 Weeks (All Patterns)
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -682,7 +682,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
 
           {/* Hydration */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Hydration
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -737,7 +737,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
               : 'Small snack - banana or yoghurt. Keep it light.'
             return (
               <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
                   Daily Rhythm - Training Day
                 </div>
                 {/* Toggle */}
@@ -748,7 +748,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
 
           {/* Meal builder */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Meal Builder
             </div>
             <p style={{ fontSize: 13, color: '#78716c', margin: '0 0 16px', lineHeight: 1.7 }}>Every meal follows the same structure. Build each meal in this order.</p>
@@ -775,7 +775,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
 
           {/* Example meals */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Example Meals
             </div>
             {[
@@ -797,7 +797,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
 
           {/* Shopping list */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Shopping List
             </div>
             {[
@@ -840,7 +840,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
 
       {/* Suggested training days */}
       <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
           Suggested Schedule
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 12 }}>
@@ -874,7 +874,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
 
       {/* Pattern rules */}
       <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
           {config.label} - Training Rules
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -889,7 +889,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
 
       {/* Full progression table */}
       <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
           Phase Progression
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
@@ -914,7 +914,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
       {/* Session tabs */}
       <div style={{ marginBottom: 16 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
             Session Templates
           </div>
           {/* Gym / Home / Bodyweight toggle */}
@@ -1069,7 +1069,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
             </div>
 
             <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '24px', marginBottom: 24 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                 Current Phase
               </div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
@@ -1081,7 +1081,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
             </div>
 
             <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '24px' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
                 Programme Phases
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
