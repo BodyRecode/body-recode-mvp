@@ -96,8 +96,8 @@ const WHAT_YOU_GET = [
   },
   {
     icon: '🥗',
-    title: 'HABNS nutrition framework',
-    desc: 'The nutrition structure used in 1:1 coaching. Simplified, sustainable, and aligned to your pattern\'s specific requirements.',
+    title: 'Nutrition framework',
+    desc: 'A whole foods nutrition structure aligned to your pattern. Simplified, sustainable, and built around the timing and composition your biology responds to.',
   },
   {
     icon: '📚',

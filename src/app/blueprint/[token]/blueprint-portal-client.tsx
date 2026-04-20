@@ -262,7 +262,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
         {activeTab === 'nutrition' && (
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '32px 24px', textAlign: 'center' }}>
             <div style={{ fontSize: 32, marginBottom: 16 }}>🥗</div>
-            <h2 style={{ fontSize: 20, fontWeight: 700, color: '#fff', margin: '0 0 12px' }}>HABNS Nutrition Framework</h2>
+            <h2 style={{ fontSize: 20, fontWeight: 700, color: '#fff', margin: '0 0 12px' }}>Nutrition Framework</h2>
             <p style={{ fontSize: 14, color: '#78716c', lineHeight: 1.75, margin: '0 0 8px' }}>
               Nutrition guide with {config.label} pattern emphasis.
             </p>
