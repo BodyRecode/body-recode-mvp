@@ -372,6 +372,94 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   }
 
+  // Handle Blueprint purchase
+  if (session.metadata?.type === 'blueprint_purchase') {
+    const { name, email, pattern_from_challenge } = session.metadata
+    const admin = createAdminClient()
+    const firstName = name.split(' ')[0]
+
+    // If buyer came through challenge, pattern is pre-loaded — create enrollment directly
+    // If no pattern, portal will show assessment gate
+    const pattern = pattern_from_challenge || null
+
+    const { data: enrollment } = await admin
+      .from('blueprint_enrollments')
+      .insert({
+        email: email.toLowerCase(),
+        first_name: firstName,
+        pattern: pattern ?? 'pending',
+        pattern_source: pattern ? 'challenge' : 'assessment',
+        stripe_payment_intent_id: session.payment_intent as string ?? null,
+      })
+      .select('token')
+      .single()
+
+    if (enrollment && process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/${enrollment.token}`
+
+      const patternLabel: Record<string, string> = {
+        'stress-stored': 'Stress-Stored',
+        'metabolic-drift': 'Metabolic-Drift',
+        'hormonal-shift': 'Hormonal-Shift',
+        'system-overload': 'System-Overload',
+      }
+      const patternDisplay = pattern ? patternLabel[pattern] ?? pattern : null
+
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `Your 6-Week Body Rewire Blueprint is ready`,
+        html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr>
+          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+            <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${firstName},</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#888888;">Your 6-Week Body Rewire Blueprint is ready. ${patternDisplay ? `Your programme has been built around your <strong style="color:#fff;">${patternDisplay}</strong> pattern.` : `Your first step is a short pattern assessment so the programme can be built around your biology.`}</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#888888;">The programme runs across three phases:</p>
+            <ul style="padding-left:20px;color:#888888;margin:0 0 24px;">
+              <li style="margin-bottom:8px;"><strong style="color:#fff;">Phase 1 - Regulate</strong> (Weeks 1-2) - Re-establish structure and biological rhythm</li>
+              <li style="margin-bottom:8px;"><strong style="color:#fff;">Phase 2 - Adapt</strong> (Weeks 3-4) - Drive adaptation through progressive load</li>
+              <li style="margin-bottom:8px;"><strong style="color:#fff;">Phase 3 - Embed</strong> (Weeks 5-6) - Lock in the new baseline before Stage 3</li>
+            </ul>
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+              <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my Blueprint</a></td></tr>
+            </table>
+            <p style="margin:0 0 18px;font-size:13px;color:#555;">Bookmark this link. It is your personal portal for the full 6 weeks.<br/><a href="${portalUrl}" style="color:#555;">${portalUrl}</a></p>
+            ${darkEmailSignature()}
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`,
+      })
+
+      // Coach notification
+      await resend.emails.send({
+        from: 'Body Recode <kade@bodyrecode.au>',
+        to: 'kade@bodyrecode.au',
+        subject: `Blueprint purchased - ${name}`,
+        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${name} purchased the Blueprint</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Email: ${email}</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Pattern: ${patternDisplay ?? 'Pending assessment'}</p>
+</div>`,
+      })
+    }
+
+    return NextResponse.json({ received: true })
+  }
+
   if (session.metadata?.type !== 'commencement_fee') {
     return NextResponse.json({ received: true })
   }
