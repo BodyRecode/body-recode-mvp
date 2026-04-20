@@ -96,7 +96,7 @@ const WHAT_YOU_GET = [
   },
   {
     icon: '🥗',
-    title: 'HABS nutrition framework',
+    title: 'HABNS nutrition framework',
     desc: 'The nutrition structure used in 1:1 coaching. Simplified, sustainable, and aligned to your pattern\'s specific requirements.',
   },
   {
