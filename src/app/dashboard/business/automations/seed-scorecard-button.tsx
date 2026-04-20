@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Zap } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 export default function SeedScorecardButton() {
   const router = useRouter()
@@ -15,7 +16,13 @@ export default function SeedScorecardButton() {
     setDone(false)
     setError('')
     try {
-      const res = await fetch('/api/admin/resync-scorecard-workflow', { method: 'POST' })
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      const res = await fetch('/api/admin/resync-scorecard-workflow', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coachId: user?.id }),
+      })
       if (res.ok) {
         setDone(true)
         router.refresh()

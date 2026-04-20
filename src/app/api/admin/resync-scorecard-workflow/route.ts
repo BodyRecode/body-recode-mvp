@@ -123,8 +123,10 @@ Body Recode`,
   },
 ]
 
-export async function POST() {
+export async function POST(request: Request) {
   const admin = createAdminClient()
+  const body = await request.json().catch(() => ({}))
+  const coachId: string | null = body.coachId ?? null
 
   // Fetch ALL matching workflows — duplicates may exist from prior failed seeds
   const { data: allMatching, error: findError } = await admin
@@ -147,7 +149,10 @@ export async function POST() {
     if (duplicateIds.length > 0) {
       await admin.from('be_workflows').delete().in('id', duplicateIds)
     }
-    await admin.from('be_workflows').update({ is_active: true }).eq('id', workflowId)
+    // Also stamp coach_id if we have it and it's currently null
+    const update: Record<string, unknown> = { is_active: true }
+    if (coachId) update.coach_id = coachId
+    await admin.from('be_workflows').update(update).eq('id', workflowId)
   } else {
     // Create fresh
     const { data: created, error: createError } = await admin
@@ -157,6 +162,7 @@ export async function POST() {
         trigger_type: 'form_submitted',
         trigger_config: { form: 'scorecard' },
         is_active: true,
+        ...(coachId ? { coach_id: coachId } : {}),
       })
       .select('id')
       .single()
