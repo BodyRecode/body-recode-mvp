@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { buildProgramBuyerEmails, daysAfter9amBrisbane } from '@/lib/generate-report'
+import { buildProgramBuyerEmails, buildReportFollowUpEmails, daysAfter9amBrisbane, nextMorning9amBrisbane } from '@/lib/generate-report'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -272,7 +272,9 @@ export async function POST(request: NextRequest) {
       const resend = new Resend(process.env.RESEND_API_KEY)
       const firstName = name.split(' ')[0]
       const reportUrl = `${process.env.NEXT_PUBLIC_APP_URL}/report/${report.token}`
+      const BOOKING_LINK = process.env.BOOKING_LINK ?? `${process.env.NEXT_PUBLIC_APP_URL}/book`
 
+      // Deliver the report
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
@@ -305,6 +307,66 @@ export async function POST(request: NextRequest) {
   </table>
 </body></html>`,
       })
+
+      // Schedule 3-email report follow-up sequence
+      const { email1: f1, email2: f2, email3: f3 } = buildReportFollowUpEmails(firstName, body_state, BOOKING_LINK)
+      const day2 = daysAfter9amBrisbane(nextMorning9amBrisbane(), 1)
+      const day5 = daysAfter9amBrisbane(nextMorning9amBrisbane(), 4)
+      const day10 = daysAfter9amBrisbane(nextMorning9amBrisbane(), 9)
+
+      const [rf1, rf2, rf3] = await Promise.all([
+        resend.emails.send({
+          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          to: email,
+          subject: f1.subject,
+          html: f1.html,
+          scheduledAt: day2.toISOString(),
+        }),
+        resend.emails.send({
+          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          to: email,
+          subject: f2.subject,
+          html: f2.html,
+          scheduledAt: day5.toISOString(),
+        }),
+        resend.emails.send({
+          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          to: email,
+          subject: f3.subject,
+          html: f3.html,
+          scheduledAt: day10.toISOString(),
+        }),
+      ])
+
+      // Find lead by email and cancel any pending scorecard follow-up, log event
+      const { data: lead } = await admin
+        .from('leads')
+        .select('id, followup_email_ids')
+        .ilike('email', email)
+        .maybeSingle()
+
+      if (lead) {
+        const followupIds = (lead.followup_email_ids as string[] | null) ?? []
+        if (followupIds.length > 0) {
+          for (const emailId of followupIds) {
+            try { await resend.emails.cancel(emailId) } catch {}
+          }
+        }
+
+        const newEmailIds = [rf1.data?.id, rf2.data?.id, rf3.data?.id].filter(Boolean) as string[]
+        await admin
+          .from('leads')
+          .update({ followup_email_ids: newEmailIds, status: 'report_sent' })
+          .eq('id', lead.id)
+
+        await admin.from('lead_events').insert({
+          lead_id: lead.id,
+          type: 'email_sent',
+          subject: 'Body Decode Report delivered',
+          notes: 'Report follow-up sequence scheduled (Day 2, Day 5, Day 10)',
+          sent_at: new Date().toISOString(),
+        })
+      }
     }
 
     return NextResponse.json({ received: true })

@@ -418,6 +418,61 @@ export function buildNoShowEmails(firstName: string, bookingLink: string): {
   return { email1, email2, email3 }
 }
 
+export function buildReportFollowUpEmails(firstName: string, bodyState: string, bookingLink: string): {
+  email1: { subject: string; html: string }
+  email2: { subject: string; html: string }
+  email3: { subject: string; html: string }
+} {
+  const email1 = {
+    subject: `Your report is the starting point, ${firstName}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`You have the report now. It tells you what your body is doing, why it is doing it, and what the biological pattern looks like from the outside.`),
+        p(`Reading it is the first step. The second is knowing what to actually do about it - in order, at the right intensity, for your current state.`),
+        p(`That is what the call is for. 30 minutes. We go through your ${bodyState} result together and map out exactly what needs to change first.`),
+        p(`No obligation. Just a focused conversation.`),
+      ].join(''),
+      'Book a call with Kade →',
+      bookingLink
+    ),
+  }
+
+  const email2 = {
+    subject: `One thing worth noting about ${bodyState}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`One thing the report cannot show you is sequence.`),
+        p(`${bodyState} results have a specific order of operations. There are things that need to happen before other things will work - and if you skip that order, effort goes in without the result coming back.`),
+        p(`That sequencing is what I build the call around. What to address first, what to park for now, and how to structure the next 4-6 weeks around your actual state.`),
+        p(`If you have not booked yet, the link is below.`),
+      ].join(''),
+      'Book a call →',
+      bookingLink
+    ),
+  }
+
+  const email3 = {
+    subject: `Last one from me, ${firstName}`,
+    html: followUpEmail(
+      firstName,
+      [
+        p(`Hi ${firstName},`),
+        p(`Last message from me on this.`),
+        p(`The report is yours and the call is still available whenever it makes sense. No follow-up after this.`),
+        p(`Just wanted you to know the door stays open.`),
+      ].join(''),
+      'Book when you\'re ready →',
+      bookingLink
+    ),
+  }
+
+  return { email1, email2, email3 }
+}
+
 export function buildZoom1DeclinedEmails(firstName: string, bookingLink: string): {
   email1: { subject: string; html: string }
   email2: { subject: string; html: string }
