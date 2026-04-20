@@ -255,6 +255,29 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
         </p>
       </div>
 
+      {/* Suggested training days */}
+      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+          Suggested Schedule
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 12 }}>
+          {[
+            { day: 'Monday', session: 'A', subtitle: 'Strength Base' },
+            { day: 'Wednesday', session: 'B', subtitle: 'Conditioning' },
+            { day: 'Friday', session: 'C', subtitle: 'Balance' },
+          ].map(item => (
+            <div key={item.day} style={{ background: '#1c1917', borderRadius: 8, padding: '14px 16px', textAlign: 'center' }}>
+              <div style={{ fontSize: 12, color: '#57534e', marginBottom: 6 }}>{item.day}</div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: '#14b8a6', marginBottom: 4 }}>Session {item.session}</div>
+              <div style={{ fontSize: 11, color: '#3d3935' }}>{item.subtitle}</div>
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize: 12, color: '#3d3935', margin: 0, lineHeight: 1.6 }}>
+          Any 3 non-consecutive days works. The gap between sessions is more important than the specific days. Avoid training back to back.
+        </p>
+      </div>
+
       {/* Current week target */}
       <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
