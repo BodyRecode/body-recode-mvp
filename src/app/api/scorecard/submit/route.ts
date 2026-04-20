@@ -5,9 +5,16 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 
 const CORS = {
-  'Access-Control-Allow-Origin': 'https://performance.bodyrecode.au',
+  'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
+}
+
+const QR_SOURCE_MAP: Record<string, string> = {
+  qr_floor_banner: 'gym_floor',
+  qr_window: 'gym_floor',
+  qr_card: 'gym_floor',
+  qr_flyer: 'gym_floor',
 }
 
 export async function OPTIONS() {
@@ -53,13 +60,16 @@ export async function POST(request: NextRequest) {
     leadId = existing.id
     console.log('[scorecard/submit] Found existing lead:', leadId)
   } else {
+    const dbSource = QR_SOURCE_MAP[source] ?? (source ?? 'other')
+    const dbSourceDetail = QR_SOURCE_MAP[source] ? source : 'scorecard'
+
     const { data: newLead, error: leadError } = await supabase
       .from('leads')
       .insert({
         name: first_name.trim(),
         email: email.toLowerCase().trim(),
-        source: source ?? 'other',
-        source_detail: 'scorecard',
+        source: dbSource,
+        source_detail: dbSourceDetail,
         status: 'new_check_in',
         active: true,
       })
