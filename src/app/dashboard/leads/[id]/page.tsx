@@ -7,6 +7,7 @@ import EditContact from './edit-contact'
 import ConvertButton from './convert-button'
 import CancelSequenceButton from './cancel-sequence-button'
 import NoShowSequenceButton from '@/components/noshow-sequence-button'
+import Zoom1DeclinedButton from '@/components/zoom1-declined-button'
 import CommencementFeeButton from '@/components/commencement-fee-button'
 import DownsellButton from '@/components/downsell-button'
 import FounderApplicationStatus from '@/components/founder-application-status'
@@ -506,6 +507,17 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <p className="text-stone-500 text-sm">3 emails over 10 days. Day 1, Day 4, Day 10. Calm re-invitation to rebook.</p>
           </div>
           <NoShowSequenceButton leadId={lead.id} />
+        </div>
+      )}
+
+      {/* Zoom 1 declined follow-up */}
+      {lead.status === 'closed_declined' && (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Declined Follow-up Sequence</h2>
+            <p className="text-stone-500 text-sm">3 emails over 12 days. Keeps the door open without pressure.</p>
+          </div>
+          <Zoom1DeclinedButton leadId={lead.id} />
         </div>
       )}
 
