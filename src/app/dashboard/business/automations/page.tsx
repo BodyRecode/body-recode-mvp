@@ -79,7 +79,7 @@ export default async function AutomationsPage() {
 
                 <div className="flex items-center gap-3 shrink-0">
                   {workflow.name === 'Scorecard — Follow-up Sequence' && (
-                    <ReseedScorecardButton />
+                    <ReseedScorecardButton stepCount={stepCount} />
                   )}
                   <span className={`flex items-center gap-1 text-xs font-medium ${
                     workflow.is_active ? 'text-teal-400' : 'text-stone-500'

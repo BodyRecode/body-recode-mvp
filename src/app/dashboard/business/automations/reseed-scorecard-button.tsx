@@ -4,17 +4,21 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
-export default function ReseedScorecardButton() {
+const EXPECTED_STEPS = 9
+
+export default function ReseedScorecardButton({ stepCount }: { stepCount: number }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [done, setDone] = useState(false)
+  const [synced, setSynced] = useState(false)
   const [error, setError] = useState('')
 
-  async function reseed(e: React.MouseEvent) {
+  const isCurrent = stepCount === EXPECTED_STEPS
+
+  async function resync(e: React.MouseEvent) {
     e.preventDefault()
     e.stopPropagation()
     setLoading(true)
-    setDone(false)
+    setSynced(false)
     setError('')
     try {
       const supabase = createClient()
@@ -25,7 +29,7 @@ export default function ReseedScorecardButton() {
         body: JSON.stringify({ coachId: user?.id }),
       })
       if (res.ok) {
-        setDone(true)
+        setSynced(true)
         router.refresh()
       } else {
         const data = await res.json().catch(() => ({}))
@@ -39,13 +43,17 @@ export default function ReseedScorecardButton() {
 
   return (
     <div>
-      <button
-        onClick={reseed}
-        disabled={loading}
-        className="bg-stone-800 hover:bg-stone-700 disabled:opacity-50 text-stone-300 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors shrink-0"
-      >
-        {loading ? 'Syncing...' : done ? 'Synced' : 'Re-sync'}
-      </button>
+      {isCurrent && !synced ? (
+        <span className="text-xs font-medium text-stone-500 px-3 py-1.5">Up to date</span>
+      ) : (
+        <button
+          onClick={resync}
+          disabled={loading}
+          className="bg-stone-800 hover:bg-stone-700 disabled:opacity-50 text-stone-300 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors shrink-0"
+        >
+          {loading ? 'Syncing...' : synced ? 'Synced ✓' : 'Re-sync'}
+        </button>
+      )}
       {error && <p className="text-xs text-red-400 mt-1">{error}</p>}
     </div>
   )
