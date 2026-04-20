@@ -302,6 +302,52 @@ const REMOVE_FOODS = [
   'Fast food and takeaway',
 ]
 
+const PORTION_GUIDE = [
+  { food: 'Protein', measure: '1-2 palms', detail: 'Per meal. A palm is roughly 100-150g cooked meat or 2-3 eggs.' },
+  { food: 'Fat', measure: '1 thumb', detail: 'Per meal. One thumb = roughly 1 tbsp butter or ghee, or half an avocado.' },
+  { food: 'Fruit', measure: '1-2 fists', detail: 'Per day total. A fist = one medium piece of fruit or a large handful of berries.' },
+  { food: 'Starchy Carbs', measure: '1-2 cupped hands', detail: 'Post-training only. One cupped hand = roughly 100-150g cooked rice or potato.' },
+]
+
+const PATTERN_PORTIONS: Record<string, { note: string; adjustments: string[] }> = {
+  'stress-stored': {
+    note: 'Standard portions apply. The key rule is never under-eat - restriction spikes cortisol and works against this pattern directly.',
+    adjustments: [
+      'Protein: 2 palms per meal minimum - supports cortisol regulation',
+      'Fat: generous - 1 thumb minimum per meal, more is fine',
+      'Starchy carbs: 1 cupped hand post-training. Do not add extra on rest days.',
+      'Do not reduce portions if you are not hungry - eat the meal anyway and build the rhythm',
+    ],
+  },
+  'metabolic-drift': {
+    note: 'Portion size matters most at the post-training carb window. Keep starchy carb portions measured - this is where insulin is most active.',
+    adjustments: [
+      'Protein: 2 palms per meal - always eat protein before anything else',
+      'Fat: 1 thumb per meal on rest days, reduce slightly post-training to allow carbs to do the work',
+      'Starchy carbs: 1 cupped hand post-training to start. Increase to 2 cupped hands only if performance drops.',
+      'Fruit: 1 fist on rest days - choose lower-GI options (berries, apple). Freely on training days.',
+    ],
+  },
+  'hormonal-shift': {
+    note: 'Generous portions are part of the protocol, not a concession. Inadequate fat and calorie intake directly suppresses the hormones this pattern needs to shift.',
+    adjustments: [
+      'Protein: 2 palms per meal minimum',
+      'Fat: 1-2 thumbs per meal - this pattern requires more fat than others',
+      'Starchy carbs: 1-2 cupped hands post-training. Do not restrict on training days.',
+      'Include starchy carbs 2-3 times per week even on rest days if energy is low - this pattern does not respond well to strict carb cycling',
+    ],
+  },
+  'system-overload': {
+    note: 'Eat full portions at every meal without question. Your nervous system is already running a deficit - under-eating extends the recovery timeline.',
+    adjustments: [
+      'Protein: 2 palms per meal - red meat at least once per day (beef or lamb)',
+      'Fat: 1-2 thumbs per meal. Never low-fat.',
+      'Starchy carbs: 1-2 cupped hands post-training. Do not skip this.',
+      'If appetite is low, prioritise protein and fat over volume - a smaller meal with adequate protein and fat is better than a large low-protein meal',
+    ],
+  },
+}
+
 const PATTERN_NUTRITION: Record<string, {
   headline: string
   rules: string[]
@@ -407,7 +453,7 @@ const PATTERN_NUTRITION: Record<string, {
 }
 
 function NutritionTab({ pattern }: { pattern: string }) {
-  const [section, setSection] = useState<'overview' | 'foundation' | 'meals'>('overview')
+  const [section, setSection] = useState<'overview' | 'portions' | 'foundation' | 'meals'>('overview')
   const config = PATTERN_CONFIG[pattern] ?? PATTERN_CONFIG['stress-stored']
   const nutritionData = PATTERN_NUTRITION[pattern] ?? PATTERN_NUTRITION['stress-stored']
 
@@ -424,6 +470,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
       <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
         {([
           { id: 'overview', label: 'Your Pattern' },
+          { id: 'portions', label: 'Portions' },
           { id: 'foundation', label: 'Foundation Foods' },
           { id: 'meals', label: 'Meal Builder' },
         ] as const).map(s => (
@@ -495,6 +542,59 @@ function NutritionTab({ pattern }: { pattern: string }) {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {section === 'portions' && (
+        <div>
+          {/* How to measure */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
+              How to Measure
+            </div>
+            <p style={{ fontSize: 13, color: '#78716c', margin: '0 0 16px', lineHeight: 1.7 }}>
+              Use your hand as your measuring tool. It scales to your body size automatically - no scales or tracking required.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '100px 110px 1fr', gap: 12, padding: '8px 0', borderBottom: '1px solid #1c1917', marginBottom: 4 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Food</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Measure</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>What That Means</span>
+              </div>
+              {PORTION_GUIDE.map((row, i) => (
+                <div key={i} style={{ display: 'grid', gridTemplateColumns: '100px 110px 1fr', gap: 12, padding: '12px 0', borderBottom: i < PORTION_GUIDE.length - 1 ? '1px solid #1c1917' : 'none' }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#fff' }}>{row.food}</span>
+                  <span style={{ fontSize: 13, color: '#14b8a6', fontWeight: 600 }}>{row.measure}</span>
+                  <span style={{ fontSize: 13, color: '#78716c', lineHeight: 1.5 }}>{row.detail}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pattern-specific portion note */}
+          <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
+              {config.label} - Portion Notes
+            </div>
+            <p style={{ fontSize: 13, color: '#a8a29e', margin: '0 0 16px', lineHeight: 1.75 }}>
+              {PATTERN_PORTIONS[pattern]?.note}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {PATTERN_PORTIONS[pattern]?.adjustments.map((adj, i) => (
+                <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{adj}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* General rule */}
+          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '18px 20px' }}>
+            <p style={{ fontSize: 13, color: '#57534e', margin: 0, lineHeight: 1.7 }}>
+              These are starting portions. If you are losing weight too fast, add more protein and fat. If you are not progressing, review the avoid list and tighten carb timing before adjusting portions.
+            </p>
           </div>
         </div>
       )}
