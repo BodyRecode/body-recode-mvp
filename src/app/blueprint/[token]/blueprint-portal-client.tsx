@@ -452,6 +452,52 @@ const PATTERN_NUTRITION: Record<string, {
   },
 }
 
+function MorningToggle({ preTrainingNote }: { preTrainingNote: string }) {
+  const [timing, setTiming] = useState<'later' | 'morning'>('later')
+
+  const rhythms = {
+    later: [
+      { time: 'On waking', food: '500ml water + pinch of salt', note: 'Before anything else' },
+      { time: 'Breakfast', food: 'Protein + fat', note: 'Eggs in butter, yoghurt + berries, or similar' },
+      { time: 'Pre-training', food: 'Salt + water', note: 'Add small fruit or honey if needed' },
+      { time: 'Post-training', food: 'Whey + fruit', note: 'Within 30 minutes' },
+      { time: 'Post-training meal', food: 'Protein + starchy carbs', note: 'Beef + rice, chicken + potato' },
+      { time: 'Evening meal', food: 'Protein + fat', note: 'No starchy carbs' },
+    ],
+    morning: [
+      { time: 'On waking', food: '500ml water + pinch of salt', note: 'Before anything else' },
+      { time: 'Pre-training', food: preTrainingNote, note: '15-20 min before training' },
+      { time: 'Post-training', food: 'Whey + fruit', note: 'Within 30 minutes of finishing' },
+      { time: 'Breakfast', food: 'Protein + starchy carbs', note: 'This is your post-training meal - beef + rice, eggs + potato' },
+      { time: 'Lunch', food: 'Protein + fat', note: 'Standard meal, no starchy carbs' },
+      { time: 'Evening meal', food: 'Protein + fat', note: 'No starchy carbs' },
+    ],
+  }
+
+  return (
+    <div>
+      <div style={{ display: 'flex', background: '#1c1917', borderRadius: 8, padding: 3, gap: 2, marginBottom: 16, width: 'fit-content' }}>
+        {([{ id: 'later', label: 'Train Later in Day' }, { id: 'morning', label: 'Train First Thing' }] as const).map(t => (
+          <button key={t.id} onClick={() => setTiming(t.id)} style={{ padding: '7px 14px', fontSize: 12, fontWeight: 600, color: timing === t.id ? '#0c0a09' : '#57534e', background: timing === t.id ? '#14b8a6' : 'transparent', border: 'none', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+        {rhythms[timing].map((row, i) => (
+          <div key={i} style={{ display: 'grid', gridTemplateColumns: '110px 1fr', gap: 16, padding: '11px 0', borderBottom: i < rhythms[timing].length - 1 ? '1px solid #1c1917' : 'none' }}>
+            <span style={{ fontSize: 12, color: '#57534e', paddingTop: 1 }}>{row.time}</span>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#d4d0cc', marginBottom: 2 }}>{row.food}</div>
+              <div style={{ fontSize: 12, color: '#3d3935' }}>{row.note}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function NutritionTab({ pattern }: { pattern: string }) {
   const [section, setSection] = useState<'overview' | 'portions' | 'foundation' | 'meals'>('overview')
   const config = PATTERN_CONFIG[pattern] ?? PATTERN_CONFIG['stress-stored']
@@ -659,6 +705,47 @@ function NutritionTab({ pattern }: { pattern: string }) {
 
       {section === 'meals' && (
         <div>
+          {/* Meals per day */}
+          {(() => {
+            const mealsConfig: Record<string, { count: string; note: string }> = {
+              'stress-stored': { count: '3 meals per day', note: 'Breakfast, lunch, and dinner. Never skip. Snacking is fine if genuinely hungry - protein and fat only.' },
+              'metabolic-drift': { count: '2-3 meals per day', note: 'Three meals is the default. Some do well on two larger meals with a longer gap between. No snacking either way - the fasting window between meals is part of the protocol.' },
+              'hormonal-shift': { count: '3 meals per day', note: 'Three full meals every day without exception. Do not attempt two meals or intermittent fasting - this pattern requires consistent fuel for hormone production.' },
+              'system-overload': { count: '3 meals per day', note: 'Three meals minimum. If appetite is low, still eat - prioritise protein and fat even if the meal is small. Skipping is not an option for this pattern.' },
+            }
+            const mc = mealsConfig[pattern] ?? mealsConfig['stress-stored']
+            return (
+              <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  Meals Per Day
+                </div>
+                <div style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 8 }}>{mc.count}</div>
+                <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.7 }}>{mc.note}</p>
+              </div>
+            )
+          })()}
+
+          {/* Daily rhythm */}
+          {(() => {
+            const isMetabolic = pattern === 'metabolic-drift'
+            const isStressStored = pattern === 'stress-stored'
+            const isSystemOverload = pattern === 'system-overload'
+            const preTrainingNote = isMetabolic
+              ? 'Water + electrolytes only. Fasted is ideal for this pattern.'
+              : isStressStored || isSystemOverload
+              ? 'Small snack required - banana, honey, or yoghurt. Never fully fasted.'
+              : 'Small snack - banana or yoghurt. Keep it light.'
+            return (
+              <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+                  Daily Rhythm - Training Day
+                </div>
+                {/* Toggle */}
+                <MorningToggle preTrainingNote={preTrainingNote} />
+              </div>
+            )
+          })()}
+
           {/* Meal builder */}
           <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
