@@ -50,41 +50,65 @@ const NAV_ITEMS = [
   { id: 'checkin', label: 'Check-In' },
 ]
 
-const SESSIONS = [
+type Exercise = { name: string; sets: number; reps: string; notes: string }
+type Session = { id: string; name: string; subtitle: string; gym: Exercise[]; home: Exercise[] }
+
+const SESSIONS: Session[] = [
   {
     id: 'A',
     name: 'Session A',
     subtitle: 'Strength Base',
-    exercises: [
+    gym: [
       { name: 'Goblet Squat', sets: 4, reps: '10', notes: 'Focus on depth and control' },
       { name: 'DB Bench Press', sets: 4, reps: '10', notes: 'Stable grip, full range' },
       { name: 'Seated Row', sets: 3, reps: '12', notes: 'Squeeze shoulder blades' },
       { name: 'Reverse Lunge', sets: 3, reps: '12/leg', notes: 'Stay balanced' },
       { name: 'Plank', sets: 3, reps: '30 sec', notes: 'Brace core and breathe' },
     ],
+    home: [
+      { name: 'DB Goblet Squat', sets: 4, reps: '10', notes: 'Hold one DB at chest. Focus on depth and control.' },
+      { name: 'Push-Up', sets: 4, reps: '10-12', notes: 'Hands shoulder-width. Full chest to floor range.' },
+      { name: 'Bent Over DB Row', sets: 3, reps: '12/side', notes: 'Hinge at hips, row to hip. Squeeze shoulder blade.' },
+      { name: 'Reverse Lunge', sets: 3, reps: '12/leg', notes: 'Bodyweight or hold DBs at sides. Stay balanced.' },
+      { name: 'Plank', sets: 3, reps: '30 sec', notes: 'Brace core and breathe.' },
+    ],
   },
   {
     id: 'B',
     name: 'Session B',
     subtitle: 'Conditioning and Volume',
-    exercises: [
+    gym: [
       { name: 'Trap Bar Deadlift', sets: 3, reps: '8', notes: 'Neutral spine, drive through heels' },
       { name: 'Overhead Press', sets: 3, reps: '10', notes: 'Control tempo' },
       { name: 'Step-Ups', sets: 3, reps: '12/leg', notes: 'Explode through front leg' },
       { name: 'Lat Pulldown', sets: 3, reps: '12', notes: 'Smooth pull, full stretch' },
       { name: 'Finisher: Row or Bike', sets: 5, reps: '45s hard / 75s easy', notes: 'See pattern rules below' },
     ],
+    home: [
+      { name: 'DB Romanian Deadlift', sets: 3, reps: '10', notes: 'Hinge at hips, soft knee. Feel the hamstring load.' },
+      { name: 'DB Shoulder Press', sets: 3, reps: '10', notes: 'Standing or seated. Press straight overhead, control descent.' },
+      { name: 'Step-Ups', sets: 3, reps: '12/leg', notes: 'Use a sturdy chair or step. Drive through the front leg.' },
+      { name: 'DB Pullover', sets: 3, reps: '12', notes: 'Lie on floor, hold one DB overhead. Pull to chest slowly.' },
+      { name: 'Finisher: High Knees', sets: 5, reps: '45s hard / 75s easy', notes: 'See pattern rules below' },
+    ],
   },
   {
     id: 'C',
     name: 'Session C',
     subtitle: 'Balance and Stability',
-    exercises: [
+    gym: [
       { name: 'Front Squat', sets: 3, reps: '8', notes: 'Keep upright posture' },
       { name: 'Incline DB Bench', sets: 3, reps: '10', notes: 'Controlled descent' },
       { name: 'DB Row', sets: 3, reps: '10/side', notes: 'Elbow drives back' },
       { name: 'Walking Lunge', sets: 3, reps: '12/leg', notes: 'Step smooth, upright torso' },
       { name: 'Hanging Knee Raise', sets: 3, reps: '10-12', notes: 'Controlled lift, no swing' },
+    ],
+    home: [
+      { name: 'DB Goblet Squat', sets: 3, reps: '8', notes: 'Hold DB at chest. Elbows inside knees at the bottom.' },
+      { name: 'Decline Push-Up', sets: 3, reps: '10', notes: 'Feet elevated on a chair. Controlled descent, full range.' },
+      { name: 'DB Row', sets: 3, reps: '10/side', notes: 'Brace on a chair or knee. Elbow drives back.' },
+      { name: 'Walking Lunge', sets: 3, reps: '12/leg', notes: 'Bodyweight or DBs at sides. Step smooth, upright torso.' },
+      { name: 'Lying Knee Raise', sets: 3, reps: '10-12', notes: 'Flat on floor. Pull knees to chest with control, lower slow.' },
     ],
   },
 ]
@@ -241,10 +265,12 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
 
 function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: number }) {
   const [activeSession, setActiveSession] = useState('A')
+  const [mode, setMode] = useState<'gym' | 'home'>('gym')
   const config = PATTERN_CONFIG[pattern] ?? PATTERN_CONFIG['stress-stored']
   const trainingData = PATTERN_TRAINING[pattern] ?? PATTERN_TRAINING['stress-stored']
   const currentPhaseRow = currentWeek <= 2 ? trainingData.progression[0] : currentWeek <= 4 ? trainingData.progression[1] : currentWeek === 5 ? trainingData.progression[2] : trainingData.progression[3]
   const activeSessionData = SESSIONS.find(s => s.id === activeSession)!
+  const exercises = activeSessionData[mode]
 
   return (
     <div>
@@ -330,8 +356,22 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
 
       {/* Session tabs */}
       <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>
-          Session Templates
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            Session Templates
+          </div>
+          {/* Gym / Home toggle */}
+          <div style={{ display: 'flex', background: '#1c1917', borderRadius: 8, padding: 3, gap: 2 }}>
+            {(['gym', 'home'] as const).map(m => (
+              <button
+                key={m}
+                onClick={() => setMode(m)}
+                style={{ padding: '6px 14px', fontSize: 12, fontWeight: 600, color: mode === m ? '#0c0a09' : '#57534e', background: mode === m ? '#14b8a6' : 'transparent', border: 'none', borderRadius: 6, cursor: 'pointer', textTransform: 'capitalize' }}
+              >
+                {m === 'gym' ? 'Gym' : 'Home'}
+              </button>
+            ))}
+          </div>
         </div>
         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
           {SESSIONS.map(s => (
@@ -346,9 +386,16 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
         </div>
 
         <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, overflow: 'hidden' }}>
-          <div style={{ padding: '18px 20px', borderBottom: '1px solid #1c1917' }}>
-            <div style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>{activeSessionData.name}</div>
-            <div style={{ fontSize: 12, color: '#57534e', marginTop: 2 }}>{activeSessionData.subtitle}</div>
+          <div style={{ padding: '18px 20px', borderBottom: '1px solid #1c1917', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>{activeSessionData.name}</div>
+              <div style={{ fontSize: 12, color: '#57534e', marginTop: 2 }}>{activeSessionData.subtitle}</div>
+            </div>
+            {mode === 'home' && (
+              <div style={{ fontSize: 11, color: '#57534e', background: '#1c1917', padding: '4px 10px', borderRadius: 6, whiteSpace: 'nowrap' }}>
+                DBs + bodyweight
+              </div>
+            )}
           </div>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -361,11 +408,11 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
                 </tr>
               </thead>
               <tbody>
-                {activeSessionData.exercises.map((ex, i) => {
+                {exercises.map((ex, i) => {
                   const isFinisher = ex.name.startsWith('Finisher')
                   const finisherSkipped = isFinisher && (pattern === 'stress-stored' || pattern === 'system-overload')
                   return (
-                    <tr key={i} style={{ borderBottom: i < activeSessionData.exercises.length - 1 ? '1px solid #1c1917' : 'none', opacity: finisherSkipped ? 0.4 : 1 }}>
+                    <tr key={i} style={{ borderBottom: i < exercises.length - 1 ? '1px solid #1c1917' : 'none', opacity: finisherSkipped ? 0.4 : 1 }}>
                       <td style={{ padding: '14px 20px', fontSize: 14, color: finisherSkipped ? '#57534e' : '#d4d0cc', fontWeight: isFinisher ? 600 : 400 }}>
                         {ex.name}
                         {finisherSkipped && <span style={{ fontSize: 11, color: '#57534e', marginLeft: 8 }}>(skipped)</span>}
