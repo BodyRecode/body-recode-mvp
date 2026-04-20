@@ -826,15 +826,17 @@ const LESSONS = [
     title: 'Cortisol and the Stress Response',
     loomUrl: '', // paste Loom embed URL here e.g. https://www.loom.com/embed/abc123
     summary: [
-      'Cortisol is your primary stress hormone, released by the adrenal glands. It has a natural daily curve - high in the morning to get you moving, low at night to allow recovery.',
-      'When stress is chronic, that curve flattens. Cortisol stays elevated all day. The body interprets this as a survival threat and responds by storing fat, breaking down muscle, disrupting sleep, and suppressing other hormones.',
-      'The training intensity limits, meal timing, and sleep priority in your programme are all working to restore this curve.',
+      'Cortisol is your primary stress hormone, produced by the adrenal glands and regulated by the HPA axis - a communication chain between the hypothalamus, pituitary gland, and adrenals. It follows a natural 24-hour curve: high within 30-45 minutes of waking to mobilise energy and alertness, then gradually declining through the day to allow sleep onset at night.',
+      'In short bursts, cortisol is useful. It is anti-inflammatory, sharpens focus, and mobilises stored fuel for activity. The problem is not cortisol itself - it is cortisol that never switches off.',
+      'Chronic stress from poor sleep, overtraining, skipped meals, and sustained psychological pressure keeps the HPA axis activated around the clock. The body interprets this as a prolonged survival threat and responds by storing fat - particularly visceral fat around the abdomen - breaking down muscle for fuel, disrupting sleep architecture, suppressing digestion, and downregulating other hormones.',
+      'Cortisol is the upstream driver for most of the other hormones in this series. Elevated cortisol directly suppresses testosterone, competes with reproductive hormones for the same cholesterol precursors, blocks the conversion of thyroid T4 to active T3, and raises blood sugar independently of food intake - driving insulin resistance over time.',
+      'Signs that cortisol is normalising: energy stabilises through the day rather than spiking and crashing. Sleep onset becomes easier. The urge to eat late at night - a classic cortisol-driven pattern - reduces. Morning energy improves without needing caffeine immediately after waking.',
     ],
     patternCallouts: {
-      'stress-stored': 'Cortisol is your primary driver. The controlled training intensity, sleep focus, and eating rhythm in your programme are specifically designed to bring this curve back down.',
-      'metabolic-drift': 'Cortisol raises blood sugar even without eating. Lowering chronic stress load is a secondary lever for improving your insulin sensitivity.',
-      'hormonal-shift': 'Cortisol competes with reproductive hormones for the same building blocks. High cortisol directly suppresses oestrogen and progesterone production.',
-      'system-overload': 'Your total load is keeping cortisol elevated. Every recovery action in your programme - controlled training, rest days, sleep - is directly targeting this.',
+      'stress-stored': 'Cortisol is your primary driver. The entire structure of your programme - controlled training intensity, sleep as a non-negotiable, eating within an hour of waking, no fasted training - is designed to bring this curve back down and keep it there.',
+      'metabolic-drift': 'Cortisol raises blood sugar independently of food through a process called gluconeogenesis. As your cortisol load reduces through the programme, your insulin sensitivity improves as a direct downstream effect.',
+      'hormonal-shift': 'Cortisol and reproductive hormones compete for the same cholesterol precursor molecules. When cortisol demand is high, oestrogen and progesterone production is suppressed. Reducing cortisol load is a primary lever for restoring hormonal balance in your pattern.',
+      'system-overload': 'Your total neurological load is keeping cortisol elevated. Every recovery-first decision in your programme - controlled RIR, no finishers, extended rest periods, no extra sessions - is directly targeting cortisol reduction.',
     },
   },
   {
@@ -842,15 +844,18 @@ const LESSONS = [
     title: 'Insulin and Blood Sugar Control',
     loomUrl: '', // paste Loom embed URL here
     summary: [
-      'Insulin is released by the pancreas every time blood glucose rises. Its job is to shuttle that glucose into cells for energy or store it as fat. This system works well when it is not overloaded.',
-      'Repeated blood sugar spikes reduce how sensitive cells are to insulin. The pancreas produces more to compensate. Fat storage increases, energy becomes unstable, and hunger signals break down.',
-      'The carbohydrate timing strategy in your programme controls when glucose enters your system so insulin is working with you, not against you.',
+      'Insulin is a peptide hormone produced by the beta cells of the pancreas. It is released every time blood glucose rises - primarily after carbohydrate intake, and to a lesser extent after protein. Its primary job is to move glucose out of the bloodstream and into cells, where it is either used for immediate energy, stored as glycogen in muscle and liver, or converted to fat.',
+      'When cells are sensitive to insulin, small amounts of the hormone move glucose efficiently. Blood sugar stabilises quickly after meals, energy is consistent between meals, and fat metabolism is active during fasting and training windows.',
+      'Repeated and excessive blood glucose spikes gradually reduce cellular sensitivity to insulin - a process called insulin resistance. The pancreas compensates by producing more insulin. Over time, more insulin is circulating at any given point. High circulating insulin signals the body to store fat rather than release it. Fat metabolism effectively switches off.',
+      'Insulin resistance also dysregulates hunger signalling. Cells are not getting glucose efficiently, so hunger signals keep firing regardless of how much has been eaten. This drives cravings, particularly for sugar and refined carbohydrates, which spike glucose further and compound the cycle. Afternoon energy crashes are a hallmark of this pattern.',
+      'Chronically elevated insulin also drives oestrogen excess by stimulating aromatase activity - the enzyme that converts testosterone to oestrogen - and suppresses sex hormone binding globulin, making hormone levels harder to regulate overall.',
+      'Signs that insulin sensitivity is improving: afternoon energy crashes reduce or disappear. Hunger becomes more predictable and less urgent between meals. Cravings for sugar or processed carbohydrates after meals drop significantly. Sleep quality often improves as blood sugar stabilises overnight.',
     ],
     patternCallouts: {
-      'stress-stored': 'Cortisol raises blood sugar directly through a process called gluconeogenesis. As cortisol normalises through the programme, insulin sensitivity improves alongside it.',
-      'metabolic-drift': 'Insulin sensitivity is your primary target. Your carb timing window, post-meal walks, and fasted or semi-fasted training are all directly addressing this.',
-      'hormonal-shift': 'Insulin resistance drives oestrogen excess and progesterone suppression. Improving insulin sensitivity helps restore the hormone balance your pattern needs.',
-      'system-overload': 'Poor sleep - common in this pattern - reduces insulin sensitivity by 20-30% the following day. Sleep quality is directly tied to your metabolic function.',
+      'stress-stored': 'Cortisol raises blood sugar directly through gluconeogenesis - producing glucose from non-carbohydrate sources even without eating. As your cortisol curve normalises, this background blood sugar elevation reduces and insulin sensitivity improves alongside it.',
+      'metabolic-drift': 'Insulin sensitivity is your primary target. Your post-training carb window, post-meal walks, fasted or semi-fasted training, and elimination of between-meal snacking are all working directly on this mechanism.',
+      'hormonal-shift': 'Insulin resistance drives oestrogen excess through increased aromatase activity and suppressed sex hormone binding globulin. Improving insulin sensitivity is a direct lever for restoring the reproductive hormone balance your pattern needs.',
+      'system-overload': 'One night of poor sleep - the norm in this pattern early in the programme - reduces insulin sensitivity by 20-30% the following day. As sleep quality improves through the programme, insulin function improves in parallel.',
     },
   },
   {
@@ -858,15 +863,18 @@ const LESSONS = [
     title: 'Testosterone and Muscle Signal',
     loomUrl: '', // paste Loom embed URL here
     summary: [
-      'Testosterone drives muscle protein synthesis, fat metabolism, energy, and motivation. It is present in both men and women at different levels, and both are affected when it drops.',
-      'Chronic stress, poor sleep, over-training, and calorie restriction all suppress testosterone output. Less testosterone means a weaker signal to build and maintain muscle, which reduces your capacity to burn fat at rest.',
-      'The RIR-controlled training in your programme is calibrated to stimulate testosterone without the suppression that comes from training too hard for your current recovery capacity.',
+      'Testosterone is an androgen hormone produced primarily in the testes in men and in the ovaries and adrenal glands in women. While men have significantly higher circulating levels, testosterone is equally important for women - driving lean muscle maintenance, fat metabolism, energy, motivation, sleep quality, and mood stability.',
+      'Adequate testosterone means your body receives a consistent signal to maintain and build muscle tissue. More functional muscle at rest means a higher basal metabolic rate and greater capacity to burn fat between meals and during training. It also supports recovery speed, immune function, and the motivation to train consistently.',
+      'Chronic elevated cortisol, over-training, calorie restriction, poor sleep, and excess body fat all suppress testosterone. Excess body fat is particularly important - adipose tissue contains the aromatase enzyme, which converts testosterone to oestrogen. The higher the body fat, the more testosterone is being converted rather than utilised.',
+      'This creates a restriction trap that many people fall into. When progress stalls, the instinct is to cut calories further and train more. Both actions suppress testosterone further, slow metabolic rate, and reduce recovery capacity. The result is more effort producing less result - which then leads to further restriction.',
+      'Testosterone and cortisol have a direct inverse relationship. As one rises, the other tends to fall. Insulin resistance also reduces testosterone by suppressing production and increasing aromatase activity. Thyroid health influences how testosterone is metabolised at the cellular level.',
+      'Signs that testosterone is recovering: recovery between training sessions noticeably improves - less soreness, faster readiness to train again. Motivation and drive return without forcing it. Muscle definition begins to improve even at similar body weight. Sleep becomes deeper and waking feels more restorative.',
     ],
     patternCallouts: {
-      'stress-stored': 'Cortisol and testosterone have an inverse relationship. As your cortisol curve normalises through the programme, testosterone signal will recover alongside it.',
-      'metabolic-drift': 'Improving insulin sensitivity directly increases testosterone availability. The training intensity in your programme is specifically calibrated to support this.',
-      'hormonal-shift': 'For women, testosterone balance relative to oestrogen and progesterone is the key variable. Over-training and restriction suppress it further - which is why your programme protects both.',
-      'system-overload': 'Chronic overload is one of the fastest ways to suppress testosterone. Recovery and adequate nutrition are the primary tools for restoring it in your pattern.',
+      'stress-stored': 'Cortisol and testosterone have a direct inverse relationship - when one is elevated chronically, the other is suppressed. As your cortisol curve normalises through the programme, testosterone signal recovers as a direct downstream effect.',
+      'metabolic-drift': 'Improving insulin sensitivity reduces aromatase activity and increases testosterone availability. The training protocol in your programme is specifically calibrated to stimulate testosterone without the cortisol spike that comes from training too intensely for your current recovery state.',
+      'hormonal-shift': 'For women, the balance of testosterone relative to oestrogen and progesterone is the critical variable. Over-training and restriction both suppress testosterone and worsen the imbalance. Your programme protects against both.',
+      'system-overload': 'Chronic neurological overload is one of the most reliable ways to suppress testosterone. The recovery-first structure of your programme - adequate food, controlled intensity, full rest days - creates the conditions for testosterone to restore.',
     },
   },
   {
@@ -874,15 +882,18 @@ const LESSONS = [
     title: 'Thyroid and Metabolic Rate',
     loomUrl: '', // paste Loom embed URL here
     summary: [
-      'Thyroid hormones - primarily T3 and T4 - regulate how fast your body burns energy at rest. Your metabolic rate is largely determined by how well your thyroid is functioning.',
-      'Chronic calorie restriction, high stress, and inflammation all suppress thyroid output. The body responds to perceived scarcity by slowing metabolism. This is why cutting calories harder rarely works long-term.',
-      'The nutrition structure in your programme - adequate food volume, no restriction - protects thyroid function while the training drives adaptation.',
+      'The thyroid is a small gland at the base of the throat that produces two primary hormones: T4 (thyroxine) and T3 (triiodothyronine). T4 is the inactive storage form. T3 is the active form that drives metabolism. Most T4 is converted to T3 in the liver and peripheral tissues - and this conversion step is highly sensitive to lifestyle factors.',
+      'Thyroid hormones set your metabolic rate - how much energy your body burns at rest. They regulate body temperature, heart rate, digestion speed, and the rate at which every cell processes fuel. When thyroid function is optimal, the body burns energy efficiently and body composition responds to training and nutrition inputs.',
+      'Chronic calorie restriction is one of the fastest and most reliable ways to suppress thyroid output. The body reads reduced energy intake as a scarcity signal and responds by slowing metabolism to match. Elevated cortisol directly impairs T4 to T3 conversion, reducing the amount of active thyroid hormone available even when T4 production is normal. Systemic inflammation - driven by poor food quality, gut dysfunction, or chronic stress - further suppresses thyroid activity at the cellular level.',
+      'This is the mechanism behind why cutting more calories often produces less result over time. As thyroid output drops, metabolic rate falls to meet the new intake level. The body becomes progressively more efficient at using less energy. Eating less eventually means maintaining the same weight on fewer calories - a ceiling that gets harder to break through with further restriction.',
+      'Oestrogen excess - common in hormonal-shift pattern - can directly block thyroid receptors, preventing thyroid hormone from being used at the cell even when levels appear adequate on a blood test. Insulin resistance at the cellular level also reduces thyroid hormone sensitivity.',
+      'Signs that thyroid function is improving: body temperature stabilises - persistent cold hands and feet reduce. Energy at rest improves without relying on caffeine to function. Digestion speeds up slightly. Hair loss or shedding - a common symptom of subclinical thyroid suppression - often reduces. Body composition begins to shift even without changes to calorie intake.',
     ],
     patternCallouts: {
-      'stress-stored': 'Cortisol suppresses the conversion of T4 to the active T3 form. Lowering your stress load through the programme supports thyroid function directly.',
-      'metabolic-drift': 'Thyroid function improves as insulin sensitivity is restored and systemic inflammation drops. Both are targets of your programme.',
-      'hormonal-shift': 'Oestrogen excess can block thyroid hormone at the receptor level. Restoring hormone balance through the programme directly supports your metabolic rate.',
-      'system-overload': 'This pattern is often associated with subclinical thyroid suppression from chronic load. Adequate food volume and recovery are the two primary levers here.',
+      'stress-stored': 'Cortisol impairs the conversion of inactive T4 to active T3. Reducing your cortisol load through the programme directly supports thyroid function - you do not need to target the thyroid separately.',
+      'metabolic-drift': 'Thyroid function improves as insulin sensitivity is restored and systemic inflammation reduces. Both are direct targets of your programme structure. Metabolic rate recovery is a downstream effect of the primary work.',
+      'hormonal-shift': 'Oestrogen excess can block thyroid receptors directly, reducing thyroid hormone effectiveness even when blood levels appear normal. Restoring hormonal balance through your programme removes this block and supports metabolic rate recovery.',
+      'system-overload': 'Subclinical thyroid suppression is common in this pattern due to the combination of chronic stress load and often-inadequate food intake. The non-negotiable food volume in your programme protects thyroid output while recovery reduces the suppressive cortisol load.',
     },
   },
   {
@@ -890,15 +901,18 @@ const LESSONS = [
     title: 'Sleep Hormones and Recovery',
     loomUrl: '', // paste Loom embed URL here
     summary: [
-      'Sleep is governed by melatonin at onset and growth hormone during deep sleep. Recovery, muscle repair, fat metabolism, and the reset of every hormone in this series all happen during this window.',
-      'One poor night of sleep raises cortisol, impairs insulin sensitivity, suppresses testosterone, and reduces growth hormone output the following day. It compounds quickly.',
-      'By Week 5 of the programme, biological rhythm should be more stable. The habits built in the Regulate and Adapt phases are protecting this window.',
+      'Sleep is the primary biological recovery window. It is governed by two overlapping systems: melatonin - produced by the pineal gland in response to darkness and driving sleep onset - and circadian rhythm, a 24-hour internal clock regulated by light exposure, meal timing, temperature, and physical activity. Growth hormone, the primary anabolic and tissue repair hormone, is released in pulses during slow-wave deep sleep.',
+      'During deep sleep, muscle tissue is repaired and rebuilt. Cortisol resets to its morning baseline. Insulin sensitivity is restored for the following day. Testosterone and reproductive hormones undergo their daily reset cycle. The brain consolidates learning, processes emotional content, and clears metabolic waste products. Every biological system in this series uses sleep as its primary maintenance window.',
+      'Artificial light exposure at night, irregular sleep and wake times, high evening cortisol, late meals, and alcohol all suppress melatonin production and fragment sleep architecture. When deep sleep is disrupted, growth hormone output drops, cortisol does not fully reset, and the following day begins from a compounding deficit.',
+      'One night of poor sleep raises cortisol by up to 50%, reduces insulin sensitivity by 20-30%, suppresses testosterone output, impairs appetite hormone regulation through ghrelin and leptin dysregulation - making you hungrier and less satisfied by food - and reduces motivation, focus, and training capacity. Poor sleep is not a passive background factor. It actively undermines every other effort being made.',
+      'Sleep is also the compounding variable that ties the previous four lessons together. Cortisol does not reset without it. Insulin sensitivity is impaired without it. Testosterone is suppressed without it. Thyroid conversion is reduced without it. Improving sleep quality is often the single highest-leverage change available, particularly in patterns where everything seems to be stalling.',
+      'Signs that the sleep system is recovering: falling asleep within 20 minutes of lying down without the mind racing. Waking without an alarm and feeling genuinely rested rather than groggy. Energy is stable from mid-morning without a crash at 2-3pm. Mood and motivation stabilise day to day. Physical recovery between training sessions noticeably improves. Morning cortisol awakening response feels energising rather than anxious.',
     ],
     patternCallouts: {
-      'stress-stored': 'Sleep is treated as a training variable in your programme because it is. Poor sleep is the single fastest way to spike cortisol and undo the work of the week.',
-      'metabolic-drift': 'One night of disrupted sleep reduces insulin sensitivity by 20-30% the next day. Sleep quality is non-negotiable for your pattern\'s primary target.',
-      'hormonal-shift': 'Deep sleep is when growth hormone peaks and reproductive hormones reset. Protecting sleep is protecting the hormones your programme is trying to balance.',
-      'system-overload': 'Sleep is the primary recovery stimulus for your nervous system. It outranks training in your programme. Protecting this window is the highest-leverage action available to you.',
+      'stress-stored': 'Sleep is treated as a training variable in your programme because it is one. Poor sleep is the single fastest way to spike cortisol and undo an entire week of work. If sleep quality is poor, your programme adjusts - reduce session intensity before anything else.',
+      'metabolic-drift': 'One night of poor sleep reduces insulin sensitivity by 20-30% the following day. Given that insulin sensitivity is your primary target, sleep quality is not optional. It is part of the protocol.',
+      'hormonal-shift': 'Deep sleep is when growth hormone peaks and reproductive hormones complete their daily reset cycle. Disrupted sleep directly disrupts the hormonal balance your programme is working to restore. Protecting sleep is protecting the result.',
+      'system-overload': 'Sleep is the primary recovery stimulus for your nervous system - it outranks training in your programme. The highest-leverage action available to your pattern is consistent, high-quality sleep. Everything else is built around protecting it.',
     },
   },
 ]
