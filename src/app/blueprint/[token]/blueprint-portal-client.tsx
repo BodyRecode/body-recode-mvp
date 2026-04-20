@@ -1556,20 +1556,21 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
               <div style={{ background: '#111110', border: '1px solid #14b8a6', borderRadius: 12, padding: '24px', marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #14b8a6, #8b5cf6)' }} />
                 <div style={{ fontSize: 11, fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
-                  Stage 3 - What Comes Next
+                  What comes next
                 </div>
                 <div style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 12 }}>
-                  You built the foundation. Now build the result.
+                  You built the foundation. Now keep going.
                 </div>
                 <p style={{ fontSize: 14, color: '#a8a29e', margin: '0 0 20px', lineHeight: 1.8 }}>
-                  Six weeks of regulated rhythm, progressive training, and hormonal correction has created a system that can now respond properly. Stage 3 is the Body Recode membership - ongoing progressive coaching built on what you have established here.
+                  Six weeks established the rhythm. The Body Recode Membership is where that work compounds. Same portal, same pattern - new blocks every six weeks with a coach watching your numbers.
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
                   {[
-                    'Progressive training built on your current capacity and pattern',
-                    'Pattern-specific nutrition evolved for performance, not just regulation',
-                    'Fortnightly check-ins with direct coaching feedback',
-                    'Ongoing accountability with a coach who knows your biology',
+                    'Progressive 6-week training blocks built on your Blueprint foundation',
+                    'Nutrition precision layer updated each block - carb cycling, cycle-aware strategies',
+                    'Monthly coach Loom based on your check-in data',
+                    'Monthly group Q&A call - live with Kade',
+                    '$49 per week - cancel anytime',
                   ].map((item, i) => (
                     <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                       <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#14b8a6', marginTop: 6, flexShrink: 0 }} />
@@ -1579,13 +1580,13 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
                 </div>
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                   <a
-                    href="mailto:kade@bodyrecode.au?subject=Stage 3 - I want to continue"
+                    href="/membership"
                     style={{ display: 'inline-block', padding: '13px 24px', background: '#14b8a6', color: '#0c0a09', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none' }}
                   >
-                    Start Stage 3
+                    Join the Membership - $49/week
                   </a>
                   <a
-                    href="mailto:kade@bodyrecode.au?subject=Blueprint complete - what next?"
+                    href="mailto:kade@bodyrecode.au?subject=Blueprint complete - question about membership"
                     style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#14b8a6', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #14b8a6' }}
                   >
                     Ask a question first

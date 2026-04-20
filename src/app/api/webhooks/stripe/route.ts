@@ -467,6 +467,82 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   }
 
+  // Handle Membership purchase
+  if (session.metadata?.type === 'membership_purchase') {
+    const { first_name, email, pattern_from_blueprint, blueprint_token } = session.metadata
+    const admin = createAdminClient()
+    const stripeSubscriptionId = session.subscription as string ?? null
+
+    const { data: membership } = await admin
+      .from('membership_enrollments')
+      .insert({
+        email: email.toLowerCase(),
+        first_name,
+        pattern: pattern_from_blueprint || 'pending',
+        pattern_source: pattern_from_blueprint ? 'blueprint' : 'assessment',
+        blueprint_token: blueprint_token || null,
+        stripe_subscription_id: stripeSubscriptionId,
+        current_block: 'A',
+        current_week: 1,
+      })
+      .select('token')
+      .single()
+
+    if (membership && process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      const portalUrl = blueprint_token
+        ? `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/${blueprint_token}`
+        : `${process.env.NEXT_PUBLIC_APP_URL}/membership/${membership.token}`
+
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `Welcome to the Body Recode Membership`,
+        html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr>
+          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+            <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${first_name},</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#888888;">You are in. Your Body Recode Membership is active and <strong style="color:#fff;">Block A is loaded into your portal</strong>.</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#888888;">Block A - Consolidate picks up directly from where the Blueprint ended. Your pattern rules carry forward. The training and nutrition have been built on top of the foundation you have already established.</p>
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+              <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my portal</a></td></tr>
+            </table>
+            <p style="margin:0 0 18px;font-size:13px;color:#555;">Your first monthly coach Loom will be sent at the end of Week 4. Monthly group Q&A call details to follow.</p>
+            ${darkEmailSignature()}
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`,
+      })
+
+      await resend.emails.send({
+        from: 'Body Recode <kade@bodyrecode.au>',
+        to: 'kade@bodyrecode.au',
+        subject: `Membership purchased - ${first_name}`,
+        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${first_name} joined the membership</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Email: ${email}</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Pattern: ${pattern_from_blueprint || 'Pending assessment'}</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Blueprint token: ${blueprint_token || 'None - direct join'}</p>
+</div>`,
+      })
+    }
+
+    return NextResponse.json({ received: true })
+  }
+
   if (session.metadata?.type !== 'commencement_fee') {
     return NextResponse.json({ received: true })
   }
