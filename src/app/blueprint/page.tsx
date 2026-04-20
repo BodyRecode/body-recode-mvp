@@ -220,7 +220,7 @@ export default function BlueprintPage() {
           }}>
             <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#14b8a6' }} />
             <span style={{ fontSize: '12px', fontWeight: 700, color: '#0f766e', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              Stage 2 - 6-Week Body Rewire Blueprint
+              6-Week Body Rewire Blueprint
             </span>
           </div>
 

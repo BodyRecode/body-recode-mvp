@@ -22,7 +22,9 @@ export async function POST(request: NextRequest) {
 
   const patternFromChallenge = challengeEnrollment?.quiz_result ?? null
 
-  const session = await stripe.checkout.sessions.create({
+  let session
+  try {
+    session = await stripe.checkout.sessions.create({
     mode: 'payment',
     payment_method_types: ['card'],
     customer_email: email.toLowerCase().trim(),
@@ -45,9 +47,13 @@ export async function POST(request: NextRequest) {
       email: email.toLowerCase().trim(),
       pattern_from_challenge: patternFromChallenge ?? '',
     },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/pending?email=${encodeURIComponent(email.toLowerCase().trim())}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/blueprint`,
-  })
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/pending?email=${encodeURIComponent(email.toLowerCase().trim())}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/blueprint`,
+    })
+  } catch (err) {
+    console.error('Stripe checkout error:', err)
+    return NextResponse.json({ error: 'Failed to create checkout session.' }, { status: 500 })
+  }
 
   return NextResponse.json({ url: session.url })
 }
