@@ -177,5 +177,5 @@ export async function POST() {
     return NextResponse.json({ error: stepsError.message }, { status: 500 })
   }
 
-  return NextResponse.json({ ok: true, workflowId, action: existing ? 'updated' : 'created' })
+  return NextResponse.json({ ok: true, workflowId, action: allMatching && allMatching.length > 0 ? 'updated' : 'created' })
 }
