@@ -4,14 +4,15 @@ import { useState } from 'react'
 import { Zap, ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { createClient } from '@/lib/supabase/client'
 
 const SYSTEM_AUTOMATIONS = [
   {
     id: 'scorecard-followup',
     name: 'Scorecard Follow-up Sequence',
-    description: '5-email sequence triggered when someone completes the Body State Scorecard',
+    description: '9-step sequence triggered when someone completes the Body State Scorecard',
     trigger: 'Scorecard completed',
-    steps: 5,
+    steps: 9,
     canReseed: true,
   },
   {
@@ -79,11 +80,19 @@ export default function SystemAutomationsPanel() {
 
   async function reseedScorecard() {
     setReseeding(true)
-    const res = await fetch('/api/scorecard/seed-automation', { method: 'POST' })
-    if (res.ok) {
-      setReseeded(true)
-      router.refresh()
-    }
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      const res = await fetch('/api/admin/resync-scorecard-workflow', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coachId: user?.id }),
+      })
+      if (res.ok) {
+        setReseeded(true)
+        router.refresh()
+      }
+    } catch {}
     setReseeding(false)
   }
 
