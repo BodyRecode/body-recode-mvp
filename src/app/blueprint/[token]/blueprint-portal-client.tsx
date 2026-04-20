@@ -753,19 +753,19 @@ function NutritionTab({ pattern }: { pattern: string }) {
             </div>
             <p style={{ fontSize: 13, color: '#78716c', margin: '0 0 16px', lineHeight: 1.7 }}>Every meal follows the same structure. Build each meal in this order.</p>
             {[
-              { step: '1', label: 'Protein', detail: 'Always first. Beef, chicken, eggs, pork, lamb, seafood, yoghurt.', required: true },
-              { step: '2', label: 'Fat', detail: 'Every meal. Butter, ghee, avocado, cheese, egg yolks, coconut oil.', required: true },
-              { step: '3', label: 'Fruit', detail: 'Daily carbohydrate base. Any fruit you enjoy. Eat freely.', required: true },
-              { step: '4', label: 'Starchy Carbs', detail: 'Post-training window only. Rice, potato, sweet potato, honey.', required: false },
+              { step: '1', label: 'Protein', detail: 'Always first. Beef, chicken, eggs, pork, lamb, seafood, yoghurt.' },
+              { step: '2', label: 'Fat', detail: 'Every meal. Butter, ghee, avocado, cheese, egg yolks, coconut oil.' },
+              { step: '3', label: 'Fruit', detail: 'Daily carbohydrate base. Any fruit you enjoy. Eat freely.' },
+              { step: '4', label: 'Starchy Carbs', detail: 'Post-training window only. Rice, potato, sweet potato, honey.' },
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: 16, paddingBottom: i < 3 ? 16 : 0, marginBottom: i < 3 ? 16 : 0, borderBottom: i < 3 ? '1px solid #1c1917' : 'none' }}>
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: item.required ? '#14b8a6' : '#1c1917', border: `2px solid ${item.required ? '#14b8a6' : '#292524'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: item.required ? '#0c0a09' : '#57534e' }}>{item.step}</span>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#14b8a6', border: '2px solid #14b8a6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#0c0a09' }}>{item.step}</span>
                 </div>
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 600, color: '#fff', marginBottom: 3 }}>
                     {item.label}
-                    {!item.required && <span style={{ fontSize: 11, color: '#57534e', marginLeft: 8, fontWeight: 400 }}>post-training only</span>}
+                    {i === 3 && <span style={{ fontSize: 11, color: '#57534e', marginLeft: 8, fontWeight: 400 }}>post-training only</span>}
                   </div>
                   <div style={{ fontSize: 13, color: '#78716c', lineHeight: 1.6 }}>{item.detail}</div>
                 </div>
