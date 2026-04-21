@@ -18,12 +18,28 @@ const STATES = [
     border: 'rgba(239,68,68,0.25)',
     tagBg: 'rgba(239,68,68,0.12)',
     summary: 'Body in protection mode. Cortisol elevated. Metabolism suppressed. Pushing harder makes this worse.',
-    consult: [
-      'Their score tells you their body is in a state where it is actively resisting change. Not a willpower problem — a biology problem.',
-      'When cortisol is chronically elevated, the body holds onto fat as a survival mechanism. More training and less food makes this state worse, not better.',
-      'Today\'s session is going to feel lighter than what they\'re used to. That is the point — show them what appropriate stimulus looks like for where they\'re at.',
-      'Cover: sleep quality, stress load, training history, what they have tried that is not working.',
-    ],
+    consult: {
+      opening: '"Good to meet you [name]. Amie put us in touch — before we get into anything I just want to sit down for a few minutes and get a clear picture of where you\'re at."',
+      goals: [
+        '"What are you actually trying to achieve? What does success look like for you over the next few months?"',
+        '[Listen, acknowledge. Then:] "And what have you been doing so far to try to get there? What has and hasn\'t been working?"',
+      ],
+      results: [
+        '"So your scorecard came back at [score]/15 — that puts you in what I call a Depleted state."',
+        '"What that means is your body is currently in protection mode. It is under more physiological stress than it can recover from. Cortisol is likely elevated, metabolism is suppressed, and your biology is actively resisting fat loss and performance gains right now."',
+        '"The reason most people in this state do not see results is because they do what seems logical — train harder, eat less. But those are the wrong inputs for this state. Your body reads that as more stress and doubles down on holding onto fat."',
+      ],
+      whyWeTrainLikeThis: [
+        '"So today\'s session is going to look different to what you might expect. The intensity is low and the load is light. That is deliberate."',
+        '"I am not taking it easy on you — I am giving your body the right stimulus for its current state. High intensity right now would push cortisol higher and make things worse, not better."',
+      ],
+      afterToday: [
+        '"When you leave today, the most important thing you can do is protect your recovery."',
+        '"Sleep — 7 to 8 hours minimum, consistent wake times. That is non-negotiable for this state."',
+        '"If you are currently training 5 or more days a week, pull it back. More training is not the answer right now."',
+        '"Eat enough. Undereating is one of the fastest ways to deepen this state. We need to bring your body out of protection mode before we can push it."',
+      ],
+    },
     warmup: [
       '90/90 belly breathing on floor — 60 sec',
       'TRX assisted deep squat hold — 45 sec',
@@ -74,12 +90,27 @@ const STATES = [
     border: 'rgba(245,158,11,0.25)',
     tagBg: 'rgba(245,158,11,0.12)',
     summary: 'Mixed signals. Capacity exists but something is limiting the response — sleep, stress, or a load mismatch.',
-    consult: [
-      'Their score tells you the body has capacity but is not converting it consistently. Something is creating friction — usually sleep, stress load, or a mismatch between training intensity and recovery.',
-      'They are close. But adding more input before identifying the bottleneck just creates more noise.',
-      'Today\'s session puts them under a moderate load to watch how their body responds. You are looking for where output drops — that is their bottleneck.',
-      'Cover: sleep consistency, stress sources, training frequency, nutrition timing.',
-    ],
+    consult: {
+      opening: '"Good to meet you [name]. Amie put us in touch — before we get into anything I just want to sit down for a few minutes and get a clear picture of where you\'re at."',
+      goals: [
+        '"What are you actually trying to achieve? What does success look like for you over the next few months?"',
+        '[Listen, acknowledge. Then:] "And what have you been doing so far? What has and hasn\'t been working?"',
+      ],
+      results: [
+        '"Your scorecard came back at [score]/15 — that puts you in what I call a Transitioning state."',
+        '"What that tells me is your body has capacity but something is creating friction. You are getting inconsistent results because one specific thing is limiting your response right now — usually sleep consistency, stress load, or a mismatch between how hard you are training and how well you are recovering."',
+        '"You are close. But adding more input before we identify that bottleneck just creates more noise."',
+      ],
+      whyWeTrainLikeThis: [
+        '"Today I want to put you under a moderate load and watch how your body responds. I am looking for where your output drops — that drop point is your bottleneck."',
+        '"Once we identify it, we know exactly what to fix first. Everything else follows from that."',
+      ],
+      afterToday: [
+        '"When you leave today, I want you to think about what broke down during the session — that is the area to focus on."',
+        '"Most people in your state have one specific thing holding everything else back. It is usually sleep consistency or training load. Fix that one thing and you will start seeing results move."',
+        '"Do not add more training right now. The answer is not more — it is better matched."',
+      ],
+    },
     warmup: [
       'Rower or BikeErg easy — 90 sec',
       'World\'s greatest stretch — 3 reps per side',
@@ -142,12 +173,27 @@ const STATES = [
     border: 'rgba(20,184,166,0.25)',
     tagBg: 'rgba(20,184,166,0.12)',
     summary: 'Biology is primed. If fat loss or performance is not happening, the issue is in the prescription.',
-    consult: [
-      'Their score tells you their body is ready to respond. If fat loss or performance is not happening at this score, it is a prescription problem — training or nutrition is not matched to what their biology can do right now.',
-      'They have the foundation. Today you are finding out how well their current approach is matched to their output capacity.',
-      'You are going to push them today. Watch their output — you are measuring quality under fatigue.',
-      'Cover: current training structure, progressive overload, nutrition strategy, results relative to effort.',
-    ],
+    consult: {
+      opening: '"Good to meet you [name]. Amie put us in touch — before we get into anything I just want to sit down for a few minutes and get a clear picture of where you\'re at."',
+      goals: [
+        '"What are you actually trying to achieve? What does success look like for you over the next few months?"',
+        '[Listen, acknowledge. Then:] "And what have you been doing so far? What has and hasn\'t been working?"',
+      ],
+      results: [
+        '"Your scorecard came back at [score]/15 — that puts you in what I call a Ready state."',
+        '"What that tells me is your body is biologically primed to respond. Your recovery is solid, your stress load is manageable, and your biology is in a position to adapt."',
+        '"If fat loss or performance is not happening at this score, it is a prescription problem — the training or nutrition you are using is not matched to what your body can actually do right now. That is fixable."',
+      ],
+      whyWeTrainLikeThis: [
+        '"Today I am going to push you. We are looking at output quality under fatigue — that tells me how well your current approach is working and where the prescription needs to change."',
+        '"Watch your output across the rounds. Where it drops, that is the data."',
+      ],
+      afterToday: [
+        '"When you leave today, what you need to look at is your program structure — progressive overload, training intensity, and nutrition timing."',
+        '"Your body is ready. It just needs the right prescription. That is exactly what we can work on together."',
+        '"The report will give you a written breakdown of what Ready state means for your training and nutrition specifically — it is a good starting point."',
+      ],
+    },
     warmup: [
       'Rower — 2 min building to 75%',
       'KB halo — 5 reps each direction',
@@ -252,15 +298,54 @@ export default function GymSessionsPage() {
         <div className="px-5 py-3 border-b border-stone-800">
           <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Consult — 10 min</p>
         </div>
-        <div className="px-5 py-4 space-y-4">
-          {state.consult.map((point, i) => (
-            <div key={i} className="flex gap-3">
-              <span className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-0.5" style={{ background: state.tagBg, color: state.color }}>
-                {i + 1}
-              </span>
-              <p className="text-stone-300 text-sm leading-relaxed">{point}</p>
+        <div className="divide-y divide-stone-800/60">
+
+          {/* Opening */}
+          <div className="px-5 py-4">
+            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Opening</p>
+            <p className="text-sm text-stone-300 leading-relaxed italic">{state.consult.opening}</p>
+          </div>
+
+          {/* Goals */}
+          <div className="px-5 py-4">
+            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Their Goals</p>
+            <div className="space-y-2">
+              {state.consult.goals.map((line, i) => (
+                <p key={i} className="text-sm text-stone-300 leading-relaxed italic">{line}</p>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Results */}
+          <div className="px-5 py-4">
+            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Explain Their Results</p>
+            <div className="space-y-2">
+              {state.consult.results.map((line, i) => (
+                <p key={i} className="text-sm text-stone-300 leading-relaxed italic">{line}</p>
+              ))}
+            </div>
+          </div>
+
+          {/* Why */}
+          <div className="px-5 py-4">
+            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Why We Train Like This</p>
+            <div className="space-y-2">
+              {state.consult.whyWeTrainLikeThis.map((line, i) => (
+                <p key={i} className="text-sm text-stone-300 leading-relaxed italic">{line}</p>
+              ))}
+            </div>
+          </div>
+
+          {/* After today */}
+          <div className="px-5 py-4">
+            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">What To Do After Today</p>
+            <div className="space-y-2">
+              {state.consult.afterToday.map((line, i) => (
+                <p key={i} className="text-sm text-stone-300 leading-relaxed italic">{line}</p>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
 
