@@ -417,12 +417,36 @@ export default function GymSessionsPage() {
       </div>
 
       {/* Handoff */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-4">
         <div className="px-5 py-3 border-b border-stone-800">
           <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Handoff script</p>
         </div>
         <div className="px-5 py-4">
           <p className="text-sm text-stone-300 leading-relaxed italic">"{state.handoff}"</p>
+        </div>
+      </div>
+
+      {/* Next steps */}
+      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+        <div className="px-5 py-3 border-b border-stone-800">
+          <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Next Steps</p>
+        </div>
+        <div className="divide-y divide-stone-800/60">
+          <div className="px-5 py-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">Yes</span>
+              <p className="text-xs font-semibold text-stone-400">They want to know more</p>
+            </div>
+            <p className="text-sm text-stone-300 leading-relaxed">Book a Zoom on the spot or take their number and follow up same day. Do not leave it open-ended.</p>
+          </div>
+          <div className="px-5 py-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-stone-700/50 text-stone-400 border border-stone-700">Not right now</span>
+              <p className="text-xs font-semibold text-stone-400">Pivot to the report</p>
+            </div>
+            <p className="text-sm text-stone-300 leading-relaxed italic mb-2">"No problem — the scorecard report is a good next step. It covers everything we touched on today in detail. I will send you the link."</p>
+            <p className="text-xs text-stone-500">The follow-up sequence has already sent the link to their inbox. You do not need to do anything.</p>
+          </div>
         </div>
       </div>
     </div>
