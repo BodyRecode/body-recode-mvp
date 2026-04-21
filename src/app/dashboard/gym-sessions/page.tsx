@@ -437,7 +437,15 @@ export default function GymSessionsPage() {
               <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">Yes</span>
               <p className="text-xs font-semibold text-stone-400">They want to know more</p>
             </div>
-            <p className="text-sm text-stone-300 leading-relaxed">Book a Zoom on the spot or take their number and follow up same day. Do not leave it open-ended.</p>
+            <p className="text-sm text-stone-300 leading-relaxed mb-3">Book a Zoom on the spot or take their number and follow up same day. Do not leave it open-ended.</p>
+            <a
+              href="https://bodyrecode.au/book"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-sm font-bold px-4 py-2.5 rounded-lg transition-colors"
+            >
+              Book a call
+            </a>
           </div>
           <div className="px-5 py-4">
             <div className="flex items-center gap-2 mb-2">
