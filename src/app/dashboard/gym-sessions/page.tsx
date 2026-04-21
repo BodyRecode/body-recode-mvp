@@ -47,7 +47,7 @@ const STATES = [
       'Shoulder circles + arm swings — 45 sec',
     ],
     close: ['Child\'s pose — 60 sec', 'Box breathing 4-4-4-4 — 4 rounds'],
-    handoff: 'Today\'s session was built for your state. That is the difference between a program that works and one that makes things worse. Your report goes deeper on exactly what is keeping you in this state.',
+    handoff: 'What we did today is the starting point. The session was built around your state — that is exactly how a program works too. Everything is matched to where your body is at and adjusted as it changes. If you want to keep that going, that is what the coaching is. Want to set up a proper conversation about it?',
     programs: {
       machines: {
         structure: '3 rounds — light load, 3 sec down on every rep, no rush between sets',
@@ -117,7 +117,7 @@ const STATES = [
       'TRX face pull — 10 reps',
     ],
     close: ['Hip flexor stretch — 45 sec per side'],
-    handoff: 'You can see where your output dropped — that is your bottleneck. Your report maps out what is causing that specifically and what to address first.',
+    handoff: 'What we did today is the starting point. You saw where your output dropped — that is your bottleneck. A program built around your state addresses that specifically and adjusts as it changes. If you want to keep that going, that is what the coaching is. Want to set up a proper conversation about it?',
     programs: {
       machines: {
         structure: 'Strength primer — 2 rounds (not for time), then AMRAP 10 min',
@@ -200,7 +200,7 @@ const STATES = [
       'Box jump or jump squat — 5 reps (activation)',
     ],
     close: ['Walk + breathe down — 2 min'],
-    handoff: 'Your body responded well. That tells me the problem is not your biology — it is your program. Your report breaks down exactly what needs to change in your prescription.',
+    handoff: 'What we did today is the starting point. Your body responded well — that tells me the problem is not your biology, it is your prescription. A program built around your state fixes that specifically and adjusts as you progress. If you want to keep that going, that is what the coaching is. Want to set up a proper conversation about it?',
     programs: {
       machines: {
         structure: '4 rounds — 35 sec rest between rounds, performance output focus',
