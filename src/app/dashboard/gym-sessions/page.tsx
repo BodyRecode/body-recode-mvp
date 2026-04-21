@@ -452,8 +452,8 @@ export default function GymSessionsPage() {
               <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-stone-700/50 text-stone-400 border border-stone-700">Not right now</span>
               <p className="text-xs font-semibold text-stone-400">Pivot to the report</p>
             </div>
-            <p className="text-sm text-stone-300 leading-relaxed italic mb-2">"No problem — the scorecard report is a good next step. It covers everything we touched on today in detail. I will send you the link."</p>
-            <p className="text-xs text-stone-500">The follow-up sequence has already sent the link to their inbox. You do not need to do anything.</p>
+            <p className="text-sm text-stone-300 leading-relaxed italic mb-2">"No problem — the scorecard report is a good next step. It covers everything we touched on today in detail. Keep an eye on your inbox."</p>
+            <p className="text-xs text-stone-500">The follow-up sequence has already sent the link. Day 2 email is a dedicated report offer — you do not need to do anything.</p>
           </div>
         </div>
       </div>
