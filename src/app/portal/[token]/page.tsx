@@ -114,7 +114,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
       description: 'Submit your baseline measurements and progress photos.',
       done: baselineDone,
       href: client.baseline_token ? `/baseline/${client.baseline_token}` : null,
-      available: healthDone,
+      available: intakeDone,
     },
   ]
 
