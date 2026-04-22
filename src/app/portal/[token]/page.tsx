@@ -16,7 +16,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const { data: client } = await admin
     .from('clients')
-    .select('*, baselines(id), intake_invitations(status), weekly_checkins(week_number, form_type, submitted_at), session_type')
+    .select('*, baselines(id), intake_invitations(status, token), weekly_checkins(week_number, form_type, submitted_at), session_type')
     .eq('onboarding_token', token)
     .ilike('email', user.email!)
     .single()
@@ -66,6 +66,10 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const agreementDone = !!client.agreement_accepted_at
   const healthDone = !!client.health_declaration_submitted_at
   const intakeDone = Array.isArray(client.intake_invitations) && client.intake_invitations.some((i: { status: string }) => i.status === 'complete')
+  const pendingInvitation = Array.isArray(client.intake_invitations)
+    ? client.intake_invitations.find((i: { status: string; token: string }) => i.status !== 'complete')
+    : null
+  const intakeToken = pendingInvitation?.token ?? null
   const baselineDone = Array.isArray(client.baselines) && client.baselines.length > 0
   const clearanceRequired = !!client.medical_clearance_required
   const clearanceReceived = !!client.medical_clearance_received_at
@@ -104,7 +108,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
       title: 'Foundational Intake',
       description: 'Complete your full intake. This informs your entire coaching structure.',
       done: intakeDone,
-      href: client.intake_token ? `/intake/${client.intake_token}` : null,
+      href: intakeToken ? `/intake/${intakeToken}` : null,
       available: healthDone && !clearanceBlocking,
       notice: clearanceBlocking ? 'Unlocks once medical clearance is received.' : null,
     },
