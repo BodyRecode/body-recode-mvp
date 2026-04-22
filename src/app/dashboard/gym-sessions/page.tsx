@@ -8,6 +8,9 @@ const PROGRAM_TYPES = [
   { id: 'mixed', label: 'Mixed' },
 ]
 
+type Exercise = { name: string; detail: string; cues: string[]; why: string }
+type Program = { structure: string; primer?: Exercise[]; exercises: Exercise[]; note?: string }
+
 const STATES = [
   {
     id: 'depleted',
@@ -52,33 +55,33 @@ const STATES = [
       machines: {
         structure: '3 rounds — light load, 3 sec down on every rep, no rush between sets',
         exercises: [
-          { name: 'Leg press', detail: '10 reps — light load, 3 sec descent' },
-          { name: 'Seated cable row', detail: '10 reps — scapular control, slow return' },
-          { name: 'Chest press machine', detail: '10 reps — controlled tempo' },
-          { name: 'Leg curl', detail: '10 reps — slow and controlled' },
-          { name: 'BikeErg', detail: '60 sec @ RPE 4-5 — conversational pace' },
+          { name: 'Leg press', detail: '10 reps', cues: ['Feet hip-width, toes slightly out', '3 sec descent — control it', 'Press through the whole foot'], why: 'Machine removes the stability demand. Lower body stimulus without taxing the nervous system.' },
+          { name: 'Seated cable row', detail: '10 reps', cues: ['Shoulder blades together first, then elbows', 'Slow return — don\'t let it yank you', 'Stay tall through the torso'], why: 'Upper back and scapular work in a fixed path. Keeps systemic stress low.' },
+          { name: 'Chest press machine', detail: '10 reps', cues: ['Shoulders back and down before you press', 'Don\'t shrug at the top', '3 sec down'], why: 'Horizontal push in a fixed path. Pressing strength without CNS cost.' },
+          { name: 'Leg curl', detail: '10 reps', cues: ['Hips stay flat on the pad', 'Curl to 90 degrees', '3 sec back down'], why: 'Hamstring isolation with no spinal loading. Complements the leg press pattern.' },
+          { name: 'BikeErg', detail: '60 sec @ RPE 4-5', cues: ['Upright posture', 'Pace you could hold a conversation at — no harder'], why: 'Low-impact aerobic work. Moves blood and increases circulation without spiking cortisol.' },
         ],
-      },
+      } as Program,
       functional: {
         structure: '3 rounds — low intensity throughout, quality over output',
         exercises: [
-          { name: 'TRX assisted squat', detail: '8 reps — slow descent, use the suspension for support' },
-          { name: 'TRX row', detail: '10 reps — scapular control focus' },
-          { name: 'KB goblet squat', detail: '8 reps — light, 3 sec down' },
-          { name: 'Med ball slam', detail: '6 reps — rhythmic, not explosive' },
-          { name: 'BikeErg', detail: '60 sec @ RPE 4-5 — conversational pace' },
+          { name: 'TRX assisted squat', detail: '8 reps', cues: ['Hold the straps lightly — support not momentum', 'Sit back into the hips', 'Chest tall throughout'], why: 'TRX offloads bodyweight, reducing joint stress while still training the squat pattern.' },
+          { name: 'TRX row', detail: '10 reps', cues: ['Body in a straight line — don\'t pike', 'Pull chest to hands', '1 sec pause at the top'], why: 'Horizontal pull with bodyweight. Zero spinal compression, adjustable to any level.' },
+          { name: 'KB goblet squat', detail: '8 reps', cues: ['Bell at chest height', 'Elbows inside knees at the bottom', '3 sec controlled descent'], why: 'Front-loaded squat teaches upright torso and hip mobility with minimal load.' },
+          { name: 'Med ball slam', detail: '6 reps', cues: ['Full overhead reach before every slam', 'Let the ball drop — don\'t force it', 'Full reset between reps — no rushing'], why: 'Rhythmic power expression. Non-explosive keeps cortisol from spiking.' },
+          { name: 'BikeErg', detail: '60 sec @ RPE 4-5', cues: ['Upright posture', 'Pace you could hold a conversation at — no harder'], why: 'Low-impact aerobic work. Moves blood without spiking cortisol.' },
         ],
-      },
+      } as Program,
       mixed: {
-        structure: '3 rounds — controlled tempo throughout, machines and functional combined',
+        structure: '3 rounds — controlled tempo throughout',
         exercises: [
-          { name: 'Leg press', detail: '10 reps — light load, 3 sec descent' },
-          { name: 'TRX row', detail: '10 reps — scapular control' },
-          { name: 'KB goblet squat', detail: '8 reps — light, controlled' },
-          { name: 'Med ball slam', detail: '6 reps — rhythmic, not explosive' },
-          { name: 'BikeErg', detail: '60 sec @ RPE 4-5 — conversational pace' },
+          { name: 'Leg press', detail: '10 reps', cues: ['Feet hip-width, toes slightly out', '3 sec descent', 'Press through the whole foot'], why: 'Machine removes stability demand. Lower body stimulus without taxing the nervous system.' },
+          { name: 'TRX row', detail: '10 reps', cues: ['Body in a straight line', 'Pull chest to hands', '1 sec pause at the top'], why: 'Horizontal pull with zero spinal compression. Balances the pressing pattern.' },
+          { name: 'KB goblet squat', detail: '8 reps', cues: ['Bell at chest height', 'Elbows inside knees at the bottom', '3 sec down'], why: 'Front-loaded squat builds positional awareness with a light load.' },
+          { name: 'Med ball slam', detail: '6 reps', cues: ['Full overhead reach before every slam', 'Reset completely between reps'], why: 'Rhythmic power — non-explosive. Expresses force without cortisol spike.' },
+          { name: 'BikeErg', detail: '60 sec @ RPE 4-5', cues: ['Upright posture', 'Conversational pace only'], why: 'Aerobic circulation without cortisol impact.' },
         ],
-      },
+      } as Program,
     },
   },
   {
@@ -122,46 +125,46 @@ const STATES = [
       machines: {
         structure: 'Strength primer — 2 rounds (not for time), then AMRAP 10 min',
         primer: [
-          { name: 'Leg press', detail: '8 reps — moderate load' },
-          { name: 'Lat pulldown', detail: '10 reps' },
-          { name: 'Seated cable row', detail: '10 reps' },
+          { name: 'Leg press', detail: '8 reps', cues: ['Moderate load — working but not grinding', 'Full range every rep', 'Controlled descent'], why: 'Primes the nervous system for the AMRAP. Not for fatigue — just activation.' },
+          { name: 'Lat pulldown', detail: '10 reps', cues: ['Elbows drive down and back', 'Pull to upper chest', 'Slow on the way up — don\'t let it yank you'], why: 'Vertical pull primer. Activates lats and upper back before the circuit.' },
+          { name: 'Seated cable row', detail: '10 reps', cues: ['Chest tall', 'Drive elbows back past the torso', 'Pause at end range'], why: 'Horizontal pull to complement the lat pulldown. Full upper back primed.' },
         ],
         exercises: [
-          { name: 'Leg press', detail: '8 reps — moderate' },
-          { name: 'Chest press machine', detail: '10 reps' },
-          { name: 'Cable face pull', detail: '12 reps' },
-          { name: 'Rower', detail: '200m' },
+          { name: 'Leg press', detail: '8 reps', cues: ['Maintain full range — depth is your quality marker', 'Watch for pace dropping across rounds'], why: 'Lower body output marker. Range or pace drop tells you where fatigue is hitting first.' },
+          { name: 'Chest press machine', detail: '10 reps', cues: ['Consistent tempo across every round', 'Note when pressing starts to feel significantly heavier'], why: 'Upper body push output. Decline across rounds shows recovery capacity.' },
+          { name: 'Cable face pull', detail: '12 reps', cues: ['Pull to nose height', 'Elbows stay high', 'Thumbs back at end range'], why: 'Rear delt and upper back work. Keeps the circuit balanced and shoulder health in check.' },
+          { name: 'Rower', detail: '200m', cues: ['Legs first, then lean, then arms', 'Hold a sustainable pace', 'Note if your split time drops across rounds'], why: 'Full body output marker. Pace degradation across rounds reveals the bottleneck.' },
         ],
         note: 'Note how many rounds completed — use this in the handoff conversation.',
-      },
+      } as Program,
       functional: {
         structure: 'Strength primer — 2 rounds (not for time), then AMRAP 10 min',
         primer: [
-          { name: 'KB deadlift', detail: '8 reps — moderate load' },
-          { name: 'TRX row', detail: '10 reps' },
+          { name: 'KB deadlift', detail: '8 reps', cues: ['Push the floor away — don\'t pull the bell up', 'Squeeze glutes at the top', 'Bell stays close to the shins'], why: 'Posterior chain primer. Hip hinge activation before the AMRAP.' },
+          { name: 'TRX row', detail: '10 reps', cues: ['Body straight', 'Pull chest to hands', 'Squeeze at the top'], why: 'Upper back primer. Gets pulling muscles firing before the circuit.' },
         ],
         exercises: [
-          { name: 'KB swing', detail: '12 reps' },
-          { name: 'Box step-up', detail: '8 reps per leg' },
-          { name: 'Battle rope', detail: '20 sec' },
-          { name: 'SkiErg', detail: '150m' },
+          { name: 'KB swing', detail: '12 reps', cues: ['Hinge — not a squat', 'Drive through the hips — not the arms', 'Let the bell float to shoulder height'], why: 'Hip power output. Watch for the hinge pattern breaking down as fatigue builds — that is the bottleneck signal.' },
+          { name: 'Box step-up', detail: '8 reps per leg', cues: ['Drive through the heel of the working leg', 'Don\'t push off the back foot', 'Controlled step down'], why: 'Single leg strength output. Asymmetry in quality across rounds reveals a weakness.' },
+          { name: 'Battle rope', detail: '20 sec', cues: ['Soft knees, slight hip hinge', 'Full arm range on each wave', 'Consistent rhythm — don\'t die at 10 sec'], why: 'Upper body and conditioning output. Fade in power across rounds reveals aerobic ceiling.' },
+          { name: 'SkiErg', detail: '150m', cues: ['Hinge at the hips as you pull', 'Full extension overhead between reps', 'Note your time across rounds'], why: 'Full body pulling output. Time degradation across rounds shows aerobic capacity limits.' },
         ],
         note: 'Note how many rounds completed — use this in the handoff conversation.',
-      },
+      } as Program,
       mixed: {
         structure: 'Strength primer — 2 rounds (not for time), then AMRAP 10 min',
         primer: [
-          { name: 'Leg press', detail: '8 reps — moderate load' },
-          { name: 'Lat pulldown', detail: '10 reps' },
+          { name: 'Leg press', detail: '8 reps', cues: ['Moderate load — working but not grinding', 'Full range every rep'], why: 'Primes the nervous system for the AMRAP. Not for fatigue — just activation.' },
+          { name: 'Lat pulldown', detail: '10 reps', cues: ['Elbows drive down and back', 'Slow on the way up'], why: 'Vertical pull primer. Activates lats and upper back.' },
         ],
         exercises: [
-          { name: 'KB swing', detail: '12 reps' },
-          { name: 'Box step-up', detail: '8 reps per leg' },
-          { name: 'Cable face pull', detail: '12 reps' },
-          { name: 'SkiErg', detail: '150m' },
+          { name: 'KB swing', detail: '12 reps', cues: ['Hinge — not a squat', 'Drive through the hips', 'Let the bell float to shoulder height'], why: 'Hip power output marker. Pattern breakdown signals the bottleneck.' },
+          { name: 'Box step-up', detail: '8 reps per leg', cues: ['Drive through the heel of the working leg', 'Don\'t push off the back foot'], why: 'Single leg strength output. Asymmetry across rounds reveals a weakness.' },
+          { name: 'Cable face pull', detail: '12 reps', cues: ['Pull to nose height', 'Elbows high', 'Thumbs back at end range'], why: 'Rear delt and upper back. Balances the circuit and keeps shoulders healthy.' },
+          { name: 'SkiErg', detail: '150m', cues: ['Hinge at the hips as you pull', 'Full overhead extension between reps'], why: 'Full body pulling output. Time across rounds reveals aerobic capacity.' },
         ],
         note: 'Note how many rounds completed — use this in the handoff conversation.',
-      },
+      } as Program,
     },
   },
   {
@@ -205,31 +208,31 @@ const STATES = [
       machines: {
         structure: '4 rounds — 35 sec rest between rounds, performance output focus',
         exercises: [
-          { name: 'Leg press', detail: '8 reps — challenging load' },
-          { name: 'Chest press machine', detail: '8 reps — strong effort' },
-          { name: 'Cable pull-through', detail: '12 reps — hip hinge, control the return' },
-          { name: 'Seated row', detail: '10 reps — explosive pull, slow return' },
-          { name: 'Rower', detail: '30 sec sprint' },
+          { name: 'Leg press', detail: '8 reps', cues: ['Challenging load — you should be working hard', 'Full range every rep', 'Note when depth starts to drop — that is fatigue'], why: 'Heavy lower body stimulus. Output quality across 4 rounds shows your current strength-endurance capacity.' },
+          { name: 'Chest press machine', detail: '8 reps', cues: ['Shoulders back before every set', 'Press with intent — no grinding', 'If it significantly slows, stop the set and note the round'], why: 'Upper body push under load. Decline across rounds shows a prescription mismatch.' },
+          { name: 'Cable pull-through', detail: '12 reps', cues: ['Hinge back into the cable', 'Drive hips forward to stand — not a back extension', 'Control the return slowly'], why: 'Hip hinge under tension with no spinal compression. Keeps the posterior chain in the circuit.' },
+          { name: 'Seated row', detail: '10 reps', cues: ['Explosive pull', '3 sec controlled return', 'Drive elbows hard past your torso'], why: 'Upper back power output. Explosive intent tests rate of force development.' },
+          { name: 'Rower', detail: '30 sec sprint', cues: ['All-out effort', 'Note your distance each round — look for drops'], why: 'Full body power output marker. Distance per round tells you how well you are recovering between rounds.' },
         ],
-      },
+      } as Program,
       functional: {
         structure: '4 rounds — 35 sec rest between rounds, maximum output quality',
         exercises: [
-          { name: 'KB clean + press', detail: '5 reps per side' },
-          { name: 'Med ball slam', detail: '8 reps — explosive, full reset each rep' },
-          { name: 'Battle rope', detail: '20 sec — maximum effort' },
-          { name: 'SkiErg', detail: '20 sec sprint' },
+          { name: 'KB clean + press', detail: '5 reps per side', cues: ['Clean from the hip — don\'t curl it', 'Punch palm to ceiling at the top', 'Reset fully at the bottom each rep'], why: 'Full body power and overhead strength. Complex movement that shows coordination under fatigue.' },
+          { name: 'Med ball slam', detail: '8 reps', cues: ['Full overhead extension before every slam', 'Whole body drives the slam — not just arms', 'Complete reset between reps — quality over speed'], why: 'Explosive power output. Fade in force across rounds shows energy system limits.' },
+          { name: 'Battle rope', detail: '20 sec sprint', cues: ['Athletic position — soft knees, slight hinge', 'Full arm range on each wave', 'Max effort for the full 20 sec'], why: 'Upper body power and conditioning. Tests repeated power output under fatigue.' },
+          { name: 'SkiErg', detail: '20 sec sprint', cues: ['Max effort', 'Full overhead extension between reps', 'Note your distance each round'], why: 'Full body pulling power. Distance across 4 rounds reveals your aerobic ceiling.' },
         ],
-      },
+      } as Program,
       mixed: {
         structure: '4 rounds — 35 sec rest between rounds, push the output',
         exercises: [
-          { name: 'KB clean + press', detail: '5 reps per side' },
-          { name: 'Med ball slam', detail: '8 reps — explosive' },
-          { name: 'Cable pull-through', detail: '12 reps' },
-          { name: 'SkiErg', detail: '20 sec sprint' },
+          { name: 'KB clean + press', detail: '5 reps per side', cues: ['Clean from the hip — don\'t curl it', 'Punch palm to ceiling at the top', 'Reset fully at the bottom'], why: 'Full body power and overhead strength. Coordination under fatigue is the marker.' },
+          { name: 'Med ball slam', detail: '8 reps', cues: ['Full overhead extension before every slam', 'Whole body drives it — not just arms', 'Complete reset between reps'], why: 'Explosive power output. Force fade across rounds shows energy system limits.' },
+          { name: 'Cable pull-through', detail: '12 reps', cues: ['Hinge back into the cable', 'Drive hips forward to stand', 'Slow controlled return'], why: 'Hip hinge under tension with no spinal compression. Posterior chain stays in the circuit.' },
+          { name: 'SkiErg', detail: '20 sec sprint', cues: ['Max effort', 'Full overhead extension between reps', 'Note distance each round'], why: 'Full body pulling power output. Distance across 4 rounds reveals the aerobic ceiling.' },
         ],
-      },
+      } as Program,
     },
   },
 ]
@@ -299,14 +302,10 @@ export default function GymSessionsPage() {
           <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Consult — 10 min</p>
         </div>
         <div className="divide-y divide-stone-800/60">
-
-          {/* Opening */}
           <div className="px-5 py-4">
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Opening</p>
             <p className="text-sm text-stone-300 leading-relaxed italic">{state.consult.opening}</p>
           </div>
-
-          {/* Goals */}
           <div className="px-5 py-4">
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Their Goals</p>
             <div className="space-y-2">
@@ -315,8 +314,6 @@ export default function GymSessionsPage() {
               ))}
             </div>
           </div>
-
-          {/* Results */}
           <div className="px-5 py-4">
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Explain Their Results</p>
             <div className="space-y-2">
@@ -325,8 +322,6 @@ export default function GymSessionsPage() {
               ))}
             </div>
           </div>
-
-          {/* Why */}
           <div className="px-5 py-4">
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Why We Train Like This</p>
             <div className="space-y-2">
@@ -335,8 +330,6 @@ export default function GymSessionsPage() {
               ))}
             </div>
           </div>
-
-          {/* After today */}
           <div className="px-5 py-4">
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">What To Do After Today</p>
             <div className="space-y-2">
@@ -345,7 +338,6 @@ export default function GymSessionsPage() {
               ))}
             </div>
           </div>
-
         </div>
       </div>
 
@@ -373,31 +365,25 @@ export default function GymSessionsPage() {
           <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">Working</p>
           <p className="text-xs text-stone-500 mb-4">{program.structure}</p>
 
-          {'primer' in program && program.primer && (
+          {program.primer && (
             <div className="mb-4">
               <p className="text-xs font-medium text-stone-600 mb-2">Strength primer</p>
-              <div className="space-y-2 mb-3">
+              <div className="space-y-3 mb-4">
                 {program.primer.map((ex, i) => (
-                  <div key={i} className="flex items-start gap-3 bg-stone-800/50 rounded-lg px-3 py-2.5">
-                    <span className="text-sm font-semibold text-white shrink-0 w-36">{ex.name}</span>
-                    <span className="text-sm text-stone-400">{ex.detail}</span>
-                  </div>
+                  <ExerciseCard key={i} ex={ex} />
                 ))}
               </div>
               <p className="text-xs font-medium text-stone-600 mb-2">AMRAP</p>
             </div>
           )}
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             {program.exercises.map((ex, i) => (
-              <div key={i} className="flex items-start gap-3 bg-stone-800/50 rounded-lg px-3 py-2.5">
-                <span className="text-sm font-semibold text-white shrink-0 w-36">{ex.name}</span>
-                <span className="text-sm text-stone-400">{ex.detail}</span>
-              </div>
+              <ExerciseCard key={i} ex={ex} />
             ))}
           </div>
 
-          {'note' in program && program.note && (
+          {program.note && (
             <p className="text-xs text-stone-500 mt-3 italic">{program.note}</p>
           )}
         </div>
@@ -464,6 +450,23 @@ export default function GymSessionsPage() {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+function ExerciseCard({ ex }: { ex: Exercise }) {
+  return (
+    <div className="bg-stone-800/50 rounded-lg px-3 py-3">
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <span className="text-sm font-semibold text-white">{ex.name}</span>
+        <span className="text-xs text-stone-400 shrink-0">{ex.detail}</span>
+      </div>
+      <div className="space-y-1 mb-2">
+        {ex.cues.map((cue, i) => (
+          <p key={i} className="text-xs text-stone-400">→ {cue}</p>
+        ))}
+      </div>
+      <p className="text-xs text-stone-500 italic">{ex.why}</p>
     </div>
   )
 }
