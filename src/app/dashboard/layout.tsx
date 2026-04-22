@@ -28,6 +28,7 @@ export default async function DashboardLayout({
             <Link href="/dashboard/business" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Business</Link>
             <Link href="/dashboard/preview" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Assets</Link>
             <Link href="/dashboard/gym-sessions" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Gym Sessions</Link>
+            <Link href="/dashboard/group-classes" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Group Classes</Link>
             <Link href="/dashboard/help" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Guide</Link>
           </nav>
         </div>
