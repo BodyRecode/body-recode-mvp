@@ -333,9 +333,10 @@ function TrackingTab() {
             {[
               { product: 'AI Co-Founder Method (ebook)',      price: '$37 AUD',  type: 'One-time' },
               { product: 'AI Co-Founder Method (bundle)',     price: '$47 AUD',  type: 'One-time' },
-              { product: 'Body Recode Scorecard',             price: 'Free',     type: 'Lead gen' },
-              { product: 'Body Recode Coaching (online)',     price: '$195-295/wk', type: 'Recurring' },
-              { product: 'Body Recode Coaching (in-person)', price: '$299-409/wk', type: 'Recurring' },
+              { product: 'Body Recode Scorecard',              price: 'Free',      type: 'Lead gen' },
+              { product: 'Body Recode Coaching (online)',      price: '$149/wk',   type: 'Recurring' },
+              { product: 'Body Recode Coaching (in-person 2x)', price: '$299/wk', type: 'Recurring' },
+              { product: 'Body Recode Coaching (in-person 3x)', price: '$409/wk', type: 'Recurring' },
             ].map(r => (
               <tr key={r.product} className="border-b border-stone-800/60 last:border-0">
                 <td className="py-3 text-stone-300">{r.product}</td>
