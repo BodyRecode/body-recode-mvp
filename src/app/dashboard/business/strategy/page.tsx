@@ -20,13 +20,15 @@ const TABS: { id: Tab; label: string }[] = [
 
 // ── CALENDAR ────────────────────────────────────────────────
 
-type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'founder' | 'ad' | 'prelaunch'
+type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'founder' | 'ad' | 'prelaunch' | 'thread' | 'video'
 type CampaignPhase = 'prelaunch' | 'founder' | 'ads' | 'optimise' | 'scale'
+type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder'
 
 interface ScheduledPost {
   id: string
   date: string // YYYY-MM-DD
   time?: string // HH:MM
+  brand?: Brand
   type: PostType
   phase: CampaignPhase
   title: string
@@ -36,14 +38,22 @@ interface ScheduledPost {
 }
 
 const POST_TYPE_DEFAULT_TIMES: Record<PostType, string> = {
-  authority:  '07:00', // Monday pre-work — high attention, sets the tone for the week
-  pattern:    '12:00', // Wednesday lunch — scrolling during a break, self-recognition content lands here
-  contrarian: '07:00', // Morning disruption hook — works best when people are freshly alert
-  coach:      '18:00', // Friday wind-down — end of week reflection, lower guard
-  diagnostic: '08:00', // Sunday morning — relaxed scroll, higher intent to take action
-  founder:    '07:00', // Morning — high-intent audience, early engagement window
-  ad:         '07:00', // Peak algorithm window for professional demographic
-  prelaunch:  '07:00', // Establishment posts — morning for maximum early reach
+  authority:  '07:00',
+  pattern:    '12:00',
+  contrarian: '07:00',
+  coach:      '18:00',
+  diagnostic: '08:00',
+  founder:    '07:00',
+  ad:         '07:00',
+  prelaunch:  '07:00',
+  thread:     '07:00',
+  video:      '07:00',
+}
+
+const BRAND_STYLES: Record<Brand, { label: string; handle: string; dot: string; filter: string }> = {
+  body_recode:    { label: 'Body Recode',    handle: 'body_recode_',       dot: 'bg-teal-400',   filter: 'bg-teal-500/10 text-teal-400 border-teal-500/30' },
+  personal_brand: { label: 'Personal Brand', handle: 'kade_dunstone_',     dot: 'bg-violet-400', filter: 'bg-violet-500/10 text-violet-400 border-violet-500/30' },
+  ai_cofounder:   { label: 'AI Co-Founder',  handle: 'aicofoundermethod.com', dot: 'bg-amber-400',  filter: 'bg-amber-500/10 text-amber-400 border-amber-500/30' },
 }
 
 const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: string; border: string }> = {
@@ -55,6 +65,8 @@ const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: str
   founder:     { label: 'Founder',      color: '#c084fc', bg: 'rgba(192,132,252,0.12)', border: 'rgba(192,132,252,0.3)' },
   ad:          { label: 'Paid Ad',      color: '#60a5fa', bg: 'rgba(96,165,250,0.12)',  border: 'rgba(96,165,250,0.3)' },
   prelaunch:   { label: 'Pre-Launch',   color: '#6b7280', bg: 'rgba(107,114,128,0.12)', border: 'rgba(107,114,128,0.3)' },
+  thread:      { label: 'Thread',       color: '#e879f9', bg: 'rgba(232,121,249,0.12)', border: 'rgba(232,121,249,0.3)' },
+  video:       { label: 'Video/Reel',   color: '#f97316', bg: 'rgba(249,115,22,0.12)',  border: 'rgba(249,115,22,0.3)' },
 }
 
 const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
@@ -97,8 +109,9 @@ function ContentCalendar() {
   const [selected, setSelected] = useState<string | null>(null)
   const [activePost, setActivePost] = useState<ScheduledPost | null>(null)
   const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState<Partial<ScheduledPost>>({ type: 'authority', phase: 'prelaunch', time: POST_TYPE_DEFAULT_TIMES['authority'] })
+  const [form, setForm] = useState<Partial<ScheduledPost>>({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', time: POST_TYPE_DEFAULT_TIMES['authority'] })
   const [editId, setEditId] = useState<string | null>(null)
+  const [brandFilter, setBrandFilter] = useState<Brand | 'all'>('all')
 
   useEffect(() => {
     supabase
@@ -129,28 +142,29 @@ function ContentCalendar() {
   }
 
   function postsForDay(day: number) {
-    return posts.filter(p => p.date === dateStr(day))
+    return posts.filter(p => p.date === dateStr(day) && (brandFilter === 'all' || (p.brand ?? 'body_recode') === brandFilter))
   }
 
   async function savePost() {
     if (!form.date || !form.title || !form.type || !form.phase) return
     setSaving(true)
+    const brandVal = form.brand ?? 'body_recode'
     if (editId) {
       const { error } = await supabase
         .from('calendar_posts')
-        .update({ date: form.date, time: form.time ?? null, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
+        .update({ date: form.date, time: form.time ?? null, brand: brandVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
         .eq('id', editId)
       if (!error) setPosts(ps => ps.map(p => p.id === editId ? { ...p, ...form } as ScheduledPost : p))
       setEditId(null)
     } else {
       const { data, error } = await supabase
         .from('calendar_posts')
-        .insert({ date: form.date, time: form.time ?? null, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
+        .insert({ date: form.date, time: form.time ?? null, brand: brandVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
         .select()
         .single()
       if (!error && data) setPosts(ps => [...ps, data as ScheduledPost])
     }
-    setForm({ type: 'authority', phase: 'prelaunch', time: POST_TYPE_DEFAULT_TIMES['authority'] })
+    setForm({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', time: POST_TYPE_DEFAULT_TIMES['authority'] })
     setShowForm(false)
     setSaving(false)
   }
@@ -166,12 +180,32 @@ function ContentCalendar() {
     setShowForm(true)
   }
 
-  const selectedPosts = selected ? posts.filter(p => p.date === selected) : []
-
   if (loading) return <div className="text-sm text-stone-500 py-8 text-center">Loading calendar...</div>
+
+  const filteredSelectedPosts = selected
+    ? posts.filter(p => p.date === selected && (brandFilter === 'all' || (p.brand ?? 'body_recode') === brandFilter))
+    : []
 
   return (
     <div className="space-y-4">
+      {/* Brand filter */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <button
+          onClick={() => setBrandFilter('all')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === 'all' ? 'bg-stone-700 text-white border-stone-600' : 'text-stone-500 border-stone-800 hover:text-stone-300'}`}
+        >All brands</button>
+        {(Object.entries(BRAND_STYLES) as [Brand, typeof BRAND_STYLES[Brand]][]).map(([k, s]) => (
+          <button
+            key={k}
+            onClick={() => setBrandFilter(k)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === k ? s.filter : 'text-stone-500 border-stone-800 hover:text-stone-300'}`}
+          >
+            <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${s.dot}`} />
+            {s.label}
+          </button>
+        ))}
+      </div>
+
       {/* Legend */}
       <Card>
         <SectionLabel>Content Types</SectionLabel>
@@ -242,9 +276,12 @@ function ContentCalendar() {
                 <div className="space-y-0.5">
                   {dayPosts.slice(0, 3).map(p => {
                     const s = POST_TYPE_STYLES[p.type] ?? POST_TYPE_STYLES['authority']
+                    const bd = BRAND_STYLES[(p.brand ?? 'body_recode') as Brand]
                     return (
-                      <div key={p.id} className="text-[10px] font-medium px-1 py-0.5 rounded truncate" style={{ color: s.color, background: s.bg }}>
-                        <span className="opacity-70 mr-1">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type as PostType] ?? '07:00'}</span>{p.title}
+                      <div key={p.id} className="text-[10px] font-medium px-1 py-0.5 rounded truncate flex items-center gap-1" style={{ color: s.color, background: s.bg }}>
+                        <span className={`inline-block w-1 h-1 rounded-full shrink-0 ${bd.dot}`} />
+                        <span className="opacity-70 mr-0.5">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type as PostType] ?? '07:00'}</span>
+                        <span className="truncate">{p.title}</span>
                       </div>
                     )
                   })}
@@ -264,17 +301,17 @@ function ContentCalendar() {
               {new Date(selected + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
             <button
-              onClick={() => { setForm({ type: 'authority', phase: 'prelaunch', date: selected, time: POST_TYPE_DEFAULT_TIMES['authority'] }); setEditId(null); setShowForm(true) }}
+              onClick={() => { setForm({ type: 'authority', phase: 'prelaunch', brand: brandFilter !== 'all' ? brandFilter : 'body_recode', date: selected, time: POST_TYPE_DEFAULT_TIMES['authority'] }); setEditId(null); setShowForm(true) }}
               className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium"
             >
               + Add post
             </button>
           </div>
-          {selectedPosts.length === 0 ? (
+          {filteredSelectedPosts.length === 0 ? (
             <p className="text-sm text-stone-600">Nothing scheduled. Click &ldquo;+ Add post&rdquo; to schedule something.</p>
           ) : (
             <div className="space-y-2">
-              {selectedPosts.map(p => {
+              {filteredSelectedPosts.map(p => {
                 const s = POST_TYPE_STYLES[p.type] ?? POST_TYPE_STYLES['authority']
                 const ph = PHASE_STYLES[p.phase] ?? PHASE_STYLES['prelaunch']
                 return (
@@ -283,6 +320,7 @@ function ContentCalendar() {
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-xs font-bold" style={{ color: s.color }}>{s.label}</span>
                         <span className={`text-xs ${ph.color}`}>· {ph.label}</span>
+                        {(() => { const bd = BRAND_STYLES[(p.brand ?? 'body_recode') as Brand]; return <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${bd.filter}`}>{bd.label}</span> })()}
                       </div>
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-white">{p.title}</p>
@@ -390,16 +428,21 @@ function ContentCalendar() {
 
               {/* Right — caption */}
               <div className="space-y-3">
-                {/* Instagram profile row */}
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center shrink-0">
-                    <span className="text-teal-400 text-xs font-bold">K</span>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-white">body_recode_</p>
-                    <p className="text-xs text-stone-600">Brisbane, Australia</p>
-                  </div>
-                </div>
+                {/* Profile row */}
+                {(() => {
+                  const bd = BRAND_STYLES[(activePost.brand ?? 'body_recode') as Brand]
+                  return (
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-8 h-8 rounded-full border flex items-center justify-center shrink-0 ${bd.filter}`}>
+                        <span className="text-xs font-bold">@</span>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-white">{bd.handle}</p>
+                        <p className="text-xs text-stone-600">{bd.label}</p>
+                      </div>
+                    </div>
+                  )
+                })()}
 
                 {activePost.caption ? (
                   <div className="bg-stone-950 border border-stone-800 rounded-xl p-4">
@@ -438,7 +481,16 @@ function ContentCalendar() {
         <Card>
           <p className="text-sm font-semibold text-white mb-4">{editId ? 'Edit Post' : 'Schedule Post'}</p>
           <div className="space-y-3">
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-4 gap-3">
+              <div>
+                <label className="block text-xs text-stone-500 mb-1">Brand</label>
+                <select value={form.brand ?? 'body_recode'} onChange={e => setForm(f => ({ ...f, brand: e.target.value as Brand }))}
+                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500">
+                  {(Object.entries(BRAND_STYLES) as [Brand, typeof BRAND_STYLES[Brand]][]).map(([k, s]) => (
+                    <option key={k} value={k}>{s.label}</option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Date</label>
                 <input type="date" value={form.date ?? ''} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
@@ -502,7 +554,7 @@ function ContentCalendar() {
                 className="bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
                 {saving ? 'Saving...' : editId ? 'Save Changes' : 'Schedule Post'}
               </button>
-              <button onClick={() => { setShowForm(false); setEditId(null); setForm({ type: 'authority', phase: 'prelaunch', time: POST_TYPE_DEFAULT_TIMES['authority'] }) }}
+              <button onClick={() => { setShowForm(false); setEditId(null); setForm({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', time: POST_TYPE_DEFAULT_TIMES['authority'] }) }}
                 className="text-xs text-stone-500 hover:text-stone-300 transition-colors">
                 Cancel
               </button>
