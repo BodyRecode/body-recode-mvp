@@ -16,6 +16,8 @@ import {
   Clapperboard,
   Compass,
   FlaskConical,
+  User,
+  BrainCircuit,
 } from 'lucide-react'
 
 type NavItem = {
@@ -65,6 +67,13 @@ const sections: NavSection[] = [
     label: 'Strategy',
     items: [
       { label: 'Strategy', href: '/dashboard/business/strategy', icon: Compass },
+    ],
+  },
+  {
+    label: 'Brands',
+    items: [
+      { label: 'Personal Brand', href: '/dashboard/business/personal-brand', icon: User },
+      { label: 'AI Co-Founder',  href: '/dashboard/business/ai-cofounder',   icon: BrainCircuit },
     ],
   },
   {
