@@ -89,9 +89,9 @@ function PositioningTab() {
       <Card>
         <SectionLabel>Confirmed Bio</SectionLabel>
         <div className="bg-stone-900 rounded-lg p-4 text-sm text-stone-200 leading-relaxed font-mono">
-          I stopped writing programs and started building systems.<br />
-          Performance coach. Founder. Systems thinker.<br />
-          Body Recode™ + AI Co-Founder Method
+          Three rebuilds. One constant. I never stopped building.<br />
+          Performance coach. Father. Builder.<br />
+          bodyrecode.au/kade
         </div>
       </Card>
 
