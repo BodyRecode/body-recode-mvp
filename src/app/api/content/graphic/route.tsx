@@ -608,6 +608,43 @@ export async function GET(request: NextRequest) {
     )
   }
 
+  // ── PERSONAL BRAND ─────────────────────────────────────────────
+  // Dark, minimal, one strong line. Handle at bottom. No logo.
+  if (style === 'personal') {
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif', position: 'relative' }}>
+          {/* Subtle left border accent */}
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '3px', height: '1080px', background: 'linear-gradient(to bottom, rgba(255,255,255,0.15), transparent)' }} />
+
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+            {/* Optional context label */}
+            {label && (
+              <div style={{ fontSize: '26px', fontWeight: 600, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '48px' }}>{label}</div>
+            )}
+
+            {/* Main quote */}
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px' }}>
+              {displayText}
+            </div>
+
+            {/* Sub line */}
+            {sub && (
+              <div style={{ fontSize: '42px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, fontWeight: 400, maxWidth: '820px', marginTop: '40px' }}>{sub}</div>
+            )}
+          </div>
+
+          {/* Handle at bottom */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '32px', height: '2px', background: 'rgba(255,255,255,0.2)' }} />
+            <div style={{ fontSize: '28px', fontWeight: 500, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.08em' }}>@kade_dunstone_</div>
+          </div>
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
+  }
+
   // Default: quote card
   return new ImageResponse(
     (
