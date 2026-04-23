@@ -30,6 +30,7 @@ export async function GET(request: NextRequest) {
   const accent = searchParams.get('accent') ?? 'teal' // teal | red | amber
   const style = searchParams.get('style') ?? 'quote'
   const n = parseInt(searchParams.get('n') ?? '1', 10) // slide number for carousel-slide
+  const taken = parseInt(searchParams.get('taken') ?? '0', 10) // founder: positions taken
 
   const accentColor = accent === 'red' ? '#ef4444' : accent === 'amber' ? '#f59e0b' : '#14b8a6'
 
@@ -309,7 +310,9 @@ export async function GET(request: NextRequest) {
                 <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#14b8a6' }} />
                 <div style={{ fontSize: '26px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Founding Client Program</div>
               </div>
-              <div style={{ fontSize: '26px', fontWeight: 600, color: '#a8a29e', letterSpacing: '0.06em' }}>20 spots only</div>
+              <div style={{ fontSize: '26px', fontWeight: 600, color: taken > 0 ? '#f87171' : '#a8a29e', letterSpacing: '0.06em' }}>
+                {taken > 0 ? `${taken} of 20 positions taken` : '20 spots only'}
+              </div>
             </div>
 
             {/* Headline */}

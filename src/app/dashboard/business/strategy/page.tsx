@@ -1868,7 +1868,7 @@ export default function StrategyPage() {
                 { date: 'Sat 18 Apr', title: 'Post 3 — Why Founder', copy: 'Addresses the assumption that this is a discount. Explains the trade in full. Sets the standard for who the 20 positions are for — people who want the outcome badly enough to document it.' },
                 { date: 'Mon 20 Apr', title: 'Post 4 — What They Get', copy: 'Full breakdown of the system. Body State assessment, program built around current state, weekly check-in and response, direct access, real-time adjustments. The only difference is rate and participation requirement.' },
                 { date: 'Wed 22 Apr', title: 'Post 5 — Authority', copy: 'Prescription vs interpretation. Why programs fail when they ignore body state. Depleted bodies in stress-driven holding patterns do not respond to more load or less calories — they respond to addressing the cortisol-recovery-sleep loop.' },
-                { date: 'Thu 24 Apr', title: 'Post 6 — Scarcity', copy: 'Update X before posting. "X of 20 positions taken." Not a waitlist. When positions fill, the founding rate closes permanently. Update the number as applications are accepted — never fake the count.' },
+                { date: 'Thu 24 Apr', title: 'Post 6 — Scarcity', copy: '8 of 20 positions taken. Not a waitlist. When positions fill, the founding rate closes permanently. Update the number as applications are accepted — never fake the count.' },
               ].map(post => (
                 <div key={post.title} className="p-3 bg-stone-950 rounded-lg border border-stone-800">
                   <div className="flex items-center gap-2 mb-1">
@@ -1878,6 +1878,50 @@ export default function StrategyPage() {
                   <p className="text-sm text-stone-400">{post.copy}</p>
                 </div>
               ))}
+            </div>
+          </Card>
+
+          <Card>
+            <SectionLabel>Post 6 — Scarcity Graphic + Caption (Thu 24 Apr)</SectionLabel>
+            <div className="grid sm:grid-cols-2 gap-5 items-start">
+              <div>
+                <a
+                  href="/api/content/graphic?style=founder&text=8+of+20+positions+taken.&sub=The+founding+rate+does+not+reopen.+When+20+positions+are+filled%2C+it+closes+permanently.&taken=8"
+                  download="founder-post6-8-of-20.png"
+                  className="flex items-center justify-center gap-2 w-full mb-3 px-3 py-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-xs font-semibold rounded-lg transition-colors"
+                >
+                  ↓ Download graphic (8 of 20)
+                </a>
+                <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '240px' }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/api/content/graphic?style=founder&text=8+of+20+positions+taken.&sub=The+founding+rate+does+not+reopen.+When+20+positions+are+filled%2C+it+closes+permanently.&taken=8"
+                    alt="Founder Post 6"
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center shrink-0">
+                    <span className="text-teal-400 text-xs font-bold">K</span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-white">body_recode_</p>
+                    <p className="text-xs text-stone-600">Brisbane, Australia</p>
+                  </div>
+                </div>
+                <div className="bg-stone-950 border border-stone-800 rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-bold text-stone-600 uppercase tracking-widest">Caption</p>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(`8 of 20 positions taken.\n\nThe Founding Client Program is still open — but not for long.\n\n20 positions. Half the standard rate. In exchange for documented participation in a structured case study process.\n\nThis isn't a discount. It's a trade.\n\nWhen the 20 positions are filled, the founding rate closes permanently. It does not reopen.\n\nIf you've been watching — this is the window.\n\nTake the Body State Scorecard first. Link in bio.\n\nOnce we have your results, we'll be in touch.`)}
+                      className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium"
+                    >Copy</button>
+                  </div>
+                  <p className="text-sm text-stone-200 leading-relaxed whitespace-pre-line">{`8 of 20 positions taken.\n\nThe Founding Client Program is still open — but not for long.\n\n20 positions. Half the standard rate. In exchange for documented participation in a structured case study process.\n\nThis isn't a discount. It's a trade.\n\nWhen the 20 positions are filled, the founding rate closes permanently. It does not reopen.\n\nIf you've been watching — this is the window.\n\nTake the Body State Scorecard first. Link in bio.\n\nOnce we have your results, we'll be in touch.`}</p>
+                </div>
+              </div>
             </div>
           </Card>
 
