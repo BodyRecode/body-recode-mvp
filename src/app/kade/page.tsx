@@ -46,6 +46,18 @@ export default function KadePage() {
             <span className="text-stone-600 group-hover:text-stone-400 transition-colors text-lg">→</span>
           </a>
 
+          {/* AI Co-Founder Method */}
+          <a
+            href="https://aicofoundermethod.com"
+            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-amber-500/40 hover:bg-amber-500/5 rounded-xl px-5 py-4 transition-all"
+          >
+            <div>
+              <p className="text-sm font-semibold text-white group-hover:text-amber-400 transition-colors">AI Co-Founder Method</p>
+              <p className="text-xs text-stone-500 mt-0.5">Build with AI as your co-founder</p>
+            </div>
+            <span className="text-stone-600 group-hover:text-amber-400 transition-colors text-lg">→</span>
+          </a>
+
           {/* Threads */}
           <a
             href="https://www.threads.net/@kade_dunstone_"
