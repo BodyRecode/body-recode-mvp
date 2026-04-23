@@ -13,9 +13,8 @@ export default function KadePage() {
 
         {/* Identity */}
         <div className="text-center mb-12">
-          <div className="w-16 h-16 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center mx-auto mb-5">
-            <span className="text-white text-xl font-bold">K</span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/kade.jpg" alt="Kade Dunstone" className="w-20 h-20 rounded-full object-cover mx-auto mb-5 border border-stone-700" />
           <h1 className="text-xl font-bold text-white mb-1">Kade Dunstone</h1>
           <p className="text-sm text-stone-500">Performance coach. Founder. Builder.</p>
         </div>
