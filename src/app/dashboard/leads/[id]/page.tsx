@@ -406,9 +406,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <p className="text-stone-500 text-sm">
               {lead.zoom_meeting_url ? 'Opens companion screen and Zoom call.' : 'Open the call companion screen for this call.'}
             </p>
-            {lead.zoom_date && (
+            {lead.zoom_1_date && (
               <p className="text-xs text-stone-600 mt-1">
-                {new Date(lead.zoom_date).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane
+                {new Date(lead.zoom_1_date).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane
               </p>
             )}
           </div>
@@ -433,7 +433,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         </div>
         <div className="border-t border-stone-800 pt-4">
           <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Booking</p>
-          <BookingActionButtons leadId={lead.id} leadName={lead.name} leadEmail={lead.email ?? undefined} hasZoomDate={!!lead.zoom_date} />
+          <BookingActionButtons leadId={lead.id} leadName={lead.name} leadEmail={lead.email ?? undefined} hasZoomDate={!!lead.zoom_1_date} />
           {bookingLinkSentEvent && (
             <p className="text-xs text-stone-600 mt-3">
               Booking link sent {new Date(bookingLinkSentEvent.sent_at).toLocaleString('en-AU', {

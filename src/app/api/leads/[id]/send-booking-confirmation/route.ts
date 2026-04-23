@@ -40,11 +40,11 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
 
   if (!lead) return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
   if (!lead.email) return NextResponse.json({ error: 'Lead has no email' }, { status: 400 })
-  if (!lead.zoom_date) return NextResponse.json({ error: 'No Zoom date set on this lead. Set it in Actions first.' }, { status: 400 })
+  if (!lead.zoom_1_date) return NextResponse.json({ error: 'No Zoom date set on this lead. Set it in Actions first.' }, { status: 400 })
 
   if (!process.env.RESEND_API_KEY) return NextResponse.json({ error: 'Email not configured' }, { status: 500 })
 
-  const slotStart = new Date(lead.zoom_date)
+  const slotStart = new Date(lead.zoom_1_date)
   const meetingLink: string | null = lead.zoom_meeting_url ?? null
   const firstName = lead.name.split(' ')[0]
   const sessionTitle = `Body Recode — Scorecard Review — ${lead.name}`
@@ -60,7 +60,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
 
   const ics = generateIcs({
     title: sessionTitle,
-    startTime: lead.zoom_date,
+    startTime: lead.zoom_1_date,
     durationMinutes: 30,
     location: meetingLink ?? 'Zoom',
     description: meetingLink ? `Join Zoom: ${meetingLink}` : '',

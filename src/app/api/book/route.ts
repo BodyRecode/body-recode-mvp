@@ -129,15 +129,19 @@ export async function POST(request: NextRequest) {
   }
 
   // Update lead status and zoom details
-  await admin
+  const { error: leadUpdateError } = await admin
     .from('leads')
     .update({
       status: 'zoom_1_booked',
       zoom_meeting_url: meetingLink,
-      zoom_date: slotStart.toISOString(),
+      zoom_1_date: slotStart.toISOString(),
       followup_email_ids: null,
     })
     .eq('id', lead.id)
+
+  if (leadUpdateError) {
+    console.error('Lead update failed after booking:', leadUpdateError.message, leadUpdateError)
+  }
 
   // Log event
   await logLeadEvent({

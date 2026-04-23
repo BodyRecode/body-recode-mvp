@@ -19,7 +19,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       notes: body.notes,
       source: body.source,
       active: body.active,
-      zoom_date: body.zoom_date,
+      zoom_1_date: body.zoom_1_date,
       zoom_meeting_url: body.zoom_meeting_url,
       zoom2_outcome: body.zoom2_outcome,
       zoom2_pathway_type: body.zoom2_pathway_type,

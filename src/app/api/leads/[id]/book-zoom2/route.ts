@@ -93,7 +93,7 @@ export async function POST(
     .update({
       status: 'zoom_1_booked',
       zoom_meeting_url: meetingLink,
-      zoom_date: slotStart.toISOString(),
+      zoom_1_date: slotStart.toISOString(),
     })
     .eq('id', id)
 

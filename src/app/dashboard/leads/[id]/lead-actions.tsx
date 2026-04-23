@@ -16,7 +16,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
   const [status, setStatus] = useState(lead.status)
   const [source, setSource] = useState<string>(lead.source || '')
   const [notes, setNotes] = useState(lead.notes || '')
-  const [zoomDate, setZoomDate] = useState(lead.zoom_date ? lead.zoom_date.slice(0, 16) : '')
+  const [zoomDate, setZoomDate] = useState(lead.zoom_1_date ? lead.zoom_1_date.slice(0, 16) : '')
   const [zoomUrl, setZoomUrl] = useState(lead.zoom_meeting_url || '')
   const [saved, setSaved] = useState(false)
 
@@ -29,7 +29,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
         status,
         source,
         notes,
-        zoom_date: zoomDate || null,
+        zoom_1_date: zoomDate || null,
         zoom_meeting_url: zoomUrl || null,
       }),
     })

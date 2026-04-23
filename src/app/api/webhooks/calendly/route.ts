@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     .from('leads')
     .update({
       zoom_meeting_url: zoomUrl,
-      zoom_date: scheduledAt,
+      zoom_1_date: scheduledAt,
       status: 'zoom_1_booked',
       followup_email_ids: null,
     })

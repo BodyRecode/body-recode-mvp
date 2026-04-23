@@ -447,7 +447,7 @@ async function checkStuckLeads(admin: ReturnType<typeof createAdminClient>): Pro
       .from('leads')
       .select('id, name, created_at')
       .eq('status', 'zoom_1_booked')
-      .is('zoom_date', null)
+      .is('zoom_1_date', null)
       .lt('created_at', sevenDaysAgo)
 
     if (error) {
