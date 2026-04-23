@@ -294,115 +294,249 @@ function PillarsTab() {
 
 function ScriptsTab() {
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [scriptTab, setScriptTab] = useState<'launch' | 'pillar1' | 'pillar2' | 'pillar3' | 'pillar4' | 'video'>('launch')
 
-  const scripts = [
+  type PillarColor = 'teal' | 'violet' | 'amber' | 'orange' | 'stone'
+
+  interface Script {
+    id: string
+    type: string
+    pillar: string
+    pillarColor: PillarColor
+    platform: string
+    hook: string
+    body?: string
+    copy?: string
+  }
+
+  const launchScripts: Script[] = [
     {
-      id: 'post1',
-      type: 'Launch Post',
-      pillar: 'Positioning',
-      hook: 'I\'ve spent 20 years helping people understand their body. Most of the work was never in the gym.',
-      body: null,
-      platform: 'Threads + Instagram',
+      id: 'l1', type: 'Arrival', pillar: 'Positioning', pillarColor: 'teal', platform: 'Threads + Instagram',
+      hook: "I've spent 20 years helping people understand their body. Most of the work was never in the gym.",
     },
     {
-      id: 'post2',
-      type: 'Contrarian',
-      pillar: 'Thinking',
+      id: 'l2', type: 'Contrarian', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads + Instagram',
       hook: 'The problem is not effort. Effort is everywhere.',
-      body: 'The problem is that nobody reads the situation before prescribing to it. That\'s true in coaching. And in most areas of life.',
-      platform: 'Threads + Instagram',
+      body: "The problem is that nobody reads the situation before prescribing to it. That's true in coaching. And in most areas of life.",
     },
     {
-      id: 'post3',
-      type: 'Rebuild',
-      pillar: 'Identity',
-      hook: 'I\'ve rebuilt my identity three times.',
+      id: 'l3', type: 'Rebuild', pillar: 'Identity', pillarColor: 'amber', platform: 'Threads + Instagram',
+      hook: "I've rebuilt my identity three times.",
       body: 'Each time I thought I was starting over. Each time I was actually going deeper.',
-      platform: 'Threads + Instagram',
     },
     {
-      id: 'post4',
-      type: 'System',
-      pillar: 'Thinking',
+      id: 'l4', type: 'System', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads + Instagram',
       hook: 'I stopped writing programs and started building systems.',
-      body: 'When I realised that programs solve yesterday\'s problem. Systems solve the pattern underneath it.',
-      platform: 'Threads + Instagram',
+      body: "When I realised that programs solve yesterday's problem. Systems solve the pattern underneath it.",
     },
     {
-      id: 'post5',
-      type: 'Connection',
-      pillar: 'Body Recode',
+      id: 'l5', type: 'Connection', pillar: 'Body Recode', pillarColor: 'teal', platform: 'Threads + Instagram',
       hook: 'Body Recode is the result of every rebuild.',
-      body: 'An interpretive system - read the body before prescribing to it. That principle started with my own body and became a framework for everyone else\'s.',
-      platform: 'Threads + Instagram',
+      body: "An interpretive system - read the body before prescribing to it. That principle started with my own body and became a framework for everyone else's.",
     },
   ]
 
-  const pillarColors: Record<string, string> = {
-    Positioning: 'teal',
-    Thinking:    'violet',
-    Identity:    'amber',
-    'Body Recode': 'orange',
+  const pillar1Scripts: Script[] = [
+    {
+      id: 'p1a', type: 'Contrarian', pillar: 'Body', pillarColor: 'teal', platform: 'Threads',
+      hook: 'The body is not broken. It is being misread.',
+      body: "20 years in this industry. The bodies that weren't responding weren't failing - they were communicating. Most coaches don't know how to listen.",
+    },
+    {
+      id: 'p1b', type: 'Observation', pillar: 'Body', pillarColor: 'teal', platform: 'Threads',
+      hook: "You can't out-train a nervous system in protection mode.",
+      body: "More sessions. More restriction. More discipline. All of it makes a depleted body worse. The body interprets load as threat when it's already overwhelmed. The answer is never more - it's different.",
+    },
+    {
+      id: 'p1c', type: 'Framework', pillar: 'Body', pillarColor: 'teal', platform: 'Threads + Instagram',
+      hook: 'Three states. One body. Completely different responses to the same training.',
+      copy: "Depleted - protection mode. Adding load makes it worse.\n\nTransitioning - mixed signals. Something is blocking response.\n\nReady - biology is set up to respond.\n\nSame program. Three completely different outcomes depending on which state the person is in.\n\nMost coaches write the program first. I read the state first.",
+    },
+    {
+      id: 'p1d', type: 'Story', pillar: 'Body', pillarColor: 'teal', platform: 'Threads',
+      hook: 'I was medically discharged from the military at 19.',
+      body: "Structural issues in both legs. Years of building toward soldier - gone in a single assessment. That forced me to understand the body in a way no training qualification ever taught me. The setback became the foundation.",
+    },
+    {
+      id: 'p1e', type: 'Contrarian', pillar: 'Body', pillarColor: 'teal', platform: 'Threads',
+      hook: "What 20 years in the industry taught me that no qualification covers.",
+      body: "Qualifications teach you what to prescribe. They don't teach you how to read the person in front of you before you prescribe anything. That's the gap. That's where most coaches fail.",
+    },
+  ]
+
+  const pillar2Scripts: Script[] = [
+    {
+      id: 'p2a', type: 'Contrarian', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads',
+      hook: "Most people don't have a discipline problem. They have a clarity problem.",
+      body: "Discipline applied to the wrong direction is just effort wasted. Before you build the system, you need to know what you're actually solving for.",
+    },
+    {
+      id: 'p2b', type: 'Framework', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads + Instagram',
+      hook: 'Interpretation vs prescription. The difference matters more than most people realise.',
+      copy: "Prescription: here's the plan, follow it.\n\nInterpretation: here's what I see, here's what it means, here's what we do about it.\n\nOne of these adapts. One of these doesn't.\n\nEvery failed coaching relationship I've seen came down to prescription without interpretation.",
+    },
+    {
+      id: 'p2c', type: 'Observation', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads',
+      hook: 'Clarity is upstream of everything.',
+      body: "Performance. Decisions. Relationships. Business. When these break down, most people go looking for a better strategy. The actual problem is almost always upstream - in how the situation was read.",
+    },
+    {
+      id: 'p2d', type: 'Framework', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads',
+      hook: 'Pause. Reflect. Document.',
+      body: "Three steps that separate reactive decisions from structured ones. Most people skip all three. They act on instinct, forget what they observed, and wonder why they keep solving the same problems.",
+    },
+    {
+      id: 'p2e', type: 'Contrarian', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads',
+      hook: 'Pattern recognition is the skill nobody teaches.',
+      body: "It's not intelligence. It's not experience alone. It's the habit of observing before acting - long enough that you start seeing what repeats. Most people are too fast. They act before the pattern is clear.",
+    },
+  ]
+
+  const pillar3Scripts: Script[] = [
+    {
+      id: 'p3a', type: 'Contrarian', pillar: 'AI', pillarColor: 'amber', platform: 'Threads',
+      hook: "AI doesn't make you smarter. It makes your current thinking louder.",
+      body: "If your thinking is structured, AI amplifies structure. If it isn't, AI amplifies noise. The tool is neutral. The input determines the output.",
+    },
+    {
+      id: 'p3b', type: 'Story', pillar: 'AI', pillarColor: 'amber', platform: 'Threads + Instagram',
+      hook: 'Most coaches rent software. I built mine.',
+      copy: "A full coaching and CRM platform. Client assessment. Program generation. Automations. Business dashboard.\n\nBuilt using AI as a co-founder - not a tool.\n\nI didn't write the code. I knew what I was building and why. AI handled the rest.\n\nThe platform is the proof of concept for everything I teach about structured thinking.",
+    },
+    {
+      id: 'p3c', type: 'Framework', pillar: 'AI', pillarColor: 'amber', platform: 'Threads',
+      hook: 'The difference between using AI as a tool and using it as a co-founder.',
+      body: "A tool does what you tell it. A co-founder thinks alongside you. The second one requires you to have structured thinking first - but when you do, the output is completely different.",
+    },
+    {
+      id: 'p3d', type: 'Contrarian', pillar: 'AI', pillarColor: 'amber', platform: 'Threads',
+      hook: "You don't need to know how to code. You need to know what you're building and why.",
+      body: "AI handles the execution. Your job is the thinking, the structure, the direction. Most people get this backwards - they learn the tool before they know the problem.",
+    },
+    {
+      id: 'p3e', type: 'Observation', pillar: 'AI', pillarColor: 'amber', platform: 'Threads',
+      hook: 'Building in public changes how you think.',
+      body: "When you have to explain what you're building, you realise how much of it you haven't fully thought through yet. The documentation is not the output - it's the process.",
+    },
+  ]
+
+  const pillar4Scripts: Script[] = [
+    {
+      id: 'p4a', type: 'Story', pillar: 'Identity', pillarColor: 'orange', platform: 'Threads',
+      hook: "I've rebuilt my identity three times. Each time I thought I was losing. Each time I was building.",
+      body: "Military discharge at 19. Fitness industry exit at 30. End of a 20-year relationship. Each one felt like failure. Each one produced the framework I now teach.",
+    },
+    {
+      id: 'p4b', type: 'Contrarian', pillar: 'Identity', pillarColor: 'orange', platform: 'Threads',
+      hook: 'Rebuilding is not failure. It is the process of building better structure.',
+      body: "The people who never rebuild are the ones who stay attached to a version of themselves that no longer fits. The rebuild is not the problem. The resistance to it is.",
+    },
+    {
+      id: 'p4c', type: 'Observation', pillar: 'Identity', pillarColor: 'orange', platform: 'Threads',
+      hook: 'Identity determines direction. Get the identity wrong and the strategy never lands.',
+      body: "You can have the right method, the right plan, the right resources - and still get nowhere. If the identity underneath doesn't match the direction, the whole thing works against itself.",
+    },
+    {
+      id: 'p4d', type: 'Story', pillar: 'Identity', pillarColor: 'orange', platform: 'Threads + Instagram',
+      hook: "I walked away from a 20-year relationship and had to rebuild self-trust from scratch.",
+      copy: "Not because the relationship was bad. Because I had built my identity so completely around it that when it ended, I didn't know who I was without it.\n\nThat's when I understood performance loss at its deepest level.\n\nPeople don't lose fitness. They lose clarity. They lose direction. They lose the identity that made effort feel worth it.\n\nClarity is upstream of everything.",
+    },
+    {
+      id: 'p4e', type: 'Contrarian', pillar: 'Identity', pillarColor: 'orange', platform: 'Threads',
+      hook: 'Most people try to perform their way out of an identity problem.',
+      body: "More training. More output. More discipline. All applied on top of a foundation that hasn't been examined. The performance doesn't fix the problem. It masks it - until it can't anymore.",
+    },
+  ]
+
+  const videoScripts: Script[] = [
+    {
+      id: 'v1', type: 'Video - 60s', pillar: 'Body', pillarColor: 'teal', platform: 'Instagram Reel',
+      hook: "Here's why your body stopped responding - and it's not what most coaches will tell you.",
+      copy: "Most coaches see a body that's not responding and they add more.\n\nMore training. More restriction. More discipline.\n\nBut here's what's actually happening.\n\nWhen a body is in a depleted state - cortisol elevated, nervous system overloaded, recovery absent - it interprets load as threat.\n\nAnd when the body interprets load as threat, it holds on. It protects.\n\nAdding more makes it worse.\n\nThe answer is interpretation before prescription.\n\nRead the state the body is actually in before deciding what to give it.\n\nThat's what Body Recode is built on. Link in bio to find out which state you're in.",
+    },
+    {
+      id: 'v2', type: 'Video - 60s', pillar: 'Thinking', pillarColor: 'violet', platform: 'Instagram Reel',
+      hook: "The reason most people stay stuck isn't discipline. It's this.",
+      copy: "I've worked with high-functioning people for over 20 years.\n\nMost of them are not unmotivated. Most of them are not lazy.\n\nThey're misdirected.\n\nThey're applying enormous effort to the wrong thing because nobody ever helped them interpret the situation before acting on it.\n\nMost coaching is prescription without interpretation.\n\nHere's the plan. Follow it.\n\nBut if the plan is built on a wrong read of the person in front of you - it doesn't matter how good the plan is.\n\nInterpret first. Prescribe second.\n\nThat's the principle behind everything I build.",
+    },
+    {
+      id: 'v3', type: 'Video - 90s', pillar: 'AI', pillarColor: 'amber', platform: 'Instagram Reel',
+      hook: "I built my own coaching software. No coding background. Here's how.",
+      copy: "I'm a performance coach. Not a developer.\n\nBut I built a full coaching platform - client assessments, program generation, CRM, automations, business dashboard - from scratch.\n\nHow?\n\nI stopped using AI as a tool and started using it as a co-founder.\n\nA tool does what you tell it.\n\nA co-founder thinks alongside you.\n\nThe difference is in how you show up to the conversation.\n\nI didn't say 'write me some code.'\n\nI said - here's the problem, here's the system, here's what it needs to do. Build it with me.\n\nThe result is a platform that runs my entire business.\n\nThat's what the AI Co-Founder Method teaches. Link in bio.",
+    },
+    {
+      id: 'v4', type: 'Video - 60s', pillar: 'Identity', pillarColor: 'orange', platform: 'Instagram Reel',
+      hook: "I've rebuilt my identity three times. Each one produced a framework.",
+      copy: "At 19 I was medically discharged from the military.\n\nI had built my entire identity around becoming a soldier. It was gone overnight.\n\nThat forced me to understand the body differently. The setback became the system.\n\nAt 30 I walked away from the commercial fitness industry.\n\nScale without systems creates noise. I learned that by being inside it.\n\nAnd then I walked away from a 20-year relationship.\n\nAnd had to rebuild self-trust from nothing.\n\nThat's when I understood - people don't lose performance. They lose clarity.\n\nEvery rebuild produced a framework.\n\nBody Recode is all three of them combined.",
+    },
+  ]
+
+  const scriptSections: Record<typeof scriptTab, { label: string; scripts: Script[] }> = {
+    launch:  { label: 'Launch - First 5 Posts', scripts: launchScripts },
+    pillar1: { label: 'Pillar 1 - Body', scripts: pillar1Scripts },
+    pillar2: { label: 'Pillar 2 - Thinking', scripts: pillar2Scripts },
+    pillar3: { label: 'Pillar 3 - AI', scripts: pillar3Scripts },
+    pillar4: { label: 'Pillar 4 - Identity', scripts: pillar4Scripts },
+    video:   { label: 'HeyGen Video Scripts', scripts: videoScripts },
   }
 
+  const current = scriptSections[scriptTab]
+
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
+      {/* Section tabs */}
+      <div className="flex gap-1.5 flex-wrap">
+        {(Object.entries(scriptSections) as [typeof scriptTab, { label: string }][]).map(([k, v]) => (
+          <button
+            key={k}
+            onClick={() => setScriptTab(k)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+              scriptTab === k
+                ? 'bg-teal-500/10 text-teal-400 border-teal-500/30'
+                : 'text-stone-500 border-stone-800 hover:text-stone-300'
+            }`}
+          >{v.label}</button>
+        ))}
+      </div>
+
       <Card>
-        <SectionLabel>First 5 Posts - Launch Sequence</SectionLabel>
-        <p className="text-xs text-stone-500 mb-4">Post these in order before any outreach or promotion begins.</p>
-        <div className="space-y-3">
-          {scripts.map((s, i) => (
+        <SectionLabel>{current.label}</SectionLabel>
+        {scriptTab === 'launch' && <p className="text-xs text-stone-500 mb-4">Post these in order before any outreach or promotion begins.</p>}
+        {scriptTab === 'video' && <p className="text-xs text-stone-500 mb-4">Record using HeyGen avatar. Calm delivery, clean background. 60-90 seconds.</p>}
+        <div className="space-y-2">
+          {current.scripts.map((s, i) => (
             <div key={s.id} className="border border-stone-800 rounded-lg overflow-hidden">
               <button
                 onClick={() => setExpanded(expanded === s.id ? null : s.id)}
-                className="w-full flex items-center justify-between px-4 py-3 hover:bg-stone-900/50 transition-colors"
+                className="w-full flex items-center justify-between px-4 py-3 hover:bg-stone-900/50 transition-colors text-left"
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-stone-600 font-mono w-4">0{i + 1}</span>
-                  <span className="text-sm font-medium text-white">{s.type}</span>
-                  <Tag color={pillarColors[s.pillar] as 'teal' | 'violet' | 'amber' | 'orange'}>{s.pillar}</Tag>
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="text-xs text-stone-600 font-mono shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="text-sm font-medium text-white truncate">{s.hook}</span>
+                  <Tag color={s.pillarColor}>{s.type}</Tag>
                 </div>
-                <span className="text-stone-600 text-xs">{expanded === s.id ? 'hide' : 'view'}</span>
+                <span className="text-stone-600 text-xs shrink-0 ml-2">{expanded === s.id ? 'hide' : 'view'}</span>
               </button>
               {expanded === s.id && (
                 <div className="px-4 pb-4 space-y-3 border-t border-stone-800">
-                  <div className="mt-3">
-                    <p className="text-[10px] uppercase tracking-widest text-stone-600 mb-1">Platform</p>
-                    <p className="text-xs text-stone-400">{s.platform}</p>
+                  <div className="flex items-center gap-3 mt-3">
+                    <Tag color={s.pillarColor}>{s.pillar}</Tag>
+                    <span className="text-xs text-stone-500">{s.platform}</span>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-stone-600 mb-1">Caption</p>
-                    <div className="bg-stone-900 rounded-lg p-3 text-sm text-stone-200 leading-relaxed">
-                      {s.body ? (
-                        <>
-                          <p className="font-medium">{s.hook}</p>
-                          <p className="mt-2 text-stone-400">{s.body}</p>
-                        </>
-                      ) : (
-                        <p className="font-medium">{s.hook}</p>
-                      )}
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="text-[10px] uppercase tracking-widest text-stone-600">Copy</p>
+                      <button
+                        onClick={() => navigator.clipboard.writeText(s.copy ?? [s.hook, s.body].filter(Boolean).join('\n\n'))}
+                        className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
+                      >Copy</button>
+                    </div>
+                    <div className="bg-stone-900 rounded-lg p-3 text-sm text-stone-200 leading-relaxed whitespace-pre-line">
+                      {s.copy ?? [s.hook, s.body].filter(Boolean).join('\n\n')}
                     </div>
                   </div>
                 </div>
               )}
-            </div>
-          ))}
-        </div>
-      </Card>
-
-      <Card>
-        <SectionLabel>HeyGen Video Strategy</SectionLabel>
-        <div className="space-y-3">
-          {[
-            { label: 'Format',       value: 'Talking head, calm delivery, gym or clean background' },
-            { label: 'Length',       value: '60-90 seconds for Reels' },
-            { label: 'Frequency',    value: '1 video per week minimum' },
-            { label: 'Distribution', value: 'Post to @kade_dunstone_, cross-reference relevant Body Recode content' },
-            { label: 'Scripts',      value: 'Written in advance, mapped to content pillars' },
-          ].map(r => (
-            <div key={r.label} className="flex items-start gap-3 py-2 border-b border-stone-800/60 last:border-0">
-              <p className="text-xs text-stone-500 w-28 shrink-0 pt-0.5">{r.label}</p>
-              <p className="text-sm text-stone-300">{r.value}</p>
             </div>
           ))}
         </div>
