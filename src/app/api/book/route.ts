@@ -273,7 +273,6 @@ export async function POST(request: NextRequest) {
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
       subject: `Zoom booked — ${lead.name}`,
-      attachments: [{ filename: 'booking.ics', content: Buffer.from(ics).toString('base64') }],
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
 <body style="margin:0;padding:0;background-color:#0c0a09;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
