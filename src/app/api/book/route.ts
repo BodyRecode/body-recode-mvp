@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
     .insert({
       coach_id: lead.coach_id,
       lead_id: lead.id,
-      type: 'zoom',
+      type: 'zoom1',
       scheduled_at: slotStart.toISOString(),
       duration_minutes: 30,
       meeting_link: meetingLink,
