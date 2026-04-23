@@ -2,11 +2,92 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function BookingActionButtons({ leadId, hasZoomDate }: { leadId: string; hasZoomDate: boolean }) {
+type Step = 'idle' | 'picking' | 'loading-slots' | 'confirming' | 'booking' | 'done' | 'error'
+
+function groupByDay(slots: string[]): Record<string, string[]> {
+  const map: Record<string, string[]> = {}
+  for (const slot of slots) {
+    const brisbane = new Date(new Date(slot).getTime() + 10 * 60 * 60_000)
+    const key = brisbane.toISOString().slice(0, 10)
+    if (!map[key]) map[key] = []
+    map[key].push(slot)
+  }
+  return map
+}
+
+function formatTime(iso: string) {
+  return new Date(iso).toLocaleTimeString('en-AU', {
+    hour: 'numeric', minute: '2-digit', hour12: true,
+    timeZone: 'Australia/Brisbane',
+  })
+}
+
+function formatDay(dateKey: string) {
+  const d = new Date(dateKey + 'T00:00:00+10:00')
+  return d.toLocaleDateString('en-AU', {
+    weekday: 'short', day: 'numeric', month: 'short',
+    timeZone: 'Australia/Brisbane',
+  })
+}
+
+export default function BookingActionButtons({
+  leadId,
+  leadName,
+  leadEmail,
+  hasZoomDate,
+}: {
+  leadId: string
+  leadName: string
+  leadEmail?: string
+  hasZoomDate: boolean
+}) {
   const router = useRouter()
+  const [step, setStep] = useState<Step>('idle')
+  const [slots, setSlots] = useState<string[]>([])
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
+  const [errorMsg, setErrorMsg] = useState('')
+
   const [linkState, setLinkState] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle')
   const [confirmState, setConfirmState] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle')
-  const [errorMsg, setErrorMsg] = useState('')
+
+  async function openSlotPicker() {
+    setStep('loading-slots')
+    setSelectedSlot(null)
+    setErrorMsg('')
+    try {
+      const res = await fetch('/api/booking-slots?days=14')
+      const data = await res.json()
+      setSlots(Array.isArray(data) ? data : [])
+      setStep('picking')
+    } catch {
+      setErrorMsg('Could not load available slots.')
+      setStep('error')
+    }
+  }
+
+  async function confirmBooking() {
+    if (!selectedSlot || !leadName || !leadEmail) return
+    setStep('booking')
+    setErrorMsg('')
+    try {
+      const res = await fetch('/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: leadName, email: leadEmail, slot: selectedSlot }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setErrorMsg(data.error ?? 'Booking failed.')
+        setStep('error')
+        return
+      }
+      setStep('done')
+      router.refresh()
+    } catch {
+      setErrorMsg('Something went wrong.')
+      setStep('error')
+    }
+  }
 
   async function sendBookingLink() {
     setLinkState('loading')
@@ -48,26 +129,132 @@ export default function BookingActionButtons({ leadId, hasZoomDate }: { leadId: 
     }
   }
 
+  const grouped = groupByDay(slots)
+  const days = Object.keys(grouped).sort()
+
+  const selectedDate = selectedSlot
+    ? new Date(selectedSlot).toLocaleDateString('en-AU', {
+        weekday: 'long', day: 'numeric', month: 'long',
+        timeZone: 'Australia/Brisbane',
+      })
+    : null
+  const selectedTime = selectedSlot ? formatTime(selectedSlot) : null
+
   return (
     <div className="space-y-2">
-      <button
-        onClick={sendBookingLink}
-        disabled={linkState === 'loading'}
-        className="w-full text-left px-4 py-3 rounded-lg border border-stone-700 text-sm font-medium text-stone-300 hover:border-stone-500 hover:text-white transition-colors disabled:opacity-50"
-      >
-        {linkState === 'loading' ? 'Sending...' : linkState === 'sent' ? 'Booking link sent ✓' : linkState === 'error' ? 'Failed to send' : 'Send booking link'}
-      </button>
-      <button
-        onClick={sendConfirmation}
-        disabled={confirmState === 'loading' || !hasZoomDate}
-        title={!hasZoomDate ? 'Set a Zoom date in Actions first' : undefined}
-        className="w-full text-left px-4 py-3 rounded-lg border border-stone-700 text-sm font-medium text-stone-300 hover:border-stone-500 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {confirmState === 'loading' ? 'Sending...' : confirmState === 'sent' ? 'Confirmation sent ✓' : confirmState === 'error' ? (errorMsg || 'Failed to send') : 'Send booking confirmation'}
-      </button>
-      {!hasZoomDate && (
-        <p className="text-xs text-stone-600">Set a Zoom date in Actions before sending the confirmation.</p>
+
+      {/* Book a call — coach-side slot picker */}
+      {step === 'idle' && (
+        <button
+          onClick={openSlotPicker}
+          className="w-full text-left px-4 py-3 rounded-lg border border-stone-700 text-sm font-medium text-stone-300 hover:border-stone-500 hover:text-white transition-colors"
+        >
+          Book a call
+        </button>
       )}
+
+      {step === 'loading-slots' && (
+        <div className="px-4 py-3 rounded-lg border border-stone-700 text-sm text-stone-500">
+          Loading slots...
+        </div>
+      )}
+
+      {step === 'picking' && (
+        <div className="rounded-lg border border-stone-700 bg-stone-950 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider">Pick a time</p>
+            <button onClick={() => setStep('idle')} className="text-xs text-stone-600 hover:text-stone-400 transition-colors">Cancel</button>
+          </div>
+          {days.length === 0 ? (
+            <p className="text-xs text-stone-500">No available slots in the next 14 days. Check your availability settings.</p>
+          ) : (
+            <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
+              {days.map(day => (
+                <div key={day}>
+                  <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1.5">{formatDay(day)}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {grouped[day].map(slot => (
+                      <button
+                        key={slot}
+                        onClick={() => { setSelectedSlot(slot); setStep('confirming') }}
+                        className="px-3 py-1.5 text-xs font-medium rounded-md border border-stone-700 text-stone-300 hover:border-teal-500 hover:text-teal-400 transition-colors"
+                      >
+                        {formatTime(slot)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {step === 'confirming' && selectedSlot && (
+        <div className="rounded-lg border border-stone-700 bg-stone-950 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider">Confirm booking</p>
+            <button onClick={() => setStep('picking')} className="text-xs text-stone-600 hover:text-stone-400 transition-colors">Back</button>
+          </div>
+          <p className="text-sm font-semibold text-white mb-0.5">{selectedDate}</p>
+          <p className="text-xs text-stone-400 mb-4">{selectedTime} Brisbane · 30 min · {leadName}</p>
+          <button
+            onClick={confirmBooking}
+            className="w-full px-4 py-2.5 rounded-lg bg-teal-500 hover:bg-teal-400 text-black text-sm font-bold transition-colors"
+          >
+            Confirm
+          </button>
+        </div>
+      )}
+
+      {step === 'booking' && (
+        <div className="px-4 py-3 rounded-lg border border-stone-700 text-sm text-stone-500">
+          Booking...
+        </div>
+      )}
+
+      {step === 'done' && (
+        <div className="px-4 py-3 rounded-lg border border-teal-400/20 bg-teal-400/5 text-sm font-medium text-teal-400">
+          Booked — confirmation sent to {leadEmail}
+        </div>
+      )}
+
+      {step === 'error' && (
+        <div className="space-y-2">
+          <div className="px-4 py-3 rounded-lg border border-red-500/30 bg-red-500/5 text-sm text-red-400">
+            {errorMsg || 'Something went wrong.'}
+          </div>
+          <button onClick={() => setStep('idle')} className="text-xs text-stone-500 hover:text-stone-300 transition-colors">Try again</button>
+        </div>
+      )}
+
+      {/* Send booking link */}
+      {(step === 'idle' || step === 'done') && (
+        <button
+          onClick={sendBookingLink}
+          disabled={linkState === 'loading'}
+          className="w-full text-left px-4 py-3 rounded-lg border border-stone-700 text-sm font-medium text-stone-300 hover:border-stone-500 hover:text-white transition-colors disabled:opacity-50"
+        >
+          {linkState === 'loading' ? 'Sending...' : linkState === 'sent' ? 'Booking link sent ✓' : linkState === 'error' ? 'Failed to send' : 'Send booking link'}
+        </button>
+      )}
+
+      {/* Send booking confirmation */}
+      {(step === 'idle' || step === 'done') && (
+        <button
+          onClick={sendConfirmation}
+          disabled={confirmState === 'loading' || !hasZoomDate}
+          title={!hasZoomDate ? 'Book a call or set a Zoom date in Actions first' : undefined}
+          className="w-full text-left px-4 py-3 rounded-lg border border-stone-700 text-sm font-medium text-stone-300 hover:border-stone-500 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {confirmState === 'loading' ? 'Sending...' : confirmState === 'sent' ? 'Confirmation sent ✓' : confirmState === 'error' ? (errorMsg || 'Failed to send') : 'Send booking confirmation'}
+        </button>
+      )}
+
+      {!hasZoomDate && (step === 'idle' || step === 'done') && (
+        <p className="text-xs text-stone-600">Use &quot;Book a call&quot; above, or set a Zoom date in Actions before sending the confirmation.</p>
+      )}
+
       {(linkState === 'error' || confirmState === 'error') && errorMsg && (
         <p className="text-xs text-red-400">{errorMsg}</p>
       )}
