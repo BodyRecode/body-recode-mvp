@@ -60,6 +60,18 @@ export default function KadePage() {
           </a>
 
 
+          {/* Contact */}
+          <a
+            href="mailto:kade@bodyrecode.au"
+            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-stone-600 rounded-xl px-5 py-4 transition-all"
+          >
+            <div>
+              <p className="text-sm font-semibold text-white transition-colors">Get in touch</p>
+              <p className="text-xs text-stone-500 mt-0.5">kade@bodyrecode.au</p>
+            </div>
+            <span className="text-stone-600 group-hover:text-stone-400 transition-colors text-lg">→</span>
+          </a>
+
         </div>
 
         {/* Footer */}
