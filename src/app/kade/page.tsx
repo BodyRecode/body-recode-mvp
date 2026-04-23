@@ -38,25 +38,25 @@ export default function KadePage() {
           {/* Body Recode Platform */}
           <a
             href="https://bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-violet-500/40 hover:bg-violet-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-teal-500/40 hover:bg-teal-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-violet-400 transition-colors">Body Recode™</p>
+              <p className="text-sm font-semibold text-white group-hover:text-teal-400 transition-colors">Body Recode™</p>
               <p className="text-xs text-stone-500 mt-0.5">Biological interpretation platform</p>
             </div>
-            <span className="text-stone-600 group-hover:text-violet-400 transition-colors text-lg">→</span>
+            <span className="text-stone-600 group-hover:text-teal-400 transition-colors text-lg">→</span>
           </a>
 
           {/* AI Co-Founder Method */}
           <a
             href="https://aicofoundermethod.com"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-amber-500/40 hover:bg-amber-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-violet-500/40 hover:bg-violet-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-amber-400 transition-colors">AI Co-Founder Method</p>
+              <p className="text-sm font-semibold text-white group-hover:text-violet-400 transition-colors">AI Co-Founder Method</p>
               <p className="text-xs text-stone-500 mt-0.5">Build with AI as your co-founder</p>
             </div>
-            <span className="text-stone-600 group-hover:text-amber-400 transition-colors text-lg">→</span>
+            <span className="text-stone-600 group-hover:text-violet-400 transition-colors text-lg">→</span>
           </a>
 
           {/* Contact */}
