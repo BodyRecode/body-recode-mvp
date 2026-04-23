@@ -8,12 +8,12 @@ type CheckStatus = 'ok' | 'fixed' | 'failed' | 'info'
 type CheckResult = {
   name: string
   status: CheckStatus
-  detail: string           // what was found
-  action?: string          // what the system did to fix it (if anything)
-  manualFix?: string       // what Kade needs to do if it couldn't be auto-fixed
+  detail: string
+  action?: string
+  manualFix?: string
 }
 
-// ─── Checks + auto-fixes ───────────────────────────────────────────────────
+// ─── Infrastructure checks ────────────────────────────────────────────────
 
 async function checkDatabase(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
   try {
@@ -69,7 +69,7 @@ async function checkAvailabilitySlots(admin: ReturnType<typeof createAdminClient
         name: 'Booking Slots',
         status: 'failed',
         detail: 'Availability rules exist but no slots are showing for the next 7 days.',
-        manualFix: 'Go to Dashboard → Business → Availability and check for blocked times or gaps in your schedule that cover the next 7 days.',
+        manualFix: 'Go to Dashboard → Business → Availability and check for blocked times or gaps in your schedule.',
       }
     }
 
@@ -108,7 +108,7 @@ async function checkZoom(): Promise<CheckResult> {
         name: 'Zoom',
         status: 'failed',
         detail: `Credentials rejected by Zoom: ${err}`,
-        manualFix: 'Go to marketplace.zoom.us → your Server-to-Server OAuth app → check the credentials are still active and the app has not been deactivated.',
+        manualFix: 'Go to marketplace.zoom.us → your Server-to-Server OAuth app → check the credentials are still active.',
       }
     }
 
@@ -124,8 +124,6 @@ async function checkZoom(): Promise<CheckResult> {
 }
 
 async function checkResend(): Promise<CheckResult> {
-  // Send-only key — management API calls will be rejected.
-  // The fact this email arrives is the proof it is working.
   if (!process.env.RESEND_API_KEY) {
     return {
       name: 'Email (Resend)',
@@ -140,6 +138,410 @@ async function checkResend(): Promise<CheckResult> {
     detail: 'Key present — delivery confirmed by receipt of this email',
   }
 }
+
+// ─── Write smoke tests ────────────────────────────────────────────────────
+// Each test actually inserts a record and immediately deletes it.
+// This catches schema mismatches, constraint violations, and permission
+// failures that a read-only check cannot detect.
+
+async function checkBookingWrite(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  const SENTINEL = 'health-check-sentinel'
+  try {
+    // Need a real lead_id to satisfy the FK — grab any existing lead
+    const { data: anyLead } = await admin.from('leads').select('id').limit(1).maybeSingle()
+    if (!anyLead) {
+      return { name: 'Booking Write', status: 'info', detail: 'No leads in the system yet — skipping write test' }
+    }
+
+    const futureTime = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+    const { data, error } = await admin
+      .from('be_bookings')
+      .insert({
+        lead_id: anyLead.id,
+        type: 'zoom1',
+        scheduled_at: futureTime,
+        duration_minutes: 30,
+        status: 'scheduled',
+        notes: SENTINEL,
+      })
+      .select('id')
+      .single()
+
+    if (error || !data) {
+      return {
+        name: 'Booking Write',
+        status: 'failed',
+        detail: `Insert failed: ${error?.message ?? 'no data returned'}`,
+        manualFix: 'Check the be_bookings table schema in Supabase — a column constraint or RLS policy may be blocking inserts.',
+      }
+    }
+
+    await admin.from('be_bookings').delete().eq('id', data.id)
+    return { name: 'Booking Write', status: 'ok', detail: 'Insert and delete succeeded' }
+  } catch (e) {
+    return {
+      name: 'Booking Write',
+      status: 'failed',
+      detail: String(e),
+      manualFix: 'Check the be_bookings table in Supabase for schema or permission issues.',
+    }
+  }
+}
+
+async function checkLeadWrite(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  const SENTINEL_EMAIL = 'healthcheck-sentinel@bodyrecode.internal'
+  try {
+    // Clean up any leftover sentinel from a previous failed run
+    await admin.from('leads').delete().eq('email', SENTINEL_EMAIL)
+
+    const { data, error } = await admin
+      .from('leads')
+      .insert({
+        name: 'Health Check Sentinel',
+        email: SENTINEL_EMAIL,
+        source: 'direct',
+        status: 'new_check_in',
+      })
+      .select('id')
+      .single()
+
+    if (error || !data) {
+      return {
+        name: 'Lead Write',
+        status: 'failed',
+        detail: `Insert failed: ${error?.message ?? 'no data returned'}`,
+        manualFix: 'Check the leads table schema in Supabase — a column constraint or required field may be missing.',
+      }
+    }
+
+    await admin.from('leads').delete().eq('id', data.id)
+    return { name: 'Lead Write', status: 'ok', detail: 'Insert and delete succeeded' }
+  } catch (e) {
+    return {
+      name: 'Lead Write',
+      status: 'failed',
+      detail: String(e),
+      manualFix: 'Check the leads table in Supabase for schema or permission issues.',
+    }
+  }
+}
+
+async function checkIntakeInvitationWrite(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const { data: anyClient } = await admin.from('clients').select('id').limit(1).maybeSingle()
+    if (!anyClient) {
+      return { name: 'Intake Invitation Write', status: 'info', detail: 'No clients in the system yet — skipping write test' }
+    }
+
+    const { data, error } = await admin
+      .from('intake_invitations')
+      .insert({ client_id: anyClient.id, status: 'pending' })
+      .select('id')
+      .single()
+
+    if (error || !data) {
+      return {
+        name: 'Intake Invitation Write',
+        status: 'failed',
+        detail: `Insert failed: ${error?.message ?? 'no data returned'}`,
+        manualFix: 'Check the intake_invitations table schema in Supabase.',
+      }
+    }
+
+    await admin.from('intake_invitations').delete().eq('id', data.id)
+    return { name: 'Intake Invitation Write', status: 'ok', detail: 'Insert and delete succeeded' }
+  } catch (e) {
+    return {
+      name: 'Intake Invitation Write',
+      status: 'failed',
+      detail: String(e),
+      manualFix: 'Check the intake_invitations table in Supabase for schema or permission issues.',
+    }
+  }
+}
+
+async function checkBaselineWrite(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const { data: anyClient } = await admin.from('clients').select('id').limit(1).maybeSingle()
+    if (!anyClient) {
+      return { name: 'Baseline Write', status: 'info', detail: 'No clients in the system yet — skipping write test' }
+    }
+
+    const { data, error } = await admin
+      .from('baselines')
+      .insert({ client_id: anyClient.id })
+      .select('id')
+      .single()
+
+    if (error || !data) {
+      return {
+        name: 'Baseline Write',
+        status: 'failed',
+        detail: `Insert failed: ${error?.message ?? 'no data returned'}`,
+        manualFix: 'Check the baselines table schema in Supabase.',
+      }
+    }
+
+    await admin.from('baselines').delete().eq('id', data.id)
+    return { name: 'Baseline Write', status: 'ok', detail: 'Insert and delete succeeded' }
+  } catch (e) {
+    return {
+      name: 'Baseline Write',
+      status: 'failed',
+      detail: String(e),
+      manualFix: 'Check the baselines table in Supabase for schema or permission issues.',
+    }
+  }
+}
+
+async function checkWeeklyCheckinWrite(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const { data: anyClient } = await admin.from('clients').select('id').limit(1).maybeSingle()
+    if (!anyClient) {
+      return { name: 'Weekly Check-In Write', status: 'info', detail: 'No clients in the system yet — skipping write test' }
+    }
+
+    const { data, error } = await admin
+      .from('weekly_checkins')
+      .insert({
+        client_id: anyClient.id,
+        week_number: 9999,
+        form_type: 'A',
+        submitted_at: new Date().toISOString(),
+      })
+      .select('id')
+      .single()
+
+    if (error || !data) {
+      return {
+        name: 'Weekly Check-In Write',
+        status: 'failed',
+        detail: `Insert failed: ${error?.message ?? 'no data returned'}`,
+        manualFix: 'Check the weekly_checkins table schema in Supabase.',
+      }
+    }
+
+    await admin.from('weekly_checkins').delete().eq('id', data.id)
+    return { name: 'Weekly Check-In Write', status: 'ok', detail: 'Insert and delete succeeded' }
+  } catch (e) {
+    return {
+      name: 'Weekly Check-In Write',
+      status: 'failed',
+      detail: String(e),
+      manualFix: 'Check the weekly_checkins table in Supabase for schema or permission issues.',
+    }
+  }
+}
+
+// ─── Data integrity checks ────────────────────────────────────────────────
+
+async function checkClientsWithoutIntakeInvitation(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const { data: clients, error } = await admin
+      .from('clients')
+      .select('id, name, onboarding_token')
+      .not('onboarding_token', 'is', null)
+
+    if (error) {
+      return { name: 'Clients — Intake Invitation', status: 'info', detail: 'Could not query clients table' }
+    }
+
+    if (!clients || clients.length === 0) {
+      return { name: 'Clients — Intake Invitation', status: 'ok', detail: 'No clients in the system yet' }
+    }
+
+    const { data: invitations } = await admin
+      .from('intake_invitations')
+      .select('client_id')
+
+    const clientsWithInvite = new Set((invitations ?? []).map((i: { client_id: string }) => i.client_id))
+    const missing = clients.filter(c => !clientsWithInvite.has(c.id))
+
+    if (missing.length > 0) {
+      return {
+        name: 'Clients — Intake Invitation',
+        status: 'failed',
+        detail: `${missing.length} client${missing.length === 1 ? '' : 's'} have a portal but no intake invitation: ${missing.map(c => c.name).join(', ')}`,
+        manualFix: 'Go to Dashboard → each affected client → create a new intake invitation from the client profile.',
+      }
+    }
+
+    return { name: 'Clients — Intake Invitation', status: 'ok', detail: `All ${clients.length} portal client${clients.length === 1 ? '' : 's'} have an intake invitation` }
+  } catch (e) {
+    return { name: 'Clients — Intake Invitation', status: 'info', detail: String(e) }
+  }
+}
+
+async function checkActiveClientsWithoutProgram(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const { data: activeClients, error } = await admin
+      .from('clients')
+      .select('id, name')
+      .not('coaching_started_at', 'is', null)
+
+    if (error || !activeClients || activeClients.length === 0) {
+      return { name: 'Active Clients — Programs', status: 'ok', detail: 'No active clients in the system yet' }
+    }
+
+    const { data: programs } = await admin
+      .from('programs')
+      .select('client_id')
+      .eq('is_active', true)
+
+    const clientsWithProgram = new Set((programs ?? []).map((p: { client_id: string }) => p.client_id))
+    const missing = activeClients.filter(c => !clientsWithProgram.has(c.id))
+
+    if (missing.length > 0) {
+      return {
+        name: 'Active Clients — Programs',
+        status: 'failed',
+        detail: `${missing.length} active client${missing.length === 1 ? '' : 's'} have no training program: ${missing.map(c => c.name).join(', ')}`,
+        manualFix: 'Go to Dashboard → each affected client → generate a training program.',
+      }
+    }
+
+    return { name: 'Active Clients — Programs', status: 'ok', detail: `All ${activeClients.length} active client${activeClients.length === 1 ? '' : 's'} have a training program` }
+  } catch (e) {
+    return { name: 'Active Clients — Programs', status: 'info', detail: String(e) }
+  }
+}
+
+async function checkActiveClientsWithoutNutrition(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const { data: activeClients, error } = await admin
+      .from('clients')
+      .select('id, name')
+      .not('coaching_started_at', 'is', null)
+
+    if (error || !activeClients || activeClients.length === 0) {
+      return { name: 'Active Clients — Nutrition', status: 'ok', detail: 'No active clients in the system yet' }
+    }
+
+    const { data: plans } = await admin
+      .from('nutrition_plans')
+      .select('client_id')
+      .eq('status', 'active')
+
+    const clientsWithPlan = new Set((plans ?? []).map((p: { client_id: string }) => p.client_id))
+    const missing = activeClients.filter(c => !clientsWithPlan.has(c.id))
+
+    if (missing.length > 0) {
+      return {
+        name: 'Active Clients — Nutrition',
+        status: 'failed',
+        detail: `${missing.length} active client${missing.length === 1 ? '' : 's'} have no nutrition plan: ${missing.map(c => c.name).join(', ')}`,
+        manualFix: 'Go to Dashboard → each affected client → generate a nutrition plan.',
+      }
+    }
+
+    return { name: 'Active Clients — Nutrition', status: 'ok', detail: `All ${activeClients.length} active client${activeClients.length === 1 ? '' : 's'} have a nutrition plan` }
+  } catch (e) {
+    return { name: 'Active Clients — Nutrition', status: 'info', detail: String(e) }
+  }
+}
+
+async function checkStuckLeads(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+    const { data, error } = await admin
+      .from('leads')
+      .select('id, name, created_at')
+      .eq('status', 'zoom_1_booked')
+      .is('zoom_date', null)
+      .lt('created_at', sevenDaysAgo)
+
+    if (error) {
+      return { name: 'Leads — Stuck Bookings', status: 'info', detail: 'Could not query leads table' }
+    }
+
+    const stuck = data ?? []
+    if (stuck.length > 0) {
+      return {
+        name: 'Leads — Stuck Bookings',
+        status: 'failed',
+        detail: `${stuck.length} lead${stuck.length === 1 ? '' : 's'} marked as zoom_1_booked for 7+ days but have no Zoom date set: ${stuck.map(l => l.name).join(', ')}`,
+        manualFix: 'Go to Dashboard → Leads → check each affected lead. Either set their Zoom date manually in Actions, or update their status.',
+      }
+    }
+
+    return { name: 'Leads — Stuck Bookings', status: 'ok', detail: 'No leads stuck in booked status without a date' }
+  } catch (e) {
+    return { name: 'Leads — Stuck Bookings', status: 'info', detail: String(e) }
+  }
+}
+
+async function checkPendingIntakes(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const tenDaysAgo = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
+    const { data, error } = await admin
+      .from('intake_invitations')
+      .select('id, client_id, created_at, clients(name)')
+      .eq('status', 'pending')
+      .lt('created_at', tenDaysAgo)
+
+    if (error) {
+      return { name: 'Intake — Pending 10+ Days', status: 'info', detail: 'Could not query intake_invitations table' }
+    }
+
+    const stale = data ?? []
+    if (stale.length > 0) {
+      const names = stale.map((i: { clients: { name: string }[] | { name: string } | null }) => {
+        const c = i.clients
+        if (!c) return 'Unknown'
+        return Array.isArray(c) ? (c[0]?.name ?? 'Unknown') : c.name
+      }).join(', ')
+      return {
+        name: 'Intake — Pending 10+ Days',
+        status: 'failed',
+        detail: `${stale.length} client${stale.length === 1 ? '' : 's'} have not completed their intake form after 10+ days: ${names}`,
+        manualFix: 'Follow up with each client via WhatsApp to complete their intake form.',
+      }
+    }
+
+    return { name: 'Intake — Pending 10+ Days', status: 'ok', detail: 'All intake forms completed or recently sent' }
+  } catch (e) {
+    return { name: 'Intake — Pending 10+ Days', status: 'info', detail: String(e) }
+  }
+}
+
+async function checkClientsWithMissedCheckins(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const fourteenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString()
+
+    const { data: activeClients, error } = await admin
+      .from('clients')
+      .select('id, name, coaching_started_at')
+      .not('coaching_started_at', 'is', null)
+      .lt('coaching_started_at', fourteenDaysAgo)
+
+    if (error || !activeClients || activeClients.length === 0) {
+      return { name: 'Active Clients — Check-Ins', status: 'ok', detail: 'No clients have been active for 14+ days yet' }
+    }
+
+    const { data: recentCheckins } = await admin
+      .from('weekly_checkins')
+      .select('client_id, submitted_at')
+      .gte('submitted_at', fourteenDaysAgo)
+
+    const clientsWithRecentCheckin = new Set((recentCheckins ?? []).map((c: { client_id: string }) => c.client_id))
+    const missing = activeClients.filter(c => !clientsWithRecentCheckin.has(c.id))
+
+    if (missing.length > 0) {
+      return {
+        name: 'Active Clients — Check-Ins',
+        status: 'failed',
+        detail: `${missing.length} active client${missing.length === 1 ? '' : 's'} have not submitted a check-in in 14+ days: ${missing.map(c => c.name).join(', ')}`,
+        manualFix: 'Follow up with each client via WhatsApp to check if they are engaged and completing their check-ins.',
+      }
+    }
+
+    return { name: 'Active Clients — Check-Ins', status: 'ok', detail: `All ${activeClients.length} active client${activeClients.length === 1 ? '' : 's'} have checked in within the last 14 days` }
+  } catch (e) {
+    return { name: 'Active Clients — Check-Ins', status: 'info', detail: String(e) }
+  }
+}
+
+// ─── Automation checks ────────────────────────────────────────────────────
 
 async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
   try {
@@ -159,7 +561,6 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
       }
     }
 
-    // Missing entirely — create it
     if (!workflow) {
       const seeded = await resyncScorecardWorkflow(admin)
       if (seeded) {
@@ -178,7 +579,6 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
       }
     }
 
-    // Exists but inactive
     if (!workflow.is_active) {
       await admin.from('be_workflows').update({ is_active: true }).eq('id', workflow.id)
       return {
@@ -194,7 +594,6 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
       .select('id', { count: 'exact', head: true })
       .eq('workflow_id', workflow.id)
 
-    // Wrong step count means stale content — resync
     if (stepCount !== 9) {
       const seeded = await resyncScorecardWorkflow(admin, workflow.id)
       if (seeded) {
@@ -231,26 +630,7 @@ async function resyncScorecardWorkflow(
       position: 1, type: 'action', action_type: 'send_email',
       config: {
         subject: 'Your Body State result',
-        body: `Hi {{first_name}},
-
-Your scorecard result: {{scorecard_score}}/15. Body state: {{scorecard_state}}.
-
-That result tells you one specific thing: which state your body is currently in.
-
-That state determines what works. It also determines what makes things worse. Most people apply the same approach regardless of their state. That is why most people stay stuck.
-
-If you want to understand exactly what is driving your result and what needs to change first, book a free 30-minute call. We go through your scorecard together, identify the specific bottleneck, and map out the first steps.
-
-Book here: https://bodyrecode.au/book
-
----
-
-Want the written breakdown first? The Body Decode Report ($37) covers what your {{scorecard_state}} result means biologically, what is actively working against you right now, and what needs to change first.
-
-Get your report here: https://bodyrecode.au/get-report
-
-Kade
-Body Recode`,
+        body: `Hi {{first_name}},\n\nYour scorecard result: {{scorecard_score}}/15. Body state: {{scorecard_state}}.\n\nThat result tells you one specific thing: which state your body is currently in.\n\nThat state determines what works. It also determines what makes things worse. Most people apply the same approach regardless of their state. That is why most people stay stuck.\n\nIf you want to understand exactly what is driving your result and what needs to change first, book a free 30-minute call. We go through your scorecard together, identify the specific bottleneck, and map out the first steps.\n\nBook here: https://bodyrecode.au/book\n\n---\n\nWant the written breakdown first? The Body Decode Report ($37) covers what your {{scorecard_state}} result means biologically, what is actively working against you right now, and what needs to change first.\n\nGet your report here: https://bodyrecode.au/get-report\n\nKade\nBody Recode`,
       },
     },
     { position: 2, type: 'wait', action_type: null, config: { unit: 'days', amount: '2' } },
@@ -258,22 +638,7 @@ Body Recode`,
       position: 3, type: 'action', action_type: 'send_email',
       config: {
         subject: 'What your {{scorecard_state}} result actually means',
-        body: `Hi {{first_name}},
-
-Your score was {{scorecard_score}}/15. Body state: {{scorecard_state}}.
-
-Most people look at that result and think they need to train harder or eat less. That is usually the wrong call.
-
-Your body state is a biological signal. It tells you how your body is currently handling load, how well it is recovering, and how much capacity it has to respond right now. The right prescription depends entirely on that state.
-
-The Body Decode Report goes through exactly what {{scorecard_state}} means for your training, your nutrition, and your fat loss. It is written specifically to your result, not a generic guide.
-
-$37. Delivered to your inbox within minutes.
-
-Get your report here: https://bodyrecode.au/get-report
-
-Kade
-Body Recode`,
+        body: `Hi {{first_name}},\n\nYour score was {{scorecard_score}}/15. Body state: {{scorecard_state}}.\n\nMost people look at that result and think they need to train harder or eat less. That is usually the wrong call.\n\nYour body state is a biological signal. It tells you how your body is currently handling load, how well it is recovering, and how much capacity it has to respond right now. The right prescription depends entirely on that state.\n\nThe Body Decode Report goes through exactly what {{scorecard_state}} means for your training, your nutrition, and your fat loss. It is written specifically to your result, not a generic guide.\n\n$37. Delivered to your inbox within minutes.\n\nGet your report here: https://bodyrecode.au/get-report\n\nKade\nBody Recode`,
       },
     },
     { position: 4, type: 'wait', action_type: null, config: { unit: 'days', amount: '2' } },
@@ -281,22 +646,7 @@ Body Recode`,
       position: 5, type: 'action', action_type: 'send_email',
       config: {
         subject: 'Re: your Body State Scorecard',
-        body: `Hi {{first_name}},
-
-Following up on your scorecard.
-
-The most common thing I hear after someone takes it: "That finally explains why nothing has been working."
-
-Knowing your state is the first piece. The second is knowing exactly what to do about it. That is what the call is for.
-
-30 minutes. Free. No pitch.
-
-Book here: https://bodyrecode.au/book
-
-If the timing is not right, no problem. The link will be there when you are ready.
-
-Kade
-Body Recode`,
+        body: `Hi {{first_name}},\n\nFollowing up on your scorecard.\n\nThe most common thing I hear after someone takes it: "That finally explains why nothing has been working."\n\nKnowing your state is the first piece. The second is knowing exactly what to do about it. That is what the call is for.\n\n30 minutes. Free. No pitch.\n\nBook here: https://bodyrecode.au/book\n\nIf the timing is not right, no problem. The link will be there when you are ready.\n\nKade\nBody Recode`,
       },
     },
     { position: 6, type: 'wait', action_type: null, config: { unit: 'days', amount: '4' } },
@@ -304,20 +654,7 @@ Body Recode`,
       position: 7, type: 'action', action_type: 'send_email',
       config: {
         subject: 'The prescription problem',
-        body: `Hi {{first_name}},
-
-Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state does not factor into it at all.
-
-Your scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.
-
-A program built for a Ready state will not work for a Depleted state. That is not a motivation problem. That is a prescription problem.
-
-That is exactly what the call addresses. Building the approach around your actual state, not a generic template.
-
-Book here: https://bodyrecode.au/book
-
-Kade
-Body Recode`,
+        body: `Hi {{first_name}},\n\nMost coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state does not factor into it at all.\n\nYour scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.\n\nA program built for a Ready state will not work for a Depleted state. That is not a motivation problem. That is a prescription problem.\n\nThat is exactly what the call addresses. Building the approach around your actual state, not a generic template.\n\nBook here: https://bodyrecode.au/book\n\nKade\nBody Recode`,
       },
     },
     { position: 8, type: 'wait', action_type: null, config: { unit: 'days', amount: '5' } },
@@ -325,19 +662,7 @@ Body Recode`,
       position: 9, type: 'action', action_type: 'send_email',
       config: {
         subject: 'Last one from me, {{first_name}}',
-        body: `Hi {{first_name}},
-
-Last email from me on this.
-
-Your scorecard result is still there whenever you want to act on it. The call is still available. The report is still there if you want the written breakdown first.
-
-No follow-up after this.
-
-Book a call: https://bodyrecode.au/book
-Get the report: https://bodyrecode.au/get-report
-
-Kade
-Body Recode`,
+        body: `Hi {{first_name}},\n\nLast email from me on this.\n\nYour scorecard result is still there whenever you want to act on it. The call is still available. The report is still there if you want the written breakdown first.\n\nNo follow-up after this.\n\nBook a call: https://bodyrecode.au/book\nGet the report: https://bodyrecode.au/get-report\n\nKade\nBody Recode`,
       },
     },
   ]
@@ -403,7 +728,6 @@ export async function GET(request: NextRequest) {
 
   const admin = createAdminClient()
 
-  // Run all checks sequentially where fixes depend on DB state, parallel elsewhere
   const [db, slots, zoom, email] = await Promise.all([
     checkDatabase(admin),
     checkAvailabilitySlots(admin),
@@ -411,19 +735,51 @@ export async function GET(request: NextRequest) {
     checkResend(),
   ])
 
-  // These run after DB check since they may write to DB
-  const [automation, funnel] = await Promise.all([
+  const [
+    bookingWrite,
+    leadWrite,
+    intakeWrite,
+    baselineWrite,
+    checkinWrite,
+    clientsIntake,
+    activePrograms,
+    activeNutrition,
+    stuckLeads,
+    pendingIntakes,
+    missedCheckins,
+    automation,
+    funnel,
+  ] = await Promise.all([
+    checkBookingWrite(admin),
+    checkLeadWrite(admin),
+    checkIntakeInvitationWrite(admin),
+    checkBaselineWrite(admin),
+    checkWeeklyCheckinWrite(admin),
+    checkClientsWithoutIntakeInvitation(admin),
+    checkActiveClientsWithoutProgram(admin),
+    checkActiveClientsWithoutNutrition(admin),
+    checkStuckLeads(admin),
+    checkPendingIntakes(admin),
+    checkClientsWithMissedCheckins(admin),
     checkScorecardAutomation(admin),
     checkFunnelActivity(admin),
   ])
 
-  const checks: CheckResult[] = [db, slots, zoom, email, automation, funnel]
+  const checks: CheckResult[] = [
+    // Infrastructure
+    db, slots, zoom, email,
+    // Write smoke tests
+    bookingWrite, leadWrite, intakeWrite, baselineWrite, checkinWrite,
+    // Data integrity
+    clientsIntake, activePrograms, activeNutrition, stuckLeads, pendingIntakes, missedCheckins,
+    // Automation + pipeline
+    automation, funnel,
+  ]
 
   const failures = checks.filter(c => c.status === 'failed')
   const fixes = checks.filter(c => c.status === 'fixed')
   const allGood = failures.length === 0
 
-  // ─── Email ───────────────────────────────────────────────────────────────
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -447,9 +803,12 @@ export async function GET(request: NextRequest) {
       return '#a8a29e'
     }
 
-    const checkRows = checks.map(c => `
+    const sectionHeader = (label: string) =>
+      `<tr><td style="padding:18px 0 6px;"><p style="margin:0;font-size:10px;font-weight:700;color:#3c3835;letter-spacing:0.1em;text-transform:uppercase;">${label}</p></td></tr>`
+
+    const checkRow = (c: CheckResult) => `
       <tr>
-        <td style="padding:14px 0;border-bottom:1px solid #1c1917;">
+        <td style="padding:12px 0;border-bottom:1px solid #1c1917;">
           <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
             ${iconFor(c.status)}
             <span style="font-size:13px;font-weight:600;color:${colorFor(c.status)};">${c.name}</span>
@@ -458,7 +817,18 @@ export async function GET(request: NextRequest) {
           ${c.action ? `<p style="margin:0;font-size:12px;color:#f59e0b;padding-left:18px;">&#9889; ${c.action}</p>` : ''}
           ${c.manualFix ? `<p style="margin:0;font-size:12px;color:#ef4444;padding-left:18px;">Action needed: ${c.manualFix}</p>` : ''}
         </td>
-      </tr>`).join('')
+      </tr>`
+
+    const checkRows = `
+      ${sectionHeader('Infrastructure')}
+      ${[db, slots, zoom, email].map(checkRow).join('')}
+      ${sectionHeader('Write Smoke Tests')}
+      ${[bookingWrite, leadWrite, intakeWrite, baselineWrite, checkinWrite].map(checkRow).join('')}
+      ${sectionHeader('Data Integrity')}
+      ${[clientsIntake, activePrograms, activeNutrition, stuckLeads, pendingIntakes, missedCheckins].map(checkRow).join('')}
+      ${sectionHeader('Automation + Pipeline')}
+      ${[automation, funnel].map(checkRow).join('')}
+    `
 
     const subject = allGood && fixes.length === 0
       ? 'Body Recode - Daily Check: All good'
