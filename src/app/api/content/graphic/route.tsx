@@ -294,53 +294,55 @@ export async function GET(request: NextRequest) {
   }
 
   // ── FOUNDER PROGRAM ─────────────────────────────────────────────
-  // Deep teal background, 20 spots badge, application/trade language
+  // Scarcity-focused: big number, progress bar, minimal copy
   if (style === 'founder') {
+    const takenPct = taken > 0 ? Math.round((taken / 20) * 880) : 0
     return new ImageResponse(
       (
-        <div style={{ width: '1080px', height: '1080px', background: '#0c1614', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '80px 100px', fontFamily: 'sans-serif' }}>
+        <div style={{ width: '1080px', height: '1080px', background: '#0c1614', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '90px 100px', fontFamily: 'sans-serif', position: 'relative' }}>
 
-          {/* Subtle teal top border */}
+          {/* Top teal border */}
           <div style={{ position: 'absolute', top: 0, left: 0, width: '1080px', height: '4px', background: 'linear-gradient(to right, #14b8a6, transparent)' }} />
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {/* 20 spots badge */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '36px' }}>
-              <div style={{ background: 'rgba(20,184,166,0.15)', border: '1px solid rgba(20,184,166,0.35)', borderRadius: '100px', padding: '8px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#14b8a6' }} />
-                <div style={{ fontSize: '26px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Founding Client Program</div>
-              </div>
-              <div style={{ fontSize: '26px', fontWeight: 600, color: taken > 0 ? '#f87171' : '#a8a29e', letterSpacing: '0.06em' }}>
-                {taken > 0 ? `${taken} of 20 positions taken` : '20 spots only'}
-              </div>
+            {/* Label */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '70px' }}>
+              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#14b8a6' }} />
+              <div style={{ fontSize: '28px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Founding Client Program</div>
             </div>
 
-            {/* Headline */}
-            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '28px' }}>
-              {displayText || 'This isn\'t a discount. It\'s a trade.'}
-            </div>
-
-            {/* Sub copy */}
-            {sub && (
-              <div style={{ fontSize: '40px', color: '#a8a29e', lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginBottom: '32px' }}>{sub}</div>
+            {/* Big number */}
+            {taken > 0 ? (
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '0px', marginBottom: '16px' }}>
+                <div style={{ fontSize: '260px', fontWeight: 900, color: '#ffffff', lineHeight: 1, letterSpacing: '-0.04em' }}>{taken}</div>
+                <div style={{ fontSize: '100px', fontWeight: 700, color: 'rgba(255,255,255,0.2)', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '24px' }}>/20</div>
+              </div>
+            ) : (
+              <div style={{ fontSize: '180px', fontWeight: 900, color: '#ffffff', lineHeight: 1, letterSpacing: '-0.04em', marginBottom: '16px' }}>20</div>
             )}
 
-            {/* Trade detail box */}
-            <div style={{ background: 'rgba(20,184,166,0.06)', border: '1px solid rgba(20,184,166,0.2)', borderRadius: '12px', padding: '24px 32px', display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '820px' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                <div style={{ fontSize: '32px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
-                <div style={{ fontSize: '34px', color: '#d4cfc9', lineHeight: 1.5 }}>Half the standard fee — in exchange for documented participation in a structured case study process.</div>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                <div style={{ fontSize: '32px', color: '#14b8a6', marginTop: '2px' }}>↓</div>
-                <div style={{ fontSize: '34px', color: '#d4cfc9', lineHeight: 1.5 }}>Application only. Not everyone will be selected.</div>
-              </div>
+            {/* Label under number */}
+            <div style={{ fontSize: '48px', fontWeight: 600, color: taken > 0 ? '#f87171' : '#a8a29e', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '56px' }}>
+              {taken > 0 ? `positions taken` : 'positions available'}
+            </div>
+
+            {/* Progress bar */}
+            <div style={{ width: '880px', height: '8px', background: 'rgba(255,255,255,0.08)', borderRadius: '4px', marginBottom: '56px', display: 'flex' }}>
+              {taken > 0 && (
+                <div style={{ width: `${takenPct}px`, height: '8px', background: '#f87171', borderRadius: '4px' }} />
+              )}
+            </div>
+
+            {/* Single line of copy */}
+            <div style={{ fontSize: '42px', color: '#a8a29e', fontWeight: 400, lineHeight: 1.5, maxWidth: '820px' }}>
+              {taken > 0
+                ? `${20 - taken} positions remaining. When they fill, the founding rate closes permanently.`
+                : 'Half the standard rate. Application only. 20 positions.'}
             </div>
           </div>
 
-          {/* Logo sits below all content */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ height: '80px', objectFit: 'contain', alignSelf: 'flex-start' }} />
+          <img src={logoSrc} alt="Body Recode" style={{ height: '72px', objectFit: 'contain', alignSelf: 'flex-start' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
