@@ -718,6 +718,87 @@ async function checkFunnelActivity(admin: ReturnType<typeof createAdminClient>):
   }
 }
 
+// ─── Markdown report generator ───────────────────────────────────────────
+
+function generateMarkdownReport(checks: CheckResult[], ranAt: Date): string {
+  const failures = checks.filter(c => c.status === 'failed')
+  const fixes = checks.filter(c => c.status === 'fixed')
+  const allGood = failures.length === 0
+
+  const overallStatus = allGood && fixes.length === 0
+    ? 'ALL SYSTEMS OPERATIONAL'
+    : fixes.length > 0 && failures.length === 0
+      ? `${fixes.length} ISSUE${fixes.length === 1 ? '' : 'S'} AUTO-FIXED`
+      : `${failures.length} ISSUE${failures.length === 1 ? '' : 'S'} NEED MANUAL ATTENTION`
+
+  const dateStr = ranAt.toLocaleString('en-AU', {
+    timeZone: 'Australia/Brisbane',
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true,
+  })
+
+  const iconFor = (s: CheckStatus) => {
+    if (s === 'ok') return 'OK'
+    if (s === 'fixed') return 'FIXED'
+    if (s === 'failed') return 'FAILED'
+    return 'INFO'
+  }
+
+  const sections: Array<{ label: string; items: CheckResult[] }> = [
+    { label: 'Infrastructure', items: checks.slice(0, 4) },
+    { label: 'Write Smoke Tests', items: checks.slice(4, 9) },
+    { label: 'Data Integrity', items: checks.slice(9, 15) },
+    { label: 'Automation + Pipeline', items: checks.slice(15) },
+  ]
+
+  const checkLines = sections.map(section => {
+    const rows = section.items.map(c => {
+      const lines = [`### [${iconFor(c.status)}] ${c.name}`, `${c.detail}`]
+      if (c.action) lines.push(`Auto-fixed: ${c.action}`)
+      if (c.manualFix) lines.push(`Action needed: ${c.manualFix}`)
+      return lines.join('\n')
+    }).join('\n\n')
+    return `## ${section.label}\n\n${rows}`
+  }).join('\n\n---\n\n')
+
+  const summaryLines: string[] = []
+  if (failures.length > 0) {
+    summaryLines.push('### Needs manual attention')
+    failures.forEach(f => {
+      summaryLines.push(`- **${f.name}**: ${f.detail}`)
+      if (f.manualFix) summaryLines.push(`  - Fix: ${f.manualFix}`)
+    })
+  }
+  if (fixes.length > 0) {
+    summaryLines.push('### Auto-fixed')
+    fixes.forEach(f => {
+      summaryLines.push(`- **${f.name}**: ${f.action ?? f.detail}`)
+    })
+  }
+  if (failures.length === 0 && fixes.length === 0) {
+    summaryLines.push('No issues found. All checks passed.')
+  }
+
+  return `# Body Recode — Daily System Health Check
+
+**Run:** ${dateStr} Brisbane
+**Status:** ${overallStatus}
+**Checks run:** ${checks.length}
+**Failures:** ${failures.length}
+**Auto-fixed:** ${fixes.length}
+
+---
+
+## Summary
+
+${summaryLines.join('\n')}
+
+---
+
+${checkLines}
+`
+}
+
 // ─── Main handler ──────────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
@@ -779,6 +860,22 @@ export async function GET(request: NextRequest) {
   const failures = checks.filter(c => c.status === 'failed')
   const fixes = checks.filter(c => c.status === 'fixed')
   const allGood = failures.length === 0
+
+  const ranAt = new Date()
+  const overallStatus = allGood && fixes.length === 0 ? 'ok' : fixes.length > 0 && failures.length === 0 ? 'fixed' : 'failed'
+  const reportMd = generateMarkdownReport(checks, ranAt)
+
+  // Save run to database
+  await admin.from('health_check_runs').insert({
+    ran_at: ranAt.toISOString(),
+    status: overallStatus,
+    failures_count: failures.length,
+    fixes_count: fixes.length,
+    checks: checks,
+    report_md: reportMd,
+  }).then(({ error }) => {
+    if (error) console.error('Failed to save health check run:', error.message)
+  })
 
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
