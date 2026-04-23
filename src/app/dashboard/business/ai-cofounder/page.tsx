@@ -229,10 +229,16 @@ function ContentTab() {
       color: 'amber' as const,
     },
     {
-      hook: 'How Kade uses AI to build Body Recode',
+      hook: 'How Kade used AI to build an entire coaching platform - from scratch, no coding background',
       pillar: 'Case Study',
       type: 'Story',
       color: 'stone' as const,
+    },
+    {
+      hook: 'Most coaches rent software. I built mine. Here\'s what that forced me to understand about my business.',
+      pillar: 'Contrarian',
+      type: 'Contrarian',
+      color: 'orange' as const,
     },
   ]
 

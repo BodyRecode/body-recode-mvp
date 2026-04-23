@@ -50,7 +50,7 @@ function PositioningTab() {
       <Card>
         <SectionLabel>Who Kade Dunstone Is</SectionLabel>
         <p className="text-stone-300 text-sm leading-relaxed">
-          A performance coach and systems thinker who has rebuilt his identity, career, and direction multiple times - and built frameworks out of every rebuild.
+          A performance coach, systems thinker, and software builder who has rebuilt his identity, career, and direction multiple times - and built frameworks out of every rebuild.
         </p>
         <div className="mt-4 space-y-2">
           {[
@@ -64,8 +64,11 @@ function PositioningTab() {
           ))}
           <div className="flex items-start gap-2 text-sm text-stone-200 mt-3">
             <span className="text-teal-400 mt-0.5">+</span>
-            <span>Someone who learned to interpret before acting - and built systems around that principle across the body, business, and identity.</span>
+            <span>Someone who learned to interpret before acting - and built systems around that principle across the body, business, and software.</span>
           </div>
+        </div>
+        <div className="mt-4 p-3 bg-teal-500/5 border border-teal-500/20 rounded-lg">
+          <p className="text-xs text-teal-300">The platform is the proof. Most coaches rent software. Kade built his own - a full coaching and CRM platform - using the same AI co-founder principles he teaches.</p>
         </div>
       </Card>
 
@@ -125,6 +128,8 @@ function PositioningTab() {
             'AI does not create value. It distributes structured value. If your thinking isn\'t structured, AI amplifies noise.',
             'Most coaching businesses deliver sessions. They should be delivering systems.',
             'Identity determines direction. Get the identity wrong and the strategy never lands.',
+            'Most coaches rent software built by someone else. Building your own forces you to understand your business at a different level.',
+            'You don\'t need to know how to code. You need to know what you\'re building and why. AI handles the rest.',
           ].map((p, i) => (
             <div key={i} className="flex items-start gap-3 py-2 border-b border-stone-800/60 last:border-0">
               <span className="text-xs text-stone-600 font-mono mt-0.5 w-4 shrink-0">{i + 1}</span>
@@ -156,6 +161,12 @@ function StoryTab() {
       color: 'amber' as const,
       context: 'Walked away from a shared life and business. Rebuilt self-trust and clarity from scratch.',
       lesson: 'People don\'t lose performance - they lose clarity. Clarity is upstream of everything.',
+    },
+    {
+      title: 'The Build - Body Recode Platform',
+      color: 'teal' as const,
+      context: 'After three rebuilds, stopped renting other people\'s software and built his own. A full coaching and CRM platform built using AI as a co-founder.',
+      lesson: 'If the principles are real, you should be able to build with them. The platform is the proof of concept.',
     },
   ]
 
@@ -227,9 +238,12 @@ function PillarsTab() {
       description: 'The AI Co-Founder Method. Building structured IP. Using AI as a thinking partner.',
       topics: [
         'How AI amplifies clarity (and noise if clarity doesn\'t exist)',
-        'Building in public',
+        'Building in public - the software build documented in real time',
         'IP extraction and structuring',
         'What happens when you treat AI as a co-founder, not a tool',
+        'Most coaches rent software. I built mine.',
+        'What you learn about your own business when you design the software for it',
+        'The Body Recode platform as a live case study',
       ],
     },
     {
