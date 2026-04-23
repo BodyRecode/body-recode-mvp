@@ -10,13 +10,24 @@ const STATUSES = [
   'closed_declined', 'commencement_fee_paid', 'active_deliberate_start', 'active_coaching',
 ]
 
+function utcToBrisbaneInput(iso: string): string {
+  // Brisbane is UTC+10, no DST — shift UTC time forward 10h for display
+  const d = new Date(new Date(iso).getTime() + 10 * 60 * 60 * 1000)
+  return d.toISOString().slice(0, 16)
+}
+
+function brisbaneInputToUtcIso(local: string): string {
+  // datetime-local value is Brisbane time — subtract 10h to get UTC
+  return new Date(local + ':00+10:00').toISOString()
+}
+
 export default function LeadActions({ lead }: { lead: Lead }) {
   const router = useRouter()
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState(lead.status)
   const [source, setSource] = useState<string>(lead.source || '')
   const [notes, setNotes] = useState(lead.notes || '')
-  const [zoomDate, setZoomDate] = useState(lead.zoom_1_date ? lead.zoom_1_date.slice(0, 16) : '')
+  const [zoomDate, setZoomDate] = useState(lead.zoom_1_date ? utcToBrisbaneInput(lead.zoom_1_date) : '')
   const [zoomUrl, setZoomUrl] = useState(lead.zoom_meeting_url || '')
   const [saved, setSaved] = useState(false)
 
@@ -29,7 +40,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
         status,
         source,
         notes,
-        zoom_1_date: zoomDate || null,
+        zoom_1_date: zoomDate ? brisbaneInputToUtcIso(zoomDate) : null,
         zoom_meeting_url: zoomUrl || null,
       }),
     })
@@ -86,7 +97,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
 
       {/* Zoom date */}
       <div>
-        <label className="block text-xs text-stone-500 mb-1.5">Zoom date</label>
+        <label className="block text-xs text-stone-500 mb-1.5">Zoom date (Brisbane time)</label>
         <input
           type="datetime-local"
           value={zoomDate}
