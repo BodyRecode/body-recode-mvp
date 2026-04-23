@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Coach Portal",
 };
 
-const META_PIXEL_ID = '1654127952141112';
+const META_PIXEL_ID = '972772552072010';
 
 export default function RootLayout({
   children,
