@@ -38,13 +38,13 @@ export default function KadePage() {
           {/* Body Recode Platform */}
           <a
             href="https://bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-stone-600 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-violet-500/40 hover:bg-violet-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white transition-colors">Body Recode™</p>
+              <p className="text-sm font-semibold text-white group-hover:text-violet-400 transition-colors">Body Recode™</p>
               <p className="text-xs text-stone-500 mt-0.5">Biological interpretation platform</p>
             </div>
-            <span className="text-stone-600 group-hover:text-stone-400 transition-colors text-lg">→</span>
+            <span className="text-stone-600 group-hover:text-violet-400 transition-colors text-lg">→</span>
           </a>
 
           {/* AI Co-Founder Method */}
@@ -59,17 +59,16 @@ export default function KadePage() {
             <span className="text-stone-600 group-hover:text-amber-400 transition-colors text-lg">→</span>
           </a>
 
-
           {/* Contact */}
           <a
             href="mailto:kade@bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-stone-600 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-blue-500/40 hover:bg-blue-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white transition-colors">Get in touch</p>
+              <p className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">Get in touch</p>
               <p className="text-xs text-stone-500 mt-0.5">kade@bodyrecode.au</p>
             </div>
-            <span className="text-stone-600 group-hover:text-stone-400 transition-colors text-lg">→</span>
+            <span className="text-stone-600 group-hover:text-blue-400 transition-colors text-lg">→</span>
           </a>
 
         </div>
