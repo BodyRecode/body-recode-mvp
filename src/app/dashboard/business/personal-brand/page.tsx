@@ -87,7 +87,7 @@ function PositioningTab() {
       </Card>
 
       <Card>
-        <SectionLabel>Recommended Bio</SectionLabel>
+        <SectionLabel>Confirmed Bio</SectionLabel>
         <div className="bg-stone-900 rounded-lg p-4 text-sm text-stone-200 leading-relaxed font-mono">
           I stopped writing programs and started building systems.<br />
           Performance coach. Founder. Systems thinker.<br />
