@@ -16,7 +16,8 @@ export default function KadePage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/kade.jpg" alt="Kade Dunstone" className="w-20 h-20 rounded-full object-cover object-top mx-auto mb-5 border border-stone-700" style={{ objectPosition: '50% 20%' }} />
           <h1 className="text-xl font-bold text-white mb-1">Kade Dunstone</h1>
-          <p className="text-sm text-stone-500">Performance coach. Founder. Builder.</p>
+          <p className="text-sm text-stone-400">Performance coach. Builder. Father.</p>
+          <p className="text-xs text-stone-600 mt-1">Three rebuilds. Still building.</p>
         </div>
 
         {/* Links */}
@@ -58,29 +59,6 @@ export default function KadePage() {
             <span className="text-stone-600 group-hover:text-amber-400 transition-colors text-lg">→</span>
           </a>
 
-          {/* Threads */}
-          <a
-            href="https://www.threads.net/@kade_dunstone_"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-stone-600 rounded-xl px-5 py-4 transition-all"
-          >
-            <div>
-              <p className="text-sm font-semibold text-white transition-colors">Threads</p>
-              <p className="text-xs text-stone-500 mt-0.5">@kade_dunstone_</p>
-            </div>
-            <span className="text-stone-600 group-hover:text-stone-400 transition-colors text-lg">→</span>
-          </a>
-
-          {/* Instagram */}
-          <a
-            href="https://www.instagram.com/kade_dunstone_"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-stone-600 rounded-xl px-5 py-4 transition-all"
-          >
-            <div>
-              <p className="text-sm font-semibold text-white transition-colors">Instagram</p>
-              <p className="text-xs text-stone-500 mt-0.5">@kade_dunstone_</p>
-            </div>
-            <span className="text-stone-600 group-hover:text-stone-400 transition-colors text-lg">→</span>
-          </a>
 
         </div>
 
