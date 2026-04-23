@@ -23,6 +23,7 @@ const SECTIONS = [
   { id: 'communications',   title: '16. Communications',     colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'assets',           title: '16b. Assets',            colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'admin-actions',    title: '17. Admin Actions',      colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'system-health',    title: '17b. System Health',     colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'founding-client',  title: '18. Founding Client',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'stripe-payments',  title: '19. Stripe Payments',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'training-program', title: '20. Training Program',   colour: 'teal' as const, category: 'coaching' as Category },
@@ -801,6 +802,60 @@ export default function HelpPage() {
               <li><strong>Resend reports to all leads</strong> — Triggers the re-engagement blast. Cancels all existing follow-up sequences and sends a fresh re-engagement email plus a new 3-email follow-up sequence to every lead with scorecard data. Requires confirmation before firing.</li>
             </ul>
             <Note>The blast is protected by an admin secret and requires confirmation. It will not fire accidentally.</Note>
+          </Section>
+
+          <Section id="system-health" title="17b. System Health Check" colour="teal">
+            <p>The platform runs an automated health check every morning and sends a report to kade@bodyrecode.au. Every run is also saved and viewable at <strong>Dashboard → System</strong> (top nav).</p>
+
+            <p className="font-semibold text-white mt-4">What it checks</p>
+            <p>The check runs 17 tests across four groups every day:</p>
+
+            <p className="font-semibold text-white mt-3">1. Infrastructure</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Database</strong> — confirms Supabase is connected and readable.</li>
+              <li><strong>Booking Slots</strong> — confirms active availability rules exist and real time slots are showing for the next 7 days.</li>
+              <li><strong>Zoom</strong> — performs a live credential check with the Zoom API to confirm meeting links will generate on booking.</li>
+              <li><strong>Email (Resend)</strong> — confirms the email API key is present. Delivery is confirmed by receipt of the email itself.</li>
+            </ul>
+
+            <p className="font-semibold text-white mt-3">2. Write Smoke Tests</p>
+            <p>These are the most important checks. Each one actually inserts a test record into the database and immediately deletes it. This is the only way to catch schema mismatches, constraint violations, and permission failures that a read-only check cannot detect. The booking bug of April 2026 — where every booking silently failed at the database level — is the canonical example of what these catch.</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Booking Write</strong> — inserts and deletes a test booking record.</li>
+              <li><strong>Lead Write</strong> — inserts and deletes a test lead record.</li>
+              <li><strong>Intake Invitation Write</strong> — inserts and deletes a test intake invitation.</li>
+              <li><strong>Baseline Write</strong> — inserts and deletes a test baseline record.</li>
+              <li><strong>Weekly Check-In Write</strong> — inserts and deletes a test check-in record.</li>
+            </ul>
+
+            <p className="font-semibold text-white mt-3">3. Data Integrity</p>
+            <p>These audit the live state of real records to catch silent data gaps affecting real clients and leads right now.</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Clients — Intake Invitation</strong> — finds any client with portal access but no intake invitation. Without one, the intake form card in their portal shows &quot;Your coach will send this link when ready&quot; indefinitely.</li>
+              <li><strong>Active Clients — Programs</strong> — finds any active client with no training program.</li>
+              <li><strong>Active Clients — Nutrition</strong> — finds any active client with no nutrition plan.</li>
+              <li><strong>Leads — Stuck Bookings</strong> — finds leads marked as zoom_1_booked for 7+ days with no Zoom date set.</li>
+              <li><strong>Intake — Pending 10+ Days</strong> — finds clients who have not completed their intake form after 10 days.</li>
+              <li><strong>Active Clients — Check-Ins</strong> — finds active clients with no check-in submitted in the last 14 days.</li>
+            </ul>
+
+            <p className="font-semibold text-white mt-3">4. Automation + Pipeline</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Scorecard Automation</strong> — verifies the 9-step follow-up sequence is active and intact.</li>
+              <li><strong>Funnel Activity (24h)</strong> — reports how many scorecards were completed in the last 24 hours. Informational only.</li>
+            </ul>
+
+            <p className="font-semibold text-white mt-4">What it fixes automatically vs what needs you</p>
+            <p>Only the Scorecard Automation check can auto-fix. If the workflow is missing it recreates it. If it is deactivated it reactivates it. If the step count is wrong it resyncs the steps. The email subject will say &quot;auto-fixed&quot; when this happens — no action needed from you.</p>
+            <p className="mt-2">Everything else requires manual action. Any failed check in the email will include the exact step to fix it.</p>
+
+            <p className="font-semibold text-white mt-4">Viewing run history</p>
+            <p>Go to <strong>Dashboard → System</strong>. Every run is listed in the left sidebar by date with a colour-coded dot — green for all clear, amber for auto-fixed, red for failures needing attention. Click any run to see the full report broken down by section.</p>
+
+            <p className="font-semibold text-white mt-4">Downloading a run as a file</p>
+            <p>Open any run in Dashboard → System and click <strong>Download .md</strong> in the top right of the report. This saves a markdown file named <code>body-recode-health-YYYY-MM-DD.md</code> to your machine. Move it to Dropbox → 01_BODY_RECODE → 06_SAAS_PLATFORM_BUILD → SYSTEM-HEALTH-CHECK to keep a permanent record.</p>
+
+            <Note>The health check runs on Vercel&apos;s servers and cannot write directly to your local Dropbox. The download button in the dashboard is the bridge — one click saves the file locally.</Note>
           </Section>
 
           <Section id="founding-client" title="18. Founding Client Program" colour="teal">
