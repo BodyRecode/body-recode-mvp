@@ -615,7 +615,7 @@ export async function GET(request: NextRequest) {
       (
         <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif', position: 'relative' }}>
           {/* Subtle left border accent */}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '3px', height: '1080px', background: 'linear-gradient(to bottom, rgba(255,255,255,0.15), transparent)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '3px', height: '1080px', background: 'linear-gradient(to bottom, rgba(255,255,255,0.5), transparent)' }} />
 
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
             {/* Optional context label */}
