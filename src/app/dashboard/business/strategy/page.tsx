@@ -23,12 +23,21 @@ const TABS: { id: Tab; label: string }[] = [
 type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'founder' | 'ad' | 'prelaunch' | 'thread' | 'video'
 type CampaignPhase = 'prelaunch' | 'founder' | 'ads' | 'optimise' | 'scale'
 type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder'
+type Platform = 'instagram' | 'threads' | 'facebook' | 'both'
+
+const PLATFORM_STYLES: Record<Platform, { label: string; badge: string }> = {
+  instagram: { label: 'Instagram', badge: 'bg-pink-500/15 text-pink-400 border-pink-500/25' },
+  threads:   { label: 'Threads',   badge: 'bg-stone-500/15 text-stone-300 border-stone-500/25' },
+  facebook:  { label: 'Facebook',  badge: 'bg-blue-500/15 text-blue-400 border-blue-500/25' },
+  both:      { label: 'IG + Threads', badge: 'bg-violet-500/15 text-violet-400 border-violet-500/25' },
+}
 
 interface ScheduledPost {
   id: string
   date: string // YYYY-MM-DD
   time?: string // HH:MM
   brand?: Brand
+  platform?: Platform
   type: PostType
   phase: CampaignPhase
   title: string
@@ -149,22 +158,23 @@ function ContentCalendar() {
     if (!form.date || !form.title || !form.type || !form.phase) return
     setSaving(true)
     const brandVal = form.brand ?? 'body_recode'
+    const platformVal = form.platform ?? 'instagram'
     if (editId) {
       const { error } = await supabase
         .from('calendar_posts')
-        .update({ date: form.date, time: form.time ?? null, brand: brandVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
+        .update({ date: form.date, time: form.time ?? null, brand: brandVal, platform: platformVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
         .eq('id', editId)
       if (!error) setPosts(ps => ps.map(p => p.id === editId ? { ...p, ...form } as ScheduledPost : p))
       setEditId(null)
     } else {
       const { data, error } = await supabase
         .from('calendar_posts')
-        .insert({ date: form.date, time: form.time ?? null, brand: brandVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
+        .insert({ date: form.date, time: form.time ?? null, brand: brandVal, platform: platformVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
         .select()
         .single()
       if (!error && data) setPosts(ps => [...ps, data as ScheduledPost])
     }
-    setForm({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', time: POST_TYPE_DEFAULT_TIMES['authority'] })
+    setForm({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', platform: 'instagram', time: POST_TYPE_DEFAULT_TIMES['authority'] })
     setShowForm(false)
     setSaving(false)
   }
@@ -277,11 +287,13 @@ function ContentCalendar() {
                   {dayPosts.slice(0, 3).map(p => {
                     const s = POST_TYPE_STYLES[p.type] ?? POST_TYPE_STYLES['authority']
                     const bd = BRAND_STYLES[(p.brand ?? 'body_recode') as Brand]
+                    const pl = PLATFORM_STYLES[(p.platform ?? 'instagram') as Platform]
                     return (
                       <div key={p.id} className="text-[10px] font-medium px-1 py-0.5 rounded truncate flex items-center gap-1" style={{ color: s.color, background: s.bg }}>
                         <span className={`inline-block w-1 h-1 rounded-full shrink-0 ${bd.dot}`} />
                         <span className="opacity-70 mr-0.5">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type as PostType] ?? '07:00'}</span>
                         <span className="truncate">{p.title}</span>
+                        <span className={`shrink-0 text-[9px] px-1 rounded border ${pl.badge}`}>{pl.label}</span>
                       </div>
                     )
                   })}
@@ -301,7 +313,7 @@ function ContentCalendar() {
               {new Date(selected + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
             <button
-              onClick={() => { setForm({ type: 'authority', phase: 'prelaunch', brand: brandFilter !== 'all' ? brandFilter : 'body_recode', date: selected, time: POST_TYPE_DEFAULT_TIMES['authority'] }); setEditId(null); setShowForm(true) }}
+              onClick={() => { setForm({ type: 'authority', phase: 'prelaunch', brand: brandFilter !== 'all' ? brandFilter : 'body_recode', platform: 'instagram', date: selected, time: POST_TYPE_DEFAULT_TIMES['authority'] }); setEditId(null); setShowForm(true) }}
               className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium"
             >
               + Add post
@@ -321,6 +333,7 @@ function ContentCalendar() {
                         <span className="text-xs font-bold" style={{ color: s.color }}>{s.label}</span>
                         <span className={`text-xs ${ph.color}`}>· {ph.label}</span>
                         {(() => { const bd = BRAND_STYLES[(p.brand ?? 'body_recode') as Brand]; return <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${bd.filter}`}>{bd.label}</span> })()}
+                        {(() => { const pl = PLATFORM_STYLES[(p.platform ?? 'instagram') as Platform]; return <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${pl.badge}`}>{pl.label}</span> })()}
                       </div>
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-white">{p.title}</p>
@@ -358,6 +371,7 @@ function ContentCalendar() {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs font-bold px-2 py-0.5 rounded border" style={{ color: s.color, background: s.bg, borderColor: s.border }}>{s.label}</span>
                   <span className={`text-xs font-medium ${ph.color}`}>{ph.label}</span>
+                  {(() => { const pl = PLATFORM_STYLES[(activePost.platform ?? 'instagram') as Platform]; return <span className={`text-xs px-2 py-0.5 rounded border font-medium ${pl.badge}`}>{pl.label}</span> })()}
                   <span className="text-xs text-stone-600">{dateLabel}</span>
                   <span className="text-xs font-semibold text-teal-400 bg-teal-500/10 border border-teal-500/20 px-2 py-0.5 rounded-full">{activePost.time ?? POST_TYPE_DEFAULT_TIMES[activePost.type]}</span>
                 </div>
@@ -481,12 +495,21 @@ function ContentCalendar() {
         <Card>
           <p className="text-sm font-semibold text-white mb-4">{editId ? 'Edit Post' : 'Schedule Post'}</p>
           <div className="space-y-3">
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-5 gap-3">
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Brand</label>
                 <select value={form.brand ?? 'body_recode'} onChange={e => setForm(f => ({ ...f, brand: e.target.value as Brand }))}
                   className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500">
                   {(Object.entries(BRAND_STYLES) as [Brand, typeof BRAND_STYLES[Brand]][]).map(([k, s]) => (
+                    <option key={k} value={k}>{s.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-stone-500 mb-1">Platform</label>
+                <select value={form.platform ?? 'instagram'} onChange={e => setForm(f => ({ ...f, platform: e.target.value as Platform }))}
+                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500">
+                  {(Object.entries(PLATFORM_STYLES) as [Platform, typeof PLATFORM_STYLES[Platform]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
                   ))}
                 </select>
@@ -554,7 +577,7 @@ function ContentCalendar() {
                 className="bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
                 {saving ? 'Saving...' : editId ? 'Save Changes' : 'Schedule Post'}
               </button>
-              <button onClick={() => { setShowForm(false); setEditId(null); setForm({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', time: POST_TYPE_DEFAULT_TIMES['authority'] }) }}
+              <button onClick={() => { setShowForm(false); setEditId(null); setForm({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', platform: 'instagram', time: POST_TYPE_DEFAULT_TIMES['authority'] }) }}
                 className="text-xs text-stone-500 hover:text-stone-300 transition-colors">
                 Cancel
               </button>
