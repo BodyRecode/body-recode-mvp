@@ -636,8 +636,8 @@ export async function GET(request: NextRequest) {
 
           {/* Handle at bottom */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '32px', height: '2px', background: 'rgba(255,255,255,0.2)' }} />
-            <div style={{ fontSize: '28px', fontWeight: 500, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.08em' }}>@kade_dunstone_</div>
+            <div style={{ width: '32px', height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+            <div style={{ fontSize: '28px', fontWeight: 500, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.08em' }}>@kade_dunstone_</div>
           </div>
         </div>
       ),
