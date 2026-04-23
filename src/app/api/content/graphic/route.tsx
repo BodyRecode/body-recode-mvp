@@ -312,32 +312,24 @@ export async function GET(request: NextRequest) {
             </div>
 
             {/* Big number */}
-            {taken > 0 ? (
-              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '0px', marginBottom: '16px' }}>
-                <div style={{ fontSize: '260px', fontWeight: 900, color: '#ffffff', lineHeight: 1, letterSpacing: '-0.04em' }}>{taken}</div>
-                <div style={{ fontSize: '100px', fontWeight: 700, color: 'rgba(255,255,255,0.2)', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '24px' }}>/20</div>
-              </div>
-            ) : (
-              <div style={{ fontSize: '180px', fontWeight: 900, color: '#ffffff', lineHeight: 1, letterSpacing: '-0.04em', marginBottom: '16px' }}>20</div>
-            )}
+            <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: '16px' }}>
+              <div style={{ fontSize: taken > 0 ? '260px' : '180px', fontWeight: 900, color: '#ffffff', lineHeight: 1, letterSpacing: '-0.04em' }}>{taken > 0 ? String(taken) : '20'}</div>
+              {taken > 0 ? <div style={{ fontSize: '100px', fontWeight: 700, color: 'rgba(255,255,255,0.2)', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '24px' }}>/20</div> : <div style={{ display: 'none' }} />}
+            </div>
 
             {/* Label under number */}
             <div style={{ fontSize: '48px', fontWeight: 600, color: taken > 0 ? '#f87171' : '#a8a29e', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '56px' }}>
-              {taken > 0 ? `positions taken` : 'positions available'}
+              {taken > 0 ? 'positions taken' : 'positions available'}
             </div>
 
             {/* Progress bar */}
             <div style={{ width: '880px', height: '8px', background: 'rgba(255,255,255,0.08)', borderRadius: '4px', marginBottom: '56px', display: 'flex' }}>
-              {taken > 0 && (
-                <div style={{ width: `${takenPct}px`, height: '8px', background: '#f87171', borderRadius: '4px' }} />
-              )}
+              <div style={{ width: taken > 0 ? `${takenPct}px` : '0px', height: '8px', background: '#f87171', borderRadius: '4px' }} />
             </div>
 
             {/* Single line of copy */}
             <div style={{ fontSize: '42px', color: '#a8a29e', fontWeight: 400, lineHeight: 1.5, maxWidth: '820px' }}>
-              {taken > 0
-                ? `${20 - taken} positions remaining. When they fill, the founding rate closes permanently.`
-                : 'Half the standard rate. Application only. 20 positions.'}
+              {taken > 0 ? `${String(20 - taken)} positions remaining. When they fill, the founding rate closes permanently.` : 'Half the standard rate. Application only. 20 positions.'}
             </div>
           </div>
 
