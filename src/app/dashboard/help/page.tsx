@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-type Category = 'flows' | 'coaching' | 'business' | 'content' | 'challenge'
+type Category = 'flows' | 'coaching' | 'business' | 'content' | 'challenge' | 'blueprint' | 'membership'
 
 const SECTIONS = [
   { id: 'operator-flow',         title: 'Operator Flow',         colour: 'violet' as const, category: 'flows' as Category },
@@ -56,6 +56,26 @@ const SECTIONS = [
   { id: 'ch-sms',           title: 'SMS Coaching Sequence',  colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-database',      title: 'Database and Supabase',  colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-prelaunch',     title: 'Pre-Launch Checklist',   colour: 'teal' as const, category: 'challenge' as Category },
+
+  // Blueprint
+  { id: 'bp-overview',      title: 'Blueprint Overview',     colour: 'teal' as const, category: 'blueprint' as Category },
+  { id: 'bp-sales',         title: 'Sales Page',             colour: 'teal' as const, category: 'blueprint' as Category },
+  { id: 'bp-purchase',      title: 'Purchase Flow',          colour: 'teal' as const, category: 'blueprint' as Category },
+  { id: 'bp-portal',        title: 'Member Portal',          colour: 'teal' as const, category: 'blueprint' as Category },
+  { id: 'bp-patterns',      title: 'Biological Patterns',    colour: 'teal' as const, category: 'blueprint' as Category },
+  { id: 'bp-checkin',       title: 'Weekly Check-In',        colour: 'teal' as const, category: 'blueprint' as Category },
+  { id: 'bp-automation',    title: 'Automation and Emails',  colour: 'teal' as const, category: 'blueprint' as Category },
+  { id: 'bp-database',      title: 'Database',               colour: 'teal' as const, category: 'blueprint' as Category },
+
+  // Membership
+  { id: 'mb-overview',      title: 'Membership Overview',    colour: 'teal' as const, category: 'membership' as Category },
+  { id: 'mb-sales',         title: 'Sales Page',             colour: 'teal' as const, category: 'membership' as Category },
+  { id: 'mb-purchase',      title: 'Purchase Flow',          colour: 'teal' as const, category: 'membership' as Category },
+  { id: 'mb-portal',        title: 'Member Portal',          colour: 'teal' as const, category: 'membership' as Category },
+  { id: 'mb-blocks',        title: 'Block Structure',        colour: 'teal' as const, category: 'membership' as Category },
+  { id: 'mb-checkin',       title: 'Check-In and Trends',    colour: 'teal' as const, category: 'membership' as Category },
+  { id: 'mb-automation',    title: 'Automation',             colour: 'teal' as const, category: 'membership' as Category },
+  { id: 'mb-database',      title: 'Database',               colour: 'teal' as const, category: 'membership' as Category },
 ]
 
 const CATEGORIES: { id: Category; label: string }[] = [
@@ -63,7 +83,9 @@ const CATEGORIES: { id: Category; label: string }[] = [
   { id: 'coaching',  label: 'Coaching' },
   { id: 'business',  label: 'Business' },
   { id: 'content',   label: 'Content' },
-  { id: 'challenge', label: 'Challenge' },
+  { id: 'challenge',   label: 'Challenge' },
+  { id: 'blueprint',   label: 'Blueprint' },
+  { id: 'membership',  label: 'Membership' },
 ]
 
 export default function HelpPage() {
@@ -2005,6 +2027,292 @@ export default function HelpPage() {
             </div>
 
             <Note>To backdate enrollment for testing: UPDATE challenge_enrollments SET enrolled_at = NOW() - INTERVAL '7 days' WHERE token = '[your-token]';</Note>
+          </Section>
+
+          {/* ── BLUEPRINT ─────────────────────────────────────────── */}
+          <Section id="bp-overview" title="Blueprint Overview" colour="teal">
+            <p>The 6-Week Body Rewire Blueprint is a paid consumer product ($97 AUD one-time) that sits at Stage 2 of the Body Recode funnel. Participants purchase via Stripe, receive a token-gated portal, and complete a 6-week pattern-specific programme covering training, nutrition, and education.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Purpose in the funnel</p>
+            <p>The Blueprint is the direct ascension from the 14-Day Challenge. Challenge graduates are driven to the Blueprint via the Day 14 CTA. Direct buyers (no challenge) go through a two-question pattern assessment before their portal opens. At Week 6, members are presented with the Body Recode Membership ascension CTA.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Key URLs</p>
+            <StatusList items={[
+              { label: 'Sales page', desc: 'app.bodyrecode.au/blueprint — sales page with Stripe checkout' },
+              { label: 'Member portal', desc: 'app.bodyrecode.au/blueprint/[token] — token-gated, unique per buyer' },
+              { label: 'Pending page', desc: 'app.bodyrecode.au/blueprint/pending — shown after Stripe checkout while webhook processes' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">The four biological patterns</p>
+            <StatusList items={[
+              { label: 'Stress-Stored', desc: 'Cortisol driver. Fat stored at waist and stomach. Wired but tired at night.' },
+              { label: 'Metabolic-Drift', desc: 'Insulin driver. Afternoon crash, sluggish after meals, lower gut bloating.' },
+              { label: 'Hormonal-Shift', desc: 'Reproductive hormone driver. Hips and thighs, cycle disruption, mood swings.' },
+              { label: 'System-Overload', desc: 'Nervous system load. Upper body storage, flat and stalled, not responding.' },
+            ]} />
+          </Section>
+
+          <Section id="bp-sales" title="Sales Page" colour="teal">
+            <p>Found at <strong>app.bodyrecode.au/blueprint</strong>. Light theme matching Blueprint brand. Contains hero, pattern cards, three-phase breakdown, what you get, mid-CTA, and footer checkout form.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Checkout form</p>
+            <p>Name and email collected on the sales page. Submits to <strong>POST /api/blueprint/checkout</strong> which creates a Stripe one-time checkout session at $97 AUD. On success, the user is redirected to Stripe. On payment, the webhook fires and creates the enrollment.</p>
+
+            <Note>The sales page does not collect phone numbers. Pattern is not collected at checkout — it is either carried from the challenge or determined via the two-question assessment inside the portal.</Note>
+          </Section>
+
+          <Section id="bp-purchase" title="Purchase Flow" colour="teal">
+            <p>When Stripe fires <strong>checkout.session.completed</strong> with <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">metadata.type === &apos;blueprint_purchase&apos;</code>, the webhook runs the following steps:</p>
+
+            <div className="space-y-2 mt-2">
+              <ChecklistItem text="Check if the buyer has a challenge enrollment with a completed quiz result — if so, the pattern is pre-loaded from the challenge." />
+              <ChecklistItem text="Create a blueprint_enrollments row with email, first_name, pattern (or 'pending' if no challenge data), pattern_source, and stripe_payment_intent_id." />
+              <ChecklistItem text="Send welcome email to the buyer with their portal link and pattern (or assessment gate notice if pending)." />
+              <ChecklistItem text="Send coach notification email to kade@bodyrecode.au." />
+              <ChecklistItem text="Fire the blueprint/enrolled Inngest event, which triggers the week-advance function and the 7-email sequence." />
+            </div>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Pattern assessment gate</p>
+            <p>If a buyer has no challenge quiz result, their portal shows a two-question assessment before opening. Q1 asks where they notice excess puffiness. Q2 asks which energy/mood description fits best. The answer to Q2 determines the pattern. On submit, the portal calls <strong>POST /api/blueprint/set-pattern</strong> which updates the enrollment and opens the portal.</p>
+          </Section>
+
+          <Section id="bp-portal" title="Member Portal" colour="teal">
+            <p>Found at <strong>app.bodyrecode.au/blueprint/[token]</strong>. Dark theme. Five tabs: Home, Training, Nutrition, Education, Check-In.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Tab overview</p>
+            <StatusList items={[
+              { label: 'Home', desc: 'Pattern banner, current week and phase, weekly coaching note, phase structure, midpoint reflection (Week 3), ascension CTA (Week 6)' },
+              { label: 'Training', desc: 'Three sessions (A/B/C) with gym/home/bodyweight toggle. Pattern-specific RIR progression table and rules.' },
+              { label: 'Nutrition', desc: 'HABNS foundation foods, remove list, hand portion guide, pattern-specific adjustments, meal timing toggle (train later vs train first thing).' },
+              { label: 'Education', desc: 'Five biology lessons, week-locked (Lesson 1 open, 2-5 unlock weekly). Loom video embed, transcript, pattern callout per lesson.' },
+              { label: 'Check-In', desc: '8-marker weekly form. History of previous submissions displayed below the form.' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Conditional cards on Home tab</p>
+            <StatusList items={[
+              { label: 'Midpoint reflection (Week 3)', desc: 'Appears when current_week === 3. Structured reflection prompts and progress acknowledgement.' },
+              { label: 'Ascension CTA (Week 6)', desc: 'Appears when current_week === 6. Presents the Body Recode Membership offer at $49/week. Primary CTA links to /membership.' },
+            ]} />
+
+            <Note>The portal is server-rendered on first load (fetches enrollment from Supabase), then hydrates as a client component. Token is in the URL — no login required. Tokens are 64 hex characters, not guessable.</Note>
+          </Section>
+
+          <Section id="bp-patterns" title="Biological Patterns" colour="teal">
+            <p>All four patterns use identical session exercises. The pattern determines the RIR targets, progression rules, and the specific nutrition overlays applied to the HABNS foundation.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Training sessions</p>
+            <StatusList items={[
+              { label: 'Session A', desc: 'Strength Base — squat, press, row, lunge, core' },
+              { label: 'Session B', desc: 'Conditioning and Volume — hinge, overhead press, lunge, pull, finisher (pattern-dependent)' },
+              { label: 'Session C', desc: 'Balance and Stability — front squat, incline press, row, walking lunge, core' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Pattern-specific rules (key differences)</p>
+            <StatusList items={[
+              { label: 'Stress-Stored', desc: 'Skip Session B finisher. Zone 2 walking only. Sleep outranks training. 3 RIR throughout, deload at Week 6 with 30% set reduction.' },
+              { label: 'Metabolic-Drift', desc: 'Session B finisher mandatory. Post-session walk required. Train fasted where possible. Carbs timed to 90-min post-session window only.' },
+              { label: 'Hormonal-Shift', desc: 'Finisher optional at 6/10 effort. Never miss a session. Never add extra sessions. Hold intensity if cycle timing disrupts recovery.' },
+              { label: 'System-Overload', desc: 'Skip finisher. No extra cardio. 2-3 min rest between sets. Drop to 2 working sets if energy is significantly depleted.' },
+            ]} />
+          </Section>
+
+          <Section id="bp-checkin" title="Weekly Check-In" colour="teal">
+            <p>The weekly check-in is an 8-marker form inside the Blueprint portal. One submission per week per enrollment. Saved to the <strong>blueprint_checkins</strong> table.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">The 8 markers</p>
+            <StatusList items={[
+              { label: 'Energy Levels', desc: 'General energy across the day (1-5)' },
+              { label: 'Morning Energy', desc: 'How the member feels in the first hour of waking (1-5)' },
+              { label: 'Sleep Quality', desc: 'Quality and depth of sleep (1-5)' },
+              { label: 'Afternoon Crash', desc: '1 = severe crash, 5 = no crash (1-5)' },
+              { label: 'Hunger and Cravings', desc: '1 = constant cravings, 5 = controlled and stable (1-5)' },
+              { label: 'Training Recovery', desc: 'Recovery between sessions (1-5)' },
+              { label: 'Mood Stability', desc: 'Consistency of mood across the week (1-5)' },
+              { label: 'Physical Changes', desc: 'Visible or felt changes in body composition (1-5)' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">API</p>
+            <StatusList items={[
+              { label: 'POST /api/blueprint/checkin', desc: 'Saves a weekly check-in. Validates token, checks week is not already submitted (unique constraint on enrollment_id + week_number). Returns 409 on duplicate.' },
+              { label: 'GET /api/blueprint/checkin?token=', desc: 'Returns all check-ins for the enrollment, ordered by week_number ascending.' },
+            ]} />
+          </Section>
+
+          <Section id="bp-automation" title="Automation and Emails" colour="teal">
+            <p>Two Inngest functions are triggered on the <strong>blueprint/enrolled</strong> event, fired from the Stripe webhook after enrollment creation.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">blueprintWeekAdvanceFunction</p>
+            <p>Sleeps 7 days then advances <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_week</code> from 1 to 2, sleeps again, advances to 3, and so on up to week 6. Checks <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">status === &apos;active&apos;</code> before each advance — cancelled enrollments are skipped.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">blueprintEmailSequenceFunction</p>
+            <p>Sends 7 emails across 7 weeks. Fetches the pattern at send time (handles pending-pattern buyers whose pattern resolves after purchase). Email subjects and content are pattern-specific.</p>
+            <div className="space-y-1 mt-2">
+              <SeqRow day="Week 1 (immediate)" label="Welcome and pattern introduction" />
+              <SeqRow day="Week 2" label="Insulin lesson preview + nutrition reminder" />
+              <SeqRow day="Week 3" label="Midpoint check-in prompt" />
+              <SeqRow day="Week 4" label="Testosterone/thyroid lesson preview" />
+              <SeqRow day="Week 5" label="Sleep lesson preview + recovery focus" />
+              <SeqRow day="Week 6" label="Ascension — what comes next" />
+              <SeqRow day="Week 7" label="Final follow-up if no ascension action taken" />
+            </div>
+          </Section>
+
+          <Section id="bp-database" title="Database" colour="teal">
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">blueprint_enrollments</p>
+            <StatusList items={[
+              { label: 'id', desc: 'UUID primary key' },
+              { label: 'token', desc: 'Unique 64-char hex token. Used in all portal URLs.' },
+              { label: 'email', desc: 'Buyer email, lowercased' },
+              { label: 'first_name', desc: 'First name extracted from full name at purchase' },
+              { label: 'pattern', desc: 'stress-stored | metabolic-drift | hormonal-shift | system-overload | pending' },
+              { label: 'pattern_source', desc: 'challenge | assessment — how the pattern was determined' },
+              { label: 'current_week', desc: 'Integer 1-6, advanced by Inngest weekly' },
+              { label: 'stripe_payment_intent_id', desc: 'Stripe payment reference' },
+              { label: 'purchase_date', desc: 'Timestamptz, set at enrollment creation' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">blueprint_checkins</p>
+            <StatusList items={[
+              { label: 'enrollment_id', desc: 'FK to blueprint_enrollments.id' },
+              { label: 'week_number', desc: 'Integer 1-6. Unique constraint with enrollment_id prevents duplicate weekly submissions.' },
+              { label: '8 marker columns', desc: 'energy_levels, morning_energy, sleep_quality, afternoon_crash, hunger_cravings, training_recovery, mood_stability, physical_changes — all int 1-5' },
+              { label: 'notes', desc: 'Optional text field' },
+            ]} />
+
+            <Note>To create a test enrollment: INSERT INTO blueprint_enrollments (email, first_name, pattern, pattern_source, current_week) VALUES (&apos;email&apos;, &apos;Name&apos;, &apos;stress-stored&apos;, &apos;assessment&apos;, 1) RETURNING token;</Note>
+          </Section>
+
+          {/* ── MEMBERSHIP ────────────────────────────────────────── */}
+          <Section id="mb-overview" title="Membership Overview" colour="teal">
+            <p>The Body Recode Membership is Stage 3 of the funnel. $49 per week, billed weekly via Stripe subscription. Members access ongoing pattern-specific programming across three rotating 6-week blocks (Block A, B, C). After Block C, a pattern re-assessment determines whether the cycle resets or the dominant pattern has shifted.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">What members get</p>
+            <StatusList items={[
+              { label: 'Progressive training blocks', desc: 'Block A (Consolidate), B (Advance), C (Refine) — 6 weeks each. All 4 patterns, all 3 equipment modes.' },
+              { label: 'Nutrition precision layers', desc: 'Each block adds a new nutrition strategy on top of the HABNS foundation — carb cycling, cycle-aware eating, recovery protocols.' },
+              { label: 'Monthly coach Loom', desc: 'Kade reviews check-in data and records a personal 3-5 minute Loom response each month.' },
+              { label: 'Monthly group Q&A call', desc: 'Live monthly call. Replays available in the portal.' },
+              { label: 'Pattern resource library', desc: '3 deep-dive guides per pattern (12 total) — supplement protocols, biology explanations, lifestyle tools.' },
+              { label: 'Check-in trend dashboard', desc: '8-marker data visualised over time with bar charts and running averages.' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Key URLs</p>
+            <StatusList items={[
+              { label: 'Sales page', desc: 'app.bodyrecode.au/membership — sales page with Stripe subscription checkout' },
+              { label: 'Member portal', desc: 'app.bodyrecode.au/membership/[token] — token-gated, unique per member' },
+              { label: 'Welcome page', desc: 'app.bodyrecode.au/membership/welcome — post-purchase confirmation' },
+            ]} />
+          </Section>
+
+          <Section id="mb-sales" title="Sales Page" colour="teal">
+            <p>Found at <strong>app.bodyrecode.au/membership</strong>. Light theme. Sections: hero, what this is, progression timeline (Blueprint to Block C), what you get (6 items), Block A pattern previews, pricing, who this is for, final CTA.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Checkout form</p>
+            <p>Name and email collected on the sales page. Submits to <strong>POST /api/membership/checkout</strong> which creates a Stripe subscription session at $49/week AUD (weekly recurring billing). On payment, the Stripe webhook fires and creates the membership enrollment.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Blueprint integration</p>
+            <p>The checkout API checks if the buyer already has a Blueprint enrollment. If so, the pattern is carried over automatically — no re-assessment needed. The Blueprint portal token is stored on the membership enrollment record for reference.</p>
+          </Section>
+
+          <Section id="mb-purchase" title="Purchase Flow" colour="teal">
+            <p>When Stripe fires <strong>checkout.session.completed</strong> with <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">metadata.type === &apos;membership_purchase&apos;</code>, the webhook runs the following steps:</p>
+
+            <div className="space-y-2 mt-2">
+              <ChecklistItem text="Create a membership_enrollments row with email, first_name, pattern (from Blueprint if available), blueprint_token reference, stripe_subscription_id, current_block A, current_week 1." />
+              <ChecklistItem text="Send welcome email to the member with their portal link." />
+              <ChecklistItem text="Send coach notification email to kade@bodyrecode.au." />
+              <ChecklistItem text="Fire the membership/enrolled Inngest event, which triggers the membershipWeekAdvanceFunction." />
+            </div>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Ascension from Blueprint</p>
+            <p>Blueprint members at Week 6 see the ascension CTA card on their Home tab. The primary CTA links directly to <strong>/membership</strong>. Their email pre-fills and their pattern carries over on checkout — no friction in the transition.</p>
+          </Section>
+
+          <Section id="mb-portal" title="Member Portal" colour="teal">
+            <p>Found at <strong>app.bodyrecode.au/membership/[token]</strong>. Dark theme. Six tabs: Home, Training, Nutrition, Resources, Check-In, Trends.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Tab overview</p>
+            <StatusList items={[
+              { label: 'Home', desc: 'Pattern banner, current block and week, current phase, weekly coaching note, block phase structure.' },
+              { label: 'Training', desc: 'Equipment toggle (gym/home/bodyweight). Block-specific sessions with RIR progression table and pattern rules. Updates automatically when block advances.' },
+              { label: 'Nutrition', desc: 'Block-specific nutrition strategy for the current pattern. Phase notes. Foundation (HABNS) reminder.' },
+              { label: 'Resources', desc: '3 deep-dive pattern guides per pattern. Expandable accordion cards.' },
+              { label: 'Check-In', desc: '8-marker weekly form. Previous submissions displayed below. One per week per enrollment.' },
+              { label: 'Trends', desc: 'Averages dashboard and week-by-week bar charts for all 8 check-in markers.' },
+            ]} />
+
+            <Note>The portal reads current_block and current_week from the membership_enrollments table. When Inngest advances these values, the member refreshes and sees the updated block content automatically — no code change required.</Note>
+          </Section>
+
+          <Section id="mb-blocks" title="Block Structure" colour="teal">
+            <p>Three 6-week blocks complete an 18-week cycle. Each block has 4 phases: Reset (weeks 1-2), Build (weeks 3-4), Load (week 5), Deload/Recover (week 6).</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Block progression</p>
+            <StatusList items={[
+              { label: 'Block A — Consolidate', desc: 'Builds on Blueprint foundations. More complex movements, supersets introduced, nutrition precision layers added.' },
+              { label: 'Block B — Advance', desc: 'Heavier barbell compounds, superset pairings, higher volume for applicable patterns. Calorie periodisation introduced.' },
+              { label: 'Block C — Refine', desc: 'Peak intensity of the full cycle. Tri-sets, lowest rep ranges, highest loads. Pattern re-assessment follows Block C week 6.' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Content structure</p>
+            <p>Each block has: 3 sessions x 3 equipment modes x 4 patterns = 36 session variations. Plus pattern-specific RIR progressions, rules, nutrition strategies, and 6 weekly coaching notes per pattern (24 notes per block, 72 total across all blocks).</p>
+          </Section>
+
+          <Section id="mb-checkin" title="Check-In and Trends" colour="teal">
+            <p>Same 8-marker structure as the Blueprint check-in. One submission per week per enrollment. Saved to the <strong>membership_checkins</strong> table.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">API</p>
+            <StatusList items={[
+              { label: 'POST /api/membership/checkin', desc: 'Saves a weekly check-in. Unique constraint on enrollment_id + week_number prevents duplicates.' },
+              { label: 'GET /api/membership/checkin?token=', desc: 'Returns all check-ins for the enrollment, ordered by week_number ascending.' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Trends dashboard</p>
+            <p>The Trends tab visualises check-in data in two views. Averages: a 2-column grid showing the mean score for each marker across all submissions, colour-coded green/amber/red. Week by week: a bar chart for each marker showing score per week as proportional bars.</p>
+
+            <Note>Blueprint check-in data and membership check-in data are stored in separate tables. The Trends tab currently shows membership data only. A future enhancement could merge both datasets to show the full programme history.</Note>
+          </Section>
+
+          <Section id="mb-automation" title="Automation" colour="teal">
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">membershipWeekAdvanceFunction</p>
+            <p>Triggered by the <strong>membership/enrolled</strong> Inngest event. Sleeps 7 days then advances <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_week</code> within the current block. After week 6, advances <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_block</code> to the next block and resets <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_week</code> to 1. Checks <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">cancelled_at</code> before each step — cancelled memberships are skipped.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Block advance logic</p>
+            <div className="space-y-1 mt-2">
+              <SeqRow day="Block A Weeks 1-6" label="current_week advances 1 through 6 over 6 weeks" />
+              <SeqRow day="Block A complete" label="current_block set to B, current_week reset to 1" />
+              <SeqRow day="Block B Weeks 1-6" label="current_week advances 1 through 6" />
+              <SeqRow day="Block B complete" label="current_block set to C, current_week reset to 1" />
+              <SeqRow day="Block C Weeks 1-6" label="current_week advances 1 through 6" />
+              <SeqRow day="Block C complete" label="Pattern re-assessment — manual process, not yet automated" />
+            </div>
+          </Section>
+
+          <Section id="mb-database" title="Database" colour="teal">
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">membership_enrollments</p>
+            <StatusList items={[
+              { label: 'id', desc: 'UUID primary key' },
+              { label: 'token', desc: 'Unique 64-char hex token. Used in all portal URLs.' },
+              { label: 'email', desc: 'Member email, lowercased' },
+              { label: 'first_name', desc: 'First name' },
+              { label: 'pattern', desc: 'stress-stored | metabolic-drift | hormonal-shift | system-overload | pending' },
+              { label: 'pattern_source', desc: 'blueprint | assessment — how the pattern was determined' },
+              { label: 'blueprint_token', desc: 'FK to blueprint_enrollments.token — null if direct join with no Blueprint history' },
+              { label: 'stripe_subscription_id', desc: 'Stripe subscription reference for cancellation handling' },
+              { label: 'current_block', desc: 'A | B | C — advanced by Inngest' },
+              { label: 'current_week', desc: 'Integer 1-6 within the current block — advanced by Inngest' },
+              { label: 'cancelled_at', desc: 'Set when Stripe fires customer.subscription.deleted' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">membership_checkins</p>
+            <StatusList items={[
+              { label: 'enrollment_id', desc: 'FK to membership_enrollments.id' },
+              { label: 'week_number', desc: 'Integer. Unique constraint with enrollment_id prevents duplicate weekly submissions.' },
+              { label: '8 marker columns', desc: 'Same as blueprint_checkins — all int 1-5' },
+              { label: 'notes', desc: 'Optional text field' },
+            ]} />
+
+            <Note>To create a test membership enrollment: INSERT INTO membership_enrollments (email, first_name, pattern, pattern_source, current_block, current_week) VALUES (&apos;email&apos;, &apos;Name&apos;, &apos;stress-stored&apos;, &apos;blueprint&apos;, &apos;A&apos;, 1) RETURNING token;</Note>
           </Section>
 
         </div>
