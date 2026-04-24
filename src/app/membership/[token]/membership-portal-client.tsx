@@ -352,6 +352,302 @@ const BLOCK_B_COACHING_NOTES: Record<string, Record<number, string>> = {
   },
 }
 
+const BLOCK_C_SESSIONS: Session[] = [
+  {
+    id: 'A',
+    name: 'Session A',
+    subtitle: 'Strength Peak',
+    gym: [
+      { name: 'Barbell Back Squat', sets: 5, reps: '5', notes: 'Heaviest squat of the programme. 3-second descent. Full depth.' },
+      { name: 'Tri-set: Romanian Deadlift', sets: 3, reps: '8', notes: 'No rest after squat. Hinge immediately. Rest 2 minutes after all three.' },
+      { name: 'Tri-set: Barbell Bench Press', sets: 3, reps: '5-6', notes: 'Peak pressing load. Full range. No bouncing.' },
+      { name: 'Weighted Pull-Up', sets: 4, reps: '5-6', notes: 'Add weight via belt or vest. Lower over 3 seconds.' },
+      { name: 'Landmine Press', sets: 3, reps: '10/side', notes: 'Rotational pressing pattern. Core engagement throughout.' },
+    ],
+    home: [
+      { name: 'DB Goblet Squat (Heaviest, Low Rep)', sets: 5, reps: '6', notes: 'Heaviest DB available. Pause at bottom.' },
+      { name: 'Tri-set: DB Romanian Deadlift', sets: 3, reps: '8', notes: 'Both DBs. Full hamstring stretch.' },
+      { name: 'Tri-set: DB Floor Press (Heaviest)', sets: 3, reps: '6', notes: 'Heaviest available. Full range.' },
+      { name: 'DB Bent Over Row (Peak Load)', sets: 4, reps: '6', notes: 'Both DBs. As heavy as possible for 6 reps.' },
+      { name: 'DB Lateral + Front Raise Combo', sets: 3, reps: '10 each', notes: 'Lateral raise flowing into front raise. Continuous movement.' },
+    ],
+    bodyweight: [
+      { name: 'Pistol Squat (Unassisted Target)', sets: 5, reps: '5/leg', notes: 'Aim to reduce or eliminate assistance from Block B.' },
+      { name: 'Tri-set: Single Leg Hip Hinge (5 sec)', sets: 3, reps: '8/leg', notes: '5-second hold at parallel.' },
+      { name: 'Tri-set: Archer Push-Up (5 sec down)', sets: 3, reps: '6/side', notes: '5-second descent. Full range.' },
+      { name: 'Table Inverted Row (4 sec lower)', sets: 4, reps: '8', notes: '4-second lowering phase. Maximum tension.' },
+      { name: 'Pike Push-Up (Deficit, 4 sec down)', sets: 3, reps: '10', notes: 'Hands elevated. 4-second descent. Full range.' },
+    ],
+  },
+  {
+    id: 'B',
+    name: 'Session B',
+    subtitle: 'Peak Conditioning',
+    gym: [
+      { name: 'Trap Bar Deadlift (Peak Load)', sets: 5, reps: '4-5', notes: 'Heaviest deadlift of the programme. Set up carefully.' },
+      { name: 'Push Press', sets: 4, reps: '6', notes: 'Slight dip and drive from legs to initiate. Press overhead.' },
+      { name: 'Walking Lunge (Barbell, Heavy)', sets: 4, reps: '10/leg', notes: 'Heaviest lunge of the cycle. Upright torso.' },
+      { name: 'Chest-Supported Row (Heavy)', sets: 4, reps: '6-8', notes: 'Full range. Hard contraction at the top.' },
+      { name: 'Finisher: EMOM 10 min', sets: 1, reps: '10 min', notes: 'Every minute: 5 burpees + 5 DB thrusters. Pattern rules apply.' },
+    ],
+    home: [
+      { name: 'DB Romanian Deadlift (Peak, Both)', sets: 5, reps: '6', notes: 'Heaviest possible for 6 reps. Full stretch.' },
+      { name: 'DB Push Press', sets: 4, reps: '6', notes: 'Dip and drive. Press both DBs overhead from shoulder height.' },
+      { name: 'Walking Lunge (Heaviest DBs)', sets: 4, reps: '10/leg', notes: 'Full depth. Upright torso.' },
+      { name: 'DB Renegade Row (Heavy)', sets: 4, reps: '6/side', notes: 'Heaviest renegade row of the cycle. Hips stay square.' },
+      { name: 'Finisher: EMOM 10 min', sets: 1, reps: '10 min', notes: 'Every minute: 5 squat jumps + 5 DB push press. Pattern rules apply.' },
+    ],
+    bodyweight: [
+      { name: 'Single Leg RDL (5 sec hold)', sets: 5, reps: '10/leg', notes: 'Highest volume of the cycle for this movement.' },
+      { name: 'Push Press (Bodyweight)', sets: 4, reps: '8', notes: 'Jump and press. Explosive. Land soft.' },
+      { name: 'Walking Lunge (Slow, Paused)', sets: 4, reps: '10/leg', notes: '3-second descent, 1-second pause at bottom.' },
+      { name: 'Plyo Push-Up or Max Effort', sets: 4, reps: 'max', notes: 'Explosive push-up. Max reps per set.' },
+      { name: 'Finisher: EMOM 10 min', sets: 1, reps: '10 min', notes: 'Every minute: 5 burpees + 5 jump squats. Pattern rules apply.' },
+    ],
+  },
+  {
+    id: 'C',
+    name: 'Session C',
+    subtitle: 'Technical Refinement',
+    gym: [
+      { name: 'Front Squat (Peak Load)', sets: 5, reps: '4-5', notes: 'Heaviest front squat of the cycle. Upright torso.' },
+      { name: 'Incline Barbell Bench (Peak Load)', sets: 4, reps: '5-6', notes: 'Heaviest incline of the cycle.' },
+      { name: 'Pendlay Row', sets: 4, reps: '5-6', notes: 'Bar starts on floor each rep. Full reset. Explosively pull to lower chest.' },
+      { name: 'Weighted Chin-Up', sets: 4, reps: '5-6', notes: 'Supinated grip. Add weight. Pull chin fully over bar.' },
+      { name: 'Turkish Get-Up', sets: 3, reps: '3/side', notes: 'Slow and deliberate. Full movement from floor to standing with DB overhead.' },
+    ],
+    home: [
+      { name: 'DB Front Squat (Peak Load)', sets: 5, reps: '6', notes: 'Heaviest front squat of the cycle. Front-rack position.' },
+      { name: 'DB Incline Press (Peak Load)', sets: 4, reps: '6', notes: 'Heaviest incline press of the cycle.' },
+      { name: 'DB Pendlay Row (Floor Reset)', sets: 4, reps: '6', notes: 'Place DBs on floor each rep. Hinge and explosively pull.' },
+      { name: 'Supinated Inverted Row (Peak)', sets: 4, reps: '8', notes: 'Under table, supinated grip. Pull chest to table. Maximum effort.' },
+      { name: 'Turkish Get-Up', sets: 3, reps: '3/side', notes: 'One DB. Slow and deliberate. Floor to standing.' },
+    ],
+    bodyweight: [
+      { name: 'Shrimp Squat or Pistol Progression', sets: 5, reps: '5/leg', notes: 'Most advanced squat variation of the programme.' },
+      { name: 'Close Grip Pike Push-Up', sets: 4, reps: '8', notes: 'Hands close together. Targets triceps more than standard.' },
+      { name: 'Explosive Table Row', sets: 4, reps: '8', notes: 'Explosive pull. Touch chest to table hard.' },
+      { name: 'L-Sit Hold', sets: 3, reps: '15-20 sec', notes: 'Straight arms, legs extended parallel to floor. Hardest core hold of the programme.' },
+      { name: 'Turkish Get-Up (Bodyweight)', sets: 3, reps: '3/side', notes: 'No weight. Perfect technique. Full movement from floor to standing.' },
+    ],
+  },
+]
+
+const BLOCK_C_PATTERN_TRAINING: Record<string, {
+  progression: { phase: string; weeks: string; rir: string; notes: string }[]
+  rules: string[]
+}> = {
+  'stress-stored': {
+    progression: [
+      { phase: 'Reset', weeks: '1-2', rir: '2-3 RIR', notes: 'Adjust to peak-phase rep ranges. Technique refinement.' },
+      { phase: 'Build', weeks: '3-4', rir: '1-2 RIR', notes: 'Highest load of the full cycle. Sleep data governs.' },
+      { phase: 'Peak', weeks: '5', rir: '1 RIR', notes: 'Controlled personal bests. Never 0 RIR.' },
+      { phase: 'Recover', weeks: '6', rir: '4-5 RIR', notes: 'Full recovery. 40% set reduction. Pattern re-assessment follows.' },
+    ],
+    rules: [
+      'Session B finisher remains skipped - no conditioning in Block C',
+      'Pre-training fuel mandatory in weeks 3-5 - protein and fat 60-90 min before each session',
+      'Week 5 requires sleep quality 4/5+ in check-in to attempt 1 RIR - hold at 2 RIR if below',
+      'Week 6: begin noting any shifts in fat storage location, energy patterns, and morning cortisol signals for re-assessment',
+    ],
+  },
+  'metabolic-drift': {
+    progression: [
+      { phase: 'Reset', weeks: '1-2', rir: '1-2 RIR', notes: 'New rep ranges. Maintain full conditioning output.' },
+      { phase: 'Build', weeks: '3-4', rir: '0-1 RIR', notes: 'Near-maximum across all sessions. Record everything.' },
+      { phase: 'Peak', weeks: '5', rir: '0 RIR', notes: 'True maximum effort. Personal bests across all lifts.' },
+      { phase: 'Recover', weeks: '6', rir: '3-4 RIR', notes: 'Full recovery. Carbs drop to Block A baseline.' },
+    ],
+    rules: [
+      'Session B EMOM finisher is the highest metabolic output of the programme - do not skip',
+      'Post-session walk mandatory every session',
+      'Week 5 carb intake is the highest of the entire programme - fuel the output fully',
+      'Week 6: assess how blood sugar stability, energy consistency, and body composition have shifted across 18 weeks',
+    ],
+  },
+  'hormonal-shift': {
+    progression: [
+      { phase: 'Reset', weeks: '1-2', rir: '2 RIR', notes: 'New movements. Cycle phase mapping critical.' },
+      { phase: 'Build', weeks: '3-4', rir: '1-2 RIR', notes: 'Cycle phase determines upper limit at every session.' },
+      { phase: 'Peak', weeks: '5', rir: '1 RIR', notes: 'Follicular or ovulatory only. Luteal holds at 2 RIR.' },
+      { phase: 'Recover', weeks: '6', rir: '3-4 RIR', notes: 'Full recovery. Food volume maintained.' },
+    ],
+    rules: [
+      'Session B EMOM finisher: optional, 7/10 effort maximum',
+      'Map cycle timing across all 6 weeks before Block C begins - it determines your peak week',
+      'If peak week falls during luteal phase, move peak effort to the nearest follicular window',
+      'Week 6: note how hormonal symptoms, energy, and body composition have shifted across the full 18 weeks',
+    ],
+  },
+  'system-overload': {
+    progression: [
+      { phase: 'Reset', weeks: '1-2', rir: '3 RIR', notes: 'Longest reset of any block. New movements only.' },
+      { phase: 'Build', weeks: '3-4', rir: '2-3 RIR', notes: 'Gradual increase only. Check-in data governs every step.' },
+      { phase: 'Peak', weeks: '5', rir: '2 RIR', notes: 'Most modest peak of any pattern. Quality over proximity to failure.' },
+      { phase: 'Recover', weeks: '6', rir: '5 RIR', notes: 'Lightest week of the full cycle. 50% set reduction.' },
+    ],
+    rules: [
+      'Session B finisher remains skipped',
+      'Tri-sets: do as straight sets with 2-3 minutes rest if tri-sets feel like too much',
+      'Week 5: if energy markers have been below 3/5 consistently, hold at 3 RIR rather than pushing to 2',
+      'Week 6: full deload, 50% set reduction. The pattern re-assessment that follows depends on how well you recover this week',
+    ],
+  },
+}
+
+const BLOCK_C_NUTRITION: Record<string, { headline: string; newStrategy: { title: string; points: string[] }[]; phaseNotes: { phase: string; weeks: string; note: string }[] }> = {
+  'stress-stored': {
+    headline: 'Block C nutrition prepares the body for peak output and the pattern re-assessment that follows. Recovery is the primary lever.',
+    newStrategy: [
+      {
+        title: 'Peak Fuelling Protocol',
+        points: [
+          'Weeks 3-5: post-training carbs increase to 2-3 cupped hands on heavy session days.',
+          'Pre-training meal is non-negotiable - protein and fat 60-90 minutes before every session.',
+          'Cortisol anchor evening meal structure continues throughout Block C.',
+          'No skipped meals in peak weeks. Undereating during peak training weeks spikes cortisol and works directly against this pattern.',
+        ],
+      },
+      {
+        title: 'Pattern Re-Assessment Preparation (Week 6)',
+        points: [
+          'Week 6 is not just a deload - it is a reset observation week.',
+          'Reduce post-training carbs back to 1 cupped hand.',
+          'Notice where any remaining softness or bloating sits in your body.',
+          'Track morning energy, afternoon crash, and mood - these become the re-assessment inputs alongside your check-in data.',
+        ],
+      },
+    ],
+    phaseNotes: [
+      { phase: 'Reset', weeks: '1-2', note: 'Maintain Block B nutrition structure. Anchor meals continue every training day.' },
+      { phase: 'Build', weeks: '3-4', note: 'Increase post-training carbs to 2-3 cupped hands on heavy session days. Pre-training fuel mandatory.' },
+      { phase: 'Peak', weeks: '5', note: 'Highest food volume of Block C. Never under-eat in peak week for this pattern.' },
+      { phase: 'Recover', weeks: '6', note: 'Post-training carbs drop to 1 cupped hand. Begin re-assessment observation. Note energy patterns and fat storage signals.' },
+    ],
+  },
+  'metabolic-drift': {
+    headline: 'Block C nutrition peaks carb intake alongside training output, then drops sharply in the deload to assess how the metabolic system has adapted.',
+    newStrategy: [
+      {
+        title: 'Peak Carb Protocol',
+        points: [
+          'Week 5 is the highest carb intake of the entire programme.',
+          'Session B day: 3 cupped hands post-training. This session earns the fuel.',
+          'Session A and C days: 2-3 cupped hands post-training.',
+          'Rest days remain fruit only - the contrast is what drives the adaptation.',
+        ],
+      },
+      {
+        title: 'Post-Block Assessment (Week 6)',
+        points: [
+          'Drop carbs back to Block A levels in week 6.',
+          'This deliberate contrast after peak intake gives a clear read on how insulin sensitivity has shifted.',
+          'Monitor energy on rest days specifically - a well-adapted metabolic system maintains energy without starchy carbs.',
+          'This data informs whether the next cycle should continue as Metabolic-Drift or shift pattern.',
+        ],
+      },
+    ],
+    phaseNotes: [
+      { phase: 'Reset', weeks: '1-2', note: 'Maintain Block B calorie periodisation. Carbs on training days, fruit on rest days.' },
+      { phase: 'Build', weeks: '3-4', note: 'Increase training day carbs. Session B gets the most - it demands the most.' },
+      { phase: 'Peak', weeks: '5', note: 'Highest carb intake of the programme on Session B day. Fuel the maximum output.' },
+      { phase: 'Recover', weeks: '6', note: 'Drop to Block A carb levels. Observe how energy holds on rest days without starchy carbs. This is the re-assessment signal.' },
+    ],
+  },
+  'hormonal-shift': {
+    headline: 'Block C nutrition maps food volume to cycle phase more precisely than any previous block. The programme peaks when your biology peaks.',
+    newStrategy: [
+      {
+        title: 'Cycle-Mapped Peak Week',
+        points: [
+          'If peak week (week 5) falls in the follicular or ovulatory phase: push training hard, increase carbs to 2-3 cupped hands post-training, eat fully.',
+          'If peak week falls in the luteal phase: hold training at 2 RIR, increase fat to 2-3 thumbs per meal, allow starchy carbs 3x on rest days.',
+          'Never force a peak during luteal phase. The hormonal environment does not support maximum output - and fighting it creates setbacks.',
+          'If the cycle alignment is unfavourable, contact Kade before week 5 to discuss adjusting the peak window.',
+        ],
+      },
+      {
+        title: 'Re-Assessment Nutrition (Week 6)',
+        points: [
+          'Maintain full food volume in week 6 regardless of reduced training.',
+          'Observe: has the luteal phase become more manageable? Are cravings lower? Is mood more stable across the cycle?',
+          'These changes indicate whether the pattern has shifted or the Hormonal-Shift pattern needs another cycle.',
+        ],
+      },
+    ],
+    phaseNotes: [
+      { phase: 'Reset', weeks: '1-2', note: 'Map cycle timing across all 6 weeks of Block C. This determines your entire nutrition approach for the block.' },
+      { phase: 'Build', weeks: '3-4', note: 'Follow the cycle-mapped approach. Follicular: push. Luteal: support. No exceptions.' },
+      { phase: 'Peak', weeks: '5', note: 'Peak nutrition follows peak biology. Follicular: maximum carbs and output. Luteal: maximum fat and recovery.' },
+      { phase: 'Recover', weeks: '6', note: 'Full food volume maintained. Observe hormonal symptom changes as re-assessment inputs.' },
+    ],
+  },
+  'system-overload': {
+    headline: 'Block C nutrition prioritises nervous system recovery above performance gains. The re-assessment at the end of this block measures how far the system has come.',
+    newStrategy: [
+      {
+        title: 'Maximum Recovery Nutrition',
+        points: [
+          'Red meat at least 3 times per week in Block C - higher than any previous block.',
+          'Liver once per week if tolerated. This remains the most efficient single food for nervous system recovery.',
+          'Magnesium every night without exception - the most impactful single supplement for this pattern.',
+          'Pre-sleep protocol non-negotiable: nothing within 2 hours of bed, magnesium 60 minutes before sleep.',
+        ],
+      },
+      {
+        title: 'Re-Assessment Observation (Week 6)',
+        points: [
+          'Week 6 is the lightest training week of the entire programme.',
+          'Use the reduced demand to observe baseline energy - how does the nervous system feel when the load is low?',
+          'Significant improvement in baseline energy over 18 weeks indicates the system has recovered.',
+          'Persistent fatigue despite the deload suggests another cycle of System-Overload work is warranted before shifting pattern.',
+        ],
+      },
+    ],
+    phaseNotes: [
+      { phase: 'Reset', weeks: '1-2', note: 'Maximum recovery nutrition from day 1. Red meat, liver, magnesium. Pre-sleep protocol every night.' },
+      { phase: 'Build', weeks: '3-4', note: 'Maintain recovery stack. Pre-session fuel mandatory. Monitor energy markers in check-in closely.' },
+      { phase: 'Peak', weeks: '5', note: 'Pre-session fuel critical. Protein and fat 60-90 minutes before every session. No exceptions in peak week.' },
+      { phase: 'Recover', weeks: '6', note: '50% set reduction. Maximum food volume. Observe baseline energy - this is the re-assessment signal.' },
+    ],
+  },
+}
+
+const BLOCK_C_COACHING_NOTES: Record<string, Record<number, string>> = {
+  'stress-stored': {
+    1: 'Block C is the peak of the 18-week cycle. Lower rep ranges, heavier loads, tri-set pairings. In weeks 1-2 the priority is adapting to the new format - not chasing load. The heaviest sets come in weeks 3-5.',
+    2: 'Anchor meals are now established. In Block C they become even more important - as training demand peaks, food decision fatigue becomes a real cortisol source. Two anchored meals per day removes that variable entirely.',
+    3: 'Training load is now the highest of the programme. Your sleep quality marker in this check-in determines how you approach week 4. 4/5 or above - progress the load. Below that - hold steady.',
+    4: 'If your strength numbers are moving week on week, the system is working. The combination of cortisol management, anchor meals, and progressive load is producing adaptation. Notice it.',
+    5: 'Peak week. 1 RIR on all major lifts. Pre-training fuel is non-negotiable this week - protein and fat 60-90 minutes before every session. Do not skip it for any reason.',
+    6: 'Full deload. 40% set reduction. Begin the re-assessment observation: where does any remaining softness sit? How does your morning energy feel? How is your sleep? This data feeds the next cycle.',
+  },
+  'metabolic-drift': {
+    1: 'Block C introduces the peak rep ranges of the programme. Lower reps, heavier loads, more complex movement pairings. Weeks 1-2 are about adjusting - the maximum effort weeks are 3-5.',
+    2: 'Calorie periodisation is now at its most structured. Training days are the highest intake of the programme. Rest days are fruit only. The contrast between training and rest day intake is the insulin sensitivity driver.',
+    3: 'Near-maximum effort begins this week. Record every set on every compound lift. These are the numbers you are trying to surpass in week 5. If you are not recording, you cannot know if you improved.',
+    4: 'The EMOM finisher in Session B is the highest metabolic output moment of the entire programme. Approach it that way. 10 minutes of maximum sustained effort is what creates the most significant insulin sensitivity shift.',
+    5: 'Peak week. 0 RIR. True maximum effort across all sessions. Session B carb window is the largest of the programme today - 3 cupped hands post-training. Fuel the output completely.',
+    6: 'Deload. Carbs drop back to Block A levels. Use this week to observe how energy holds on rest days without starchy carbs. If it holds well - the metabolic system has shifted. If it dips sharply - another cycle is warranted.',
+  },
+  'hormonal-shift': {
+    1: 'Block C is the highest demand block. Map where your cycle falls across all 6 weeks before you begin. This single piece of planning will determine how you approach load, carbs, and recovery across the entire block.',
+    2: 'The programme peaks when your biology peaks. If you are currently in the follicular phase, push the load and carbs hard this week. If luteal, hold steady and recover well. Both approaches are correct - they are just different.',
+    3: 'Build phase begins. Load increases only when your cycle phase supports it. If you are follicular or ovulatory, push to 1-2 RIR. If luteal, hold at 2-3 RIR. The calendar says week 3. Your body determines the intensity.',
+    4: 'Consistency across 18 weeks is the adaptation. The fact that you are in Block C at week 4 is evidence of that. The body composition changes in this pattern are visible in the check-in trend data - look at how your markers have moved since Block A.',
+    5: 'Peak week. If follicular or ovulatory - push to 1 RIR and fuel fully. If luteal - hold at 2 RIR, increase fat intake, and treat this as a strategic recovery week. There is no wrong answer, only the honest one.',
+    6: 'Final deload. Food volume maintained. Observe: has the luteal phase become more manageable across this block? Are cycle symptoms lighter? This determines whether the pattern has shifted or another cycle is needed.',
+  },
+  'system-overload': {
+    1: 'Block C is the most demanding block. Your nervous system has 18 weeks of progressive work behind it. The tri-set format is new - if it feels like too much in weeks 1-2, do straight sets with full rest. The format adjusts to the system.',
+    2: 'Maximum recovery nutrition this week. Red meat at least twice. Liver if possible. Magnesium every night. Pre-sleep protocol every night. Recovery nutrition is the most powerful variable for this pattern in Block C.',
+    3: 'Load progression only if check-in energy markers are 3/5 or above. If they are below, hold at 3 RIR for another week. This has been the rule since Block A. It does not change in the peak block.',
+    4: 'The check-in trend data across 18 weeks is now a meaningful dataset. Look at the trends tab and observe how your energy, sleep, and recovery markers have moved from Block A week 1 to now. That movement is the adaptation.',
+    5: 'Modest peak. 2 RIR, controlled throughout. Pre-session fuel is critical this week without exception. The nervous system needs fuel to perform at its current capacity. Do not skip the pre-training meal.',
+    6: 'Lightest week of the programme. 50% set reduction. Observe baseline energy with the load removed. How does the nervous system feel when the demand is minimal? That answer determines the re-assessment outcome.',
+  },
+}
+
 const NAV_ITEMS = [
   { id: 'home', label: 'Home' },
   { id: 'training', label: 'Training' },
@@ -745,17 +1041,23 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
   const block = enrollment.current_block ?? 'A'
   const currentWeek = enrollment.current_week ?? 1
   const phases = BLOCK_PHASES[block] ?? BLOCK_PHASES['A']
-  const sessions = block === 'B' ? BLOCK_B_SESSIONS : BLOCK_A_SESSIONS
-  const trainingData = block === 'B'
-    ? (BLOCK_B_PATTERN_TRAINING[pattern] ?? BLOCK_B_PATTERN_TRAINING['stress-stored'])
-    : (PATTERN_TRAINING[pattern] ?? PATTERN_TRAINING['stress-stored'])
-  const nutritionData = block === 'B'
-    ? (BLOCK_B_NUTRITION[pattern] ?? BLOCK_B_NUTRITION['stress-stored'])
-    : (BLOCK_A_NUTRITION[pattern] ?? BLOCK_A_NUTRITION['stress-stored'])
+  const sessions = block === 'C' ? BLOCK_C_SESSIONS : block === 'B' ? BLOCK_B_SESSIONS : BLOCK_A_SESSIONS
+  const trainingData = block === 'C'
+    ? (BLOCK_C_PATTERN_TRAINING[pattern] ?? BLOCK_C_PATTERN_TRAINING['stress-stored'])
+    : block === 'B'
+      ? (BLOCK_B_PATTERN_TRAINING[pattern] ?? BLOCK_B_PATTERN_TRAINING['stress-stored'])
+      : (PATTERN_TRAINING[pattern] ?? PATTERN_TRAINING['stress-stored'])
+  const nutritionData = block === 'C'
+    ? (BLOCK_C_NUTRITION[pattern] ?? BLOCK_C_NUTRITION['stress-stored'])
+    : block === 'B'
+      ? (BLOCK_B_NUTRITION[pattern] ?? BLOCK_B_NUTRITION['stress-stored'])
+      : (BLOCK_A_NUTRITION[pattern] ?? BLOCK_A_NUTRITION['stress-stored'])
   const resources = RESOURCES[pattern] ?? RESOURCES['stress-stored']
-  const coachingNote = block === 'B'
-    ? (BLOCK_B_COACHING_NOTES[pattern]?.[currentWeek] ?? '')
-    : (COACHING_NOTES[pattern]?.[currentWeek] ?? '')
+  const coachingNote = block === 'C'
+    ? (BLOCK_C_COACHING_NOTES[pattern]?.[currentWeek] ?? '')
+    : block === 'B'
+      ? (BLOCK_B_COACHING_NOTES[pattern]?.[currentWeek] ?? '')
+      : (COACHING_NOTES[pattern]?.[currentWeek] ?? '')
 
   const currentPhase = (() => {
     if (currentWeek <= 2) return phases[0]
