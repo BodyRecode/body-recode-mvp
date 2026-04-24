@@ -699,20 +699,17 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
             </div>
 
             {nutritionData.newStrategy.map((s, i) => (
-              card(
-                <>
-                  {label(`New in Block A: ${s.title}`)}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    {s.points.map((point, j) => (
-                      <div key={j} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-                        <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{point}</span>
-                      </div>
-                    ))}
-                  </div>
-                </>,
-                { key: i }
-              )
+              <div key={i} style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
+                {label(`New in Block A: ${s.title}`)}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {s.points.map((point, j) => (
+                    <div key={j} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
+                      <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{point}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ))}
 
             {card(<>
