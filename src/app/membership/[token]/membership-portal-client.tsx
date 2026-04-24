@@ -814,7 +814,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
       {/* Header */}
       <div style={{ background: '#111110', borderBottom: '1px solid #1c1917', padding: '16px 24px' }}>
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <img src="https://bodyrecode.au/logo-teal.png" width={100} alt="Body Recode" />
+          <img src="https://bodyrecode.au/logo-teal.png" width={140} alt="Body Recode" />
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>{enrollment.first_name}</div>
             <div style={{ fontSize: 12, color: config.colour, fontWeight: 600 }}>Membership - Block {block}</div>
