@@ -30,3 +30,31 @@ create policy "Service role full access"
 create index if not exists membership_enrollments_token_idx on membership_enrollments(token);
 create index if not exists membership_enrollments_email_idx on membership_enrollments(email);
 create index if not exists membership_enrollments_blueprint_token_idx on membership_enrollments(blueprint_token);
+
+-- membership_checkins table
+create table if not exists membership_checkins (
+  id uuid primary key default gen_random_uuid(),
+  enrollment_id uuid not null references membership_enrollments(id) on delete cascade,
+  week_number int not null,
+  energy_levels int not null check (energy_levels between 1 and 5),
+  morning_energy int not null check (morning_energy between 1 and 5),
+  sleep_quality int not null check (sleep_quality between 1 and 5),
+  afternoon_crash int not null check (afternoon_crash between 1 and 5),
+  hunger_cravings int not null check (hunger_cravings between 1 and 5),
+  training_recovery int not null check (training_recovery between 1 and 5),
+  mood_stability int not null check (mood_stability between 1 and 5),
+  physical_changes int not null check (physical_changes between 1 and 5),
+  notes text,
+  submitted_at timestamptz not null default now(),
+  unique(enrollment_id, week_number)
+);
+
+alter table membership_checkins enable row level security;
+
+create policy "Service role full access"
+  on membership_checkins
+  for all
+  using (true)
+  with check (true);
+
+create index if not exists membership_checkins_enrollment_idx on membership_checkins(enrollment_id);

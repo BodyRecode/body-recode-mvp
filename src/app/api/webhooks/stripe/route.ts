@@ -538,6 +538,11 @@ export async function POST(request: NextRequest) {
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Blueprint token: ${blueprint_token || 'None - direct join'}</p>
 </div>`,
       })
+
+      await inngest.send({
+        name: 'membership/enrolled',
+        data: { token: membership.token, email, first_name },
+      })
     }
 
     return NextResponse.json({ received: true })

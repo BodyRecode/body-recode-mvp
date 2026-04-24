@@ -802,6 +802,68 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
   }
 )
 
+// ─── Membership Week/Block Advance Function ───────────────────────────────────
+
+export const membershipWeekAdvanceFunction = inngest.createFunction(
+  {
+    id: 'membership-week-advance',
+    retries: 2,
+    triggers: [{ event: 'membership/enrolled' }],
+  },
+  async ({ event, step }: { event: any; step: any }) => {
+    const { token } = event.data as { token: string }
+
+    const BLOCKS = ['A', 'B', 'C']
+    const WEEKS_PER_BLOCK = 6
+
+    for (const block of BLOCKS) {
+      for (let week = (block === 'A' ? 2 : 1); week <= WEEKS_PER_BLOCK; week++) {
+        await step.sleep(`wait-block-${block}-week-${week}`, '7d')
+
+        await step.run(`advance-block-${block}-week-${week}`, async () => {
+          const admin = createAdminClient()
+          const { data } = await admin
+            .from('membership_enrollments')
+            .select('current_block, current_week, cancelled_at')
+            .eq('token', token)
+            .single()
+
+          if (!data || data.cancelled_at) return
+          if (data.current_block !== block) return
+
+          if (week <= WEEKS_PER_BLOCK) {
+            await admin
+              .from('membership_enrollments')
+              .update({ current_week: week })
+              .eq('token', token)
+          }
+        })
+      }
+
+      // Advance to next block after week 6 deload
+      if (block !== 'C') {
+        const nextBlock = BLOCKS[BLOCKS.indexOf(block) + 1]
+        await step.run(`advance-to-block-${nextBlock}`, async () => {
+          const admin = createAdminClient()
+          const { data } = await admin
+            .from('membership_enrollments')
+            .select('current_block, cancelled_at')
+            .eq('token', token)
+            .single()
+
+          if (!data || data.cancelled_at) return
+          if (data.current_block !== block) return
+
+          await admin
+            .from('membership_enrollments')
+            .update({ current_block: nextBlock, current_week: 1 })
+            .eq('token', token)
+        })
+      }
+    }
+  }
+)
+
 // ─── Execute Workflow Function ────────────────────────────────────────────────
 
 export const executeWorkflowFunction = inngest.createFunction(
