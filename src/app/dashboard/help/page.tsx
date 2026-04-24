@@ -57,6 +57,9 @@ const SECTIONS = [
   { id: 'ch-database',      title: 'Database and Supabase',  colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-prelaunch',     title: 'Pre-Launch Checklist',   colour: 'teal' as const, category: 'challenge' as Category },
 
+  // Funnel Dashboard
+  { id: 'funnel-dashboard',  title: 'Funnel Dashboard',      colour: 'teal' as const, category: 'flows' as Category },
+
   // Blueprint
   { id: 'bp-overview',      title: 'Blueprint Overview',     colour: 'teal' as const, category: 'blueprint' as Category },
   { id: 'bp-sales',         title: 'Sales Page',             colour: 'teal' as const, category: 'blueprint' as Category },
@@ -349,6 +352,32 @@ export default function HelpPage() {
               </div>
 
             </div>
+          </Section>
+
+          <Section id="funnel-dashboard" title="Funnel Dashboard" colour="teal">
+            <p>Found at <strong>/dashboard/funnel</strong>. A unified view of every participant across all three Body Recode stages — Challenge, Blueprint, and Membership. The purpose is to ensure no lead gets lost and no ascension opportunity is missed.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Summary cards</p>
+            <p>Three stat cards at the top show total enrollment counts per stage, with ascension rates (e.g. how many challenge participants purchased Blueprint, how many Blueprint buyers joined membership).</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Attention flags</p>
+            <p>An amber alert bar appears automatically when action is needed. Currently flags two conditions:</p>
+            <div className="space-y-2 mt-2">
+              <ChecklistItem text="Blueprint buyers at Week 6 who have not yet joined the membership — these are the highest-value outreach targets." />
+              <ChecklistItem text="Active membership members with no check-in submitted — data gap that limits the monthly Loom review." />
+            </div>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Tabs</p>
+            <StatusList items={[
+              { label: 'Challenge', desc: 'All enrollments with current day, quiz result, and whether they purchased Blueprint. Rows flagged red if they completed Day 14 without buying.' },
+              { label: 'Blueprint', desc: 'All buyers with pattern, current week, last check-in week and average score, and membership status. Rows flagged red if at Week 6 without membership, or past Week 1 with no check-in.' },
+              { label: 'Membership', desc: 'All members with pattern, current block and week, last check-in, average score, and active/cancelled status. Rows flagged red if active with no check-in submitted.' },
+            ]} />
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Search</p>
+            <p>Filter by name or email across any tab. Updates instantly as you type.</p>
+
+            <Note>The Funnel Dashboard is read-only — it shows data but does not allow edits. To modify an enrollment, go directly to Supabase or the relevant portal.</Note>
           </Section>
 
           {/* Section 1 */}
@@ -2142,10 +2171,16 @@ export default function HelpPage() {
             <p>Two Inngest functions are triggered on the <strong>blueprint/enrolled</strong> event, fired from the Stripe webhook after enrollment creation.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">blueprintWeekAdvanceFunction</p>
-            <p>Sleeps 7 days then advances <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_week</code> from 1 to 2, sleeps again, advances to 3, and so on up to week 6. Checks <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">status === &apos;active&apos;</code> before each advance — cancelled enrollments are skipped.</p>
+            <p>Sleeps 7 days then advances <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_week</code> from 1 to 2, sleeps again, advances to 3, and so on up to week 6. On each advance it also sends a check-in prompt email. If the check-in is not submitted within 2 days, a reminder email fires automatically.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Check-in email cadence (per week)</p>
+            <div className="space-y-1 mt-2">
+              <SeqRow day="Day 7 (week advance)" label="Check-in prompt — Week X is complete, submit your check-in" />
+              <SeqRow day="Day 9 (if no submission)" label="Reminder — check-in still outstanding" />
+            </div>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">blueprintEmailSequenceFunction</p>
-            <p>Sends 7 emails across 7 weeks. Fetches the pattern at send time (handles pending-pattern buyers whose pattern resolves after purchase). Email subjects and content are pattern-specific.</p>
+            <p>Sends 7 coaching emails across 7 weeks. Fetches the pattern at send time (handles pending-pattern buyers whose pattern resolves after purchase). Email subjects and content are pattern-specific.</p>
             <div className="space-y-1 mt-2">
               <SeqRow day="Week 1 (immediate)" label="Welcome and pattern introduction" />
               <SeqRow day="Week 2" label="Insulin lesson preview + nutrition reminder" />
@@ -2155,6 +2190,8 @@ export default function HelpPage() {
               <SeqRow day="Week 6" label="Ascension — what comes next" />
               <SeqRow day="Week 7" label="Final follow-up if no ascension action taken" />
             </div>
+
+            <Note>Check-in prompt emails and coaching sequence emails are separate. A buyer receives both — the coaching sequence is educational, the check-in prompts are action-driven.</Note>
           </Section>
 
           <Section id="bp-database" title="Database" colour="teal">
@@ -2275,7 +2312,13 @@ export default function HelpPage() {
 
           <Section id="mb-automation" title="Automation" colour="teal">
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">membershipWeekAdvanceFunction</p>
-            <p>Triggered by the <strong>membership/enrolled</strong> Inngest event. Sleeps 7 days then advances <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_week</code> within the current block. After week 6, advances <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_block</code> to the next block and resets <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_week</code> to 1. Checks <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">cancelled_at</code> before each step — cancelled memberships are skipped.</p>
+            <p>Triggered by the <strong>membership/enrolled</strong> Inngest event. Sleeps 7 days then advances <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_week</code> within the current block. On each advance it sends a check-in prompt email. If no check-in is submitted within 2 days, a reminder fires. After week 6, advances <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_block</code> to the next block and resets <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">current_week</code> to 1. Checks <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">cancelled_at</code> before each step.</p>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Check-in email cadence (per week)</p>
+            <div className="space-y-1 mt-2">
+              <SeqRow day="Day 7 (week advance)" label="Check-in prompt — Block X Week Y is complete, submit your check-in. Mentions monthly Loom review." />
+              <SeqRow day="Day 9 (if no submission)" label="Reminder — check-in outstanding. Reminder that without data the monthly Loom review is limited." />
+            </div>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Block advance logic</p>
             <div className="space-y-1 mt-2">
