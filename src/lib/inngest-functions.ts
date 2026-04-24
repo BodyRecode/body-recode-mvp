@@ -777,7 +777,7 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
     triggers: [{ event: 'blueprint/enrolled' }],
   },
   async ({ event, step }: { event: any; step: any }) => {
-    const { token } = event.data as { token: string }
+    const { token, email, firstName } = event.data as { token: string; email: string; firstName: string }
 
     for (let week = 2; week <= 6; week++) {
       await step.sleep(`wait-for-week-${week}`, '7d')
@@ -797,6 +797,93 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
           .from('blueprint_enrollments')
           .update({ current_week: week })
           .eq('token', token)
+
+        // Send check-in prompt for the completed week
+        if (process.env.RESEND_API_KEY) {
+          const resend = new Resend(process.env.RESEND_API_KEY)
+          const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/${token}`
+          const completedWeek = week - 1
+          await resend.emails.send({
+            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            to: email,
+            subject: `Week ${completedWeek} check-in is due`,
+            html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+        </td></tr>
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${firstName},</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Week ${completedWeek} is complete. Week ${week} is now live in your portal.</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Before you move into the new week, take 2 minutes to submit your Week ${completedWeek} check-in. It tracks the 8 biological markers that show whether the programme is working - energy, sleep, recovery, cravings, and more.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
+          </table>
+          ${darkEmailSignature()}
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`,
+          })
+        }
+      })
+
+      // 2-day reminder if check-in not submitted
+      await step.sleep(`reminder-delay-week-${week}`, '2d')
+
+      await step.run(`checkin-reminder-week-${week}`, async () => {
+        const admin = createAdminClient()
+        const { data: enrollment } = await admin
+          .from('blueprint_enrollments')
+          .select('id, status')
+          .eq('token', token)
+          .single()
+
+        if (!enrollment || enrollment.status !== 'active') return
+
+        const completedWeek = week - 1
+        const { data: existing } = await admin
+          .from('blueprint_checkins')
+          .select('id')
+          .eq('enrollment_id', enrollment.id)
+          .eq('week_number', completedWeek)
+          .maybeSingle()
+
+        if (existing) return // already submitted
+
+        if (process.env.RESEND_API_KEY) {
+          const resend = new Resend(process.env.RESEND_API_KEY)
+          const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/${token}`
+          await resend.emails.send({
+            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            to: email,
+            subject: `Reminder: Week ${completedWeek} check-in not yet submitted`,
+            html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+        </td></tr>
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${firstName},</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Your Week ${completedWeek} check-in is still outstanding. It takes 2 minutes and gives you a clear read on what the programme is doing to your biology.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Check-In Now</a></td></tr>
+          </table>
+          ${darkEmailSignature()}
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`,
+          })
+        }
       })
     }
   }
@@ -811,7 +898,7 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
     triggers: [{ event: 'membership/enrolled' }],
   },
   async ({ event, step }: { event: any; step: any }) => {
-    const { token } = event.data as { token: string }
+    const { token, email, first_name } = event.data as { token: string; email: string; first_name: string }
 
     const BLOCKS = ['A', 'B', 'C']
     const WEEKS_PER_BLOCK = 6
@@ -824,18 +911,107 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
           const admin = createAdminClient()
           const { data } = await admin
             .from('membership_enrollments')
-            .select('current_block, current_week, cancelled_at')
+            .select('id, current_block, current_week, cancelled_at')
             .eq('token', token)
             .single()
 
           if (!data || data.cancelled_at) return
           if (data.current_block !== block) return
 
-          if (week <= WEEKS_PER_BLOCK) {
-            await admin
-              .from('membership_enrollments')
-              .update({ current_week: week })
-              .eq('token', token)
+          await admin
+            .from('membership_enrollments')
+            .update({ current_week: week })
+            .eq('token', token)
+
+          const completedWeek = week - 1
+          if (completedWeek < 1) return
+
+          // Send check-in prompt for the completed week
+          if (process.env.RESEND_API_KEY) {
+            const resend = new Resend(process.env.RESEND_API_KEY)
+            const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/membership/${token}`
+            await resend.emails.send({
+              from: 'Kade at Body Recode <kade@bodyrecode.au>',
+              to: email,
+              subject: `Block ${block} Week ${completedWeek} check-in is due`,
+              html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+        </td></tr>
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${first_name},</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Block ${block} Week ${completedWeek} is complete. Week ${week} is now live in your portal.</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Submit your Week ${completedWeek} check-in before moving on. This is the data that feeds your monthly Loom review - the more consistent the data, the more useful the feedback.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
+          </table>
+          ${darkEmailSignature()}
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`,
+            })
+          }
+        })
+
+        // 2-day reminder if check-in not submitted
+        await step.sleep(`reminder-delay-block-${block}-week-${week}`, '2d')
+
+        await step.run(`checkin-reminder-block-${block}-week-${week}`, async () => {
+          const admin = createAdminClient()
+          const { data: enrollment } = await admin
+            .from('membership_enrollments')
+            .select('id, cancelled_at')
+            .eq('token', token)
+            .single()
+
+          if (!enrollment || enrollment.cancelled_at) return
+
+          const completedWeek = week - 1
+          if (completedWeek < 1) return
+
+          const { data: existing } = await admin
+            .from('membership_checkins')
+            .select('id')
+            .eq('enrollment_id', enrollment.id)
+            .eq('week_number', completedWeek)
+            .maybeSingle()
+
+          if (existing) return
+
+          if (process.env.RESEND_API_KEY) {
+            const resend = new Resend(process.env.RESEND_API_KEY)
+            const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/membership/${token}`
+            await resend.emails.send({
+              from: 'Kade at Body Recode <kade@bodyrecode.au>',
+              to: email,
+              subject: `Reminder: Block ${block} Week ${completedWeek} check-in not yet submitted`,
+              html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+        </td></tr>
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${first_name},</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Your Block ${block} Week ${completedWeek} check-in is still outstanding. This data is what your monthly Loom review is built from - without it, I am working blind.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Check-In Now</a></td></tr>
+          </table>
+          ${darkEmailSignature()}
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`,
+            })
           }
         })
       }
