@@ -57,6 +57,301 @@ const BLOCK_PHASES: Record<string, { number: number; name: string; weeks: string
   ],
 }
 
+const BLOCK_B_SESSIONS: Session[] = [
+  {
+    id: 'A',
+    name: 'Session A',
+    subtitle: 'Heavy Compound + Superset',
+    gym: [
+      { name: 'Barbell Back Squat', sets: 4, reps: '6-8', notes: 'Heavier than Block A. 3-second descent. Drive hard.' },
+      { name: 'Superset: Bulgarian Split Squat', sets: 4, reps: '8/leg', notes: 'No rest between squat and split squat. Rest 90s after both.' },
+      { name: 'Barbell Bench Press', sets: 4, reps: '6-8', notes: 'Full range. Control the descent.' },
+      { name: 'Superset: Chest-Supported Row', sets: 4, reps: '10', notes: 'No rest between press and row. Push-pull pairing.' },
+      { name: 'Ab Wheel Rollout', sets: 3, reps: '10-12', notes: 'Full extension. Do not let hips drop.' },
+    ],
+    home: [
+      { name: 'DB Goblet Squat (Heavy, Paused)', sets: 4, reps: '8', notes: 'Heaviest DBs available. 2-second pause at bottom.' },
+      { name: 'Superset: Bulgarian Split Squat', sets: 4, reps: '8/leg', notes: 'Hold DBs at sides. Full depth. No rest between.' },
+      { name: 'DB Floor Press', sets: 4, reps: '8', notes: 'Lie on floor. Full range. Control descent.' },
+      { name: 'Superset: Bent Over DB Row (Heavy)', sets: 4, reps: '8/side', notes: 'Heavy. Drive elbow back hard. No rest between press and row.' },
+      { name: 'Dead Bug (Loaded)', sets: 3, reps: '10/side', notes: 'Hold a light DB in the opposite hand. Increases anti-extension demand.' },
+    ],
+    bodyweight: [
+      { name: 'Tempo Squat (5 sec down)', sets: 4, reps: '8', notes: '5-second descent. Pause at bottom. Explosive drive up.' },
+      { name: 'Superset: Bulgarian Split Squat (Slow)', sets: 4, reps: '10/leg', notes: '3-second descent. Full depth. No rest between.' },
+      { name: 'Archer Push-Up (4 sec descent)', sets: 4, reps: '8/side', notes: '4-second descent to increase difficulty.' },
+      { name: 'Superset: Table Inverted Row (Feet Elevated)', sets: 4, reps: '12', notes: 'Immediately after push-up. Horizontal pull.' },
+      { name: 'Hollow Rock', sets: 3, reps: '20', notes: 'From hollow hold position, rock forward and back. Core stays engaged.' },
+    ],
+  },
+  {
+    id: 'B',
+    name: 'Session B',
+    subtitle: 'Loaded Conditioning',
+    gym: [
+      { name: 'Trap Bar Deadlift', sets: 4, reps: '5-6', notes: 'Heaviest lift of the week. Neutral spine throughout.' },
+      { name: 'DB Z-Press', sets: 3, reps: '10', notes: 'Seated on floor with legs straight. Press overhead. No back support.' },
+      { name: 'Walking Lunge (Heavy)', sets: 3, reps: '12/leg', notes: 'Barbell or heavy DBs. Upright torso. Full depth.' },
+      { name: 'Neutral Grip Pull-Up or Pulldown', sets: 4, reps: '8', notes: 'Palms facing each other. Lower slowly.' },
+      { name: 'Finisher: Sled Push or Row Sprint', sets: 6, reps: '30s hard / 60s easy', notes: 'Pattern rules apply.' },
+    ],
+    home: [
+      { name: 'DB Romanian Deadlift (Heavy, Both Legs)', sets: 4, reps: '8', notes: 'Two DBs. As heavy as possible. Full hamstring stretch.' },
+      { name: 'DB Z-Press', sets: 3, reps: '10', notes: 'Seated on floor. Press both DBs overhead simultaneously.' },
+      { name: 'Walking Lunge (Heavy DBs)', sets: 3, reps: '12/leg', notes: 'Heaviest DBs available. Full depth.' },
+      { name: 'DB Renegade Row', sets: 4, reps: '8/side', notes: 'Push-up position. Row one DB at a time. Hips stay square.' },
+      { name: 'Finisher: DB Complex', sets: 6, reps: '30s hard / 60s easy', notes: '3 reps RDL + 3 reps hang clean + 3 reps press, continuous.' },
+    ],
+    bodyweight: [
+      { name: 'Single Leg RDL (3 sec hold)', sets: 4, reps: '8/leg', notes: '3-second hold at parallel. Challenges balance and posterior chain.' },
+      { name: 'Deficit Pike Push-Up', sets: 3, reps: '10', notes: 'Hands on books or elevated surface. Increases depth and range.' },
+      { name: 'Walking Lunge (Slow tempo)', sets: 3, reps: '12/leg', notes: '3-second descent on each rep.' },
+      { name: 'Single Arm Plank Hold', sets: 4, reps: '20s/side', notes: 'Full plank position. Lift one hand off the floor. Hips stay square.' },
+      { name: 'Finisher: Burpee Variations', sets: 6, reps: '30s hard / 60s easy', notes: 'Pattern rules apply.' },
+    ],
+  },
+  {
+    id: 'C',
+    name: 'Session C',
+    subtitle: 'Strength Peaking',
+    gym: [
+      { name: 'Front Squat or Hack Squat', sets: 4, reps: '6', notes: 'Front squat demands more quad and thoracic extension. Hack squat if front squat is uncomfortable.' },
+      { name: 'Incline Barbell Bench Press', sets: 4, reps: '6-8', notes: 'Heavier than DB incline in Block A. Full range.' },
+      { name: 'Barbell Row', sets: 4, reps: '6-8', notes: 'Overhand grip. Hinge to 45 degrees. Pull to lower chest. Heavy.' },
+      { name: 'Weighted Pull-Up or Heavy Lat Pulldown', sets: 3, reps: '6-8', notes: 'Heaviest of the block. Lower slowly.' },
+      { name: "Farmer's Carry", sets: 3, reps: '30m', notes: 'Heaviest DBs or plates available. Grip and core demand.' },
+    ],
+    home: [
+      { name: 'DB Front Squat', sets: 4, reps: '8', notes: 'Hold DBs at shoulder height. Front-rack position. More quad demand than goblet.' },
+      { name: 'DB Incline Press (Heaviest)', sets: 4, reps: '8', notes: 'Push the weight on this one. Heaviest DB available.' },
+      { name: 'DB Bent Over Row (Heaviest)', sets: 4, reps: '8', notes: 'Both DBs simultaneously. Hinge to 45 degrees. Row to hip.' },
+      { name: 'DB Pullover (Slow, Heavy)', sets: 3, reps: '10', notes: 'Floor or bench. Heaviest DB. 3-second stretch at the top.' },
+      { name: "DB Farmer's Carry", sets: 3, reps: '30m', notes: 'Heaviest available. Full grip tension.' },
+    ],
+    bodyweight: [
+      { name: 'Pistol Squat or Assisted Pistol', sets: 4, reps: '6/leg', notes: 'Progress from Block A. Reduce assist if able.' },
+      { name: 'Pike Push-Up to Downward Dog', sets: 4, reps: '10', notes: 'Full pike push-up, then push hips back to downward dog. Shoulder girdle strength.' },
+      { name: 'Wide Grip Table Row', sets: 4, reps: '12', notes: 'Hands wider than shoulder-width. Targets rear delts and upper back.' },
+      { name: 'Hollow Body Hold + Rock Combo', sets: 3, reps: '30 sec + 10 rocks', notes: 'Hold 30 seconds, then rock 10 times without losing position.' },
+      { name: "Farmer's Carry (Heavy Objects)", sets: 3, reps: '30m', notes: 'Use the heaviest objects available. Grip demand is the point.' },
+    ],
+  },
+]
+
+const BLOCK_B_PATTERN_TRAINING: Record<string, {
+  progression: { phase: string; weeks: string; rir: string; notes: string }[]
+  rules: string[]
+}> = {
+  'stress-stored': {
+    progression: [
+      { phase: 'Reset', weeks: '1-2', rir: '3 RIR', notes: 'New movements, heavier loads. Technique before intensity.' },
+      { phase: 'Build', weeks: '3-4', rir: '2 RIR', notes: 'Load increases. Sleep quality check-in guides progression.' },
+      { phase: 'Load', weeks: '5', rir: '1-2 RIR', notes: 'Controlled peak. Never 1 RIR if sleep has been poor.' },
+      { phase: 'Deload', weeks: '6', rir: '4 RIR', notes: 'Reduce sets by 30%.' },
+    ],
+    rules: [
+      'Skip Session B finisher - conditioning ban continues',
+      'Zone 2 walking only on rest days',
+      'Supersets are fine - rest between each superset is still 90 seconds minimum total',
+      'If Week 5 check-in energy or sleep markers are below 3/5, hold at 2 RIR',
+    ],
+  },
+  'metabolic-drift': {
+    progression: [
+      { phase: 'Reset', weeks: '1-2', rir: '2 RIR', notes: 'New movement patterns. Maintain conditioning intensity.' },
+      { phase: 'Build', weeks: '3-4', rir: '1 RIR', notes: 'Near-maximum effort on compound lifts. Record everything.' },
+      { phase: 'Load', weeks: '5', rir: '0-1 RIR', notes: 'Absolute peak. These are the numbers Block C will beat.' },
+      { phase: 'Deload', weeks: '6', rir: '3-4 RIR', notes: 'Reduce sets by 30%.' },
+    ],
+    rules: [
+      'Session B finisher mandatory - upgrade to 6 rounds',
+      'Post-session walk mandatory - 15-20 minutes every session',
+      'Carb cycling continues - training days higher, rest days fruit only',
+      'Superset pairings increase metabolic demand significantly - this is intentional for this pattern',
+    ],
+  },
+  'hormonal-shift': {
+    progression: [
+      { phase: 'Reset', weeks: '1-2', rir: '2-3 RIR', notes: 'New movement patterns. Never miss a session.' },
+      { phase: 'Build', weeks: '3-4', rir: '2 RIR', notes: 'Load increases. Cycle phase determines upper limit.' },
+      { phase: 'Load', weeks: '5', rir: '1-2 RIR', notes: 'Moderate peak. Luteal phase overrides - hold at 2 RIR.' },
+      { phase: 'Deload', weeks: '6', rir: '3-4 RIR', notes: 'Reduce sets by 30%.' },
+    ],
+    rules: [
+      'Session B finisher: optional, 7/10 effort maximum (increased from Block A)',
+      'Never miss a session regardless of motivation level',
+      'Superset rest: 60-90 seconds between each pairing',
+      'Luteal phase: hold at 2-3 RIR regardless of what the programme says',
+    ],
+  },
+  'system-overload': {
+    progression: [
+      { phase: 'Reset', weeks: '1-2', rir: '3 RIR', notes: 'New stimulus. Single sets on each superset if fatigue is present.' },
+      { phase: 'Build', weeks: '3-4', rir: '2-3 RIR', notes: 'Gradual load increase. Check-in data is the progression signal.' },
+      { phase: 'Load', weeks: '5', rir: '2 RIR', notes: 'Modest peak. Controlled throughout.' },
+      { phase: 'Deload', weeks: '6', rir: '4 RIR', notes: 'Reduce sets by 40%.' },
+    ],
+    rules: [
+      'Skip Session B finisher - conditioning ban continues',
+      'Supersets permitted but rest between each pairing is 2-3 minutes minimum',
+      'Reduce to 1 set per superset if energy is significantly depleted',
+      'Only increase load when 3 RIR feels genuinely comfortable in check-in data',
+    ],
+  },
+}
+
+const BLOCK_B_NUTRITION: Record<string, { headline: string; newStrategy: { title: string; points: string[] }[]; phaseNotes: { phase: string; weeks: string; note: string }[] }> = {
+  'stress-stored': {
+    headline: 'Block B nutrition introduces meal anchoring - removing decision fatigue around food as training demand increases.',
+    newStrategy: [
+      {
+        title: 'Meal Anchoring',
+        points: [
+          'Pick one meal that never changes. Same food, same time, every training day.',
+          'Breakfast and the post-training meal work best as anchors for most people.',
+          'Eliminates the decision fatigue that spikes cortisol in busy periods.',
+          'The rest of the day stays flexible within the pattern rules.',
+        ],
+      },
+      {
+        title: 'Pre-Training Fuel (Block B)',
+        points: [
+          'As training gets heavier, pre-training fuel becomes more important.',
+          'Eat 60-90 minutes before every session - protein and fat, no heavy carbs.',
+          'Never train fasted in Block B - the load is too high for this pattern.',
+        ],
+      },
+    ],
+    phaseNotes: [
+      { phase: 'Reset', weeks: '1-2', note: 'Identify your two anchor meals. Write them down. Eat them every training day.' },
+      { phase: 'Build', weeks: '3-4', note: 'Post-training carbs stay at 2 cupped hands. Monitor sleep in check-in - it is the nutrition feedback signal.' },
+      { phase: 'Load', weeks: '5', note: 'Pre-training fuel is critical this week. Protein and fat 60-90 minutes before every session.' },
+      { phase: 'Deload', weeks: '6', note: 'Reduce post-training carbs back to 1 cupped hand. Keep anchor meals. Cortisol anchor evening meal continues.' },
+    ],
+  },
+  'metabolic-drift': {
+    headline: 'Block B introduces calorie periodisation - higher calories on training days, lower on rest days, more formally than Block A carb cycling.',
+    newStrategy: [
+      {
+        title: 'Calorie Periodisation',
+        points: [
+          'Training days: eat more. Post-training carbs 2-3 cupped hands. Fat at normal levels.',
+          'Rest days: eat less. Fruit only for carbs. Fat slightly reduced. Protein stays constant.',
+          'Session B training days: highest intake of the week. This session demands the most fuel.',
+          'The swing between training and rest days is now larger than Block A - this is intentional.',
+        ],
+      },
+      {
+        title: 'Creatine',
+        points: [
+          'Block B is the right time to introduce creatine if not already using it.',
+          '5g per day, any time, with food. No loading phase required.',
+          'Increases phosphocreatine stores and directly improves training output.',
+          'Improved training output is the primary driver of insulin sensitivity gains for this pattern.',
+        ],
+      },
+    ],
+    phaseNotes: [
+      { phase: 'Reset', weeks: '1-2', note: 'Introduce calorie periodisation. Formalise the difference between training and rest day intake.' },
+      { phase: 'Build', weeks: '3-4', note: 'Increase Session B carb window to 3 cupped hands. This session earns the fuel.' },
+      { phase: 'Load', weeks: '5', note: 'Highest carb intake of the block on Session B day. Maximum training output requires maximum fuel.' },
+      { phase: 'Deload', weeks: '6', note: 'Drop back to Block A carb levels. Use the week to assess body composition shifts.' },
+    ],
+  },
+  'hormonal-shift': {
+    headline: 'Block B nutrition introduces cycle-informed calorie variation - using the natural hormonal rhythm to guide weekly food volume.',
+    newStrategy: [
+      {
+        title: 'Weekly Volume Variation',
+        points: [
+          'Follicular and ovulatory weeks: slightly higher overall food volume. More carbs on training days.',
+          'Luteal weeks: increase fat significantly. Allow starchy carbs more freely - even on rest days.',
+          'Menstrual week: iron-rich foods, red meat daily, no restriction. This week is a recovery input.',
+          'Track where your cycle falls across Block B and adjust accordingly.',
+        ],
+      },
+      {
+        title: 'Omega-3 Upgrade',
+        points: [
+          'Block A introduced omega-3 focus. Block B makes it a daily non-negotiable.',
+          'Salmon or sardines 3x per week minimum, or supplement with 2-3g EPA+DHA daily.',
+          'Reduces inflammation that amplifies hormonal symptoms in the luteal phase.',
+        ],
+      },
+    ],
+    phaseNotes: [
+      { phase: 'Reset', weeks: '1-2', note: 'Map where your cycle falls across Block B weeks. Plan food volume variation accordingly.' },
+      { phase: 'Build', weeks: '3-4', note: 'If luteal phase falls here, increase fat to 2 thumbs per meal and allow starchy carbs 3x on rest days.' },
+      { phase: 'Load', weeks: '5', note: 'If follicular or ovulatory - push training and carbs hard. If luteal - hold steady and recover.' },
+      { phase: 'Deload', weeks: '6', note: 'Full food volume maintained. Never reduce nutrition in the deload week for this pattern.' },
+    ],
+  },
+  'system-overload': {
+    headline: 'Block B introduces structured recovery nutrition - specific protocols around sleep and pre-session fuelling to support the increased training load.',
+    newStrategy: [
+      {
+        title: 'Pre-Sleep Protocol (Formalised)',
+        points: [
+          'No food within 2 hours of bed.',
+          'Magnesium glycinate 400mg taken 60 minutes before bed - every night.',
+          'If genuinely hungry before bed: small serve of protein and fat only. Never carbs.',
+          'This protocol accelerates sleep architecture and nervous system recovery.',
+        ],
+      },
+      {
+        title: 'Red Meat Frequency',
+        points: [
+          'Block B: red meat at least twice per week, ideally more.',
+          'Beef and lamb are the highest sources of zinc and iron in bioavailable form.',
+          'These two minerals are the most commonly depleted in system-overload presentations.',
+          'Liver once per week remains the most efficient single food source for nervous system recovery.',
+        ],
+      },
+    ],
+    phaseNotes: [
+      { phase: 'Reset', weeks: '1-2', note: 'Formalise the pre-sleep protocol. Magnesium every night from week 1.' },
+      { phase: 'Build', weeks: '3-4', note: 'Red meat twice per week minimum. Liver once if possible. Monitor energy markers in check-in.' },
+      { phase: 'Load', weeks: '5', note: 'Pre-session fuel is critical as load peaks. Eat protein and fat 60-90 minutes before every session.' },
+      { phase: 'Deload', weeks: '6', note: 'Maintain full food volume. Pre-sleep protocol continues. Deload is a recovery stimulus.' },
+    ],
+  },
+}
+
+const BLOCK_B_COACHING_NOTES: Record<string, Record<number, string>> = {
+  'stress-stored': {
+    1: 'Block B starts heavier. The barbell compounds will feel unfamiliar for the first 1-2 sessions - this is expected. Focus on technique in weeks 1-2, not load. Your cortisol system adapts to new movement patterns before it adapts to load.',
+    2: 'Identify your two anchor meals this week. Write them down and commit to them every training day. Removing food decisions removes a hidden cortisol source you may not have noticed until now.',
+    3: 'Training load increases this week. You are building toward 2 RIR on the main compounds. Check your sleep quality marker in this check-in - if it is below 3, hold the load steady rather than progressing.',
+    4: 'The superset pairings should feel more manageable by now. If rest between supersets is drifting below 90 seconds, slow down. Rest is a variable, not a reward.',
+    5: 'Peak week. 1-2 RIR on compound lifts. Pre-training fuel is critical this week - protein and fat 60-90 minutes before every session. Do not skip it.',
+    6: 'Planned deload. 30% set reduction. Keep the cortisol anchor evening meal and anchor meals in place. Use this week to notice how far energy, sleep, and mood have shifted since the start of Block A.',
+  },
+  'metabolic-drift': {
+    1: 'Block B introduces the heaviest training yet. Trap bar deadlift and barbell compounds are new demands. In weeks 1-2, treat them as technique sessions - the load comes in weeks 3-4.',
+    2: 'Calorie periodisation starts this week. Training days get more carbs, rest days get less. The swing is larger than Block A - this is intentional. The bigger the contrast, the stronger the insulin signal.',
+    3: 'Near-failure sets begin this week (1 RIR). Record your numbers on every compound lift. These become the benchmarks Block C is designed to surpass.',
+    4: 'If strength is progressing week on week, the system is working. The combination of carb cycling, post-meal walks, and progressive training is the most powerful insulin sensitivity intervention available without medication.',
+    5: 'Peak week. 0-1 RIR on all major lifts. Session B carb window expands to 3 cupped hands today - this session earns the fuel. Record everything.',
+    6: 'Planned deload. Carbs drop back to Block A levels. Use this week to assess how body composition has shifted across 12 weeks of membership. The changes in this pattern are cumulative.',
+  },
+  'hormonal-shift': {
+    1: 'Block B adds supersets and heavier loads. In weeks 1-2 the priority is learning the new movement pairings, not the load. Never miss a session - consistency is still the primary adaptation signal for this pattern.',
+    2: 'Map where your cycle falls across the next 6 weeks. This information changes how you approach load, carbs, and recovery in specific weeks. The programme bends to your biology in Block B more than any block so far.',
+    3: 'If you are in the luteal phase this week, hold at 2-3 RIR regardless of what the programme says. No exceptions. If follicular or ovulatory, push to 2 RIR and feel the difference.',
+    4: 'Omega-3 is now a daily non-negotiable. Salmon, sardines, or 2-3g EPA+DHA supplement. It directly reduces the inflammation that amplifies luteal symptoms and makes training recovery slower.',
+    5: 'Peak week if energy supports it. If follicular or ovulatory, push to 1-2 RIR. If luteal, hold steady. The programme has two different week 5 experiences depending on your cycle - both are correct.',
+    6: 'Deload. Food volume stays identical. This pattern cannot afford to reduce nutrition when training reduces - the hormonal axis needs fuel to consolidate the adaptations from weeks 1-5.',
+  },
+  'system-overload': {
+    1: 'Block B introduces supersets. In weeks 1-2, you may need to drop to 1 set per exercise pairing rather than the full prescription. That is fine. The nervous system adapts to new patterns before it adapts to volume.',
+    2: 'Formalise the pre-sleep protocol this week. Magnesium every night, 60 minutes before bed. Nothing to eat within 2 hours of bed. This is the single most impactful change you can make to nervous system recovery.',
+    3: 'Load progression begins. But only progress if your check-in energy markers are 3/5 or above. If they are below, hold at 3 RIR for another week. The data governs this block, not the calendar.',
+    4: 'Red meat twice this week minimum. The zinc and iron in beef and lamb are the most depleted minerals in this pattern presentation. Food is recovery infrastructure - treat it that way.',
+    5: 'Modest peak. 2 RIR, controlled throughout. Pre-session fuel is critical this week - protein and fat 60-90 minutes before every session without exception.',
+    6: 'Extended deload. 40% set reduction. Full food volume maintained. Use this week to assess how energy levels have shifted across 12 weeks of membership. The trend in your check-in data will tell you more than the scale.',
+  },
+}
+
 const NAV_ITEMS = [
   { id: 'home', label: 'Home' },
   { id: 'training', label: 'Training' },
@@ -450,10 +745,17 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
   const block = enrollment.current_block ?? 'A'
   const currentWeek = enrollment.current_week ?? 1
   const phases = BLOCK_PHASES[block] ?? BLOCK_PHASES['A']
-  const trainingData = PATTERN_TRAINING[pattern] ?? PATTERN_TRAINING['stress-stored']
-  const nutritionData = BLOCK_A_NUTRITION[pattern] ?? BLOCK_A_NUTRITION['stress-stored']
+  const sessions = block === 'B' ? BLOCK_B_SESSIONS : BLOCK_A_SESSIONS
+  const trainingData = block === 'B'
+    ? (BLOCK_B_PATTERN_TRAINING[pattern] ?? BLOCK_B_PATTERN_TRAINING['stress-stored'])
+    : (PATTERN_TRAINING[pattern] ?? PATTERN_TRAINING['stress-stored'])
+  const nutritionData = block === 'B'
+    ? (BLOCK_B_NUTRITION[pattern] ?? BLOCK_B_NUTRITION['stress-stored'])
+    : (BLOCK_A_NUTRITION[pattern] ?? BLOCK_A_NUTRITION['stress-stored'])
   const resources = RESOURCES[pattern] ?? RESOURCES['stress-stored']
-  const coachingNote = COACHING_NOTES[pattern]?.[currentWeek] ?? ''
+  const coachingNote = block === 'B'
+    ? (BLOCK_B_COACHING_NOTES[pattern]?.[currentWeek] ?? '')
+    : (COACHING_NOTES[pattern]?.[currentWeek] ?? '')
 
   const currentPhase = (() => {
     if (currentWeek <= 2) return phases[0]
@@ -651,7 +953,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
             </>)}
 
             {/* Sessions */}
-            {BLOCK_A_SESSIONS.map(session => (
+            {sessions.map(session => (
               <div key={session.id} style={{ marginBottom: 12 }}>
                 <button
                   onClick={() => setExpandedSession(expandedSession === session.id ? null : session.id)}
