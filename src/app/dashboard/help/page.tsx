@@ -1322,23 +1322,51 @@ export default function HelpPage() {
           </Section>
 
           <Section id="be-ads" title="32. Ads" colour="amber">
-            <p>The Ads module tracks paid advertising performance — spend, leads generated, and cost-per-lead (CPL) — across Meta and Google campaigns. All data is entered manually.</p>
+            <p>Meta ads feed the top of the funnel. Clicks go to <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">bodyrecode.au/scorecard</code> where the Body Recode pixel fires a <strong>Lead</strong> event when someone completes and submits the scorecard. All analysis lives in Dropbox.</p>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Adding a Campaign</p>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">File Structure</p>
+            <p>All ads analysis lives at <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">Dropbox/01_BODY_RECODE/07_ADS/</code></p>
             <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
-              <li>Click <strong>Add Campaign</strong></li>
-              <li>Select the platform (Meta or Google)</li>
-              <li>Enter the campaign name, spend (AUD), leads generated, and date range</li>
-              <li>CPL is calculated automatically as you type</li>
+              <li><strong>New_Leads_Campaign/RAW_DATA/</strong> — drop Meta CSV or Numbers exports here, named with the date range</li>
+              <li><strong>New_Leads_Campaign/ANALYSIS/WEEKLY_TRACKER.md</strong> — fill in metrics each week</li>
+              <li><strong>New_Leads_Campaign/ANALYSIS/AD_SET_COMPARISON.md</strong> — cumulative ranking and scaling framework</li>
+              <li><strong>New_Leads_Campaign/ANALYSIS/DECISIONS_LOG.md</strong> — log every observation and action taken</li>
             </ul>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Summary Row</p>
-            <p>At the top of the page, totals across all campaigns are shown: total spend, total leads, and average CPL. Use this to compare Meta vs Google performance over time.</p>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Weekly Report - Every Friday</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Export data from Meta Ads Manager - Ad Sets tab - set date range - export CSV or Numbers</li>
+              <li>Drop the file into <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">RAW_DATA/</code> before 9am Friday</li>
+              <li>At 9am Friday, the automated report runs, saves to ANALYSIS/, and emails to kade@bodyrecode.au</li>
+              <li>Report includes: performance table, ranking, observations, scaling recommendation, fatigue warnings</li>
+            </ul>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Editing</p>
-            <p>Click the pencil icon on any campaign to edit it inline. Update spend or lead count as final numbers come in from your ad manager dashboard.</p>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Active Campaign Setup</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Campaign:</strong> New Leads Campaign - objective: Leads</li>
+              <li><strong>Ad sets:</strong> Silent Frustration, Diagnosis, Contrarian - all at $10/day, Australia, broad audience</li>
+              <li><strong>Optimisation:</strong> Maximize number of conversions - Body Recode pixel (ID: 972772552072010) - Lead event</li>
+              <li><strong>Ad account:</strong> 190093840320613 - under Body Recode Business Manager</li>
+              <li><strong>Destination:</strong> <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">bodyrecode.au/scorecard?source=facebook_ad_[adset]</code></li>
+            </ul>
 
-            <Note>Automatic sync with Meta Ads and Google Ads APIs is planned once ad accounts are active. For now, pull the numbers from your ad manager and enter them here.</Note>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Pixel</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Pixel ID: <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">972772552072010</code> - named Body Recode in Meta</li>
+              <li>PageView fires on every page via layout.tsx</li>
+              <li>Lead event fires in report-client.tsx when someone lands on their scorecard result</li>
+              <li>To verify: Meta Events Manager - Body Recode dataset - Test Events tab - complete the scorecard and confirm Lead event appears</li>
+            </ul>
+
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Scaling Framework</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm">
+              <li>Run all three ad sets for minimum 7 days before drawing conclusions</li>
+              <li>Scale the winner by 20-30% budget increase every 5 days once CPL is confirmed</li>
+              <li>Flag creative fatigue if frequency exceeds 2.5</li>
+              <li>Lookalike audiences: build once the pixel has 50+ Lead events recorded</li>
+            </ul>
+
+            <Note>The automated Friday report reads from RAW_DATA, generates the analysis, and emails it. If no file is dropped before 9am the script will use the most recent file it finds - always drop a fresh export each week.</Note>
           </Section>
 
           <Section id="be-content-engine" title="33. Content Engine" colour="amber">
