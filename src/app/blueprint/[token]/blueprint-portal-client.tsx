@@ -1586,8 +1586,14 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
                     Join the Membership - $49/week
                   </a>
                   <a
-                    href="mailto:kade@bodyrecode.au?subject=Blueprint complete - question about membership"
+                    href="/extension"
                     style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#14b8a6', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #14b8a6' }}
+                  >
+                    90-Day Extension - $197
+                  </a>
+                  <a
+                    href="mailto:kade@bodyrecode.au?subject=Blueprint complete - question about next step"
+                    style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#57534e', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #292524' }}
                   >
                     Ask a question first
                   </a>

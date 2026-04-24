@@ -26,14 +26,45 @@ export async function POST(request: NextRequest) {
   // Handle subscription cancellation
   if (event.type === 'customer.subscription.deleted') {
     const subscription = event.data.object as Stripe.Subscription
+    const admin = createAdminClient()
+
+    // Performance coaching cancellation
     const clientRefId = subscription.metadata?.client_id
     if (clientRefId) {
-      const admin = createAdminClient()
-      await admin
-        .from('clients')
-        .update({ subscription_active: false })
-        .eq('id', clientRefId)
+      await admin.from('clients').update({ subscription_active: false }).eq('id', clientRefId)
     }
+
+    // Membership cancellation
+    const { data: membership } = await admin
+      .from('membership_enrollments')
+      .select('id, email, first_name, pattern')
+      .eq('stripe_subscription_id', subscription.id)
+      .maybeSingle()
+
+    if (membership) {
+      await admin
+        .from('membership_enrollments')
+        .update({ cancelled_at: new Date().toISOString() })
+        .eq('id', membership.id)
+
+      const patternLabels: Record<string, string> = {
+        'stress-stored': 'Stress-Stored',
+        'metabolic-drift': 'Metabolic-Drift',
+        'hormonal-shift': 'Hormonal-Shift',
+        'system-overload': 'System-Overload',
+      }
+
+      await inngest.send({
+        name: 'reengagement/membership-cancelled',
+        data: {
+          email: membership.email,
+          firstName: membership.first_name,
+          source: 'membership',
+          patternLabel: patternLabels[membership.pattern] ?? undefined,
+        },
+      })
+    }
+
     return NextResponse.json({ received: true })
   }
 
@@ -542,6 +573,76 @@ export async function POST(request: NextRequest) {
       await inngest.send({
         name: 'membership/enrolled',
         data: { token: membership.token, email, first_name },
+      })
+    }
+
+    return NextResponse.json({ received: true })
+  }
+
+  // Handle Extension purchase
+  if (session.metadata?.type === 'extension_purchase') {
+    const { first_name, email, pattern_from_blueprint, blueprint_token } = session.metadata
+    const admin = createAdminClient()
+
+    const { data: enrollment } = await admin
+      .from('extension_enrollments')
+      .insert({
+        email: email.toLowerCase(),
+        first_name,
+        pattern: pattern_from_blueprint || 'pending',
+        pattern_source: pattern_from_blueprint ? 'blueprint' : 'assessment',
+        blueprint_token: blueprint_token || null,
+        stripe_payment_intent_id: session.payment_intent as string ?? null,
+        current_week: 1,
+      })
+      .select('token')
+      .single()
+
+    if (enrollment && process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/extension/${enrollment.token}`
+
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `Your 90-Day Body Rewire Extension is ready`,
+        html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+        </td></tr>
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${first_name},</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Your 90-Day Body Rewire Extension is active. Your portal is ready - 12 weeks of progressive programming that picks up exactly where the Blueprint ended.</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Weeks 1-6 run Block A (Consolidate). Weeks 7-12 run Block B (Advance). Same pattern, same portal structure you already know.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my Extension Portal</a></td></tr>
+          </table>
+          ${darkEmailSignature()}
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`,
+      })
+
+      await resend.emails.send({
+        from: 'Body Recode <kade@bodyrecode.au>',
+        to: 'kade@bodyrecode.au',
+        subject: `Extension purchased - ${first_name}`,
+        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
+  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${first_name} purchased the 90-Day Extension</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Email: ${email}</p>
+  <p style="font-size:15px;color:#aaa;margin:0;">Pattern: ${pattern_from_blueprint || 'Pending assessment'}</p>
+</div>`,
+      })
+
+      await inngest.send({
+        name: 'extension/enrolled',
+        data: { token: enrollment.token, email, firstName: first_name },
       })
     }
 

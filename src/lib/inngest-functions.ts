@@ -289,6 +289,25 @@ export const challengeSequenceFunction = inngest.createFunction(
         .update({ status: 'completed' })
         .eq('token', token)
     })
+
+    // 7-day grace, then check if they purchased Blueprint
+    await step.sleep('wait-ascension-grace', '7d')
+
+    await step.run('check-challenge-ascension', async () => {
+      const admin = createAdminClient()
+      const { data: blueprint } = await admin
+        .from('blueprint_enrollments')
+        .select('id')
+        .ilike('email', email)
+        .maybeSingle()
+
+      if (blueprint) return // ascended - no re-engagement needed
+
+      await inngest.send({
+        name: 'reengagement/challenge-no-ascension',
+        data: { email, firstName, source: 'challenge' },
+      })
+    })
   }
 )
 
@@ -886,6 +905,43 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
         }
       })
     }
+
+    // After week 6 - 14-day grace then check if they joined membership
+    await step.sleep('wait-blueprint-ascension-grace', '14d')
+
+    await step.run('check-blueprint-ascension', async () => {
+      const admin = createAdminClient()
+      const { data: membership } = await admin
+        .from('membership_enrollments')
+        .select('id')
+        .ilike('email', email)
+        .maybeSingle()
+
+      if (membership) return // ascended - no re-engagement needed
+
+      const { data: enrollment } = await admin
+        .from('blueprint_enrollments')
+        .select('pattern')
+        .eq('token', token)
+        .single()
+
+      const patternLabels: Record<string, string> = {
+        'stress-stored': 'Stress-Stored',
+        'metabolic-drift': 'Metabolic-Drift',
+        'hormonal-shift': 'Hormonal-Shift',
+        'system-overload': 'System-Overload',
+      }
+
+      await inngest.send({
+        name: 'reengagement/blueprint-no-ascension',
+        data: {
+          email,
+          firstName,
+          source: 'blueprint',
+          patternLabel: patternLabels[enrollment?.pattern ?? ''] ?? undefined,
+        },
+      })
+    })
   }
 )
 
@@ -1037,6 +1093,285 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
         })
       }
     }
+  }
+)
+
+// ─── Extension Week Advance Function ─────────────────────────────────────────
+
+export const extensionWeekAdvanceFunction = inngest.createFunction(
+  {
+    id: 'extension-week-advance',
+    retries: 2,
+    triggers: [{ event: 'extension/enrolled' }],
+  },
+  async ({ event, step }: { event: any; step: any }) => {
+    const { token, email, firstName } = event.data as { token: string; email: string; firstName: string }
+
+    for (let week = 2; week <= 12; week++) {
+      await step.sleep(`wait-extension-week-${week}`, '7d')
+
+      await step.run(`advance-extension-week-${week}`, async () => {
+        const admin = createAdminClient()
+        const { data } = await admin
+          .from('extension_enrollments')
+          .select('current_week')
+          .eq('token', token)
+          .single()
+
+        if (!data) return
+        if (data.current_week !== week - 1) return
+
+        await admin
+          .from('extension_enrollments')
+          .update({ current_week: week })
+          .eq('token', token)
+
+        const completedWeek = week - 1
+        if (process.env.RESEND_API_KEY) {
+          const resend = new Resend(process.env.RESEND_API_KEY)
+          const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/extension/${token}`
+          await resend.emails.send({
+            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            to: email,
+            subject: `Extension Week ${completedWeek} check-in is due`,
+            html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+        </td></tr>
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+          <p style="margin:0 0 18px;color:#888888;">Hi ${firstName},</p>
+          <p style="margin:0 0 18px;color:#888888;">Extension Week ${completedWeek} is complete. Week ${week} is now live. Submit your check-in before moving on.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
+          </table>
+          ${darkEmailSignature()}
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`,
+          })
+        }
+      })
+    }
+
+    // After week 12 - check if they joined membership
+    await step.sleep('wait-extension-ascension-grace', '7d')
+
+    await step.run('check-extension-ascension', async () => {
+      const admin = createAdminClient()
+      const { data: membership } = await admin
+        .from('membership_enrollments')
+        .select('id')
+        .ilike('email', email)
+        .maybeSingle()
+
+      if (membership) return
+
+      const { data: enrollment } = await admin
+        .from('extension_enrollments')
+        .select('pattern')
+        .eq('token', token)
+        .single()
+
+      const patternLabels: Record<string, string> = {
+        'stress-stored': 'Stress-Stored',
+        'metabolic-drift': 'Metabolic-Drift',
+        'hormonal-shift': 'Hormonal-Shift',
+        'system-overload': 'System-Overload',
+      }
+
+      await inngest.send({
+        name: 'reengagement/blueprint-no-ascension',
+        data: {
+          email,
+          firstName,
+          source: 'blueprint',
+          patternLabel: patternLabels[enrollment?.pattern ?? ''] ?? undefined,
+        },
+      })
+    })
+  }
+)
+
+// ─── Re-Engagement Sequence Function ─────────────────────────────────────────
+// Triggered by: challenge/completed-no-ascension, blueprint/completed-no-ascension, membership/cancelled
+
+function reengagementEmailShell(content: string, firstName: string) {
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+        </td></tr>
+        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${firstName},</p>
+          ${content}
+          ${darkEmailSignature()}
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`
+}
+
+export const reengagementSequenceFunction = inngest.createFunction(
+  {
+    id: 'reengagement-sequence',
+    retries: 2,
+    triggers: [
+      { event: 'reengagement/challenge-no-ascension' },
+      { event: 'reengagement/blueprint-no-ascension' },
+      { event: 'reengagement/membership-cancelled' },
+    ],
+  },
+  async ({ event, step }: { event: any; step: any }) => {
+    const { email, firstName, source, patternLabel } = event.data as {
+      email: string
+      firstName: string
+      source: 'challenge' | 'blueprint' | 'membership'
+      patternLabel?: string
+    }
+
+    const extensionUrl = `${process.env.NEXT_PUBLIC_APP_URL}/extension`
+    const membershipUrl = `${process.env.NEXT_PUBLIC_APP_URL}/membership`
+    const patternNote = patternLabel ? ` Your ${patternLabel} pattern doesn't reset when you stop - it's still there when you come back.` : ''
+
+    // Email 1: Day 3 - check in
+    await step.run('send-day3', async () => {
+      if (!process.env.RESEND_API_KEY) return
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      const sourceContext = source === 'challenge'
+        ? 'You finished the 14-day challenge a few days ago.'
+        : source === 'blueprint'
+          ? 'You completed the 6-Week Blueprint a few days ago.'
+          : 'Your Body Recode membership has ended.'
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `Checking in, ${firstName}`,
+        html: reengagementEmailShell(`
+          <p>${sourceContext} I wanted to check in and see how things are going.</p>
+          <p>The work you put in doesn't disappear the moment a programme ends.${patternNote}</p>
+          <p>If the timing wasn't right, or life got in the way, that's fine. There's no pressure here. But if you've been thinking about what's next, I want to make sure you know the door is still open.</p>
+          <p style="color:#888888;">Reply to this email if you want to talk through where you're at. I read every reply.</p>
+        `, firstName),
+      })
+    })
+
+    await step.sleep('wait-day3-to-14', '11d')
+
+    // Email 2: Day 14 - what the next stage looks like
+    await step.run('send-day14', async () => {
+      if (!process.env.RESEND_API_KEY) return
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      const nextStageContext = source === 'challenge'
+        ? `The 6-Week Blueprint is where the work you started gets structure and direction. It's built around your biological pattern - not a generic plan.`
+        : `The 90-Day Extension is designed for exactly where you are - you've done the foundation work, and you need time to consolidate it before committing to the full membership.`
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `What the next step looks like for you`,
+        html: reengagementEmailShell(`
+          <p>I want to give you a clear picture of what the next stage of the Body Recode system looks like - not a pitch, just information.</p>
+          <p>${nextStageContext}</p>
+          <p>The biology doesn't care about the gap between stages. Whether you pick this up tomorrow or in three months, the pattern is still there and the system still works. You just need to decide when you're ready.</p>
+          <p style="color:#888888;">Reply if you have questions or want to know which pathway fits where you're at right now.</p>
+        `, firstName),
+      })
+    })
+
+    await step.sleep('wait-day14-to-30', '16d')
+
+    // Email 3: Day 30 - re-entry offer
+    await step.run('send-day30', async () => {
+      if (!process.env.RESEND_API_KEY) return
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `A lower-commitment way back in`,
+        html: reengagementEmailShell(`
+          <p>If the weekly membership commitment felt like too much right now, there's another option.</p>
+          <div style="background:#0d2d29;border:1px solid rgba(20,184,166,0.2);border-radius:10px;padding:20px;margin:20px 0;">
+            <p style="color:#14b8a6;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">90-Day Body Rewire Extension</p>
+            <p style="color:#ffffff;font-weight:700;font-size:16px;margin:0 0 4px;">$197 one-time</p>
+            <p style="color:#a8a29e;font-size:13px;margin:0 0 16px;">12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.</p>
+            <a href="${extensionUrl}" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">See the Extension</a>
+          </div>
+          <p style="font-size:13px;color:#57534e;">Not ready yet? That's fine. I'll check back in.</p>
+        `, firstName),
+      })
+    })
+
+    await step.sleep('wait-day30-to-45', '15d')
+
+    // Email 4: Day 45 - reminder
+    await step.run('send-day45', async () => {
+      if (!process.env.RESEND_API_KEY) return
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `Still here if you want it`,
+        html: reengagementEmailShell(`
+          <p>Just a short one.</p>
+          <p>The 90-Day Extension is still available at $197 if the timing is better now. It gives you 12 weeks of the next stage of programming - picked up exactly where you left off.</p>
+          <a href="${extensionUrl}" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;margin:16px 0;">See the 90-Day Extension</a>
+          <p style="font-size:13px;color:#57534e;">Reply any time if you want to talk through it.</p>
+        `, firstName),
+      })
+    })
+
+    await step.sleep('wait-day45-to-60', '15d')
+
+    // Email 5: Day 60 - membership offer direct
+    await step.run('send-day60', async () => {
+      if (!process.env.RESEND_API_KEY) return
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `The membership is still open`,
+        html: reengagementEmailShell(`
+          <p>If you've been thinking about the full membership, here's the short version of what it is:</p>
+          <ul style="padding-left:20px;color:#888888;margin:0 0 16px;">
+            <li style="margin-bottom:8px;">Progressive 6-week training blocks built around your pattern - Block A, B, and C</li>
+            <li style="margin-bottom:8px;">Nutrition precision layer updated each block</li>
+            <li style="margin-bottom:8px;">Monthly coach Loom - I review your check-in data and send a personal response</li>
+            <li style="margin-bottom:8px;">Monthly group Q&amp;A call</li>
+            <li style="margin-bottom:8px;">Cancel anytime. No lock-in.</li>
+          </ul>
+          <p style="color:#888888;">$49 per week.</p>
+          <a href="${membershipUrl}" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;margin:16px 0;">See the Membership</a>
+        `, firstName),
+      })
+    })
+
+    await step.sleep('wait-day60-to-90', '30d')
+
+    // Email 6: Day 90 - final touchpoint + referral
+    await step.run('send-day90', async () => {
+      if (!process.env.RESEND_API_KEY) return
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: `Last one from me`,
+        html: reengagementEmailShell(`
+          <p>This is the last email in this sequence. I don't want to keep showing up in your inbox if the timing isn't right.</p>
+          <p>If you ever want to come back, the door is open. The system works whenever you're ready for it.</p>
+          <p>One other thing - if you know someone who would benefit from any of the Body Recode programmes, send them to <a href="https://app.bodyrecode.au" style="color:#14b8a6;">app.bodyrecode.au</a>. The challenge is free and a good starting point for anyone.</p>
+          <p style="font-size:13px;color:#57534e;">Take care of yourself.</p>
+        `, firstName),
+      })
+    })
   }
 )
 
