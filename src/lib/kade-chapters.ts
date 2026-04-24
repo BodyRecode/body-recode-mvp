@@ -45,7 +45,11 @@ I started mimicking him. Not consciously. Just by instinct. I worked hard. Took 
 
 My father was a builder.
 
-He built things with his hands - sheds, fences, furniture. But he also built rhythm, reliability, and routine. He got up before the sun, drank his tea slowly, packed his lunch with the same quiet ritual. When he left for work, you could set your watch by him. When he came home, you felt safer just hearing the truck pull up.
+A home builder. By trade and by blood. His whole family were builders. My grandmother used to say it like a punchline. "Gordon would build a house slanting to the left. Kenny would build a house slanting to the right. But Neil - Neil would build them dead straight."
+
+That was him. Dead straight. In the work and in the man.
+
+He didn't just build with his hands. He built rhythm, reliability, and routine. He got up before the sun, drank his tea slowly, packed his lunch with the same quiet ritual. When he left for work, you could set your watch by him. When he came home, you felt safer just hearing the truck pull up.
 
 He didn't talk much about emotions. But you didn't need him to. He was present. In his presence, there was order. There was calm. And when that disappeared, so did my sense of safety.
 
