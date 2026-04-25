@@ -47,18 +47,6 @@ export default function KadePage() {
             <span className="text-stone-600 group-hover:text-teal-400 transition-colors text-lg">→</span>
           </a>
 
-          {/* Chapters - Tracing Myself */}
-          <Link
-            href="/kade/chapters"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-stone-500/50 hover:bg-stone-500/5 rounded-xl px-5 py-4 transition-all"
-          >
-            <div>
-              <p className="text-sm font-semibold text-white group-hover:text-stone-200 transition-colors">Tracing Myself</p>
-              <p className="text-xs text-stone-500 mt-0.5">A memoir, published as I write it</p>
-            </div>
-            <span className="text-stone-600 group-hover:text-stone-300 transition-colors text-lg">→</span>
-          </Link>
-
           {/* AI Co-Founder Method */}
           <a
             href="https://aicofoundermethod.com"
@@ -70,6 +58,18 @@ export default function KadePage() {
             </div>
             <span className="text-stone-600 group-hover:text-violet-400 transition-colors text-lg">→</span>
           </a>
+
+          {/* Chapters - Tracing Myself */}
+          <Link
+            href="/kade/chapters"
+            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-stone-500/50 hover:bg-stone-500/5 rounded-xl px-5 py-4 transition-all"
+          >
+            <div>
+              <p className="text-sm font-semibold text-white group-hover:text-stone-200 transition-colors">Tracing Myself</p>
+              <p className="text-xs text-stone-500 mt-0.5">A memoir, published as I write it</p>
+            </div>
+            <span className="text-stone-600 group-hover:text-stone-300 transition-colors text-lg">→</span>
+          </Link>
 
           {/* Contact */}
           <a
