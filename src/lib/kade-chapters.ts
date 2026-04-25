@@ -91,7 +91,88 @@ Hand on shoulder. Quiet nod.
 
 You're mine. I see you. You're safe here.`,
   },
-  { slug: 'the-day-everything-shifted',  number: 2, part: 1, partLabel: 'The Father & The Fracture', title: 'The Day Everything Shifted',  summary: 'The moment I was pulled from class. Not attending the funeral. The internal rupture.' },
+  {
+    slug: 'the-day-everything-shifted',
+    number: 2,
+    part: 1,
+    partLabel: 'The Father & The Fracture',
+    title: 'The Day Everything Shifted',
+    summary: 'The moment I was pulled from class. Not attending the funeral. The internal rupture.',
+    publishedAt: '2026-04-26',
+    content: `I was deep in my work when she came for me.
+
+I was eight years old and I was drawing. That's what I did. While other kids were playing or fighting or doing whatever eight year olds do, I was usually somewhere quiet with a pencil, copying X-Men and Spider-Man panels from comics I'd memorised. I was good at it. Not in a polite way. In a way that surprised adults. My hands moved and the characters appeared. It was the one thing I had that nobody could take away.
+
+I was inside one of those drawings when the classroom door opened.
+
+I remember the teacher who came to get me. She was a teacher I liked, and I think she liked me back. The kind of warmth that an eight year old can feel without being able to name it. Years later I'd wonder if she happened to be in the office when the call came through. If someone in the building heard what had happened and decided it had to be her. The one who knew me. The one who could walk in without spooking me.
+
+She didn't tell me anything.
+
+She said I'd be heading home for the day. That my aunty was here to collect me. Calm voice. Steady hands. She gave me nothing to worry about and everything to wonder about.
+
+The car ride home was quiet.
+
+My aunty drove and I sat there and the silence felt different to a normal silence. Adults have a particular kind of quiet when they're carrying something they aren't saying yet. I couldn't name it but I could feel it. Something was off and I didn't have the language for it. I just sat in the passenger seat and watched the road and waited for the car to stop.
+
+When I walked through the front door, the first thing I saw was my older brother.
+
+He was curled up on the couch.
+
+Crying.
+
+That's when I knew something had broken in the world.
+
+My older brother was the kind of kid no one touched. He was naturally big and strong, and he could fight like a thrashing machine like he had some serious training behind him. He was the one I looked up to. The one I assumed was untouchable. To see him like that, balled up, undone, was a sight my eight year old mind could not reconcile. If he was that broken, this wasn't a normal day.
+
+It was my favourite aunty who took me and my older sister into the master bedroom.
+
+She sat us on the bed.
+
+And she delivered the news.
+
+I don't remember the exact words. I remember the room. The quiet. The weight of being eight years old and being told something that doesn't have a shape yet. I didn't know how to react. I didn't understand what I was being told. The information didn't fit anywhere in me.
+
+So I turned and looked at my sister.
+
+And her face broke open.
+
+That's when I knew how I was supposed to feel.
+
+I had to look at someone else's face to learn the appropriate response to my own father's death. That's what eight year olds do. They borrow reactions from the people around them because they don't have the equipment yet. I watched her cry, and only then did I understand that this was the kind of thing you cried about.
+
+Later there was a funeral. I didn't go. The adults decided. Too young, they said. Too much.
+
+But here's the strange part.
+
+I don't remember not being allowed to go.
+
+I don't remember being told.
+
+I don't remember the day itself, what I did, where I was, who I was with while everyone else was at the service.
+
+There's just a hole there.
+
+I think the mind protects you when there's nothing to hold onto. No coffin. No goodbye. No body to confirm what had happened. Just a closed door and a decision made on my behalf and a day I have no record of in my memory.
+
+It was like he vanished. Like someone turned off a light and threw away the switch.
+
+And because there was no funeral for me, there was no ending. The grief didn't have a container. It didn't have a beginning or a moment or a ritual. It was just an absence that opened up that day in the master bedroom and never properly closed.
+
+I went back to school.
+
+Life kept going.
+
+People stopped asking how I was doing because they thought it would be kinder to let me get on with things.
+
+But I was eight and my father was gone and I had no proof of either fact except the way the air had changed in the house. The truck didn't pull up anymore. The morning ritual didn't happen anymore. The hand on the shoulder was never coming back.
+
+And I didn't know what to do with any of it.
+
+So I kept drawing.
+
+Because at least when I was drawing, my hands knew what they were doing.`,
+  },
   { slug: 'what-grief-did-to-a-boy',     number: 3, part: 1, partLabel: 'The Father & The Fracture', title: 'What Grief Did to a Boy',     summary: 'Anger, defiance, and emotional contradictions. I became untouchable but still loving.' },
   { slug: 'too-much-and-not-enough',     number: 4, part: 1, partLabel: 'The Father & The Fracture', title: 'Too Much and Not Enough',     summary: 'Being the favourite and the hardest to handle. The birth of emotional duality.' },
   { slug: 'learning-the-mask',           number: 5, part: 1, partLabel: 'The Father & The Fracture', title: 'Learning the Mask',           summary: 'Early adolescence. People-pleasing, over-functioning, and managing other people\'s energy.' },
