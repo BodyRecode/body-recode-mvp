@@ -173,7 +173,102 @@ So I kept drawing.
 
 Because at least when I was drawing, my hands knew what they were doing.`,
   },
-  { slug: 'what-grief-did-to-a-boy',     number: 3, part: 1, partLabel: 'The Father & The Fracture', title: 'What Grief Did to a Boy',     summary: 'Anger, defiance, and emotional contradictions. I became untouchable but still loving.' },
+  {
+    slug: 'what-grief-did-to-a-boy',
+    number: 3,
+    part: 1,
+    partLabel: 'The Father & The Fracture',
+    title: 'What Grief Did to a Boy',
+    summary: 'Anger, defiance, and emotional contradictions. I became untouchable but still loving.',
+    publishedAt: '2026-04-27',
+    content: `Everything quiet inside me turned loud.
+
+I didn't cry. Not in front of anyone. Crying didn't feel like something I was allowed to do, even though no one had told me I wasn't. So instead I broke things.
+
+Not metaphorically. Actual things.
+
+I put the broom handle through the glass window beside our front door. I don't remember why. I don't remember what set me off. I remember the sound of it. I remember the way the air felt different after it happened. Like something had finally been answered.
+
+I broke other things too. Furniture. Toys. Whatever was nearby when the wave came. The grief inside me didn't have a shape and I was too young to give it one, so I gave it to objects instead. The objects could carry what I couldn't.
+
+At school I was the kid who brought a basketball ring down.
+
+We had one out the back of the oval. I was a kid who could still play, even after everything. I dunked one day and the whole ring came down. Not just the rim. The frame. The backboard. The lot. I remember standing there, looking at the wreckage, half proud and half terrified.
+
+The school's response was to start taking the ring off at the end of every day. So we couldn't come back after hours. Which felt like another thing being taken from me. So I went and scratched up the janitor's car. Long lines down the boot. Just because.
+
+I got in trouble for that one.
+
+I lit a paddock on fire once. Tall dead grass, a whole block of it. I just wanted to see it burn. The fire spread further than I expected. Two fire trucks came. Houses around the paddock could have gone up. Nothing did. But the fire trucks pulling up in our street to put out something I'd started is a memory I still carry.
+
+The fighting was the constant.
+
+I fought at school. I fought a lot. I was angry and I didn't keep it in. I'd swing at boys bigger than me. I'd take whatever came back. I wasn't trying to win. I was trying to feel something land. The chaos in my body wanted somewhere to go, and a fight was the most reliable way to get rid of it for an afternoon.
+
+Looking back, those years are not all clean. There are things I did that I'm not proud of. The destruction. The damage. The cost of all of that to other people.
+
+But there was another kid living inside the same body.
+
+The kid who stuck up for the ones nobody else stuck up for.
+
+The kids who didn't fit. The ones who ate lunch alone. The ones picked last for sports. The ones who'd been told quietly, in a hundred small ways, that they didn't belong. They figured out pretty quickly that I was someone they could come to. If a bigger kid was making their life hard, they'd find me. I'd put an end to it.
+
+Some of those kids became my friends. They still are. Thirty something years later. Still in contact. Still in my life.
+
+The people who didn't know me back then would look at the broken windows and the burnt paddock and the fights and the scratched car and conclude I was a bad kid. Plenty of adults did. I gave them every reason to.
+
+But the kids I protected knew something different.
+
+Because the same instinct that drove me to break things drove me to defend them.
+
+And the truth is, I never thought of it as two different things. The destruction and the protection felt like the same impulse looking for different exits. The anger had to go somewhere. Sometimes it went into a basketball ring. Sometimes it went into a fight with a boy who deserved it. Sometimes it went into standing between a smaller kid and the one who was making him cry.
+
+If you'd asked me at the time why I stuck up for them, I wouldn't have had an answer.
+
+I do now.
+
+It wasn't right. That's the first part.
+
+The second part is harder to explain but it's the thing that actually drove me.
+
+I felt like I could help them. So I had a duty to.
+
+Not morality. Duty. If the strength was in my hands, then the responsibility came with it. That's how I read it. I was nine years old and I had no language for it, but the wiring was already there. If you have the capacity to help and you don't, you've chosen something. And whatever you've chosen, it isn't right.
+
+That wiring came from my father.
+
+He taught me right from wrong. He taught me to own my shit. He taught me to take responsibility for what I did. He didn't sit me down and lecture me. He just showed me what it looked like to be steady. To be fair. To stand for something. He lived that way every day, until he didn't anymore.
+
+He died when I was eight.
+
+And nearly everything I knew about myself came apart in the years that followed.
+
+But the code he gave me didn't.
+
+The code stayed.
+
+Even when I was burning paddocks and scratching cars and putting broom handles through windows and getting into fights I had no business being in, the code stayed. Hidden somewhere I couldn't see it from the outside. Buried under everything else that was breaking.
+
+But it was still there.
+
+Because when I saw a kid getting picked on, my body moved before my mind did. Not because I was naturally good. Because my father had given me something before he left, and something in me refused to let that go.
+
+He didn't see any of it.
+
+He didn't see the broken windows. He didn't see the basketball ring come down. He didn't see the fights. And he didn't see the kids I protected.
+
+But he was the reason for both.
+
+The destruction was the grief.
+
+The protection was him.
+
+And I think now, looking back, that the kid I was in those years was doing the only thing he knew how to do. He was carrying his father's voice through his hands, in whatever form he could find it. Sometimes it came out destructive. Sometimes it came out as defending the kid eating lunch alone.
+
+Either way, it was the only thread of him I had left.
+
+And I wasn't going to let it go.`,
+  },
   { slug: 'too-much-and-not-enough',     number: 4, part: 1, partLabel: 'The Father & The Fracture', title: 'Too Much and Not Enough',     summary: 'Being the favourite and the hardest to handle. The birth of emotional duality.' },
   { slug: 'learning-the-mask',           number: 5, part: 1, partLabel: 'The Father & The Fracture', title: 'Learning the Mask',           summary: 'Early adolescence. People-pleasing, over-functioning, and managing other people\'s energy.' },
 
