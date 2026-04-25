@@ -263,6 +263,24 @@ The destruction was the grief.
 
 The protection was him.
 
+Years later, in a session with my psychologist, she asked me what grief meant to me.
+
+I couldn't answer her.
+
+Not because I didn't know. Because I knew it too well. The feeling was too big to compress into words. Anything I might have said would have made it smaller than it was, and it didn't deserve to be made smaller.
+
+I sat there in that room as a grown man and realised something I hadn't seen before.
+
+I had never actually let myself grieve.
+
+Not as a kid. Not in the years that followed. Not through any of it.
+
+The destruction was grief leaking out without permission. The fights were grief looking for somewhere to land. The protection was grief disguised as duty. The drawing was grief held in my hands so I didn't have to feel it anywhere else.
+
+But none of it was actually grieving.
+
+It was all just other things taking the shape grief should have taken.
+
 And I think now, looking back, that the kid I was in those years was doing the only thing he knew how to do. He was carrying his father's voice through his hands, in whatever form he could find it. Sometimes it came out destructive. Sometimes it came out as defending the kid eating lunch alone.
 
 Either way, it was the only thread of him I had left.
