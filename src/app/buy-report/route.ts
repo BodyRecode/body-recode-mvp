@@ -4,28 +4,28 @@ import { createAdminClient } from '@/lib/supabase/admin'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
-export async function POST(request: NextRequest) {
-  const { email } = await request.json()
+function errorRedirect(reason: string) {
+  const url = new URL(`${process.env.NEXT_PUBLIC_APP_URL}/get-report`)
+  url.searchParams.set('error', reason)
+  return NextResponse.redirect(url, { status: 302 })
+}
 
-  if (!email?.trim()) {
-    return NextResponse.json({ error: 'Email is required.' }, { status: 400 })
-  }
+export async function GET(request: NextRequest) {
+  const email = request.nextUrl.searchParams.get('email')?.toLowerCase().trim()
+
+  if (!email) return errorRedirect('missing-email')
 
   const supabase = createAdminClient()
 
-  // Find lead by email
   const { data: leads } = await supabase
     .from('leads')
     .select('id, name, email')
-    .eq('email', email.toLowerCase().trim())
+    .eq('email', email)
     .limit(1)
 
   const lead = leads?.[0]
-  if (!lead) {
-    return NextResponse.json({ error: 'No scorecard found for this email. Please complete the scorecard first.' }, { status: 404 })
-  }
+  if (!lead) return errorRedirect('no-scorecard')
 
-  // Get their latest scorecard result
   const { data: event } = await supabase
     .from('lead_events')
     .select('notes')
@@ -35,16 +35,12 @@ export async function POST(request: NextRequest) {
     .limit(1)
     .maybeSingle()
 
-  if (!event?.notes) {
-    return NextResponse.json({ error: 'No scorecard found for this email. Please complete the scorecard first.' }, { status: 404 })
-  }
+  if (!event?.notes) return errorRedirect('no-scorecard')
 
   const scoreMatch = event.notes.match(/Score: (\d+)\/15/)
   const stateMatch = event.notes.match(/Body state: (.+?)\./)
 
-  if (!scoreMatch || !stateMatch) {
-    return NextResponse.json({ error: 'Could not read scorecard result. Please contact us.' }, { status: 500 })
-  }
+  if (!scoreMatch || !stateMatch) return errorRedirect('bad-scorecard')
 
   const score = parseInt(scoreMatch[1])
   const body_state = stateMatch[1]
@@ -78,5 +74,7 @@ export async function POST(request: NextRequest) {
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/get-report`,
   })
 
-  return NextResponse.json({ url: session.url })
+  if (!session.url) return errorRedirect('stripe-failed')
+
+  return NextResponse.redirect(session.url, { status: 302 })
 }
