@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import ClientHeader from '@/components/client-header'
+import { useDraftState, clearDraftsByPrefix } from '@/lib/use-form-draft'
 
 const CARDIO_SYMPTOMS = [
   'Unusual shortness of breath with light effort',
@@ -36,67 +37,69 @@ export default function HealthDeclarationForm({
   const router = useRouter()
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const draftPrefix = `health:${clientId}:`
+  const k = (n: string) => `${draftPrefix}${n}`
 
   // Section 1 — Personal Details
-  const [dob, setDob] = useState('')
-  const [phone, setPhone] = useState('')
-  const [address, setAddress] = useState('')
-  const [postcode, setPostcode] = useState('')
+  const [dob, setDob] = useDraftState(k('dob'), '')
+  const [phone, setPhone] = useDraftState(k('phone'), '')
+  const [address, setAddress] = useDraftState(k('address'), '')
+  const [postcode, setPostcode] = useDraftState(k('postcode'), '')
 
   // Section 2 — Emergency Contact
-  const [emergencyName, setEmergencyName] = useState('')
-  const [emergencyRelationship, setEmergencyRelationship] = useState('')
-  const [emergencyPhone, setEmergencyPhone] = useState('')
+  const [emergencyName, setEmergencyName] = useDraftState(k('emergencyName'), '')
+  const [emergencyRelationship, setEmergencyRelationship] = useDraftState(k('emergencyRelationship'), '')
+  const [emergencyPhone, setEmergencyPhone] = useDraftState(k('emergencyPhone'), '')
 
   // Section 3 — General Health
-  const [healthRating, setHealthRating] = useState<'Excellent' | 'Good' | 'Fair' | 'Poor' | ''>('')
-  const [exercisedBefore, setExercisedBefore] = useState<YesNo>('')
-  const [exerciseType, setExerciseType] = useState('')
-  const [exerciseEnjoy, setExerciseEnjoy] = useState('')
-  const [exerciseDislike, setExerciseDislike] = useState('')
+  const [healthRating, setHealthRating] = useDraftState<'Excellent' | 'Good' | 'Fair' | 'Poor' | ''>(k('healthRating'), '')
+  const [exercisedBefore, setExercisedBefore] = useDraftState<YesNo>(k('exercisedBefore'), '')
+  const [exerciseType, setExerciseType] = useDraftState(k('exerciseType'), '')
+  const [exerciseEnjoy, setExerciseEnjoy] = useDraftState(k('exerciseEnjoy'), '')
+  const [exerciseDislike, setExerciseDislike] = useDraftState(k('exerciseDislike'), '')
 
   // Section 4 — Cardiovascular Screening
-  const [cardioSymptoms, setCardioSymptoms] = useState<string[]>([])
+  const [cardioSymptoms, setCardioSymptoms] = useDraftState<string[]>(k('cardioSymptoms'), [])
 
   // Section 5 — Medical History
-  const [illnessInjury, setIllnessInjury] = useState<YesNo>('')
-  const [illnessDetails, setIllnessDetails] = useState('')
-  const [receivingTreatment, setReceivingTreatment] = useState<YesNo>('')
-  const [treatmentDetails, setTreatmentDetails] = useState('')
-  const [onMedication, setOnMedication] = useState<YesNo>('')
-  const [medicationList, setMedicationList] = useState('')
-  const [pregnant, setPregnant] = useState<YesNo>('')
+  const [illnessInjury, setIllnessInjury] = useDraftState<YesNo>(k('illnessInjury'), '')
+  const [illnessDetails, setIllnessDetails] = useDraftState(k('illnessDetails'), '')
+  const [receivingTreatment, setReceivingTreatment] = useDraftState<YesNo>(k('receivingTreatment'), '')
+  const [treatmentDetails, setTreatmentDetails] = useDraftState(k('treatmentDetails'), '')
+  const [onMedication, setOnMedication] = useDraftState<YesNo>(k('onMedication'), '')
+  const [medicationList, setMedicationList] = useDraftState(k('medicationList'), '')
+  const [pregnant, setPregnant] = useDraftState<YesNo>(k('pregnant'), '')
 
   // Section 6 — Musculoskeletal
-  const [painAreas, setPainAreas] = useState('')
-  const [painAggravated, setPainAggravated] = useState<YesNo>('')
-  const [painTreatment, setPainTreatment] = useState<YesNo>('')
+  const [painAreas, setPainAreas] = useDraftState(k('painAreas'), '')
+  const [painAggravated, setPainAggravated] = useDraftState<YesNo>(k('painAggravated'), '')
+  const [painTreatment, setPainTreatment] = useDraftState<YesNo>(k('painTreatment'), '')
 
   // Section 7 — Lifestyle
-  const [alcohol, setAlcohol] = useState<YesNo>('')
-  const [smoking, setSmoking] = useState<YesNo>('')
-  const [dietPattern, setDietPattern] = useState('')
-  const [eatingHabits, setEatingHabits] = useState<number | null>(null)
-  const [nutritionSupport, setNutritionSupport] = useState<YesNo>('')
+  const [alcohol, setAlcohol] = useDraftState<YesNo>(k('alcohol'), '')
+  const [smoking, setSmoking] = useDraftState<YesNo>(k('smoking'), '')
+  const [dietPattern, setDietPattern] = useDraftState(k('dietPattern'), '')
+  const [eatingHabits, setEatingHabits] = useDraftState<number | null>(k('eatingHabits'), null)
+  const [nutritionSupport, setNutritionSupport] = useDraftState<YesNo>(k('nutritionSupport'), '')
 
   // Section 8 — Barriers & Goals
-  const [barriers, setBarriers] = useState<string[]>([])
-  const [healthGoals, setHealthGoals] = useState('')
-  const [action1, setAction1] = useState('')
-  const [action2, setAction2] = useState('')
-  const [action3, setAction3] = useState('')
+  const [barriers, setBarriers] = useDraftState<string[]>(k('barriers'), [])
+  const [healthGoals, setHealthGoals] = useDraftState(k('healthGoals'), '')
+  const [action1, setAction1] = useDraftState(k('action1'), '')
+  const [action2, setAction2] = useDraftState(k('action2'), '')
+  const [action3, setAction3] = useDraftState(k('action3'), '')
 
   // Section 9 — Health Declaration
-  const [declaredHonest, setDeclaredHonest] = useState(false)
-  const [declaredDisclosed, setDeclaredDisclosed] = useState(false)
-  const [declaredWillNotify, setDeclaredWillNotify] = useState(false)
-  const [declaredRisks, setDeclaredRisks] = useState(false)
-  const [declaredResponsibility, setDeclaredResponsibility] = useState(false)
-  const [declaredFollowGuidance, setDeclaredFollowGuidance] = useState(false)
-  const [declaredNutrition, setDeclaredNutrition] = useState(false)
-  const [declaredLiability, setDeclaredLiability] = useState(false)
-  const [declaredPrivacy, setDeclaredPrivacy] = useState(false)
-  const [declarationName, setDeclarationName] = useState('')
+  const [declaredHonest, setDeclaredHonest] = useDraftState(k('declaredHonest'), false)
+  const [declaredDisclosed, setDeclaredDisclosed] = useDraftState(k('declaredDisclosed'), false)
+  const [declaredWillNotify, setDeclaredWillNotify] = useDraftState(k('declaredWillNotify'), false)
+  const [declaredRisks, setDeclaredRisks] = useDraftState(k('declaredRisks'), false)
+  const [declaredResponsibility, setDeclaredResponsibility] = useDraftState(k('declaredResponsibility'), false)
+  const [declaredFollowGuidance, setDeclaredFollowGuidance] = useDraftState(k('declaredFollowGuidance'), false)
+  const [declaredNutrition, setDeclaredNutrition] = useDraftState(k('declaredNutrition'), false)
+  const [declaredLiability, setDeclaredLiability] = useDraftState(k('declaredLiability'), false)
+  const [declaredPrivacy, setDeclaredPrivacy] = useDraftState(k('declaredPrivacy'), false)
+  const [declarationName, setDeclarationName] = useDraftState(k('declarationName'), '')
 
   // Clearance logic
   const requiresClearance = cardioSymptoms.filter(s => s !== 'None of the above').length > 0 || pregnant === 'yes'
@@ -150,6 +153,7 @@ export default function HealthDeclarationForm({
       return
     }
 
+    clearDraftsByPrefix(draftPrefix)
     router.push(`/portal/${portalToken}`)
   }
 

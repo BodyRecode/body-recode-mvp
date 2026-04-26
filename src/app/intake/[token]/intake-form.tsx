@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { INTAKE_SECTIONS, Question } from '@/lib/intake-questions'
+import { useFormDraft } from '@/lib/use-form-draft'
 
 type FormValue = string | number | boolean | string[]
 type FormData = Record<string, FormValue>
@@ -169,9 +170,16 @@ function QuestionInput({
   return null
 }
 
+type Draft = { sectionIndex: number; formData: FormData }
+
 export default function IntakeForm({ token, clientName }: Props) {
-  const [sectionIndex, setSectionIndex] = useState(0)
-  const [formData, setFormData] = useState<FormData>({})
+  const [draft, setDraft, clearDraft] = useFormDraft<Draft>(`intake:${token}`, { sectionIndex: 0, formData: {} })
+  const sectionIndex = draft.sectionIndex
+  const formData = draft.formData
+  const setSectionIndex = (next: number | ((p: number) => number)) =>
+    setDraft(prev => ({ ...prev, sectionIndex: typeof next === 'function' ? next(prev.sectionIndex) : next }))
+  const setFormData = (next: FormData | ((p: FormData) => FormData)) =>
+    setDraft(prev => ({ ...prev, formData: typeof next === 'function' ? next(prev.formData) : next }))
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
@@ -210,6 +218,7 @@ export default function IntakeForm({ token, clientName }: Props) {
         const data = await res.json()
         throw new Error(data.error || 'Submission failed. Please try again.')
       }
+      clearDraft()
       setSubmitted(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')

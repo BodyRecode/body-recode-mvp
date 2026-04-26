@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import ClientHeader from '@/components/client-header'
+import { useFormDraft } from '@/lib/use-form-draft'
 
 interface Props {
   clientId: string
@@ -10,15 +11,39 @@ interface Props {
 
 type Step = 'intro' | 'measurements' | 'photos' | 'submitting' | 'done'
 
-export default function BaselineForm({ clientId, clientName }: Props) {
-  const [step, setStep] = useState<Step>('intro')
-  const [error, setError] = useState('')
+type PersistedStep = 'intro' | 'measurements' | 'photos' | 'done'
+type Draft = {
+  step: PersistedStep
+  bodyweight: string
+  waist: string
+  hips: string
+  chest: string
+}
 
-  // Measurements
-  const [bodyweight, setBodyweight] = useState('')
-  const [waist, setWaist] = useState('')
-  const [hips, setHips] = useState('')
-  const [chest, setChest] = useState('')
+export default function BaselineForm({ clientId, clientName }: Props) {
+  const [draft, setDraft, clearDraft] = useFormDraft<Draft>(`baseline:${clientId}`, {
+    step: 'intro',
+    bodyweight: '',
+    waist: '',
+    hips: '',
+    chest: '',
+  })
+  const [submittingNow, setSubmittingNow] = useState(false)
+  const step: Step = submittingNow ? 'submitting' : draft.step
+  const setStep = (s: Step) => {
+    if (s === 'submitting') { setSubmittingNow(true); return }
+    setSubmittingNow(false)
+    setDraft(prev => ({ ...prev, step: s }))
+  }
+  const bodyweight = draft.bodyweight
+  const setBodyweight = (v: string) => setDraft(prev => ({ ...prev, bodyweight: v }))
+  const waist = draft.waist
+  const setWaist = (v: string) => setDraft(prev => ({ ...prev, waist: v }))
+  const hips = draft.hips
+  const setHips = (v: string) => setDraft(prev => ({ ...prev, hips: v }))
+  const chest = draft.chest
+  const setChest = (v: string) => setDraft(prev => ({ ...prev, chest: v }))
+  const [error, setError] = useState('')
 
   // Photos
   const [photoFront, setPhotoFront] = useState<File | null>(null)
@@ -49,6 +74,7 @@ export default function BaselineForm({ clientId, clientName }: Props) {
       return
     }
 
+    clearDraft()
     setStep('done')
   }
 

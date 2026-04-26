@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { FORM_A_SECTIONS, FORM_B_SECTIONS, CheckInSection } from '@/lib/weekly-checkin-questions'
+import { useFormDraft } from '@/lib/use-form-draft'
 
 interface Props {
   clientId: string
@@ -66,10 +67,20 @@ function QuestionInput({
   return null
 }
 
+type CheckinDraft = { sectionIndex: number; responses: Responses }
+
 export default function CheckInForm({ clientId, clientName, weekNumber, formType }: Props) {
   const sections: CheckInSection[] = formType === 'A' ? FORM_A_SECTIONS : FORM_B_SECTIONS
-  const [sectionIndex, setSectionIndex] = useState(0)
-  const [responses, setResponses] = useState<Responses>({})
+  const [draft, setDraft, clearDraft] = useFormDraft<CheckinDraft>(
+    `checkin:${clientId}:w${weekNumber}:${formType}`,
+    { sectionIndex: 0, responses: {} }
+  )
+  const sectionIndex = draft.sectionIndex
+  const responses = draft.responses
+  const setSectionIndex = (next: number | ((p: number) => number)) =>
+    setDraft(prev => ({ ...prev, sectionIndex: typeof next === 'function' ? next(prev.sectionIndex) : next }))
+  const setResponses = (next: Responses | ((p: Responses) => Responses)) =>
+    setDraft(prev => ({ ...prev, responses: typeof next === 'function' ? next(prev.responses) : next }))
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
@@ -101,6 +112,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
         const data = await res.json()
         throw new Error(data.error || 'Submission failed. Please try again.')
       }
+      clearDraft()
       setSubmitted(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')

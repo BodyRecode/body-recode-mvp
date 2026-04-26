@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useDraftState, clearDraftsByPrefix } from '@/lib/use-form-draft'
 
 const SIGNAL_OPTIONS = [
   { value: 'under_fuelling', label: 'Under-fuelled', desc: 'Persistent hunger, low energy, poor recovery' },
@@ -30,11 +31,12 @@ export default function NutritionReviewForm({
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const draftPrefix = `nutrition-review:${token}:`
 
-  const [adherenceConfirmed, setAdherenceConfirmed] = useState(false)
-  const [signalCategories, setSignalCategories] = useState<string[]>([])
-  const [direction, setDirection] = useState<'progress' | 'hold' | 'rebuild' | ''>('')
-  const [signalsNoted, setSignalsNoted] = useState('')
+  const [adherenceConfirmed, setAdherenceConfirmed] = useDraftState(`${draftPrefix}adherence`, false)
+  const [signalCategories, setSignalCategories] = useDraftState<string[]>(`${draftPrefix}signals`, [])
+  const [direction, setDirection] = useDraftState<'progress' | 'hold' | 'rebuild' | ''>(`${draftPrefix}direction`, '')
+  const [signalsNoted, setSignalsNoted] = useDraftState(`${draftPrefix}notes`, '')
 
   async function handleSubmit() {
     if (!direction) { setError('Please select how things are going'); return }
@@ -57,6 +59,7 @@ export default function NutritionReviewForm({
     setSubmitting(false)
 
     if (!res.ok) { setError(data.error || 'Something went wrong'); return }
+    clearDraftsByPrefix(draftPrefix)
     setSubmitted(true)
   }
 
