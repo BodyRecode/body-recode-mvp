@@ -1,0 +1,197 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { darkEmailSignature } from '@/lib/email-signature'
+
+type Threshold = 3 | 7 | 14
+
+interface ClientRow {
+  id: string
+  name: string
+  email: string | null
+  active: boolean | null
+  created_at: string
+  onboarding_token: string | null
+  is_founding_client: boolean | null
+  agreement_accepted_at: string | null
+  health_declaration_submitted_at: string | null
+  onboarding_reminders_sent: Record<string, string> | null
+}
+
+interface TaskState {
+  id: 'founding-agreement' | 'agreement' | 'health' | 'intake' | 'baseline'
+  title: string
+  applicable: boolean
+  done: boolean
+  availableAt: string | null
+}
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://app.bodyrecode.au'
+
+function dayCard(html: string) {
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr>
+          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;"/>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+            ${html}
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`
+}
+
+function reminderEmail(firstName: string, taskTitle: string, threshold: Threshold, portalUrl: string) {
+  const intro =
+    threshold === 3
+      ? `Just a nudge — your ${taskTitle} is waiting. Pick up where you left off whenever you have a few minutes.`
+      : threshold === 7
+      ? `Your ${taskTitle} is still outstanding. We need this to keep your coaching on track.`
+      : `It's been two weeks since your ${taskTitle} became available. If you've changed your mind that's okay — just let me know. Otherwise, this is the last automated reminder.`
+
+  const body = `
+    <p style="margin:0 0 18px;font-size:15px;color:#aaa;line-height:1.75;">Hi ${firstName},</p>
+    <p style="margin:0 0 24px;font-size:15px;color:#aaa;line-height:1.75;">${intro}</p>
+    <a href="${portalUrl}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open your portal</a>
+    <p style="margin:24px 0 0;font-size:13px;color:#666;line-height:1.7;">If anything's blocking you or unclear, reply to this email.</p>
+    ${darkEmailSignature()}`
+
+  return dayCard(body)
+}
+
+function daysSince(iso: string): number {
+  return Math.floor((Date.now() - new Date(iso).getTime()) / (1000 * 60 * 60 * 24))
+}
+
+function pickThreshold(days: number): Threshold | null {
+  if (days >= 14) return 14
+  if (days >= 7) return 7
+  if (days >= 3) return 3
+  return null
+}
+
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get('authorization')
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  }
+
+  const admin = createAdminClient()
+  const resend = new Resend(process.env.RESEND_API_KEY)
+
+  const { data: clients } = await admin
+    .from('clients')
+    .select('id, name, email, active, created_at, onboarding_token, is_founding_client, agreement_accepted_at, health_declaration_submitted_at, onboarding_reminders_sent, intake_invitations(status, completed_at), baselines(id), founding_client_agreements(status, signed_at)')
+    .eq('active', true)
+
+  if (!clients || clients.length === 0) {
+    return NextResponse.json({ sent: 0, considered: 0 })
+  }
+
+  let sent = 0
+  let considered = 0
+
+  for (const raw of clients) {
+    const client = raw as unknown as ClientRow & {
+      intake_invitations: { status: string; completed_at: string | null }[]
+      baselines: { id: string }[]
+      founding_client_agreements: { status: string; signed_at: string | null }[]
+    }
+
+    if (!client.email || !client.onboarding_token) continue
+
+    const intakeCompleted = (client.intake_invitations || []).find(i => i.status === 'complete')
+    const baselineDone = (client.baselines || []).length > 0
+    const foundingSigned = (client.founding_client_agreements || []).find(a => a.status === 'signed')
+
+    const tasks: TaskState[] = [
+      {
+        id: 'founding-agreement',
+        title: 'Founding Client Agreement',
+        applicable: !!client.is_founding_client,
+        done: !!foundingSigned,
+        availableAt: client.created_at,
+      },
+      {
+        id: 'agreement',
+        title: 'Coaching Agreement',
+        applicable: true,
+        done: !!client.agreement_accepted_at,
+        availableAt: client.is_founding_client
+          ? (foundingSigned?.signed_at ?? null)
+          : client.created_at,
+      },
+      {
+        id: 'health',
+        title: 'Health Declaration',
+        applicable: true,
+        done: !!client.health_declaration_submitted_at,
+        availableAt: client.agreement_accepted_at,
+      },
+      {
+        id: 'intake',
+        title: 'Foundational Intake',
+        applicable: true,
+        done: !!intakeCompleted,
+        availableAt: client.health_declaration_submitted_at,
+      },
+      {
+        id: 'baseline',
+        title: 'Baseline Documentation',
+        applicable: true,
+        done: baselineDone,
+        availableAt: intakeCompleted?.completed_at ?? null,
+      },
+    ]
+
+    const sentMap = client.onboarding_reminders_sent ?? {}
+    const firstName = client.name.split(' ')[0]
+    const portalUrl = `${APP_URL}/portal/${client.onboarding_token}`
+
+    for (const task of tasks) {
+      if (!task.applicable || task.done || !task.availableAt) continue
+      const threshold = pickThreshold(daysSince(task.availableAt))
+      if (!threshold) continue
+      const key = `${task.id}_${threshold}`
+      if (sentMap[key]) continue
+
+      considered++
+
+      try {
+        await resend.emails.send({
+          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          to: client.email,
+          subject:
+            threshold === 3
+              ? `Quick reminder — finish your ${task.title}`
+              : threshold === 7
+              ? `Your ${task.title} is still pending`
+              : `Last reminder — your ${task.title}`,
+          html: reminderEmail(firstName, task.title, threshold, portalUrl),
+        })
+        sentMap[key] = new Date().toISOString()
+        sent++
+      } catch (err) {
+        console.error(`Failed to send ${key} reminder to ${client.email}:`, err)
+      }
+    }
+
+    if (Object.keys(sentMap).length > 0) {
+      await admin
+        .from('clients')
+        .update({ onboarding_reminders_sent: sentMap })
+        .eq('id', client.id)
+    }
+  }
+
+  return NextResponse.json({ sent, considered })
+}
