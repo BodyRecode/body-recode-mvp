@@ -24,6 +24,7 @@ const SECTIONS = [
   { id: 'assets',           title: '16b. Assets',            colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'admin-actions',    title: '17. Admin Actions',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'system-health',    title: '17b. System Health',     colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'onboarding-nudges',title: '17c. Onboarding Nudges', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'founding-client',  title: '18. Founding Client',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'stripe-payments',  title: '19. Stripe Payments',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'training-program', title: '20. Training Program',   colour: 'teal' as const, category: 'coaching' as Category },
@@ -909,6 +910,47 @@ export default function HelpPage() {
             <Note>The health check runs on Vercel&apos;s servers and cannot write directly to your local Dropbox. The download button in the dashboard is the bridge — one click saves the file locally.</Note>
           </Section>
 
+          <Section id="onboarding-nudges" title="17c. Onboarding Nudges and Form Drafts" colour="teal">
+            <p>Two systems work together to keep clients moving through onboarding without you having to chase them manually.</p>
+
+            <p className="font-semibold text-white mt-4">Form drafts — clients can resume mid-form</p>
+            <p>Every long form in the portal saves the client&apos;s answers to their browser as they go. If they close the tab or come back two days later, their progress is restored — they pick up where they left off, not from the start. This applies to:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li>Foundational Intake (208 questions)</li>
+              <li>Health Declaration (40+ fields)</li>
+              <li>Baseline Documentation (measurements only — photos must be re-picked, browser security)</li>
+              <li>Weekly Check-In (Form A and Form B independently)</li>
+              <li>Training Review</li>
+              <li>Nutrition Review</li>
+            </ul>
+            <p className="mt-2">Drafts auto-clear on successful submit. They&apos;re browser-local — same device works seamlessly, but if a client switches from phone to laptop they&apos;ll start fresh on the new device.</p>
+
+            <p className="font-semibold text-white mt-4">Automated reminder emails</p>
+            <p>A daily cron at 7am Brisbane checks every active client&apos;s onboarding tasks and sends a branded reminder email if a task has been outstanding for 3, 7, or 14 days. Each (task, threshold) pair fires once per client — no spam.</p>
+
+            <p className="font-semibold text-white mt-3">Tasks tracked</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li>Founding Client Agreement (founding clients only)</li>
+              <li>Coaching Agreement</li>
+              <li>Health Declaration</li>
+              <li>Foundational Intake</li>
+              <li>Baseline Documentation</li>
+            </ul>
+
+            <p className="font-semibold text-white mt-3">Reminder cadence</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Day 3</strong> — gentle nudge: &quot;pick up where you left off&quot;</li>
+              <li><strong>Day 7</strong> — stronger: &quot;still pending — we need this to keep your coaching on track&quot;</li>
+              <li><strong>Day 14</strong> — final: &quot;last automated reminder — let me know if you&apos;ve changed your mind&quot;</li>
+            </ul>
+            <p className="mt-2">&quot;Days since&quot; is counted from when the task became <em>available</em> (i.e., when the previous step was completed), not from when the client was created. So a client who finishes their agreement quickly but stalls on intake gets reminded based on time since the agreement was signed.</p>
+
+            <p className="font-semibold text-white mt-4">What you see vs what gets tracked</p>
+            <p>Every reminder sent is recorded in <code>clients.onboarding_reminders_sent</code> as a JSON map of <code>task_threshold → timestamp</code>. To check if a client has been reminded, look at the client record in Supabase. The cron skips any client where the relevant reminder has already been logged.</p>
+
+            <Note>If you want to re-send a reminder for testing, clear the relevant key from the client&apos;s <code>onboarding_reminders_sent</code> JSON in Supabase — the cron will pick them up on the next run.</Note>
+          </Section>
+
           <Section id="founding-client" title="18. Founding Client Program" colour="teal">
             <p>The Founding Client Program is a limited, selective participation model. 20 positions are available for online clients. The fee is reduced by 50% in exchange for the client&apos;s documented participation in a structured case study process.</p>
             <p>This is a structured trade, not a discount. The client provides participation of commercial and developmental value to the system. The adjusted fee reflects that exchange.</p>
@@ -942,14 +984,15 @@ export default function HelpPage() {
             </Training>
 
             <p className="font-semibold text-white mt-2">Agreement before commencement</p>
-            <p>The Founding Client Case Study Agreement must be signed before the commencement fee is sent. This is non-negotiable. The sequence is:</p>
+            <p>The Founding Client Case Study Agreement must be signed before the commencement fee is sent. This is non-negotiable. As of April 2026 the agreement lives in the client portal — no email is sent. The sequence is:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
               <li>Lead accepts the Founding Client offer (at the Zoom call, or via the online application path).</li>
-              <li>Select Path C and the Founding Client pathway in the Zoom decision panel, or proceed from the lead detail page for online applicants.</li>
-              <li>Click <strong>Send Case Study Agreement</strong> — this creates the agreement record and emails the signing link to the lead.</li>
-              <li>Lead reviews and signs the agreement online, selecting their consent tier.</li>
-              <li>Once signed, generate and send the commencement fee from the lead detail page.</li>
+              <li>On the client profile, toggle <strong>Foundation Client</strong> on. This auto-creates the agreement record and surfaces it as the first task in their portal.</li>
+              <li>Tell the client to log in to their portal — the &quot;Founding Client Agreement&quot; will be the first card under Getting Started, gating the Coaching Agreement until signed.</li>
+              <li>Client reviews and signs the agreement in-portal, selecting their consent tier.</li>
+              <li>Once signed, the dashboard badge flips to <strong>Case Study Agreement signed</strong>. Generate and send the commencement fee from the lead detail page.</li>
             </ol>
+            <Note>The old &quot;Send Case Study Agreement&quot; email button has been removed. The portal handles delivery. If a client doesn&apos;t see the task, confirm <strong>Foundation Client</strong> is toggled on in their profile.</Note>
 
             <p className="font-semibold text-white mt-2">Consent tiers</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
