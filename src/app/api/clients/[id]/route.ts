@@ -26,6 +26,23 @@ export async function PATCH(
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
+  if (updates.is_founding_client === true) {
+    const { data: existing } = await admin
+      .from('founding_client_agreements')
+      .select('id')
+      .eq('client_id', id)
+      .in('status', ['pending', 'signed'])
+      .maybeSingle()
+
+    if (!existing) {
+      await admin.from('founding_client_agreements').insert({
+        client_id: id,
+        lead_id: null,
+        status: 'pending',
+      })
+    }
+  }
+
   return NextResponse.json({ success: true })
 }
 
