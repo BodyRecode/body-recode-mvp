@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createZoomMeeting } from '@/lib/zoom'
 import { Resend } from 'resend'
 import { fireTrigger } from '@/lib/automation-engine'
+import { darkEmailSignature } from '@/lib/email-signature'
 
 const typeLabel: Record<string, string> = {
   zoom: 'Zoom',
@@ -183,6 +184,111 @@ export async function POST(request: NextRequest) {
           },
         ],
       })
+
+      // Send confirmation + reminders to the lead/client
+      if (contactEmail) {
+        const firstName = contactName.split(' ')[0]
+        const durationMinutes = body.duration_minutes ?? 60
+
+        await resend.emails.send({
+          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          to: contactEmail,
+          subject: `Your Zoom call is confirmed. ${dateStr}`,
+          attachments: [
+            {
+              filename: 'booking.ics',
+              content: Buffer.from(icsContent).toString('base64'),
+            },
+          ],
+          html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr>
+          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;"/>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+            <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your Zoom call with Kade is confirmed.</p>
+            <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
+              <tr>
+                <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
+                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#ffffff;">${dateStr}</p>
+                  <p style="margin:0 0 16px;font-size:14px;color:#888888;">${timeStr} Brisbane · ${durationMinutes} min</p>
+                  ${meetingLink ? `<a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>` : ''}
+                </td>
+              </tr>
+            </table>
+            <p style="margin:0 0 24px;font-size:13px;color:#555555;">Open the attached file to add this to your calendar.</p>
+            ${darkEmailSignature()}
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`,
+        })
+
+        // Scheduled reminders: 2 hours and 30 minutes before
+        const reminder2hTime = new Date(scheduledAt.getTime() - 2 * 60 * 60 * 1000)
+        const reminder30mTime = new Date(scheduledAt.getTime() - 30 * 60 * 1000)
+        const now = Date.now()
+
+        const reminderHtml = (minutesBefore: number) => `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+<body style="margin:0;padding:0;background-color:#0c0a09;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <tr>
+          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
+            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;"/>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+            <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your Zoom call with Kade is in ${minutesBefore === 120 ? '2 hours' : '30 minutes'}.</p>
+            <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
+              <tr>
+                <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
+                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#ffffff;">${dateStr}</p>
+                  <p style="margin:0 0 16px;font-size:14px;color:#888888;">${timeStr} Brisbane · ${durationMinutes} min</p>
+                  ${meetingLink ? `<a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>` : ''}
+                </td>
+              </tr>
+            </table>
+            ${darkEmailSignature()}
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`
+
+        if (reminder2hTime.getTime() > now + 60_000) {
+          await resend.emails.send({
+            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            to: contactEmail,
+            subject: `Your Zoom call is in 2 hours. ${timeStr} Brisbane`,
+            scheduledAt: reminder2hTime.toISOString(),
+            html: reminderHtml(120),
+          })
+        }
+
+        if (reminder30mTime.getTime() > now + 60_000) {
+          await resend.emails.send({
+            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            to: contactEmail,
+            subject: `Your Zoom call is in 30 minutes. ${timeStr} Brisbane`,
+            scheduledAt: reminder30mTime.toISOString(),
+            html: reminderHtml(30),
+          })
+        }
+      }
     } catch (err) {
       console.error('Failed to send booking email:', err)
     }

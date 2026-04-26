@@ -1206,7 +1206,7 @@ export default function HelpPage() {
             <p className="mt-2">To subscribe: open Calendar on your Mac → File → New Calendar Subscription → paste the webcal:// URL → set auto-refresh to Every 15 Minutes. The calendar updates automatically as bookings are made or changed. No manual export needed.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Manual Bookings</p>
-            <p>You can also create bookings from <strong>Business → Bookings → New Booking</strong>. Select the contact, type (Zoom, Other), date/time, and duration. Zoom is created automatically and an email is sent to you (not the lead — use Inbox to send them the link if needed).</p>
+            <p>You can also create bookings from <strong>Business → Bookings → New Booking</strong>. Select the contact, type (Zoom 1, Zoom 2, Other), date/time, and duration. Zoom is created automatically. The lead/client receives a branded confirmation email with the Zoom link, .ics calendar invite, and scheduled 2-hour and 30-minute reminders. You also get a coach notification with the .ics attached.</p>
 
             <Note>The Zoom booking page is fully public — share the link bodyrecode.au/book anywhere. It shows available times for the next 14 days. After booking, the lead is redirected to performance.bodyrecode.au.</Note>
           </Section>
