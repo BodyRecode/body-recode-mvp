@@ -632,7 +632,8 @@ export default function HelpPage() {
               <li><strong>Form A</strong> (odd system weeks) — Training, load, and recovery questions.</li>
               <li><strong>Form B</strong> (even system weeks) — Regulation, lifestyle, and context questions.</li>
             </ul>
-            <p>Every Friday at 6pm Brisbane time, clients receive an automated email notifying them that the window is open. The email links directly to their <strong>client portal at /portal/[token]</strong>.</p>
+            <p>Every Friday at 6pm Brisbane time, clients receive an automated email and SMS notifying them that the window is open (cron: <code>checkin-window-open</code>). The notification links directly to their <strong>client portal at /portal/[token]</strong>.</p>
+            <p>On Sunday at 5:30pm Brisbane (1 hour before close), clients who haven&apos;t submitted yet receive a closing reminder email and SMS (cron: <code>checkin-window-closing</code>) so nobody misses the window by accident.</p>
             <p>Inside the portal, the <strong>This week</strong> section shows:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li>The active form for this week with a Start link — or a ticked state if already submitted.</li>
