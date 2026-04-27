@@ -30,7 +30,7 @@ export default function KadePage() {
           >
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-sky-400 transition-colors">
-                Studio of Ten <span className="text-sky-400 font-bold">- COMING SOON!</span>
+                Studio of Ten <span className="text-sky-400 font-bold">- LAUNCHING SOON</span>
               </p>
               <p className="text-xs text-stone-500 mt-0.5">Capped 10-client build studio for solo business operators.</p>
             </div>
