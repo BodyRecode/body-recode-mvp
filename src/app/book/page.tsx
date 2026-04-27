@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Calendar, Clock, CheckCircle2, Loader2, ChevronLeft } from 'lucide-react'
 
-type Step = 'slots' | 'details' | 'confirmed'
+type Step = 'slots' | 'details' | 'confirmed' | 'request' | 'request_confirmed'
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -30,6 +30,7 @@ export default function BookPage() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
   const [selectedDay, setSelectedDay] = useState<string | null>(null)
   const [form, setForm] = useState({ name: '', email: '', phone: '' })
+  const [requestForm, setRequestForm] = useState({ name: '', email: '', phone: '', preferredTime: '', note: '' })
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -72,6 +73,29 @@ export default function BookPage() {
         return
       }
       setStep('confirmed')
+    } catch {
+      setError('Something went wrong. Please try again.')
+      setSubmitting(false)
+    }
+  }
+
+  async function submitRequest() {
+    if (!requestForm.name || !requestForm.email || !requestForm.preferredTime) return
+    setSubmitting(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/book-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestForm),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ?? 'Something went wrong. Please try again.')
+        setSubmitting(false)
+        return
+      }
+      setStep('request_confirmed')
     } catch {
       setError('Something went wrong. Please try again.')
       setSubmitting(false)
@@ -127,32 +151,46 @@ export default function BookPage() {
                 <Loader2 size={18} className="animate-spin" />
                 Loading available times...
               </div>
-            ) : days.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-stone-400 text-base mb-2">No available times right now.</p>
-                <p className="text-stone-600 text-sm">Please check back soon or email kade@bodyrecode.au</p>
-              </div>
             ) : (
-              <div className="space-y-6">
-                {days.map(day => (
-                  <div key={day}>
-                    <p className="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-3">
-                      {formatDayHeader(day)}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {grouped[day].map(slot => (
-                        <button
-                          key={slot}
-                          onClick={() => { setSelectedSlot(slot); setSelectedDay(day); setStep('details') }}
-                          className="px-4 py-2.5 text-sm font-medium rounded-lg border border-stone-700 text-stone-300 hover:border-teal-500 hover:text-teal-400 hover:bg-teal-500/5 transition-colors"
-                        >
-                          {formatTime(slot)}
-                        </button>
-                      ))}
-                    </div>
+              <>
+                {days.length === 0 ? (
+                  <div className="text-center py-12">
+                    <p className="text-stone-400 text-base mb-2">No available times right now.</p>
+                    <p className="text-stone-600 text-sm">Request a time below or email kade@bodyrecode.au</p>
                   </div>
-                ))}
-              </div>
+                ) : (
+                  <div className="space-y-6">
+                    {days.map(day => (
+                      <div key={day}>
+                        <p className="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-3">
+                          {formatDayHeader(day)}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {grouped[day].map(slot => (
+                            <button
+                              key={slot}
+                              onClick={() => { setSelectedSlot(slot); setSelectedDay(day); setStep('details') }}
+                              className="px-4 py-2.5 text-sm font-medium rounded-lg border border-stone-700 text-stone-300 hover:border-teal-500 hover:text-teal-400 hover:bg-teal-500/5 transition-colors"
+                            >
+                              {formatTime(slot)}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-10 pt-6 border-t border-stone-800 text-center">
+                  <p className="text-stone-500 text-sm mb-2">None of these times work for you?</p>
+                  <button
+                    onClick={() => setStep('request')}
+                    className="text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors"
+                  >
+                    Request a different time →
+                  </button>
+                </div>
+              </>
             )}
           </>
         )}
@@ -249,6 +287,122 @@ export default function BookPage() {
             </p>
             <p className="text-stone-500 text-sm mb-8">
               Check your email for your Zoom link and calendar invite.
+            </p>
+            <a
+              href="https://performance.bodyrecode.au"
+              className="text-sm text-teal-400 hover:text-teal-300 transition-colors"
+            >
+              ← Back to Body Recode
+            </a>
+          </div>
+        )}
+
+        {/* Request a different time */}
+        {step === 'request' && (
+          <>
+            <button
+              onClick={() => setStep('slots')}
+              className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-white transition-colors mb-8"
+            >
+              <ChevronLeft size={15} />
+              Back
+            </button>
+
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold mb-2">Request a different time</h1>
+              <p className="text-stone-400 text-sm leading-relaxed">
+                Tell me when works for you. I'll get back to you within 24 hours to confirm or suggest the closest match.
+              </p>
+            </div>
+
+            <div className="space-y-4 mb-8">
+              <div>
+                <label className="block text-xs font-medium text-stone-400 mb-1.5">Full Name</label>
+                <input
+                  type="text"
+                  value={requestForm.name}
+                  onChange={e => setRequestForm(f => ({ ...f, name: e.target.value }))}
+                  placeholder="John Smith"
+                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-stone-400 mb-1.5">Email</label>
+                <input
+                  type="email"
+                  value={requestForm.email}
+                  onChange={e => setRequestForm(f => ({ ...f, email: e.target.value }))}
+                  placeholder="john@example.com"
+                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-stone-400 mb-1.5">Phone (optional)</label>
+                <input
+                  type="tel"
+                  value={requestForm.phone}
+                  onChange={e => setRequestForm(f => ({ ...f, phone: e.target.value }))}
+                  placeholder="0400 000 000"
+                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-stone-400 mb-1.5">What time works for you?</label>
+                <textarea
+                  value={requestForm.preferredTime}
+                  onChange={e => setRequestForm(f => ({ ...f, preferredTime: e.target.value }))}
+                  placeholder="e.g. Tuesday or Thursday around 3pm Brisbane"
+                  rows={3}
+                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors resize-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-stone-400 mb-1.5">Anything else? (optional)</label>
+                <textarea
+                  value={requestForm.note}
+                  onChange={e => setRequestForm(f => ({ ...f, note: e.target.value }))}
+                  placeholder="Schedule constraints, time zone, anything useful"
+                  rows={2}
+                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors resize-none"
+                />
+              </div>
+            </div>
+
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-6">
+                <p className="text-red-400 text-sm">{error}</p>
+              </div>
+            )}
+
+            <button
+              onClick={submitRequest}
+              disabled={!requestForm.name || !requestForm.email || !requestForm.preferredTime || submitting}
+              className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-400 text-stone-950 font-semibold text-sm py-4 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              {submitting && <Loader2 size={15} className="animate-spin" />}
+              Send Request
+            </button>
+
+            <p className="text-xs text-stone-600 text-center mt-4">
+              Kade will reply within 24 hours.
+            </p>
+          </>
+        )}
+
+        {/* Request confirmed */}
+        {step === 'request_confirmed' && (
+          <div className="text-center py-8">
+            <div className="flex justify-center mb-6">
+              <div className="p-4 bg-teal-500/10 rounded-2xl">
+                <CheckCircle2 size={40} className="text-teal-400" />
+              </div>
+            </div>
+            <h1 className="text-2xl font-bold mb-3">Request received.</h1>
+            <p className="text-stone-400 text-base mb-2">
+              Kade will get back to you within 24 hours.
+            </p>
+            <p className="text-stone-500 text-sm mb-8">
+              Check your email for confirmation.
             </p>
             <a
               href="https://performance.bodyrecode.au"
