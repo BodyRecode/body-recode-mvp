@@ -64,6 +64,12 @@ export async function POST(request: NextRequest) {
           founding_client_status: 'active',
         })
         .eq('id', convertedLead.converted_to_client_id)
+
+      // Bridge the agreement to the client record (portal queries by client_id only)
+      await admin
+        .from('founding_client_agreements')
+        .update({ client_id: convertedLead.converted_to_client_id, lead_id: null })
+        .eq('id', agreement.id)
     }
   }
 

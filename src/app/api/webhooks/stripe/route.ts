@@ -701,6 +701,37 @@ export async function POST(request: NextRequest) {
     })
     .eq('id', leadId)
 
+  // Apply founding-client status if a signed agreement already exists for this lead.
+  // The signing endpoint only sets the flag when conversion has happened; if signing
+  // came first (the intended flow per the email), this is where we apply it.
+  const { data: signedAgreement } = await admin
+    .from('founding_client_agreements')
+    .select('id, consent_tier, signed_at')
+    .eq('lead_id', leadId)
+    .eq('status', 'signed')
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (signedAgreement) {
+    await admin
+      .from('clients')
+      .update({
+        is_founding_client: true,
+        founding_client_trigger_type: lead.zoom2_trigger_type,
+        founding_client_start_date: signedAgreement.signed_at ?? new Date().toISOString(),
+        consent_tier: signedAgreement.consent_tier,
+        founding_client_status: 'active',
+      })
+      .eq('id', client.id)
+
+    // Bridge the agreement to the new client (portal queries by client_id only)
+    await admin
+      .from('founding_client_agreements')
+      .update({ client_id: client.id, lead_id: null })
+      .eq('id', signedAgreement.id)
+  }
+
   // Record commencement fee payment
   if (session.amount_total && session.amount_total > 0) {
     await admin.from('be_payments').insert({
