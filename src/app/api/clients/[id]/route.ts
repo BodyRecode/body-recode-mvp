@@ -8,7 +8,7 @@ export async function PATCH(
   const { id } = await params
   const body = await request.json()
 
-  const allowed = ['coaching_started_at', 'package', 'active', 'founding_client_status', 'phone', 'is_founding_client', 'founding_client_trigger_type', 'founding_client_start_date', 'subscription_link_send_at', 'subscription_link_sent_at', 'founder_info_sent_at']
+  const allowed = ['coaching_started_at', 'package', 'active', 'phone', 'subscription_link_send_at', 'subscription_link_sent_at']
   const updates: Record<string, unknown> = {}
   for (const key of allowed) {
     if (key in body) updates[key] = body[key]
@@ -25,23 +25,6 @@ export async function PATCH(
     .eq('id', id)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-
-  if (updates.is_founding_client === true) {
-    const { data: existing } = await admin
-      .from('founding_client_agreements')
-      .select('id')
-      .eq('client_id', id)
-      .in('status', ['pending', 'signed'])
-      .maybeSingle()
-
-    if (!existing) {
-      await admin.from('founding_client_agreements').insert({
-        client_id: id,
-        lead_id: null,
-        status: 'pending',
-      })
-    }
-  }
 
   return NextResponse.json({ success: true })
 }

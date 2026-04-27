@@ -46,34 +46,6 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     })
     .eq('id', id)
 
-  // Apply founding-client status if a signed agreement already exists for this lead.
-  const { data: signedAgreement } = await supabase
-    .from('founding_client_agreements')
-    .select('id, consent_tier, signed_at')
-    .eq('lead_id', id)
-    .eq('status', 'signed')
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  if (signedAgreement) {
-    await supabase
-      .from('clients')
-      .update({
-        is_founding_client: true,
-        founding_client_trigger_type: lead.zoom2_trigger_type,
-        founding_client_start_date: signedAgreement.signed_at ?? new Date().toISOString(),
-        consent_tier: signedAgreement.consent_tier,
-        founding_client_status: 'active',
-      })
-      .eq('id', client.id)
-
-    await supabase
-      .from('founding_client_agreements')
-      .update({ client_id: client.id, lead_id: null })
-      .eq('id', signedAgreement.id)
-  }
-
   return NextResponse.json({
     client_id: client.id,
     intake_token: invitation.token,

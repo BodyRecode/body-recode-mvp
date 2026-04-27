@@ -9,16 +9,9 @@ const PACKAGES = [
   { value: '3x', label: 'In-Person 3x - $409/week', stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
 ]
 
-const FOUNDING_PACKAGES = [
-  { value: 'online', label: 'Online - $74.50/week (Founding)', stripe: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04' },
-  { value: '2x', label: 'In-Person 2x - $149.50/week (Founding)', stripe: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05' },
-  { value: '3x', label: 'In-Person 3x - $204.50/week (Founding)', stripe: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06' },
-]
-
 interface PackageManagerProps {
   clientId: string
   currentPackage?: string
-  isFoundingClient?: boolean
   subscriptionLinkSendAt?: string | null
   subscriptionLinkSentAt?: string | null
 }
@@ -26,7 +19,6 @@ interface PackageManagerProps {
 export default function PackageManager({
   clientId,
   currentPackage,
-  isFoundingClient,
   subscriptionLinkSendAt,
   subscriptionLinkSentAt,
 }: PackageManagerProps) {
@@ -43,7 +35,7 @@ export default function PackageManager({
   const [scheduleSaved, setScheduleSaved] = useState(false)
   const [cancelling, setCancelling] = useState(false)
 
-  const packages = isFoundingClient ? FOUNDING_PACKAGES : PACKAGES
+  const packages = PACKAGES
 
   const save = async (newPkg: string) => {
     setPkg(newPkg)
@@ -121,9 +113,6 @@ export default function PackageManager({
 
   return (
     <div className="space-y-3">
-      {isFoundingClient && (
-        <p className="text-xs text-violet-400 font-semibold">Founding Client rates (50% adjusted)</p>
-      )}
       <div className="flex flex-wrap gap-2">
         {packages.map(p => (
           <button

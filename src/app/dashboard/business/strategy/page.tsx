@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
-type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'organic' | 'ads' | 'founder' | 'timeline' | 'pages' | 'calendar'
+type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'organic' | 'ads' | 'timeline' | 'pages' | 'calendar'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
@@ -12,7 +12,6 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'prelaunch', label: 'Pre-Launch' },
   { id: 'organic', label: 'Organic → Ads' },
   { id: 'ads', label: 'Paid Ads' },
-  { id: 'founder', label: 'Founder Program' },
   { id: 'timeline', label: 'Launch Timeline' },
   { id: 'pages', label: 'Pages' },
   { id: 'calendar', label: 'Content Calendar' },
@@ -20,8 +19,8 @@ const TABS: { id: Tab; label: string }[] = [
 
 // ── CALENDAR ────────────────────────────────────────────────
 
-type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'founder' | 'ad' | 'prelaunch' | 'thread' | 'video'
-type CampaignPhase = 'prelaunch' | 'founder' | 'ads' | 'optimise' | 'scale'
+type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'ad' | 'prelaunch' | 'thread' | 'video'
+type CampaignPhase = 'prelaunch' | 'ads' | 'optimise' | 'scale'
 type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder'
 type Platform = 'instagram' | 'threads' | 'facebook' | 'both'
 
@@ -52,7 +51,6 @@ const POST_TYPE_DEFAULT_TIMES: Record<PostType, string> = {
   contrarian: '07:00',
   coach:      '18:00',
   diagnostic: '08:00',
-  founder:    '07:00',
   ad:         '07:00',
   prelaunch:  '07:00',
   thread:     '07:00',
@@ -71,7 +69,6 @@ const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: str
   contrarian:  { label: 'Contrarian',   color: '#fb923c', bg: 'rgba(251,146,60,0.12)',  border: 'rgba(251,146,60,0.3)' },
   coach:       { label: 'Coach',        color: '#a78bfa', bg: 'rgba(167,139,250,0.12)', border: 'rgba(167,139,250,0.3)' },
   diagnostic:  { label: 'Diagnostic',   color: '#f87171', bg: 'rgba(248,113,113,0.12)', border: 'rgba(248,113,113,0.3)' },
-  founder:     { label: 'Founder',      color: '#c084fc', bg: 'rgba(192,132,252,0.12)', border: 'rgba(192,132,252,0.3)' },
   ad:          { label: 'Paid Ad',      color: '#60a5fa', bg: 'rgba(96,165,250,0.12)',  border: 'rgba(96,165,250,0.3)' },
   prelaunch:   { label: 'Pre-Launch',   color: '#6b7280', bg: 'rgba(107,114,128,0.12)', border: 'rgba(107,114,128,0.3)' },
   thread:      { label: 'Thread',       color: '#e879f9', bg: 'rgba(232,121,249,0.12)', border: 'rgba(232,121,249,0.3)' },
@@ -80,7 +77,6 @@ const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: str
 
 const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
   prelaunch: { label: 'Pre-Launch',    color: 'text-stone-400' },
-  founder:   { label: 'Founder',       color: 'text-violet-400' },
   ads:       { label: 'Ads Launch',    color: 'text-blue-400' },
   optimise:  { label: 'Optimise',      color: 'text-amber-400' },
   scale:     { label: 'Scale',         color: 'text-teal-400' },
@@ -88,8 +84,7 @@ const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
 
 // Phase date ranges for calendar highlighting
 const PHASE_RANGES: { phase: CampaignPhase; start: string; end: string; topBorder: string }[] = [
-  { phase: 'prelaunch', start: '2026-04-08', end: '2026-04-15', topBorder: 'border-t-2 border-t-stone-500/60' },
-  { phase: 'founder',   start: '2026-04-16', end: '2026-04-21', topBorder: 'border-t-2 border-t-violet-500/60' },
+  { phase: 'prelaunch', start: '2026-04-08', end: '2026-04-21', topBorder: 'border-t-2 border-t-stone-500/60' },
   { phase: 'ads',       start: '2026-04-22', end: '2026-05-06', topBorder: 'border-t-2 border-t-blue-500/60' },
   { phase: 'optimise',  start: '2026-05-07', end: '2026-05-23', topBorder: 'border-t-2 border-t-amber-500/60' },
   { phase: 'scale',     start: '2026-05-24', end: '2026-12-31', topBorder: 'border-t-2 border-t-teal-500/60' },
@@ -730,26 +725,13 @@ const PRELAUNCH_POSTS = [
 export default function StrategyPage() {
   const [tab, setTab] = useState<Tab>('overview')
   const [postStatuses, setPostStatuses] = useState<Record<string, PostStatus>>({})
-  const [founderPosted, setFounderPosted] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem('prelaunch_post_statuses')
       if (saved) setPostStatuses(JSON.parse(saved))
     } catch {}
-    try {
-      const saved = localStorage.getItem('founder_series_posted')
-      if (saved) setFounderPosted(JSON.parse(saved))
-    } catch {}
   }, [])
-
-  function toggleFounderPosted(date: string) {
-    setFounderPosted(prev => {
-      const next = { ...prev, [date]: !prev[date] }
-      try { localStorage.setItem('founder_series_posted', JSON.stringify(next)) } catch {}
-      return next
-    })
-  }
 
   function cycleStatus(id: string) {
     setPostStatuses(prev => {
@@ -793,41 +775,6 @@ export default function StrategyPage() {
             <SectionLabel>Mission</SectionLabel>
             <p className="text-lg font-semibold text-white leading-snug mb-2">Interpretation before prescription.</p>
             <Body>Social media is not the funnel — it feeds the funnel. Every piece of content drives curiosity. The scorecard converts that curiosity into qualified leads.</Body>
-          </Card>
-
-          {/* Current phase */}
-          <Card className="border-violet-500/30 bg-violet-500/5">
-            <SectionLabel>Current Phase</SectionLabel>
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-xs font-bold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2.5 py-1 rounded-full">Phase 2 — Founder Launch</span>
-              <span className="text-xs text-stone-500">14 Apr – 24 Apr 2026</span>
-            </div>
-            <div className="space-y-1.5">
-              {[
-                { date: 'Wed 15 Apr', title: 'Post 1 — What Body Recode Is' },
-                { date: 'Thu 17 Apr', title: 'Post 2 — The Offer' },
-                { date: 'Sat 18 Apr', title: 'Post 3 — Why Founder' },
-                { date: 'Mon 20 Apr', title: 'Post 4 — What They Get' },
-                { date: 'Wed 22 Apr', title: 'Post 5 — Authority' },
-                { date: 'Thu 24 Apr', title: 'Post 6 — Scarcity' },
-              ].map(p => {
-                const done = !!founderPosted[p.date]
-                return (
-                  <div key={p.date} className="flex items-center gap-3 text-xs">
-                    <span className="text-stone-600 w-20 shrink-0">{p.date}</span>
-                    <button
-                      onClick={() => toggleFounderPosted(p.date)}
-                      className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border transition-colors ${done ? 'bg-teal-500/20 border-teal-500/40' : 'bg-stone-900 border-stone-700 hover:border-stone-500'}`}
-                    >
-                      {done && <span className="text-teal-400 text-[10px] font-bold">✓</span>}
-                    </button>
-                    <span className={done ? 'text-stone-500 line-through' : 'text-stone-300'}>{p.title}</span>
-                    {done && <span className="text-teal-500 text-[10px] font-bold">POSTED</span>}
-                  </div>
-                )
-              })}
-            </div>
-            <p className="text-xs text-stone-500 mt-3">Organic only. No ads until Phase 3 (from 25 Apr). Update Post 6 scarcity count before posting.</p>
           </Card>
 
           {/* Funnel flow */}
@@ -1316,7 +1263,7 @@ export default function StrategyPage() {
 
           <Card>
             <SectionLabel>Pre-Launch Goal</SectionLabel>
-            <Body>Post 5 times over 8 days before any ads or the Founder Program offer goes live. Goal: profile looks established and intentional. No hashtags until Post 5. No CTA until Post 5.</Body>
+            <Body>Post 5 times over 8 days before any ads go live. Goal: profile looks established and intentional. No hashtags until Post 5. No CTA until Post 5.</Body>
             <div className="mt-3 space-y-1.5">
               {[
                 { post: 'Post 1', temp: 'Cold', desc: 'Brand arrival — no CTA, no explanation yet. Intrigue only.' },
@@ -1832,129 +1779,6 @@ export default function StrategyPage() {
         </div>
       )}
 
-      {/* ── FOUNDER ── */}
-      {tab === 'founder' && (
-        <div className="space-y-4">
-          <Card>
-            <SectionLabel>The Program</SectionLabel>
-            <p className="text-base font-semibold text-white mb-2">Founding Client Program — 20 positions</p>
-            <Body>A limited, selective participation model. Half the standard coaching fee in exchange for the client&apos;s documented participation in a structured case study process. This is a trade — not a discount, not a fee reduction. That framing is intentional and strategic.</Body>
-          </Card>
-
-          <div className="grid sm:grid-cols-2 gap-3">
-            <Card>
-              <SectionLabel>Online Rate</SectionLabel>
-              <p className="text-2xl font-bold text-white">$74.50<span className="text-base text-stone-500 font-normal">/week</span></p>
-              <p className="text-xs text-stone-500 mt-1">Standard rate: $149/week</p>
-            </Card>
-            <Card>
-              <SectionLabel>In-Person 2× Rate</SectionLabel>
-              <p className="text-2xl font-bold text-white">$149.50<span className="text-base text-stone-500 font-normal">/week</span></p>
-              <p className="text-xs text-stone-500 mt-1">Standard rate: $299/week</p>
-            </Card>
-            <Card>
-              <SectionLabel>In-Person 3× Rate</SectionLabel>
-              <p className="text-2xl font-bold text-white">$204.50<span className="text-base text-stone-500 font-normal">/week</span></p>
-              <p className="text-xs text-stone-500 mt-1">Standard rate: $409/week</p>
-            </Card>
-            <Card>
-              <SectionLabel>Positions Available</SectionLabel>
-              <p className="text-2xl font-bold text-white">20</p>
-              <p className="text-xs text-stone-500 mt-1">Open until filled. Decrement on accept, not on apply.</p>
-            </Card>
-          </div>
-
-          <Card>
-            <SectionLabel>3 Entry Paths</SectionLabel>
-            <div className="space-y-4">
-              <div>
-                <div className="flex items-center gap-2 mb-1"><Tag color="teal">Path A</Tag><Heading>Online Application</Heading></div>
-                <Body>Person finds the landing page at performance.bodyrecode.au/founder, reads the offer, completes the Body State Scorecard as step one of the application. Lead arrives tagged as Founder Program. Review scorecard results on lead detail page. Set application status: Under Review → Accepted / Declined / Waitlisted.</Body>
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1"><Tag color="amber">Path B</Tag><Heading>Objection-Triggered at Zoom 2</Heading></div>
-                <Body>Full rate offer made first at Stage 5. If lead objects to price, introduce the Founding Client program as the second offer. Use the Objection-Triggered tab in the Zoom 2 companion.</Body>
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1"><Tag color="violet">Path C</Tag><Heading>Manual Override at Zoom 2</Heading></div>
-                <Body>For a high-suitability lead with strong case study potential. Proactively offer before any objection. All four criteria on the checklist must be true. Use sparingly — positions are finite.</Body>
-              </div>
-            </div>
-          </Card>
-
-          <Card>
-            <SectionLabel>6-Post Founder Series</SectionLabel>
-            <div className="space-y-3">
-              {[
-                { date: 'Wed 15 Apr', title: 'Post 1 — What Body Recode Is', copy: 'Context-setting post. Explains the three states, the six pillars, and why interpretation has to come before prescription. Ends with a teaser: "Something is opening this week. More this week." Drives to the scorecard.' },
-                { date: 'Thu 17 Apr', title: 'Post 2 — The Offer', copy: 'Founding Client Program announced. 20 positions, application-based, structured. Half the standard rate in exchange for documented case study participation. Not a discount — a trade. Application link in bio.' },
-                { date: 'Sat 18 Apr', title: 'Post 3 — Why Founder', copy: 'Addresses the assumption that this is a discount. Explains the trade in full. Sets the standard for who the 20 positions are for — people who want the outcome badly enough to document it.' },
-                { date: 'Mon 20 Apr', title: 'Post 4 — What They Get', copy: 'Full breakdown of the system. Body State assessment, program built around current state, weekly check-in and response, direct access, real-time adjustments. The only difference is rate and participation requirement.' },
-                { date: 'Wed 22 Apr', title: 'Post 5 — Authority', copy: 'Prescription vs interpretation. Why programs fail when they ignore body state. Depleted bodies in stress-driven holding patterns do not respond to more load or less calories — they respond to addressing the cortisol-recovery-sleep loop.' },
-                { date: 'Thu 24 Apr', title: 'Post 6 — Scarcity', copy: '8 of 20 positions taken. Not a waitlist. When positions fill, the founding rate closes permanently. Update the number as applications are accepted — never fake the count.' },
-              ].map(post => (
-                <div key={post.title} className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-bold text-violet-400">{post.date}</span>
-                    <p className="text-xs font-semibold text-stone-300 uppercase tracking-widest">{post.title}</p>
-                  </div>
-                  <p className="text-sm text-stone-400">{post.copy}</p>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          <Card>
-            <SectionLabel>Post 6 — Scarcity Graphic + Caption (Thu 24 Apr)</SectionLabel>
-            <div className="grid sm:grid-cols-2 gap-5 items-start">
-              <div>
-                <a
-                  href="/api/content/graphic?style=founder&text=8+of+20+positions+taken.&sub=The+founding+rate+does+not+reopen.+When+20+positions+are+filled%2C+it+closes+permanently.&taken=8"
-                  download="founder-post6-8-of-20.png"
-                  className="flex items-center justify-center gap-2 w-full mb-3 px-3 py-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-xs font-semibold rounded-lg transition-colors"
-                >
-                  ↓ Download graphic (8 of 20)
-                </a>
-                <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '240px' }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/api/content/graphic?style=founder&text=8+of+20+positions+taken.&sub=The+founding+rate+does+not+reopen.+When+20+positions+are+filled%2C+it+closes+permanently.&taken=8"
-                    alt="Founder Post 6"
-                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </div>
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center shrink-0">
-                    <span className="text-teal-400 text-xs font-bold">K</span>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-white">body_recode_</p>
-                    <p className="text-xs text-stone-600">Brisbane, Australia</p>
-                  </div>
-                </div>
-                <div className="bg-stone-950 border border-stone-800 rounded-xl p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-bold text-stone-600 uppercase tracking-widest">Caption</p>
-                    <button
-                      onClick={() => navigator.clipboard.writeText(`8 of 20 positions taken.\n\nThe Founding Client Program is still open — but not for long.\n\n20 positions. Half the standard rate. In exchange for documented participation in a structured case study process.\n\nThis isn't a discount. It's a trade.\n\nWhen the 20 positions are filled, the founding rate closes permanently. It does not reopen.\n\nIf you've been watching — this is the window.\n\nTake the Body State Scorecard first. Link in bio.\n\nOnce we have your results, we'll be in touch.`)}
-                      className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium"
-                    >Copy</button>
-                  </div>
-                  <p className="text-sm text-stone-200 leading-relaxed whitespace-pre-line">{`8 of 20 positions taken.\n\nThe Founding Client Program is still open — but not for long.\n\n20 positions. Half the standard rate. In exchange for documented participation in a structured case study process.\n\nThis isn't a discount. It's a trade.\n\nWhen the 20 positions are filled, the founding rate closes permanently. It does not reopen.\n\nIf you've been watching — this is the window.\n\nTake the Body State Scorecard first. Link in bio.\n\nOnce we have your results, we'll be in touch.`}</p>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="border-amber-500/20 bg-amber-500/5">
-            <SectionLabel>Critical Framing Rule</SectionLabel>
-            <Body>Presenting it as a trade also screens out the wrong leads. Someone who responds well to the framing understands the nature of the program. Someone who immediately treats it as a price negotiation tool is likely the wrong fit. The positions are finite — use them with intent.</Body>
-          </Card>
-        </div>
-      )}
-
       {/* ── TIMELINE ── */}
       {tab === 'timeline' && (
         <div className="space-y-4">
@@ -1971,28 +1795,12 @@ export default function StrategyPage() {
               items: [
                 'Post 5 profile establishment posts (logo, who you are, the problem, three states, scorecard CTA)',
                 'No ads running yet',
-                'No Founder Program offer yet',
                 'Profile looks established before anyone is sent there',
               ],
             },
             {
-              phase: 'Phase 2 — Founder Launch',
-              days: 'Days 9–17 (14–24 Apr)',
-              color: 'violet' as const,
-              items: [
-                'Post 1 (15 Apr) — What Body Recode Is. Context-setting with teaser line. Drives to scorecard.',
-                'Post 2 (17 Apr) — The Offer. Founding Client Program announced. 20 positions, the trade explained.',
-                'Post 3 (18 Apr) — Why Founder. Not a discount. A trade. Who the 20 positions are for.',
-                'Post 4 (20 Apr) — What They Get. Full system breakdown. Same process as every client.',
-                'Post 5 (22 Apr) — Authority. Prescription vs interpretation. Why body state determines everything.',
-                'Post 6 (24 Apr) — Scarcity. Update X before posting. Positions closing as they fill.',
-                'Organic only throughout — no ads yet',
-                'Applications open at performance.bodyrecode.au/founder',
-              ],
-            },
-            {
-              phase: 'Phase 3 — Ads Launch',
-              days: 'Days 15–28',
+              phase: 'Phase 2 — Ads Launch',
+              days: 'Days 9–22',
               color: 'amber' as const,
               items: [
                 'Start Meta ads at $20–30/day AUD',
@@ -2003,19 +1811,18 @@ export default function StrategyPage() {
               ],
             },
             {
-              phase: 'Phase 4 — Optimise',
-              days: 'Days 29–45',
+              phase: 'Phase 3 — Optimise',
+              days: 'Days 23–45',
               color: 'stone' as const,
               items: [
                 'Review ad performance — cut 2 underperforming angles',
                 'Scale budget on winning angle to $40–50/day',
                 'Continue organic content rhythm',
-                'Update founder spots counter as positions are accepted',
                 'Review CPL in Ads dashboard',
               ],
             },
             {
-              phase: 'Phase 5 — Scale',
+              phase: 'Phase 4 — Scale',
               days: 'Days 46–60+',
               color: 'teal' as const,
               items: [

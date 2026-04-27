@@ -13,10 +13,6 @@ import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
 import ClientDangerActions from './client-danger-actions'
-import FoundingClientStatusManager from '@/components/founding-client-status-manager'
-import MarkAsFoundingClientButton from '@/components/mark-as-founding-client-button'
-import SendFounderInfoButton from '@/components/send-founder-info-button'
-import SendAgreementButton from '@/components/send-agreement-button'
 import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
 import OverrideSubscriptionButton from '@/components/override-subscription-button'
@@ -94,23 +90,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .maybeSingle(),
   ])
 
-  const [{ data: upcomingClientSessions }, { data: clientAgreement }] = await Promise.all([
-    admin
-      .from('client_sessions')
-      .select('id, scheduled_at, duration_minutes, status, confirmed_at')
-      .eq('client_id', id)
-      .eq('status', 'scheduled')
-      .gte('scheduled_at', new Date().toISOString())
-      .order('scheduled_at', { ascending: true })
-      .limit(6),
-    admin
-      .from('founding_client_agreements')
-      .select('status, created_at')
-      .eq('client_id', id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle(),
-  ])
+  const { data: upcomingClientSessions } = await admin
+    .from('client_sessions')
+    .select('id, scheduled_at, duration_minutes, status, confirmed_at')
+    .eq('client_id', id)
+    .eq('status', 'scheduled')
+    .gte('scheduled_at', new Date().toISOString())
+    .order('scheduled_at', { ascending: true })
+    .limit(6)
 
   const { data: clientFixedSlots } = await admin
     .from('client_fixed_slots')
@@ -183,11 +170,6 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-2xl font-semibold">{client.name}</h1>
-            {client.is_founding_client && (
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full border border-violet-400/30 text-violet-300 bg-violet-400/10 tracking-wide">
-                Founding Client
-              </span>
-            )}
           </div>
           <div className="flex items-center gap-4 mt-1 flex-wrap">
             <p className="text-stone-400 text-sm">Added {formatDate(client.created_at)}</p>
@@ -281,96 +263,6 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         )}
       </div>
 
-      {/* Founding Client */}
-      {client.is_founding_client && (() => {
-        const statusConfig: Record<string, { label: string; colour: string }> = {
-          active: { label: 'Active', colour: 'text-teal-400 bg-teal-400/10 border-teal-400/30' },
-          '12_week_complete': { label: '12 Weeks Complete', colour: 'text-blue-300 bg-blue-400/10 border-blue-400/30' },
-          extended: { label: 'Extended', colour: 'text-violet-300 bg-violet-400/10 border-violet-400/30' },
-          withdrawn: { label: 'Withdrawn', colour: 'text-stone-400 bg-stone-800 border-stone-700' },
-        }
-        const tierLabels: Record<string, string> = {
-          tier_1: 'Tier 1 — External Use (Anonymised)',
-          tier_2: 'Tier 2 — External Use (Named)',
-        }
-        const triggerLabels: Record<string, string> = {
-          objection_triggered: 'Objection-triggered',
-          manual_override: 'Manual override',
-        }
-        const status = statusConfig[client.founding_client_status] ?? { label: client.founding_client_status, colour: 'text-stone-400 bg-stone-800 border-stone-700' }
-
-        const twelveWeekDate = client.founding_client_start_date
-          ? (() => {
-              const d = new Date(client.founding_client_start_date)
-              d.setDate(d.getDate() + 84)
-              return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
-            })()
-          : null
-
-        return (
-          <div className="bg-stone-900 border border-violet-400/20 rounded-xl p-5 mb-4">
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-xs uppercase tracking-wider text-violet-400/70">Founding Client Program</p>
-              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${status.colour}`}>
-                {status.label}
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
-              {client.founding_client_trigger_type && (
-                <div>
-                  <p className="text-xs text-stone-500 mb-0.5">Entry type</p>
-                  <p className="text-sm text-stone-200">{triggerLabels[client.founding_client_trigger_type] ?? client.founding_client_trigger_type}</p>
-                </div>
-              )}
-              {client.consent_tier && (
-                <div>
-                  <p className="text-xs text-stone-500 mb-0.5">Consent tier</p>
-                  <p className="text-sm text-stone-200">{tierLabels[client.consent_tier] ?? client.consent_tier}</p>
-                </div>
-              )}
-              {client.founding_client_start_date && (
-                <div>
-                  <p className="text-xs text-stone-500 mb-0.5">Program start</p>
-                  <p className="text-sm text-stone-200">{new Date(client.founding_client_start_date).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                </div>
-              )}
-              {twelveWeekDate && (
-                <div>
-                  <p className="text-xs text-stone-500 mb-0.5">12-week threshold</p>
-                  <p className="text-sm text-stone-200">{twelveWeekDate}</p>
-                </div>
-              )}
-            </div>
-            <div className="mt-4 pt-4 border-t border-stone-800/60 space-y-3">
-              <div className="flex items-center justify-between">
-                <FoundingClientStatusManager clientId={id} currentStatus={client.founding_client_status} />
-                <SendFounderInfoButton clientId={id} sentAt={client.founder_info_sent_at ?? null} />
-              </div>
-              <div className="flex items-center justify-between">
-                <SendAgreementButton
-                  clientId={id}
-                  agreementStatus={clientAgreement?.status === 'signed' ? 'signed' : clientAgreement ? 'pending' : 'none'}
-                  agreementSentAt={clientAgreement?.created_at ?? null}
-                />
-              </div>
-            </div>
-          </div>
-        )
-      })()}
-
-      {/* Founding Client — manual assignment (bypassed funnel) */}
-      {!client.is_founding_client && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-wider text-stone-500 mb-1">Founding Client Program</p>
-              <p className="text-sm text-stone-600">Not enrolled</p>
-            </div>
-            <MarkAsFoundingClientButton clientId={id} />
-          </div>
-        </div>
-      )}
-
       {/* Package */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
@@ -391,7 +283,6 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <PackageManager
           clientId={client.id}
           currentPackage={client.package}
-          isFoundingClient={client.is_founding_client ?? false}
           subscriptionLinkSendAt={client.subscription_link_send_at ?? null}
           subscriptionLinkSentAt={client.subscription_link_sent_at ?? null}
         />

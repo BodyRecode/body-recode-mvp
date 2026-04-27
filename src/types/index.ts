@@ -6,7 +6,7 @@ export type AdaptationArc = 'short' | 'mid' | 'long'
 
 export type ExposureReadiness = 'Green' | 'Amber' | 'Red' | 'Unknown'
 
-export type LeadSource = 'quiz' | 'instagram' | 'facebook' | 'google' | 'gym_floor' | 'referral' | 'direct' | 'other' | 'founder_program'
+export type LeadSource = 'quiz' | 'instagram' | 'facebook' | 'google' | 'gym_floor' | 'referral' | 'direct' | 'other'
 
 export type LeadStatus =
   | 'new_check_in'
@@ -36,7 +36,6 @@ export interface Lead {
   notes?: string
   converted_to_client_id?: string
   converted_at?: string
-  founder_application_status?: 'under_review' | 'accepted' | 'declined' | 'waitlisted'
   active?: boolean
   scorecard_score?: number
   scorecard_body_state?: string

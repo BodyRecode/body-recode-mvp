@@ -12,14 +12,13 @@ interface ClientRow {
   active: boolean | null
   created_at: string
   onboarding_token: string | null
-  is_founding_client: boolean | null
   agreement_accepted_at: string | null
   health_declaration_submitted_at: string | null
   onboarding_reminders_sent: Record<string, string> | null
 }
 
 interface TaskState {
-  id: 'founding-agreement' | 'agreement' | 'health' | 'intake' | 'baseline'
+  id: 'agreement' | 'health' | 'intake' | 'baseline'
   title: string
   applicable: boolean
   done: boolean
@@ -90,7 +89,7 @@ export async function GET(request: NextRequest) {
 
   const { data: clients } = await admin
     .from('clients')
-    .select('id, name, email, active, created_at, onboarding_token, is_founding_client, agreement_accepted_at, health_declaration_submitted_at, onboarding_reminders_sent, intake_invitations(status, completed_at), baselines(id), founding_client_agreements(status, signed_at)')
+    .select('id, name, email, active, created_at, onboarding_token, agreement_accepted_at, health_declaration_submitted_at, onboarding_reminders_sent, intake_invitations(status, completed_at), baselines(id)')
     .eq('active', true)
 
   if (!clients || clients.length === 0) {
@@ -104,31 +103,20 @@ export async function GET(request: NextRequest) {
     const client = raw as unknown as ClientRow & {
       intake_invitations: { status: string; completed_at: string | null }[]
       baselines: { id: string }[]
-      founding_client_agreements: { status: string; signed_at: string | null }[]
     }
 
     if (!client.email || !client.onboarding_token) continue
 
     const intakeCompleted = (client.intake_invitations || []).find(i => i.status === 'complete')
     const baselineDone = (client.baselines || []).length > 0
-    const foundingSigned = (client.founding_client_agreements || []).find(a => a.status === 'signed')
 
     const tasks: TaskState[] = [
-      {
-        id: 'founding-agreement',
-        title: 'Founding Client Agreement',
-        applicable: !!client.is_founding_client,
-        done: !!foundingSigned,
-        availableAt: client.created_at,
-      },
       {
         id: 'agreement',
         title: 'Coaching Agreement',
         applicable: true,
         done: !!client.agreement_accepted_at,
-        availableAt: client.is_founding_client
-          ? (foundingSigned?.signed_at ?? null)
-          : client.created_at,
+        availableAt: client.created_at,
       },
       {
         id: 'health',

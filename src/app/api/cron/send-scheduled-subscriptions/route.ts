@@ -9,12 +9,6 @@ const PACKAGES: Record<string, { label: string; price: string; stripe: string }>
   '3x': { label: 'In-Person 3x', price: '$409/week', stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
 }
 
-const FOUNDING_PACKAGES: Record<string, { label: string; price: string; stripe: string }> = {
-  online: { label: 'Online Coaching (Founding Client)', price: '$74.50/week', stripe: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04' },
-  '2x': { label: 'In-Person 2x (Founding Client)', price: '$149.50/week', stripe: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05' },
-  '3x': { label: 'In-Person 3x (Founding Client)', price: '$204.50/week', stripe: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06' },
-}
-
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -27,7 +21,7 @@ export async function GET(request: NextRequest) {
   // Find clients with a scheduled send date that has passed and hasn't been sent yet
   const { data: clients } = await admin
     .from('clients')
-    .select('id, name, email, package, is_founding_client')
+    .select('id, name, email, package')
     .lte('subscription_link_send_at', new Date().toISOString())
     .is('subscription_link_sent_at', null)
     .not('subscription_link_send_at', 'is', null)
@@ -40,8 +34,7 @@ export async function GET(request: NextRequest) {
   for (const client of clients) {
     if (!client.email || !client.package) continue
 
-    const packageMap = client.is_founding_client ? FOUNDING_PACKAGES : PACKAGES
-    const pkg = packageMap[client.package]
+    const pkg = PACKAGES[client.package]
     if (!pkg) continue
 
     const firstName = client.name.split(' ')[0]

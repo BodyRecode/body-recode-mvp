@@ -21,16 +21,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .ilike('email', user.email!)
     .single()
 
-  const { data: foundingAgreement } = client?.is_founding_client
-    ? await admin
-        .from('founding_client_agreements')
-        .select('token, status')
-        .eq('client_id', client.id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle()
-    : { data: null }
-
   const { data: activeNutritionPlan } = await admin
     .from('nutrition_plans')
     .select('id, plan_name, last_review_at')
@@ -85,25 +75,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const clearanceReceived = !!client.medical_clearance_received_at
   const clearanceBlocking = clearanceRequired && !clearanceReceived
 
-  const foundingAgreementDone = foundingAgreement?.status === 'signed'
-
   const tasks = [
-    ...(client.is_founding_client && foundingAgreement ? [{
-      id: 'founding-agreement',
-      title: 'Founding Client Agreement',
-      description: 'Review and sign your case study agreement.',
-      done: foundingAgreementDone,
-      href: `/founding-client-agreement/${foundingAgreement.token}`,
-      available: true,
-      notice: null,
-    }] : []),
     {
       id: 'agreement',
       title: 'Coaching Agreement',
       description: 'Review and sign your coaching agreement before we begin.',
       done: agreementDone,
       href: `/portal/${token}/agreement`,
-      available: client.is_founding_client ? foundingAgreementDone : true,
+      available: true,
       notice: null,
     },
     {

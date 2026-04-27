@@ -10,7 +10,6 @@ import NoShowSequenceButton from '@/components/noshow-sequence-button'
 import Zoom1DeclinedButton from '@/components/zoom1-declined-button'
 import CommencementFeeButton from '@/components/commencement-fee-button'
 import DownsellButton from '@/components/downsell-button'
-import FounderApplicationStatus from '@/components/founder-application-status'
 import BookingActionButtons from '@/components/booking-action-buttons'
 import Link from 'next/link'
 
@@ -239,22 +238,6 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           </p>
         </div>
       </div>
-
-      {/* Founder Application */}
-      {lead.source === 'founder_program' && (
-        <div className="bg-teal-950/30 border border-teal-800/40 rounded-xl p-6 mb-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-sm font-semibold text-teal-300 uppercase tracking-wider mb-1">Founder Client Application</h2>
-              <p className="text-stone-400 text-sm">Review the check-in answers below and update the application status.</p>
-            </div>
-            <FounderApplicationStatus
-              leadId={lead.id}
-              current={lead.founder_application_status ?? null}
-            />
-          </div>
-        </div>
-      )}
 
       {/* Contact */}
       <EditContact leadId={lead.id} name={lead.name} email={lead.email} phone={lead.phone} />

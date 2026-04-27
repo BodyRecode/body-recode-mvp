@@ -39,8 +39,6 @@ export default async function LeadsPage({
   const counts: Record<string, number> = {}
   allLeads.forEach(l => { counts[l.status] = (counts[l.status] || 0) + 1 })
 
-  const founderCount = allLeads.filter(l => l.source === 'founder_program').length
-
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
@@ -70,20 +68,6 @@ export default async function LeadsPage({
             + Add Lead
           </Link>
         </div>
-      </div>
-
-      {/* Source filter */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        <Link
-          href={params.source === 'founder_program' ? '/dashboard/leads' : '/dashboard/leads?source=founder_program'}
-          className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
-            params.source === 'founder_program'
-              ? 'bg-teal-950 text-teal-300 border-teal-800'
-              : 'border-stone-700 text-stone-400 hover:border-stone-500'
-          }`}
-        >
-          Founder Program{founderCount > 0 ? ` (${founderCount})` : ''}
-        </Link>
       </div>
 
       {/* Status filter */}
@@ -142,14 +126,6 @@ export default async function LeadsPage({
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                {lead.source === 'founder_program' && (
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-full border bg-teal-950 text-teal-300 border-teal-800 uppercase tracking-wider">
-                    {lead.founder_application_status === 'accepted' ? 'Accepted'
-                      : lead.founder_application_status === 'declined' ? 'Declined'
-                      : lead.founder_application_status === 'waitlisted' ? 'Waitlisted'
-                      : 'Founder'}
-                  </span>
-                )}
                 <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${getLeadStatusColour(lead.status)}`}>
                   {getLeadStatusLabel(lead.status)}
                 </span>

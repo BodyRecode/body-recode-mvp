@@ -6,7 +6,6 @@ type Category = 'flows' | 'coaching' | 'business' | 'content' | 'challenge' | 'b
 
 const SECTIONS = [
   { id: 'operator-flow',         title: 'Operator Flow',         colour: 'violet' as const, category: 'flows' as Category },
-  { id: 'operator-flow-founder', title: 'Founder Operator Flow', colour: 'violet' as const, category: 'flows' as Category },
   { id: 'lead-pipeline',    title: '1. Lead Pipeline',       colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'zoom-1',           title: '2. Zoom Companion',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'coaching-entry',   title: '3. Coaching Entry',      colour: 'teal' as const, category: 'coaching' as Category },
@@ -25,7 +24,6 @@ const SECTIONS = [
   { id: 'admin-actions',    title: '17. Admin Actions',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'system-health',    title: '17b. System Health',     colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'onboarding-nudges',title: '17c. Onboarding Nudges', colour: 'teal' as const, category: 'coaching' as Category },
-  { id: 'founding-client',  title: '18. Founding Client',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'stripe-payments',  title: '19. Stripe Payments',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'training-program', title: '20. Training Program',   colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'macro-arc',        title: '21. Macro Training Arc', colour: 'teal' as const, category: 'coaching' as Category },
@@ -210,8 +208,7 @@ export default function HelpPage() {
                   <ChecklistItem text="First half: run through Opening Frame, Scorecard Reflection, Context Exploration, Pattern Interpretation (stages 1-4)" />
                   <ChecklistItem text="Second half: run through Hot Spot Framing, Emotional Acknowledgement, Pricing, and Decision (stages 5-8)" />
                   <ChecklistItem text="Select the decision path at Stage 8 (A — Declined, B — Needs Time, C — Proceeding)" />
-                  <ChecklistItem text="Path C only: select the pricing pathway (Full Rate, Founding Client, or Online)" />
-                  <ChecklistItem text="Founding Client only: click Send Case Study Agreement before sending the commencement fee link" />
+                  <ChecklistItem text="Path C only: select the pricing pathway (Full Rate or Online)" />
                   <ChecklistItem text="Mark Call Complete in the companion notes panel" />
                 </div>
               </div>
@@ -265,90 +262,6 @@ export default function HelpPage() {
                   <ChecklistItem text="Review the full draft on the Nutrition Plan page — meal structure, macros, training day adjustments, execution rules, and progression notes" />
                   <ChecklistItem text="Click Approve Plan to promote the draft to active" />
                   <ChecklistItem text="Each week, the client submits their nutrition review via the portal — you see the results as a read-only feed on the Nutrition Plan page. No form to fill in on your side." />
-                </div>
-              </div>
-
-            </div>
-          </Section>
-
-          {/* Founder Operator Flow */}
-          <Section id="operator-flow-founder" title="Founder Operator Flow" colour="violet">
-            <p>Three paths lead to a Founder Client conversion. Follow the track that matches how the person entered.</p>
-
-            <div className="space-y-6 mt-2">
-
-              <div>
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track D — Direct Entry (Bypassed Funnel)</p>
-                <p className="text-sm text-stone-400 mb-3">Client signed directly without going through the scorecard or Zoom calls. They were created manually and an intake link was sent to them.</p>
-                <div className="space-y-2">
-                  <ChecklistItem text="Open the client profile" />
-                  <ChecklistItem text="In the Founding Client Program card, click Mark as Founding Client — this sets Manual Override as the entry type" />
-                  <ChecklistItem text="Confirm when prompted — the card will update immediately to show the program as Active" />
-                  <ChecklistItem text="Click Send Info Package — this emails the client a full breakdown of what the Founder Client Program is, what participation involves, the fee structure, and the two consent tiers. Replaces the explanation that normally happens in the second half of the Zoom call." />
-                  <ChecklistItem text="Click Send Case Study Agreement — the client receives a signing link via email. They select their consent tier and sign online. Once signed, their consent tier appears on the profile and the button shows Agreement Signed." />
-                  <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage" />
-                  <ChecklistItem text="Set the Coaching Package to the correct Founding Client tier" />
-                  <ChecklistItem text="Send the subscription link to the client — or use Schedule Send to queue it for a specific date" />
-                  <ChecklistItem text="Wait for Subscription Active badge, then set the Coaching Start Date" />
-                </div>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track A — Online Application</p>
-                <p className="text-sm text-stone-400 mb-3">Person finds the landing page, reads the offer, and applies directly. No Zoom calls are required before entry.</p>
-                <div className="space-y-2">
-                  <ChecklistItem text="Applicant visits performance.bodyrecode.au/founder and clicks Apply" />
-                  <ChecklistItem text="They complete the Performance Check-In quiz (source is tagged as Founder Program automatically)" />
-                  <ChecklistItem text="A lead is created in the dashboard — check the Leads page, filter by Founder Program to find them" />
-                  <ChecklistItem text="Open the lead detail page — the Founder Client Application section appears at the top" />
-                  <ChecklistItem text="Review their check-in answers to assess fit" />
-                  <ChecklistItem text="Set the application status: Under Review (default), Accepted, Declined, or Waitlisted" />
-                  <ChecklistItem text="If accepted: send them a personal message to confirm and arrange a brief onboarding call if needed" />
-                  <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage — do this when you accept, not when they apply" />
-                  <ChecklistItem text="From the lead detail page, send the Case Study Agreement link — it must be signed before the commencement fee is sent" />
-                  <ChecklistItem text="Once signed, send the commencement fee link ($240) from Coaching Entry" />
-                  <ChecklistItem text="Client profile, welcome email, and intake link are created automatically on payment — no action needed" />
-                  <ChecklistItem text="Send the client their portal link via the Send to Client button on the client profile" />
-                  <ChecklistItem text="Client completes onboarding: Coaching Agreement, Health Declaration, Foundational Intake, Baseline Documentation" />
-                  <ChecklistItem text="CFFS generates automatically once intake is submitted — review it on the client profile" />
-                  <ChecklistItem text="Set the Coaching Package to Online (Founding Client) — $74.50/week" />
-                  <ChecklistItem text="Send the subscription link to the client" />
-                  <ChecklistItem text="Wait for Subscription Active badge, then set the Coaching Start Date (3–7 days out)" />
-                </div>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track B — Zoom Conversion (Price Objection)</p>
-                <p className="text-sm text-stone-400 mb-3">Lead is already in the pipeline. They book the Zoom call, and object to the full rate at Stage 7.</p>
-                <div className="space-y-2">
-                  <ChecklistItem text="Run the Zoom through all 8 stages" />
-                  <ChecklistItem text="At Stage 7, lead objects to price — use the Objection-Triggered script in the Zoom companion" />
-                  <ChecklistItem text="Step 1: reflect the objection back. Step 2: reframe the investment. Step 3: introduce the Founding Client program if they still need it." />
-                  <ChecklistItem text="If they accept: select Path C and choose Founding Client (Objection-Triggered) in the decision panel" />
-                  <ChecklistItem text="Click Send Case Study Agreement — agreement must be signed before the commencement fee is sent" />
-                  <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage" />
-                  <ChecklistItem text="Once signed, send the commencement fee link ($240) from Coaching Entry" />
-                  <ChecklistItem text="Client profile, welcome email, and intake link are created automatically on payment — no action needed" />
-                  <ChecklistItem text="Send the client their portal link via the Send to Client button on the client profile" />
-                  <ChecklistItem text="Client completes onboarding: Coaching Agreement, Health Declaration, Foundational Intake, Baseline Documentation" />
-                  <ChecklistItem text="CFFS generates automatically once intake is submitted — review it on the client profile" />
-                  <ChecklistItem text="Set the Coaching Package to the correct Founding Client tier (Online, 2x, or 3x)" />
-                  <ChecklistItem text="Send the subscription link to the client" />
-                  <ChecklistItem text="Wait for Subscription Active badge, then set the Coaching Start Date (3–7 days out)" />
-                </div>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Track C — Zoom Conversion (Manual Override)</p>
-                <p className="text-sm text-stone-400 mb-3">Lead is a strong fit and you proactively offer the program before any price objection. Use the qualification checklist in the Zoom companion before this track — all four criteria must be met.</p>
-                <div className="space-y-2">
-                  <ChecklistItem text="Confirm all four qualification criteria are met before making the offer (check the Manual Override tab in the Zoom companion)" />
-                  <ChecklistItem text="Run the Zoom as normal — introduce the offer at Stage 7 before presenting full-rate pricing" />
-                  <ChecklistItem text="If they accept: select Path C and choose Founding Client (Manual Override) in the decision panel" />
-                  <ChecklistItem text="Click Send Case Study Agreement — must be signed before the commencement fee is sent" />
-                  <ChecklistItem text="Decrement the Positions Available counter on the Dashboard homepage" />
-                  <ChecklistItem text="Once signed, send the commencement fee link ($240) from Coaching Entry" />
-                  <ChecklistItem text="Follow the same steps as Track B from coaching entry onward" />
                 </div>
               </div>
 
@@ -472,7 +385,7 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li><strong>Path A — Declined</strong> — Updates lead status to Closed Declined.</li>
               <li><strong>Path B — Needs Time</strong> — Updates lead status to Zoom Completed.</li>
-              <li><strong>Path C — Proceeding</strong> — A pathway selector appears. Choose from Full Rate, Founding Client (Objection Triggered), Founding Client (Manual Override), or Online. For Founding Client pathways a <strong>Send Case Study Agreement</strong> button appears — click it to email the signing link to the lead. The commencement fee is sent only after the agreement is signed.</li>
+              <li><strong>Path C — Proceeding</strong> — A pathway selector appears. Choose Full Rate or Online. The commencement fee link can be sent immediately.</li>
             </ul>
             <Training title="What the Zoom call is for">
               <p><strong>The first half is not a sales call.</strong> There is nothing to sell yet. The only job in the first half is to make the lead feel correctly understood and to build the interpretation that their scorecard and report are based on something real, not generic.</p>
@@ -483,10 +396,10 @@ export default function HelpPage() {
             <Training title="The pricing half">
               <p><strong>Stage 5 — Hot Spot Framing.</strong> This is the bridge between &quot;I understand my situation&quot; and &quot;I understand why I need help with it.&quot; Name the specific thing that surfaced in the first half. This is not a generic pitch — it should sound like you were listening. If you named it right, they&apos;ll feel seen. That feeling is what makes pricing land differently. Do not move to pricing until this is done.</p>
               <p className="mt-2"><strong>Stage 7 — Pricing.</strong> Lead with in-person 2x ($299/week). Present it as information, not a pitch. After you say the number: pause. Let it land. Do not fill the silence. The silence is not awkward — it is the lead processing.</p>
-              <p className="mt-2"><strong>Stage 8 — Decision.</strong> Three possible paths. Know which one you&apos;re in before you respond. Path A closes cleanly — don&apos;t re-pitch. Path B diagnoses what&apos;s sitting with them and sets a specific follow-up date. Path C selects the pathway and sends the agreement if Founding Client.</p>
+              <p className="mt-2"><strong>Stage 8 — Decision.</strong> Three possible paths. Know which one you&apos;re in before you respond. Path A closes cleanly — don&apos;t re-pitch. Path B diagnoses what&apos;s sitting with them and sets a specific follow-up date. Path C selects the pathway and sends the commencement fee link.</p>
             </Training>
 
-            <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead objects to the price. The 3x in-person package ($409/week) is not presented on the Zoom — it is coach-assessed and offered during weekly check-ins once coaching is underway. Founding client rates: 2x $149.50/week, 3x $204.50/week, online $74.50/week.</Note>
+            <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead objects to the price. The 3x in-person package ($409/week) is not presented on the Zoom — it is coach-assessed and offered during weekly check-ins once coaching is underway.</Note>
           </Section>
 
           {/* Section 3 */}
@@ -812,9 +725,6 @@ export default function HelpPage() {
 
             <p className="font-semibold text-white mt-4">Coaching Start Reminder</p>
             <p>Sent automatically the day before a client&apos;s coaching start date. Triggered by a Vercel cron job that runs daily.</p>
-
-            <p className="font-semibold text-white mt-4">Founding Client Case Study Agreement</p>
-            <p>Sent manually from the Zoom companion when a Founding Client pathway is selected at Stage 8. Click <strong>Send Case Study Agreement</strong> — the system creates the agreement record, generates a unique signing token, and emails the lead a link to review and sign online. The agreement must be signed before the commencement fee is sent.</p>
           </Section>
 
           <Section id="communications" title="16. Communications Timeline" colour="teal">
@@ -845,9 +755,6 @@ export default function HelpPage() {
 
           <Section id="admin-actions" title="17. Admin Actions" colour="teal">
             <p>The following actions are available on the <strong>Dashboard Homepage</strong>.</p>
-
-            <p className="font-semibold text-white mt-2">Positions Available</p>
-            <p>The <strong>Positions Available</strong> card shows the current number of Founder Client Program spots shown on performance.bodyrecode.au/founder. Use the + and - buttons to adjust the count. The page updates within 60 seconds. Decrement this when you accept an applicant, not when they apply.</p>
 
             <p className="font-semibold text-white mt-2">Admin Actions panel</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
@@ -931,7 +838,6 @@ export default function HelpPage() {
 
             <p className="font-semibold text-white mt-3">Tasks tracked</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li>Founding Client Agreement (founding clients only)</li>
               <li>Coaching Agreement</li>
               <li>Health Declaration</li>
               <li>Foundational Intake</li>
@@ -950,74 +856,6 @@ export default function HelpPage() {
             <p>Every reminder sent is recorded in <code>clients.onboarding_reminders_sent</code> as a JSON map of <code>task_threshold → timestamp</code>. To check if a client has been reminded, look at the client record in Supabase. The cron skips any client where the relevant reminder has already been logged.</p>
 
             <Note>If you want to re-send a reminder for testing, clear the relevant key from the client&apos;s <code>onboarding_reminders_sent</code> JSON in Supabase — the cron will pick them up on the next run.</Note>
-          </Section>
-
-          <Section id="founding-client" title="18. Founding Client Program" colour="teal">
-            <p>The Founding Client Program is a limited, selective participation model. 20 positions are available for online clients. The fee is reduced by 50% in exchange for the client&apos;s documented participation in a structured case study process.</p>
-            <p>This is a structured trade, not a discount. The client provides participation of commercial and developmental value to the system. The adjusted fee reflects that exchange.</p>
-
-            <Training title="Why framing matters here">
-              <p>The language matters. Calling it a discount frames it as you giving something up. Calling it a trade frames it as an exchange — and it is an exchange. The client gets a reduced fee. You get documented case study data, which has real commercial value for the system&apos;s long-term development.</p>
-              <p className="mt-2">Presenting it as a trade also screens out the wrong leads. Someone who responds well to the framing understands the nature of the program. Someone who immediately treats it as a price negotiation tool is likely the wrong fit for it. The positions are finite — use them with intent.</p>
-            </Training>
-
-            <p className="font-semibold text-white mt-2">Three entry paths</p>
-            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Online ad application</strong> — The primary path for online clients. The landing page at performance.bodyrecode.au/founder directs applicants through the Body State Scorecard as step one of the application. Applications come in tagged as source: Founder Program in the leads list. Review the scorecard results and set the application status on the lead detail page.</li>
-              <li><strong>Objection-triggered on Zoom</strong> — The full rate offer is made first. If the lead objects to price, the Founding Client offer is introduced as the second offer. Use the Objection-Triggered tab in the Zoom companion.</li>
-              <li><strong>Manual override on Zoom</strong> — For a high-suitability lead, you may proactively offer the program before any objection arises. Use the Manual Override tab. All four criteria on the checklist must be true before using it.</li>
-            </ul>
-
-            <p className="font-semibold text-white mt-2">Managing online applications</p>
-            <p>Applications from the landing page arrive in your leads list with a teal <strong>Founder</strong> badge. Use the <strong>Founder Program</strong> filter at the top of the leads list to view them in isolation.</p>
-            <p className="mt-2">On each founder lead&apos;s detail page, a <strong>Founder Client Application</strong> section appears at the top. Review their scorecard results below it and update the application status using the status button:</p>
-            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
-              <li><strong>Under Review</strong> — Default state. Application received, not yet assessed.</li>
-              <li><strong>Accepted</strong> — Position offered. Proceed to booking and coaching entry.</li>
-              <li><strong>Declined</strong> — Not a fit for this cohort.</li>
-              <li><strong>Waitlisted</strong> — Suitable but no positions available right now.</li>
-            </ul>
-            <p className="mt-2">When you accept an applicant, decrement the positions counter on the Dashboard Homepage using the Positions Available control. The landing page updates within 60 seconds.</p>
-
-            <Training title="Objection-triggered vs manual override — know the difference">
-              <p><strong>Objection-triggered</strong> is the standard Zoom pathway. Full rate goes first, always. If the lead objects to price, you handle the objection first, and if they still need something to move, the Founding Client program becomes the second offer. The script walks you through the steps — use it.</p>
-              <p className="mt-2"><strong>Manual override</strong> is not for when you want to help someone who cannot afford the full rate. That is a misuse of the program and a misuse of a position. Manual override is for a lead where the case study potential is genuinely high. All four criteria on the checklist must be true before you use it.</p>
-            </Training>
-
-            <p className="font-semibold text-white mt-2">Agreement before commencement</p>
-            <p>The Founding Client Case Study Agreement must be signed before the commencement fee is sent. This is non-negotiable. As of April 2026 the agreement lives in the client portal — no email is sent. The sequence is:</p>
-            <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
-              <li>Lead accepts the Founding Client offer (at the Zoom call, or via the online application path).</li>
-              <li>On the client profile, toggle <strong>Foundation Client</strong> on. This auto-creates the agreement record and surfaces it as the first task in their portal.</li>
-              <li>Tell the client to log in to their portal — the &quot;Founding Client Agreement&quot; will be the first card under Getting Started, gating the Coaching Agreement until signed.</li>
-              <li>Client reviews and signs the agreement in-portal, selecting their consent tier.</li>
-              <li>Once signed, the dashboard badge flips to <strong>Case Study Agreement signed</strong>. Generate and send the commencement fee from the lead detail page.</li>
-            </ol>
-            <Note>The old &quot;Send Case Study Agreement&quot; email button has been removed. The portal handles delivery. If a client doesn&apos;t see the task, confirm <strong>Foundation Client</strong> is toggled on in their profile.</Note>
-
-            <p className="font-semibold text-white mt-2">Consent tiers</p>
-            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Tier 1 — Anonymised</strong> — Case study may be published with identity removed.</li>
-              <li><strong>Tier 2 — Named</strong> — Case study may be published with identity, subject to client review of identifying material.</li>
-            </ul>
-
-            <Training title="Why consent tiers exist">
-              <p>The consent tier is selected by the client at signing — not decided by you. Tier 2 gives you more flexibility to publish and use the case study publicly. Tier 1 still produces valuable documented data, but you cannot attach a name or identifying details to it.</p>
-              <p className="mt-2">The tier selection is captured at signing and shown permanently on the client&apos;s profile. It determines what you can do with the case study when the time comes. Do not assume — check the profile.</p>
-            </Training>
-
-            <p className="font-semibold text-white mt-2">Founding Client badge and section on client profile</p>
-            <p>Once the agreement is signed and the client converts, their profile shows a <strong>Founding Client</strong> badge in the header and a dedicated section with entry type, consent tier, program start date, and 12-week threshold date.</p>
-            <p>At the bottom of that section is an <strong>Update status</strong> link. Click it to reveal four status buttons — Active, 12 Weeks Complete, Extended, Withdrawn. The current status is highlighted. Click any other to update it immediately.</p>
-
-            <p className="font-semibold text-white mt-2">Founding client rates</p>
-            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li>Online — $74.50/week (standard $149)</li>
-              <li>In-Person 2x — $149.50/week (standard $299)</li>
-              <li>In-Person 3x — $204.50/week (standard $409)</li>
-            </ul>
-
-            <Note>Minimum participation is 12 weeks. Status states: Active, 12 Weeks Complete, Extended, Withdrawn. Status is managed manually as the case study progresses.</Note>
           </Section>
 
           <Section id="stripe-payments" title="19. Stripe Payments" colour="teal">
@@ -1352,9 +1190,6 @@ export default function HelpPage() {
               { label: 'Online Coaching', desc: '$149/week recurring' },
               { label: 'In-Person 2x', desc: '$299/week recurring — lead with this on the Zoom' },
               { label: 'In-Person 3x', desc: '$409/week recurring — coach-assessed only, offer during check-ins' },
-              { label: 'Online Coaching (Founding Client)', desc: '$74.50/week — half rate for case study clients' },
-              { label: 'In-Person 2x (Founding Client)', desc: '$149.50/week' },
-              { label: 'In-Person 3x (Founding Client)', desc: '$204.50/week' },
             ]} />
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Automatic Recording</p>
@@ -1491,7 +1326,7 @@ export default function HelpPage() {
             </ul>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">CTAs</p>
-            <p>A CTA is the desired action at the end of the content. Add CTAs as plain text. Examples: &ldquo;Take the free check-in&rdquo;, &ldquo;Apply for a Founder position&rdquo;, &ldquo;Link in bio&rdquo;.</p>
+            <p>A CTA is the desired action at the end of the content. Add CTAs as plain text. Examples: &ldquo;Take the free check-in&rdquo;, &ldquo;Book a Zoom call&rdquo;, &ldquo;Link in bio&rdquo;.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Generate</p>
             <p>The Generate tab has two modes:</p>
@@ -1605,7 +1440,7 @@ export default function HelpPage() {
             <p>The Card Library tab shows all 16 pre-made card templates as a preview grid. Click <strong>Download PNG</strong> on any card to save it as a 1080×1080 PNG ready to post. On mobile, open the dashboard in your browser, go to Business → Content Engine → Card Library, and download directly to your camera roll.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Card Styles</p>
-            <p>The graphic API generates 1080×1080 PNG cards. All styles use the brand dark background (<code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">#0c0a09</code>) except the Founder card which uses deep teal. A full visual reference with example images is saved at <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">Dropbox/01_BODY_RECODE/07_MARKETING/04_CONTENT_LIBRARY/card-designs/card-designs-reference.html</code>.</p>
+            <p>The graphic API generates 1080×1080 PNG cards. All styles use the brand dark background (<code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">#0c0a09</code>). A full visual reference with example images is saved at <code className="text-teal-400 text-xs bg-stone-800 px-1 py-0.5 rounded">Dropbox/01_BODY_RECODE/07_MARKETING/04_CONTENT_LIBRARY/card-designs/card-designs-reference.html</code>.</p>
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mt-3 mb-1">Text Cards</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li><strong>logo-only</strong> — Centred teal logo on dark background. Brand arrival post.</li>
@@ -1634,7 +1469,6 @@ export default function HelpPage() {
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mt-3 mb-1">Conversion Cards</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li><strong>scorecard-cta</strong> — Sunday diagnostic post. Shows all 3 body states condensed with colour-coded strips, teal pill CTA, "Free · 2 min · Link in bio".</li>
-              <li><strong>founder</strong> — Deep teal background. "Founding Client Program · 20 spots only" badge, trade framing, application language. For founder offer posts only.</li>
             </ul>
           </Section>
 
@@ -1642,14 +1476,13 @@ export default function HelpPage() {
             <p>The Strategy Hub is the central reference for the Body Recode marketing and acquisition strategy. Navigate to <strong>Business → Strategy</strong> to access it.</p>
             <p className="mt-2">It has 8 tabs:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
-              <li><strong>Overview</strong> — Mission, funnel flow (Content → Scorecard → Check-In → Consultation → Client), primary platform, posting frequency, ad budget, two parallel objectives (ongoing acquisition + Founding Client Program), and platforms to ignore for now.</li>
+              <li><strong>Overview</strong> — Mission, funnel flow (Content → Scorecard → Check-In → Consultation → Client), primary platform, posting frequency, and ad budget.</li>
               <li><strong>Positioning</strong> — Target audience (primary: women 35–50, secondary: men 35–55), the core problem solved, tone of voice principles, the 5 topics you own, what every post must make people feel, messaging framework (Insight → Signal → Shift → Solution → Momentum), the 3 public-facing body states, and the Never Say/Do list.</li>
               <li><strong>Content System</strong> — Weekly posting cadence (Mon authority / Wed pattern recognition / Fri coach perspective / Sun diagnostic), detailed post ideas and format guidance for each type, and content production guide with effort ratings and tools.</li>
-              <li><strong>Pre-Launch</strong> — The 5 pre-launch posts (Brand Arrival, Who You Are, The Problem, Three Body States, Scorecard CTA) with graphic specs, full captions, and posting order. Post these before any ads or founder offer goes live.</li>
+              <li><strong>Pre-Launch</strong> — The 5 pre-launch posts (Brand Arrival, Who You Are, The Problem, Three Body States, Scorecard CTA) with graphic specs, full captions, and posting order. Post these before any ads go live.</li>
               <li><strong>Paid Ads</strong> — Ad strategy, budget, targeting, and 3 full reel scripts (angle, hook, duration, full spoken script) ready to film.</li>
-              <li><strong>Founder Program</strong> — Full strategy for filling the 20 Founding Client Program spots, content angles, application language, and the trade framing (never "discount").</li>
               <li><strong>Launch Timeline</strong> — Phase-by-phase launch plan from pre-launch through to scale.</li>
-              <li><strong>Content Calendar</strong> — Monthly calendar for scheduling posts. Click any day to see scheduled posts or add a new one. Colour-coded by content type (authority, pattern, coach, diagnostic, founder, ad, pre-launch) and by campaign phase (pre-launch, founder, ads, optimise, scale).</li>
+              <li><strong>Content Calendar</strong> — Monthly calendar for scheduling posts. Click any day to see scheduled posts or add a new one. Colour-coded by content type (authority, pattern, coach, diagnostic, ad, pre-launch) and by campaign phase (pre-launch, ads, optimise, scale).</li>
             </ul>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Content Calendar</p>
@@ -1779,9 +1612,7 @@ export default function HelpPage() {
               <li>Profile complete and aligned to this spec</li>
               <li>Warm outreach — 20–30 personal messages to existing contacts</li>
               <li>Daily engagement — 20–30 min per day in target hashtags</li>
-              <li>Reach 50 followers before posting any founder content</li>
               <li>5 pre-launch posts in order</li>
-              <li>Founder program series (7 posts, 2–3 days apart)</li>
               <li>Regular 4x/week cadence begins</li>
             </ol>
             <Note>Full cold start strategy and post copy are in the Marketing folder: 07_MARKETING/03_ORGANIC_INSTAGRAM/</Note>
@@ -1810,7 +1641,7 @@ export default function HelpPage() {
             <p>Switch between 7, 30, and 90 day views using the buttons at the top right. All four stats and the daily chart update to match the selected window.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Live Pages</p>
-            <p>Quick links to open any page on performance.bodyrecode.au directly from the dashboard - Homepage, How It Works, Online Coaching, Brisbane, Body State Scorecard, Founder Program.</p>
+            <p>Quick links to open any page on performance.bodyrecode.au directly from the dashboard - Homepage, How It Works, Online Coaching, Brisbane, Body State Scorecard.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Data Accuracy Note</p>
             <p>Vercel Analytics was enabled in April 2026 - no historical traffic data exists before that date. In the early weeks, visitor counts are low and conversion rate will appear inflated or misleading because scorecard submissions (from the leads DB) span a longer window than visitor data. A warning banner appears automatically while visitor data is sparse. Numbers will stabilise and become meaningful once 4-6 weeks of tracking data has accumulated.</p>

@@ -90,36 +90,7 @@ That's $149 a week. Same commencement fee to get started.
 If the in-person format was part of the hesitation, that might be worth considering."
 
 ↳ If online works — Stage 8, Path C (Online).
-↳ If price still holds — move to Step 3.`,
-    },
-    {
-      label: 'Step 3 — Introduce Founding Client',
-      content: `"There's one other option I want to put in front of you — I'll explain it properly so you can decide if it's relevant.
-
-I have a small number of founding client positions open. These are clients whose full coaching journey gets documented — intake, interpretation, weekly data, outcomes. It's how I formally validate the system across real cases.
-
-In exchange for that, fees are adjusted by 50% for the full engagement. So $149.50 a week instead of $299 for two sessions, or $204.50 instead of $409 for three.
-
-That's not a discount. It's a trade — your participation has genuine value to the system, and the fee reflects that.
-
-If that changes things for you, I can walk you through what's involved."`,
-    },
-    {
-      label: 'Step 4 — If they want the detail',
-      content: `COMMITMENT
-"Minimum 12 weeks. That's what makes it a valid case study. Most founding clients stay 6 to 12 months, but we don't ask for that upfront."
-
-WHAT GETS DOCUMENTED
-"Everything that's already happening — your intake, CFFS interpretation, weekly check-ins, synthesis outputs. Nothing extra from you. You just show up and do the work."
-
-CONSENT
-"You sign an agreement before we start. Two options — anonymised, where your identity is removed from anything published, or named, where you review anything before it goes public. Internal use for system development is covered either way."
-
-NOT REDUCED COACHING
-"Same sessions, same interpretation, same system. The only thing that changes is the fee."
-
-NEXT STEP
-"If you want to go ahead — I send the case study agreement first. Once that's signed, I send the commencement fee link. That's it."`,
+↳ If price still holds — return to standard decision flow. Non-enrolment is acceptable.`,
     },
   ],
   followups: [
@@ -128,67 +99,6 @@ NEXT STEP
   ],
   exitPath: 'If declined → move to Online Coaching tab. Or return to standard decision flow.',
   boundary: 'Do not introduce before objection. Do not introduce if objection resolves. Do not re-offer after decline. Do not frame as discount. Do not escalate tone.',
-}
-
-const MANUAL_OVERRIDE = {
-  toneIndicator: 'Tone: Selective inclusion',
-  when: 'Use only when: no price objection is present, client is aligned to proceed, client is identified as a strong case study candidate.',
-  insertPoint: 'After pricing is explained — before objection handling begins.',
-  qualificationChecklist: [
-    'Complex or high-value interpretive pattern',
-    'Strong compliance signal — clear communication, engaged throughout the call',
-    'Long-term candidate — likely to sustain 6–12 month engagement',
-    'You actively want this client in the founding cohort',
-  ],
-  qualificationRule: 'All four must be true. If any are unclear — do not use manual override.',
-  script: `"Before we lock anything in, I want to raise something with you that sits slightly outside the standard coaching structure.
-
-I'm currently in the process of formally validating the Body Recode™ interpretive system across real client engagements.
-
-To do that properly, I need a small number of clients whose entire coaching journey is documented — from the initial CFFS interpretation through to the weekly CFWS cycles and outcomes over time. That documentation becomes part of the evidence base for the system.
-
-I have five positions available for this. I call them founding client positions.
-
-Based on everything I know about your situation — your check-in data, what came up in our conversation today — I think you would be a strong fit for one of these positions.
-
-Here is what it means practically.
-
-You would enter a formal case study agreement before we commence. That agreement covers exactly what gets documented, how it is used, whether you are named or anonymised, and your right to review anything before it is published externally. Nothing happens with your data without your knowledge and sign-off.
-
-In exchange for that participation, your coaching fees are adjusted by 50% for the full duration of your engagement with me. Not just for the first 12 weeks — for as long as you remain in the program and the agreement is active.
-
-At your package level that means $149.50/week instead of $299/week (2x), or $204.50/week instead of $409/week (3x).
-
-This is not a promotional offer. I am not discounting my services. I am making a direct trade — your documented participation has genuine value to the development of this system, and the adjustment reflects that value.
-
-There is no pressure to say yes. If you would prefer to commence as a standard client at full rate that option is absolutely available. But I wanted to offer you this first because I think your case would contribute something meaningful.
-
-Do you want me to walk you through what the agreement looks like before you decide?"`,
-  followups: [
-    '"Do you want me to walk you through the agreement before you decide?"',
-    '"There are five positions in total. I\'m selective about who I offer this to."',
-    '"The coaching structure and standards are identical to a full-rate engagement. Nothing is reduced except the fee."',
-  ],
-  walkThrough: `MINIMUM COMMITMENT
-"The minimum is 12 weeks. That's the threshold for a valid case study — it needs enough time to see a real pattern. Most founding clients stay 6 to 12 months, but we don't ask for that upfront."
-
-WHAT GETS DOCUMENTED
-"Everything that's already part of the coaching process — your intake, your CFFS interpretation, your weekly check-ins, the synthesis outputs. Nothing extra is required from you. You just participate fully."
-
-CONSENT — TWO OPTIONS
-"Before we start, you sign an agreement that covers how your data can be used externally. You choose one of two tiers:
-- Tier 1: Anonymised — your case study can be published but your identity is removed.
-- Tier 2: Named — your name can be used, but you review anything before it goes public.
-Either way, internal use for system development is part of the agreement regardless of tier."
-
-WHAT IT IS NOT
-"This is not reduced coaching. The sessions, the interpretation, the system — all identical to a full-rate engagement. The only thing that changes is the fee."
-
-SEQUENCE
-"If you want to proceed, I send you the case study agreement to sign before anything else. Once that's signed, I send the commencement fee link. Coaching begins from there."`,
-  ifAskedWhyYou: `"A few reasons. Your check-in data showed a pattern that's genuinely useful to document — it's not a simple case. What came up in our conversation today tells me there's something worth tracking properly over time. And from the way you've engaged, I think you're someone who will participate consistently. That's what makes a case study valid. I'm not offering this to everyone — I'm offering it because I think your case will contribute something real to the system."`,
-  exitPath: 'If declined — return to standard decision flow. Offer full rate or online pathway. Do not re-offer.',
-  boundary: 'Do not use if a price objection is present. Do not introduce reactively. Do not frame as incentive or cheaper coaching. Do not increase energy or urgency.',
 }
 
 const ONLINE_SCRIPT = `"There is also an online option - and I want to be clear, this is not a lesser version of the system.
@@ -415,7 +325,7 @@ There's also a one-time commencement fee of $240 to get started. That covers the
         '💬 STAKES: "The cost of staying where you are is higher than the cost of this. You\'ve already proven that by being here."',
         '↳ TRANSITION → When they respond, move to Stage 8.',
       ] as string[],
-      tips: 'Present pricing as information. Do not use urgency, scarcity, or pressure. After presenting pricing — pause and allow response. Do not jump to founding client. Evaluate based on response.',
+      tips: 'Present pricing as information. Do not use urgency, scarcity, or pressure. After presenting pricing — pause and allow response. Evaluate based on response.',
       boundary: 'Full rate is always Offer 1. No discount framing. No urgency. Founding client is Offer 2 only — via objection-triggered or manual override.',
       half: 2,
     },
@@ -478,21 +388,8 @@ If not, the report still stands on its own."`,
             { label: 'Online — $149/week', url: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02' },
           ],
         },
-        {
-          label: 'PATH C — Proceeding (Founding Client)',
-          colour: 'violet' as const,
-          lines: [
-            'Send case study agreement first. Once signed, send commencement fee. Once paid, send subscription at founding rate. Confirm Deliberate Start Window. Send intake link.',
-          ],
-          subItems: [],
-          links: [
-            { label: 'Commencement Fee — $240', url: 'https://buy.stripe.com/6oUbJ392W3L02sn00T5ZC01' },
-            { label: 'In-Person 2x Founding — $149.50/week', url: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00' },
-            { label: 'In-Person 3x Founding — $204.50/week', url: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
-          ],
-        },
       ],
-      tips: 'Founding client: agreement must be signed before any payment link is sent. Standard and online: commencement fee first, then subscription.',
+      tips: 'Standard and online: commencement fee first, then subscription.',
       boundary: 'No urgency manipulation. No discount framing. Non-enrolment is an acceptable outcome.',
       half: 2,
     },
@@ -501,7 +398,7 @@ If not, the report still stands on its own."`,
 
 // ─── Component ──────────────────────────────────────────────────────────────
 
-type PathwayType = 'full_rate' | 'founding_client_objection_triggered' | 'founding_client_manual_override' | 'online'
+type PathwayType = 'full_rate' | 'online'
 
 interface ZoomCompanionProps {
   leadName: string
@@ -520,11 +417,9 @@ export default function ZoomCompanion({
   const [running, setRunning] = useState(false)
   const [notes, setNotes] = useState(initialNotes)
   const [saving, setSaving] = useState(false)
-  const [activeTab, setActiveTab] = useState<'prompts' | 'objection_triggered' | 'manual_override' | 'online' | 'signals' | 'language'>('prompts')
+  const [activeTab, setActiveTab] = useState<'prompts' | 'objection_triggered' | 'online' | 'signals' | 'language'>('prompts')
   const [decisionPath, setDecisionPath] = useState<'A' | 'B' | 'C' | null>(null)
   const [pathwayType, setPathwayType] = useState<PathwayType | null>(null)
-  const [sendingAgreement, setSendingAgreement] = useState(false)
-  const [agreementSent, setAgreementSent] = useState(false)
   const [declinedSent, setDeclinedSent] = useState(false)
   const [sendingDeclined, setSendingDeclined] = useState(false)
   const [callComplete, setCallComplete] = useState(false)
@@ -586,28 +481,12 @@ export default function ZoomCompanion({
   }
 
   const markPathway = async (type: PathwayType) => {
-    const triggerMap: Record<PathwayType, string | null> = {
-      full_rate: null,
-      founding_client_objection_triggered: 'objection_triggered',
-      founding_client_manual_override: 'manual_override',
-      online: null,
-    }
     await fetch(`/api/leads/${leadId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        zoom2_pathway_type: type,
-        zoom2_trigger_type: triggerMap[type],
-      }),
+      body: JSON.stringify({ zoom2_pathway_type: type }),
     })
     setPathwayType(type)
-  }
-
-  const sendAgreement = async () => {
-    setSendingAgreement(true)
-    await fetch(`/api/leads/${leadId}/send-agreement`, { method: 'POST' })
-    setSendingAgreement(false)
-    setAgreementSent(true)
   }
 
   const markCallComplete = async () => {
@@ -632,7 +511,6 @@ export default function ZoomCompanion({
   const scoreDisplay = totalScore ? ` — ${totalScore}/15` : ''
   const isFirstHalf = stage.half === 1
   const isDecisionStage = currentStage === 7
-  const isFoundingClientPathway = pathwayType === 'founding_client_objection_triggered' || pathwayType === 'founding_client_manual_override'
 
   const sectionColour = (score: number) =>
     score === 1 ? 'text-red-400 border-red-400/30 bg-red-400/10'
@@ -691,13 +569,12 @@ export default function ZoomCompanion({
   }
 
   const firstHalfTabs = ['prompts', 'signals', 'language'] as const
-  const secondHalfTabs = ['prompts', 'objection_triggered', 'manual_override', 'online', 'signals'] as const
+  const secondHalfTabs = ['prompts', 'objection_triggered', 'online', 'signals'] as const
   const tabLabels: Record<string, string> = {
     prompts: isFirstHalf ? 'Prompts' : 'Script & Prompts',
     signals: 'Scorecard Breakdown',
     language: 'Interpretation Language',
-    objection_triggered: 'Objection-Triggered',
-    manual_override: 'Manual Override',
+    objection_triggered: 'Objection Handling',
     online: 'Online Coaching',
   }
   const tabColours: Record<string, string> = {
@@ -705,7 +582,6 @@ export default function ZoomCompanion({
     signals: 'border-[#10E1C2] text-[#10E1C2]',
     language: 'border-[#10E1C2] text-[#10E1C2]',
     objection_triggered: 'border-amber-400 text-amber-400',
-    manual_override: 'border-violet-400 text-violet-400',
     online: 'border-amber-400 text-amber-400',
   }
   const currentTabs = isFirstHalf ? firstHalfTabs : secondHalfTabs
@@ -1036,46 +912,6 @@ export default function ZoomCompanion({
                 </div>
               )}
 
-              {/* Manual Override tab */}
-              {activeTab === 'manual_override' && (
-                <div className="space-y-4">
-                  <div className="bg-violet-400/10 border border-violet-400/30 rounded-xl p-4">
-                    <p className="text-xs font-bold text-violet-400 uppercase tracking-wider mb-1">{MANUAL_OVERRIDE.toneIndicator}</p>
-                    <p className="text-stone-400 text-xs leading-relaxed">{MANUAL_OVERRIDE.when}</p>
-                  </div>
-                  <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
-                    <p className="text-xs font-bold text-violet-400 uppercase tracking-wider mb-3">Qualification checklist — all four must be true</p>
-                    <div className="space-y-2">
-                      {MANUAL_OVERRIDE.qualificationChecklist.map((item, i) => (
-                        <div key={i} className="flex items-start gap-3">
-                          <div className="w-5 h-5 rounded-full border border-violet-400/30 bg-violet-400/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <div className="w-1.5 h-1.5 rounded-full bg-violet-400" />
-                          </div>
-                          <p className="text-stone-300 text-sm">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <p className="text-stone-500 text-xs mt-3">{MANUAL_OVERRIDE.qualificationRule}</p>
-                  </div>
-                  <div className="bg-violet-400/5 border border-violet-400/20 rounded-xl p-5">
-                    <p className="text-xs font-bold text-violet-400 uppercase tracking-wider mb-3">Script</p>
-                    <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{MANUAL_OVERRIDE.script}</p>
-                  </div>
-                  <div className="bg-violet-400/5 border border-violet-400/20 rounded-xl p-4">
-                    <p className="text-xs font-bold text-violet-400 uppercase tracking-wider mb-2">If they want to know more</p>
-                    <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{MANUAL_OVERRIDE.walkThrough}</p>
-                  </div>
-                  <div className="bg-stone-800 border border-stone-700 rounded-xl p-4">
-                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">If asked &quot;why me?&quot;</p>
-                    <p className="text-stone-400 text-sm">{MANUAL_OVERRIDE.ifAskedWhyYou}</p>
-                  </div>
-                  <div className="bg-red-400/5 border border-red-400/20 rounded-xl p-4">
-                    <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Boundary</p>
-                    <p className="text-stone-400 text-sm leading-relaxed">{MANUAL_OVERRIDE.boundary}</p>
-                  </div>
-                </div>
-              )}
-
               {/* Online Coaching tab */}
               {activeTab === 'online' && (
                 <div className="space-y-4">
@@ -1134,38 +970,10 @@ export default function ZoomCompanion({
                       <button onClick={() => markPathway('full_rate')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20 transition-colors">
                         Full Rate
                       </button>
-                      <button onClick={() => markPathway('founding_client_objection_triggered')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 transition-colors">
-                        Founding Client — Objection Triggered
-                      </button>
-                      <button onClick={() => markPathway('founding_client_manual_override')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 hover:bg-violet-500/20 transition-colors">
-                        Founding Client — Manual Override
-                      </button>
                       <button onClick={() => markPathway('online')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-stone-700/50 border border-stone-600 text-stone-300 hover:bg-stone-700 transition-colors">
                         Online
                       </button>
                     </>
-                  ) : decisionPath === 'C' && pathwayType && isFoundingClientPathway && !agreementSent ? (
-                    <div className="space-y-2">
-                      <div className={`text-xs font-bold px-3 py-2 rounded-lg text-center ${
-                        pathwayType === 'founding_client_manual_override'
-                          ? 'bg-violet-500/10 border border-violet-500/20 text-violet-400'
-                          : 'bg-amber-500/10 border border-amber-500/20 text-amber-400'
-                      }`}>
-                        {pathwayType === 'founding_client_manual_override' ? 'Manual Override' : 'Objection Triggered'} recorded
-                      </div>
-                      <p className="text-xs text-stone-500 leading-relaxed">Send agreement before any payment link.</p>
-                      <button
-                        onClick={sendAgreement}
-                        disabled={sendingAgreement}
-                        className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20 transition-colors disabled:opacity-50"
-                      >
-                        {sendingAgreement ? 'Sending...' : 'Send Case Study Agreement'}
-                      </button>
-                    </div>
-                  ) : agreementSent ? (
-                    <div className="text-xs font-bold px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-center">
-                      Agreement sent — await signature before payment
-                    </div>
                   ) : decisionPath !== 'C' ? (
                     <div className={`text-xs font-bold px-3 py-2 rounded-lg text-center ${
                       decisionPath === 'A'

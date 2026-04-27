@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     name,
     email,
     phone: phone || null,
-    source: ['quiz', 'instagram', 'facebook', 'google', 'gym_floor', 'referral', 'direct', 'other', 'founder_program'].includes(source) ? source : 'quiz',
+    source: ['quiz', 'instagram', 'facebook', 'google', 'gym_floor', 'referral', 'direct', 'other'].includes(source) ? source : 'quiz',
     status: 'new_check_in',
     check_in_answers: answers,
     active: true,

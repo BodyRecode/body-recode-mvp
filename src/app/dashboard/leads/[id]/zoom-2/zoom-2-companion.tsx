@@ -76,7 +76,7 @@ Is that still the right way to describe it?"`,
     id: 4,
     name: 'Pricing',
     duration: '5-10 min',
-    goal: 'Present the coaching structure and packages as information, not persuasion. Full rate is always Offer 1. No mention of founding client program unless objection held or manual override selected.',
+    goal: 'Present the coaching structure and packages as information, not persuasion. Full rate is always Offer 1. Online ($149/wk) is Offer 2 only if schedule, location, or preference makes in-person unworkable.',
     script: `"Based on what you've described, it might be useful to explain how support is structured - just so you have the full picture. There's no expectation to decide today.
 
 Before I go into the numbers, I want to be clear about what Body Recode Performance Coaching actually is. This is not a standard personal training service. You're not paying for sessions. You're entering a structured coaching system that governs how your body is loaded, recovered, and interpreted across time. Most PTs don't operate at this level - and most coaching services don't either.
@@ -94,8 +94,8 @@ I guide that decision based on what your system can actually tolerate - it's not
       '↳ "Most people who continue do so because things start to make more sense — not because anything dramatic has changed."',
       '↳ TRANSITION → Pause. Let the price land. Do not fill the silence. When they respond — move to Stage 5.',
     ],
-    tips: 'Present pricing as information. Do not use urgency, scarcity, or pressure. After presenting pricing — pause and allow response. Do not jump to founding client. Evaluate based on response.',
-    boundary: 'Full rate is always Offer 1. No discount framing. No urgency. Founding client is Offer 2 only — via objection-triggered or manual override.',
+    tips: 'Present pricing as information. Do not use urgency, scarcity, or pressure. After presenting pricing — pause and allow response. Evaluate based on response.',
+    boundary: 'Full rate is always Offer 1. No discount framing. No urgency.',
   },
   {
     id: 5,
@@ -109,104 +109,18 @@ If it feels like the right fit, we can talk next steps.
 If not, the report still stands on its own."`,
     prompts: [
       'PATH A - NOT PROCEEDING: Acknowledge without persuasion. Reinforce the clarity gained. Leave the door open professionally. "That\'s completely fine. The report still stands — you now have a clearer read on what\'s actually going on. If anything changes, the door\'s open."',
-      'PATH B - NEEDS TIME: "That\'s fine — take the time you need. Before we wrap up, can I ask what\'s sitting with you? Is it the investment, whether this is the right fit, or something else?"\n↳ If it\'s the money → "Understood. If the investment is the sticking point, there is one other option I haven\'t mentioned yet. It\'s not available to everyone — do you want me to explain it?" [→ move to Founding Client if appropriate]\n↳ If it\'s whether it\'ll work → "That\'s a fair concern — especially if you\'ve tried things before. What I\'d say is the report you already have is the first output of the system working. That wasn\'t a pitch. That was the system reading your data. Whether coaching is right is a separate question — but the read is already done."\n↳ If they need permission → "Makes sense. Is there someone else who needs to be part of this decision? I\'m happy to jump on a call with both of you if that helps."\n↳ Set a specific follow-up → "When would be a good time to pick this back up? I\'d rather have a date than leave it open-ended."',
+      'PATH B - NEEDS TIME: "That\'s fine — take the time you need. Before we wrap up, can I ask what\'s sitting with you? Is it the investment, whether this is the right fit, or something else?"\n↳ If it\'s whether it\'ll work → "That\'s a fair concern — especially if you\'ve tried things before. What I\'d say is the report you already have is the first output of the system working. That wasn\'t a pitch. That was the system reading your data. Whether coaching is right is a separate question — but the read is already done."\n↳ If they need permission → "Makes sense. Is there someone else who needs to be part of this decision? I\'m happy to jump on a call with both of you if that helps."\n↳ Set a specific follow-up → "When would be a good time to pick this back up? I\'d rather have a date than leave it open-ended."',
       'PATH C - PROCEEDING (FULL RATE): Confirm the package. Send commencement fee link first ($240). Once paid, send weekly subscription link. Confirm Deliberate Start Window (3-7 days). Send intake link after fee received.',
-      'PATH C - PROCEEDING (FOUNDING CLIENT): Confirm the founding client program. Send case study agreement link first. Once signed, send commencement fee ($240). Once paid, send subscription at founding rate. Confirm Deliberate Start Window. Send intake link.',
       'PATH C - PROCEEDING (ONLINE): Send commencement fee first ($240). Once paid, send online subscription link ($149/week). Confirm Deliberate Start Window. Send intake link.',
       'COMMENCEMENT FEE - $240 (one-time): https://buy.stripe.com/6oUbJ392W3L02sn00T5ZC01',
       'ONLINE $149/week: https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02',
       'IN-PERSON 2x $299/week: https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00',
       'IN-PERSON 3x $409/week: https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03',
     ],
-    tips: 'Founding client: agreement must be signed before any payment link is sent. Standard and online: commencement fee first, then subscription.',
+    tips: 'Standard and online: commencement fee first, then subscription.',
     boundary: 'No urgency manipulation. No discount framing. Non-enrolment is an acceptable outcome.',
   },
 ]
-
-const OBJECTION_TRIGGERED = {
-  toneIndicator: 'Tone: Solution to resistance',
-  when: 'Use only when: pricing has been presented → price objection raised → objection handled → resistance remains.',
-  steps: [
-    {
-      label: 'Step 1 — Handle objection first',
-      content: `They say: "That's a lot" / "It's too expensive" / "I can't justify that"
-
-Repeat back: "So the investment feels like a stretch right now — I hear that."
-
-Response: "What I'd say is this isn't a personal training fee. You're not paying for two sessions a week. You're paying for a system that governs how your body is loaded, interpreted, and adjusted across time — and most people don't have access to that at any price.
-
-The question I'd be asking is not whether it's expensive. It's whether what you've been doing up to now has been working. Because if it has, you probably don't need this. But if it hasn't — that has a cost too, it's just not showing up as a line item."
-
-↳ Pause. Let them respond. Don't fill the silence.
-↳ If they move forward at full rate — go to Stage 5 Path C (Full Rate).
-↳ If price objection remains — introduce founding client below.`,
-    },
-    {
-      label: 'Step 2 — Introduce Founding Client (objection held)',
-      content: `"Just based on what you've said, I want to raise something that might make this more workable — but I'll explain it properly so you can decide.
-
-I'm currently running a small number of founding client positions as part of validating the Body Recode™ system.
-
-These are clients whose full journey is documented — from interpretation through to outcomes over time. It allows me to validate the system properly across real-world cases.
-
-In exchange for that participation, fees are adjusted by 50% for the duration of the engagement. So instead of [full rate], it would be [adjusted rate].
-
-This isn't a discount or a deal. It's a structured exchange — your participation has value, and the adjustment reflects that.
-
-If that feels like it changes things for you, we can walk through what it involves. If not, that's completely fine as well."`,
-    },
-  ],
-  followups: [
-    '"Do you want me to walk you through how that works?"',
-    '"Would that make this more workable for you?"',
-  ],
-  exitPath: 'If declined → move to Online Coaching tab. Or return to standard decision flow.',
-  boundary: 'Do not introduce before objection. Do not introduce if objection resolves. Do not re-offer after decline. Do not frame as discount. Do not escalate tone.',
-}
-
-const MANUAL_OVERRIDE = {
-  toneIndicator: 'Tone: Selective inclusion',
-  when: 'Use only when: no price objection is present, client is aligned to proceed, client is identified as a strong case study candidate.',
-  insertPoint: 'After pricing is explained — before objection handling begins.',
-  qualificationChecklist: [
-    'Complex or high-value interpretive pattern',
-    'Strong compliance signal — clear communication, engaged in both zooms',
-    'Long-term candidate — likely to sustain 6–12 month engagement',
-    'You actively want this client in the founding cohort',
-  ],
-  qualificationRule: 'All four must be true. If any are unclear — do not use manual override.',
-  script: `"Before we lock anything in, I want to raise something with you that sits slightly outside the standard coaching structure.
-
-I'm currently in the process of formally validating the Body Recode™ interpretive system across real client engagements.
-
-To do that properly, I need a small number of clients whose entire coaching journey is documented — from the initial CFFS interpretation through to the weekly CFWS cycles and outcomes over time. That documentation becomes part of the evidence base for the system.
-
-I have five positions available for this. I call them founding client positions.
-
-Based on everything I know about your situation — your check-in data, what came up in Zoom 1, and what we've discussed today — I think you would be a strong fit for one of these positions.
-
-Here is what it means practically.
-
-You would enter a formal case study agreement before we commence. That agreement covers exactly what gets documented, how it is used, whether you are named or anonymised, and your right to review anything before it is published externally. Nothing happens with your data without your knowledge and sign-off.
-
-In exchange for that participation, your coaching fees are adjusted by 50% for the full duration of your engagement with me. Not just for the first 12 weeks — for as long as you remain in the program and the agreement is active.
-
-At your package level that means [adjusted rate] per week instead of [full rate].
-
-This is not a promotional offer. I am not discounting my services. I am making a direct trade — your documented participation has genuine value to the development of this system, and the adjustment reflects that value.
-
-There is no pressure to say yes. If you would prefer to commence as a standard client at full rate that option is absolutely available. But I wanted to offer you this first because I think your case would contribute something meaningful.
-
-Do you want me to walk you through what the agreement looks like before you decide?"`,
-  followups: [
-    '"Do you want me to walk you through the agreement before you decide?"',
-    '"There are five positions in total. I\'m selective about who I offer this to."',
-    '"The coaching structure and standards are identical to a full-rate engagement. Nothing is reduced except the fee."',
-  ],
-  ifAskedWhyYou: 'Answer directly — based on their check-in data, patterns presented, and suitability for the validation cohort. No flattery. No exaggeration.',
-  exitPath: 'If declined — return to standard decision flow. Offer full rate or online pathway. Do not re-offer.',
-  boundary: 'Do not use if a price objection is present. Do not introduce reactively. Do not frame as incentive or cheaper coaching. Do not increase energy or urgency. Do not use both triggers in the same conversation.',
-}
 
 const ONLINE_SCRIPT = `"There is also an online option - and I want to be clear, this is not a lesser version of the system.
 
@@ -220,8 +134,8 @@ const OBJECTIONS = [
   {
     objection: '"It\'s too expensive."',
     response: `"That's a fair thing to sit with. What I'd say is the investment reflects the full system - not just the sessions. You're not paying for two hours of training per week. You're paying for ongoing interpretation, pattern tracking, and a structured process that most people don't have access to. The question is whether that's useful for where you are right now."`,
-    followup: 'If they remain hesitant on price — consider Objection-Triggered tab.',
-    dropDown: true,
+    followup: null,
+    dropDown: false,
   },
   {
     objection: '"I need to think about it."',
@@ -288,7 +202,7 @@ const SIGNAL_LABELS = {
   },
 }
 
-type PathwayType = 'full_rate' | 'founding_client_objection_triggered' | 'founding_client_manual_override' | 'online'
+type PathwayType = 'full_rate' | 'online'
 
 interface Zoom2CompanionProps {
   leadName: string
@@ -297,8 +211,6 @@ interface Zoom2CompanionProps {
   rilsLevel: SignalLevel
   leadId: string
   initialNotes: string
-  zoom2TriggerType: string | null
-  agreementStatus: 'pending' | 'signed' | null
 }
 
 export default function Zoom2Companion({
@@ -308,29 +220,15 @@ export default function Zoom2Companion({
   rilsLevel,
   leadId,
   initialNotes,
-  zoom2TriggerType,
-  agreementStatus,
 }: Zoom2CompanionProps) {
   const [currentStage, setCurrentStage] = useState(0)
   const [seconds, setSeconds] = useState(0)
   const [running, setRunning] = useState(false)
   const [notes, setNotes] = useState(initialNotes)
   const [saving, setSaving] = useState(false)
-  const [activeTab, setActiveTab] = useState<'prompts' | 'objection_triggered' | 'manual_override' | 'online' | 'signals'>('prompts')
-  const [decisionPath, setDecisionPath] = useState<'A' | 'B' | 'C' | null>(zoom2TriggerType !== undefined && zoom2TriggerType !== null ? 'C' : null)
-  const [pathwayType, setPathwayType] = useState<PathwayType | null>(() => {
-    if (!zoom2TriggerType) return null
-    const map: Record<string, PathwayType> = {
-      null: 'full_rate',
-      objection_triggered: 'founding_client_objection_triggered',
-      manual_override: 'founding_client_manual_override',
-      online: 'online',
-    }
-    return map[zoom2TriggerType] ?? null
-  })
-  const [sendingAgreement, setSendingAgreement] = useState(false)
-  const [agreementSent, setAgreementSent] = useState(agreementStatus !== null)
-  const [agreementSignedConfirmed, setAgreementSignedConfirmed] = useState(agreementStatus === 'signed')
+  const [activeTab, setActiveTab] = useState<'prompts' | 'online' | 'signals'>('prompts')
+  const [decisionPath, setDecisionPath] = useState<'A' | 'B' | 'C' | null>(null)
+  const [pathwayType, setPathwayType] = useState<PathwayType | null>(null)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const stageScrollRef = useRef<HTMLDivElement | null>(null)
 
@@ -392,28 +290,12 @@ export default function Zoom2Companion({
   }
 
   const markPathway = async (type: PathwayType) => {
-    const triggerMap: Record<PathwayType, string | null> = {
-      full_rate: null,
-      founding_client_objection_triggered: 'objection_triggered',
-      founding_client_manual_override: 'manual_override',
-      online: null,
-    }
     await fetch(`/api/leads/${leadId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        zoom2_pathway_type: type,
-        zoom2_trigger_type: triggerMap[type],
-      }),
+      body: JSON.stringify({ zoom2_pathway_type: type }),
     })
     setPathwayType(type)
-  }
-
-  const sendAgreement = async () => {
-    setSendingAgreement(true)
-    await fetch(`/api/leads/${leadId}/send-agreement`, { method: 'POST' })
-    setSendingAgreement(false)
-    setAgreementSent(true)
   }
 
   const saveNotes = async () => {
@@ -433,8 +315,6 @@ export default function Zoom2Companion({
     { key: 'rils', level: rilsLevel },
   ]
   const firstName = leadName.split(' ')[0]
-
-  const isFoundingClientPathway = pathwayType === 'founding_client_objection_triggered' || pathwayType === 'founding_client_manual_override'
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col">
@@ -525,8 +405,6 @@ export default function Zoom2Companion({
               <div className="flex gap-1 mb-5 border-b border-white/10 flex-wrap">
                 {([
                   { key: 'prompts', label: 'Script & Prompts' },
-                  { key: 'objection_triggered', label: 'Objection-Triggered', colour: 'amber' },
-                  { key: 'manual_override', label: 'Manual Override', colour: 'violet' },
                   { key: 'online', label: 'Online Coaching', colour: 'amber' },
                   { key: 'signals', label: 'Signal Reference' },
                 ] as const).map(tab => (
@@ -537,8 +415,6 @@ export default function Zoom2Companion({
                       activeTab === tab.key
                         ? ('colour' in tab && tab.colour === 'amber')
                           ? 'border-amber-400 text-amber-400'
-                          : ('colour' in tab && tab.colour === 'violet')
-                          ? 'border-violet-400 text-violet-400'
                           : 'border-[#10E1C2] text-[#10E1C2]'
                         : 'border-transparent text-stone-500 hover:text-stone-300'
                     }`}
@@ -580,90 +456,6 @@ export default function Zoom2Companion({
                       <p className="text-stone-400 text-sm leading-relaxed">{stage.boundary}</p>
                     </div>
                   )}
-                </div>
-              )}
-
-              {/* Objection-Triggered tab */}
-              {activeTab === 'objection_triggered' && (
-                <div className="space-y-4">
-                  <div className="bg-amber-400/10 border border-amber-400/30 rounded-xl p-4">
-                    <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">{OBJECTION_TRIGGERED.toneIndicator}</p>
-                    <p className="text-stone-400 text-xs leading-relaxed">{OBJECTION_TRIGGERED.when}</p>
-                  </div>
-                  {OBJECTION_TRIGGERED.steps.map((step, i) => (
-                    <div key={i} className="bg-stone-900 border border-stone-800 rounded-xl p-5 space-y-2">
-                      <p className="text-xs font-bold text-amber-400 uppercase tracking-wider">{step.label}</p>
-                      <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{step.content}</p>
-                    </div>
-                  ))}
-                  <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 space-y-2">
-                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">Follow-up prompts</p>
-                    {OBJECTION_TRIGGERED.followups.map((f, i) => (
-                      <div key={i} className="bg-stone-800 rounded-lg p-3">
-                        <p className="text-stone-300 text-sm">{f}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="bg-stone-800 border border-stone-700 rounded-xl p-4">
-                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">Exit path</p>
-                    <p className="text-stone-400 text-sm">{OBJECTION_TRIGGERED.exitPath}</p>
-                  </div>
-                  <div className="bg-red-400/5 border border-red-400/20 rounded-xl p-4">
-                    <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Boundary</p>
-                    <p className="text-stone-400 text-sm leading-relaxed">{OBJECTION_TRIGGERED.boundary}</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Manual Override tab */}
-              {activeTab === 'manual_override' && (
-                <div className="space-y-4">
-                  <div className="bg-violet-400/10 border border-violet-400/30 rounded-xl p-4">
-                    <p className="text-xs font-bold text-violet-400 uppercase tracking-wider mb-1">{MANUAL_OVERRIDE.toneIndicator}</p>
-                    <p className="text-stone-400 text-xs leading-relaxed">{MANUAL_OVERRIDE.when}</p>
-                  </div>
-                  <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
-                    <p className="text-xs font-bold text-violet-400 uppercase tracking-wider mb-3">Qualification checklist — all four must be true</p>
-                    <div className="space-y-2">
-                      {MANUAL_OVERRIDE.qualificationChecklist.map((item, i) => (
-                        <div key={i} className="flex items-start gap-3">
-                          <div className="w-5 h-5 rounded-full border border-violet-400/30 bg-violet-400/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <div className="w-1.5 h-1.5 rounded-full bg-violet-400" />
-                          </div>
-                          <p className="text-stone-300 text-sm">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <p className="text-stone-500 text-xs mt-3">{MANUAL_OVERRIDE.qualificationRule}</p>
-                  </div>
-                  <div className="bg-stone-800 border border-stone-700 rounded-xl p-3">
-                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">Insert point</p>
-                    <p className="text-stone-300 text-sm">{MANUAL_OVERRIDE.insertPoint}</p>
-                  </div>
-                  <div className="bg-violet-400/5 border border-violet-400/20 rounded-xl p-5">
-                    <p className="text-xs font-bold text-violet-400 uppercase tracking-wider mb-3">Script</p>
-                    <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{MANUAL_OVERRIDE.script}</p>
-                  </div>
-                  <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 space-y-2">
-                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">Follow-up prompts</p>
-                    {MANUAL_OVERRIDE.followups.map((f, i) => (
-                      <div key={i} className="bg-stone-800 rounded-lg p-3">
-                        <p className="text-stone-300 text-sm">{f}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="bg-stone-800 border border-stone-700 rounded-xl p-4">
-                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">If asked &quot;why me?&quot;</p>
-                    <p className="text-stone-400 text-sm">{MANUAL_OVERRIDE.ifAskedWhyYou}</p>
-                  </div>
-                  <div className="bg-stone-800 border border-stone-700 rounded-xl p-4">
-                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-1">Exit path</p>
-                    <p className="text-stone-400 text-sm">{MANUAL_OVERRIDE.exitPath}</p>
-                  </div>
-                  <div className="bg-red-400/5 border border-red-400/20 rounded-xl p-4">
-                    <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Boundary</p>
-                    <p className="text-stone-400 text-sm leading-relaxed">{MANUAL_OVERRIDE.boundary}</p>
-                  </div>
                 </div>
               )}
 
@@ -724,9 +516,6 @@ export default function Zoom2Companion({
                       </div>
                     )
                   })}
-                  <div className="mt-2 bg-stone-900/50 border border-stone-800 rounded-xl p-4">
-                    <p className="text-xs text-stone-500 leading-relaxed">For objection handling, use the <button onClick={() => setActiveTab('objection_triggered')} className="text-amber-400 font-semibold hover:text-amber-300 transition-colors">Objection-Triggered tab</button>.</p>
-                  </div>
                 </div>
               )}
             </div>
@@ -783,48 +572,10 @@ export default function Zoom2Companion({
                       <button onClick={() => markPathway('full_rate')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20 transition-colors">
                         Full Rate
                       </button>
-                      <button onClick={() => markPathway('founding_client_objection_triggered')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 transition-colors">
-                        Founding Client — Objection Triggered
-                      </button>
-                      <button onClick={() => markPathway('founding_client_manual_override')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 hover:bg-violet-500/20 transition-colors">
-                        Founding Client — Manual Override
-                      </button>
                       <button onClick={() => markPathway('online')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-stone-700/50 border border-stone-600 text-stone-300 hover:bg-stone-700 transition-colors">
                         Online
                       </button>
                     </>
-                  ) : decisionPath === 'C' && pathwayType && isFoundingClientPathway && !agreementSent ? (
-                    <div className="space-y-2">
-                      <div className={`text-xs font-bold px-3 py-2 rounded-lg text-center ${
-                        pathwayType === 'founding_client_manual_override'
-                          ? 'bg-violet-500/10 border border-violet-500/20 text-violet-400'
-                          : 'bg-amber-500/10 border border-amber-500/20 text-amber-400'
-                      }`}>
-                        {pathwayType === 'founding_client_manual_override' ? 'Manual Override' : 'Objection Triggered'} recorded
-                      </div>
-                      <p className="text-xs text-stone-500 leading-relaxed">Send agreement before any payment link.</p>
-                      <button
-                        onClick={sendAgreement}
-                        disabled={sendingAgreement}
-                        className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20 transition-colors disabled:opacity-50"
-                      >
-                        {sendingAgreement ? 'Sending...' : 'Send Case Study Agreement'}
-                      </button>
-                    </div>
-                  ) : agreementSent && !agreementSignedConfirmed ? (
-                    <div className="space-y-2">
-                      <div className="text-xs font-bold px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-center">
-                        Agreement sent. Await signature before payment.
-                      </div>
-                      <button
-                        onClick={() => setAgreementSignedConfirmed(true)}
-                        className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20 transition-colors"
-                      >
-                        Agreement signed. Send commencement fee.
-                      </button>
-                    </div>
-                  ) : agreementSent && agreementSignedConfirmed ? (
-                    <CommencementFeeButton leadId={leadId} />
                   ) : decisionPath !== 'C' ? (
                     <div className={`text-xs font-bold px-3 py-2 rounded-lg text-center ${
                       decisionPath === 'A'
