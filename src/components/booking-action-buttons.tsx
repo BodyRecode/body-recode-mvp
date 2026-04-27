@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-type Step = 'idle' | 'picking' | 'loading-slots' | 'confirming' | 'booking' | 'done' | 'error'
+type Step = 'idle' | 'picking' | 'loading-slots' | 'confirming' | 'custom' | 'booking' | 'done' | 'error'
 
 function groupByDay(slots: string[]): Record<string, string[]> {
   const map: Record<string, string[]> = {}
@@ -45,6 +45,8 @@ export default function BookingActionButtons({
   const [step, setStep] = useState<Step>('idle')
   const [slots, setSlots] = useState<string[]>([])
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
+  const [customDate, setCustomDate] = useState('')
+  const [customTime, setCustomTime] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
 
   const [linkState, setLinkState] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle')
@@ -74,6 +76,32 @@ export default function BookingActionButtons({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: leadName, email: leadEmail, slot: selectedSlot }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setErrorMsg(data.error ?? 'Booking failed.')
+        setStep('error')
+        return
+      }
+      setStep('done')
+      router.refresh()
+    } catch {
+      setErrorMsg('Something went wrong.')
+      setStep('error')
+    }
+  }
+
+  async function confirmCustomBooking() {
+    if (!customDate || !customTime || !leadName || !leadEmail) return
+    // Build ISO from Brisbane local datetime — Brisbane is UTC+10 year-round (no DST)
+    const slotISO = new Date(`${customDate}T${customTime}:00+10:00`).toISOString()
+    setStep('booking')
+    setErrorMsg('')
+    try {
+      const res = await fetch('/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: leadName, email: leadEmail, slot: slotISO }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -166,7 +194,7 @@ export default function BookingActionButtons({
             <button onClick={() => setStep('idle')} className="text-xs text-stone-600 hover:text-stone-400 transition-colors">Cancel</button>
           </div>
           {days.length === 0 ? (
-            <p className="text-xs text-stone-500">No available slots in the next 14 days. Check your availability settings.</p>
+            <p className="text-xs text-stone-500">No available slots in the next 14 days. Use Custom time below or check your availability settings.</p>
           ) : (
             <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
               {days.map(day => (
@@ -187,6 +215,46 @@ export default function BookingActionButtons({
               ))}
             </div>
           )}
+          <div className="mt-3 pt-3 border-t border-stone-800">
+            <button
+              onClick={() => setStep('custom')}
+              className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium"
+            >
+              + Pick a custom time (outside published availability)
+            </button>
+          </div>
+        </div>
+      )}
+
+      {step === 'custom' && (
+        <div className="rounded-lg border border-stone-700 bg-stone-950 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider">Custom time</p>
+            <button onClick={() => setStep('picking')} className="text-xs text-stone-600 hover:text-stone-400 transition-colors">Back</button>
+          </div>
+          <p className="text-xs text-stone-500 mb-3">Brisbane time. This bypasses your published availability — use when {leadName.split(' ')[0]} needs a slot you don&apos;t normally offer.</p>
+          <div className="space-y-2 mb-3">
+            <input
+              type="date"
+              value={customDate}
+              onChange={e => setCustomDate(e.target.value)}
+              className="w-full bg-stone-900 border border-stone-700 rounded-md px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500 transition-colors [color-scheme:dark]"
+            />
+            <input
+              type="time"
+              value={customTime}
+              onChange={e => setCustomTime(e.target.value)}
+              step={900}
+              className="w-full bg-stone-900 border border-stone-700 rounded-md px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500 transition-colors [color-scheme:dark]"
+            />
+          </div>
+          <button
+            onClick={confirmCustomBooking}
+            disabled={!customDate || !customTime}
+            className="w-full px-4 py-2.5 rounded-lg bg-teal-500 hover:bg-teal-400 text-black text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Book {leadName.split(' ')[0]}
+          </button>
         </div>
       )}
 
