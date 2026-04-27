@@ -29,8 +29,10 @@ export default function KadePage() {
             className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-sky-500/40 hover:bg-sky-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-sky-400 transition-colors">Studio of Ten</p>
-              <p className="text-xs text-stone-500 mt-0.5">Capped 10-client build studio. Coming soon.</p>
+              <p className="text-sm font-semibold text-white group-hover:text-sky-400 transition-colors">
+                Studio of Ten <span className="text-sky-400 font-bold">- COMING SOON!</span>
+              </p>
+              <p className="text-xs text-stone-500 mt-0.5">Capped 10-client build studio for solo business operators.</p>
             </div>
             <span className="text-stone-600 group-hover:text-sky-400 transition-colors text-lg">→</span>
           </a>
