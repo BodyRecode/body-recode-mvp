@@ -360,46 +360,64 @@ export default function HelpPage() {
           {/* Section 2 */}
           <Section id="zoom-1" title="2. Zoom - Call Companion" colour="teal">
             <p>Open the <strong>Call Companion</strong> from the lead detail page before the Zoom call. It opens in a new tab so you can run it alongside the call.</p>
-            <p>The companion has 8 stages split across two halves:</p>
+            <p>The companion has 9 stages split across two halves:</p>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mt-3 mb-1">First half — consultation</p>
             <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
-              <li><strong>Opening Frame</strong> — Set context, explain the purpose of the call.</li>
-              <li><strong>Scorecard Reflection</strong> — Walk through the lead&apos;s scorecard results and body state.</li>
-              <li><strong>Context Exploration</strong> — Explore SLS, RPS, and RILS signal areas using structured prompts.</li>
-              <li><strong>Pattern Interpretation</strong> — Name the dominant pattern using signal-specific language.</li>
+              <li><strong>Opening Frame</strong> — Set context, establish this is not a sales call.</li>
+              <li><strong>Scorecard Reflection</strong> — Walk the lead through their actual results. Their score, body state, section breakdown with the description text matching what they selected, plus your interpretation under each. Their reaction comes first.</li>
+              <li><strong>Context Exploration</strong> — Explore each signal area (Energy, Sleep, Stress Load, Training Response, Fat Loss Response) using structured prompts.</li>
+              <li><strong>Pattern Interpretation</strong> — Name the dominant pattern using body-state-specific language.</li>
+            </ol>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mt-3 mb-1">Second half — bridge → system → price → decision</p>
+            <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm" start={5}>
               <li><strong>Hot Spot Framing</strong> — Name the specific point where effort and response stopped aligning.</li>
               <li><strong>Emotional Acknowledgement</strong> — Normalise confusion and confidence erosion.</li>
-              <li><strong>Pricing</strong> — Present the coaching structure and packages as information, not persuasion.</li>
-              <li><strong>Decision</strong> — Identify the path and close cleanly.</li>
+              <li><strong>How The System Works</strong> — Walk them through the 4 stages of the Body Recode™ system (Intake → CFFS → Execution → Continuous Loop). Mirrors performance.bodyrecode.au/how-it-works. They need to see what they&apos;re paying for before pricing.</li>
+              <li><strong>Pricing</strong> — Present the itemised breakdown and packages as information.</li>
+              <li><strong>Decision</strong> — Path A/B/C and close cleanly.</li>
             </ol>
-            <p>The first four stages are the consultation half. The last four are the pricing and decision half. The companion nav shows &quot;First Half&quot; and &quot;Second Half&quot; labels to keep you oriented.</p>
-            <p>The notes panel on the right contains two persistent actions available at any stage:</p>
+            <p>The companion nav shows &quot;First Half&quot; and &quot;Second Half&quot; labels to keep you oriented.</p>
+
+            <p className="font-semibold text-white mt-3">Lead-specific Stage 2</p>
+            <p>Stage 2 is fully populated with the lead&apos;s actual scorecard data — their score, body state, and per-section breakdown including the exact description text they selected (e.g. for Energy 1/3 they read &quot;Tired most of the day. Relying on caffeine. Crashes after lunch or training.&quot;). When you reference what they said, you&apos;re literally pointing at it on screen.</p>
+
+            <p className="font-semibold text-white mt-3">Coach Drawer</p>
+            <p>The top bar has a <strong>Coach Drawer</strong> button. Open it any time during the call to access:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Mark Call Complete</strong> — updates lead status to Zoom Completed. Available at any stage.</li>
-              <li><strong>Readiness Check</strong> — A (ready), B (hesitant), C (not right fit). Use it to anchor your read before Stage 8.</li>
+              <li><strong>Objection Handling</strong> — Two-step script when a price objection holds.</li>
+              <li><strong>Online</strong> — Pitch script and package details for the online option.</li>
+              <li><strong>Language</strong> — Body-state-specific pattern and interpretation language.</li>
             </ul>
-            <p>After the call, switch to <strong>Post-Call</strong> view, paste the Zoom transcript, and generate an AI summary. Click <strong>Save to lead notes</strong> to persist it to the lead record — it won&apos;t survive a page refresh otherwise.</p>
-            <p>At the bottom of the companion, <strong>Send declined follow-up</strong> fires two things simultaneously: the 3-email re-engagement sequence and the $97 self-guided program offer email. Both are automatic — no further action required.</p>
-            <Note>Scripts and prompts are personalised to each lead&apos;s signal levels (SLS, RPS, RILS). Stage 3 prompts are grouped by category (Training, Recovery, Consistency, Pressure) with sub-questions indented below each.</Note>
-            <p>The companion tabs change based on which half you are in. In the first half: Prompts, Signals, Language. In the second half: Prompts, Objection-Triggered, Manual Override, Online, Signals.</p>
-            <p className="mt-1">At Stage 8, three decision path buttons appear in the notes panel:</p>
+            <p>The drawer overlays the main view so you don&apos;t lose your place in the stage flow. Close it when you&apos;re done.</p>
+
+            <p className="font-semibold text-white mt-3">Notes panel actions</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Path A — Declined</strong> — Updates lead status to Closed Declined.</li>
-              <li><strong>Path B — Needs Time</strong> — Updates lead status to Zoom Completed.</li>
-              <li><strong>Path C — Proceeding</strong> — A pathway selector appears. Choose Full Rate or Online. The commencement fee link can be sent immediately.</li>
+              <li><strong>Live Notes</strong> — Type observations as the call unfolds. Click <strong>Save</strong> to persist.</li>
+              <li><strong>Mark Call Complete</strong> — Updates lead status to Zoom Completed. Available at any stage.</li>
+              <li><strong>Send declined follow-up</strong> — Fires the 3-email re-engagement sequence and the $97 downsell offer.</li>
             </ul>
+
+            <p className="mt-3">At Stage 9, three decision path buttons appear:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Path A — Declined</strong> — Updates status to Closed Declined.</li>
+              <li><strong>Path B — Needs Time</strong> — Updates status to Zoom Completed.</li>
+              <li><strong>Path C — Proceeding</strong> — Pathway selector (Full Rate or Online), then the commencement fee link can be sent immediately.</li>
+            </ul>
+
             <Training title="What the Zoom call is for">
-              <p><strong>The first half is not a sales call.</strong> There is nothing to sell yet. The only job in the first half is to make the lead feel correctly understood and to build the interpretation that their scorecard and report are based on something real, not generic.</p>
-              <p className="mt-2">If a lead doesn&apos;t trust the scorecard, price becomes the only thing they can evaluate. If they do trust it, they are evaluating whether this is the right intervention — which is a completely different conversation.</p>
-              <p className="mt-2">The signal exploration in Stage 3 gives you the language for the Hot Spot Framing in Stage 5. The hot spot you name should come directly from what surfaced in the context exploration. Keep your notes panel updated — those notes are what you&apos;ll reference when you pivot to pricing.</p>
+              <p><strong>The first half is not a sales call.</strong> The only job in the first half is to make the lead feel correctly understood — that their scorecard reflects something real, not a generic template.</p>
+              <p className="mt-2">If a lead doesn&apos;t trust the scorecard, price becomes the only thing they can evaluate. If they do trust it, they&apos;re evaluating whether this is the right intervention — a different conversation.</p>
+              <p className="mt-2">Stage 2 (Scorecard Reflection) is now the heaviest first-half stage by design. The data is right there — point at it, let them respond, build context from what surfaces.</p>
             </Training>
 
-            <Training title="The pricing half">
-              <p><strong>Stage 5 — Hot Spot Framing.</strong> This is the bridge between &quot;I understand my situation&quot; and &quot;I understand why I need help with it.&quot; Name the specific thing that surfaced in the first half. This is not a generic pitch — it should sound like you were listening. If you named it right, they&apos;ll feel seen. That feeling is what makes pricing land differently. Do not move to pricing until this is done.</p>
-              <p className="mt-2"><strong>Stage 7 — Pricing.</strong> Lead with in-person 2x ($299/week). Present it as information, not a pitch. After you say the number: pause. Let it land. Do not fill the silence. The silence is not awkward — it is the lead processing.</p>
-              <p className="mt-2"><strong>Stage 8 — Decision.</strong> Three possible paths. Know which one you&apos;re in before you respond. Path A closes cleanly — don&apos;t re-pitch. Path B diagnoses what&apos;s sitting with them and sets a specific follow-up date. Path C selects the pathway and sends the commencement fee link.</p>
+            <Training title="The second half flow">
+              <p><strong>Stage 5 — Hot Spot Framing.</strong> Bridge from &quot;I understand my situation&quot; to &quot;I understand why I need help with it.&quot; Name the specific thing that surfaced in the first half. If you named it right, they&apos;ll feel seen. That feeling is what makes the rest land differently.</p>
+              <p className="mt-2"><strong>Stage 7 — How The System Works.</strong> This is the new bridge between feeling understood and being asked for money. Walk them through the four cards in order. Don&apos;t improvise — the cards have the language. End with: &quot;That&apos;s the whole system. Continuous loop, governed by data, not guesswork.&quot;</p>
+              <p className="mt-2"><strong>Stage 8 — Pricing.</strong> They&apos;ve just seen the system. Now show the itemised breakdown panel ($297 + $200 + $150 + …) before stating the package price. The price for everything together is $299/week. Pause after stating it. The silence is not awkward — it&apos;s the lead processing.</p>
+              <p className="mt-2"><strong>Stage 9 — Decision.</strong> Three paths. Know which one you&apos;re in before you respond. Path A closes cleanly — don&apos;t re-pitch.</p>
             </Training>
 
-            <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead objects to the price. The 3x in-person package ($409/week) is not presented on the Zoom — it is coach-assessed and offered during weekly check-ins once coaching is underway.</Note>
+            <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead can&apos;t do in-person. The 3x in-person package ($409/week) is coach-assessed only and not presented on the Zoom unless capacity allows.</Note>
           </Section>
 
           {/* Section 3 */}
