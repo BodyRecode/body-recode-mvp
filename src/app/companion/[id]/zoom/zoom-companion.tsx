@@ -156,12 +156,17 @@ const PRICING_BREAKDOWN = [
 ] as const
 
 const PACKAGES = [
-  { tier: 'In-Person 2x', price: '$299/week', desc: 'Two coached sessions per week. The default starting structure.', stripe: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00' },
-  { tier: 'In-Person 3x', price: '$409/week', desc: 'Three coached sessions per week. Coach-assessed only — offered when capacity allows.', stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
-  { tier: 'Online', price: '$149/week', desc: 'Same system, same interpretation, weekly check-ins and direct access — no in-person sessions.', stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02' },
+  { tier: 'In-Person 2x', price: '$299/week', founding: '$149.50/week', desc: 'Two coached sessions per week. The default starting structure.', stripe: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00', stripeFounding: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05' },
+  { tier: 'In-Person 3x', price: '$409/week', founding: '$204.50/week', desc: 'Three coached sessions per week. Coach-assessed only — offered when capacity allows.', stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03', stripeFounding: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06' },
+  { tier: 'Online', price: '$149/week', founding: '$74.50/week', desc: 'Same system, same interpretation, weekly check-ins and direct access — no in-person sessions.', stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02', stripeFounding: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04' },
 ] as const
 
 const COMMENCEMENT_FEE = '$240'
+
+const FOUNDING_OFFER = {
+  headline: 'Founding Client Offer · First 20 clients · 50% off',
+  blurb: 'Half rate for the duration of their engagement. No agreement, no extra requirement — same coaching, half the fee. Mention only after the standard pricing has landed, or when relevant to the conversation.',
+}
 
 // ─── Coach drawer content ──────────────────────────────────────────────────
 
@@ -444,7 +449,11 @@ The full thing together is $299 a week. Two sessions per week. That's where most
 
 Three sessions is available where the schedule and your capacity allow — $409. I'll guide that based on what your body can actually handle.
 
-There's also a one-off $240 to get started — covers the setup before coaching begins."`,
+There's also a one-off $240 to get started — covers the setup before coaching begins.
+
+— and one more thing —
+
+I'm running a founding client offer for the first 20 clients. Half rate for the duration of your engagement with me. So instead of $299 a week it's $149.50. Online drops to $74.50, three-session in-person to $204.50. Same coaching, same depth — just half the fee. Once 20 spots are filled it closes."`,
       prompts: [
         '↳ PAUSE after stating the price. Let it land. Do not fill the silence.',
         '↳ TRANSITION → When they respond, move to Stage 9.',
@@ -922,7 +931,10 @@ export default function ZoomCompanion({
                       <div key={pkg.tier} className="bg-stone-900 border border-stone-800 rounded-xl p-5">
                         <div className="flex items-baseline justify-between mb-1">
                           <p className="text-sm font-bold text-white">{pkg.tier}</p>
-                          <p className="text-base font-bold text-[#10E1C2]">{pkg.price}</p>
+                          <div className="text-right">
+                            <p className="text-base font-bold text-[#10E1C2]">{pkg.price}</p>
+                            <p className="text-[11px] text-stone-500">Founding: <span className="text-[#10E1C2]/80 font-semibold">{pkg.founding}</span></p>
+                          </div>
                         </div>
                         <p className="text-xs text-stone-400 leading-relaxed">{pkg.desc}</p>
                       </div>
@@ -932,6 +944,11 @@ export default function ZoomCompanion({
                   <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 flex items-center justify-between">
                     <p className="text-sm text-stone-300">One-time commencement fee</p>
                     <p className="text-base font-bold text-white tabular-nums">{COMMENCEMENT_FEE}</p>
+                  </div>
+
+                  <div className="border border-[#10E1C2]/30 bg-[#10E1C2]/5 rounded-xl p-4">
+                    <p className="text-[11px] font-bold text-[#10E1C2] uppercase tracking-widest mb-1">{FOUNDING_OFFER.headline}</p>
+                    <p className="text-stone-300 text-sm leading-relaxed">{FOUNDING_OFFER.blurb}</p>
                   </div>
                 </div>
               )}
