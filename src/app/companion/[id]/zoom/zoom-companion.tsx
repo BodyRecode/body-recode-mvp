@@ -146,13 +146,13 @@ const HOW_IT_WORKS_STAGES = [
 
 // ─── Pricing & Packages ────────────────────────────────────────────────────
 
-const PRICING_BREAKDOWN = [
-  { label: 'CFFS diagnostic & body state interpretation', value: '$297' },
-  { label: 'Training program written for your state', value: '$200' },
-  { label: 'Nutrition protocol', value: '$150' },
-  { label: 'Weekly CFWS interpretation', value: '$150 / week' },
-  { label: 'Direct access between sessions', value: '$100 / week' },
-  { label: 'In-person sessions (2/wk)', value: '$120 each' },
+const WHATS_INCLUDED = [
+  'Foundational intake and CFFS — your biological read',
+  'Training program written from your data, not a template',
+  'Nutrition structure built around your profile',
+  'Weekly check-in and CFWS — your weekly read on how your body\'s responding',
+  'Direct access between sessions',
+  'Two coached sessions per week (in-person packages)',
 ] as const
 
 const PACKAGES = [
@@ -439,13 +439,9 @@ Not because you're doing anything wrong — but because you can't see what your 
       goal: 'Present the packages as information, not persuasion. Lead with In-Person 2x.',
       script: `"Now you've seen what's involved. Here's what it costs.
 
-Before I give you the number, let me show you what each piece is worth on its own — so the number makes sense.
+Here's what's included: the foundational intake and CFFS, your training program, nutrition structure, weekly check-in and CFWS read, direct access between sessions, and two coached sessions a week.
 
-[Walk through the breakdown: CFFS $297, Program $200, Nutrition $150, Weekly read $150/wk, Direct access $100/wk, Sessions $120 each.]
-
-Add it up — you're well over $1,000 a month for the individual pieces.
-
-The full thing together is $299 a week. Two sessions per week. That's where most people start.
+$299 a week. That's where most people start.
 
 Three sessions is available where the schedule and your capacity allow — $409. I'll guide that based on what your body can actually handle.
 
@@ -914,16 +910,15 @@ export default function ZoomCompanion({
               {stage.id === 8 && (
                 <div className="space-y-3 mb-6">
                   <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
-                    <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">What\'s included — and what each piece costs on its own</p>
-                    <div className="space-y-2">
-                      {PRICING_BREAKDOWN.map(item => (
-                        <div key={item.label} className="flex items-center justify-between border-b border-stone-800/50 pb-2 last:border-0 last:pb-0">
-                          <p className="text-sm text-stone-300">{item.label}</p>
-                          <p className="text-sm font-bold text-white tabular-nums">{item.value}</p>
-                        </div>
+                    <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">What\'s included</p>
+                    <ul className="space-y-2">
+                      {WHATS_INCLUDED.map(item => (
+                        <li key={item} className="flex gap-2 text-sm text-stone-300 leading-relaxed">
+                          <span className="text-[#10E1C2] flex-shrink-0">·</span>
+                          <span>{item}</span>
+                        </li>
                       ))}
-                    </div>
-                    <p className="text-xs text-stone-500 mt-3 leading-relaxed">Add it up — well over $1,000/month for the individual pieces. The investment for all of it together is the package below.</p>
+                    </ul>
                   </div>
 
                   <div className="space-y-2">
