@@ -76,23 +76,25 @@ const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string; openi
   'Depleted State': {
     colour: 'text-red-400 border-red-400/30 bg-red-400/10',
     badge: 'bg-red-400',
-    opening: 'Their scorecard came back as Depleted State. The body is in protection mode — cortisol elevated, metabolism suppressed, biology actively resisting fat loss and performance. The scorecard gave us the signal. This call is about understanding what\'s driving it.',
-    interpretation: 'What you\'re experiencing is a biological response, not a willpower or effort problem. When the body registers sustained demand — poor sleep, high stress, inconsistent recovery, training that isn\'t producing results — it shifts into a state where it protects rather than performs. That\'s what the scorecard picked up. It\'s not a coincidence that fat loss has stalled and training feels harder than it should. Those are two symptoms of the same underlying state.',
-    pattern: 'Depleted State: The body is in protection mode. Cortisol elevated, metabolism suppressed. Adding more training stimulus typically makes this worse. The fix is not harder — it\'s smarter management of the system.',
+    // Coach-facing — what's going on under the hood. Not spoken aloud.
+    opening: 'Their scorecard came back as Depleted State. Body is in protection mode — cortisol elevated, metabolism suppressed, fat loss and performance shut down. The scorecard surfaced the signal. The call is about understanding what\'s driving it.',
+    // Spoken to the lead. Plain, direct.
+    interpretation: 'What you\'re seeing isn\'t an effort or willpower thing — your body\'s protecting itself. When you\'re running on poor sleep, high stress, and training that isn\'t paying off, your body shifts into preservation mode. The fact that fat loss has stalled and training feels harder than it should — those are two sides of the same thing.',
+    pattern: 'Depleted State: body in protection mode. Cortisol up, metabolism down. Adding more training stimulus makes it worse. The fix is smarter management, not harder work.',
   },
   'Transitioning State': {
     colour: 'text-amber-400 border-amber-400/30 bg-amber-400/10',
     badge: 'bg-amber-400',
-    opening: 'Their scorecard came back as Transitioning State. They have capacity but something is limiting consistent response. Could be sleep, stress, recovery rhythm, or a mismatch between training load and current biological state. The call is about identifying which.',
-    interpretation: 'The Transitioning State means the body has capacity but isn\'t consistently expressing it. Some weeks things click, other weeks they don\'t. That inconsistency is the signal. It usually means there\'s one or two limiting factors keeping the system from settling into a reliable response pattern.',
-    pattern: 'Transitioning State: Has capacity but not consistency. Usually one or two sections dragging the overall picture. The work is identifying the specific drivers and addressing them in order.',
+    opening: 'Their scorecard came back as Transitioning State. They\'ve got capacity but something\'s blocking consistent response. Sleep, stress, recovery rhythm, or a mismatch between training load and where their body is right now. Call is about identifying which.',
+    interpretation: 'You\'ve got the capacity — you\'re just not consistently expressing it. Some weeks things click, other weeks they don\'t. That inconsistency is the actual issue. Usually it\'s one or two things holding the rest of it back.',
+    pattern: 'Transitioning State: capacity is there, consistency isn\'t. Usually one or two sections dragging the picture. Identify the specific drivers and address them in order.',
   },
   'Ready State': {
     colour: 'text-teal-400 border-teal-400/30 bg-teal-400/10',
     badge: 'bg-teal-400',
-    opening: 'Their scorecard came back as Ready State. Biology is in a position to respond well. If fat loss or performance isn\'t happening at this score, the issue is in the prescription — the what and how of training and nutrition, not the biological foundation.',
-    interpretation: 'A Ready State score means the biology is in a good position — energy, sleep, stress, and recovery are not the limiting factors. When someone in this state isn\'t getting results, it\'s typically a prescription problem. The training or nutrition approach isn\'t matched to what the body needs right now.',
-    pattern: 'Ready State: Biology is responding well. If results aren\'t happening, the issue is in the prescription. Focus the conversation on the training and nutrition approach.',
+    opening: 'Their scorecard came back as Ready State. Foundations are in place. If results aren\'t happening at this score, it\'s a prescription problem — the what and how of training and nutrition, not the foundation.',
+    interpretation: 'You\'ve got the foundations — energy, sleep, stress, recovery are all in the right place. So when results aren\'t happening, it\'s not a foundation issue. It\'s the training or the nutrition approach not matching where you actually are.',
+    pattern: 'Ready State: foundations solid. If results aren\'t happening, it\'s the prescription. Focus on the training and nutrition approach.',
   },
 }
 
@@ -105,7 +107,7 @@ const HOW_IT_WORKS_STAGES = [
     subtitle: '208 Data Points',
     body: 'The system begins with a structured biological intake across eight signal domains. 208 data points in total. Nothing is assumed. Nothing is filled in from a template.',
     chips: ['Training History', 'Nutrition History', 'Metabolic Indicators', 'Hormonal Signals', 'Recovery Patterns', 'Stress Markers', 'Sleep Quality', 'Body Composition'],
-    coachScript: '"The first thing you do is the foundational intake. 208 questions across eight signal domains. This gives me the data to interpret what\'s actually going on with your body — not from a template, from you."',
+    coachScript: '"First thing you do is the foundational intake. 208 questions across eight areas. This is what gives me the data to read what\'s actually going on with your body — not from a template, from you."',
   },
   {
     number: '02',
@@ -113,7 +115,7 @@ const HOW_IT_WORKS_STAGES = [
     subtitle: 'The CFFS',
     body: 'The data is interpreted through the Body Recode™ Interpretive Pillars. The Fat Map Method™ is the primary pillar. The output is the CFFS — your Coach-Facing Foundational Synthesis. It defines your biological profile and governs every downstream decision.',
     chips: ['Stress-Stored', 'Estrogen-Shift', 'Insulin-Drift', 'Androgen-Decline'],
-    coachScript: '"From your intake I produce a CFFS — your Coach-Facing Foundational Synthesis. It identifies which of four biological profiles you fall into. That sets the boundaries for everything I do with you from there."',
+    coachScript: '"From your intake I put together what we call a CFFS — that\'s your foundational read. It tells me which of four profiles you fit into. From there it sets the rules for everything I do with you."',
   },
   {
     number: '03',
@@ -126,14 +128,14 @@ const HOW_IT_WORKS_STAGES = [
       { name: 'Weekly Check-In', desc: 'Structured data capture produces the CFWS in real time' },
       { name: 'Client Portal', desc: 'Program, plan, synthesis docs and check-in history in one place' },
     ],
-    coachScript: '"Everything gets delivered through your portal — training program, nutrition structure, your weekly check-ins. All in one place. All governed by the CFFS."',
+    coachScript: '"Everything lives in your portal — training program, nutrition, weekly check-ins. All in one place. All driven by your CFFS."',
   },
   {
     number: '04',
     title: 'The Continuous Loop',
     subtitle: 'CFFS + CFWS in parallel',
     body: 'Two parallel documents run throughout: the CFFS, foundational and non-temporal; and the CFWS, the Coach-Facing Weekly Synthesis, which captures how the system is responding to applied load in real time.',
-    coachScript: '"Once we\'re going the system runs on a continuous loop. Every week I generate a CFWS that captures how your body is responding to what we\'ve applied. Interpretation feeds execution. Execution feeds interpretation. It\'s a living system, not a static protocol."',
+    coachScript: '"Once we\'re going it runs on a loop. Every week I do what\'s called a CFWS — your weekly read on how your body\'s responding to what we\'ve applied. Each one feeds the next. It\'s not a static plan, it adapts as your body adapts."',
   },
 ] as const
 
@@ -166,11 +168,11 @@ const OBJECTION_HANDLING = {
       label: 'Step 1 — Handle the objection',
       content: `They say: "That's a lot" / "It's too expensive" / "I can't justify that"
 
-Repeat back: "So the investment feels like a stretch — got it."
+Repeat back: "Yeah — feels like a stretch right now. Got it."
 
-"Here's how I'd look at it. You're not paying for two sessions a week. You're paying for a system that's reading your body the whole time — loading it, recovering it, interpreting what's happening and adjusting. Most people don't have access to that at any price point.
+"Here's how I'd look at it. You're not paying for two sessions a week. You're paying for me reading your body the whole time — loading it, recovering it, working out what's actually going on, adjusting. Most people don't have that at any price point.
 
-The real question isn't whether it's expensive. It's whether what you've been doing has been working."
+The real question isn't whether it's expensive. It's whether what you've been doing has actually been working."
 
 ↳ Pause. Let them sit with it.
 ↳ If they move forward — Stage 9, Path C (Full Rate).
@@ -178,22 +180,20 @@ The real question isn't whether it's expensive. It's whether what you've been do
     },
     {
       label: 'Step 2 — Introduce Online',
-      content: `"There's an online option. Same system, same interpretation, same weekly check-ins and direct access — just remote instead of face to face.
+      content: `"There's an online option. Same system, same weekly read, same direct access — just remote instead of face to face.
 
-That's $149 a week. Same commencement fee."
+That's $149 a week. Same $240 to get started."
 
 ↳ If online works — Stage 9, Path C (Online).
-↳ If price still holds — non-enrolment is acceptable. Close cleanly.`,
+↳ If price still holds — non-enrolment is fine. Close cleanly.`,
     },
   ],
   boundary: 'No urgency. No discount framing. Do not re-offer after decline.',
 }
 
-const ONLINE_SCRIPT = `"There's an online option — and it's not a lesser version of the system.
+const ONLINE_SCRIPT = `"There's an online option — and it's not a lesser version. Same system, same weekly read, same coaching support. The only difference is we're not training together in person.
 
-Everything that makes Body Recode work is still there. Weekly check-ins, the interpretation, the performance synthesis, the coaching support. The only difference is we're not training together in person.
-
-For some people that's actually the right structure — schedule, location, or just preference.
+For some people that's actually the right fit — schedule, location, or just preference.
 
 $149 a week. Same 12-week minimum. Same standards."`
 
@@ -222,16 +222,16 @@ function buildStages(leadName: string, bodyState: string, totalScore: number | n
 
   const stage2Tail =
     trainingStatus === 'returning'
-      ? `That's a snapshot of where your system is right now, before we add any load back in.\n\nWhat was your reaction when you saw it?`
+      ? `That's where you're at right now, before we put any load back in.\n\nWhat was your reaction when you saw it?`
       : trainingStatus === 'new'
-      ? `That's your starting baseline — where we'll work from before any training load is applied.\n\nWhat was your reaction when you saw it?`
+      ? `That's your starting point — where we work from before adding any training in.\n\nWhat was your reaction when you saw it?`
       : `What was your reaction when you saw the result?`
 
   const stage4Preface =
     trainingStatus === 'returning'
-      ? `Given you're coming back into training, this gives us a clear baseline to work from.\n\n`
+      ? `Coming back into it, this gives us a clear starting point.\n\n`
       : trainingStatus === 'new'
-      ? `This is your biological starting point — important context for how we design your entry into training.\n\n`
+      ? `This is the starting point — important context for how we ease you in.\n\n`
       : ``
 
   return [
@@ -241,11 +241,11 @@ function buildStages(leadName: string, bodyState: string, totalScore: number | n
       name: 'Opening Frame',
       duration: '2-3 min',
       goal: 'Create safety. Establish this is not a sales call. Set the tone.',
-      script: `"Thanks for jumping on today, ${firstName}.
+      script: `"Thanks for jumping on, ${firstName}.
 
-The purpose of this conversation is to talk through what showed up in your scorecard and hear a bit more about what's actually been happening for you.
+The plan today is to walk through what showed up in your scorecard and hear what's actually going on for you.
 
-There's nothing you need to decide today. I just want to make sure the patterns the scorecard picked up actually match what you've been experiencing."`,
+Nothing to decide today. I just want to check that what the scorecard picked up matches what you're seeing."`,
       prompts: [
         { type: 'prompt', text: 'Quick first — are you currently training, coming back to it after a break, or fairly new to all this?' },
         { type: 'prompt', text: 'How did you find doing the scorecard?' },
@@ -261,7 +261,7 @@ There's nothing you need to decide today. I just want to make sure the patterns 
       name: 'Scorecard Reflection',
       duration: '4-6 min',
       goal: 'Walk them through their actual results. Let them respond before you interpret. Their reaction is the signal.',
-      script: `"Before I share my read, I want to hear yours first.
+      script: `"Before I tell you what I see, I want to hear what you see first.
 
 Your scorecard came back as ${bodyState}${scoreDisplay}.
 
@@ -281,9 +281,9 @@ ${stage2Tail}"`,
       name: 'Context Exploration',
       duration: '10-12 min',
       goal: 'Get the picture behind the scores. The scorecard gives the signal — the conversation gives the context.',
-      script: `"What I want to do now is get a clearer picture of what's been going on — because the scorecard shows the pattern, but it doesn't know the context behind it.
+      script: `"Now I want to get a clearer picture of what's actually been going on. The scorecard shows the pattern but doesn't know the why.
 
-I'm going to ask a few questions. Just answer as openly as you can."`,
+I'll ask a few questions. Just answer honestly — there's no right answer."`,
       prompts: [
         { type: 'category', text: 'ENERGY' },
         { type: 'prompt', text: 'Walk me through what a typical day looks like for you energy-wise.' },
@@ -347,11 +347,11 @@ I'm going to ask a few questions. Just answer as openly as you can."`,
       name: 'Pattern Interpretation',
       duration: '5-7 min',
       goal: 'Name the pattern clearly. Make it understandable, not alarming.',
-      script: `"Based on what you've described and what showed up in the scorecard, here's what I'm hearing.
+      script: `"Based on what you've told me and what showed up in the scorecard, here's what I'm hearing.
 
 ${stage4Preface}${stateInfo.interpretation}
 
-That's not a personal failing — it's a system response. And it's one of the more common patterns we see."`,
+That's not on you — it's how the body responds when these things stack up. It's also one of the more common patterns I see."`,
       prompts: [
         { type: 'prompt', text: 'Does that explanation feel like it reflects what you\'ve been experiencing?' },
         { type: 'prompt', text: 'Does it help make sense of what you\'ve noticed?' },
@@ -369,13 +369,13 @@ That's not a personal failing — it's a system response. And it's one of the mo
       name: 'Hot Spot Framing',
       duration: '5-7 min',
       goal: 'Name the specific thing that came up in the first half, confirm it. Do not move on until they feel understood.',
-      script: `"Before we talk about what support looks like, I want to come back to something you mentioned.
+      script: `"Before we talk about what working together looks like, I want to come back to something you said.
 
 [Name the specific thing — e.g. "You said you've been training consistently but your body isn't responding the way it should." OR "You said something shifted and you're not sure when or why."]
 
-That's what I'd call the hot spot. It's not a goal. It's the point where effort and response stopped feeling aligned.
+That's the spot where what you're putting in stopped matching what you're getting back. That's the thing we're going to address.
 
-Is that still the right way to describe it?"`,
+Does that sound about right?"`,
       prompts: [
         '↳ If yes → "Good. That\'s exactly what we\'re going to address. Let me explain how it works."',
         '↳ If they add more → let them talk. The more specific they get, the more invested they become.',
@@ -391,13 +391,13 @@ Is that still the right way to describe it?"`,
       name: 'Emotional Acknowledgement',
       duration: '2-3 min',
       goal: 'Normalise the confusion and confidence erosion that comes with interpretive uncertainty.',
-      script: `"Something I want to name, because it comes up a lot.
+      script: `"One more thing I want to mention, because it comes up a lot.
 
-When people feel unsure about how their body is responding, it's not just confusing — it can quietly erode confidence.
+When you can't tell why your body's not responding, it does more than just confuse you — it eats away at your confidence.
 
-People start second-guessing their effort, their judgement, even their consistency.
+You start second-guessing your effort, your judgement, even your consistency.
 
-Not because they're doing something wrong, but because the feedback loop isn't clear."`,
+Not because you're doing anything wrong — but because you can't see what your body's actually telling you."`,
       prompts: [
         'Has that been part of your experience — second-guessing yourself?',
         'How long has that been sitting with you?',
@@ -412,7 +412,7 @@ Not because they're doing something wrong, but because the feedback loop isn't c
       name: 'How The System Works',
       duration: '5-7 min',
       goal: 'Walk through the four stages of the Body Recode™ system. They need to see what they\'re actually paying for before pricing.',
-      script: `"Before I get to the numbers, I want to walk you through how this actually works — the four stages of the system. This is what every client goes through. The price you'll hear next isn't for sessions — it's for this."`,
+      script: `"Before I get to the numbers, I want to walk you through how this actually works — four stages, every client goes through them. The price you'll hear next isn't for sessions. It's for this."`,
       prompts: [
         '↳ Walk through cards 1 → 4 in order. Each has a 1-line script underneath.',
         '↳ Pause briefly between cards. Don\'t rush.',
@@ -427,19 +427,19 @@ Not because they're doing something wrong, but because the feedback loop isn't c
       name: 'Pricing',
       duration: '5-10 min',
       goal: 'Present the packages as information, not persuasion. Lead with In-Person 2x.',
-      script: `"Now you've seen what the system is. Here's what it costs.
+      script: `"Now you've seen what's involved. Here's what it costs.
 
-Before I give you the number, let me walk through what's included and what each piece costs on its own — just so the price makes sense in context.
+Before I give you the number, let me show you what each piece is worth on its own — so the number makes sense.
 
-[Walk through the breakdown panel: CFFS $297, Program $200, Nutrition $150, Weekly CFWS $150/wk, Direct access $100/wk, Sessions $120 each.]
+[Walk through the breakdown: CFFS $297, Program $200, Nutrition $150, Weekly read $150/wk, Direct access $100/wk, Sessions $120 each.]
 
-Add that up and you're well over $1,000 a month for the individual pieces.
+Add it up — you're well over $1,000 a month for the individual pieces.
 
-The investment for all of that is $299 a week. Two sessions per week. That's where most people start.
+The full thing together is $299 a week. Two sessions per week. That's where most people start.
 
-Three sessions is available where capacity and schedule allow — $409. I'll guide that decision based on what your system can actually handle.
+Three sessions is available where the schedule and your capacity allow — $409. I'll guide that based on what your body can actually handle.
 
-There's also a one-time commencement fee of $240 to get started — that covers the setup work before coaching begins."`,
+There's also a one-off $240 to get started — covers the setup before coaching begins."`,
       prompts: [
         '↳ PAUSE after stating the price. Let it land. Do not fill the silence.',
         '↳ TRANSITION → When they respond, move to Stage 9.',
@@ -454,11 +454,11 @@ There's also a one-time commencement fee of $240 to get started — that covers 
       name: 'Decision',
       duration: '2-3 min',
       goal: 'Identify the pathway and close cleanly.',
-      script: `"Take whatever time you need with it.
+      script: `"Take whatever time you need.
 
-If it feels like the right fit, we can talk next steps.
+If it feels like the right fit, we can talk through next steps.
 
-If not, the report still stands on its own."`,
+If not, that's fine — the scorecard read still stands on its own."`,
       prompts: [] as string[],
       tips: 'Three paths. Know which one you\'re in before you respond. Path A closes cleanly — don\'t re-pitch.',
       boundary: 'No urgency. No discount framing. Non-enrolment is an acceptable outcome.',
