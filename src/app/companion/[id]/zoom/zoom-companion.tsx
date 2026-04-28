@@ -213,10 +213,26 @@ interface Stage {
   half: 1 | 2
 }
 
-function buildStages(leadName: string, bodyState: string, totalScore: number | null): Stage[] {
+type TrainingStatus = 'active' | 'returning' | 'new' | null
+
+function buildStages(leadName: string, bodyState: string, totalScore: number | null, trainingStatus: TrainingStatus): Stage[] {
   const firstName = leadName.split(' ')[0]
   const stateInfo = BODY_STATE_LANGUAGE[bodyState] ?? BODY_STATE_LANGUAGE['Transitioning State']
   const scoreDisplay = totalScore ? ` — ${totalScore}/15` : ''
+
+  const stage2Tail =
+    trainingStatus === 'returning'
+      ? `That's a snapshot of where your system is right now, before we add any load back in.\n\nWhat was your reaction when you saw it?`
+      : trainingStatus === 'new'
+      ? `That's your starting baseline — where we'll work from before any training load is applied.\n\nWhat was your reaction when you saw it?`
+      : `What was your reaction when you saw the result?`
+
+  const stage4Preface =
+    trainingStatus === 'returning'
+      ? `Given you're coming back into training, this gives us a clear baseline to work from.\n\n`
+      : trainingStatus === 'new'
+      ? `This is your biological starting point — important context for how we design your entry into training.\n\n`
+      : ``
 
   return [
     // ── FIRST HALF (consultation) ──────────────────────────────────────────
@@ -231,11 +247,12 @@ The purpose of this conversation is to talk through what showed up in your score
 
 There's nothing you need to decide today. I just want to make sure the patterns the scorecard picked up actually match what you've been experiencing."`,
       prompts: [
+        { type: 'prompt', text: 'Quick first — are you currently training, coming back to it after a break, or fairly new to all this?' },
         { type: 'prompt', text: 'How did you find doing the scorecard?' },
         { type: 'prompt', text: 'Was it straightforward to answer?' },
         { type: 'prompt', text: 'Did anything make you stop and think?' },
       ] as TypedPrompt[],
-      tips: 'Slow down. Let them land. The tone you set here carries the whole call.',
+      tips: 'Capture their training context using the toggle above before moving to Stage 2. Stages 2-4 will adapt automatically. Slow down. Let them land.',
       boundary: null,
       half: 1,
     },
@@ -248,7 +265,7 @@ There's nothing you need to decide today. I just want to make sure the patterns 
 
 Your scorecard came back as ${bodyState}${scoreDisplay}.
 
-What was your reaction when you saw the result?"`,
+${stage2Tail}"`,
       prompts: [
         { type: 'prompt', text: 'What stood out to you most when you saw your result?' },
         { type: 'prompt', text: 'Did it feel accurate to where you\'re at right now?' },
@@ -283,16 +300,43 @@ I'm going to ask a few questions. Just answer as openly as you can."`,
         { type: 'sub', text: 'Is the demand ongoing or situational?' },
         { type: 'sub', text: 'Do you find yourself carrying it into training?' },
         { type: 'sub', text: 'Any genuine downtime in a typical week?' },
-        { type: 'category', text: 'TRAINING RESPONSE' },
-        { type: 'prompt', text: 'What does progress actually look like compared to what you\'re putting in?' },
-        { type: 'sub', text: 'Are you getting stronger over time?' },
-        { type: 'sub', text: 'How do you feel during sessions compared to 6-12 months ago?' },
-        { type: 'sub', text: 'Does the body feel beaten up or recovered between sessions?' },
-        { type: 'category', text: 'FAT LOSS RESPONSE' },
-        { type: 'prompt', text: 'Walk me through what you\'ve tried for fat loss and what\'s actually happened.' },
-        { type: 'sub', text: 'Is the diet consistent?' },
-        { type: 'sub', text: 'Has anything worked in the past? What changed?' },
-        { type: 'sub', text: 'How long has it felt stuck?' },
+        ...(trainingStatus === 'returning'
+          ? [
+              { type: 'category', text: 'TRAINING (RETURNING)' },
+              { type: 'prompt', text: 'Walk me through what training looked like before you stepped back.' },
+              { type: 'sub', text: 'What made you stop?' },
+              { type: 'sub', text: 'How long has it been?' },
+              { type: 'sub', text: 'What does training look like right now, if anything?' },
+              { type: 'category', text: 'COMPOSITION' },
+              { type: 'prompt', text: 'Walk me through how things shifted while you were away from training.' },
+              { type: 'sub', text: 'Has the body changed in ways that have surprised you?' },
+              { type: 'sub', text: 'Has anything you\'ve tried recently moved the needle?' },
+              { type: 'sub', text: 'How long has it felt off?' },
+            ] as TypedPrompt[]
+          : trainingStatus === 'new'
+          ? [
+              { type: 'category', text: 'TRAINING (NEW)' },
+              { type: 'prompt', text: 'Have you done any structured exercise before?' },
+              { type: 'sub', text: 'What\'s prompted you to look at this now?' },
+              { type: 'sub', text: 'What does activity look like in a typical week right now?' },
+              { type: 'sub', text: 'Is there anything you\'ve been trying on your own?' },
+              { type: 'category', text: 'COMPOSITION' },
+              { type: 'prompt', text: 'Walk me through what you\'ve tried before in terms of body composition.' },
+              { type: 'sub', text: 'Has anything worked, or has it been mostly stalled?' },
+              { type: 'sub', text: 'How long has it felt this way?' },
+            ] as TypedPrompt[]
+          : [
+              { type: 'category', text: 'TRAINING RESPONSE' },
+              { type: 'prompt', text: 'What does progress actually look like compared to what you\'re putting in?' },
+              { type: 'sub', text: 'Are you getting stronger over time?' },
+              { type: 'sub', text: 'How do you feel during sessions compared to 6-12 months ago?' },
+              { type: 'sub', text: 'Does the body feel beaten up or recovered between sessions?' },
+              { type: 'category', text: 'FAT LOSS RESPONSE' },
+              { type: 'prompt', text: 'Walk me through what you\'ve tried for fat loss and what\'s actually happened.' },
+              { type: 'sub', text: 'Is the diet consistent?' },
+              { type: 'sub', text: 'Has anything worked in the past? What changed?' },
+              { type: 'sub', text: 'How long has it felt stuck?' },
+            ] as TypedPrompt[]),
       ] as TypedPrompt[],
       tips: 'One question at a time. Let silence work. You\'re building context — not solving anything.',
       boundary: 'No prescriptions. No "you should try...". No advice. Just listening.',
@@ -305,7 +349,7 @@ I'm going to ask a few questions. Just answer as openly as you can."`,
       goal: 'Name the pattern clearly. Make it understandable, not alarming.',
       script: `"Based on what you've described and what showed up in the scorecard, here's what I'm hearing.
 
-${stateInfo.interpretation}
+${stage4Preface}${stateInfo.interpretation}
 
 That's not a personal failing — it's a system response. And it's one of the more common patterns we see."`,
       prompts: [
@@ -446,6 +490,7 @@ export default function ZoomCompanion({
   const [saving, setSaving] = useState(false)
   const [decisionPath, setDecisionPath] = useState<'A' | 'B' | 'C' | null>(null)
   const [pathwayType, setPathwayType] = useState<PathwayType | null>(null)
+  const [trainingStatus, setTrainingStatusState] = useState<TrainingStatus>(null)
   const [declinedSent, setDeclinedSent] = useState(false)
   const [sendingDeclined, setSendingDeclined] = useState(false)
   const [callComplete, setCallComplete] = useState(false)
@@ -460,6 +505,28 @@ export default function ZoomCompanion({
   useLayoutEffect(() => {
     if (stageScrollRef.current) stageScrollRef.current.scrollTop = 0
   }, [currentStage])
+
+  // Persist training status per-lead in localStorage so a refresh mid-call
+  // doesn't lose the selection. Hydration on mount only.
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem(`zoom-companion:${leadId}:training-status`)
+      if (v === 'active' || v === 'returning' || v === 'new') {
+        setTrainingStatusState(v)
+      }
+    } catch {}
+  }, [leadId])
+
+  function setTrainingStatus(v: TrainingStatus) {
+    setTrainingStatusState(v)
+    try {
+      if (v) {
+        localStorage.setItem(`zoom-companion:${leadId}:training-status`, v)
+      } else {
+        localStorage.removeItem(`zoom-companion:${leadId}:training-status`)
+      }
+    } catch {}
+  }
 
   useEffect(() => {
     if (running) {
@@ -524,7 +591,7 @@ export default function ZoomCompanion({
     setSendingDeclined(false)
   }
 
-  const STAGES = buildStages(leadName, bodyState, totalScore)
+  const STAGES = buildStages(leadName, bodyState, totalScore, trainingStatus)
   const stage = STAGES[currentStage]
   const stateInfo = BODY_STATE_LANGUAGE[bodyState] ?? BODY_STATE_LANGUAGE['Transitioning State']
   const scoreDisplay = totalScore ? ` — ${totalScore}/15` : ''
@@ -597,6 +664,15 @@ export default function ZoomCompanion({
             <div className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${isFirstHalf ? 'border-stone-700 text-stone-500 bg-stone-900' : 'border-[#10E1C2]/30 text-[#10E1C2] bg-[#10E1C2]/5'}`}>
               {isFirstHalf ? 'First Half' : 'Second Half'}
             </div>
+            {trainingStatus && (
+              <div className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
+                trainingStatus === 'active' ? 'border-[#10E1C2]/30 text-[#10E1C2] bg-[#10E1C2]/5'
+                : trainingStatus === 'returning' ? 'border-amber-400/30 text-amber-400 bg-amber-400/5'
+                : 'border-violet-400/30 text-violet-400 bg-violet-400/5'
+              }`}>
+                {trainingStatus === 'active' ? 'Active trainer' : trainingStatus === 'returning' ? 'Returning' : 'New to training'}
+              </div>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -690,6 +766,46 @@ export default function ZoomCompanion({
               </div>
               <h2 className="text-xl font-bold text-white mb-3">{stage.name}</h2>
               <p className="text-stone-400 text-sm leading-relaxed mb-6">{stage.goal}</p>
+
+              {/* Stage 1 — Training context capture (drives Stages 2-4 personalisation) */}
+              {stage.id === 1 && (
+                <div className="mb-6 bg-stone-900 border border-stone-800 rounded-xl p-5">
+                  <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Training context</p>
+                  <p className="text-xs text-stone-400 mb-4">Pick what matches before moving on. Stages 2-4 adapt to this.</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {([
+                      { key: 'active' as const, label: 'Currently training', dot: 'bg-[#10E1C2]', cls: 'border-[#10E1C2]/40 bg-[#10E1C2]/10 text-[#10E1C2]' },
+                      { key: 'returning' as const, label: 'Returning to it', dot: 'bg-amber-400', cls: 'border-amber-400/40 bg-amber-400/10 text-amber-400' },
+                      { key: 'new' as const, label: 'New to training', dot: 'bg-violet-400', cls: 'border-violet-400/40 bg-violet-400/10 text-violet-400' },
+                    ]).map(opt => {
+                      const selected = trainingStatus === opt.key
+                      return (
+                        <button
+                          key={opt.key}
+                          onClick={() => setTrainingStatus(selected ? null : opt.key)}
+                          className={`px-3 py-3 rounded-lg text-xs font-semibold border transition-colors text-left ${
+                            selected ? opt.cls : 'border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className={`w-1.5 h-1.5 rounded-full ${opt.dot}`} />
+                            <span className="text-[10px] uppercase tracking-wider opacity-70">{opt.key}</span>
+                          </div>
+                          {opt.label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {trainingStatus && (
+                    <button
+                      onClick={() => setTrainingStatus(null)}
+                      className="mt-3 text-[11px] text-stone-600 hover:text-stone-400 transition-colors"
+                    >
+                      Clear selection
+                    </button>
+                  )}
+                </div>
+              )}
 
               {/* Stage 2 — Scorecard Reflection: rich per-lead view */}
               {stage.id === 2 && (

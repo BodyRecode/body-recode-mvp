@@ -381,6 +381,16 @@ export default function HelpPage() {
             <p className="font-semibold text-white mt-3">Lead-specific Stage 2</p>
             <p>Stage 2 is fully populated with the lead&apos;s actual scorecard data — their score, body state, and per-section breakdown including the exact description text they selected (e.g. for Energy 1/3 they read &quot;Tired most of the day. Relying on caffeine. Crashes after lunch or training.&quot;). When you reference what they said, you&apos;re literally pointing at it on screen.</p>
 
+            <p className="font-semibold text-white mt-3">Training context capture (Stage 1)</p>
+            <p>Stage 1 has a 3-button toggle: <strong>Currently training</strong> · <strong>Returning to it</strong> · <strong>New to training</strong>. Pick what matches the lead before moving to Stage 2. The selection persists across page refreshes (stored locally) and a badge shows in the top bar so you always know which mode is active.</p>
+            <p>Stages 2, 3, and 4 adapt to the selection:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><strong>Stage 2</strong> — script gets a one-line variant per audience (e.g. for new trainers: &quot;That&apos;s your starting baseline — where we work from before any training load is applied&quot;).</li>
+              <li><strong>Stage 3</strong> — last two prompt categories swap. Default is Training Response + Fat Loss Response. For returners and new trainers, replaced with Training (context-appropriate) + Composition.</li>
+              <li><strong>Stage 4</strong> — interpretation gets a one-line preface acknowledging where they&apos;re entering from. Same body-state interpretation otherwise.</li>
+            </ul>
+            <p>Stages 5–9 stay identical regardless of training status — Hot Spot, How The System Works, Pricing, and Decision apply equally to all three audiences.</p>
+
             <p className="font-semibold text-white mt-3">Coach Drawer</p>
             <p>The top bar has a <strong>Coach Drawer</strong> button. Open it any time during the call to access:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
