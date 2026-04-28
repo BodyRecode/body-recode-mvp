@@ -19,14 +19,11 @@ export default function LoginForm({ redirect }: { redirect: string }) {
     setError(null)
 
     const supabase = createClient()
-    const callbackUrl = new URL('/portal/auth/callback', window.location.origin)
-    callbackUrl.searchParams.set('redirect', redirect)
 
+    // Pure OTP code flow (no emailRedirectTo so Supabase generates a token of
+    // type 'email' that matches our verifyOtp call below).
     const { error: authError } = await supabase.auth.signInWithOtp({
       email: email.trim().toLowerCase(),
-      options: {
-        emailRedirectTo: callbackUrl.toString(),
-      },
     })
 
     setSubmitting(false)
