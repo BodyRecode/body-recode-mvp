@@ -246,7 +246,7 @@ There's nothing you need to decide today. I just want to make sure the patterns 
       goal: 'Walk them through their actual results. Let them respond before you interpret. Their reaction is the signal.',
       script: `"Before I share my read, I want to hear yours first.
 
-Your scorecard came back as ${bodyState}${scoreDisplay}. You've had a chance to sit with that.
+Your scorecard came back as ${bodyState}${scoreDisplay}.
 
 What was your reaction when you saw the result?"`,
       prompts: [
