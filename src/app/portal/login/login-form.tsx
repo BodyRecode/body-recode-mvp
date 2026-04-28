@@ -14,66 +14,88 @@ export default function LoginForm({ redirect }: { redirect: string }) {
 
   async function requestCode(e: React.FormEvent) {
     e.preventDefault()
-    if (!email.trim()) return
+    if (!email.trim() || submitting) return
     setSubmitting(true)
     setError(null)
 
-    const supabase = createClient()
-
-    // Pure OTP code flow (no emailRedirectTo so Supabase generates a token of
-    // type 'email' that matches our verifyOtp call below).
-    const { error: authError } = await supabase.auth.signInWithOtp({
-      email: email.trim().toLowerCase(),
-    })
-
-    setSubmitting(false)
-
-    if (authError) {
-      setError(authError.message)
-      return
+    try {
+      const res = await fetch('/api/portal/send-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setError(data.error ?? 'Could not send code. Try again.')
+        setSubmitting(false)
+        return
+      }
+      setStep('code')
+    } catch {
+      setError('Network error. Try again.')
+    } finally {
+      setSubmitting(false)
     }
-
-    setStep('code')
   }
 
   async function verifyCode(e: React.FormEvent) {
     e.preventDefault()
-    if (!code.trim()) return
+    if (!code.trim() || submitting) return
     setSubmitting(true)
     setError(null)
 
-    const supabase = createClient()
-    const { data, error: verifyError } = await supabase.auth.verifyOtp({
-      email: email.trim().toLowerCase(),
-      token: code.trim(),
-      type: 'email',
-    })
-
-    if (verifyError || !data.session) {
-      setError(verifyError?.message ?? 'That code did not work. Check the email or request a new one.')
-      setSubmitting(false)
-      return
-    }
-
-    if (redirect && redirect.startsWith('/portal/')) {
-      router.push(redirect)
-      router.refresh()
-      return
-    }
-
     try {
-      const res = await fetch('/api/portal/redirect-target')
-      if (res.ok) {
-        const json = await res.json()
-        if (json.url) {
-          router.push(json.url)
-          router.refresh()
-          return
-        }
+      // Verify our custom code, get a fresh Supabase token_hash back
+      const verifyRes = await fetch('/api/portal/verify-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim().toLowerCase(), code: code.trim() }),
+      })
+      const verifyData = await verifyRes.json().catch(() => ({}))
+      if (!verifyRes.ok) {
+        setError(verifyData.error ?? 'That code did not work. Check the email or request a new one.')
+        setSubmitting(false)
+        return
       }
-    } catch {}
 
-    router.push('/portal/login?error=no_client')
+      // Establish the Supabase session client-side using the fresh token_hash.
+      // This token has never been emailed — no scanner could have touched it.
+      const supabase = createClient()
+      const { data, error: sessionError } = await supabase.auth.verifyOtp({
+        type: 'magiclink',
+        token_hash: verifyData.token_hash,
+      })
+
+      if (sessionError || !data?.session) {
+        setError(sessionError?.message ?? 'Sign-in failed. Try again.')
+        setSubmitting(false)
+        return
+      }
+
+      // Where to send them
+      if (redirect && redirect.startsWith('/portal/')) {
+        router.push(redirect)
+        router.refresh()
+        return
+      }
+
+      try {
+        const targetRes = await fetch('/api/portal/redirect-target')
+        if (targetRes.ok) {
+          const targetData = await targetRes.json()
+          if (targetData.url) {
+            router.push(targetData.url)
+            router.refresh()
+            return
+          }
+        }
+      } catch {}
+
+      router.push('/portal/login?error=no_client')
+    } catch {
+      setError('Network error. Try again.')
+      setSubmitting(false)
+    }
   }
 
   if (step === 'code') {
@@ -87,7 +109,7 @@ export default function LoginForm({ redirect }: { redirect: string }) {
           </div>
           <h2 className="text-xl font-bold text-white mb-1">Enter your sign-in code</h2>
           <p className="text-stone-400 text-sm leading-relaxed">
-            We sent a 6-digit code to <span className="text-white font-medium">{email}</span>.
+            We sent a 6-digit code to <span className="text-white font-medium">{email.toLowerCase()}</span>.
           </p>
         </div>
 
