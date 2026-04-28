@@ -91,7 +91,9 @@ export default function LoginForm({ redirect }: { redirect: string }) {
         }
       } catch {}
 
-      router.push('/portal/login?error=no_client')
+      // Authenticated, but no client record matches this email
+      setError(`No client account found for ${email.toLowerCase()}. Contact your coach.`)
+      setSubmitting(false)
     } catch {
       setError('Network error. Try again.')
       setSubmitting(false)

@@ -21,12 +21,12 @@ export default async function PortalLoginPage({
         <div className="text-center mb-10">
           <img
             src="https://bodyrecode.au/logo-teal.png"
-            width="120"
+            width="200"
             alt="Body Recode"
             className="mx-auto mb-8"
           />
           <h1 className="text-2xl font-bold text-white mb-2">Client Portal</h1>
-          <p className="text-stone-400 text-sm">Enter your email to receive a sign-in link.</p>
+          <p className="text-stone-400 text-sm">Sign in to your coaching portal.</p>
         </div>
         {errorMessage && (
           <div className="mb-6 bg-red-950/30 border border-red-800 rounded-xl px-4 py-3">
