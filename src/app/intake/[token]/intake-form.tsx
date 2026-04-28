@@ -12,18 +12,37 @@ interface Props {
   clientName?: string
 }
 
+// Treat a question as required by default; only text fields are optional
+// unless explicitly flagged required. `required: false` always wins.
+function isRequired(q: Question): boolean {
+  if (q.required === true) return true
+  if (q.required === false) return false
+  return q.type !== 'text'
+}
+
+function isAnswered(q: Question, value: FormValue | undefined): boolean {
+  if (value === undefined || value === null) return false
+  if (q.type === 'scale') return typeof value === 'number'
+  if (q.type === 'checkbox') return value === true
+  if (q.type === 'multiselect') return Array.isArray(value) && value.length > 0
+  if (typeof value === 'string') return value.trim().length > 0
+  return true
+}
+
 function ScaleInput({
   question,
   value,
   onChange,
+  hasError,
 }: {
   question: Question
   value: FormValue | undefined
   onChange: (val: number) => void
+  hasError: boolean
 }) {
   return (
     <div className="py-1">
-      <p className="text-[15px] font-medium text-white mb-4 leading-snug">{question.text}</p>
+      <p className={`text-[15px] font-medium mb-4 leading-snug ${hasError ? 'text-red-400' : 'text-white'}`}>{question.text}</p>
       <div className="flex gap-2">
         {[0, 1, 2, 3, 4].map(n => (
           <button
@@ -33,6 +52,8 @@ function ScaleInput({
             className={`flex-1 py-3.5 rounded-2xl text-sm font-bold transition-all duration-150 ${
               value === n
                 ? 'bg-[#10E1C2] text-black shadow-sm'
+                : hasError
+                ? 'bg-stone-800 text-stone-400 border border-red-500/60'
                 : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
             }`}
           >
@@ -55,18 +76,24 @@ function QuestionInput({
   value,
   onChange,
   onToggle,
+  hasError,
 }: {
   question: Question
   value: FormValue | undefined
   onChange: (val: FormValue) => void
   onToggle: (opt: string) => void
+  hasError: boolean
 }) {
+  const errorBorder = hasError ? 'border-red-500/60' : 'border-stone-700'
+  const errorText = hasError ? 'text-red-400' : 'text-white'
+
   if (question.type === 'scale') {
     return (
       <ScaleInput
         question={question}
         value={value}
         onChange={(n) => onChange(n)}
+        hasError={hasError}
       />
     )
   }
@@ -74,13 +101,13 @@ function QuestionInput({
   if (question.type === 'text') {
     return (
       <div>
-        <label className="block text-[15px] font-medium text-white mb-3 leading-snug">{question.text}</label>
+        <label className={`block text-[15px] font-medium mb-3 leading-snug ${errorText}`}>{question.text}</label>
         <textarea
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
           rows={3}
           placeholder="Your answer..."
-          className="w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 resize-none transition-all border border-stone-700"
+          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 resize-none transition-all border ${errorBorder}`}
         />
       </div>
     )
@@ -89,12 +116,12 @@ function QuestionInput({
   if (question.type === 'date') {
     return (
       <div>
-        <label className="block text-[15px] font-medium text-white mb-3 leading-snug">{question.text}</label>
+        <label className={`block text-[15px] font-medium mb-3 leading-snug ${errorText}`}>{question.text}</label>
         <input
           type="date"
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
-          className="w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 transition-all border border-stone-700"
+          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 transition-all border ${errorBorder}`}
         />
       </div>
     )
@@ -103,11 +130,11 @@ function QuestionInput({
   if (question.type === 'select') {
     return (
       <div>
-        <label className="block text-[15px] font-medium text-white mb-3 leading-snug">{question.text}</label>
+        <label className={`block text-[15px] font-medium mb-3 leading-snug ${errorText}`}>{question.text}</label>
         <select
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
-          className="w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 transition-all appearance-none border border-stone-700"
+          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 transition-all appearance-none border ${errorBorder}`}
         >
           <option value="">Select an option</option>
           {question.options?.map(opt => (
@@ -122,7 +149,7 @@ function QuestionInput({
     const selected = (value as string[]) || []
     return (
       <div>
-        <p className="text-[15px] font-medium text-white mb-3 leading-snug">{question.text}</p>
+        <p className={`text-[15px] font-medium mb-3 leading-snug ${errorText}`}>{question.text}</p>
         <div className="flex flex-wrap gap-2">
           {question.options?.map(opt => (
             <button
@@ -132,6 +159,8 @@ function QuestionInput({
               className={`text-[13px] font-medium px-4 py-2.5 rounded-2xl transition-all duration-150 ${
                 selected.includes(opt)
                   ? 'bg-[#10E1C2] text-black'
+                  : hasError
+                  ? 'bg-stone-800 text-stone-400 border border-red-500/60'
                   : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
               }`}
             >
@@ -153,7 +182,11 @@ function QuestionInput({
       >
         <span
           className={`mt-0.5 w-5 h-5 rounded-md flex items-center justify-center shrink-0 transition-all duration-150 ${
-            checked ? 'bg-[#10E1C2]' : 'bg-stone-800 border border-stone-600'
+            checked
+              ? 'bg-[#10E1C2]'
+              : hasError
+              ? 'bg-stone-800 border border-red-500/60'
+              : 'bg-stone-800 border border-stone-600'
           }`}
         >
           {checked && (
@@ -162,7 +195,7 @@ function QuestionInput({
             </svg>
           )}
         </span>
-        <span className="text-[14px] text-stone-300 leading-relaxed">{question.text}</span>
+        <span className={`text-[14px] leading-relaxed ${hasError ? 'text-red-400' : 'text-stone-300'}`}>{question.text}</span>
       </button>
     )
   }
@@ -183,6 +216,8 @@ export default function IntakeForm({ token, clientName }: Props) {
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
+  const [errors, setErrors] = useState<Set<string>>(new Set())
+  const [validationMessage, setValidationMessage] = useState('')
 
   const section = INTAKE_SECTIONS[sectionIndex]
   const isLast = sectionIndex === INTAKE_SECTIONS.length - 1
@@ -190,6 +225,14 @@ export default function IntakeForm({ token, clientName }: Props) {
 
   function setValue(id: string, value: FormValue) {
     setFormData(prev => ({ ...prev, [id]: value }))
+    // Clear error for this question as soon as it has a value
+    if (errors.has(id)) {
+      setErrors(prev => {
+        const next = new Set(prev)
+        next.delete(id)
+        return next
+      })
+    }
   }
 
   function goToSection(index: number) {
@@ -205,7 +248,70 @@ export default function IntakeForm({ token, clientName }: Props) {
     )
   }
 
+  function findMissedInSection(idx: number): string[] {
+    const s = INTAKE_SECTIONS[idx]
+    return s.questions
+      .filter(q => isRequired(q) && !isAnswered(q, formData[q.id]))
+      .map(q => q.id)
+  }
+
+  function findMissedAcrossAll(): { sectionIdx: number; questionIds: string[] }[] {
+    return INTAKE_SECTIONS
+      .map((_, idx) => ({ sectionIdx: idx, questionIds: findMissedInSection(idx) }))
+      .filter(s => s.questionIds.length > 0)
+  }
+
+  function scrollToFirstMissed(missedIds: string[]) {
+    setTimeout(() => {
+      const first = missedIds[0]
+      const el = document.getElementById(`q-${first}`)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 80)
+  }
+
+  function handleContinue() {
+    const missed = findMissedInSection(sectionIndex)
+    if (missed.length > 0) {
+      setErrors(prev => {
+        const next = new Set(prev)
+        missed.forEach(id => next.add(id))
+        return next
+      })
+      setValidationMessage(
+        missed.length === 1
+          ? '1 question still needs an answer.'
+          : `${missed.length} questions still need an answer.`
+      )
+      scrollToFirstMissed(missed)
+      return
+    }
+    setValidationMessage('')
+    goToSection(sectionIndex + 1)
+  }
+
   async function handleSubmit() {
+    const missedSections = findMissedAcrossAll()
+    if (missedSections.length > 0) {
+      const allMissed = new Set<string>()
+      for (const s of missedSections) for (const id of s.questionIds) allMissed.add(id)
+      setErrors(allMissed)
+
+      const total = allMissed.size
+      setValidationMessage(
+        total === 1
+          ? '1 question still needs an answer. Scroll up to find it.'
+          : `${total} questions still need an answer across the form. Scroll up to find them.`
+      )
+
+      const firstMissed = missedSections[0]
+      if (firstMissed.sectionIdx !== sectionIndex) {
+        goToSection(firstMissed.sectionIdx)
+      }
+      scrollToFirstMissed(firstMissed.questionIds)
+      return
+    }
+
+    setValidationMessage('')
     setSubmitting(true)
     setError('')
     try {
@@ -280,20 +386,40 @@ export default function IntakeForm({ token, clientName }: Props) {
           )}
         </div>
 
+        {/* Validation message */}
+        {validationMessage && (
+          <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+            <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
+            <p className="text-red-400/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
+          </div>
+        )}
+
         {/* Divider */}
         <div className="h-px bg-stone-800 mb-8" />
 
         {/* Questions */}
         <div className="space-y-8">
-          {section.questions.map(q => (
-            <QuestionInput
-              key={q.id}
-              question={q}
-              value={formData[q.id]}
-              onChange={(val) => setValue(q.id, val)}
-              onToggle={(opt) => toggleMultiselect(q.id, opt)}
-            />
-          ))}
+          {section.questions.map(q => {
+            const hasError = errors.has(q.id)
+            return (
+              <div
+                key={q.id}
+                id={`q-${q.id}`}
+                className={hasError ? 'border-l-2 border-red-500 pl-4 -ml-4 scroll-mt-24' : 'scroll-mt-24'}
+              >
+                <QuestionInput
+                  question={q}
+                  value={formData[q.id]}
+                  onChange={(val) => setValue(q.id, val)}
+                  onToggle={(opt) => toggleMultiselect(q.id, opt)}
+                  hasError={hasError}
+                />
+                {hasError && (
+                  <p className="text-red-400 text-xs mt-2 font-medium">Please answer this question.</p>
+                )}
+              </div>
+            )
+          })}
         </div>
 
         {error && (
@@ -328,7 +454,7 @@ export default function IntakeForm({ token, clientName }: Props) {
           ) : (
             <button
               type="button"
-              onClick={() => goToSection(sectionIndex + 1)}
+              onClick={handleContinue}
               className="flex-1 bg-[#10E1C2] text-black text-[15px] font-bold py-4 rounded-2xl hover:bg-[#0ecfb2] transition-colors tracking-tight"
             >
               Continue

@@ -19,10 +19,32 @@ export default function AgreementForm({
   const [accepted, setAccepted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [missing, setMissing] = useState<Set<string>>(new Set())
+  const [validationMessage, setValidationMessage] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!accepted || !fullName.trim()) return
+
+    const m = new Set<string>()
+    if (!fullName.trim()) m.add('fullName')
+    if (!accepted) m.add('accepted')
+    if (m.size > 0) {
+      setMissing(m)
+      setValidationMessage(
+        m.size === 1
+          ? '1 field still needs an answer.'
+          : `${m.size} fields still need an answer.`
+      )
+      setTimeout(() => {
+        const first = Array.from(m)[0]
+        const el = document.getElementById(`f-${first}`)
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 80)
+      return
+    }
+
+    setMissing(new Set())
+    setValidationMessage('')
     setSubmitting(true)
     setError('')
 
@@ -67,32 +89,53 @@ export default function AgreementForm({
           ))}
         </div>
 
+        {validationMessage && (
+          <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+            <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
+            <p className="text-red-400/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="bg-stone-900 rounded-2xl p-5 border border-stone-800">
             <p className="text-sm text-stone-300 mb-4">By typing your full name and ticking below, you confirm that you have read, understood, and agree to the terms of this Coaching Agreement.</p>
 
             <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Full name</label>
+              <div id="f-fullName" className="scroll-mt-24">
+                <label className={`block text-xs font-semibold uppercase tracking-wide mb-2 ${missing.has('fullName') ? 'text-red-400' : 'text-stone-400'}`}>Full name</label>
                 <input
                   type="text"
                   value={fullName}
-                  onChange={e => setFullName(e.target.value)}
+                  onChange={e => {
+                    setFullName(e.target.value)
+                    if (e.target.value.trim() && missing.has('fullName')) {
+                      setMissing(prev => { const n = new Set(prev); n.delete('fullName'); return n })
+                    }
+                  }}
                   placeholder={clientName}
-                  required
-                  className="w-full bg-stone-800 text-white text-sm rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border border-stone-700"
+                  className={`w-full bg-stone-800 text-white text-sm rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${missing.has('fullName') ? 'border-red-500/60' : 'border-stone-700'}`}
                 />
+                {missing.has('fullName') && <p className="text-red-400 text-xs mt-2 font-medium">Please type your full name.</p>}
               </div>
 
-              <label className="flex items-start gap-3 cursor-pointer">
+              <label
+                id="f-accepted"
+                className={`flex items-start gap-3 cursor-pointer scroll-mt-24 p-3 rounded-xl border ${missing.has('accepted') ? 'border-red-500/60 bg-red-950/20' : 'border-transparent'}`}
+              >
                 <input
                   type="checkbox"
                   checked={accepted}
-                  onChange={e => setAccepted(e.target.checked)}
+                  onChange={e => {
+                    setAccepted(e.target.checked)
+                    if (e.target.checked && missing.has('accepted')) {
+                      setMissing(prev => { const n = new Set(prev); n.delete('accepted'); return n })
+                    }
+                  }}
                   className="mt-0.5 w-4 h-4 rounded accent-teal-400"
                 />
-                <span className="text-sm text-stone-300">I have read and agree to the Body Recode™ Coaching Agreement.</span>
+                <span className={`text-sm ${missing.has('accepted') ? 'text-red-300' : 'text-stone-300'}`}>I have read and agree to the Body Recode™ Coaching Agreement.</span>
               </label>
+              {missing.has('accepted') && <p className="text-red-400 text-xs -mt-2 ml-7 font-medium">Please tick this box to continue.</p>}
             </div>
           </div>
 
@@ -100,7 +143,7 @@ export default function AgreementForm({
 
           <button
             type="submit"
-            disabled={!accepted || !fullName.trim() || submitting}
+            disabled={submitting}
             className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           >
             {submitting ? 'Saving…' : 'Sign and continue →'}

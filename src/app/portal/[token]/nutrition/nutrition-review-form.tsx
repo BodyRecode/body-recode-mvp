@@ -38,8 +38,19 @@ export default function NutritionReviewForm({
   const [direction, setDirection] = useDraftState<'progress' | 'hold' | 'rebuild' | ''>(`${draftPrefix}direction`, '')
   const [signalsNoted, setSignalsNoted] = useDraftState(`${draftPrefix}notes`, '')
 
+  const [missing, setMissing] = useState<Set<string>>(new Set())
+
   async function handleSubmit() {
-    if (!direction) { setError('Please select how things are going'); return }
+    if (!direction) {
+      setMissing(new Set(['direction']))
+      setError('Please answer the highlighted question below.')
+      setTimeout(() => {
+        const el = document.getElementById('f-direction')
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 80)
+      return
+    }
+    setMissing(new Set())
     setSubmitting(true)
     setError(null)
 
@@ -151,8 +162,8 @@ export default function NutritionReviewForm({
       </div>
 
       {/* How are things going */}
-      <div>
-        <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">Overall — how are things going?</p>
+      <div id="f-direction" className="scroll-mt-24">
+        <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${missing.has('direction') ? 'text-red-400' : 'text-stone-500'}`}>Overall — how are things going?</p>
         <div className="grid grid-cols-3 gap-2">
           {([
             { value: 'progress', label: 'Making progress' },
@@ -161,10 +172,15 @@ export default function NutritionReviewForm({
           ] as const).map(opt => (
             <button
               key={opt.value}
-              onClick={() => setDirection(opt.value)}
+              onClick={() => {
+                setDirection(opt.value)
+                if (missing.has('direction')) setMissing(prev => { const n = new Set(prev); n.delete('direction'); return n })
+              }}
               className={`px-3 py-3 rounded-2xl border text-sm font-semibold transition-colors ${
                 direction === opt.value
                   ? directionColour[opt.value]
+                  : missing.has('direction')
+                  ? 'border-red-500/60 text-stone-500'
                   : 'border-stone-800 text-stone-500 hover:border-stone-700'
               }`}
             >
@@ -172,6 +188,7 @@ export default function NutritionReviewForm({
             </button>
           ))}
         </div>
+        {missing.has('direction') && <p className="text-red-400 text-xs mt-2 font-medium">Please select an option.</p>}
       </div>
 
       {/* Notes */}
@@ -194,7 +211,7 @@ export default function NutritionReviewForm({
 
       <button
         onClick={handleSubmit}
-        disabled={submitting || !direction}
+        disabled={submitting}
         className="w-full py-3.5 bg-teal-400 hover:bg-teal-300 disabled:bg-stone-800 disabled:text-stone-600 text-black font-bold text-sm rounded-2xl transition-colors"
       >
         {submitting ? 'Submitting...' : 'Submit Review'}

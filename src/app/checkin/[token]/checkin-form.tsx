@@ -17,15 +17,17 @@ function QuestionInput({
   question,
   value,
   onChange,
+  hasError,
 }: {
   question: { id: string; type: 'text' | 'choice'; text: string; helper?: string; options?: string[] }
   value: string | undefined
   onChange: (val: string) => void
+  hasError: boolean
 }) {
   if (question.type === 'text') {
     return (
       <div>
-        <label className="block text-[15px] font-medium text-white mb-2 leading-snug">{question.text}</label>
+        <label className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-400' : 'text-white'}`}>{question.text}</label>
         {question.helper && (
           <p className="text-[13px] text-stone-500 mb-3 leading-relaxed">{question.helper}</p>
         )}
@@ -34,7 +36,7 @@ function QuestionInput({
           onChange={e => onChange(e.target.value)}
           rows={4}
           placeholder="Your response..."
-          className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:border-stone-600 resize-none transition-colors"
+          className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:border-stone-600 resize-none transition-colors border ${hasError ? 'border-red-500/60' : 'border-stone-800'}`}
         />
       </div>
     )
@@ -43,7 +45,7 @@ function QuestionInput({
   if (question.type === 'choice') {
     return (
       <div>
-        <p className="text-[15px] font-medium text-white mb-3 leading-snug">{question.text}</p>
+        <p className={`text-[15px] font-medium mb-3 leading-snug ${hasError ? 'text-red-400' : 'text-white'}`}>{question.text}</p>
         <div className="space-y-2">
           {question.options?.map(opt => (
             <button
@@ -53,6 +55,8 @@ function QuestionInput({
               className={`w-full text-left text-[14px] px-4 py-3 rounded-xl border transition-all duration-150 ${
                 value === opt
                   ? 'bg-teal-500/10 border-teal-500 text-teal-300'
+                  : hasError
+                  ? 'bg-stone-900 border-red-500/60 text-stone-300'
                   : 'bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-600'
               }`}
             >
@@ -84,6 +88,8 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
+  const [errors, setErrors] = useState<Set<string>>(new Set())
+  const [validationMessage, setValidationMessage] = useState('')
 
   const section = sections[sectionIndex]
   const isLast = sectionIndex === sections.length - 1
@@ -92,6 +98,13 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
 
   function setValue(id: string, value: string) {
     setResponses(prev => ({ ...prev, [id]: value }))
+    if (errors.has(id)) {
+      setErrors(prev => {
+        const next = new Set(prev)
+        next.delete(id)
+        return next
+      })
+    }
   }
 
   function goToSection(index: number) {
@@ -99,7 +112,69 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
     setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }), 0)
   }
 
+  function findMissedInSection(idx: number): string[] {
+    return sections[idx].questions
+      .filter(q => !(responses[q.id] && responses[q.id].trim().length > 0))
+      .map(q => q.id)
+  }
+
+  function findMissedAcrossAll(): { sectionIdx: number; questionIds: string[] }[] {
+    return sections
+      .map((_, idx) => ({ sectionIdx: idx, questionIds: findMissedInSection(idx) }))
+      .filter(s => s.questionIds.length > 0)
+  }
+
+  function scrollToFirstMissed(missedIds: string[]) {
+    setTimeout(() => {
+      const first = missedIds[0]
+      const el = document.getElementById(`q-${first}`)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 80)
+  }
+
+  function handleContinue() {
+    const missed = findMissedInSection(sectionIndex)
+    if (missed.length > 0) {
+      setErrors(prev => {
+        const next = new Set(prev)
+        missed.forEach(id => next.add(id))
+        return next
+      })
+      setValidationMessage(
+        missed.length === 1
+          ? '1 question still needs an answer.'
+          : `${missed.length} questions still need an answer.`
+      )
+      scrollToFirstMissed(missed)
+      return
+    }
+    setValidationMessage('')
+    goToSection(sectionIndex + 1)
+  }
+
   async function handleSubmit() {
+    const missedSections = findMissedAcrossAll()
+    if (missedSections.length > 0) {
+      const allMissed = new Set<string>()
+      for (const s of missedSections) for (const id of s.questionIds) allMissed.add(id)
+      setErrors(allMissed)
+
+      const total = allMissed.size
+      setValidationMessage(
+        total === 1
+          ? '1 question still needs an answer.'
+          : `${total} questions still need an answer.`
+      )
+
+      const firstMissed = missedSections[0]
+      if (firstMissed.sectionIdx !== sectionIndex) {
+        goToSection(firstMissed.sectionIdx)
+      }
+      scrollToFirstMissed(firstMissed.questionIds)
+      return
+    }
+
+    setValidationMessage('')
     setSubmitting(true)
     setError('')
     try {
@@ -167,19 +242,39 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
           <h1 className="text-[22px] font-bold text-white tracking-tight">{section.title}</h1>
         </div>
 
+        {/* Validation message */}
+        {validationMessage && (
+          <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+            <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
+            <p className="text-red-400/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
+          </div>
+        )}
+
         {/* Divider */}
         <div className="h-px bg-stone-900 mb-8" />
 
         {/* Questions */}
         <div className="space-y-8">
-          {section.questions.map(q => (
-            <QuestionInput
-              key={q.id}
-              question={q}
-              value={responses[q.id]}
-              onChange={(val) => setValue(q.id, val)}
-            />
-          ))}
+          {section.questions.map(q => {
+            const hasError = errors.has(q.id)
+            return (
+              <div
+                key={q.id}
+                id={`q-${q.id}`}
+                className={hasError ? 'border-l-2 border-red-500 pl-4 -ml-4 scroll-mt-24' : 'scroll-mt-24'}
+              >
+                <QuestionInput
+                  question={q}
+                  value={responses[q.id]}
+                  onChange={(val) => setValue(q.id, val)}
+                  hasError={hasError}
+                />
+                {hasError && (
+                  <p className="text-red-400 text-xs mt-2 font-medium">Please answer this question.</p>
+                )}
+              </div>
+            )
+          })}
         </div>
 
         {error && (
@@ -214,7 +309,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
           ) : (
             <button
               type="button"
-              onClick={() => goToSection(sectionIndex + 1)}
+              onClick={handleContinue}
               className="flex-1 bg-white text-black text-[15px] font-bold py-4 rounded-xl hover:bg-stone-100 transition-colors tracking-tight"
             >
               Continue

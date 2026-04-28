@@ -50,9 +50,58 @@ export default function BaselineForm({ clientId, clientName }: Props) {
   const [photoSide, setPhotoSide] = useState<File | null>(null)
   const [photoBack, setPhotoBack] = useState<File | null>(null)
 
+  // Validation flags for each missed field
+  const [missing, setMissing] = useState<Set<string>>(new Set())
+  const [validationMessage, setValidationMessage] = useState('')
+
+  function clearMissing(id: string) {
+    if (!missing.has(id)) return
+    setMissing(prev => {
+      const next = new Set(prev)
+      next.delete(id)
+      return next
+    })
+  }
+
   const firstName = clientName.split(' ')[0]
 
+  const handleContinueMeasurements = () => {
+    const missed = new Set<string>()
+    if (!bodyweight.trim()) missed.add('bodyweight')
+    if (!waist.trim()) missed.add('waist')
+    if (!hips.trim()) missed.add('hips')
+    if (!chest.trim()) missed.add('chest')
+    if (missed.size > 0) {
+      setMissing(missed)
+      setValidationMessage(
+        missed.size === 1
+          ? '1 measurement still needs an answer.'
+          : `${missed.size} measurements still need an answer.`
+      )
+      return
+    }
+    setMissing(new Set())
+    setValidationMessage('')
+    setStep('photos')
+  }
+
   const handleSubmit = async () => {
+    const missed = new Set<string>()
+    if (!photoFront) missed.add('photoFront')
+    if (!photoSide) missed.add('photoSide')
+    if (!photoBack) missed.add('photoBack')
+    if (missed.size > 0) {
+      setMissing(missed)
+      setValidationMessage(
+        missed.size === 1
+          ? '1 photo still needs to be uploaded.'
+          : `${missed.size} photos still need to be uploaded.`
+      )
+      return
+    }
+
+    setMissing(new Set())
+    setValidationMessage('')
     setStep('submitting')
     setError('')
 
@@ -160,36 +209,46 @@ export default function BaselineForm({ clientId, clientName }: Props) {
               <p className="text-stone-500 text-sm">Record in the units shown. Use a soft tape, don't compress tissue.</p>
             </div>
 
+            {validationMessage && (
+              <div className="border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+                <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
+                <p className="text-red-400/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
+              </div>
+            )}
+
             <div className="space-y-4">
               {[
-                { label: 'Morning bodyweight', unit: 'kg', value: bodyweight, set: setBodyweight, helper: 'After using the bathroom, before food' },
-                { label: 'Waist circumference', unit: 'cm', value: waist, set: setWaist, helper: 'At narrowest point or just above navel' },
-                { label: 'Hip circumference', unit: 'cm', value: hips, set: setHips, helper: 'At widest point of hips and glutes' },
-                { label: 'Chest circumference', unit: 'cm', value: chest, set: setChest, helper: 'At nipple line while relaxed' },
-              ].map(({ label, unit, value, set, helper }) => (
-                <div key={label} className="bg-stone-900 rounded-2xl p-5">
-                  <label className="block text-sm font-medium text-white mb-1">{label}</label>
-                  <p className="text-stone-500 text-xs mb-3">{helper}</p>
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="number"
-                      inputMode="decimal"
-                      step="0.1"
-                      value={value}
-                      onChange={e => set(e.target.value)}
-                      placeholder="0.0"
-                      className="flex-1 bg-stone-800 text-white text-base rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
-                    />
-                    <span className="text-stone-400 text-sm font-medium w-8">{unit}</span>
+                { id: 'bodyweight', label: 'Morning bodyweight', unit: 'kg', value: bodyweight, set: setBodyweight, helper: 'After using the bathroom, before food' },
+                { id: 'waist', label: 'Waist circumference', unit: 'cm', value: waist, set: setWaist, helper: 'At narrowest point or just above navel' },
+                { id: 'hips', label: 'Hip circumference', unit: 'cm', value: hips, set: setHips, helper: 'At widest point of hips and glutes' },
+                { id: 'chest', label: 'Chest circumference', unit: 'cm', value: chest, set: setChest, helper: 'At nipple line while relaxed' },
+              ].map(({ id, label, unit, value, set, helper }) => {
+                const hasError = missing.has(id)
+                return (
+                  <div key={label} className={`bg-stone-900 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
+                    <label className={`block text-sm font-medium mb-1 ${hasError ? 'text-red-400' : 'text-white'}`}>{label}</label>
+                    <p className="text-stone-500 text-xs mb-3">{helper}</p>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        step="0.1"
+                        value={value}
+                        onChange={e => { set(e.target.value); clearMissing(id) }}
+                        placeholder="0.0"
+                        className={`flex-1 bg-stone-800 text-white text-base rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${hasError ? 'border-red-500/60' : 'border-transparent'}`}
+                      />
+                      <span className="text-stone-400 text-sm font-medium w-8">{unit}</span>
+                    </div>
+                    {hasError && <p className="text-red-400 text-xs mt-2 font-medium">Please enter a value.</p>}
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
             <button
-              onClick={() => setStep('photos')}
-              disabled={!bodyweight || !waist || !hips || !chest}
-              className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              onClick={handleContinueMeasurements}
+              className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors"
             >
               Continue to photos
             </button>
@@ -204,6 +263,13 @@ export default function BaselineForm({ clientId, clientName }: Props) {
               <p className="text-stone-500 text-sm">Three positions required. Images must reflect structural reality, not posed presentation.</p>
             </div>
 
+            {validationMessage && (
+              <div className="border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+                <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
+                <p className="text-red-400/70 text-xs mt-1">Missing photos are highlighted in red below.</p>
+              </div>
+            )}
+
             <div className="bg-stone-900 rounded-2xl p-5 space-y-2">
               <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider">Photo standards</p>
               <ul className="space-y-1.5 text-stone-400 text-sm">
@@ -216,56 +282,59 @@ export default function BaselineForm({ clientId, clientName }: Props) {
 
             <div className="space-y-4">
               {[
-                { label: 'Front — relaxed stance', file: photoFront, set: setPhotoFront },
-                { label: 'Side — natural posture', file: photoSide, set: setPhotoSide },
-                { label: 'Back — relaxed arms', file: photoBack, set: setPhotoBack },
-              ].map(({ label, file, set }) => (
-                <div key={label} className="bg-stone-900 rounded-2xl p-5">
-                  <p className="text-sm font-medium text-white mb-3">{label}</p>
-                  {file ? (
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-teal-400/10 flex items-center justify-center">
-                          <svg className="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
+                { id: 'photoFront', label: 'Front — relaxed stance', file: photoFront, set: setPhotoFront },
+                { id: 'photoSide', label: 'Side — natural posture', file: photoSide, set: setPhotoSide },
+                { id: 'photoBack', label: 'Back — relaxed arms', file: photoBack, set: setPhotoBack },
+              ].map(({ id, label, file, set }) => {
+                const hasError = missing.has(id)
+                return (
+                  <div key={label} className={`bg-stone-900 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
+                    <p className={`text-sm font-medium mb-3 ${hasError ? 'text-red-400' : 'text-white'}`}>{label}</p>
+                    {file ? (
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-teal-400/10 flex items-center justify-center">
+                            <svg className="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                          <span className="text-stone-300 text-sm truncate max-w-[180px]">{file.name}</span>
                         </div>
-                        <span className="text-stone-300 text-sm truncate max-w-[180px]">{file.name}</span>
+                        <button onClick={() => set(null)} className="text-stone-500 text-xs hover:text-white">Remove</button>
                       </div>
-                      <button onClick={() => set(null)} className="text-stone-500 text-xs hover:text-white">Remove</button>
-                    </div>
-                  ) : (
-                    <label className="block cursor-pointer">
-                      <div className="border-2 border-dashed border-stone-700 rounded-xl p-6 text-center hover:border-teal-400/50 transition-colors">
-                        <svg className="w-6 h-6 text-stone-500 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
-                        </svg>
-                        <p className="text-stone-500 text-sm">Tap to upload</p>
-                      </div>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        capture="environment"
-                        className="hidden"
-                        onChange={e => set(e.target.files?.[0] ?? null)}
-                      />
-                    </label>
-                  )}
-                </div>
-              ))}
+                    ) : (
+                      <label className="block cursor-pointer">
+                        <div className={`border-2 border-dashed rounded-xl p-6 text-center hover:border-teal-400/50 transition-colors ${hasError ? 'border-red-500/60' : 'border-stone-700'}`}>
+                          <svg className="w-6 h-6 text-stone-500 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
+                          </svg>
+                          <p className="text-stone-500 text-sm">Tap to upload</p>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          capture="environment"
+                          className="hidden"
+                          onChange={e => { set(e.target.files?.[0] ?? null); clearMissing(id) }}
+                        />
+                      </label>
+                    )}
+                    {hasError && <p className="text-red-400 text-xs mt-2 font-medium">Please upload this photo.</p>}
+                  </div>
+                )
+              })}
             </div>
 
             {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
             <button
               onClick={handleSubmit}
-              disabled={!photoFront || !photoSide || !photoBack}
-              className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors"
             >
               Submit baseline
             </button>
 
-            <button onClick={() => setStep('measurements')} className="w-full text-stone-500 text-sm py-2 hover:text-white transition-colors">
+            <button onClick={() => { setMissing(new Set()); setValidationMessage(''); setStep('measurements') }} className="w-full text-stone-500 text-sm py-2 hover:text-white transition-colors">
               ← Back to measurements
             </button>
           </div>

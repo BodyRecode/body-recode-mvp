@@ -101,21 +101,21 @@ export default function HealthDeclarationForm({
   const [declaredPrivacy, setDeclaredPrivacy] = useDraftState(k('declaredPrivacy'), false)
   const [declarationName, setDeclarationName] = useDraftState(k('declarationName'), '')
 
+  // Validation
+  const [missing, setMissing] = useState<Set<string>>(new Set())
+  const [validationMessage, setValidationMessage] = useState('')
+
+  function clearMissing(id: string) {
+    if (!missing.has(id)) return
+    setMissing(prev => {
+      const next = new Set(prev)
+      next.delete(id)
+      return next
+    })
+  }
+
   // Clearance logic
   const requiresClearance = cardioSymptoms.filter(s => s !== 'None of the above').length > 0 || pregnant === 'yes'
-
-  const allDeclarationsTicked =
-    declaredHonest && declaredDisclosed && declaredWillNotify && declaredRisks &&
-    declaredResponsibility && declaredFollowGuidance && declaredNutrition &&
-    declaredLiability && declaredPrivacy
-
-  const canSubmit =
-    dob && phone && emergencyName && emergencyPhone && emergencyRelationship &&
-    healthRating && exercisedBefore &&
-    illnessInjury && receivingTreatment && onMedication && pregnant &&
-    alcohol && smoking &&
-    allDeclarationsTicked && declarationName.trim().length > 2 &&
-    !submitting
 
   const toggleBarrier = (b: string) =>
     setBarriers(prev => prev.includes(b) ? prev.filter(x => x !== b) : [...prev, b])
@@ -123,9 +123,55 @@ export default function HealthDeclarationForm({
   const toggleCardio = (s: string) =>
     setCardioSymptoms(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s])
 
+  function buildMissing(): Set<string> {
+    const m = new Set<string>()
+    if (!dob) m.add('dob')
+    if (!phone) m.add('phone')
+    if (!emergencyName) m.add('emergencyName')
+    if (!emergencyRelationship) m.add('emergencyRelationship')
+    if (!emergencyPhone) m.add('emergencyPhone')
+    if (!healthRating) m.add('healthRating')
+    if (!exercisedBefore) m.add('exercisedBefore')
+    if (!illnessInjury) m.add('illnessInjury')
+    if (!receivingTreatment) m.add('receivingTreatment')
+    if (!onMedication) m.add('onMedication')
+    if (!pregnant) m.add('pregnant')
+    if (!alcohol) m.add('alcohol')
+    if (!smoking) m.add('smoking')
+    if (!declaredHonest) m.add('declaredHonest')
+    if (!declaredDisclosed) m.add('declaredDisclosed')
+    if (!declaredWillNotify) m.add('declaredWillNotify')
+    if (!declaredRisks) m.add('declaredRisks')
+    if (!declaredResponsibility) m.add('declaredResponsibility')
+    if (!declaredFollowGuidance) m.add('declaredFollowGuidance')
+    if (!declaredNutrition) m.add('declaredNutrition')
+    if (!declaredLiability) m.add('declaredLiability')
+    if (!declaredPrivacy) m.add('declaredPrivacy')
+    if (declarationName.trim().length < 3) m.add('declarationName')
+    return m
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!canSubmit) return
+
+    const m = buildMissing()
+    if (m.size > 0) {
+      setMissing(m)
+      setValidationMessage(
+        m.size === 1
+          ? '1 question still needs an answer.'
+          : `${m.size} questions still need an answer.`
+      )
+      setTimeout(() => {
+        const first = Array.from(m)[0]
+        const el = document.getElementById(`f-${first}`)
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 80)
+      return
+    }
+
+    setMissing(new Set())
+    setValidationMessage('')
     setSubmitting(true)
     setError('')
 
@@ -157,6 +203,34 @@ export default function HealthDeclarationForm({
     router.push(`/portal/${portalToken}`)
   }
 
+  const errClass = (id: string) => missing.has(id) ? 'border-red-500/60' : 'border-stone-800'
+  const errLabel = (id: string) => missing.has(id) ? 'text-red-400' : 'text-stone-300'
+  const errMessage = (id: string) =>
+    missing.has(id) ? (
+      <p className="text-red-400 text-xs mt-2 font-medium">Please answer this question.</p>
+    ) : null
+
+  const yesNoButton = (id: string, current: YesNo, setter: (v: YesNo) => void, opt: 'Yes' | 'No') => {
+    const isSelected = current === opt.toLowerCase()
+    const hasError = missing.has(id) && !current
+    return (
+      <button
+        key={opt}
+        type="button"
+        onClick={() => { setter(opt.toLowerCase() as YesNo); clearMissing(id) }}
+        className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors border ${
+          isSelected
+            ? 'bg-teal-400/20 text-teal-400 border-teal-400/40'
+            : hasError
+            ? 'bg-stone-800 text-stone-400 border-red-500/60'
+            : 'bg-stone-800 text-stone-400 border-stone-700 hover:border-stone-600'
+        }`}
+      >
+        {opt}
+      </button>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <ClientHeader />
@@ -165,6 +239,13 @@ export default function HealthDeclarationForm({
           <h1 className="text-2xl font-bold text-white mb-1">Health Declaration</h1>
           <p className="text-stone-400 text-sm leading-relaxed">This screening ensures your coaching program is structured safely and appropriately for you. Answer all questions honestly and completely.</p>
         </div>
+
+        {validationMessage && (
+          <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+            <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
+            <p className="text-red-400/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-10">
 
@@ -176,23 +257,27 @@ export default function HealthDeclarationForm({
                 <p className="text-xs text-stone-500 mb-1">Full Name</p>
                 <p className="text-sm text-stone-300">{clientName}</p>
               </div>
-              <input
-                type="date"
-                value={dob}
-                onChange={e => setDob(e.target.value)}
-                required
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
-                placeholder="Date of Birth"
-              />
-              <p className="text-xs text-stone-600 -mt-1 ml-1">Date of Birth</p>
-              <input
-                type="tel"
-                value={phone}
-                onChange={e => setPhone(e.target.value)}
-                required
-                placeholder="Mobile Number"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
-              />
+              <div id="f-dob" className="scroll-mt-24">
+                <input
+                  type="date"
+                  value={dob}
+                  onChange={e => { setDob(e.target.value); clearMissing('dob') }}
+                  className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${errClass('dob')}`}
+                  placeholder="Date of Birth"
+                />
+                <p className={`text-xs mt-1 ml-1 ${errLabel('dob')}`}>Date of Birth</p>
+                {errMessage('dob')}
+              </div>
+              <div id="f-phone" className="scroll-mt-24">
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={e => { setPhone(e.target.value); clearMissing('phone') }}
+                  placeholder="Mobile Number"
+                  className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${errClass('phone')}`}
+                />
+                {errMessage('phone')}
+              </div>
               <input
                 type="text"
                 value={address}
@@ -214,30 +299,36 @@ export default function HealthDeclarationForm({
           <section>
             <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Emergency Contact</p>
             <div className="space-y-3">
-              <input
-                type="text"
-                value={emergencyName}
-                onChange={e => setEmergencyName(e.target.value)}
-                required
-                placeholder="Full Name"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
-              />
-              <input
-                type="text"
-                value={emergencyRelationship}
-                onChange={e => setEmergencyRelationship(e.target.value)}
-                required
-                placeholder="Relationship (e.g. Partner, Parent)"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
-              />
-              <input
-                type="tel"
-                value={emergencyPhone}
-                onChange={e => setEmergencyPhone(e.target.value)}
-                required
-                placeholder="Phone Number"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
-              />
+              <div id="f-emergencyName" className="scroll-mt-24">
+                <input
+                  type="text"
+                  value={emergencyName}
+                  onChange={e => { setEmergencyName(e.target.value); clearMissing('emergencyName') }}
+                  placeholder="Full Name"
+                  className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${errClass('emergencyName')}`}
+                />
+                {errMessage('emergencyName')}
+              </div>
+              <div id="f-emergencyRelationship" className="scroll-mt-24">
+                <input
+                  type="text"
+                  value={emergencyRelationship}
+                  onChange={e => { setEmergencyRelationship(e.target.value); clearMissing('emergencyRelationship') }}
+                  placeholder="Relationship (e.g. Partner, Parent)"
+                  className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${errClass('emergencyRelationship')}`}
+                />
+                {errMessage('emergencyRelationship')}
+              </div>
+              <div id="f-emergencyPhone" className="scroll-mt-24">
+                <input
+                  type="tel"
+                  value={emergencyPhone}
+                  onChange={e => { setEmergencyPhone(e.target.value); clearMissing('emergencyPhone') }}
+                  placeholder="Phone Number"
+                  className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${errClass('emergencyPhone')}`}
+                />
+                {errMessage('emergencyPhone')}
+              </div>
             </div>
           </section>
 
@@ -245,28 +336,34 @@ export default function HealthDeclarationForm({
           <section>
             <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">General Health</p>
             <div className="space-y-5">
-              <div>
-                <p className="text-sm text-stone-300 mb-3">How would you rate your general health?</p>
+              <div id="f-healthRating" className="scroll-mt-24">
+                <p className={`text-sm mb-3 ${errLabel('healthRating')}`}>How would you rate your general health?</p>
                 <div className="grid grid-cols-2 gap-2">
-                  {(['Excellent', 'Good', 'Fair', 'Poor'] as const).map(r => (
-                    <button key={r} type="button"
-                      onClick={() => setHealthRating(r)}
-                      className={`py-2.5 rounded-xl text-sm font-semibold transition-colors ${healthRating === r ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
-                    >{r}</button>
-                  ))}
+                  {(['Excellent', 'Good', 'Fair', 'Poor'] as const).map(r => {
+                    const isSelected = healthRating === r
+                    const hasError = missing.has('healthRating') && !healthRating
+                    return (
+                      <button key={r} type="button"
+                        onClick={() => { setHealthRating(r); clearMissing('healthRating') }}
+                        className={`py-2.5 rounded-xl text-sm font-semibold transition-colors border ${
+                          isSelected ? 'bg-teal-400/20 text-teal-400 border-teal-400/40'
+                          : hasError ? 'bg-stone-800 text-stone-400 border-red-500/60'
+                          : 'bg-stone-800 text-stone-400 border-stone-700 hover:border-stone-600'
+                        }`}
+                      >{r}</button>
+                    )
+                  })}
                 </div>
+                {errMessage('healthRating')}
               </div>
 
-              <div>
-                <p className="text-sm text-stone-300 mb-3">Have you done structured exercise before?</p>
+              <div id="f-exercisedBefore" className="scroll-mt-24">
+                <p className={`text-sm mb-3 ${errLabel('exercisedBefore')}`}>Have you done structured exercise before?</p>
                 <div className="flex gap-3">
-                  {(['Yes', 'No'] as const).map(opt => (
-                    <button key={opt} type="button"
-                      onClick={() => setExercisedBefore(opt.toLowerCase() as YesNo)}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${exercisedBefore === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
-                    >{opt}</button>
-                  ))}
+                  {yesNoButton('exercisedBefore', exercisedBefore, setExercisedBefore, 'Yes')}
+                  {yesNoButton('exercisedBefore', exercisedBefore, setExercisedBefore, 'No')}
                 </div>
+                {errMessage('exercisedBefore')}
               </div>
 
               {exercisedBefore === 'yes' && (
@@ -310,16 +407,13 @@ export default function HealthDeclarationForm({
             <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Medical History</p>
             <div className="space-y-5">
 
-              <div>
-                <p className="text-sm text-stone-300 mb-3">Have you had any major illness or injury in the last 5 years?</p>
+              <div id="f-illnessInjury" className="scroll-mt-24">
+                <p className={`text-sm mb-3 ${errLabel('illnessInjury')}`}>Have you had any major illness or injury in the last 5 years?</p>
                 <div className="flex gap-3">
-                  {(['Yes', 'No'] as const).map(opt => (
-                    <button key={opt} type="button"
-                      onClick={() => setIllnessInjury(opt.toLowerCase() as YesNo)}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${illnessInjury === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
-                    >{opt}</button>
-                  ))}
+                  {yesNoButton('illnessInjury', illnessInjury, setIllnessInjury, 'Yes')}
+                  {yesNoButton('illnessInjury', illnessInjury, setIllnessInjury, 'No')}
                 </div>
+                {errMessage('illnessInjury')}
                 {illnessInjury === 'yes' && (
                   <textarea value={illnessDetails} onChange={e => setIllnessDetails(e.target.value)}
                     placeholder="Please provide details..."
@@ -327,16 +421,13 @@ export default function HealthDeclarationForm({
                 )}
               </div>
 
-              <div>
-                <p className="text-sm text-stone-300 mb-3">Are you currently receiving medical treatment for any condition?</p>
+              <div id="f-receivingTreatment" className="scroll-mt-24">
+                <p className={`text-sm mb-3 ${errLabel('receivingTreatment')}`}>Are you currently receiving medical treatment for any condition?</p>
                 <div className="flex gap-3">
-                  {(['Yes', 'No'] as const).map(opt => (
-                    <button key={opt} type="button"
-                      onClick={() => setReceivingTreatment(opt.toLowerCase() as YesNo)}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${receivingTreatment === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
-                    >{opt}</button>
-                  ))}
+                  {yesNoButton('receivingTreatment', receivingTreatment, setReceivingTreatment, 'Yes')}
+                  {yesNoButton('receivingTreatment', receivingTreatment, setReceivingTreatment, 'No')}
                 </div>
+                {errMessage('receivingTreatment')}
                 {receivingTreatment === 'yes' && (
                   <textarea value={treatmentDetails} onChange={e => setTreatmentDetails(e.target.value)}
                     placeholder="Please provide details..."
@@ -344,16 +435,13 @@ export default function HealthDeclarationForm({
                 )}
               </div>
 
-              <div>
-                <p className="text-sm text-stone-300 mb-3">Are you currently taking any prescription medication?</p>
+              <div id="f-onMedication" className="scroll-mt-24">
+                <p className={`text-sm mb-3 ${errLabel('onMedication')}`}>Are you currently taking any prescription medication?</p>
                 <div className="flex gap-3">
-                  {(['Yes', 'No'] as const).map(opt => (
-                    <button key={opt} type="button"
-                      onClick={() => setOnMedication(opt.toLowerCase() as YesNo)}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${onMedication === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
-                    >{opt}</button>
-                  ))}
+                  {yesNoButton('onMedication', onMedication, setOnMedication, 'Yes')}
+                  {yesNoButton('onMedication', onMedication, setOnMedication, 'No')}
                 </div>
+                {errMessage('onMedication')}
                 {onMedication === 'yes' && (
                   <textarea value={medicationList} onChange={e => setMedicationList(e.target.value)}
                     placeholder="Please list all medications..."
@@ -361,16 +449,13 @@ export default function HealthDeclarationForm({
                 )}
               </div>
 
-              <div>
-                <p className="text-sm text-stone-300 mb-3">Are you currently pregnant or recently postpartum (within 12 months)?</p>
+              <div id="f-pregnant" className="scroll-mt-24">
+                <p className={`text-sm mb-3 ${errLabel('pregnant')}`}>Are you currently pregnant or recently postpartum (within 12 months)?</p>
                 <div className="flex gap-3">
-                  {(['Yes', 'No'] as const).map(opt => (
-                    <button key={opt} type="button"
-                      onClick={() => setPregnant(opt.toLowerCase() as YesNo)}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${pregnant === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
-                    >{opt}</button>
-                  ))}
+                  {yesNoButton('pregnant', pregnant, setPregnant, 'Yes')}
+                  {yesNoButton('pregnant', pregnant, setPregnant, 'No')}
                 </div>
+                {errMessage('pregnant')}
               </div>
             </div>
           </section>
@@ -416,28 +501,22 @@ export default function HealthDeclarationForm({
           <section>
             <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Lifestyle</p>
             <div className="space-y-5">
-              <div>
-                <p className="text-sm text-stone-300 mb-3">Do you drink alcohol?</p>
+              <div id="f-alcohol" className="scroll-mt-24">
+                <p className={`text-sm mb-3 ${errLabel('alcohol')}`}>Do you drink alcohol?</p>
                 <div className="flex gap-3">
-                  {(['Yes', 'No'] as const).map(opt => (
-                    <button key={opt} type="button"
-                      onClick={() => setAlcohol(opt.toLowerCase() as YesNo)}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${alcohol === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
-                    >{opt}</button>
-                  ))}
+                  {yesNoButton('alcohol', alcohol, setAlcohol, 'Yes')}
+                  {yesNoButton('alcohol', alcohol, setAlcohol, 'No')}
                 </div>
+                {errMessage('alcohol')}
               </div>
 
-              <div>
-                <p className="text-sm text-stone-300 mb-3">Do you smoke?</p>
+              <div id="f-smoking" className="scroll-mt-24">
+                <p className={`text-sm mb-3 ${errLabel('smoking')}`}>Do you smoke?</p>
                 <div className="flex gap-3">
-                  {(['Yes', 'No'] as const).map(opt => (
-                    <button key={opt} type="button"
-                      onClick={() => setSmoking(opt.toLowerCase() as YesNo)}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${smoking === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
-                    >{opt}</button>
-                  ))}
+                  {yesNoButton('smoking', smoking, setSmoking, 'Yes')}
+                  {yesNoButton('smoking', smoking, setSmoking, 'No')}
                 </div>
+                {errMessage('smoking')}
               </div>
 
               <textarea value={dietPattern} onChange={e => setDietPattern(e.target.value)}
@@ -518,39 +597,56 @@ export default function HealthDeclarationForm({
             <p className="text-sm text-stone-400 mb-4">Please read and tick each statement to confirm your understanding:</p>
             <div className="space-y-3">
               {[
-                { state: declaredHonest, setter: setDeclaredHonest, text: 'I have completed this form honestly and to the best of my knowledge.' },
-                { state: declaredDisclosed, setter: setDeclaredDisclosed, text: 'I have disclosed all relevant medical conditions, medications, and health history.' },
-                { state: declaredWillNotify, setter: setDeclaredWillNotify, text: 'I will notify Body Recode of any changes to my health status during coaching.' },
-                { state: declaredRisks, setter: setDeclaredRisks, text: 'I understand that exercise carries inherent risks including soreness, strain, fatigue, and the possibility of accidental injury.' },
-                { state: declaredResponsibility, setter: setDeclaredResponsibility, text: 'I accept responsibility for staying within my limits, following guidance, communicating honestly about discomfort, and seeking medical advice when recommended.' },
-                { state: declaredFollowGuidance, setter: setDeclaredFollowGuidance, text: 'I will use proper form and technique, and modify or pause exercises when needed.' },
-                { state: declaredNutrition, setter: setDeclaredNutrition, text: 'I understand that any nutrition guidance provided by Body Recode is general information only and does not constitute medical or dietetic treatment.' },
-                { state: declaredLiability, setter: setDeclaredLiability, text: 'I agree that Body Recode is not liable for injuries or health complications arising from participation, provided coaching is delivered within its professional scope of practice. Nothing in this declaration limits my rights under Australian Consumer Law.' },
-                { state: declaredPrivacy, setter: setDeclaredPrivacy, text: 'I consent to my health information being securely stored and used solely for the purpose of delivering my coaching program. It will not be shared with third parties without my permission.' },
-              ].map(({ state, setter, text }, i) => (
-                <label key={i} className={`flex items-start gap-3 cursor-pointer p-4 rounded-xl border transition-colors ${state ? 'border-teal-400/30 bg-teal-400/5' : 'border-stone-800 bg-stone-900 hover:border-stone-700'}`}>
-                  <input type="checkbox" checked={state} onChange={e => setter(e.target.checked)}
-                    className="mt-0.5 w-4 h-4 rounded accent-teal-400 flex-shrink-0" />
-                  <span className="text-sm text-stone-300 leading-relaxed">{text}</span>
-                </label>
-              ))}
+                { id: 'declaredHonest', state: declaredHonest, setter: setDeclaredHonest, text: 'I have completed this form honestly and to the best of my knowledge.' },
+                { id: 'declaredDisclosed', state: declaredDisclosed, setter: setDeclaredDisclosed, text: 'I have disclosed all relevant medical conditions, medications, and health history.' },
+                { id: 'declaredWillNotify', state: declaredWillNotify, setter: setDeclaredWillNotify, text: 'I will notify Body Recode of any changes to my health status during coaching.' },
+                { id: 'declaredRisks', state: declaredRisks, setter: setDeclaredRisks, text: 'I understand that exercise carries inherent risks including soreness, strain, fatigue, and the possibility of accidental injury.' },
+                { id: 'declaredResponsibility', state: declaredResponsibility, setter: setDeclaredResponsibility, text: 'I accept responsibility for staying within my limits, following guidance, communicating honestly about discomfort, and seeking medical advice when recommended.' },
+                { id: 'declaredFollowGuidance', state: declaredFollowGuidance, setter: setDeclaredFollowGuidance, text: 'I will use proper form and technique, and modify or pause exercises when needed.' },
+                { id: 'declaredNutrition', state: declaredNutrition, setter: setDeclaredNutrition, text: 'I understand that any nutrition guidance provided by Body Recode is general information only and does not constitute medical or dietetic treatment.' },
+                { id: 'declaredLiability', state: declaredLiability, setter: setDeclaredLiability, text: 'I agree that Body Recode is not liable for injuries or health complications arising from participation, provided coaching is delivered within its professional scope of practice. Nothing in this declaration limits my rights under Australian Consumer Law.' },
+                { id: 'declaredPrivacy', state: declaredPrivacy, setter: setDeclaredPrivacy, text: 'I consent to my health information being securely stored and used solely for the purpose of delivering my coaching program. It will not be shared with third parties without my permission.' },
+              ].map(({ id, state, setter, text }) => {
+                const hasError = missing.has(id) && !state
+                return (
+                  <label
+                    key={id}
+                    id={`f-${id}`}
+                    className={`flex items-start gap-3 cursor-pointer p-4 rounded-xl border transition-colors scroll-mt-24 ${
+                      state
+                        ? 'border-teal-400/30 bg-teal-400/5'
+                        : hasError
+                        ? 'border-red-500/60 bg-red-950/20'
+                        : 'border-stone-800 bg-stone-900 hover:border-stone-700'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={state}
+                      onChange={e => { setter(e.target.checked); clearMissing(id) }}
+                      className="mt-0.5 w-4 h-4 rounded accent-teal-400 flex-shrink-0"
+                    />
+                    <span className={`text-sm leading-relaxed ${hasError ? 'text-red-300' : 'text-stone-300'}`}>{text}</span>
+                  </label>
+                )
+              })}
             </div>
           </section>
 
           {/* Declaration */}
           <section>
             <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Declaration</p>
-            <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 space-y-4">
-              <p className="text-sm text-stone-400">By typing your full name below, you confirm that all information provided in this form is accurate and complete, and that you agree to the declarations above.</p>
+            <div id="f-declarationName" className={`bg-stone-900 rounded-xl p-5 space-y-4 border scroll-mt-24 ${missing.has('declarationName') ? 'border-red-500/60' : 'border-stone-800'}`}>
+              <p className={`text-sm ${missing.has('declarationName') ? 'text-red-300' : 'text-stone-400'}`}>By typing your full name below, you confirm that all information provided in this form is accurate and complete, and that you agree to the declarations above.</p>
               <input
                 type="text"
                 value={declarationName}
-                onChange={e => setDeclarationName(e.target.value)}
+                onChange={e => { setDeclarationName(e.target.value); if (e.target.value.trim().length >= 3) clearMissing('declarationName') }}
                 placeholder="Type your full name"
-                required
-                className="w-full bg-[#0a0a0a] border border-stone-700 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+                className={`w-full bg-[#0a0a0a] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${missing.has('declarationName') ? 'border-red-500/60' : 'border-stone-700'}`}
               />
               <p className="text-xs text-stone-600">Date: {new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              {errMessage('declarationName')}
             </div>
           </section>
 
@@ -558,15 +654,11 @@ export default function HealthDeclarationForm({
 
           <button
             type="submit"
-            disabled={!canSubmit}
+            disabled={submitting}
             className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           >
             {submitting ? 'Saving…' : 'Submit Health Declaration →'}
           </button>
-
-          {!canSubmit && !submitting && (
-            <p className="text-xs text-stone-600 text-center">Complete all required fields and tick all declarations to continue.</p>
-          )}
         </form>
       </div>
     </div>
