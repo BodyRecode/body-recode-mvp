@@ -113,9 +113,14 @@ const HOW_IT_WORKS_STAGES = [
     number: '02',
     title: 'Biological Interpretation',
     subtitle: 'The CFFS',
-    body: 'The data is interpreted through the Body Recode™ Interpretive Pillars. The Fat Map Method™ is the primary pillar. The output is the CFFS — your Coach-Facing Foundational Synthesis. It defines your biological profile and governs every downstream decision.',
-    chips: ['Stress-Stored', 'Estrogen-Shift', 'Insulin-Drift', 'Androgen-Decline'],
-    coachScript: '"From your intake I put together what we call a CFFS — that\'s your foundational read. It tells me which of four profiles you fit into. From there it sets the rules for everything I do with you."',
+    body: 'I read your data through the Body Recode™ Interpretive Pillars — the Fat Map Method™ is the primary one. The output is the CFFS — your Coach-Facing Foundational Synthesis. It defines your biological profile and the boundaries I work within from there.',
+    pieces: [
+      { name: 'Stress-Stored', desc: 'Managing a lot, holding on. Body holds tighter instead of releasing fat. The harder you push, the less moves.' },
+      { name: 'Estrogen-Shift', desc: 'Body has changed. What used to work doesn\'t anymore. Fat distribution shifted, recovery feels different.' },
+      { name: 'Insulin-Drift', desc: 'Energy is inconsistent. Eating well but feeling flat. Body partitioning energy differently than it used to.' },
+      { name: 'Androgen-Decline', desc: 'Response has dropped off. Muscle harder to hold, recovery slower, the stimulus that used to work has stopped.' },
+    ],
+    coachScript: '"From your intake I put together what we call a CFFS — that\'s your foundational read. It tells me which of four profiles you fit into. Based on what you\'ve told me, you\'re sitting in [name the profile]. From there it sets the rules for everything I do with you."',
   },
   {
     number: '03',
@@ -134,8 +139,8 @@ const HOW_IT_WORKS_STAGES = [
     number: '04',
     title: 'The Continuous Loop',
     subtitle: 'CFFS + CFWS in parallel',
-    body: 'Two parallel documents run throughout: the CFFS, foundational and non-temporal; and the CFWS, the Coach-Facing Weekly Synthesis, which captures how the system is responding to applied load in real time.',
-    coachScript: '"Once we\'re going it runs on a loop. Every week I do what\'s called a CFWS — your weekly read on how your body\'s responding to what we\'ve applied. Each one feeds the next. It\'s not a static plan, it adapts as your body adapts."',
+    body: 'Two documents run in parallel the whole way through: the CFFS — the foundation that doesn\'t change — and the CFWS, your weekly read. I produce a fresh CFWS every week, capturing how your body\'s responding to what we\'ve applied.',
+    coachScript: '"Once we\'re going we\'re in a continuous cycle — I read, I adjust, I read again. Every week I do what\'s called a CFWS — your weekly read on how your body\'s responding to what we\'ve applied. That feeds my next adjustment. It\'s not a static plan, it adapts as your body adapts."',
   },
 ] as const
 
