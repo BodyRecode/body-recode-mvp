@@ -22,12 +22,13 @@ const TABS: { id: Tab; label: string }[] = [
 type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'ad' | 'prelaunch' | 'thread' | 'video'
 type CampaignPhase = 'prelaunch' | 'ads' | 'optimise' | 'scale'
 type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder' | 'studio_of_ten'
-type Platform = 'instagram' | 'threads' | 'facebook' | 'both'
+type Platform = 'instagram' | 'threads' | 'facebook' | 'linkedin' | 'both'
 
 const PLATFORM_STYLES: Record<Platform, { label: string; badge: string }> = {
   instagram: { label: 'Instagram', badge: 'bg-pink-500/15 text-pink-400 border-pink-500/25' },
   threads:   { label: 'Threads',   badge: 'bg-stone-500/15 text-stone-300 border-stone-500/25' },
   facebook:  { label: 'Facebook',  badge: 'bg-blue-500/15 text-blue-400 border-blue-500/25' },
+  linkedin:  { label: 'LinkedIn',  badge: 'bg-sky-500/15 text-sky-400 border-sky-500/25' },
   both:      { label: 'IG + Threads', badge: 'bg-violet-500/15 text-violet-400 border-violet-500/25' },
 }
 

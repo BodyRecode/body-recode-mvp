@@ -259,12 +259,12 @@ function PillarsTab() {
       title: 'Building in Public',
       color: 'blue' as const,
       tagLabel: 'Build',
-      description: 'The Body Recode platform documented in real time. The Studio of Ten internal platform documented in real time. Live case studies as they happen.',
+      description: 'The Studio of Ten internal platform and real client builds documented in real time. Live case studies as they happen, not polished retrospectives.',
       topics: [
         'What was built this week (specific feature, specific client)',
         'Trade-offs made and why',
         'The internal platform: 8 phases shipped to run the studio itself',
-        'Body Recode platform decisions and why they matter for clients',
+        'Decisions that look small but compound across every future client',
         'Failures, rebuilds, and what each one taught',
       ],
     },
@@ -365,7 +365,7 @@ function ScriptsTab() {
   const launchScripts: Script[] = [
     {
       id: 'l1', type: 'Arrival', pillar: 'Positioning', pillarColor: 'blue', platform: 'LinkedIn + Instagram',
-      hook: 'I\'m taking on 10 clients alongside Body Recode. That\'s the whole company.',
+      hook: 'I\'m taking on ten clients. That\'s the whole company.',
       body: 'Studio of Ten is a capped-capacity build studio. Custom websites, platforms, and software for serious operators. One person, ten clients ever. The cap is real - it\'s the actual upper bound of what I can deliver well.',
     },
     {
@@ -375,8 +375,8 @@ function ScriptsTab() {
     },
     {
       id: 'l3', type: 'Build', pillar: 'Build', pillarColor: 'blue', platform: 'LinkedIn + Instagram',
-      hook: 'Body Recode runs on software I built myself.',
-      body: 'No off-the-shelf coaching platform. No agency. CRM, programs, payments, automations - all custom. That capability has capacity for ten clients. That\'s Studio of Ten.',
+      hook: 'I built the software my own business runs on.',
+      body: 'No off-the-shelf tools. No agency. CRM, payments, automations - all custom. That capability now has capacity for ten clients. That\'s Studio of Ten.',
     },
     {
       id: 'l4', type: 'Stack', pillar: 'Stack', pillarColor: 'amber', platform: 'LinkedIn + Instagram',
@@ -417,7 +417,7 @@ function ScriptsTab() {
     {
       id: 'p2a', type: 'Contrarian', pillar: 'Cap', pillarColor: 'violet', platform: 'LinkedIn',
       hook: 'Scarcity is not a marketing trick when it\'s the actual constraint.',
-      body: 'Ten clients is the math. Twenty would mean compromising Body Recode. The cap is honest. That\'s why the cap is the brand.',
+      body: 'Ten clients is the math. Twenty would mean compromising the work I\'m already doing. The cap is honest. That\'s why the cap is the brand.',
     },
     {
       id: 'p2b', type: 'Framework', pillar: 'Cap', pillarColor: 'violet', platform: 'LinkedIn + Instagram',
@@ -432,7 +432,7 @@ function ScriptsTab() {
     {
       id: 'p2d', type: 'Math', pillar: 'Cap', pillarColor: 'violet', platform: 'LinkedIn',
       hook: 'Here\'s the actual capacity math.',
-      body: 'Ten clients at $1,500/mo = $15K/mo recurring. ~15-20 hrs/week sustained. Body Recode stays the main game. The numbers only work because the cap is real. Stretch past ten and the whole model breaks.',
+      body: 'Ten clients at $1,500/mo = $15K/mo recurring. ~15-20 hrs/week sustained. The numbers only work because the cap is real. Stretch past ten and the whole model breaks.',
     },
   ]
 
