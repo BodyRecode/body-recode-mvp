@@ -18,6 +18,7 @@ import {
   FlaskConical,
   User,
   BrainCircuit,
+  Hexagon,
 } from 'lucide-react'
 
 type NavItem = {
@@ -74,6 +75,7 @@ const sections: NavSection[] = [
     items: [
       { label: 'Personal Brand', href: '/dashboard/business/personal-brand', icon: User },
       { label: 'AI Co-Founder',  href: '/dashboard/business/ai-cofounder',   icon: BrainCircuit },
+      { label: 'Studio of Ten',  href: '/dashboard/business/studio-of-ten',  icon: Hexagon },
     ],
   },
   {

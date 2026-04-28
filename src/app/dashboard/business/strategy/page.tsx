@@ -21,7 +21,7 @@ const TABS: { id: Tab; label: string }[] = [
 
 type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'ad' | 'prelaunch' | 'thread' | 'video'
 type CampaignPhase = 'prelaunch' | 'ads' | 'optimise' | 'scale'
-type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder'
+type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder' | 'studio_of_ten'
 type Platform = 'instagram' | 'threads' | 'facebook' | 'both'
 
 const PLATFORM_STYLES: Record<Platform, { label: string; badge: string }> = {
@@ -61,6 +61,7 @@ const BRAND_STYLES: Record<Brand, { label: string; handle: string; dot: string; 
   body_recode:    { label: 'Body Recode',    handle: 'body_recode_',       dot: 'bg-teal-400',   filter: 'bg-teal-500/10 text-teal-400 border-teal-500/30' },
   personal_brand: { label: 'Personal Brand', handle: 'kade_dunstone_',     dot: 'bg-violet-400', filter: 'bg-violet-500/10 text-violet-400 border-violet-500/30' },
   ai_cofounder:   { label: 'AI Co-Founder',  handle: 'aicofoundermethod.com', dot: 'bg-amber-400',  filter: 'bg-amber-500/10 text-amber-400 border-amber-500/30' },
+  studio_of_ten:  { label: 'Studio of Ten',  handle: 'studiooften.com',    dot: 'bg-blue-400',   filter: 'bg-blue-500/10 text-blue-400 border-blue-500/30' },
 }
 
 const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: string; border: string }> = {
