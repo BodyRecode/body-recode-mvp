@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
-import Image from 'next/image'
 import CommencementFeeButton from '@/components/commencement-fee-button'
 
 // ─── Constants ─────────────────────────────────────────────────────────────
@@ -815,18 +814,6 @@ export default function ZoomCompanion({
                               {chip}
                             </span>
                           ))}
-                        </div>
-                      )}
-
-                      {card.number === '02' && (
-                        <div className="rounded-lg overflow-hidden border border-stone-800 bg-black mb-3">
-                          <Image
-                            src="/images/fatmap-zones.png"
-                            alt="Fat Map Method — Biological Zone Map"
-                            width={1100}
-                            height={1465}
-                            className="w-full h-auto"
-                          />
                         </div>
                       )}
 
