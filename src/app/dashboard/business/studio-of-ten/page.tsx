@@ -51,14 +51,14 @@ function PositioningTab() {
       <Card>
         <SectionLabel>What Studio of Ten Is</SectionLabel>
         <p className="text-stone-300 text-sm leading-relaxed">
-          A boutique, capped-capacity build studio. One operator. Ten clients maximum. End-to-end digital systems for solo business operators who want production-grade infrastructure without agency overhead.
+          A small build studio. We integrate AI into solo coaching and allied health practices - lead capture, client platforms, AI reports, automations - all custom-built and properly engineered. Capped at ten clients.
         </p>
         <div className="mt-4 space-y-2">
           {[
-            'Not a freelancer',
-            'Not an agency',
             'Not a SaaS product',
-            'Not a marketplace',
+            'Not a generic agency',
+            'Not Kajabi / Wix / Mindbody',
+            'Not for tradies, consultants, or course creators',
           ].map(s => (
             <div key={s} className="flex items-center gap-2 text-sm text-stone-400">
               <span className="text-red-400">-</span> {s}
@@ -66,20 +66,20 @@ function PositioningTab() {
           ))}
           <div className="flex items-start gap-2 text-sm text-stone-200 mt-3">
             <span className="text-blue-400 mt-0.5">+</span>
-            <span>A capped-capacity studio with one founder-operator who has built a real business and uses the same stack to build for clients.</span>
+            <span>A studio that integrates AI properly into coaching and allied health practices - so the operator stops doing busywork and gets back to clients.</span>
           </div>
         </div>
         <div className="mt-4 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
-          <p className="text-xs text-blue-300">The platform is the proof. Body Recode runs on software Kade built himself. Studio of Ten exists because that capability has capacity for 10 clients alongside Body Recode.</p>
+          <p className="text-xs text-blue-300">Body Recode is the case study. We built and run a full custom platform for it - lead capture, AI reports, client portal, automations. Now we ship the same level of work for clients in the same niche.</p>
         </div>
       </Card>
 
       <Card>
         <SectionLabel>Core Philosophy</SectionLabel>
-        <p className="text-2xl font-semibold text-white mb-3">Capped at 10. The cap is the brand.</p>
+        <p className="text-2xl font-semibold text-white mb-3">AI integrated, properly. Capped at 10.</p>
         <p className="text-stone-400 text-sm leading-relaxed">
-          Scarcity drives quality and filters out time-wasters.<br />
-          Ten clients is the actual upper bound of what one operator can deliver well alongside Body Recode.<br />
+          AI integration done properly is complicated - we&apos;ve done the learning so coaches don&apos;t have to.<br />
+          Ten clients is the upper bound of what we can deliver well.<br />
           When the cap is reached, the door closes and prospects join a waitlist.
         </p>
         <div className="mt-4 flex gap-2 flex-wrap">
@@ -125,7 +125,7 @@ Capped at 10 clients. Yours never gets second priority.
           <div>
             <p className="text-[10px] uppercase tracking-widest text-blue-500/60 mb-2">Always</p>
             <div className="space-y-1">
-              {['Direct', 'Confident, not cocky', 'Specific - name tools, name outcomes', 'Honest about limits and trade-offs', 'Tech-forward (mono fonts, system metaphors)'].map(t => (
+              {['Direct', 'Confident, not cocky', 'Specific - name tools, name outcomes', 'Honest about limits and trade-offs', 'Studio voice (we, the studio) - not solo I'].map(t => (
                 <div key={t} className="flex items-center gap-2 text-xs text-stone-300">
                   <span className="text-blue-500/60">+</span> {t}
                 </div>
@@ -135,7 +135,7 @@ Capped at 10 clients. Yours never gets second priority.
           <div>
             <p className="text-[10px] uppercase tracking-widest text-red-500/60 mb-2">Never</p>
             <div className="space-y-1">
-              {['Synergy / leverage / solutions', '"We\'re passionate about..."', 'Award-winning (no awards)', 'Corporate "we" - it\'s one person, use "I"', 'Em dashes - use hyphens', 'Emojis in client-facing copy'].map(t => (
+              {['Synergy / leverage / solutions', '"We\'re passionate about..."', 'Award-winning (no awards)', '"Just one person" - studio voice instead', 'Em dashes - use hyphens', 'Emojis in client-facing copy', 'Engineering jargon coaches don\'t recognise (Postmark, OAuth, Inngest)'].map(t => (
                 <div key={t} className="flex items-center gap-2 text-xs text-stone-500">
                   <span className="text-red-500/60">-</span> {t}
                 </div>
@@ -149,16 +149,16 @@ Capped at 10 clients. Yours never gets second priority.
         <SectionLabel>Contrarian Positions (Content Foundation)</SectionLabel>
         <div className="space-y-2">
           {[
-            'Most agencies sell you scale you don\'t need. The cap is the value.',
-            'Off-the-shelf tools (Wix, Kajabi, Squarespace) hit a ceiling fast. Custom is cheaper than you think.',
-            'You don\'t need a 30-person team. You need one person who understands the whole stack.',
-            'Lock-in is a tax on switching. Real ownership of your software is rarer than people realise.',
-            'The best builders are operators first - they build for the business, not the portfolio.',
-            'AI does not replace builders. It compounds builders who already think in systems.',
-            'Most software is rented. Yours should run on systems you can take in-house at any time.',
-            'Scarcity is not a marketing trick when it\'s the actual constraint of one operator.',
-            'The platform is the proof. If it doesn\'t run a real business, don\'t trust the builder.',
-            'Premium service businesses deserve premium software - and most are still on Mailchimp.',
+            'Most coaches don\'t have time to learn AI. We do that for them.',
+            'AI for coaches isn\'t ChatGPT prompts. It\'s integrated systems that run quietly in the background.',
+            'Kajabi, Wix, and Mindbody hit a ceiling fast. Custom AI-integrated software is cheaper than you think.',
+            'A 6-figure coaching practice deserves better than $39/mo Mailchimp templates.',
+            'AI integration done properly takes years to learn. Most coaches shouldn\'t learn it - they should hire someone who has.',
+            'The studio integrates AI where it actually matters: client intake, reports, follow-ups, content - not gimmicks.',
+            'You don\'t need a 30-person agency. You need a small studio that understands coaching businesses.',
+            'Scarcity is not a marketing trick when it\'s the actual constraint. Ten clients is the limit of what we can deliver well.',
+            'The platform is the proof. Body Recode runs on what we build. If it works for a real coaching practice, it works for yours.',
+            'Most coaches rent software that wasn\'t built for them. Yours should be tuned to how you actually work.',
           ].map((p, i) => (
             <div key={i} className="flex items-start gap-3 py-2 border-b border-stone-800/60 last:border-0">
               <span className="text-xs text-stone-600 font-mono mt-0.5 w-4 shrink-0">{i + 1}</span>
@@ -256,16 +256,16 @@ function PillarsTab() {
   const pillars = [
     {
       num: '01',
-      title: 'Building in Public',
+      title: 'AI in Practice',
       color: 'blue' as const,
-      tagLabel: 'Build',
-      description: 'The Studio of Ten internal platform and real client builds documented in real time. Live case studies as they happen, not polished retrospectives.',
+      tagLabel: 'AI',
+      description: 'Real AI use cases for coaching and allied health practices. What we built, what it does, what it saved. No theory, no demos - actual production AI doing actual work.',
       topics: [
-        'What was built this week (specific feature, specific client)',
-        'Trade-offs made and why',
-        'The internal platform: 8 phases shipped to run the studio itself',
-        'Decisions that look small but compound across every future client',
-        'Failures, rebuilds, and what each one taught',
+        'AI-personalised intake reports replacing 2-hour writing sessions',
+        'Weekly check-in synthesis that runs while clients sleep',
+        'Custom AI for content briefs, follow-ups, and client comms',
+        'Why "AI for coaches" isn\'t ChatGPT prompts',
+        'What integrating AI actually looks like in week 1, week 4, month 3',
       ],
     },
     {
@@ -273,7 +273,7 @@ function PillarsTab() {
       title: 'The 10-Client Cap',
       color: 'violet' as const,
       tagLabel: 'Cap',
-      description: 'Why scarcity is the offer. Why most agencies oversell scale. Why a real cap changes the relationship between operator and client.',
+      description: 'Why scarcity is the offer. Why most agencies oversell scale. Why a real cap changes the relationship between studio and client.',
       topics: [
         'The math behind the cap (capacity, revenue, sustainability)',
         'Why "yours never gets second priority" is only true at small scale',
@@ -284,17 +284,17 @@ function PillarsTab() {
     },
     {
       num: '03',
-      title: 'Tools and Tech',
+      title: 'Stack & Tools',
       color: 'amber' as const,
       tagLabel: 'Stack',
-      description: 'Specific technical write-ups. Real systems, real costs, real trade-offs. No theory, no vendor pitches.',
+      description: 'Tools coaches and allied health practitioners actually use - what works, what hits a ceiling, what costs more than people realise. Concrete comparisons, not vendor pitches.',
       topics: [
         'Why I dropped Calendly (and what replaced it)',
-        'Postmark vs Resend - the real differences',
-        'Custom OTP login vs Supabase magic links - one is fragile, one isn\'t',
-        'Stripe billing without hand-rolling a billing system',
-        'When custom beats off-the-shelf (and when it doesn\'t)',
-        'The cost of Kajabi over five years vs custom',
+        'The 5-year cost of Kajabi vs custom',
+        'Squarespace ceiling: when to leave',
+        'Mindbody for allied health: where it works, where it breaks',
+        'Practice Better, Healthie, ClinicMaster - what they all miss',
+        'Stripe vs the platforms that take a cut on every payment',
       ],
     },
     {
@@ -302,13 +302,13 @@ function PillarsTab() {
       title: 'Operator-Builder',
       color: 'orange' as const,
       tagLabel: 'Operator',
-      description: 'The cross-pollination of running a service business and building software. The lessons that only come from doing both at once.',
+      description: 'The cross-pollination of running a coaching practice and building the software for it. Lessons that only come from being on both sides at once.',
       topics: [
-        'What I learned about my own coaching business by designing the software for it',
+        'What we learned about coaching businesses by designing software for them',
         'Why operators make better builders than developers do',
-        'The sales call as research input for the platform',
-        'How a real client problem becomes a feature',
+        'How a real client problem becomes a feature in the next build',
         'When to build, when to buy, when to leave it manual',
+        'Why every sales call is research input for the next iteration',
       ],
     },
   ]
@@ -365,51 +365,51 @@ function ScriptsTab() {
   const launchScripts: Script[] = [
     {
       id: 'l1', type: 'Arrival', pillar: 'Positioning', pillarColor: 'blue', platform: 'LinkedIn + Instagram',
-      hook: 'I\'m taking on ten clients. That\'s the whole company.',
-      body: 'Studio of Ten is a capped-capacity build studio. Custom websites, platforms, and software for serious operators. One person, ten clients ever. The cap is real - it\'s the actual upper bound of what I can deliver well.',
+      hook: 'Studio of Ten is taking on ten clients. That\'s the whole company.',
+      body: 'A small build studio that integrates AI into solo coaching and allied health practices. Custom systems built around how your business already runs - lead capture, client platforms, AI reports, automations. Capped at ten clients, ever.',
     },
     {
-      id: 'l2', type: 'Contrarian', pillar: 'Cap', pillarColor: 'violet', platform: 'LinkedIn + Instagram',
-      hook: 'Most agencies sell you scale you don\'t need.',
-      body: 'A 30-person team is overhead, not value, when you\'re a solo operator earning $200K. What you actually need is one person who understands your whole stack and won\'t put you behind 49 other clients.',
+      id: 'l2', type: 'Contrarian', pillar: 'AI', pillarColor: 'blue', platform: 'LinkedIn + Instagram',
+      hook: 'Most coaches don\'t have time to figure out AI.',
+      body: 'The tools change every month. The integrations are fragile. Most operators end up doing nothing because the learning curve isn\'t worth it. We spent two years figuring it out so coaches don\'t have to. Get back to clients - we\'ll handle the AI.',
     },
     {
-      id: 'l3', type: 'Build', pillar: 'Build', pillarColor: 'blue', platform: 'LinkedIn + Instagram',
-      hook: 'I built the software my own business runs on.',
-      body: 'No off-the-shelf tools. No agency. CRM, payments, automations - all custom. That capability now has capacity for ten clients. That\'s Studio of Ten.',
+      id: 'l3', type: 'Build', pillar: 'AI', pillarColor: 'blue', platform: 'LinkedIn + Instagram',
+      hook: 'AI for coaches isn\'t ChatGPT prompts.',
+      body: 'It\'s integrated systems running quietly in the background. AI reading the intake and writing the assessment. AI synthesising weekly check-ins and drafting the response. Real production AI doing real coaching admin. That\'s what we build.',
     },
     {
       id: 'l4', type: 'Stack', pillar: 'Stack', pillarColor: 'amber', platform: 'LinkedIn + Instagram',
-      hook: 'Wix and Kajabi hit a ceiling faster than most people think.',
-      body: 'You start with templates because they\'re fast. Two years in, you\'re fighting the platform. Custom is cheaper than you think when you stop renting software you\'ve outgrown.',
+      hook: 'Kajabi, Wix, and Mindbody hit a ceiling faster than most coaches think.',
+      body: 'You start with templates because they\'re fast. Two years in, you\'re fighting the platform. Custom AI-integrated software is cheaper than you think when you stop renting software that wasn\'t built for your business.',
     },
     {
       id: 'l5', type: 'Filter', pillar: 'Cap', pillarColor: 'violet', platform: 'LinkedIn + Instagram',
       hook: 'The cap means walking away is fine.',
-      body: 'When you only have ten slots, you stop chasing. The wrong client at the right price still costs you a slot. The brand does the filtering before discovery starts.',
+      body: 'When the studio only has ten slots, we stop chasing. The wrong client at the right price still costs a slot. The brand does the filtering before discovery starts.',
     },
   ]
 
   const pillar1Scripts: Script[] = [
     {
-      id: 'p1a', type: 'Build Log', pillar: 'Build', pillarColor: 'blue', platform: 'LinkedIn',
-      hook: 'I just shipped phase 7 of the studio\'s internal platform.',
-      body: 'Cross-client activity feed, 24 event types, manual event logging. The whole platform is built on a single lead_events table from phase 1 - five phases later it\'s the foundation for the global activity feed. Compound architecture.',
+      id: 'p1a', type: 'Use Case', pillar: 'AI', pillarColor: 'blue', platform: 'LinkedIn',
+      hook: 'AI now writes the intake reports I used to spend two hours on.',
+      body: 'Client fills out a 200-question intake. AI synthesises it into a structured assessment - body state, blockers, priorities, recommended approach. I review and adjust in 15 minutes. The reports are better than what I wrote manually because the AI doesn\'t skip questions.',
     },
     {
-      id: 'p1b', type: 'Trade-off', pillar: 'Build', pillarColor: 'blue', platform: 'LinkedIn',
-      hook: 'I built custom e-signing instead of using DocuSign.',
-      body: 'Six hours of work. Captures IP, timestamp, user agent for legal validity under the Australian Electronic Transactions Act. Saves $40/mo per active client and demos the capability. The build IS the marketing.',
+      id: 'p1b', type: 'Use Case', pillar: 'AI', pillarColor: 'blue', platform: 'LinkedIn',
+      hook: 'Weekly check-ins now interpret themselves.',
+      body: 'Client fills out their weekly form. AI reads it against the last 4 weeks, flags pattern shifts, drafts the response. I edit and send. The check-in that used to take 30 minutes now takes 5 - and it\'s more consistent because the AI never forgets the context.',
     },
     {
-      id: 'p1c', type: 'Case Study', pillar: 'Build', pillarColor: 'blue', platform: 'LinkedIn + Instagram',
-      hook: 'What it actually takes to replace 5 SaaS tools with one custom platform.',
-      copy: 'Calendly, Mailchimp, DocuSign, Practice Better, ClickFunnels.\n\nCombined: ~$400/mo. Combined annual cost: ~$5K.\n\nReplaced with one custom platform. Build cost: 40 hours. Ongoing cost: hosting + email = $30/mo.\n\nThat\'s the real math behind "custom is too expensive."',
+      id: 'p1c', type: 'Case Study', pillar: 'AI', pillarColor: 'blue', platform: 'LinkedIn + Instagram',
+      hook: '"AI for coaches" isn\'t ChatGPT prompts.',
+      copy: 'It\'s a system that:\n\nReads the client\'s intake and writes their assessment.\nReads weekly check-ins and drafts the response.\nReads program performance and flags what to change.\nReads sales calls and pulls the next content topic.\n\nAll integrated. All tuned to one practice. All running while you sleep.\n\nThat\'s what we mean by AI integration.',
     },
     {
-      id: 'p1d', type: 'Failure', pillar: 'Build', pillarColor: 'blue', platform: 'LinkedIn',
-      hook: 'I shipped a feature that broke silently for three days.',
-      body: 'Resend SDK returns errors as object properties, not throws. I assumed it would throw. Emails appeared sent but failed. The fix was one line. The lesson was bigger - never trust a library\'s error model without reading the source.',
+      id: 'p1d', type: 'Reframe', pillar: 'AI', pillarColor: 'blue', platform: 'LinkedIn',
+      hook: 'Most coaches don\'t need to learn AI.',
+      body: 'They need to hire someone who already has. The tools change every month. The integrations are fragile. Learning AI as a side quest steals from the work that actually pays. We\'ve done two years of learning so coaches don\'t have to.',
     },
   ]
 
@@ -439,36 +439,36 @@ function ScriptsTab() {
   const pillar3Scripts: Script[] = [
     {
       id: 'p3a', type: 'Tool Review', pillar: 'Stack', pillarColor: 'amber', platform: 'LinkedIn',
-      hook: 'Why I dropped Calendly.',
-      body: 'It works, it\'s polished, it costs $192/yr per user. But it owns the booking experience and the data. I built native scheduling in 4 hours. Same UX, my brand, my data. The $192 was the smallest part of the cost.',
+      hook: 'Why I dropped Calendly for my coaching business.',
+      body: 'It works, it\'s polished, it costs $192/yr per user. But it owns the booking experience and the data. We built native scheduling in 4 hours. Same UX, my brand, my data. The $192 was the smallest part of the cost.',
     },
     {
-      id: 'p3b', type: 'Comparison', pillar: 'Stack', pillarColor: 'amber', platform: 'LinkedIn + Instagram',
-      hook: 'Postmark vs Resend - the real differences.',
-      copy: 'Resend: better DX, faster setup, modern API.\n\nPostmark: best-in-class deliverability, inbound parsing, decade of operational maturity.\n\nUse Resend for outbound transactional. Use Postmark when inbound parsing matters or deliverability is mission-critical. Studio of Ten uses both.',
-    },
-    {
-      id: 'p3c', type: 'Pattern', pillar: 'Stack', pillarColor: 'amber', platform: 'LinkedIn',
-      hook: 'Custom OTP beats Supabase magic links every time.',
-      body: 'Magic links break in Gmail because the scanner pre-fetches them and burns the token. The user clicks a dead link. Custom 6-digit OTP via Resend takes 2 hours to build and never has that problem. Boring tech wins.',
-    },
-    {
-      id: 'p3d', type: 'Cost Math', pillar: 'Stack', pillarColor: 'amber', platform: 'LinkedIn',
+      id: 'p3b', type: 'Cost Math', pillar: 'Stack', pillarColor: 'amber', platform: 'LinkedIn + Instagram',
       hook: 'The 5-year cost of Kajabi vs custom.',
-      body: 'Kajabi at $199/mo over 5 years = $11,940. A custom equivalent: ~30 hours to build, ~$30/mo to run. Total 5-year cost: ~$3K plus 30 hours. The build is cheaper than three years of Kajabi. Most people never run the math.',
+      copy: 'Kajabi at $199/mo over 5 years = $11,940.\n\nA custom equivalent: ~30 hours to build, ~$30/mo to run.\n\nTotal 5-year cost: ~$3K plus 30 hours.\n\nThe build is cheaper than three years of Kajabi. Most coaches never run the math.',
+    },
+    {
+      id: 'p3c', type: 'Comparison', pillar: 'Stack', pillarColor: 'amber', platform: 'LinkedIn',
+      hook: 'Mindbody works for class-based studios. Not for solo allied health.',
+      body: 'Built for a 1990s gym scheduling problem. Try fitting a complex client intake, AI assessments, or branded reports into it. Not impossible - just constantly fighting the platform. Allied health practitioners deserve software built for them, not for Pure Barre.',
+    },
+    {
+      id: 'p3d', type: 'Reframe', pillar: 'Stack', pillarColor: 'amber', platform: 'LinkedIn',
+      hook: 'Practice Better, Healthie, ClinicMaster - they all miss the same thing.',
+      body: 'They\'re thin layers over the same booking + form + invoice template. Good enough to start. Frustrating once your practice has its own way of doing things. The moment you want a custom intake flow or AI-driven reports, you hit the ceiling. Custom isn\'t scary - it\'s the only way past it.',
     },
   ]
 
   const pillar4Scripts: Script[] = [
     {
       id: 'p4a', type: 'Story', pillar: 'Operator', pillarColor: 'orange' as const, platform: 'LinkedIn',
-      hook: 'I learned more about my own coaching business by designing the software for it than I did in 15 years of running it.',
-      body: 'When you have to model the workflow in code, every assumption surfaces. Every implicit step becomes explicit. The build is the audit you never schedule.',
+      hook: 'I learned more about my coaching business in 6 months of building software for it than I did in 15 years of running it.',
+      body: 'When you have to model the client journey in code, every assumption surfaces. Every implicit step becomes explicit. The build is the audit you never scheduled. That\'s the angle the studio takes for every client.',
     },
     {
       id: 'p4b', type: 'Contrarian', pillar: 'Operator', pillarColor: 'orange', platform: 'LinkedIn',
-      hook: 'Operators make better builders than developers do.',
-      body: 'A developer builds what you spec. An operator builds what the business actually needs - because they\'ve felt the pain at 11pm on a Sunday. Specs are downstream of pain. Operators have the pain.',
+      hook: 'Coaches make better software clients than tech founders do.',
+      body: 'Coaches know exactly what their clients need. They feel the pain at 11pm on Sundays. Specs are downstream of pain - and they have the pain. Tell us your problem and we\'ll build the system. Don\'t bring us specs - bring us the friction.',
     },
     {
       id: 'p4c', type: 'Pattern', pillar: 'Operator', pillarColor: 'orange', platform: 'LinkedIn + Instagram',
