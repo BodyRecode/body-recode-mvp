@@ -156,9 +156,10 @@ const WHATS_INCLUDED = [
 ] as const
 
 const PACKAGES = [
-  { tier: 'In-Person 2x', price: '$299/week', founding: '$149.50/week', desc: 'Two coached sessions per week. The default starting structure.', stripe: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00', stripeFounding: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05' },
-  { tier: 'In-Person 3x', price: '$409/week', founding: '$204.50/week', desc: 'Three coached sessions per week. Coach-assessed only — offered when capacity allows.', stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03', stripeFounding: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06' },
-  { tier: 'Online', price: '$149/week', founding: '$74.50/week', desc: 'Same system, same interpretation, weekly check-ins and direct access — no in-person sessions.', stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02', stripeFounding: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04' },
+  { tier: 'In-Person 2x', price: '$299/week', founding: '$149.50/week', desc: 'Two coached sessions per week. The default starting structure.', coachAssessed: false, stripe: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00', stripeFounding: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05' },
+  { tier: 'In-Person 3x', price: '$409/week', founding: '$204.50/week', desc: 'Three coached sessions per week. Offered when schedule and capacity allow.', coachAssessed: true, stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03', stripeFounding: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06' },
+  { tier: 'In-Person 1x + self-led', price: '$199/week', founding: '$99.50/week', desc: 'One coached session per week, you train independently the rest. For clients who already train consistently on their own.', coachAssessed: true, stripe: 'TODO_REPLACE_WITH_1X_STANDARD_STRIPE_URL', stripeFounding: 'TODO_REPLACE_WITH_1X_FOUNDING_STRIPE_URL' },
+  { tier: 'Online', price: '$149/week', founding: '$74.50/week', desc: 'Same system, same interpretation, weekly check-ins and direct access — no in-person sessions.', coachAssessed: false, stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02', stripeFounding: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04' },
 ] as const
 
 const COMMENCEMENT_FEE = '$240'
@@ -362,16 +363,20 @@ Three sessions is available where the schedule and your capacity allow — $409.
 
 There\'s also a one-off $240 to get started — covers the setup before coaching begins.
 
+[IF SUITABLE — see tips below]
+
+There\'s also a 1 session option — I\'m with you in person once a week and you do another session or two on your own. $199 a week. That suits people who already train consistently on their own and want me as the in-person check-in once a week.
+
 — and one more thing —
 
-I\'m running a founding client offer for the first 20 clients. Half rate for the duration of your engagement. So $299 becomes $149.50. Online drops to $74.50. Three sessions becomes $204.50. Same coaching, just half the fee. Once 20 spots fill it closes."`,
+Founding client offer for the first 20 clients. Half rate for the duration of your engagement. So $299 becomes $149.50. Online drops to $74.50. Three sessions becomes $204.50. One session drops to $99.50. Same coaching, just half the fee. Once 20 spots fill it closes."`,
       prompts: [
         '↳ PAUSE after stating the price. Let it land. Don\'t fill the silence.',
         '↳ Use the decision panel on the right to mark Path A / B / C when they respond.',
         'IF objection → open Coach Drawer → Objection Handling.',
       ] as string[],
-      tips: 'Present pricing as information. No urgency. After stating the number — pause. Three paths: A declined (close cleanly), B needs time (diagnose what\'s sitting with them), C proceeding (pick pathway, send fee link).',
-      boundary: 'No urgency manipulation. No discount framing. Non-enrolment is an acceptable outcome.',
+      tips: 'Lead with 2x as the default. Mention 1x ONLY if their training history shows self-discipline (returning trainer with a strong base, busy exec who\'s trained consistently for years, etc). Skip 1x for new trainers, anyone who admitted inconsistency in Stage 2, or anyone where 2x is non-negotiable for habit-building. After stating the number, pause. Three paths: A declined (close cleanly), B needs time (diagnose what\'s sitting with them), C proceeding (pick pathway, send fee link).',
+      boundary: 'No urgency manipulation. No discount framing. Don\'t present 1x to leads who haven\'t demonstrated they\'ll do the self-led work — it sets them up to fail. Non-enrolment is an acceptable outcome.',
       half: 2,
     },
   ]
@@ -851,7 +856,12 @@ export default function ZoomCompanion({
                     {PACKAGES.map(pkg => (
                       <div key={pkg.tier} className="bg-stone-900 border border-stone-800 rounded-xl p-5">
                         <div className="flex items-baseline justify-between mb-1">
-                          <p className="text-sm font-bold text-white">{pkg.tier}</p>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="text-sm font-bold text-white">{pkg.tier}</p>
+                            {pkg.coachAssessed && (
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 border border-amber-400/30 bg-amber-400/10 px-1.5 py-0.5 rounded">Coach-assessed</span>
+                            )}
+                          </div>
                           <div className="text-right">
                             <p className="text-base font-bold text-[#10E1C2]">{pkg.price}</p>
                             <p className="text-[11px] text-stone-500">Founding: <span className="text-[#10E1C2]/80 font-semibold">{pkg.founding}</span></p>

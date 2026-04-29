@@ -431,7 +431,7 @@ export default function HelpPage() {
               <p className="mt-2"><strong>Decision.</strong> Three paths. Know which one you&apos;re in before you respond. Path A closes cleanly — don&apos;t re-pitch.</p>
             </Training>
 
-            <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead can&apos;t do in-person. The 3x in-person package ($409/week) is coach-assessed only and not presented on the Zoom unless capacity allows.</Note>
+            <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead can&apos;t do in-person. The 3x package ($409/week) and the 1x + self-led package ($199/week) are both coach-assessed. Only mention 1x if their training history shows real self-discipline (returning trainer with a strong base, busy professional who&apos;s trained consistently for years). Skip 1x for new trainers, anyone who admitted inconsistency in Stage 2, or anyone where 2x is non-negotiable for habit-building.</Note>
           </Section>
 
           {/* Section 3 */}
@@ -1220,8 +1220,9 @@ export default function HelpPage() {
             <StatusList items={[
               { label: 'Coaching Commencement Fee', desc: '$240 — one-time. Send to every lead who agrees to proceed at the Zoom call.' },
               { label: 'Online Coaching', desc: '$149/week recurring' },
+              { label: 'In-Person 1x + self-led', desc: '$199/week recurring — coach-assessed, only for self-disciplined trainers' },
               { label: 'In-Person 2x', desc: '$299/week recurring — lead with this on the Zoom' },
-              { label: 'In-Person 3x', desc: '$409/week recurring — coach-assessed only, offer during check-ins' },
+              { label: 'In-Person 3x', desc: '$409/week recurring — coach-assessed, offer during check-ins' },
             ]} />
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Automatic Recording</p>
