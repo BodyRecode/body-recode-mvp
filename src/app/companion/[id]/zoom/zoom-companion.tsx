@@ -158,7 +158,7 @@ const WHATS_INCLUDED = [
 const PACKAGES = [
   { tier: 'In-Person 2x', price: '$299/week', founding: '$149.50/week', desc: 'Two coached sessions per week. The default starting structure.', coachAssessed: false, stripe: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00', stripeFounding: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05' },
   { tier: 'In-Person 3x', price: '$409/week', founding: '$204.50/week', desc: 'Three coached sessions per week. Offered when schedule and capacity allow.', coachAssessed: true, stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03', stripeFounding: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06' },
-  { tier: 'In-Person 1x + self-led', price: '$199/week', founding: '$99.50/week', desc: 'One coached session per week, you train independently the rest. For clients who already train consistently on their own.', coachAssessed: true, stripe: 'TODO_REPLACE_WITH_1X_STANDARD_STRIPE_URL', stripeFounding: 'TODO_REPLACE_WITH_1X_FOUNDING_STRIPE_URL' },
+  { tier: 'In-Person 1x + self-led', price: '$199/week', founding: '$99.50/week', desc: 'One coached session per week, you train independently the rest. For clients who already train consistently on their own.', coachAssessed: true, stripe: 'https://buy.stripe.com/eVq5kFeng0yO6ID7tl5ZC0a', stripeFounding: 'https://buy.stripe.com/bJefZj0wqdlA3wrbJB5ZC0b' },
   { tier: 'Online', price: '$149/week', founding: '$74.50/week', desc: 'Same system, same interpretation, weekly check-ins and direct access — no in-person sessions.', coachAssessed: false, stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02', stripeFounding: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04' },
 ] as const
 
