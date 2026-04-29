@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
   const label = searchParams.get('label') ?? ''
   const accent = searchParams.get('accent') ?? 'teal' // teal | red | amber
   const style = searchParams.get('style') ?? 'quote'
+  const format = searchParams.get('format') ?? 'square' // square | story
   const n = parseInt(searchParams.get('n') ?? '1', 10) // slide number for carousel-slide
   const taken = parseInt(searchParams.get('taken') ?? '0', 10) // founder: positions taken
 
@@ -610,12 +611,17 @@ export async function GET(request: NextRequest) {
 
   // ── PERSONAL BRAND ─────────────────────────────────────────────
   // Dark, minimal, one strong line. Handle at bottom. No logo.
+  // Supports format=square (1080x1080) or format=story (1080x1920)
   if (style === 'personal') {
+    const isStory = format === 'story'
+    const W = 1080
+    const H = isStory ? 1920 : 1080
+
     return new ImageResponse(
       (
-        <div style={{ width: '1080px', height: '1080px', background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif', position: 'relative' }}>
+        <div style={{ width: `${W}px`, height: `${H}px`, background: '#0c0a09', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif', position: 'relative' }}>
           {/* Subtle left border accent */}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '3px', height: '1080px', background: 'linear-gradient(to bottom, rgba(255,255,255,0.5), transparent)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '3px', height: `${H}px`, background: 'linear-gradient(to bottom, rgba(255,255,255,0.5), transparent)' }} />
 
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
             {/* Optional context label */}
@@ -641,7 +647,7 @@ export async function GET(request: NextRequest) {
           </div>
         </div>
       ),
-      { width: 1080, height: 1080 }
+      { width: W, height: H }
     )
   }
 
