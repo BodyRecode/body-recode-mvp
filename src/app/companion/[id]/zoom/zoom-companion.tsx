@@ -111,32 +111,46 @@ const HOW_IT_WORKS_STAGES = [
   },
   {
     number: '02',
-    title: 'Biological Interpretation',
-    subtitle: 'The CFFS',
-    body: 'I read your data through the Body Recode™ Interpretive Pillars — the Fat Map Method™ is the primary one. The output is the CFFS — your Coach-Facing Foundational Synthesis. It defines your biological profile and the boundaries I work within from there.',
-    pieces: [
-      { name: 'Stress-Stored', desc: 'Managing a lot, holding on. Body holds tighter instead of releasing fat. The harder you push, the less moves.' },
-      { name: 'Estrogen-Shift', desc: 'Body has changed. What used to work doesn\'t anymore. Fat distribution shifted, recovery feels different.' },
-      { name: 'Insulin-Drift', desc: 'Energy is inconsistent. Eating well but feeling flat. Body partitioning energy differently than it used to.' },
-      { name: 'Androgen-Decline', desc: 'Response has dropped off. Muscle harder to hold, recovery slower, the stimulus that used to work has stopped.' },
+    title: 'Where it shows up',
+    subtitle: 'Four anatomical zones',
+    body: 'Your body shows biological load in four main areas. Where you carry it tells me a lot about what\'s driving it — before I even open your intake.',
+    zones: [
+      { dot: 'red',    region: 'Stomach and waist',              driver: 'Stress and cortisol' },
+      { dot: 'amber',  region: 'Under the ribs and abdomen',     driver: 'Digestion and insulin' },
+      { dot: 'purple', region: 'Hips, glutes and thighs',        driver: 'Long-term hormonal' },
+      { dot: 'cyan',   region: 'Upper back, traps and shoulders', driver: 'Nervous system, running hot' },
     ],
-    coachScript: '"From your intake I put together what we call a CFFS — that\'s your foundational read. It tells me which of four profiles you fit into. Based on what you\'ve told me, you\'re sitting in [name the profile]. From there it sets the rules for everything I do with you."',
+    coachScript: '"Your body has four main areas where things show up. Stomach and waist — that\'s stress. Under the ribs — digestion and insulin. Hips and thighs — long-term hormonal. Upper back and traps — nervous system running too hot. Just by where you\'re carrying it I already have a strong read on what\'s actually driving it."',
   },
   {
     number: '03',
+    title: 'What type of body',
+    subtitle: 'Four biological profiles',
+    body: 'From your intake I read which of four profiles your body is sitting in overall. Each one needs a materially different approach.',
+    pieces: [
+      { name: 'Stress-Stored', desc: 'Managing a lot, holding on. The harder you push, the tighter the body holds.' },
+      { name: 'Estrogen-Shift', desc: 'Body has changed. What used to work doesn\'t anymore. Distribution and recovery feel different.' },
+      { name: 'Insulin-Drift', desc: 'Energy is inconsistent. Eating well but feeling flat. Body partitioning energy differently than it used to.' },
+      { name: 'Androgen-Decline', desc: 'Response has dropped off. Muscle harder to hold, recovery slower than it used to be.' },
+    ],
+    coachScript: '"From your intake I sort you into one of four profiles. Based on what you\'ve told me, you\'re sitting in [name the profile]. From there it sets the rules for everything I do with you."',
+    bridge: 'Two reads of the same body. The zone tells me where the load is showing on your body. The profile tells me what type of body it\'s coming from. Both feed into how I write your training and nutrition — neither alone gives the full picture.',
+  },
+  {
+    number: '04',
     title: 'Execution',
     subtitle: 'Program · Nutrition · Synthesis · Portal',
-    body: 'With the CFFS established, execution begins. Training, nutrition, and weekly check-in synthesis are all delivered through your client portal. Live from day one.',
+    body: 'With the read in place, execution begins. Training, nutrition, and weekly check-in synthesis are all delivered through your client portal. Live from day one.',
     pieces: [
-      { name: 'Training Program', desc: 'Load, volume and modality derived from CFFS — not a template' },
+      { name: 'Training Program', desc: 'Load, volume and modality derived from your read — not a template' },
       { name: 'Nutrition Structure', desc: 'Built around your biological profile, adjusted as state shifts' },
       { name: 'Weekly Check-In', desc: 'Structured data capture produces the CFWS in real time' },
       { name: 'Client Portal', desc: 'Program, plan, synthesis docs and check-in history in one place' },
     ],
-    coachScript: '"Everything lives in your portal — training program, nutrition, weekly check-ins. All in one place. All driven by your CFFS."',
+    coachScript: '"Everything lives in your portal — training program, nutrition, weekly check-ins. All in one place. All driven by your read."',
   },
   {
-    number: '04',
+    number: '05',
     title: 'The Continuous Loop',
     subtitle: 'CFFS + CFWS in parallel',
     body: 'Two documents run in parallel the whole way through: the CFFS — the foundation that doesn\'t change — and the CFWS, your weekly read. I produce a fresh CFWS every week, capturing how your body\'s responding to what we\'ve applied.',
@@ -336,7 +350,9 @@ I\'ll ask a few questions about how things are going day to day. Then we\'ll tal
       script: '',
       prompts: [
         '↳ Pause briefly between cards. Don\'t rush.',
-        '↳ Card 2 — name their likely profile based on their hot spot. Read the description.',
+        '↳ Card 02 (Where it shows up) — match their hot spot to a zone if it\'s locational ("you said hips and thighs — that\'s long-term hormonal").',
+        '↳ Card 03 (What type of body) — name their likely profile based on intake + hot spot. Read the description.',
+        '↳ Read the "How they connect" note after Card 03 — that\'s the bridge between zone and profile.',
       ] as string[],
       tips: 'Every card anchors back to their words from Stage 2. The coach script under each card is what you say — read it, don\'t paraphrase generically.',
       boundary: 'Don\'t jump to pricing until all four cards are walked through and tied back.',
@@ -817,6 +833,27 @@ export default function ZoomCompanion({
                         </div>
                       )}
 
+                      {'zones' in card && card.zones && (
+                        <div className="space-y-2 mb-3">
+                          {card.zones.map(z => {
+                            const dotClass =
+                              z.dot === 'red' ? 'bg-red-400' :
+                              z.dot === 'amber' ? 'bg-amber-400' :
+                              z.dot === 'purple' ? 'bg-purple-400' :
+                              'bg-cyan-400'
+                            return (
+                              <div key={z.region} className="flex items-center gap-3 bg-stone-800 border border-stone-700 rounded-lg p-3">
+                                <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${dotClass}`} />
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-xs font-semibold text-white">{z.region}</p>
+                                  <p className="text-[11px] text-stone-400 leading-snug">{z.driver}</p>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )}
+
                       {'pieces' in card && card.pieces && (
                         <div className="grid grid-cols-2 gap-2 mb-3">
                           {card.pieces.map(p => (
@@ -825,6 +862,13 @@ export default function ZoomCompanion({
                               <p className="text-[11px] text-stone-400 leading-snug">{p.desc}</p>
                             </div>
                           ))}
+                        </div>
+                      )}
+
+                      {'bridge' in card && card.bridge && (
+                        <div className="bg-amber-400/5 border border-amber-400/20 rounded-lg p-3 mb-3">
+                          <p className="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-1">How they connect</p>
+                          <p className="text-[13px] text-stone-300 leading-relaxed">{card.bridge}</p>
                         </div>
                       )}
 
