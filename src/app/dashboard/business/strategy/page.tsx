@@ -44,6 +44,7 @@ interface ScheduledPost {
   notes?: string
   caption?: string
   graphic?: string
+  scheduled?: boolean
 }
 
 const POST_TYPE_DEFAULT_TIMES: Record<PostType, string> = {
@@ -57,6 +58,12 @@ const POST_TYPE_DEFAULT_TIMES: Record<PostType, string> = {
   thread:     '07:00',
   video:      '07:00',
 }
+
+function isAicmPost(p: { title?: string; notes?: string }): boolean {
+  return (p.title ?? '').startsWith('AICM ') || (p.notes ?? '').toUpperCase().includes('AICM')
+}
+
+const AICM_BADGE_CLASS = 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30'
 
 const BRAND_STYLES: Record<Brand, { label: string; handle: string; dot: string; filter: string }> = {
   body_recode:    { label: 'Body Recode',    handle: 'body_recode_',       dot: 'bg-teal-400',   filter: 'bg-teal-500/10 text-teal-400 border-teal-500/30' },
@@ -181,6 +188,12 @@ function ContentCalendar() {
     setPosts(ps => ps.filter(p => p.id !== id))
   }
 
+  async function toggleScheduled(p: ScheduledPost) {
+    const next = !p.scheduled
+    setPosts(ps => ps.map(x => x.id === p.id ? { ...x, scheduled: next } : x))
+    await supabase.from('calendar_posts').update({ scheduled: next }).eq('id', p.id)
+  }
+
   function startEdit(p: ScheduledPost) {
     setForm({ ...p })
     setEditId(p.id)
@@ -286,8 +299,10 @@ function ContentCalendar() {
                     const bd = BRAND_STYLES[(p.brand ?? 'body_recode') as Brand]
                     const pl = PLATFORM_STYLES[(p.platform ?? 'instagram') as Platform]
                     return (
-                      <div key={p.id} className="text-[10px] font-medium px-1 py-0.5 rounded truncate flex items-center gap-1" style={{ color: s.color, background: s.bg }}>
+                      <div key={p.id} className={`text-[10px] font-medium px-1 py-0.5 rounded truncate flex items-center gap-1 ${p.scheduled ? 'opacity-50 line-through decoration-1' : ''}`} style={{ color: s.color, background: s.bg }}>
                         <span className={`inline-block w-1 h-1 rounded-full shrink-0 ${bd.dot}`} />
+                        {isAicmPost(p) && <span className="inline-block w-1 h-1 rounded-full shrink-0 bg-indigo-400" />}
+                        {p.scheduled && <span className="text-teal-400 shrink-0">✓</span>}
                         <span className="opacity-70 mr-0.5">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type as PostType] ?? '07:00'}</span>
                         <span className="truncate">{p.title}</span>
                         <span className={`shrink-0 text-[9px] px-1 rounded border ${pl.badge}`}>{pl.label}</span>
@@ -324,12 +339,13 @@ function ContentCalendar() {
                 const s = POST_TYPE_STYLES[p.type] ?? POST_TYPE_STYLES['authority']
                 const ph = PHASE_STYLES[p.phase] ?? PHASE_STYLES['prelaunch']
                 return (
-                  <div key={p.id} className="flex items-start justify-between gap-3 p-3 rounded-lg border cursor-pointer hover:opacity-90 transition-opacity" style={{ background: s.bg, borderColor: s.border }} onClick={() => setActivePost(p)}>
+                  <div key={p.id} className={`flex items-start justify-between gap-3 p-3 rounded-lg border cursor-pointer hover:opacity-90 transition-opacity ${p.scheduled ? 'opacity-50' : ''}`} style={{ background: s.bg, borderColor: s.border }} onClick={() => setActivePost(p)}>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-xs font-bold" style={{ color: s.color }}>{s.label}</span>
                         <span className={`text-xs ${ph.color}`}>· {ph.label}</span>
                         {(() => { const bd = BRAND_STYLES[(p.brand ?? 'body_recode') as Brand]; return <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${bd.filter}`}>{bd.label}</span> })()}
+                        {isAicmPost(p) && <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${AICM_BADGE_CLASS}`}>AICM</span>}
                         {(() => { const pl = PLATFORM_STYLES[(p.platform ?? 'instagram') as Platform]; return <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${pl.badge}`}>{pl.label}</span> })()}
                       </div>
                       <div className="flex items-center gap-2">
@@ -339,6 +355,9 @@ function ContentCalendar() {
                       {p.caption && <p className="text-xs text-stone-400 mt-1 line-clamp-2">{p.caption}</p>}
                     </div>
                     <div className="flex items-center gap-1 shrink-0" onClick={e => e.stopPropagation()}>
+                      <button onClick={() => toggleScheduled(p)} className={`text-xs transition-colors px-2 py-1 rounded border font-medium ${p.scheduled ? 'bg-teal-500/15 text-teal-400 border-teal-500/40' : 'text-stone-500 border-stone-700 hover:text-teal-400 hover:border-teal-500/30'}`} title={p.scheduled ? 'Mark as unscheduled' : 'Mark as scheduled'}>
+                        {p.scheduled ? '✓ Scheduled' : 'Schedule'}
+                      </button>
                       <button onClick={() => startEdit(p)} className="text-xs text-stone-500 hover:text-stone-300 transition-colors px-2 py-1">Edit</button>
                       <button onClick={() => deletePost(p.id)} className="text-xs text-stone-500 hover:text-red-400 transition-colors px-2 py-1">Delete</button>
                     </div>
@@ -449,7 +468,10 @@ function ContentCalendar() {
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-white">{bd.handle}</p>
-                        <p className="text-xs text-stone-600">{bd.label}</p>
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-xs text-stone-600">{bd.label}</p>
+                          {isAicmPost(activePost) && <span className={`text-[9px] px-1.5 py-0.5 rounded border font-medium ${AICM_BADGE_CLASS}`}>AICM</span>}
+                        </div>
                       </div>
                     </div>
                   )
