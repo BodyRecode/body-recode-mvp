@@ -356,7 +356,7 @@ function ContentCalendar() {
         const ph = PHASE_STYLES[activePost.phase] ?? PHASE_STYLES['prelaunch']
         const dateLabel = new Date(activePost.date + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
         const graphicUrls = activePost.graphic
-          ? activePost.graphic.split(',').map((u: string) => u.trim()).filter((u: string) => u.startsWith('/api/'))
+          ? activePost.graphic.split(',').map((u: string) => u.trim()).filter((u: string) => u.startsWith('/') || u.startsWith('http'))
           : []
         const isCarousel = graphicUrls.length > 1
         const isSingleGraphic = graphicUrls.length === 1
