@@ -333,18 +333,12 @@ I\'ll ask a few questions about how things are going day to day. Then we\'ll tal
       name: 'Tie hot spot to training',
       duration: '5-7 min',
       goal: 'Connect what they just told you in Stage 2 to what coaching does about it. Bridge from feeling understood to seeing the solution.',
-      script: `"OK. So based on what you just told me, here\'s how my coaching addresses that specifically.
-
-[Reference their hot spot directly. e.g. "You said you don\'t like how your lower body holds onto fat — that\'s a hormonal storage pattern, and it\'s exactly what the Fat Map Method is built to read and prescribe around."]
-
-Let me walk you through how I actually do that..."`,
+      script: '',
       prompts: [
-        '↳ Walk through Cards 1 → 4 in order. Each one tied back to their hot spot from Stage 2.',
         '↳ Pause briefly between cards. Don\'t rush.',
         '↳ Card 2 — name their likely profile based on their hot spot. Read the description.',
-        '↳ End with: "That\'s how I get to the thing you just told me."',
       ] as string[],
-      tips: 'This is a presentation tied back to their hot spot. Don\'t go generic. Every card you walk through, anchor it to their words from Stage 2. The cards are the visual scaffolding — the coach script under each is what you say.',
+      tips: 'Every card anchors back to their words from Stage 2. The coach script under each card is what you say — read it, don\'t paraphrase generically.',
       boundary: 'Don\'t jump to pricing until all four cards are walked through and tied back.',
       half: 2,
     },
@@ -795,6 +789,12 @@ export default function ZoomCompanion({
               {/* Stage 3 — Tie hot spot to training: 4-card visual */}
               {stage.id === 3 && (
                 <div className="space-y-3 mb-6">
+                  {/* Opening tie-back */}
+                  <div className="border border-[#10E1C2]/30 bg-[#10E1C2]/5 rounded-xl p-5">
+                    <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-2">Open with</p>
+                    <p className="text-sm text-stone-200 italic leading-relaxed">&ldquo;OK. Based on what you just told me about [their hot spot] — here&rsquo;s exactly how my coaching gets to that. Let me walk you through it.&rdquo;</p>
+                  </div>
+
                   {HOW_IT_WORKS_STAGES.map(card => (
                     <div key={card.number} className="border border-stone-800 bg-stone-900 rounded-xl p-5">
                       <div className="flex items-baseline gap-3 mb-2">
@@ -834,6 +834,12 @@ export default function ZoomCompanion({
                       </div>
                     </div>
                   ))}
+
+                  {/* Closing line */}
+                  <div className="border border-[#10E1C2]/30 bg-[#10E1C2]/5 rounded-xl p-5">
+                    <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-2">Close with</p>
+                    <p className="text-sm text-stone-200 italic leading-relaxed">&ldquo;That&rsquo;s how I get to the thing you just told me.&rdquo;</p>
+                  </div>
                 </div>
               )}
 
