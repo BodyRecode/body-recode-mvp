@@ -185,7 +185,7 @@ Repeat back: "Yeah — feels like a stretch right now. Got it."
 The real question isn't whether it's expensive. It's whether what you've been doing has actually been working."
 
 ↳ Pause. Let them sit with it.
-↳ If they move forward — Stage 9, Path C (Full Rate).
+↳ If they move forward — Stage 4 decision panel, Path C (Full Rate).
 ↳ If price holds — move to Step 2.`,
     },
     {
@@ -194,7 +194,7 @@ The real question isn't whether it's expensive. It's whether what you've been do
 
 That's $149 a week. Same $240 to get started."
 
-↳ If online works — Stage 9, Path C (Online).
+↳ If online works — Stage 4 decision panel, Path C (Online).
 ↳ If price still holds — non-enrolment is fine. Close cleanly.`,
     },
   ],
@@ -245,58 +245,40 @@ function buildStages(leadName: string, bodyState: string, totalScore: number | n
       : ``
 
   return [
-    // ── FIRST HALF (consultation) ──────────────────────────────────────────
     {
       id: 1,
-      name: 'Opening Frame',
-      duration: '2-3 min',
-      goal: 'Create safety. Establish this is not a sales call. Set the tone.',
-      script: `"Thanks for jumping on, ${firstName}.
+      name: 'Recap',
+      duration: '5-7 min',
+      goal: 'Recap their scorecard results and what you\'ve already covered with them. Their reaction is the signal.',
+      script: `"OK ${firstName}, before we go any further I want to recap where we\'re at.
 
-The plan today is to walk through what showed up in your scorecard and hear what's actually going on for you.
+Your scorecard came back as ${bodyState}${scoreDisplay}.
 
-Nothing to decide today. I just want to check that what the scorecard picked up matches what you're seeing."`,
+${stage4Preface}${stateInfo.interpretation}
+
+${stage2Tail}"`,
       prompts: [
         { type: 'prompt', text: 'Quick first — are you currently training, coming back to it after a break, or fairly new to all this?' },
-        { type: 'prompt', text: 'How did you find doing the scorecard?' },
-        { type: 'prompt', text: 'Was it straightforward to answer?' },
-        { type: 'prompt', text: 'Did anything make you stop and think?' },
+        { type: 'prompt', text: 'What stood out to you most when you saw your result?' },
+        { type: 'prompt', text: 'Did it feel accurate to where you\'re at?' },
+        { type: 'prompt', text: 'Anything that surprised you, or didn\'t land?' },
       ] as TypedPrompt[],
-      tips: 'Capture their training context using the toggle above before moving to Stage 2. Stages 2-4 will adapt automatically. Slow down. Let them land.',
+      tips: 'Capture their training context using the toggle below before moving on. Stages 2-3 adapt automatically. The scorecard breakdown panel is right here — point at sections as you reference them.',
       boundary: null,
       half: 1,
     },
     {
       id: 2,
-      name: 'Scorecard Reflection',
-      duration: '4-6 min',
-      goal: 'Walk them through their actual results. Let them respond before you interpret. Their reaction is the signal.',
-      script: `"Before I tell you what I see, I want to hear what you see first.
+      name: 'Conversation & Hot Spot',
+      duration: '10-15 min',
+      goal: 'Build the conversation. Explore context (energy, sleep, stress, training) to build rapport, then push to the real emotional reason they\'re here. Specific, vulnerable, in their words.',
+      script: `"Now I want to get a clearer picture of what\'s actually been going on for you. The scorecard shows the pattern but doesn\'t know the why behind it.
 
-Your scorecard came back as ${bodyState}${scoreDisplay}.
-
-${stage2Tail}"`,
+I\'ll ask a few questions about how things are going day to day. Then we\'ll talk about what you actually want to change. Just answer honestly — there\'s no right answer."`,
       prompts: [
-        { type: 'prompt', text: 'What stood out to you most when you saw your result?' },
-        { type: 'prompt', text: 'Did it feel accurate to where you\'re at right now?' },
-        { type: 'prompt', text: 'Was there anything that surprised you, or anything that didn\'t land?' },
-        { type: 'prompt', text: 'Had you considered any of those areas as a factor before?' },
-      ] as TypedPrompt[],
-      tips: 'Their reaction surfaces the real friction point. The strongest insight usually appears here. The section breakdown is right there in the panel — refer to specific scores when they speak.',
-      boundary: null,
-      half: 1,
-    },
-    {
-      id: 3,
-      name: 'Context Exploration',
-      duration: '10-12 min',
-      goal: 'Get the picture behind the scores. The scorecard gives the signal — the conversation gives the context.',
-      script: `"Now I want to get a clearer picture of what's actually been going on. The scorecard shows the pattern but doesn't know the why.
-
-I'll ask a few questions. Just answer honestly — there's no right answer."`,
-      prompts: [
+        { type: 'category', text: 'CONTEXT — BUILD THE PICTURE' },
         { type: 'category', text: 'ENERGY' },
-        { type: 'prompt', text: 'Walk me through what a typical day looks like for you energy-wise.' },
+        { type: 'prompt', text: 'Walk me through what a typical day looks like energy-wise.' },
         { type: 'sub', text: 'Do you rely on caffeine to get through the day?' },
         { type: 'sub', text: 'When does the energy drop usually hit?' },
         { type: 'sub', text: 'How does energy feel after training specifically?' },
@@ -308,7 +290,7 @@ I'll ask a few questions. Just answer honestly — there's no right answer."`,
         { type: 'category', text: 'STRESS LOAD' },
         { type: 'prompt', text: 'What\'s the stress load like right now — work, life, or something else?' },
         { type: 'sub', text: 'Is the demand ongoing or situational?' },
-        { type: 'sub', text: 'Do you find yourself carrying it into training?' },
+        { type: 'sub', text: 'Do you carry it into training?' },
         { type: 'sub', text: 'Any genuine downtime in a typical week?' },
         ...(trainingStatus === 'returning'
           ? [
@@ -317,11 +299,6 @@ I'll ask a few questions. Just answer honestly — there's no right answer."`,
               { type: 'sub', text: 'What made you stop?' },
               { type: 'sub', text: 'How long has it been?' },
               { type: 'sub', text: 'What does training look like right now, if anything?' },
-              { type: 'category', text: 'COMPOSITION' },
-              { type: 'prompt', text: 'Walk me through how things shifted while you were away from training.' },
-              { type: 'sub', text: 'Has the body changed in ways that have surprised you?' },
-              { type: 'sub', text: 'Has anything you\'ve tried recently moved the needle?' },
-              { type: 'sub', text: 'How long has it felt off?' },
             ] as TypedPrompt[]
           : trainingStatus === 'new'
           ? [
@@ -329,149 +306,72 @@ I'll ask a few questions. Just answer honestly — there's no right answer."`,
               { type: 'prompt', text: 'Have you done any structured exercise before?' },
               { type: 'sub', text: 'What\'s prompted you to look at this now?' },
               { type: 'sub', text: 'What does activity look like in a typical week right now?' },
-              { type: 'sub', text: 'Is there anything you\'ve been trying on your own?' },
-              { type: 'category', text: 'COMPOSITION' },
-              { type: 'prompt', text: 'Walk me through what you\'ve tried before in terms of body composition.' },
-              { type: 'sub', text: 'Has anything worked, or has it been mostly stalled?' },
-              { type: 'sub', text: 'How long has it felt this way?' },
             ] as TypedPrompt[]
           : [
-              { type: 'category', text: 'TRAINING RESPONSE' },
+              { type: 'category', text: 'TRAINING' },
               { type: 'prompt', text: 'What does progress actually look like compared to what you\'re putting in?' },
               { type: 'sub', text: 'Are you getting stronger over time?' },
               { type: 'sub', text: 'How do you feel during sessions compared to 6-12 months ago?' },
-              { type: 'sub', text: 'Does the body feel beaten up or recovered between sessions?' },
-              { type: 'category', text: 'FAT LOSS RESPONSE' },
-              { type: 'prompt', text: 'Walk me through what you\'ve tried for fat loss and what\'s actually happened.' },
-              { type: 'sub', text: 'Is the diet consistent?' },
-              { type: 'sub', text: 'Has anything worked in the past? What changed?' },
-              { type: 'sub', text: 'How long has it felt stuck?' },
+              { type: 'sub', text: 'Does the body feel beaten up, or recovered between sessions?' },
             ] as TypedPrompt[]),
+        { type: 'category', text: 'HOT SPOT — WHAT YOU REALLY WANT TO CHANGE' },
+        { type: 'prompt', text: 'What is it about how you look or feel right now that you most want to change?' },
+        { type: 'sub', text: 'Don\'t just say weight or size — what\'s underneath that?' },
+        { type: 'sub', text: 'Is it how clothes fit? Catching yourself in the mirror?' },
+        { type: 'sub', text: 'A specific situation where you really feel it?' },
+        { type: 'prompt', text: 'When did you last feel really good in your body? What was different then?' },
+        { type: 'prompt', text: 'If we sorted that out for you, what changes day to day?' },
+        { type: 'prompt', text: 'Has anyone ever made a comment that stuck with you?' },
       ] as TypedPrompt[],
-      tips: 'One question at a time. Let silence work. You\'re building context — not solving anything.',
-      boundary: 'No prescriptions. No "you should try...". No advice. Just listening.',
+      tips: 'Build rapport with the context questions before you push for the hot spot. Often the hot spot surfaces naturally in the earlier categories — when it does, follow it. Repeat the hot spot back word-for-word when they say it. Drop it into live notes so you have it on hand for Stage 3.',
+      boundary: 'No prescriptions, no advice, no solutions yet. Just listening and reflecting. The longer they sit in the truth of the hot spot, the more invested they get.',
       half: 1,
+    },
+    {
+      id: 3,
+      name: 'Tie hot spot to training',
+      duration: '5-7 min',
+      goal: 'Connect what they just told you in Stage 2 to what coaching does about it. Bridge from feeling understood to seeing the solution.',
+      script: `"OK. So based on what you just told me, here\'s how my coaching addresses that specifically.
+
+[Reference their hot spot directly. e.g. "You said you don\'t like how your lower body holds onto fat — that\'s a hormonal storage pattern, and it\'s exactly what the Fat Map Method is built to read and prescribe around."]
+
+Let me walk you through how I actually do that..."`,
+      prompts: [
+        '↳ Walk through Cards 1 → 4 in order. Each one tied back to their hot spot from Stage 2.',
+        '↳ Pause briefly between cards. Don\'t rush.',
+        '↳ Card 2 — name their likely profile based on their hot spot. Read the description.',
+        '↳ End with: "That\'s how I get to the thing you just told me."',
+      ] as string[],
+      tips: 'This is a presentation tied back to their hot spot. Don\'t go generic. Every card you walk through, anchor it to their words from Stage 2. The cards are the visual scaffolding — the coach script under each is what you say.',
+      boundary: 'Don\'t jump to pricing until all four cards are walked through and tied back.',
+      half: 2,
     },
     {
       id: 4,
-      name: 'Pattern Interpretation',
-      duration: '5-7 min',
-      goal: 'Name the pattern clearly. Make it understandable, not alarming.',
-      script: `"Based on what you've told me and what showed up in the scorecard, here's what I'm hearing.
-
-${stage4Preface}${stateInfo.interpretation}
-
-That's not on you — it's how the body responds when these things stack up. It's also one of the more common patterns I see."`,
-      prompts: [
-        { type: 'prompt', text: 'Does that explanation feel like it reflects what you\'ve been experiencing?' },
-        { type: 'prompt', text: 'Does it help make sense of what you\'ve noticed?' },
-        { type: 'prompt', text: 'Did anything in that surprise you?' },
-        { type: 'prompt', text: 'Has it changed the way you\'re thinking about it?' },
-      ] as TypedPrompt[],
-      tips: 'Keep it observational. Make the pattern feel understandable — not alarming.',
-      boundary: 'No medical interpretation. No outcome promises. Pattern identification only.',
-      half: 1,
-    },
-
-    // ── SECOND HALF (bridge → system → price → decision) ───────────────────
-    {
-      id: 5,
-      name: 'Hot Spot Framing',
-      duration: '5-7 min',
-      goal: 'Name the specific thing that came up in the first half, confirm it. Do not move on until they feel understood.',
-      script: `"Before we talk about what working together looks like, I want to come back to something you said.
-
-[Name the specific thing — e.g. "You said you've been training consistently but your body isn't responding the way it should." OR "You said something shifted and you're not sure when or why."]
-
-That's the spot where what you're putting in stopped matching what you're getting back. That's the thing we're going to address.
-
-Does that sound about right?"`,
-      prompts: [
-        '↳ If yes → "Good. That\'s exactly what we\'re going to address. Let me explain how it works."',
-        '↳ If they add more → let them talk. The more specific they get, the more invested they become.',
-        'IF MOTIVATION COMES UP → "Motivation is information, not the problem."',
-        'IF THEY MINIMISE IT → "Most people do that — they\'ve been managing it for so long it starts to feel normal."',
-      ] as string[],
-      tips: 'You already know the hot spot from the first half. This is about naming it back precisely and watching them confirm it.',
-      boundary: 'Do not move on until the hot spot is clearly named and confirmed.',
-      half: 2,
-    },
-    {
-      id: 6,
-      name: 'Emotional Acknowledgement',
-      duration: '2-3 min',
-      goal: 'Normalise the confusion and confidence erosion that comes with interpretive uncertainty.',
-      script: `"One more thing I want to mention, because it comes up a lot.
-
-When you can't tell why your body's not responding, it does more than just confuse you — it eats away at your confidence.
-
-You start second-guessing your effort, your judgement, even your consistency.
-
-Not because you're doing anything wrong — but because you can't see what your body's actually telling you."`,
-      prompts: [
-        'Has that been part of your experience — second-guessing yourself?',
-        'How long has that been sitting with you?',
-        '↳ TRANSITION → "Good — let me walk you through what the system actually does."',
-      ] as string[],
-      tips: 'Observational, not therapeutic. Name it and move on.',
-      boundary: null,
-      half: 2,
-    },
-    {
-      id: 7,
-      name: 'How The System Works',
-      duration: '5-7 min',
-      goal: 'Walk through the four stages of the Body Recode™ system. They need to see what they\'re actually paying for before pricing.',
-      script: `"Before I get to the numbers, I want to walk you through how this actually works — four stages, every client goes through them. The price you'll hear next isn't for sessions. It's for this."`,
-      prompts: [
-        '↳ Walk through cards 1 → 4 in order. Each has a 1-line script underneath.',
-        '↳ Pause briefly between cards. Don\'t rush.',
-        '↳ End with: "That\'s the whole system. Continuous loop, governed by data, not guesswork."',
-      ] as string[],
-      tips: 'This is a presentation, not a conversation. They\'re absorbing the structure. Speak to each card slowly. Don\'t add improvised content — the cards have the language.',
-      boundary: 'Do not jump to pricing before all four cards have been walked through.',
-      half: 2,
-    },
-    {
-      id: 8,
-      name: 'Pricing',
+      name: 'Offer & Packages',
       duration: '5-10 min',
-      goal: 'Present the packages as information, not persuasion. Lead with In-Person 2x.',
-      script: `"Now you've seen what's involved. Here's what it costs.
+      goal: 'Present pricing in the context of what they just connected to. Why each package suits. Then close.',
+      script: `"You\'ve seen what I do, and you\'ve seen how it gets to the thing you told me about.
 
-Here's what's included: the foundational intake and CFFS, your training program, nutrition structure, weekly check-in and CFWS read, direct access between sessions, and two coached sessions a week.
+Here\'s what\'s included: the foundational intake and CFFS, your training program, nutrition structure, weekly check-in and CFWS read, direct access between sessions, and two coached sessions a week.
 
-$299 a week. That's where most people start.
+$299 a week. That\'s where most people start.
 
-Three sessions is available where the schedule and your capacity allow — $409. I'll guide that based on what your body can actually handle.
+Three sessions is available where the schedule and your capacity allow — $409. I\'ll guide that based on what your body can actually handle.
 
-There's also a one-off $240 to get started — covers the setup before coaching begins.
+There\'s also a one-off $240 to get started — covers the setup before coaching begins.
 
 — and one more thing —
 
-I'm running a founding client offer for the first 20 clients. Half rate for the duration of your engagement with me. So instead of $299 a week it's $149.50. Online drops to $74.50, three-session in-person to $204.50. Same coaching, same depth — just half the fee. Once 20 spots are filled it closes."`,
+I\'m running a founding client offer for the first 20 clients. Half rate for the duration of your engagement. So $299 becomes $149.50. Online drops to $74.50. Three sessions becomes $204.50. Same coaching, just half the fee. Once 20 spots fill it closes."`,
       prompts: [
-        '↳ PAUSE after stating the price. Let it land. Do not fill the silence.',
-        '↳ TRANSITION → When they respond, move to Stage 9.',
+        '↳ PAUSE after stating the price. Let it land. Don\'t fill the silence.',
+        '↳ Use the decision panel on the right to mark Path A / B / C when they respond.',
         'IF objection → open Coach Drawer → Objection Handling.',
       ] as string[],
-      tips: 'Present pricing as information. No urgency. After stating the number — pause.',
-      boundary: 'Lead with In-Person 2x. Online ($149/wk) only if they can\'t do in-person. 3x is coach-assessed only.',
-      half: 2,
-    },
-    {
-      id: 9,
-      name: 'Decision',
-      duration: '2-3 min',
-      goal: 'Identify the pathway and close cleanly.',
-      script: `"Take whatever time you need.
-
-If it feels like the right fit, we can talk through next steps.
-
-If not, that's fine — the scorecard read still stands on its own."`,
-      prompts: [] as string[],
-      tips: 'Three paths. Know which one you\'re in before you respond. Path A closes cleanly — don\'t re-pitch.',
-      boundary: 'No urgency. No discount framing. Non-enrolment is an acceptable outcome.',
+      tips: 'Present pricing as information. No urgency. After stating the number — pause. Three paths: A declined (close cleanly), B needs time (diagnose what\'s sitting with them), C proceeding (pick pathway, send fee link).',
+      boundary: 'No urgency manipulation. No discount framing. Non-enrolment is an acceptable outcome.',
       half: 2,
     },
   ]
@@ -625,7 +525,7 @@ export default function ZoomCompanion({
   const stateInfo = BODY_STATE_LANGUAGE[bodyState] ?? BODY_STATE_LANGUAGE['Transitioning State']
   const scoreDisplay = totalScore ? ` — ${totalScore}/15` : ''
   const isFirstHalf = stage.half === 1
-  const isDecisionStage = currentStage === 8
+  const isDecisionStage = currentStage === 3
 
   const sectionColour = (score: number) =>
     score === 1 ? 'text-red-400 border-red-400/30 bg-red-400/10'
@@ -691,7 +591,7 @@ export default function ZoomCompanion({
               {bodyState}{scoreDisplay}
             </div>
             <div className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${isFirstHalf ? 'border-stone-700 text-stone-500 bg-stone-900' : 'border-[#10E1C2]/30 text-[#10E1C2] bg-[#10E1C2]/5'}`}>
-              {isFirstHalf ? 'First Half' : 'Second Half'}
+              {isFirstHalf ? 'Listen' : 'Pitch'}
             </div>
             {trainingStatus && (
               <div className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
@@ -735,7 +635,7 @@ export default function ZoomCompanion({
 
         {/* Stage nav */}
         <div className="w-52 border-r border-white/10 p-4 flex flex-col gap-1 overflow-y-auto">
-          <p className="text-xs text-stone-600 uppercase tracking-widest font-semibold mb-2">First Half</p>
+          <p className="text-xs text-stone-600 uppercase tracking-widest font-semibold mb-2">Listen</p>
           {STAGES.filter(s => s.half === 1).map(s => {
             const idx = STAGES.indexOf(s)
             return (
@@ -756,7 +656,7 @@ export default function ZoomCompanion({
             )
           })}
 
-          <p className="text-xs text-stone-600 uppercase tracking-widest font-semibold mb-2 mt-4">Second Half</p>
+          <p className="text-xs text-stone-600 uppercase tracking-widest font-semibold mb-2 mt-4">Pitch</p>
           {STAGES.filter(s => s.half === 2).map(s => {
             const idx = STAGES.indexOf(s)
             return (
@@ -803,11 +703,11 @@ export default function ZoomCompanion({
               <h2 className="text-xl font-bold text-white mb-3">{stage.name}</h2>
               <p className="text-stone-400 text-sm leading-relaxed mb-6">{stage.goal}</p>
 
-              {/* Stage 1 — Training context capture (drives Stages 2-4 personalisation) */}
+              {/* Stage 1 — Training context capture (drives Stage 2 personalisation) */}
               {stage.id === 1 && (
                 <div className="mb-6 bg-stone-900 border border-stone-800 rounded-xl p-5">
                   <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Training context</p>
-                  <p className="text-xs text-stone-400 mb-4">Pick what matches before moving on. Stages 2-4 adapt to this.</p>
+                  <p className="text-xs text-stone-400 mb-4">Pick what matches before moving on. Stage 2 adapts to this.</p>
                   <div className="grid grid-cols-3 gap-2">
                     {([
                       { key: 'active' as const, label: 'Currently training', dot: 'bg-[#10E1C2]', cls: 'border-[#10E1C2]/40 bg-[#10E1C2]/10 text-[#10E1C2]' },
@@ -843,8 +743,8 @@ export default function ZoomCompanion({
                 </div>
               )}
 
-              {/* Stage 2 — Scorecard Reflection: rich per-lead view */}
-              {stage.id === 2 && (
+              {/* Stage 1 — Lead-specific scorecard breakdown lives in Recap */}
+              {stage.id === 1 && (
                 <div className="space-y-3 mb-6">
                   <div className={`border rounded-xl p-5 ${stateInfo.colour}`}>
                     <p className="text-[10px] font-bold uppercase tracking-widest mb-1 opacity-80">Their result</p>
@@ -887,8 +787,8 @@ export default function ZoomCompanion({
                 </div>
               )}
 
-              {/* Stage 7 — How The System Works: 4-card visual */}
-              {stage.id === 7 && (
+              {/* Stage 3 — Tie hot spot to training: 4-card visual */}
+              {stage.id === 3 && (
                 <div className="space-y-3 mb-6">
                   {HOW_IT_WORKS_STAGES.map(card => (
                     <div key={card.number} className="border border-stone-800 bg-stone-900 rounded-xl p-5">
@@ -932,8 +832,8 @@ export default function ZoomCompanion({
                 </div>
               )}
 
-              {/* Stage 8 — Pricing: itemised breakdown + packages */}
-              {stage.id === 8 && (
+              {/* Stage 4 — Offer & Packages */}
+              {stage.id === 4 && (
                 <div className="space-y-3 mb-6">
                   <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
                     <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">What\'s included</p>
@@ -1028,7 +928,7 @@ export default function ZoomCompanion({
 
             <div className="p-4 border-t border-white/10 space-y-3">
 
-              {/* Decision panel — only on Stage 9 */}
+              {/* Decision panel — only on Stage 4 */}
               {isDecisionStage && (
                 <div className="space-y-2">
                   <p className="text-xs text-stone-600 uppercase tracking-wider font-semibold">Mark outcome</p>

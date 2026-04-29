@@ -360,36 +360,40 @@ export default function HelpPage() {
           {/* Section 2 */}
           <Section id="zoom-1" title="2. Zoom - Call Companion" colour="teal">
             <p>Open the <strong>Call Companion</strong> from the lead detail page before the Zoom call. It opens in a new tab so you can run it alongside the call.</p>
-            <p>The companion has 9 stages split across two halves:</p>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mt-3 mb-1">First half — consultation</p>
+            <p>The companion has 4 stages split across two halves: <strong>Listen</strong> (Stages 1–2) and <strong>Pitch</strong> (Stages 3–4).</p>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mt-3 mb-1">Listen — discovery and surfacing the hot spot</p>
             <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm">
-              <li><strong>Opening Frame</strong> — Set context, establish this is not a sales call.</li>
-              <li><strong>Scorecard Reflection</strong> — Walk the lead through their actual results. Their score, body state, section breakdown with the description text matching what they selected, plus your interpretation under each. Their reaction comes first.</li>
-              <li><strong>Context Exploration</strong> — Explore each signal area (Energy, Sleep, Stress Load, Training Response, Fat Loss Response) using structured prompts.</li>
-              <li><strong>Pattern Interpretation</strong> — Name the dominant pattern using body-state-specific language.</li>
+              <li><strong>Recap</strong> — Walk the lead through their actual scorecard results: score, body state, per-section breakdown with the exact description text they selected, plus your interpretation. Capture training context (Active / Returning / New) here.</li>
+              <li><strong>Conversation &amp; Hot Spot</strong> — Build the picture with context questions (Energy, Sleep, Stress Load, Training) then push to the real emotional driver. Hot spot is the specific, vulnerable thing they want to change in their body — &quot;I hate how my lower body looks in clothes&quot;, not &quot;lose 5kg&quot;.</li>
             </ol>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mt-3 mb-1">Second half — bridge → system → price → decision</p>
-            <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm" start={5}>
-              <li><strong>Hot Spot Framing</strong> — Name the specific point where effort and response stopped aligning.</li>
-              <li><strong>Emotional Acknowledgement</strong> — Normalise confusion and confidence erosion.</li>
-              <li><strong>How The System Works</strong> — Walk them through the 4 stages of the Body Recode™ system (Intake → CFFS → Execution → Continuous Loop). Mirrors performance.bodyrecode.au/how-it-works. They need to see what they&apos;re paying for before pricing.</li>
-              <li><strong>Pricing</strong> — Present the itemised breakdown and packages as information.</li>
-              <li><strong>Decision</strong> — Path A/B/C and close cleanly.</li>
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mt-3 mb-1">Pitch — solution and offer</p>
+            <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm" start={3}>
+              <li><strong>Tie hot spot to training</strong> — Walk through the four stages of the Body Recode™ system (Intake → CFFS → Execution → Continuous Loop), each one explicitly tied back to their hot spot from Stage 2. Mirrors performance.bodyrecode.au/how-it-works.</li>
+              <li><strong>Offer &amp; Packages</strong> — Present what&apos;s included, the three packages (with founding rates), and close. Decision panel (Path A/B/C, commencement fee link) lives in the right side panel.</li>
             </ol>
-            <p>The companion nav shows &quot;First Half&quot; and &quot;Second Half&quot; labels to keep you oriented.</p>
+            <p>The companion nav shows &quot;Listen&quot; and &quot;Pitch&quot; labels in the left sidebar to keep you oriented.</p>
 
-            <p className="font-semibold text-white mt-3">Lead-specific Stage 2</p>
-            <p>Stage 2 is fully populated with the lead&apos;s actual scorecard data — their score, body state, and per-section breakdown including the exact description text they selected (e.g. for Energy 1/3 they read &quot;Tired most of the day. Relying on caffeine. Crashes after lunch or training.&quot;). When you reference what they said, you&apos;re literally pointing at it on screen.</p>
+            <p className="font-semibold text-white mt-3">Lead-specific Stage 1 (Recap)</p>
+            <p>Stage 1 is fully populated with the lead&apos;s actual scorecard data — their score, body state, and per-section breakdown including the exact description text they selected (e.g. for Energy 1/3 they read &quot;Tired most of the day. Relying on caffeine. Crashes after lunch or training.&quot;). When you reference what they said, you&apos;re literally pointing at it on screen.</p>
 
             <p className="font-semibold text-white mt-3">Training context capture (Stage 1)</p>
-            <p>Stage 1 has a 3-button toggle: <strong>Currently training</strong> · <strong>Returning to it</strong> · <strong>New to training</strong>. Pick what matches the lead before moving to Stage 2. The selection persists across page refreshes (stored locally) and a badge shows in the top bar so you always know which mode is active.</p>
-            <p>Stages 2, 3, and 4 adapt to the selection:</p>
+            <p>Stage 1 has a 3-button toggle: <strong>Currently training</strong> · <strong>Returning to it</strong> · <strong>New to training</strong>. Pick what matches the lead. The selection persists across page refreshes and a badge shows in the top bar.</p>
+            <p>The toggle adapts:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
-              <li><strong>Stage 2</strong> — script gets a one-line variant per audience (e.g. for new trainers: &quot;That&apos;s your starting baseline — where we work from before any training load is applied&quot;).</li>
-              <li><strong>Stage 3</strong> — last two prompt categories swap. Default is Training Response + Fat Loss Response. For returners and new trainers, replaced with Training (context-appropriate) + Composition.</li>
-              <li><strong>Stage 4</strong> — interpretation gets a one-line preface acknowledging where they&apos;re entering from. Same body-state interpretation otherwise.</li>
+              <li><strong>Stage 1 script</strong> — gets a one-line preface acknowledging where they&apos;re entering from (returners / new trainers).</li>
+              <li><strong>Stage 2 prompts</strong> — the Training category swaps based on context. Active trainers get progress questions; returners get &quot;what made you stop&quot;; new trainers get &quot;what prompted this now&quot;.</li>
             </ul>
-            <p>Stages 5–9 stay identical regardless of training status — Hot Spot, How The System Works, Pricing, and Decision apply equally to all three audiences.</p>
+            <p>Stages 3 and 4 are identical regardless of training context.</p>
+
+            <p className="font-semibold text-white mt-3">Hot spot definition</p>
+            <p>The hot spot is the <strong>emotional</strong> reason they want to change. Specific, vulnerable, in their words. Not &quot;lose 5kg&quot; — the thing underneath that. Examples:</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
+              <li><em>&quot;I hate how my lower body looks in jeans.&quot;</em></li>
+              <li><em>&quot;I avoid being in photos with my wife.&quot;</em></li>
+              <li><em>&quot;I don&apos;t recognise myself in the mirror anymore.&quot;</em></li>
+              <li><em>&quot;A friend made a comment last year and I haven&apos;t shaken it.&quot;</em></li>
+            </ul>
+            <p>Surface it in Stage 2 by building rapport with context questions first, then pushing to the emotional probe. Drop the exact words into your live notes so you can reference them in Stage 3 when you tie the system back to their thing.</p>
 
             <p className="font-semibold text-white mt-3">Coach Drawer</p>
             <p>The top bar has a <strong>Coach Drawer</strong> button. Open it any time during the call to access:</p>
@@ -407,24 +411,24 @@ export default function HelpPage() {
               <li><strong>Send declined follow-up</strong> — Fires the 3-email re-engagement sequence and the $97 downsell offer.</li>
             </ul>
 
-            <p className="mt-3">At Stage 9, three decision path buttons appear:</p>
+            <p className="mt-3">In Stage 4, three decision path buttons appear in the right side panel:</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm">
               <li><strong>Path A — Declined</strong> — Updates status to Closed Declined.</li>
               <li><strong>Path B — Needs Time</strong> — Updates status to Zoom Completed.</li>
               <li><strong>Path C — Proceeding</strong> — Pathway selector (Full Rate or Online), then the commencement fee link can be sent immediately.</li>
             </ul>
 
-            <Training title="What the Zoom call is for">
-              <p><strong>The first half is not a sales call.</strong> The only job in the first half is to make the lead feel correctly understood — that their scorecard reflects something real, not a generic template.</p>
-              <p className="mt-2">If a lead doesn&apos;t trust the scorecard, price becomes the only thing they can evaluate. If they do trust it, they&apos;re evaluating whether this is the right intervention — a different conversation.</p>
-              <p className="mt-2">Stage 2 (Scorecard Reflection) is now the heaviest first-half stage by design. The data is right there — point at it, let them respond, build context from what surfaces.</p>
+            <Training title="What the Listen half is for">
+              <p><strong>Stages 1 and 2 are not a sales call.</strong> The only job here is to make the lead feel correctly understood — that their scorecard reflects something real, and that you understand the actual emotional reason they want to change.</p>
+              <p className="mt-2">If a lead doesn&apos;t trust the scorecard, price becomes the only thing they can evaluate. If they trust it and feel seen, they&apos;re evaluating whether this is the right intervention — a different conversation.</p>
+              <p className="mt-2">The hot spot is the bridge. Without surfacing the emotional driver, Stage 3 (where you tie the system back to their thing) lands generic.</p>
             </Training>
 
-            <Training title="The second half flow">
-              <p><strong>Stage 5 — Hot Spot Framing.</strong> Bridge from &quot;I understand my situation&quot; to &quot;I understand why I need help with it.&quot; Name the specific thing that surfaced in the first half. If you named it right, they&apos;ll feel seen. That feeling is what makes the rest land differently.</p>
-              <p className="mt-2"><strong>Stage 7 — How The System Works.</strong> This is the new bridge between feeling understood and being asked for money. Walk them through the four cards in order. Don&apos;t improvise — the cards have the language. End with: &quot;That&apos;s the whole system. Continuous loop, governed by data, not guesswork.&quot;</p>
-              <p className="mt-2"><strong>Stage 8 — Pricing.</strong> They&apos;ve just seen the system. Now show the itemised breakdown panel ($297 + $200 + $150 + …) before stating the package price. The price for everything together is $299/week. Pause after stating it. The silence is not awkward — it&apos;s the lead processing.</p>
-              <p className="mt-2"><strong>Stage 9 — Decision.</strong> Three paths. Know which one you&apos;re in before you respond. Path A closes cleanly — don&apos;t re-pitch.</p>
+            <Training title="What the Pitch half is for">
+              <p><strong>Stage 3 — Tie hot spot to training.</strong> This is the heart of the conversion. Walk through the four system cards in order, but every card gets anchored back to what they told you in Stage 2. Card 2 is where you name their likely biological profile — read the description back and watch them recognise themselves.</p>
+              <p className="mt-2"><strong>Stage 4 — Offer &amp; Packages.</strong> They&apos;ve seen what you do and how it gets to their thing. State what&apos;s included, then the price. $299/week for in-person 2x. Pause after stating it. The silence isn&apos;t awkward — it&apos;s the lead processing.</p>
+              <p className="mt-2">After pricing, mention the founding offer (50% off for first 20 clients) as a single add-on line, not as the lead with the price.</p>
+              <p className="mt-2"><strong>Decision.</strong> Three paths. Know which one you&apos;re in before you respond. Path A closes cleanly — don&apos;t re-pitch.</p>
             </Training>
 
             <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead can&apos;t do in-person. The 3x in-person package ($409/week) is coach-assessed only and not presented on the Zoom unless capacity allows.</Note>
