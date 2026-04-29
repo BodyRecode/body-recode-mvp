@@ -651,6 +651,52 @@ export async function GET(request: NextRequest) {
     )
   }
 
+  // ── AI CO-FOUNDER METHOD ───────────────────────────────────────
+  // Deep navy/indigo gradient. Indigo accent eyebrow pill. White quote.
+  // URL footer with stroke. Mirrors aicofoundermethod.com visual.
+  // Supports format=square (1080x1080) or format=story (1080x1920).
+  if (style === 'aicm') {
+    const isStory = format === 'story'
+    const W = 1080
+    const H = isStory ? 1920 : 1080
+
+    return new ImageResponse(
+      (
+        <div style={{ width: `${W}px`, height: `${H}px`, background: 'linear-gradient(135deg, #0f0e2e 0%, #1e1b4b 50%, #2d2a6e 100%)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif', position: 'relative' }}>
+          {/* Top: brand pill */}
+          <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', alignItems: 'center', padding: '10px 20px', background: 'rgba(167, 139, 250, 0.12)', border: '1px solid rgba(167, 139, 250, 0.35)', borderRadius: '999px', fontSize: '22px', fontWeight: 600, color: '#c4b5fd', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+              AI Co-Founder Method
+            </div>
+          </div>
+
+          {/* Centred main quote */}
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+            {/* Optional context label */}
+            {label && label !== 'AI CO-FOUNDER METHOD' && (
+              <div style={{ fontSize: '24px', fontWeight: 600, color: 'rgba(196, 181, 253, 0.55)', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '40px' }}>{label}</div>
+            )}
+
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px' }}>
+              {displayText}
+            </div>
+
+            {sub && (
+              <div style={{ fontSize: '38px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.55, fontWeight: 400, maxWidth: '820px', marginTop: '36px' }}>{sub}</div>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '32px', height: '2px', background: '#818cf8' }} />
+            <div style={{ fontSize: '26px', fontWeight: 600, color: '#a78bfa', letterSpacing: '0.06em' }}>aicofoundermethod.com</div>
+          </div>
+        </div>
+      ),
+      { width: W, height: H }
+    )
+  }
+
   // Default: quote card
   return new ImageResponse(
     (
