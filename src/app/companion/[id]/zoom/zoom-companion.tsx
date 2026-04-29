@@ -501,6 +501,7 @@ export default function ZoomCompanion({
   const [decisionPath, setDecisionPath] = useState<'A' | 'B' | 'C' | null>(null)
   const [pathwayType, setPathwayType] = useState<PathwayType | null>(null)
   const [trainingStatus, setTrainingStatusState] = useState<TrainingStatus>(null)
+  const [compactMode, setCompactMode] = useState(true)
   const [declinedSent, setDeclinedSent] = useState(false)
   const [sendingDeclined, setSendingDeclined] = useState(false)
   const [callComplete, setCallComplete] = useState(false)
@@ -526,6 +527,24 @@ export default function ZoomCompanion({
       }
     } catch {}
   }, [leadId])
+
+  // Compact mode: hides script / tips / boundary blocks for in-person calls
+  // where reading paragraphs across a table is impractical. Persists globally.
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem('zoom-companion:compact')
+      if (v === '0') setCompactMode(false)
+      // default true otherwise (already initial state)
+    } catch {}
+  }, [])
+
+  function toggleCompact() {
+    setCompactMode(c => {
+      const next = !c
+      try { localStorage.setItem('zoom-companion:compact', next ? '1' : '0') } catch {}
+      return next
+    })
+  }
 
   function setTrainingStatus(v: TrainingStatus) {
     setTrainingStatusState(v)
@@ -686,6 +705,13 @@ export default function ZoomCompanion({
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={toggleCompact}
+            className={`text-xs font-bold px-3 py-2 rounded-lg border transition-colors ${compactMode ? 'border-[#10E1C2]/40 text-[#10E1C2] bg-[#10E1C2]/10' : 'border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200'}`}
+            title="Compact mode hides scripts, tips, and boundary panels — leaving only the prompts and action buttons. Best for in-person calls."
+          >
+            {compactMode ? 'Compact ✓' : 'Compact'}
+          </button>
           <button
             onClick={() => { setDrawerSection('objection'); setDrawerOpen(o => !o) }}
             className={`text-xs font-bold px-3 py-2 rounded-lg border transition-colors ${drawerOpen ? 'border-amber-400/40 text-amber-400 bg-amber-400/10' : 'border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200'}`}
@@ -948,8 +974,8 @@ export default function ZoomCompanion({
                 </div>
               )}
 
-              {/* Script (always shown) */}
-              {stage.script && (
+              {/* Script — hidden in compact mode */}
+              {stage.script && !compactMode && (
                 <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/30 rounded-xl p-5 mb-3">
                   <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-3">Script</p>
                   <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{stage.script}</p>
@@ -965,16 +991,16 @@ export default function ZoomCompanion({
                 </div>
               )}
 
-              {/* Tips */}
-              {stage.tips && (
+              {/* Tips — hidden in compact mode */}
+              {stage.tips && !compactMode && (
                 <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/20 rounded-xl p-4 mt-4">
                   <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-1">Coach note</p>
                   <p className="text-stone-400 text-sm leading-relaxed">{stage.tips}</p>
                 </div>
               )}
 
-              {/* Boundary */}
-              {stage.boundary && (
+              {/* Boundary — hidden in compact mode */}
+              {stage.boundary && !compactMode && (
                 <div className="bg-red-400/5 border border-red-400/20 rounded-xl p-4 mt-3">
                   <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Boundary</p>
                   <p className="text-stone-400 text-sm leading-relaxed">{stage.boundary}</p>
