@@ -138,7 +138,7 @@ export default function CreateBookingButton() {
               <div>
                 <label className="block text-xs font-medium text-stone-400 mb-1.5">Type</label>
                 <div className="flex gap-2">
-                  {[{ value: 'zoom1', label: 'Zoom 1' }, { value: 'zoom2', label: 'Zoom 2' }, { value: 'other', label: 'Other' }].map(opt => (
+                  {[{ value: 'zoom1', label: 'Zoom' }, { value: 'other', label: 'Other' }].map(opt => (
                     <button
                       key={opt.value}
                       onClick={() => setForm(f => ({ ...f, type: opt.value }))}

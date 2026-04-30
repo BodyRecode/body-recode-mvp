@@ -174,18 +174,18 @@ That\'s not a personal failing — it\'s a system response. And it\'s one of the
       id: 5,
       name: 'Next Step Invitation',
       duration: '2-3 min',
-      goal: 'Offer deeper exploration without pressure. Intellectual curiosity — not pitch.',
+      goal: 'Offer deeper exploration without pressure. Intellectual curiosity, not pitch.',
       script: `"What we\'ve covered today is essentially the surface layer of the pattern.
 
-If you wanted to explore it more deeply, the next step would be a second conversation where we go through how the Body Recode coaching process works and what it would actually look like for your situation specifically.
+If you wanted to explore it more deeply, the next step is to look at how the Body Recode coaching process would actually work for your situation specifically. We can walk through that now if you\'re open to it.
 
 There\'s no obligation. It\'s just a more detailed look at what the system would do with your pattern."
 
-Then ask: "Would you like to explore that further?"
+Then ask: "Would you like to walk through that now?"
 
 ──────────────────────────────────────
 
-IF YES → Book Zoom 2 before ending the call. Use the panel on the right.
+IF YES → Move into the pricing and decision stages within this same call. The funnel is single-call now.
 
 ──────────────────────────────────────
 
@@ -193,18 +193,17 @@ IF NO → Use this close:
 
 "Completely understood. These things only work when the timing is right for you, not when they fit someone else\'s timeline.
 
-The patterns we talked through today don\'t go anywhere. If anything shifts — whether that\'s in a few weeks or further down the track — the conversation is still here.
+The patterns we talked through today don\'t go anywhere. If anything shifts, whether that\'s in a few weeks or further down the track, the conversation is still here.
 
 I\'ll send you a quick email after this just to close the loop. No pressure, no follow-up after that unless you reach out."
 
 Then use the "Send declined follow-up" button in the panel on the right.`,
       prompts: [
-        { type: 'prompt', text: 'Would you like to explore that further?' },
+        { type: 'prompt', text: 'Would you like to walk through that now?' },
         { type: 'prompt', text: 'Would it be helpful to see how the coaching process works?' },
         { type: 'prompt', text: 'Are you open to walking through the Body Recode approach?' },
-        { type: 'prompt', text: 'Would you like to book that second conversation?' },
       ],
-      tips: 'Don\'t oversell. Don\'t rush. If they\'re not ready, that\'s valid information. Zoom 2 should be booked before this call ends if they say yes. If no, close warmly and trigger the declined sequence.',
+      tips: 'Don\'t oversell. Don\'t rush. If they\'re not ready, that\'s valid information. If they say yes, transition straight into the pricing and decision stages within this same call. If no, close warmly and trigger the declined sequence.',
       boundary: null,
     },
   ]
@@ -242,8 +241,6 @@ export default function ZoomCompanion({
   const [savingSummary, setSavingSummary] = useState(false)
   const [summarySaved, setSummarySaved] = useState(false)
   const [statusUpdated, setStatusUpdated] = useState(false)
-  const [zoom2Date, setZoom2Date] = useState('')
-  const [zoom2Saved, setZoom2Saved] = useState(false)
   const [declinedSent, setDeclinedSent] = useState(false)
   const [sendingDeclined, setSendingDeclined] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -323,17 +320,6 @@ export default function ZoomCompanion({
     await fetch(`/api/leads/${leadId}/send-zoom1-declined`, { method: 'POST' })
     setDeclinedSent(true)
     setSendingDeclined(false)
-  }
-
-  const bookZoom2 = async () => {
-    if (!zoom2Date) return
-    await fetch(`/api/leads/${leadId}/book-zoom2`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ scheduledAt: new Date(zoom2Date).toISOString() }),
-    })
-    setZoom2Saved(true)
-    setTimeout(() => setZoom2Saved(false), 3000)
   }
 
   const STAGES = buildStages(leadName, bodyState, totalScore, sectionScores)
@@ -667,24 +653,6 @@ export default function ZoomCompanion({
                     <span className="text-xs text-stone-400">Not ready / not right fit</span>
                   </div>
                 </div>
-              </div>
-
-              {/* Zoom 2 booking */}
-              <div className="bg-stone-900 border border-stone-800 rounded-lg p-3">
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">Book Zoom 2</p>
-                <input
-                  type="datetime-local"
-                  value={zoom2Date}
-                  onChange={e => setZoom2Date(e.target.value)}
-                  className="w-full bg-stone-800 border border-stone-700 rounded-md px-2.5 py-1.5 text-white text-xs focus:outline-none focus:border-stone-500 mb-2"
-                />
-                <button
-                  onClick={bookZoom2}
-                  disabled={!zoom2Date || zoom2Saved}
-                  className={`w-full text-xs font-bold px-3 py-1.5 rounded-md transition-colors ${zoom2Saved ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2] hover:bg-[#10E1C2]/20 disabled:opacity-40'}`}
-                >
-                  {zoom2Saved ? 'Zoom 2 Booked' : 'Confirm Zoom 2'}
-                </button>
               </div>
 
               {/* Mark complete */}

@@ -26,13 +26,6 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 4,
   },
   {
-    id: 'zoom2-confirmation',
-    name: 'Zoom 2 Booking Confirmation',
-    description: 'Confirmation + 2-hour and 30-minute reminder emails to the lead, plus a coach notification on booking',
-    trigger: 'Zoom 2 booked',
-    steps: 4,
-  },
-  {
     id: 'downsell-offer',
     name: 'Self-Guided Program Offer',
     description: '$97 self-guided program offer sent automatically on Zoom 1 decline',

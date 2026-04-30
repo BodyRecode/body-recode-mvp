@@ -282,61 +282,6 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
     ],
   },
 
-  'zoom2-confirmation': {
-    id: 'zoom2-confirmation',
-    name: 'Zoom Booking Confirmation (legacy)',
-    description: 'Legacy entry - merged into the main Zoom Booking Confirmation automation',
-    trigger: 'Zoom booked',
-    triggerDetail: 'This entry is preserved for reference. All Zoom bookings now use the single Zoom Booking Confirmation automation.',
-    steps: [
-      {
-        day: 'Immediately — to lead',
-        subject: 'Your Zoom call is confirmed — {date, e.g. Monday 14 April 2026}',
-        paragraphs: [
-          'Hi {firstName},',
-          'Your Zoom call with Kade is confirmed.',
-          '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
-          'Open the attached file to add this to your calendar.',
-          '[Coach signature with photo]',
-        ],
-        cta: 'Join Zoom ↗',
-      },
-      {
-        day: '2 hours before — to lead (scheduled)',
-        subject: 'Your Zoom call is in 2 hours — {time} Brisbane',
-        paragraphs: [
-          'Hi {firstName},',
-          'Your Zoom call with Kade is in 2 hours.',
-          '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
-          '[Coach signature with photo]',
-        ],
-        cta: 'Join Zoom ↗',
-      },
-      {
-        day: '30 minutes before — to lead (scheduled)',
-        subject: 'Your Zoom call is in 30 minutes — {time} Brisbane',
-        paragraphs: [
-          'Hi {firstName},',
-          'Your Zoom call with Kade is in 30 minutes.',
-          '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
-          '[Coach signature with photo]',
-        ],
-        cta: 'Join Zoom ↗',
-      },
-      {
-        day: 'Immediately — to coach (kade@bodyrecode.au)',
-        subject: 'Zoom booked — {name}',
-        paragraphs: [
-          'Zoom booked — {name}',
-          '{email}',
-          '[Date & Time card: {date} · {time} Brisbane]',
-          '[Join Zoom button + View Lead button]',
-        ],
-        cta: 'Join Zoom ↗  /  View Lead →',
-      },
-    ],
-  },
-
   'program-buyer-nurture': {
     id: 'program-buyer-nurture',
     name: 'Program Buyer Nurture',
