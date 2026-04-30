@@ -24,6 +24,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       zoom2_outcome: body.zoom2_outcome,
       zoom2_pathway_type: body.zoom2_pathway_type,
       zoom2_completed_at: body.zoom2_completed_at,
+      pre_call_brief: body.pre_call_brief,
     })
     .eq('id', id)
     .select()

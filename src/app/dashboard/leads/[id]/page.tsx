@@ -6,6 +6,7 @@ import LeadDangerActions from './lead-danger-actions'
 import EditContact from './edit-contact'
 import ConvertButton from './convert-button'
 import CancelSequenceButton from './cancel-sequence-button'
+import PreCallRead from './pre-call-read'
 import NoShowSequenceButton from '@/components/noshow-sequence-button'
 import Zoom1DeclinedButton from '@/components/zoom1-declined-button'
 import CommencementFeeButton from '@/components/commencement-fee-button'
@@ -428,6 +429,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           )}
         </div>
       </div>
+
+      {/* Pre-Call Read */}
+      <PreCallRead leadId={lead.id} initialBrief={lead.pre_call_brief ?? null} />
 
       {/* Convert to client */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">

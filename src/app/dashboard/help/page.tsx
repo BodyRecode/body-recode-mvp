@@ -204,6 +204,7 @@ export default function HelpPage() {
                 <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Phase 2 — Zoom</p>
                 <div className="space-y-2">
                   <ChecklistItem text="Lead books Zoom via bodyrecode.au/book — or book manually from Business → Bookings" />
+                  <ChecklistItem text="Write the Pre-Call Read on the lead detail page — their pattern, what to listen for, lines to have ready" />
                   <ChecklistItem text="Open the Zoom Companion from the lead detail page before the call" />
                   <ChecklistItem text="First half: run through Opening Frame, Scorecard Reflection, Context Exploration, Pattern Interpretation (stages 1-4)" />
                   <ChecklistItem text="Second half: run through Hot Spot Framing, Emotional Acknowledgement, Pricing, and Decision (stages 5-8)" />
@@ -372,6 +373,9 @@ export default function HelpPage() {
               <li><strong>Offer &amp; Packages</strong> — Present what&apos;s included, the three packages (with founding rates), and close. Decision panel (Path A/B/C, commencement fee link) lives in the right side panel.</li>
             </ol>
             <p>The companion nav shows &quot;Listen&quot; and &quot;Pitch&quot; labels in the left sidebar to keep you oriented.</p>
+
+            <p className="font-semibold text-white mt-3">Pre-Call Read</p>
+            <p>Above the Coaching Entry section on the lead detail page, the <strong>Pre-Call Read</strong> card holds the lead-specific brief for the upcoming call. Their pattern, what to listen for, lines to have ready. Click <strong>Add</strong> or <strong>Edit</strong> to write or update it. The brief persists per-lead and is independent of the companion notes.</p>
 
             <p className="font-semibold text-white mt-3">Lead-specific Stage 1 (Recap)</p>
             <p>Stage 1 is fully populated with the lead&apos;s actual scorecard data — their score, body state, and per-section breakdown including the exact description text they selected (e.g. for Energy 1/3 they read &quot;Tired most of the day. Relying on caffeine. Crashes after lunch or training.&quot;). When you reference what they said, you&apos;re literally pointing at it on screen.</p>
