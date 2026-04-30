@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, type ReactNode } from 'react'
 
 interface PreCallReadProps {
   leadId: string
@@ -61,8 +61,8 @@ function parseBrief(brief: string): Block[] {
     const text = para.join('\n').trim()
     if (!text) continue
 
-    if (/^\(.+\)$/s.test(text)) {
-      blocks.push({ kind: 'note', text: text.replace(/^\(|\)$/g, '').trim() })
+    if (text.startsWith('(') && text.endsWith(')')) {
+      blocks.push({ kind: 'note', text: text.slice(1, -1).trim() })
       continue
     }
 
@@ -127,13 +127,11 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
   }
 
   function renderBlocks() {
-    const out: React.ReactNode[] = []
-    let currentSectionId: string | null = null
+    const out: ReactNode[] = []
     let suppressed = false
 
     blocks.forEach((b, i) => {
       if (b.kind === 'section') {
-        currentSectionId = b.id
         suppressed = !!collapsed[b.id]
         out.push(
           <div key={i} id={b.id} className="flex items-center gap-3 pt-6 first:pt-0 scroll-mt-20">
