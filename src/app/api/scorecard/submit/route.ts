@@ -10,12 +10,20 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 }
 
-const QR_SOURCE_MAP: Record<string, string> = {
+// Map source URL params to allowed leads.source CHECK constraint values.
+// Anything not in this map AND not in the allowed list falls through to 'other'.
+const SOURCE_MAP: Record<string, string> = {
+  // QR codes (gym floor face-to-face)
   qr_floor_banner: 'gym_floor',
   qr_window: 'gym_floor',
   qr_card: 'gym_floor',
   qr_flyer: 'gym_floor',
+  // Gym DM follow-ups (complementary first session bookings)
+  gym_complementary: 'gym_floor',
 }
+
+// Source values the leads.source CHECK constraint accepts directly.
+const ALLOWED_SOURCES = new Set(['quiz', 'other', 'gym_floor', 'instagram', 'facebook', 'direct'])
 
 export async function OPTIONS() {
   return new NextResponse(null, { status: 204, headers: CORS })
@@ -60,8 +68,19 @@ export async function POST(request: NextRequest) {
     leadId = existing.id
     console.log('[scorecard/submit] Found existing lead:', leadId)
   } else {
-    const dbSource = QR_SOURCE_MAP[source] ?? (source ?? 'other')
-    const dbSourceDetail = QR_SOURCE_MAP[source] ? source : 'scorecard'
+    // Resolve to a constraint-safe source while preserving the original as source_detail.
+    let dbSource: string
+    let dbSourceDetail: string
+    if (SOURCE_MAP[source]) {
+      dbSource = SOURCE_MAP[source]
+      dbSourceDetail = source
+    } else if (source && ALLOWED_SOURCES.has(source)) {
+      dbSource = source
+      dbSourceDetail = 'scorecard'
+    } else {
+      dbSource = 'other'
+      dbSourceDetail = source || 'scorecard'
+    }
 
     const { data: newLead, error: leadError } = await supabase
       .from('leads')
