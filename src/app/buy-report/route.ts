@@ -19,31 +19,37 @@ export async function GET(request: NextRequest) {
 
   const { data: leads } = await supabase
     .from('leads')
-    .select('id, name, email')
+    .select('id, name, email, scorecard_score, scorecard_body_state, scorecard_section_scores')
     .eq('email', email)
     .limit(1)
 
   const lead = leads?.[0]
   if (!lead) return errorRedirect('no-scorecard')
 
-  const { data: event } = await supabase
-    .from('lead_events')
-    .select('notes')
-    .eq('lead_id', lead.id)
-    .eq('type', 'scorecard_completed')
-    .order('sent_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
+  let score: number | null = lead.scorecard_score ?? null
+  let body_state: string | null = lead.scorecard_body_state ?? null
+  let section_scores: Record<string, number> = lead.scorecard_section_scores ?? {}
 
-  if (!event?.notes) return errorRedirect('no-scorecard')
+  if (score === null || body_state === null) {
+    const { data: event } = await supabase
+      .from('lead_events')
+      .select('notes')
+      .eq('lead_id', lead.id)
+      .eq('type', 'scorecard_completed')
+      .order('sent_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
 
-  const scoreMatch = event.notes.match(/Score: (\d+)\/15/)
-  const stateMatch = event.notes.match(/Body state: (.+?)\./)
+    if (!event?.notes) return errorRedirect('no-scorecard')
 
-  if (!scoreMatch || !stateMatch) return errorRedirect('bad-scorecard')
+    const scoreMatch = event.notes.match(/Score: (\d+)\/15/)
+    const stateMatch = event.notes.match(/Body state: (.+?)\./)
 
-  const score = parseInt(scoreMatch[1])
-  const body_state = stateMatch[1]
+    if (!scoreMatch || !stateMatch) return errorRedirect('bad-scorecard')
+
+    score = parseInt(scoreMatch[1])
+    body_state = stateMatch[1]
+  }
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
@@ -68,7 +74,7 @@ export async function GET(request: NextRequest) {
       email: lead.email,
       score: String(score),
       body_state,
-      section_scores: '{}',
+      section_scores: JSON.stringify(section_scores),
     },
     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/report/pending?email=${encodeURIComponent(lead.email)}`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/get-report`,
