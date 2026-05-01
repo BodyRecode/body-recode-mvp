@@ -38,10 +38,10 @@ export default function GetReportPage() {
           <img src="/logo-teal.png" alt="Body Recode" style={{ height: '80px', marginBottom: '48px', display: 'block', margin: '0 auto 48px' }} />
           <div style={{ width: '32px', height: '3px', background: '#14b8a6', margin: '0 auto 24px' }} />
           <h1 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '12px' }}>
-            Body Decode Report
+            Why your body has stopped losing fat, and the order to fix it.
           </h1>
           <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.7 }}>
-            A personalised written breakdown of your Body State Scorecard result. What is working against you right now, and exactly what to stop and start doing.
+            A written breakdown of your scorecard result. The specific physiology behind your score, the fat-storage pattern your body is locked in, what is quietly making it worse, and the exact order to unstick it.
           </p>
         </div>
 
@@ -96,7 +96,7 @@ export default function GetReportPage() {
                 transition: 'all 0.15s ease',
               }}
             >
-              {loading ? 'Loading...' : 'Get my Body Decode Report — $37'}
+              {loading ? 'Loading...' : 'Get my full breakdown · $37'}
             </button>
           </form>
           <p style={{ fontSize: '12px', color: '#57534e', textAlign: 'center', marginTop: '16px', lineHeight: 1.6 }}>
