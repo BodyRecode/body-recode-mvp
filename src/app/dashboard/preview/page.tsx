@@ -18,7 +18,37 @@ type AssetGroup = {
 
 const ASSET_GROUPS: AssetGroup[] = [
   {
-    title: 'Self-Guided Programs',
+    title: 'Body Decode Reports ($37 deliverable)',
+    icon: <FileText size={14} className="text-teal-400" />,
+    assets: [
+      {
+        label: 'Depleted State Report',
+        description: 'The $37 Body Decode Report a lead receives after purchase if they scored 5-8',
+        href: '/report-preview?state=depleted',
+        external: true,
+        tag: 'Depleted',
+        tagColour: 'text-red-400 bg-red-500/10 border-red-500/20',
+      },
+      {
+        label: 'Transitioning State Report',
+        description: 'The $37 Body Decode Report a lead receives after purchase if they scored 9-11',
+        href: '/report-preview?state=transitioning',
+        external: true,
+        tag: 'Transitioning',
+        tagColour: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
+      },
+      {
+        label: 'Ready State Report',
+        description: 'The $37 Body Decode Report a lead receives after purchase if they scored 12-15',
+        href: '/report-preview?state=ready',
+        external: true,
+        tag: 'Ready',
+        tagColour: 'text-teal-400 bg-teal-500/10 border-teal-500/20',
+      },
+    ],
+  },
+  {
+    title: 'Self-Guided Programs ($97 deliverable)',
     icon: <BookOpen size={14} className="text-teal-400" />,
     assets: [
       {
