@@ -6,6 +6,7 @@ type Category = 'flows' | 'coaching' | 'business' | 'content' | 'challenge' | 'b
 
 const SECTIONS = [
   { id: 'operator-flow',         title: 'Operator Flow',         colour: 'violet' as const, category: 'flows' as Category },
+  { id: 'brand-voice',           title: 'Brand Voice',           colour: 'violet' as const, category: 'flows' as Category },
   { id: 'lead-pipeline',    title: '1. Lead Pipeline',       colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'zoom-1',           title: '2. Zoom Companion',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'coaching-entry',   title: '3. Coaching Entry',      colour: 'teal' as const, category: 'coaching' as Category },
@@ -295,6 +296,39 @@ export default function HelpPage() {
             <Note>The Funnel Dashboard is read-only — it shows data but does not allow edits. To modify an enrollment, go directly to Supabase or the relevant portal.</Note>
           </Section>
 
+          {/* Brand Voice — reference doc for anyone writing public-facing copy */}
+          <Section id="brand-voice" title="Brand Voice — Layered Buyer Language" colour="violet">
+            <p>Every piece of public-facing Body Recode copy follows the same layering rule, established 2026-04-30 after a two-week ad data review showed that system-builder language at the cold front door was producing 4% CTR but only 2% scorecard completion and 0% $37 conversion. The frame is right. The layering was wrong.</p>
+
+            <p className="font-semibold text-white mt-3">The principle</p>
+            <p>Lead with the buyer&apos;s lived experience in their own words. Body Recode vocabulary (Body State, CFFS, Fat Map, four profiles, four zones, Depleted/Transitioning/Ready) earns its place AFTER the prospect has crossed into the conversation. Fat loss is the explicit symptom at the cold layer, body responsiveness is the diagnostic frame at the engagement layer, the full system shows up at the conversion layer.</p>
+
+            <p className="font-semibold text-white mt-4">By layer</p>
+            <StatusList items={[
+              { label: 'Cold layer (ads, IG bio, gym DMs, scorecard hero, popup, home hero, $37 result page)', desc: 'Fat loss as the symptom. "You\'re training. You\'re eating clean. The fat won\'t move." Zero brand vocabulary. The job here is to get them to lean in. The proven hook is "your body has stopped responding to effort" framed against the lived problem.' },
+              { label: 'Engagement layer (scorecard email sequence, $37 report, IG content)', desc: 'Introduce one piece of the frame at a time. "Here\'s what your scorecard tells me. Body Recode language for this is [State]." Bridge their language to ours. Body state vocabulary OK once the felt picture is established.' },
+              { label: 'Conversion layer (Zoom call script, pre-call brief, coaching offer, onboarding)', desc: 'Full Body Recode language earned. CFFS, four zones, four profiles, weekly CFWS, the continuous read-and-adjust cycle. By this point they\'ve felt the frame in motion.' },
+            ]} />
+
+            <p className="font-semibold text-white mt-4">Hard rules</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><strong>No em dashes.</strong> AI writing signal. Use periods, commas, hyphens, or rewrite. Replace-all whenever you spot one.</li>
+              <li><strong>Single Zoom funnel.</strong> No "Zoom 2", no "second conversation". The call covers diagnosis through pricing through decision in one block. Anything that contradicts this is stale and should be flagged.</li>
+              <li><strong>No fitness clichés:</strong> grind, crush it, hustle, push through, no-pain-no-gain. The brand is intelligent, not punitive.</li>
+              <li><strong>No shame or guilt framing.</strong> &quot;You&apos;re lazy / inconsistent / not trying hard enough&quot; is the opposite of the read.</li>
+              <li><strong>Founding Client Offer is a trade, not a discount.</strong> Half-rate in return for documented case-study participation. Never frame it as &quot;reduction in fees&quot;.</li>
+            </ul>
+
+            <p className="font-semibold text-white mt-4">Reference docs</p>
+            <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-04-30_Buyer_Language_Rewrite.md</code> — full diagnostic, every before/after, IG bio variants</li>
+              <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-01_Pre_Call_Brief_Template.md</code> — locked 13-section template for pre-call briefs</li>
+              <li><code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-01_May_Post_Revisions.json</code> — 22 revised IG post captions, all in the new voice</li>
+            </ul>
+
+            <Note>When you draft anything new (DM, email, post, ad creative, script), check it against these rules before publishing. The cold-layer rule is the most often violated — it&apos;s tempting to lead with brand vocabulary because it&apos;s sharp. Resist. Lead with what they&apos;re feeling first.</Note>
+          </Section>
+
           {/* Section 1 */}
           <Section id="lead-pipeline" title="1. Lead Pipeline" colour="teal">
             <p>Every potential client enters the system as a <strong>lead</strong>. Leads are created manually or automatically when someone completes the Body State Scorecard at performance.bodyrecode.au.</p>
@@ -326,12 +360,14 @@ export default function HelpPage() {
             <p>When someone completes the Body State Scorecard on performance.bodyrecode.au, a lead is <strong>automatically created</strong> in the CRM — no manual entry required. Their name, email, score, body state, and section scores are all captured. You receive a branded notification email immediately on every scorecard submission.</p>
             <p className="mt-2">Leads created this way are tagged with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">source_detail: scorecard</code>. This is now the primary lead entry path.</p>
 
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Post-Scorecard CTAs</p>
-            <p>After completing the scorecard, leads are shown two options on the result page:</p>
-            <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm mt-1">
-              <li><strong>Book a free call</strong> — links to bodyrecode.au/book. Primary CTA. A 30-minute Zoom to review their results and map out what needs to change first.</li>
-              <li><strong>Get my Body Decode Report — $37</strong> — upsell below the primary CTA. A personalised web-based analysis of their body state, section scores, and what to stop and start doing. Purchased via Stripe and delivered automatically by email as a unique link at app.bodyrecode.au/report/[token].</li>
-            </ol>
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Post-Scorecard CTAs (state-based split)</p>
+            <p>After completing the scorecard, the CTA shown on the result page <strong>depends on the lead&apos;s body state</strong>. This was changed 2026-04-30 to remove the $37/free-call cannibalisation that had been driving $37 conversion to zero. Each state now sees ONE primary path matched to where their body actually is:</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><strong>Depleted (5-8):</strong> Free 15-minute call only. A PDF will not unstick a body in protection mode. CTA links to <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">bodyrecode.au/book?from=scorecard_depleted</code>.</li>
+              <li><strong>Transitioning (9-11):</strong> $37 Body Decode Report only. The bullseye buyer. No competing free option drains conversions.</li>
+              <li><strong>Ready (12-15):</strong> $37 Body Decode Report with custom framing (&quot;Your biology is ready. The prescription is the gap.&quot;). High-intent lead, $37 acts as a self-screening commit signal.</li>
+            </ul>
+            <p className="mt-2">The Body Decode Report itself: a personalised web-based analysis of their body state, section scores, and what to stop and start doing. Purchased via Stripe at <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">$37 AUD</code> and delivered automatically by email as a unique link at <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">app.bodyrecode.au/report/[token]</code>.</p>
             <ul className="space-y-1 list-disc list-inside text-stone-300 text-sm mt-1">
               <li>Personalised to their exact body state (Depleted / Transitioning / Ready)</li>
               <li>Section-by-section breakdown with interpretations for each score level</li>
@@ -376,6 +412,7 @@ export default function HelpPage() {
 
             <p className="font-semibold text-white mt-3">Pre-Call Read</p>
             <p>Above the Coaching Entry section on the lead detail page, the <strong>Pre-Call Read</strong> card holds the lead-specific brief for the upcoming call. Their pattern, what to listen for, lines to have ready. Click <strong>Add</strong> or <strong>Edit</strong> to write or update it. The brief persists per-lead and is independent of the companion notes.</p>
+            <p>Briefs follow a locked 13-section template (Opening → Reading Scorecard Back → Building the Picture → Hot Spot → Pushback Handling → How This Gets You There → Offer → If That&apos;s a Lot → Yes/Path C closing → Path B → Path A → One Thing to Hold → Key Lines). The OPENING and READING-BACK sections lead with the prospect&apos;s lived experience (buyer language) before introducing body state vocabulary. The system-explanation section (How This Gets You There) is where CFFS / fat-storage zones / four profiles / CFWS earn their place. Template doc lives at <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-01_Pre_Call_Brief_Template.md</code>. Two reference briefs to mirror: Riley (Ready State, 13/15) and Samantha (Transitioning State, 9/15).</p>
 
             <p className="font-semibold text-white mt-3">Lead-specific Stage 1 (Recap)</p>
             <p>Stage 1 is fully populated with the lead&apos;s actual scorecard data — their score, body state, and per-section breakdown including the exact description text they selected (e.g. for Energy 1/3 they read &quot;Tired most of the day. Relying on caffeine. Crashes after lunch or training.&quot;). When you reference what they said, you&apos;re literally pointing at it on screen.</p>
@@ -675,7 +712,7 @@ export default function HelpPage() {
             <p>The following outbound email sequences run automatically. All emails send from <strong>kade@bodyrecode.au</strong> via Resend. All automated emails use a <strong>dark card template</strong> — black outer background, #111111 inner card, Body Recode logo header, Kade signature with photo at the bottom.</p>
 
             <p className="font-semibold text-white mt-4">Scorecard Follow-up Sequence (automatic)</p>
-            <p>Fires when someone completes the Body State Scorecard. 9 emails over 13 days. Each email is personalised to the lead&apos;s score and body state using <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_score}}`}</code>, <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_state}}`}</code>, and <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{first_name}}`}</code>. Every email pushes toward booking a call at bodyrecode.au/book or purchasing the $37 report.</p>
+            <p>Fires when someone completes the Body State Scorecard. <strong>5 emails over 13 days</strong>. Each email is personalised to the lead&apos;s score and body state using <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_score}}`}</code>, <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{scorecard_state}}`}</code>, and <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">{`{{first_name}}`}</code>. Voice: leads with fat loss as the symptom (buyer language), introduces body state vocabulary as the diagnostic. Emails 1-2 push the $37 Body Decode Report; emails 3-4 push the free strategy call; email 5 names both options based on state.</p>
             <div className="space-y-1">
               <SeqRow day="Immediate" label="Email 1 — Your Body State result + book a call or get the report" />
               <SeqRow day="Day 2" label="Email 2 — What your body state result actually means" />
@@ -701,9 +738,6 @@ export default function HelpPage() {
               <SeqRow day="30 min before" label="Reminder — Zoom call is in 30 minutes" />
               <SeqRow day="Immediate (to you)" label="Coach notification with lead name, email, date/time, and Zoom link" />
             </div>
-
-            <p className="font-semibold text-white mt-4">Zoom 2 Booking Confirmation (automatic)</p>
-            <p>Same 4-step sequence as Zoom 1. Fires automatically when Zoom 2 is booked from the companion screen.</p>
 
             <p className="font-semibold text-white mt-4">No-Show Re-engagement Sequence (manual trigger)</p>
             <p>Does not fire automatically. To trigger it: set the lead status to <strong>Closed - No Show</strong>, save, then click <strong>Start Re-engagement Sequence</strong> on the lead detail page. The button only appears when the status is Closed - No Show.</p>
@@ -1080,7 +1114,7 @@ export default function HelpPage() {
             <p className="mt-2">To subscribe: open Calendar on your Mac → File → New Calendar Subscription → paste the webcal:// URL → set auto-refresh to Every 15 Minutes. The calendar updates automatically as bookings are made or changed. No manual export needed.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Manual Bookings</p>
-            <p>You can also create bookings from <strong>Business → Bookings → New Booking</strong>. Select the contact, type (Zoom 1, Zoom 2, Other), date/time, and duration. Zoom is created automatically. The lead/client receives a branded confirmation email with the Zoom link, .ics calendar invite, and scheduled 2-hour and 30-minute reminders. You also get a coach notification with the .ics attached.</p>
+            <p>You can also create bookings from <strong>Business → Bookings → New Booking</strong>. Select the contact, type (Zoom or Other), date/time, and duration. Zoom is created automatically. The lead/client receives a branded confirmation email with the Zoom link, .ics calendar invite, and scheduled 2-hour and 30-minute reminders. You also get a coach notification with the .ics attached. (The legacy Zoom 1 / Zoom 2 split was deprecated 2026-04-29 — the funnel is now single-call.)</p>
 
             <Note>The Zoom booking page is fully public — share the link bodyrecode.au/book anywhere. It shows available times for the next 14 days. After booking, the lead is redirected to performance.bodyrecode.au.</Note>
           </Section>
@@ -1091,10 +1125,9 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">System Automations</p>
             <p>These run automatically. You cannot break them by doing nothing — they are always active.</p>
             <StatusList items={[
-              { label: 'Scorecard Follow-up Sequence', desc: '9-email sequence over 13 days. Fires when someone completes the Body State Scorecard. Emails are personalised to score and body state.' },
+              { label: 'Scorecard Follow-up Sequence', desc: '5-email sequence over 13 days. Fires when someone completes the Body State Scorecard. Voice leads with fat loss / buyer language; body state vocabulary used as the diagnostic frame. Emails 1-2 drive the $37 report; emails 3-4 drive the free strategy call; email 5 names both options based on state.' },
               { label: 'Performance Report Follow-up', desc: '3-email sequence. Fires when someone purchases the $37 Body Decode Report via Stripe. Cancels the scorecard follow-up and replaces it with report-specific copy.' },
-              { label: 'Zoom 1 Booking Confirmation', desc: 'Confirmation + .ics, 2-hour reminder, 30-minute reminder, coach notification. Fires automatically when a lead books via bodyrecode.au/book.' },
-              { label: 'Zoom 2 Booking Confirmation', desc: 'Same 4-step sequence as Zoom 1. Fires when Zoom 2 is booked from the companion screen.' },
+              { label: 'Zoom Booking Confirmation', desc: 'Confirmation + .ics, 2-hour reminder, 30-minute reminder, coach notification. Fires automatically when a lead books via bodyrecode.au/book. Single Zoom call covers diagnosis through pricing through decision (Zoom 1 / Zoom 2 split deprecated 2026-04-29).' },
               { label: 'Self-Guided Program Offer', desc: '$97 program offer email. Fires automatically as part of the Zoom 1 Declined sequence below — no second action needed.' },
               { label: 'Program Buyer Nurture', desc: '3-email sequence at Week 4, 8, and 12. Fires automatically when the $97 program is purchased via Stripe.' },
             ]} />
@@ -1269,12 +1302,14 @@ export default function HelpPage() {
             ]} />
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Scorecard URLs</p>
-            <p>Use these for Instagram bio and scorecard-specific posts. These link directly to the Body State Scorecard with source tracking — use these as your primary Instagram link in bio.</p>
+            <p>Use these for Instagram bio, scorecard-specific posts, and DMs to gym members offering complementary first sessions. These link directly to the Body State Scorecard with source tracking. Use these as the primary link in bio for any channel.</p>
             <StatusList items={[
-              { label: 'Instagram', desc: 'bodyrecode.au/scorecard?source=instagram' },
-              { label: 'Website', desc: 'bodyrecode.au/scorecard?source=website' },
-              { label: 'Facebook', desc: 'bodyrecode.au/scorecard?source=facebook' },
+              { label: 'Instagram', desc: 'performance.bodyrecode.au/scorecard?source=instagram' },
+              { label: 'Website', desc: 'performance.bodyrecode.au/scorecard?source=website' },
+              { label: 'Facebook', desc: 'performance.bodyrecode.au/scorecard?source=facebook' },
+              { label: 'Gym DM (complementary first session)', desc: 'performance.bodyrecode.au/scorecard?source=gym_complementary — for the DM you send gym members who book a complementary session. Maps to source=gym_floor with source_detail=gym_complementary in the CRM for attribution.' },
             ]} />
+            <Note>The leads.source column has a CHECK constraint that only accepts a fixed set of values (quiz, other, gym_floor, instagram, facebook, direct). Any unmapped <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">?source=</code> param falls through to <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">source=other</code> with the raw value preserved in source_detail. This was tightened 2026-04-30 after a gym_complementary submission failed. To add a new normalised source, edit <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">SOURCE_MAP</code> in <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">src/app/api/scorecard/submit/route.ts</code>.</Note>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Digital Channel URLs</p>
             <p>For the Performance Check-In quiz — use these if sending traffic directly to the longer check-in rather than the scorecard.</p>
@@ -1289,7 +1324,14 @@ export default function HelpPage() {
           </Section>
 
           <Section id="be-ads" title="32. Ads" colour="amber">
-            <p>Meta ads feed the top of the funnel. Clicks go to <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">bodyrecode.au/scorecard</code> where the Body Recode pixel fires a <strong>Lead</strong> event when someone completes and submits the scorecard. All analysis lives in Dropbox.</p>
+            <p>Meta ads feed the top of the funnel. Clicks go to <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">performance.bodyrecode.au/scorecard</code> where the Meta Pixel (ID <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">972772552072010</code>) fires four events as the prospect moves through the funnel:</p>
+            <StatusList items={[
+              { label: 'PageView', desc: 'Fires on every page load across performance.bodyrecode.au. Mounted globally in app/layout.tsx via the MetaPixel component.' },
+              { label: 'ViewContent', desc: 'Fires when the scorecard page mounts (content_name: scorecard_start). Marks the moment the lead starts engaging with the lead magnet.' },
+              { label: 'Lead', desc: 'Fires on successful email submit at the end of the scorecard. content_name: scorecard_complete.' },
+              { label: 'InitiateCheckout', desc: 'Fires when the prospect clicks the $37 Body Decode Report button on the result page. value: 37 AUD. content_name: body_decode_report.' },
+            ]} />
+            <p className="mt-3">The actual Purchase event still needs wiring on bodyrecode.au&apos;s Stripe success page (separate repo) and Schedule on /book confirmation. Until those are wired, conversion attribution stops at InitiateCheckout. All ad-data analysis lives in <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">~/Dropbox/01_BODY_RECODE/07_ADS</code>.</p>
 
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">File Structure</p>
             <p>All ads analysis lives at <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">Dropbox/01_BODY_RECODE/07_ADS/</code></p>
