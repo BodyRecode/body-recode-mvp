@@ -72,6 +72,11 @@ export default function BookPage() {
         setSubmitting(false)
         return
       }
+      if (typeof window !== 'undefined' && (window as { fbq?: (...args: unknown[]) => void }).fbq) {
+        ;(window as { fbq?: (...args: unknown[]) => void }).fbq?.('track', 'Schedule', {
+          content_name: 'book_call_slot',
+        })
+      }
       setStep('confirmed')
     } catch {
       setError('Something went wrong. Please try again.')
@@ -94,6 +99,11 @@ export default function BookPage() {
         setError(data.error ?? 'Something went wrong. Please try again.')
         setSubmitting(false)
         return
+      }
+      if (typeof window !== 'undefined' && (window as { fbq?: (...args: unknown[]) => void }).fbq) {
+        ;(window as { fbq?: (...args: unknown[]) => void }).fbq?.('track', 'Schedule', {
+          content_name: 'book_call_request',
+        })
       }
       setStep('request_confirmed')
     } catch {
