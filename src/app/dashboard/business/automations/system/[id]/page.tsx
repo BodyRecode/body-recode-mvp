@@ -22,55 +22,65 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
   'scorecard-followup': {
     id: 'scorecard-followup',
     name: 'Scorecard Follow-up Sequence',
-    description: '4-email sequence triggered when someone completes the Body State Scorecard',
+    description: '5-email sequence over 13 days. Fat-loss-explicit voice. Emails 1-2 push the $37 Body Decode Report; emails 3-4 push the free strategy call; email 5 names both options based on state.',
     trigger: 'Scorecard completed',
-    triggerDetail: 'Fires automatically when a lead submits the Body State Scorecard on bodyrecode.au/scorecard',
+    triggerDetail: 'Fires automatically when a lead submits the Body State Scorecard on performance.bodyrecode.au/scorecard. Each email is personalised to the lead\'s score, body state, and first name.',
     steps: [
       {
         day: 'Immediately',
-        subject: 'Your Body State result',
+        subject: 'Why your body has stopped responding, {firstName}',
         paragraphs: [
           'Hi {firstName},',
-          'Your scorecard result: {score}/15. Body state: {state}.',
-          'That result tells you one specific thing: which state your body is currently in. That state determines what works. It also determines what makes things worse. Most people apply the same approach regardless of their state. That is why most people stay stuck.',
-          'If you want to understand exactly what is driving your result and what needs to change first, book a free 30-minute call. We go through your scorecard together, identify the specific bottleneck, and map out the first steps.',
+          'You just took the scorecard. Result: {score}/15. Body state: {state}.',
+          'That number is the starting point, not the answer. It tells you which of three states your body is currently in. It does not tell you why fat loss has stalled, what specifically is making things worse, or what to fix first.',
+          'The Body Decode Report does. $37. Delivered in 5 minutes. Yours to keep.',
         ],
-        cta: 'Book here →',
+        cta: 'Get your report →',
       },
       {
-        day: 'Day 3',
-        subject: 'Re: your Body State Scorecard',
+        day: 'Day 2',
+        subject: 'What your {state} result actually means',
+        paragraphs: [
+          'Hi {firstName},',
+          'Most people in your situation think they need to train harder or eat less. That is usually the wrong call.',
+          'When a body has stopped responding to effort, the issue is rarely the effort itself. It is the prescription. Pushing harder against a body that is already resisting is what got it stuck in the first place.',
+          'The Body Decode Report walks through what {state} actually means for your training, nutrition, recovery, and most importantly, why fat loss has stalled.',
+        ],
+        cta: 'Get your report →',
+      },
+      {
+        day: 'Day 4',
+        subject: 'Re: your scorecard',
         paragraphs: [
           'Hi {firstName},',
           'Following up on your scorecard.',
           'The most common thing I hear after someone takes it: "That finally explains why nothing has been working."',
-          'Knowing your state is the first piece. The second is knowing exactly what to do about it. That is what the call is for. 30 minutes. Free. No pitch.',
-          'If the timing is not right, no problem. The link will be there when you are ready.',
+          '15 minutes. Free. No pitch. We go through your scorecard together, identify the specific bottleneck, and map out what to do first.',
         ],
-        cta: 'Book here →',
+        cta: 'Book a call →',
       },
       {
-        day: 'Day 7',
-        subject: 'What your {state} result actually means',
+        day: 'Day 8',
+        subject: 'The prescription problem',
         paragraphs: [
           'Hi {firstName},',
-          'Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state doesn\'t factor into it at all.',
-          'Your scorecard came back as {state}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.',
-          'A program built for a Ready state will not work for a Depleted state. That is not a motivation problem. That is a prescription problem.',
-          'That is exactly what the call addresses. Building the approach around your actual state, not a generic template.',
+          'Most coaching programs give everyone the same plan. Your body state does not factor in at all.',
+          'Your scorecard came back as {state}. That is a specific biological pattern. A program built for a Ready state will make a Depleted state worse. That is not a motivation problem. It is a prescription problem.',
+          'The fastest way to address it is the call. 15 minutes, free, no pitch.',
         ],
-        cta: 'Book here →',
+        cta: 'Book a call →',
       },
       {
-        day: 'Day 12',
+        day: 'Day 13',
         subject: 'Last one from me, {firstName}',
         paragraphs: [
           'Hi {firstName},',
-          'Last email from me on this.',
-          'Your scorecard result is still there whenever you want to act on it. The call is still available. No follow-up after this.',
-          'Just wanted you to know the door stays open.',
+          'Last email from me on this. Two doors based on your {state} score:',
+          '1. Body Decode Report ($37). Written breakdown of your result and the order to fix it.',
+          '2. Free 15-minute call. Best if you would rather talk it through first.',
+          'No follow-up after this.',
         ],
-        cta: 'Book here →',
+        cta: 'Pick a door →',
       },
     ],
   },
@@ -230,49 +240,47 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
   'zoom1-confirmation': {
     id: 'zoom1-confirmation',
     name: 'Zoom Booking Confirmation',
-    description: 'Branded confirmation email with Zoom link and .ics calendar invite sent to the lead, plus a coach notification - fires automatically on every Zoom booking',
+    description: 'Branded confirmation email with Zoom link and .ics calendar invite sent to the lead, plus 2-hour and 30-minute reminders, plus a coach notification. Single Zoom funnel (Zoom 1 / Zoom 2 split deprecated 2026-04-29).',
     trigger: 'Zoom booked',
-    triggerDetail: 'Fires automatically whenever a lead books a Zoom call via bodyrecode.au/book or a manual booking is created in Business → Bookings',
+    triggerDetail: 'Fires automatically whenever a lead books a Zoom call via bodyrecode.au/book or a manual booking is created in Business → Bookings.',
     steps: [
       {
-        day: 'Immediately — to lead',
-        subject: 'Your Zoom call is confirmed — {date, e.g. Monday 14 April 2026}',
+        day: 'Immediately to lead',
+        subject: 'Your strategy call is locked in: {date}',
         paragraphs: [
           'Hi {firstName},',
-          'Your Zoom call with Kade is confirmed.',
+          'You are locked in. Here is what we will cover.',
+          'We go through your scorecard together, identify the specific reason your body has stopped responding, and map out what to do first. Free. No pitch.',
           '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
           'Open the attached file to add this to your calendar.',
-          '[Coach signature with photo]',
         ],
         cta: 'Join Zoom ↗',
       },
       {
-        day: '2 hours before — to lead (scheduled)',
-        subject: 'Your Zoom call is in 2 hours — {time} Brisbane',
+        day: '2 hours before, to lead (scheduled)',
+        subject: 'Your strategy call starts in 2 hours',
         paragraphs: [
           'Hi {firstName},',
-          'Your Zoom call with Kade is in 2 hours.',
+          'Your strategy call with Kade starts in 2 hours.',
           '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
-          '[Coach signature with photo]',
         ],
         cta: 'Join Zoom ↗',
       },
       {
-        day: '30 minutes before — to lead (scheduled)',
-        subject: 'Your Zoom call is in 30 minutes — {time} Brisbane',
+        day: '30 minutes before, to lead (scheduled)',
+        subject: 'Your strategy call starts in 30 minutes',
         paragraphs: [
           'Hi {firstName},',
-          'Your Zoom call with Kade is in 30 minutes.',
+          'Your strategy call with Kade starts in 30 minutes.',
           '[Date card: {date} · {time} Brisbane · 30 min · Join Zoom button]',
-          '[Coach signature with photo]',
         ],
         cta: 'Join Zoom ↗',
       },
       {
-        day: 'Immediately — to coach (kade@bodyrecode.au)',
-        subject: 'Zoom booked — {name}',
+        day: 'Immediately to coach (kade@bodyrecode.au)',
+        subject: 'Zoom booked: {name}',
         paragraphs: [
-          'Zoom booked — {name}',
+          'Zoom booked: {name}',
           '{email}',
           '[Date & Time card: {date} · {time} Brisbane]',
           '[Join Zoom button + View Lead button]',
@@ -316,11 +324,289 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
         subject: 'End of the program, {firstName}',
         paragraphs: [
           'Hi {firstName},',
-          'You\'re at the end of 12 weeks. Most people don\'t finish. That matters.',
-          'The question now is what it told you, and what comes next. Your body state shifts as your capacity builds. The next phase looks different from where you started - and it should be built around that.',
+          'You are at the end of 12 weeks. Most people do not finish. That matters.',
+          'The question now is what it told you, and what comes next. Your body state shifts as your capacity builds. The next phase looks different from where you started, and it should be built around that.',
           'If you want to work out what that next phase looks like with proper support, book a call. 30 minutes. No obligation. Just a straight conversation about where you are and where you could go.',
         ],
         cta: 'Book a call →',
+      },
+    ],
+  },
+
+  // ─── Lead-stage manual triggers ─────────────────────────────────
+
+  'send-booking-link': {
+    id: 'send-booking-link',
+    name: 'Send Booking Link',
+    description: 'Manually email a lead the strategy-call booking link.',
+    trigger: 'Coach clicks "Send booking link" on the lead detail page',
+    triggerDetail: 'Use when a lead has not yet booked but you want to nudge them. Sends a single email with the bodyrecode.au/book link.',
+    steps: [
+      {
+        day: 'Immediately on click',
+        subject: '{firstName}, lock in your strategy call',
+        paragraphs: [
+          'Hi {firstName},',
+          'Pick a time and we will go through your scorecard, identify the specific reason your body has stopped responding, and map out what to do first.',
+          'Free. No pitch. Confirmation comes through straight away.',
+        ],
+        cta: 'Lock in a time →',
+      },
+    ],
+  },
+
+  'send-orientation': {
+    id: 'send-orientation',
+    name: 'Send Orientation Guide',
+    description: 'Manually send the pre-call orientation guide so the lead understands how the coaching process works before the Zoom.',
+    trigger: 'Coach clicks "Send orientation" on the lead detail page',
+    triggerDetail: 'Use after a Zoom is booked but before the call. The Orientation Guide lives at app.bodyrecode.au/orientation and covers how coaching works, the relationship, and what to expect from the structure.',
+    steps: [
+      {
+        day: 'Immediately on click',
+        subject: '{firstName}, your Body Recode Orientation Guide',
+        paragraphs: [
+          'Hi {firstName},',
+          'Before we speak, have a read through this so you know how the coaching process actually works and what the relationship looks like from the inside.',
+          'Nothing to complete or decide. Read it at your own pace. It exists to create clarity before we have the conversation, not momentum to push you toward one.',
+        ],
+        cta: 'Read the Orientation Guide →',
+      },
+    ],
+  },
+
+  'send-commencement-fee': {
+    id: 'send-commencement-fee',
+    name: 'Send Commencement Fee Link',
+    description: 'Manually email a lead the $240 Stripe checkout link to commence coaching.',
+    trigger: 'Click "Send to Client" under Coaching Entry on the lead detail page, OR Path C in the Zoom companion',
+    triggerDetail: 'Auto-triggered when Path C - Proceeding is selected in the Zoom companion. Can also be sent manually from the lead profile if needed.',
+    steps: [
+      {
+        day: 'Immediately on click',
+        subject: '{firstName}, your $240 commencement link',
+        paragraphs: [
+          'Hi {firstName},',
+          'Here is the $240 commencement link to get started. This covers the foundational read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.',
+          'Once payment is in, your portal access, intake, and the first foundational steps unlock automatically.',
+        ],
+        cta: 'Pay commencement fee →',
+      },
+    ],
+  },
+
+  // ─── Client onboarding manual triggers ─────────────────────────
+
+  'send-portal-email': {
+    id: 'send-portal-email',
+    name: 'Send Portal Email',
+    description: 'Manually email a client their onboarding portal link.',
+    trigger: 'Click "Send to Client" on the client profile after the commencement fee is paid',
+    triggerDetail: 'Magic-link sign-in (no password). Email previews the four onboarding steps the client will work through in their portal.',
+    steps: [
+      {
+        day: 'Immediately on click',
+        subject: '{firstName}, your portal is ready',
+        paragraphs: [
+          'Hi {firstName},',
+          'Your portal is open. Four steps to complete before we start coaching: Coaching Agreement, Health Declaration, Foundational Intake (208 questions across 8 areas), and Baseline Documentation.',
+          'Once your intake is in, your CFFS generates automatically. That is the read I work from to write your program. No template. Built around what your body is actually doing.',
+        ],
+        cta: 'Open my portal →',
+      },
+    ],
+  },
+
+  'send-subscription': {
+    id: 'send-subscription',
+    name: 'Send Subscription Link',
+    description: 'Manually email a client their weekly subscription Stripe link.',
+    trigger: 'Click "Send subscription" on the client profile, after CFFS has been reviewed and the coaching package is set',
+    triggerDetail: 'Last step before coaching starts. Stripe link is package-specific (online, 2x in-person, or 3x in-person) and the price reflects launch rate if it is currently active.',
+    steps: [
+      {
+        day: 'Immediately on click',
+        subject: '{firstName}, lock in your weekly subscription',
+        paragraphs: [
+          'Hi {firstName},',
+          'Your CFFS is in. Your program is being built around it. The last step before we start coaching is locking in your weekly subscription.',
+          'Once payment is active, we lock in your sessions and set your start date. Usually three to seven days out.',
+        ],
+        cta: 'Set up subscription →',
+      },
+    ],
+  },
+
+  // ─── Client onboarding auto-fires ───────────────────────────────
+
+  'intake-submitted': {
+    id: 'intake-submitted',
+    name: 'Foundational Intake Submitted',
+    description: 'Coach notification when a client completes their 208-question intake.',
+    trigger: 'Client submits Foundational Intake via portal',
+    triggerDetail: 'Sends a coach notification email AND triggers automatic CFFS generation in the background via Claude. CFFS appears on the client profile a few seconds after submission.',
+    steps: [
+      {
+        day: 'Immediately on submit',
+        subject: '{name} submitted their intake',
+        paragraphs: [
+          '{name} has completed and submitted their foundational intake. CFFS generation is underway.',
+          'Open the client profile to review the CFFS once it lands.',
+        ],
+        cta: 'Open client profile →',
+      },
+    ],
+  },
+
+  'baseline-submitted': {
+    id: 'baseline-submitted',
+    name: 'Baseline Documentation Submitted',
+    description: 'Coach notification when a client uploads their baseline measurements + photos.',
+    trigger: 'Client submits Baseline via portal',
+    triggerDetail: 'Final onboarding step. Baseline data + photos are stored on the client record for week-over-week comparison.',
+    steps: [
+      {
+        day: 'Immediately on submit',
+        subject: '{name} submitted their baseline',
+        paragraphs: [
+          '{name} has submitted their baseline measurements and photos.',
+          'Open the client profile to review.',
+        ],
+        cta: 'Open client profile →',
+      },
+    ],
+  },
+
+  'health-declaration-submitted': {
+    id: 'health-declaration-submitted',
+    name: 'Health Declaration Submitted',
+    description: 'Coach notification when a client submits their health declaration.',
+    trigger: 'Client submits Health Declaration via portal',
+    triggerDetail: 'If the client flags conditions that require medical clearance, the email includes a "Medical clearance required" warning and the Foundational Intake stays locked until clearance is approved.',
+    steps: [
+      {
+        day: 'Immediately on submit',
+        subject: '{name} submitted their health declaration',
+        paragraphs: [
+          '{name} has submitted their health declaration.',
+          'If medical clearance is required, the email flags this and intake stays locked until you review and approve it.',
+        ],
+        cta: 'Open client profile →',
+      },
+    ],
+  },
+
+  'clearance-uploaded': {
+    id: 'clearance-uploaded',
+    name: 'Medical Clearance Uploaded',
+    description: 'Coach notification when a client uploads their medical clearance form.',
+    trigger: 'Client uploads clearance file via portal',
+    triggerDetail: 'Email includes a signed link to the uploaded file (private bucket, link expires in 7 days). Clearance must be approved manually before intake unlocks.',
+    steps: [
+      {
+        day: 'Immediately on upload',
+        subject: 'Medical clearance uploaded: {name}',
+        paragraphs: [
+          '{name} has uploaded their completed medical clearance form.',
+          'Review and approve it in the dashboard.',
+        ],
+        cta: 'Open in dashboard →',
+      },
+    ],
+  },
+
+  'clearance-approved': {
+    id: 'clearance-approved',
+    name: 'Medical Clearance Approved',
+    description: 'Email to client when coach approves their medical clearance. Unlocks Foundational Intake and Baseline.',
+    trigger: 'Coach clicks Approve on the medical clearance review page',
+    triggerDetail: 'Sets medical_clearance_received_at on the client record and emails the client to let them know onboarding is now fully unlocked.',
+    steps: [
+      {
+        day: 'Immediately on approval',
+        subject: '{firstName}, medical clearance approved',
+        paragraphs: [
+          'Hi {firstName},',
+          'Your medical clearance has been reviewed and approved. Onboarding is now fully unlocked. The Foundational Intake and Baseline Documentation are open in your portal.',
+          'Take your time with the intake. The more accurate it is, the better the read I get.',
+        ],
+        cta: 'Go to my portal →',
+      },
+    ],
+  },
+
+  // ─── Weekly + session automations ──────────────────────────────
+
+  'weekly-checkin-submitted': {
+    id: 'weekly-checkin-submitted',
+    name: 'Weekly Check-In Submitted',
+    description: 'Coach notification + client confirmation when a weekly check-in form is submitted.',
+    trigger: 'Client submits Form A or Form B via portal',
+    triggerDetail: 'Each week the client submits two forms. Form A covers training, load, recovery. Form B covers regulation, lifestyle, context. When both are in for a given week, CFWS generation is triggered.',
+    steps: [
+      {
+        day: 'Immediately to coach',
+        subject: '{name}, Week N check-in submitted',
+        paragraphs: [
+          'Form A or Form B has been submitted. A CFWS will generate once both are in for the week.',
+        ],
+        cta: 'View client profile →',
+      },
+      {
+        day: 'Immediately to client',
+        subject: 'Week N check-in received',
+        paragraphs: [
+          'Hi {firstName},',
+          'Your Week N check-in has been received. I will review it and it will inform your coaching this week.',
+        ],
+        cta: '',
+      },
+    ],
+  },
+
+  'session-confirmed': {
+    id: 'session-confirmed',
+    name: 'Session Confirmed via Portal',
+    description: 'Coach notification when a client confirms their face-to-face session via the one-click portal link.',
+    trigger: 'Client clicks "Confirm session" link in their portal email',
+    triggerDetail: 'Public confirm-session URL. Marks the session as confirmed and sends a coach notification with the session details.',
+    steps: [
+      {
+        day: 'Immediately on click',
+        subject: '{name} confirmed their session: {date}',
+        paragraphs: [
+          '{name} confirmed their attendance for the face-to-face session.',
+          'Date, time, and location appear in the email.',
+        ],
+        cta: '',
+      },
+    ],
+  },
+
+  'session-booked-portal': {
+    id: 'session-booked-portal',
+    name: 'Session Booked via Portal',
+    description: 'Client confirmation + coach notification when a client books a face-to-face session through their portal.',
+    trigger: 'Client books a session via portal Sessions page',
+    triggerDetail: 'Sends a confirmation to the client (with session details) and a notification to the coach. Used for face-to-face slot rescheduling.',
+    steps: [
+      {
+        day: 'Immediately to client',
+        subject: 'Session booked: {date} at {time}',
+        paragraphs: [
+          'Hey {firstName}, your session has been booked.',
+          'Date, time, location, duration in the email. Changes can be made via the portal Sessions page.',
+        ],
+        cta: '',
+      },
+      {
+        day: 'Immediately to coach',
+        subject: '{name} booked a session: {date} at {time}',
+        paragraphs: [
+          '{name} has booked a face-to-face session via portal.',
+          'Session details in the email.',
+        ],
+        cta: '',
       },
     ],
   },
