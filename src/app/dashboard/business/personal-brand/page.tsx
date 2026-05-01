@@ -100,7 +100,6 @@ function PositioningTab() {
         <div className="space-y-3">
           {[
             { platform: 'Instagram', handle: '@kade_dunstone_', link: 'bodyrecode.au/scorecard?source=instagram_kade' },
-            { platform: 'Threads',   handle: '@kade_dunstone_', link: 'bodyrecode.au/scorecard?source=threads_kade' },
           ].map(r => (
             <div key={r.platform} className="flex items-center justify-between py-2 border-b border-stone-800 last:border-0">
               <div>
@@ -311,26 +310,26 @@ function ScriptsTab() {
 
   const launchScripts: Script[] = [
     {
-      id: 'l1', type: 'Arrival', pillar: 'Positioning', pillarColor: 'teal', platform: 'Threads + Instagram',
+      id: 'l1', type: 'Arrival', pillar: 'Positioning', pillarColor: 'teal', platform: 'Instagram',
       hook: "I've spent 20 years helping people understand their body. Most of the work was never in the gym.",
     },
     {
-      id: 'l2', type: 'Contrarian', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads + Instagram',
+      id: 'l2', type: 'Contrarian', pillar: 'Thinking', pillarColor: 'violet', platform: 'Instagram',
       hook: 'The problem is not effort. Effort is everywhere.',
       body: "The problem is that nobody reads the situation before prescribing to it. That's true in coaching. And in most areas of life.",
     },
     {
-      id: 'l3', type: 'Rebuild', pillar: 'Identity', pillarColor: 'amber', platform: 'Threads + Instagram',
+      id: 'l3', type: 'Rebuild', pillar: 'Identity', pillarColor: 'amber', platform: 'Instagram',
       hook: "I've rebuilt my identity three times.",
       body: 'Each time I thought I was starting over. Each time I was actually going deeper.',
     },
     {
-      id: 'l4', type: 'System', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads + Instagram',
+      id: 'l4', type: 'System', pillar: 'Thinking', pillarColor: 'violet', platform: 'Instagram',
       hook: 'I stopped writing programs and started building systems.',
       body: "When I realised that programs solve yesterday's problem. Systems solve the pattern underneath it.",
     },
     {
-      id: 'l5', type: 'Connection', pillar: 'Body Recode', pillarColor: 'teal', platform: 'Threads + Instagram',
+      id: 'l5', type: 'Connection', pillar: 'Body Recode', pillarColor: 'teal', platform: 'Instagram',
       hook: 'Body Recode is the result of every rebuild.',
       body: "An interpretive system - read the body before prescribing to it. That principle started with my own body and became a framework for everyone else's.",
     },
@@ -338,27 +337,27 @@ function ScriptsTab() {
 
   const pillar1Scripts: Script[] = [
     {
-      id: 'p1a', type: 'Contrarian', pillar: 'Body', pillarColor: 'teal', platform: 'Threads',
+      id: 'p1a', type: 'Contrarian', pillar: 'Body', pillarColor: 'teal', platform: 'Instagram',
       hook: 'The body is not broken. It is being misread.',
       body: "20 years in this industry. The bodies that weren't responding weren't failing - they were communicating. Most coaches don't know how to listen.",
     },
     {
-      id: 'p1b', type: 'Observation', pillar: 'Body', pillarColor: 'teal', platform: 'Threads',
+      id: 'p1b', type: 'Observation', pillar: 'Body', pillarColor: 'teal', platform: 'Instagram',
       hook: "You can't out-train a nervous system in protection mode.",
       body: "More sessions. More restriction. More discipline. All of it makes a depleted body worse. The body interprets load as threat when it's already overwhelmed. The answer is never more - it's different.",
     },
     {
-      id: 'p1c', type: 'Framework', pillar: 'Body', pillarColor: 'teal', platform: 'Threads + Instagram',
+      id: 'p1c', type: 'Framework', pillar: 'Body', pillarColor: 'teal', platform: 'Instagram',
       hook: 'Three states. One body. Completely different responses to the same training.',
       copy: "Depleted - protection mode. Adding load makes it worse.\n\nTransitioning - mixed signals. Something is blocking response.\n\nReady - biology is set up to respond.\n\nSame program. Three completely different outcomes depending on which state the person is in.\n\nMost coaches write the program first. I read the state first.",
     },
     {
-      id: 'p1d', type: 'Story', pillar: 'Body', pillarColor: 'teal', platform: 'Threads',
+      id: 'p1d', type: 'Story', pillar: 'Body', pillarColor: 'teal', platform: 'Instagram',
       hook: 'I was medically discharged from the military at 19.',
       body: "Structural issues in both legs. Years of building toward soldier - gone in a single assessment. That forced me to understand the body in a way no training qualification ever taught me. The setback became the foundation.",
     },
     {
-      id: 'p1e', type: 'Contrarian', pillar: 'Body', pillarColor: 'teal', platform: 'Threads',
+      id: 'p1e', type: 'Contrarian', pillar: 'Body', pillarColor: 'teal', platform: 'Instagram',
       hook: "What 20 years in the industry taught me that no qualification covers.",
       body: "Qualifications teach you what to prescribe. They don't teach you how to read the person in front of you before you prescribe anything. That's the gap. That's where most coaches fail.",
     },
@@ -366,27 +365,27 @@ function ScriptsTab() {
 
   const pillar2Scripts: Script[] = [
     {
-      id: 'p2a', type: 'Contrarian', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads',
+      id: 'p2a', type: 'Contrarian', pillar: 'Thinking', pillarColor: 'violet', platform: 'Instagram',
       hook: "Most people don't have a discipline problem. They have a clarity problem.",
       body: "Discipline applied to the wrong direction is just effort wasted. Before you build the system, you need to know what you're actually solving for.",
     },
     {
-      id: 'p2b', type: 'Framework', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads + Instagram',
+      id: 'p2b', type: 'Framework', pillar: 'Thinking', pillarColor: 'violet', platform: 'Instagram',
       hook: 'Interpretation vs prescription. The difference matters more than most people realise.',
       copy: "Prescription: here's the plan, follow it.\n\nInterpretation: here's what I see, here's what it means, here's what we do about it.\n\nOne of these adapts. One of these doesn't.\n\nEvery failed coaching relationship I've seen came down to prescription without interpretation.",
     },
     {
-      id: 'p2c', type: 'Observation', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads',
+      id: 'p2c', type: 'Observation', pillar: 'Thinking', pillarColor: 'violet', platform: 'Instagram',
       hook: 'Clarity is upstream of everything.',
       body: "Performance. Decisions. Relationships. Business. When these break down, most people go looking for a better strategy. The actual problem is almost always upstream - in how the situation was read.",
     },
     {
-      id: 'p2d', type: 'Framework', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads',
+      id: 'p2d', type: 'Framework', pillar: 'Thinking', pillarColor: 'violet', platform: 'Instagram',
       hook: 'Pause. Reflect. Document.',
       body: "Three steps that separate reactive decisions from structured ones. Most people skip all three. They act on instinct, forget what they observed, and wonder why they keep solving the same problems.",
     },
     {
-      id: 'p2e', type: 'Contrarian', pillar: 'Thinking', pillarColor: 'violet', platform: 'Threads',
+      id: 'p2e', type: 'Contrarian', pillar: 'Thinking', pillarColor: 'violet', platform: 'Instagram',
       hook: 'Pattern recognition is the skill nobody teaches.',
       body: "It's not intelligence. It's not experience alone. It's the habit of observing before acting - long enough that you start seeing what repeats. Most people are too fast. They act before the pattern is clear.",
     },
@@ -394,27 +393,27 @@ function ScriptsTab() {
 
   const pillar3Scripts: Script[] = [
     {
-      id: 'p3a', type: 'Contrarian', pillar: 'AI', pillarColor: 'amber', platform: 'Threads',
+      id: 'p3a', type: 'Contrarian', pillar: 'AI', pillarColor: 'amber', platform: 'Instagram',
       hook: "AI doesn't make you smarter. It makes your current thinking louder.",
       body: "If your thinking is structured, AI amplifies structure. If it isn't, AI amplifies noise. The tool is neutral. The input determines the output.",
     },
     {
-      id: 'p3b', type: 'Story', pillar: 'AI', pillarColor: 'amber', platform: 'Threads + Instagram',
+      id: 'p3b', type: 'Story', pillar: 'AI', pillarColor: 'amber', platform: 'Instagram',
       hook: 'Most coaches rent software. I built mine.',
       copy: "A full coaching and CRM platform. Client assessment. Program generation. Automations. Business dashboard.\n\nBuilt using AI as a co-founder - not a tool.\n\nI didn't write the code. I knew what I was building and why. AI handled the rest.\n\nThe platform is the proof of concept for everything I teach about structured thinking.",
     },
     {
-      id: 'p3c', type: 'Framework', pillar: 'AI', pillarColor: 'amber', platform: 'Threads',
+      id: 'p3c', type: 'Framework', pillar: 'AI', pillarColor: 'amber', platform: 'Instagram',
       hook: 'The difference between using AI as a tool and using it as a co-founder.',
       body: "A tool does what you tell it. A co-founder thinks alongside you. The second one requires you to have structured thinking first - but when you do, the output is completely different.",
     },
     {
-      id: 'p3d', type: 'Contrarian', pillar: 'AI', pillarColor: 'amber', platform: 'Threads',
+      id: 'p3d', type: 'Contrarian', pillar: 'AI', pillarColor: 'amber', platform: 'Instagram',
       hook: "You don't need to know how to code. You need to know what you're building and why.",
       body: "AI handles the execution. Your job is the thinking, the structure, the direction. Most people get this backwards - they learn the tool before they know the problem.",
     },
     {
-      id: 'p3e', type: 'Observation', pillar: 'AI', pillarColor: 'amber', platform: 'Threads',
+      id: 'p3e', type: 'Observation', pillar: 'AI', pillarColor: 'amber', platform: 'Instagram',
       hook: 'Building in public changes how you think.',
       body: "When you have to explain what you're building, you realise how much of it you haven't fully thought through yet. The documentation is not the output - it's the process.",
     },
@@ -422,27 +421,27 @@ function ScriptsTab() {
 
   const pillar4Scripts: Script[] = [
     {
-      id: 'p4a', type: 'Story', pillar: 'Identity', pillarColor: 'orange', platform: 'Threads',
+      id: 'p4a', type: 'Story', pillar: 'Identity', pillarColor: 'orange', platform: 'Instagram',
       hook: "I've rebuilt my identity three times. Each time I thought I was losing. Each time I was building.",
       body: "Military discharge at 19. Fitness industry exit at 30. End of a 20-year relationship. Each one felt like failure. Each one produced the framework I now teach.",
     },
     {
-      id: 'p4b', type: 'Contrarian', pillar: 'Identity', pillarColor: 'orange', platform: 'Threads',
+      id: 'p4b', type: 'Contrarian', pillar: 'Identity', pillarColor: 'orange', platform: 'Instagram',
       hook: 'Rebuilding is not failure. It is the process of building better structure.',
       body: "The people who never rebuild are the ones who stay attached to a version of themselves that no longer fits. The rebuild is not the problem. The resistance to it is.",
     },
     {
-      id: 'p4c', type: 'Observation', pillar: 'Identity', pillarColor: 'orange', platform: 'Threads',
+      id: 'p4c', type: 'Observation', pillar: 'Identity', pillarColor: 'orange', platform: 'Instagram',
       hook: 'Identity determines direction. Get the identity wrong and the strategy never lands.',
       body: "You can have the right method, the right plan, the right resources - and still get nowhere. If the identity underneath doesn't match the direction, the whole thing works against itself.",
     },
     {
-      id: 'p4d', type: 'Story', pillar: 'Identity', pillarColor: 'orange', platform: 'Threads + Instagram',
+      id: 'p4d', type: 'Story', pillar: 'Identity', pillarColor: 'orange', platform: 'Instagram',
       hook: "I walked away from a 20-year relationship and had to rebuild self-trust from scratch.",
       copy: "Not because the relationship was bad. Because I had built my identity so completely around it that when it ended, I didn't know who I was without it.\n\nThat's when I understood performance loss at its deepest level.\n\nPeople don't lose fitness. They lose clarity. They lose direction. They lose the identity that made effort feel worth it.\n\nClarity is upstream of everything.",
     },
     {
-      id: 'p4e', type: 'Contrarian', pillar: 'Identity', pillarColor: 'orange', platform: 'Threads',
+      id: 'p4e', type: 'Contrarian', pillar: 'Identity', pillarColor: 'orange', platform: 'Instagram',
       hook: 'Most people try to perform their way out of an identity problem.',
       body: "More training. More output. More discipline. All applied on top of a foundation that hasn't been examined. The performance doesn't fix the problem. It masks it - until it can't anymore.",
     },
@@ -549,28 +548,7 @@ function CadenceTab() {
   return (
     <div className="space-y-5">
       <Card>
-        <SectionLabel>Threads - Primary Thinking Platform</SectionLabel>
-        <div className="flex items-center gap-2 mb-4">
-          <Tag color="teal">Daily or near-daily</Tag>
-          <Tag color="stone">No graphics needed</Tag>
-        </div>
-        <div className="space-y-2">
-          {[
-            'Short observations and contrarian takes',
-            'Thread format for deeper breakdowns',
-            'Pure text - reads like someone who has thought about this for years',
-            'No motivational fluff, no gym selfies, no vague inspiration',
-          ].map(t => (
-            <div key={t} className="flex items-start gap-2 text-sm text-stone-300">
-              <span className="text-teal-500 mt-1 shrink-0">-</span>
-              {t}
-            </div>
-          ))}
-        </div>
-      </Card>
-
-      <Card>
-        <SectionLabel>Instagram - Secondary, More Polished</SectionLabel>
+        <SectionLabel>Instagram - Primary Platform</SectionLabel>
         <div className="flex items-center gap-2 mb-4">
           <Tag color="violet">3-4x per week</Tag>
         </div>
@@ -645,7 +623,7 @@ function LaunchTab() {
     { done: false, step: 'First 5 posts live before any outreach' },
     { done: false, step: 'Warm outreach to 20-30 people' },
     { done: false, step: 'Build to 50 followers before any promotion' },
-    { done: false, step: 'Regular cadence begins - daily Threads, 3-4x Instagram' },
+    { done: false, step: 'Regular cadence begins - 3-4x Instagram' },
     { done: false, step: 'HeyGen avatar finalised - 1 video per week minimum' },
   ]
 
@@ -667,7 +645,6 @@ function LaunchTab() {
         <SectionLabel>Source Tracking</SectionLabel>
         <div className="space-y-2">
           {[
-            { platform: 'Threads bio',       url: 'bodyrecode.au/scorecard?source=threads_kade' },
             { platform: 'Instagram bio',     url: 'bodyrecode.au/scorecard?source=instagram_kade' },
             { platform: 'Instagram story',   url: 'bodyrecode.au/scorecard?source=instagram_kade_story' },
           ].map(r => (
@@ -725,7 +702,7 @@ export default function PersonalBrandPage() {
           <h1 className="text-xl font-semibold text-white">Personal Brand</h1>
           <span className="text-xs text-stone-500 bg-stone-800 px-2 py-0.5 rounded font-mono">@kade_dunstone_</span>
         </div>
-        <p className="text-sm text-stone-500 mb-4">Threads + Instagram - the thinking, the journey, the builder</p>
+        <p className="text-sm text-stone-500 mb-4">Instagram - the thinking, the journey, the builder</p>
 
         <div className="flex gap-1 overflow-x-auto pb-px">
           {TABS.map(t => (
