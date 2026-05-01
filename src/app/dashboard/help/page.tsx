@@ -316,7 +316,7 @@ export default function HelpPage() {
               <li><strong>Single Zoom funnel.</strong> No "Zoom 2", no "second conversation". The call covers diagnosis through pricing through decision in one block. Anything that contradicts this is stale and should be flagged.</li>
               <li><strong>No fitness clichés:</strong> grind, crush it, hustle, push through, no-pain-no-gain. The brand is intelligent, not punitive.</li>
               <li><strong>No shame or guilt framing.</strong> &quot;You&apos;re lazy / inconsistent / not trying hard enough&quot; is the opposite of the read.</li>
-              <li><strong>Founding Client Program is no longer running</strong> (closed 2026-05-01). Do not reference founding rates, &quot;first 20 clients&quot;, or 50% off in any new copy. Standard rates apply: $149/wk online, $299/wk 2x in-person, $409/wk 3x in-person, plus the $240 commencement fee.</li>
+              <li><strong>Founding Client Program framing is retired</strong> (closed 2026-05-01). Do not reference &quot;Founding Client&quot;, &quot;first 20 clients&quot;, &quot;the Program&quot;, or trade/case-study language in any new copy. The half-rate offer itself is still available as the <strong>launch rate</strong>, used as a closing tool on Zoom calls only (not promoted publicly). Standard rates: $149/wk online, $299/wk 2x in-person, $409/wk 3x in-person, plus $240 commencement fee. Launch rate (call-only): $74.50/wk online, $149.50/wk 2x, $204.50/wk 3x.</li>
             </ul>
 
             <p className="font-semibold text-white mt-4">Reference docs</p>
@@ -468,6 +468,7 @@ export default function HelpPage() {
             <Training title="What the Pitch half is for">
               <p><strong>Stage 3 — Tie hot spot to training.</strong> This is the heart of the conversion. Walk through the four system cards in order, but every card gets anchored back to what they told you in Stage 2. Card 2 is where you name their likely biological profile — read the description back and watch them recognise themselves.</p>
               <p className="mt-2"><strong>Stage 4 — Offer &amp; Packages.</strong> They&apos;ve seen what you do and how it gets to their thing. State what&apos;s included, then the price. $299/week for in-person 2x. Pause after stating it. The silence is not awkward, it is the lead processing.</p>
+              <p className="mt-2">After pricing, mention the launch rate (half off, locked for engagement duration) as a single add-on line at the end. Don&apos;t lead with the discount. Frame as &quot;And one more thing. There is a launch rate open right now...&quot;</p>
               <p className="mt-2"><strong>Decision.</strong> Three paths. Know which one you&apos;re in before you respond. Path A closes cleanly. Do not re-pitch.</p>
             </Training>
 
