@@ -360,6 +360,14 @@ export default function HelpPage() {
             <p>When someone completes the Body State Scorecard on performance.bodyrecode.au, a lead is <strong>automatically created</strong> in the CRM — no manual entry required. Their name, email, score, body state, and section scores are all captured. You receive a branded notification email immediately on every scorecard submission.</p>
             <p className="mt-2">Leads created this way are tagged with <code className="bg-stone-800 px-1 rounded text-teal-300 text-xs">source_detail: scorecard</code>. This is now the primary lead entry path.</p>
 
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Lead Quality Filter (Red Flag Test)</p>
+            <p>Two qualifier questions are asked between the email step and the result. Based on Hormozi&apos;s &quot;red flag test&quot; — a single mindset/behaviour question identified leads with half the show rate and half the close rate. Body Recode uses two:</p>
+            <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm mt-1">
+              <li><strong>Approach (behaviour):</strong> When training/nutrition stops producing results, what is your honest first response? <span className="text-stone-500">A/B = good fit. C (push harder) and D (frustrated, want program changed) = red flag — exactly the prescription-over-interpretation mindset BR is built to correct.</span></li>
+              <li><strong>Investment readiness (qualification):</strong> If we identify what is blocking your progress, are you in a position to invest? <span className="text-stone-500">A (ready now) / B (1-3 months) = good. C (just exploring) / D (free only) = red flag — not a coaching buyer.</span></li>
+            </ul>
+            <p className="mt-2">Each lead is scored: <strong className="text-teal-400">green</strong> (zero red flags), <strong className="text-amber-400">yellow</strong> (one), <strong className="text-red-400">red</strong> (both). Quality dot appears on the avatar in the leads list and a Lead Quality block appears on the lead detail page below the section breakdown. Red-flagged leads should not be pushed to a Zoom call unless they push for it themselves.</p>
+
             <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mt-4 mb-2">Post-Scorecard CTAs (state-based split)</p>
             <p>After completing the scorecard, the CTA shown on the result page <strong>depends on the lead&apos;s body state</strong>. This was changed 2026-04-30 to remove the $37/free-call cannibalisation that had been driving $37 conversion to zero. Each state now sees ONE primary path matched to where their body actually is:</p>
             <ul className="space-y-1.5 list-disc list-inside text-stone-300 text-sm mt-1">

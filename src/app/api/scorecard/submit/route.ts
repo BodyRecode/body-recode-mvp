@@ -40,8 +40,31 @@ export async function POST(request: NextRequest) {
     console.error('[scorecard/submit] Failed to parse JSON body:', e)
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400, headers: CORS })
   }
-  const { first_name, email, score, body_state, source, section_scores } = body as { first_name: string; email: string; score: number; body_state: string; source: string; section_scores?: Record<string, number> }
-  console.log('[scorecard/submit] Received:', { first_name, email, score, body_state, source })
+  const { first_name, email, score, body_state, source, section_scores, approach_response, investment_readiness } = body as {
+    first_name: string
+    email: string
+    score: number
+    body_state: string
+    source: string
+    section_scores?: Record<string, number>
+    approach_response?: 'A' | 'B' | 'C' | 'D'
+    investment_readiness?: 'A' | 'B' | 'C' | 'D'
+  }
+  console.log('[scorecard/submit] Received:', { first_name, email, score, body_state, source, approach_response, investment_readiness })
+
+  // Compute lead quality from qualifier answers.
+  // Behaviour red flag: approach C/D (push harder / get frustrated).
+  // Investment red flag: investment C/D (just exploring / free only).
+  // Two reds = red, one = yellow, zero = green.
+  let redCount = 0
+  if (approach_response === 'C' || approach_response === 'D') redCount++
+  if (investment_readiness === 'C' || investment_readiness === 'D') redCount++
+  const leadQuality: 'green' | 'yellow' | 'red' | null =
+    !approach_response || !investment_readiness ? null
+    : redCount === 0 ? 'green'
+    : redCount === 1 ? 'yellow'
+    : 'red'
+  const redFlag = redCount >= 1
 
   if (!first_name?.trim() || !email?.trim()) {
     return NextResponse.json({ error: 'Name and email are required.' }, { status: 400, headers: CORS })
@@ -110,15 +133,27 @@ export async function POST(request: NextRequest) {
   // Persist scorecard result directly on the lead record
   await supabase
     .from('leads')
-    .update({ scorecard_score: score, scorecard_body_state: body_state, scorecard_section_scores: section_scores ?? null, updated_at: new Date().toISOString() })
+    .update({
+      scorecard_score: score,
+      scorecard_body_state: body_state,
+      scorecard_section_scores: section_scores ?? null,
+      approach_response: approach_response ?? null,
+      investment_readiness: investment_readiness ?? null,
+      red_flag: redFlag,
+      lead_quality: leadQuality,
+      updated_at: new Date().toISOString(),
+    })
     .eq('id', leadId)
 
   // Log scorecard result as a lead event
+  const qualifierNote = leadQuality
+    ? ` Quality: ${leadQuality}${redFlag ? ' (RED FLAG)' : ''}. Approach: ${approach_response}. Investment: ${investment_readiness}.`
+    : ''
   await logLeadEvent({
     leadId,
     type: 'scorecard_completed',
     subject: 'Scorecard completed',
-    notes: `Score: ${score}/15. Body state: ${body_state}.${section_scores ? ' Sections: ' + JSON.stringify(section_scores) : ''}`,
+    notes: `Score: ${score}/15. Body state: ${body_state}.${qualifierNote}${section_scores ? ' Sections: ' + JSON.stringify(section_scores) : ''}`,
   })
   console.log('[scorecard/submit] Event logged for lead:', leadId)
 
@@ -131,6 +166,13 @@ export async function POST(request: NextRequest) {
     body_state === 'Depleted State' ? '#ef4444' :
     body_state === 'Transitioning State' ? '#f59e0b' :
     '#14b8a6' // Ready State
+
+  // Lead quality color
+  const qualityColor =
+    leadQuality === 'red' ? '#ef4444' :
+    leadQuality === 'yellow' ? '#f59e0b' :
+    leadQuality === 'green' ? '#14b8a6' :
+    '#57534e'
 
   // Notify coach
   if (process.env.RESEND_API_KEY) {
@@ -154,7 +196,7 @@ export async function POST(request: NextRequest) {
             <td bgcolor="#111110" style="background-color:#111110;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
               <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#ffffff;">${first_name} just completed the scorecard.</p>
               <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;">${email}</p>
-              <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;width:100%;">
+              <table cellpadding="0" cellspacing="0" style="margin-bottom:16px;width:100%;">
                 <tr>
                   <td style="padding:14px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;">
                     <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#57534e;letter-spacing:0.08em;text-transform:uppercase;">Score</p>
@@ -167,6 +209,13 @@ export async function POST(request: NextRequest) {
                   </td>
                 </tr>
               </table>
+              ${leadQuality ? `
+              <div style="padding:14px 20px;background:${leadQuality === 'red' ? 'rgba(239,68,68,0.08)' : leadQuality === 'yellow' ? 'rgba(245,158,11,0.08)' : 'rgba(20,184,166,0.08)'};border-radius:10px;border:1px solid ${qualityColor}33;margin-bottom:24px;">
+                <p style="margin:0 0 6px;font-size:11px;font-weight:700;color:#57534e;letter-spacing:0.08em;text-transform:uppercase;">Lead Quality</p>
+                <p style="margin:0 0 10px;font-size:16px;font-weight:800;color:${qualityColor};text-transform:uppercase;letter-spacing:0.04em;">${leadQuality}${redFlag ? ' — Red Flag' : ''}</p>
+                <p style="margin:0;font-size:13px;color:#a8a29e;line-height:1.6;">Approach: ${approach_response} · Investment: ${investment_readiness}</p>
+              </div>
+              ` : ''}
               <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads" style="display:inline-block;padding:12px 24px;background:#14b8a6;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">View in dashboard</a>
             </td>
           </tr>

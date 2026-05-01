@@ -110,8 +110,20 @@ export default async function LeadsPage({
               className="bg-stone-900 border border-stone-800 rounded-xl px-5 py-4 flex items-center justify-between hover:border-stone-600 transition-colors group"
             >
               <div className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full bg-stone-700 flex items-center justify-center text-sm font-medium text-stone-300 shrink-0">
-                  {lead.name.charAt(0).toUpperCase()}
+                <div className="relative">
+                  <div className="w-9 h-9 rounded-full bg-stone-700 flex items-center justify-center text-sm font-medium text-stone-300 shrink-0">
+                    {lead.name.charAt(0).toUpperCase()}
+                  </div>
+                  {lead.lead_quality && (
+                    <span
+                      title={`Lead quality: ${lead.lead_quality}${lead.red_flag ? ' (red flag)' : ''}`}
+                      className={`absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-stone-900 ${
+                        lead.lead_quality === 'red' ? 'bg-red-500' :
+                        lead.lead_quality === 'yellow' ? 'bg-amber-500' :
+                        'bg-teal-500'
+                      }`}
+                    />
+                  )}
                 </div>
                 <div>
                   <p className="font-medium text-white">{lead.name}</p>
@@ -126,6 +138,11 @@ export default async function LeadsPage({
                 </div>
               </div>
               <div className="flex items-center gap-3">
+                {lead.red_flag && (
+                  <span className="text-xs font-bold px-2 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400" title="Red flag — half show rate, half close rate historically">
+                    RED FLAG
+                  </span>
+                )}
                 <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${getLeadStatusColour(lead.status)}`}>
                   {getLeadStatusLabel(lead.status)}
                 </span>

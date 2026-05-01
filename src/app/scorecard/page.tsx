@@ -84,7 +84,23 @@ function getResult(total: number) {
   return RESULTS[2]
 }
 
-type Step = 'scoring' | 'email' | 'result'
+type Step = 'scoring' | 'email' | 'qualifier' | 'result'
+
+type QualifierAnswer = 'A' | 'B' | 'C' | 'D'
+
+const APPROACH_OPTIONS: { value: QualifierAnswer; label: string }[] = [
+  { value: 'A', label: 'I look at what my body is doing and adjust' },
+  { value: 'B', label: 'I give it more time and stay consistent' },
+  { value: 'C', label: 'I push harder and expect it to break through' },
+  { value: 'D', label: 'I get frustrated and want the program changed immediately' },
+]
+
+const INVESTMENT_OPTIONS: { value: QualifierAnswer; label: string }[] = [
+  { value: 'A', label: 'Yes — ready to invest in 1-on-1 coaching now' },
+  { value: 'B', label: 'Within the next 1-3 months' },
+  { value: 'C', label: 'Just exploring for now' },
+  { value: 'D', label: 'Looking for free resources only' },
+]
 
 function ReportUpsell({ firstName, email, score, bodyState, scores }: {
   firstName: string
@@ -154,6 +170,8 @@ function ScorecardInner() {
   const [step, setStep] = useState<Step>('scoring')
   const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
+  const [approach, setApproach] = useState<QualifierAnswer | null>(null)
+  const [investment, setInvestment] = useState<QualifierAnswer | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -166,15 +184,30 @@ function ScorecardInner() {
     setScores(s => ({ ...s, [sectionNumber]: score }))
   }
 
-  async function submitEmail() {
+  function goToQualifier() {
     if (!firstName.trim() || !email.trim()) return
+    setError('')
+    setStep('qualifier')
+  }
+
+  async function submitQualifier() {
+    if (!approach || !investment) return
     setSubmitting(true)
     setError('')
     try {
       const res = await fetch('/api/scorecard/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ first_name: firstName, email, score: total, body_state: result.label, source, section_scores: scores }),
+        body: JSON.stringify({
+          first_name: firstName,
+          email,
+          score: total,
+          body_state: result.label,
+          source,
+          section_scores: scores,
+          approach_response: approach,
+          investment_readiness: investment,
+        }),
       })
       if (res.ok) {
         setStep('result')
@@ -329,7 +362,7 @@ function ScorecardInner() {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="you@email.com"
-                  onKeyDown={e => e.key === 'Enter' && submitEmail()}
+                  onKeyDown={e => e.key === 'Enter' && goToQualifier()}
                   style={{
                     width: '100%', padding: '14px 16px', background: '#111110',
                     border: '1.5px solid #1c1917', borderRadius: '10px',
@@ -343,18 +376,18 @@ function ScorecardInner() {
             {error && <p style={{ fontSize: '13px', color: '#ef4444', marginBottom: '16px' }}>{error}</p>}
 
             <button
-              onClick={submitEmail}
-              disabled={submitting || !firstName.trim() || !email.trim()}
+              onClick={goToQualifier}
+              disabled={!firstName.trim() || !email.trim()}
               style={{
                 width: '100%', padding: '16px', borderRadius: '12px', border: 'none',
                 background: '#14b8a6', color: '#0c0a09',
                 fontSize: '15px', fontWeight: 700,
-                cursor: submitting || !firstName.trim() || !email.trim() ? 'not-allowed' : 'pointer',
-                opacity: submitting || !firstName.trim() || !email.trim() ? 0.6 : 1,
+                cursor: !firstName.trim() || !email.trim() ? 'not-allowed' : 'pointer',
+                opacity: !firstName.trim() || !email.trim() ? 0.6 : 1,
                 transition: 'opacity 0.2s ease',
               }}
             >
-              {submitting ? 'Loading...' : 'Show My Result'}
+              Continue
             </button>
 
             <p style={{ fontSize: '12px', color: '#57534e', textAlign: 'center', marginTop: '16px', lineHeight: 1.6 }}>
@@ -363,6 +396,126 @@ function ScorecardInner() {
 
             <button
               onClick={() => setStep('scoring')}
+              style={{ display: 'block', margin: '16px auto 0', background: 'none', border: 'none', color: '#57534e', fontSize: '13px', cursor: 'pointer' }}
+            >
+              Go back
+            </button>
+          </>
+        )}
+
+        {/* ─── QUALIFIER STEP ─── */}
+        {step === 'qualifier' && (
+          <>
+            <div style={{ marginBottom: '32px' }}>
+              <div style={{ width: '32px', height: '3px', background: '#14b8a6', marginBottom: '20px' }} />
+              <h2 style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '12px' }}>
+                Two more questions before your result.
+              </h2>
+              <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.6 }}>
+                Be honest. The result is more useful when these answers are.
+              </p>
+            </div>
+
+            {/* Approach question */}
+            <div style={{ marginBottom: '28px' }}>
+              <p style={{ fontSize: '10px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '10px' }}>06</p>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', marginBottom: '14px', lineHeight: 1.4 }}>
+                When your training or nutrition stops producing results, what is your honest first response?
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {APPROACH_OPTIONS.map(opt => {
+                  const selected = approach === opt.value
+                  return (
+                    <button
+                      key={opt.value}
+                      onClick={() => setApproach(opt.value)}
+                      style={{
+                        display: 'flex', alignItems: 'flex-start', gap: '14px',
+                        background: selected ? 'rgba(20,184,166,0.08)' : '#111110',
+                        border: `1.5px solid ${selected ? '#14b8a6' : '#1c1917'}`,
+                        borderRadius: '12px', padding: '14px 16px',
+                        cursor: 'pointer', textAlign: 'left', width: '100%',
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      <div style={{
+                        width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
+                        background: selected ? 'rgba(20,184,166,0.15)' : '#1c1917',
+                        border: `1.5px solid ${selected ? '#14b8a6' : '#2c2826'}`,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '11px', fontWeight: 700, color: selected ? '#14b8a6' : '#57534e',
+                      }}>
+                        {opt.value}
+                      </div>
+                      <p style={{ fontSize: '14px', color: selected ? '#ffffff' : '#a8a29e', lineHeight: 1.55, flex: 1 }}>
+                        {opt.label}
+                      </p>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Investment question */}
+            <div style={{ marginBottom: '32px' }}>
+              <p style={{ fontSize: '10px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '10px' }}>07</p>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', marginBottom: '14px', lineHeight: 1.4 }}>
+                If the scorecard identifies what is blocking your progress, are you in a position to invest in addressing it?
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {INVESTMENT_OPTIONS.map(opt => {
+                  const selected = investment === opt.value
+                  return (
+                    <button
+                      key={opt.value}
+                      onClick={() => setInvestment(opt.value)}
+                      style={{
+                        display: 'flex', alignItems: 'flex-start', gap: '14px',
+                        background: selected ? 'rgba(20,184,166,0.08)' : '#111110',
+                        border: `1.5px solid ${selected ? '#14b8a6' : '#1c1917'}`,
+                        borderRadius: '12px', padding: '14px 16px',
+                        cursor: 'pointer', textAlign: 'left', width: '100%',
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      <div style={{
+                        width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
+                        background: selected ? 'rgba(20,184,166,0.15)' : '#1c1917',
+                        border: `1.5px solid ${selected ? '#14b8a6' : '#2c2826'}`,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '11px', fontWeight: 700, color: selected ? '#14b8a6' : '#57534e',
+                      }}>
+                        {opt.value}
+                      </div>
+                      <p style={{ fontSize: '14px', color: selected ? '#ffffff' : '#a8a29e', lineHeight: 1.55, flex: 1 }}>
+                        {opt.label}
+                      </p>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {error && <p style={{ fontSize: '13px', color: '#ef4444', marginBottom: '16px' }}>{error}</p>}
+
+            <button
+              onClick={submitQualifier}
+              disabled={submitting || !approach || !investment}
+              style={{
+                width: '100%', padding: '16px', borderRadius: '12px', border: 'none',
+                background: approach && investment ? '#14b8a6' : '#1c1917',
+                color: approach && investment ? '#0c0a09' : '#57534e',
+                fontSize: '15px', fontWeight: 700,
+                cursor: submitting || !approach || !investment ? 'not-allowed' : 'pointer',
+                opacity: submitting ? 0.6 : 1,
+                transition: 'all 0.2s ease',
+              }}
+            >
+              {submitting ? 'Loading...' : 'Show My Result'}
+            </button>
+
+            <button
+              onClick={() => setStep('email')}
               style={{ display: 'block', margin: '16px auto 0', background: 'none', border: 'none', color: '#57534e', fontSize: '13px', cursor: 'pointer' }}
             >
               Go back

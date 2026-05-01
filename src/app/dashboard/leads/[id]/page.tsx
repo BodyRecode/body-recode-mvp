@@ -295,6 +295,32 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               </div>
             </div>
           )}
+          {lead.lead_quality && (
+            <div className="mt-4 pt-4 border-t border-stone-800">
+              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Lead Quality</p>
+              <div className="flex items-start gap-4">
+                <div
+                  className="text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0"
+                  style={{
+                    color: lead.lead_quality === 'red' ? '#ef4444' : lead.lead_quality === 'yellow' ? '#f59e0b' : '#14b8a6',
+                    background: lead.lead_quality === 'red' ? 'rgba(239,68,68,0.08)' : lead.lead_quality === 'yellow' ? 'rgba(245,158,11,0.08)' : 'rgba(20,184,166,0.08)',
+                    border: `1px solid ${lead.lead_quality === 'red' ? 'rgba(239,68,68,0.25)' : lead.lead_quality === 'yellow' ? 'rgba(245,158,11,0.25)' : 'rgba(20,184,166,0.25)'}`,
+                  }}
+                >
+                  {lead.lead_quality}{lead.red_flag ? ' · red flag' : ''}
+                </div>
+                <div className="flex-1 text-xs text-stone-400 space-y-1">
+                  <p><span className="text-stone-500">Approach:</span> <span className="font-medium text-stone-300">{lead.approach_response}</span> {(lead.approach_response === 'C' || lead.approach_response === 'D') && <span className="text-red-400">— red flag</span>}</p>
+                  <p><span className="text-stone-500">Investment:</span> <span className="font-medium text-stone-300">{lead.investment_readiness}</span> {(lead.investment_readiness === 'C' || lead.investment_readiness === 'D') && <span className="text-red-400">— red flag</span>}</p>
+                </div>
+              </div>
+              {lead.red_flag && (
+                <p className="text-xs text-red-400/70 mt-3 leading-relaxed">
+                  Hormozi red flag rule: leads flagged on these questions historically convert at half the show rate and half the close rate. Consider not booking a Zoom unless they push for it themselves.
+                </p>
+              )}
+            </div>
+          )}
         </div>
       )}
 

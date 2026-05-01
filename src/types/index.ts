@@ -40,6 +40,10 @@ export interface Lead {
   scorecard_score?: number
   scorecard_body_state?: string
   scorecard_section_scores?: Record<string, number>
+  approach_response?: 'A' | 'B' | 'C' | 'D'
+  investment_readiness?: 'A' | 'B' | 'C' | 'D'
+  red_flag?: boolean
+  lead_quality?: 'green' | 'yellow' | 'red'
   created_at: string
   updated_at: string
 }
