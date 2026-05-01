@@ -316,7 +316,7 @@ export default function HelpPage() {
               <li><strong>Single Zoom funnel.</strong> No "Zoom 2", no "second conversation". The call covers diagnosis through pricing through decision in one block. Anything that contradicts this is stale and should be flagged.</li>
               <li><strong>No fitness clichés:</strong> grind, crush it, hustle, push through, no-pain-no-gain. The brand is intelligent, not punitive.</li>
               <li><strong>No shame or guilt framing.</strong> &quot;You&apos;re lazy / inconsistent / not trying hard enough&quot; is the opposite of the read.</li>
-              <li><strong>Founding Client Offer is a trade, not a discount.</strong> Half-rate in return for documented case-study participation. Never frame it as &quot;reduction in fees&quot;.</li>
+              <li><strong>Founding Client Program is no longer running</strong> (closed 2026-05-01). Do not reference founding rates, &quot;first 20 clients&quot;, or 50% off in any new copy. Standard rates apply: $149/wk online, $299/wk 2x in-person, $409/wk 3x in-person, plus the $240 commencement fee.</li>
             </ul>
 
             <p className="font-semibold text-white mt-4">Reference docs</p>
@@ -406,7 +406,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mt-3 mb-1">Pitch — solution and offer</p>
             <ol className="space-y-1.5 list-decimal list-inside text-stone-300 text-sm" start={3}>
               <li><strong>Tie hot spot to training</strong> — Walk through the four stages of the Body Recode™ system (Intake → CFFS → Execution → Continuous Loop), each one explicitly tied back to their hot spot from Stage 2. Mirrors performance.bodyrecode.au/how-it-works.</li>
-              <li><strong>Offer &amp; Packages</strong> — Present what&apos;s included, the three packages (with founding rates), and close. Decision panel (Path A/B/C, commencement fee link) lives in the right side panel.</li>
+              <li><strong>Offer &amp; Packages</strong> — Present what&apos;s included, the three packages at standard rates ($149/wk online, $299/wk 2x in-person, $409/wk 3x in-person), and close. Decision panel (Path A/B/C, commencement fee link) lives in the right side panel.</li>
             </ol>
             <p>The companion nav shows &quot;Listen&quot; and &quot;Pitch&quot; labels in the left sidebar to keep you oriented.</p>
 
@@ -467,9 +467,8 @@ export default function HelpPage() {
 
             <Training title="What the Pitch half is for">
               <p><strong>Stage 3 — Tie hot spot to training.</strong> This is the heart of the conversion. Walk through the four system cards in order, but every card gets anchored back to what they told you in Stage 2. Card 2 is where you name their likely biological profile — read the description back and watch them recognise themselves.</p>
-              <p className="mt-2"><strong>Stage 4 — Offer &amp; Packages.</strong> They&apos;ve seen what you do and how it gets to their thing. State what&apos;s included, then the price. $299/week for in-person 2x. Pause after stating it. The silence isn&apos;t awkward — it&apos;s the lead processing.</p>
-              <p className="mt-2">After pricing, mention the founding offer (50% off for first 20 clients) as a single add-on line, not as the lead with the price.</p>
-              <p className="mt-2"><strong>Decision.</strong> Three paths. Know which one you&apos;re in before you respond. Path A closes cleanly — don&apos;t re-pitch.</p>
+              <p className="mt-2"><strong>Stage 4 — Offer &amp; Packages.</strong> They&apos;ve seen what you do and how it gets to their thing. State what&apos;s included, then the price. $299/week for in-person 2x. Pause after stating it. The silence is not awkward, it is the lead processing.</p>
+              <p className="mt-2"><strong>Decision.</strong> Three paths. Know which one you&apos;re in before you respond. Path A closes cleanly. Do not re-pitch.</p>
             </Training>
 
             <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead can&apos;t do in-person. The 3x package ($409/week) and the 1x + self-led package ($199/week) are both coach-assessed. Only mention 1x if their training history shows real self-discipline (returning trainer with a strong base, busy professional who&apos;s trained consistently for years). Skip 1x for new trainers, anyone who admitted inconsistency in Stage 2, or anyone where 2x is non-negotiable for habit-building.</Note>
