@@ -47,7 +47,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
   const slotStart = new Date(lead.zoom_1_date)
   const meetingLink: string | null = lead.zoom_meeting_url ?? null
   const firstName = lead.name.split(' ')[0]
-  const sessionTitle = `Body Recode — Scorecard Review — ${lead.name}`
+  const sessionTitle = `Body Recode Strategy Call - ${lead.name}`
 
   const dateStr = slotStart.toLocaleDateString('en-AU', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
@@ -72,7 +72,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: lead.email,
-    subject: `Your Zoom call is confirmed — ${dateStr}`,
+    subject: `Your strategy call is locked in: ${dateStr}`,
     attachments: [{ filename: 'booking.ics', content: Buffer.from(ics).toString('base64') }],
     html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
 <body style="margin:0;padding:0;background-color:#0c0a09;">
@@ -87,7 +87,8 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
         <tr>
           <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
             <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your Zoom call with Kade is confirmed.</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">You are locked in. Here is what we will cover.</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">We go through your scorecard together, identify the specific reason your body has stopped responding, and map out what to do first. Free. No pitch.</p>
             <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
               <tr>
                 <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
@@ -120,7 +121,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: lead.email!,
-      subject: `Reminder: your Zoom call starts in ${reminder.label}`,
+      subject: `Your strategy call starts in ${reminder.label}`,
       scheduledAt: reminder.at.toISOString(),
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
 <body style="margin:0;padding:0;background-color:#0c0a09;">
@@ -135,7 +136,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
         <tr>
           <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
             <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your Zoom call with Kade starts in ${reminder.label}.</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your strategy call with Kade starts in ${reminder.label}.</p>
             <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
               <tr>
                 <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">

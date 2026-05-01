@@ -14,11 +14,11 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   if (!transcript?.trim()) return NextResponse.json({ error: 'No transcript provided' }, { status: 400 })
 
-  const systemPrompt = `You are an internal documentation assistant for Body Recode™, a biology-first performance coaching system.
+  const systemPrompt = `You are an internal documentation assistant for Body Recode, a biology-first performance coaching system.
 
-Your role is to analyse Zoom consultation transcripts and produce structured internal summaries for the coach (Kade Dunstone). These summaries are coach-facing only — never shared with the member.
+Your role is to analyse Zoom consultation transcripts and produce structured internal summaries for the coach (Kade Dunstone). These summaries are coach-facing only. Never shared with the member.
 
-The Zoom is a 45–60 minute call split into two halves: the first half covers pattern clarification (not a sales call, diagnosis, or coaching intervention), and the second half covers pricing and decision. The goal is: the member moves from "I'm being evaluated" → "This person understands me" → "I want to proceed."
+The Zoom is a single 45 to 60 minute strategy call covering all stages of the conversation: opening frame, scorecard reflection, context exploration, pattern interpretation, hot spot framing, emotional acknowledgement, system walk-through, pricing, and decision. The goal is for the member to move from "I am being evaluated" to "this person understands me" to "I want to proceed". (The previous Zoom 1 / Zoom 2 split is deprecated as of 2026-04-29.)
 
 Your summary must be observational, precise, and clinically neutral. Do not add commentary or suggestions beyond what the transcript supports. Do not invent details not present in the transcript.`
 
@@ -49,8 +49,8 @@ How did the member respond to the pattern interpretation? Did they connect with 
 ## Psychological Readiness
 Category: [A / B / C]
 - A = Ready, clear interest in proceeding
-- B = Interested but hesitant — note specific hesitations
-- C = Not ready or not a right fit — note why
+- B = Interested but hesitant. Note specific hesitations.
+- C = Not ready or not a right fit. Note why.
 
 Brief explanation of your assessment.
 
@@ -64,7 +64,7 @@ What was agreed or discussed at the close? (Commencement fee paid / follow-up sc
 Any specific actions required after the call. Include anything you said you'd send or look into.
 
 ## Governance Note
-Did the consultation stay within Zoom 1 doctrine bounds? (No prescriptions, no programming, no medical interpretation, no outcome promises.) Note any moments that approached the boundary.`
+Did the consultation stay within doctrine bounds? (No prescriptions, no programming, no medical interpretation, no outcome promises.) Note any moments that approached the boundary.`
 
   const response = await anthropic.messages.create({
     model: 'claude-haiku-4-5-20251001',

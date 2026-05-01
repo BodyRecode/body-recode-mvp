@@ -22,7 +22,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: lead.email,
-    subject: 'Book your Zoom call with Kade',
+    subject: `${firstName}, lock in your strategy call`,
     html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
 <body style="margin:0;padding:0;background-color:#0c0a09;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
@@ -36,10 +36,11 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
         <tr>
           <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
             <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Use the link below to pick a time for your Zoom call. It takes 30 seconds and you will get a confirmation straight away.</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Pick a time and we will go through your scorecard, identify the specific reason your body has stopped responding, and map out what to do first.</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Free. No pitch. Confirmation comes through straight away.</p>
             <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
               <tr>
-                <td><a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Book your Zoom call</a></td>
+                <td><a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Lock in a time</a></td>
               </tr>
             </table>
             <p style="margin:0 0 24px;font-size:13px;color:#555555;">Or copy this link: ${bookingLink}</p>

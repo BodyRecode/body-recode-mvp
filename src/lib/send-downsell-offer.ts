@@ -82,7 +82,7 @@ export async function sendDownsellOffer(
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: lead.email,
-    subject: `Your ${stateLabel} State Program - $97`,
+    subject: `${firstName}, the self-guided ${stateLabel} program - $97`,
     html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
 <body style="margin:0;padding:0;background-color:#0c0a09;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
@@ -97,11 +97,11 @@ export async function sendDownsellOffer(
           <tr>
             <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
               <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Your scorecard came back as ${stateLabel} State. That tells me specifically how your body is handling stress and recovery right now, and what it can actually respond to.</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">I have built a 12-week program specifically for ${stateLabel} State. Not a generic plan. Every decision in it, the training volume, intensity, rest periods, and nutrition, is designed around where you are right now.</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">It is $97. One-time. Yours to keep.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Coaching is not the right fit right now. Understood. Most people in ${stateLabel} State still need to act on the read though, and that is what this is for.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">12 weeks of training and nutrition built specifically for ${stateLabel} State. Volume, intensity, rest, and food sequenced around where your body actually is. Not a generic plan you guess your way through.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">$97. One-time. Yours to keep. Self-paced.</p>
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${checkoutUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Get the Program - $97</a></td></tr>
+                <tr><td><a href="${checkoutUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Get the program - $97</a></td></tr>
               </table>
               <p style="margin:0 0 18px;font-size:13px;color:#555555;line-height:1.75;">Or copy this link: ${checkoutUrl}</p>
               ${darkEmailSignature()}

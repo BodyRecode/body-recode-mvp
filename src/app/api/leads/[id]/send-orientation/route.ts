@@ -51,15 +51,13 @@ export async function POST(
 
   <p>Hi ${firstName},</p>
 
-  <p>Before our next Zoom, I'd like you to read through the Body Recode Performance Coaching Orientation Guide.</p>
+  <p>Before we speak, have a read through this so you know how the coaching process actually works and what the relationship looks like from the inside.</p>
 
-  <p>There's nothing to complete, decide, or action. Just read it at your own pace when you're ready. It covers how the coaching process works, what the relationship looks like, and what to expect from the structure.</p>
-
-  <p>Take your time with it. Orientation exists to create clarity, not momentum.</p>
+  <p>Nothing to complete or decide. Read it at your own pace. It exists to create clarity before we have the conversation, not momentum to push you toward one.</p>
 
   <a href="${ORIENTATION_URL}" class="btn">Read the Orientation Guide</a>
 
-  <p>If anything stands out or you have questions before we speak, feel free to reply to this email.</p>
+  <p>If anything stands out or you have questions before we speak, reply to this email.</p>
 
   ${darkEmailSignature()}
 </div>

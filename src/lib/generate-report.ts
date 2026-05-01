@@ -371,14 +371,14 @@ export function buildNoShowEmails(firstName: string, bookingLink: string): {
   email3: { subject: string; html: string }
 } {
   const email1 = {
-    subject: `${firstName} - missed you yesterday`,
+    subject: `${firstName}, missed you yesterday`,
     html: followUpEmail(
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`Looks like we missed each other yesterday. No problem at all - these things happen.`),
-        p(`When you're ready, the conversation is still available. It's a 30-minute call to talk through what showed up in your report and work out whether there's something useful in it for you.`),
-        p(`No pressure. Just let me know when works.`),
+        p(`Looks like we missed each other yesterday. No problem at all. These things happen.`),
+        p(`Your scorecard read does not change because of one missed call. When you are ready, the conversation is still available. It is a 30-minute call to go through what showed up, identify the specific reason your body has stopped responding, and work out what to do first.`),
+        p(`No pressure. Just lock in a time when it suits.`),
       ].join(''),
       'Rebook a time →',
       bookingLink
@@ -386,14 +386,14 @@ export function buildNoShowEmails(firstName: string, bookingLink: string): {
   }
 
   const email2 = {
-    subject: `Still here when you're ready, ${firstName}`,
+    subject: `${firstName}, still here when you are ready`,
     html: followUpEmail(
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`Just a quiet follow-up from me.`),
-        p(`Your report picked up some patterns worth talking through - particularly around ${firstName === firstName ? 'the load and recovery signals' : 'what came up in the check-in'}. That kind of clarity doesn't come from reading the report alone. It comes from a conversation.`),
-        p(`If timing wasn't right last time, happy to find something that works better. The conversation is 30 minutes and there's no obligation on the other side of it.`),
+        p(`Quiet follow-up from me.`),
+        p(`Your scorecard picked up patterns worth talking through. The kind of clarity that gets you unstuck does not come from reading a result alone. It comes from a conversation that connects what your body is showing to what to actually do about it.`),
+        p(`If timing was not right last time, happy to find something that works better. 30 minutes. No obligation on the other side of it.`),
       ].join(''),
       'Find a time that works →',
       bookingLink
@@ -407,10 +407,10 @@ export function buildNoShowEmails(firstName: string, bookingLink: string): {
       [
         p(`Hi ${firstName},`),
         p(`Last message from me on this.`),
-        p(`The report is still there and the conversation is still available whenever it feels right - whether that's now or down the track.`),
+        p(`Your scorecard read is still on file. The conversation is still available whenever it feels right, whether that is now or down the track.`),
         p(`No follow-up after this. Just wanted you to know the door stays open.`),
       ].join(''),
-      'Book when you\'re ready →',
+      "Book when you're ready →",
       bookingLink
     ),
   }
@@ -424,13 +424,13 @@ export function buildReportFollowUpEmails(firstName: string, bodyState: string, 
   email3: { subject: string; html: string }
 } {
   const email1 = {
-    subject: `Your report is the starting point, ${firstName}`,
+    subject: `${firstName}, the report is the starting point`,
     html: followUpEmail(
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`You have the report now. It tells you what your body is doing, why it is doing it, and what the biological pattern looks like from the outside.`),
-        p(`Reading it is the first step. The second is knowing what to actually do about it - in order, at the right intensity, for your current state.`),
+        p(`You have the report now. It tells you what your body is doing, why fat loss has stalled, and what the biological pattern looks like from the outside.`),
+        p(`Reading it is the first step. The second is knowing what to actually do about it. In order. At the right intensity. For where your body actually is right now.`),
         p(`That is what the call is for. 30 minutes. We go through your ${bodyState} result together and map out exactly what needs to change first.`),
         p(`No obligation. Just a focused conversation.`),
       ].join(''),
@@ -440,14 +440,14 @@ export function buildReportFollowUpEmails(firstName: string, bodyState: string, 
   }
 
   const email2 = {
-    subject: `One thing worth noting about ${bodyState}`,
+    subject: `One thing the report cannot show you, ${firstName}`,
     html: followUpEmail(
       firstName,
       [
         p(`Hi ${firstName},`),
         p(`One thing the report cannot show you is sequence.`),
-        p(`${bodyState} results have a specific order of operations. There are things that need to happen before other things will work - and if you skip that order, effort goes in without the result coming back.`),
-        p(`That sequencing is what I build the call around. What to address first, what to park for now, and how to structure the next 4-6 weeks around your actual state.`),
+        p(`${bodyState} results have a specific order of operations. There are things that need to happen before other things will work. Skip the order and effort goes in without the result coming back. That is the trap most people in your position fall into.`),
+        p(`The sequencing is what I build the call around. What to address first, what to park for now, and how to structure the next 4 to 6 weeks around your actual state.`),
         p(`If you have not booked yet, the link is below.`),
       ].join(''),
       'Book a call →',
@@ -462,10 +462,10 @@ export function buildReportFollowUpEmails(firstName: string, bodyState: string, 
       [
         p(`Hi ${firstName},`),
         p(`Last message from me on this.`),
-        p(`The report is yours and the call is still available whenever it makes sense. No follow-up after this.`),
+        p(`The report is yours. The call is still available whenever it makes sense. No follow-up after this.`),
         p(`Just wanted you to know the door stays open.`),
       ].join(''),
-      'Book when you\'re ready →',
+      "Book when you're ready →",
       bookingLink
     ),
   }
@@ -484,9 +484,9 @@ export function buildZoom1DeclinedEmails(firstName: string, bookingLink: string)
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`Good speaking with you yesterday. I appreciate you taking the time.`),
-        p(`Completely understood that the timing isn't right. These things only work when they're right for you, not when they fit someone else's schedule.`),
-        p(`What we talked through doesn't expire. The patterns we identified are still there, and so is the conversation if you ever want to pick it up again.`),
+        p(`Good speaking with you yesterday. Appreciate you taking the time.`),
+        p(`Completely understood that the timing is not right. These things only work when the timing is right for you, not when it fits someone else's schedule.`),
+        p(`What we talked through does not expire. The pattern we identified is still there. The reason your body has stopped responding is still there. The conversation is still available the moment it makes sense to pick it back up.`),
       ].join(''),
       "Book a time when you're ready →",
       bookingLink
@@ -494,14 +494,14 @@ export function buildZoom1DeclinedEmails(firstName: string, bookingLink: string)
   }
 
   const email2 = {
-    subject: `Still here if the timing changes, ${firstName}`,
+    subject: `${firstName}, still here if the timing changes`,
     html: followUpEmail(
       firstName,
       [
         p(`Hi ${firstName},`),
-        p(`Just a quiet follow-up from me.`),
-        p(`No pitch here. I just wanted to say the door stays open. What came up in your scorecard and our conversation doesn't change. Sometimes the right time to act on something comes a few weeks after the conversation, not during it.`),
-        p(`If anything has shifted and you'd like to talk it through properly, I'm here.`),
+        p(`Quiet follow-up from me.`),
+        p(`No pitch. The door stays open. The pattern we surfaced in your scorecard and on the call does not change because the timing was off. Sometimes the right moment to act on something is a few weeks after the conversation, not during it.`),
+        p(`If anything has shifted and you would like to talk it through properly, I am here.`),
       ].join(''),
       'Book a call →',
       bookingLink
@@ -515,7 +515,7 @@ export function buildZoom1DeclinedEmails(firstName: string, bookingLink: string)
       [
         p(`Hi ${firstName},`),
         p(`Last message from me on this.`),
-        p(`The conversation is still available whenever it makes sense, whether that's soon or down the track. No follow-up after this.`),
+        p(`The conversation is still available whenever it makes sense. Whether that is soon or down the track. No follow-up after this.`),
         p(`Just wanted you to know the door stays open.`),
       ].join(''),
       "Book when you're ready →",

@@ -57,7 +57,7 @@ export async function POST(
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: lead.email,
-    subject: `${firstName}, your Body Recode commencement link`,
+    subject: `${firstName}, your $240 commencement link`,
     html: `
 <!DOCTYPE html>
 <html>
@@ -68,10 +68,10 @@ export async function POST(
       <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
     </div>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Hi ${firstName},</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Here is your commencement fee link for Body Recode Performance Coaching.</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 28px;">Once payment is confirmed, you will receive a follow-up email with everything you need to get started.</p>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Here is the $240 commencement link to get started. This covers the foundational read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.</p>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 28px;">Once payment is in, your portal access, intake, and the first foundational steps unlock automatically. You will get a welcome email with everything you need to start the next stage.</p>
     <a href="${session.url}" style="display:inline-block;margin:0 0 28px;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">Pay commencement fee</a>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">If you have any questions before paying, just reply to this email.</p>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">If anything comes up before you pay, reply to this email.</p>
     ${darkEmailSignature()}
     <p style="margin:20px 0 0;font-size:13px;color:#444;line-height:1.5;">Or copy this link: ${session.url}</p>
   </div>
