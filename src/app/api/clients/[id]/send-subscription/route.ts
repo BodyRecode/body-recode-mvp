@@ -43,7 +43,7 @@ export async function POST(
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: client.email,
-    subject: `${firstName}, your Body Recode subscription link`,
+    subject: `${firstName}, lock in your weekly subscription`,
     html: `
 <!DOCTYPE html>
 <html>
@@ -54,10 +54,11 @@ export async function POST(
       <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
     </div>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Hi ${firstName},</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Here is your weekly subscription link for Body Recode Performance Coaching.</p>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Your CFFS is in. Your program is being built around it. The last step before we start coaching is locking in your weekly subscription.</p>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 28px;">Package: <strong style="color:#fff;">${pkg.label} at ${pkg.price}</strong></p>
     <a href="${subscriptionUrl}" style="display:inline-block;margin:0 0 28px;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">Set up subscription</a>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">If you have any questions, reply to this email.</p>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Once payment is active, we lock in your sessions and set your start date. Usually three to seven days out.</p>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Any questions, reply to this email.</p>
     ${darkEmailSignature()}
     <p style="margin:20px 0 0;font-size:13px;color:#444;line-height:1.5;">Or copy this link: ${subscriptionUrl}</p>
   </div>
