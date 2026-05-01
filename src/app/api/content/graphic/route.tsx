@@ -660,36 +660,64 @@ export async function GET(request: NextRequest) {
     const W = 1080
     const H = isStory ? 1920 : 1080
 
+    // Bigger headline scale, especially for story format where the canvas is tall.
+    function aicmHeadlineSize(len: number) {
+      if (isStory) {
+        if (len <= 40) return '120px'
+        if (len <= 60) return '100px'
+        if (len <= 80) return '88px'
+        if (len <= 100) return '76px'
+        if (len <= 120) return '66px'
+        return '58px'
+      }
+      // square
+      if (len <= 40) return '92px'
+      if (len <= 60) return '76px'
+      if (len <= 80) return '66px'
+      if (len <= 100) return '58px'
+      if (len <= 120) return '50px'
+      return '44px'
+    }
+
     return new ImageResponse(
       (
-        <div style={{ width: `${W}px`, height: `${H}px`, background: 'linear-gradient(135deg, #0f0e2e 0%, #1e1b4b 50%, #2d2a6e 100%)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif', position: 'relative' }}>
+        <div style={{ width: `${W}px`, height: `${H}px`, background: 'linear-gradient(135deg, #0f0e2e 0%, #1e1b4b 50%, #2d2a6e 100%)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: isStory ? '120px 90px' : '90px 80px', fontFamily: 'sans-serif', position: 'relative' }}>
+
+          {/* Subtle radial glow top-right for visual texture */}
+          <div style={{ position: 'absolute', top: '-200px', right: '-200px', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(129, 140, 248, 0.18) 0%, rgba(129, 140, 248, 0) 70%)', display: 'flex' }} />
+
           {/* Top: brand pill */}
           <div style={{ display: 'flex' }}>
-            <div style={{ display: 'flex', alignItems: 'center', padding: '10px 20px', background: 'rgba(167, 139, 250, 0.12)', border: '1px solid rgba(167, 139, 250, 0.35)', borderRadius: '999px', fontSize: '22px', fontWeight: 600, color: '#c4b5fd', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            <div style={{ display: 'flex', alignItems: 'center', padding: '14px 26px', background: 'rgba(167, 139, 250, 0.14)', border: '1px solid rgba(167, 139, 250, 0.45)', borderRadius: '999px', fontSize: '26px', fontWeight: 700, color: '#c4b5fd', letterSpacing: '0.18em', textTransform: 'uppercase' }}>
               AI Co-Founder Method
             </div>
           </div>
 
-          {/* Centred main quote */}
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+          {/* Centred main quote with quote mark accent */}
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, marginTop: isStory ? '60px' : '20px' }}>
+            {/* Large stylised opening quote mark as visual anchor */}
+            <div style={{ fontSize: isStory ? '180px' : '140px', fontWeight: 700, color: '#818cf8', lineHeight: 0.7, marginBottom: isStory ? '40px' : '24px', opacity: 0.45, fontFamily: 'serif', display: 'flex' }}>
+              &ldquo;
+            </div>
+
             {/* Optional context label */}
             {label && label !== 'AI CO-FOUNDER METHOD' && (
-              <div style={{ fontSize: '24px', fontWeight: 600, color: 'rgba(196, 181, 253, 0.55)', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '40px' }}>{label}</div>
+              <div style={{ fontSize: '26px', fontWeight: 600, color: 'rgba(196, 181, 253, 0.65)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '32px' }}>{label}</div>
             )}
 
-            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px' }}>
+            <div style={{ fontSize: aicmHeadlineSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.025em', maxWidth: '900px', display: 'flex' }}>
               {displayText}
             </div>
 
             {sub && (
-              <div style={{ fontSize: '38px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.55, fontWeight: 400, maxWidth: '820px', marginTop: '36px' }}>{sub}</div>
+              <div style={{ fontSize: '40px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginTop: '40px', display: 'flex' }}>{sub}</div>
             )}
           </div>
 
-          {/* Footer */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '32px', height: '2px', background: '#818cf8' }} />
-            <div style={{ fontSize: '26px', fontWeight: 600, color: '#a78bfa', letterSpacing: '0.06em' }}>aicofoundermethod.com</div>
+          {/* Footer with stronger treatment */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ width: '48px', height: '2px', background: '#818cf8', display: 'flex' }} />
+            <div style={{ fontSize: '30px', fontWeight: 700, color: '#a78bfa', letterSpacing: '0.06em' }}>aicofoundermethod.com</div>
           </div>
         </div>
       ),
