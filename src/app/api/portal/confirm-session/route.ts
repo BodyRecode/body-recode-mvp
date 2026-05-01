@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     const displayDate = new Date(session.scheduled_at).toLocaleDateString('en-AU', {
       timeZone: 'Australia/Brisbane', weekday: 'long', day: 'numeric', month: 'long',
     })
-    return new NextResponse(confirmPage(`You already confirmed this session — ${displayDate} at ${displayTime}.`, true), {
+    return new NextResponse(confirmPage(`You already confirmed this session: ${displayDate} at ${displayTime}.`, true), {
       headers: { 'Content-Type': 'text/html' },
     })
   }
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
-      subject: `${(client as { name: string }).name} confirmed their session — ${displayDate}`,
+      subject: `${(client as { name: string }).name} confirmed their session: ${displayDate}`,
       html: `
         <div style="background:#0c0a09;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
           <div style="max-width:480px;margin:0 auto;background:#111110;border-radius:16px;padding:36px;">
@@ -91,7 +91,7 @@ function confirmPage(message: string, success: boolean): string {
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Session ${success ? 'Confirmed' : 'Not Found'} — Body Recode</title>
+  <title>Session ${success ? 'Confirmed' : 'Not Found'} · Body Recode</title>
 </head>
 <body style="margin:0;padding:0;background:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;">
   <div style="max-width:440px;margin:0 auto;padding:48px 24px;text-align:center;">

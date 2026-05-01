@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to send code' }, { status: 500 })
   }
 
-  // Send via Resend — fully branded, no clickable auth link for any mail
+  // Send via Resend. Fully branded, no clickable auth link for any mail
   // scanner to pre-fetch.
   if (!process.env.RESEND_API_KEY) {
     return NextResponse.json({ error: 'Email service not configured' }, { status: 500 })

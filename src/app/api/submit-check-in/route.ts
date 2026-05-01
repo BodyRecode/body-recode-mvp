@@ -44,12 +44,12 @@ export async function POST(request: NextRequest) {
   }
 
   const OPTIONS: Record<string, string[]> = {
-    effort_vs_result: ['Rarely — effort and response feel aligned', 'Occasionally — some sessions require more than expected', 'Often — effort feels higher relative to the result', 'Frequently — it regularly feels harder than it seems it should'],
-    consistency: ['Largely consistent with minor interruptions', 'Mostly consistent, with some start–stop periods', 'Variable, with frequent changes in routine', 'Difficult to maintain a steady pattern'],
-    training_response: ['Settled and able to return to the day without much disruption', 'Noticeably worked, but manageable with some recovery', 'Variable — sometimes fine, sometimes harder to bounce back', 'Often carrying fatigue that lingers longer than expected'],
-    recovery_predictability: ['Fairly predictable from week to week', 'Predictable most of the time, with occasional fluctuations', 'Inconsistent — recovery can vary without a clear pattern', 'Hard to predict — recovery often feels different session to session'],
+    effort_vs_result: ['Rarely. Effort and response feel aligned.', 'Occasionally. Some sessions require more than expected.', 'Often. Effort feels higher relative to the result.', 'Frequently. It regularly feels harder than it seems it should.'],
+    consistency: ['Largely consistent with minor interruptions', 'Mostly consistent, with some start-stop periods', 'Variable, with frequent changes in routine', 'Difficult to maintain a steady pattern'],
+    training_response: ['Settled and able to return to the day without much disruption', 'Noticeably worked, but manageable with some recovery', 'Variable. Sometimes fine, sometimes harder to bounce back.', 'Often carrying fatigue that lingers longer than expected'],
+    recovery_predictability: ['Fairly predictable from week to week', 'Predictable most of the time, with occasional fluctuations', 'Inconsistent. Recovery can vary without a clear pattern.', 'Hard to predict. Recovery often feels different session to session.'],
     planning_vs_reality: ['Usually matches closely', 'Mostly matches, with some adjustments', 'Often requires changes as the week unfolds', 'Rarely matches as planned'],
-    week_variability: ['Fairly similar from one week to the next', 'Mostly similar, with occasional changes', 'Often different, depending on the week', 'Rarely similar — weeks tend to look quite different'],
+    week_variability: ['Fairly similar from one week to the next', 'Mostly similar, with occasional changes', 'Often different, depending on the week', 'Rarely similar. Weeks tend to look quite different.'],
     body_signals: ['Occasionally, without affecting training much', 'Regularly, but usually manageable', 'Frequently, requiring adjustments more often than not', 'Very frequently, shaping how sessions are approached'],
     external_load: ['Generally steady and manageable', 'Manageable, with some periods of higher demand', 'Often busy or demanding, requiring ongoing adjustment', 'Frequently demanding, with little consistency week to week'],
     adjustments: ['Comfortable making adjustments when needed', 'Somewhat comfortable, but not always sure', 'Often uncertain about how to adjust', 'Rarely confident making changes on my own'],
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     })
     .join('')
 
-  // Save lead first — before any email sending so it's never lost
+  // Save lead first, before any email sending, so it's never lost
   const supabase = createAdminClient()
   const { data: newLead, error: leadError } = await supabase.from('leads').insert({
     name,
@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
                 Your responses have been received and are being reviewed.
               </p>
               <p style="margin:0 0 16px;font-size:15px;color:#888888;line-height:1.7;">
-                From this submission, a short interpretive report will be prepared — reflecting the patterns currently showing up across your training, recovery, and overall consistency.
+                From this submission, a short interpretive report will be prepared, reflecting the patterns currently showing up across your training, recovery, and overall consistency.
               </p>
               <p style="margin:0 0 36px;font-size:15px;color:#888888;line-height:1.7;">
                 You can expect this report within one business day. No further action is required from you at this stage.
@@ -213,7 +213,7 @@ export async function POST(request: NextRequest) {
     `,
   })
 
-  // Check-in emails are paused — do not schedule report or follow-ups until flow is finalised
+  // Check-in emails are paused. Do not schedule report or follow-ups until flow is finalised.
   // after(async () => {
   //   await scheduleReport(resend, newLead?.id ?? null, name, email, answers, signalPattern).catch(err =>
   //     console.error('Report generation error:', err)

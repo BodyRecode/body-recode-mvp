@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const name = client?.name ?? 'A client'
     const clearanceNote = requiresClearance
-      ? '<p style="margin:12px 0 0;font-size:14px;color:#f59e0b;"><strong>⚠ Medical clearance required</strong> — review before commencing.</p>'
+      ? '<p style="margin:12px 0 0;font-size:14px;color:#f59e0b;"><strong>⚠ Medical clearance required.</strong> Review before commencing.</p>'
       : ''
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',

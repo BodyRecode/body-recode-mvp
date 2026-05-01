@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: client.email,
-      subject: `Session booked — ${displayDate} at ${displayTime}`,
+      subject: `Session booked: ${displayDate} at ${displayTime}`,
       html: `
         <div style="background:#0c0a09;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
           <div style="max-width:480px;margin:0 auto;background:#111110;border-radius:16px;padding:36px;">
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
-      subject: `${client.name} booked a session — ${displayDate} at ${displayTime}`,
+      subject: `${client.name} booked a session: ${displayDate} at ${displayTime}`,
       html: `
         <div style="background:#0c0a09;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
           <div style="max-width:480px;margin:0 auto;background:#111110;border-radius:16px;padding:36px;">

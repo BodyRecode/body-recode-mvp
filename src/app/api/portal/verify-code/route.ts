@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
   // if needed and returns a token we can hand to the client to immediately
   // establish a session via verifyOtp({type: 'magiclink', token_hash}).
   // The token is fresh, has never been emailed, and cannot have been
-  // pre-fetched by anyone — Gmail/Apple Mail are completely out of the loop.
+  // pre-fetched by anyone. Gmail/Apple Mail are completely out of the loop.
   const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
     type: 'magiclink',
     email: cleanEmail,

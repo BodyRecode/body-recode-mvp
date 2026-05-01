@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
   }
 
-  // Get signed URL (private bucket — expires in 7 days for dashboard viewing)
+  // Get signed URL (private bucket, expires in 7 days for dashboard viewing)
   const { data: signedData } = await admin.storage
     .from('clearance-docs')
     .createSignedUrl(path, 60 * 60 * 24 * 7)
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: 'Body Recode™ <kade@bodyrecode.au>',
       to: 'info@bodyrecode.au',
-      subject: `Medical clearance uploaded — ${client?.name}`,
+      subject: `Medical clearance uploaded: ${client?.name}`,
       html: `
         <p><strong>${client?.name}</strong> has uploaded their completed medical clearance form.</p>
         <p>Review and approve it in the dashboard:</p>

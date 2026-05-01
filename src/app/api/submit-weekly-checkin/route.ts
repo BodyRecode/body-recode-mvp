@@ -93,13 +93,13 @@ async function sendNotifications(
   const resend = new Resend(process.env.RESEND_API_KEY)
   const firstName = client.name.split(' ')[0]
   const clientUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/clients/${client.id}`
-  const formLabel = formType === 'A' ? 'Form A — Training, load, and recovery' : 'Form B — Regulation, lifestyle, and context'
+  const formLabel = formType === 'A' ? 'Form A: Training, load, and recovery' : 'Form B: Regulation, lifestyle, and context'
 
   // Notify Kade
   await resend.emails.send({
     from: 'Body Recode <kade@bodyrecode.au>',
     to: 'kade@bodyrecode.au',
-    subject: `${client.name} — Week ${weekNumber} check-in submitted`,
+    subject: `${client.name}, Week ${weekNumber} check-in submitted`,
     html: `
 <!DOCTYPE html>
 <html>
@@ -109,7 +109,7 @@ async function sendNotifications(
     <div style="margin-bottom:40px;">
       <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
     </div>
-    <p style="font-size:16px;font-weight:700;color:#fff;margin:0 0 12px;">${client.name} — Week ${weekNumber}</p>
+    <p style="font-size:16px;font-weight:700;color:#fff;margin:0 0 12px;">${client.name} · Week ${weekNumber}</p>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 28px;">${formLabel} has been submitted. A CFWS will be generated shortly.</p>
     <a href="${clientUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client profile</a>
   </div>
@@ -122,7 +122,7 @@ async function sendNotifications(
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: client.email,
-      subject: `Check-in received — Week ${weekNumber}`,
+      subject: `Week ${weekNumber} check-in received`,
       html: `
 <!DOCTYPE html>
 <html>
