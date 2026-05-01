@@ -1232,7 +1232,7 @@ export default function HelpPage() {
               <li>Emails you sent — shown in teal</li>
               <li>Replies from the lead — shown in blue as &quot;Reply received&quot;</li>
               <li>Zoom bookings</li>
-              <li>Automations and sequences (orientation, follow-ups, re-engagement)</li>
+              <li>Automations and sequences (follow-ups, re-engagement)</li>
               <li>Check-ins submitted</li>
             </ul>
 

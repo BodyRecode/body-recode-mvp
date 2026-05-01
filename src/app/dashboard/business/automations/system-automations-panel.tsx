@@ -110,13 +110,6 @@ const MANUAL_AUTOMATIONS = [
     steps: 1,
   },
   {
-    id: 'send-orientation',
-    name: 'Send Orientation Guide',
-    description: 'Manually send the pre-call orientation guide so the lead knows how the coaching process works before the Zoom.',
-    trigger: 'Click "Send orientation" on the lead detail page',
-    steps: 1,
-  },
-  {
     id: 'no-show',
     name: 'No-show Re-engagement',
     description: '3-email re-engagement sequence for leads who missed their scheduled Zoom call.',

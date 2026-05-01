@@ -355,26 +355,6 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
     ],
   },
 
-  'send-orientation': {
-    id: 'send-orientation',
-    name: 'Send Orientation Guide',
-    description: 'Manually send the pre-call orientation guide so the lead understands how the coaching process works before the Zoom.',
-    trigger: 'Coach clicks "Send orientation" on the lead detail page',
-    triggerDetail: 'Use after a Zoom is booked but before the call. The Orientation Guide lives at app.bodyrecode.au/orientation and covers how coaching works, the relationship, and what to expect from the structure.',
-    steps: [
-      {
-        day: 'Immediately on click',
-        subject: '{firstName}, your Body Recode Orientation Guide',
-        paragraphs: [
-          'Hi {firstName},',
-          'Before we speak, have a read through this so you know how the coaching process actually works and what the relationship looks like from the inside.',
-          'Nothing to complete or decide. Read it at your own pace. It exists to create clarity before we have the conversation, not momentum to push you toward one.',
-        ],
-        cta: 'Read the Orientation Guide →',
-      },
-    ],
-  },
-
   'send-commencement-fee': {
     id: 'send-commencement-fee',
     name: 'Send Commencement Fee Link',
