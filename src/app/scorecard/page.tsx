@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import { useState, Suspense, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 const SECTIONS = [
@@ -179,6 +179,10 @@ function ScorecardInner() {
   const allSelected = totalSelected === SECTIONS.length
   const total = Object.values(scores).reduce((a, b) => a + b, 0)
   const result = getResult(total)
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [step])
 
   function selectScore(sectionNumber: string, score: number) {
     setScores(s => ({ ...s, [sectionNumber]: score }))
