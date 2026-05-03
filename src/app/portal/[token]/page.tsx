@@ -18,8 +18,40 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .from('clients')
     .select('*, baselines(id), intake_invitations(status, token), weekly_checkins(week_number, form_type, submitted_at), session_type')
     .eq('onboarding_token', token)
-    .ilike('email', user.email!)
     .single()
+
+  if (!client) return notFound()
+
+  const userEmail = (user.email ?? '').toLowerCase()
+  const clientEmail = (client.email ?? '').toLowerCase()
+  if (userEmail !== clientEmail) {
+    return (
+      <div className="min-h-screen bg-[#0c0a09] text-white flex flex-col items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md bg-[#111110] border border-[#1c1917] rounded-2xl p-8">
+          <img src="https://bodyrecode.au/logo-teal.png" width="140" alt="Body Recode" className="mb-8" />
+          <h1 className="text-xl font-bold text-white mb-3">Wrong account signed in</h1>
+          <p className="text-sm text-stone-400 leading-relaxed mb-2">
+            This portal link belongs to a different account. You&apos;re currently signed in as{' '}
+            <span className="text-white font-medium">{user.email}</span>.
+          </p>
+          <p className="text-sm text-stone-400 leading-relaxed mb-6">
+            Sign out and sign in with the email address this link was sent to.
+          </p>
+          <form action="/portal/auth/signout" method="POST">
+            <button
+              type="submit"
+              className="w-full py-3.5 bg-teal-400 hover:bg-teal-300 text-black font-bold text-sm rounded-2xl transition-colors"
+            >
+              Sign out and use a different email
+            </button>
+          </form>
+          <p className="mt-5 text-xs text-stone-600 leading-relaxed">
+            Want to keep your other session open? Open this link in a private/incognito window instead.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   const { data: activeNutritionPlan } = await admin
     .from('nutrition_plans')
@@ -52,8 +84,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .order('reviewed_at', { ascending: false })
     .limit(1)
     .maybeSingle()
-
-  if (!client) return notFound()
 
   // Load fixed slots for sessions card
   const { data: fixedSlots } = await admin
