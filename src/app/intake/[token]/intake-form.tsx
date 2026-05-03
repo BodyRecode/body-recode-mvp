@@ -10,6 +10,7 @@ type FormData = Record<string, FormValue>
 interface Props {
   token: string
   clientName?: string
+  portalToken?: string | null
 }
 
 // Treat a question as required by default; only text fields are optional
@@ -205,7 +206,7 @@ function QuestionInput({
 
 type Draft = { sectionIndex: number; formData: FormData }
 
-export default function IntakeForm({ token, clientName }: Props) {
+export default function IntakeForm({ token, clientName, portalToken }: Props) {
   const [draft, setDraft, clearDraft] = useFormDraft<Draft>(`intake:${token}`, { sectionIndex: 0, formData: {} })
   const sectionIndex = draft.sectionIndex
   const formData = draft.formData
@@ -344,9 +345,17 @@ export default function IntakeForm({ token, clientName }: Props) {
           </div>
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Submitted</p>
           <h1 className="text-2xl font-bold text-white mb-3 tracking-tight">You&apos;re all done.</h1>
-          <p className="text-stone-400 text-[15px] leading-relaxed">
+          <p className="text-stone-400 text-[15px] leading-relaxed mb-8">
             Your intake has been submitted. Your coach will review everything and be in touch shortly.
           </p>
+          {portalToken && (
+            <a
+              href={`/portal/${portalToken}`}
+              className="inline-block px-6 py-3 bg-[#10E1C2] hover:bg-teal-300 text-black font-bold text-sm rounded-2xl transition-colors"
+            >
+              Back to your portal
+            </a>
+          )}
         </div>
       </div>
     )
