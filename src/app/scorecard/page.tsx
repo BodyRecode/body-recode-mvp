@@ -84,7 +84,7 @@ function getResult(total: number) {
   return RESULTS[2]
 }
 
-type Step = 'scoring' | 'email' | 'qualifier' | 'result'
+type Step = 'scoring' | 'email' | 'result'
 
 type QualifierAnswer = 'A' | 'B' | 'C' | 'D'
 
@@ -184,14 +184,10 @@ function ScorecardInner() {
     setScores(s => ({ ...s, [sectionNumber]: score }))
   }
 
-  function goToQualifier() {
-    if (!firstName.trim() || !email.trim()) return
-    setError('')
-    setStep('qualifier')
-  }
+  const canSubmit = !!firstName.trim() && !!email.trim() && !!approach && !!investment
 
-  async function submitQualifier() {
-    if (!approach || !investment) return
+  async function submitEmail() {
+    if (!canSubmit) return
     setSubmitting(true)
     setError('')
     try {
@@ -325,7 +321,7 @@ function ScorecardInner() {
         {/* ─── EMAIL STEP ─── */}
         {step === 'email' && (
           <>
-            <div style={{ marginBottom: '40px' }}>
+            <div style={{ marginBottom: '32px' }}>
               <div style={{ width: '32px', height: '3px', background: '#14b8a6', marginBottom: '20px' }} />
               <h2 style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '12px' }}>
                 Where should we send your result?
@@ -335,7 +331,7 @@ function ScorecardInner() {
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '12px', color: '#a8a29e', fontWeight: 500, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   First name
@@ -362,7 +358,6 @@ function ScorecardInner() {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="you@email.com"
-                  onKeyDown={e => e.key === 'Enter' && goToQualifier()}
                   style={{
                     width: '100%', padding: '14px 16px', background: '#111110',
                     border: '1.5px solid #1c1917', borderRadius: '10px',
@@ -373,50 +368,6 @@ function ScorecardInner() {
               </div>
             </div>
 
-            {error && <p style={{ fontSize: '13px', color: '#ef4444', marginBottom: '16px' }}>{error}</p>}
-
-            <button
-              onClick={goToQualifier}
-              disabled={!firstName.trim() || !email.trim()}
-              style={{
-                width: '100%', padding: '16px', borderRadius: '12px', border: 'none',
-                background: '#14b8a6', color: '#0c0a09',
-                fontSize: '15px', fontWeight: 700,
-                cursor: !firstName.trim() || !email.trim() ? 'not-allowed' : 'pointer',
-                opacity: !firstName.trim() || !email.trim() ? 0.6 : 1,
-                transition: 'opacity 0.2s ease',
-              }}
-            >
-              Continue
-            </button>
-
-            <p style={{ fontSize: '12px', color: '#57534e', textAlign: 'center', marginTop: '16px', lineHeight: 1.6 }}>
-              No spam. Your result is shown instantly. You can unsubscribe any time.
-            </p>
-
-            <button
-              onClick={() => setStep('scoring')}
-              style={{ display: 'block', margin: '16px auto 0', background: 'none', border: 'none', color: '#57534e', fontSize: '13px', cursor: 'pointer' }}
-            >
-              Go back
-            </button>
-          </>
-        )}
-
-        {/* ─── QUALIFIER STEP ─── */}
-        {step === 'qualifier' && (
-          <>
-            <div style={{ marginBottom: '32px' }}>
-              <div style={{ width: '32px', height: '3px', background: '#14b8a6', marginBottom: '20px' }} />
-              <h2 style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '12px' }}>
-                Two more questions before your result.
-              </h2>
-              <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.6 }}>
-                Be honest. The result is more useful when these answers are.
-              </p>
-            </div>
-
-            {/* Approach question */}
             <div style={{ marginBottom: '28px' }}>
               <p style={{ fontSize: '10px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '10px' }}>06</p>
               <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', marginBottom: '14px', lineHeight: 1.4 }}>
@@ -456,7 +407,6 @@ function ScorecardInner() {
               </div>
             </div>
 
-            {/* Investment question */}
             <div style={{ marginBottom: '32px' }}>
               <p style={{ fontSize: '10px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '10px' }}>07</p>
               <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', marginBottom: '14px', lineHeight: 1.4 }}>
@@ -499,14 +449,14 @@ function ScorecardInner() {
             {error && <p style={{ fontSize: '13px', color: '#ef4444', marginBottom: '16px' }}>{error}</p>}
 
             <button
-              onClick={submitQualifier}
-              disabled={submitting || !approach || !investment}
+              onClick={submitEmail}
+              disabled={submitting || !canSubmit}
               style={{
                 width: '100%', padding: '16px', borderRadius: '12px', border: 'none',
-                background: approach && investment ? '#14b8a6' : '#1c1917',
-                color: approach && investment ? '#0c0a09' : '#57534e',
+                background: canSubmit ? '#14b8a6' : '#1c1917',
+                color: canSubmit ? '#0c0a09' : '#57534e',
                 fontSize: '15px', fontWeight: 700,
-                cursor: submitting || !approach || !investment ? 'not-allowed' : 'pointer',
+                cursor: submitting || !canSubmit ? 'not-allowed' : 'pointer',
                 opacity: submitting ? 0.6 : 1,
                 transition: 'all 0.2s ease',
               }}
@@ -514,8 +464,12 @@ function ScorecardInner() {
               {submitting ? 'Loading...' : 'Show My Result'}
             </button>
 
+            <p style={{ fontSize: '12px', color: '#57534e', textAlign: 'center', marginTop: '16px', lineHeight: 1.6 }}>
+              No spam. Your result is shown instantly. You can unsubscribe any time.
+            </p>
+
             <button
-              onClick={() => setStep('email')}
+              onClick={() => setStep('scoring')}
               style={{ display: 'block', margin: '16px auto 0', background: 'none', border: 'none', color: '#57534e', fontSize: '13px', cursor: 'pointer' }}
             >
               Go back
