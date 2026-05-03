@@ -17,7 +17,7 @@ const sections = [
   { id: 'cadence', label: 'Weekly Cadence' },
   { id: 'cfws', label: 'CFWS' },
   { id: 'body-state', label: 'Body State & Re-evaluation' },
-  { id: 'holds', label: 'Holds & Containment' },
+  { id: 'holds', label: 'Holds, Deloads & Rebuilds' },
   { id: 'long-arc', label: 'The Long Arc' },
   { id: 'communication', label: 'Communication' },
   { id: 'closing', label: 'Closing' },
@@ -147,7 +147,7 @@ export default function CoachingGuidePage() {
             </GuideSection>
 
             <GuideSection id="activation" title="Commitment and Activation">
-              <p>Active Coaching is formally activated once your Commencement Fee has been received. At that point, your onboarding sequence begins immediately.</p>
+              <p>Active Coaching is formally activated once your Commencement Fee has been processed and your Coaching Agreement becomes available in your portal. From that point, your onboarding sequence begins.</p>
               <Emphasis>The Commencement Fee does not begin training exposure. It activates configuration.</Emphasis>
               <p>Body Recode operates on governed sequencing. Load is not introduced until contractual alignment, health status, and readiness have been confirmed. Your coaching phase is now active. Structured exposure has not yet begun.</p>
               <Emphasis>Once foundational documentation is returned, the next stage opens.</Emphasis>
@@ -167,7 +167,7 @@ export default function CoachingGuidePage() {
             <GuideSection id="data" title="Structured Data Collection and Baseline Establishment">
               <p>Once foundational documentation is reviewed, the system advances to structured data collection. Two elements work together:</p>
               <BulletList items={[
-                { label: 'Foundational Intake', desc: 'Captures training history, injury background, dieting patterns, lifestyle load, sleep, recovery capacity, and present objectives. Provides interpretive context around stability and tolerance.' },
+                { label: 'Foundational Intake', desc: 'A multi-section interpretive form covering training history, injury and pain status, nutrition history, body pattern signals (fat distribution mapping), schedule and availability, sleep and recovery, stress load, supplements and stimulants, and present objectives.' },
                 { label: 'Baseline Documentation', desc: 'Establishes objective reference anchors: morning bodyweight, defined circumference measurements, and standardised relaxed progress photos.' },
               ]} />
               <Emphasis>This stage is not about intensity. It is about accuracy.</Emphasis>
@@ -176,14 +176,14 @@ export default function CoachingGuidePage() {
             </GuideSection>
 
             <GuideSection id="start-window" title="The Deliberate Start Window">
-              <p>Once your Foundational Intake and Baseline are submitted, the Deliberate Start Window begins. It typically spans three to seven days. During this period:</p>
+              <p>Once your Foundational Intake and Baseline are submitted, the Deliberate Start Window begins. It typically spans three to seven days, though it may extend depending on coach load and scheduling. During this period:</p>
               <SimpleList items={[
                 'Your data is synthesised into your Coach-Facing Foundational Synthesis (CFFS)',
                 'Biological tolerance, lifestyle load, recovery bandwidth, and behavioural patterns are interpreted in context',
                 'Your first exposure phase is constructed: volume, frequency, recovery positioning, and pacing sequenced to interpreted capacity',
               ]} />
               <Emphasis>This is not an automated configuration.</Emphasis>
-              <p>Each new entry into Performance Coaching is treated with care. On occasion, the window may extend slightly beyond seven days. When that occurs, it reflects prioritisation, not delay.</p>
+              <p>Each new entry into Performance Coaching is treated with care. Where the window extends beyond seven days, it reflects prioritisation, not delay.</p>
               <Emphasis>Nothing is rushed. Exposure is introduced only after interpretation has occurred.</Emphasis>
             </GuideSection>
 
@@ -201,9 +201,9 @@ export default function CoachingGuidePage() {
             </GuideSection>
 
             <GuideSection id="ieep" title="The Initial Exposure &amp; Entry Phase (IEEP)">
-              <p>Following your Start Window and CFFS, coaching enters the Initial Exposure &amp; Entry Phase.</p>
-              <Emphasis>The IEEP is a structured two-week calibration period.</Emphasis>
-              <p>It is not a testing block or a trial of intensity. It is the first governed exposure phase, designed to confirm that your classified Body State aligns with lived response under load. During these two weeks:</p>
+              <p>Following your Start Window and CFFS, coaching enters the Initial Exposure &amp; Entry Phase. The first weeks of training function as a calibration period rather than a testing block.</p>
+              <Emphasis>The IEEP is the first governed exposure phase. It confirms that your classified Body State aligns with lived response under load.</Emphasis>
+              <p>During this phase:</p>
               <SimpleList items={[
                 'Training exposure is introduced according to your Body State',
                 'Recovery response is observed carefully',
@@ -211,7 +211,7 @@ export default function CoachingGuidePage() {
                 'Lifestyle stability is assessed under structured load',
               ]} />
               <p>If exposure is tolerated as predicted, structural confidence increases. If instability emerges, adjustment occurs early and deliberately.</p>
-              <Emphasis>Two weeks of disciplined alignment protect months of sustainable adaptation.</Emphasis>
+              <Emphasis>Disciplined alignment in this phase protects months of sustainable adaptation.</Emphasis>
             </GuideSection>
 
             <GuideSection id="roles" title="Roles and Expectations">
@@ -242,8 +242,8 @@ export default function CoachingGuidePage() {
               <p>Active Coaching operates on a fixed weekly rhythm. Each training week concludes with a formal Check-In Window:</p>
               <SimpleList items={[
                 'Opens 6:00pm Friday',
-                'Closes 6:00pm Sunday',
-                'A defined 48-hour submission period',
+                'Closes 6:30pm Sunday',
+                'All structured weekly inputs must be submitted inside this window',
               ]} />
               <p>Within this cadence, check-ins alternate on an A/B rotation:</p>
               <BulletList items={[
@@ -251,6 +251,7 @@ export default function CoachingGuidePage() {
                 { label: 'Check-In B', desc: 'The stabilisation review. Confirms rhythm adherence and identifies early instability signals. Its role is continuity and structural monitoring.' },
               ]} />
               <p>Both check-ins are required to maintain progression eligibility. A valid escalation requires the structural pairing of an A followed by a B. Without this pairing, exposure remains held. This is not punitive. It protects continuity.</p>
+              <p>Once the window closes at 6:30pm Sunday, review and synthesis occur. Adjustments are applied within the structured decision window aligned to the upcoming training week.</p>
               <Emphasis>Change is governed. Stability is protected. Accumulation is deliberate.</Emphasis>
               <p>Missed submissions do not pause or reset the cadence. Exposure remains held and the system continues forward.</p>
             </GuideSection>
@@ -259,13 +260,13 @@ export default function CoachingGuidePage() {
               <p>At the close of each Check-In Window, your inputs are reviewed through the Coach-Facing Weekly Synthesis. It is a structured interpretive layer that evaluates pattern stability across a rolling window of weeks rather than reacting to isolated data points.</p>
               <p>Each week, the CFWS determines whether exposure should be:</p>
               <SimpleList items={[
-                'Maintained',
                 'Progressed',
                 'Held',
-                'Reduced for containment',
+                'Deloaded',
+                'Rebuilt',
               ]} />
               <p>Progression is earned through pattern stability, never granted on enthusiasm or urgency.</p>
-              <Emphasis>Containment can occur immediately if instability appears. Protection does not require permission. Progression does.</Emphasis>
+              <Emphasis>Protective adjustments can occur immediately if instability appears. Protection does not require permission. Progression does.</Emphasis>
               <p>The CFWS evaluates trend consistency, regulatory tolerance, load handling, and behavioural rhythm across multiple weeks. Most coaching models react to single data points. Body Recode evaluates pattern integrity.</p>
               <Emphasis>The result is progression that accumulates rather than oscillates.</Emphasis>
             </GuideSection>
@@ -284,16 +285,16 @@ export default function CoachingGuidePage() {
               <Emphasis>Remaining in a given Body State while building durability is not stagnation. It is consolidation. You are being sequenced correctly.</Emphasis>
             </GuideSection>
 
-            <GuideSection id="holds" title="Holds, Containment, and Re-entry">
+            <GuideSection id="holds" title="Holds, Deloads, and Rebuilds">
               <p>Active Coaching is built to function under real-life conditions. Illness, travel, work pressure, sleep fluctuation, and injury are realities, not failures.</p>
               <Emphasis>The system does not collapse when life becomes unstable. It adjusts deliberately.</Emphasis>
-              <p>Three protective responses exist inside the system:</p>
+              <p>Each weekly review assigns one of four directions to your program. Three of them are protective:</p>
               <BulletList items={[
-                { label: 'Containment', desc: 'Applied immediately when instability signals appear. May involve temporary load reduction or simplified structure. Protection takes priority over progression.' },
                 { label: 'Hold', desc: 'Exposure remains unchanged when check-in pairing or biological signals do not support escalation. Not regression. Structural patience.' },
-                { label: 'Pause', desc: 'A formal stop when illness, injury, travel, or major disruption make structured training temporarily inappropriate. A protective decision, not a punishment.' },
+                { label: 'Deload', desc: 'A deliberate reduction in load when fatigue, stress, or recovery signals indicate the current exposure cannot be sustained. Protection takes priority over progression.' },
+                { label: 'Rebuild', desc: 'A more substantial reset when significant instability, illness, injury, or major life disruption has compromised capacity. Training is recalibrated to a position the body can currently sustain. Foundational synthesis remains intact.' },
               ]} />
-              <p>After a pause, re-entry is structured. Training does not resume at arbitrary intensity. Your foundational synthesis remains intact unless formal re-evaluation occurs.</p>
+              <p>If disruption is severe enough that structured training is temporarily inappropriate, formal re-entry is coordinated directly with your coach. Training does not resume at arbitrary intensity.</p>
               <Emphasis>You are not expected to be perfect. You are expected to be consistent when stable and communicative when unstable. The system handles the rest.</Emphasis>
             </GuideSection>
 
@@ -312,7 +313,7 @@ export default function CoachingGuidePage() {
             <GuideSection id="communication" title="Communication Standards and WhatsApp Protocol">
               <p><strong className="text-white">WhatsApp is the required communication platform for all clients.</strong> Every client must download and maintain active access for the duration of coaching.</p>
               <Emphasis>Communication inside this system is structured. It is not open-ended or reactive.</Emphasis>
-              <p>The primary formal communication window each week is the Check-In Window (6:00pm Friday to 6:00pm Sunday). All weekly analysis, CFWS generation, and adjustments occur after this window closes.</p>
+              <p>The primary formal communication window each week is the Check-In Window (6:00pm Friday to 6:30pm Sunday). All weekly analysis, CFWS generation, and adjustments occur after this window closes.</p>
               <p>Standard weekday response time is within 24 hours. Weekend responses outside the Check-In Window may extend beyond this.</p>
               <p>WhatsApp is designed for:</p>
               <SimpleList items={[
