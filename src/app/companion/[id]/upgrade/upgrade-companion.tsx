@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { TWO_SESSION_PACKAGE_VALUES, THREE_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
 
 const STAGES = [
   {
@@ -106,7 +107,8 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
   const isFirst = activeStage === 0
   const isLast = activeStage === STAGES.length - 1
 
-  const isUpgradeCandidate = currentPackage === '2x' && (weekNumber ?? 0) >= 8
+  const isUpgradeCandidate = TWO_SESSION_PACKAGE_VALUES.includes(currentPackage as never) && (weekNumber ?? 0) >= 8
+  const isThreeSession = THREE_SESSION_PACKAGE_VALUES.includes(currentPackage as never)
 
   return (
     <div className="min-h-screen bg-[#0c0a09] text-white">
@@ -129,17 +131,17 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
             </span>
           )}
           <span className={`text-xs px-2.5 py-1 rounded-full border font-semibold ${
-            currentPackage === '3x'
+            isThreeSession
               ? 'bg-teal-900/30 text-teal-400 border-teal-800/50'
               : 'bg-amber-900/30 text-amber-400 border-amber-800/50'
           }`}>
-            {currentPackage === '3x' ? '3x - Already upgraded' : '2x - Upgrade candidate'}
+            {isThreeSession ? '3x - Already upgraded' : '2x - Upgrade candidate'}
           </span>
         </div>
       </div>
 
       {/* Not yet ready warning */}
-      {!isUpgradeCandidate && currentPackage !== '3x' && (
+      {!isUpgradeCandidate && !isThreeSession && (
         <div className="mx-6 mt-6 bg-amber-950/40 border border-amber-800/50 rounded-xl px-5 py-4">
           <p className="text-amber-300 text-sm font-medium">Early stage client</p>
           <p className="text-amber-400/70 text-xs mt-1">
@@ -148,7 +150,7 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
         </div>
       )}
 
-      {currentPackage === '3x' && (
+      {isThreeSession && (
         <div className="mx-6 mt-6 bg-teal-950/40 border border-teal-800/50 rounded-xl px-5 py-4">
           <p className="text-teal-300 text-sm font-medium">Already on 3x</p>
           <p className="text-teal-400/70 text-xs mt-1">

@@ -2,12 +2,14 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { COACHING_PACKAGES } from '@/lib/coaching-packages'
 
-const PACKAGES = [
-  { value: 'online', label: 'Online - $149/week', stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02' },
-  { value: '2x', label: 'In-Person 2x - $299/week', stripe: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00' },
-  { value: '3x', label: 'In-Person 3x - $409/week', stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
-]
+const PACKAGES = COACHING_PACKAGES.map(p => ({
+  value: p.value,
+  label: `${p.label} - ${p.price}`,
+  stripe: p.stripe,
+  tier: p.tier,
+}))
 
 interface PackageManagerProps {
   clientId: string
@@ -113,21 +115,45 @@ export default function PackageManager({
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap gap-2">
-        {packages.map(p => (
-          <button
-            key={p.value}
-            onClick={() => save(p.value)}
-            disabled={saving}
-            className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
-              pkg === p.value
-                ? 'bg-teal-500/10 border-teal-500/30 text-teal-400'
-                : 'border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200'
-            }`}
-          >
-            {p.label}
-          </button>
-        ))}
+      <div className="space-y-2">
+        <div>
+          <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Standard</p>
+          <div className="flex flex-wrap gap-2">
+            {packages.filter(p => p.tier === 'standard').map(p => (
+              <button
+                key={p.value}
+                onClick={() => save(p.value)}
+                disabled={saving}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
+                  pkg === p.value
+                    ? 'bg-teal-500/10 border-teal-500/30 text-teal-400'
+                    : 'border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200'
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p className="text-[10px] font-semibold text-amber-500/80 uppercase tracking-widest mb-1.5">Launch Rate (50% off)</p>
+          <div className="flex flex-wrap gap-2">
+            {packages.filter(p => p.tier === 'launch').map(p => (
+              <button
+                key={p.value}
+                onClick={() => save(p.value)}
+                disabled={saving}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
+                  pkg === p.value
+                    ? 'bg-amber-500/10 border-amber-500/40 text-amber-300'
+                    : 'border-stone-700 text-stone-400 hover:border-amber-500/40 hover:text-amber-300'
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       {saved && <p className="text-xs text-teal-400">Package updated</p>}
 

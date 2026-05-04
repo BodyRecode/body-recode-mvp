@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import { AlertTriangle } from 'lucide-react'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
+import { ONLINE_PACKAGE_VALUES, IN_PERSON_PACKAGE_VALUES, TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ view?: string; type?: string }> }) {
   const supabase = createAdminClient()
@@ -40,8 +41,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     .eq('active', !showInactive)
     .order('created_at', { ascending: false })
 
-  if (typeFilter === 'online') query = query.eq('package', 'online')
-  if (typeFilter === 'face_to_face') query = query.in('package', ['2x', '3x'])
+  if (typeFilter === 'online') query = query.in('package', ONLINE_PACKAGE_VALUES)
+  if (typeFilter === 'face_to_face') query = query.in('package', IN_PERSON_PACKAGE_VALUES)
 
   const { data: clients } = await query
 
@@ -87,7 +88,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     const hasFormA = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'A')
     const hasFormB = thisWeekCheckins.some((ci: { form_type: string }) => ci.form_type === 'B')
 
-    const upgradeCandidate = client.package === '2x' && (weekNumber ?? 0) >= 8 && (daysUntilStart ?? 0) <= 0
+    const upgradeCandidate = TWO_SESSION_PACKAGE_VALUES.includes(client.package) && (weekNumber ?? 0) >= 8 && (daysUntilStart ?? 0) <= 0
 
     return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB, rebuildTraining: rebuildTrainingIds.has(client.id), rebuildNutrition: rebuildNutritionIds.has(client.id), upgradeCandidate }
   })

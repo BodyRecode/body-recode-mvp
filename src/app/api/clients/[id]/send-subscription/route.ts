@@ -3,12 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
-
-const PACKAGES: Record<string, { label: string; price: string; stripe: string }> = {
-  online: { label: 'Online Coaching', price: '$149/week', stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02' },
-  '2x': { label: 'In-Person 2x', price: '$299/week', stripe: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00' },
-  '3x': { label: 'In-Person 3x', price: '$409/week', stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
-}
+import { getCoachingPackage } from '@/lib/coaching-packages'
 
 export async function POST(
   _request: NextRequest,
@@ -32,7 +27,7 @@ export async function POST(
   if (!client.email) return NextResponse.json({ error: 'No email address for this client' }, { status: 400 })
   if (!client.package) { console.error('No package on client:', client); return NextResponse.json({ error: 'No package selected' }, { status: 400 }) }
 
-  const pkg = PACKAGES[client.package]
+  const pkg = getCoachingPackage(client.package)
   if (!pkg) { console.error('Invalid package value:', client.package); return NextResponse.json({ error: 'Invalid package' }, { status: 400 }) }
 
   const firstName = client.name.split(' ')[0]

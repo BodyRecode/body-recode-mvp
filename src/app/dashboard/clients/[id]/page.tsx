@@ -5,6 +5,7 @@ import Link from 'next/link'
 import SetStartDate from '@/components/set-start-date'
 import PackageManager from '@/components/package-manager'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
+import { TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
 import CopyLinkButton from './copy-link-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
@@ -288,7 +289,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         />
         {(() => {
           const weekNumber = client.coaching_started_at ? getWeekNumber(client.coaching_started_at) : null
-          const isUpgradeCandidate = client.package === '2x' && (weekNumber ?? 0) >= 8
+          const isUpgradeCandidate = TWO_SESSION_PACKAGE_VALUES.includes(client.package) && (weekNumber ?? 0) >= 8
           if (!isUpgradeCandidate) return null
           return (
             <div className="mt-3 pt-3 border-t border-stone-800 flex items-center justify-between">

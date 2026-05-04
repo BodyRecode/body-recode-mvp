@@ -2,12 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
-
-const PACKAGES: Record<string, { label: string; price: string; stripe: string }> = {
-  online: { label: 'Online Coaching', price: '$149/week', stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02' },
-  '2x': { label: 'In-Person 2x', price: '$299/week', stripe: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00' },
-  '3x': { label: 'In-Person 3x', price: '$409/week', stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03' },
-}
+import { getCoachingPackage } from '@/lib/coaching-packages'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -34,7 +29,7 @@ export async function GET(request: NextRequest) {
   for (const client of clients) {
     if (!client.email || !client.package) continue
 
-    const pkg = PACKAGES[client.package]
+    const pkg = getCoachingPackage(client.package)
     if (!pkg) continue
 
     const firstName = client.name.split(' ')[0]
