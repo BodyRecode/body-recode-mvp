@@ -2,6 +2,65 @@
 
 import { useState } from 'react'
 
+const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
+
+type ButtonTone = 'neutral' | 'caution'
+
+function ActionButton({
+  label,
+  loadingLabel,
+  doneLabel,
+  state,
+  tone,
+  onClick,
+  ariaLabel,
+}: {
+  label: string
+  loadingLabel: string
+  doneLabel: string
+  state: 'idle' | 'sending' | 'sent' | 'done' | 'error'
+  tone: ButtonTone
+  onClick: () => void
+  ariaLabel?: string
+}) {
+  const display =
+    state === 'sending' ? loadingLabel
+    : state === 'sent' || state === 'done' ? doneLabel
+    : state === 'error' ? 'Failed'
+    : label
+
+  const base = 'text-[12px] font-semibold px-3.5 py-2 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap'
+  const palette =
+    tone === 'caution'
+      ? 'border border-[#3a2410] text-[#f59e0b] bg-[#1a1108] hover:border-[#5a3818] hover:text-[#fbbf24]'
+      : 'border border-[#1c1917] text-[#d4cfc9] bg-[#0c0a09] hover:border-[#292524] hover:text-white'
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={state !== 'idle'}
+      aria-label={ariaLabel}
+      className={`${base} ${palette}`}
+    >
+      {display}
+    </button>
+  )
+}
+
+function FieldRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-2 p-4 rounded-xl border border-[#1c1917] bg-[#0c0a09]">
+      <span
+        className="text-[10px] text-[#78716c] uppercase"
+        style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+      >
+        {label}
+      </span>
+      <div className="flex flex-wrap items-center gap-2">{children}</div>
+    </div>
+  )
+}
+
 export default function AdminButtons() {
   const [previewStatus, setPreviewStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [reportEmailStatus, setReportEmailStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
@@ -72,56 +131,69 @@ export default function AdminButtons() {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <div className="flex items-center gap-2">
+    <div className="grid md:grid-cols-2 gap-3">
+      <FieldRow label="Test report email">
         <select
           value={reportBodyState}
           onChange={e => setReportBodyState(e.target.value)}
-          className="text-sm bg-stone-800 border border-stone-700 text-stone-300 rounded-lg px-3 py-2 focus:outline-none focus:border-teal-500"
+          className="text-[12px] bg-[#111110] border border-[#1c1917] text-[#d4cfc9] rounded-lg px-2.5 py-2 focus:outline-none focus:border-[#14b8a6]"
         >
           <option>Depleted State</option>
           <option>Transitioning State</option>
           <option>Ready State</option>
         </select>
-        <button
+        <ActionButton
+          label="Send to my inbox"
+          loadingLabel="Sending..."
+          doneLabel="Sent"
+          state={reportEmailStatus}
+          tone="neutral"
           onClick={sendTestReportEmail}
-          disabled={reportEmailStatus !== 'idle'}
-          className="text-sm font-semibold px-4 py-2 rounded-lg border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white transition-colors disabled:opacity-50"
-        >
-          {reportEmailStatus === 'sending' ? 'Sending...' : reportEmailStatus === 'sent' ? 'Sent to your inbox' : reportEmailStatus === 'error' ? 'Failed' : 'Test report email'}
-        </button>
-      </div>
-      <button
-        onClick={sendPreview}
-        disabled={previewStatus !== 'idle'}
-        className="text-sm font-semibold px-4 py-2 rounded-lg border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white transition-colors disabled:opacity-50"
-      >
-        {previewStatus === 'sending' ? 'Sending...' : previewStatus === 'sent' ? 'Sent to your inbox' : previewStatus === 'error' ? 'Failed' : 'Send preview email'}
-      </button>
-      <div className="flex items-center gap-3">
+        />
+      </FieldRow>
+
+      <FieldRow label="Preview email">
+        <ActionButton
+          label="Send preview"
+          loadingLabel="Sending..."
+          doneLabel="Sent"
+          state={previewStatus}
+          tone="neutral"
+          onClick={sendPreview}
+        />
+      </FieldRow>
+
+      <FieldRow label="Resend reports to all leads">
         {blastResult && (
-          <span className="text-xs text-teal-400">{blastResult.sent} sent, {blastResult.failed} failed</span>
+          <span className="text-[11px] text-[#14b8a6]" style={{ fontFamily: MONO_FONT }}>
+            {blastResult.sent} sent · {blastResult.failed} failed
+          </span>
         )}
-        <button
+        <ActionButton
+          label="Resend to all"
+          loadingLabel="Sending..."
+          doneLabel="Done"
+          state={blastStatus}
+          tone="caution"
           onClick={sendBlast}
-          disabled={blastStatus !== 'idle'}
-          className="text-sm font-semibold px-4 py-2 rounded-lg border border-amber-700/50 text-amber-400 hover:border-amber-600 hover:text-amber-300 transition-colors disabled:opacity-50"
-        >
-          {blastStatus === 'sending' ? 'Sending...' : blastStatus === 'done' ? 'Done' : blastStatus === 'error' ? 'Failed' : 'Resend reports to all leads'}
-        </button>
-      </div>
-      <div className="flex items-center gap-3">
+        />
+      </FieldRow>
+
+      <FieldRow label="Retrigger scorecard for missed leads">
         {retriggerResult && (
-          <span className="text-xs text-teal-400">{retriggerResult.triggered} triggered, {retriggerResult.skipped} already had it, {retriggerResult.failed} failed</span>
+          <span className="text-[11px] text-[#14b8a6]" style={{ fontFamily: MONO_FONT }}>
+            {retriggerResult.triggered} sent · {retriggerResult.skipped} skipped · {retriggerResult.failed} failed
+          </span>
         )}
-        <button
+        <ActionButton
+          label="Send to missed"
+          loadingLabel="Sending..."
+          doneLabel="Done"
+          state={retriggerStatus}
+          tone="caution"
           onClick={retriggerScorecard}
-          disabled={retriggerStatus !== 'idle'}
-          className="text-sm font-semibold px-4 py-2 rounded-lg border border-amber-700/50 text-amber-400 hover:border-amber-600 hover:text-amber-300 transition-colors disabled:opacity-50"
-        >
-          {retriggerStatus === 'sending' ? 'Sending...' : retriggerStatus === 'done' ? 'Done' : retriggerStatus === 'error' ? 'Failed' : 'Send scorecard emails to missed leads'}
-        </button>
-      </div>
+        />
+      </FieldRow>
     </div>
   )
 }

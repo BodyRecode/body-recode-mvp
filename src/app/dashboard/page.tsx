@@ -14,7 +14,7 @@ export default async function DashboardHomePage() {
     { data: recentLeads },
     { data: recentCheckins },
   ] = await Promise.all([
-    supabase.from('leads').select('id, status'),
+    supabase.from('leads').select('id, status, created_at'),
     supabase.from('clients').select('id, name, coaching_started_at'),
     supabase.from('leads').select('id, name, email, status, created_at').order('created_at', { ascending: false }).limit(5),
     supabase.from('weekly_checkins').select('id, client_id, form_type, week_number, submitted_at, clients(name)').order('submitted_at', { ascending: false }).limit(5),
@@ -22,12 +22,20 @@ export default async function DashboardHomePage() {
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
+  const sevenDaysAgo = new Date(today)
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
 
   const totalLeads = leads?.length || 0
+  const newLeads7d = leads?.filter(l => l.created_at && new Date(l.created_at) >= sevenDaysAgo).length || 0
   const pipelineLeads = leads?.filter(l => !['commencement_fee_paid', 'closed_declined', 'closed_no_show'].includes(l.status)).length || 0
+  const zoomBooked = leads?.filter(l => l.status === 'zoom_booked' || l.status === 'zoom_1_booked').length || 0
   const activeClients = clients?.filter(c => {
     if (!c.coaching_started_at) return false
     return new Date(c.coaching_started_at) <= today
+  }).length || 0
+  const scheduledClients = clients?.filter(c => {
+    if (!c.coaching_started_at) return false
+    return new Date(c.coaching_started_at) > today
   }).length || 0
 
   const checkinsThisWeek = clients?.reduce((count, client) => {
@@ -59,11 +67,35 @@ export default async function DashboardHomePage() {
     year: 'numeric',
   })
 
-  const stats = [
-    { label: 'Total Leads', value: totalLeads, accent: '#57534e' },
-    { label: 'In Pipeline', value: pipelineLeads, accent: '#f59e0b' },
-    { label: 'Active Clients', value: activeClients, accent: '#14b8a6' },
-    { label: 'Check-Ins This Week', value: checkinsThisWeek, accent: '#14b8a6' },
+  const stats: Array<{ label: string; value: number; sub: string; accent: string; href?: string }> = [
+    {
+      label: 'Total Leads',
+      value: totalLeads,
+      sub: newLeads7d > 0 ? `+${newLeads7d} in last 7 days` : 'No new leads this week',
+      accent: '#57534e',
+      href: '/dashboard/leads',
+    },
+    {
+      label: 'In Pipeline',
+      value: pipelineLeads,
+      sub: zoomBooked > 0 ? `${zoomBooked} Zoom${zoomBooked === 1 ? '' : 's'} booked` : 'No calls booked',
+      accent: '#f59e0b',
+      href: '/dashboard/leads',
+    },
+    {
+      label: 'Active Clients',
+      value: activeClients,
+      sub: scheduledClients > 0 ? `${scheduledClients} starting soon` : 'No upcoming starts',
+      accent: '#14b8a6',
+      href: '/dashboard/coaching',
+    },
+    {
+      label: 'Check-Ins This Week',
+      value: checkinsThisWeek,
+      sub: 'Across all active clients',
+      accent: '#14b8a6',
+      href: '/dashboard/coaching',
+    },
   ]
 
   return (
@@ -71,6 +103,7 @@ export default async function DashboardHomePage() {
 
       {/* Header */}
       <div className="relative mb-12 pb-8">
+        {/* dotted grid */}
         <div
           aria-hidden
           className="absolute inset-0 -mx-6 -mt-10 pointer-events-none"
@@ -79,6 +112,15 @@ export default async function DashboardHomePage() {
             backgroundSize: '22px 22px',
             maskImage: 'radial-gradient(ellipse 60% 80% at 20% 0%, black 0%, transparent 70%)',
             WebkitMaskImage: 'radial-gradient(ellipse 60% 80% at 20% 0%, black 0%, transparent 70%)',
+          }}
+        />
+        {/* teal glow */}
+        <div
+          aria-hidden
+          className="absolute -top-24 -right-24 w-[420px] h-[420px] pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(20, 184, 166, 0.12) 0%, transparent 60%)',
+            filter: 'blur(40px)',
           }}
         />
         <div className="relative">
@@ -100,26 +142,34 @@ export default async function DashboardHomePage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
-        {stats.map(stat => (
-          <div
-            key={stat.label}
-            className="relative bg-[#111110] border border-[#1c1917] rounded-2xl p-5 overflow-hidden"
-          >
-            <div
-              className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
-              style={{ background: stat.accent }}
-            />
-            <p
-              className="text-[10px] text-[#78716c] uppercase mt-4 mb-3"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
-            >
-              {stat.label}
-            </p>
-            <p className="text-[40px] font-extrabold text-white tracking-tight leading-none">
-              {stat.value}
-            </p>
-          </div>
-        ))}
+        {stats.map(stat => {
+          const Inner = (
+            <div className="relative bg-[#111110] border border-[#1c1917] rounded-2xl p-5 overflow-hidden h-full transition-colors hover:border-[#292524]">
+              <div
+                className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
+                style={{ background: stat.accent }}
+              />
+              <p
+                className="text-[10px] text-[#78716c] uppercase mt-4 mb-3"
+                style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+              >
+                {stat.label}
+              </p>
+              <p
+                className="text-[40px] font-extrabold text-white tracking-tight leading-none mb-2.5"
+                style={{ fontVariantNumeric: 'tabular-nums' }}
+              >
+                {stat.value}
+              </p>
+              <p className="text-[11px] text-[#57534e] truncate">{stat.sub}</p>
+            </div>
+          )
+          return stat.href ? (
+            <Link key={stat.label} href={stat.href} className="block">{Inner}</Link>
+          ) : (
+            <div key={stat.label}>{Inner}</div>
+          )
+        })}
       </div>
 
       <div className="grid md:grid-cols-2 gap-4 mb-10">
@@ -222,14 +272,22 @@ export default async function DashboardHomePage() {
 
       {/* Admin Actions */}
       <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6">
-        <div className="flex items-center gap-2.5 mb-5">
-          <span className="w-7 h-[3px] rounded-full bg-[#f59e0b]" />
-          <h2
-            className="text-[11px] font-bold text-white uppercase"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-[3px] rounded-full bg-[#f59e0b]" />
+            <h2
+              className="text-[11px] font-bold text-white uppercase"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            >
+              Admin Actions
+            </h2>
+          </div>
+          <span
+            className="text-[10px] text-[#57534e]"
+            style={{ fontFamily: MONO_FONT, letterSpacing: '0.1em' }}
           >
-            Admin Actions
-          </h2>
+            Use with care
+          </span>
         </div>
         <AdminButtons />
       </div>

@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import LogoutButton from '@/components/LogoutButton'
+import DashboardNav from './nav'
 
 export default async function DashboardLayout({
   children,
@@ -12,20 +13,6 @@ export default async function DashboardLayout({
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) redirect('/login')
-
-  const navItems = [
-    { href: '/dashboard', label: 'Home' },
-    { href: '/dashboard/leads', label: 'Leads' },
-    { href: '/dashboard/coaching', label: 'Coaching' },
-    { href: '/dashboard/sources', label: 'Sources' },
-    { href: '/dashboard/business', label: 'Business' },
-    { href: '/dashboard/preview', label: 'Assets' },
-    { href: '/dashboard/gym-sessions', label: 'Gym' },
-    { href: '/dashboard/group-classes', label: 'Classes' },
-    { href: '/dashboard/funnel', label: 'Funnel' },
-    { href: '/dashboard/help', label: 'Guide' },
-    { href: '/dashboard/system-health', label: 'System' },
-  ]
 
   return (
     <div className="min-h-screen bg-[#0c0a09] text-white">
@@ -44,17 +31,7 @@ export default async function DashboardLayout({
               </span>
               <span className="text-[14px] font-semibold text-white tracking-tight">Body Recode</span>
             </Link>
-            <nav className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide">
-              {navItems.map(item => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-[13px] text-[#a8a29e] hover:text-white px-2.5 py-1.5 rounded-md hover:bg-[#1c1917] transition-colors whitespace-nowrap"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+            <DashboardNav />
           </div>
           <div className="flex items-center gap-4 shrink-0">
             <span
