@@ -13,33 +13,63 @@ export default async function DashboardLayout({
 
   if (!user) redirect('/login')
 
+  const navItems = [
+    { href: '/dashboard', label: 'Home' },
+    { href: '/dashboard/leads', label: 'Leads' },
+    { href: '/dashboard/coaching', label: 'Coaching' },
+    { href: '/dashboard/sources', label: 'Sources' },
+    { href: '/dashboard/business', label: 'Business' },
+    { href: '/dashboard/preview', label: 'Assets' },
+    { href: '/dashboard/gym-sessions', label: 'Gym' },
+    { href: '/dashboard/group-classes', label: 'Classes' },
+    { href: '/dashboard/funnel', label: 'Funnel' },
+    { href: '/dashboard/help', label: 'Guide' },
+    { href: '/dashboard/system-health', label: 'System' },
+  ]
+
   return (
-    <div className="min-h-screen bg-stone-950 text-white">
-      <header className="border-b border-stone-800 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-8">
-          <Link href="/dashboard">
-            <img src="https://bodyrecode.au/logo-teal.png" width="140" alt="Body Recode" style={{ display: 'block' }} />
-          </Link>
-          <nav className="flex items-center gap-1">
-            <Link href="/dashboard" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Home</Link>
-            <Link href="/dashboard/leads" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Leads</Link>
-            <Link href="/dashboard/coaching" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Coaching</Link>
-            <Link href="/dashboard/sources" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Sources</Link>
-            <Link href="/dashboard/business" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Business</Link>
-            <Link href="/dashboard/preview" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Assets</Link>
-            <Link href="/dashboard/gym-sessions" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Gym Sessions</Link>
-            <Link href="/dashboard/group-classes" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Group Classes</Link>
-            <Link href="/dashboard/funnel" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Funnel</Link>
-            <Link href="/dashboard/help" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">Guide</Link>
-            <Link href="/dashboard/system-health" className="text-sm text-stone-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-stone-800 transition-colors">System</Link>
-          </nav>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="text-stone-500 text-xs">{user.email}</span>
-          <LogoutButton />
+    <div className="min-h-screen bg-[#0c0a09] text-white">
+      <header
+        className="sticky top-0 z-50 border-b border-[#1c1917] backdrop-blur-xl"
+        style={{ background: 'rgba(12, 10, 9, 0.78)' }}
+      >
+        <div className="max-w-[1280px] mx-auto px-6 h-14 flex items-center justify-between gap-6">
+          <div className="flex items-center gap-7 min-w-0">
+            <Link href="/dashboard" className="flex items-center gap-2.5 shrink-0">
+              <span
+                className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-[#14b8a6] text-[#0c0a09] font-bold text-[11px] tracking-tight"
+                style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}
+              >
+                BR
+              </span>
+              <span className="text-[14px] font-semibold text-white tracking-tight">Body Recode</span>
+            </Link>
+            <nav className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide">
+              {navItems.map(item => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-[13px] text-[#a8a29e] hover:text-white px-2.5 py-1.5 rounded-md hover:bg-[#1c1917] transition-colors whitespace-nowrap"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+          <div className="flex items-center gap-4 shrink-0">
+            <span
+              className="hidden md:inline-flex items-center gap-1.5 text-[11px] text-[#a8a29e] px-2.5 py-1 rounded-full border border-[#1c1917] bg-[#111110]"
+              style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#14b8a6] shadow-[0_0_6px_#14b8a6]" />
+              live
+            </span>
+            <span className="hidden md:inline text-[#57534e] text-[11px] tracking-wide">{user.email}</span>
+            <LogoutButton />
+          </div>
         </div>
       </header>
-      <main className="max-w-6xl mx-auto px-6 py-8">
+      <main className="max-w-[1280px] mx-auto px-6 py-10">
         {children}
       </main>
     </div>
