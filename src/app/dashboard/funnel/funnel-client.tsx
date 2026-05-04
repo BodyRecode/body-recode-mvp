@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { PageHeader } from '@/components/dashboard/ui'
 
 const PATTERN_COLOURS: Record<string, string> = {
   'stress-stored': '#ef4444',
@@ -143,12 +144,12 @@ export default function FunnelClient({
   const membershipNoCheckin = membershipEnrollments.filter(e => !e.cancelledAt && !e.lastCheckin).length
 
   return (
-    <div>
-      {/* Header */}
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 800, color: '#fff', marginBottom: 4 }}>Funnel Dashboard</h1>
-        <p style={{ fontSize: 13, color: '#57534e' }}>Every participant across all three stages.</p>
-      </div>
+    <div className="max-w-[1100px]">
+      <PageHeader
+        eyebrow="Funnel"
+        title="Funnel Dashboard"
+        subtitle="Every participant across all three stages — Challenge, Blueprint, Membership."
+      />
 
       {/* Summary stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>

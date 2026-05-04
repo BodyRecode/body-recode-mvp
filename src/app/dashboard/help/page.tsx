@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { PageHeader } from '@/components/dashboard/ui'
 
 type Category = 'flows' | 'coaching' | 'business' | 'content' | 'challenge' | 'blueprint' | 'membership'
 
@@ -129,12 +130,14 @@ export default function HelpPage() {
       >
         ↑
       </button>
-      {/* Header */}
+      <PageHeader
+        eyebrow="Reference"
+        title="Dashboard Guide"
+        subtitle="How the Body Recode Performance Coaching system works — and why each part is structured the way it is."
+      />
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold mb-2">Dashboard Guide</h1>
-        <p className="text-stone-400 text-sm">How the Body Recode Performance Coaching system works — and why each part is structured the way it is.</p>
         {/* Category tabs */}
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2">
           {CATEGORIES.map(cat => (
             <button
               key={cat.id}

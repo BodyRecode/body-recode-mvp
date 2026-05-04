@@ -2,7 +2,9 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { Activity } from 'lucide-react'
 import RunDetail from './run-detail'
+import { PageHeader, Card, MONO_FONT, accentColour, EmptyState } from '@/components/dashboard/ui'
 
 export default async function SystemHealthPage({
   searchParams,
@@ -38,33 +40,41 @@ export default async function SystemHealthPage({
           .then(r => r.data)
       : null
 
+  const teal = accentColour('teal')
+  const amber = accentColour('amber')
+  const red = accentColour('red')
+
   return (
-    <div className="max-w-5xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-white mb-1">System Health</h1>
-        <p className="text-stone-400 text-sm">Daily automated checks across all platform processes.</p>
-      </div>
+    <div className="max-w-[1100px]">
+      <PageHeader
+        eyebrow="Diagnostics"
+        title="System Health"
+        subtitle="Daily automated checks across all platform processes."
+      />
 
       {!runs || runs.length === 0 ? (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-8 text-center">
-          <p className="text-stone-400 text-sm">No health check runs recorded yet.</p>
-          <p className="text-stone-600 text-xs mt-1">The first run will appear here tomorrow morning.</p>
-        </div>
+        <Card>
+          <EmptyState
+            icon={Activity}
+            title="No health check runs recorded yet."
+            hint="The first run will appear here tomorrow morning."
+          />
+        </Card>
       ) : (
-        <div className="flex gap-6">
+        <div className="flex gap-6 flex-col md:flex-row">
 
           {/* Run list */}
-          <div className="w-56 flex-shrink-0">
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">Run history</p>
+          <div className="md:w-56 md:flex-shrink-0">
+            <p
+              className="text-[10px] font-bold text-[#57534e] uppercase mb-3"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            >
+              Run history
+            </p>
             <div className="space-y-1.5">
               {(runs ?? []).map(run => {
                 const isSelected = selectedRun?.id === run.id
-                const statusColor = run.status === 'ok'
-                  ? 'text-teal-400'
-                  : run.status === 'fixed'
-                  ? 'text-amber-400'
-                  : 'text-red-400'
-                const dot = run.status === 'ok' ? 'bg-teal-400' : run.status === 'fixed' ? 'bg-amber-400' : 'bg-red-400'
+                const tone = run.status === 'ok' ? teal : run.status === 'fixed' ? amber : red
                 const date = new Date(run.ran_at)
                 const label = date.toLocaleDateString('en-AU', {
                   timeZone: 'Australia/Brisbane',
@@ -78,18 +88,21 @@ export default async function SystemHealthPage({
                   <Link
                     key={run.id}
                     href={`/dashboard/system-health?run=${run.id}`}
-                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg transition-colors ${
+                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg border transition-colors ${
                       isSelected
-                        ? 'bg-stone-800 border border-stone-700'
-                        : 'hover:bg-stone-900 border border-transparent'
+                        ? 'bg-[#1c1917] border-[#292524]'
+                        : 'border-transparent hover:bg-[#111110]'
                     }`}
                   >
-                    <div className={`w-2 h-2 rounded-full flex-shrink-0 ${dot}`} />
+                    <div
+                      className="w-2 h-2 rounded-full flex-shrink-0"
+                      style={{ background: tone.bar }}
+                    />
                     <div className="min-w-0">
-                      <p className={`text-xs font-semibold ${isSelected ? 'text-white' : 'text-stone-300'}`}>{label}</p>
-                      <p className="text-[10px] text-stone-600">{time}</p>
+                      <p className={`text-[12px] font-semibold ${isSelected ? 'text-white' : 'text-[#d4cfc9]'}`}>{label}</p>
+                      <p className="text-[10px] text-[#57534e]" style={{ fontFamily: MONO_FONT }}>{time}</p>
                       {run.status !== 'ok' && (
-                        <p className={`text-[10px] font-medium mt-0.5 ${statusColor}`}>
+                        <p className="text-[10px] font-medium mt-0.5" style={{ color: tone.text }}>
                           {run.status === 'fixed'
                             ? `${run.fixes_count} auto-fixed`
                             : `${run.failures_count} failed`}
@@ -107,9 +120,9 @@ export default async function SystemHealthPage({
             {selectedRun ? (
               <RunDetail run={selectedRun} />
             ) : (
-              <div className="bg-stone-900 border border-stone-800 rounded-xl p-8 text-center">
-                <p className="text-stone-500 text-sm">Select a run to view details.</p>
-              </div>
+              <Card>
+                <p className="text-[#57534e] text-[13px] text-center py-6">Select a run to view details.</p>
+              </Card>
             )}
           </div>
 

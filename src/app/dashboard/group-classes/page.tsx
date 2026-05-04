@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { PageHeader } from '@/components/dashboard/ui'
 
 interface Exercise {
   name: string
@@ -481,11 +482,12 @@ export default function GroupClassesPage() {
   const cls = CLASSES.find(c => c.id === activeClass)!
 
   return (
-    <div className="max-w-3xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1">Group Class Templates</h1>
-        <p className="text-stone-400 text-sm">Select the class and day variation.</p>
-      </div>
+    <div className="max-w-[900px]">
+      <PageHeader
+        eyebrow="Templates"
+        title="Group Class Templates"
+        subtitle="Select the class and day variation."
+      />
 
       {/* Class tabs */}
       <div className="flex gap-2 mb-3">

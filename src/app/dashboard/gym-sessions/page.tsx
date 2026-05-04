@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { PageHeader } from '@/components/dashboard/ui'
 
 const PROGRAM_TYPES = [
   { id: 'machines', label: 'Machines & Weights' },
@@ -247,11 +248,12 @@ export default function GymSessionsPage() {
   const program = state.programs[activeProgram]
 
   return (
-    <div className="max-w-3xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1">Gym Session Templates</h1>
-        <p className="text-stone-400 text-sm">Select the member's body state and session type.</p>
-      </div>
+    <div className="max-w-[900px]">
+      <PageHeader
+        eyebrow="Templates"
+        title="Gym Session Templates"
+        subtitle="Select the member's body state and session type."
+      />
 
       {/* State tabs */}
       <div className="flex gap-2 mb-3">
