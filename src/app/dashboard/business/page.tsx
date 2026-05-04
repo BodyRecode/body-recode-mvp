@@ -16,86 +16,28 @@ import {
   ExternalLink,
   Check,
   Clock,
+  ArrowUpRight,
 } from 'lucide-react'
+import { PageHeader, Card, SectionLabel, Btn, MONO_FONT } from '@/components/dashboard/ui'
 
 const modules = [
-  {
-    label: 'CRM',
-    description: 'Pipeline, contacts, opportunities',
-    href: '/dashboard/business/crm',
-    icon: Users,
-  },
-  {
-    label: 'Inbox',
-    description: 'Email threads per lead',
-    href: '/dashboard/business/inbox',
-    icon: MessageSquare,
-  },
-  {
-    label: 'Bookings',
-    description: 'Zoom 1, Zoom 2, calendar',
-    href: '/dashboard/business/bookings',
-    icon: Calendar,
-  },
-  {
-    label: 'Availability',
-    description: 'Set days and times leads can book',
-    href: '/dashboard/business/availability',
-    icon: Clock,
-  },
-  {
-    label: 'Payments',
-    description: 'Products, invoices, subscriptions',
-    href: '/dashboard/business/payments',
-    icon: CreditCard,
-  },
-  {
-    label: 'Funnels',
-    description: 'Landing pages, lead capture',
-    href: '/dashboard/business/funnels',
-    icon: Layers,
-  },
-  {
-    label: 'Campaigns',
-    description: 'Email and SMS broadcasts',
-    href: '/dashboard/business/campaigns',
-    icon: Megaphone,
-  },
-  {
-    label: 'Content',
-    description: 'Generate copy, graphics, reels',
-    href: '/dashboard/business/content',
-    icon: Clapperboard,
-  },
-  {
-    label: 'Automations',
-    description: 'Trigger sequences and workflows',
-    href: '/dashboard/business/automations',
-    icon: Zap,
-  },
-  {
-    label: 'Ads',
-    description: 'Meta + Google performance tracking',
-    href: '/dashboard/business/ads',
-    icon: TrendingUp,
-  },
-  {
-    label: 'Analytics',
-    description: 'Revenue, leads, conversions',
-    href: '/dashboard/business/analytics',
-    icon: BarChart2,
-  },
-  {
-    label: 'Website',
-    description: 'Traffic, conversions, page performance',
-    href: '/dashboard/business/website',
-    icon: ExternalLink,
-  },
+  { label: 'CRM',          description: 'Pipeline, contacts, opportunities',         href: '/dashboard/business/crm',          icon: Users },
+  { label: 'Inbox',        description: 'Email threads per lead',                    href: '/dashboard/business/inbox',        icon: MessageSquare },
+  { label: 'Bookings',     description: 'Zoom 1, Zoom 2, calendar',                  href: '/dashboard/business/bookings',     icon: Calendar },
+  { label: 'Availability', description: 'Set days and times leads can book',         href: '/dashboard/business/availability', icon: Clock },
+  { label: 'Payments',     description: 'Products, invoices, subscriptions',         href: '/dashboard/business/payments',     icon: CreditCard },
+  { label: 'Funnels',      description: 'Landing pages, lead capture',               href: '/dashboard/business/funnels',      icon: Layers },
+  { label: 'Campaigns',    description: 'Email and SMS broadcasts',                  href: '/dashboard/business/campaigns',    icon: Megaphone },
+  { label: 'Content',      description: 'Generate copy, graphics, reels',            href: '/dashboard/business/content',      icon: Clapperboard },
+  { label: 'Automations',  description: 'Trigger sequences and workflows',           href: '/dashboard/business/automations',  icon: Zap },
+  { label: 'Ads',          description: 'Meta + Google performance tracking',        href: '/dashboard/business/ads',          icon: TrendingUp },
+  { label: 'Analytics',    description: 'Revenue, leads, conversions',               href: '/dashboard/business/analytics',    icon: BarChart2 },
+  { label: 'Website',      description: 'Traffic, conversions, page performance',    href: '/dashboard/business/website',      icon: ExternalLink },
 ]
 
 const publicLinks = [
-  { label: 'Booking page', url: '/book', desc: 'Public Zoom booking' },
-  { label: 'Body State Scorecard', url: '/scorecard', desc: 'Lead magnet — body state quiz' },
+  { label: 'Booking page',         url: '/book',                 desc: 'Public Zoom booking' },
+  { label: 'Body State Scorecard', url: '/scorecard',            desc: 'Lead magnet — body state quiz' },
   { label: 'Performance Check-In', url: '/performance-check-in', desc: 'Free 3-min check-in' },
 ]
 
@@ -119,88 +61,97 @@ export default function BusinessHubPage() {
   }
 
   return (
-    <div className="max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1">Business Engine</h1>
-        <p className="text-stone-400 text-sm">The operating layer that feeds leads into the coaching system.</p>
-      </div>
+    <div className="max-w-[1100px]">
+      <PageHeader
+        eyebrow="Business Engine"
+        title="Business"
+        subtitle="The operating layer that feeds leads into the coaching system."
+      />
 
       {/* Modules grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-        {modules.map((mod) => {
+        {modules.map(mod => {
           const Icon = mod.icon
           return (
             <Link
               key={mod.href}
               href={mod.href}
-              className="group bg-stone-900 border border-stone-800 rounded-xl p-5 hover:border-stone-700 transition-colors"
+              className="group bg-[#111110] border border-[#1c1917] rounded-2xl p-5 hover:border-[#292524] transition-colors"
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="p-2 bg-stone-800 rounded-lg">
-                  <Icon size={16} className="text-teal-400" strokeWidth={1.8} />
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-9 h-9 rounded-xl bg-[#0c0a09] border border-[#1c1917] flex items-center justify-center">
+                  <Icon size={15} className="text-[#14b8a6]" strokeWidth={1.8} />
                 </div>
+                <ArrowUpRight size={14} className="text-[#57534e] group-hover:text-[#14b8a6] transition-colors" />
               </div>
-              <p className="text-sm font-semibold text-white group-hover:text-teal-400 transition-colors mb-0.5">
+              <p className="text-[14px] font-semibold text-white group-hover:text-[#14b8a6] transition-colors mb-1">
                 {mod.label}
               </p>
-              <p className="text-xs text-stone-500">{mod.description}</p>
+              <p className="text-[12px] text-[#57534e] leading-relaxed">{mod.description}</p>
             </Link>
           )
         })}
       </div>
 
       {/* Public links */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
-        <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Public Links</p>
-        <div className="space-y-2">
+      <Card className="mb-4" padding="md">
+        <SectionLabel>Public Links</SectionLabel>
+        <div className="divide-y divide-[#1c1917]">
           {publicLinks.map(link => (
-            <div key={link.url} className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-white font-medium">{link.label}</p>
-                <p className="text-xs text-stone-500">{link.desc}</p>
+            <div key={link.url} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
+              <div className="min-w-0">
+                <p className="text-[14px] text-white font-medium">{link.label}</p>
+                <p className="text-[12px] text-[#57534e] mt-0.5">{link.desc}</p>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-stone-600 font-mono">bodyrecode.au{link.url}</span>
+              <div className="flex items-center gap-3 shrink-0">
+                <span
+                  className="text-[11px] text-[#57534e] hidden sm:inline"
+                  style={{ fontFamily: MONO_FONT }}
+                >
+                  bodyrecode.au{link.url}
+                </span>
                 <a
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 text-stone-500 hover:text-teal-400 transition-colors"
+                  className="p-1.5 text-[#57534e] hover:text-[#14b8a6] transition-colors"
+                  aria-label={`Open ${link.label}`}
                 >
-                  <ExternalLink size={13} />
+                  <ExternalLink size={14} />
                 </a>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </Card>
 
       {/* Scorecard automation setup */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold text-white mb-1">Scorecard Follow-up Automation</p>
-            <p className="text-xs text-stone-400 leading-relaxed">
+      <Card padding="md">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div className="min-w-0">
+            <p className="text-[14px] font-semibold text-white mb-1">Scorecard Follow-up Automation</p>
+            <p className="text-[12px] text-[#a8a29e] leading-relaxed max-w-xl">
               A 4-email sequence that fires when someone completes the Body State Scorecard. Directs leads to book a free call or get the $37 Body Decode Report.
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {automationSeeded && (
-              <div className="flex items-center gap-1.5 text-teal-400 text-xs font-semibold">
-                <Check size={13} /> Synced
-              </div>
+              <span className="inline-flex items-center gap-1.5 text-[#14b8a6] text-[11px] font-semibold">
+                <Check size={12} /> Synced
+              </span>
             )}
-            <button
+            <Btn
+              variant="primary"
+              size="sm"
+              icon={Zap}
               onClick={automationSeeded ? resyncScorecardAutomation : seedScorecardAutomation}
               disabled={seedingAutomation}
-              className="flex items-center gap-2 bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-2 rounded-lg transition-colors"
             >
-              <Zap size={12} />
               {seedingAutomation ? 'Syncing...' : automationSeeded ? 'Re-sync' : 'Set Up'}
-            </button>
+            </Btn>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   )
 }

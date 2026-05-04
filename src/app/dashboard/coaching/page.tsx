@@ -1,9 +1,10 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, ArrowUpRight, ChevronRight, UserPlus, Users } from 'lucide-react'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { ONLINE_PACKAGE_VALUES, IN_PERSON_PACKAGE_VALUES, TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
+import { PageHeader, Btn, EmptyState, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ view?: string; type?: string }> }) {
   const supabase = createAdminClient()
@@ -46,7 +47,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   const { data: clients } = await query
 
-  // Fetch clients with active Rebuild direction on training or nutrition
   const { data: rebuildPrograms } = await supabase
     .from('programs')
     .select('client_id')
@@ -69,7 +69,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     const startDate = client.coaching_started_at ? new Date(client.coaching_started_at) : null
     if (startDate) startDate.setHours(0, 0, 0, 0)
     const daysUntilStart = startDate ? Math.ceil((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : null
-
     const weekNumber = client.coaching_started_at ? getWeekNumber(client.coaching_started_at) : null
 
     const latestCffs = client.cffs
@@ -95,98 +94,118 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   const flaggedCount = clientsProcessed.filter(c => c.latestCffs?.reassessment_flagged).length
   const upgradeCandidateCount = clientsProcessed.filter(c => c.upgradeCandidate).length
+  const teal = accentColour('teal')
+  const red = accentColour('red')
+  const amber = accentColour('amber')
+
+  const buildHref = (paramOverrides: { view?: string | null; type?: string | null }) => {
+    const next: Record<string, string> = {}
+    const newView = paramOverrides.view !== undefined ? paramOverrides.view : (showInactive ? 'inactive' : null)
+    const newType = paramOverrides.type !== undefined ? paramOverrides.type : (typeFilter === 'all' ? null : typeFilter)
+    if (newView) next.view = newView
+    if (newType) next.type = newType
+    const qs = Object.entries(next).map(([k, v]) => `${k}=${v}`).join('&')
+    return `/dashboard/coaching${qs ? '?' + qs : ''}`
+  }
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Clients</h1>
-          <p className="text-stone-400 text-sm mt-1">{clients?.length || 0} {showInactive ? 'inactive' : 'active'} clients</p>
-        </div>
-        <Link
-          href="/dashboard/clients/new"
-          className="bg-white text-stone-950 text-sm font-medium px-4 py-2 rounded-lg hover:bg-stone-100 transition-colors"
-        >
-          + Add Client
-        </Link>
-      </div>
+    <div className="max-w-[1100px]">
+      <PageHeader
+        eyebrow="Coaching"
+        title="Clients"
+        subtitle={`${clients?.length || 0} ${showInactive ? 'inactive' : 'active'} ${(clients?.length || 0) === 1 ? 'client' : 'clients'}`}
+        cta={
+          <Btn href="/dashboard/clients/new" variant="primary" icon={UserPlus} size="sm">
+            New Client
+          </Btn>
+        }
+      />
 
       {/* Filters */}
-      <div className="flex items-center gap-3 mb-8">
-        {/* Type */}
-        <div className="flex items-center bg-stone-900 border border-stone-800 rounded-lg p-0.5">
+      <div className="flex items-center gap-3 mb-7 flex-wrap">
+        <div className="inline-flex items-center bg-[#111110] border border-[#1c1917] rounded-lg p-0.5">
           {[
             { label: 'All', value: 'all' },
             { label: 'Face-to-Face', value: 'face_to_face' },
             { label: 'Online', value: 'online' },
-          ].map(opt => {
-            const href = `/dashboard/coaching${
-              [showInactive ? 'view=inactive' : '', opt.value !== 'all' ? `type=${opt.value}` : ''].filter(Boolean).join('&') ? '?' + [showInactive ? 'view=inactive' : '', opt.value !== 'all' ? `type=${opt.value}` : ''].filter(Boolean).join('&') : ''
-            }`
-            return (
-              <Link
-                key={opt.value}
-                href={href}
-                className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${typeFilter === opt.value ? 'bg-teal-500 text-black' : 'text-stone-400 hover:text-white'}`}
-              >
-                {opt.label}
-              </Link>
-            )
-          })}
+          ].map(opt => (
+            <Link
+              key={opt.value}
+              href={buildHref({ type: opt.value === 'all' ? null : opt.value })}
+              className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
+                typeFilter === opt.value ? 'bg-[#14b8a6] text-[#0c0a09]' : 'text-[#a8a29e] hover:text-white'
+              }`}
+            >
+              {opt.label}
+            </Link>
+          ))}
         </div>
 
-        <div className="h-4 w-px bg-stone-700" />
+        <div className="h-4 w-px bg-[#1c1917]" />
 
-        {/* Active / Inactive */}
-        <div className="flex items-center bg-stone-900 border border-stone-800 rounded-lg p-0.5">
+        <div className="inline-flex items-center bg-[#111110] border border-[#1c1917] rounded-lg p-0.5">
           {[
             { label: 'Active', inactive: false },
             { label: 'Inactive', inactive: true },
-          ].map(opt => {
-            const href = `/dashboard/coaching${
-              [opt.inactive ? 'view=inactive' : '', typeFilter !== 'all' ? `type=${typeFilter}` : ''].filter(Boolean).join('&') ? '?' + [opt.inactive ? 'view=inactive' : '', typeFilter !== 'all' ? `type=${typeFilter}` : ''].filter(Boolean).join('&') : ''
-            }`
-            return (
-              <Link
-                key={opt.label}
-                href={href}
-                className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${showInactive === opt.inactive ? 'bg-stone-600 text-white' : 'text-stone-400 hover:text-white'}`}
-              >
-                {opt.label}
-              </Link>
-            )
-          })}
+          ].map(opt => (
+            <Link
+              key={opt.label}
+              href={buildHref({ view: opt.inactive ? 'inactive' : null })}
+              className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
+                showInactive === opt.inactive ? 'bg-[#1c1917] text-white' : 'text-[#a8a29e] hover:text-white'
+              }`}
+            >
+              {opt.label}
+            </Link>
+          ))}
         </div>
       </div>
 
       {/* Action queue — clients needing attention */}
       {clientsProcessed.some(c => c.rebuildTraining || c.rebuildNutrition) && (
-        <div className="mb-6 bg-stone-900 border border-red-800/50 rounded-xl overflow-hidden">
-          <div className="px-4 py-3 border-b border-red-800/30 flex items-center gap-2">
-            <svg className="w-4 h-4 text-red-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-            </svg>
-            <p className="text-xs font-bold text-red-400 uppercase tracking-widest">Needs attention</p>
+        <div
+          className="mb-5 bg-[#111110] border rounded-2xl overflow-hidden"
+          style={{ borderColor: red.ring }}
+        >
+          <div
+            className="px-4 py-3 border-b flex items-center gap-2"
+            style={{ borderColor: red.ring }}
+          >
+            <AlertTriangle size={14} style={{ color: red.text }} />
+            <p
+              className="text-[10px] font-bold uppercase"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em', color: red.text }}
+            >
+              Needs attention
+            </p>
           </div>
-          <div className="divide-y divide-stone-800">
+          <div className="divide-y divide-[#1c1917]">
             {clientsProcessed.filter(c => c.rebuildTraining || c.rebuildNutrition).map(client => (
               <div key={client.id} className="px-4 py-3 flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm font-semibold text-white">{client.name}</p>
+                <div className="min-w-0">
+                  <p className="text-[14px] font-semibold text-white truncate">{client.name}</p>
                   <div className="flex items-center gap-2 mt-0.5">
-                    {client.rebuildTraining && <span className="text-xs text-red-400">Training: Rebuild</span>}
-                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-stone-700 text-xs">·</span>}
-                    {client.rebuildNutrition && <span className="text-xs text-red-400">Nutrition: Rebuild</span>}
+                    {client.rebuildTraining && <span className="text-[12px]" style={{ color: red.text }}>Training: Rebuild</span>}
+                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#1c1917] text-xs">·</span>}
+                    {client.rebuildNutrition && <span className="text-[12px]" style={{ color: red.text }}>Nutrition: Rebuild</span>}
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   {client.rebuildTraining && (
-                    <Link href={`/dashboard/clients/${client.id}/program`} className="text-xs font-semibold text-red-400 hover:text-red-300 border border-red-800/50 px-2.5 py-1 rounded-lg transition-colors">
+                    <Link
+                      href={`/dashboard/clients/${client.id}/program`}
+                      className="text-[11px] font-semibold border px-2.5 py-1 rounded-lg transition-colors hover:bg-[#0c0a09]"
+                      style={{ color: red.text, borderColor: red.ring }}
+                    >
                       Training →
                     </Link>
                   )}
                   {client.rebuildNutrition && (
-                    <Link href={`/dashboard/clients/${client.id}/nutrition`} className="text-xs font-semibold text-red-400 hover:text-red-300 border border-red-800/50 px-2.5 py-1 rounded-lg transition-colors">
+                    <Link
+                      href={`/dashboard/clients/${client.id}/nutrition`}
+                      className="text-[11px] font-semibold border px-2.5 py-1 rounded-lg transition-colors hover:bg-[#0c0a09]"
+                      style={{ color: red.text, borderColor: red.ring }}
+                    >
                       Nutrition →
                     </Link>
                   )}
@@ -198,75 +217,88 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       )}
 
       {flaggedCount > 0 && (
-        <div className="mb-6 bg-amber-950/50 border border-amber-800 rounded-lg px-4 py-3 flex items-center gap-3">
-          <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-          <p className="text-amber-300 text-sm">
-            <span className="font-medium">{flaggedCount} client{flaggedCount > 1 ? 's' : ''}</span> may be appropriate for re-assessment
+        <div
+          className="mb-5 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-3"
+          style={{ borderColor: amber.ring }}
+        >
+          <AlertTriangle size={14} style={{ color: amber.text }} />
+          <p className="text-[13px]" style={{ color: amber.text }}>
+            <span className="font-semibold">{flaggedCount} client{flaggedCount > 1 ? 's' : ''}</span> may be appropriate for re-assessment
           </p>
         </div>
       )}
 
       {upgradeCandidateCount > 0 && (
-        <div className="mb-6 bg-teal-950/40 border border-teal-800/50 rounded-lg px-4 py-3 flex items-center gap-3">
-          <svg className="w-4 h-4 text-teal-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-          </svg>
-          <p className="text-teal-300 text-sm">
-            <span className="font-medium">{upgradeCandidateCount} client{upgradeCandidateCount > 1 ? 's' : ''}</span> eligible for the 2x to 3x upgrade conversation
+        <div
+          className="mb-5 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-3"
+          style={{ borderColor: teal.ring }}
+        >
+          <ArrowUpRight size={14} style={{ color: teal.text }} />
+          <p className="text-[13px]" style={{ color: teal.text }}>
+            <span className="font-semibold">{upgradeCandidateCount} client{upgradeCandidateCount > 1 ? 's' : ''}</span> eligible for the 2x to 3x upgrade conversation
           </p>
         </div>
       )}
 
       {clientsProcessed.length === 0 ? (
-        <div className="text-center py-20 text-stone-500">
-          <p className="text-lg mb-2">No clients yet</p>
-          <p className="text-sm">Add your first client to get started</p>
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl">
+          <EmptyState icon={Users} title="No clients yet" hint="Add your first client to get started" />
         </div>
       ) : (
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           {clientsProcessed.map(client => (
             <Link
               key={client.id}
               href={`/dashboard/clients/${client.id}`}
-              className="bg-stone-900 border border-stone-800 rounded-xl px-5 py-4 flex items-center justify-between hover:border-stone-600 transition-colors group"
+              className="bg-[#111110] border border-[#1c1917] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#292524] transition-colors group"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full bg-stone-700 flex items-center justify-center text-sm font-medium text-stone-300 shrink-0">
+              <div className="flex items-center gap-4 min-w-0">
+                <div
+                  className="w-9 h-9 rounded-full bg-[#1c1917] border border-[#292524] flex items-center justify-center text-[13px] font-medium text-[#d4cfc9] shrink-0"
+                  style={{ fontFamily: MONO_FONT }}
+                >
                   {client.name.charAt(0).toUpperCase()}
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-white">{client.name}</span>
+                    <span className="text-[14px] font-medium text-white group-hover:text-[#14b8a6] transition-colors truncate">{client.name}</span>
                     {client.latestCffs?.reassessment_flagged && (
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+                      <AlertTriangle size={13} style={{ color: amber.text }} />
                     )}
                   </div>
-                  <div className="flex items-center gap-3 mt-0.5">
-                    <p className="text-stone-500 text-xs">
+                  <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                    <p className="text-[11px] text-[#57534e]">
                       Added {formatDate(client.created_at)}
                     </p>
                     {client.weekNumber !== null && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
                       <>
-                        <span className="text-stone-700 text-xs">·</span>
-                        <span className="text-stone-400 text-xs font-medium">Week {client.weekNumber}</span>
-                        <span className="text-stone-700 text-xs">·</span>
-                        <span className={`text-xs font-semibold ${client.hasFormA ? 'text-teal-400' : 'text-stone-600'}`}>A</span>
-                        <span className={`text-xs font-semibold ${client.hasFormB ? 'text-teal-400' : 'text-stone-600'}`}>B</span>
+                        <span className="text-[#1c1917] text-xs">·</span>
+                        <span className="text-[11px] text-[#a8a29e] font-medium">Week {client.weekNumber}</span>
+                        <span className="text-[#1c1917] text-xs">·</span>
+                        <span
+                          className={`text-[11px] font-semibold ${client.hasFormA ? 'text-[#14b8a6]' : 'text-[#57534e]'}`}
+                          style={{ fontFamily: MONO_FONT }}
+                        >A</span>
+                        <span
+                          className={`text-[11px] font-semibold ${client.hasFormB ? 'text-[#14b8a6]' : 'text-[#57534e]'}`}
+                          style={{ fontFamily: MONO_FONT }}
+                        >B</span>
                       </>
                     )}
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                {/* Upgrade candidate badge */}
+              <div className="flex items-center gap-3 shrink-0 ml-3">
                 {client.upgradeCandidate && (
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-teal-700/50 text-teal-400 bg-teal-900/20">
+                  <span
+                    className="text-[10px] font-semibold px-2.5 py-1 rounded-full border uppercase"
+                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', color: teal.text, borderColor: teal.ring, background: teal.bg }}
+                  >
                     Upgrade
                   </span>
                 )}
 
-                {/* CFWS readiness dots */}
                 {client.latestCfws && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
                   <div className="flex items-center gap-1">
                     {[
@@ -281,23 +313,29 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 )}
 
                 {client.daysUntilStart !== null && client.daysUntilStart > 0 ? (
-                  <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-amber-400/30 text-amber-400 bg-amber-400/10">
+                  <span
+                    className="text-[11px] font-medium px-2.5 py-1 rounded-full border whitespace-nowrap"
+                    style={{ color: amber.text, borderColor: amber.ring, background: amber.bg }}
+                  >
                     Starts in {client.daysUntilStart}d
                   </span>
                 ) : client.daysUntilStart === 0 ? (
-                  <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-teal-400/30 text-teal-400 bg-teal-400/10">
+                  <span
+                    className="text-[11px] font-medium px-2.5 py-1 rounded-full border whitespace-nowrap"
+                    style={{ color: teal.text, borderColor: teal.ring, background: teal.bg }}
+                  >
                     Starts today
                   </span>
                 ) : client.latestCffs ? (
-                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${getStateColour(client.latestCffs.body_state_classification)}`}>
+                  <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full border whitespace-nowrap ${getStateColour(client.latestCffs.body_state_classification)}`}>
                     {client.latestCffs.body_state_classification}
                   </span>
                 ) : (
-                  <span className="text-xs text-stone-500 px-2.5 py-1 rounded-full border border-stone-700">
+                  <span className="text-[11px] text-[#57534e] px-2.5 py-1 rounded-full border border-[#1c1917]">
                     No CFFS
                   </span>
                 )}
-                <span className="text-stone-600 group-hover:text-stone-400 transition-colors">→</span>
+                <ChevronRight size={16} className="text-[#57534e] group-hover:text-[#14b8a6] transition-colors" />
               </div>
             </Link>
           ))}

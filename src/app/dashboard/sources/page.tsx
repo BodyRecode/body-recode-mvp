@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
-import { getLeadSourceLabel, LEAD_SOURCES } from '@/lib/utils'
+import { LEAD_SOURCES } from '@/lib/utils'
+import { PageHeader, Card, SectionLabel, Pill, MONO_FONT } from '@/components/dashboard/ui'
+import CopyButton from './copy-button'
 
 const QR_BASE_URL = 'https://bodyrecode.au/scorecard'
 const DIGITAL_BASE_URL = 'https://bodyrecode.au/performance-check-in-quiz'
@@ -7,23 +9,62 @@ const SCORECARD_BASE_URL = 'https://bodyrecode.au/scorecard'
 
 const QR_SOURCES = [
   { value: 'qr_floor_banner', label: 'Floor Banner', desc: 'Large QR code on the gym floor banner near the entrance.' },
-  { value: 'qr_window', label: 'Window Decal', desc: 'QR code on the front window or door.' },
-  { value: 'qr_card', label: 'Business Card', desc: 'QR code printed on business cards.' },
-  { value: 'qr_flyer', label: 'Flyer', desc: 'QR code on printed flyers or handouts.' },
+  { value: 'qr_window',       label: 'Window Decal', desc: 'QR code on the front window or door.' },
+  { value: 'qr_card',         label: 'Business Card', desc: 'QR code printed on business cards.' },
+  { value: 'qr_flyer',        label: 'Flyer',         desc: 'QR code on printed flyers or handouts.' },
 ]
 
 const DIGITAL_SOURCES = [
-  { value: 'website', label: 'Website', desc: 'Check-in link on bodyrecode.au' },
+  { value: 'website',   label: 'Website',   desc: 'Check-in link on bodyrecode.au' },
   { value: 'instagram', label: 'Instagram', desc: 'Link in bio or story.' },
-  { value: 'facebook', label: 'Facebook', desc: 'Facebook post or profile link.' },
-  { value: 'google', label: 'Google', desc: 'Google Ads or search.' },
+  { value: 'facebook',  label: 'Facebook',  desc: 'Facebook post or profile link.' },
+  { value: 'google',    label: 'Google',    desc: 'Google Ads or search.' },
 ]
 
 const SCORECARD_SOURCES = [
   { value: 'instagram', label: 'Instagram', desc: 'Link in bio. Primary scorecard entry point for organic content.' },
-  { value: 'website', label: 'Website', desc: 'Scorecard link on bodyrecode.au' },
-  { value: 'facebook', label: 'Facebook', desc: 'Facebook post or profile link.' },
+  { value: 'website',   label: 'Website',   desc: 'Scorecard link on bodyrecode.au' },
+  { value: 'facebook',  label: 'Facebook',  desc: 'Facebook post or profile link.' },
 ]
+
+function SourceItem({
+  label,
+  desc,
+  count,
+  url,
+  showCount = true,
+}: {
+  label: string
+  desc: string
+  count: number
+  url: string
+  showCount?: boolean
+}) {
+  return (
+    <div className="border border-[#1c1917] bg-[#0c0a09] rounded-xl p-4">
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="min-w-0">
+          <p className="text-[14px] font-semibold text-white">{label}</p>
+          <p className="text-[12px] text-[#57534e] mt-0.5">{desc}</p>
+        </div>
+        {showCount && (
+          <Pill accent={count > 0 ? 'teal' : 'neutral'}>
+            {count} {count === 1 ? 'lead' : 'leads'}
+          </Pill>
+        )}
+      </div>
+      <div className="flex items-center gap-2">
+        <code
+          className="flex-1 text-[11px] text-[#14b8a6] bg-[#111110] border border-[#1c1917] rounded-lg px-3 py-2 truncate"
+          style={{ fontFamily: MONO_FONT }}
+        >
+          {url}
+        </code>
+        <CopyButton url={url} />
+      </div>
+    </div>
+  )
+}
 
 export default async function SourcesPage() {
   const supabase = await createClient()
@@ -40,81 +81,68 @@ export default async function SourcesPage() {
   }
 
   const total = Object.values(counts).reduce((a, b) => a + b, 0)
+  const unknownCount = (counts['unknown'] ?? 0) + (counts[''] ?? 0)
 
   return (
-    <div className="max-w-3xl">
-      <div className="mb-10">
-        <h1 className="text-2xl font-semibold mb-1">Lead Sources</h1>
-        <p className="text-stone-400 text-sm">Tracking URLs for QR codes and digital channels. Copy a URL and paste it into any QR code generator.</p>
-      </div>
+    <div className="max-w-[900px]">
+      <PageHeader
+        eyebrow="Attribution"
+        title="Lead Sources"
+        subtitle="Tracking URLs for QR codes and digital channels. Copy a URL and paste it into any QR code generator."
+      />
 
-      {/* QR Tracking URLs */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-6">
-        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-5">QR Code URLs</h2>
-        <div className="space-y-4">
+      <Card className="mb-5">
+        <SectionLabel>QR Code URLs</SectionLabel>
+        <div className="space-y-3">
           {QR_SOURCES.map(src => (
-            <div key={src.value} className="border border-stone-800 rounded-lg p-4">
-              <div className="flex items-start justify-between gap-4 mb-2">
-                <div>
-                  <p className="text-sm font-semibold text-white">{src.label}</p>
-                  <p className="text-xs text-stone-500 mt-0.5">{src.desc}</p>
-                </div>
-                <span className="text-xs font-semibold text-stone-500 bg-stone-800 px-2 py-1 rounded-full shrink-0">
-                  {counts[src.value] ?? 0} leads
-                </span>
-              </div>
-              <CopyUrl url={`${QR_BASE_URL}?source=${src.value}`} />
-            </div>
+            <SourceItem
+              key={src.value}
+              label={src.label}
+              desc={src.desc}
+              count={counts[src.value] ?? 0}
+              url={`${QR_BASE_URL}?source=${src.value}`}
+            />
           ))}
         </div>
-      </div>
+      </Card>
 
-      {/* Digital Channel URLs */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-6">
-        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Digital Channel URLs</h2>
-        <p className="text-xs text-stone-500 mb-5">Performance Check-In Quiz</p>
-        <div className="space-y-4">
+      <Card className="mb-5">
+        <SectionLabel meta="Performance Check-In Quiz">Digital Channel URLs</SectionLabel>
+        <div className="space-y-3">
           {DIGITAL_SOURCES.map(src => (
-            <div key={src.value} className="border border-stone-800 rounded-lg p-4">
-              <div className="flex items-start justify-between gap-4 mb-2">
-                <div>
-                  <p className="text-sm font-semibold text-white">{src.label}</p>
-                  <p className="text-xs text-stone-500 mt-0.5">{src.desc}</p>
-                </div>
-                <span className="text-xs font-semibold text-stone-500 bg-stone-800 px-2 py-1 rounded-full shrink-0">
-                  {counts[src.value] ?? 0} leads
-                </span>
-              </div>
-              <CopyUrl url={`${DIGITAL_BASE_URL}?source=${src.value}`} />
-            </div>
+            <SourceItem
+              key={src.value}
+              label={src.label}
+              desc={src.desc}
+              count={counts[src.value] ?? 0}
+              url={`${DIGITAL_BASE_URL}?source=${src.value}`}
+            />
           ))}
         </div>
-      </div>
+      </Card>
 
-      {/* Scorecard URLs */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-6">
-        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Scorecard URLs</h2>
-        <p className="text-xs text-stone-500 mb-5">Body State Scorecard — use for Instagram bio and scorecard-specific posts</p>
-        <div className="space-y-4">
+      <Card className="mb-5">
+        <SectionLabel meta="Body State Scorecard">Scorecard URLs</SectionLabel>
+        <div className="space-y-3">
           {SCORECARD_SOURCES.map(src => (
-            <div key={src.value} className="border border-stone-800 rounded-lg p-4">
-              <div className="flex items-start justify-between gap-4 mb-2">
-                <div>
-                  <p className="text-sm font-semibold text-white">{src.label}</p>
-                  <p className="text-xs text-stone-500 mt-0.5">{src.desc}</p>
-                </div>
-              </div>
-              <CopyUrl url={`${SCORECARD_BASE_URL}?source=${src.value}`} />
-            </div>
+            <SourceItem
+              key={src.value}
+              label={src.label}
+              desc={src.desc}
+              count={counts[src.value] ?? 0}
+              url={`${SCORECARD_BASE_URL}?source=${src.value}`}
+              showCount={false}
+            />
           ))}
         </div>
-      </div>
+      </Card>
 
-      {/* Source breakdown */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
-        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-5">All Leads by Source</h2>
+      <Card>
+        <SectionLabel meta={total > 0 ? `${total} total` : undefined}>
+          All Leads by Source
+        </SectionLabel>
         {total === 0 ? (
-          <p className="text-stone-500 text-sm">No leads yet.</p>
+          <p className="text-[#57534e] text-[13px]">No leads yet.</p>
         ) : (
           <div className="space-y-3">
             {LEAD_SOURCES.map(src => {
@@ -123,44 +151,44 @@ export default async function SourcesPage() {
               const pct = Math.round((count / total) * 100)
               return (
                 <div key={src.value}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-stone-300">{src.label}</span>
-                    <span className="text-sm font-semibold text-white">{count} <span className="text-stone-500 font-normal text-xs">({pct}%)</span></span>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[13px] text-[#d4cfc9]">{src.label}</span>
+                    <span
+                      className="text-[13px] font-semibold text-white"
+                      style={{ fontVariantNumeric: 'tabular-nums' }}
+                    >
+                      {count}
+                      <span className="text-[#57534e] font-normal text-[11px] ml-1.5">{pct}%</span>
+                    </span>
                   </div>
-                  <div className="h-1.5 bg-stone-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-teal-500 rounded-full" style={{ width: `${pct}%` }} />
+                  <div className="h-1.5 bg-[#0c0a09] border border-[#1c1917] rounded-full overflow-hidden">
+                    <div className="h-full bg-[#14b8a6] rounded-full" style={{ width: `${pct}%` }} />
                   </div>
                 </div>
               )
             })}
-            {counts['unknown'] || counts[''] ? (
+            {unknownCount > 0 && (
               <div>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm text-stone-500">Unknown</span>
-                  <span className="text-sm font-semibold text-stone-400">{(counts['unknown'] ?? 0) + (counts[''] ?? 0)}</span>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[13px] text-[#57534e]">Unknown</span>
+                  <span
+                    className="text-[13px] font-semibold text-[#a8a29e]"
+                    style={{ fontVariantNumeric: 'tabular-nums' }}
+                  >
+                    {unknownCount}
+                  </span>
                 </div>
-                <div className="h-1.5 bg-stone-800 rounded-full overflow-hidden">
-                  <div className="h-full bg-stone-600 rounded-full" style={{ width: `${Math.round(((counts['unknown'] ?? 0) + (counts[''] ?? 0)) / total * 100)}%` }} />
+                <div className="h-1.5 bg-[#0c0a09] border border-[#1c1917] rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#57534e] rounded-full"
+                    style={{ width: `${Math.round((unknownCount / total) * 100)}%` }}
+                  />
                 </div>
               </div>
-            ) : null}
+            )}
           </div>
         )}
-      </div>
+      </Card>
     </div>
   )
 }
-
-function CopyUrl({ url }: { url: string }) {
-  return (
-    <div className="flex items-center gap-2 mt-2">
-      <code className="flex-1 text-xs text-teal-400 bg-stone-950 border border-stone-800 rounded-lg px-3 py-2 truncate">
-        {url}
-      </code>
-      <CopyButton url={url} />
-    </div>
-  )
-}
-
-// Client component just for the copy button
-import CopyButton from './copy-button'

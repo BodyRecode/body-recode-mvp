@@ -1,8 +1,10 @@
 'use server'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import { ChevronRight, UserPlus, Users } from 'lucide-react'
 import { formatDate, getLeadStatusLabel, getLeadStatusColour, getLeadSourceLabel } from '@/lib/utils'
 import type { Lead } from '@/types'
+import { PageHeader, Btn, EmptyState, MONO_FONT } from '@/components/dashboard/ui'
 
 const STATUS_GROUPS = [
   { label: 'Pipeline', statuses: ['new_check_in', 'report_sent', 'cold_no_booking'] },
@@ -40,56 +42,66 @@ export default async function LeadsPage({
   allLeads.forEach(l => { counts[l.status] = (counts[l.status] || 0) + 1 })
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-semibold">Leads</h1>
-          <p className="text-stone-400 text-sm mt-1">{allLeads.length} {showInactive ? 'inactive' : 'active'}</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center bg-stone-900 border border-stone-800 rounded-lg p-0.5">
-            <Link
-              href="/dashboard/leads"
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${!showInactive ? 'bg-teal-500 text-black' : 'text-stone-400 hover:text-white'}`}
-            >
-              Active
-            </Link>
-            <Link
-              href="/dashboard/leads?view=inactive"
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${showInactive ? 'bg-stone-600 text-white' : 'text-stone-400 hover:text-white'}`}
-            >
-              Inactive
-            </Link>
+    <div className="max-w-[1100px]">
+      <PageHeader
+        eyebrow="Pipeline"
+        title="Leads"
+        subtitle={`${allLeads.length} ${showInactive ? 'inactive' : 'active'} ${allLeads.length === 1 ? 'lead' : 'leads'}`}
+        cta={
+          <div className="flex items-center gap-3">
+            <div className="inline-flex items-center bg-[#111110] border border-[#1c1917] rounded-lg p-0.5">
+              <Link
+                href="/dashboard/leads"
+                className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
+                  !showInactive ? 'bg-[#14b8a6] text-[#0c0a09]' : 'text-[#a8a29e] hover:text-white'
+                }`}
+              >
+                Active
+              </Link>
+              <Link
+                href="/dashboard/leads?view=inactive"
+                className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
+                  showInactive ? 'bg-[#1c1917] text-white' : 'text-[#a8a29e] hover:text-white'
+                }`}
+              >
+                Inactive
+              </Link>
+            </div>
+            <Btn href="/dashboard/leads/new" variant="primary" icon={UserPlus} size="sm">
+              New Lead
+            </Btn>
           </div>
-          <Link
-            href="/dashboard/leads/new"
-            className="bg-white text-stone-950 text-sm font-medium px-4 py-2 rounded-lg hover:bg-stone-100 transition-colors"
-          >
-            + Add Lead
-          </Link>
-        </div>
-      </div>
+        }
+      />
 
       {/* Status filter */}
-      <div className="flex flex-wrap gap-6 mb-8">
+      <div className="flex flex-wrap gap-x-8 gap-y-5 mb-8">
         {STATUS_GROUPS.map(group => (
           <div key={group.label}>
-            <p className="text-[10px] font-bold tracking-widest text-stone-500 uppercase mb-2">{group.label}</p>
+            <p
+              className="text-[10px] font-bold text-[#57534e] uppercase mb-2.5"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            >
+              {group.label}
+            </p>
             <div className="flex flex-wrap gap-2">
-              {group.statuses.map(s => (
-                <Link
-                  key={s}
-                  href={params.status === s ? '/dashboard/leads' : `/dashboard/leads?status=${s}`}
-                  className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
-                    params.status === s
-                      ? getLeadStatusColour(s)
-                      : 'border-stone-700 text-stone-400 hover:border-stone-500'
-                  }`}
-                >
-                  {getLeadStatusLabel(s)}
-                  {counts[s] ? <span className="ml-1.5 opacity-60">{counts[s]}</span> : null}
-                </Link>
-              ))}
+              {group.statuses.map(s => {
+                const active = params.status === s
+                return (
+                  <Link
+                    key={s}
+                    href={active ? '/dashboard/leads' : `/dashboard/leads?status=${s}`}
+                    className={`text-[11px] px-3 py-1.5 rounded-full border transition-colors ${
+                      active
+                        ? getLeadStatusColour(s)
+                        : 'border-[#1c1917] text-[#a8a29e] hover:border-[#292524] hover:text-white bg-[#111110]'
+                    }`}
+                  >
+                    {getLeadStatusLabel(s)}
+                    {counts[s] ? <span className="ml-1.5 opacity-60">{counts[s]}</span> : null}
+                  </Link>
+                )
+              })}
             </div>
           </div>
         ))}
@@ -97,9 +109,12 @@ export default async function LeadsPage({
 
       {/* Leads list */}
       {allLeads.length === 0 ? (
-        <div className="text-center py-20 text-stone-500">
-          <p className="text-lg mb-2">No leads yet</p>
-          <p className="text-sm">Add a lead manually or wait for quiz submissions to come in</p>
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl">
+          <EmptyState
+            icon={Users}
+            title="No leads yet"
+            hint="Add a lead manually or wait for scorecard submissions"
+          />
         </div>
       ) : (
         <div className="grid gap-2">
@@ -107,27 +122,30 @@ export default async function LeadsPage({
             <Link
               key={lead.id}
               href={`/dashboard/leads/${lead.id}`}
-              className="bg-stone-900 border border-stone-800 rounded-xl px-5 py-4 flex items-center justify-between hover:border-stone-600 transition-colors group"
+              className="bg-[#111110] border border-[#1c1917] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#292524] transition-colors group"
             >
-              <div className="flex items-center gap-4">
-                <div className="relative">
-                  <div className="w-9 h-9 rounded-full bg-stone-700 flex items-center justify-center text-sm font-medium text-stone-300 shrink-0">
+              <div className="flex items-center gap-4 min-w-0">
+                <div className="relative shrink-0">
+                  <div
+                    className="w-9 h-9 rounded-full bg-[#1c1917] border border-[#292524] flex items-center justify-center text-[13px] font-medium text-[#d4cfc9]"
+                    style={{ fontFamily: MONO_FONT }}
+                  >
                     {lead.name.charAt(0).toUpperCase()}
                   </div>
                   {lead.lead_quality && (
                     <span
                       title={`Lead quality: ${lead.lead_quality}${lead.red_flag ? ' (red flag)' : ''}`}
-                      className={`absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-stone-900 ${
-                        lead.lead_quality === 'red' ? 'bg-red-500' :
-                        lead.lead_quality === 'yellow' ? 'bg-amber-500' :
-                        'bg-teal-500'
+                      className={`absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#111110] ${
+                        lead.lead_quality === 'red' ? 'bg-[#ef4444]' :
+                        lead.lead_quality === 'yellow' ? 'bg-[#f59e0b]' :
+                        'bg-[#14b8a6]'
                       }`}
                     />
                   )}
                 </div>
-                <div>
-                  <p className="font-medium text-white">{lead.name}</p>
-                  <p className="text-stone-500 text-xs mt-0.5">
+                <div className="min-w-0">
+                  <p className="text-[14px] font-medium text-white truncate group-hover:text-[#14b8a6] transition-colors">{lead.name}</p>
+                  <p className="text-[12px] text-[#57534e] truncate mt-0.5">
                     {lead.email}
                     {lead.phone ? ` · ${lead.phone}` : ''}
                     {' · '}
@@ -137,16 +155,20 @@ export default async function LeadsPage({
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 shrink-0 ml-4">
                 {lead.red_flag && (
-                  <span className="text-xs font-bold px-2 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400" title="Red flag — half show rate, half close rate historically">
-                    RED FLAG
+                  <span
+                    className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#3a1414] border border-[#5a2020] text-[#ef4444] uppercase"
+                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em' }}
+                    title="Red flag — half show rate, half close rate historically"
+                  >
+                    Red Flag
                   </span>
                 )}
-                <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${getLeadStatusColour(lead.status)}`}>
+                <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full border whitespace-nowrap ${getLeadStatusColour(lead.status)}`}>
                   {getLeadStatusLabel(lead.status)}
                 </span>
-                <span className="text-stone-600 group-hover:text-stone-400 transition-colors">→</span>
+                <ChevronRight size={16} className="text-[#57534e] group-hover:text-[#14b8a6] transition-colors" />
               </div>
             </Link>
           ))}
