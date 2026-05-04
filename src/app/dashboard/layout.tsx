@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import LogoutButton from '@/components/LogoutButton'
 import DashboardNav from './nav'
+import CommandPalette from './command-palette'
+import CommandKHint from './command-k-hint'
 
 export default async function DashboardLayout({
   children,
@@ -33,7 +35,8 @@ export default async function DashboardLayout({
             </Link>
             <DashboardNav />
           </div>
-          <div className="flex items-center gap-4 shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
+            <CommandKHint />
             <span
               className="hidden md:inline-flex items-center gap-1.5 text-[11px] text-[#a8a29e] px-2.5 py-1 rounded-full border border-[#1c1917] bg-[#111110]"
               style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}
@@ -41,7 +44,7 @@ export default async function DashboardLayout({
               <span className="w-1.5 h-1.5 rounded-full bg-[#14b8a6] shadow-[0_0_6px_#14b8a6]" />
               live
             </span>
-            <span className="hidden md:inline text-[#57534e] text-[11px] tracking-wide">{user.email}</span>
+            <span className="hidden lg:inline text-[#57534e] text-[11px] tracking-wide">{user.email}</span>
             <LogoutButton />
           </div>
         </div>
@@ -49,6 +52,7 @@ export default async function DashboardLayout({
       <main className="max-w-[1280px] mx-auto px-6 py-10">
         {children}
       </main>
+      <CommandPalette />
     </div>
   )
 }
