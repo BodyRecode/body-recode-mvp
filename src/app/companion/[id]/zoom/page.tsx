@@ -16,15 +16,17 @@ export default async function ZoomCompanionPage({ params }: { params: Promise<{ 
 
   const { data: events } = await admin
     .from('lead_events')
-    .select('type, notes')
+    .select('type, subject, notes, sent_at')
     .eq('lead_id', id)
-    .eq('type', 'scorecard_completed')
     .order('sent_at', { ascending: false })
-    .limit(1)
 
-  const scorecardEvent = events?.[0] ?? null
+  const scorecardEvent = events?.find(e => e.type === 'scorecard_completed') ?? null
   const scorecardScore = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
   const scorecardState = scorecardEvent?.notes?.match(/Body state: (.+?)\./)?.[1]
+
+  const commencementFeeSentEvents = events?.filter(e => e.type === 'email_sent' && e.subject === 'Commencement fee link sent') ?? []
+  const lastCommencementFeeSentAt = commencementFeeSentEvents[0]?.sent_at ?? null
+  const commencementFeeSendCount = commencementFeeSentEvents.length
 
   const { data: report } = await admin
     .from('scorecard_reports')
@@ -46,6 +48,8 @@ export default async function ZoomCompanionPage({ params }: { params: Promise<{ 
       sectionScores={sectionScores}
       leadId={id}
       initialNotes={lead.notes ?? ''}
+      lastCommencementFeeSentAt={lastCommencementFeeSentAt}
+      commencementFeeSendCount={commencementFeeSendCount}
     />
   )
 }

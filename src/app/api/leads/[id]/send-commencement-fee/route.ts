@@ -3,6 +3,7 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { logLeadEvent } from '@/lib/log-lead-event'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -54,7 +55,7 @@ export async function POST(
   const firstName = lead.name.split(' ')[0]
   const resend = new Resend(process.env.RESEND_API_KEY)
 
-  await resend.emails.send({
+  const sendResult = await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: lead.email,
     subject: `${firstName}, your $240 commencement link`,
@@ -77,6 +78,15 @@ export async function POST(
   </div>
 </body>
 </html>`,
+  })
+
+  await logLeadEvent({
+    leadId: id,
+    type: 'email_sent',
+    subject: 'Commencement fee link sent',
+    resendEmailId: sendResult.data?.id,
+    notes: `Stripe session: ${session.id}. Link expires ${new Date(session.expires_at * 1000).toISOString()}.`,
+    sentAt: new Date(),
   })
 
   return NextResponse.json({ sent: true })

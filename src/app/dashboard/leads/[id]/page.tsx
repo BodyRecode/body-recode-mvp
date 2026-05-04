@@ -183,6 +183,10 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   // Booking link sent event
   const bookingLinkSentEvent = events?.find(e => e.type === 'email_sent' && e.subject === 'Booking link sent') ?? null
 
+  // Commencement fee link sent events (most recent first; events query is already desc by sent_at)
+  const commencementFeeSentEvents = events?.filter(e => e.type === 'email_sent' && e.subject === 'Commencement fee link sent') ?? []
+  const lastCommencementFeeSent = commencementFeeSentEvents[0] ?? null
+
   // Extract scorecard result from events
   const scorecardEvent = events?.find(e => e.type === 'scorecard_completed') ?? null
   const scorecardScoreFromEvent = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
@@ -468,6 +472,23 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {!lead.converted_to_client_id ? (
           <div className="space-y-3">
             <CommencementFeeButton leadId={lead.id} />
+            {lastCommencementFeeSent && (() => {
+              const sentAt = new Date(lastCommencementFeeSent.sent_at)
+              const ageHours = (Date.now() - sentAt.getTime()) / 36e5
+              const expired = ageHours >= 24
+              const sentLabel = sentAt.toLocaleString('en-AU', {
+                timeZone: 'Australia/Brisbane',
+                weekday: 'short', day: 'numeric', month: 'short',
+                hour: 'numeric', minute: '2-digit', hour12: true,
+              })
+              const count = commencementFeeSentEvents.length
+              return (
+                <p className={`text-xs ${expired ? 'text-amber-500' : 'text-stone-600'}`}>
+                  Last sent {sentLabel} Brisbane{count > 1 ? ` · sent ${count}×` : ''}
+                  {expired && ' · Stripe link expired (resend to generate new one)'}
+                </p>
+              )
+            })()}
             <p className="text-xs text-stone-600">Or convert manually once fee is confirmed:</p>
             <ConvertButton
               leadId={lead.id}

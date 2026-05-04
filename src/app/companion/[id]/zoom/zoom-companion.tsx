@@ -403,10 +403,13 @@ interface ZoomCompanionProps {
   sectionScores: Record<string, number> | null
   leadId: string
   initialNotes: string
+  lastCommencementFeeSentAt: string | null
+  commencementFeeSendCount: number
 }
 
 export default function ZoomCompanion({
   leadName, bodyState, totalScore, sectionScores, leadId, initialNotes,
+  lastCommencementFeeSentAt, commencementFeeSendCount,
 }: ZoomCompanionProps) {
   const [currentStage, setCurrentStage] = useState(0)
   const [seconds, setSeconds] = useState(0)
@@ -1028,6 +1031,22 @@ export default function ZoomCompanion({
                         {pathwayType === 'full_rate' ? 'Full Rate' : 'Online'} — send commencement fee
                       </div>
                       <CommencementFeeButton leadId={leadId} />
+                      {lastCommencementFeeSentAt && (() => {
+                        const sentAt = new Date(lastCommencementFeeSentAt)
+                        const ageHours = (Date.now() - sentAt.getTime()) / 36e5
+                        const expired = ageHours >= 24
+                        const sentLabel = sentAt.toLocaleString('en-AU', {
+                          timeZone: 'Australia/Brisbane',
+                          weekday: 'short', day: 'numeric', month: 'short',
+                          hour: 'numeric', minute: '2-digit', hour12: true,
+                        })
+                        return (
+                          <p className={`text-[11px] ${expired ? 'text-amber-500' : 'text-stone-500'}`}>
+                            Last sent {sentLabel} Brisbane{commencementFeeSendCount > 1 ? ` · ${commencementFeeSendCount}×` : ''}
+                            {expired && ' · link expired'}
+                          </p>
+                        )
+                      })()}
                     </div>
                   )}
                 </div>
