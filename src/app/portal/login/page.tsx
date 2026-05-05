@@ -26,7 +26,7 @@ export default async function PortalLoginPage({
             className="mx-auto mb-8"
           />
           <h1 className="text-2xl font-bold text-white mb-2">Client Portal</h1>
-          <p className="text-stone-400 text-sm">Sign in to your coaching portal.</p>
+          <p className="text-[#a8a29e] text-sm">Sign in to your coaching portal.</p>
         </div>
         {errorMessage && (
           <div className="mb-6 bg-red-950/30 border border-red-800 rounded-xl px-4 py-3">

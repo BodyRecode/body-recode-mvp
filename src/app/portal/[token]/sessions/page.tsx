@@ -123,53 +123,53 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-xs text-stone-500 hover:text-stone-300 transition-colors mb-4 block">
+          <Link href={`/portal/${token}`} className="text-xs text-[#57534e] hover:text-[#d4cfc9] transition-colors mb-4 block">
             ← Back to portal
           </Link>
           <h1 className="text-2xl font-bold text-white mb-1">Your Sessions</h1>
-          <p className="text-stone-400 text-sm">Face-to-face coaching at AF Newstead.</p>
+          <p className="text-[#a8a29e] text-sm">Face-to-face coaching at AF Newstead.</p>
         </div>
 
         {!hasFixedSlots ? (
-          <div className="rounded-2xl border border-stone-800 bg-stone-900/50 p-6">
-            <p className="text-sm font-semibold text-stone-400 mb-1">No fixed session assigned yet</p>
-            <p className="text-xs text-stone-600 leading-relaxed">Your coach will assign your fixed session slot. You will see your schedule here once it is set up.</p>
+          <div className="rounded-2xl border border-[#1c1917] bg-[#111110]/50 p-6">
+            <p className="text-sm font-semibold text-[#a8a29e] mb-1">No fixed session assigned yet</p>
+            <p className="text-xs text-[#3c3835] leading-relaxed">Your coach will assign your fixed session slot. You will see your schedule here once it is set up.</p>
           </div>
         ) : (
           <>
             {/* Fixed slots summary */}
-            <div className="rounded-2xl border border-teal-400/20 bg-teal-400/5 p-5 mb-8">
-              <p className="text-xs font-bold tracking-widest text-teal-500 uppercase mb-3">Your fixed slots</p>
+            <div className="rounded-2xl border border-[#14b8a6]/20 bg-[#14b8a6]/5 p-5 mb-8">
+              <p className="text-xs font-bold tracking-widest text-[#14b8a6] uppercase mb-3">Your fixed slots</p>
               <div className="space-y-1">
                 {(fixedSlots ?? []).map(slot => (
                   <div key={slot.id} className="flex items-center gap-2">
                     <span className="text-sm font-bold text-white">{DAYS[slot.day_of_week]}s</span>
-                    <span className="text-sm text-stone-400">
+                    <span className="text-sm text-[#a8a29e]">
                       · {new Date(`1970-01-01T${slot.session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })} · {slot.duration_minutes} min
                     </span>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-stone-500 mt-2">AF Newstead</p>
+              <p className="text-xs text-[#57534e] mt-2">AF Newstead</p>
             </div>
 
             {/* All upcoming sessions */}
             <div className="mb-8">
-              <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Upcoming sessions</p>
+              <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-4">Upcoming sessions</p>
               {allSessions.length === 0 ? (
-                <p className="text-sm text-stone-600">No sessions scheduled yet.</p>
+                <p className="text-sm text-[#3c3835]">No sessions scheduled yet.</p>
               ) : (
                 <div className="space-y-2">
                   {allSessions.slice(0, 10).map((session, i) => (
-                    <div key={i} className="flex items-center justify-between rounded-xl bg-stone-900 border border-stone-800 px-4 py-3">
+                    <div key={i} className="flex items-center justify-between rounded-xl bg-[#111110] border border-[#1c1917] px-4 py-3">
                       <div>
                         <p className="text-sm font-medium text-white">{session.displayDate}</p>
-                        <p className="text-xs text-stone-500 mt-0.5">{session.displayTime} · {session.durMin} min</p>
+                        <p className="text-xs text-[#57534e] mt-0.5">{session.displayTime} · {session.durMin} min</p>
                       </div>
                       {session.confirmed ? (
-                        <span className="text-xs font-bold text-teal-400 bg-teal-400/10 px-2.5 py-1 rounded-full">Confirmed</span>
+                        <span className="text-xs font-bold text-[#14b8a6] bg-[#14b8a6]/10 px-2.5 py-1 rounded-full">Confirmed</span>
                       ) : (
-                        <span className="text-xs text-stone-600">Scheduled</span>
+                        <span className="text-xs text-[#3c3835]">Scheduled</span>
                       )}
                     </div>
                   ))}

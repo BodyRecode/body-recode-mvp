@@ -32,19 +32,19 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
     return (
       <div className="min-h-screen bg-[#0a0a0a] text-white">
         <div className="max-w-lg mx-auto px-6 py-12">
-          <Link href={`/portal/${token}`} className="text-xs text-stone-500 hover:text-stone-300 transition-colors mb-8 inline-block">← Back to portal</Link>
+          <Link href={`/portal/${token}`} className="text-xs text-[#57534e] hover:text-[#d4cfc9] transition-colors mb-8 inline-block">← Back to portal</Link>
           <div className="text-center mb-8">
-            <div className="w-14 h-14 bg-teal-400/10 rounded-full flex items-center justify-center mx-auto mb-5">
-              <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-14 h-14 bg-[#14b8a6]/10 rounded-full flex items-center justify-center mx-auto mb-5">
+              <svg className="w-7 h-7 text-[#14b8a6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
             <h1 className="text-xl font-semibold text-white mb-2">Clearance approved</h1>
-            <p className="text-stone-500 text-sm">Your medical clearance has been reviewed and approved.</p>
+            <p className="text-[#57534e] text-sm">Your medical clearance has been reviewed and approved.</p>
           </div>
           {docSignedUrl && (
-            <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
-              <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">Your submitted form</p>
+            <div className="bg-[#111110] border border-[#1c1917] rounded-xl p-5">
+              <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-3">Your submitted form</p>
               {docSignedUrl.match(/\.(jpg|jpeg|png|gif|webp)(\?|$)/i) ? (
                 <img src={docSignedUrl} alt="Your submitted clearance form" className="w-full rounded-lg" />
               ) : (
@@ -52,7 +52,7 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
                   href={docSignedUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-sm text-teal-400 hover:text-teal-300 transition-colors"
+                  className="flex items-center gap-3 text-sm text-[#14b8a6] hover:text-[#5eead4] transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -71,19 +71,19 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
     return (
       <div className="min-h-screen bg-[#0a0a0a] text-white">
         <div className="max-w-lg mx-auto px-6 py-12">
-          <Link href={`/portal/${token}`} className="text-xs text-stone-500 hover:text-stone-300 transition-colors mb-8 inline-block">← Back to portal</Link>
+          <Link href={`/portal/${token}`} className="text-xs text-[#57534e] hover:text-[#d4cfc9] transition-colors mb-8 inline-block">← Back to portal</Link>
           <div className="text-center mb-8">
-            <div className="w-14 h-14 bg-stone-900 border border-stone-800 rounded-full flex items-center justify-center mx-auto mb-5">
-              <svg className="w-7 h-7 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-14 h-14 bg-[#111110] border border-[#1c1917] rounded-full flex items-center justify-center mx-auto mb-5">
+              <svg className="w-7 h-7 text-[#a8a29e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <h1 className="text-xl font-semibold text-white mb-2">Form submitted</h1>
-            <p className="text-stone-500 text-sm">Your completed clearance form has been received. Your coach will review it and confirm approval shortly.</p>
+            <p className="text-[#57534e] text-sm">Your completed clearance form has been received. Your coach will review it and confirm approval shortly.</p>
           </div>
           {docSignedUrl && (
-            <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
-              <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">Your submitted form</p>
+            <div className="bg-[#111110] border border-[#1c1917] rounded-xl p-5">
+              <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-3">Your submitted form</p>
               {docSignedUrl.match(/\.(jpg|jpeg|png|gif|webp)(\?|$)/i) ? (
                 <img src={docSignedUrl} alt="Your submitted clearance form" className="w-full rounded-lg" />
               ) : (
@@ -91,7 +91,7 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
                   href={docSignedUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-sm text-teal-400 hover:text-teal-300 transition-colors"
+                  className="flex items-center gap-3 text-sm text-[#14b8a6] hover:text-[#5eead4] transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -111,9 +111,9 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-xs text-stone-500 hover:text-stone-300 transition-colors mb-6 inline-block">← Back to portal</Link>
+          <Link href={`/portal/${token}`} className="text-xs text-[#57534e] hover:text-[#d4cfc9] transition-colors mb-6 inline-block">← Back to portal</Link>
           <h1 className="text-2xl font-bold text-white mb-2">Medical Clearance</h1>
-          <p className="text-stone-400 text-sm leading-relaxed">Based on your health declaration, we need written confirmation from your GP that you are cleared for supervised progressive exercise before training begins.</p>
+          <p className="text-[#a8a29e] text-sm leading-relaxed">Based on your health declaration, we need written confirmation from your GP that you are cleared for supervised progressive exercise before training begins.</p>
         </div>
 
         {/* Steps */}
@@ -123,11 +123,11 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
             { step: '2', title: 'See your GP', desc: 'Take the form to your doctor and ask them to complete and sign the exercise clearance section.' },
             { step: '3', title: 'Upload completed form', desc: 'Scan or photograph the completed form and upload it here.' },
           ].map(s => (
-            <div key={s.step} className="flex items-start gap-4 bg-stone-900 rounded-xl p-4 border border-stone-800">
-              <div className="w-7 h-7 rounded-full bg-teal-400 flex items-center justify-center flex-shrink-0 text-black text-xs font-bold">{s.step}</div>
+            <div key={s.step} className="flex items-start gap-4 bg-[#111110] rounded-xl p-4 border border-[#1c1917]">
+              <div className="w-7 h-7 rounded-full bg-[#14b8a6] flex items-center justify-center flex-shrink-0 text-black text-xs font-bold">{s.step}</div>
               <div>
                 <p className="text-sm font-semibold text-white mb-0.5">{s.title}</p>
-                <p className="text-xs text-stone-500">{s.desc}</p>
+                <p className="text-xs text-[#57534e]">{s.desc}</p>
               </div>
             </div>
           ))}
@@ -137,13 +137,13 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
         <Link
           href={`/portal/${token}/medical-clearance/print`}
           target="_blank"
-          className="flex items-center justify-between w-full bg-stone-900 border border-stone-700 rounded-2xl px-5 py-4 hover:border-stone-600 transition-colors mb-8"
+          className="flex items-center justify-between w-full bg-[#111110] border border-[#1c1917] rounded-2xl px-5 py-4 hover:border-[#292524] transition-colors mb-8"
         >
           <div>
             <p className="text-sm font-semibold text-white">Medical Clearance Request Form</p>
-            <p className="text-xs text-stone-500 mt-0.5">Opens in new tab. Print or save as PDF.</p>
+            <p className="text-xs text-[#57534e] mt-0.5">Opens in new tab. Print or save as PDF.</p>
           </div>
-          <svg className="w-5 h-5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5 text-[#a8a29e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
           </svg>
         </Link>

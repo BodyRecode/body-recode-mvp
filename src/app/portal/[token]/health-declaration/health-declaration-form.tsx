@@ -40,28 +40,28 @@ export default function HealthDeclarationForm({
   const draftPrefix = `health:${clientId}:`
   const k = (n: string) => `${draftPrefix}${n}`
 
-  // Section 1 — Personal Details
+  // Section 1 - Personal Details
   const [dob, setDob] = useDraftState(k('dob'), '')
   const [phone, setPhone] = useDraftState(k('phone'), '')
   const [address, setAddress] = useDraftState(k('address'), '')
   const [postcode, setPostcode] = useDraftState(k('postcode'), '')
 
-  // Section 2 — Emergency Contact
+  // Section 2 - Emergency Contact
   const [emergencyName, setEmergencyName] = useDraftState(k('emergencyName'), '')
   const [emergencyRelationship, setEmergencyRelationship] = useDraftState(k('emergencyRelationship'), '')
   const [emergencyPhone, setEmergencyPhone] = useDraftState(k('emergencyPhone'), '')
 
-  // Section 3 — General Health
+  // Section 3 - General Health
   const [healthRating, setHealthRating] = useDraftState<'Excellent' | 'Good' | 'Fair' | 'Poor' | ''>(k('healthRating'), '')
   const [exercisedBefore, setExercisedBefore] = useDraftState<YesNo>(k('exercisedBefore'), '')
   const [exerciseType, setExerciseType] = useDraftState(k('exerciseType'), '')
   const [exerciseEnjoy, setExerciseEnjoy] = useDraftState(k('exerciseEnjoy'), '')
   const [exerciseDislike, setExerciseDislike] = useDraftState(k('exerciseDislike'), '')
 
-  // Section 4 — Cardiovascular Screening
+  // Section 4 - Cardiovascular Screening
   const [cardioSymptoms, setCardioSymptoms] = useDraftState<string[]>(k('cardioSymptoms'), [])
 
-  // Section 5 — Medical History
+  // Section 5 - Medical History
   const [illnessInjury, setIllnessInjury] = useDraftState<YesNo>(k('illnessInjury'), '')
   const [illnessDetails, setIllnessDetails] = useDraftState(k('illnessDetails'), '')
   const [receivingTreatment, setReceivingTreatment] = useDraftState<YesNo>(k('receivingTreatment'), '')
@@ -70,26 +70,26 @@ export default function HealthDeclarationForm({
   const [medicationList, setMedicationList] = useDraftState(k('medicationList'), '')
   const [pregnant, setPregnant] = useDraftState<YesNo>(k('pregnant'), '')
 
-  // Section 6 — Musculoskeletal
+  // Section 6 - Musculoskeletal
   const [painAreas, setPainAreas] = useDraftState(k('painAreas'), '')
   const [painAggravated, setPainAggravated] = useDraftState<YesNo>(k('painAggravated'), '')
   const [painTreatment, setPainTreatment] = useDraftState<YesNo>(k('painTreatment'), '')
 
-  // Section 7 — Lifestyle
+  // Section 7 - Lifestyle
   const [alcohol, setAlcohol] = useDraftState<YesNo>(k('alcohol'), '')
   const [smoking, setSmoking] = useDraftState<YesNo>(k('smoking'), '')
   const [dietPattern, setDietPattern] = useDraftState(k('dietPattern'), '')
   const [eatingHabits, setEatingHabits] = useDraftState<number | null>(k('eatingHabits'), null)
   const [nutritionSupport, setNutritionSupport] = useDraftState<YesNo>(k('nutritionSupport'), '')
 
-  // Section 8 — Barriers & Goals
+  // Section 8 - Barriers & Goals
   const [barriers, setBarriers] = useDraftState<string[]>(k('barriers'), [])
   const [healthGoals, setHealthGoals] = useDraftState(k('healthGoals'), '')
   const [action1, setAction1] = useDraftState(k('action1'), '')
   const [action2, setAction2] = useDraftState(k('action2'), '')
   const [action3, setAction3] = useDraftState(k('action3'), '')
 
-  // Section 9 — Health Declaration
+  // Section 9 - Health Declaration
   const [declaredHonest, setDeclaredHonest] = useDraftState(k('declaredHonest'), false)
   const [declaredDisclosed, setDeclaredDisclosed] = useDraftState(k('declaredDisclosed'), false)
   const [declaredWillNotify, setDeclaredWillNotify] = useDraftState(k('declaredWillNotify'), false)
@@ -203,8 +203,8 @@ export default function HealthDeclarationForm({
     router.push(`/portal/${portalToken}`)
   }
 
-  const errClass = (id: string) => missing.has(id) ? 'border-red-500/60' : 'border-stone-800'
-  const errLabel = (id: string) => missing.has(id) ? 'text-red-400' : 'text-stone-300'
+  const errClass = (id: string) => missing.has(id) ? 'border-red-500/60' : 'border-[#1c1917]'
+  const errLabel = (id: string) => missing.has(id) ? 'text-red-400' : 'text-[#d4cfc9]'
   const errMessage = (id: string) =>
     missing.has(id) ? (
       <p className="text-red-400 text-xs mt-2 font-medium">Please answer this question.</p>
@@ -220,10 +220,10 @@ export default function HealthDeclarationForm({
         onClick={() => { setter(opt.toLowerCase() as YesNo); clearMissing(id) }}
         className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors border ${
           isSelected
-            ? 'bg-teal-400/20 text-teal-400 border-teal-400/40'
+            ? 'bg-[#14b8a6]/20 text-[#14b8a6] border-[#14b8a6]/40'
             : hasError
-            ? 'bg-stone-800 text-stone-400 border-red-500/60'
-            : 'bg-stone-800 text-stone-400 border-stone-700 hover:border-stone-600'
+            ? 'bg-[#1c1917] text-[#a8a29e] border-red-500/60'
+            : 'bg-[#1c1917] text-[#a8a29e] border-[#1c1917] hover:border-[#292524]'
         }`}
       >
         {opt}
@@ -237,7 +237,7 @@ export default function HealthDeclarationForm({
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white mb-1">Health Declaration</h1>
-          <p className="text-stone-400 text-sm leading-relaxed">This screening ensures your coaching program is structured safely and appropriately for you. Answer all questions honestly and completely.</p>
+          <p className="text-[#a8a29e] text-sm leading-relaxed">This screening ensures your coaching program is structured safely and appropriately for you. Answer all questions honestly and completely.</p>
         </div>
 
         {validationMessage && (
@@ -249,20 +249,20 @@ export default function HealthDeclarationForm({
 
         <form onSubmit={handleSubmit} className="space-y-10">
 
-          {/* Section 1 — Personal Details */}
+          {/* Section 1 - Personal Details */}
           <section>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Personal Details</p>
+            <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-4">Personal Details</p>
             <div className="space-y-3">
-              <div className="bg-stone-900 rounded-xl border border-stone-800 px-4 py-3">
-                <p className="text-xs text-stone-500 mb-1">Full Name</p>
-                <p className="text-sm text-stone-300">{clientName}</p>
+              <div className="bg-[#111110] rounded-xl border border-[#1c1917] px-4 py-3">
+                <p className="text-xs text-[#57534e] mb-1">Full Name</p>
+                <p className="text-sm text-[#d4cfc9]">{clientName}</p>
               </div>
               <div id="f-dob" className="scroll-mt-24">
                 <input
                   type="date"
                   value={dob}
                   onChange={e => { setDob(e.target.value); clearMissing('dob') }}
-                  className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${errClass('dob')}`}
+                  className={`w-full bg-[#111110] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] border ${errClass('dob')}`}
                   placeholder="Date of Birth"
                 />
                 <p className={`text-xs mt-1 ml-1 ${errLabel('dob')}`}>Date of Birth</p>
@@ -274,7 +274,7 @@ export default function HealthDeclarationForm({
                   value={phone}
                   onChange={e => { setPhone(e.target.value); clearMissing('phone') }}
                   placeholder="Mobile Number"
-                  className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${errClass('phone')}`}
+                  className={`w-full bg-[#111110] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] border ${errClass('phone')}`}
                 />
                 {errMessage('phone')}
               </div>
@@ -283,21 +283,21 @@ export default function HealthDeclarationForm({
                 value={address}
                 onChange={e => setAddress(e.target.value)}
                 placeholder="Address (optional)"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+                className="w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835]"
               />
               <input
                 type="text"
                 value={postcode}
                 onChange={e => setPostcode(e.target.value)}
                 placeholder="Postcode (optional)"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600"
+                className="w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835]"
               />
             </div>
           </section>
 
-          {/* Section 2 — Emergency Contact */}
+          {/* Section 2 - Emergency Contact */}
           <section>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Emergency Contact</p>
+            <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-4">Emergency Contact</p>
             <div className="space-y-3">
               <div id="f-emergencyName" className="scroll-mt-24">
                 <input
@@ -305,7 +305,7 @@ export default function HealthDeclarationForm({
                   value={emergencyName}
                   onChange={e => { setEmergencyName(e.target.value); clearMissing('emergencyName') }}
                   placeholder="Full Name"
-                  className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${errClass('emergencyName')}`}
+                  className={`w-full bg-[#111110] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] border ${errClass('emergencyName')}`}
                 />
                 {errMessage('emergencyName')}
               </div>
@@ -315,7 +315,7 @@ export default function HealthDeclarationForm({
                   value={emergencyRelationship}
                   onChange={e => { setEmergencyRelationship(e.target.value); clearMissing('emergencyRelationship') }}
                   placeholder="Relationship (e.g. Partner, Parent)"
-                  className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${errClass('emergencyRelationship')}`}
+                  className={`w-full bg-[#111110] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] border ${errClass('emergencyRelationship')}`}
                 />
                 {errMessage('emergencyRelationship')}
               </div>
@@ -325,16 +325,16 @@ export default function HealthDeclarationForm({
                   value={emergencyPhone}
                   onChange={e => { setEmergencyPhone(e.target.value); clearMissing('emergencyPhone') }}
                   placeholder="Phone Number"
-                  className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${errClass('emergencyPhone')}`}
+                  className={`w-full bg-[#111110] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] border ${errClass('emergencyPhone')}`}
                 />
                 {errMessage('emergencyPhone')}
               </div>
             </div>
           </section>
 
-          {/* Section 3 — General Health */}
+          {/* Section 3 - General Health */}
           <section>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">General Health</p>
+            <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-4">General Health</p>
             <div className="space-y-5">
               <div id="f-healthRating" className="scroll-mt-24">
                 <p className={`text-sm mb-3 ${errLabel('healthRating')}`}>How would you rate your general health?</p>
@@ -346,9 +346,9 @@ export default function HealthDeclarationForm({
                       <button key={r} type="button"
                         onClick={() => { setHealthRating(r); clearMissing('healthRating') }}
                         className={`py-2.5 rounded-xl text-sm font-semibold transition-colors border ${
-                          isSelected ? 'bg-teal-400/20 text-teal-400 border-teal-400/40'
-                          : hasError ? 'bg-stone-800 text-stone-400 border-red-500/60'
-                          : 'bg-stone-800 text-stone-400 border-stone-700 hover:border-stone-600'
+                          isSelected ? 'bg-[#14b8a6]/20 text-[#14b8a6] border-[#14b8a6]/40'
+                          : hasError ? 'bg-[#1c1917] text-[#a8a29e] border-red-500/60'
+                          : 'bg-[#1c1917] text-[#a8a29e] border-[#1c1917] hover:border-[#292524]'
                         }`}
                       >{r}</button>
                     )
@@ -369,42 +369,42 @@ export default function HealthDeclarationForm({
               {exercisedBefore === 'yes' && (
                 <textarea value={exerciseType} onChange={e => setExerciseType(e.target.value)}
                   placeholder="What type of exercise did you do?"
-                  className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={2} />
+                  className="w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] resize-none" rows={2} />
               )}
 
               <textarea value={exerciseEnjoy} onChange={e => setExerciseEnjoy(e.target.value)}
                 placeholder="Types of exercise you enjoy (optional)"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={2} />
+                className="w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] resize-none" rows={2} />
 
               <textarea value={exerciseDislike} onChange={e => setExerciseDislike(e.target.value)}
                 placeholder="Types of exercise you dislike (optional)"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={2} />
+                className="w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] resize-none" rows={2} />
             </div>
           </section>
 
-          {/* Section 4 — Cardiovascular Screening */}
+          {/* Section 4 - Cardiovascular Screening */}
           <section>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-1">Cardiovascular & Respiratory Screening</p>
-            <p className="text-sm text-stone-400 mb-4">Tick any symptoms you currently experience or have experienced recently:</p>
+            <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-1">Cardiovascular & Respiratory Screening</p>
+            <p className="text-sm text-[#a8a29e] mb-4">Tick any symptoms you currently experience or have experienced recently:</p>
             <div className="space-y-2">
               {CARDIO_SYMPTOMS.map(symptom => (
-                <label key={symptom} className="flex items-start gap-3 cursor-pointer p-3 rounded-xl hover:bg-stone-900 transition-colors">
+                <label key={symptom} className="flex items-start gap-3 cursor-pointer p-3 rounded-xl hover:bg-[#111110] transition-colors">
                   <input type="checkbox" checked={cardioSymptoms.includes(symptom)} onChange={() => toggleCardio(symptom)}
                     className="mt-0.5 w-4 h-4 rounded accent-teal-400 flex-shrink-0" />
-                  <span className="text-sm text-stone-300">{symptom}</span>
+                  <span className="text-sm text-[#d4cfc9]">{symptom}</span>
                 </label>
               ))}
-              <label className="flex items-start gap-3 cursor-pointer p-3 rounded-xl hover:bg-stone-900 transition-colors">
+              <label className="flex items-start gap-3 cursor-pointer p-3 rounded-xl hover:bg-[#111110] transition-colors">
                 <input type="checkbox" checked={cardioSymptoms.includes('None of the above')} onChange={() => toggleCardio('None of the above')}
                   className="mt-0.5 w-4 h-4 rounded accent-teal-400 flex-shrink-0" />
-                <span className="text-sm text-stone-300">None of the above</span>
+                <span className="text-sm text-[#d4cfc9]">None of the above</span>
               </label>
             </div>
           </section>
 
-          {/* Section 5 — Medical History */}
+          {/* Section 5 - Medical History */}
           <section>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Medical History</p>
+            <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-4">Medical History</p>
             <div className="space-y-5">
 
               <div id="f-illnessInjury" className="scroll-mt-24">
@@ -417,7 +417,7 @@ export default function HealthDeclarationForm({
                 {illnessInjury === 'yes' && (
                   <textarea value={illnessDetails} onChange={e => setIllnessDetails(e.target.value)}
                     placeholder="Please provide details..."
-                    className="mt-3 w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={3} />
+                    className="mt-3 w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] resize-none" rows={3} />
                 )}
               </div>
 
@@ -431,7 +431,7 @@ export default function HealthDeclarationForm({
                 {receivingTreatment === 'yes' && (
                   <textarea value={treatmentDetails} onChange={e => setTreatmentDetails(e.target.value)}
                     placeholder="Please provide details..."
-                    className="mt-3 w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={3} />
+                    className="mt-3 w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] resize-none" rows={3} />
                 )}
               </div>
 
@@ -445,7 +445,7 @@ export default function HealthDeclarationForm({
                 {onMedication === 'yes' && (
                   <textarea value={medicationList} onChange={e => setMedicationList(e.target.value)}
                     placeholder="Please list all medications..."
-                    className="mt-3 w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={3} />
+                    className="mt-3 w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] resize-none" rows={3} />
                 )}
               </div>
 
@@ -460,34 +460,34 @@ export default function HealthDeclarationForm({
             </div>
           </section>
 
-          {/* Section 6 — Musculoskeletal */}
+          {/* Section 6 - Musculoskeletal */}
           <section>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Musculoskeletal Health</p>
+            <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-4">Musculoskeletal Health</p>
             <div className="space-y-5">
               <textarea value={painAreas} onChange={e => setPainAreas(e.target.value)}
                 placeholder="Describe any current pain, injuries, or areas of concern (or write 'None')"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={3} />
+                className="w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] resize-none" rows={3} />
 
               {painAreas && painAreas.toLowerCase() !== 'none' && painAreas.length > 2 && (
                 <>
                   <div>
-                    <p className="text-sm text-stone-300 mb-3">Is this aggravated by exercise?</p>
+                    <p className="text-sm text-[#d4cfc9] mb-3">Is this aggravated by exercise?</p>
                     <div className="flex gap-3">
                       {(['Yes', 'No'] as const).map(opt => (
                         <button key={opt} type="button"
                           onClick={() => setPainAggravated(opt.toLowerCase() as YesNo)}
-                          className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${painAggravated === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                          className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${painAggravated === opt.toLowerCase() ? 'bg-[#14b8a6]/20 text-[#14b8a6] border border-[#14b8a6]/40' : 'bg-[#1c1917] text-[#a8a29e] border border-[#1c1917] hover:border-[#292524]'}`}
                         >{opt}</button>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm text-stone-300 mb-3">Are you currently receiving treatment for it?</p>
+                    <p className="text-sm text-[#d4cfc9] mb-3">Are you currently receiving treatment for it?</p>
                     <div className="flex gap-3">
                       {(['Yes', 'No'] as const).map(opt => (
                         <button key={opt} type="button"
                           onClick={() => setPainTreatment(opt.toLowerCase() as YesNo)}
-                          className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${painTreatment === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                          className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${painTreatment === opt.toLowerCase() ? 'bg-[#14b8a6]/20 text-[#14b8a6] border border-[#14b8a6]/40' : 'bg-[#1c1917] text-[#a8a29e] border border-[#1c1917] hover:border-[#292524]'}`}
                         >{opt}</button>
                       ))}
                     </div>
@@ -497,9 +497,9 @@ export default function HealthDeclarationForm({
             </div>
           </section>
 
-          {/* Section 7 — Lifestyle */}
+          {/* Section 7 - Lifestyle */}
           <section>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Lifestyle</p>
+            <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-4">Lifestyle</p>
             <div className="space-y-5">
               <div id="f-alcohol" className="scroll-mt-24">
                 <p className={`text-sm mb-3 ${errLabel('alcohol')}`}>Do you drink alcohol?</p>
@@ -521,27 +521,27 @@ export default function HealthDeclarationForm({
 
               <textarea value={dietPattern} onChange={e => setDietPattern(e.target.value)}
                 placeholder="Describe your typical diet pattern (optional)"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={2} />
+                className="w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] resize-none" rows={2} />
 
               <div>
-                <p className="text-sm text-stone-300 mb-3">Rate your eating habits (1 = poor, 10 = excellent)</p>
+                <p className="text-sm text-[#d4cfc9] mb-3">Rate your eating habits (1 = poor, 10 = excellent)</p>
                 <div className="grid grid-cols-5 gap-2">
                   {[1,2,3,4,5,6,7,8,9,10].map(n => (
                     <button key={n} type="button"
                       onClick={() => setEatingHabits(n)}
-                      className={`py-2.5 rounded-xl text-sm font-semibold transition-colors ${eatingHabits === n ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                      className={`py-2.5 rounded-xl text-sm font-semibold transition-colors ${eatingHabits === n ? 'bg-[#14b8a6]/20 text-[#14b8a6] border border-[#14b8a6]/40' : 'bg-[#1c1917] text-[#a8a29e] border border-[#1c1917] hover:border-[#292524]'}`}
                     >{n}</button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <p className="text-sm text-stone-300 mb-3">Do you need nutrition support?</p>
+                <p className="text-sm text-[#d4cfc9] mb-3">Do you need nutrition support?</p>
                 <div className="flex gap-3">
                   {(['Yes', 'No'] as const).map(opt => (
                     <button key={opt} type="button"
                       onClick={() => setNutritionSupport(opt.toLowerCase() as YesNo)}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${nutritionSupport === opt.toLowerCase() ? 'bg-teal-400/20 text-teal-400 border border-teal-400/40' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:border-stone-600'}`}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${nutritionSupport === opt.toLowerCase() ? 'bg-[#14b8a6]/20 text-[#14b8a6] border border-[#14b8a6]/40' : 'bg-[#1c1917] text-[#a8a29e] border border-[#1c1917] hover:border-[#292524]'}`}
                     >{opt}</button>
                   ))}
                 </div>
@@ -549,18 +549,18 @@ export default function HealthDeclarationForm({
             </div>
           </section>
 
-          {/* Section 8 — Barriers & Goals */}
+          {/* Section 8 - Barriers & Goals */}
           <section>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Barriers & Readiness</p>
+            <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-4">Barriers & Readiness</p>
             <div className="space-y-5">
               <div>
-                <p className="text-sm text-stone-300 mb-3">What barriers do you currently face? (select all that apply)</p>
+                <p className="text-sm text-[#d4cfc9] mb-3">What barriers do you currently face? (select all that apply)</p>
                 <div className="space-y-2">
                   {BARRIERS.map(b => (
-                    <label key={b} className="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-stone-900 transition-colors">
+                    <label key={b} className="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-[#111110] transition-colors">
                       <input type="checkbox" checked={barriers.includes(b)} onChange={() => toggleBarrier(b)}
                         className="w-4 h-4 rounded accent-teal-400" />
-                      <span className="text-sm text-stone-300">{b}</span>
+                      <span className="text-sm text-[#d4cfc9]">{b}</span>
                     </label>
                   ))}
                 </div>
@@ -568,15 +568,15 @@ export default function HealthDeclarationForm({
 
               <textarea value={healthGoals} onChange={e => setHealthGoals(e.target.value)}
                 placeholder="What are your health and performance goals for the next 3 months? (optional)"
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 resize-none" rows={3} />
+                className="w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] resize-none" rows={3} />
 
               <div>
-                <p className="text-sm text-stone-300 mb-3">List 3 actions you will take to improve your health: (optional)</p>
+                <p className="text-sm text-[#d4cfc9] mb-3">List 3 actions you will take to improve your health: (optional)</p>
                 <div className="space-y-2">
                   {[[action1, setAction1], [action2, setAction2], [action3, setAction3]].map(([val, setter], i) => (
                     <input key={i} type="text" value={val as string} onChange={e => (setter as (v: string) => void)(e.target.value)}
                       placeholder={`Action ${i + 1}`}
-                      className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600" />
+                      className="w-full bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835]" />
                   ))}
                 </div>
               </div>
@@ -591,10 +591,10 @@ export default function HealthDeclarationForm({
             </div>
           )}
 
-          {/* Section 9 — Health Declaration */}
+          {/* Section 9 - Health Declaration */}
           <section>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-1">Health Declaration</p>
-            <p className="text-sm text-stone-400 mb-4">Please read and tick each statement to confirm your understanding:</p>
+            <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-1">Health Declaration</p>
+            <p className="text-sm text-[#a8a29e] mb-4">Please read and tick each statement to confirm your understanding:</p>
             <div className="space-y-3">
               {[
                 { id: 'declaredHonest', state: declaredHonest, setter: setDeclaredHonest, text: 'I have completed this form honestly and to the best of my knowledge.' },
@@ -614,10 +614,10 @@ export default function HealthDeclarationForm({
                     id={`f-${id}`}
                     className={`flex items-start gap-3 cursor-pointer p-4 rounded-xl border transition-colors scroll-mt-24 ${
                       state
-                        ? 'border-teal-400/30 bg-teal-400/5'
+                        ? 'border-[#14b8a6]/30 bg-[#14b8a6]/5'
                         : hasError
                         ? 'border-red-500/60 bg-red-950/20'
-                        : 'border-stone-800 bg-stone-900 hover:border-stone-700'
+                        : 'border-[#1c1917] bg-[#111110] hover:border-[#1c1917]'
                     }`}
                   >
                     <input
@@ -626,7 +626,7 @@ export default function HealthDeclarationForm({
                       onChange={e => { setter(e.target.checked); clearMissing(id) }}
                       className="mt-0.5 w-4 h-4 rounded accent-teal-400 flex-shrink-0"
                     />
-                    <span className={`text-sm leading-relaxed ${hasError ? 'text-red-300' : 'text-stone-300'}`}>{text}</span>
+                    <span className={`text-sm leading-relaxed ${hasError ? 'text-red-300' : 'text-[#d4cfc9]'}`}>{text}</span>
                   </label>
                 )
               })}
@@ -635,17 +635,17 @@ export default function HealthDeclarationForm({
 
           {/* Declaration */}
           <section>
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Declaration</p>
-            <div id="f-declarationName" className={`bg-stone-900 rounded-xl p-5 space-y-4 border scroll-mt-24 ${missing.has('declarationName') ? 'border-red-500/60' : 'border-stone-800'}`}>
-              <p className={`text-sm ${missing.has('declarationName') ? 'text-red-300' : 'text-stone-400'}`}>By typing your full name below, you confirm that all information provided in this form is accurate and complete, and that you agree to the declarations above.</p>
+            <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-4">Declaration</p>
+            <div id="f-declarationName" className={`bg-[#111110] rounded-xl p-5 space-y-4 border scroll-mt-24 ${missing.has('declarationName') ? 'border-red-500/60' : 'border-[#1c1917]'}`}>
+              <p className={`text-sm ${missing.has('declarationName') ? 'text-red-300' : 'text-[#a8a29e]'}`}>By typing your full name below, you confirm that all information provided in this form is accurate and complete, and that you agree to the declarations above.</p>
               <input
                 type="text"
                 value={declarationName}
                 onChange={e => { setDeclarationName(e.target.value); if (e.target.value.trim().length >= 3) clearMissing('declarationName') }}
                 placeholder="Type your full name"
-                className={`w-full bg-[#0a0a0a] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${missing.has('declarationName') ? 'border-red-500/60' : 'border-stone-700'}`}
+                className={`w-full bg-[#0a0a0a] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] border ${missing.has('declarationName') ? 'border-red-500/60' : 'border-[#1c1917]'}`}
               />
-              <p className="text-xs text-stone-600">Date: {new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p className="text-xs text-[#3c3835]">Date: {new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
               {errMessage('declarationName')}
             </div>
           </section>
@@ -655,7 +655,7 @@ export default function HealthDeclarationForm({
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-full bg-[#14b8a6] text-black text-sm font-bold py-4 rounded-2xl hover:bg-[#5eead4] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           >
             {submitting ? 'Saving…' : 'Submit Health Declaration →'}
           </button>

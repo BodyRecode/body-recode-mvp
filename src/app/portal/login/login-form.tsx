@@ -59,7 +59,7 @@ export default function LoginForm({ redirect }: { redirect: string }) {
       }
 
       // Establish the Supabase session client-side using the fresh token_hash.
-      // This token has never been emailed — no scanner could have touched it.
+      // This token has never been emailed - no scanner could have touched it.
       const supabase = createClient()
       const { data, error: sessionError } = await supabase.auth.verifyOtp({
         type: 'magiclink',
@@ -104,13 +104,13 @@ export default function LoginForm({ redirect }: { redirect: string }) {
     return (
       <form onSubmit={verifyCode} className="space-y-4">
         <div className="text-center mb-2">
-          <div className="w-14 h-14 rounded-full bg-teal-400/10 border border-teal-400/30 flex items-center justify-center mx-auto mb-5">
-            <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-14 h-14 rounded-full bg-[#14b8a6]/10 border border-[#14b8a6]/30 flex items-center justify-center mx-auto mb-5">
+            <svg className="w-7 h-7 text-[#14b8a6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </div>
           <h2 className="text-xl font-bold text-white mb-1">Enter your sign-in code</h2>
-          <p className="text-stone-400 text-sm leading-relaxed">
+          <p className="text-[#a8a29e] text-sm leading-relaxed">
             We sent a 6-digit code to <span className="text-white font-medium">{email.toLowerCase()}</span>.
           </p>
         </div>
@@ -125,7 +125,7 @@ export default function LoginForm({ redirect }: { redirect: string }) {
             onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder="123456"
             required
-            className="w-full bg-stone-900 border border-stone-700 rounded-2xl px-4 py-4 text-center text-2xl tracking-[0.4em] font-mono text-white placeholder-stone-700 focus:outline-none focus:border-teal-500 transition-colors"
+            className="w-full bg-[#111110] border border-[#1c1917] rounded-2xl px-4 py-4 text-center text-2xl tracking-[0.4em] font-mono text-white placeholder-[#3c3835] focus:outline-none focus:border-teal-500 transition-colors"
           />
         </div>
 
@@ -138,7 +138,7 @@ export default function LoginForm({ redirect }: { redirect: string }) {
         <button
           type="submit"
           disabled={submitting || code.length !== 6}
-          className="w-full py-3.5 bg-teal-400 hover:bg-teal-300 disabled:bg-stone-800 disabled:text-stone-600 text-black font-bold text-sm rounded-2xl transition-colors"
+          className="w-full py-3.5 bg-[#14b8a6] hover:bg-[#5eead4] disabled:bg-[#1c1917] disabled:text-[#3c3835] text-black font-bold text-sm rounded-2xl transition-colors"
         >
           {submitting ? 'Signing in...' : 'Sign in'}
         </button>
@@ -146,7 +146,7 @@ export default function LoginForm({ redirect }: { redirect: string }) {
         <button
           type="button"
           onClick={() => { setStep('email'); setCode(''); setError(null) }}
-          className="block w-full text-xs text-stone-500 hover:text-stone-300 transition-colors text-center"
+          className="block w-full text-xs text-[#57534e] hover:text-[#d4cfc9] transition-colors text-center"
         >
           ← Use a different email
         </button>
@@ -157,14 +157,14 @@ export default function LoginForm({ redirect }: { redirect: string }) {
   return (
     <form onSubmit={requestCode} className="space-y-4">
       <div>
-        <label className="block text-xs font-semibold text-stone-400 mb-2">Email address</label>
+        <label className="block text-xs font-semibold text-[#a8a29e] mb-2">Email address</label>
         <input
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
           placeholder="your@email.com"
           required
-          className="w-full bg-stone-900 border border-stone-700 rounded-2xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors"
+          className="w-full bg-[#111110] border border-[#1c1917] rounded-2xl px-4 py-3 text-sm text-white placeholder-[#3c3835] focus:outline-none focus:border-teal-500 transition-colors"
         />
       </div>
 
@@ -177,7 +177,7 @@ export default function LoginForm({ redirect }: { redirect: string }) {
       <button
         type="submit"
         disabled={submitting || !email.trim()}
-        className="w-full py-3.5 bg-teal-400 hover:bg-teal-300 disabled:bg-stone-800 disabled:text-stone-600 text-black font-bold text-sm rounded-2xl transition-colors"
+        className="w-full py-3.5 bg-[#14b8a6] hover:bg-[#5eead4] disabled:bg-[#1c1917] disabled:text-[#3c3835] text-black font-bold text-sm rounded-2xl transition-colors"
       >
         {submitting ? 'Sending...' : 'Send sign-in code'}
       </button>

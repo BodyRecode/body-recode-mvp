@@ -29,13 +29,13 @@ export default async function PortalCheckinPage({ params }: { params: Promise<{ 
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6">
-            <a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a>
+          <p className="text-xs font-bold tracking-widest text-[#14b8a6] uppercase mb-6">
+            <a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-[#14b8a6] uppercase">Body Recode™</a>
           </p>
           <h1 className="text-xl font-semibold text-white mb-2">Window not open</h1>
-          <p className="text-stone-500 text-sm mb-4">The check-in window opens <span className="text-white">Friday at 6:00pm</span> and closes Sunday at 6:00pm Brisbane time.</p>
-          <p className="text-stone-600 text-xs mb-8">Next window opens {opensAt} (Brisbane)</p>
-          <a href={`/portal/${token}`} className="text-xs font-semibold text-teal-400 hover:text-teal-300 transition-colors">← Back to portal</a>
+          <p className="text-[#57534e] text-sm mb-4">The check-in window opens <span className="text-white">Friday at 6:00pm</span> and closes Sunday at 6:00pm Brisbane time.</p>
+          <p className="text-[#3c3835] text-xs mb-8">Next window opens {opensAt} (Brisbane)</p>
+          <a href={`/portal/${token}`} className="text-xs font-semibold text-[#14b8a6] hover:text-[#5eead4] transition-colors">← Back to portal</a>
         </div>
       </div>
     )
@@ -74,17 +74,17 @@ export default async function PortalCheckinPage({ params }: { params: Promise<{ 
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6">
-            <a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a>
+          <p className="text-xs font-bold tracking-widest text-[#14b8a6] uppercase mb-6">
+            <a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-[#14b8a6] uppercase">Body Recode™</a>
           </p>
-          <div className="w-14 h-14 bg-stone-900 border border-stone-800 rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-14 h-14 bg-[#111110] border border-[#1c1917] rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg className="w-7 h-7 text-[#14b8a6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
           <h1 className="text-xl font-semibold text-white mb-2">Already submitted</h1>
-          <p className="text-stone-500 text-sm mb-8">Your check-in for this week has been received. Your coach will review it shortly.</p>
-          <a href={`/portal/${token}`} className="text-xs font-semibold text-teal-400 hover:text-teal-300 transition-colors">← Back to portal</a>
+          <p className="text-[#57534e] text-sm mb-8">Your check-in for this week has been received. Your coach will review it shortly.</p>
+          <a href={`/portal/${token}`} className="text-xs font-semibold text-[#14b8a6] hover:text-[#5eead4] transition-colors">← Back to portal</a>
         </div>
       </div>
     )
