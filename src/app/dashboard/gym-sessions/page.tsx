@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { PageHeader } from '@/components/dashboard/ui'
+import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
 
 const PROGRAM_TYPES = [
   { id: 'machines', label: 'Machines & Weights' },
@@ -257,218 +257,248 @@ export default function GymSessionsPage() {
 
       {/* State tabs */}
       <div className="flex gap-2 mb-3">
-        {STATES.map(s => (
-          <button
-            key={s.id}
-            onClick={() => setActiveState(s.id)}
-            style={{
-              borderColor: activeState === s.id ? s.border : undefined,
-              color: activeState === s.id ? s.color : undefined,
-              background: activeState === s.id ? s.bg : undefined,
-            }}
-            className={`flex-1 py-3 px-4 rounded-xl border text-sm font-semibold transition-all ${
-              activeState === s.id ? '' : 'border-stone-800 text-stone-500 hover:text-stone-300 hover:border-stone-700'
-            }`}
-          >
-            <span className="block">{s.label}</span>
-            <span className="block text-xs font-normal mt-0.5 opacity-70">{s.score}</span>
-          </button>
-        ))}
+        {STATES.map(s => {
+          const active = activeState === s.id
+          return (
+            <button
+              key={s.id}
+              onClick={() => setActiveState(s.id)}
+              style={active ? { borderColor: s.border, color: s.color, background: s.bg } : undefined}
+              className={`flex-1 py-3 px-4 rounded-xl border text-[13px] font-semibold transition-colors ${
+                active ? '' : 'border-[#1c1917] bg-[#111110] text-[#a8a29e] hover:text-white hover:border-[#292524]'
+              }`}
+            >
+              <span className="block">{s.label}</span>
+              <span
+                className="block text-[10px] font-normal mt-0.5 opacity-70"
+                style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em' }}
+              >
+                {s.score}
+              </span>
+            </button>
+          )
+        })}
       </div>
 
       {/* Program type tabs */}
       <div className="flex gap-2 mb-6">
-        {PROGRAM_TYPES.map(p => (
-          <button
-            key={p.id}
-            onClick={() => setActiveProgram(p.id as ProgramType)}
-            className={`flex-1 py-2 px-3 rounded-lg border text-xs font-semibold transition-all ${
-              activeProgram === p.id
-                ? 'border-stone-500 text-white bg-stone-800'
-                : 'border-stone-800 text-stone-500 hover:text-stone-300 hover:border-stone-700'
-            }`}
-          >
-            {p.label}
-          </button>
-        ))}
+        {PROGRAM_TYPES.map(p => {
+          const active = activeProgram === p.id
+          return (
+            <button
+              key={p.id}
+              onClick={() => setActiveProgram(p.id as ProgramType)}
+              className={`flex-1 py-2 px-3 rounded-lg border text-[11px] font-semibold transition-colors ${
+                active
+                  ? 'border-[#292524] text-white bg-[#1c1917]'
+                  : 'border-[#1c1917] bg-[#111110] text-[#a8a29e] hover:text-white hover:border-[#292524]'
+              }`}
+            >
+              {p.label}
+            </button>
+          )
+        })}
       </div>
 
       {/* Summary */}
-      <div className="rounded-xl p-4 mb-6 border" style={{ background: state.bg, borderColor: state.border }}>
-        <p className="text-sm font-medium" style={{ color: state.color }}>{state.summary}</p>
+      <div className="rounded-2xl p-4 mb-6 border" style={{ background: state.bg, borderColor: state.border }}>
+        <p className="text-[14px] font-medium leading-relaxed" style={{ color: state.color }}>{state.summary}</p>
       </div>
 
       {/* Consult */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-4">
-        <div className="px-5 py-3 border-b border-stone-800">
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Consult — 10 min</p>
-        </div>
-        <div className="divide-y divide-stone-800/60">
-          <div className="px-5 py-4">
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Opening</p>
-            <p className="text-sm text-stone-300 leading-relaxed italic">{state.consult.opening}</p>
-          </div>
-          <div className="px-5 py-4">
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Their Goals</p>
-            <div className="space-y-2">
-              {state.consult.goals.map((line, i) => (
-                <p key={i} className="text-sm text-stone-300 leading-relaxed italic">{line}</p>
-              ))}
-            </div>
-          </div>
-          <div className="px-5 py-4">
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Explain Their Results</p>
-            <div className="space-y-2">
-              {state.consult.results.map((line, i) => (
-                <p key={i} className="text-sm text-stone-300 leading-relaxed italic">{line}</p>
-              ))}
-            </div>
-          </div>
-          <div className="px-5 py-4">
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Why We Train Like This</p>
-            <div className="space-y-2">
-              {state.consult.whyWeTrainLikeThis.map((line, i) => (
-                <p key={i} className="text-sm text-stone-300 leading-relaxed italic">{line}</p>
-              ))}
-            </div>
-          </div>
-          <div className="px-5 py-4">
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">What To Do After Today</p>
-            <div className="space-y-2">
-              {state.consult.afterToday.map((line, i) => (
-                <p key={i} className="text-sm text-stone-300 leading-relaxed italic">{line}</p>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      <ScriptCard label={`Consult — 10 min · ${state.label}`}>
+        <ScriptSection label="Opening">
+          <ScriptLine>{state.consult.opening}</ScriptLine>
+        </ScriptSection>
+        <ScriptSection label="Their Goals">
+          {state.consult.goals.map((line, i) => <ScriptLine key={i}>{line}</ScriptLine>)}
+        </ScriptSection>
+        <ScriptSection label="Explain Their Results">
+          {state.consult.results.map((line, i) => <ScriptLine key={i}>{line}</ScriptLine>)}
+        </ScriptSection>
+        <ScriptSection label="Why We Train Like This">
+          {state.consult.whyWeTrainLikeThis.map((line, i) => <ScriptLine key={i}>{line}</ScriptLine>)}
+        </ScriptSection>
+        <ScriptSection label="What To Do After Today">
+          {state.consult.afterToday.map((line, i) => <ScriptLine key={i}>{line}</ScriptLine>)}
+        </ScriptSection>
+      </ScriptCard>
 
       {/* Session */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-4">
-        <div className="px-5 py-3 border-b border-stone-800">
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Session — 20 min</p>
-        </div>
-
-        {/* Warm-up */}
-        <div className="px-5 py-4 border-b border-stone-800/60">
-          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Warm-up — 3 min</p>
-          <div className="space-y-2">
-            {state.warmup.map((item, i) => (
-              <div key={i} className="flex items-start gap-2">
-                <div className="w-1 h-1 rounded-full bg-stone-600 mt-2 shrink-0" />
-                <p className="text-sm text-stone-300">{item}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Working */}
-        <div className="px-5 py-4 border-b border-stone-800/60">
-          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">Working</p>
-          <p className="text-xs text-stone-500 mb-4">{program.structure}</p>
-
+      <ScriptCard label="Session — 20 min">
+        <ScriptSection label="Warm-up — 3 min">
+          {state.warmup.map((item, i) => (
+            <div key={i} className="flex items-start gap-2">
+              <div className="w-1 h-1 rounded-full bg-[#57534e] mt-2 shrink-0" />
+              <p className="text-[14px] text-[#d4cfc9]">{item}</p>
+            </div>
+          ))}
+        </ScriptSection>
+        <ScriptSection label="Working" sublabel={program.structure}>
           {program.primer && (
-            <div className="mb-4">
-              <p className="text-xs font-medium text-stone-600 mb-2">Strength primer</p>
-              <div className="space-y-3 mb-4">
-                {program.primer.map((ex, i) => (
-                  <ExerciseCard key={i} ex={ex} />
-                ))}
+            <div className="mb-2">
+              <p
+                className="text-[10px] font-medium text-[#57534e] uppercase mb-2"
+                style={{ fontFamily: MONO_FONT, letterSpacing: '0.1em' }}
+              >
+                Strength primer
+              </p>
+              <div className="space-y-2 mb-4">
+                {program.primer.map((ex, i) => <ExerciseCard key={i} ex={ex} />)}
               </div>
-              <p className="text-xs font-medium text-stone-600 mb-2">AMRAP</p>
+              <p
+                className="text-[10px] font-medium text-[#57534e] uppercase mb-2"
+                style={{ fontFamily: MONO_FONT, letterSpacing: '0.1em' }}
+              >
+                AMRAP
+              </p>
             </div>
           )}
-
-          <div className="space-y-3">
-            {program.exercises.map((ex, i) => (
-              <ExerciseCard key={i} ex={ex} />
-            ))}
-          </div>
-
-          {program.note && (
-            <p className="text-xs text-stone-500 mt-3 italic">{program.note}</p>
-          )}
-        </div>
-
-        {/* Close */}
-        <div className="px-5 py-4">
-          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Close — 2 min</p>
           <div className="space-y-2">
-            {state.close.map((item, i) => (
-              <div key={i} className="flex items-start gap-2">
-                <div className="w-1 h-1 rounded-full bg-stone-600 mt-2 shrink-0" />
-                <p className="text-sm text-stone-300">{item}</p>
-              </div>
-            ))}
+            {program.exercises.map((ex, i) => <ExerciseCard key={i} ex={ex} />)}
           </div>
-        </div>
-      </div>
+          {program.note && (
+            <p className="text-[12px] text-[#57534e] mt-3 italic">{program.note}</p>
+          )}
+        </ScriptSection>
+        <ScriptSection label="Close — 2 min">
+          {state.close.map((item, i) => (
+            <div key={i} className="flex items-start gap-2">
+              <div className="w-1 h-1 rounded-full bg-[#57534e] mt-2 shrink-0" />
+              <p className="text-[14px] text-[#d4cfc9]">{item}</p>
+            </div>
+          ))}
+        </ScriptSection>
+      </ScriptCard>
 
       {/* Handoff */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-4">
-        <div className="px-5 py-3 border-b border-stone-800">
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Handoff script</p>
-        </div>
+      <ScriptCard label="Handoff script">
         <div className="px-5 py-4">
-          <p className="text-sm text-stone-300 leading-relaxed italic">"{state.handoff}"</p>
+          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic">"{state.handoff}"</p>
         </div>
-      </div>
+      </ScriptCard>
 
       {/* Next steps */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-        <div className="px-5 py-3 border-b border-stone-800">
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Next Steps</p>
-        </div>
-        <div className="divide-y divide-stone-800/60">
-          <div className="px-5 py-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">Yes</span>
-              <p className="text-xs font-semibold text-stone-400">They want to know more</p>
-            </div>
-            <p className="text-sm text-stone-300 leading-relaxed mb-3">Book a Zoom on the spot or take their number and follow up same day. Do not leave it open-ended.</p>
-            <a
-              href="https://bodyrecode.au/book"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-sm font-bold px-4 py-2.5 rounded-lg transition-colors"
+      <ScriptCard label="Next Steps">
+        <div className="px-5 py-4 border-b border-[#1c1917]">
+          <div className="flex items-center gap-2 mb-2">
+            <span
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[rgba(20,184,166,0.12)] text-[#14b8a6] border border-[#0d2d29] uppercase"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
-              Book a call
-            </a>
+              Yes
+            </span>
+            <p
+              className="text-[10px] font-bold text-[#a8a29e] uppercase"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            >
+              They want to know more
+            </p>
           </div>
-          <div className="px-5 py-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-stone-700/50 text-stone-400 border border-stone-700">Not right now</span>
-              <p className="text-xs font-semibold text-stone-400">Pivot to the report</p>
-            </div>
-            <p className="text-sm text-stone-300 leading-relaxed italic mb-2">"No problem — the scorecard report is a good next step. It covers everything we touched on today in detail. Keep an eye on your inbox."</p>
-            <p className="text-xs text-stone-500">The follow-up sequence has already sent the link. Day 2 email is a dedicated report offer — you do not need to do anything.</p>
-          </div>
-          <div className="px-5 py-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-stone-700/50 text-stone-400 border border-stone-700">Close</span>
-              <p className="text-xs font-semibold text-stone-400">Wrap up</p>
-            </div>
-            <p className="text-sm text-stone-300 leading-relaxed italic">"Really good to meet you [name]. I enjoyed that — you worked hard today. Whatever you decide to do next, you have got something useful out of today. Check your inbox, have a read through the results, and if anything comes up just reach out. Take care of yourself."</p>
-          </div>
+          <p className="text-[14px] text-[#d4cfc9] leading-relaxed mb-3">Book a Zoom on the spot or take their number and follow up same day. Do not leave it open-ended.</p>
+          <a
+            href="https://bodyrecode.au/book"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-[#14b8a6] hover:bg-[#5eead4] text-[#0c0a09] text-[13px] font-bold px-4 py-2 rounded-lg transition-colors"
+          >
+            Book a call
+          </a>
         </div>
-      </div>
+        <div className="px-5 py-4 border-b border-[#1c1917]">
+          <div className="flex items-center gap-2 mb-2">
+            <span
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#0c0a09] text-[#a8a29e] border border-[#1c1917] uppercase"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+            >
+              Not right now
+            </span>
+            <p
+              className="text-[10px] font-bold text-[#a8a29e] uppercase"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            >
+              Pivot to the report
+            </p>
+          </div>
+          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic mb-2">"No problem — the scorecard report is a good next step. It covers everything we touched on today in detail. Keep an eye on your inbox."</p>
+          <p className="text-[12px] text-[#57534e]">The follow-up sequence has already sent the link. Day 2 email is a dedicated report offer — you do not need to do anything.</p>
+        </div>
+        <div className="px-5 py-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#0c0a09] text-[#a8a29e] border border-[#1c1917] uppercase"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+            >
+              Close
+            </span>
+            <p
+              className="text-[10px] font-bold text-[#a8a29e] uppercase"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            >
+              Wrap up
+            </p>
+          </div>
+          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic">"Really good to meet you [name]. I enjoyed that — you worked hard today. Whatever you decide to do next, you have got something useful out of today. Check your inbox, have a read through the results, and if anything comes up just reach out. Take care of yourself."</p>
+        </div>
+      </ScriptCard>
     </div>
   )
 }
 
+function ScriptCard({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden mb-4">
+      <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#1c1917]">
+        <span className="w-7 h-[3px] rounded-full bg-[#14b8a6] shrink-0" />
+        <p
+          className="text-[10px] font-bold text-white uppercase"
+          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+        >
+          {label}
+        </p>
+      </div>
+      <div className="divide-y divide-[#1c1917]">{children}</div>
+    </div>
+  )
+}
+
+function ScriptSection({ label, sublabel, children }: { label: string; sublabel?: string; children: React.ReactNode }) {
+  return (
+    <div className="px-5 py-4">
+      <p
+        className="text-[10px] font-bold text-[#57534e] uppercase mb-2"
+        style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+      >
+        {label}
+      </p>
+      {sublabel && <p className="text-[12px] text-[#57534e] mb-3">{sublabel}</p>}
+      <div className="space-y-2">{children}</div>
+    </div>
+  )
+}
+
+function ScriptLine({ children }: { children: React.ReactNode }) {
+  return <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic">{children}</p>
+}
+
 function ExerciseCard({ ex }: { ex: Exercise }) {
   return (
-    <div className="bg-stone-800/50 rounded-lg px-3 py-3">
+    <div className="bg-[#0c0a09] border border-[#1c1917] rounded-xl px-3 py-3">
       <div className="flex items-start justify-between gap-3 mb-2">
-        <span className="text-sm font-semibold text-white">{ex.name}</span>
-        <span className="text-xs text-stone-400 shrink-0">{ex.detail}</span>
+        <span className="text-[14px] font-semibold text-white">{ex.name}</span>
+        <span
+          className="text-[11px] text-[#a8a29e] shrink-0"
+          style={{ fontFamily: MONO_FONT }}
+        >
+          {ex.detail}
+        </span>
       </div>
       <div className="space-y-1 mb-2">
         {ex.cues.map((cue, i) => (
-          <p key={i} className="text-xs text-stone-400">→ {cue}</p>
+          <p key={i} className="text-[12px] text-[#a8a29e]">→ {cue}</p>
         ))}
       </div>
-      <p className="text-xs text-stone-500 italic">{ex.why}</p>
+      <p className="text-[12px] text-[#57534e] italic">{ex.why}</p>
     </div>
   )
 }
