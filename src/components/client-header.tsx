@@ -6,15 +6,16 @@ import PortalSignOutButton from './portal-sign-out-button'
 
 const WHATSAPP_NUMBER = '61400336284'
 
-export default function ClientHeader() {
+export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?: string | null } = {}) {
   const pathname = usePathname()
   const params = useParams()
   const token = typeof params?.token === 'string' ? params.token : null
-  // Only link the logo home from /portal/[token]/* routes.
-  // /baseline/[token] uses a different token (baseline_token, not onboarding_token)
-  // so we don't link from there to avoid 404s.
+  // Default behaviour: link home only from /portal/[token]/* routes (those tokens are
+  // onboarding_tokens). Pages on other tokens (e.g. /baseline/[baseline_token]) can
+  // pass an explicit homeHref so the logo still links back to the portal.
   const isPortalRoute = pathname?.startsWith('/portal/') ?? false
-  const homeHref = isPortalRoute && token ? `/portal/${token}` : null
+  const defaultHomeHref = isPortalRoute && token ? `/portal/${token}` : null
+  const homeHref = explicitHomeHref !== undefined ? explicitHomeHref : defaultHomeHref
 
   const logo = (
     <img

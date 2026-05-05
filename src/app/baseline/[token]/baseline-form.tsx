@@ -7,6 +7,7 @@ import { useFormDraft } from '@/lib/use-form-draft'
 interface Props {
   clientId: string
   clientName: string
+  portalHref?: string | null
 }
 
 type Step = 'intro' | 'measurements' | 'photos' | 'submitting' | 'done'
@@ -20,7 +21,7 @@ type Draft = {
   chest: string
 }
 
-export default function BaselineForm({ clientId, clientName }: Props) {
+export default function BaselineForm({ clientId, clientName, portalHref }: Props) {
   const [draft, setDraft, clearDraft] = useFormDraft<Draft>(`baseline:${clientId}`, {
     step: 'intro',
     bodyweight: '',
@@ -158,7 +159,7 @@ export default function BaselineForm({ clientId, clientName }: Props) {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <ClientHeader />
+      <ClientHeader homeHref={portalHref} />
       <div className="max-w-lg mx-auto px-6 py-10">
 
         {/* Header */}

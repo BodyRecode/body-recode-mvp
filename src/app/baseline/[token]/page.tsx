@@ -7,7 +7,7 @@ export default async function BaselinePage({ params }: { params: Promise<{ token
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, baseline_token')
+    .select('id, name, baseline_token, onboarding_token')
     .eq('baseline_token', token)
     .single()
 
@@ -46,5 +46,11 @@ export default async function BaselinePage({ params }: { params: Promise<{ token
     )
   }
 
-  return <BaselineForm clientId={client.id} clientName={client.name} />
+  return (
+    <BaselineForm
+      clientId={client.id}
+      clientName={client.name}
+      portalHref={client.onboarding_token ? `/portal/${client.onboarding_token}` : null}
+    />
+  )
 }
