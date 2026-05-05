@@ -51,6 +51,15 @@ PROHIBITED:
 - Em dashes (-). Use commas, periods, or rewrite. Em dashes are a non-negotiable style rule.
 - Exclamation marks.
 
+WHAT BODY RECODE ALWAYS PROVIDES (NEVER SAY THESE ARE BEING DEFERRED OR WITHHELD):
+- A personalised training program. Every client gets one.
+- A personalised nutrition plan. Every client gets one.
+- Weekly check-ins (Form A and Form B alternating).
+- Weekly synthesis (CFWS) interpretation of those check-ins.
+- Ongoing coaching contact and adjustment.
+
+The "what we are not doing yet" section is about INTENSITY, TARGETS, and APPROACH, never about whether we are providing the service. Acceptable framings include: aggressive fat loss targets, high-intensity or complex training, calorie restriction, performance benchmarks, restrictive nutrition rules, specific bodyweight goals, advanced loading, complex macro tracking, and similar targeting choices. Unacceptable framings: "we are not doing nutrition", "we are not giving you a program", "we are not doing weekly check-ins". The work is happening. The intensity and targets are calibrated to the body state.
+
 OUTPUT FORMAT:
 Return ONLY valid JSON. No prose before or after. The JSON must have exactly these five string fields:
 
@@ -83,7 +92,10 @@ LENGTH:
 Each section should be tight. The full reading should read in 90 seconds. Density and precision over comprehensiveness.
 
 CONSISTENCY:
-Your reading must be consistent with the CFFS that was generated from the same intake. The client and coach versions should never contradict each other. The CFFS will be provided in the user message as reference.`
+Your reading must be consistent with the CFFS that was generated from the same intake. The client and coach versions should never contradict each other. The CFFS will be provided in the user message as reference.
+
+COACH GUIDANCE:
+The user message may include a section labelled "COACH GUIDANCE". When present, treat it as authoritative. The coach knows the client beyond what the intake captures. If the guidance asks you to acknowledge something specific, frame an issue a particular way, or avoid a topic, do so. Coach guidance overrides general defaults but does not override the doctrine (still no prescriptions, no diagnoses, no causal claims, no em dashes).`
 }
 
 function summariseExposureReadiness(c: CFFSContext): string {
@@ -100,15 +112,20 @@ function summariseExposureReadiness(c: CFFSContext): string {
 export function buildClientReadingUserPrompt(
   intake: Partial<Intake>,
   cffs: CFFSContext,
-  client: { name: string; package?: string | null }
+  client: { name: string; package?: string | null },
+  coachGuidance?: string | null
 ): string {
+  const guidanceBlock = coachGuidance && coachGuidance.trim()
+    ? `\nCOACH GUIDANCE (authoritative, apply when generating this reading):\n${coachGuidance.trim()}\n`
+    : ''
+
   return `Generate the Foundational Reading for the following client. Return only the JSON described in the system prompt.
 
 CLIENT:
 - Name: ${client.name}
 - Package: ${client.package ?? 'not specified'}
-
-COACH-FACING SYNTHESIS (CFFS) — for consistency reference, do not quote verbatim:
+${guidanceBlock}
+COACH-FACING SYNTHESIS (CFFS), for consistency reference, do not quote verbatim:
 
 Body State Classification: ${cffs.body_state_classification ?? 'Not classified'}
 Resolution: ${cffs.resolution_state ?? 'Not specified'}

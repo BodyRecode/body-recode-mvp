@@ -93,7 +93,12 @@ export async function POST(request: NextRequest) {
       system: buildClientReadingSystemPrompt(),
       messages: [{
         role: 'user',
-        content: buildClientReadingUserPrompt(intake, cffsContext, { name: client.name, package: client.package }),
+        content: buildClientReadingUserPrompt(
+          intake,
+          cffsContext,
+          { name: client.name, package: client.package },
+          cffs.cr_coach_guidance ?? null
+        ),
       }],
     })
   } catch (err) {
