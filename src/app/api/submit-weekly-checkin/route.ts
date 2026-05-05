@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 
 export const maxDuration = 60
 
@@ -100,21 +101,13 @@ async function sendNotifications(
     from: 'Body Recode <kade@bodyrecode.au>',
     to: 'kade@bodyrecode.au',
     subject: `${client.name}, Week ${weekNumber} check-in submitted`,
-    html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
-<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:48px 32px;">
-    <div style="margin-bottom:40px;">
-      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
-    </div>
-    <p style="font-size:16px;font-weight:700;color:#fff;margin:0 0 12px;">${client.name} · Week ${weekNumber}</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 28px;">${formLabel} has been submitted. A CFWS will be generated shortly.</p>
-    <a href="${clientUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client profile</a>
-  </div>
-</body>
-</html>`,
+    html: buildCoachNotificationEmail({
+      eyebrow: `Week ${weekNumber} Check-In`,
+      heading: `${client.name} submitted Week ${weekNumber}`,
+      body: `${formLabel} has been submitted. A CFWS will be generated shortly and will surface in their client profile.`,
+      ctaLabel: 'View client profile',
+      ctaUrl: clientUrl,
+    }),
   })
 
   // Confirm to client

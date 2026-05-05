@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export const maxDuration = 60
@@ -61,11 +62,18 @@ export async function POST(req: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { data: client } = await admin.from('clients').select('name').eq('id', clientId).maybeSingle()
     const name = client?.name ?? 'A client'
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
       subject: `${name} submitted their baseline`,
-      html: `<div style="font-family:sans-serif;background:#0a0a0a;color:#aaa;padding:32px;max-width:480px;"><img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:24px;" alt="Body Recode" /><p style="color:#fff;font-size:16px;font-weight:700;margin:0 0 12px;">Baseline submitted</p><p style="margin:0;font-size:14px;line-height:1.7;"><strong style="color:#fff;">${name}</strong> has submitted their baseline measurements and photos.</p></div>`,
+      html: buildCoachNotificationEmail({
+        eyebrow: 'Baseline',
+        heading: `${name} submitted their baseline`,
+        body: `${name} has uploaded their baseline measurements and progress photos. This is the calibration point for everything that follows. Their Deliberate Start Window can begin once you have reviewed it.`,
+        ctaLabel: 'Open client profile',
+        ctaUrl: `${baseUrl}/dashboard/clients/${clientId}`,
+      }),
     })
   } catch (e) {
     console.error('Notification email failed:', e)

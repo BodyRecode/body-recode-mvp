@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 
 export async function POST(req: NextRequest) {
   const { clientId, fullName } = await req.json()
@@ -19,11 +20,18 @@ export async function POST(req: NextRequest) {
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
       subject: `${fullName} signed their coaching agreement`,
-      html: `<div style="font-family:sans-serif;background:#0a0a0a;color:#aaa;padding:32px;max-width:480px;"><img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:24px;" alt="Body Recode" /><p style="color:#fff;font-size:16px;font-weight:700;margin:0 0 12px;">Coaching agreement signed</p><p style="margin:0;font-size:14px;line-height:1.7;"><strong style="color:#fff;">${fullName}</strong> has signed and accepted the Body Recode coaching agreement.</p></div>`,
+      html: buildCoachNotificationEmail({
+        eyebrow: 'Coaching Agreement',
+        heading: `${fullName} signed their coaching agreement`,
+        body: `${fullName} has reviewed and electronically accepted the Body Recode coaching agreement. Their next portal task (Health Declaration) is now unlocked.`,
+        ctaLabel: 'Open client profile',
+        ctaUrl: `${baseUrl}/dashboard/clients/${clientId}`,
+      }),
     })
   } catch (e) {
     console.error('Notification email failed:', e)

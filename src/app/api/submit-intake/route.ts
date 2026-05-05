@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { Resend } from 'resend'
+import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFFSSystemPrompt, buildCFFSUserPrompt } from '@/lib/cffs-prompt'
 
@@ -103,11 +104,19 @@ export async function POST(request: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const clientName = intake.full_name || 'A client'
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
       subject: `${clientName} submitted their intake`,
-      html: `<div style="font-family:sans-serif;background:#0a0a0a;color:#aaa;padding:32px;max-width:480px;"><img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:24px;" alt="Body Recode" /><p style="color:#fff;font-size:16px;font-weight:700;margin:0 0 12px;">Intake submitted</p><p style="margin:0;font-size:14px;line-height:1.7;"><strong style="color:#fff;">${clientName}</strong> has completed and submitted their foundational intake. CFFS generation is underway.</p></div>`,
+      html: buildCoachNotificationEmail({
+        eyebrow: 'Foundational Intake',
+        heading: `${clientName} submitted their intake`,
+        body: `${clientName} has completed and submitted all 208 questions of their foundational intake. CFFS generation is underway and will surface in the client profile within a minute or two. Once it lands you can also generate the client-facing Foundational Reading from the same panel.`,
+        ctaLabel: 'Open client profile',
+        ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
+        footnote: 'Their next portal task (Baseline Documentation) is now unlocked.',
+      }),
     })
   } catch (e) {
     console.error('Notification email failed:', e)

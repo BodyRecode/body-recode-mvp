@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
+import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 
 export const maxDuration = 60
 
@@ -59,15 +60,20 @@ export async function POST(req: NextRequest) {
   // Notify Kade
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const name = client?.name ?? 'A client'
     await resend.emails.send({
-      from: 'Body Recode™ <kade@bodyrecode.au>',
-      to: 'info@bodyrecode.au',
-      subject: `Medical clearance uploaded: ${client?.name}`,
-      html: `
-        <p><strong>${client?.name}</strong> has uploaded their completed medical clearance form.</p>
-        <p>Review and approve it in the dashboard:</p>
-        <p><a href="https://app.bodyrecode.au/dashboard/clients/${clientId}/medical-clearance">Open in dashboard →</a></p>
-      `,
+      from: 'Body Recode <kade@bodyrecode.au>',
+      to: 'kade@bodyrecode.au',
+      subject: `${name} uploaded their medical clearance`,
+      html: buildCoachNotificationEmail({
+        eyebrow: 'Medical Clearance',
+        heading: `${name} uploaded their medical clearance`,
+        body: `${name} has uploaded their completed medical clearance form. Review the form, then click Approve clearance on the client profile to unlock the rest of their onboarding.`,
+        ctaLabel: 'Review and approve',
+        ctaUrl: `${baseUrl}/dashboard/clients/${clientId}/medical-clearance`,
+        accent: 'amber',
+      }),
     }).catch(err => console.error('Notification email error:', err))
   }
 

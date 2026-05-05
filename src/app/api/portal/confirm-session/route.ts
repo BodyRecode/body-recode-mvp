@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
+import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { darkEmailSignature } from '@/lib/email-signature'
 
 export async function GET(request: NextRequest) {
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest) {
 
   const { data: session } = await admin
     .from('client_sessions')
-    .select('id, scheduled_at, duration_minutes, confirmed_at, clients(name, email)')
+    .select('id, scheduled_at, duration_minutes, confirmed_at, client_id, clients(name, email)')
     .eq('id', id)
     .eq('status', 'scheduled')
     .single()
@@ -56,25 +57,23 @@ export async function GET(request: NextRequest) {
   // Notify coach
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const clientName = (client as { name: string }).name
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
-      subject: `${(client as { name: string }).name} confirmed their session: ${displayDate}`,
-      html: `
-        <div style="background:#0c0a09;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-          <div style="max-width:480px;margin:0 auto;background:#111110;border-radius:16px;padding:36px;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:28px;" alt="Body Recode" />
-            <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#ffffff;">Session confirmed</p>
-            <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;"><strong style="color:#fff;">${(client as { name: string }).name}</strong> confirmed their attendance.</p>
-            <div style="background:#1a1a1a;border-radius:12px;padding:20px;">
-              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#2dd4bf;text-transform:uppercase;letter-spacing:0.08em;">Session</p>
-              <p style="margin:0 0 2px;font-size:16px;font-weight:700;color:#ffffff;">${displayDate}</p>
-              <p style="margin:0;font-size:14px;color:#a8a29e;">${displayTime} · ${session.duration_minutes} min · AF Newstead</p>
-            </div>
-            ${darkEmailSignature()}
-          </div>
-        </div>
-      `,
+      subject: `${clientName} confirmed their session: ${displayDate}`,
+      html: buildCoachNotificationEmail({
+        eyebrow: 'Session Confirmed',
+        heading: `${clientName} confirmed their session`,
+        body: `${clientName} has confirmed attendance for the upcoming face-to-face session.`,
+        details: [
+          `<strong style="color:#ffffff;">${displayDate}</strong>`,
+          `${displayTime} · ${session.duration_minutes} min · AF Newstead`,
+        ],
+        ctaLabel: 'Open client profile',
+        ctaUrl: `${baseUrl}/dashboard/clients/${session.client_id}`,
+      }),
     })
   } catch (e) {
     console.error('Coach notification failed:', e)

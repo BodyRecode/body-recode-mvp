@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 
 export async function POST(req: NextRequest) {
   const { clientId, requiresClearance, data } = await req.json()
@@ -24,14 +25,26 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const name = client?.name ?? 'A client'
-    const clearanceNote = requiresClearance
-      ? '<p style="margin:12px 0 0;font-size:14px;color:#f59e0b;"><strong>⚠ Medical clearance required.</strong> Review before commencing.</p>'
-      : ''
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const body = requiresClearance
+      ? [
+          `${name} has completed their health declaration.`,
+          '<strong style="color:#f59e0b;">Medical clearance required.</strong> Their intake is gated until you approve a completed clearance form. They will be prompted to upload it inside the portal.',
+        ]
+      : `${name} has completed their health declaration. No medical clearance flagged. Their Foundational Intake task is now unlocked.`
+
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
-      subject: `${name} submitted their health declaration`,
-      html: `<div style="font-family:sans-serif;background:#0a0a0a;color:#aaa;padding:32px;max-width:480px;"><img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:24px;" alt="Body Recode" /><p style="color:#fff;font-size:16px;font-weight:700;margin:0 0 12px;">Health declaration submitted</p><p style="margin:0;font-size:14px;line-height:1.7;"><strong style="color:#fff;">${name}</strong> has completed their health declaration.${clearanceNote}</p></div>`,
+      subject: `${name} submitted their health declaration${requiresClearance ? ' (clearance required)' : ''}`,
+      html: buildCoachNotificationEmail({
+        eyebrow: 'Health Declaration',
+        heading: `${name} submitted their health declaration`,
+        body,
+        ctaLabel: 'Open client profile',
+        ctaUrl: `${baseUrl}/dashboard/clients/${clientId}`,
+        accent: requiresClearance ? 'amber' : 'teal',
+      }),
     })
   } catch (e) {
     console.error('Notification email failed:', e)

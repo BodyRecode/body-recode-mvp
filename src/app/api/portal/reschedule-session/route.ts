@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { Resend } from 'resend'
+import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { darkEmailSignature } from '@/lib/email-signature'
 
 export async function POST(req: NextRequest) {
@@ -96,25 +97,22 @@ export async function POST(req: NextRequest) {
       `,
     })
 
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
       subject: `${client.name} booked a session: ${displayDate} at ${displayTime}`,
-      html: `
-        <div style="background:#0c0a09;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-          <div style="max-width:480px;margin:0 auto;background:#111110;border-radius:16px;padding:36px;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:28px;" alt="Body Recode" />
-            <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#ffffff;">Session booked via portal</p>
-            <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;line-height:1.6;"><strong style="color:#fff;">${client.name}</strong> has booked a face-to-face session.</p>
-            <div style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:24px;">
-              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#2dd4bf;text-transform:uppercase;letter-spacing:0.08em;">Booking Details</p>
-              <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#ffffff;">${displayDate}</p>
-              <p style="margin:0;font-size:14px;color:#a8a29e;">${displayTime} · ${durationMinutes} min · AF Newstead</p>
-            </div>
-            ${darkEmailSignature()}
-          </div>
-        </div>
-      `,
+      html: buildCoachNotificationEmail({
+        eyebrow: 'Session Booked',
+        heading: `${client.name} booked a face-to-face session`,
+        body: `${client.name} has booked a session via the client portal.`,
+        details: [
+          `<strong style="color:#ffffff;">${displayDate}</strong>`,
+          `${displayTime} · ${durationMinutes} min · AF Newstead`,
+        ],
+        ctaLabel: 'Open client profile',
+        ctaUrl: `${baseUrl}/dashboard/clients/${client.id}`,
+      }),
     })
   } catch (e) {
     console.error('Email error:', e)
