@@ -270,7 +270,7 @@ const DEPLETED_BANK: StateBank = {
   recommendations: [
     'Sleep first. 7-8 hours, lights out by 10pm, no screens after 9. Non-negotiable for this state.',
     'Pull training back. Max 3 sessions/wk at RPE 5-6. No high intensity until your foundations come up.',
-    'Eat enough. 1g protein per pound of bodyweight, daily. Don\'t undereat - that deepens the depletion.',
+    'Eat enough. 1.8-2.2g protein per kg of bodyweight, daily. Don\'t undereat - that deepens the depletion.',
     'Caffeine before noon only. Late caffeine compounds the cortisol cycle.',
     '10-minute walk after dinner. Blood sugar regulation + parasympathetic shift in one move.',
     'One nervous system reset daily. 5 min belly breathing morning OR evening. Whichever fits.',
