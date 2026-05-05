@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { PageHeader } from '@/components/dashboard/ui'
+import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
 
 interface Exercise {
   name: string
@@ -461,16 +461,69 @@ const CLASSES = [
 
 function ExerciseCard({ exercise }: { exercise: Exercise }) {
   return (
-    <div className="bg-stone-800/50 rounded-lg px-3 py-3">
-      <p className="text-sm font-medium text-stone-200 mb-2">{exercise.name}</p>
+    <div className="bg-[#0c0a09] border border-[#1c1917] rounded-xl px-3 py-3">
+      <p className="text-[14px] font-semibold text-white mb-2">{exercise.name}</p>
       <div className="space-y-1 mb-2">
         {exercise.cues.map((cue, i) => (
-          <p key={i} className="text-xs text-stone-400">
-            <span className="text-teal-500 mr-1">→</span>{cue}
+          <p key={i} className="text-[12px] text-[#a8a29e]">
+            <span className="text-[#14b8a6] mr-1">→</span>{cue}
           </p>
         ))}
       </div>
-      <p className="text-xs text-stone-500 italic">{exercise.why}</p>
+      <p className="text-[12px] text-[#57534e] italic">{exercise.why}</p>
+    </div>
+  )
+}
+
+function ScriptCard({ label, meta, children }: { label: string; meta?: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden mb-4">
+      <div className="flex items-center justify-between px-5 py-3 border-b border-[#1c1917]">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span className="w-7 h-[3px] rounded-full bg-[#14b8a6] shrink-0" />
+          <p
+            className="text-[10px] font-bold text-white uppercase truncate"
+            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+          >
+            {label}
+          </p>
+        </div>
+        {meta && (
+          <span
+            className="text-[10px] text-[#57534e] shrink-0"
+            style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em' }}
+          >
+            {meta}
+          </span>
+        )}
+      </div>
+      <div className="divide-y divide-[#1c1917]">{children}</div>
+    </div>
+  )
+}
+
+function FieldLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className="text-[10px] font-bold text-[#57534e] uppercase mb-2"
+      style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+    >
+      {children}
+    </p>
+  )
+}
+
+function TagList({ items }: { items: string[] }) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {items.map((t, i) => (
+        <span
+          key={i}
+          className="text-[11px] px-2.5 py-1 rounded-full bg-[#0c0a09] text-[#a8a29e] border border-[#1c1917]"
+        >
+          {t}
+        </span>
+      ))}
     </div>
   )
 }
@@ -490,135 +543,122 @@ export default function GroupClassesPage() {
       />
 
       {/* Class tabs */}
-      <div className="flex gap-2 mb-3">
-        {CLASSES.map(c => (
-          <button
-            key={c.id}
-            onClick={() => setActiveClass(c.id)}
-            className={`flex-1 py-3 px-4 rounded-xl border text-sm font-semibold transition-all ${
-              activeClass === c.id
-                ? 'border-teal-500/40 text-teal-400 bg-teal-500/08'
-                : 'border-stone-800 text-stone-500 hover:text-stone-300 hover:border-stone-700'
-            }`}
-            style={activeClass === c.id ? { background: 'rgba(20,184,166,0.08)' } : {}}
-          >
-            {c.label}
-          </button>
-        ))}
+      <div className="flex gap-2 mb-3 flex-wrap">
+        {CLASSES.map(c => {
+          const active = activeClass === c.id
+          return (
+            <button
+              key={c.id}
+              onClick={() => setActiveClass(c.id)}
+              className={`flex-1 min-w-[120px] py-3 px-4 rounded-xl border text-[13px] font-semibold transition-colors ${
+                active
+                  ? 'border-[#0d2d29] text-[#14b8a6] bg-[rgba(20,184,166,0.08)]'
+                  : 'border-[#1c1917] bg-[#111110] text-[#a8a29e] hover:text-white hover:border-[#292524]'
+              }`}
+            >
+              {c.label}
+            </button>
+          )
+        })}
       </div>
 
       {/* Day toggle */}
       <div className="flex gap-2 mb-6">
-        {(['a', 'b'] as const).map(day => (
-          <button
-            key={day}
-            onClick={() => setActiveDay(day)}
-            className={`flex-1 py-2 px-3 rounded-lg border text-xs font-semibold transition-all ${
-              activeDay === day
-                ? 'border-stone-500 text-white bg-stone-800'
-                : 'border-stone-800 text-stone-500 hover:text-stone-300 hover:border-stone-700'
-            }`}
-          >
-            Day {day.toUpperCase()}
-          </button>
-        ))}
+        {(['a', 'b'] as const).map(day => {
+          const active = activeDay === day
+          return (
+            <button
+              key={day}
+              onClick={() => setActiveDay(day)}
+              className={`flex-1 py-2 px-3 rounded-lg border text-[11px] font-semibold transition-colors ${
+                active
+                  ? 'border-[#292524] text-white bg-[#1c1917]'
+                  : 'border-[#1c1917] bg-[#111110] text-[#a8a29e] hover:text-white hover:border-[#292524]'
+              }`}
+            >
+              Day {day.toUpperCase()}
+            </button>
+          )
+        })}
       </div>
 
       {/* Overview */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-4">
-        <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between">
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Class Overview</p>
-          <span className="text-xs text-stone-500">{cls.duration}</span>
-        </div>
+      <ScriptCard label="Class Overview" meta={cls.duration}>
         <div className="px-5 py-4 space-y-4">
           <div>
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">Objective</p>
-            <p className="text-sm text-stone-300 leading-relaxed">{cls.objective}</p>
+            <FieldLabel>Objective</FieldLabel>
+            <p className="text-[14px] text-[#d4cfc9] leading-relaxed">{cls.objective}</p>
           </div>
           <div>
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">Primary Goal</p>
-            <p className="text-sm text-stone-300 leading-relaxed">{cls.goal}</p>
+            <FieldLabel>Primary Goal</FieldLabel>
+            <p className="text-[14px] text-[#d4cfc9] leading-relaxed">{cls.goal}</p>
           </div>
           <div>
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Target Member</p>
-            <div className="flex flex-wrap gap-2">
-              {cls.targetMember.map((t, i) => (
-                <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-stone-800 text-stone-400 border border-stone-700">{t}</span>
-              ))}
-            </div>
+            <FieldLabel>Target Member</FieldLabel>
+            <TagList items={cls.targetMember} />
           </div>
         </div>
-      </div>
+      </ScriptCard>
 
       {/* Session sections */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-4">
-        <div className="px-5 py-3 border-b border-stone-800">
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Session Plan — Day {activeDay.toUpperCase()}</p>
-        </div>
-        <div className="divide-y divide-stone-800/60">
-          {cls.sections.map((section, i) => (
-            <div key={i} className="px-5 py-4">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-sm font-bold text-white">{section.title}</p>
-                <span className="text-xs text-stone-500">{section.time}</span>
-              </div>
-              <p className="text-xs text-stone-500 mb-3">{section.objective}</p>
-
-              {'format' in section && section.format && (
-                <p className="text-xs text-teal-400/70 mb-3">{section.format}</p>
-              )}
-
-              <div className="space-y-2 mb-3">
-                {section.days[activeDay].map((exercise, j) => (
-                  <ExerciseCard key={j} exercise={exercise} />
-                ))}
-              </div>
-
-              {section.coachingFocus.length > 0 && (
-                <div>
-                  <p className="text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">Coaching focus</p>
-                  <div className="flex flex-wrap gap-2">
-                    {section.coachingFocus.map((f, j) => (
-                      <span key={j} className="text-xs px-2.5 py-1 rounded-full bg-stone-800 text-stone-400 border border-stone-700">{f}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
+      <ScriptCard label={`Session Plan — Day ${activeDay.toUpperCase()}`}>
+        {cls.sections.map((section, i) => (
+          <div key={i} className="px-5 py-4">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[14px] font-bold text-white">{section.title}</p>
+              <span
+                className="text-[11px] text-[#57534e]"
+                style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+              >
+                {section.time}
+              </span>
             </div>
-          ))}
-        </div>
-      </div>
+            <p className="text-[12px] text-[#57534e] mb-3">{section.objective}</p>
+
+            {'format' in section && section.format && (
+              <p className="text-[12px] text-[#14b8a6] mb-3">{section.format}</p>
+            )}
+
+            <div className="space-y-2 mb-3">
+              {section.days[activeDay].map((exercise, j) => (
+                <ExerciseCard key={j} exercise={exercise} />
+              ))}
+            </div>
+
+            {section.coachingFocus.length > 0 && (
+              <div>
+                <FieldLabel>Coaching focus</FieldLabel>
+                <TagList items={section.coachingFocus} />
+              </div>
+            )}
+          </div>
+        ))}
+      </ScriptCard>
 
       {/* Coaching principles */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden mb-4">
-        <div className="px-5 py-3 border-b border-stone-800">
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Coaching Principles</p>
-        </div>
+      <ScriptCard label="Coaching Principles">
         <div className="px-5 py-4 space-y-2">
           {cls.principles.map((p, i) => (
             <div key={i} className="flex items-start gap-2">
-              <div className="w-1 h-1 rounded-full bg-stone-600 mt-2 shrink-0" />
-              <p className="text-sm text-stone-300">{p}</p>
+              <div className="w-1 h-1 rounded-full bg-[#57534e] mt-2 shrink-0" />
+              <p className="text-[14px] text-[#d4cfc9]">{p}</p>
             </div>
           ))}
         </div>
-      </div>
+      </ScriptCard>
 
       {/* Primary cues + member experience */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-        <div className="px-5 py-3 border-b border-stone-800">
-          <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Primary Cues</p>
-        </div>
-        <div className="px-5 py-4 space-y-2 border-b border-stone-800/60">
+      <ScriptCard label="Primary Cues">
+        <div className="px-5 py-4 space-y-2">
           {cls.cues.map((c, i) => (
-            <p key={i} className="text-sm text-stone-300 italic">{c}</p>
+            <p key={i} className="text-[14px] text-[#d4cfc9] italic">{c}</p>
           ))}
         </div>
         <div className="px-5 py-4">
-          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Member Experience Goal</p>
-          <p className="text-sm text-teal-400 font-medium italic">{cls.memberExperience}</p>
+          <FieldLabel>Member Experience Goal</FieldLabel>
+          <p className="text-[14px] text-[#14b8a6] font-medium italic">{cls.memberExperience}</p>
         </div>
-      </div>
+      </ScriptCard>
     </div>
   )
 }
