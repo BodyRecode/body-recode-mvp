@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
+import { generatePreCallBrief } from '@/lib/pre-call-brief'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -144,6 +145,25 @@ export async function POST(request: NextRequest) {
       updated_at: new Date().toISOString(),
     })
     .eq('id', leadId)
+
+  // Auto-generate the pre-call brief from the scorecard data.
+  // Wrapped so any failure here never blocks the submit flow.
+  try {
+    const brief = generatePreCallBrief({
+      name: first_name.trim(),
+      scorecard_score: score,
+      scorecard_body_state: body_state as 'Depleted State' | 'Transitioning State' | 'Ready State',
+      scorecard_section_scores: section_scores ?? {},
+      approach_response: approach_response ?? null,
+      investment_readiness: investment_readiness ?? null,
+      lead_quality: leadQuality,
+    })
+    await supabase.from('leads').update({ pre_call_brief: brief }).eq('id', leadId)
+    console.log('[scorecard/submit] Pre-call brief generated for lead:', leadId)
+  } catch (briefErr) {
+    console.error('[scorecard/submit] Pre-call brief generation failed:', briefErr)
+    // Don't fail the request - the brief can be regenerated later via the backfill route.
+  }
 
   // Log scorecard result as a lead event
   const qualifierNote = leadQuality
