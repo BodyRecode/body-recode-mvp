@@ -32,13 +32,13 @@ export default function ClientDangerActions({ clientId, isActive }: { clientId: 
   }
 
   return (
-    <div className="mt-6 bg-stone-900 border border-stone-800 rounded-xl p-6">
-      <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">Client Management</h2>
+    <div className="mt-6 bg-[#111110] border border-[#1c1917] rounded-xl p-6">
+      <h2 className="text-sm font-semibold text-[#d4cfc9] uppercase tracking-wider mb-4">Client Management</h2>
       <div className="flex items-center gap-3">
         <button
           onClick={toggleActive}
           disabled={!!loading}
-          className="text-sm font-medium px-4 py-2 rounded-lg border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white transition-colors disabled:opacity-50"
+          className="text-sm font-medium px-4 py-2 rounded-lg border border-[#1c1917] text-[#d4cfc9] hover:border-[#292524] hover:text-white transition-colors disabled:opacity-50"
         >
           {loading === 'deactivate' || loading === 'activate'
             ? 'Saving...'
