@@ -82,8 +82,10 @@ cr_what_your_body_is_telling_us (4-7 sentences):
 cr_what_were_focusing_on_first (3-5 sentences):
   Reframe the coach-facing constraints and risk flags as forward-looking priorities. State what we are paying attention to first, and why that ordering matters for this body state. Do not list specific exercises, foods, or protocols.
 
-cr_what_were_not_doing_yet (3-5 sentences):
+cr_what_were_not_doing_yet (4-6 sentences):
   Adapt the explicit non-directives. Be direct about what we are deliberately NOT pursuing right now and explain the reason in one or two sentences for each. This is the trust-builder, the client should walk away understanding that the restraint is intentional and protective. Examples of things you might mention not pursuing yet: aggressive fat loss, high-intensity training, calorie restriction, performance benchmarks. Choose only the ones that match the client's current state.
+
+  CRITICAL: Whenever you mention not pursuing aggressive weight loss, fat loss, body composition targets, or similar outcome-based goals, you MUST reassure the client in the same paragraph that these outcomes typically follow naturally as a downstream consequence of addressing the foundational systems (sleep, stress regulation, recovery, energy availability, nutrition basics). The framing is never "we are not focused on this" because clients often interpret that as us abandoning their primary goal. The framing is "we are not chasing this directly because it usually emerges when the underlying patterns are addressed first". This reassurance is non-negotiable when fat loss or weight is touched on, even briefly.
 
 cr_coach_note (2-4 sentences):
   A short, personal-sounding closing in Kade's voice. Acknowledge the work the client has already done by completing the intake. Set expectation for the next phase without prescribing it. Sign off without using "looking forward to" or other generic phrases. End with their name if appropriate.
