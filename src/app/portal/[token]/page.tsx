@@ -92,6 +92,17 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .eq('client_id', client.id)
     .order('day_of_week', { ascending: true })
 
+  // Foundational Reading (only the published one)
+  const { data: publishedReadingRows } = await admin
+    .from('cffs')
+    .select('client_reading_published_at, body_state_classification')
+    .eq('client_id', client.id)
+    .eq('is_archived', false)
+    .not('client_reading_published_at', 'is', null)
+    .order('client_reading_published_at', { ascending: false })
+    .limit(1)
+  const publishedReading = publishedReadingRows?.[0] ?? null
+
   const firstName = client.name?.split(' ')[0] ?? 'there'
   const agreementDone = !!client.agreement_accepted_at
   const healthDone = !!client.health_declaration_submitted_at
@@ -275,7 +286,29 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
-        {/* Sessions — face-to-face clients */}
+        {/* Foundational Reading - shown the moment Kade publishes it */}
+        {publishedReading && (
+          <div className="mb-10">
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Your Reading</p>
+            <Link
+              href={`/portal/${token}/foundational-reading`}
+              className="block rounded-2xl border border-stone-700 bg-stone-900 p-5 hover:border-teal-400/40 hover:bg-teal-400/5 transition-colors"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-white mb-1">Foundational Reading</p>
+                  <p className="text-xs text-stone-400 leading-relaxed">
+                    A read of how your body is currently organising itself
+                    {publishedReading.body_state_classification ? `, currently in ${publishedReading.body_state_classification}.` : '.'}
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-teal-400 ml-4 shrink-0">View →</span>
+              </div>
+            </Link>
+          </div>
+        )}
+
+        {/* Sessions - face-to-face clients */}
         {allOnboardingDone && client.session_type === 'face_to_face' && (
           <div className="mb-10">
             <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Sessions</p>

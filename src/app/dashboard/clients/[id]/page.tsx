@@ -11,6 +11,7 @@ import { TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
 import CopyLinkButton from './copy-link-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
+import ClientReadingPanel from './client-reading-panel'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
@@ -492,6 +493,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               </div>
             ))}
           </div>
+
+          <ClientReadingPanel
+            cffs={activeCffs as Parameters<typeof ClientReadingPanel>[0]['cffs']}
+            clientId={client.id}
+            clientToken={client.onboarding_token ?? null}
+          />
 
           {/* Archived CFFS */}
           {archivedCffs.length > 0 && (

@@ -1,0 +1,172 @@
+import { NextRequest, NextResponse } from 'next/server'
+import Anthropic from '@anthropic-ai/sdk'
+import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import {
+  buildClientReadingSystemPrompt,
+  buildClientReadingUserPrompt,
+  type CFFSContext,
+} from '@/lib/client-reading-prompt'
+
+export const maxDuration = 60
+
+function stripEmDashes<T>(value: T): T {
+  if (typeof value === 'string') return value.replace(/—/g, ', ') as T
+  if (Array.isArray(value)) return value.map(stripEmDashes) as T
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, stripEmDashes(v)])
+    ) as T
+  }
+  return value
+}
+
+export async function POST(request: NextRequest) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  }
+
+  const { cffs_id } = await request.json()
+  if (!cffs_id) {
+    return NextResponse.json({ error: 'Missing cffs_id' }, { status: 400 })
+  }
+
+  const admin = createAdminClient()
+
+  const { data: cffs, error: cffsErr } = await admin
+    .from('cffs')
+    .select('*')
+    .eq('id', cffs_id)
+    .single()
+
+  if (cffsErr || !cffs) {
+    return NextResponse.json({ error: 'CFFS not found' }, { status: 404 })
+  }
+
+  const { data: intake, error: intakeErr } = await admin
+    .from('intakes')
+    .select('*')
+    .eq('id', cffs.intake_id)
+    .single()
+
+  if (intakeErr || !intake) {
+    return NextResponse.json({ error: 'Intake not found' }, { status: 404 })
+  }
+
+  const { data: client, error: clientErr } = await admin
+    .from('clients')
+    .select('id, name, package')
+    .eq('id', cffs.client_id)
+    .single()
+
+  if (clientErr || !client) {
+    return NextResponse.json({ error: 'Client not found' }, { status: 404 })
+  }
+
+  const cffsContext: CFFSContext = {
+    body_state_classification: cffs.body_state_classification,
+    resolution_state: cffs.resolution_state,
+    client_context_summary: cffs.client_context_summary,
+    primary_patterns_and_signals: cffs.primary_patterns_and_signals,
+    capacity_constraints_and_guardrails: cffs.capacity_constraints_and_guardrails,
+    risk_flags_and_watch_items: cffs.risk_flags_and_watch_items,
+    tensions_and_tradeoffs: cffs.tensions_and_tradeoffs,
+    explicit_non_directives: cffs.explicit_non_directives,
+    closing_interpretive_notes: cffs.closing_interpretive_notes,
+    exposure_readiness_capacity: cffs.exposure_readiness_capacity,
+    exposure_readiness_schedule: cffs.exposure_readiness_schedule,
+    exposure_readiness_regulation: cffs.exposure_readiness_regulation,
+    exposure_readiness_behaviour: cffs.exposure_readiness_behaviour,
+  }
+
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+
+  let message
+  try {
+    message = await anthropic.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 2000,
+      system: buildClientReadingSystemPrompt(),
+      messages: [{
+        role: 'user',
+        content: buildClientReadingUserPrompt(intake, cffsContext, { name: client.name, package: client.package }),
+      }],
+    })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('Anthropic API error:', msg)
+    return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
+  }
+
+  const content = message.content[0]
+  if (content.type !== 'text') {
+    return NextResponse.json({ error: 'Unexpected response from AI' }, { status: 500 })
+  }
+
+  const jsonMatch = content.text.match(/\{[\s\S]*\}/)
+  if (!jsonMatch) {
+    return NextResponse.json(
+      { error: `Could not parse reading. AI returned: ${content.text.slice(0, 120)}` },
+      { status: 500 }
+    )
+  }
+
+  let reading: {
+    cr_where_you_are?: string
+    cr_what_your_body_is_telling_us?: string
+    cr_what_were_focusing_on_first?: string
+    cr_what_were_not_doing_yet?: string
+    cr_coach_note?: string
+  }
+  try {
+    reading = JSON.parse(jsonMatch[0])
+  } catch (err) {
+    return NextResponse.json(
+      { error: `JSON parse failed: ${jsonMatch[0].slice(0, 120)}` },
+      { status: 500 }
+    )
+  }
+
+  const required = [
+    'cr_where_you_are',
+    'cr_what_your_body_is_telling_us',
+    'cr_what_were_focusing_on_first',
+    'cr_what_were_not_doing_yet',
+    'cr_coach_note',
+  ] as const
+  for (const key of required) {
+    if (!reading[key] || typeof reading[key] !== 'string') {
+      return NextResponse.json(
+        { error: `Missing or invalid section: ${key}` },
+        { status: 500 }
+      )
+    }
+  }
+
+  const cleaned = stripEmDashes(reading)
+
+  const { data: updated, error: updateErr } = await admin
+    .from('cffs')
+    .update({
+      cr_where_you_are: cleaned.cr_where_you_are,
+      cr_what_your_body_is_telling_us: cleaned.cr_what_your_body_is_telling_us,
+      cr_what_were_focusing_on_first: cleaned.cr_what_were_focusing_on_first,
+      cr_what_were_not_doing_yet: cleaned.cr_what_were_not_doing_yet,
+      cr_coach_note: cleaned.cr_coach_note,
+      client_reading_generated_at: new Date().toISOString(),
+      // Re-publishing requires Kade to click Send to client again
+      client_reading_published_at: null,
+    })
+    .eq('id', cffs_id)
+    .select()
+    .single()
+
+  if (updateErr) {
+    console.error('Failed to save reading:', updateErr)
+    return NextResponse.json({ error: 'Failed to save reading' }, { status: 500 })
+  }
+
+  return NextResponse.json({ cffs: updated })
+}
