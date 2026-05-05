@@ -132,15 +132,23 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <div className="w-14 h-14 bg-teal-400/10 rounded-full flex items-center justify-center mx-auto mb-5">
-            <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-14 h-14 bg-[#14b8a6]/10 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg className="w-7 h-7 text-[#14b8a6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
           <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style={{ display: 'block', margin: '0 auto 20px' }} />
           <h1 className="text-2xl font-bold text-white mb-3">Baseline received.</h1>
-          <p className="text-stone-400 text-sm leading-relaxed">Baseline documentation protects interpretive integrity. It allows exposure to be guided by structure rather than emotion. This marks the starting calibration point of your coaching arc.</p>
-          <p className="text-stone-500 text-xs mt-4">Your coach will review your documentation and your Deliberate Start Window will begin shortly.</p>
+          <p className="text-[#a8a29e] text-sm leading-relaxed">Baseline documentation protects interpretive integrity. It allows exposure to be guided by structure rather than emotion. This marks the starting calibration point of your coaching arc.</p>
+          <p className="text-[#57534e] text-xs mt-4 mb-7">Your coach will review your documentation and your Deliberate Start Window will begin shortly.</p>
+          {portalHref && (
+            <a
+              href={portalHref}
+              className="inline-flex items-center gap-2 bg-[#14b8a6] text-black text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#5eead4] transition-colors"
+            >
+              Back to your portal
+            </a>
+          )}
         </div>
       </div>
     )
