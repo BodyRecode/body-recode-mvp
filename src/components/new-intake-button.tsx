@@ -42,7 +42,7 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
       <button
         onClick={createInvitation}
         disabled={status === 'loading'}
-        className="text-sm px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 transition-colors disabled:opacity-50"
+        className="text-sm px-4 py-2 border border-[#1c1917] text-[#d4cfc9] rounded-lg hover:border-[#292524] transition-colors disabled:opacity-50"
       >
         {status === 'loading' ? 'Creating…' : 'New intake'}
       </button>
@@ -50,15 +50,15 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
   }
 
   return (
-    <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mt-4">
-      <p className="text-xs uppercase tracking-wider text-stone-500 mb-3">New intake link ready</p>
-      <div className="bg-stone-950 rounded-lg px-4 py-3 flex items-center gap-3 mb-4">
-        <p className="text-stone-400 text-xs font-mono flex-1 truncate">
+    <div className="bg-[#111110] border border-[#1c1917] rounded-xl p-5 mt-4">
+      <p className="text-xs uppercase tracking-wider text-[#57534e] mb-3">New intake link ready</p>
+      <div className="bg-[#0c0a09] rounded-lg px-4 py-3 flex items-center gap-3 mb-4">
+        <p className="text-[#a8a29e] text-xs font-mono flex-1 truncate">
           {window.location.origin}/intake/{token}
         </p>
         <button
           onClick={copy}
-          className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-stone-600 text-stone-300 hover:border-stone-400 hover:text-white transition-colors"
+          className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#292524] text-[#d4cfc9] hover:border-[#3c3835] hover:text-white transition-colors"
         >
           {copied ? 'Copied!' : 'Copy'}
         </button>
@@ -75,7 +75,7 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
         )}
         <button
           onClick={() => { setStatus('idle'); setToken('') }}
-          className="text-xs text-stone-500 hover:text-stone-300 transition-colors"
+          className="text-xs text-[#57534e] hover:text-[#d4cfc9] transition-colors"
         >
           Dismiss
         </button>

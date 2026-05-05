@@ -34,7 +34,7 @@ export default function NoShowSequenceButton({ leadId }: { leadId: string }) {
       <button
         onClick={send}
         disabled={loading}
-        className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors disabled:opacity-50"
+        className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#14b8a6] text-black rounded-lg hover:bg-[#5eead4] transition-colors disabled:opacity-50"
       >
         {loading ? 'Starting...' : 'Start Re-engagement Sequence'}
       </button>

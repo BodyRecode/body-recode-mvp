@@ -19,7 +19,7 @@ export default function PortalInviteButton({ clientId, onboardingToken }: { clie
     <button
       onClick={handleClick}
       disabled={!onboardingToken}
-      className="text-sm font-medium px-4 py-2.5 rounded-lg border border-stone-700 text-stone-300 hover:border-stone-500 transition-colors disabled:opacity-50"
+      className="text-sm font-medium px-4 py-2.5 rounded-lg border border-[#1c1917] text-[#d4cfc9] hover:border-[#292524] transition-colors disabled:opacity-50"
     >
       {status === 'copied' ? 'Copied!' : 'Copy portal link'}
     </button>

@@ -30,9 +30,9 @@ export default function RegenerateCFWSButton({ clientId, weekNumber }: { clientI
     <button
       onClick={regenerate}
       disabled={status === 'loading' || status === 'done'}
-      className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors disabled:opacity-50"
+      className="text-xs font-medium px-3 py-1.5 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-[#292524] hover:text-[#e7e5e4] transition-colors disabled:opacity-50"
     >
-      {status === 'loading' ? 'Generating…' : status === 'done' ? 'Done — reloading' : status === 'error' ? `Error: ${errorMsg || 'retry'}` : 'Generate CFWS'}
+      {status === 'loading' ? 'Generating…' : status === 'done' ? 'Done - reloading' : status === 'error' ? `Error: ${errorMsg || 'retry'}` : 'Generate CFWS'}
     </button>
   )
 }

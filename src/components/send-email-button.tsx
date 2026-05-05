@@ -44,8 +44,8 @@ export default function SendEmailButton({
   const baseClass = 'text-sm font-medium px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50'
   const variantClass =
     variant === 'outline'
-      ? 'border border-stone-700 text-stone-300 hover:border-stone-500'
-      : 'bg-white text-stone-950 hover:bg-stone-100'
+      ? 'border border-[#1c1917] text-[#d4cfc9] hover:border-[#292524]'
+      : 'bg-white text-[#0c0a09] hover:bg-[#5eead4]'
 
   if (status === 'sent') {
     return (
@@ -53,7 +53,7 @@ export default function SendEmailButton({
         onClick={() => setStatus('idle')}
         className={`${baseClass} ${variantClass} opacity-60`}
       >
-        ✓ Sent — send again?
+        ✓ Sent - send again?
       </button>
     )
   }

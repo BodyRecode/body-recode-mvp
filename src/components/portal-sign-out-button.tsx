@@ -15,7 +15,7 @@ export default function PortalSignOutButton() {
   return (
     <button
       onClick={handleSignOut}
-      className="text-xs text-stone-600 hover:text-stone-400 transition-colors"
+      className="text-xs text-[#3c3835] hover:text-[#a8a29e] transition-colors"
     >
       Sign out
     </button>

@@ -117,7 +117,7 @@ export default function PackageManager({
     <div className="space-y-3">
       <div className="space-y-2">
         <div>
-          <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Standard</p>
+          <p className="text-[10px] font-semibold text-[#57534e] uppercase tracking-widest mb-1.5">Standard</p>
           <div className="flex flex-wrap gap-2">
             {packages.filter(p => p.tier === 'standard').map(p => (
               <button
@@ -127,7 +127,7 @@ export default function PackageManager({
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
                     ? 'bg-teal-500/10 border-teal-500/30 text-teal-400'
-                    : 'border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200'
+                    : 'border-[#1c1917] text-[#a8a29e] hover:border-[#292524] hover:text-[#e7e5e4]'
                 }`}
               >
                 {p.label}
@@ -146,7 +146,7 @@ export default function PackageManager({
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
                     ? 'bg-amber-500/10 border-amber-500/40 text-amber-300'
-                    : 'border-stone-700 text-stone-400 hover:border-amber-500/40 hover:text-amber-300'
+                    : 'border-[#1c1917] text-[#a8a29e] hover:border-amber-500/40 hover:text-amber-300'
                 }`}
               >
                 {p.label}
@@ -168,7 +168,7 @@ export default function PackageManager({
               <button
                 onClick={cancelSchedule}
                 disabled={cancelling}
-                className="text-stone-500 hover:text-red-400 transition-colors"
+                className="text-[#57534e] hover:text-red-400 transition-colors"
               >
                 {cancelling ? 'Cancelling...' : 'Cancel'}
               </button>
@@ -176,9 +176,9 @@ export default function PackageManager({
           )}
 
           {alreadySent && (
-            <div className="text-xs text-stone-500">
+            <div className="text-xs text-[#57534e]">
               Subscription link sent {new Date(subscriptionLinkSentAt!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Brisbane' })}
-              {subscriptionLinkSendAt && <span className="ml-1 text-stone-600">(scheduled send)</span>}
+              {subscriptionLinkSendAt && <span className="ml-1 text-[#3c3835]">(scheduled send)</span>}
             </div>
           )}
 
@@ -188,20 +188,20 @@ export default function PackageManager({
             <button
               onClick={sendLink}
               disabled={sending || sent}
-              className="text-xs font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors disabled:opacity-50"
+              className="text-xs font-bold px-4 py-2 bg-[#14b8a6] text-black rounded-lg hover:bg-[#5eead4] transition-colors disabled:opacity-50"
             >
               {sending ? 'Sending...' : sent ? 'Sent!' : 'Send to Client'}
             </button>
             <button
               onClick={copyLink}
-              className="text-xs font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
+              className="text-xs font-bold px-4 py-2 border border-[#1c1917] text-[#d4cfc9] rounded-lg hover:border-[#292524] hover:text-white transition-colors"
             >
               {copied ? 'Copied!' : 'Copy Link'}
             </button>
             {!isScheduled && (
               <button
                 onClick={() => setShowSchedule(v => !v)}
-                className="text-xs font-bold px-4 py-2 border border-stone-700 text-stone-400 rounded-lg hover:border-amber-500/40 hover:text-amber-300 transition-colors"
+                className="text-xs font-bold px-4 py-2 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-amber-500/40 hover:text-amber-300 transition-colors"
               >
                 Schedule Send
               </button>
@@ -215,7 +215,7 @@ export default function PackageManager({
                 value={scheduleDate || todayStr}
                 min={todayStr}
                 onChange={e => setScheduleDate(e.target.value)}
-                className="text-xs bg-stone-800 border border-stone-700 text-stone-200 rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-500/50"
+                className="text-xs bg-[#1c1917] border border-[#1c1917] text-[#e7e5e4] rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-500/50"
               />
               <button
                 onClick={scheduleLink}
@@ -226,11 +226,11 @@ export default function PackageManager({
               </button>
               <button
                 onClick={() => setShowSchedule(false)}
-                className="text-xs text-stone-600 hover:text-stone-400 transition-colors"
+                className="text-xs text-[#3c3835] hover:text-[#a8a29e] transition-colors"
               >
                 Cancel
               </button>
-              <span className="text-xs text-stone-600">Will send at 8am Brisbane time</span>
+              <span className="text-xs text-[#3c3835]">Will send at 8am Brisbane time</span>
             </div>
           )}
         </div>

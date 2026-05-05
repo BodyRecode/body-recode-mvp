@@ -41,7 +41,7 @@ export default function StickyScrollNav({ sections }: { sections: Section[] }) {
             className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
               active === id
                 ? 'bg-teal-500/10 text-teal-400'
-                : 'text-stone-500 hover:text-stone-300 hover:bg-stone-800/50'
+                : 'text-[#57534e] hover:text-[#d4cfc9] hover:bg-[#1c1917]/50'
             }`}
           >
             {title}
