@@ -19,7 +19,7 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen bg-[#0c0a09] text-white">
       <header
-        className="sticky top-0 z-50 border-b border-[#1c1917] backdrop-blur-xl"
+        className="sticky top-0 z-50 border-b border-[#1c1917] backdrop-blur-xl print:hidden"
         style={{ background: 'rgba(12, 10, 9, 0.78)' }}
       >
         <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between gap-8">
@@ -49,7 +49,7 @@ export default async function DashboardLayout({
           </div>
         </div>
       </header>
-      <main className="max-w-[1280px] mx-auto px-6 py-10">
+      <main className="max-w-[1280px] mx-auto px-6 py-10 print:max-w-none print:mx-0 print:p-0">
         {children}
       </main>
       <CommandPalette />

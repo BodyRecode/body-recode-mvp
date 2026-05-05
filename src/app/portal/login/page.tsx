@@ -21,7 +21,7 @@ export default async function PortalLoginPage({
         <div className="text-center mb-10">
           <img
             src="https://bodyrecode.au/logo-teal.png"
-            width="200"
+            width="280"
             alt="Body Recode"
             className="mx-auto mb-8"
           />

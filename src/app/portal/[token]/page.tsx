@@ -28,7 +28,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     return (
       <div className="min-h-screen bg-[#0c0a09] text-white flex flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-md bg-[#111110] border border-[#1c1917] rounded-2xl p-8">
-          <img src="https://bodyrecode.au/logo-teal.png" width="140" alt="Body Recode" className="mb-8" />
+          <img src="https://bodyrecode.au/logo-teal.png" width="220" alt="Body Recode" className="mb-8" />
           <h1 className="text-xl font-bold text-white mb-3">Wrong account signed in</h1>
           <p className="text-sm text-stone-400 leading-relaxed mb-2">
             This portal link belongs to a different account. You&apos;re currently signed in as{' '}

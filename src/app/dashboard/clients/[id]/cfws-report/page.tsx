@@ -60,7 +60,11 @@ export default async function CFWSReportPage({ params }: { params: Promise<{ id:
 
   return (
     <>
-      <PrintTrigger backHref={`/dashboard/clients/${id}`} />
+      <PrintTrigger
+        backHref={`/dashboard/clients/${id}`}
+        pdfHref={`/api/dashboard/clients/${id}/cfws-report/pdf`}
+        filename={`${client.name.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-cfws-week-${cfws.week_number}.pdf`}
+      />
 
       <style>{`
         .cfws-report { font-family: ${SCREEN_FONT}; background: ${PAGE_BG}; color: ${INK}; min-height: 100vh; }
