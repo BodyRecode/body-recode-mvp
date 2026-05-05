@@ -51,11 +51,11 @@ export default function EditContact({ leadId, name, email, phone }: Props) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-xs text-[#57534e] mb-1">Email</p>
-            <p className="text-white text-sm">{email || '—'}</p>
+            <p className="text-white text-sm">{email || '-'}</p>
           </div>
           <div>
             <p className="text-xs text-[#57534e] mb-1">Phone</p>
-            <p className="text-white text-sm">{phone || '—'}</p>
+            <p className="text-white text-sm">{phone || '-'}</p>
           </div>
         </div>
       </div>

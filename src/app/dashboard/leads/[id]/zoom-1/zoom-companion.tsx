@@ -14,27 +14,27 @@ const SECTION_LABELS: Record<string, string> = {
 
 const SECTION_INTERPRETATIONS: Record<string, Record<number, string>> = {
   '01': {
-    1: 'Energy is significantly depleted — relying on caffeine, crashing through the day. This is a core signal that the body is running on reserves.',
+    1: 'Energy is significantly depleted - relying on caffeine, crashing through the day. This is a core signal that the body is running on reserves.',
     2: 'Energy is inconsistent day to day. Not reliably low, but not reliably high either. The variation itself is the signal.',
     3: 'Energy is steady and self-sustaining. Not a limiting factor right now.',
   },
   '02': {
-    1: 'Sleep quality is poor — waking through the night, not rested. This is the single biggest recovery suppressor when it\'s compromised.',
+    1: 'Sleep quality is poor - waking through the night, not rested. This is the single biggest recovery suppressor when it\'s compromised.',
     2: 'Sleep is okay most nights but not consistently restorative. Some nights fine, others not.',
     3: 'Sleep is solid and consistently restorative. Recovery rhythm is intact.',
   },
   '03': {
     1: 'Stress load is high and ongoing. Work, life, or emotional demands are significant. This directly suppresses fat loss and training response.',
-    2: 'Stress is moderate — manageable most of the time but not low. Has an ongoing background effect.',
+    2: 'Stress is moderate - manageable most of the time but not low. Has an ongoing background effect.',
     3: 'Stress load is low to moderate. Not a significant driver in the current picture.',
   },
   '04': {
     1: 'Training response has stalled or regressed. Performance flat or declining. Body feels beaten up. Classic depletion-state training pattern.',
     2: 'Training response is inconsistent. Some progress but hard to build momentum. Hit and miss.',
-    3: 'Training response is good — getting stronger, fitter, recovering between sessions.',
+    3: 'Training response is good - getting stronger, fitter, recovering between sessions.',
   },
   '05': {
-    1: 'Fat loss has stopped despite effort. Diet clean, training consistent — nothing moving. This is a biology problem, not a behaviour problem.',
+    1: 'Fat loss has stopped despite effort. Diet clean, training consistent - nothing moving. This is a biology problem, not a behaviour problem.',
     2: 'Fat loss is slow or stalled. Some movement but not matching the input.',
     3: 'Body is responding. Composition is shifting in the right direction.',
   },
@@ -44,23 +44,23 @@ const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string; openi
   'Depleted State': {
     colour: 'text-red-400 border-red-400/30 bg-red-400/10',
     badge: 'bg-red-400',
-    opening: 'Their scorecard came back as Depleted State. This means the body is in protection mode — cortisol elevated, metabolism suppressed, biology actively working against fat loss and performance. The scorecard gave us the signal. This call is about understanding what\'s driving it.',
-    interpretation: 'What you\'re experiencing is a biological response, not a willpower or effort problem. When the body registers sustained demand — poor sleep, high stress, inconsistent recovery, training that isn\'t producing results — it shifts into a state where it protects rather than performs. That\'s what the scorecard picked up. It\'s not a coincidence that fat loss has stalled and training feels harder than it should. Those are two symptoms of the same underlying state.',
-    pattern: 'Depleted State: The body is in protection mode. Cortisol elevated, metabolism suppressed. Adding more training stimulus typically makes this worse. The fix is not harder — it\'s smarter management of the system.',
+    opening: 'Their scorecard came back as Depleted State. This means the body is in protection mode - cortisol elevated, metabolism suppressed, biology actively working against fat loss and performance. The scorecard gave us the signal. This call is about understanding what\'s driving it.',
+    interpretation: 'What you\'re experiencing is a biological response, not a willpower or effort problem. When the body registers sustained demand - poor sleep, high stress, inconsistent recovery, training that isn\'t producing results - it shifts into a state where it protects rather than performs. That\'s what the scorecard picked up. It\'s not a coincidence that fat loss has stalled and training feels harder than it should. Those are two symptoms of the same underlying state.',
+    pattern: 'Depleted State: The body is in protection mode. Cortisol elevated, metabolism suppressed. Adding more training stimulus typically makes this worse. The fix is not harder - it\'s smarter management of the system.',
   },
   'Transitioning State': {
     colour: 'text-amber-400 border-amber-400/30 bg-amber-400/10',
     badge: 'bg-amber-400',
     opening: 'Their scorecard came back as Transitioning State. They have capacity but something is limiting consistent response. Could be sleep, stress, recovery rhythm, or a mismatch between training load and current biological state. The call is about identifying which.',
-    interpretation: 'The Transitioning State means the body has capacity but isn\'t consistently expressing it. Some weeks things click, other weeks they don\'t. That inconsistency is the signal. It usually means there\'s one or two limiting factors keeping the system from settling into a reliable response pattern. The scorecard narrowed down where those are — the section scores point to what\'s holding things back.',
-    pattern: 'Transitioning State: Has capacity but not consistency. Something is limiting the response — usually one or two sections dragging the overall picture. The work is identifying the specific drivers and addressing them in order.',
+    interpretation: 'The Transitioning State means the body has capacity but isn\'t consistently expressing it. Some weeks things click, other weeks they don\'t. That inconsistency is the signal. It usually means there\'s one or two limiting factors keeping the system from settling into a reliable response pattern. The scorecard narrowed down where those are - the section scores point to what\'s holding things back.',
+    pattern: 'Transitioning State: Has capacity but not consistency. Something is limiting the response - usually one or two sections dragging the overall picture. The work is identifying the specific drivers and addressing them in order.',
   },
   'Ready State': {
     colour: 'text-teal-400 border-teal-400/30 bg-teal-400/10',
     badge: 'bg-teal-400',
-    opening: 'Their scorecard came back as Ready State. Biology is in a position to respond well. If fat loss or performance isn\'t happening at this score, the issue is in the prescription — the what and how of training and nutrition, not the biological foundation. This call is about identifying where the prescription gap is.',
-    interpretation: 'A Ready State score means the biology is in a good position — energy, sleep, stress, and recovery are not the limiting factors. When someone in this state isn\'t getting results, it\'s typically a prescription problem. The training or nutrition approach isn\'t matched to what the body needs right now. That\'s actually good news — because it\'s a much more solvable problem than trying to fix depleted biology.',
-    pattern: 'Ready State: Biology is responding well. If results aren\'t happening, the issue is in the prescription — not the foundation. Focus the conversation on the training and nutrition approach.',
+    opening: 'Their scorecard came back as Ready State. Biology is in a position to respond well. If fat loss or performance isn\'t happening at this score, the issue is in the prescription - the what and how of training and nutrition, not the biological foundation. This call is about identifying where the prescription gap is.',
+    interpretation: 'A Ready State score means the biology is in a good position - energy, sleep, stress, and recovery are not the limiting factors. When someone in this state isn\'t getting results, it\'s typically a prescription problem. The training or nutrition approach isn\'t matched to what the body needs right now. That\'s actually good news - because it\'s a much more solvable problem than trying to fix depleted biology.',
+    pattern: 'Ready State: Biology is responding well. If results aren\'t happening, the issue is in the prescription - not the foundation. Focus the conversation on the training and nutrition approach.',
   },
 }
 
@@ -105,7 +105,7 @@ There\'s nothing you need to decide today. I just want to make sure the patterns
       goal: 'Let them respond to their result before you interpret it. Their reaction is the signal.',
       script: `"Before I share anything, I want to hear your take first.
 
-Your scorecard came back as ${bodyState} — ${scoreDisplay}. You\'ve had a chance to sit with that.
+Your scorecard came back as ${bodyState} - ${scoreDisplay}. You\'ve had a chance to sit with that.
 
 What was your reaction when you saw the result?"`,
       prompts: [
@@ -121,8 +121,8 @@ What was your reaction when you saw the result?"`,
       id: 3,
       name: 'Context Exploration',
       duration: '10-12 min',
-      goal: 'Understand the real picture behind the section scores. The scorecard gives the signal — the conversation gives the context.',
-      script: `"What I want to do now is get a clearer picture of what\'s actually been going on — because the scorecard shows the pattern, but it doesn\'t know the context behind it.
+      goal: 'Understand the real picture behind the section scores. The scorecard gives the signal - the conversation gives the context.',
+      script: `"What I want to do now is get a clearer picture of what\'s actually been going on - because the scorecard shows the pattern, but it doesn\'t know the context behind it.
 
 I\'m going to ask you a few questions. Just answer as openly as you can."`,
       prompts: [
@@ -142,7 +142,7 @@ I\'m going to ask you a few questions. Just answer as openly as you can."`,
         ] : []),
         ...(lowSections.includes('03') ? [
           { type: 'category', text: 'STRESS LOAD' },
-          { type: 'prompt', text: 'Your stress load score was significant. What\'s actually driving that right now — is it work, life, or something else?' },
+          { type: 'prompt', text: 'Your stress load score was significant. What\'s actually driving that right now - is it work, life, or something else?' },
           { type: 'sub', text: 'Is the demand ongoing or more situational?' },
           { type: 'sub', text: 'Do you find yourself carrying it into training?' },
           { type: 'sub', text: 'Is there any period of genuine downtime in a typical week?' },
@@ -168,26 +168,26 @@ I\'m going to ask you a few questions. Just answer as openly as you can."`,
         { type: 'sub', text: 'Do you follow a structured program or train more by feel?' },
         { type: 'sub', text: 'Has the structure changed recently?' },
       ],
-      tips: 'Ask one question at a time. Let silence do work. You\'re building context — not solving anything yet.',
+      tips: 'Ask one question at a time. Let silence do work. You\'re building context - not solving anything yet.',
       boundary: 'No prescriptions. No "you should try...". No training or nutrition advice. Just listening and clarifying.',
     },
     {
       id: 4,
       name: 'Pattern Interpretation',
       duration: '5-7 min',
-      goal: 'Name the pattern clearly. Clarity — not solution. Make it feel understandable, not alarming.',
+      goal: 'Name the pattern clearly. Clarity - not solution. Make it feel understandable, not alarming.',
       script: `"Based on what you\'ve just described and what showed up in the scorecard, here\'s what I\'m hearing.
 
 ${stateInfo.interpretation}
 
-That\'s not a personal failing — it\'s a system response. And it\'s one of the more common patterns we see."`,
+That\'s not a personal failing - it\'s a system response. And it\'s one of the more common patterns we see."`,
       prompts: [
         { type: 'prompt', text: 'Does that explanation feel like it reflects what you\'ve been experiencing?' },
         { type: 'prompt', text: 'Does it help make sense of what you\'ve noticed?' },
         { type: 'prompt', text: 'Did anything in that surprise you?' },
         { type: 'prompt', text: 'Has it changed the way you\'re thinking about it?' },
       ],
-      tips: 'Keep it observational. The goal is to make the pattern feel understandable — not alarming, not overwhelming.',
+      tips: 'Keep it observational. The goal is to make the pattern feel understandable - not alarming, not overwhelming.',
       boundary: 'No medical interpretation. No outcome promises. No training adjustments. Pattern identification only.',
     },
     {
@@ -581,16 +581,16 @@ export default function ZoomCompanion({
                       <p className="text-sm leading-relaxed opacity-80">{SECTION_INTERPRETATIONS[key]?.[score] ?? ''}</p>
                     </div>
                   )) : (
-                    <p className="text-stone-500 text-sm">Section scores not available — lead may not have purchased the Body Decode Report. Body state and total score are pulled from the scorecard event.</p>
+                    <p className="text-stone-500 text-sm">Section scores not available - lead may not have purchased the Body Decode Report. Body state and total score are pulled from the scorecard event.</p>
                   )}
                 </div>
               )}
 
               {activeTab === 'language' && (
                 <div className="space-y-4">
-                  <p className="text-xs text-stone-500 mb-4">Pre-written interpretation language based on {leadName}&apos;s body state. Use naturally — not verbatim.</p>
+                  <p className="text-xs text-stone-500 mb-4">Pre-written interpretation language based on {leadName}&apos;s body state. Use naturally - not verbatim.</p>
                   <div className={`border rounded-xl p-4 ${stateInfo.colour}`}>
-                    <p className="text-xs font-bold uppercase tracking-wider mb-3">{bodyState} — Pattern</p>
+                    <p className="text-xs font-bold uppercase tracking-wider mb-3">{bodyState} - Pattern</p>
                     <p className="text-sm leading-relaxed opacity-90 mb-3">{stateInfo.pattern}</p>
                   </div>
                   <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">

@@ -18,7 +18,7 @@ export function accentColour(a: Accent = 'teal') {
 }
 
 /* ===========================================================
- * Page header — eyebrow + title + subtitle, optional CTA
+ * Page header - eyebrow + title + subtitle, optional CTA
  * Includes the dotted-grid + soft glow used on the home page.
  * =========================================================== */
 export function PageHeader({
@@ -84,7 +84,7 @@ export function PageHeader({
 }
 
 /* ===========================================================
- * Card — base surface
+ * Card - base surface
  * =========================================================== */
 export function Card({
   children,
@@ -113,7 +113,7 @@ export function Card({
 }
 
 /* ===========================================================
- * Section label — small accent bar + mono uppercase label
+ * Section label - small accent bar + mono uppercase label
  * =========================================================== */
 export function SectionLabel({
   children,
@@ -152,7 +152,7 @@ export function SectionLabel({
 }
 
 /* ===========================================================
- * Pill — small mono uppercase chip
+ * Pill - small mono uppercase chip
  * =========================================================== */
 export function Pill({
   children,
@@ -179,7 +179,7 @@ export function Pill({
 }
 
 /* ===========================================================
- * Stat card — accent bar + label + tabular number + sublabel
+ * Stat card - accent bar + label + tabular number + sublabel
  * =========================================================== */
 export function StatCard({
   label,
@@ -232,7 +232,7 @@ export function StatCard({
 }
 
 /* ===========================================================
- * Data row — link row used for lists inside cards
+ * Data row - link row used for lists inside cards
  * =========================================================== */
 export function DataRow({
   href,
@@ -262,7 +262,7 @@ export function DataRow({
 }
 
 /* ===========================================================
- * Empty state — for lists / cards with no data
+ * Empty state - for lists / cards with no data
  * =========================================================== */
 export function EmptyState({
   icon: Icon,
@@ -287,7 +287,7 @@ export function EmptyState({
 }
 
 /* ===========================================================
- * Button — button-shaped link or button in locked palette
+ * Button - button-shaped link or button in locked palette
  * =========================================================== */
 export function Btn({
   children,

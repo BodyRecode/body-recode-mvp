@@ -157,12 +157,12 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
         />
       </div>
 
-      {/* Draft — show preview with Approve/Discard */}
+      {/* Draft - show preview with Approve/Discard */}
       {draftPlan && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">
-              Draft Arc — Pending Approval
+              Draft Arc - Pending Approval
             </span>
             <PlanDraftActions planId={draftPlan.id} clientId={id} />
           </div>
@@ -170,7 +170,7 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
         </div>
       )}
 
-      {/* Active plan — full editor */}
+      {/* Active plan - full editor */}
       {activePlan && (
         <div>
           {draftPlan && (

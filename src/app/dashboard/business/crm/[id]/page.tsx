@@ -56,7 +56,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
           <h1 className="text-2xl font-semibold mb-1">{lead.name}</h1>
           <p className="text-stone-400 text-sm">
             {getLeadSourceLabel(lead.source)}
-            {lead.source_detail ? ` — ${lead.source_detail}` : ''}
+            {lead.source_detail ? ` - ${lead.source_detail}` : ''}
             {' · Added '}
             {new Date(lead.created_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
           </p>

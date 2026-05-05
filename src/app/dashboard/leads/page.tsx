@@ -160,7 +160,7 @@ export default async function LeadsPage({
                   <span
                     className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#3a1414] border border-[#5a2020] text-[#ef4444] uppercase"
                     style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em' }}
-                    title="Red flag — half show rate, half close rate historically"
+                    title="Red flag - half show rate, half close rate historically"
                   >
                     Red Flag
                   </span>

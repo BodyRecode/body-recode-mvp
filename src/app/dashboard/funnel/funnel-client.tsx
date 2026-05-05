@@ -167,7 +167,7 @@ export default function FunnelClient({
       <PageHeader
         eyebrow="Funnel"
         title="Funnel Dashboard"
-        subtitle="Every participant across all three stages — Challenge, Blueprint, Membership."
+        subtitle="Every participant across all three stages - Challenge, Blueprint, Membership."
       />
 
       {/* Summary stats */}
@@ -212,7 +212,7 @@ export default function FunnelClient({
           </div>
           {blueprintAtRisk > 0 && (
             <div className="text-[13px] text-[#a8a29e]">
-              <span className="font-semibold text-white">{blueprintAtRisk}</span> Blueprint buyer{blueprintAtRisk > 1 ? 's' : ''} at Week 6 — not yet in membership
+              <span className="font-semibold text-white">{blueprintAtRisk}</span> Blueprint buyer{blueprintAtRisk > 1 ? 's' : ''} at Week 6 - not yet in membership
             </div>
           )}
           {membershipNoCheckin > 0 && (

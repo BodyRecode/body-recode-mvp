@@ -75,7 +75,7 @@ export default function NewClientPage() {
   const inputClass =
     'w-full bg-stone-900 border border-stone-700 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-stone-500 transition-colors placeholder-stone-600'
 
-  // Success state — show the link
+  // Success state - show the link
   if (intakeLink) {
     return (
       <div className="max-w-lg mx-auto">
@@ -182,7 +182,7 @@ export default function NewClientPage() {
 
         <div>
           <label className="block text-sm text-stone-300 mb-1.5">
-            Mobile <span className="text-stone-600 text-xs">(optional — for SMS notifications)</span>
+            Mobile <span className="text-stone-600 text-xs">(optional - for SMS notifications)</span>
           </label>
           <input
             type="tel"

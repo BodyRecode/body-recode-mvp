@@ -95,7 +95,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
         <input
           value={planName}
           onChange={e => setPlanName(e.target.value)}
-          placeholder="e.g. Foundation Nutrition — Training Support"
+          placeholder="e.g. Foundation Nutrition - Training Support"
           className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-600"
           required
         />
@@ -150,7 +150,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
         <input
           value={ptsPhase}
           onChange={e => setPtsPhase(e.target.value)}
-          placeholder="e.g. Accumulation — Hypertrophy, or No active program"
+          placeholder="e.g. Accumulation - Hypertrophy, or No active program"
           className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-600"
         />
       </div>
@@ -168,7 +168,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
             max={300}
             step={5}
           />
-          <span className="text-stone-500 text-sm">grams/day — non-variable, distributed evenly across meals</span>
+          <span className="text-stone-500 text-sm">grams/day - non-variable, distributed evenly across meals</span>
         </div>
       </div>
 

@@ -203,10 +203,10 @@ export default function GenerateProgramForm({
             onChange={e => setForm(prev => ({ ...prev, progression_phase: e.target.value }))}
             className={inputClass}
           >
-            <option value="accumulation">Accumulation — volume priority, foundation building</option>
-            <option value="intensification">Intensification — intensity priority, load climbs</option>
-            <option value="realization">Realization — peak expression, max loads</option>
-            <option value="restoration">Restoration — recovery/deload, suppressed load</option>
+            <option value="accumulation">Accumulation - volume priority, foundation building</option>
+            <option value="intensification">Intensification - intensity priority, load climbs</option>
+            <option value="realization">Realization - peak expression, max loads</option>
+            <option value="restoration">Restoration - recovery/deload, suppressed load</option>
           </select>
         </div>
 
@@ -239,7 +239,7 @@ export default function GenerateProgramForm({
         {/* Training Frequency */}
         <div>
           <label className={labelClass}>
-            Training Frequency — <span className="text-[#10E1C2]">{form.training_frequency} sessions/week</span>
+            Training Frequency - <span className="text-[#10E1C2]">{form.training_frequency} sessions/week</span>
           </label>
           <input
             type="range"
@@ -262,7 +262,7 @@ export default function GenerateProgramForm({
               <span className="ml-2 text-[#10E1C2] normal-case font-normal">
                 {trainingDays.length} selected
                 {trainingDays.length < form.training_frequency && (
-                  <span className="text-amber-400 ml-1">— select at least {form.training_frequency}</span>
+                  <span className="text-amber-400 ml-1">- select at least {form.training_frequency}</span>
                 )}
               </span>
             )}
@@ -316,9 +316,9 @@ export default function GenerateProgramForm({
             ))}
           </div>
           <p className="text-xs text-stone-500 mt-1.5">
-            {form.training_age === 'beginner' && 'Linear progression — load increases each session'}
-            {form.training_age === 'intermediate' && 'Double progression — reps then load'}
-            {form.training_age === 'advanced' && 'Undulating periodisation — varies session to session'}
+            {form.training_age === 'beginner' && 'Linear progression - load increases each session'}
+            {form.training_age === 'intermediate' && 'Double progression - reps then load'}
+            {form.training_age === 'advanced' && 'Undulating periodisation - varies session to session'}
           </p>
         </div>
 
@@ -342,9 +342,9 @@ export default function GenerateProgramForm({
             ))}
           </div>
           <p className="text-xs text-stone-500 mt-1.5">
-            {form.movement_competency === 'limited' && 'Supported, bilateral, low stability — machine and bodyweight base movements'}
+            {form.movement_competency === 'limited' && 'Supported, bilateral, low stability - machine and bodyweight base movements'}
             {form.movement_competency === 'developing' && 'Bilateral preferred, standard compounds permitted, moderate stability'}
-            {form.movement_competency === 'proficient' && 'Full range — unilateral, high stability, all compounds available'}
+            {form.movement_competency === 'proficient' && 'Full range - unilateral, high stability, all compounds available'}
           </p>
         </div>
 

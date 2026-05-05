@@ -189,7 +189,7 @@ export default function MacroPlanEditor({
         <p className="text-sm text-red-400 bg-red-950/50 border border-red-800 rounded-md px-3 py-2 mb-4">{error}</p>
       )}
 
-      {/* No plan yet — create one */}
+      {/* No plan yet - create one */}
       {!plan ? (
         <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
           <h2 className="text-sm font-semibold text-stone-300 mb-4">Create Macro Plan</h2>
@@ -505,9 +505,9 @@ function BlockFormFields({
         <div>
           <label className={labelCls}>Execution Arc</label>
           <select value={form.execution_arc} onChange={e => setForm(p => ({ ...p, execution_arc: e.target.value }))} className={inputCls}>
-            <option value="short">Short Arc — rapid build</option>
-            <option value="mid">Mid Arc — moderate window</option>
-            <option value="long">Long Arc — sustained exposure</option>
+            <option value="short">Short Arc - rapid build</option>
+            <option value="mid">Mid Arc - moderate window</option>
+            <option value="long">Long Arc - sustained exposure</option>
           </select>
         </div>
       </div>
@@ -516,14 +516,14 @@ function BlockFormFields({
         <div>
           <label className={labelCls}>Phase Category (Layer A)</label>
           <select value={form.phase_category} onChange={e => setForm(p => ({ ...p, phase_category: e.target.value }))} className={inputCls}>
-            <option value="">— Select —</option>
+            <option value="">- Select -</option>
             {PHASE_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
         <div>
           <label className={labelCls}>Phase Objective (Layer D)</label>
           <select value={form.phase_objective} onChange={e => setForm(p => ({ ...p, phase_objective: e.target.value }))} className={inputCls}>
-            <option value="">— Select —</option>
+            <option value="">- Select -</option>
             {PHASE_OBJECTIVES.map(o => <option key={o} value={o}>{o}</option>)}
           </select>
         </div>

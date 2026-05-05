@@ -52,12 +52,12 @@ interface Props {
 // ─── Constants ──────────────────────────────────────────────────────────────
 
 const HOOK_CATEGORIES = [
-  { value: 'unaware', label: 'Unaware — Cold' },
-  { value: 'problem_aware', label: 'Problem Aware — Cold' },
-  { value: 'contrarian', label: 'Contrarian — Cold' },
-  { value: 'curiosity', label: 'Curiosity — Cold/Warm' },
-  { value: 'solution_aware', label: 'Solution Aware — Warm' },
-  { value: 'authority', label: 'Authority — Warm' },
+  { value: 'unaware', label: 'Unaware - Cold' },
+  { value: 'problem_aware', label: 'Problem Aware - Cold' },
+  { value: 'contrarian', label: 'Contrarian - Cold' },
+  { value: 'curiosity', label: 'Curiosity - Cold/Warm' },
+  { value: 'solution_aware', label: 'Solution Aware - Warm' },
+  { value: 'authority', label: 'Authority - Warm' },
 ]
 
 const MESSAGE_TYPES = [
@@ -282,7 +282,7 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
             <textarea
               value={form.hook_text}
               onChange={e => setForm(f => ({ ...f, hook_text: e.target.value }))}
-              placeholder="Your body isn't broken — it's protecting you"
+              placeholder="Your body isn't broken - it's protecting you"
               rows={2}
               className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 resize-none"
             />
@@ -411,7 +411,7 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
             <textarea
               value={form.message_text}
               onChange={e => setForm(f => ({ ...f, message_text: e.target.value }))}
-              placeholder="Stress triggers cortisol, which tells the body to hold fat — especially around the belly. Training harder into that state makes it worse."
+              placeholder="Stress triggers cortisol, which tells the body to hold fat - especially around the belly. Training harder into that state makes it worse."
               rows={4}
               className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 resize-none"
             />
@@ -732,7 +732,7 @@ function GenerateTab({
           <div>
             <p className="text-xs text-stone-500 mb-0.5">Variants to generate</p>
             <p className="text-2xl font-semibold text-white">
-              {variantCount > 0 ? variantCount.toLocaleString() : '—'}
+              {variantCount > 0 ? variantCount.toLocaleString() : '-'}
             </p>
             {variantCount > 0 && (
               <p className="text-xs text-stone-500 mt-0.5">
@@ -811,7 +811,7 @@ function GenerateTab({
           <div>
             <p className="text-sm font-semibold text-white mb-1">Reel Generation</p>
             <p className="text-xs text-stone-400 leading-relaxed">
-              Once you have outputs, you can generate AI avatar reels from any piece of copy — your face, your voice, no camera required.
+              Once you have outputs, you can generate AI avatar reels from any piece of copy - your face, your voice, no camera required.
               Powered by ElevenLabs (voice clone) and HeyGen (avatar video). Set up your avatar and voice clone first, then reels are one click from the Outputs tab.
             </p>
             <p className="text-xs text-stone-500 mt-2">
@@ -1300,9 +1300,9 @@ const CARDS = [
   { file: '02-statement.png', label: 'Statement' },
   { file: '03-question.png', label: 'Question' },
   { file: '04-insight.png', label: 'Insight' },
-  { file: '05-body-state-red.png', label: 'Body State — Depleted' },
-  { file: '06-body-state-amber.png', label: 'Body State — Transitioning' },
-  { file: '07-body-state-teal.png', label: 'Body State — Ready' },
+  { file: '05-body-state-red.png', label: 'Body State - Depleted' },
+  { file: '06-body-state-amber.png', label: 'Body State - Transitioning' },
+  { file: '07-body-state-teal.png', label: 'Body State - Ready' },
   { file: '08-photo-split.png', label: 'Photo Split' },
   { file: '09-photo-quote.png', label: 'Photo Quote' },
   { file: '10-photo-top.png', label: 'Photo Top' },

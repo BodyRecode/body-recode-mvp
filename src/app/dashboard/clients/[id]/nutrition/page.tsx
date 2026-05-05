@@ -68,7 +68,7 @@ function parseText(text: string): { intro: string | null; points: string[] } {
     const points = rest.split(/\s*\(\d+\)\s*/).map((s: string) => s.trim()).filter(Boolean)
     return { intro, points }
   }
-  const sentences = text.replace(/([.!?])\s+(?=[A-Z—])/g, '$1|||').split('|||').map((s: string) => s.trim()).filter((s: string) => s.length > 10)
+  const sentences = text.replace(/([.!?])\s+(?=[A-Z-])/g, '$1|||').split('|||').map((s: string) => s.trim()).filter((s: string) => s.length > 10)
   if (sentences.length >= 3) return { intro: null, points: sentences }
   return { intro: null, points: [text] }
 }
@@ -112,7 +112,7 @@ const directionLabel: Record<string, string> = {
 }
 
 function clean(s: string): string {
-  return s.replace(/ — /g, ' ').replace(/—/g, ' ')
+  return s.replace(/ - /g, ' ').replace(/-/g, ' ')
 }
 
 function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPrefix?: string }) {
@@ -295,7 +295,7 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
           <div className="space-y-1.5">
             {plan.what_not_to_change.map((item, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span className="text-stone-600 mt-0.5 shrink-0">—</span>
+                <span className="text-stone-600 mt-0.5 shrink-0">-</span>
                 <p className="text-xs text-stone-400">{clean(item)}</p>
               </div>
             ))}
@@ -395,7 +395,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">
-              Draft — Pending Approval
+              Draft - Pending Approval
             </span>
             <NutritionDraftActions planId={draftPlan.id} clientId={id} />
           </div>

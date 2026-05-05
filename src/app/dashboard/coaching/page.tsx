@@ -161,7 +161,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </div>
       </div>
 
-      {/* Action queue — clients needing attention */}
+      {/* Action queue - clients needing attention */}
       {clientsProcessed.some(c => c.rebuildTraining || c.rebuildNutrition) && (
         <div
           className="mb-5 bg-[#111110] border rounded-2xl overflow-hidden"

@@ -12,7 +12,7 @@ function parseReason(text: string): { intro: string | null; points: string[] } {
     const points = rest.split(/\s*\(\d+\)\s*/).map(s => s.trim()).filter(Boolean)
     return { intro, points }
   }
-  const sentences = text.replace(/([.!?])\s+(?=[A-Z—])/g, '$1|||').split('|||').map(s => s.trim()).filter(s => s.length > 10)
+  const sentences = text.replace(/([.!?])\s+(?=[A-Z-])/g, '$1|||').split('|||').map(s => s.trim()).filter(s => s.length > 10)
   if (sentences.length >= 3) return { intro: null, points: sentences }
   return { intro: null, points: [text] }
 }

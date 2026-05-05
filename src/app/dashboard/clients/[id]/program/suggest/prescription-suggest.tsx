@@ -88,7 +88,7 @@ function parseReason(text: string): { intro: string | null; points: string[] } {
     const points = rest.split(/\s*\(\d+\)\s*/).map(s => s.trim()).filter(Boolean)
     return { intro, points }
   }
-  const sentences = text.replace(/([.!?])\s+(?=[A-Z—])/g, '$1|||').split('|||').map(s => s.trim()).filter(s => s.length > 10)
+  const sentences = text.replace(/([.!?])\s+(?=[A-Z-])/g, '$1|||').split('|||').map(s => s.trim()).filter(s => s.length > 10)
   if (sentences.length >= 3) return { intro: null, points: sentences }
   return { intro: null, points: [text] }
 }
@@ -364,7 +364,7 @@ export default function PrescriptionSuggest({
 
             {/* Training Frequency */}
             <div id="frequency" className="scroll-mt-8">
-              <ReasonCard label={`Training Frequency — ${form.training_frequency} sessions/week`} value={`${form.training_frequency}x / week`} reason={suggestion.training_frequency_reason}>
+              <ReasonCard label={`Training Frequency - ${form.training_frequency} sessions/week`} value={`${form.training_frequency}x / week`} reason={suggestion.training_frequency_reason}>
                 <input type="range" min={2} max={6} value={form.training_frequency}
                   onChange={e => setForm(p => ({ ...p, training_frequency: parseInt(e.target.value) }))}
                   className="w-full accent-[#10E1C2]" />

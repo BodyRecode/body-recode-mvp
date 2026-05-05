@@ -146,7 +146,7 @@ export default function RecordPaymentButton({ products }: Props) {
                 >
                   <option value="">Manual / no product</option>
                   {products.map(p => (
-                    <option key={p.id} value={p.id}>{p.name} — ${p.price}</option>
+                    <option key={p.id} value={p.id}>{p.name} - ${p.price}</option>
                   ))}
                 </select>
               </div>

@@ -30,12 +30,12 @@ const CHECK_IN_QUESTIONS: Record<string, string> = {
 }
 
 const CHECK_IN_OPTIONS: Record<string, string[]> = {
-  effort_vs_result: ['Rarely — effort and response feel aligned', 'Occasionally — some sessions require more than expected', 'Often — effort feels higher relative to the result', 'Frequently — it regularly feels harder than it seems it should'],
+  effort_vs_result: ['Rarely - effort and response feel aligned', 'Occasionally - some sessions require more than expected', 'Often - effort feels higher relative to the result', 'Frequently - it regularly feels harder than it seems it should'],
   consistency: ['Largely consistent with minor interruptions', 'Mostly consistent, with some start–stop periods', 'Variable, with frequent changes in routine', 'Difficult to maintain a steady pattern'],
-  training_response: ['Settled and able to return to the day without much disruption', 'Noticeably worked, but manageable with some recovery', 'Variable — sometimes fine, sometimes harder to bounce back', 'Often carrying fatigue that lingers longer than expected'],
-  recovery_predictability: ['Fairly predictable from week to week', 'Predictable most of the time, with occasional fluctuations', 'Inconsistent — recovery can vary without a clear pattern', 'Hard to predict — recovery often feels different session to session'],
+  training_response: ['Settled and able to return to the day without much disruption', 'Noticeably worked, but manageable with some recovery', 'Variable - sometimes fine, sometimes harder to bounce back', 'Often carrying fatigue that lingers longer than expected'],
+  recovery_predictability: ['Fairly predictable from week to week', 'Predictable most of the time, with occasional fluctuations', 'Inconsistent - recovery can vary without a clear pattern', 'Hard to predict - recovery often feels different session to session'],
   planning_vs_reality: ['Usually matches closely', 'Mostly matches, with some adjustments', 'Often requires changes as the week unfolds', 'Rarely matches as planned'],
-  week_variability: ['Fairly similar from one week to the next', 'Mostly similar, with occasional changes', 'Often different, depending on the week', 'Rarely similar — weeks tend to look quite different'],
+  week_variability: ['Fairly similar from one week to the next', 'Mostly similar, with occasional changes', 'Often different, depending on the week', 'Rarely similar - weeks tend to look quite different'],
   body_signals: ['Occasionally, without affecting training much', 'Regularly, but usually manageable', 'Frequently, requiring adjustments more often than not', 'Very frequently, shaping how sessions are approached'],
   external_load: ['Generally steady and manageable', 'Manageable, with some periods of higher demand', 'Often busy or demanding, requiring ongoing adjustment', 'Frequently demanding, with little consistency week to week'],
   adjustments: ['Comfortable making adjustments when needed', 'Somewhat comfortable, but not always sure', 'Often uncertain about how to adjust', 'Rarely confident making changes on my own'],
@@ -74,7 +74,7 @@ const BODY_STATE_STYLES: Record<string, { color: string; bg: string; border: str
     color: '#14b8a6',
     bg: 'rgba(20,184,166,0.06)',
     border: 'rgba(20,184,166,0.2)',
-    desc: 'Biology is in a position to respond. If fat loss or performance isn\'t happening at this score, the issue is in the prescription. Has the foundation — now it needs to be optimised.',
+    desc: 'Biology is in a position to respond. If fat loss or performance isn\'t happening at this score, the issue is in the prescription. Has the foundation - now it needs to be optimised.',
   },
 }
 
@@ -243,7 +243,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         subtitle={
           <span style={{ fontFamily: MONO_FONT, letterSpacing: '0.02em' }}>
             {getLeadSourceLabel(lead.source)}
-            {lead.source_detail ? ` — ${lead.source_detail}` : ''}
+            {lead.source_detail ? ` - ${lead.source_detail}` : ''}
             {' · Added '}
             {formatDate(lead.created_at)}
           </span>
@@ -297,7 +297,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                   const border = s === 1 ? 'rgba(239,68,68,0.25)' : s === 2 ? 'rgba(245,158,11,0.25)' : s === 3 ? 'rgba(20,184,166,0.25)' : 'rgba(87,83,78,0.25)'
                   return (
                     <div key={key} className="rounded-lg p-2 text-center" style={{ background: bg, border: `1px solid ${border}` }}>
-                      <div className="text-lg font-black" style={{ color }}>{s ?? '—'}</div>
+                      <div className="text-lg font-black" style={{ color }}>{s ?? '-'}</div>
                       <div className="text-[10px] font-medium text-[#57534e] mt-0.5 leading-tight">{title}</div>
                     </div>
                   )
@@ -320,8 +320,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                   {lead.lead_quality}{lead.red_flag ? ' · red flag' : ''}
                 </div>
                 <div className="flex-1 text-xs text-[#a8a29e] space-y-1">
-                  <p><span className="text-[#57534e]">Approach:</span> <span className="font-medium text-[#d4cfc9]">{lead.approach_response}</span> {(lead.approach_response === 'C' || lead.approach_response === 'D') && <span className="text-red-400">— red flag</span>}</p>
-                  <p><span className="text-[#57534e]">Investment:</span> <span className="font-medium text-[#d4cfc9]">{lead.investment_readiness}</span> {(lead.investment_readiness === 'C' || lead.investment_readiness === 'D') && <span className="text-red-400">— red flag</span>}</p>
+                  <p><span className="text-[#57534e]">Approach:</span> <span className="font-medium text-[#d4cfc9]">{lead.approach_response}</span> {(lead.approach_response === 'C' || lead.approach_response === 'D') && <span className="text-red-400">- red flag</span>}</p>
+                  <p><span className="text-[#57534e]">Investment:</span> <span className="font-medium text-[#d4cfc9]">{lead.investment_readiness}</span> {(lead.investment_readiness === 'C' || lead.investment_readiness === 'D') && <span className="text-red-400">- red flag</span>}</p>
                 </div>
               </div>
               {lead.red_flag && (

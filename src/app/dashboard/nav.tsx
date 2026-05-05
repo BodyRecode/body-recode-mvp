@@ -21,7 +21,7 @@ export default function DashboardNav() {
   const pathname = usePathname() || '/dashboard'
 
   return (
-    <nav className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide">
+    <nav className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
       {NAV_ITEMS.map(item => {
         const active = item.exact
           ? pathname === item.href
@@ -30,7 +30,7 @@ export default function DashboardNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`relative text-[13px] px-2.5 py-1.5 rounded-md transition-colors whitespace-nowrap ${
+            className={`relative text-[13px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
               active
                 ? 'text-white bg-[#1c1917]'
                 : 'text-[#a8a29e] hover:text-white hover:bg-[#1c1917]/60'
@@ -38,7 +38,7 @@ export default function DashboardNav() {
           >
             {item.label}
             {active && (
-              <span className="absolute left-1/2 -translate-x-1/2 -bottom-[15px] w-6 h-[2px] rounded-full bg-[#14b8a6]" />
+              <span className="absolute left-1/2 -translate-x-1/2 -bottom-[17px] w-6 h-[2px] rounded-full bg-[#14b8a6]" />
             )}
           </Link>
         )

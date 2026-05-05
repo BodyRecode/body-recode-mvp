@@ -22,16 +22,16 @@ export default async function DashboardLayout({
         className="sticky top-0 z-50 border-b border-[#1c1917] backdrop-blur-xl"
         style={{ background: 'rgba(12, 10, 9, 0.78)' }}
       >
-        <div className="max-w-[1280px] mx-auto px-6 h-14 flex items-center justify-between gap-6">
-          <div className="flex items-center gap-7 min-w-0">
-            <Link href="/dashboard" className="flex items-center gap-2.5 shrink-0">
+        <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between gap-8">
+          <div className="flex items-center gap-9 min-w-0">
+            <Link href="/dashboard" className="flex items-center gap-3 shrink-0">
               <span
-                className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-[#14b8a6] text-[#0c0a09] font-bold text-[11px] tracking-tight"
+                className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#14b8a6] text-[#0c0a09] font-bold text-[13px] tracking-tight"
                 style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}
               >
                 BR
               </span>
-              <span className="text-[14px] font-semibold text-white tracking-tight">Body Recode</span>
+              <span className="text-[16px] font-semibold text-white tracking-tight">Body Recode</span>
             </Link>
             <DashboardNav />
           </div>

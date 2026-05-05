@@ -395,7 +395,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       )}
 
       <div id="cffs" className="flex items-center justify-between mb-3 mt-6 scroll-mt-8">
-        <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Foundational Synthesis <span className="text-[#3c3835] font-normal">— CFFS</span></h2></div>
+        <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Foundational Synthesis <span className="text-[#3c3835] font-normal">- CFFS</span></h2></div>
       </div>
 
       {!activeCffs ? (
@@ -474,7 +474,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               This is not a summary. It is a structured interpretation of how this client&apos;s system is currently organising itself.
             </p>
             <p className="text-sm text-[#57534e] leading-relaxed">
-              The CFFS translates 208 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses — you remain the interpretive authority.
+              The CFFS translates 208 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses - you remain the interpretive authority.
             </p>
           </div>
 
@@ -545,7 +545,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               ].map(m => (
                 <div key={m.label} className="bg-[#1c1917]/50 rounded-xl p-3 text-center">
                   <p className="text-xs text-[#57534e] mb-1">{m.label}</p>
-                  <p className="text-base font-semibold text-white">{m.value ?? '—'}<span className="text-xs text-[#57534e] ml-1">{m.unit}</span></p>
+                  <p className="text-base font-semibold text-white">{m.value ?? '-'}<span className="text-xs text-[#57534e] ml-1">{m.unit}</span></p>
                 </div>
               ))}
             </div>
@@ -585,7 +585,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {/* Weekly Check-In Section */}
       <div id="cfws" className="mt-6 scroll-mt-8">
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Weekly Synthesis <span className="text-[#3c3835] font-normal">— CFWS</span></h2></div>
+          <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Weekly Synthesis <span className="text-[#3c3835] font-normal">- CFWS</span></h2></div>
           {checkinToken && (
             <CopyLinkButton token={checkinToken} label="Copy check-in link" path="/checkin" />
           )}
@@ -647,7 +647,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 This is not a summary. It is a structured interpretation of how this client&apos;s system is behaving this week.
               </p>
               <p className="text-sm text-[#57534e] leading-relaxed">
-                The CFWS translates weekly check-in signals across training load, recovery, regulation, and lifestyle into a coherent picture. Nothing here prescribes or diagnoses — you remain the interpretive authority.
+                The CFWS translates weekly check-in signals across training load, recovery, regulation, and lifestyle into a coherent picture. Nothing here prescribes or diagnoses - you remain the interpretive authority.
               </p>
             </div>
 

@@ -45,11 +45,11 @@ export default function AdsClient({ initialCampaigns }: Props) {
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const cpl = (spend: number, leads: number) =>
-    leads > 0 ? (spend / leads).toFixed(2) : '—'
+    leads > 0 ? (spend / leads).toFixed(2) : '-'
 
   const totalSpend = campaigns.reduce((s, c) => s + (c.spend ?? 0), 0)
   const totalLeads = campaigns.reduce((s, c) => s + (c.leads_count ?? 0), 0)
-  const totalCpl = totalLeads > 0 ? (totalSpend / totalLeads).toFixed(2) : '—'
+  const totalCpl = totalLeads > 0 ? (totalSpend / totalLeads).toFixed(2) : '-'
 
   function startEdit(c: AdCampaign) {
     setEditingId(c.id)
@@ -209,7 +209,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
           </div>
           <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
             <p className="text-xs text-stone-500 mb-1">Avg CPL</p>
-            <p className="text-xl font-semibold">{totalCpl !== '—' ? `$${totalCpl}` : '—'}</p>
+            <p className="text-xl font-semibold">{totalCpl !== '-' ? `$${totalCpl}` : '-'}</p>
           </div>
         </div>
       )}
@@ -302,9 +302,9 @@ export default function AdsClient({ initialCampaigns }: Props) {
                       <div>
                         <p className="text-xs text-stone-500">CPL</p>
                         <p className="text-sm font-semibold text-teal-400">
-                          {cpl(campaign.spend ?? 0, campaign.leads_count ?? 0) !== '—'
+                          {cpl(campaign.spend ?? 0, campaign.leads_count ?? 0) !== '-'
                             ? `$${cpl(campaign.spend ?? 0, campaign.leads_count ?? 0)}`
-                            : '—'}
+                            : '-'}
                         </p>
                       </div>
                     </div>

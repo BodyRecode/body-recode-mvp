@@ -123,7 +123,7 @@ export default function RunDetail({ run }: { run: Run }) {
             <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Auto-fixed</p>
             <div className="space-y-1">
               {fixes.map((f, i) => (
-                <p key={i} className="text-xs text-stone-400">{f.name} — {f.action}</p>
+                <p key={i} className="text-xs text-stone-400">{f.name} - {f.action}</p>
               ))}
             </div>
           </div>

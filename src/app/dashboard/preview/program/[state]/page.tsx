@@ -34,7 +34,7 @@ export default async function PreviewProgramPage({
 
       {/* Preview banner */}
       <div style={{ background: '#1a1a00', borderBottom: '1px solid #333300', padding: '10px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
-        <span style={{ fontSize: '11px', color: '#aaaa00', fontWeight: 600 }}>PREVIEW — client view</span>
+        <span style={{ fontSize: '11px', color: '#aaaa00', fontWeight: 600 }}>PREVIEW - client view</span>
         <span style={{ color: '#333' }}>|</span>
         {['depleted', 'transitioning', 'ready'].map(s => (
           <a key={s} href={`/dashboard/preview/program/${s}`} style={{

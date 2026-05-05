@@ -117,7 +117,7 @@ export default async function TodayWidget() {
     items.push({
       icon: Sparkles,
       accent: 'teal',
-      label: 'Nothing urgent — pipeline is clean and check-ins are up to date',
+      label: 'Nothing urgent - pipeline is clean and check-ins are up to date',
       href: '/dashboard/business',
       meta: 'Move on to growth work',
     })

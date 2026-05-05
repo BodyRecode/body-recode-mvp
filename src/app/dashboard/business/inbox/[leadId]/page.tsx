@@ -107,7 +107,7 @@ export default async function InboxThreadPage({
           })
         ) : (
           <div className="text-center py-12 text-stone-600 text-sm">
-            No activity yet — send an email to start the conversation.
+            No activity yet - send an email to start the conversation.
           </div>
         )}
       </div>
@@ -118,7 +118,7 @@ export default async function InboxThreadPage({
       )}
       {!lead.email && (
         <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 text-stone-500 text-sm text-center">
-          No email address on file — can't send from here.
+          No email address on file - can't send from here.
         </div>
       )}
     </div>

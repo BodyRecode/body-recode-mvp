@@ -39,7 +39,7 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
         <div className="flex items-center gap-3 mb-8">
           <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-white text-sm transition-colors">← Back</Link>
           <span className="text-stone-700">/</span>
-          <p className="text-sm text-stone-400">Health Declaration — {client.name}</p>
+          <p className="text-sm text-stone-400">Health Declaration - {client.name}</p>
         </div>
         <p className="text-stone-500 text-sm">Health declaration not yet submitted.</p>
       </div>
@@ -57,7 +57,7 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
       <div className="flex items-center gap-3 mb-8">
         <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-white text-sm transition-colors">← Back</Link>
         <span className="text-stone-700">/</span>
-        <p className="text-sm text-stone-400">Health Declaration — {client.name}</p>
+        <p className="text-sm text-stone-400">Health Declaration - {client.name}</p>
       </div>
 
       <div className="flex items-center justify-between mb-6">

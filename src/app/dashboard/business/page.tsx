@@ -37,7 +37,7 @@ const modules = [
 
 const publicLinks = [
   { label: 'Booking page',         url: '/book',                 desc: 'Public Zoom booking' },
-  { label: 'Body State Scorecard', url: '/scorecard',            desc: 'Lead magnet — body state quiz' },
+  { label: 'Body State Scorecard', url: '/scorecard',            desc: 'Lead magnet - body state quiz' },
   { label: 'Performance Check-In', url: '/performance-check-in', desc: 'Free 3-min check-in' },
 ]
 

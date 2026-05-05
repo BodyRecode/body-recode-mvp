@@ -177,7 +177,7 @@ export default function WebsitePage() {
             <StatCard label="Page Views" value={pageViews.toLocaleString()} />
             <StatCard
               label="Scorecard Submissions"
-              value={leadCount ?? '—'}
+              value={leadCount ?? '-'}
               sub={conversionRate ? `${conversionRate}% conversion` : undefined}
               highlight
             />
@@ -235,12 +235,12 @@ export default function WebsitePage() {
         <p className="text-sm text-stone-500 mb-4">All six pages are live. The scorecard is the primary conversion point - every other page should funnel toward it. The Founder Program page is the current active offer.</p>
         <div className="grid sm:grid-cols-2 gap-2">
           {[
-            { label: 'Homepage', path: '/', note: 'Top of funnel — positions the approach, drives to scorecard' },
+            { label: 'Homepage', path: '/', note: 'Top of funnel - positions the approach, drives to scorecard' },
             { label: 'How It Works', path: '/how-it-works', note: 'Explains the Body Recode method and the two-layer system' },
-            { label: 'Online Coaching', path: '/online', note: 'Service page for online clients — links to scorecard' },
+            { label: 'Online Coaching', path: '/online', note: 'Service page for online clients - links to scorecard' },
             { label: 'Brisbane', path: '/brisbane', note: 'Geo-targeted page for face-to-face clients' },
-            { label: 'Body State Scorecard', path: '/scorecard', note: 'Primary conversion point — lead capture via quiz' },
-            { label: 'Founder Program', path: '/founder', note: 'Active offer page — current primary CTA destination' },
+            { label: 'Body State Scorecard', path: '/scorecard', note: 'Primary conversion point - lead capture via quiz' },
+            { label: 'Founder Program', path: '/founder', note: 'Active offer page - current primary CTA destination' },
           ].map(p => (
             <a
               key={p.path}

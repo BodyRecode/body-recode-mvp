@@ -42,7 +42,7 @@ export default async function AgreementPrintPage({ params }: { params: Promise<{
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-teal.png" alt="Body Recode" style={{ height: '36px', marginBottom: '24px', display: 'block' }} />
           <h1 style={{ fontSize: '22px', fontWeight: 800, color: G, marginBottom: '4px' }}>Body Recode™ Coaching Agreement</h1>
-          <p style={{ fontSize: '12px', color: '#666', marginBottom: '20px' }}>Version 2.5 — Sole Trader, Queensland, Australia</p>
+          <p style={{ fontSize: '12px', color: '#666', marginBottom: '20px' }}>Version 2.5 - Sole Trader, Queensland, Australia</p>
           <div style={{ display: 'flex', gap: '40px' }}>
             <div>
               <p style={{ fontSize: '9px', fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '4px' }}>Client</p>

@@ -267,7 +267,7 @@ export default function DraftEditor({
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-white">{program.block_name}</h1>
-            <p className="text-sm text-amber-400 mt-1">Draft — pending coach review</p>
+            <p className="text-sm text-amber-400 mt-1">Draft - pending coach review</p>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -349,11 +349,11 @@ export default function DraftEditor({
             </div>
 
             <div className="divide-y divide-stone-800/60">
-              {/* Movement Prep — editable */}
+              {/* Movement Prep - editable */}
               {session.movement_prep?.length > 0 && (
                 <div className="px-5 py-4 bg-stone-800/30">
                   <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-1">
-                    Preparatory Entry — Movement Preparation
+                    Preparatory Entry - Movement Preparation
                   </p>
                   <p className="text-[10px] text-stone-600 mb-3">Non-Slot · Prepare joints, tissues, and coordination</p>
                   <div className="space-y-1.5">
@@ -490,7 +490,7 @@ export default function DraftEditor({
                                     type="number"
                                     min={5}
                                     max={10}
-                                    placeholder="—"
+                                    placeholder="-"
                                     value={ex.rpe ?? ''}
                                     onChange={e => {
                                       const val = e.target.value

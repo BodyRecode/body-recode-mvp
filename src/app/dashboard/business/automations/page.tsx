@@ -24,7 +24,7 @@ export default async function AutomationsPage() {
   const active = workflows?.filter(w => w.is_active).length || 0
   const total = workflows?.length || 0
 
-  const hasScorecardAutomation = workflows?.some(w => w.name === 'Scorecard — Follow-up Sequence') ?? false
+  const hasScorecardAutomation = workflows?.some(w => w.name === 'Scorecard - Follow-up Sequence') ?? false
 
   return (
     <div className="max-w-3xl">
@@ -78,7 +78,7 @@ export default async function AutomationsPage() {
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
-                  {workflow.name === 'Scorecard — Follow-up Sequence' && (
+                  {workflow.name === 'Scorecard - Follow-up Sequence' && (
                     <ReseedScorecardButton stepCount={stepCount} />
                   )}
                   <span className={`flex items-center gap-1 text-xs font-medium ${

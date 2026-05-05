@@ -76,7 +76,7 @@ export default async function FunnelsPage() {
           </div>
           <p className="text-stone-400 text-sm font-medium mb-1">No funnels yet</p>
           <p className="text-stone-600 text-xs mb-6">
-            Create a landing page to capture leads — they flow straight into your CRM
+            Create a landing page to capture leads - they flow straight into your CRM
           </p>
           <Link
             href="/dashboard/business/funnels/new"

@@ -11,13 +11,13 @@ const STATUSES = [
 ]
 
 function utcToBrisbaneInput(iso: string): string {
-  // Brisbane is UTC+10, no DST — shift UTC time forward 10h for display
+  // Brisbane is UTC+10, no DST - shift UTC time forward 10h for display
   const d = new Date(new Date(iso).getTime() + 10 * 60 * 60 * 1000)
   return d.toISOString().slice(0, 16)
 }
 
 function brisbaneInputToUtcIso(local: string): string {
-  // datetime-local value is Brisbane time — subtract 10h to get UTC
+  // datetime-local value is Brisbane time - subtract 10h to get UTC
   return new Date(local + ':00+10:00').toISOString()
 }
 

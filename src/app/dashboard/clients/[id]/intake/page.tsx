@@ -97,7 +97,7 @@ export default async function IntakeViewPage({ params }: { params: Promise<{ id:
       <div className="flex items-center gap-3 mb-8">
         <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-white text-sm transition-colors">← Back</Link>
         <span className="text-stone-700">/</span>
-        <p className="text-sm text-stone-400">Intake — {client.name}</p>
+        <p className="text-sm text-stone-400">Intake - {client.name}</p>
       </div>
 
       <div className="flex items-start justify-between mb-6">

@@ -86,12 +86,12 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
           <span className="text-stone-300">Direction</span>
         </div>
         <h1 className="text-2xl font-semibold text-white">Client Direction</h1>
-        <p className="text-stone-500 text-sm mt-1">Macro arc, current meso block, and nutrition alignment — all in one view.</p>
+        <p className="text-stone-500 text-sm mt-1">Macro arc, current meso block, and nutrition alignment - all in one view.</p>
       </div>
 
       <div className="space-y-4">
 
-        {/* Current State — CFFS */}
+        {/* Current State - CFFS */}
         {cffs ? (
           <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 border-b border-stone-800">
@@ -247,7 +247,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                 <div className="mt-3 pt-3 border-t border-stone-800">
                   <p className="text-[10px] text-stone-600 uppercase tracking-wider mb-1">Macro Block Context</p>
                   <p className="text-xs text-stone-400">
-                    Block {currentBlock.position} of {blocks.length} — {currentBlock.execution_arc || currentBlock.progression_phase}
+                    Block {currentBlock.position} of {blocks.length} - {currentBlock.execution_arc || currentBlock.progression_phase}
                   </p>
                 </div>
               )}

@@ -25,10 +25,10 @@ export default function OrientationPage() {
           </OrientationSection>
 
           <OrientationSection title="What This Is (and What It Isn&apos;t)">
-            <p>Body Recode Performance Coaching is built on the Body Recode framework — a considered system for understanding how the body responds to stress, load, recovery, and time.</p>
+            <p>Body Recode Performance Coaching is built on the Body Recode framework - a considered system for understanding how the body responds to stress, load, recovery, and time.</p>
             <p>Rather than chasing outcomes or pushing effort, Body Recode focuses on creating conditions the body can reliably hold, and allowing progress to emerge from stability rather than force.</p>
             <p>This work isn&apos;t about fixing yourself. It doesn&apos;t assume that something is broken or failing. Instead, Body Recode treats the body as a responsive system that adapts continuously to load and context.</p>
-            <p>What Body Recode offers is structure, containment, and perspective. It reduces noise, lowers reactivity, and makes it easier to understand what actually matters — without relying on motivation, willpower, or constant self-monitoring.</p>
+            <p>What Body Recode offers is structure, containment, and perspective. It reduces noise, lowers reactivity, and makes it easier to understand what actually matters - without relying on motivation, willpower, or constant self-monitoring.</p>
             <p>Orientation is not a deep dive into the specifics of your coaching plan. That conversation happens next. Its purpose here is simply to give you enough context to arrive at that conversation informed rather than uncertain.</p>
           </OrientationSection>
 
@@ -37,12 +37,12 @@ export default function OrientationPage() {
             <p>This framework takes a long arc view of performance. Progress is built deliberately, layer by layer, with priority given to stability before intensity, tolerance before demand, and consistency before complexity.</p>
             <p>Early phases of coaching commonly focus on reducing background stress, improving recovery and regulation, and establishing a baseline that the system can reliably hold. This creates the conditions for lasting progress, rather than short surges followed by withdrawal.</p>
             <p>Change within this system is not expected to be linear. Plateaus, pauses, and even temporary regressions are treated as information rather than failure. The aim is not constant escalation, but steady forward motion that the system can sustain.</p>
-            <p>Body Recode recognises that motivation is unreliable. Structure, however, holds when motivation does not. Coaching is built around clear phases, predictable rhythms, and defined decision points — reducing emotional effort and removing the need to rely on willpower.</p>
-            <p>Within the Body Recode framework, it is common to see that when load is applied appropriately, recovery is protected, and the body is no longer operating under constant stress, people achieve better results while doing less — because the system is finally working with the body rather than against it.</p>
+            <p>Body Recode recognises that motivation is unreliable. Structure, however, holds when motivation does not. Coaching is built around clear phases, predictable rhythms, and defined decision points - reducing emotional effort and removing the need to rely on willpower.</p>
+            <p>Within the Body Recode framework, it is common to see that when load is applied appropriately, recovery is protected, and the body is no longer operating under constant stress, people achieve better results while doing less - because the system is finally working with the body rather than against it.</p>
           </OrientationSection>
 
           <OrientationSection title="The Coaching Relationship">
-            <p>This relationship is designed to feel steady, respectful, and well defined — rather than intense, dependent, or constantly reactive. Its purpose is to support progress over time, not to create pressure or urgency.</p>
+            <p>This relationship is designed to feel steady, respectful, and well defined - rather than intense, dependent, or constantly reactive. Its purpose is to support progress over time, not to create pressure or urgency.</p>
             <p>Your coach&apos;s role is to hold the structure, interpret information, and guide decisions based on how your system is responding. This includes helping to pace progress, identify when restraint is needed, and recognise when capacity is available to develop further.</p>
             <p>Your role within the relationship is not to perform, impress, or push beyond what feels sustainable. It is to engage honestly with the process, communicate clearly where needed, and allow the structure to do its work over time.</p>
             <p>When the coaching relationship is working well, it tends to feel quieter rather than louder. There is less urgency, fewer abrupt changes, and a growing sense that progress is unfolding in a way your system can actually hold.</p>
@@ -50,13 +50,13 @@ export default function OrientationPage() {
 
           <OrientationSection title="Roles and Responsibilities">
             <p>Clear roles and responsibilities are essential to how Body Recode Performance Coaching works. They create predictability, reduce confusion, and protect the relationship from unnecessary pressure or emotional load.</p>
-            <p>The coach&apos;s responsibility is to hold the structure of the framework — interpreting information, guiding decisions, and pacing progress in a way that reflects how your system is responding over time. The coach is responsible for maintaining perspective, especially when frustration, urgency, or comparison arise.</p>
+            <p>The coach&apos;s responsibility is to hold the structure of the framework - interpreting information, guiding decisions, and pacing progress in a way that reflects how your system is responding over time. The coach is responsible for maintaining perspective, especially when frustration, urgency, or comparison arise.</p>
             <p>Your responsibility within the coaching relationship is to engage honestly and realistically with the process. This includes communicating relevant information when asked, and allowing the structure to do its work rather than trying to accelerate it.</p>
             <p>You are not expected to be perfect, disciplined, or constantly on track. There is no requirement to perform, impress, or justify yourself. What matters is staying connected to the process in a way that feels sustainable and honest.</p>
           </OrientationSection>
 
           <OrientationSection title="Expectations and Boundaries">
-            <p>Clear expectations and boundaries are essential to how Body Recode Performance Coaching is held. They are not restrictions or rules for compliance — they exist to protect the work, reduce unnecessary pressure, and create a coaching environment that feels steady, respectful, and sustainable.</p>
+            <p>Clear expectations and boundaries are essential to how Body Recode Performance Coaching is held. They are not restrictions or rules for compliance - they exist to protect the work, reduce unnecessary pressure, and create a coaching environment that feels steady, respectful, and sustainable.</p>
             <p>There is no expectation to be constantly motivated, positive, or progressing at all times. Fluctuations in energy, confidence, and capacity are expected and accounted for within the framework.</p>
             <p>You are not required to justify every choice or seek permission for how you live outside of coaching. The role of the framework is to support clearer decision-making, not to control behaviour or impose rules.</p>
             <p>When expectations and boundaries are respected, coaching tends to feel calmer and more contained. There is less emotional load, fewer reactive decisions, and a stronger sense of trust in the process over time.</p>
@@ -71,8 +71,8 @@ export default function OrientationPage() {
 
           <OrientationSection title="Before Our Next Conversation">
             <p>When we speak next, the focus will be on what the report is showing us, what it means for how you&apos;ve been responding, and what a structured coaching approach could look like for you specifically.</p>
-            <p>You don&apos;t need to have prepared anything. You don&apos;t need to have formed opinions or made decisions. What helps is arriving with a clearer sense of what this framework is — which is what this guide is for.</p>
-            <p>If anything in here stands out, prompts a question, or doesn&apos;t sit right — bring it. That&apos;s exactly the kind of conversation worth having before anything moves forward.</p>
+            <p>You don&apos;t need to have prepared anything. You don&apos;t need to have formed opinions or made decisions. What helps is arriving with a clearer sense of what this framework is - which is what this guide is for.</p>
+            <p>If anything in here stands out, prompts a question, or doesn&apos;t sit right - bring it. That&apos;s exactly the kind of conversation worth having before anything moves forward.</p>
           </OrientationSection>
 
           {/* Closing */}

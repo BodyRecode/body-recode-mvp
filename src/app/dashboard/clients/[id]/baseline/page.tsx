@@ -57,7 +57,7 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
                 <div key={m.label} className="bg-stone-800/50 rounded-xl p-3 text-center">
                   <p className="text-xs text-stone-500 mb-1">{m.label}</p>
                   <p className="text-base font-semibold text-white">
-                    {m.value ?? '—'}
+                    {m.value ?? '-'}
                     <span className="text-xs text-stone-500 ml-1">{m.unit}</span>
                   </p>
                 </div>

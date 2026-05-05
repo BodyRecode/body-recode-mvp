@@ -272,7 +272,7 @@ function ContentCalendar() {
 
         {/* Days grid */}
         <div className="grid grid-cols-7 gap-px bg-stone-800">
-          {/* Empty cells for first day — Monday-first: Sun(0)→6, Mon(1)→0, Tue(2)→1... */}
+          {/* Empty cells for first day - Monday-first: Sun(0)→6, Mon(1)→0, Tue(2)→1... */}
           {Array.from({ length: (firstDay + 6) % 7 }).map((_, i) => (
             <div key={`empty-${i}`} className="bg-stone-950 min-h-[80px]" />
           ))}
@@ -377,7 +377,7 @@ function ContentCalendar() {
           : []
         const isCarousel = graphicUrls.length > 1
         const isSingleGraphic = graphicUrls.length === 1
-        const CAROUSEL_LABELS = ['Slide 1 — Depleted', 'Slide 2 — Transitioning', 'Slide 3 — Ready']
+        const CAROUSEL_LABELS = ['Slide 1 - Depleted', 'Slide 2 - Transitioning', 'Slide 3 - Ready']
         return (
           <Card>
             <div className="flex items-start justify-between mb-5">
@@ -400,12 +400,12 @@ function ContentCalendar() {
             {/* Instagram-style post preview */}
             <div className="grid sm:grid-cols-2 gap-5 items-start">
 
-              {/* Left — graphic(s) */}
+              {/* Left - graphic(s) */}
               <div>
               {isCarousel ? (
-                // Carousel — multiple slides
+                // Carousel - multiple slides
                 <div className="space-y-3">
-                  <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">{graphicUrls.length} slides — download each</p>
+                  <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">{graphicUrls.length} slides - download each</p>
                   {graphicUrls.map((url: string, i: number) => (
                     <div key={i}>
                       <a
@@ -454,7 +454,7 @@ function ContentCalendar() {
               )}
               </div>
 
-              {/* Right — caption */}
+              {/* Right - caption */}
               <div className="space-y-3">
                 {/* Profile row */}
                 {(() => {
@@ -646,7 +646,7 @@ function BulletList({ items }: { items: string[] }) {
     <ul className="space-y-1.5">
       {items.map((item, i) => (
         <li key={i} className="flex items-start gap-2 text-sm text-stone-400">
-          <span className="text-teal-500 mt-0.5 shrink-0">—</span>
+          <span className="text-teal-500 mt-0.5 shrink-0">-</span>
           <span>{item}</span>
         </li>
       ))}
@@ -796,7 +796,7 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Mission</SectionLabel>
             <p className="text-lg font-semibold text-white leading-snug mb-2">Interpretation before prescription.</p>
-            <Body>Social media is not the funnel — it feeds the funnel. Every piece of content drives curiosity. The scorecard converts that curiosity into qualified leads.</Body>
+            <Body>Social media is not the funnel - it feeds the funnel. Every piece of content drives curiosity. The scorecard converts that curiosity into qualified leads.</Body>
           </Card>
 
           {/* Funnel flow */}
@@ -849,7 +849,7 @@ export default function StrategyPage() {
                 ))}
               </div>
               <div className="bg-stone-800/30 border border-stone-700/50 rounded-lg px-4 py-3">
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">LTV Optimisation — 2x to 3x Upgrade</p>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">LTV Optimisation - 2x to 3x Upgrade</p>
                 <div className="grid sm:grid-cols-3 gap-3 text-sm">
                   <div>
                     <p className="text-stone-400 text-xs font-semibold mb-1">When</p>
@@ -873,12 +873,12 @@ export default function StrategyPage() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-2"><Tag color="teal">Objective 1</Tag></div>
-                <Heading>Performance Coaching — Ongoing Acquisition</Heading>
+                <Heading>Performance Coaching - Ongoing Acquisition</Heading>
                 <Body>Cold traffic → Scorecard → Zoom 1 booking → Zoom 2 → client. Organic first. Ads added once organic conversion is proven.</Body>
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-2"><Tag color="violet">Objective 2</Tag></div>
-                <Heading>Founding Client Program — 20 Spots</Heading>
+                <Heading>Founding Client Program - 20 Spots</Heading>
                 <Body>Parallel track. Separate content angles. Application-based. Urgency through finite positions. People must feel selected, not sold to.</Body>
               </div>
             </div>
@@ -903,20 +903,20 @@ export default function StrategyPage() {
             <SectionLabel>Target Audience</SectionLabel>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <Heading>Primary — Women 35–50</Heading>
+                <Heading>Primary - Women 35–50</Heading>
                 <BulletList items={[
                   'High-functioning, disciplined, consistent',
-                  'Training and eating well — getting nothing back',
+                  'Training and eating well - getting nothing back',
                   'Corporate, finance, law, medical, consulting',
                   '$100K–$180K+ AUD income',
                   'Frustrated, not lazy',
                 ]} />
               </div>
               <div>
-                <Heading>Secondary — Men 35–55</Heading>
+                <Heading>Secondary - Men 35–55</Heading>
                 <BulletList items={[
                   'Ex-athletes, corporate professionals',
-                  'Body stopped responding — no explanation',
+                  'Body stopped responding - no explanation',
                   'Seek logic and structure, not hype',
                   'Have tried harder and got worse results',
                   'Need the system explained before they commit',
@@ -932,7 +932,7 @@ export default function StrategyPage() {
           </Card>
 
           <Card>
-            <SectionLabel>Tone of Voice — 6 Principles</SectionLabel>
+            <SectionLabel>Tone of Voice - 6 Principles</SectionLabel>
             <div className="grid sm:grid-cols-2 gap-3">
               {[
                 { a: 'Intelligent', b: 'not complicated' },
@@ -944,7 +944,7 @@ export default function StrategyPage() {
               ].map(({ a, b }) => (
                 <div key={a} className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-white">{a}</span>
-                  <span className="text-stone-600 text-sm">—</span>
+                  <span className="text-stone-600 text-sm">-</span>
                   <span className="text-sm text-stone-400">{b}</span>
                 </div>
               ))}
@@ -956,11 +956,11 @@ export default function StrategyPage() {
             <Body className="mb-4">Every piece of content maps to one of these five topics. Nothing outside these. This is your intellectual territory.</Body>
             <div className="space-y-3">
               {[
-                { n: '1', label: 'Body State', desc: 'Depleted / Transitioning / Ready. Why body state determines everything — training, fat loss, and what the body will and won\'t respond to.' },
+                { n: '1', label: 'Body State', desc: 'Depleted / Transitioning / Ready. Why body state determines everything - training, fat loss, and what the body will and won\'t respond to.' },
                 { n: '2', label: 'Why Effort Isn\'t Working', desc: 'The training harder / eating less trap. Why doing more makes things worse in the wrong state. The effort paradox.' },
                 { n: '3', label: 'Cortisol and Fat Storage', desc: 'Stress belt, protection mode, why the body resists fat loss under load. The mechanism most coaches ignore entirely.' },
                 { n: '4', label: 'Prescription Without Interpretation', desc: 'The fundamental flaw in mainstream fitness. Being told what to do before anyone has read what the body is actually doing.' },
-                { n: '5', label: 'The Intelligent Approach', desc: 'What reading the body first actually looks like. The Body Recode system as the solution — interpretation before prescription.' },
+                { n: '5', label: 'The Intelligent Approach', desc: 'What reading the body first actually looks like. The Body Recode system as the solution - interpretation before prescription.' },
               ].map(({ n, label, desc }) => (
                 <div key={n} className="flex items-start gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800">
                   <span className="text-sm font-bold text-teal-500 w-5 shrink-0 mt-0.5">{n}</span>
@@ -992,18 +992,18 @@ export default function StrategyPage() {
           <Card className="border-red-500/20 bg-red-500/5">
             <SectionLabel>Never Say or Do</SectionLabel>
             <BulletList items={[
-              '"Crush it", "no excuses", "grind", "hustle" — no fitness clichés',
+              '"Crush it", "no excuses", "grind", "hustle" - no fitness clichés',
               'Blame the client for biological symptoms',
               'Shame-based or guilt-based messaging',
               'Hype or exaggerated promises',
               'Long-winded clinical explanations',
-              'Direct selling — always guide, never push',
-              '"Discount" or "reduction in fees" for the Founding Client Program — it is a trade',
+              'Direct selling - always guide, never push',
+              '"Discount" or "reduction in fees" for the Founding Client Program - it is a trade',
             ]} />
           </Card>
 
           <Card>
-            <SectionLabel>Messaging Framework — Every Post</SectionLabel>
+            <SectionLabel>Messaging Framework - Every Post</SectionLabel>
             <div className="space-y-2">
               {[
                 { n: '1', label: 'Insight', desc: 'State the physiological truth' },
@@ -1016,7 +1016,7 @@ export default function StrategyPage() {
                   <span className="text-xs font-bold text-teal-500 w-4 shrink-0 mt-0.5">{n}</span>
                   <div>
                     <span className="text-sm font-semibold text-white">{label} </span>
-                    <span className="text-sm text-stone-400">— {desc}</span>
+                    <span className="text-sm text-stone-400">- {desc}</span>
                   </div>
                 </div>
               ))}
@@ -1048,12 +1048,12 @@ export default function StrategyPage() {
       {tab === 'content' && (
         <div className="space-y-4">
           <Card>
-            <SectionLabel>Content Temperature — Hormozi Engagement Ladder</SectionLabel>
+            <SectionLabel>Content Temperature - Hormozi Engagement Ladder</SectionLabel>
             <Body className="mb-4">Every post targets one temperature level. Cold content moves people from unaware to problem aware. Warm content moves them from problem aware to solution aware. Hot content pushes them to act. The ratio should be roughly 60% cold, 30% warm, 10% hot.</Body>
             <div className="space-y-2">
               {[
                 { temp: 'Cold', colour: 'text-blue-400', bg: 'bg-blue-400/5 border-blue-400/20', ratio: '~60% of posts', desc: 'Unaware → Problem aware. Education and pattern recognition. No CTA or soft "does this sound familiar?" Never ask for action.', types: 'Authority, Pattern Recognition, Coach Perspective' },
-                { temp: 'Warm', colour: 'text-amber-400', bg: 'bg-amber-400/5 border-amber-400/20', ratio: '~30% of posts', desc: 'Problem aware → Solution aware. Introduce the system. "There is a reason for this and it can be read." Soft CTA — link in bio.', types: 'Coach Perspective, Diagnostic (soft)' },
+                { temp: 'Warm', colour: 'text-amber-400', bg: 'bg-amber-400/5 border-amber-400/20', ratio: '~30% of posts', desc: 'Problem aware → Solution aware. Introduce the system. "There is a reason for this and it can be read." Soft CTA - link in bio.', types: 'Coach Perspective, Diagnostic (soft)' },
                 { temp: 'Hot', colour: 'text-red-400', bg: 'bg-red-400/5 border-red-400/20', ratio: '~10% of posts', desc: 'Solution aware → Ready to act. Direct CTA. "Take the scorecard. 2 minutes. Free. Find out your state." One job: get them to the scorecard.', types: 'Diagnostic / Funnel' },
               ].map(row => (
                 <div key={row.temp} className={`p-3 rounded-lg border ${row.bg}`}>
@@ -1077,9 +1077,9 @@ export default function StrategyPage() {
               {[
                 { day: 'Monday', type: 'Authority', temp: 'Cold', goal: 'Make people think differently about their body', format: 'Carousel (5–7 slides) or short video', cta: 'None' },
                 { day: 'Tuesday', type: 'Contrarian', temp: 'Cold', goal: 'Challenge the standard fitness narrative', format: 'Short video or statement graphic', cta: 'None' },
-                { day: 'Wednesday', type: 'Pattern Recognition', temp: 'Cold', goal: 'Trigger self-recognition — "that\'s exactly me"', format: 'Carousel or graphic card', cta: 'Soft' },
+                { day: 'Wednesday', type: 'Pattern Recognition', temp: 'Cold', goal: 'Trigger self-recognition - "that\'s exactly me"', format: 'Carousel or graphic card', cta: 'Soft' },
                 { day: 'Friday', type: 'Coach Perspective', temp: 'Warm', goal: 'Build trust, introduce the system', format: 'Talking video or photo card', cta: 'Soft' },
-                { day: 'Sunday', type: 'Diagnostic / Funnel', temp: 'Hot', goal: 'Drive to the scorecard', format: 'Graphic card or reel', cta: 'Hard — scorecard link' },
+                { day: 'Sunday', type: 'Diagnostic / Funnel', temp: 'Hot', goal: 'Drive to the scorecard', format: 'Graphic card or reel', cta: 'Hard - scorecard link' },
               ].map(row => (
                 <div key={row.day} className="grid grid-cols-5 gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800 text-xs">
                   <div><p className="text-stone-600 mb-0.5">Day</p><p className="font-semibold text-white">{row.day}</p></div>
@@ -1094,13 +1094,13 @@ export default function StrategyPage() {
 
           {[
             {
-              type: 'Type 1 — Authority',
+              type: 'Type 1 - Authority',
               day: 'Monday',
               color: 'teal' as const,
               temp: 'Cold',
               tempColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
               tempDesc: 'Unaware → Problem aware',
-              goal: 'Position Body Recode as a different philosophy from the fitness industry. Make people think: "This coach understands the body differently." No CTA — plant the idea.',
+              goal: 'Position Body Recode as a different philosophy from the fitness industry. Make people think: "This coach understands the body differently." No CTA - plant the idea.',
               topics: [
                 'Why fat loss is not just calories',
                 'Why stress influences metabolism and fat storage',
@@ -1114,13 +1114,13 @@ export default function StrategyPage() {
               format: 'Carousel (5–7 slides) or short talking video (30–60 sec)',
             },
             {
-              type: 'Type 2 — Pattern Recognition',
+              type: 'Type 2 - Pattern Recognition',
               day: 'Wednesday',
               color: 'amber' as const,
               temp: 'Cold',
               tempColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
               tempDesc: 'Unaware → Problem aware',
-              goal: 'Show people the patterns they are already stuck in. They read it and think: "That\'s exactly me." Recognition creates engagement. Soft CTA at most — "does this sound familiar?"',
+              goal: 'Show people the patterns they are already stuck in. They read it and think: "That\'s exactly me." Recognition creates engagement. Soft CTA at most - "does this sound familiar?"',
               topics: [
                 '"If your stomach fat won\'t move despite training consistently…"',
                 '"If you gain fat easily when life gets stressful…"',
@@ -1134,32 +1134,32 @@ export default function StrategyPage() {
               format: 'Carousel (hook slide + pattern slides + reframe + CTA) or graphic card',
             },
             {
-              type: 'Type 3 — Coach Perspective',
+              type: 'Type 3 - Coach Perspective',
               day: 'Friday',
               color: 'violet' as const,
               temp: 'Warm',
               tempColor: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
               tempDesc: 'Problem aware → Solution aware',
-              goal: 'Build personal authority and trust. Introduce the system through experience-based storytelling. People buy the person guiding the system. Soft CTA — link in bio.',
+              goal: 'Build personal authority and trust. Introduce the system through experience-based storytelling. People buy the person guiding the system. Soft CTA - link in bio.',
               topics: [
                 '"After years of coaching, I keep seeing the same pattern…"',
                 '"The biggest mistake people make when trying to lose fat"',
                 '"The moment I know someone will struggle with dieting"',
                 '"What most coaches misunderstand about metabolism"',
                 '"Why I stopped writing generic programs"',
-                '"The client who did everything right and got nothing back — here\'s what was actually happening"',
+                '"The client who did everything right and got nothing back - here\'s what was actually happening"',
                 '"What changes when you read the body before prescribing to it"',
               ],
               format: 'Talking-head video (face to camera, gym or clean background) or photo card with caption',
             },
             {
-              type: 'Type 4 — Contrarian',
+              type: 'Type 4 - Contrarian',
               day: 'Tuesday (5th post)',
               color: 'amber' as const,
               temp: 'Cold / Warm',
               tempColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
               tempDesc: 'Unaware → Problem aware (challenges existing belief)',
-              goal: 'Challenge the standard fitness narrative. Make people question what they\'ve been told. Highest share potential. No direct CTA — let the idea do the work.',
+              goal: 'Challenge the standard fitness narrative. Make people question what they\'ve been told. Highest share potential. No direct CTA - let the idea do the work.',
               topics: [
                 '"More training and less food is making it worse."',
                 '"Discipline is not the problem. The prescription is."',
@@ -1171,18 +1171,18 @@ export default function StrategyPage() {
               format: 'Short talking video (15–30 sec) or bold statement graphic card',
             },
             {
-              type: 'Type 5 — Diagnostic / Funnel',
+              type: 'Type 5 - Diagnostic / Funnel',
               day: 'Sunday',
               color: 'red' as const,
               temp: 'Hot',
               tempColor: 'text-red-400 bg-red-400/10 border-red-400/20',
               tempDesc: 'Solution aware → Ready to act',
-              goal: 'Drive people to the scorecard. One job: get them to take it. This is the conversion post. Hard CTA — link in bio.',
+              goal: 'Drive people to the scorecard. One job: get them to take it. This is the conversion post. Hard CTA - link in bio.',
               topics: [
                 '"Your body is operating in one of three states right now. Find out which one."',
                 '"I built a free tool that tells you which state your body is in. 2 minutes. Link in bio."',
                 '"The Body State Scorecard. 2 minutes. Free. Find out why you\'re stuck."',
-                '"Before I prescribe anything, I read the body first. You can do the same — link in bio."',
+                '"Before I prescribe anything, I read the body first. You can do the same - link in bio."',
                 '"Find out your body state in 2 minutes. Free. No email until you see your result."',
               ],
               format: 'Single graphic (photo card or scorecard-style card) + strong caption. Can also be a short reel.',
@@ -1192,7 +1192,7 @@ export default function StrategyPage() {
               <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <Tag color={ct.color}>{ct.type}</Tag>
                 <span className="text-xs text-stone-600">{ct.day}</span>
-                <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${ct.tempColor}`}>{ct.temp} — {ct.tempDesc}</span>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${ct.tempColor}`}>{ct.temp} - {ct.tempDesc}</span>
               </div>
               <Body>{ct.goal}</Body>
               <div className="mt-4">
@@ -1210,10 +1210,10 @@ export default function StrategyPage() {
             <SectionLabel>Content Production Guide</SectionLabel>
             <div className="space-y-2">
               {[
-                { type: 'Authority carousel', effort: 'Low', tool: 'Content Engine — graphic + carousel generator' },
-                { type: 'Pattern recognition carousel', effort: 'Low', tool: 'Content Engine — carousel generator' },
+                { type: 'Authority carousel', effort: 'Low', tool: 'Content Engine - graphic + carousel generator' },
+                { type: 'Pattern recognition carousel', effort: 'Low', tool: 'Content Engine - carousel generator' },
                 { type: 'Coach perspective video', effort: 'Medium', tool: 'iPhone + tripod in gym. 30–60 sec.' },
-                { type: 'Diagnostic graphic', effort: 'Low', tool: 'Content Engine — photo card or scorecard card' },
+                { type: 'Diagnostic graphic', effort: 'Low', tool: 'Content Engine - photo card or scorecard card' },
                 { type: 'Ad reel (talking head)', effort: 'Medium', tool: 'iPhone + tripod in gym. 15–30 sec.' },
                 { type: 'AI avatar reel (variation)', effort: 'Low', tool: 'ElevenLabs + HeyGen via Content Engine' },
               ].map(row => (
@@ -1288,11 +1288,11 @@ export default function StrategyPage() {
             <Body>Post 5 times over 8 days before any ads go live. Goal: profile looks established and intentional. No hashtags until Post 5. No CTA until Post 5.</Body>
             <div className="mt-3 space-y-1.5">
               {[
-                { post: 'Post 1', temp: 'Cold', desc: 'Brand arrival — no CTA, no explanation yet. Intrigue only.' },
-                { post: 'Post 2', temp: 'Cold', desc: 'Who you are — introduce the philosophy, not the offer.' },
-                { post: 'Post 3', temp: 'Cold', desc: 'The problem — name the pain. Body state problem, not effort problem.' },
-                { post: 'Post 4', temp: 'Cold', desc: 'The three states — educate. Still no CTA.' },
-                { post: 'Post 5', temp: 'Hot', desc: 'Scorecard CTA — first time asking for action. Profile is now established.' },
+                { post: 'Post 1', temp: 'Cold', desc: 'Brand arrival - no CTA, no explanation yet. Intrigue only.' },
+                { post: 'Post 2', temp: 'Cold', desc: 'Who you are - introduce the philosophy, not the offer.' },
+                { post: 'Post 3', temp: 'Cold', desc: 'The problem - name the pain. Body state problem, not effort problem.' },
+                { post: 'Post 4', temp: 'Cold', desc: 'The three states - educate. Still no CTA.' },
+                { post: 'Post 5', temp: 'Hot', desc: 'Scorecard CTA - first time asking for action. Profile is now established.' },
               ].map(r => (
                 <div key={r.post} className="flex items-center gap-3 text-xs p-2 rounded-lg bg-stone-950 border border-stone-800">
                   <span className="text-stone-500 w-10 shrink-0">{r.post}</span>
@@ -1302,7 +1302,7 @@ export default function StrategyPage() {
               ))}
             </div>
             <div className="mt-3 p-3 bg-teal-500/5 border border-teal-500/20 rounded-lg">
-              <p className="text-xs text-teal-400 font-medium">After Post 5 — drop the Founding Client Program offer. Then launch ads.</p>
+              <p className="text-xs text-teal-400 font-medium">After Post 5 - drop the Founding Client Program offer. Then launch ads.</p>
             </div>
           </Card>
 
@@ -1330,14 +1330,14 @@ export default function StrategyPage() {
             day="Day 4"
             format="Insight card"
             graphic="Insight card. Label: The Real Problem. Text: Your body isn't broken. It's being misread. Use: /api/content/graphic?style=insight&label=The+Real+Problem&text=Your+body+isn%27t+broken.+It%27s+being+misread."
-            caption={`You're training. You're eating well. You're consistent.\n\nAnd nothing is moving.\n\nThat's not a discipline problem. That's a body state problem.\n\nYour biology operates in one of three states. In two of those states, adding more training and cutting more food makes things worse — not better.\n\nNobody told you that. That's the problem.`}
+            caption={`You're training. You're eating well. You're consistent.\n\nAnd nothing is moving.\n\nThat's not a discipline problem. That's a body state problem.\n\nYour biology operates in one of three states. In two of those states, adding more training and cutting more food makes things worse - not better.\n\nNobody told you that. That's the problem.`}
           />
 
           <PostBlock
             number={4}
             title="The Three Body States"
             day="Day 6"
-            format="Carousel — 3 body-state cards"
+            format="Carousel - 3 body-state cards"
             graphic="3 separate body-state cards. Red (Depleted), Amber (Transitioning), Teal (Ready). Use the body-state graphic style with accent=red/amber/teal."
             caption={`Your body is operating in one of three states right now.\n\nDepleted. Transitioning. Ready.\n\nEach one requires a completely different approach. The same program that gets results in Ready State will make things worse in Depleted State.\n\nThis is why generic programs fail. They don't read the state first.\n\nSwipe to find out what each one means.`}
           />
@@ -1348,7 +1348,7 @@ export default function StrategyPage() {
             day="Day 8"
             format="Photo card (photo-split or photo-top)"
             graphic='Photo card. Label: "Body Recode™". Text: "Find out which state your body is in." Sub: "Free. 2 minutes." Use: /api/content/graphic?style=photo-split&label=Body+Recode™&text=Find+out+which+state+your+body+is+in.&sub=Free.+2+minutes.'
-            caption={`I built a free tool that tells you which state your body is currently operating in.\n\n5 sections. 2 minutes. No email required until you see your result.\n\nIt tells you:\n— Which body state you're in\n— Why your body is responding the way it is\n— What that means for your training and fat loss right now\n\nTake the Body State Scorecard — link in bio.`}
+            caption={`I built a free tool that tells you which state your body is currently operating in.\n\n5 sections. 2 minutes. No email required until you see your result.\n\nIt tells you:\n- Which body state you're in\n- Why your body is responding the way it is\n- What that means for your training and fat loss right now\n\nTake the Body State Scorecard - link in bio.`}
             hashtags="#bodyrecode #bodystate #fatlosss #performancecoaching #cortisol #fatloss #trainingresponse #brisbanecoach #onlinecoaching #hormones #metabolichealth #interpretation"
           />
         </div>
@@ -1377,9 +1377,9 @@ export default function StrategyPage() {
                   border: 'border-blue-400/20',
                   bg: 'bg-blue-400/5',
                   items: [
-                    '5x/week — Cold builds audience, Hot converts',
+                    '5x/week - Cold builds audience, Hot converts',
                     'Sunday Diagnostic post always drives to scorecard',
-                    'Hook quality determines reach — first line is everything',
+                    'Hook quality determines reach - first line is everything',
                     'Consistency over 4 weeks before judging results',
                   ],
                 },
@@ -1390,7 +1390,7 @@ export default function StrategyPage() {
                   border: 'border-amber-400/20',
                   bg: 'bg-amber-400/5',
                   items: [
-                    'Bio link goes directly to the scorecard — not homepage',
+                    'Bio link goes directly to the scorecard - not homepage',
                     'Bio copy: one problem statement, one action',
                     'Highlight covers: Body States, Method, Scorecard',
                     'Profile photo: clear face, not a logo',
@@ -1404,7 +1404,7 @@ export default function StrategyPage() {
                   bg: 'bg-teal-400/5',
                   items: [
                     'Reply to every comment within 1 hour of posting',
-                    'DM every new follower — short welcome, no pitch',
+                    'DM every new follower - short welcome, no pitch',
                     'DM anyone who replies to a story or saves a post',
                     'DM story viewers who have watched 3+ stories',
                   ],
@@ -1432,18 +1432,18 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Weekly Action Plan</SectionLabel>
             <div className="flex items-start gap-3 mb-3 p-3 rounded-lg bg-amber-400/5 border border-amber-400/20">
-              <p className="text-xs text-amber-300 leading-relaxed">This rhythm starts <strong>after the pre-launch is complete</strong> (after Post 5 on April 15). Don&apos;t try to force it during pre-launch — those posts run on their own Day 1/2/4/6/8 schedule. First Monday of this rhythm: <strong>April 20</strong>.</p>
+              <p className="text-xs text-amber-300 leading-relaxed">This rhythm starts <strong>after the pre-launch is complete</strong> (after Post 5 on April 15). Don&apos;t try to force it during pre-launch - those posts run on their own Day 1/2/4/6/8 schedule. First Monday of this rhythm: <strong>April 20</strong>.</p>
             </div>
-            <p className="text-stone-500 text-xs mb-3">What to do each week — beyond just posting.</p>
+            <p className="text-stone-500 text-xs mb-3">What to do each week - beyond just posting.</p>
             <div className="space-y-2">
               {[
-                { day: 'Mon', post: true,  action: 'Post (Pattern Recognition — Cold). Reply to all weekend comments within 1hr.' },
-                { day: 'Tue', post: true,  action: 'Post (Contrarian — Cold). DM the last 5 new followers — soft intro, no pitch.' },
-                { day: 'Wed', post: true,  action: 'Post (Coach Perspective — Warm). Check story viewers from last 48hrs — DM anyone warm.' },
-                { day: 'Thu', post: false, action: 'No post. DM anyone who saved a post this week. Review engagement on last 3 posts — note what performed.' },
-                { day: 'Fri', post: true,  action: 'Post (Authority — Cold). Reply to all comments. DM anyone who replies to stories.' },
+                { day: 'Mon', post: true,  action: 'Post (Pattern Recognition - Cold). Reply to all weekend comments within 1hr.' },
+                { day: 'Tue', post: true,  action: 'Post (Contrarian - Cold). DM the last 5 new followers - soft intro, no pitch.' },
+                { day: 'Wed', post: true,  action: 'Post (Coach Perspective - Warm). Check story viewers from last 48hrs - DM anyone warm.' },
+                { day: 'Thu', post: false, action: 'No post. DM anyone who saved a post this week. Review engagement on last 3 posts - note what performed.' },
+                { day: 'Fri', post: true,  action: 'Post (Authority - Cold). Reply to all comments. DM anyone who replies to stories.' },
                 { day: 'Sat', post: false, action: 'No post. Review the week: profile visits, scorecard submissions, follower growth. Note in weekly log.' },
-                { day: 'Sun', post: true,  action: 'Post (Diagnostic/Funnel — Hot → Scorecard CTA). Actively DM anyone who comments asking how to do it.' },
+                { day: 'Sun', post: true,  action: 'Post (Diagnostic/Funnel - Hot → Scorecard CTA). Actively DM anyone who comments asking how to do it.' },
               ].map(r => (
                 <div key={r.day} className="flex items-start gap-3 p-2.5 rounded-lg bg-stone-950 border border-stone-800">
                   <span className="text-xs font-bold text-stone-500 w-7 shrink-0 pt-0.5">{r.day}</span>
@@ -1483,12 +1483,12 @@ export default function StrategyPage() {
 
           {/* Daily engagement routine */}
           <Card>
-            <SectionLabel>Daily Engagement Routine — 20 Min/Day</SectionLabel>
-            <p className="text-stone-500 text-xs mb-4">Do this every day, separate from posting. The algorithm reads engagement signal — an account that only posts but never interacts gets suppressed. This is how you grow without ads.</p>
+            <SectionLabel>Daily Engagement Routine - 20 Min/Day</SectionLabel>
+            <p className="text-stone-500 text-xs mb-4">Do this every day, separate from posting. The algorithm reads engagement signal - an account that only posts but never interacts gets suppressed. This is how you grow without ads.</p>
             <div className="space-y-3">
 
               <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                <p className="text-xs font-semibold text-white mb-2">Step 1 — Comment on hashtag posts (10 min)</p>
+                <p className="text-xs font-semibold text-white mb-2">Step 1 - Comment on hashtag posts (10 min)</p>
                 <p className="text-xs text-stone-500 mb-2">Browse these hashtags and leave 5–8 genuine comments on recent posts. Comments that add value get profile clicks.</p>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
@@ -1511,21 +1511,21 @@ export default function StrategyPage() {
               </div>
 
               <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                <p className="text-xs font-semibold text-white mb-2">Step 2 — Engage with target accounts (5 min)</p>
-                <p className="text-xs text-stone-500 mb-2">Follow and comment on accounts your target client already follows. Your comment appears in their feed — that&apos;s a free impression on a warm audience.</p>
+                <p className="text-xs font-semibold text-white mb-2">Step 2 - Engage with target accounts (5 min)</p>
+                <p className="text-xs text-stone-500 mb-2">Follow and comment on accounts your target client already follows. Your comment appears in their feed - that&apos;s a free impression on a warm audience.</p>
                 <div className="space-y-1.5">
                   {[
                     { type: 'Brisbane PTs and coaches', why: 'Your direct audience watches these accounts' },
-                    { type: 'Functional medicine practitioners', why: 'Cortisol, hormones, metabolic health — adjacent content' },
+                    { type: 'Functional medicine practitioners', why: 'Cortisol, hormones, metabolic health - adjacent content' },
                     { type: "Women's health coaches (35–50)", why: 'Your primary demographic is already engaged here' },
                     { type: 'Exercise science and sports nutrition accounts', why: 'Establishes you as a peer, not a follower' },
                     { type: 'Corporate wellness and productivity accounts', why: 'High-functioning professionals in your target income bracket' },
                   ].map(r => (
                     <div key={r.type} className="flex items-start gap-2 text-xs">
-                      <span className="text-teal-500 shrink-0 mt-0.5">—</span>
+                      <span className="text-teal-500 shrink-0 mt-0.5">-</span>
                       <div>
                         <span className="text-stone-300 font-medium">{r.type}</span>
-                        <span className="text-stone-600"> — {r.why}</span>
+                        <span className="text-stone-600"> - {r.why}</span>
                       </div>
                     </div>
                   ))}
@@ -1533,20 +1533,20 @@ export default function StrategyPage() {
               </div>
 
               <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                <p className="text-xs font-semibold text-white mb-2">Step 3 — React to stories (5 min)</p>
-                <p className="text-xs text-stone-500">React to stories from people in your target audience. A reaction opens a DM thread — low friction, high visibility. Don&apos;t force a conversation. Just a reaction is enough to put your name in front of them.</p>
+                <p className="text-xs font-semibold text-white mb-2">Step 3 - React to stories (5 min)</p>
+                <p className="text-xs text-stone-500">React to stories from people in your target audience. A reaction opens a DM thread - low friction, high visibility. Don&apos;t force a conversation. Just a reaction is enough to put your name in front of them.</p>
               </div>
 
               <div className="p-3 bg-red-500/5 rounded-lg border border-red-500/20">
-                <p className="text-xs font-semibold text-red-400 mb-2">Comment quality rules — non-negotiable</p>
+                <p className="text-xs font-semibold text-red-400 mb-2">Comment quality rules - non-negotiable</p>
                 <div className="space-y-1">
                   {[
                     { bad: '"Great post!" / "Love this!" / "So true!"', good: 'Never. Generic comments are invisible and signal a bot.' },
-                    { bad: 'Always add something real', good: 'A point of agreement, a related insight, a question — 2–3 sentences. Comments that show expertise get profile clicks.' },
+                    { bad: 'Always add something real', good: 'A point of agreement, a related insight, a question - 2–3 sentences. Comments that show expertise get profile clicks.' },
                     { bad: 'Example of a good comment', good: '"The cortisol-fat loss connection is underrated. Most people push harder when they\'re stuck and wonder why nothing moves. Usually the opposite is needed."' },
                   ].map((r, i) => (
                     <div key={i} className="flex items-start gap-2 text-xs py-1 border-b border-red-500/10 last:border-0">
-                      <span className="text-red-400 shrink-0 mt-0.5">—</span>
+                      <span className="text-red-400 shrink-0 mt-0.5">-</span>
                       <div>
                         <span className="text-stone-400 font-medium">{r.bad}: </span>
                         <span className="text-stone-500">{r.good}</span>
@@ -1561,15 +1561,15 @@ export default function StrategyPage() {
 
           {/* Content designed to grow */}
           <Card>
-            <SectionLabel>Content Designed to Grow — Not Just Post</SectionLabel>
+            <SectionLabel>Content Designed to Grow - Not Just Post</SectionLabel>
             <p className="text-stone-500 text-xs mb-3">The algorithm rewards saves and shares above all else. These signals tell Instagram the post is worth distributing beyond your followers.</p>
             <div className="space-y-2">
               {[
-                { signal: 'Saves', how: 'Reference content — "save this for next time your fat loss stalls". The body states carousel is a save magnet. Any post with a framework, checklist, or explainer gets saved.' },
-                { signal: 'Shares', how: 'Pattern recognition content — "if you know someone doing everything right and getting nothing back, send this". People share content that describes someone they know.' },
-                { signal: 'Reels', how: 'Reels get 3–5x the reach of static posts on a new account. One 20-second talking head reel per week minimum once the pre-launch is done. Low production — face to camera, gym background, one clear point.' },
+                { signal: 'Saves', how: 'Reference content - "save this for next time your fat loss stalls". The body states carousel is a save magnet. Any post with a framework, checklist, or explainer gets saved.' },
+                { signal: 'Shares', how: 'Pattern recognition content - "if you know someone doing everything right and getting nothing back, send this". People share content that describes someone they know.' },
+                { signal: 'Reels', how: 'Reels get 3–5x the reach of static posts on a new account. One 20-second talking head reel per week minimum once the pre-launch is done. Low production - face to camera, gym background, one clear point.' },
                 { signal: 'Comments', how: 'Posts that ask a direct question at the end get more comments. More comments = more reach. End every Pattern Recognition post with one question.' },
-                { signal: 'Story polls', how: 'Use Instagram Stories polls 2–3x per week. Simple yes/no questions about symptoms ("Do you train consistently but feel like nothing is changing?"). Each response is a warm signal — that person is your audience.' },
+                { signal: 'Story polls', how: 'Use Instagram Stories polls 2–3x per week. Simple yes/no questions about symptoms ("Do you train consistently but feel like nothing is changing?"). Each response is a warm signal - that person is your audience.' },
               ].map(r => (
                 <div key={r.signal} className="flex items-start gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800">
                   <span className="text-xs font-bold text-teal-400 w-14 shrink-0 pt-0.5">{r.signal}</span>
@@ -1583,11 +1583,11 @@ export default function StrategyPage() {
           <Card className="border-red-500/20 bg-red-500/5">
             <SectionLabel>What Not to Do</SectionLabel>
             <BulletList items={[
-              'Follow/unfollow strategy — it works short-term and destroys trust long-term. Your audience is intelligent. They notice.',
-              'Engagement pods — fake reciprocal engagement inflates vanity metrics, not real reach or leads.',
-              'Buying followers — dead weight. Kills your engagement rate and signals the algorithm to suppress you.',
-              'Commenting on competitor accounts to poach their followers — it reads as desperate, not authoritative.',
-              'Posting the same content twice to get more reach — Instagram suppresses reposted content.',
+              'Follow/unfollow strategy - it works short-term and destroys trust long-term. Your audience is intelligent. They notice.',
+              'Engagement pods - fake reciprocal engagement inflates vanity metrics, not real reach or leads.',
+              'Buying followers - dead weight. Kills your engagement rate and signals the algorithm to suppress you.',
+              'Commenting on competitor accounts to poach their followers - it reads as desperate, not authoritative.',
+              'Posting the same content twice to get more reach - Instagram suppresses reposted content.',
             ]} />
           </Card>
 
@@ -1600,7 +1600,7 @@ export default function StrategyPage() {
                 { check: 'Hook quality', fix: 'Read back your last 10 first lines. If they don\'t stop your own scroll, they won\'t stop anyone else\'s. Rewrite the weakest 3.' },
                 { check: 'Profile link', fix: 'Check the bio link goes directly to the scorecard. Open it yourself on mobile. If there\'s friction, fix it.' },
                 { check: 'Outreach frequency', fix: 'Are you actually DMing new followers and story viewers? If you\'re only posting without outreach, the posts alone won\'t convert in week 5.' },
-                { check: 'CTA clarity', fix: 'Every Sunday post must have one clear action: take the scorecard. Not "follow", not "save" — one action. Check the last 4 Sunday posts.' },
+                { check: 'CTA clarity', fix: 'Every Sunday post must have one clear action: take the scorecard. Not "follow", not "save" - one action. Check the last 4 Sunday posts.' },
                 { check: 'Content temperature mix', fix: 'If every post is Cold (educational), there\'s nothing pulling people toward an action. Hot posts (Sunday Diagnostic) must run every week without exception.' },
               ].map(r => (
                 <div key={r.check} className="p-3 rounded-lg bg-stone-950 border border-stone-800">
@@ -1626,7 +1626,7 @@ export default function StrategyPage() {
         <div className="space-y-4">
           <Card className="border-amber-500/20 bg-amber-500/5">
             <SectionLabel>Sequence Rule</SectionLabel>
-            <Body>Organic first. Ads second. Ads are a multiplier on a system that already converts — not a replacement for proving the funnel works. Run organic until you have consistent scorecard submissions from content. Then add ads to scale what's working.</Body>
+            <Body>Organic first. Ads second. Ads are a multiplier on a system that already converts - not a replacement for proving the funnel works. Run organic until you have consistent scorecard submissions from content. Then add ads to scale what's working.</Body>
           </Card>
 
           <div className="grid sm:grid-cols-3 gap-3">
@@ -1651,7 +1651,7 @@ export default function StrategyPage() {
             <SectionLabel>Ad Objective & Audience</SectionLabel>
             <div className="space-y-3">
               <div><Heading>Objective</Heading><Body>Cold traffic → Scorecard. Never direct to purchase.</Body></div>
-              <div><Heading>Audience</Heading><Body>Cold — women and men 35–55. Interests: health, fitness, fat loss, body composition, wellness, personal development.</Body></div>
+              <div><Heading>Audience</Heading><Body>Cold - women and men 35–55. Interests: health, fitness, fat loss, body composition, wellness, personal development.</Body></div>
               <div><Heading>Placement</Heading><Body>Instagram feed + Reels + Facebook feed. Start broad, let Meta optimise.</Body></div>
               <div><Heading>Traffic type</Heading><Body>Cold only for now. Retargeting layer added at Day 30+ once pixel has enough data.</Body></div>
             </div>
@@ -1662,46 +1662,46 @@ export default function StrategyPage() {
             <BulletList items={[
               'Primary: 15–30 sec talking head reel (face to camera, gym background)',
               'Secondary: Static graphic card (scorecard-style or photo card)',
-              'No music on primary ads — calm and direct tone IS the differentiator',
-              'No jump cuts every 2 seconds — this audience responds to calm authority',
+              'No music on primary ads - calm and direct tone IS the differentiator',
+              'No jump cuts every 2 seconds - this audience responds to calm authority',
               'Vertical 9:16 for Reels/Stories, horizontal 16:9 for feed where possible',
             ]} />
           </Card>
 
           <div className="space-y-3">
-            <SectionLabel>3 Ad Angles — Test Simultaneously</SectionLabel>
+            <SectionLabel>3 Ad Angles - Test Simultaneously</SectionLabel>
             <ScriptBlock
               number={1}
               angle="Silent Frustration"
               hook="You're training. You're eating well. Nothing is moving. Here's why."
               duration="~22 sec"
-              script="If you're training consistently, eating well, and your body has stopped responding — that's not a discipline problem. That's a body state problem. Your biology is in protection mode. And when it's there, adding more training and cutting more food makes it worse. Before I give anyone a program, I read their body first. Take the free Body State Scorecard — link in bio. Two minutes. Find out which state your body is in."
+              script="If you're training consistently, eating well, and your body has stopped responding - that's not a discipline problem. That's a body state problem. Your biology is in protection mode. And when it's there, adding more training and cutting more food makes it worse. Before I give anyone a program, I read their body first. Take the free Body State Scorecard - link in bio. Two minutes. Find out which state your body is in."
             />
             <ScriptBlock
               number={2}
               angle="Contrarian"
               hook="More training and less food is making it worse."
               duration="~20 sec"
-              script="The standard advice when fat loss stalls — train harder, eat less. That's also the advice that drives cortisol up, suppresses your metabolism, and locks your body into a state where it actively resists fat loss. I've seen it hundreds of times. The problem was never effort. The problem was that nobody read the body before prescribing to it. Take the free Body State Scorecard — link in bio. Two minutes."
+              script="The standard advice when fat loss stalls - train harder, eat less. That's also the advice that drives cortisol up, suppresses your metabolism, and locks your body into a state where it actively resists fat loss. I've seen it hundreds of times. The problem was never effort. The problem was that nobody read the body before prescribing to it. Take the free Body State Scorecard - link in bio. Two minutes."
             />
             <ScriptBlock
               number={3}
               angle="Diagnosis"
               hook="Your body is in one of three states right now. Find out which one."
               duration="~23 sec"
-              script="Your body is operating in one of three states right now. Ready — it can respond to training and nutrition. Transitioning — mixed signals, inconsistent results. Or Depleted — in protection mode, actively resisting fat loss and performance. Most people who feel stuck are in Depleted and don't know it. Find out which state you're in. Take the free Body State Scorecard — link in bio. Two minutes. No cost."
+              script="Your body is operating in one of three states right now. Ready - it can respond to training and nutrition. Transitioning - mixed signals, inconsistent results. Or Depleted - in protection mode, actively resisting fat loss and performance. Most people who feel stuck are in Depleted and don't know it. Find out which state you're in. Take the free Body State Scorecard - link in bio. Two minutes. No cost."
             />
           </div>
 
           {/* Ad Graphics */}
           <Card>
-            <SectionLabel>Image Ad Graphics — Download</SectionLabel>
+            <SectionLabel>Image Ad Graphics - Download</SectionLabel>
             <p className="text-stone-500 text-xs mb-4">Ready-to-use 1080×1080 graphics for Meta image ads. Download and upload directly to Ads Manager. All point to the Body State Scorecard.</p>
             <div className="space-y-6">
 
-              {/* Graphic 1 — Statement card */}
+              {/* Graphic 1 - Statement card */}
               <div>
-                <p className="text-xs font-semibold text-white mb-1">Ad 1 — Statement</p>
+                <p className="text-xs font-semibold text-white mb-1">Ad 1 - Statement</p>
                 <p className="text-xs text-stone-500 mb-3">Angle: Silent Frustration. Clean text card, no photo.</p>
                 <div className="grid sm:grid-cols-2 gap-3 items-start">
                   <div className="rounded-xl overflow-hidden border border-stone-800 bg-stone-950" style={{ aspectRatio: '1/1' }}>
@@ -1718,9 +1718,9 @@ export default function StrategyPage() {
                 </div>
               </div>
 
-              {/* Graphic 2 — Photo card */}
+              {/* Graphic 2 - Photo card */}
               <div>
-                <p className="text-xs font-semibold text-white mb-1">Ad 2 — Photo</p>
+                <p className="text-xs font-semibold text-white mb-1">Ad 2 - Photo</p>
                 <p className="text-xs text-stone-500 mb-3">Angle: Contrarian. Face + statement. Higher trust signal.</p>
                 <div className="grid sm:grid-cols-2 gap-3 items-start">
                   <div className="rounded-xl overflow-hidden border border-stone-800 bg-stone-950" style={{ aspectRatio: '1/1' }}>
@@ -1737,9 +1737,9 @@ export default function StrategyPage() {
                 </div>
               </div>
 
-              {/* Graphic 3 — Body states carousel */}
+              {/* Graphic 3 - Body states carousel */}
               <div>
-                <p className="text-xs font-semibold text-white mb-1">Ad 3 — Body States (3 slides)</p>
+                <p className="text-xs font-semibold text-white mb-1">Ad 3 - Body States (3 slides)</p>
                 <p className="text-xs text-stone-500 mb-3">Angle: Diagnosis. Carousel ad - swipe to find your state.</p>
                 <div className="grid grid-cols-3 gap-2 mb-3">
                   {[
@@ -1766,15 +1766,15 @@ export default function StrategyPage() {
           </Card>
 
           <Card>
-            <SectionLabel>Filming Guide — Gym Session</SectionLabel>
+            <SectionLabel>Filming Guide - Gym Session</SectionLabel>
             <BulletList items={[
               'Film vertical (9:16) AND horizontal (16:9) for each script',
-              'Clean background — rack of weights or open floor, not cluttered',
-              'Natural light or face a window — avoid harsh overhead gym lighting',
+              'Clean background - rack of weights or open floor, not cluttered',
+              'Natural light or face a window - avoid harsh overhead gym lighting',
               'Earbuds out, record audio directly to camera',
               'iPhone on a tripod or ask someone to hold it',
               'Film each script 3–4 times so you have options',
-              'Speak at 80% of normal pace — slower than you think',
+              'Speak at 80% of normal pace - slower than you think',
               'Pause after the first sentence of each script',
               'Look directly into the lens, not the screen',
             ]} />
@@ -1784,10 +1784,10 @@ export default function StrategyPage() {
             <SectionLabel>What to Do With the Footage</SectionLabel>
             <div className="space-y-2">
               {[
-                '1. Review takes — pick the best one per script',
-                '2. Add captions using CapCut (free) — body text, on-screen hook line',
+                '1. Review takes - pick the best one per script',
+                '2. Add captions using CapCut (free) - body text, on-screen hook line',
                 '3. Upload best take to Content Engine → Generate Reel for AI avatar variations',
-                '4. Upload to Meta Ads Manager — create 3 separate ad sets, one per angle',
+                '4. Upload to Meta Ads Manager - create 3 separate ad sets, one per angle',
                 '5. Run for 14 days at $20–30/day',
                 '6. Cut the 2 underperforming angles. Scale the winner.',
               ].map((step, i) => (
@@ -1811,7 +1811,7 @@ export default function StrategyPage() {
 
           {[
             {
-              phase: 'Phase 1 — Pre-Launch',
+              phase: 'Phase 1 - Pre-Launch',
               days: 'Days 1–8',
               color: 'teal' as const,
               items: [
@@ -1821,7 +1821,7 @@ export default function StrategyPage() {
               ],
             },
             {
-              phase: 'Phase 2 — Ads Launch',
+              phase: 'Phase 2 - Ads Launch',
               days: 'Days 9–22',
               color: 'amber' as const,
               items: [
@@ -1833,26 +1833,26 @@ export default function StrategyPage() {
               ],
             },
             {
-              phase: 'Phase 3 — Optimise',
+              phase: 'Phase 3 - Optimise',
               days: 'Days 23–45',
               color: 'stone' as const,
               items: [
-                'Review ad performance — cut 2 underperforming angles',
+                'Review ad performance - cut 2 underperforming angles',
                 'Scale budget on winning angle to $40–50/day',
                 'Continue organic content rhythm',
                 'Review CPL in Ads dashboard',
               ],
             },
             {
-              phase: 'Phase 4 — Scale',
+              phase: 'Phase 4 - Scale',
               days: 'Days 46–60+',
               color: 'teal' as const,
               items: [
-                'Add retargeting layer — people who visited check-in but didn\'t complete',
+                'Add retargeting layer - people who visited check-in but didn\'t complete',
                 'Increase budget on proven creative',
                 'Produce 2nd round of ad creative from new scripts',
                 'AI avatar variations of winning scripts via Content Engine',
-                'Organic content continues — system is now a lead engine, not a full-time job',
+                'Organic content continues - system is now a lead engine, not a full-time job',
               ],
             },
           ].map(phase => (
@@ -1946,7 +1946,7 @@ export default function StrategyPage() {
                 </div>
                 <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
                   <p className="text-stone-600 mb-1">Link tool</p>
-                  <p className="text-white">None — one link, one destination</p>
+                  <p className="text-white">None - one link, one destination</p>
                 </div>
               </div>
               <div>
@@ -1955,7 +1955,7 @@ export default function StrategyPage() {
                   {[
                     { name: 'About', purpose: 'What Body Recode is, who it\'s for' },
                     { name: 'Body State', purpose: 'Explainer on Depleted / Transitioning / Ready' },
-                    { name: 'Results', purpose: 'Client outcomes — add as they come in' },
+                    { name: 'Results', purpose: 'Client outcomes - add as they come in' },
                     { name: 'Scorecard', purpose: 'How it works, CTA to take it' },
                     { name: 'Program', purpose: 'What coaching looks like' },
                   ].map(h => (
@@ -1977,7 +1977,7 @@ export default function StrategyPage() {
               <div>
                 <Heading>Current Bio (About field)</Heading>
                 <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-sm text-stone-300 leading-relaxed">
-                  Performance coaching for people whose bodies stopped responding. Body state interpretation. Training. Nutrition. Find out which state you&apos;re in — 2-min scorecard linked below.
+                  Performance coaching for people whose bodies stopped responding. Body state interpretation. Training. Nutrition. Find out which state you&apos;re in - 2-min scorecard linked below.
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 text-xs">
@@ -2015,7 +2015,7 @@ export default function StrategyPage() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-stone-600 mt-3">Never use CFFS classification terms in public content. The scorecard gives a signal — the CFFS gives the real classification. That gap protects the value of the paid system.</p>
+            <p className="text-xs text-stone-600 mt-3">Never use CFFS classification terms in public content. The scorecard gives a signal - the CFFS gives the real classification. That gap protects the value of the paid system.</p>
           </Card>
 
           {/* Launch checklist */}

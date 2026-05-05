@@ -41,7 +41,7 @@ export default async function InboxPage() {
       <div className="max-w-2xl">
         <div className="mb-8">
           <h1 className="text-2xl font-semibold mb-1">Inbox</h1>
-          <p className="text-stone-400 text-sm">One thread per contact — email history and outreach in one place</p>
+          <p className="text-stone-400 text-sm">One thread per contact - email history and outreach in one place</p>
         </div>
         <div className="bg-stone-900 border border-dashed border-stone-800 rounded-xl p-12 text-center">
           <div className="flex justify-center mb-4">

@@ -26,13 +26,13 @@ export default async function AgreementViewPage({ params }: { params: Promise<{ 
       <div className="flex items-center gap-3 mb-8">
         <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-white text-sm transition-colors">← Back</Link>
         <span className="text-stone-700">/</span>
-        <p className="text-sm text-stone-400">Coaching Agreement — {client.name}</p>
+        <p className="text-sm text-stone-400">Coaching Agreement - {client.name}</p>
       </div>
 
       <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-xl font-semibold text-white">{client.name}</h1>
-          <p className="text-xs text-stone-500 mt-1">Version 2.5 — Sole Trader, Queensland, Australia</p>
+          <p className="text-xs text-stone-500 mt-1">Version 2.5 - Sole Trader, Queensland, Australia</p>
         </div>
         <div className="flex items-center gap-2">
           {signedDate && (

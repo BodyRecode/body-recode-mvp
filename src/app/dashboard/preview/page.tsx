@@ -42,16 +42,16 @@ const ASSET_GROUPS: AssetGroup[] = [
     title: 'Booking Emails',
     icon: Mail,
     assets: [
-      { label: 'Booking Link + Confirmation Emails', description: 'Emails sent from the lead profile — booking link and manual booking confirmation', href: '/dashboard/preview/email' },
+      { label: 'Booking Link + Confirmation Emails', description: 'Emails sent from the lead profile - booking link and manual booking confirmation', href: '/dashboard/preview/email' },
     ],
   },
   {
     title: 'Downsell Emails',
     icon: Mail,
     assets: [
-      { label: 'Depleted — Offer + Delivery Emails',     description: 'Offer email sent on Zoom 1 decline, and delivery email sent after purchase', href: '/dashboard/preview/downsell-email/depleted',     tag: 'Depleted',     tagAccent: 'red' },
-      { label: 'Transitioning — Offer + Delivery Emails', description: 'Offer email sent on Zoom 1 decline, and delivery email sent after purchase', href: '/dashboard/preview/downsell-email/transitioning', tag: 'Transitioning', tagAccent: 'amber' },
-      { label: 'Ready — Offer + Delivery Emails',        description: 'Offer email sent on Zoom 1 decline, and delivery email sent after purchase', href: '/dashboard/preview/downsell-email/ready',         tag: 'Ready',        tagAccent: 'teal' },
+      { label: 'Depleted - Offer + Delivery Emails',     description: 'Offer email sent on Zoom 1 decline, and delivery email sent after purchase', href: '/dashboard/preview/downsell-email/depleted',     tag: 'Depleted',     tagAccent: 'red' },
+      { label: 'Transitioning - Offer + Delivery Emails', description: 'Offer email sent on Zoom 1 decline, and delivery email sent after purchase', href: '/dashboard/preview/downsell-email/transitioning', tag: 'Transitioning', tagAccent: 'amber' },
+      { label: 'Ready - Offer + Delivery Emails',        description: 'Offer email sent on Zoom 1 decline, and delivery email sent after purchase', href: '/dashboard/preview/downsell-email/ready',         tag: 'Ready',        tagAccent: 'teal' },
     ],
   },
   {

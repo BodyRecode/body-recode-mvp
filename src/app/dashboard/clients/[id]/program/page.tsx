@@ -55,7 +55,7 @@ function parseText(text: string): { intro: string | null; points: string[] } {
     const points = rest.split(/\s*\(\d+\)\s*/).map((s: string) => s.trim()).filter(Boolean)
     return { intro, points }
   }
-  const sentences = text.replace(/([.!?])\s+(?=[A-Z—])/g, '$1|||').split('|||').map((s: string) => s.trim()).filter((s: string) => s.length > 10)
+  const sentences = text.replace(/([.!?])\s+(?=[A-Z-])/g, '$1|||').split('|||').map((s: string) => s.trim()).filter((s: string) => s.length > 10)
   if (sentences.length >= 3) return { intro: null, points: sentences }
   return { intro: null, points: [text] }
 }
@@ -71,7 +71,7 @@ function programNavSections(program: Program) {
 }
 
 function clean(s: string): string {
-  return s.replace(/ — /g, ' ').replace(/—/g, ' ')
+  return s.replace(/ - /g, ' ').replace(/-/g, ' ')
 }
 
 function parseLines(field: string | string[] | null, fallbackSplit?: RegExp): string[] {
@@ -218,7 +218,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
                 {session.movement_prep?.length > 0 && (
                   <div className="px-5 py-4 bg-stone-800/30">
                     <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-1">
-                      Preparatory Entry — Movement Preparation
+                      Preparatory Entry - Movement Preparation
                     </p>
                     <p className="text-[10px] text-stone-600 mb-3">Non-Slot · Prepare joints, tissues, and coordination for the session&apos;s primary exposures</p>
                     <div className="space-y-1.5 mb-3">
@@ -303,12 +303,12 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
         </Link>
       </div>
 
-      {/* Draft — show in full with Discard / Approve */}
+      {/* Draft - show in full with Discard / Approve */}
       {draftProgram && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">Draft — Pending Approval</span>
+              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">Draft - Pending Approval</span>
             </div>
             <DraftActions programId={draftProgram.id} clientId={id} />
           </div>

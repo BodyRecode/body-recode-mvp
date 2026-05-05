@@ -50,7 +50,7 @@ Kade`
       <div className="flex items-center gap-3 mb-8">
         <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-white text-sm transition-colors">← Back</Link>
         <span className="text-stone-700">/</span>
-        <p className="text-sm text-stone-400">Medical Clearance — {client.name}</p>
+        <p className="text-sm text-stone-400">Medical Clearance - {client.name}</p>
       </div>
 
       {approved ? (
@@ -61,7 +61,7 @@ Kade`
       ) : submitted ? (
         <div className="bg-amber-400/10 border border-amber-400/30 rounded-xl p-5 mb-6 flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-amber-400 mb-1">Form uploaded — awaiting your approval</p>
+            <p className="text-sm font-semibold text-amber-400 mb-1">Form uploaded - awaiting your approval</p>
             <p className="text-xs text-stone-400">
               Submitted {new Date(client.medical_clearance_submitted_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}. Review the document below and approve when satisfied.
             </p>
