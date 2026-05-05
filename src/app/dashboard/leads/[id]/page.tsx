@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
+import { ChevronLeft } from 'lucide-react'
 import { formatDate, getLeadStatusLabel, getLeadStatusColour, getLeadSourceLabel } from '@/lib/utils'
 import LeadActions from './lead-actions'
 import LeadDangerActions from './lead-danger-actions'
@@ -13,6 +14,7 @@ import CommencementFeeButton from '@/components/commencement-fee-button'
 import DownsellButton from '@/components/downsell-button'
 import BookingActionButtons from '@/components/booking-action-buttons'
 import Link from 'next/link'
+import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
 
 const CHECK_IN_QUESTIONS: Record<string, string> = {
   effort_vs_result: 'Effort relative to result',
@@ -149,18 +151,18 @@ const STATE_GUIDANCE: Record<string, { stopDoing: string[]; startDoing: string[]
 }
 
 const EVENT_COLOURS: Record<string, string> = {
-  check_in_submitted: 'bg-stone-600',
+  check_in_submitted: 'bg-[#292524]',
   report_scheduled: 'bg-teal-500',
-  followup_scheduled: 'bg-stone-500',
+  followup_scheduled: 'bg-[#57534e]',
   followup_cancelled: 'bg-red-500/60',
   zoom_declined: 'bg-red-400/60',
   downsell_purchased: 'bg-teal-500',
   downsell_reentry: 'bg-teal-400',
   reengagement_sent: 'bg-teal-500',
   zoom_booked: 'bg-green-500',
-  noshow_sequence_scheduled: 'bg-stone-500',
+  noshow_sequence_scheduled: 'bg-[#57534e]',
   scorecard_completed: 'bg-teal-400',
-  email_sent: 'bg-stone-500',
+  email_sent: 'bg-[#57534e]',
 }
 
 export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -220,43 +222,47 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   }
 
   return (
-    <div className="max-w-3xl">
-      {/* Header */}
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-            <Link href="/dashboard/leads" className="hover:text-stone-300 transition-colors">Leads</Link>
-            <span>/</span>
-            <span className="text-stone-300">{lead.name}</span>
-          </div>
-          <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-2xl font-semibold">{lead.name}</h1>
-            <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${getLeadStatusColour(lead.status)}`}>
+    <div className="max-w-[900px]">
+      <Link
+        href="/dashboard/leads"
+        className="inline-flex items-center gap-1 text-[12px] text-[#57534e] hover:text-[#d4cfc9] transition-colors mb-4"
+      >
+        <ChevronLeft size={13} /> All Leads
+      </Link>
+      <PageHeader
+        eyebrow={
+          <span className="inline-flex items-center gap-2">
+            Lead
+            <span className="text-[#1c1917]">·</span>
+            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${getLeadStatusColour(lead.status)}`}>
               {getLeadStatusLabel(lead.status)}
             </span>
-          </div>
-          <p className="text-stone-400 text-sm">
+          </span>
+        }
+        title={lead.name}
+        subtitle={
+          <span style={{ fontFamily: MONO_FONT, letterSpacing: '0.02em' }}>
             {getLeadSourceLabel(lead.source)}
             {lead.source_detail ? ` — ${lead.source_detail}` : ''}
             {' · Added '}
             {formatDate(lead.created_at)}
-          </p>
-        </div>
-      </div>
+          </span>
+        }
+      />
 
       {/* Contact */}
       <EditContact leadId={lead.id} name={lead.name} email={lead.email} phone={lead.phone} />
 
       {/* Scorecard Result */}
       {scorecardScore && scorecardState && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
-          <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Body State Scorecard</h2>
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4">
+          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Body State Scorecard</h2></div>
           <div className="flex items-start gap-6">
             <div className="text-center shrink-0">
               <div className="text-5xl font-black leading-none" style={{ color: scorecardStyle?.color ?? '#a8a29e' }}>
                 {scorecardScore}
               </div>
-              <div className="text-xs text-stone-500 font-medium mt-1">/ 15</div>
+              <div className="text-xs text-[#57534e] font-medium mt-1">/ 15</div>
             </div>
             <div className="min-w-0">
               <div
@@ -269,8 +275,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               >
                 {scorecardState}
               </div>
-              <p className="text-sm text-stone-400 leading-relaxed">{scorecardStyle?.desc}</p>
-              <p className="text-xs text-stone-600 mt-2">
+              <p className="text-sm text-[#a8a29e] leading-relaxed">{scorecardStyle?.desc}</p>
+              <p className="text-xs text-[#3c3835] mt-2">
                 {scorecardEvent ? `Completed ${new Date(scorecardEvent.sent_at).toLocaleString('en-AU', {
                   timeZone: 'Australia/Brisbane',
                   day: 'numeric',
@@ -281,8 +287,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </div>
           </div>
           {scorecardSections && (
-            <div className="mt-4 pt-4 border-t border-stone-800">
-              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Section Breakdown</p>
+            <div className="mt-4 pt-4 border-t border-[#1c1917]">
+              <p className="text-xs font-semibold text-[#57534e] uppercase tracking-wider mb-3">Section Breakdown</p>
               <div className="grid grid-cols-5 gap-2">
                 {Object.entries(SCORECARD_SECTIONS).map(([key, title]) => {
                   const s = scorecardSections[key]
@@ -292,7 +298,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                   return (
                     <div key={key} className="rounded-lg p-2 text-center" style={{ background: bg, border: `1px solid ${border}` }}>
                       <div className="text-lg font-black" style={{ color }}>{s ?? '—'}</div>
-                      <div className="text-[10px] font-medium text-stone-500 mt-0.5 leading-tight">{title}</div>
+                      <div className="text-[10px] font-medium text-[#57534e] mt-0.5 leading-tight">{title}</div>
                     </div>
                   )
                 })}
@@ -300,8 +306,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </div>
           )}
           {lead.lead_quality && (
-            <div className="mt-4 pt-4 border-t border-stone-800">
-              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Lead Quality</p>
+            <div className="mt-4 pt-4 border-t border-[#1c1917]">
+              <p className="text-xs font-semibold text-[#57534e] uppercase tracking-wider mb-3">Lead Quality</p>
               <div className="flex items-start gap-4">
                 <div
                   className="text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0"
@@ -313,9 +319,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 >
                   {lead.lead_quality}{lead.red_flag ? ' · red flag' : ''}
                 </div>
-                <div className="flex-1 text-xs text-stone-400 space-y-1">
-                  <p><span className="text-stone-500">Approach:</span> <span className="font-medium text-stone-300">{lead.approach_response}</span> {(lead.approach_response === 'C' || lead.approach_response === 'D') && <span className="text-red-400">— red flag</span>}</p>
-                  <p><span className="text-stone-500">Investment:</span> <span className="font-medium text-stone-300">{lead.investment_readiness}</span> {(lead.investment_readiness === 'C' || lead.investment_readiness === 'D') && <span className="text-red-400">— red flag</span>}</p>
+                <div className="flex-1 text-xs text-[#a8a29e] space-y-1">
+                  <p><span className="text-[#57534e]">Approach:</span> <span className="font-medium text-[#d4cfc9]">{lead.approach_response}</span> {(lead.approach_response === 'C' || lead.approach_response === 'D') && <span className="text-red-400">— red flag</span>}</p>
+                  <p><span className="text-[#57534e]">Investment:</span> <span className="font-medium text-[#d4cfc9]">{lead.investment_readiness}</span> {(lead.investment_readiness === 'C' || lead.investment_readiness === 'D') && <span className="text-red-400">— red flag</span>}</p>
                 </div>
               </div>
               {lead.red_flag && (
@@ -330,14 +336,14 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Body Decode Report */}
       {scorecardScore && scorecardState && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider">Body Decode Report</h2>
+            <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Body Decode Report</h2></div>
             {scorecardReport?.token && (
               <Link
                 href={`/report/${scorecardReport.token}`}
                 target="_blank"
-                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#14b8a6] text-black rounded-lg hover:bg-[#5eead4] transition-colors"
               >
                 Open Scorecard Report ↗
               </Link>
@@ -373,7 +379,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                         </div>
                       </div>
                     </div>
-                    {interpretation && <p className="text-xs text-stone-500 leading-relaxed">{interpretation}</p>}
+                    {interpretation && <p className="text-xs text-[#57534e] leading-relaxed">{interpretation}</p>}
                   </div>
                 )
               })}
@@ -382,7 +388,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
           {STATE_GUIDANCE[scorecardState] && (
             <div className="space-y-3">
-              <p className="text-sm text-stone-400 leading-relaxed border-t border-stone-800 pt-4">{STATE_GUIDANCE[scorecardState].primaryFocus}</p>
+              <p className="text-sm text-[#a8a29e] leading-relaxed border-t border-[#1c1917] pt-4">{STATE_GUIDANCE[scorecardState].primaryFocus}</p>
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-lg p-3 bg-red-950/20 border border-red-900/30">
                   <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">Stop doing</p>
@@ -390,7 +396,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                     {STATE_GUIDANCE[scorecardState].stopDoing.map((item, i) => (
                       <li key={i} className="flex gap-2 items-start">
                         <span className="text-red-500 mt-0.5 shrink-0">·</span>
-                        <span className="text-xs text-stone-400 leading-relaxed">{item}</span>
+                        <span className="text-xs text-[#a8a29e] leading-relaxed">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -401,7 +407,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                     {STATE_GUIDANCE[scorecardState].startDoing.map((item, i) => (
                       <li key={i} className="flex gap-2 items-start">
                         <span className="text-teal-500 mt-0.5 shrink-0">·</span>
-                        <span className="text-xs text-stone-400 leading-relaxed">{item}</span>
+                        <span className="text-xs text-[#a8a29e] leading-relaxed">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -413,15 +419,15 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       )}
 
       {/* Zoom companion */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+      <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Zoom</h2>
-            <p className="text-stone-500 text-sm">
+            <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Zoom</h2></div>
+            <p className="text-[#57534e] text-sm">
               {lead.zoom_meeting_url ? 'Opens companion screen and Zoom call.' : 'Open the call companion screen for this call.'}
             </p>
             {lead.zoom_1_date && (
-              <p className="text-xs text-stone-600 mt-1">
+              <p className="text-xs text-[#3c3835] mt-1">
                 {new Date(lead.zoom_1_date).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane
               </p>
             )}
@@ -431,7 +437,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               <Link
                 href={lead.zoom_meeting_url}
                 target="_blank"
-                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-[#1c1917] text-[#d4cfc9] rounded-lg hover:border-[#292524] hover:text-white transition-colors"
               >
                 Join Zoom ↗
               </Link>
@@ -439,17 +445,17 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <Link
               href={`/companion/${lead.id}/zoom`}
               target="_blank"
-              className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#14b8a6] text-black rounded-lg hover:bg-[#5eead4] transition-colors"
             >
               Open Call Companion ↗
             </Link>
           </div>
         </div>
-        <div className="border-t border-stone-800 pt-4">
-          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Booking</p>
+        <div className="border-t border-[#1c1917] pt-4">
+          <p className="text-xs font-semibold text-[#57534e] uppercase tracking-wider mb-3">Booking</p>
           <BookingActionButtons leadId={lead.id} leadName={lead.name} leadEmail={lead.email ?? undefined} hasZoomDate={!!lead.zoom_1_date} />
           {bookingLinkSentEvent && (
-            <p className="text-xs text-stone-600 mt-3">
+            <p className="text-xs text-[#3c3835] mt-3">
               Booking link sent {new Date(bookingLinkSentEvent.sent_at).toLocaleString('en-AU', {
                 timeZone: 'Australia/Brisbane',
                 weekday: 'short', day: 'numeric', month: 'short',
@@ -464,9 +470,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <PreCallRead leadId={lead.id} initialBrief={lead.pre_call_brief ?? null} />
 
       {/* Convert to client */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
-        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">Coaching Entry</h2>
-        <p className="text-stone-500 text-sm mb-4">
+      <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4">
+        <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Coaching Entry</h2></div>
+        <p className="text-[#57534e] text-sm mb-4">
           Generate a unique commencement fee link to send to the client. Once paid, their client profile and intake link are created automatically.
         </p>
         {!lead.converted_to_client_id ? (
@@ -483,13 +489,13 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               })
               const count = commencementFeeSentEvents.length
               return (
-                <p className={`text-xs ${expired ? 'text-amber-500' : 'text-stone-600'}`}>
+                <p className={`text-xs ${expired ? 'text-amber-500' : 'text-[#3c3835]'}`}>
                   Last sent {sentLabel} Brisbane{count > 1 ? ` · sent ${count}×` : ''}
                   {expired && ' · Stripe link expired (resend to generate new one)'}
                 </p>
               )
             })()}
-            <p className="text-xs text-stone-600">Or convert manually once fee is confirmed:</p>
+            <p className="text-xs text-[#3c3835]">Or convert manually once fee is confirmed:</p>
             <ConvertButton
               leadId={lead.id}
               leadName={lead.name}
@@ -509,11 +515,11 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Self-Guided Program (Downsell) */}
       {scorecardEvent && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Self-Guided Program</h2>
-              <p className="text-stone-500 text-sm">
+              <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Self-Guided Program</h2></div>
+              <p className="text-[#57534e] text-sm">
                 {lead.downsell_purchased
                   ? `${lead.downsell_state ? lead.downsell_state.charAt(0).toUpperCase() + lead.downsell_state.slice(1) : ''} State Program purchased.`
                   : 'Send the $97 12-week downsell offer. Program is specific to their body state.'}
@@ -535,10 +541,10 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* No-show re-engagement */}
       {lead.status === 'closed_no_show' && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Re-engagement Sequence</h2>
-            <p className="text-stone-500 text-sm">3 emails over 10 days. Day 1, Day 4, Day 10. Calm re-invitation to rebook.</p>
+            <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Re-engagement Sequence</h2></div>
+            <p className="text-[#57534e] text-sm">3 emails over 10 days. Day 1, Day 4, Day 10. Calm re-invitation to rebook.</p>
           </div>
           <NoShowSequenceButton leadId={lead.id} />
         </div>
@@ -546,10 +552,10 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Zoom 1 declined follow-up */}
       {lead.status === 'closed_declined' && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4 flex items-center justify-between">
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Declined Follow-up Sequence</h2>
-            <p className="text-stone-500 text-sm">3 emails over 12 days. Keeps the door open without pressure.</p>
+            <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Declined Follow-up Sequence</h2></div>
+            <p className="text-[#57534e] text-sm">3 emails over 12 days. Keeps the door open without pressure.</p>
           </div>
           <Zoom1DeclinedButton leadId={lead.id} />
         </div>
@@ -560,16 +566,16 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Check-in answers */}
       {hasLeadData && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
-          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">Performance Check-In</h2>
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4">
+          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Performance Check-In</h2></div>
           <div className="space-y-4">
             {Object.entries(CHECK_IN_QUESTIONS).map(([key, label]) => {
               const val = answers?.[key]
               if (val === undefined) return null
               const optionText = CHECK_IN_OPTIONS[key]?.[val]
               return (
-                <div key={key} className="border-b border-stone-800 pb-4 last:border-0 last:pb-0">
-                  <p className="text-xs text-stone-400 mb-1">{label}</p>
+                <div key={key} className="border-b border-[#1c1917] pb-4 last:border-0 last:pb-0">
+                  <p className="text-xs text-[#a8a29e] mb-1">{label}</p>
                   <p className="text-white text-sm">{optionText || `Option ${val}`}</p>
                 </div>
               )
@@ -580,9 +586,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Scheduled Report */}
       {lead.report_html && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Scheduled Report</h2>
+            <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Scheduled Report</h2></div>
             {lead.report_scheduled_at && (
               <span className="text-xs text-teal-400 font-medium">
                 Sends {new Date(lead.report_scheduled_at).toLocaleString('en-AU', {
@@ -611,11 +617,11 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Scheduled Follow-ups */}
       {lead.followup_email_ids && (lead.followup_email_ids as string[]).length > 0 && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Scheduled Follow-ups</h2>
-              <p className="text-xs text-stone-500 mt-1">{(lead.followup_email_ids as string[]).length} email{(lead.followup_email_ids as string[]).length > 1 ? 's' : ''} queued</p>
+              <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Scheduled Follow-ups</h2></div>
+              <p className="text-xs text-[#57534e] mt-1">{(lead.followup_email_ids as string[]).length} email{(lead.followup_email_ids as string[]).length > 1 ? 's' : ''} queued</p>
             </div>
             <CancelSequenceButton leadId={lead.id} />
           </div>
@@ -623,24 +629,24 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       )}
 
       {/* Communications */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
-        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-5">Communications</h2>
+      <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4">
+        <div className="flex items-center gap-2.5 mb-5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Communications</h2></div>
         {events && events.length > 0 ? (
           <div className="relative">
-            <div className="absolute left-[7px] top-2 bottom-2 w-px bg-stone-800" />
+            <div className="absolute left-[7px] top-2 bottom-2 w-px bg-[#1c1917]" />
             <div className="space-y-5">
               {events.map((event) => (
                 <div key={event.id} className="flex gap-4 relative">
-                  <div className={`w-3.5 h-3.5 rounded-full mt-0.5 shrink-0 ${EVENT_COLOURS[event.type] ?? 'bg-stone-600'}`} />
+                  <div className={`w-3.5 h-3.5 rounded-full mt-0.5 shrink-0 ${EVENT_COLOURS[event.type] ?? 'bg-[#292524]'}`} />
                   <div className="min-w-0">
                     <p className="text-sm text-white font-medium">{EVENT_LABELS[event.type] ?? event.type}</p>
                     {event.subject && (
-                      <p className="text-xs text-stone-500 mt-0.5 truncate">{event.subject}</p>
+                      <p className="text-xs text-[#57534e] mt-0.5 truncate">{event.subject}</p>
                     )}
                     {event.notes && (
-                      <p className="text-xs text-stone-500 mt-0.5">{event.notes}</p>
+                      <p className="text-xs text-[#57534e] mt-0.5">{event.notes}</p>
                     )}
-                    <p className="text-xs text-stone-600 mt-1">
+                    <p className="text-xs text-[#3c3835] mt-1">
                       {new Date(event.sent_at).toLocaleString('en-AU', {
                         timeZone: 'Australia/Brisbane',
                         weekday: 'short',
@@ -658,7 +664,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </div>
           </div>
         ) : (
-          <p className="text-stone-500 text-sm">No communications logged yet.</p>
+          <p className="text-[#57534e] text-sm">No communications logged yet.</p>
         )}
       </div>
 
@@ -666,9 +672,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <LeadDangerActions leadId={lead.id} isActive={lead.active !== false} />
 
       {/* Notes */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
-        <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-4">Notes</h2>
-        <p className="text-stone-400 text-sm leading-relaxed whitespace-pre-wrap">
+      <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6">
+        <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Notes</h2></div>
+        <p className="text-[#a8a29e] text-sm leading-relaxed whitespace-pre-wrap">
           {lead.notes || 'No notes yet.'}
         </p>
       </div>

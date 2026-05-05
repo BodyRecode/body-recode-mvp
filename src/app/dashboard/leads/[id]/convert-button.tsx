@@ -51,11 +51,11 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     return (
       <div className="space-y-3">
         <p className="text-sm text-teal-400 font-medium">Client created. Send this intake link:</p>
-        <div className="bg-stone-800 rounded-lg px-4 py-3 flex items-center gap-3">
-          <p className="text-stone-400 text-xs font-mono flex-1 truncate">{intakeLink}</p>
+        <div className="bg-[#1c1917] rounded-lg px-4 py-3 flex items-center gap-3">
+          <p className="text-[#a8a29e] text-xs font-mono flex-1 truncate">{intakeLink}</p>
           <button
             onClick={copy}
-            className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-stone-600 text-stone-300 hover:border-stone-400 hover:text-white transition-colors"
+            className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#292524] text-[#d4cfc9] hover:border-[#3c3835] hover:text-white transition-colors"
           >
             {copied ? 'Copied!' : 'Copy'}
           </button>

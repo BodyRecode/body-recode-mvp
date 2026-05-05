@@ -139,12 +139,12 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               onClick={() => toggleSection(b.id)}
               className="flex items-center gap-2 group"
             >
-              <span className={`text-stone-600 group-hover:text-stone-400 transition-colors text-xs font-mono ${suppressed ? '' : 'rotate-90'} transform inline-block`}>▶</span>
-              <h3 className="text-xs font-bold text-[#10E1C2] uppercase tracking-widest">
+              <span className={`text-[#3c3835] group-hover:text-[#a8a29e] transition-colors text-xs font-mono ${suppressed ? '' : 'rotate-90'} transform inline-block`}>▶</span>
+              <h3 className="text-xs font-bold text-[#14b8a6] uppercase tracking-widest">
                 {b.title}
               </h3>
             </button>
-            <div className="flex-1 h-px bg-stone-800" />
+            <div className="flex-1 h-px bg-[#1c1917]" />
           </div>
         )
         return
@@ -154,8 +154,8 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
 
       if (b.kind === 'script') {
         out.push(
-          <div key={i} className="bg-[#10E1C2]/5 border-l-2 border-[#10E1C2] rounded-r-lg pl-4 pr-4 py-3 ml-1">
-            <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">&ldquo;{b.text}&rdquo;</p>
+          <div key={i} className="bg-[#14b8a6]/5 border-l-2 border-[#14b8a6] rounded-r-lg pl-4 pr-4 py-3 ml-1">
+            <p className="text-[#e7e5e4] text-sm leading-relaxed whitespace-pre-line">&ldquo;{b.text}&rdquo;</p>
           </div>
         )
         return
@@ -164,7 +164,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
       if (b.kind === 'note') {
         out.push(
           <div key={i} className="ml-1 px-3 py-2">
-            <p className="text-stone-500 text-xs leading-relaxed italic whitespace-pre-line">{b.text}</p>
+            <p className="text-[#57534e] text-xs leading-relaxed italic whitespace-pre-line">{b.text}</p>
           </div>
         )
         return
@@ -173,7 +173,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
       if (b.kind === 'conditional') {
         out.push(
           <div key={i} className="bg-amber-400/5 border-l-2 border-amber-400/50 rounded-r-lg pl-4 pr-4 py-3 ml-1">
-            <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{b.text}</p>
+            <p className="text-[#e7e5e4] text-sm leading-relaxed whitespace-pre-line">{b.text}</p>
           </div>
         )
         return
@@ -183,8 +183,8 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
         out.push(
           <ul key={i} className="ml-1 space-y-1.5 pl-2">
             {b.lines.map((l, j) => (
-              <li key={j} className="text-stone-300 text-sm leading-relaxed flex gap-2">
-                <span className="text-[#10E1C2] flex-shrink-0">·</span>
+              <li key={j} className="text-[#d4cfc9] text-sm leading-relaxed flex gap-2">
+                <span className="text-[#14b8a6] flex-shrink-0">·</span>
                 <span>{l}</span>
               </li>
             ))}
@@ -194,7 +194,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
       }
 
       out.push(
-        <p key={i} className="text-stone-300 text-sm leading-relaxed whitespace-pre-line ml-1">
+        <p key={i} className="text-[#d4cfc9] text-sm leading-relaxed whitespace-pre-line ml-1">
           {b.text}
         </p>
       )
@@ -204,11 +204,11 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
   }
 
   return (
-    <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+    <div className="bg-[#111110] border border-[#1c1917] rounded-xl p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider mb-1">Pre-Call Read</h2>
-          <p className="text-stone-500 text-sm">
+          <h2 className="text-sm font-semibold text-[#d4cfc9] uppercase tracking-wider mb-1">Pre-Call Read</h2>
+          <p className="text-[#57534e] text-sm">
             Lead-specific brief for this call. Their pattern, what to listen for, lines to have ready.
           </p>
         </div>
@@ -218,14 +218,14 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               <button
                 onClick={cancel}
                 disabled={saving}
-                className="text-sm font-bold px-4 py-2 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
+                className="text-sm font-bold px-4 py-2 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-[#292524] hover:text-white transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={save}
                 disabled={saving}
-                className="text-sm font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors disabled:opacity-50"
+                className="text-sm font-bold px-4 py-2 bg-[#14b8a6] text-black rounded-lg hover:bg-[#5eead4] transition-colors disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -233,7 +233,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
           ) : (
             <button
               onClick={startEdit}
-              className="text-sm font-bold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors"
+              className="text-sm font-bold px-4 py-2 border border-[#1c1917] text-[#d4cfc9] rounded-lg hover:border-[#292524] hover:text-white transition-colors"
             >
               {brief ? 'Edit' : 'Add'}
             </button>
@@ -246,18 +246,18 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
           value={draft}
           onChange={e => setDraft(e.target.value)}
           placeholder="Paste or write the pre-call brief for this lead. Pattern, hot spot triggers, key lines..."
-          className="w-full bg-stone-950 border border-stone-800 rounded-lg p-4 text-stone-200 text-sm font-mono leading-relaxed focus:outline-none focus:border-stone-600 placeholder-stone-700"
+          className="w-full bg-[#0c0a09] border border-[#1c1917] rounded-lg p-4 text-[#e7e5e4] text-sm font-mono leading-relaxed focus:outline-none focus:border-[#292524] placeholder-[#3c3835]"
           style={{ minHeight: '480px' }}
         />
       ) : brief ? (
         <div className="space-y-4">
           {sections.length > 1 && (
-            <div className="flex flex-wrap gap-1.5 mb-2 pb-4 border-b border-stone-800">
+            <div className="flex flex-wrap gap-1.5 mb-2 pb-4 border-b border-[#1c1917]">
               {sections.map(s => (
                 <a
                   key={s.id}
                   href={`#${s.id}`}
-                  className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-stone-800 border border-stone-700 text-stone-300 hover:border-[#10E1C2]/40 hover:text-[#10E1C2] transition-colors"
+                  className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#1c1917] border border-[#1c1917] text-[#d4cfc9] hover:border-[#14b8a6]/40 hover:text-[#14b8a6] transition-colors"
                 >
                   {s.title}
                 </a>
@@ -268,9 +268,9 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
             {renderBlocks()}
           </div>
 
-          <div className="pt-4 mt-2 border-t border-stone-800 flex flex-wrap gap-3 text-[11px] text-stone-600">
+          <div className="pt-4 mt-2 border-t border-[#1c1917] flex flex-wrap gap-3 text-[11px] text-[#3c3835]">
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-[#10E1C2]/40 rounded-sm" />
+              <span className="w-2 h-2 bg-[#14b8a6]/40 rounded-sm" />
               What you say
             </span>
             <span className="flex items-center gap-1.5">
@@ -278,15 +278,15 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               Conditional response
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-stone-500 italic">italic</span>
+              <span className="text-[#57534e] italic">italic</span>
               Coach note
             </span>
           </div>
         </div>
       ) : (
-        <div className="bg-stone-950 border border-stone-800 border-dashed rounded-lg p-6 text-center">
-          <p className="text-stone-500 text-sm">No pre-call read written yet for this lead.</p>
-          <p className="text-stone-600 text-xs mt-1">Click Add to write one.</p>
+        <div className="bg-[#0c0a09] border border-[#1c1917] border-dashed rounded-lg p-6 text-center">
+          <p className="text-[#57534e] text-sm">No pre-call read written yet for this lead.</p>
+          <p className="text-[#3c3835] text-xs mt-1">Click Add to write one.</p>
         </div>
       )}
     </div>
