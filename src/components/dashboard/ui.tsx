@@ -74,7 +74,7 @@ export function PageHeader({
             {title}
           </h1>
           {subtitle && (
-            <p className="text-[15px] text-[#a8a29e] max-w-xl">{subtitle}</p>
+            <div className="text-[15px] text-[#a8a29e] max-w-xl">{subtitle}</div>
           )}
         </div>
         {cta && <div className="shrink-0">{cta}</div>}
