@@ -19,7 +19,7 @@ export default function ClientHeader() {
   const logo = (
     <img
       src="https://bodyrecode.au/logo-teal.png"
-      width="180"
+      width="170"
       alt="Body Recode"
       style={{ display: 'block' }}
     />
