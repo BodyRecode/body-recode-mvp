@@ -16,8 +16,9 @@ const SECTIONS = [
   { id: 'deliberate-start', title: '7. Deliberate Start',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'client-portal',    title: '8. Client Portal',       colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'client-onboarding',title: '9. Client Onboarding',   colour: 'teal' as const, category: 'coaching' as Category },
-  { id: 'cffs',             title: '10. CFFS',               colour: 'teal' as const, category: 'coaching' as Category },
-  { id: 'weekly-checkins',  title: '11. Weekly Check-Ins',   colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'cffs',                  title: '10. CFFS',                  colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'foundational-reading',  title: '10b. Foundational Reading', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'weekly-checkins',       title: '11. Weekly Check-Ins',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'coaching-package', title: '12. Coaching Package',   colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'clients-dashboard',title: '13. Clients Dashboard',  colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'automated-status', title: '14. Automated Status',   colour: 'teal' as const, category: 'coaching' as Category },
@@ -569,6 +570,7 @@ export default function HelpPage() {
             <p>The portal shows the client exactly where they are in the process - completed steps are ticked, locked steps are greyed out. Once onboarding is complete, the portal transitions to show:</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li>Sessions - for face-to-face clients only (see below)</li>
+              <li>Your Reading - the published Foundational Reading appears here once you generate it (see section 10b)</li>
               <li>Weekly check-in (Form A or B, window-gated)</li>
               <li>Weekly training check-in - if they have an active program</li>
               <li>Weekly nutrition check-in - if they have an active nutrition plan</li>
@@ -625,12 +627,70 @@ export default function HelpPage() {
               <li>Explicit Non-Directives</li>
               <li>Closing Interpretive Notes</li>
             </ul>
-            <p>Click <strong>Download PDF</strong> on the client profile to open the full formatted CFFS report in a new tab - printable as a PDF.</p>
+            <p>Click <strong>Download PDF</strong> on the CFFS card. This calls a server-side Puppeteer endpoint that renders the report headlessly and returns a binary PDF directly to your downloads folder. No print dialog, no Save vs Cancel confusion.</p>
+            <p>The CFFS is paired with a client-facing version called the <strong>Foundational Reading</strong> (see next section). The two are generated from the same intake and stay consistent with each other. The CFFS is yours to interpret. The Foundational Reading is what the client sees.</p>
             <Note>The CFFS is a coaching reference document, not a diagnostic tool. It does not prescribe training changes.</Note>
             <Training title="How to use the CFFS">
               <p>The CFFS is not a report to file away. It is the interpretive framework for your first weeks of coaching. Before you prescribe anything - load, frequency, nutrition adjustments - read the CFFS. The Capacity Constraints and Guardrails section in particular tells you what not to do before it tells you what to do.</p>
               <p className="mt-2">The Body State Classification (Remediation, Optimisation, Post-Optimisation) should orient your entire early coaching approach. A client in Remediation is not ready for the same intervention as one in Optimisation. The CFFS makes that distinction clearly - your programming should reflect it.</p>
               <p className="mt-2">Risk Flags and Watch Items are not optional reading. If something is flagged, it means the intake data produced a pattern that requires attention. These should inform how you frame weekly check-in prompts and what you&apos;re watching for in the CFWS.</p>
+            </Training>
+          </Section>
+
+          {/* Section 10b - client-facing version of the CFFS */}
+          <Section id="foundational-reading" title="10b. Foundational Reading - Client Facing" colour="teal">
+            <p>The Foundational Reading is the client-facing translation of the CFFS. It is generated from the same intake using a separate prompt, takes the CFFS as additional input so the two stay consistent, and is written in supportive but conservative language that the client can read in 90 seconds.</p>
+
+            <p>It is structured around five sections, each with a distinct job:</p>
+            <ol className="space-y-1.5 list-decimal list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Where you are right now</strong> - body state classification translated for the client and what it means physiologically.</li>
+              <li><strong>What your body is telling us</strong> - the dominant patterns the engine surfaced, written so the client recognises themselves in it.</li>
+              <li><strong>What we are focusing on first</strong> - the priorities. Reframes the coach-side constraints as forward-looking focus areas, not problems.</li>
+              <li><strong>What we are not doing yet</strong> - the trust-builder. Direct about what we are deliberately NOT pursuing right now and why. Most coaches do not explain restraint, this section does.</li>
+              <li><strong>A note from your coach</strong> - short closing in your voice. Acknowledges the work the client has put in by completing intake, and sets expectation for what comes next.</li>
+            </ol>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-1">How to generate</p>
+            <p>On the client profile, scroll to the <strong>Foundational Reading - Client Facing</strong> section directly under the CFFS. Click <strong>Generate &amp; Publish</strong>.</p>
+            <p>One click does three things at once:</p>
+            <ol className="space-y-1 list-decimal list-inside text-[#d4cfc9] text-sm">
+              <li>Drafts the reading via Claude (~10 seconds).</li>
+              <li>Auto-publishes it to the client portal at <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">/portal/[token]/foundational-reading</code>.</li>
+              <li>Sends a branded email from <strong>kade@bodyrecode.au</strong> letting the client know the reading is ready.</li>
+            </ol>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-1">Pills and state</p>
+            <p>Two pills surface the reading state at a glance, sitting next to the section title:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Live in portal</strong> (teal dot) - the reading is currently visible to the client.</li>
+              <li><strong>Notified</strong> (envelope icon) - the email has been sent. Hover to see when.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-1">Regenerate, Unpublish, Republish</p>
+            <p><strong>Regenerate</strong> replaces the draft in place. The client portal updates silently with the new version. The client is not re-emailed (so successive revisions during prompt tuning never spam them). The Notified pill persists from the first send.</p>
+            <p><strong>Unpublish</strong> takes the reading down from the portal without deleting it. The portal card disappears and the reading page returns a friendly &ldquo;not yet available&rdquo; message. Use if you regenerate and want a moment to review before re-exposing the new version.</p>
+            <p><strong>Republish</strong> puts it back live. No new email is sent on republish either, since the client has already been notified once.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-1">Preview, PDF, Client view</p>
+            <p>From the reading card header you have three quick links:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Preview</strong> - opens the cream/black formatted reading in a new tab so you can read it as the client will see it.</li>
+              <li><strong>PDF</strong> - one-click download via the same Puppeteer endpoint as the CFFS report. Lands in Downloads, no print dialog.</li>
+              <li><strong>Client view</strong> - opens the actual portal URL in a new tab so you can see the page exactly as the client lands on it (only shown when published).</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-1">In the client portal</p>
+            <p>Once published, a <strong>Your Reading</strong> card appears at the top of the client&apos;s portal landing under their onboarding tasks. Tapping it loads the same cream/black premium layout. The client gets the same one-click <strong>Download PDF</strong> button at the top of the page so they can save it locally too.</p>
+
+            <Training title="Why a separate client version">
+              <p>The CFFS is written in coach language, conservative-clinical, full of terms like &ldquo;regulatory load&rdquo;, &ldquo;explicit non-directives&rdquo;, and &ldquo;risk flags&rdquo;. The same content shown to a client without translation reads as cold or alarming.</p>
+              <p className="mt-2">The Foundational Reading translates that same interpretation into language that does three things at once: validates the client (they feel seen), explains the methodology (they understand why we are starting where we are), and builds trust (the &ldquo;what we are not doing yet&rdquo; section signals competence and restraint that no other coach is offering them).</p>
+              <p className="mt-2">It is also a tangible deliverable post-onboarding. Most coaching pipelines have a long gap between intake and first session. Sending a polished interpretive reading in that window keeps the client engaged and reinforces that something serious is happening behind the scenes.</p>
+            </Training>
+
+            <Training title="Prompt safety rails">
+              <p>The reading prompt inherits the CFFS doctrine: pattern-based interpretation, conservative under uncertainty, no prescriptions, no diagnostic labels, no causal claims. It also explicitly forbids motivational language, em dashes, and exclamation marks. The prompt is in <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">src/lib/client-reading-prompt.ts</code>.</p>
+              <p className="mt-2">Generated content is run through an em-dash strip before being saved, as a belt-and-braces guarantee.</p>
             </Training>
           </Section>
 
