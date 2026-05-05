@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
+import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import {
@@ -7,6 +8,7 @@ import {
   buildClientReadingUserPrompt,
   type CFFSContext,
 } from '@/lib/client-reading-prompt'
+import { buildFoundationalReadingEmail } from '@/lib/foundational-reading-email'
 
 export const maxDuration = 60
 
@@ -57,7 +59,7 @@ export async function POST(request: NextRequest) {
 
   const { data: client, error: clientErr } = await admin
     .from('clients')
-    .select('id, name, package')
+    .select('id, name, email, onboarding_token, package')
     .eq('id', cffs.client_id)
     .single()
 
@@ -147,6 +149,8 @@ export async function POST(request: NextRequest) {
 
   const cleaned = stripEmDashes(reading)
 
+  const now = new Date().toISOString()
+  // Auto-publish on generation. Regenerations stay published silently.
   const { data: updated, error: updateErr } = await admin
     .from('cffs')
     .update({
@@ -155,9 +159,8 @@ export async function POST(request: NextRequest) {
       cr_what_were_focusing_on_first: cleaned.cr_what_were_focusing_on_first,
       cr_what_were_not_doing_yet: cleaned.cr_what_were_not_doing_yet,
       cr_coach_note: cleaned.cr_coach_note,
-      client_reading_generated_at: new Date().toISOString(),
-      // Re-publishing requires Kade to click Send to client again
-      client_reading_published_at: null,
+      client_reading_generated_at: now,
+      client_reading_published_at: now,
     })
     .eq('id', cffs_id)
     .select()
@@ -168,5 +171,40 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to save reading' }, { status: 500 })
   }
 
-  return NextResponse.json({ cffs: updated })
+  // Notify the client - first time only, never on regenerations
+  let emailSent = false
+  let emailError: string | null = null
+  if (!cffs.client_reading_email_sent_at && client.email && client.onboarding_token) {
+    try {
+      const firstName = client.name?.split(' ')[0] ?? 'there'
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+      const portalUrl = `${baseUrl}/portal/${client.onboarding_token}/foundational-reading`
+      const { subject, html } = buildFoundationalReadingEmail({
+        firstName,
+        bodyState: cffs.body_state_classification ?? null,
+        portalUrl,
+      })
+
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: client.email,
+        subject,
+        html,
+      })
+
+      await admin
+        .from('cffs')
+        .update({ client_reading_email_sent_at: new Date().toISOString() })
+        .eq('id', cffs_id)
+
+      emailSent = true
+    } catch (err) {
+      // Email failure should not break the reading generation flow
+      emailError = err instanceof Error ? err.message : String(err)
+      console.error('Foundational Reading email failed to send:', emailError)
+    }
+  }
+
+  return NextResponse.json({ cffs: updated, emailSent, emailError })
 }
