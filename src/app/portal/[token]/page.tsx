@@ -364,10 +364,17 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
+        {/* Preview header during onboarding */}
+        {!allOnboardingDone && (
+          <div className="mb-6">
+            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-2">Your portal</p>
+            <p className="text-xs text-stone-600 leading-relaxed">A look at what unlocks as your coach builds your plan. You can take measurements anytime.</p>
+          </div>
+        )}
+
         {/* Training */}
-        {allOnboardingDone && (
-          <div className="mb-10">
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Training</p>
+        <div className="mb-10">
+          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Training</p>
             {activeProgram ? (
               <div className="space-y-3">
                 {programReviewedThisWeek ? (
@@ -417,13 +424,11 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 <p className="text-xs text-stone-600 leading-relaxed">Your coach is putting your training program together based on your intake. You will see it here once it is ready.</p>
               </div>
             )}
-          </div>
-        )}
+        </div>
 
         {/* Nutrition */}
-        {allOnboardingDone && (
-          <div className="mb-10">
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Nutrition</p>
+        <div className="mb-10">
+          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Nutrition</p>
             {activeNutritionPlan ? (
               <div className="space-y-3">
                 {nutritionReviewedThisWeek ? (
@@ -473,27 +478,24 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 <p className="text-xs text-stone-600 leading-relaxed">Your coach is building your nutrition plan. You will see it here once it is ready.</p>
               </div>
             )}
-          </div>
-        )}
+        </div>
 
         {/* Progress */}
-        {allOnboardingDone && (
-          <div className="mb-10">
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Progress</p>
-            <Link
-              href={`/portal/${token}/progress`}
-              className="block rounded-2xl border border-stone-800 bg-stone-900/50 p-4 hover:border-stone-700 transition-colors"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-stone-300">Measurements</p>
-                  <p className="text-xs text-stone-600 mt-0.5">Track your bodyweight, waist, hips and chest over time.</p>
-                </div>
-                <span className="text-xs text-stone-500 ml-4">→</span>
+        <div className="mb-10">
+          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">Progress</p>
+          <Link
+            href={`/portal/${token}/progress`}
+            className="block rounded-2xl border border-stone-800 bg-stone-900/50 p-4 hover:border-stone-700 transition-colors"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-stone-300">Measurements</p>
+                <p className="text-xs text-stone-600 mt-0.5">Track your bodyweight, waist, hips and chest over time.</p>
               </div>
-            </Link>
-          </div>
-        )}
+              <span className="text-xs text-stone-500 ml-4">→</span>
+            </div>
+          </Link>
+        </div>
 
         {/* Coach feedback */}
         {(latestProgramReview?.coach_notes || latestNutritionReview?.coach_notes) && (
