@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { ArrowUp } from 'lucide-react'
 import { PageHeader } from '@/components/dashboard/ui'
 
 type Category = 'flows' | 'coaching' | 'business' | 'content' | 'challenge' | 'blueprint' | 'membership'
@@ -95,6 +96,14 @@ const CATEGORIES: { id: Category; label: string }[] = [
 export default function HelpPage() {
   const [activeSection, setActiveSection] = useState<string>('operator-flow')
   const [activeTab, setActiveTab] = useState<Category>('flows')
+  const [showTop, setShowTop] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 400)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -125,10 +134,13 @@ export default function HelpPage() {
     <div className="max-w-[1100px] relative">
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center bg-[#111110] hover:bg-[#1c1917] border border-[#1c1917] hover:border-[#292524] rounded-full text-[#a8a29e] hover:text-white transition-colors shadow-[0_8px_24px_-6px_rgba(0,0,0,0.6)]"
         aria-label="Back to top"
+        className={`fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 pl-3.5 pr-4 h-11 rounded-full bg-[#14b8a6] text-[#0c0a09] text-[13px] font-semibold border border-[#14b8a6] hover:bg-[#5eead4] transition-all shadow-[0_12px_32px_-8px_rgba(20,184,166,0.45),0_4px_12px_-4px_rgba(0,0,0,0.6)] ${
+          showTop ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-3 pointer-events-none'
+        }`}
       >
-        ↑
+        <ArrowUp size={15} />
+        <span>Top</span>
       </button>
       <PageHeader
         eyebrow="Reference"
