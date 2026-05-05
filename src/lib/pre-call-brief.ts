@@ -726,7 +726,7 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('IF THEY DON\'T PROCEED (Path A or B)')
   lines.push('═══════════════════════════════════════════')
   lines.push('')
-  lines.push(`If they walk out without signing, give them this. Practical takeaways tuned to their state and floor. Frame it as: these address symptoms - coaching reads which to pull first and adjusts as you go.`)
+  lines.push(`If they walk out without signing, give them this. Practical takeaways tuned to their state and floor. They'll move them forward. The piece these can't replace is the weekly read - which to pull first, when to change what.`)
   lines.push('')
   lines.push(`For ${input.name}, ${stateShort} state, floor on ${floorName}:`)
   lines.push('')
@@ -737,7 +737,7 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   recommendations.forEach((r, i) => lines.push(`${i + 1}. ${r}`))
   lines.push('')
   lines.push('CLOSING LINE')
-  lines.push('"These will move the needle. Coaching\'s the layer that reads which one to pull first and adjusts as you go. If you ever want that, the door\'s open."')
+  lines.push('"That\'s a real starting point. What it can\'t tell you is which one to pull first, or when to change what. Most people on their own end up doing the right things in the wrong order. If you want the read built in, the door\'s open."')
   lines.push('')
 
   return lines.join('\n')
