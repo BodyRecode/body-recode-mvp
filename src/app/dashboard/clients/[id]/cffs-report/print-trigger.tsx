@@ -1,15 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
 import Link from 'next/link'
 import { ChevronLeft, Download } from 'lucide-react'
 
 export default function PrintTrigger({ backHref }: { backHref?: string }) {
-  useEffect(() => {
-    const timer = setTimeout(() => window.print(), 800)
-    return () => clearTimeout(timer)
-  }, [])
-
   return (
     <div
       className="no-print sticky top-0 z-50"
