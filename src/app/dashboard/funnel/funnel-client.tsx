@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { PageHeader } from '@/components/dashboard/ui'
+import { AlertTriangle, Search } from 'lucide-react'
+import { PageHeader, Card, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 
 const PATTERN_COLOURS: Record<string, string> = {
   'stress-stored': '#ef4444',
@@ -40,10 +41,6 @@ type MembershipRow = {
   blueprintToken: string | null
 }
 
-function daysSince(dateStr: string) {
-  return Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000)
-}
-
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: '2-digit' })
 }
@@ -51,7 +48,10 @@ function formatDate(dateStr: string) {
 function AvgBadge({ avg }: { avg: number }) {
   const colour = avg >= 4 ? '#14b8a6' : avg >= 3 ? '#f59e0b' : '#ef4444'
   return (
-    <span style={{ fontSize: 12, fontWeight: 700, color: colour, background: colour + '20', padding: '2px 8px', borderRadius: 99 }}>
+    <span
+      className="inline-flex items-center text-[11px] font-bold px-2 py-0.5 rounded-full border"
+      style={{ fontFamily: MONO_FONT, color: colour, background: colour + '14', borderColor: colour + '33' }}
+    >
       {avg}/5
     </span>
   )
@@ -61,7 +61,10 @@ function PatternBadge({ pattern }: { pattern: string }) {
   const colour = PATTERN_COLOURS[pattern] ?? '#57534e'
   const label = PATTERN_LABELS[pattern] ?? pattern
   return (
-    <span style={{ fontSize: 11, fontWeight: 700, color: colour, background: colour + '18', padding: '2px 8px', borderRadius: 99, whiteSpace: 'nowrap' }}>
+    <span
+      className="inline-flex items-center text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border whitespace-nowrap"
+      style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em', color: colour, background: colour + '14', borderColor: colour + '33' }}
+    >
       {label}
     </span>
   )
@@ -69,7 +72,10 @@ function PatternBadge({ pattern }: { pattern: string }) {
 
 function StatusBadge({ label, colour }: { label: string; colour: string }) {
   return (
-    <span style={{ fontSize: 11, fontWeight: 700, color: colour, background: colour + '18', padding: '2px 8px', borderRadius: 99, whiteSpace: 'nowrap' }}>
+    <span
+      className="inline-flex items-center text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border whitespace-nowrap"
+      style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em', color: colour, background: colour + '14', borderColor: colour + '33' }}
+    >
       {label}
     </span>
   )
@@ -77,12 +83,16 @@ function StatusBadge({ label, colour }: { label: string; colour: string }) {
 
 function Table({ headers, children }: { headers: string[]; children: React.ReactNode }) {
   return (
-    <div style={{ overflowX: 'auto' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-[13px]">
         <thead>
-          <tr style={{ borderBottom: '1px solid #292524' }}>
+          <tr className="border-b border-[#1c1917] bg-[#0c0a09]">
             {headers.map(h => (
-              <th key={h} style={{ textAlign: 'left', padding: '10px 12px', fontSize: 11, fontWeight: 700, color: '#57534e', textTransform: 'uppercase', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
+              <th
+                key={h}
+                className="text-left px-3 py-3 text-[10px] font-bold text-[#57534e] uppercase whitespace-nowrap"
+                style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+              >
                 {h}
               </th>
             ))}
@@ -96,21 +106,24 @@ function Table({ headers, children }: { headers: string[]; children: React.React
 
 function TR({ children, highlight }: { children: React.ReactNode; highlight?: boolean }) {
   return (
-    <tr style={{ borderBottom: '1px solid #1c1917', background: highlight ? 'rgba(239,68,68,0.04)' : 'transparent' }}>
+    <tr
+      className="border-b border-[#1c1917] last:border-b-0 transition-colors hover:bg-[#1c1917]/40"
+      style={highlight ? { background: 'rgba(239,68,68,0.04)' } : undefined}
+    >
       {children}
     </tr>
   )
 }
 
 function TD({ children }: { children: React.ReactNode }) {
-  return <td style={{ padding: '10px 12px', color: '#a8a29e', verticalAlign: 'middle' }}>{children}</td>
+  return <td className="px-3 py-3 text-[#a8a29e] align-middle">{children}</td>
 }
 
 function TDName({ name, email }: { name: string; email: string }) {
   return (
-    <td style={{ padding: '10px 12px', verticalAlign: 'middle' }}>
-      <div style={{ fontWeight: 600, color: '#fff', fontSize: 13 }}>{name}</div>
-      <div style={{ fontSize: 11, color: '#57534e' }}>{email}</div>
+    <td className="px-3 py-3 align-middle">
+      <div className="text-[13px] font-semibold text-white">{name}</div>
+      <div className="text-[11px] text-[#57534e]">{email}</div>
     </td>
   )
 }
@@ -139,9 +152,15 @@ export default function FunnelClient({
     e.name.toLowerCase().includes(q) || e.email.toLowerCase().includes(q)
   )
 
-  // Attention flags
   const blueprintAtRisk = blueprintEnrollments.filter(e => e.currentWeek === 6 && !e.hasMembership).length
   const membershipNoCheckin = membershipEnrollments.filter(e => !e.cancelledAt && !e.lastCheckin).length
+  const amber = accentColour('amber')
+
+  const summary = [
+    { label: 'Challenge', count: challengeEnrollments.length, sub: `${challengeEnrollments.filter(e => e.quizCompleted).length} completed quiz`, accent: '#14b8a6' },
+    { label: 'Blueprint', count: blueprintEnrollments.length, sub: `${blueprintEnrollments.filter(e => e.hasMembership).length} ascended to membership`, accent: '#8b5cf6' },
+    { label: 'Membership', count: membershipEnrollments.length, sub: `${membershipEnrollments.filter(e => !e.cancelledAt).length} active`, accent: '#f59e0b' },
+  ]
 
   return (
     <div className="max-w-[1100px]">
@@ -152,40 +171,61 @@ export default function FunnelClient({
       />
 
       {/* Summary stats */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
-        {[
-          { label: 'Challenge', count: challengeEnrollments.length, sub: `${challengeEnrollments.filter(e => e.quizCompleted).length} completed quiz`, colour: '#14b8a6' },
-          { label: 'Blueprint', count: blueprintEnrollments.length, sub: `${blueprintEnrollments.filter(e => e.hasMembership).length} ascended to membership`, colour: '#8b5cf6' },
-          { label: 'Membership', count: membershipEnrollments.length, sub: `${membershipEnrollments.filter(e => !e.cancelledAt).length} active`, colour: '#f59e0b' },
-        ].map(s => (
-          <div key={s.label} style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '16px 20px' }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: s.colour, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{s.label}</div>
-            <div style={{ fontSize: 28, fontWeight: 800, color: '#fff', marginBottom: 2 }}>{s.count}</div>
-            <div style={{ fontSize: 12, color: '#57534e' }}>{s.sub}</div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+        {summary.map(s => (
+          <div key={s.label} className="relative bg-[#111110] border border-[#1c1917] rounded-2xl p-5 overflow-hidden">
+            <div
+              className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
+              style={{ background: s.accent }}
+            />
+            <p
+              className="text-[10px] text-[#78716c] uppercase mt-4 mb-3"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            >
+              {s.label}
+            </p>
+            <p
+              className="text-[34px] font-extrabold text-white tracking-tight leading-none mb-2.5"
+              style={{ fontVariantNumeric: 'tabular-nums' }}
+            >
+              {s.count}
+            </p>
+            <p className="text-[11px] text-[#57534e] truncate">{s.sub}</p>
           </div>
         ))}
       </div>
 
       {/* Attention flags */}
       {(blueprintAtRisk > 0 || membershipNoCheckin > 0) && (
-        <div style={{ background: '#1c1210', border: '1px solid #78350f', borderRadius: 12, padding: '14px 18px', marginBottom: 20, display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.06em', alignSelf: 'center' }}>Needs attention</div>
+        <div
+          className="mb-5 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-4 flex-wrap"
+          style={{ borderColor: amber.ring }}
+        >
+          <div className="inline-flex items-center gap-2 shrink-0">
+            <AlertTriangle size={14} style={{ color: amber.text }} />
+            <span
+              className="text-[10px] font-bold uppercase"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em', color: amber.text }}
+            >
+              Needs attention
+            </span>
+          </div>
           {blueprintAtRisk > 0 && (
-            <div style={{ fontSize: 13, color: '#d97706' }}>
-              <strong style={{ color: '#fbbf24' }}>{blueprintAtRisk}</strong> Blueprint buyer{blueprintAtRisk > 1 ? 's' : ''} at Week 6 - not yet in membership
+            <div className="text-[13px] text-[#a8a29e]">
+              <span className="font-semibold text-white">{blueprintAtRisk}</span> Blueprint buyer{blueprintAtRisk > 1 ? 's' : ''} at Week 6 — not yet in membership
             </div>
           )}
           {membershipNoCheckin > 0 && (
-            <div style={{ fontSize: 13, color: '#d97706' }}>
-              <strong style={{ color: '#fbbf24' }}>{membershipNoCheckin}</strong> active member{membershipNoCheckin > 1 ? 's' : ''} with no check-in submitted
+            <div className="text-[13px] text-[#a8a29e]">
+              <span className="font-semibold text-white">{membershipNoCheckin}</span> active member{membershipNoCheckin > 1 ? 's' : ''} with no check-in submitted
             </div>
           )}
         </div>
       )}
 
       {/* Search + tabs */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', background: '#111110', borderRadius: 8, padding: 3, gap: 2 }}>
+      <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+        <div className="inline-flex items-center bg-[#111110] border border-[#1c1917] rounded-lg p-0.5">
           {([
             { id: 'challenge', label: `Challenge (${challengeEnrollments.length})` },
             { id: 'blueprint', label: `Blueprint (${blueprintEnrollments.length})` },
@@ -194,36 +234,32 @@ export default function FunnelClient({
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              style={{
-                padding: '7px 14px', fontSize: 12, fontWeight: 600,
-                color: tab === t.id ? '#0c0a09' : '#57534e',
-                background: tab === t.id ? '#14b8a6' : 'transparent',
-                border: 'none', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap',
-              }}
+              className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors whitespace-nowrap ${
+                tab === t.id ? 'bg-[#14b8a6] text-[#0c0a09]' : 'text-[#a8a29e] hover:text-white'
+              }`}
             >
               {t.label}
             </button>
           ))}
         </div>
-        <input
-          placeholder="Search name or email..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          style={{
-            padding: '8px 14px', fontSize: 13, background: '#111110',
-            border: '1px solid #292524', borderRadius: 8, color: '#fff', outline: 'none', width: 220,
-          }}
-        />
+        <div className="relative">
+          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#57534e] pointer-events-none" />
+          <input
+            placeholder="Search name or email..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="text-[13px] bg-[#111110] border border-[#1c1917] rounded-lg pl-8 pr-3 py-2 text-white placeholder:text-[#57534e] outline-none focus:border-[#14b8a6] w-[220px] transition-colors"
+          />
+        </div>
       </div>
 
       {/* Tables */}
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, overflow: 'hidden' }}>
+      <Card padding="none" className="overflow-hidden">
 
-        {/* CHALLENGE */}
         {tab === 'challenge' && (
           <Table headers={['Name', 'Day', 'Pattern', 'Quiz', 'Blueprint', 'Enrolled']}>
             {filteredChallenge.length === 0 && (
-              <TR><TD><span style={{ color: '#57534e' }}>No enrollments yet.</span></TD></TR>
+              <TR><TD><span className="text-[#57534e]">No enrollments yet.</span></TD></TR>
             )}
             {filteredChallenge.map(e => {
               const atRisk = e.currentDay >= 14 && !e.hasBlueprintPurchase
@@ -231,11 +267,11 @@ export default function FunnelClient({
                 <TR key={e.id} highlight={atRisk}>
                   <TDName name={e.name} email={e.email} />
                   <TD>
-                    <span style={{ fontWeight: 700, color: '#fff' }}>Day {Math.min(e.currentDay, 14)}</span>
-                    <span style={{ fontSize: 11, color: '#57534e' }}> / 14</span>
+                    <span className="font-bold text-white" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, 14)}</span>
+                    <span className="text-[11px] text-[#57534e]" style={{ fontFamily: MONO_FONT }}> / 14</span>
                   </TD>
                   <TD>
-                    {e.quizResult ? <PatternBadge pattern={e.quizResult} /> : <span style={{ color: '#57534e', fontSize: 12 }}>No quiz</span>}
+                    {e.quizResult ? <PatternBadge pattern={e.quizResult} /> : <span className="text-[#57534e] text-[12px]">No quiz</span>}
                   </TD>
                   <TD>
                     {e.quizCompleted
@@ -249,18 +285,17 @@ export default function FunnelClient({
                         ? <StatusBadge label="Not yet" colour="#ef4444" />
                         : <StatusBadge label="In progress" colour="#57534e" />}
                   </TD>
-                  <TD>{formatDate(e.enrolledAt)}</TD>
+                  <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.enrolledAt)}</span></TD>
                 </TR>
               )
             })}
           </Table>
         )}
 
-        {/* BLUEPRINT */}
         {tab === 'blueprint' && (
           <Table headers={['Name', 'Pattern', 'Week', 'Last Check-In', 'Avg Score', 'Membership', 'Purchased']}>
             {filteredBlueprint.length === 0 && (
-              <TR><TD><span style={{ color: '#57534e' }}>No Blueprint buyers yet.</span></TD></TR>
+              <TR><TD><span className="text-[#57534e]">No Blueprint buyers yet.</span></TD></TR>
             )}
             {filteredBlueprint.map(e => {
               const atRisk = e.currentWeek === 6 && !e.hasMembership
@@ -270,15 +305,15 @@ export default function FunnelClient({
                   <TDName name={e.name} email={e.email} />
                   <TD><PatternBadge pattern={e.pattern} /></TD>
                   <TD>
-                    <span style={{ fontWeight: 700, color: '#fff' }}>Week {e.currentWeek}</span>
-                    <span style={{ fontSize: 11, color: '#57534e' }}> / 6</span>
+                    <span className="font-bold text-white" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Week {e.currentWeek}</span>
+                    <span className="text-[11px] text-[#57534e]" style={{ fontFamily: MONO_FONT }}> / 6</span>
                   </TD>
                   <TD>
                     {e.lastCheckin
-                      ? <span style={{ fontSize: 12, color: '#a8a29e' }}>Week {e.lastCheckin.week} &middot; {formatDate(e.lastCheckin.date)}</span>
-                      : <span style={{ fontSize: 12, color: '#ef4444' }}>None submitted</span>}
+                      ? <span className="text-[12px] text-[#a8a29e]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
+                      : <span className="text-[12px] text-[#ef4444]">None submitted</span>}
                   </TD>
-                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span style={{ color: '#57534e', fontSize: 12 }}>-</span>}</TD>
+                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#57534e] text-[12px]">-</span>}</TD>
                   <TD>
                     {e.hasMembership
                       ? <StatusBadge label="Active" colour="#14b8a6" />
@@ -286,18 +321,17 @@ export default function FunnelClient({
                         ? <StatusBadge label="Not joined" colour="#ef4444" />
                         : <StatusBadge label="Not yet" colour="#57534e" />}
                   </TD>
-                  <TD>{formatDate(e.purchaseDate)}</TD>
+                  <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.purchaseDate)}</span></TD>
                 </TR>
               )
             })}
           </Table>
         )}
 
-        {/* MEMBERSHIP */}
         {tab === 'membership' && (
           <Table headers={['Name', 'Pattern', 'Block / Week', 'Last Check-In', 'Avg Score', 'Status', 'Joined']}>
             {filteredMembership.length === 0 && (
-              <TR><TD><span style={{ color: '#57534e' }}>No members yet.</span></TD></TR>
+              <TR><TD><span className="text-[#57534e]">No members yet.</span></TD></TR>
             )}
             {filteredMembership.map(e => {
               const noCheckin = !e.cancelledAt && !e.lastCheckin
@@ -306,29 +340,29 @@ export default function FunnelClient({
                   <TDName name={e.name} email={e.email} />
                   <TD><PatternBadge pattern={e.pattern} /></TD>
                   <TD>
-                    <span style={{ fontWeight: 700, color: '#fff' }}>Block {e.currentBlock}</span>
-                    <span style={{ color: '#57534e' }}> &middot; </span>
-                    <span style={{ fontWeight: 700, color: '#fff' }}>Week {e.currentWeek}</span>
+                    <span className="font-bold text-white" style={{ fontFamily: MONO_FONT }}>Block {e.currentBlock}</span>
+                    <span className="text-[#57534e]"> · </span>
+                    <span className="font-bold text-white" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Week {e.currentWeek}</span>
                   </TD>
                   <TD>
                     {e.lastCheckin
-                      ? <span style={{ fontSize: 12, color: '#a8a29e' }}>Week {e.lastCheckin.week} &middot; {formatDate(e.lastCheckin.date)}</span>
-                      : <span style={{ fontSize: 12, color: '#ef4444' }}>None submitted</span>}
+                      ? <span className="text-[12px] text-[#a8a29e]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
+                      : <span className="text-[12px] text-[#ef4444]">None submitted</span>}
                   </TD>
-                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span style={{ color: '#57534e', fontSize: 12 }}>-</span>}</TD>
+                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#57534e] text-[12px]">-</span>}</TD>
                   <TD>
                     {e.cancelledAt
                       ? <StatusBadge label="Cancelled" colour="#ef4444" />
                       : <StatusBadge label="Active" colour="#14b8a6" />}
                   </TD>
-                  <TD>{formatDate(e.joinedAt)}</TD>
+                  <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.joinedAt)}</span></TD>
                 </TR>
               )
             })}
           </Table>
         )}
 
-      </div>
+      </Card>
     </div>
   )
 }
