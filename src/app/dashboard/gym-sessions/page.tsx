@@ -29,7 +29,7 @@ const STATES = [
       'Shoulder circles + arm swings - 45 sec',
     ],
     close: ['Child\'s pose - 60 sec', 'Box breathing 4-4-4-4 - 4 rounds'],
-    handoff: 'What we did today is the starting point. The session was built around your state - that is exactly how a program works too. Everything is matched to where your body is at and adjusted as it changes. If you want to keep that going, that is what the coaching is. Want to set up a proper conversation about it?',
+    handoff: 'Good work. We trained that way deliberately - your body is in a state where pushing harder right now would push it the wrong direction. Let\'s grab a seat and I\'ll walk you through your scorecard properly, what your body just did, and what my coaching would look like for what you told me earlier you want.',
     programs: {
       machines: {
         structure: '3 rounds - light load, 3 sec down on every rep, no rush between sets',
@@ -78,7 +78,7 @@ const STATES = [
       'TRX face pull - 10 reps',
     ],
     close: ['Hip flexor stretch - 45 sec per side'],
-    handoff: 'What we did today is the starting point. You saw where your output dropped - that is your bottleneck. A program built around your state addresses that specifically and adjusts as it changes. If you want to keep that going, that is what the coaching is. Want to set up a proper conversation about it?',
+    handoff: 'Good work. You saw where output dropped during that block - that is the bottleneck your scorecard is pointing at too. Let\'s grab a seat and I\'ll walk you through it properly, the bottleneck specifically, and what my coaching would look like for what you told me earlier you want.',
     programs: {
       machines: {
         structure: 'Strength primer - 2 rounds (not for time), then AMRAP 10 min',
@@ -140,7 +140,7 @@ const STATES = [
       'Box jump or jump squat - 5 reps (activation)',
     ],
     close: ['Walk + breathe down - 2 min'],
-    handoff: 'What we did today is the starting point. Your body responded well - that tells me the problem is not your biology, it is your prescription. A program built around your state fixes that specifically and adjusts as you progress. If you want to keep that going, that is what the coaching is. Want to set up a proper conversation about it?',
+    handoff: 'Good work. Your body responded the way a Ready body should - which tells me what is stopping the result you want is not your biology, it is the prescription. Let\'s grab a seat and I\'ll walk you through your scorecard, what your body just did, and what my coaching would look like for what you told me earlier.',
     programs: {
       machines: {
         structure: '4 rounds - 35 sec rest between rounds, performance output focus',
@@ -288,74 +288,76 @@ export default function GymSessionsPage() {
         </ScriptSection>
       </ScriptCard>
 
-      {/* Handoff */}
-      <ScriptCard label="Handoff script">
+      {/* Handoff into the sit-down */}
+      <ScriptCard label="Handoff into the sit-down">
         <div className="px-5 py-4">
+          <p className="text-[10px] font-bold text-[#57534e] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+            Bridge from training → table
+          </p>
           <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic">"{state.handoff}"</p>
         </div>
       </ScriptCard>
 
-      {/* Next steps */}
-      <ScriptCard label="Next Steps">
+      {/* Paths after the sit-down */}
+      <ScriptCard label="After the sit-down · paths">
+        {/* PATH C — proceeding now */}
         <div className="px-5 py-4 border-b border-[#1c1917]">
           <div className="flex items-center gap-2 mb-2">
             <span
               className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[rgba(20,184,166,0.12)] text-[#14b8a6] border border-[#0d2d29] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
-              Yes
+              Path C
             </span>
             <p
               className="text-[10px] font-bold text-[#a8a29e] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
             >
-              They want to know more
+              Locking in now
             </p>
           </div>
-          <p className="text-[14px] text-[#d4cfc9] leading-relaxed mb-3">Book a Zoom on the spot or take their number and follow up same day. Do not leave it open-ended.</p>
-          <a
-            href="https://bodyrecode.au/book"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#14b8a6] hover:bg-[#5eead4] text-[#0c0a09] text-[13px] font-bold px-4 py-2 rounded-lg transition-colors"
-          >
-            Book a call
-          </a>
+          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic mb-3">"Good. Here's exactly what happens next. I'll send you a link straight to your inbox now for the $240 commencement fee. Once that's through, three things happen automatically. Welcome email with portal access. Your foundational intake unlocks - 208 questions across 8 areas. And I get notified at every step. Once your intake's in, your CFFS generates. I review it, send you the subscription link at the launch rate, and we lock in your start date. Sound good?"</p>
+          <p className="text-[12px] text-[#57534e] leading-relaxed">Open the lead in <span className="text-[#a8a29e]">/dashboard/leads</span>, run companion → Path C → pick pathway (in-person / online) → Send commencement fee → Mark Complete. Stripe link goes to her instantly.</p>
         </div>
+
+        {/* PATH B — needs time */}
         <div className="px-5 py-4 border-b border-[#1c1917]">
           <div className="flex items-center gap-2 mb-2">
             <span
-              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#0c0a09] text-[#a8a29e] border border-[#1c1917] uppercase"
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[rgba(245,158,11,0.12)] text-[#f59e0b] border border-[#3a2e10] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
-              Not right now
+              Path B
             </span>
             <p
               className="text-[10px] font-bold text-[#a8a29e] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
             >
-              Pivot to the report
+              Needs time · most common
             </p>
           </div>
-          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic mb-2">"No problem - the scorecard report is a good next step. It covers everything we touched on today in detail. Keep an eye on your inbox."</p>
-          <p className="text-[12px] text-[#57534e]">The follow-up sequence has already sent the link. Day 2 email is a dedicated report offer - you do not need to do anything.</p>
+          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic mb-3">"Take whatever time you need to sit with it. The launch rate stays open. If anything comes up between now and when you decide, message me and I'll answer it. No pressure either way."</p>
+          <p className="text-[12px] text-[#57534e] leading-relaxed">Send the post-session recap email same day (Post Session Email Template). Companion → Path B → Mark Complete. Follow up ~5-7 days out if no reply (Follow-up Email Template).</p>
         </div>
+
+        {/* PATH A — out */}
         <div className="px-5 py-4">
           <div className="flex items-center gap-2 mb-2">
             <span
               className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#0c0a09] text-[#a8a29e] border border-[#1c1917] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
-              Close
+              Path A
             </span>
             <p
               className="text-[10px] font-bold text-[#a8a29e] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
             >
-              Wrap up
+              Not the right fit
             </p>
           </div>
-          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic">"Really good to meet you [name]. I enjoyed that - you worked hard today. Whatever you decide to do next, you have got something useful out of today. Check your inbox, have a read through the results, and if anything comes up just reach out. Take care of yourself."</p>
+          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic mb-3">"All good. The scorecard read still stands on its own and you've got the breakdown to sit with. If anything shifts in your thinking later, the door's open."</p>
+          <p className="text-[12px] text-[#57534e] leading-relaxed">Companion → Path A → Mark Complete. Click 'Send declined follow-up' to fire the 3-email re-engagement sequence + $97 downsell offer.</p>
         </div>
       </ScriptCard>
     </div>
