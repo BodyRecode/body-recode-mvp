@@ -19,6 +19,7 @@ const SECTIONS = [
   { id: 'cffs',                  title: '10. CFFS',                  colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'foundational-reading',  title: '10b. Foundational Reading', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'weekly-checkins',       title: '11. Weekly Check-Ins',      colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'signal-monitoring',     title: '11b. Signal Monitoring',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'coaching-package', title: '12. Coaching Package',   colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'clients-dashboard',title: '13. Clients Dashboard',  colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'automated-status', title: '14. Automated Status',   colour: 'teal' as const, category: 'coaching' as Category },
@@ -722,6 +723,52 @@ export default function HelpPage() {
               <p><strong>Alternating forms.</strong> Form A captures load, training, and recovery. Form B captures regulation, lifestyle, and context. Together they produce a complete picture of the week. Running both every week would be 20+ minutes per check-in. Alternating them halves the client burden while keeping the data complete over a two-week cycle. The CFWS is always generated using the most recent Form A and Form B - even if they weren&apos;t from the same week.</p>
               <p className="mt-2"><strong>The Friday-Sunday window.</strong> Friday 6pm is not arbitrary. It gives the client the full week to have happened before they reflect on it. Sunday 6:30pm closes it before Monday, so you have the CFWS ready before the new week begins. Read the CFWS before Monday if you can - it will orient your coaching decisions for the week ahead.</p>
               <p className="mt-2"><strong>Everything through the portal.</strong> The check-in notification links to the portal, not a standalone form. The client uses the same URL they used for onboarding. Over time it becomes the single place they associate with their coaching relationship - not a different link each week.</p>
+            </Training>
+          </Section>
+
+          {/* Section 11b - Signal Monitoring v1.0 */}
+          <Section id="signal-monitoring" title="11b. Signal Monitoring and Reassessment Triggers" colour="teal">
+            <p>The system watches the four CFWS readiness signals (Capacity, Schedule, Regulation, Behaviour) week over week and surfaces flags when conditions defined in the <strong>Signal Monitoring and Reassessment Triggers v1.0</strong> doctrine are met. The doctrine itself is at <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">~/Dropbox/01_BODY_RECODE/.../Performance_Coaching_Framework_Master_Folder_v1/Signal_Monitoring_and_Reassessment_Triggers_v1.0.md</code>.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Drift definitions</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Single-notch drop</strong>: a signal moves Green → Amber, or Amber → Red between consecutive CFWS. Advisory only, not regression.</li>
+              <li><strong>Multi-notch drop</strong>: a signal moves Green → Red in one week. Regression trigger per doctrine §19.</li>
+              <li><strong>Sustained instability</strong>: same signal at Amber or Red across two consecutive CFWS. Regression trigger when on Regulation, Capacity, or Behaviour.</li>
+              <li><strong>Any Red in latest CFWS</strong>: active regression state. Coach review required.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">CFFS reassessment triggers</p>
+            <p>A reassessment is recommended when ANY of the following fires:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>The CFWS engine sets <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">reassessment_language_triggered: true</code></li>
+              <li>A multi-notch drop occurs on any signal</li>
+              <li>Two or more readiness signals are at Amber or Red simultaneously</li>
+              <li>Sustained instability persists across two consecutive CFWS</li>
+              <li>The active program block reaches its end (current week ≥ block_start_week + week_duration - 1)</li>
+              <li>Time since the active CFFS exceeds 12 weeks (annual upper bound)</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Where it surfaces</p>
+            <p><strong>On the Coaching dashboard list:</strong> three priority-ordered banners at the top — Active Regression (red), CFFS Reassessment Recommended (amber), Drift Advisories (neutral). Each client row shows a status pill if any condition fires.</p>
+            <p><strong>On the client profile:</strong> a dedicated panel above the CFFS report shows the active drift conditions, the reassessment triggers, the recommended depth (lightweight / delta / full), and the current block status with weeks remaining. The Regenerate CFFS button is embedded in the panel when reassessment is recommended.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Reassessment depth</p>
+            <p>Per §5 of the doctrine, a reassessment can be one of three depths. The system recommends a depth based on the trigger but lets you override:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Lightweight</strong>: re-run CFFS engine against the original intake plus the recent CFWS history. No client effort. Default for block-end and single-notch drift.</li>
+              <li><strong>Delta intake</strong>: a shortened ~30-question form covering domains likely to have changed. Default for multi-notch drops or two-or-more concurrent Amber/Red signals.</li>
+              <li><strong>Full re-intake</strong>: client completes the full 208 questions again. Default for the 12-week cap, two-band body state changes, or Restoration phase exit.</li>
+            </ul>
+            <Note>The current Regenerate CFFS button performs the lightweight path (re-runs against existing intake). Delta intake and full re-intake flows are doctrine-defined but not yet implemented as separate UI flows. They will be added when the trigger conditions become common.</Note>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Block end and macro arc</p>
+            <p>The current block always completes uninterrupted. At block end the system surfaces a "Block complete - reassessment review" prompt before the next block is generated. The next block is generated against the most recent CFFS, post-reassessment if performed.</p>
+            <p>The macro arc (Accumulation → Intensification → Realization → Restoration) is treated as an <strong>expected path, not a locked schedule</strong>. If reassessment shows the body state has shifted, the next block honours the new state per doctrine §19, which may mean the originally-anticipated phase isn&apos;t selected.</p>
+
+            <Training title="Why thresholds, not just AI judgement">
+              <p>The CFWS prompt itself can produce reassessment language when it judges drift to be material. That is interpretive, not rule-based. The doctrine adds a second layer: explicit conditions the engine monitors against, which fire regardless of how the AI interpreted the week. This means a signal that the AI didn&apos;t flag still surfaces if it meets the doctrine criteria.</p>
+              <p className="mt-2">The two layers complement each other. The AI catches things the rules don&apos;t (subtle pattern changes the thresholds would miss). The rules catch things the AI might gloss over (consistent slow drift across multiple weeks).</p>
             </Training>
           </Section>
 

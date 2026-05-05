@@ -1,10 +1,11 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
-import { AlertTriangle, ArrowUpRight, ChevronRight, UserPlus, Users } from 'lucide-react'
+import { AlertTriangle, ArrowUpRight, ChevronRight, UserPlus, Users, Activity, RefreshCw } from 'lucide-react'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { ONLINE_PACKAGE_VALUES, IN_PERSON_PACKAGE_VALUES, TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
 import { PageHeader, Btn, EmptyState, MONO_FONT, accentColour } from '@/components/dashboard/ui'
+import { evaluateReadiness, type ReadinessReport } from '@/lib/readiness-monitor'
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ view?: string; type?: string }> }) {
   const supabase = createAdminClient()
@@ -31,12 +32,20 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         exposure_readiness_schedule,
         exposure_readiness_regulation,
         exposure_readiness_behaviour,
+        reassessment_language_triggered,
         is_archived
       ),
       weekly_checkins (
         week_number,
         form_type,
         submitted_at
+      ),
+      programs (
+        id,
+        block_name,
+        week_duration,
+        generated_at,
+        is_active
       )
     `)
     .eq('active', !showInactive)
@@ -77,9 +86,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         new Date(b.generated_at).getTime() - new Date(a.generated_at).getTime()
       )[0] || null
 
-    const latestCfws = client.cfws
-      ?.filter((c: { is_archived: boolean }) => !c.is_archived)
-      .sort((a: { week_number: number }, b: { week_number: number }) => b.week_number - a.week_number)[0] || null
+    const cfwsRowsSorted = (client.cfws || [])
+      .filter((c: { is_archived: boolean }) => !c.is_archived)
+      .sort((a: { week_number: number }, b: { week_number: number }) => b.week_number - a.week_number)
+    const latestCfws = cfwsRowsSorted[0] || null
+
+    const activeProgram = (client.programs || []).find((p: { is_active: boolean }) => p.is_active) || null
 
     const thisWeekCheckins = weekNumber
       ? (client.weekly_checkins || []).filter((ci: { week_number: number }) => ci.week_number === weekNumber)
@@ -89,11 +101,25 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
     const upgradeCandidate = TWO_SESSION_PACKAGE_VALUES.includes(client.package) && (weekNumber ?? 0) >= 8 && (daysUntilStart ?? 0) <= 0
 
-    return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB, rebuildTraining: rebuildTrainingIds.has(client.id), rebuildNutrition: rebuildNutritionIds.has(client.id), upgradeCandidate }
+    // Doctrine: Signal Monitoring and Reassessment Triggers v1.0
+    // Coaching has not actually started until coaching_started_at is in the past.
+    const readiness: ReadinessReport | null = client.coaching_started_at && (daysUntilStart ?? 1) <= 0
+      ? evaluateReadiness({
+          cfwsRows: cfwsRowsSorted,
+          activeCffs: latestCffs,
+          activeProgram,
+          client: { coaching_started_at: client.coaching_started_at },
+        })
+      : null
+
+    return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB, rebuildTraining: rebuildTrainingIds.has(client.id), rebuildNutrition: rebuildNutritionIds.has(client.id), upgradeCandidate, readiness }
   })
 
   const flaggedCount = clientsProcessed.filter(c => c.latestCffs?.reassessment_flagged).length
   const upgradeCandidateCount = clientsProcessed.filter(c => c.upgradeCandidate).length
+  const regressionCount = clientsProcessed.filter(c => c.readiness?.status === 'regression').length
+  const reassessmentCount = clientsProcessed.filter(c => c.readiness?.reassessmentRecommended).length
+  const driftAdvisoryCount = clientsProcessed.filter(c => c.readiness?.status === 'advisory').length
   const teal = accentColour('teal')
   const red = accentColour('red')
   const amber = accentColour('amber')
@@ -216,6 +242,44 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </div>
       )}
 
+      {/* Doctrine: Signal Monitoring v1.0 - active regression banner (highest priority) */}
+      {regressionCount > 0 && (
+        <div
+          className="mb-3 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-3"
+          style={{ borderColor: red.ring }}
+        >
+          <Activity size={14} style={{ color: red.text }} />
+          <p className="text-[13px]" style={{ color: red.text }}>
+            <span className="font-semibold">{regressionCount} client{regressionCount > 1 ? 's' : ''}</span> in active regression. Coach review required.
+          </p>
+        </div>
+      )}
+
+      {/* Doctrine: Signal Monitoring v1.0 - reassessment recommended banner */}
+      {reassessmentCount > 0 && (
+        <div
+          className="mb-3 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-3"
+          style={{ borderColor: amber.ring }}
+        >
+          <RefreshCw size={14} style={{ color: amber.text }} />
+          <p className="text-[13px]" style={{ color: amber.text }}>
+            <span className="font-semibold">{reassessmentCount} client{reassessmentCount > 1 ? 's' : ''}</span> recommended for CFFS reassessment.
+          </p>
+        </div>
+      )}
+
+      {/* Drift advisory banner - lowest priority */}
+      {driftAdvisoryCount > 0 && (
+        <div
+          className="mb-3 bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 flex items-center gap-3"
+        >
+          <ArrowUpRight size={14} className="text-[#a8a29e]" />
+          <p className="text-[13px] text-[#a8a29e]">
+            <span className="font-semibold text-white">{driftAdvisoryCount} client{driftAdvisoryCount > 1 ? 's' : ''}</span> with drift advisories this week.
+          </p>
+        </div>
+      )}
+
       {flaggedCount > 0 && (
         <div
           className="mb-5 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-3"
@@ -223,7 +287,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         >
           <AlertTriangle size={14} style={{ color: amber.text }} />
           <p className="text-[13px]" style={{ color: amber.text }}>
-            <span className="font-semibold">{flaggedCount} client{flaggedCount > 1 ? 's' : ''}</span> may be appropriate for re-assessment
+            <span className="font-semibold">{flaggedCount} client{flaggedCount > 1 ? 's' : ''}</span> flagged on intake CFFS for reassessment consideration
           </p>
         </div>
       )}
@@ -290,6 +354,33 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               </div>
 
               <div className="flex items-center gap-3 shrink-0 ml-3">
+                {client.readiness?.status === 'regression' && (
+                  <span
+                    className="text-[10px] font-semibold px-2.5 py-1 rounded-full border uppercase inline-flex items-center gap-1"
+                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', color: red.text, borderColor: red.ring, background: red.bg }}
+                    title={client.readiness.drift.filter((d: { severity: string }) => d.severity === 'high').map((d: { message: string }) => d.message).join(' · ')}
+                  >
+                    <Activity size={10} /> Regression
+                  </span>
+                )}
+                {client.readiness?.status === 'reassessment' && (
+                  <span
+                    className="text-[10px] font-semibold px-2.5 py-1 rounded-full border uppercase inline-flex items-center gap-1"
+                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', color: amber.text, borderColor: amber.ring, background: amber.bg }}
+                    title={client.readiness.reassessmentReasons.map((r: { message: string }) => r.message).join(' · ')}
+                  >
+                    <RefreshCw size={10} /> Reassess
+                  </span>
+                )}
+                {client.readiness?.status === 'advisory' && (
+                  <span
+                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full border uppercase"
+                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', color: '#a8a29e', borderColor: '#1c1917', background: '#0c0a09' }}
+                    title={client.readiness.drift.map((d: { message: string }) => d.message).join(' · ')}
+                  >
+                    Drift
+                  </span>
+                )}
                 {client.upgradeCandidate && (
                   <span
                     className="text-[10px] font-semibold px-2.5 py-1 rounded-full border uppercase"

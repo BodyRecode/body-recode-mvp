@@ -1,9 +1,10 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon } from 'lucide-react'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import Link from 'next/link'
 import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
+import { evaluateReadiness } from '@/lib/readiness-monitor'
 import SetStartDate from '@/components/set-start-date'
 import PackageManager from '@/components/package-manager'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
@@ -129,6 +130,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const latestBaseline = baselines?.[0] || null
   const baselineToken = client.baseline_token as string | undefined
   const activeProgram = activePrograms || null
+
+  // Doctrine: Signal Monitoring and Reassessment Triggers v1.0
+  const cfwsForMonitor = (cfwsRecords || []).filter(c => !c.is_archived)
+  const readinessReport = client.coaching_started_at
+    ? evaluateReadiness({
+        cfwsRows: cfwsForMonitor,
+        activeCffs: activeCffs,
+        activeProgram,
+        client: { coaching_started_at: client.coaching_started_at },
+      })
+    : null
   const draftProgram = draftPrograms || null
   const activeNutritionPlan = activeNutritionPlans || null
   const draftNutritionPlan = draftNutritionPlans || null
@@ -467,6 +479,119 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               </div>
             </div>
           </div>
+
+          {/* Doctrine: Signal Monitoring v1.0 - readiness monitor panel */}
+          {readinessReport && (readinessReport.status !== 'clean' || readinessReport.block?.weeksRemaining != null) && (
+            <div
+              className="bg-[#111110] border rounded-2xl overflow-hidden mb-4"
+              style={{
+                borderColor: readinessReport.status === 'regression' ? '#3a1414'
+                  : readinessReport.status === 'reassessment' ? '#3a2410'
+                  : '#1c1917',
+              }}
+            >
+              <div className="flex items-center justify-between px-5 py-3 border-b border-[#1c1917]">
+                <div className="flex items-center gap-2.5">
+                  {readinessReport.status === 'regression' ? (
+                    <Activity size={13} className="text-[#ef4444]" />
+                  ) : readinessReport.status === 'reassessment' ? (
+                    <RefreshCw size={13} className="text-[#f59e0b]" />
+                  ) : (
+                    <AlertTriangleIcon size={13} className="text-[#a8a29e]" />
+                  )}
+                  <p
+                    className="text-[10px] font-bold uppercase"
+                    style={{
+                      fontFamily: MONO_FONT,
+                      letterSpacing: '0.14em',
+                      color: readinessReport.status === 'regression' ? '#ef4444'
+                        : readinessReport.status === 'reassessment' ? '#f59e0b'
+                        : '#d4cfc9',
+                    }}
+                  >
+                    {readinessReport.status === 'regression' ? 'Active Regression - Coach Review Required'
+                      : readinessReport.status === 'reassessment' ? 'CFFS Reassessment Recommended'
+                      : readinessReport.status === 'advisory' ? 'Drift Advisory'
+                      : 'Block Status'}
+                  </p>
+                </div>
+                <span className="text-[10px] text-[#57534e]" style={{ fontFamily: MONO_FONT }}>
+                  Signal Monitoring v1.0
+                </span>
+              </div>
+
+              {/* Drift conditions */}
+              {readinessReport.drift.length > 0 && (
+                <div className="px-5 py-4 border-b border-[#1c1917]">
+                  <p className="text-[10px] font-bold text-[#57534e] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+                    Drift this week
+                  </p>
+                  <ul className="space-y-1.5">
+                    {readinessReport.drift.map((d, i) => (
+                      <li key={i} className="flex items-start gap-2 text-[13px]">
+                        <span
+                          className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{ background: d.severity === 'high' ? '#ef4444' : '#a8a29e' }}
+                        />
+                        <span className={d.severity === 'high' ? 'text-[#e7e5e4]' : 'text-[#a8a29e]'}>{d.message}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Reassessment reasons */}
+              {readinessReport.reassessmentReasons.length > 0 && (
+                <div className="px-5 py-4 border-b border-[#1c1917]">
+                  <p className="text-[10px] font-bold text-[#57534e] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+                    Reassessment triggers
+                  </p>
+                  <ul className="space-y-2">
+                    {readinessReport.reassessmentReasons.map((r, i) => (
+                      <li key={i} className="text-[13px]">
+                        <p className="text-[#e7e5e4]">{r.message}</p>
+                        <p className="text-[11px] text-[#57534e] mt-0.5" style={{ fontFamily: MONO_FONT }}>
+                          Recommended depth: <span className="text-[#a8a29e]">{r.recommendedDepth}</span>
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                  {latestIntakeId && (
+                    <div className="mt-4">
+                      <RegenerateCFFSButton clientId={client.id} intakeId={latestIntakeId} />
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Block status */}
+              {readinessReport.block && (
+                <div className="px-5 py-3">
+                  <div className="flex items-center justify-between text-[12px]">
+                    <span className="text-[#57534e]">
+                      Block <span className="text-[#d4cfc9]">{readinessReport.block.blockName ?? '-'}</span>
+                      {readinessReport.block.weekDuration != null && (
+                        <> · {readinessReport.block.weekDuration}-week duration</>
+                      )}
+                    </span>
+                    <span
+                      className="text-[11px] font-medium"
+                      style={{
+                        fontFamily: MONO_FONT,
+                        color: readinessReport.block.isAtBlockEnd ? '#f59e0b' : '#57534e',
+                      }}
+                    >
+                      {readinessReport.block.isAtBlockEnd
+                        ? 'Block complete - reassessment review'
+                        : readinessReport.block.weeksRemaining != null
+                          ? `${readinessReport.block.weeksRemaining} week${readinessReport.block.weeksRemaining === 1 ? '' : 's'} remaining`
+                          : ''}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* What is a CFFS */}
           <div className="border-l-2 border-[#14b8a6] bg-[#111110]/50 border border-[#1c1917] rounded-2xl p-5 mb-4">
