@@ -152,6 +152,8 @@ interface StateBank {
   tail: (floorName: string) => string
   objections: Array<{ trigger: string; response: string }>
   keyLines: string[]
+  /** Self-guided recommendations if they go Path A/B. */
+  recommendations: string[]
 }
 
 const TRANSITIONING_BANK: StateBank = {
@@ -204,6 +206,13 @@ const TRANSITIONING_BANK: StateBank = {
     '"Pull stress, the rest comes up."',
     '"You haven\'t been failing. You\'ve been doing the right things in the wrong sequence."',
     '"The scorecard isn\'t telling you something abstract. It\'s telling you what your body just did."',
+  ],
+  recommendations: [
+    'RPE 6-7 ceiling on training. No failure. No grind. Quality over volume.',
+    'Walk 7-10k steps daily. Underrated baseline for autonomic recovery.',
+    'Protein at every meal. 4x/day. Critical for a transitioning body.',
+    'Track sleep + energy + training quality weekly in a notes app. The pattern is the answer.',
+    'One recovery practice you can actually stick to. Sauna, cold, breathing, walking - pick one and do it 4x/wk.',
   ],
 }
 
@@ -258,6 +267,14 @@ const DEPLETED_BANK: StateBank = {
     '"You haven\'t been failing. You\'ve been doing the right things in the wrong sequence."',
     '"Bringing a body out of protection is the work. The result follows."',
   ],
+  recommendations: [
+    'Sleep first. 7-8 hours, lights out by 10pm, no screens after 9. Non-negotiable for this state.',
+    'Pull training back. Max 3 sessions/wk at RPE 5-6. No high intensity until your foundations come up.',
+    'Eat enough. 1g protein per pound of bodyweight, daily. Don\'t undereat - that deepens the depletion.',
+    'Caffeine before noon only. Late caffeine compounds the cortisol cycle.',
+    '10-minute walk after dinner. Blood sugar regulation + parasympathetic shift in one move.',
+    'One nervous system reset daily. 5 min belly breathing morning OR evening. Whichever fits.',
+  ],
 }
 
 const READY_BANK: StateBank = {
@@ -310,6 +327,14 @@ const READY_BANK: StateBank = {
     '"Generic programs work slowly on a Ready body. A precise one compounds."',
     '"You\'re not waiting for the system to come back online. You\'re already there."',
     '"The signal here comes through fast because there\'s nothing in the way."',
+  ],
+  recommendations: [
+    'Audit the prescription, not the body. Your foundation\'s intact - the issue is what you\'re running.',
+    'Periodise. New stimulus every 6-8 weeks. Don\'t do the same program for 6 months and expect it to keep producing.',
+    'Add what\'s missing. Most Ready bodies are missing zone 2, true high intensity, OR strength work - figure out which.',
+    'Track output across blocks. Plateau is data - what\'s the prescription telling you?',
+    'Get blood work. Confirms the biology read on paper.',
+    'Sleep doesn\'t get easier when you\'re Ready. Stay militant. 7-8 hours, locked in.',
   ],
 }
 
@@ -375,6 +400,15 @@ function buildFrustrationTell(approach?: AnswerLetter | null): string[] | null {
     'Treats backing-off as failure rather than data',
     'Talks about "grinding through" as a virtue',
   ]
+}
+
+/** Floor-specific top recommendation for Transitioning state. */
+const FLOOR_RECOMMENDATIONS: Record<SectionKey, string> = {
+  '01': 'Cut caffeine after 12pm. Protein within 1hr of waking. Anchor energy with food and timing, not stimulants.',
+  '02': 'Anchor wake time first. Same time every day, including weekends. Sleep length comes after consistency.',
+  '03': 'Identify your top 2 stressors and physically remove or reduce one. Even small. The body needs the load lower, not better managed.',
+  '04': 'Reduce volume by 25% for 2 weeks. Quality > volume. Training response comes back when the load matches recovery.',
+  '05': 'Audit total daily energy intake honestly across a week. Most stalled fat loss in this state is stress and recovery debt, not under-eating.',
 }
 
 function pathOrder(inv?: AnswerLetter | null): string[] {
@@ -684,6 +718,26 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('═══════════════════════════════════════════')
   lines.push('')
   bank.keyLines.forEach(k => lines.push(`• ${k}`))
+  lines.push('')
+  lines.push('')
+
+  // If they don't proceed — recommendations
+  lines.push('═══════════════════════════════════════════')
+  lines.push('IF THEY DON\'T PROCEED (Path A or B)')
+  lines.push('═══════════════════════════════════════════')
+  lines.push('')
+  lines.push(`If they walk out without signing, give them this. Practical takeaways tuned to their state and floor. Frame it as: these address symptoms - coaching reads which to pull first and adjusts as you go.`)
+  lines.push('')
+  lines.push(`For ${input.name}, ${stateShort} state, floor on ${floorName}:`)
+  lines.push('')
+  // For Transitioning, prepend a floor-specific top recommendation.
+  const recommendations = state === 'Transitioning State'
+    ? [FLOOR_RECOMMENDATIONS[floor], ...bank.recommendations]
+    : bank.recommendations
+  recommendations.forEach((r, i) => lines.push(`${i + 1}. ${r}`))
+  lines.push('')
+  lines.push('CLOSING LINE')
+  lines.push('"These will move the needle. Coaching\'s the layer that reads which one to pull first and adjusts as you go. If you ever want that, the door\'s open."')
   lines.push('')
 
   return lines.join('\n')

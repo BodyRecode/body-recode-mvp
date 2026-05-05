@@ -16,9 +16,11 @@ async function main() {
   const leads = await r.json() as any[]
   console.log('Found ' + leads.length + ' scored leads')
 
+  const FORCE = process.argv.includes('--force')
+  if (FORCE) console.log('FORCE mode: overwriting existing briefs')
   let generated = 0, skipped = 0, errors = 0
   for (const lead of leads) {
-    if (lead.pre_call_brief) {
+    if (lead.pre_call_brief && !FORCE) {
       skipped++
       continue
     }
