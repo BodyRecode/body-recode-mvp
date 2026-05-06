@@ -14,8 +14,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing file or client' }, { status: 400 })
   }
 
-  if (file.size > 10 * 1024 * 1024) {
-    return NextResponse.json({ error: 'File too large (max 10MB)' }, { status: 400 })
+  // Vercel's serverless body limit is 4.5MB. Anything over that is
+  // rejected by Vercel before this handler runs; this is a backstop.
+  if (file.size > 4 * 1024 * 1024) {
+    return NextResponse.json({ error: 'File too large (max 4MB)' }, { status: 413 })
   }
 
   const admin = createAdminClient()

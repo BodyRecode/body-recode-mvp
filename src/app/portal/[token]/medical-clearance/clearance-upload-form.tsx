@@ -2,19 +2,46 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 
 export default function ClearanceUploadForm({ clientId, portalToken: _portalToken }: { clientId: string; portalToken: string }) {
   const router = useRouter()
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [optimising, setOptimising] = useState(false)
   const [error, setError] = useState('')
   const [missingFile, setMissingFile] = useState(false)
+
+  async function handleFilePick(picked: File | null) {
+    if (!picked) { setFile(null); return }
+    setMissingFile(false)
+    setError('')
+    if (picked.type.startsWith('image/')) {
+      setOptimising(true)
+      try {
+        const compressed = await compressImage(picked)
+        setFile(compressed)
+      } finally {
+        setOptimising(false)
+      }
+    } else {
+      setFile(picked)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!file) {
       setMissingFile(true)
       setError('')
+      return
+    }
+    if (optimising) {
+      setError('Your file is still being optimised. Try again in a moment.')
+      return
+    }
+    if (file.size > MAX_UPLOAD_BYTES) {
+      setError(`This file is ${(file.size / 1024 / 1024).toFixed(1)} MB, which is too large to upload. PDFs need to be under 4 MB. If it is a scan, try saving it at a lower resolution or take a photo of the form instead.`)
       return
     }
     setMissingFile(false)
@@ -25,13 +52,24 @@ export default function ClearanceUploadForm({ clientId, portalToken: _portalToke
     formData.append('file', file)
     formData.append('clientId', clientId)
 
-    const res = await fetch('/api/portal/upload-clearance', {
-      method: 'POST',
-      body: formData,
-    })
+    let res: Response
+    try {
+      res = await fetch('/api/portal/upload-clearance', {
+        method: 'POST',
+        body: formData,
+      })
+    } catch {
+      setError('Could not reach the server. Check your connection and try again.')
+      setUploading(false)
+      return
+    }
 
     if (!res.ok) {
-      setError('Upload failed. Please try again.')
+      if (res.status === 413) {
+        setError('Your file is too large to upload. Try a smaller PDF or take a photo of the form instead.')
+      } else {
+        setError(`Upload failed (status ${res.status}). Please try again, or contact your coach if it keeps happening.`)
+      }
       setUploading(false)
       return
     }
@@ -60,13 +98,18 @@ export default function ClearanceUploadForm({ clientId, portalToken: _portalToke
           <input
             type="file"
             accept="image/*,.pdf"
-            onChange={e => { setFile(e.target.files?.[0] ?? null); setMissingFile(false) }}
+            onChange={e => handleFilePick(e.target.files?.[0] ?? null)}
             className="hidden"
           />
-          {file ? (
+          {optimising ? (
+            <div className="flex items-center gap-3 px-4">
+              <div className="w-5 h-5 border-2 border-[#14b8a6] border-t-transparent rounded-full animate-spin" />
+              <span className="text-[#a8a29e] text-sm">Optimising photo...</span>
+            </div>
+          ) : file ? (
             <div className="text-center px-4">
               <p className="text-sm font-semibold text-[#14b8a6] mb-1">{file.name}</p>
-              <p className="text-xs text-[#57534e]">{(file.size / 1024 / 1024).toFixed(1)} MB · tap to change</p>
+              <p className="text-xs text-[#57534e]">{(file.size / 1024 / 1024).toFixed(2)} MB · tap to change</p>
             </div>
           ) : (
             <div className="text-center px-4">
@@ -74,7 +117,7 @@ export default function ClearanceUploadForm({ clientId, portalToken: _portalToke
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
               </svg>
               <p className={`text-sm ${missingFile ? 'text-red-400' : 'text-[#a8a29e]'}`}>Tap to upload photo or PDF</p>
-              <p className="text-xs text-[#3c3835] mt-1">JPG, PNG or PDF, max 10MB</p>
+              <p className="text-xs text-[#3c3835] mt-1">Photos are optimised automatically. PDFs must be under 4 MB.</p>
             </div>
           )}
         </label>
