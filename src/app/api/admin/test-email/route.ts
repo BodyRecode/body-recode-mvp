@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { buildReportEmail } from '@/lib/generate-report'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
 
 const SAMPLE_ANSWERS: Record<string, number> = {
   effort_vs_result: 2,
@@ -78,6 +79,28 @@ export async function POST(request: NextRequest) {
       html: combined,
     })
 
+    if (result.error) {
+      return NextResponse.json({ error: result.error }, { status: 500 })
+    }
+    return NextResponse.json({ sent: true, id: result.data?.id })
+  }
+
+  if (type === 'portal-orientation') {
+    // Test sends always reference production assets so images render in
+    // real email clients regardless of local NEXT_PUBLIC_APP_URL.
+    const previousAppUrl = process.env.NEXT_PUBLIC_APP_URL
+    process.env.NEXT_PUBLIC_APP_URL = 'https://app.bodyrecode.au'
+    const { subject, html } = buildPortalOrientationEmail({
+      firstName: 'Kade',
+      portalUrl: 'https://app.bodyrecode.au/portal/test-token',
+    })
+    process.env.NEXT_PUBLIC_APP_URL = previousAppUrl
+    const result = await resend.emails.send({
+      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      to: 'kade@bodyrecode.au',
+      subject: `[TEST] ${subject}`,
+      html,
+    })
     if (result.error) {
       return NextResponse.json({ error: result.error }, { status: 500 })
     }

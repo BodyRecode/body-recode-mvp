@@ -1,8 +1,29 @@
 import { darkEmailSignature } from './email-signature'
+import fs from 'node:fs'
+import path from 'node:path'
 
 export interface PortalOrientationEmailParams {
   firstName: string
   portalUrl: string
+}
+
+/**
+ * Inlines a public/email-assets/*.png as a base64 data URI so the email
+ * doesn't rely on remote image fetching. Bulletproof across every email
+ * client: no "show images" prompts, no domain reputation issues, no CSP
+ * blocks. Cost is ~170KB across the three mockups, well within email
+ * body limits.
+ */
+function inlinePng(slug: string): string {
+  try {
+    const file = path.join(process.cwd(), 'public', 'email-assets', `${slug}.png`)
+    const buf = fs.readFileSync(file)
+    return `data:image/png;base64,${buf.toString('base64')}`
+  } catch (e) {
+    console.error(`[portal-orientation-email] could not inline ${slug}:`, e)
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    return `${baseUrl}/email-assets/${slug}.png`
+  }
 }
 
 /**
@@ -24,9 +45,9 @@ export function buildPortalOrientationEmail({
 }: PortalOrientationEmailParams): { subject: string; html: string } {
   const subject = `${firstName}, your coaching portal is set up`
 
-  // Public asset URLs. The email client fetches these from production.
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
-  const img = (slug: string) => `${baseUrl}/email-assets/${slug}.png`
+  // Inline images as base64 data URIs so they render in every email
+  // client without remote-fetch dependencies.
+  const img = (slug: string) => inlinePng(slug)
 
   const html = `<!DOCTYPE html>
 <html>
