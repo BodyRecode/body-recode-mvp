@@ -213,7 +213,7 @@ interface StateBank {
   mechanismBullets: (floorName: string) => string[]
   watchListIntro: string
   watchList: string[]
-  readbackLeadWith: (floorName: string, score: number) => string
+  readbackLeadWith: (floorName: string, score: number, scores: SectionScores) => string
   readbackThen: (score: number) => string
   callbacks: string[]
   threeXNote: string
@@ -285,6 +285,64 @@ const TRANSITIONING_BANK: StateBank = {
   ],
 }
 
+/**
+ * Depleted lead-with line, built from the lead's actual section scores
+ * rather than the canonical "all 3 foundations at the floor" phrasing.
+ *
+ * Why: the static line claimed "Recovery, energy, stress are at the floor"
+ * even when the lead's energy was 2/3, which read as inaccurate when the
+ * coach delivered it verbatim in the room.
+ */
+function buildDepletedLeadWith(scores: SectionScores): string {
+  const NAME: Record<SectionKey, string> = {
+    '01': 'energy', '02': 'sleep', '03': 'stress',
+    '04': 'training response', '05': 'fat loss',
+  }
+  const foundationKeys: SectionKey[] = ['02', '01', '03']
+  const outcomeKeys: SectionKey[] = ['04', '05']
+
+  const foundationsAtFloor = foundationKeys.filter(k => scores[k] === 1)
+  const outcomesAtFloor = outcomeKeys.filter(k => scores[k] === 1)
+  const aboveFoundations = foundationKeys.filter(k => scores[k] != null && (scores[k] as number) > 1)
+
+  const list = (keys: SectionKey[]): string => {
+    if (keys.length === 0) return ''
+    if (keys.length === 1) return NAME[keys[0]]
+    if (keys.length === 2) return `${NAME[keys[0]]} and ${NAME[keys[1]]}`
+    return `${keys.slice(0, -1).map(k => NAME[k]).join(', ')}, and ${NAME[keys[keys.length - 1]]}`
+  }
+  const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
+  const fVerb = foundationsAtFloor.length === 1 ? 'is' : 'are'
+  const oVerb = outcomesAtFloor.length === 1 ? 'is' : 'are'
+  const aVerb = aboveFoundations.length === 1 ? 'is' : 'are'
+
+  // Every section at the floor.
+  if (foundationsAtFloor.length === 3 && outcomesAtFloor.length === 2) {
+    return 'Every section is at the floor. Sleep, energy, stress, training response, fat loss, all at one. There is nothing left in the system to allocate. That is depletion at its most acute.'
+  }
+  // Classic Depleted - all foundations at 1, outcomes higher (kept as the
+  // canonical script Kade has drilled).
+  if (foundationsAtFloor.length === 3 && outcomesAtFloor.length === 0) {
+    return 'Three of your foundations are at the floor. Recovery, energy, stress. Your training and fat loss numbers are actually higher than your foundation numbers - that tells me you have been putting effort in.'
+  }
+  // Mixed: some foundations at the floor and outcomes also at the floor.
+  if (foundationsAtFloor.length > 0 && outcomesAtFloor.length > 0) {
+    if (aboveFoundations.length > 0) {
+      return `${cap(list(foundationsAtFloor))} ${fVerb} at the floor. So ${oVerb} ${list(outcomesAtFloor)}. ${cap(list(aboveFoundations))} ${aVerb} the only thing keeping the picture from being completely flat. And at this load, that does not last long.`
+    }
+    return `${cap(list(foundationsAtFloor))} ${fVerb} at the floor, and so ${oVerb} ${list(outcomesAtFloor)}. The body is in protection mode and the response to effort has stopped coming through.`
+  }
+  // Foundations at the floor, outcomes still above.
+  if (foundationsAtFloor.length > 0) {
+    return `${cap(list(foundationsAtFloor))} ${fVerb} at the floor. Your training and fat loss are higher, but holding that up against this much foundation load is the loop that put the body here.`
+  }
+  // Outcomes at the floor, foundations holding (unusual for Depleted, but safe).
+  if (outcomesAtFloor.length > 0) {
+    return `${cap(list(outcomesAtFloor))} ${oVerb} at the floor. Foundations are holding, but the response to effort has stopped coming through. The depletion is showing up downstream first.`
+  }
+  return 'Body in protection mode. Pushing harder against this makes it tighter, not looser.'
+}
+
 const DEPLETED_BANK: StateBank = {
   patternIntro: () =>
     'The foundations of recovery - sleep, energy, stress - are all sitting at the floor. Your training and fat loss numbers being higher tells me you\'ve been putting effort in. The reason it isn\'t producing isn\'t effort.',
@@ -302,8 +360,7 @@ const DEPLETED_BANK: StateBank = {
     'Pushing for more weight when the body is signalling stop',
     'Resistance to the "this is deliberate" framing',
   ],
-  readbackLeadWith: () =>
-    'Three of your foundations are at the floor. Recovery, energy, stress. Your training and fat loss numbers are actually higher than your foundation numbers - that tells me you\'ve been putting effort in.',
+  readbackLeadWith: (_floor, _score, scores) => buildDepletedLeadWith(scores),
   readbackThen: (score) =>
     `Body Recode language for this is Depleted State. ${score}/15. Body in protection mode. Pushing harder against this makes it tighter.`,
   callbacks: [
@@ -709,7 +766,7 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('═══════════════════════════════════════════')
   lines.push('')
   lines.push('LEAD WITH')
-  lines.push(`"${bank.readbackLeadWith(floorName, input.scorecard_score)}"`)
+  lines.push(`"${bank.readbackLeadWith(floorName, input.scorecard_score, scores)}"`)
   lines.push('')
   lines.push(`MECHANISM - at this level of ${floorName.toLowerCase()}:`)
   bank.mechanismBullets(floorName).forEach(b => lines.push(`• ${b}`))
