@@ -11,7 +11,7 @@ type SectionKey = '01' | '02' | '03' | '04' | '05'
 type SectionScores = Partial<Record<SectionKey, number>>
 type Quality = 'green' | 'yellow' | 'red'
 type StateName = 'Depleted State' | 'Transitioning State' | 'Ready State'
-type Profile = 'Stress-Stored' | 'Metabolic-Drift' | 'Hormonal-Shift' | 'System-Overload'
+type Profile = 'Stress-Stored' | 'Metabolic-Drift' | 'Hormonal-Shift' | 'System-Overload' | 'Indeterminate'
 type AnswerLetter = 'A' | 'B' | 'C' | 'D'
 
 export interface LeadBriefInput {
@@ -116,7 +116,8 @@ function pickFloor(scores: SectionScores): SectionKey | null {
  */
 function pickProfile(
   scores: SectionScores,
-  floor: SectionKey | null
+  floor: SectionKey | null,
+  state: StateName
 ): { profile: Profile; confidence: 'high' | 'low' } {
   const stress = scores['03']
   const sleep = scores['02']
@@ -124,20 +125,21 @@ function pickProfile(
   const training = scores['04']
   const fatLoss = scores['05']
 
-  // Without at least one section at 1, the discrimination isn't strong.
-  // Pick a soft profile from the floor and mark it provisional.
+  // Ready State by definition means foundations are intact - the Fat Map
+  // profiles describe compensation patterns, which Ready bodies don't have.
+  // Only assign a profile if there's a clear contradicting signal.
+  if (state === 'Ready State') {
+    if (stress === 1) return { profile: 'Stress-Stored', confidence: 'low' }
+    return { profile: 'Indeterminate', confidence: 'high' }
+  }
+
+  // Without at least one section at 1, the scorecard isn't pointing at any
+  // single Fat Map profile. Don't force a guess - mark as Indeterminate.
   const present = Object.values(scores).filter(v => v != null) as number[]
   const hasFloorAtOne = present.some(v => v === 1)
 
   if (!hasFloorAtOne) {
-    switch (floor) {
-      case '03': return { profile: 'Stress-Stored', confidence: 'low' }
-      case '02':
-      case '01': return { profile: 'System-Overload', confidence: 'low' }
-      case '04': return { profile: 'Hormonal-Shift', confidence: 'low' }
-      case '05': return { profile: 'Metabolic-Drift', confidence: 'low' }
-      default:   return { profile: 'Stress-Stored', confidence: 'low' }
-    }
+    return { profile: 'Indeterminate', confidence: 'high' }
   }
 
   // From here we have at least one section at 1 — the pattern is real.
@@ -174,6 +176,7 @@ function pickProfile(
   }
 
   // 5. Floor-based soft fallback when the patterns above don't quite fit.
+  //    Confidence stays low here - the data alone isn't definitive.
   switch (floor) {
     case '03': return { profile: 'Stress-Stored', confidence: 'low' }
     case '02':
@@ -182,7 +185,7 @@ function pickProfile(
     case '05': return { profile: 'Metabolic-Drift', confidence: 'low' }
   }
 
-  return { profile: 'Stress-Stored', confidence: 'low' }
+  return { profile: 'Indeterminate', confidence: 'high' }
 }
 
 const PROFILE_DRIVERS: Record<Profile, string> = {
@@ -190,6 +193,7 @@ const PROFILE_DRIVERS: Record<Profile, string> = {
   'Metabolic-Drift': 'digestion/insulin-driven',
   'Hormonal-Shift': 'long-term hormonal',
   'System-Overload': 'nervous-system-driven',
+  'Indeterminate': 'TBD on intake',
 }
 
 const PROFILE_DESCRIPTORS: Record<Profile, string> = {
@@ -197,6 +201,7 @@ const PROFILE_DESCRIPTORS: Record<Profile, string> = {
   'Metabolic-Drift': 'Effort going in but the metabolism is mistiming the response.',
   'Hormonal-Shift': 'Pattern building over time. Slow to shift, but moves once the read is right.',
   'System-Overload': 'Output going up but the nervous system never settles. Drives the rest.',
+  'Indeterminate': 'Scorecard alone doesn\'t cleanly point at one of the four. The intake will tell us which.',
 }
 
 // =============================================================
@@ -427,6 +432,8 @@ function buildCriticalHold(input: LeadBriefInput, profile: Profile): string[] {
     holds.push('Will push to change the program when frustrated. Don\'t. The frustration IS the pattern showing up live.')
   } else if (approach === 'C') {
     holds.push('Will want to push harder when output drops. Don\'t let her. Pushing harder is what put the body here.')
+  } else if (profile === 'Indeterminate') {
+    holds.push('No single Fat Map signal in the scorecard. Hold the read open - intake decides which profile applies. Don\'t pre-commit to one in the room.')
   } else {
     holds.push(`${profile} profile - hold the read steady. Don\'t let her pull you off it just because you don\'t have all the data yet.`)
   }
@@ -525,7 +532,8 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   const scores = input.scorecard_section_scores ?? {}
   const floor = pickFloor(scores)
   const floorName = floor ? SECTIONS[floor].name : 'Unclear (no section scores recorded)'
-  const { profile, confidence: profileConfidence } = pickProfile(scores, floor)
+  const { profile, confidence: profileConfidence } = pickProfile(scores, floor, state)
+  const isIndeterminate = profile === 'Indeterminate'
   const driver = PROFILE_DRIVERS[profile]
   const profileDescriptor = PROFILE_DESCRIPTORS[profile]
 
@@ -575,10 +583,17 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('AT A GLANCE')
   lines.push('═══════════════════════════════════════════')
   lines.push('')
-  const profileSuffix = profileConfidence === 'low'
-    ? ' [provisional — confirm on intake]'
-    : ''
-  lines.push(`${input.scorecard_score}/15 ${stateShort}. Profile: ${profile} (${driver})${profileSuffix}.`)
+  if (isIndeterminate) {
+    const reason = state === 'Ready State'
+      ? 'Ready foundations — Fat Map profile typically doesn\'t apply'
+      : 'No single signal at the floor — no clear Fat Map profile yet'
+    lines.push(`${input.scorecard_score}/15 ${stateShort}. Profile: TBD on intake (${reason}).`)
+  } else {
+    const profileSuffix = profileConfidence === 'low'
+      ? ' [provisional — confirm on intake]'
+      : ''
+    lines.push(`${input.scorecard_score}/15 ${stateShort}. Profile: ${profile} (${driver})${profileSuffix}.`)
+  }
   const SECTION_INLINE_LABELS: Record<SectionKey, string> = {
     '01': 'Energy', '02': 'Sleep', '03': 'Stress', '04': 'Training', '05': 'Fat Loss',
   }
@@ -703,7 +718,11 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   bank.callbacks.forEach(c => lines.push(`• ${c}`))
   lines.push('')
   lines.push('THEN')
-  lines.push(`"${bank.readbackThen(input.scorecard_score)} Yours is ${profile.toLowerCase().replace('-', ' ')}-driven specifically."`)
+  if (isIndeterminate) {
+    lines.push(`"${bank.readbackThen(input.scorecard_score)}"`)
+  } else {
+    lines.push(`"${bank.readbackThen(input.scorecard_score)} Yours is ${profile.toLowerCase().replace('-', ' ')}-driven specifically."`)
+  }
   lines.push('')
   lines.push('ASK: "What was your reaction when you saw the result?"')
   lines.push('')
@@ -733,7 +752,11 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('• 208-question intake → CFFS (Foundational Synthesis). From you, not a template.')
   lines.push('• Fat Map - 4 zones where load shows up:')
   fatMapZones.forEach(z => lines.push(z))
-  lines.push(`• 4 profiles - yours is ${profile}. ${profileDescriptor}`)
+  if (isIndeterminate) {
+    lines.push('• 4 profiles - yours is sorted on the intake. The scorecard alone doesn\'t lock it.')
+  } else {
+    lines.push(`• 4 profiles - yours is ${profile}. ${profileDescriptor}`)
+  }
   lines.push('• Portal - training, nutrition, weekly check-ins, all driven by your read.')
   lines.push('• Weekly CFWS - I read your response, adjust next week. Continuous loop, not static.')
   lines.push('')

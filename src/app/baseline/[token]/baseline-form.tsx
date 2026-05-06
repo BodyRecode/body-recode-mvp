@@ -4,6 +4,32 @@ import { useState } from 'react'
 import ClientHeader from '@/components/client-header'
 import { useFormDraft } from '@/lib/use-form-draft'
 
+// Resize and re-encode the image client-side so we stay under Vercel's
+// 4.5MB serverless body limit. Modern phones produce 5-15MB photos.
+async function compressImage(file: File, maxDim = 1600, quality = 0.82): Promise<File> {
+  if (!file.type.startsWith('image/')) return file
+  try {
+    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' })
+    const { width, height } = bitmap
+    const scale = Math.min(1, maxDim / Math.max(width, height))
+    const targetW = Math.max(1, Math.round(width * scale))
+    const targetH = Math.max(1, Math.round(height * scale))
+    const canvas = document.createElement('canvas')
+    canvas.width = targetW
+    canvas.height = targetH
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return file
+    ctx.drawImage(bitmap, 0, 0, targetW, targetH)
+    bitmap.close?.()
+    const blob: Blob | null = await new Promise(res => canvas.toBlob(res, 'image/jpeg', quality))
+    if (!blob || blob.size >= file.size) return file
+    const baseName = file.name.replace(/\.[^.]+$/, '') || 'photo'
+    return new File([blob], `${baseName}.jpg`, { type: 'image/jpeg', lastModified: Date.now() })
+  } catch {
+    return file
+  }
+}
+
 interface Props {
   clientId: string
   clientName: string
@@ -50,6 +76,19 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
   const [photoFront, setPhotoFront] = useState<File | null>(null)
   const [photoSide, setPhotoSide] = useState<File | null>(null)
   const [photoBack, setPhotoBack] = useState<File | null>(null)
+  const [processing, setProcessing] = useState<Set<string>>(new Set())
+
+  async function handlePhotoPick(id: string, file: File | null, set: (f: File | null) => void) {
+    if (!file) { set(null); return }
+    setProcessing(prev => new Set(prev).add(id))
+    try {
+      const compressed = await compressImage(file)
+      set(compressed)
+      clearMissing(id)
+    } finally {
+      setProcessing(prev => { const next = new Set(prev); next.delete(id); return next })
+    }
+  }
 
   // Validation flags for each missed field
   const [missing, setMissing] = useState<Set<string>>(new Set())
