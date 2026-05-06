@@ -33,7 +33,7 @@ export function getLeadStatusLabel(status: string) {
     closed_no_show: 'Closed — No Show',
     closed_declined: 'Closed — Declined',
     commencement_fee_paid: 'Commencement Fee Paid',
-    active_deliberate_start: 'Deliberate Start',
+    active_deliberate_start: 'Pre-Start',
     active_coaching: 'Active Coaching',
   }
   return labels[status] ?? status

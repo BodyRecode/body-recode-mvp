@@ -13,7 +13,8 @@ const SECTIONS = [
   { id: 'zoom-1',           title: '2. Zoom Companion',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'coaching-entry',   title: '3. Coaching Entry',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'post-conversion',  title: '6. Post-Conversion',     colour: 'teal' as const, category: 'coaching' as Category },
-  { id: 'deliberate-start', title: '7. Deliberate Start',    colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'pre-start',        title: '7. Pre-Start Window',         colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'deliberate-start', title: '7b. Deliberate Start (IEEP)', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'client-portal',    title: '8. Client Portal',       colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'client-onboarding',title: '9. Client Onboarding',   colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'cffs',                  title: '10. CFFS',                  colour: 'teal' as const, category: 'coaching' as Category },
@@ -360,7 +361,7 @@ export default function HelpPage() {
               { label: 'Closed - No Show', desc: 'Lead did not attend. Re-engagement sequence available.' },
               { label: 'Closed - Declined', desc: 'Lead decided not to proceed.' },
               { label: 'Commencement Fee Paid', desc: 'Payment received. Client profile created automatically.' },
-              { label: 'Active - Deliberate Start', desc: 'In the 3-7 day window before coaching begins.' },
+              { label: 'Active - Pre-Start', desc: 'In the 3-7 day window between commencement fee paid and the coaching start date. Distinct from the Deliberate Start (IEEP) which is the locked 2-week phase after coaching has begun.' },
               { label: 'Active Coaching', desc: 'Coaching underway.' },
             ]} />
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Body State Scorecard on Lead Detail</p>
@@ -545,11 +546,13 @@ export default function HelpPage() {
             </Training>
           </Section>
 
-          <Section id="deliberate-start" title="7. Deliberate Start Window" colour="teal">
+          <Section id="pre-start" title="7. Pre-Start Window" colour="teal">
             <p>After conversion, set the <strong>Coaching Start Date</strong> on the client profile. This is the date coaching officially begins - typically 3-7 days after the commencement fee is paid.</p>
+            <p>This 3-7 day gap is the Pre-Start Window. It is distinct from the doctrinal <strong>Deliberate Start (IEEP)</strong> which is the locked 2-week phase that begins once the program is generated. See section 7b.</p>
             <p>Until the start date:</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li>The client dashboard shows a <strong>Starts in Xd</strong> badge.</li>
+              <li>The lead status is <strong>Active - Pre-Start</strong>.</li>
               <li>The client gets a reminder email the day before coaching begins.</li>
             </ul>
             <p>The start date is also used to calculate the client&apos;s week number for check-ins and CFWS generation.</p>
@@ -557,6 +560,40 @@ export default function HelpPage() {
               <p>The 3-7 day window is not admin lag. It is intentional. The client needs psychological preparation time - a moment between deciding to do something and actually doing it. Starting immediately after payment can feel reactive. Starting after a deliberate lead-in period signals that this is a structured process, not an impulse.</p>
               <p className="mt-2">The window also gives the client time to complete their intake before coaching begins. The CFFS informs your first week of coaching. If the intake isn&apos;t done yet, don&apos;t set the start date.</p>
             </Training>
+          </Section>
+
+          {/* Section 7b - the doctrinal Deliberate Start Window / IEEP */}
+          <Section id="deliberate-start" title="7b. Deliberate Start Window (IEEP)" colour="teal">
+            <p>The <strong>Deliberate Start Window</strong> is the operational name for the doctrinal <strong>Initial Execution &amp; Exposure Phase (IEEP)</strong>. It is a fixed two-week period that begins once the client&apos;s initial program has been generated and ends when weekly Performance Coaching cadence takes over.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Duration</p>
+            <p>Locked at <strong>two weeks, non-negotiable per doctrine</strong>. The IEEP duration cannot be shortened or extended.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">What happens during the window</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>Client executes the initial program</li>
+              <li>Coach observes informally</li>
+              <li>Form A (Experience-Forward) completed at the end of week 1</li>
+              <li>Form B (Pattern-Aware) completed at the end of week 2</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">What does NOT happen during the window</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>CFWS generation - even if both forms are submitted, no synthesis runs until IEEP completes</li>
+              <li>PCEP evaluation</li>
+              <li>Weekly execution gating</li>
+              <li>Load optimisation or progression decisions</li>
+              <li>Reassessment triggering</li>
+            </ul>
+
+            <p>Data collected during IEEP is used solely for accumulation and calibration. It feeds the first proper CFWS that runs once the window closes.</p>
+
+            <Training title="Why two weeks, locked">
+              <p>One week of execution data is not enough to detect patterns. Two weeks gives a Form A and a Form B pair which is the minimum for the CFWS engine to operate on. Less than that and we are reading noise. The lock prevents well-meaning shortcuts that would compromise the calibration.</p>
+              <p className="mt-2">The IEEP also serves a behavioural function. The client gets to feel what the program demands without weekly coaching feedback layered on top. They build their own relationship with the work before we start interpreting it together.</p>
+            </Training>
+
+            <Note>The Pre-Start Window (section 7) is the 3-7 day gap before coaching begins. The Deliberate Start Window / IEEP is the 2-week phase after coaching begins. Two distinct things, sometimes conflated. Use the doctrinal name when speaking with clients.</Note>
           </Section>
 
           {/* Section 7 */}
@@ -809,7 +846,7 @@ export default function HelpPage() {
               <li><strong>Body state badge</strong> - From the latest CFFS.</li>
               <li><strong>Upgrade badge</strong> - Teal badge shown on any 2x client at Week 8+. Indicates they are eligible for the upgrade conversation. A banner also appears at the top of the clients list when one or more clients are eligible.</li>
             </ul>
-            <p>Clients in the Deliberate Start Window show a <strong>Starts in Xd</strong> amber badge instead.</p>
+            <p>Clients in the Pre-Start Window (before their coaching start date) show a <strong>Starts in Xd</strong> amber badge instead.</p>
             <Training title="How to read the clients dashboard">
               <p>The dashboard is designed to tell you who needs attention this week without clicking into every profile. The readiness dots are your triage layer. If a client has any amber or red dots, open their profile before their session.</p>
               <p className="mt-2">A grey A or B check-in badge mid-week is normal - the window may still be open. A grey badge on Monday means they didn&apos;t submit. That is worth a check-in message, not just a note.</p>
