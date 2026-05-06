@@ -337,11 +337,18 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
-        {/* Weekly check-in task */}
+        {/* Weekly check-in task. Gated on active program existence per
+            13_FEATURE_REGISTRY.md "Weekly check-in program gate". The check-in
+            evaluates training response, so it only opens once a program exists. */}
         {allOnboardingDone && client.coaching_started_at && (
           <div className="mb-10">
             <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">This week</p></div>
-            {checkinDoneThisWeek ? (
+            {!activeProgram ? (
+              <div className="rounded-2xl border border-[#1c1917] bg-[#111110] p-5">
+                <p className="text-sm font-semibold text-white mb-1">Your program is being built</p>
+                <p className="text-xs text-[#a8a29e] leading-relaxed">Weekly check-ins begin once your training program is in place. Your coach is reviewing your intake and baseline now. We will let you know the moment your program is ready.</p>
+              </div>
+            ) : checkinDoneThisWeek ? (
               <div className="rounded-2xl border border-[#14b8a6]/20 bg-[#14b8a6]/5 p-5">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-5 h-5 rounded-full bg-[#14b8a6] flex items-center justify-center flex-shrink-0">

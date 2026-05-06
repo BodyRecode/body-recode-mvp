@@ -15,6 +15,31 @@ export default async function PortalCheckinPage({ params }: { params: Promise<{ 
 
   if (!client) return notFound()
 
+  // Gate per 13_FEATURE_REGISTRY.md "Weekly check-in program gate".
+  // The check-in evaluates training response, so requires an active program.
+  const { data: activeProgram } = await admin
+    .from('programs')
+    .select('id')
+    .eq('client_id', client.id)
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (!activeProgram) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+        <div className="text-center max-w-sm">
+          <p className="text-xs font-bold tracking-widest text-[#14b8a6] uppercase mb-6">
+            <a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-[#14b8a6] uppercase">Body Recode™</a>
+          </p>
+          <h1 className="text-xl font-semibold text-white mb-2">Your program is being built</h1>
+          <p className="text-[#57534e] text-sm mb-4">Weekly check-ins begin once your training program is in place. Your coach is reviewing your intake and baseline now.</p>
+          <p className="text-[#3c3835] text-xs mb-8">We will let you know the moment your program is ready.</p>
+          <a href={`/portal/${token}`} className="text-xs font-semibold text-[#14b8a6] hover:text-[#5eead4] transition-colors">← Back to portal</a>
+        </div>
+      </div>
+    )
+  }
+
   const window = getCheckInWindowStatus()
   const testMode = process.env.CHECKIN_TEST_MODE?.trim().toLowerCase() === 'true'
 
