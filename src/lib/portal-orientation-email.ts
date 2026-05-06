@@ -69,7 +69,7 @@ export function buildPortalOrientationEmail({
                 ${escapeHtml(firstName)}, your coaching portal is set up.
               </p>
 
-              <p style="margin:0 0 16px;">Your baseline has been received. While I build your program over the next few days, you have time to get to know your portal. This is going to be your home base for everything from here.</p>
+              <p style="margin:0 0 16px;">While I build your program over the next few days, take some time to get to know your portal. This is going to be your home base for everything from here.</p>
               <p style="margin:0 0 24px;">Here is what is in it.</p>
 
               <!-- Section 1: Portal landing -->

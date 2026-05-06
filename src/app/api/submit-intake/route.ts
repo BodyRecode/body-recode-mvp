@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
+import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
+import { logClientCommunication } from '@/lib/client-communications'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFFSSystemPrompt, buildCFFSUserPrompt } from '@/lib/cffs-prompt'
 
@@ -100,11 +102,13 @@ export async function POST(request: NextRequest) {
     .update({ status: 'complete', completed_at: new Date().toISOString() })
     .eq('id', invitation.id)
 
-  // Notify coach
+  // Notify coach + send Portal Orientation to the client
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const clientName = intake.full_name || 'A client'
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+
+    // Notify Kade
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
@@ -112,12 +116,44 @@ export async function POST(request: NextRequest) {
       html: buildCoachNotificationEmail({
         eyebrow: 'Foundational Intake',
         heading: `${clientName} submitted their intake`,
-        body: `${clientName} has completed and submitted all 208 questions of their foundational intake. CFFS generation is underway and will surface in the client profile within a minute or two. Once it lands you can also generate the client-facing Foundational Reading from the same panel.`,
+        body: `${clientName} has completed and submitted all 208 questions of their foundational intake. CFFS generation is underway and will surface in the client profile within a minute or two. Once it lands you can also generate the client-facing Foundational Reading from the same panel. The Portal Orientation email has been sent to them automatically so they can read through the portal while you build their program.`,
         ctaLabel: 'Open client profile',
         ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
         footnote: 'Their next portal task (Baseline Documentation) is now unlocked.',
       }),
     })
+
+    // Send Portal Orientation to the client (auto-fires here so the client
+    // has time to read through the portal while baseline is still being
+    // completed and the program is being built).
+    const { data: clientRow } = await admin
+      .from('clients')
+      .select('email, name, onboarding_token')
+      .eq('id', invitation.client_id)
+      .maybeSingle()
+
+    if (clientRow?.email && clientRow.onboarding_token) {
+      const firstName = clientRow.name?.split(' ')[0] ?? 'there'
+      const portalUrl = `${baseUrl}/portal/${clientRow.onboarding_token}`
+      const { subject, html } = buildPortalOrientationEmail({ firstName, portalUrl })
+      try {
+        await resend.emails.send({
+          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          to: clientRow.email,
+          subject,
+          html,
+        })
+        await logClientCommunication(admin, {
+          clientId: invitation.client_id,
+          kind: 'portal_orientation',
+          subject,
+          toAddress: clientRow.email,
+          meta: { trigger: 'intake_submission' },
+        })
+      } catch (e) {
+        console.error('Portal orientation email failed:', e)
+      }
+    }
   } catch (e) {
     console.error('Notification email failed:', e)
   }
