@@ -94,7 +94,7 @@ async function sendNotifications(
   const resend = new Resend(process.env.RESEND_API_KEY)
   const firstName = client.name.split(' ')[0]
   const clientUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/clients/${client.id}`
-  const formLabel = formType === 'A' ? 'Form A: Training, load, and recovery' : 'Form B: Regulation, lifestyle, and context'
+  const formLabel = formType === 'A' ? 'Form A (Experience-Forward)' : 'Form B (Pattern-Aware)'
 
   // Notify Kade
   await resend.emails.send({

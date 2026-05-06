@@ -23,7 +23,7 @@ const TERMS: Array<{ term: string; def: string }> = [
   },
   {
     term: 'Form A and Form B',
-    def: 'The two weekly check-in forms. Form A is experience-forward (how the week felt). Form B is pattern-aware (what specifically happened). Both together give your coach a complete picture of your week.',
+    def: 'The two weekly check-in forms. Form A is experience-forward (how the week felt and what stood out). Form B is pattern-aware (what recurred and what felt heavier than expected). Both together give your coach a complete picture of your week.',
   },
   {
     term: 'Exposure Readiness',
