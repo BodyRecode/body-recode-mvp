@@ -36,7 +36,7 @@ ADAPTATION ARCS:
 BODY STATE CLASSIFICATIONS:
 - Remediation: regulatory system under stress, needs stabilisation before any escalation
 - Optimisation: system stable enough to build and progress
-- Post-Optimisation / Performance Identity: long-arc performance phase, system resilient
+- Post-Optimisation: long-arc performance phase, system resilient
 
 OUTPUT REQUIREMENTS:
 You must produce all 7 sections. Language must be:

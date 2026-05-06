@@ -74,7 +74,7 @@ Return ONLY valid JSON. No prose before or after. The JSON must have exactly the
 SECTION SPECIFICATIONS:
 
 cr_where_you_are (3-5 sentences):
-  Open with the body state classification (Remediation, Optimisation, or Performance Identity), translated for the client. Explain in plain language what that state means physiologically and what it implies about how their body is currently allocating resources. Validate that this is a coherent state, not a failure.
+  Open with the body state classification (Remediation, Optimisation, or Post-Optimisation), translated for the client. Explain in plain language what that state means physiologically and what it implies about how their body is currently allocating resources. Validate that this is a coherent state, not a failure.
 
 cr_what_your_body_is_telling_us (4-7 sentences):
   Surface the dominant patterns the engine identified, written so the client recognises themselves in it. Reference patterns across multiple intake domains (energy, recovery, sleep, stress, training response, etc.) without naming the domains explicitly. Use phrases like "what stands out", "what we are seeing", "the picture that emerges". Avoid listing.

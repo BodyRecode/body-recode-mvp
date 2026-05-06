@@ -7,7 +7,7 @@ import ClientHeader from '@/components/client-header'
 const TERMS: Array<{ term: string; def: string }> = [
   {
     term: 'Body State',
-    def: 'A descriptive label for what your body is currently doing across recovery, regulation, and adaptation. The three states we work with are Remediation (system under stress, needs stabilising before we push), Optimisation (system stable enough to build and progress), and Performance Identity (long-arc performance phase, system resilient).',
+    def: 'A descriptive label for what your body is currently doing across recovery, regulation, and adaptation. The three states we work with are Remediation (system under stress, needs stabilising before we push), Optimisation (system stable enough to build and progress), and Post-Optimisation (long-arc performance phase, system resilient).',
   },
   {
     term: 'CFFS - Coach-Facing Foundational Synthesis',
