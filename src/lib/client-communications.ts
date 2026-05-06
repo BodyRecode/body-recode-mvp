@@ -8,6 +8,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 export type ClientCommunicationKind =
   | 'subscription_link'
   | 'portal_access'
+  | 'portal_orientation'
   | 'intake_invite'
   | 'portal_login_code'
   | 'medical_clearance_approved'
@@ -20,6 +21,7 @@ export type ClientCommunicationKind =
 export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> = {
   subscription_link: 'Subscription link',
   portal_access: 'Portal access',
+  portal_orientation: 'Portal orientation',
   intake_invite: 'Intake invitation',
   portal_login_code: 'Portal login code',
   medical_clearance_approved: 'Medical clearance approved',

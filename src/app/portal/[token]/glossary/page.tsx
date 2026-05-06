@@ -43,7 +43,7 @@ const TERMS: Array<{ term: string; def: string }> = [
   },
   {
     term: 'Deliberate Start Window',
-    def: 'The intentional period at the very start of coaching where we calibrate before we push. Usually about a week. We are not trying to get a result in this window. We are establishing the baseline that everything else builds on.',
+    def: 'A fixed two-week period after your initial program has been created. You execute the program, complete Form A in week one and Form B in week two, and your coach observes. No weekly synthesis or progression decisions happen yet. The window exists to gather real-world exposure data before weekly Performance Coaching cadence begins. The duration is locked at two weeks per doctrine.',
   },
   {
     term: 'Block',

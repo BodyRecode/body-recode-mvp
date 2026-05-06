@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
+import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
+import { logClientCommunication } from '@/lib/client-communications'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export const maxDuration = 60
@@ -60,9 +62,15 @@ export async function POST(req: NextRequest) {
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const { data: client } = await admin.from('clients').select('name').eq('id', clientId).maybeSingle()
+    const { data: client } = await admin
+      .from('clients')
+      .select('name, email, onboarding_token')
+      .eq('id', clientId)
+      .maybeSingle()
     const name = client?.name ?? 'A client'
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+
+    // Notify Kade
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
@@ -70,11 +78,36 @@ export async function POST(req: NextRequest) {
       html: buildCoachNotificationEmail({
         eyebrow: 'Baseline',
         heading: `${name} submitted their baseline`,
-        body: `${name} has uploaded their baseline measurements and progress photos. This is the calibration point for everything that follows. Their Deliberate Start Window can begin once you have reviewed it.`,
+        body: `${name} has uploaded their baseline measurements and progress photos. This is the calibration point for everything that follows. The Portal Orientation email has been sent to them automatically. Their Deliberate Start Window can begin once you have reviewed the baseline and generated the program.`,
         ctaLabel: 'Open client profile',
         ctaUrl: `${baseUrl}/dashboard/clients/${clientId}`,
       }),
     })
+
+    // Send Portal Orientation email to the client (auto-fires here so the
+    // client has time to read through the portal while the program is built).
+    if (client?.email && client.onboarding_token) {
+      const firstName = (client.name?.split(' ')[0] ?? 'there')
+      const portalUrl = `${baseUrl}/portal/${client.onboarding_token}`
+      const { subject, html } = buildPortalOrientationEmail({ firstName, portalUrl })
+      try {
+        await resend.emails.send({
+          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          to: client.email,
+          subject,
+          html,
+        })
+        await logClientCommunication(admin, {
+          clientId,
+          kind: 'portal_orientation',
+          subject,
+          toAddress: client.email,
+          meta: { trigger: 'baseline_submission' },
+        })
+      } catch (e) {
+        console.error('Portal orientation email failed:', e)
+      }
+    }
   } catch (e) {
     console.error('Notification email failed:', e)
   }
