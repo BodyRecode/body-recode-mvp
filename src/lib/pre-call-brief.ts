@@ -71,47 +71,118 @@ const INVESTMENT_LABELS: Record<AnswerLetter, string> = {
 // =============================================================
 
 /**
- * Pick the floor (lowest section). Priority for ties:
- * Stress > Sleep > Energy > Training > Fat Loss
- * (Stress is the most common driver of compensation patterns.)
+ * Pick the floor (lowest section). When sections tie at the lowest score,
+ * fall back to the priority order: Stress > Sleep > Energy > Training > Fat Loss
+ * (root-cause hierarchy — stress drives compensation patterns most often).
+ *
+ * Returns null when no scores are present (so the caller can decide what to
+ * do, instead of silently defaulting to Stress like the old version).
  */
-function pickFloor(scores: SectionScores): SectionKey {
-  const order: SectionKey[] = ['03', '02', '01', '04', '05']
-  let lowest = 4
-  let floorKey: SectionKey = '03'
-  for (const k of order) {
-    const v = scores[k]
-    if (v != null && v < lowest) {
-      lowest = v
-      floorKey = k
-    }
+function pickFloor(scores: SectionScores): SectionKey | null {
+  const priority: SectionKey[] = ['03', '02', '01', '04', '05']
+  const present = priority.filter(k => scores[k] != null) as SectionKey[]
+  if (present.length === 0) return null
+
+  let lowest = Infinity
+  for (const k of present) {
+    const v = scores[k]!
+    if (v < lowest) lowest = v
   }
-  return floorKey
+  // Among the floor-tied keys, return the highest-priority one.
+  for (const k of priority) {
+    if (scores[k] != null && scores[k] === lowest) return k
+  }
+  return present[0]
 }
 
 /**
  * Best-guess Fat Map profile from the scorecard pattern.
- * The coach refines on intake. This is just for first-read framing.
+ *
+ * Returns confidence so the brief can mark provisional reads. The coach
+ * confirms on intake — the scorecard alone can't fully separate the four
+ * profiles, but the score pattern usually points to one.
+ *
+ * Logic:
+ *   - Stress-Stored: stress is at the floor or stress=1 dominantly
+ *   - System-Overload: sleep AND energy both low (NS recovery channel
+ *     wrecked), even if stress reads "managed"
+ *   - Metabolic-Drift: fat loss specifically stalled while foundations OK
+ *   - Hormonal-Shift: long-arc resistance — training AND fat loss both
+ *     stuck while foundations OK
+ *
+ * When the pattern doesn't clearly fit any, fall back to whichever the floor
+ * suggests (low confidence) — but never default unconditionally to
+ * Stress-Stored just because we ran out of branches.
  */
-function pickProfile(scores: SectionScores, floor: SectionKey): Profile {
-  const stress = scores['03'] ?? 2
-  const sleep = scores['02'] ?? 2
-  const energy = scores['01'] ?? 2
-  const fatLoss = scores['05'] ?? 2
+function pickProfile(
+  scores: SectionScores,
+  floor: SectionKey | null
+): { profile: Profile; confidence: 'high' | 'low' } {
+  const stress = scores['03']
+  const sleep = scores['02']
+  const energy = scores['01']
+  const training = scores['04']
+  const fatLoss = scores['05']
 
-  // Stress at the floor → Stress-Stored
-  if (floor === '03' || stress === 1) return 'Stress-Stored'
+  // Without at least one section at 1, the discrimination isn't strong.
+  // Pick a soft profile from the floor and mark it provisional.
+  const present = Object.values(scores).filter(v => v != null) as number[]
+  const hasFloorAtOne = present.some(v => v === 1)
 
-  // Sleep + energy both low, stress not low → System-Overload (NS hot)
-  if (sleep <= 2 && energy <= 2 && stress >= 2 && (sleep === 1 || floor === '02')) {
-    return 'System-Overload'
+  if (!hasFloorAtOne) {
+    switch (floor) {
+      case '03': return { profile: 'Stress-Stored', confidence: 'low' }
+      case '02':
+      case '01': return { profile: 'System-Overload', confidence: 'low' }
+      case '04': return { profile: 'Hormonal-Shift', confidence: 'low' }
+      case '05': return { profile: 'Metabolic-Drift', confidence: 'low' }
+      default:   return { profile: 'Stress-Stored', confidence: 'low' }
+    }
   }
 
-  // Fat loss bottom, stress fine → Metabolic-Drift
-  if (floor === '05' && fatLoss === 1 && stress >= 2) return 'Metabolic-Drift'
+  // From here we have at least one section at 1 — the pattern is real.
 
-  // Default: Stress-Stored is the most common across the demographic
-  return 'Stress-Stored'
+  // 1. Stress-dominant.
+  if (stress === 1) {
+    return { profile: 'Stress-Stored', confidence: 'high' }
+  }
+
+  // 2. Nervous-system blown — sleep + energy both compromised.
+  //    Common pattern: high-functioner who says stress is fine but can't sleep.
+  if (sleep === 1 && energy != null && energy <= 2) {
+    return { profile: 'System-Overload', confidence: 'high' }
+  }
+  if (energy === 1 && sleep != null && sleep <= 2) {
+    return { profile: 'System-Overload', confidence: 'high' }
+  }
+
+  // 3. Long-arc hormonal — training and fat loss both stuck, foundations OK.
+  if (
+    fatLoss != null && training != null && stress != null && sleep != null &&
+    fatLoss <= 2 && training <= 2 && (fatLoss === 1 || training === 1) &&
+    stress >= 2 && sleep >= 2
+  ) {
+    return { profile: 'Hormonal-Shift', confidence: 'high' }
+  }
+
+  // 4. Metabolic-only — fat loss alone is the floor, foundations strong.
+  if (
+    fatLoss === 1 && stress != null && sleep != null && energy != null && training != null &&
+    stress >= 2 && sleep >= 2 && energy >= 2 && training >= 2
+  ) {
+    return { profile: 'Metabolic-Drift', confidence: 'high' }
+  }
+
+  // 5. Floor-based soft fallback when the patterns above don't quite fit.
+  switch (floor) {
+    case '03': return { profile: 'Stress-Stored', confidence: 'low' }
+    case '02':
+    case '01': return { profile: 'System-Overload', confidence: 'low' }
+    case '04': return { profile: 'Hormonal-Shift', confidence: 'low' }
+    case '05': return { profile: 'Metabolic-Drift', confidence: 'low' }
+  }
+
+  return { profile: 'Stress-Stored', confidence: 'low' }
 }
 
 const PROFILE_DRIVERS: Record<Profile, string> = {
@@ -119,13 +190,6 @@ const PROFILE_DRIVERS: Record<Profile, string> = {
   'Metabolic-Drift': 'digestion/insulin-driven',
   'Hormonal-Shift': 'long-term hormonal',
   'System-Overload': 'nervous-system-driven',
-}
-
-const PROFILE_ZONES: Record<Profile, string> = {
-  'Stress-Stored': 'Stomach/waist',
-  'Metabolic-Drift': 'Under ribs',
-  'Hormonal-Shift': 'Hips/thighs',
-  'System-Overload': 'Upper back/traps',
 }
 
 const PROFILE_DESCRIPTORS: Record<Profile, string> = {
@@ -434,13 +498,13 @@ function pathOrder(inv?: AnswerLetter | null): string[] {
 // One-line pattern read for AT A GLANCE
 // =============================================================
 
-function patternRead(input: LeadBriefInput, floor: SectionKey): string {
-  const score = input.scorecard_score
-  const floorName = SECTIONS[floor].name
+function patternRead(input: LeadBriefInput, floor: SectionKey | null): string {
   if (input.scorecard_body_state === 'Depleted State') {
     return 'Foundations on the floor. Body in protection mode.'
   }
   if (input.scorecard_body_state === 'Transitioning State') {
+    if (!floor) return 'Mixed signals. No clear single floor in the scorecard pattern.'
+    const floorName = SECTIONS[floor].name
     return `${floorName} is the floor. Everything else dragged down by it.`
   }
   return 'Foundation intact. Capacity unused. Prescription, not biology.'
@@ -460,10 +524,9 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
 
   const scores = input.scorecard_section_scores ?? {}
   const floor = pickFloor(scores)
-  const floorName = SECTIONS[floor].name
-  const profile = pickProfile(scores, floor)
+  const floorName = floor ? SECTIONS[floor].name : 'Unclear (no section scores recorded)'
+  const { profile, confidence: profileConfidence } = pickProfile(scores, floor)
   const driver = PROFILE_DRIVERS[profile]
-  const profileZone = PROFILE_ZONES[profile]
   const profileDescriptor = PROFILE_DESCRIPTORS[profile]
 
   const generatedDate = new Date().toISOString().slice(0, 10)
@@ -512,7 +575,10 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('AT A GLANCE')
   lines.push('═══════════════════════════════════════════')
   lines.push('')
-  lines.push(`${input.scorecard_score}/15 ${stateShort}. Profile: ${profile} (${driver}).`)
+  const profileSuffix = profileConfidence === 'low'
+    ? ' [provisional — confirm on intake]'
+    : ''
+  lines.push(`${input.scorecard_score}/15 ${stateShort}. Profile: ${profile} (${driver})${profileSuffix}.`)
   const SECTION_INLINE_LABELS: Record<SectionKey, string> = {
     '01': 'Energy', '02': 'Sleep', '03': 'Stress', '04': 'Training', '05': 'Fat Loss',
   }
@@ -523,6 +589,25 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push(scoreInline + '.')
   lines.push(patternRead(input, floor))
   lines.push('')
+
+  // KEY SIGNALS — explicit map of every score to its read.
+  // Highlights the floors (1s) and the holds (3s) so the brief is always
+  // visibly tied to this lead's actual answers, not just the body state.
+  const ones = (['01','02','03','04','05'] as SectionKey[]).filter(k => scores[k] === 1)
+  const threes = (['01','02','03','04','05'] as SectionKey[]).filter(k => scores[k] === 3)
+  if (ones.length > 0 || threes.length > 0) {
+    lines.push('KEY SIGNALS')
+    if (ones.length > 0) {
+      lines.push(`  Floors (1/3) — where the body is actually struggling:`)
+      ones.forEach(k => lines.push(`  • ${SECTIONS[k].name} - ${SECTIONS[k].descriptors[0]}`))
+    }
+    if (threes.length > 0) {
+      lines.push(`  Holds (3/3) — what's already in place, lean on these:`)
+      threes.forEach(k => lines.push(`  • ${SECTIONS[k].name} - ${SECTIONS[k].descriptors[2]}`))
+    }
+    lines.push('')
+  }
+
   lines.push(`LEAD QUALITY: ${quality}  (${redCount} red flag${redCount === 1 ? '' : 's'})`)
   lines.push('')
 
@@ -731,7 +816,7 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push(`For ${input.name}, ${stateShort} state, floor on ${floorName}:`)
   lines.push('')
   // For Transitioning, prepend a floor-specific top recommendation.
-  const recommendations = state === 'Transitioning State'
+  const recommendations = state === 'Transitioning State' && floor
     ? [FLOOR_RECOMMENDATIONS[floor], ...bank.recommendations]
     : bank.recommendations
   recommendations.forEach((r, i) => lines.push(`${i + 1}. ${r}`))
