@@ -8,6 +8,19 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   const { id } = await params
 
+  // Optional flag — when true, the coach has confirmed the commencement fee
+  // is already in (e.g. cash, transfer). When false (the default), the client
+  // is created but the lead's status is left alone so the commencement-fee
+  // link can still be sent later. Once Stripe webhook records the payment it
+  // moves the status to 'commencement_fee_paid'.
+  let markPaid = false
+  try {
+    const body = await request.json()
+    markPaid = body?.markPaid === true
+  } catch {
+    // empty body is fine - default false
+  }
+
   // Get lead
   const { data: lead, error: leadError } = await supabase
     .from('leads')
@@ -36,14 +49,18 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   if (invError || !invitation) return NextResponse.json({ error: 'Failed to generate intake link' }, { status: 500 })
 
-  // Update lead
+  // Update lead. Only flip the status to 'commencement_fee_paid' when the
+  // coach has confirmed the fee is in. Otherwise leave the existing status
+  // so the commencement-fee link can still be sent later.
+  const update: Record<string, unknown> = {
+    converted_to_client_id: client.id,
+    converted_at: new Date().toISOString(),
+  }
+  if (markPaid) update.status = 'commencement_fee_paid'
+
   await supabase
     .from('leads')
-    .update({
-      converted_to_client_id: client.id,
-      converted_at: new Date().toISOString(),
-      status: 'commencement_fee_paid',
-    })
+    .update(update)
     .eq('id', id)
 
   return NextResponse.json({

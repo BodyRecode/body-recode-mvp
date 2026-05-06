@@ -24,13 +24,14 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     )
   }
 
-  async function convert() {
-    if (!confirm(`Convert ${leadName} to an active client? This will create their client profile and generate an intake link.`)) return
+  async function runConvert(markPaid: boolean) {
     setLoading(true)
-
-    const res = await fetch(`/api/leads/${leadId}/convert`, { method: 'POST' })
+    const res = await fetch(`/api/leads/${leadId}/convert`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ markPaid }),
+    })
     const data = await res.json()
-
     if (res.ok) {
       const link = `${window.location.origin}/intake/${data.intake_token}`
       setIntakeLink(link)
@@ -39,6 +40,20 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
       alert(data.error || 'Conversion failed')
     }
     setLoading(false)
+  }
+
+  function convert() {
+    const choice = window.prompt(
+      `Convert ${leadName} to an active client?\n\nHas the commencement fee been paid?\n\n` +
+      `Type "paid"   - mark fee as paid (status → commencement_fee_paid)\n` +
+      `Type "later"  - convert now, send the fee link later\n` +
+      `(blank or anything else cancels)`,
+      'later'
+    )
+    if (!choice) return
+    const norm = choice.trim().toLowerCase()
+    if (norm === 'paid') runConvert(true)
+    else if (norm === 'later') runConvert(false)
   }
 
   function copy() {

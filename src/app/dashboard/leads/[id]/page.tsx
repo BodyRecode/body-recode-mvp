@@ -475,42 +475,71 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <p className="text-[#57534e] text-sm mb-4">
           Generate a unique commencement fee link to send to the client. Once paid, their client profile and intake link are created automatically.
         </p>
-        {!lead.converted_to_client_id ? (
-          <div className="space-y-3">
-            <CommencementFeeButton leadId={lead.id} />
-            {lastCommencementFeeSent && (() => {
-              const sentAt = new Date(lastCommencementFeeSent.sent_at)
-              const ageHours = (Date.now() - sentAt.getTime()) / 36e5
-              const expired = ageHours >= 24
-              const sentLabel = sentAt.toLocaleString('en-AU', {
-                timeZone: 'Australia/Brisbane',
-                weekday: 'short', day: 'numeric', month: 'short',
-                hour: 'numeric', minute: '2-digit', hour12: true,
-              })
-              const count = commencementFeeSentEvents.length
-              return (
-                <p className={`text-xs ${expired ? 'text-amber-500' : 'text-[#3c3835]'}`}>
-                  Last sent {sentLabel} Brisbane{count > 1 ? ` · sent ${count}×` : ''}
-                  {expired && ' · Stripe link expired (resend to generate new one)'}
-                </p>
-              )
-            })()}
-            <p className="text-xs text-[#3c3835]">Or convert manually once fee is confirmed:</p>
-            <ConvertButton
-              leadId={lead.id}
-              leadName={lead.name}
-              alreadyConverted={!!lead.converted_to_client_id}
-              clientId={lead.converted_to_client_id}
-            />
-          </div>
-        ) : (
-          <ConvertButton
-            leadId={lead.id}
-            leadName={lead.name}
-            alreadyConverted={!!lead.converted_to_client_id}
-            clientId={lead.converted_to_client_id}
-          />
-        )}
+        {(() => {
+          const PAID_STATUSES = ['commencement_fee_paid', 'active_deliberate_start', 'active_coaching']
+          const isPaid = PAID_STATUSES.includes(lead.status)
+          const isConverted = !!lead.converted_to_client_id
+
+          if (isPaid) {
+            return (
+              <ConvertButton
+                leadId={lead.id}
+                leadName={lead.name}
+                alreadyConverted={isConverted}
+                clientId={lead.converted_to_client_id}
+              />
+            )
+          }
+
+          // Not paid yet — show the commencement-fee link controls.
+          return (
+            <div className="space-y-3">
+              {isConverted && (
+                <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg px-4 py-3">
+                  <p className="text-amber-400 text-xs font-bold uppercase tracking-wider mb-1">Converted, fee outstanding</p>
+                  <p className="text-[#a8a29e] text-xs leading-relaxed">{lead.name}&apos;s portal is open. Send the commencement fee link below when you&apos;re ready to bill.</p>
+                </div>
+              )}
+              <CommencementFeeButton leadId={lead.id} />
+              {lastCommencementFeeSent && (() => {
+                const sentAt = new Date(lastCommencementFeeSent.sent_at)
+                const ageHours = (Date.now() - sentAt.getTime()) / 36e5
+                const expired = ageHours >= 24
+                const sentLabel = sentAt.toLocaleString('en-AU', {
+                  timeZone: 'Australia/Brisbane',
+                  weekday: 'short', day: 'numeric', month: 'short',
+                  hour: 'numeric', minute: '2-digit', hour12: true,
+                })
+                const count = commencementFeeSentEvents.length
+                return (
+                  <p className={`text-xs ${expired ? 'text-amber-500' : 'text-[#3c3835]'}`}>
+                    Last sent {sentLabel} Brisbane{count > 1 ? ` · sent ${count}×` : ''}
+                    {expired && ' · Stripe link expired (resend to generate new one)'}
+                  </p>
+                )
+              })()}
+              {!isConverted && (
+                <>
+                  <p className="text-xs text-[#3c3835]">Or convert manually (you&apos;ll be asked whether the fee is already paid or to send the link later):</p>
+                  <ConvertButton
+                    leadId={lead.id}
+                    leadName={lead.name}
+                    alreadyConverted={false}
+                    clientId={undefined}
+                  />
+                </>
+              )}
+              {isConverted && (
+                <a
+                  href={`/dashboard/clients/${lead.converted_to_client_id}`}
+                  className="inline-block text-sm font-medium text-teal-400 hover:underline"
+                >
+                  View client profile →
+                </a>
+              )}
+            </div>
+          )
+        })()}
       </div>
 
       {/* Self-Guided Program (Downsell) */}

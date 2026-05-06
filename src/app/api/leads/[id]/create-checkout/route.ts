@@ -16,12 +16,16 @@ export async function POST(
 
   const { data: lead } = await supabase
     .from('leads')
-    .select('id, name, email, converted_to_client_id')
+    .select('id, name, email, converted_to_client_id, status')
     .eq('id', id)
     .maybeSingle()
 
   if (!lead) return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
-  if (lead.converted_to_client_id) return NextResponse.json({ error: 'Already converted' }, { status: 400 })
+  // Allow when converted-but-unpaid; block once the fee is on the lead.
+  const PAID_STATUSES = ['commencement_fee_paid', 'active_deliberate_start', 'active_coaching']
+  if (PAID_STATUSES.includes(lead.status)) {
+    return NextResponse.json({ error: 'Commencement fee is already paid for this lead.' }, { status: 400 })
+  }
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
