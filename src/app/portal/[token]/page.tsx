@@ -582,9 +582,19 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
-        {/* Client guide */}
+        {/* Resources */}
         <div className="mb-10">
           <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Resources</p></div>
+          <Link
+            href={`/portal/${token}/resources`}
+            className="flex items-center justify-between w-full bg-[#111110] border border-[#1c1917] rounded-2xl px-5 py-4 hover:border-[#14b8a6]/40 hover:bg-[#14b8a6]/5 transition-colors mb-3"
+          >
+            <div>
+              <p className="text-sm font-semibold text-white">All resources</p>
+              <p className="text-xs text-[#57534e] mt-0.5">Progress, readings, glossary, practical guides, message your coach, account.</p>
+            </div>
+            <span className="text-xs font-bold text-[#14b8a6] ml-4 shrink-0">View →</span>
+          </Link>
           <a
             href="https://app.bodyrecode.au/coaching-guide"
             target="_blank"
