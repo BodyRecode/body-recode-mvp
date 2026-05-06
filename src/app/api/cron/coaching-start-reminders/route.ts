@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { logClientCommunication } from '@/lib/client-communications'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -31,6 +32,7 @@ export async function GET(request: NextRequest) {
   }
 
   let sent = 0
+  const subject = 'Coaching begins tomorrow'
   for (const client of clients) {
     if (!client.email) continue
     const firstName = client.name.split(' ')[0]
@@ -38,7 +40,7 @@ export async function GET(request: NextRequest) {
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: client.email,
-      subject: 'Coaching begins tomorrow',
+      subject,
       html: `
 <!DOCTYPE html>
 <html>
@@ -56,6 +58,13 @@ export async function GET(request: NextRequest) {
   </div>
 </body>
 </html>`,
+    })
+    await logClientCommunication(admin, {
+      clientId: client.id,
+      kind: 'coaching_start_reminder',
+      subject,
+      toAddress: client.email,
+      meta: { coaching_started_at: client.coaching_started_at, trigger: 'cron' },
     })
     sent++
   }

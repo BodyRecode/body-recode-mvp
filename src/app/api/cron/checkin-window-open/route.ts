@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { sendSms, formatPhone } from '@/lib/twilio'
+import { logClientCommunication } from '@/lib/client-communications'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -37,12 +38,14 @@ export async function GET(request: NextRequest) {
     const firstName = client.name.split(' ')[0]
     const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/portal/${client.onboarding_token}`
 
+    const subject = 'Your weekly check-in is now open'
+
     // Email
     if (client.email) {
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: client.email,
-        subject: 'Your weekly check-in is now open',
+        subject,
         html: `
 <!DOCTYPE html>
 <html>
@@ -61,6 +64,14 @@ export async function GET(request: NextRequest) {
 </body>
 </html>`,
       })
+      await logClientCommunication(admin, {
+        clientId: client.id,
+        kind: 'checkin_window_open',
+        channel: 'email',
+        subject,
+        toAddress: client.email,
+        meta: { url: portalUrl, trigger: 'cron' },
+      })
       emailsSent++
     }
 
@@ -69,6 +80,14 @@ export async function GET(request: NextRequest) {
       await sendSms({
         to: formatPhone(client.phone),
         message: `Hi ${firstName}, your Body Recode weekly check-in is now open. Close Sunday 6pm. Open your portal: ${portalUrl}`,
+      })
+      await logClientCommunication(admin, {
+        clientId: client.id,
+        kind: 'checkin_window_open',
+        channel: 'sms',
+        subject: null,
+        toAddress: client.phone,
+        meta: { url: portalUrl, trigger: 'cron' },
       })
       smsSent++
     }

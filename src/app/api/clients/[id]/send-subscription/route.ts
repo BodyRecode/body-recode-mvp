@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { getCoachingPackage } from '@/lib/coaching-packages'
+import { logClientCommunication } from '@/lib/client-communications'
 
 export async function POST(
   _request: NextRequest,
@@ -35,10 +36,12 @@ export async function POST(
 
   const resend = new Resend(process.env.RESEND_API_KEY)
 
+  const subject = `${firstName}, lock in your weekly subscription`
+
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: client.email,
-    subject: `${firstName}, lock in your weekly subscription`,
+    subject,
     html: `
 <!DOCTYPE html>
 <html>
@@ -61,6 +64,24 @@ export async function POST(
 </html>`,
   })
 
+  // Mark as sent on the client row so the dashboard knows
+  const sentAt = new Date().toISOString()
+  await admin
+    .from('clients')
+    .update({ subscription_link_sent_at: sentAt })
+    .eq('id', id)
+
+  // Log to the unified communications feed
+  await logClientCommunication(admin, {
+    clientId: id,
+    kind: 'subscription_link',
+    subject,
+    toAddress: client.email,
+    sentAt,
+    sentBy: user.id,
+    meta: { package: client.package, package_label: pkg.label, price: pkg.price, url: subscriptionUrl, trigger: 'manual' },
+  })
+
   console.log('Subscription email sent to:', client.email, 'package:', client.package)
-  return NextResponse.json({ sent: true })
+  return NextResponse.json({ sent: true, sent_at: sentAt })
 }

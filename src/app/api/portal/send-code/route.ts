@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { logClientCommunication } from '@/lib/client-communications'
 
 const CODE_TTL_MINUTES = 10
 
@@ -47,10 +48,12 @@ export async function POST(request: NextRequest) {
 
   const resend = new Resend(process.env.RESEND_API_KEY)
 
+  const subject = 'Your Body Recode sign-in code'
+
   await resend.emails.send({
     from: 'Body Recode <kade@bodyrecode.au>',
     to: cleanEmail,
-    subject: 'Your Body Recode sign-in code',
+    subject,
     html: `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/></head>
@@ -80,6 +83,23 @@ export async function POST(request: NextRequest) {
 </body>
 </html>`,
   })
+
+  // Best-effort: link this code email to the matching client (if any).
+  const { data: clientRow } = await admin
+    .from('clients')
+    .select('id')
+    .ilike('email', cleanEmail)
+    .maybeSingle()
+
+  if (clientRow?.id) {
+    await logClientCommunication(admin, {
+      clientId: clientRow.id,
+      kind: 'portal_login_code',
+      subject,
+      toAddress: cleanEmail,
+      meta: { trigger: 'self-serve', expires_in_minutes: CODE_TTL_MINUTES },
+    })
+  }
 
   return NextResponse.json({ sent: true })
 }

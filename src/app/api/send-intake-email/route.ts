@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { logClientCommunication } from '@/lib/client-communications'
 
 export async function POST(request: NextRequest) {
   const { clientId, clientName, clientEmail, intakeToken } = await request.json()
@@ -15,13 +17,14 @@ export async function POST(request: NextRequest) {
 
   const firstName = clientName.split(' ')[0]
   const intakeUrl = `${process.env.NEXT_PUBLIC_APP_URL}/intake/${intakeToken}`
+  const subject = `${firstName}, your Body Recode intake is ready`
 
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   const { error } = await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: clientEmail,
-    subject: `${firstName}, your Body Recode intake is ready`,
+    subject,
     html: `
 <!DOCTYPE html>
 <html>
@@ -45,6 +48,18 @@ export async function POST(request: NextRequest) {
   if (error) {
     console.error('Intake email error:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
+  if (clientId) {
+    const admin = createAdminClient()
+    await logClientCommunication(admin, {
+      clientId,
+      kind: 'intake_invite',
+      subject,
+      toAddress: clientEmail,
+      sentBy: user.id,
+      meta: { url: intakeUrl, trigger: 'manual' },
+    })
   }
 
   return NextResponse.json({ sent: true })

@@ -21,6 +21,7 @@ import ClientDangerActions from './client-danger-actions'
 import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
 import OverrideSubscriptionButton from '@/components/override-subscription-button'
+import ClientCommunicationsPanel from '@/components/dashboard/client-communications-panel'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -109,6 +110,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     .select('id, day_of_week, session_time, duration_minutes')
     .eq('client_id', id)
     .order('day_of_week', { ascending: true })
+
+  const { data: communicationsData } = await admin
+    .from('client_communications')
+    .select('id, kind, channel, subject, to_address, meta, sent_at')
+    .eq('client_id', id)
+    .order('sent_at', { ascending: false })
+    .limit(15)
+  const communications = communicationsData ?? []
 
   const activeCffs = cffsRecords?.find(c => !c.is_archived) || null
   const archivedCffs = cffsRecords?.filter(c => c.is_archived) || []
@@ -327,6 +336,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           )
         })()}
       </div>
+
+      {/* Communications log - everything sent to the client */}
+      <ClientCommunicationsPanel rows={communications} />
 
       {/* Onboarding status */}
       <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-5 mb-4">

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { logClientCommunication } from '@/lib/client-communications'
 
 type Threshold = 3 | 7 | 14
 
@@ -154,19 +155,30 @@ export async function GET(request: NextRequest) {
 
       considered++
 
+      const subject =
+        threshold === 3
+          ? `Quick reminder - finish your ${task.title}`
+          : threshold === 7
+          ? `Your ${task.title} is still pending`
+          : `Last reminder - your ${task.title}`
+
       try {
         await resend.emails.send({
           from: 'Kade at Body Recode <kade@bodyrecode.au>',
           to: client.email,
-          subject:
-            threshold === 3
-              ? `Quick reminder — finish your ${task.title}`
-              : threshold === 7
-              ? `Your ${task.title} is still pending`
-              : `Last reminder — your ${task.title}`,
+          subject,
           html: reminderEmail(firstName, task.title, threshold, portalUrl),
         })
-        sentMap[key] = new Date().toISOString()
+        const sentAt = new Date().toISOString()
+        sentMap[key] = sentAt
+        await logClientCommunication(admin, {
+          clientId: client.id,
+          kind: 'onboarding_reminder',
+          subject,
+          toAddress: client.email,
+          sentAt,
+          meta: { task: task.id, task_title: task.title, threshold_days: threshold, url: portalUrl, trigger: 'cron' },
+        })
         sent++
       } catch (err) {
         console.error(`Failed to send ${key} reminder to ${client.email}:`, err)

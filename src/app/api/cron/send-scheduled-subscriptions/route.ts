@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { getCoachingPackage } from '@/lib/coaching-packages'
+import { logClientCommunication } from '@/lib/client-communications'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -34,12 +35,13 @@ export async function GET(request: NextRequest) {
 
     const firstName = client.name.split(' ')[0]
     const subscriptionUrl = `${pkg.stripe}?client_reference_id=${client.id}`
+    const subject = `${firstName}, your Body Recode subscription link`
 
     try {
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: client.email,
-        subject: `${firstName}, your Body Recode subscription link`,
+        subject,
         html: `
 <!DOCTYPE html>
 <html>
@@ -62,10 +64,20 @@ export async function GET(request: NextRequest) {
       })
 
       // Mark as sent
+      const sentAt = new Date().toISOString()
       await admin
         .from('clients')
-        .update({ subscription_link_sent_at: new Date().toISOString() })
+        .update({ subscription_link_sent_at: sentAt })
         .eq('id', client.id)
+
+      await logClientCommunication(admin, {
+        clientId: client.id,
+        kind: 'subscription_link',
+        subject,
+        toAddress: client.email,
+        sentAt,
+        meta: { package: client.package, package_label: pkg.label, price: pkg.price, url: subscriptionUrl, trigger: 'scheduled' },
+      })
 
       sent++
     } catch (err) {

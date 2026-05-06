@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { logClientCommunication } from '@/lib/client-communications'
 
 export async function POST(
   _request: NextRequest,
@@ -27,13 +28,14 @@ export async function POST(
 
   const firstName = client.name.split(' ')[0]
   const portalUrl = `https://app.bodyrecode.au/portal/${client.onboarding_token}`
+  const subject = `${firstName}, your portal is ready`
 
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: client.email,
-    subject: `${firstName}, your portal is ready`,
+    subject,
     html: `
 <!DOCTYPE html>
 <html>
@@ -57,6 +59,15 @@ export async function POST(
   </div>
 </body>
 </html>`,
+  })
+
+  await logClientCommunication(admin, {
+    clientId: id,
+    kind: 'portal_access',
+    subject,
+    toAddress: client.email,
+    sentBy: user.id,
+    meta: { url: portalUrl, trigger: 'manual' },
   })
 
   return NextResponse.json({ sent: true })

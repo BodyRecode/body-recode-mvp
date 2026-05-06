@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { logClientCommunication } from '@/lib/client-communications'
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -24,11 +25,12 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     const resend = new Resend(process.env.RESEND_API_KEY)
     const firstName = client.name?.split(' ')[0] ?? 'there'
     const portalUrl = `https://app.bodyrecode.au/portal/${client.onboarding_token}`
+    const subject = `${firstName}, medical clearance approved`
 
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: client.email,
-      subject: `${firstName}, medical clearance approved`,
+      subject,
       html: `
 <!DOCTYPE html>
 <html>
@@ -47,7 +49,16 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
   </div>
 </body>
 </html>`,
-    }).catch(err => console.error('Clearance approval email error:', err))
+    }).then(() =>
+      logClientCommunication(admin, {
+        clientId: id,
+        kind: 'medical_clearance_approved',
+        subject,
+        toAddress: client.email,
+        sentBy: user.id,
+        meta: { url: portalUrl },
+      })
+    ).catch(err => console.error('Clearance approval email error:', err))
   }
 
   return NextResponse.json({ success: true })

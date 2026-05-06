@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { logClientCommunication } from '@/lib/client-communications'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -47,12 +48,13 @@ export async function GET(request: NextRequest) {
     })
 
     const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/portal/confirm-session?id=${session.id}`
+    const subject = `Session reminder - tomorrow at ${displayTime}`
 
     try {
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: client.email as string,
-        subject: `Session reminder — tomorrow at ${displayTime}`,
+        subject,
         html: `
 <!DOCTYPE html>
 <html>
@@ -91,10 +93,26 @@ export async function GET(request: NextRequest) {
 </html>`,
       })
 
+      const sentAt = new Date().toISOString()
       await admin
         .from('client_sessions')
-        .update({ reminder_sent_at: new Date().toISOString() })
+        .update({ reminder_sent_at: sentAt })
         .eq('id', session.id)
+
+      await logClientCommunication(admin, {
+        clientId: client.id as string,
+        kind: 'session_reminder',
+        subject,
+        toAddress: client.email as string,
+        sentAt,
+        meta: {
+          session_id: session.id,
+          scheduled_at: session.scheduled_at,
+          duration_minutes: session.duration_minutes,
+          confirm_url: confirmUrl,
+          trigger: 'cron',
+        },
+      })
 
       sent++
     } catch (e) {

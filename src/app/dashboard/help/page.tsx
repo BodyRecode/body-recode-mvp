@@ -928,6 +928,7 @@ export default function HelpPage() {
           </Section>
 
           <Section id="communications" title="16. Communications Timeline" colour="teal">
+            <p className="font-semibold text-white">Lead detail page</p>
             <p>Every lead detail page has a <strong>Communications</strong> panel. It shows a reverse-chronological timeline of all outbound emails logged for that lead.</p>
             <p>Events logged automatically:</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
@@ -938,8 +939,23 @@ export default function HelpPage() {
               <li>Zoom booking confirmed (via Calendly)</li>
               <li>No-show sequence emails scheduled</li>
             </ul>
-            <p>Each entry shows the event type, subject line, and exact Brisbane timestamp. The timeline is live - it updates as emails go out.</p>
-            <Note>Historical leads (those who submitted before this feature was built) will not have events in the timeline. All new activity is logged going forward.</Note>
+
+            <p className="font-semibold text-white mt-4">Client detail page</p>
+            <p>Every client profile now has its own <strong>Communications</strong> panel directly under the Coaching Package card. It logs every email or SMS sent to that client, with the kind of message, the subject, the channel (Email/SMS), the recipient, and a clickable link if one was included.</p>
+            <p>Events logged automatically:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>Subscription link sent (manual <em>Send to Client</em> or scheduled cron send)</li>
+              <li>Portal access email</li>
+              <li>Intake invitation</li>
+              <li>Portal sign-in code (when the client requests one)</li>
+              <li>Medical clearance approved</li>
+              <li>Coaching start reminder (day before)</li>
+              <li>Onboarding nudges (3 / 7 / 14 day)</li>
+              <li>Session reminders (24h before)</li>
+              <li>Check-in window opened and closing alerts (email and SMS)</li>
+            </ul>
+            <p>Each entry shows the kind of message, subject line, and a relative Brisbane timestamp (hover for the exact time). The panel shows the latest 15 entries and updates the moment a send fires.</p>
+            <Note>Historical sends from before this feature shipped are best-effort backfilled from existing per-event timestamps (subscription link, portal email). Everything sent from now on is logged exactly as it goes out. To extend the log to a new email type, call <code className="text-teal-400">logClientCommunication()</code> from <code className="text-teal-400">@/lib/client-communications</code> alongside the <code className="text-teal-400">resend.emails.send()</code> call.</Note>
           </Section>
 
           <Section id="assets" title="16b. Assets" colour="teal">
