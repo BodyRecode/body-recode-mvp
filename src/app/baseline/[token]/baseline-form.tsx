@@ -126,6 +126,11 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
   }
 
   const handleSubmit = async () => {
+    if (processing.size > 0) {
+      setError('One of your photos is still being optimised. Try again in a moment.')
+      return
+    }
+
     const missed = new Set<string>()
     if (!photoFront) missed.add('photoFront')
     if (!photoSide) missed.add('photoSide')
@@ -155,10 +160,21 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
     if (photoSide) formData.append('photoSide', photoSide)
     if (photoBack) formData.append('photoBack', photoBack)
 
-    const res = await fetch('/api/submit-baseline', { method: 'POST', body: formData })
+    let res: Response
+    try {
+      res = await fetch('/api/submit-baseline', { method: 'POST', body: formData })
+    } catch {
+      setError('Could not reach the server. Check your connection and try again.')
+      setStep('photos')
+      return
+    }
 
     if (!res.ok) {
-      setError('Something went wrong. Please try again.')
+      if (res.status === 413) {
+        setError('Your photos are too large to upload. Remove and re-take each photo - the form will optimise them automatically.')
+      } else {
+        setError(`Something went wrong while saving your baseline (status ${res.status}). Please try again, or contact your coach if it keeps happening.`)
+      }
       setStep('photos')
       return
     }
@@ -330,23 +346,32 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
 
             <div className="space-y-4">
               {[
-                { id: 'photoFront', label: 'Front — relaxed stance', file: photoFront, set: setPhotoFront },
-                { id: 'photoSide', label: 'Side — natural posture', file: photoSide, set: setPhotoSide },
-                { id: 'photoBack', label: 'Back — relaxed arms', file: photoBack, set: setPhotoBack },
+                { id: 'photoFront', label: 'Front - relaxed stance', file: photoFront, set: setPhotoFront },
+                { id: 'photoSide', label: 'Side - natural posture', file: photoSide, set: setPhotoSide },
+                { id: 'photoBack', label: 'Back - relaxed arms', file: photoBack, set: setPhotoBack },
               ].map(({ id, label, file, set }) => {
                 const hasError = missing.has(id)
+                const isProcessing = processing.has(id)
                 return (
                   <div key={label} className={`bg-stone-900 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
                     <p className={`text-sm font-medium mb-3 ${hasError ? 'text-red-400' : 'text-white'}`}>{label}</p>
-                    {file ? (
+                    {isProcessing ? (
+                      <div className="flex items-center gap-3 py-2">
+                        <div className="w-5 h-5 border-2 border-teal-400 border-t-transparent rounded-full animate-spin" />
+                        <span className="text-stone-400 text-sm">Optimising photo...</span>
+                      </div>
+                    ) : file ? (
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-teal-400/10 flex items-center justify-center">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-8 h-8 rounded-lg bg-teal-400/10 flex items-center justify-center flex-shrink-0">
                             <svg className="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                           </div>
-                          <span className="text-stone-300 text-sm truncate max-w-[180px]">{file.name}</span>
+                          <div className="min-w-0">
+                            <p className="text-stone-300 text-sm truncate max-w-[180px]">{file.name}</p>
+                            <p className="text-stone-500 text-xs">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                          </div>
                         </div>
                         <button onClick={() => set(null)} className="text-stone-500 text-xs hover:text-white">Remove</button>
                       </div>
@@ -363,7 +388,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                           accept="image/*"
                           capture="environment"
                           className="hidden"
-                          onChange={e => { set(e.target.files?.[0] ?? null); clearMissing(id) }}
+                          onChange={e => handlePhotoPick(id, e.target.files?.[0] ?? null, set)}
                         />
                       </label>
                     )}
