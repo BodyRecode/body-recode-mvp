@@ -10,7 +10,7 @@ export function emailSignature(): string {
         <td style="vertical-align:middle;">
           <p style="margin:0;font-size:14px;font-weight:600;color:#1c1917;">Kade Dunstone</p>
           <p style="margin:2px 0 0;font-size:13px;color:#78716c;">Performance Coach · Body Recode</p>
-          <a href="https://bodyrecode.au" style="font-size:12px;color:#a8a29e;text-decoration:none;">bodyrecode.au</a>
+          <a href="https://performance.bodyrecode.au" style="font-size:12px;color:#a8a29e;text-decoration:none;">performance.bodyrecode.au</a>
         </td>
       </tr>
     </table>`
@@ -28,7 +28,7 @@ export function darkEmailSignature(): string {
         <td style="vertical-align:middle;">
           <p style="margin:0;font-size:14px;font-weight:600;color:#ffffff;">Kade Dunstone</p>
           <p style="margin:2px 0 0;font-size:13px;color:#a8a29e;">Performance Coach · Body Recode</p>
-          <a href="https://bodyrecode.au" style="font-size:12px;color:#a8a29e;text-decoration:none;">bodyrecode.au</a>
+          <a href="https://performance.bodyrecode.au" style="font-size:12px;color:#a8a29e;text-decoration:none;">performance.bodyrecode.au</a>
         </td>
       </tr>
     </table>`
