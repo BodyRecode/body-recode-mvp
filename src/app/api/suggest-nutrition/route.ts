@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     admin.from('clients').select('id, name').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
-      .select('bodyweight_kg, height_cm, age, sex, body_composition_notes, digestive_tolerance, food_intolerances, food_exclusions, appetite_patterns, training_history, training_frequency_current, training_goals, lifestyle_stress_level, sleep_quality, sleep_hours_average')
+      .select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_location_history, injury_primary_concern, injury_aggravating_movements, fat_map_responses, training_responses, nutrition_responses, schedule_responses, sleep_responses, stress_responses, supplement_responses, submitted_at')
       .eq('client_id', client_id)
       .order('submitted_at', { ascending: false })
       .limit(1)
@@ -59,14 +59,11 @@ export async function POST(request: NextRequest) {
       .limit(5),
   ])
 
-  // Bodyweight may live in intakes or baselines. Baseline is the canonical
-  // capture point in the current onboarding flow, so prefer baseline when
-  // intake didn't carry it. Track which source we used so the prompt can
-  // reflect it accurately.
-  const bodyweightKg = intake?.bodyweight_kg ?? baseline?.bodyweight_kg ?? null
-  const bodyweightSource =
-    intake?.bodyweight_kg ? 'intake'
-    : baseline?.bodyweight_kg ? `baseline (${baseline.captured_at?.slice(0, 10) ?? 'date unknown'})`
+  // Bodyweight is captured on the baseline submission (not the intake — the
+  // intakes table doesn't carry a flat bodyweight column). Pull from there.
+  const bodyweightKg = baseline?.bodyweight_kg ?? null
+  const bodyweightSource = baseline?.bodyweight_kg
+    ? `baseline (${baseline.captured_at?.slice(0, 10) ?? 'date unknown'})`
     : null
 
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
@@ -93,13 +90,17 @@ CFFS — FOUNDATIONAL SYNTHESIS:
   }
 
   // Body composition + intake context. Bodyweight is critical for protein
-  // anchor — emit it from whichever source has it (baseline as fallback when
-  // the foundational intake hasn't been submitted yet).
+  // anchor — emit it from whichever source has it (baseline is the canonical
+  // capture point; intake doesn't carry weight as a flat column).
+  // Age derived from date_of_birth; sex from gender.
+  const ageFromDob = intake?.date_of_birth
+    ? Math.floor((Date.now() - new Date(intake.date_of_birth).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+    : null
+
   const intakeLines: string[] = []
   intakeLines.push(`- Bodyweight: ${bodyweightKg ? `${bodyweightKg}kg${bodyweightSource ? ` (from ${bodyweightSource})` : ''}` : 'Not provided'}`)
-  intakeLines.push(`- Height: ${intake?.height_cm ? `${intake.height_cm}cm` : 'Not provided'}`)
-  intakeLines.push(`- Age: ${intake?.age || 'Not provided'}`)
-  intakeLines.push(`- Sex: ${intake?.sex || 'Not provided'}`)
+  intakeLines.push(`- Age: ${ageFromDob ?? 'Not provided'}`)
+  intakeLines.push(`- Sex: ${intake?.gender || 'Not provided'}`)
   if (baseline?.waist_cm || baseline?.hips_cm || baseline?.chest_cm) {
     const meas: string[] = []
     if (baseline.waist_cm) meas.push(`waist ${baseline.waist_cm}cm`)
@@ -108,17 +109,20 @@ CFFS — FOUNDATIONAL SYNTHESIS:
     intakeLines.push(`- Baseline measurements: ${meas.join(', ')}`)
   }
   if (intake) {
-    intakeLines.push(`- Body composition notes: ${intake.body_composition_notes || 'Not provided'}`)
-    intakeLines.push(`- Digestive tolerance: ${intake.digestive_tolerance || 'Not provided'}`)
-    intakeLines.push(`- Food intolerances: ${intake.food_intolerances || 'None noted'}`)
-    intakeLines.push(`- Food exclusions: ${intake.food_exclusions || 'None noted'}`)
-    intakeLines.push(`- Appetite patterns: ${intake.appetite_patterns || 'Not provided'}`)
-    intakeLines.push(`- Training history: ${intake.training_history || 'Not provided'}`)
-    intakeLines.push(`- Current training frequency: ${intake.training_frequency_current || 'Not provided'}`)
-    intakeLines.push(`- Training goals: ${intake.training_goals || 'Not provided'}`)
-    intakeLines.push(`- Lifestyle stress level: ${intake.lifestyle_stress_level || 'Not provided'}`)
-    intakeLines.push(`- Sleep quality: ${intake.sleep_quality || 'Not provided'}`)
-    intakeLines.push(`- Average sleep hours: ${intake.sleep_hours_average || 'Not provided'}`)
+    intakeLines.push(`- Primary goal: ${intake.primary_goal || 'Not provided'}`)
+    if (intake.secondary_goals) intakeLines.push(`- Secondary goals: ${intake.secondary_goals}`)
+    if (intake.desired_timeline) intakeLines.push(`- Desired timeline: ${intake.desired_timeline}`)
+    if (intake.subjective_motivator) intakeLines.push(`- What's driving this: ${intake.subjective_motivator}`)
+    if (intake.training_days_available) intakeLines.push(`- Training days available: ${intake.training_days_available}`)
+    if (intake.injury_location_current) intakeLines.push(`- Current injuries: ${intake.injury_location_current}`)
+    if (intake.injury_location_history) intakeLines.push(`- Injury history: ${intake.injury_location_history}`)
+    if (intake.injury_primary_concern) intakeLines.push(`- Primary injury concern: ${intake.injury_primary_concern}`)
+    if (intake.injury_aggravating_movements) intakeLines.push(`- Aggravating movements: ${intake.injury_aggravating_movements}`)
+    if (intake.nutrition_responses) intakeLines.push(`- Nutrition response blob (nut_01..nut_25, scale 0-4): ${JSON.stringify(intake.nutrition_responses)}`)
+    if (intake.sleep_responses) intakeLines.push(`- Sleep response blob (slp_01..slp_NN, scale 0-4): ${JSON.stringify(intake.sleep_responses)}`)
+    if (intake.stress_responses) intakeLines.push(`- Stress response blob (str_01..str_NN, scale 0-4): ${JSON.stringify(intake.stress_responses)}`)
+    if (intake.supplement_responses) intakeLines.push(`- Supplement response blob (sup_01..sup_NN, scale 0-4): ${JSON.stringify(intake.supplement_responses)}`)
+    if (intake.training_responses) intakeLines.push(`- Training response blob (tr_01..tr_30, scale 0-4): ${JSON.stringify(intake.training_responses)}`)
   } else {
     intakeLines.push(`- Foundational intake: not yet submitted (using baseline data only).`)
   }
