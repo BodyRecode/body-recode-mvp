@@ -164,13 +164,18 @@ export default function NutritionPrescriptionSuggest({
   const [foodExclusionsText, setFoodExclusionsText] = useState('')
 
   useEffect(() => {
+    // AbortController guards against React Strict Mode firing the effect
+    // twice and leaving stale error state from a cancelled call.
+    const ac = new AbortController()
     fetch('/api/suggest-nutrition', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ client_id: clientId }),
+      signal: ac.signal,
     })
       .then(r => r.json())
       .then(data => {
+        if (ac.signal.aborted) return
         if (data.error) { setError(data.error); setLoading(false); return }
         const s: Suggestion = data.suggestion
         setSuggestion(s)
@@ -187,9 +192,15 @@ export default function NutritionPrescriptionSuggest({
         setTrainingDaysPerWeek(s.training_days_per_week)
         setFoodExclusions(s.food_exclusions || [])
         setFoodExclusionsText((s.food_exclusions || []).join(', '))
+        setError(null)
         setLoading(false)
       })
-      .catch(() => { setError('Failed to load suggestion'); setLoading(false) })
+      .catch(err => {
+        if (err?.name === 'AbortError') return
+        setError('Failed to load suggestion')
+        setLoading(false)
+      })
+    return () => ac.abort()
   }, [clientId])
 
   async function handleGenerate() {
