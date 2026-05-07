@@ -296,10 +296,10 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           <h1 className="text-2xl font-semibold text-white">Training Program</h1>
         </div>
         <Link
-          href={`/dashboard/clients/${id}/program/suggest`}
+          href={`/dashboard/clients/${id}/plan`}
           className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
         >
-          {activeProgram || draftProgram ? 'Regenerate' : 'Generate Program'}
+          Macro Plan
         </Link>
       </div>
 
@@ -326,7 +326,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             <p className="text-sm font-semibold text-red-400">Client is struggling with training</p>
             <p className="text-xs text-red-400/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the program or generating a new block.</p>
           </div>
-          <Link href="./program/suggest" className="text-xs font-semibold text-red-400 hover:text-red-300 shrink-0 mt-0.5">Regenerate →</Link>
+          <Link href={`/dashboard/clients/${id}/plan`} className="text-xs font-semibold text-red-400 hover:text-red-300 shrink-0 mt-0.5">Open macro plan →</Link>
         </div>
       )}
 
@@ -376,13 +376,16 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           )}
         </div>
       ) : !draftProgram ? (
-        <div className="text-center py-16 border-2 border-dashed border-stone-800 rounded-xl">
-          <p className="text-stone-500 mb-4">No program generated yet.</p>
+        <div className="text-center py-16 px-6 border-2 border-dashed border-stone-800 rounded-xl">
+          <p className="text-stone-300 font-semibold mb-2">No program generated yet.</p>
+          <p className="text-stone-500 text-sm max-w-md mx-auto mb-5 leading-relaxed">
+            Programs are generated from a meso block in the macro plan. Build (or open) the plan, then hit Generate Program on the block you want to load.
+          </p>
           <Link
-            href={`/dashboard/clients/${id}/program/suggest`}
-            className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+            href={`/dashboard/clients/${id}/plan`}
+            className="inline-block text-xs font-semibold px-4 py-2 bg-teal-500 hover:bg-teal-400 text-black rounded-lg transition-colors"
           >
-            Generate Program
+            Open macro plan →
           </Link>
         </div>
       ) : null}

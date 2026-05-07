@@ -864,12 +864,6 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             >
               Macro Plan
             </Link>
-            <Link
-              href={`/dashboard/clients/${id}/program/suggest`}
-              className="text-xs font-medium px-3 py-1.5 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-[#292524] hover:text-[#e7e5e4] transition-colors"
-            >
-              {activeProgram ? 'Regenerate' : 'Generate Program'}
-            </Link>
           </div>
         </div>
 

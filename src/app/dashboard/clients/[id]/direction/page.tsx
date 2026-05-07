@@ -196,7 +196,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                       )}
                       {block.status === 'in_progress' && !block.program_id && (
                         <Link
-                          href={`/dashboard/clients/${id}/program/suggest`}
+                          href={`/dashboard/clients/${id}/program/suggest?plan_block_id=${block.id}`}
                           className="text-[10px] text-amber-400 hover:text-amber-300 mt-1.5 inline-block transition-colors"
                         >
                           Generate program →
@@ -255,8 +255,8 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
           ) : (
             <div className="px-5 py-5 text-center">
               <p className="text-stone-500 text-sm">No active program</p>
-              <Link href={`/dashboard/clients/${id}/program/suggest`} className="text-xs text-teal-400 hover:text-teal-300 mt-2 inline-block transition-colors">
-                Generate program →
+              <Link href={`/dashboard/clients/${id}/plan`} className="text-xs text-teal-400 hover:text-teal-300 mt-2 inline-block transition-colors">
+                Open macro plan →
               </Link>
             </div>
           )}
