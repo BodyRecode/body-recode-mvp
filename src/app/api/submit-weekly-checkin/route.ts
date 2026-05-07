@@ -8,7 +8,7 @@ import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 
 export const maxDuration = 60
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
 export async function POST(request: NextRequest) {
   const { clientId, weekNumber, formType, responses } = await request.json()

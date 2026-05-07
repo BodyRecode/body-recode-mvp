@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
     exposure_readiness_behaviour: cffs.exposure_readiness_behaviour,
   }
 
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
   let message
   try {

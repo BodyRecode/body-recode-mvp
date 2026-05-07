@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   const { content_text } = await request.json()
   if (!content_text?.trim()) return NextResponse.json({ error: 'content_text required' }, { status: 400 })
 
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
   const prompt = `You are a content strategist for Body Recode, an evidence-based performance coaching brand.
 

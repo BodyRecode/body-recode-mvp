@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Generate CFFS via Claude
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
   let message
   try {

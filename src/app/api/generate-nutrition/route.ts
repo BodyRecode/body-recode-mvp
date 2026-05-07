@@ -6,7 +6,7 @@ import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescrip
 
 export const maxDuration = 120
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
