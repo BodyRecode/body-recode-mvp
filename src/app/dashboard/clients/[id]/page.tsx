@@ -422,7 +422,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
 
-      <HormonalSupportEditor clientId={client.id} initialValue={client.hormonal_support ?? null} />
+      <HormonalSupportEditor
+        clientId={client.id}
+        initialValue={client.hormonal_support ?? null}
+        updatedAt={client.hormonal_support_updated_at ?? null}
+        activeProgramGeneratedAt={activeProgram?.generated_at ?? null}
+        activeNutritionGeneratedAt={activeNutritionPlan?.generated_at ?? null}
+      />
 
       <div id="cffs" className="flex items-center justify-between mb-3 mt-6 scroll-mt-8">
         <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Foundational Synthesis <span className="text-[#3c3835] font-normal">- CFFS</span></h2></div>

@@ -6,9 +6,15 @@ import { MONO_FONT } from '@/components/dashboard/ui'
 export default function HormonalSupportEditor({
   clientId,
   initialValue,
+  updatedAt,
+  activeProgramGeneratedAt,
+  activeNutritionGeneratedAt,
 }: {
   clientId: string
   initialValue: string | null
+  updatedAt?: string | null
+  activeProgramGeneratedAt?: string | null
+  activeNutritionGeneratedAt?: string | null
 }) {
   const [value, setValue] = useState(initialValue ?? '')
   const [original, setOriginal] = useState(initialValue ?? '')
@@ -17,6 +23,21 @@ export default function HormonalSupportEditor({
   const [error, setError] = useState<string | null>(null)
 
   const dirty = value !== original
+
+  // Staleness check: was the active program or nutrition plan generated
+  // before the most recent change to hormonal_support? If so, the
+  // prescription doesn't reflect the current regimen.
+  const updatedAtMs = updatedAt ? new Date(updatedAt).getTime() : null
+  const programStale = updatedAtMs && activeProgramGeneratedAt
+    ? new Date(activeProgramGeneratedAt).getTime() < updatedAtMs
+    : false
+  const nutritionStale = updatedAtMs && activeNutritionGeneratedAt
+    ? new Date(activeNutritionGeneratedAt).getTime() < updatedAtMs
+    : false
+  const showStaleBanner = !editing && original && (programStale || nutritionStale)
+  const daysSinceUpdate = updatedAtMs
+    ? Math.max(0, Math.floor((Date.now() - updatedAtMs) / 86_400_000))
+    : null
 
   async function save() {
     setSaving(true)
@@ -69,6 +90,18 @@ export default function HormonalSupportEditor({
       <p className="text-[#57534e] text-xs mb-3">
         TRT, exogenous hormones, GLP-1, peptides, anabolic support. Free text — describe regimen and dose context. Drives prescription modulation across program + nutrition.
       </p>
+      {showStaleBanner && (
+        <div className="mb-3 px-3 py-2.5 rounded-lg border border-amber-700/50 bg-amber-500/5">
+          <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">
+            Prescription is older than current regimen
+          </p>
+          <p className="text-xs text-[#d4cfc9] leading-relaxed">
+            Hormonal support {daysSinceUpdate !== null ? `was updated ${daysSinceUpdate}d ago` : 'has been updated'}. The active{' '}
+            {programStale && nutritionStale ? 'training program and nutrition plan' : programStale ? 'training program' : 'nutrition plan'}{' '}
+            {programStale && nutritionStale ? 'were' : 'was'} generated before that change. Recovery capacity, RPE ceilings, and protein synthesis assumptions may no longer match. Consider regenerating from the macro plan / nutrition page.
+          </p>
+        </div>
+      )}
       {editing ? (
         <div className="space-y-3">
           <textarea

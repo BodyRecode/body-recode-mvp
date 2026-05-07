@@ -18,6 +18,12 @@ export async function PATCH(
     return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 })
   }
 
+  // Stamp hormonal_support_updated_at when the regimen actually changes so
+  // downstream prescriptions can detect staleness.
+  if ('hormonal_support' in updates) {
+    updates.hormonal_support_updated_at = new Date().toISOString()
+  }
+
   const admin = createAdminClient()
   const { error } = await admin
     .from('clients')
