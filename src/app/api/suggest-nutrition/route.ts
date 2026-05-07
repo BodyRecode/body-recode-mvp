@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
     { data: client },
     { data: cffs },
     { data: intake },
+    { data: baseline },
     { data: previousPlans },
     { data: activeProgram },
     { data: recentReviews },
@@ -32,6 +33,12 @@ export async function POST(request: NextRequest) {
       .select('bodyweight_kg, height_cm, age, sex, body_composition_notes, digestive_tolerance, food_intolerances, food_exclusions, appetite_patterns, training_history, training_frequency_current, training_goals, lifestyle_stress_level, sleep_quality, sleep_hours_average')
       .eq('client_id', client_id)
       .order('submitted_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    admin.from('baselines')
+      .select('bodyweight_kg, waist_cm, hips_cm, chest_cm, captured_at')
+      .eq('client_id', client_id)
+      .order('captured_at', { ascending: false })
       .limit(1)
       .maybeSingle(),
     admin.from('nutrition_plans')
@@ -51,6 +58,16 @@ export async function POST(request: NextRequest) {
       .order('reviewed_at', { ascending: false })
       .limit(5),
   ])
+
+  // Bodyweight may live in intakes or baselines. Baseline is the canonical
+  // capture point in the current onboarding flow, so prefer baseline when
+  // intake didn't carry it. Track which source we used so the prompt can
+  // reflect it accurately.
+  const bodyweightKg = intake?.bodyweight_kg ?? baseline?.bodyweight_kg ?? null
+  const bodyweightSource =
+    intake?.bodyweight_kg ? 'intake'
+    : baseline?.bodyweight_kg ? `baseline (${baseline.captured_at?.slice(0, 10) ?? 'date unknown'})`
+    : null
 
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
 
@@ -75,27 +92,37 @@ CFFS — FOUNDATIONAL SYNTHESIS:
     contextParts.push(`\nCFFS: Not available. Apply conservative Stabilisation defaults.`)
   }
 
-  if (intake) {
-    contextParts.push(`
-INTAKE CONTEXT:
-- Bodyweight: ${intake.bodyweight_kg ? `${intake.bodyweight_kg}kg` : 'Not provided'}
-- Height: ${intake.height_cm ? `${intake.height_cm}cm` : 'Not provided'}
-- Age: ${intake.age || 'Not provided'}
-- Sex: ${intake.sex || 'Not provided'}
-- Body composition notes: ${intake.body_composition_notes || 'Not provided'}
-- Digestive tolerance: ${intake.digestive_tolerance || 'Not provided'}
-- Food intolerances: ${intake.food_intolerances || 'None noted'}
-- Food exclusions: ${intake.food_exclusions || 'None noted'}
-- Appetite patterns: ${intake.appetite_patterns || 'Not provided'}
-- Training history: ${intake.training_history || 'Not provided'}
-- Current training frequency: ${intake.training_frequency_current || 'Not provided'}
-- Training goals: ${intake.training_goals || 'Not provided'}
-- Lifestyle stress level: ${intake.lifestyle_stress_level || 'Not provided'}
-- Sleep quality: ${intake.sleep_quality || 'Not provided'}
-- Average sleep hours: ${intake.sleep_hours_average || 'Not provided'}`)
-  } else {
-    contextParts.push(`\nINTAKE: Not available. Apply conservative defaults.`)
+  // Body composition + intake context. Bodyweight is critical for protein
+  // anchor — emit it from whichever source has it (baseline as fallback when
+  // the foundational intake hasn't been submitted yet).
+  const intakeLines: string[] = []
+  intakeLines.push(`- Bodyweight: ${bodyweightKg ? `${bodyweightKg}kg${bodyweightSource ? ` (from ${bodyweightSource})` : ''}` : 'Not provided'}`)
+  intakeLines.push(`- Height: ${intake?.height_cm ? `${intake.height_cm}cm` : 'Not provided'}`)
+  intakeLines.push(`- Age: ${intake?.age || 'Not provided'}`)
+  intakeLines.push(`- Sex: ${intake?.sex || 'Not provided'}`)
+  if (baseline?.waist_cm || baseline?.hips_cm || baseline?.chest_cm) {
+    const meas: string[] = []
+    if (baseline.waist_cm) meas.push(`waist ${baseline.waist_cm}cm`)
+    if (baseline.hips_cm) meas.push(`hips ${baseline.hips_cm}cm`)
+    if (baseline.chest_cm) meas.push(`chest ${baseline.chest_cm}cm`)
+    intakeLines.push(`- Baseline measurements: ${meas.join(', ')}`)
   }
+  if (intake) {
+    intakeLines.push(`- Body composition notes: ${intake.body_composition_notes || 'Not provided'}`)
+    intakeLines.push(`- Digestive tolerance: ${intake.digestive_tolerance || 'Not provided'}`)
+    intakeLines.push(`- Food intolerances: ${intake.food_intolerances || 'None noted'}`)
+    intakeLines.push(`- Food exclusions: ${intake.food_exclusions || 'None noted'}`)
+    intakeLines.push(`- Appetite patterns: ${intake.appetite_patterns || 'Not provided'}`)
+    intakeLines.push(`- Training history: ${intake.training_history || 'Not provided'}`)
+    intakeLines.push(`- Current training frequency: ${intake.training_frequency_current || 'Not provided'}`)
+    intakeLines.push(`- Training goals: ${intake.training_goals || 'Not provided'}`)
+    intakeLines.push(`- Lifestyle stress level: ${intake.lifestyle_stress_level || 'Not provided'}`)
+    intakeLines.push(`- Sleep quality: ${intake.sleep_quality || 'Not provided'}`)
+    intakeLines.push(`- Average sleep hours: ${intake.sleep_hours_average || 'Not provided'}`)
+  } else {
+    intakeLines.push(`- Foundational intake: not yet submitted (using baseline data only).`)
+  }
+  contextParts.push(`\nINTAKE CONTEXT:\n${intakeLines.join('\n')}`)
 
   if (activeProgram) {
     contextParts.push(`

@@ -40,6 +40,7 @@ export async function POST(request: NextRequest) {
     { data: client },
     { data: cffs },
     { data: intake },
+    { data: baseline },
     { data: previousPlans },
   ] = await Promise.all([
     admin.from('clients').select('id, name').eq('id', client_id).maybeSingle(),
@@ -50,6 +51,12 @@ export async function POST(request: NextRequest) {
       .order('submitted_at', { ascending: false })
       .limit(1)
       .maybeSingle(),
+    admin.from('baselines')
+      .select('bodyweight_kg, captured_at')
+      .eq('client_id', client_id)
+      .order('captured_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
     admin.from('nutrition_plans')
       .select('plan_name, entry_state, generated_at')
       .eq('client_id', client_id)
@@ -57,6 +64,15 @@ export async function POST(request: NextRequest) {
       .order('generated_at', { ascending: false })
       .limit(3),
   ])
+
+  // Bodyweight may live in intakes or baselines. Baseline is the canonical
+  // capture point in the current onboarding flow, so prefer baseline when
+  // intake didn't carry it.
+  const bodyweightKg = intake?.bodyweight_kg ?? baseline?.bodyweight_kg ?? null
+  const bodyweightSource =
+    intake?.bodyweight_kg ? 'intake'
+    : baseline?.bodyweight_kg ? `baseline (${baseline.captured_at?.slice(0, 10) ?? 'date unknown'})`
+    : null
 
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
 
@@ -75,20 +91,24 @@ export async function POST(request: NextRequest) {
     ].join('\n')
   }
 
-  let intakeText: string | null = null
+  // Build intake/baseline context. Bodyweight is critical for protein anchor —
+  // emit from whichever source has it, even when the foundational intake
+  // hasn't been submitted yet.
+  const intakeLines: string[] = []
+  intakeLines.push(`Bodyweight: ${bodyweightKg ? `${bodyweightKg}kg${bodyweightSource ? ` (from ${bodyweightSource})` : ''}` : 'Not provided'}`)
+  intakeLines.push(`Height: ${intake?.height_cm ? `${intake.height_cm}cm` : 'Not provided'}`)
+  intakeLines.push(`Age: ${intake?.age || 'Not provided'}`)
+  intakeLines.push(`Sex: ${intake?.sex || 'Not provided'}`)
   if (intake) {
-    intakeText = [
-      `Bodyweight: ${intake.bodyweight_kg ? `${intake.bodyweight_kg}kg` : 'Not provided'}`,
-      `Height: ${intake.height_cm ? `${intake.height_cm}cm` : 'Not provided'}`,
-      `Age: ${intake.age || 'Not provided'}`,
-      `Sex: ${intake.sex || 'Not provided'}`,
-      `Digestive tolerance: ${intake.digestive_tolerance || 'Not provided'}`,
-      `Food intolerances: ${intake.food_intolerances || 'None'}`,
-      `Training history: ${intake.training_history || 'Not provided'}`,
-      `Lifestyle stress: ${intake.lifestyle_stress_level || 'Not provided'}`,
-      `Sleep quality: ${intake.sleep_quality || 'Not provided'}`,
-    ].join('\n')
+    intakeLines.push(`Digestive tolerance: ${intake.digestive_tolerance || 'Not provided'}`)
+    intakeLines.push(`Food intolerances: ${intake.food_intolerances || 'None'}`)
+    intakeLines.push(`Training history: ${intake.training_history || 'Not provided'}`)
+    intakeLines.push(`Lifestyle stress: ${intake.lifestyle_stress_level || 'Not provided'}`)
+    intakeLines.push(`Sleep quality: ${intake.sleep_quality || 'Not provided'}`)
+  } else {
+    intakeLines.push(`Foundational intake: not yet submitted (using baseline data only).`)
   }
+  const intakeText: string | null = intakeLines.join('\n')
 
   const inputs: NutritionPrescriptionInputs = {
     plan_name: plan_name || `Nutrition Plan — ${entry_state.replace(/_/g, ' ')}`,
