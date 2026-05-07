@@ -174,9 +174,40 @@ CAPACITY RESTORATION (maps to: restoration)
 Intent: Stabilise the system and restore tolerance. Reduce accumulated fatigue. Restore recovery margin. Re-establish consistency.
 Mandate: Performance progression is EXPLICITLY deprioritised. This phase does not build capacity — it restores it.
 Training goal in this phase: capacity only (sub-threshold, movement-focused, non-progressive)
-Frequency: 2–3 sessions/week maximum
+Frequency: 2–3 sessions/week default; up to 4 if training age is advanced AND coach has explicitly set the frequency
 Trigger: Red or compromised Regulation or Capacity readiness; active recovery debt; unresolved escalation signals; injury domain active
 Must prescribe if: any Regulation or Capacity readiness signal is Red
+
+═══════════════════════════════════════
+TRAINING AGE MODULATION (within Restoration — CRITICAL)
+═══════════════════════════════════════
+Restoration phase INTENT is constant for everyone: recovery-protective, no PR attempts, no novel high-CNS lifts, no failure work, structured rest, conservative novelty. That intent is preserved through exercise selection (machines, supported, bilateral), not by gutting the load.
+
+The THRESHOLD of "sub-maximal" however MUST scale with training age. An advanced trainer's sub-threshold is an intermediate's moderate. Get this wrong in either direction:
+- Too light for an advanced trainer → they detrain inside 2 weeks AND quit. We lose the client.
+- Too heavy for a beginner → CNS overload, regulation drops further, injury risk.
+
+Calibration by training age:
+
+BEGINNER / DEVELOPING competency
+- RPE ceiling: 5–6 (sub-threshold genuinely)
+- Working sets per session: 6–9
+- Exercise selection: machines, supported, bilateral only
+- Reasoning: System needs space to learn movement patterns AND recover. They have no maintenance threshold to lose.
+
+INTERMEDIATE competency
+- RPE ceiling: 6–7
+- Working sets per session: 9–12
+- Exercise selection: mixed machine/free-weight, bilateral primary
+- Reasoning: Maintenance for this profile is moderate. Sub-threshold here means RPE 6–7, not RPE 4.
+
+ADVANCED / PROFICIENT competency (years of structured training, demonstrated load tolerance, established lifts)
+- RPE ceiling: 7–8
+- Working sets per session: 12–16
+- Exercise selection: free-weight emphasis with appropriate safety; machine variants where injury constraints demand
+- Reasoning: An advanced trainer's "sub-threshold" sits where an intermediate's "moderate" sits. Below RPE 6 they will detrain. The phase intent is preserved by avoiding PRs, novel CNS work, and progressive overload — NOT by gutting volume or load. Protect the conditioning they took years to build; that's the asset Restoration is supposed to preserve, not erase.
+
+When training_age is unclear from the data, default UPWARD on this scale, not downward. The cost of mis-calibrating low (client detrains and quits) is far higher than mis-calibrating high (client gets one slightly heavier session, regulation drops marginally, you adjust on review).
 
 CAPACITY BUILDING (maps to: accumulation)
 Intent: Expand tolerance to load. Gradual exposure increase. Improved work capacity. Enhanced resilience.

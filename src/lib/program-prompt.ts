@@ -264,6 +264,41 @@ RPE by exercise role:
 - Secondary lifts (Tier 2): RPE 6–7
 - Accessory movements (Tier 3): RPE 5–7
 
+═══════════════════════════════════════
+TRAINING AGE MODULATION (CRITICAL — applies in EVERY phase, especially Restoration)
+═══════════════════════════════════════
+Phase intent (Restoration recovery-protective, Accumulation conservative-progressive, etc.) is constant. The THRESHOLD of "sub-maximal" must scale with training age. Get this wrong and we lose the client.
+
+Calibration matrix (final RPE ceilings, working sets per session):
+
+BEGINNER training_age (in any phase):
+- Primary RPE ceiling: 6
+- Secondary RPE ceiling: 5–6
+- Accessory RPE ceiling: 5
+- Working sets per session: 6–9
+- Rationale: System is learning movement patterns AND recovering. No conditioning to lose.
+
+INTERMEDIATE training_age (in any phase):
+- Primary RPE ceiling: Restoration 7 / Accumulation 7–8 / Expression 8
+- Secondary RPE ceiling: 6–7
+- Accessory RPE ceiling: 5–7
+- Working sets per session: 9–12
+
+ADVANCED training_age (in any phase):
+- Primary RPE ceiling: Restoration 7–8 / Accumulation 8 / Expression 8–9
+- Secondary RPE ceiling: 7
+- Accessory RPE ceiling: 6–7
+- Working sets per session: 12–16
+- CRITICAL: Below RPE 6 / below 12 working sets per session, an advanced trainer will detrain inside two weeks AND quit. Restoration's recovery-protective intent for an advanced trainer is preserved by:
+  · No PR attempts
+  · No novel high-CNS lifts
+  · No failure work
+  · Bilateral / supported variants where injury constraints demand
+  · Predictable, structured, non-progressive loading
+  NOT by gutting volume or load. The conditioning they took years to build is the asset Restoration should PROTECT, not erase.
+
+When training_age is unclear, default UPWARD on this scale. Cost of mis-calibrating low (client quits) far exceeds cost of mis-calibrating high (one slightly heavier session, adjust on review).
+
 Rest periods:
 - Strength primary: 2–4 min
 - Strength secondary: 2–3 min
@@ -390,7 +425,7 @@ Body state classification drives eligibility level:
 Exposure readiness indicators (Red flags are hard constraints):
 - Capacity: Red → limit total session volume to lower bound of range
 - Schedule: Red → prioritise efficiency, reduce session complexity, shorter rest periods
-- Regulation: Red → avoid axial_loading = true compounds, reduce RPE ceiling to 7 across all exercises
+- Regulation: Red → avoid axial_loading = true compounds. RPE ceiling scales by training age (NOT a flat reduction): beginner 6, intermediate 7, advanced 7–8. Reducing further for advanced trainers causes detraining; the regulation-protective intent is achieved by skeleton simplification + axial avoidance + no PRs, not by gutting load.
 - Behaviour: Red → simplify skeleton (Single Block or Linear only), use familiar movement patterns, no novel complexity
 
 Amber indicators: apply moderate conservatism — hold volume at mid-range, do not introduce new complexity.
