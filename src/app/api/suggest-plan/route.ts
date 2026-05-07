@@ -99,6 +99,17 @@ MACRO ARC DESIGN RULES
 - Do not prescribe hypertrophy as goal in restoration blocks
 - Each block must logically follow from the prior block's expected outcome
 
+═══════════════════════════════════════
+ENUM VALUES — STRICTLY ENFORCED
+═══════════════════════════════════════
+progression_phase MUST be exactly one of: accumulation | intensification | realization | restoration
+- "Consolidation" / "Maintenance" → progression_phase: "accumulation" + phase_objective: "Consolidation and Stability"
+- "Deload" / "Recovery" → progression_phase: "restoration"
+- "Performance Expression" → progression_phase: "realization"
+NEVER use 'consolidation', 'maintenance', 'deload' as progression_phase values. They are phase objectives, not phases.
+
+training_goal MUST be exactly one of: strength | hypertrophy | capacity
+
 OUTPUT FORMAT — return ONLY valid JSON, no markdown:
 {
   "plan_name": "string",
@@ -214,6 +225,42 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
     suggestion = JSON.parse(jsonMatch[0])
   } catch {
     return NextResponse.json({ error: 'JSON parse failed' }, { status: 500 })
+  }
+
+  // Normalise enum values that Claude sometimes gets wrong. The DB CHECK
+  // constraints only accept a fixed set of progression_phase values; any
+  // other label (e.g. 'consolidation', 'maintenance', 'deload') needs to
+  // map back to the closest canonical phase. Per doctrine:
+  //   - 'consolidation' / 'maintenance' → 'accumulation' (accumulation at
+  //     maintenance load), with the original concept preserved in
+  //     phase_objective.
+  //   - 'deload' → 'restoration' (recovery-protective intent).
+  const VALID_PHASES = new Set(['accumulation', 'intensification', 'realization', 'restoration'])
+  const VALID_GOALS = new Set(['strength', 'hypertrophy', 'capacity'])
+  const PHASE_REMAP: Record<string, string> = {
+    consolidation: 'accumulation',
+    maintenance: 'accumulation',
+    deload: 'restoration',
+    recovery: 'restoration',
+    expression: 'realization',
+    'performance expression': 'realization',
+  }
+  if (Array.isArray(suggestion.blocks)) {
+    for (const b of suggestion.blocks) {
+      const phase = String(b.progression_phase ?? '').toLowerCase().trim()
+      if (!VALID_PHASES.has(phase) && PHASE_REMAP[phase]) {
+        const original = b.progression_phase
+        b.progression_phase = PHASE_REMAP[phase]
+        if (!b.phase_objective) {
+          b.phase_objective = original.charAt(0).toUpperCase() + original.slice(1)
+        }
+      } else if (!VALID_PHASES.has(phase)) {
+        // Unknown value — fall back to accumulation as the most common safe choice.
+        b.progression_phase = 'accumulation'
+      }
+      const goal = String(b.training_goal ?? '').toLowerCase().trim()
+      if (!VALID_GOALS.has(goal)) b.training_goal = 'capacity'
+    }
   }
 
   return NextResponse.json({ suggestion })
