@@ -71,22 +71,33 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
   const [editingBlock, setEditingBlock] = useState<number | null>(null)
 
   useEffect(() => {
+    // AbortController guards against React Strict Mode firing the effect twice
+    // and leaving stale error state from a cancelled call.
+    const ac = new AbortController()
     fetch('/api/suggest-plan', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ client_id: clientId }),
+      signal: ac.signal,
     })
       .then(r => r.json())
       .then(data => {
+        if (ac.signal.aborted) return
         if (data.error) { setError(data.error); setLoading(false); return }
         const s: Suggestion = data.suggestion
         setSuggestion(s)
         setPlanName(s.plan_name)
         setMacroObjective(s.macro_objective)
         setBlocks(s.blocks)
+        setError(null)
         setLoading(false)
       })
-      .catch(() => { setError('Failed to load suggestion'); setLoading(false) })
+      .catch(err => {
+        if (err?.name === 'AbortError') return
+        setError('Failed to load suggestion')
+        setLoading(false)
+      })
+    return () => ac.abort()
   }, [clientId])
 
   function updateBlock(i: number, updates: Partial<SuggestedBlock>) {
