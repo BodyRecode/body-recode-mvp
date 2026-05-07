@@ -260,5 +260,26 @@ Output valid JSON only — no markdown, no commentary:
     return NextResponse.json({ error: 'JSON parse failed' }, { status: 500 })
   }
 
+  // Deterministic protein anchor when bodyweight is known. Haiku tends to
+  // default to ~85g (the "no-data" fallback) even when the prompt has the
+  // bodyweight, so don't trust it for the math. Multiplier scales with the
+  // entry state per doctrine.
+  if (bodyweightKg) {
+    const state = String(suggestion.entry_state ?? '').toLowerCase()
+    const multiplier =
+      state.includes('high_output') || state.includes('high output') ? 2.0
+      : state.includes('training_support') || state.includes('training support') ? 1.9
+      : 1.7  // stabilisation / recovery_reset / default
+    const computed = Math.round(bodyweightKg * multiplier)
+    const aiValue = Number(suggestion.protein_anchor_g)
+    // Override only if the AI produced something obviously off (default 85,
+    // or below the bodyweight × 1.4 floor). Otherwise trust the AI.
+    const floor = Math.round(bodyweightKg * 1.4)
+    if (!aiValue || aiValue < floor) {
+      suggestion.protein_anchor_g = computed
+      suggestion.protein_anchor_g_reason = `Computed from bodyweight ${bodyweightKg}kg × ${multiplier} (entry state: ${suggestion.entry_state}). Original AI suggestion (${aiValue || 'missing'}) overridden — fell below the bodyweight × 1.4 floor.`
+    }
+  }
+
   return NextResponse.json({ suggestion })
 }

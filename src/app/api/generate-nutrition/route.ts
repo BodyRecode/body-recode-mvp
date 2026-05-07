@@ -116,6 +116,25 @@ export async function POST(request: NextRequest) {
   }
   const intakeText: string | null = intakeLines.join('\n')
 
+  // Floor the protein anchor against bodyweight if known. Coach can pass any
+  // value through the form; we only override when the form value falls below
+  // the bodyweight × 1.4 floor (catches stale 85g defaults from upstream
+  // suggestions when bodyweight wasn't yet wired in).
+  const inboundProtein = Number(protein_anchor_g)
+  let resolvedProtein = inboundProtein
+  if (bodyweightKg) {
+    const floor = Math.round(bodyweightKg * 1.4)
+    if (!inboundProtein || inboundProtein < floor) {
+      const stateNorm = String(entry_state).toLowerCase()
+      const multiplier =
+        stateNorm.includes('high_output') || stateNorm.includes('high output') ? 2.0
+        : stateNorm.includes('training_support') || stateNorm.includes('training support') ? 1.9
+        : 1.7
+      resolvedProtein = Math.round(bodyweightKg * multiplier)
+      console.warn(`[generate-nutrition] Protein floor applied: ${inboundProtein || 'missing'}g → ${resolvedProtein}g (bodyweight ${bodyweightKg}kg × ${multiplier})`)
+    }
+  }
+
   const inputs: NutritionPrescriptionInputs = {
     plan_name: plan_name || `Nutrition Plan — ${entry_state.replace(/_/g, ' ')}`,
     entry_state,
@@ -124,7 +143,7 @@ export async function POST(request: NextRequest) {
     constraint_level: constraint_level || 'moderate',
     recovery_status: recovery_status || 'stable',
     uncertainty_level: uncertainty_level || 'moderate',
-    protein_anchor_g: Number(protein_anchor_g),
+    protein_anchor_g: resolvedProtein,
     carb_demand_level,
     meal_frequency: Number(meal_frequency) || 4,
     training_days_per_week: Number(training_days_per_week) || 3,
