@@ -16,6 +16,7 @@ interface PlanBlock {
   phase_objective: string | null
   training_goal: string
   week_duration: number
+  training_frequency: number | null
   status: 'planned' | 'in_progress' | 'complete' | 'skipped'
   program_id: string | null
   notes: string | null
@@ -78,6 +79,7 @@ const emptyBlock = {
   phase_objective: '',
   training_goal: 'strength',
   week_duration: 4,
+  training_frequency: 3,
   notes: '',
 }
 
@@ -137,6 +139,7 @@ export default function MacroPlanEditor({
           phase_objective: blockForm.phase_objective || null,
           training_goal: blockForm.training_goal,
           week_duration: blockForm.week_duration,
+          training_frequency: blockForm.training_frequency,
           notes: blockForm.notes || null,
         }),
       })
@@ -305,6 +308,7 @@ export default function MacroPlanEditor({
 
                       <div className="flex items-center gap-4 text-xs text-stone-500 mb-2 pl-7">
                         <span>{block.week_duration} weeks</span>
+                        {block.training_frequency && <span>{block.training_frequency}x/week</span>}
                         {block.execution_arc && <span className="capitalize">{block.execution_arc} arc</span>}
                         {block.phase_category && <span>{block.phase_category}</span>}
                         {block.phase_objective && <span>{block.phase_objective}</span>}
@@ -421,6 +425,7 @@ function BlockEditForm({
     phase_objective: block.phase_objective ?? '',
     training_goal: block.training_goal,
     week_duration: block.week_duration,
+    training_frequency: block.training_frequency ?? 3,
     notes: block.notes ?? '',
     status: block.status,
   })
@@ -487,7 +492,7 @@ function BlockFormFields({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-3 gap-3">
         <div>
           <label className={labelCls}>Week Duration</label>
           <select value={form.week_duration} onChange={e => setForm(p => ({ ...p, week_duration: parseInt(e.target.value) }))} className={inputCls}>
@@ -500,6 +505,16 @@ function BlockFormFields({
             <option value={8}>8 weeks</option>
             <option value={10}>10 weeks</option>
             <option value={12}>12 weeks</option>
+          </select>
+        </div>
+        <div>
+          <label className={labelCls}>Sessions / Week</label>
+          <select value={form.training_frequency} onChange={e => setForm(p => ({ ...p, training_frequency: parseInt(e.target.value) }))} className={inputCls}>
+            <option value={2}>2x</option>
+            <option value={3}>3x</option>
+            <option value={4}>4x</option>
+            <option value={5}>5x</option>
+            <option value={6}>6x</option>
           </select>
         </div>
         <div>

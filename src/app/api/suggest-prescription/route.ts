@@ -139,6 +139,9 @@ If the most recent direction is Rebuild, this means the client has been struggli
 
   if (planBlock) {
     const plan = planBlock.training_plans as { plan_name: string; macro_objective: string | null } | null
+    const freqLine = planBlock.training_frequency
+      ? `\n- COACH-SET FREQUENCY: ${planBlock.training_frequency}x/week (the coach has explicitly set this on the macro plan — your training_frequency MUST equal ${planBlock.training_frequency} unless a Red readiness signal makes that unsafe; if you must deviate, explain why in training_frequency_reason).`
+      : ''
     contextParts.push(`
 MACRO PLAN CONTEXT:
 - Plan: ${plan?.plan_name ?? 'Unknown'}
@@ -146,7 +149,7 @@ MACRO PLAN CONTEXT:
 - This block: ${planBlock.block_name} — ${planBlock.progression_phase}, ${planBlock.training_goal}, ${planBlock.week_duration}w
 - Phase category: ${planBlock.phase_category ?? 'Not specified'}
 - Execution arc: ${planBlock.execution_arc ?? 'Not specified'}
-- Phase objective: ${planBlock.phase_objective ?? 'Not specified'}`)
+- Phase objective: ${planBlock.phase_objective ?? 'Not specified'}${freqLine}`)
   }
 
   const systemPrompt = `You are the Body Recode™ Prescription Intelligence Layer. Your role is to analyse a client's full context and produce a governed prescription recommendation — with clear reasoning for every field — before program generation begins.
@@ -299,6 +302,19 @@ Output valid JSON only — no markdown, no commentary:
     suggestion = JSON.parse(jsonMatch[0])
   } catch {
     return NextResponse.json({ error: 'JSON parse failed' }, { status: 500 })
+  }
+
+  // If the coach has set a frequency on the macro-plan block, that's
+  // authoritative — override anything Claude produced. Claude can still
+  // explain the trade-off in the reason field, but the number itself is the
+  // coach's call.
+  if (planBlock && typeof planBlock.training_frequency === 'number') {
+    const aiFreq = Number(suggestion.training_frequency)
+    if (aiFreq !== planBlock.training_frequency) {
+      const aiReason = suggestion.training_frequency_reason ?? ''
+      suggestion.training_frequency = planBlock.training_frequency
+      suggestion.training_frequency_reason = `Coach-set frequency from macro plan (${planBlock.training_frequency}x/week) takes precedence. AI initially suggested ${aiFreq}x with reasoning: ${aiReason}`
+    }
   }
 
   return NextResponse.json({ suggestion })

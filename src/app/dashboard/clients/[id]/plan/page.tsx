@@ -14,6 +14,7 @@ interface PlanBlock {
   progression_phase: string
   training_goal: string
   week_duration: number
+  training_frequency: number | null
   status: 'planned' | 'in_progress' | 'complete' | 'skipped'
   phase_category: string | null
   execution_arc: string | null

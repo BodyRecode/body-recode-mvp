@@ -12,7 +12,7 @@ export async function PATCH(
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
 
   const body = await request.json()
-  const allowed = ['block_name', 'progression_phase', 'phase_category', 'execution_arc', 'phase_objective', 'training_goal', 'week_duration', 'status', 'notes', 'program_id']
+  const allowed = ['block_name', 'progression_phase', 'phase_category', 'execution_arc', 'phase_objective', 'training_goal', 'week_duration', 'training_frequency', 'status', 'notes', 'program_id']
   const updates: Record<string, unknown> = {}
   for (const key of allowed) {
     if (key in body) updates[key] = body[key]

@@ -159,6 +159,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
           execution_arc: b.execution_arc,
           phase_category: b.phase_category || null,
           phase_objective: b.phase_objective || null,
+          training_frequency: b.implied_frequency,
           notes: b.block_rationale ? `Implied ${b.implied_frequency}x/week. ${b.nutrition_context}` : null,
         }),
       })

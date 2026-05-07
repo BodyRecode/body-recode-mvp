@@ -13,7 +13,7 @@ export async function POST(
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
 
   const body = await request.json()
-  const { client_id, block_name, progression_phase, phase_category, execution_arc, phase_objective, training_goal, week_duration, notes } = body
+  const { client_id, block_name, progression_phase, phase_category, execution_arc, phase_objective, training_goal, week_duration, training_frequency, notes } = body
 
   if (!client_id || !block_name || !progression_phase || !training_goal || !week_duration) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -45,6 +45,7 @@ export async function POST(
       phase_objective: phase_objective || null,
       training_goal,
       week_duration,
+      training_frequency: training_frequency ?? null,
       notes: notes || null,
       status: 'planned',
     })
