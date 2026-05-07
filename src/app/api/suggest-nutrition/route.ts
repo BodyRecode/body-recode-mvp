@@ -207,7 +207,7 @@ Output valid JSON only — no markdown, no commentary:
   try {
     message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 2500,
+      max_tokens: 6000,
       system: systemPrompt,
       messages: [{ role: 'user', content: contextParts.join('\n') + '\n\nGenerate the nutrition prescription suggestion. JSON only.' }],
     })

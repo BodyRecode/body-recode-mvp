@@ -176,14 +176,19 @@ export default function PrescriptionSuggest({
   })
 
   useEffect(() => {
+    // AbortController guards against React Strict Mode firing the effect
+    // twice and leaving stale error state from a cancelled call.
+    const ac = new AbortController()
     async function fetchSuggestion() {
       try {
         const res = await fetch('/api/suggest-prescription', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ client_id: clientId, plan_block_id: planBlockId }),
+          signal: ac.signal,
         })
         const data = await res.json()
+        if (ac.signal.aborted) return
         if (!res.ok) { setError(data.error || 'Suggestion failed'); return }
         const s: Suggestion = data.suggestion
         setSuggestion(s)
@@ -197,13 +202,16 @@ export default function PrescriptionSuggest({
           movement_competency: s.movement_competency,
           week_duration: s.week_duration as 4 | 6 | 8,
         }))
+        setError(null)
       } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') return
         setError(err instanceof Error ? err.message : 'Failed to load suggestion')
       } finally {
-        setLoading(false)
+        if (!ac.signal.aborted) setLoading(false)
       }
     }
     fetchSuggestion()
+    return () => ac.abort()
   }, [clientId, planBlockId])
 
   function toggleEquipment(value: string) {
