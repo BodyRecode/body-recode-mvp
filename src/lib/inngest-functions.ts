@@ -1407,6 +1407,44 @@ export const executeWorkflowFunction = inngest.createFunction(
     for (let i = 0; i < steps.length; i++) {
       const s = steps[i]
 
+      // Bail out if the lead has converted to a client or been explicitly
+      // declined since this workflow started. Long sleep steps (days/weeks
+      // between drip emails) mean the lead's state may have moved on by the
+      // time we wake; we don't want a freshly-converted client receiving
+      // 'finish your scorecard' nudges.
+      if (ctx.leadId) {
+        const stopReason: string | null = await step.run(`check-lead-state-${i}`, async () => {
+          const admin = createAdminClient()
+          const { data } = await admin
+            .from('leads')
+            .select('converted_to_client_id, status, active')
+            .eq('id', ctx.leadId!)
+            .maybeSingle()
+          if (!data) return 'lead_deleted'
+          if (data.active === false) return 'lead_inactive'
+          if (data.converted_to_client_id) return 'converted_to_client'
+          if (data.status === 'closed_declined') return 'closed_declined'
+          return null
+        })
+
+        if (stopReason) {
+          if (executionId) {
+            await step.run('mark-cancelled', async () => {
+              const admin = createAdminClient()
+              await admin
+                .from('be_workflow_executions')
+                .update({
+                  status: 'cancelled',
+                  completed_at: new Date().toISOString(),
+                  error_message: `Stopped at step ${i}: ${stopReason}`,
+                })
+                .eq('id', executionId)
+            })
+          }
+          return
+        }
+      }
+
       // Update current step in execution log
       if (executionId) {
         await step.run(`update-progress-${i}`, async () => {

@@ -129,7 +129,7 @@ create table if not exists be_workflow_executions (
   workflow_id uuid references be_workflows(id) on delete cascade,
   lead_id uuid references leads(id) on delete set null,
   client_id uuid references clients(id) on delete set null,
-  status text default 'running' check (status in ('running', 'completed', 'failed', 'paused')),
+  status text default 'running' check (status in ('running', 'completed', 'failed', 'paused', 'cancelled')),
   current_step integer default 0,
   started_at timestamptz default now(),
   completed_at timestamptz,
