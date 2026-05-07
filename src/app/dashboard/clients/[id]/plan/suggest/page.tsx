@@ -26,7 +26,7 @@ export default async function MacroPlanSuggestPage({ params }: { params: Promise
           <span className="text-stone-300">Suggest Arc</span>
         </div>
         <h1 className="text-2xl font-semibold text-white">Suggest Macro Arc</h1>
-        <p className="text-stone-500 text-sm mt-1">Review and edit the suggested training arc before approving as a draft.</p>
+        <p className="text-stone-500 text-sm mt-1">Review and edit, then save as a draft. You&apos;ll approve it on the plan page to activate.</p>
       </div>
 
       <MacroPlanSuggest clientId={id} />
