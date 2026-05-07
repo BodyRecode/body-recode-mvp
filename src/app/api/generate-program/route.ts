@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { resolveEffectiveTier, clampProgramToDoctrine } from '@/lib/training-doctrine'
 import {
   buildProgramSystemPrompt,
   buildProgramUserPrompt,
@@ -216,8 +217,32 @@ export async function POST(request: NextRequest) {
   let programData
   try {
     programData = JSON.parse(jsonMatch[0])
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: `JSON parse failed: ${jsonMatch[0].slice(0, 100)}` }, { status: 500 })
+  }
+
+  // Doctrine enforcement — never trust the LLM for RPE ceilings or set
+  // counts. Walks every session/block/exercise and clamps to the floor
+  // implied by the client's effective training tier (training_age shifted
+  // up by hormonal_support load) and the prescribed phase.
+  const effectiveTier = resolveEffectiveTier(
+    training_age as 'beginner' | 'intermediate' | 'advanced',
+    client.hormonal_support
+  )
+  const phaseForDoctrine = (['restoration', 'accumulation', 'intensification', 'realization']
+    .includes(progression_phase) ? progression_phase : 'accumulation') as 'restoration' | 'accumulation' | 'intensification' | 'realization'
+  const clamp = clampProgramToDoctrine(
+    programData.sessions || [],
+    phaseForDoctrine,
+    effectiveTier
+  )
+  programData.sessions = clamp.sessions
+  if (clamp.notes.length > 0) {
+    const doctrineNote = `Doctrine clamp applied (effective tier: ${effectiveTier}, phase: ${phaseForDoctrine}). ${clamp.notes.join(' ')}`
+    programData.weekly_pattern_summary = Array.isArray(programData.weekly_pattern_summary)
+      ? [doctrineNote, ...programData.weekly_pattern_summary]
+      : [doctrineNote, ...(programData.weekly_pattern_summary ? [programData.weekly_pattern_summary] : [])]
+    console.log('[generate-program] Doctrine clamp:', { rpeClamps: clamp.rpeClamps, setsAdded: clamp.setsAdded, tier: effectiveTier, phase: phaseForDoctrine })
   }
 
   // Archive any existing drafts for this client (only one draft at a time)
