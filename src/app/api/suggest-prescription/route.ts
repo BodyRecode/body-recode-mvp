@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     { data: planBlock },
     { data: recentReviews },
   ] = await Promise.all([
-    admin.from('clients').select('id, name').eq('id', client_id).maybeSingle(),
+    admin.from('clients').select('id, name, hormonal_support').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
       .select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_location_history, injury_primary_concern, injury_aggravating_movements, training_responses, sleep_responses, stress_responses')
@@ -64,6 +64,10 @@ export async function POST(request: NextRequest) {
   const contextParts: string[] = []
 
   contextParts.push(`CLIENT: ${client.name}`)
+
+  if (client.hormonal_support) {
+    contextParts.push(`\nHORMONAL SUPPORT (CRITICAL — modulates recovery and load tolerance):\n${client.hormonal_support}`)
+  }
 
   if (cffs) {
     contextParts.push(`
@@ -229,6 +233,20 @@ Intent: Preserve adaptations and prevent regression. Change is intentionally lim
 Training goal: any, at maintenance demand
 Frequency: 2–3 sessions/week
 Use when: client is between phases, returning from hold, or managing external life stress
+
+═══════════════════════════════════════
+HORMONAL SUPPORT MODULATION (CRITICAL when present)
+═══════════════════════════════════════
+If the HORMONAL SUPPORT section in the client context is populated (e.g. TRT, exogenous testosterone, anabolic support, growth hormone, GLP-1 used during a deficit, peptides), recovery capacity, load tolerance, and protein synthesis are all elevated above what training age alone would predict.
+
+Modulation rules:
+- TRT / exogenous testosterone (within physiological range): treat training-age tolerance as +1 step (intermediate prescriptions can sit closer to advanced thresholds; advanced trainers can sustain more weekly volume without recovery debt).
+- Supraphysiological androgen support: treat as advanced regardless of training age for load tolerance; primary RPE ceiling can sit at 8 in any non-Restoration phase, 7–8 in Restoration. Volume per session can sit at the upper bound of the relevant range. Recovery debt accrues more slowly; do not apply the standard recovery-debt accumulation watch criteria as tightly.
+- GLP-1 in deficit: protein anchor floor stays at 2.0g/kg minimum. Training prescription does NOT scale up — energy availability is constrained even if recovery is intact.
+
+These modulators do not bypass readiness gates (Red regulation still requires Restoration intent). They calibrate the THRESHOLD inside the chosen phase. Sub-threshold for a TRT-supported advanced trainer is not the same load as sub-threshold for an unsupported beginner.
+
+Always reference the hormonal_support text directly in training_age_reason and overall_rationale so the coach can audit the calibration.
 
 ═══════════════════════════════════════
 READINESS GATE RULES (non-negotiable — these block progression prescription)

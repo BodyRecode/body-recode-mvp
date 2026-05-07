@@ -13,6 +13,7 @@ import CopyLinkButton from './copy-link-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
 import ClientReadingPanel from './client-reading-panel'
+import HormonalSupportEditor from './hormonal-support-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
@@ -420,6 +421,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
         </div>
       )}
+
+      <HormonalSupportEditor clientId={client.id} initialValue={client.hormonal_support ?? null} />
 
       <div id="cffs" className="flex items-center justify-between mb-3 mt-6 scroll-mt-8">
         <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Foundational Synthesis <span className="text-[#3c3835] font-normal">- CFFS</span></h2></div>

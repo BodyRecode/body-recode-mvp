@@ -257,9 +257,24 @@ export function buildNutritionUserPrompt(
   inputs: NutritionPrescriptionInputs,
   cffsText: string | null,
   intakeText: string | null,
-  previousPlans: Array<{ plan_name: string; entry_state: string; generated_at: string }> | null
+  previousPlans: Array<{ plan_name: string; entry_state: string; generated_at: string }> | null,
+  hormonalSupport?: string | null
 ): string {
   const lines: string[] = []
+
+  if (hormonalSupport) {
+    lines.push('═══════════════════════════════════════')
+    lines.push('HORMONAL SUPPORT (CRITICAL — modulates protein synthesis + recovery + energy partitioning)')
+    lines.push('═══════════════════════════════════════')
+    lines.push(hormonalSupport)
+    lines.push('')
+    lines.push('Modulation rules:')
+    lines.push('- Exogenous testosterone / TRT: protein synthesis is elevated; protein anchor floor stays as prescribed but consider upper bound. Recovery margin is wider — meal-rhythm restoration windows can be tighter.')
+    lines.push('- Supraphysiological androgen support: protein anchor sits at upper bound (2.0–2.2g/kg). Carbs should support training without unnecessary deficit.')
+    lines.push('- GLP-1: protein anchor floor is 2.0g/kg minimum (preserve LBM). Calorie deficit is built in by the drug; do not stack additional aggressive deficit.')
+    lines.push('- Other peptides / hormonal therapies: surface in rationale; reference how the regimen modulates the prescription.')
+    lines.push('')
+  }
 
   lines.push('═══════════════════════════════════════')
   lines.push('NUTRITION PRESCRIPTION INPUTS')

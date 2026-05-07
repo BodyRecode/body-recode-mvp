@@ -526,12 +526,13 @@ export function buildProgramUserPrompt(
   inputs: ProgramPrescriptionInputs,
   cffs: CFFS | null,
   exercises: ExerciseRow[],
-  macroPlan?: MacroPlanContext | null
+  macroPlan?: MacroPlanContext | null,
+  hormonalSupport?: string | null
 ): string {
   const parts: string[] = []
 
   // CLIENT + PRESCRIPTION INPUTS
-  parts.push(`CLIENT: ${clientName}
+  parts.push(`CLIENT: ${clientName}${hormonalSupport ? `\n\nHORMONAL SUPPORT (CRITICAL — modulates recovery and load tolerance):\n${hormonalSupport}` : ''}
 
 PRESCRIPTION INPUTS:
 - Block name: ${inputs.block_name}

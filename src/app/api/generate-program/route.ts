@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
   // Fetch client
   const { data: client, error: clientError } = await admin
     .from('clients')
-    .select('id, name')
+    .select('id, name, hormonal_support')
     .eq('id', client_id)
     .maybeSingle()
 
@@ -193,7 +193,7 @@ export async function POST(request: NextRequest) {
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 6000,
       system: buildProgramSystemPrompt(),
-      messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext) }],
+      messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.hormonal_support) }],
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
