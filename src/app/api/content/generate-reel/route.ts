@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
-export const maxDuration = 60
+export const maxDuration = 300
 
 // POST /api/content/generate-reel
 // Body: { output_id: string, script: string }

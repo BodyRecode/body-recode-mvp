@@ -3,7 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
-export const maxDuration = 60
+export const maxDuration = 300
 
 // POST /api/content/generate
 // Body: { hook_ids: string[], message_ids: string[], cta_ids: string[], platform: string, campaign_id?: string }
@@ -74,7 +74,7 @@ Rules:
 Return only the final copy. No labels, no explanation.`
 
         const response = await anthropic.messages.create({
-          model: 'claude-sonnet-4-6',
+          model: 'claude-haiku-4-5-20251001',
           max_tokens: 400,
           messages: [{ role: 'user', content: prompt }],
         })

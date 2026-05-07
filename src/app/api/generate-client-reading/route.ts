@@ -10,7 +10,7 @@ import {
 } from '@/lib/client-reading-prompt'
 import { buildFoundationalReadingEmail } from '@/lib/foundational-reading-email'
 
-export const maxDuration = 60
+export const maxDuration = 300
 
 function stripEmDashes<T>(value: T): T {
   if (typeof value === 'string') return value.replace(/—/g, ', ') as T

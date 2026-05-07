@@ -6,7 +6,7 @@ import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@
 import { darkEmailSignature } from '@/lib/email-signature'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 
-export const maxDuration = 60
+export const maxDuration = 300
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 

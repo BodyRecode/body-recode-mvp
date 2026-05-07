@@ -5,7 +5,7 @@ import { buildReportEmail, buildFollowUpEmails, nextMorning9amBrisbane, daysAfte
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 
-export const maxDuration = 60
+export const maxDuration = 300
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://performance.bodyrecode.au',

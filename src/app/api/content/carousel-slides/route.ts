@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 
-export const maxDuration = 30
+export const maxDuration = 300
 
 // POST /api/content/carousel-slides
 // Body: { content_text: string }
@@ -47,7 +47,7 @@ Style options: "quote", "statement", "question"
 - Use "question" for any slide that poses a question`
 
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-6',
+    model: 'claude-haiku-4-5-20251001',
     max_tokens: 800,
     messages: [{ role: 'user', content: prompt }],
   })
