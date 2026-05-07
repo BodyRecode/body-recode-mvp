@@ -9,7 +9,7 @@ import {
   ExerciseRow,
 } from '@/lib/program-prompt'
 
-export const maxDuration = 120
+export const maxDuration = 300
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
@@ -184,11 +184,13 @@ export async function POST(request: NextRequest) {
     ...injuryContext,
   }
 
-  // Generate program via Claude
+  // Generate program via Claude. Switched from Sonnet 4.6 to Haiku 4.5 for
+  // speed (~3-5x faster). Programs are structure-heavy and rule-driven, so
+  // the smaller model holds up well; revisit if quality drops.
   let message
   try {
     message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 6000,
       system: buildProgramSystemPrompt(),
       messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext) }],
