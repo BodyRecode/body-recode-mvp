@@ -503,7 +503,9 @@ export default function HelpPage() {
 
           {/* Section 3 */}
           <Section id="coaching-entry" title="3. Coaching Entry" colour="teal">
-            <p>From the lead detail page, the Coaching Entry section has two options:</p>
+            <p>From the lead detail page, the Coaching Entry section has two paths — fee-first (default) or convert-first (manual override):</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Path A — fee first (default, recommended)</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li><strong>Send to Client</strong> - generates a unique Stripe checkout link and emails it directly to the lead in a branded email. One click.</li>
               <li><strong>Copy Link</strong> - generates the link and copies it to your clipboard for manual sending.</li>
@@ -515,8 +517,16 @@ export default function HelpPage() {
               <li>Their welcome email and intake link are sent to them immediately.</li>
               <li>The lead status updates to <strong>Commencement Fee Paid</strong>.</li>
             </ol>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Path B — convert first, bill later</p>
+            <p>Click <strong>Convert to Client</strong>. A prompt asks <code>paid</code> or <code>later</code>:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><code>paid</code> - mark the fee as already paid (cash, transfer, etc). Status flips to Commencement Fee Paid.</li>
+              <li><code>later</code> - convert now and send the fee link any time. Status stays where it is. The lead page shows an amber <strong>Converted, fee outstanding</strong> callout, and the Send to Client / Copy Link buttons remain available so you can bill when ready. Once the client pays, the Stripe webhook flips status to Commencement Fee Paid and sends the welcome email.</li>
+            </ul>
+            <p><strong>Either path automatically emails the client their portal access</strong> (subject: &quot;[Name], your portal is ready&quot;) so they can begin onboarding immediately - coaching agreement, health declaration, foundational intake, baseline documentation. Sent through <code>sendPortalAccessEmail</code> and logged to <code>client_communications</code>.</p>
             <p>The lead detail page will then show a <strong>View client profile</strong> link.</p>
-            <Note>A manual Convert to Client button is also available as a fallback if needed.</Note>
+            <Note>Use Path B (convert + later) when you want a client onboarding immediately but the fee is being settled separately. The portal opens straight away so they can start the intake while you sort billing.</Note>
             <Training title="Why the commencement fee exists">
               <p>The $240 commencement fee is not a deposit. It is a commitment signal. It separates people who are interested from people who are ready. Someone who pays the commencement fee has moved from considering the program to entering it. That psychological shift matters - it changes how they engage with everything that follows.</p>
               <p className="mt-2">The automation triggered by this payment (profile creation, welcome email, intake link) removes the most failure-prone handover in the entire process. Manual client creation is where admin errors happen. Tying it to the payment makes it impossible to miss.</p>
@@ -877,6 +887,7 @@ export default function HelpPage() {
 
           <Section id="email-sequences" title="15. Email Sequences and Automation" colour="teal">
             <p>The following outbound email sequences run automatically. All emails send from <strong>kade@bodyrecode.au</strong> via Resend. All automated emails use a <strong>dark card template</strong> - black outer background, #111111 inner card, Body Recode logo header, Kade signature with photo at the bottom.</p>
+            <Note><strong>Drip sequences self-cancel on conversion.</strong> Before each step in any active workflow, the runner re-checks the lead state. If the lead has been converted to a client (<code>converted_to_client_id</code> set), deactivated, or marked <strong>Closed - Declined</strong>, the run is marked <strong>cancelled</strong> and remaining emails do not fire. So a lead with a 7-day drip running who converts on day 3 stops getting day 5 / day 7 emails automatically.</Note>
 
             <p className="font-semibold text-white mt-4">Scorecard Follow-up Sequence (automatic)</p>
             <p>Fires when someone completes the Body State Scorecard. <strong>5 emails over 13 days</strong>. Each email is personalised to the lead&apos;s score and body state using <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">{`{{scorecard_score}}`}</code>, <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">{`{{scorecard_state}}`}</code>, and <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">{`{{first_name}}`}</code>. Voice: leads with fat loss as the symptom (buyer language), introduces body state vocabulary as the diagnostic. Emails 1-2 push the $37 Body Decode Report; emails 3-4 push the free strategy call; email 5 names both options based on state.</p>
@@ -1128,13 +1139,35 @@ export default function HelpPage() {
           <Section id="training-program" title="20. Training Program - PTS (Performance Training System)" colour="teal">
             <p>The Training Program section lives on each client profile. It uses the Body Recode™ PTS doctrine and Claude AI to generate structured training programs from your client&apos;s CFFS, intake, and training history. Programs follow the full 9-stage generation pipeline and all doctrine constraints are enforced automatically.</p>
 
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Single entry point — programs always start from a macro-plan block</p>
+            <p>Programs are generated from a meso block in the client&apos;s macro plan. There is one entry: <strong>Generate program →</strong> on the relevant block in the Macro Plan editor. Old &quot;Generate Program&quot; buttons on the main client page and program page are gone — they routed bypassing the macro plan and produced free-form prescriptions without arc context. Hitting <code>/program/suggest</code> directly without a <code>plan_block_id</code> now redirects to the macro plan as defence-in-depth.</p>
+
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">The Generation Flow</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm">
-              <li><strong>Step 1 - Prescription Suggestion.</strong> Click Generate Program on the client profile. The system reads the client&apos;s CFFS, intake, injury context, and training history and produces a suggested prescription - block name, phase, goal, frequency, training age, movement competency, duration - with the reasoning behind every field. You review and edit before anything is generated.</li>
-              <li><strong>Step 2 - Approve &amp; Generate.</strong> Confirm equipment access, adjust any fields if needed, then click Approve &amp; Generate Program. Claude Sonnet generates the full program (30–60 seconds). It is saved as a draft.</li>
-              <li><strong>Step 3 - Draft Review.</strong> The full draft renders on the Training Program page with Discard and Approve Program buttons. Review the program - sessions, blocks, exercises, weekly structure, progression strategy - before promoting it.</li>
-              <li><strong>Step 4 - Approve Program.</strong> Click Approve Program to promote the draft to active. The draft replaces any previously active program. Previous programs are retained as archived history.</li>
+              <li><strong>Step 1 - Open the Macro Plan.</strong> Hit Generate program → on the meso block you want to build. The page reads the block&apos;s phase, goal, duration, and coach-set frequency as authoritative.</li>
+              <li><strong>Step 2 - Prescription Suggestion.</strong> The system reads the client&apos;s CFFS, intake JSONB blobs (training_responses, sleep_responses, stress_responses, fat_map_responses), bodyweight from baseline, hormonal support if set, injury context, and training history. It produces a suggested prescription - block name, phase, goal, frequency, training age, movement competency, duration - with reasoning. Review and edit before generating. Claude&apos;s frequency is overridden deterministically if the macro plan&apos;s training_frequency differs.</li>
+              <li><strong>Step 3 - Approve &amp; Generate.</strong> Confirm equipment access, adjust any fields if needed, then click Approve &amp; Generate Program. Claude Haiku 4.5 generates the full program (~30 seconds). Saved as draft.</li>
+              <li><strong>Step 4 - Draft Review.</strong> The full draft renders with Discard and Approve Program buttons. Review sessions, blocks, exercises, weekly structure, progression strategy.</li>
+              <li><strong>Step 5 - Approve Program.</strong> Promote the draft to active. The draft replaces any previously active program. Previous programs are retained as archived history.</li>
             </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Training Age Modulation (CRITICAL)</p>
+            <p>Restoration phase intent (recovery-protective, no PRs, no novel high-CNS lifts) is constant — but the THRESHOLD of &quot;sub-maximal&quot; scales with training age. Get this wrong and an advanced trainer will detrain inside 2 weeks AND quit.</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Beginner / developing:</strong> RPE ceiling 5–6, 6–9 sets/session, machines + supported only.</li>
+              <li><strong>Intermediate:</strong> Restoration RPE 7, Accumulation 7–8, 9–12 sets/session, mixed machine/free-weight.</li>
+              <li><strong>Advanced / proficient:</strong> Restoration RPE 7–8, Accumulation 8, 12–16 sets/session, free-weight emphasis. Below RPE 6 / 12 sets they detrain. The recovery-protective intent comes from skeleton + axial avoidance + no PRs, NOT from gutting load.</li>
+            </ul>
+            <p>If training age is ambiguous: the doctrine defaults UPWARD (cost of detraining is higher than cost of one heavier session).</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Hormonal Support Modulation</p>
+            <p>If the <strong>Hormonal Support</strong> card on the client profile is populated (TRT, exogenous testosterone, anabolic support, GLP-1, peptides), the prompt scales recovery / load tolerance / protein synthesis upward:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>TRT / exogenous testosterone:</strong> training-age tolerance treated as +1 step (intermediate → close to advanced thresholds).</li>
+              <li><strong>Supraphysiological androgens:</strong> primary RPE ceiling 8 in any non-Restoration phase, 7–8 in Restoration; volume at upper bound; recovery debt accrues more slowly.</li>
+              <li><strong>GLP-1 in deficit:</strong> protein anchor floor 2.0g/kg minimum (preserve LBM); training prescription does NOT scale up — energy availability is constrained.</li>
+            </ul>
+            <p>These modulators don&apos;t bypass readiness gates (Red regulation still requires Restoration intent). They calibrate the threshold inside the chosen phase. See section 3 / Hormonal Support card for capture.</p>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Program Structure</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm">
@@ -1169,7 +1202,10 @@ export default function HelpPage() {
             <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm">
               <li>Access it via <strong>Macro Plan</strong> on the client profile Training Program section.</li>
               <li>Create a plan with a name and macro objective (e.g. &quot;Build capacity foundation → strength expression over 6 months&quot;).</li>
-              <li>Add meso blocks in sequence. Each block has a progression phase, training goal, duration, execution arc (Short/Mid/Long), phase category (Layer A), and phase objective (Layer D).</li>
+              <li><strong>Suggest Arc</strong> generates a draft plan from the client&apos;s CFFS + intake context. Review on the suggest page - each block has phase, goal, duration, execution arc (Short/Mid/Long), phase category, phase objective, and <strong>sessions/week</strong>. Edit anything before saving.</li>
+              <li>The suggest page button reads <strong>Save as Draft</strong> (not &quot;Approve Arc&quot;). Saving creates the draft on the plan page; approval is the second step.</li>
+              <li>On the plan page the draft shows an amber <strong>Draft Arc - Pending Approval</strong> pill with <strong>Approve Arc</strong> + <strong>Discard Draft</strong> buttons. Approve to activate (auto-archives any prior active arc).</li>
+              <li>Each block has a <strong>Sessions / Week</strong> field on the editor. Coach edits propagate end-to-end: the value lives in <code>plan_blocks.training_frequency</code> as a structured column, surfaces in suggest-prescription as an authoritative <strong>COACH-SET FREQUENCY</strong> line, and is deterministically applied to the prescription regardless of what the AI suggests.</li>
               <li>Click <strong>Generate program →</strong> on any block to go to the prescription suggestion page - the system pre-fills the prescription from the plan block and passes the full arc context (previous block completed, next block planned, macro objective) to Claude during generation.</li>
               <li>Block status updates automatically: Planned → In Progress (when generation begins) → Complete (when the program weekly review marks &quot;New block required&quot;) → Skipped. When a block is marked complete, the next planned block advances to In Progress automatically.</li>
             </ul>
@@ -1188,10 +1224,28 @@ export default function HelpPage() {
             <p>The Nutrition Plan engine generates a doctrine-compliant daily nutrition prescription under the Hybrid Animal-Based Nutrition System (HABNS) - the 5th pillar of the Body Recode system. Plans follow a two-stage pipeline: draft → active. The same approval flow as the training program.</p>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Step 1 - Prescription Suggestion</p>
-            <p>From a client profile, click <strong>Generate Plan</strong> in the Nutrition Plan section. This opens the prescription suggestion page. Claude (Haiku) reads the CFFS, intake data, and any previous nutrition plans to recommend a starting prescription. Each field shows a reason. You can edit any field before proceeding.</p>
+            <p>From a client profile, click <strong>Generate Plan</strong> in the Nutrition Plan section. This opens the prescription suggestion page. Claude (Haiku 4.5) reads the CFFS, real intake JSONB blobs (nutrition_responses, sleep_responses, stress_responses, training_responses), <strong>bodyweight from the baseline submission</strong> (the canonical source — intake doesn&apos;t carry a flat bodyweight column), <strong>hormonal support</strong> if the client profile card is populated, age (derived from <code>date_of_birth</code>), sex (from <code>gender</code>), and any previous nutrition plans. Each field shows a reason. You can edit any field before proceeding.</p>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Step 2 - Plan Generation</p>
-            <p>Click <strong>Approve &amp; Generate Plan</strong> to send the prescription to Claude (Sonnet). The engine applies all six sequential build layers from doctrine: structure → protein anchor → carb demand → distribution → day variation → food selection. The result is saved as a draft. If you prefer to fill in the prescription manually, use the <strong>Fill in manually instead</strong> link at the bottom of the suggestion page.</p>
+            <p>Click <strong>Approve &amp; Generate Plan</strong> to send the prescription to Claude (Haiku 4.5). The engine applies all six sequential build layers from doctrine: structure → protein anchor → carb demand → distribution → day variation → food selection. The result is saved as a draft. If you prefer to fill in the prescription manually, use the <strong>Fill in manually instead</strong> link at the bottom of the suggestion page.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Protein Anchor — Deterministic, Not LLM Math</p>
+            <p>Protein anchor is computed in code from the client&apos;s baseline bodyweight, not by Claude. If Claude returns a value below <code>bodyweight × 1.4</code> (the floor), the route overrides with <code>bodyweight × multiplier</code>:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Stabilisation / Recovery Reset:</strong> 1.7g/kg</li>
+              <li><strong>Training Support:</strong> 1.9g/kg</li>
+              <li><strong>High Output Support:</strong> 2.0g/kg</li>
+            </ul>
+            <p>The reason field on the suggestion shows the override so it&apos;s auditable. Math through an LLM is unreliable — the floor enforces what the doctrine prescribes regardless of what Haiku produces.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Hormonal Support Modulation</p>
+            <p>If the <strong>Hormonal Support</strong> card on the client profile is populated, the prompt scales protein synthesis assumptions and carb support accordingly:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>TRT / exogenous testosterone:</strong> protein anchor sits at the upper bound of the prescribed range; recovery margin is wider.</li>
+              <li><strong>Supraphysiological androgen support:</strong> protein anchor 2.0–2.2g/kg; carbs support training without unnecessary deficit.</li>
+              <li><strong>GLP-1 in deficit:</strong> protein anchor floor 2.0g/kg minimum (preserve lean mass); the deficit is built in by the drug — do not stack additional aggressive deficit.</li>
+              <li><strong>Other peptides / hormonal therapies:</strong> surfaced in the rationale; modulation referenced where relevant.</li>
+            </ul>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Step 3 - Draft Review</p>
             <p>The generated plan appears on the client&apos;s Nutrition Plan page under a <strong>Draft - Pending Approval</strong> banner. Review the full output: entry state summary, meal structure (per-meal macros and foods), training day adjustments, execution rules, what not to change, and progression notes. Use <strong>Discard Draft</strong> to delete it or <strong>Approve Plan</strong> to promote it to active.</p>
