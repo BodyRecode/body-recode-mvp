@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
     { data: client },
     { data: cffs },
     { data: intake },
+    { data: baseline },
     { data: previousPrograms },
     { data: planBlock },
     { data: recentReviews },
@@ -30,9 +31,15 @@ export async function POST(request: NextRequest) {
     admin.from('clients').select('id, name').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
-      .select('injury_location_current, injury_primary_concern, injury_aggravating_movements, training_history, training_frequency_current, training_goals')
+      .select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_location_history, injury_primary_concern, injury_aggravating_movements, training_responses, sleep_responses, stress_responses')
       .eq('client_id', client_id)
       .order('submitted_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    admin.from('baselines')
+      .select('bodyweight_kg, captured_at')
+      .eq('client_id', client_id)
+      .order('captured_at', { ascending: false })
       .limit(1)
       .maybeSingle(),
     admin.from('programs')
@@ -74,15 +81,32 @@ CFFS BODY STATE:
     contextParts.push(`\nCFFS: Not available. Apply conservative defaults.`)
   }
 
+  // Bodyweight from baseline; age derived from date_of_birth; sex from gender.
+  const ageFromDob = intake?.date_of_birth
+    ? Math.floor((Date.now() - new Date(intake.date_of_birth).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+    : null
+
   if (intake) {
-    contextParts.push(`
-INTAKE CONTEXT:
-- Injury locations: ${intake.injury_location_current?.join(', ') || 'None'}
-- Primary concern: ${intake.injury_primary_concern || 'None'}
-- Aggravating movements: ${intake.injury_aggravating_movements || 'None'}
-- Training history: ${intake.training_history || 'Not provided'}
-- Current training frequency: ${intake.training_frequency_current || 'Not provided'}
-- Training goals: ${intake.training_goals || 'Not provided'}`)
+    const lines: string[] = []
+    if (baseline?.bodyweight_kg) lines.push(`- Bodyweight: ${baseline.bodyweight_kg}kg (from baseline ${baseline.captured_at?.slice(0, 10) ?? ''})`)
+    if (ageFromDob) lines.push(`- Age: ${ageFromDob}`)
+    if (intake.gender) lines.push(`- Sex: ${intake.gender}`)
+    if (intake.primary_goal) lines.push(`- Primary goal: ${intake.primary_goal}`)
+    if (intake.secondary_goals) lines.push(`- Secondary goals: ${intake.secondary_goals}`)
+    if (intake.desired_timeline) lines.push(`- Desired timeline: ${intake.desired_timeline}`)
+    if (intake.subjective_motivator) lines.push(`- What's driving this: ${intake.subjective_motivator}`)
+    if (intake.training_days_available) lines.push(`- Training days available: ${intake.training_days_available}`)
+    if (Array.isArray(intake.injury_location_current) && intake.injury_location_current.length) lines.push(`- Current injuries: ${intake.injury_location_current.join(', ')}`)
+    else if (intake.injury_location_current) lines.push(`- Current injuries: ${intake.injury_location_current}`)
+    if (intake.injury_location_history) lines.push(`- Injury history: ${intake.injury_location_history}`)
+    if (intake.injury_primary_concern) lines.push(`- Primary injury concern: ${intake.injury_primary_concern}`)
+    if (intake.injury_aggravating_movements) lines.push(`- Aggravating movements: ${intake.injury_aggravating_movements}`)
+    if (intake.training_responses) lines.push(`- Training response blob (tr_01..tr_30, scale 0-4): ${JSON.stringify(intake.training_responses)}`)
+    if (intake.sleep_responses) lines.push(`- Sleep response blob (scale 0-4): ${JSON.stringify(intake.sleep_responses)}`)
+    if (intake.stress_responses) lines.push(`- Stress response blob (scale 0-4): ${JSON.stringify(intake.stress_responses)}`)
+    contextParts.push(`\nINTAKE CONTEXT:\n${lines.join('\n')}`)
+  } else if (baseline?.bodyweight_kg) {
+    contextParts.push(`\nINTAKE CONTEXT:\n- Foundational intake not yet submitted.\n- Bodyweight (from baseline): ${baseline.bodyweight_kg}kg`)
   } else {
     contextParts.push(`\nINTAKE: Not available.`)
   }

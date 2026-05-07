@@ -21,13 +21,15 @@ export async function POST(request: NextRequest) {
     { data: client },
     { data: cffs },
     { data: intake },
+    { data: baseline },
     { data: activeProgram },
     { data: nutritionPlan },
     { data: existingPlans },
   ] = await Promise.all([
     admin.from('clients').select('id, name, coaching_started_at').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('body_state_classification, resolution_state, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, capacity_constraints_and_guardrails, primary_patterns_and_signals, client_context_summary').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
-    admin.from('intakes').select('bodyweight_kg, age, sex, training_history, training_age, lifestyle_stress_level, sleep_quality').eq('client_id', client_id).order('submitted_at', { ascending: false }).limit(1).maybeSingle(),
+    admin.from('intakes').select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_primary_concern, training_responses, sleep_responses, stress_responses, fat_map_responses, submitted_at').eq('client_id', client_id).order('submitted_at', { ascending: false }).limit(1).maybeSingle(),
+    admin.from('baselines').select('bodyweight_kg, captured_at').eq('client_id', client_id).order('captured_at', { ascending: false }).limit(1).maybeSingle(),
     admin.from('programs').select('block_name, progression_phase, training_goal, training_frequency, week_duration, generated_at').eq('client_id', client_id).eq('is_active', true).maybeSingle(),
     admin.from('nutrition_plans').select('entry_state, carb_demand_level, modulation_level').eq('client_id', client_id).eq('is_active', true).maybeSingle(),
     admin.from('training_plans').select('plan_name, macro_objective, created_at').eq('client_id', client_id).order('created_at', { ascending: false }).limit(3),
@@ -137,12 +139,32 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
     contextLines.push(`No CFFS available — use conservative defaults.`)
   }
 
+  // Bodyweight is captured on baseline (the intakes table has no flat
+  // bodyweight column). Age derived from date_of_birth; sex from gender.
+  const ageFromDob = intake?.date_of_birth
+    ? Math.floor((Date.now() - new Date(intake.date_of_birth).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+    : null
+
   if (intake) {
     contextLines.push(`\nINTAKE CONTEXT`)
-    contextLines.push(`Training history: ${intake.training_history || 'Not provided'}`)
-    contextLines.push(`Training age: ${intake.training_age || 'Not provided'}`)
-    contextLines.push(`Stress: ${intake.lifestyle_stress_level || 'Not provided'}`)
-    contextLines.push(`Sleep: ${intake.sleep_quality || 'Not provided'}`)
+    if (baseline?.bodyweight_kg) contextLines.push(`Bodyweight: ${baseline.bodyweight_kg}kg (from baseline ${baseline.captured_at?.slice(0, 10) ?? ''})`)
+    if (ageFromDob) contextLines.push(`Age: ${ageFromDob}`)
+    if (intake.gender) contextLines.push(`Sex: ${intake.gender}`)
+    if (intake.primary_goal) contextLines.push(`Primary goal: ${intake.primary_goal}`)
+    if (intake.secondary_goals) contextLines.push(`Secondary goals: ${intake.secondary_goals}`)
+    if (intake.desired_timeline) contextLines.push(`Desired timeline: ${intake.desired_timeline}`)
+    if (intake.subjective_motivator) contextLines.push(`What's driving this: ${intake.subjective_motivator}`)
+    if (intake.training_days_available) contextLines.push(`Training days available: ${intake.training_days_available}`)
+    if (intake.injury_location_current) contextLines.push(`Current injuries: ${intake.injury_location_current}`)
+    if (intake.injury_primary_concern) contextLines.push(`Primary injury concern: ${intake.injury_primary_concern}`)
+    if (intake.training_responses) contextLines.push(`Training response blob (tr_01..tr_30, scale 0-4): ${JSON.stringify(intake.training_responses)}`)
+    if (intake.sleep_responses) contextLines.push(`Sleep response blob (scale 0-4): ${JSON.stringify(intake.sleep_responses)}`)
+    if (intake.stress_responses) contextLines.push(`Stress response blob (scale 0-4): ${JSON.stringify(intake.stress_responses)}`)
+    if (intake.fat_map_responses) contextLines.push(`Fat Map response blob (fm_01..fm_25, scale 0-4): ${JSON.stringify(intake.fat_map_responses)}`)
+  } else if (baseline?.bodyweight_kg) {
+    contextLines.push(`\nINTAKE CONTEXT`)
+    contextLines.push(`Foundational intake not yet submitted.`)
+    contextLines.push(`Bodyweight (from baseline): ${baseline.bodyweight_kg}kg`)
   }
 
   if (activeProgram) {
