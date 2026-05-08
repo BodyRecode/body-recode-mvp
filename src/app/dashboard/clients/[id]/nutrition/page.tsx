@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import NutritionDraftActions from './draft-actions'
+import DeleteNutritionPlanButton from './delete-button'
 import NutritionWeeklyReview from './weekly-review'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 
@@ -382,12 +383,24 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
           </div>
           <h1 className="text-2xl font-semibold text-white">Nutrition Plan</h1>
         </div>
-        <Link
-          href={`/dashboard/clients/${id}/nutrition/suggest`}
-          className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
-        >
-          {activePlan || draftPlan ? 'Regenerate' : 'Generate Plan'}
-        </Link>
+        <div className="flex items-center gap-2">
+          {activePlan && (
+            <DeleteNutritionPlanButton planId={activePlan.id} label="Delete Active Plan" />
+          )}
+          {draftPlan && !activePlan && (
+            <DeleteNutritionPlanButton
+              planId={draftPlan.id}
+              label="Delete Draft"
+              confirmMessage="Delete this draft nutrition plan? This cannot be undone."
+            />
+          )}
+          <Link
+            href={`/dashboard/clients/${id}/nutrition/suggest`}
+            className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+          >
+            {activePlan || draftPlan ? 'Regenerate' : 'Generate Plan'}
+          </Link>
+        </div>
       </div>
 
       {/* Draft */}
@@ -446,12 +459,19 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
               <p className="text-stone-500 text-sm mb-3">Previous Plans ({archivedPlans.length})</p>
               <div className="space-y-2">
                 {archivedPlans.map(p => (
-                  <div key={p.id} className="bg-stone-900/50 border border-stone-800 rounded-lg px-4 py-3 flex items-center justify-between opacity-60">
-                    <span className="text-sm text-stone-400">{p.plan_name}</span>
-                    <span className="text-xs text-stone-600">
-                      {new Date(p.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
-                      {' · '}<span className="capitalize">{p.entry_state.replace(/_/g, ' ')}</span>
-                    </span>
+                  <div key={p.id} className="bg-stone-900/50 border border-stone-800 rounded-lg px-4 py-3 flex items-center justify-between">
+                    <span className="text-sm text-stone-400 opacity-70">{p.plan_name}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-stone-600">
+                        {new Date(p.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        {' · '}<span className="capitalize">{p.entry_state.replace(/_/g, ' ')}</span>
+                      </span>
+                      <DeleteNutritionPlanButton
+                        planId={p.id}
+                        label="Delete"
+                        confirmMessage="Delete this archived nutrition plan? This cannot be undone."
+                      />
+                    </div>
                   </div>
                 ))}
               </div>

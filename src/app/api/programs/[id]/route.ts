@@ -57,8 +57,9 @@ export async function DELETE(
     .maybeSingle()
 
   if (!program) return NextResponse.json({ error: 'Program not found' }, { status: 404 })
-  if (program.status !== 'draft') return NextResponse.json({ error: 'Only draft programs can be discarded' }, { status: 400 })
 
+  // Allow deleting any program (draft, active, or archived).
+  // program_reviews cascade; training_plan.program_id is set null.
   const { error } = await admin
     .from('programs')
     .delete()

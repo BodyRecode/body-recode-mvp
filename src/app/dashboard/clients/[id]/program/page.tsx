@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import DraftActions from './draft-actions'
+import DeleteProgramButton from './delete-button'
 import ProgramWeeklyReview from './weekly-review'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 
@@ -295,12 +296,24 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           </div>
           <h1 className="text-2xl font-semibold text-white">Training Program</h1>
         </div>
-        <Link
-          href={`/dashboard/clients/${id}/plan`}
-          className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
-        >
-          Macro Plan
-        </Link>
+        <div className="flex items-center gap-2">
+          {activeProgram && (
+            <DeleteProgramButton programId={activeProgram.id} label="Delete Active Program" />
+          )}
+          {draftProgram && !activeProgram && (
+            <DeleteProgramButton
+              programId={draftProgram.id}
+              label="Delete Draft"
+              confirmMessage="Delete this draft training program? This cannot be undone."
+            />
+          )}
+          <Link
+            href={`/dashboard/clients/${id}/plan`}
+            className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+          >
+            Macro Plan
+          </Link>
+        </div>
       </div>
 
       {/* Draft - show in full with Discard / Approve */}
@@ -363,12 +376,19 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               <p className="text-stone-500 text-sm mb-3">Previous Programs ({archivedPrograms.length})</p>
               <div className="space-y-2">
                 {archivedPrograms.map(p => (
-                  <div key={p.id} className="bg-stone-900/50 border border-stone-800 rounded-lg px-4 py-3 flex items-center justify-between opacity-60">
-                    <span className="text-sm text-stone-400">{p.block_name}</span>
-                    <span className="text-xs text-stone-600">
-                      {new Date(p.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
-                      {' · '}<span className="capitalize">{p.progression_phase}</span>{' · '}<span className="capitalize">{p.training_goal}</span>
-                    </span>
+                  <div key={p.id} className="bg-stone-900/50 border border-stone-800 rounded-lg px-4 py-3 flex items-center justify-between">
+                    <span className="text-sm text-stone-400 opacity-70">{p.block_name}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-stone-600">
+                        {new Date(p.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        {' · '}<span className="capitalize">{p.progression_phase}</span>{' · '}<span className="capitalize">{p.training_goal}</span>
+                      </span>
+                      <DeleteProgramButton
+                        programId={p.id}
+                        label="Delete"
+                        confirmMessage="Delete this archived training program? This cannot be undone."
+                      />
+                    </div>
                   </div>
                 ))}
               </div>

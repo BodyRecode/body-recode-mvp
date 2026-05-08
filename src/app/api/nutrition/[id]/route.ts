@@ -59,11 +59,12 @@ export async function DELETE(
   const { id } = await params
   const admin = createAdminClient()
 
+  // Allow deleting any nutrition plan (draft, active, or archived).
+  // nutrition_reviews are removed via ON DELETE CASCADE.
   const { error } = await admin
     .from('nutrition_plans')
     .delete()
     .eq('id', id)
-    .eq('status', 'draft')
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json({ ok: true })
