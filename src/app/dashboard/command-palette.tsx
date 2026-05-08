@@ -46,6 +46,7 @@ const COMMANDS: CommandItem[] = [
   { id: 'nav-home',     label: 'Home',                 href: '/dashboard',                   icon: Home,           group: 'Navigate' },
   { id: 'nav-leads',    label: 'Leads',                href: '/dashboard/leads',             icon: Users,          group: 'Navigate', keywords: ['pipeline', 'prospects'] },
   { id: 'nav-coaching', label: 'Coaching',             href: '/dashboard/coaching',          icon: GraduationCap,  group: 'Navigate', keywords: ['clients', 'check-ins'] },
+  { id: 'nav-programs', label: 'Programs',             href: '/dashboard/programs',          icon: Dumbbell,       group: 'Navigate', keywords: ['training', 'floor', 'on the floor', 'block', 'program'] },
   { id: 'nav-sources',  label: 'Sources',              href: '/dashboard/sources',           icon: Database,       group: 'Navigate' },
   { id: 'nav-business', label: 'Business',             href: '/dashboard/business',          icon: Briefcase,      group: 'Navigate' },
   { id: 'nav-assets',   label: 'Assets',               href: '/dashboard/preview',           icon: ImageIcon,      group: 'Navigate' },

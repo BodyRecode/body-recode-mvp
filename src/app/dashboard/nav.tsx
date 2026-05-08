@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: '/dashboard', label: 'Home', exact: true },
   { href: '/dashboard/leads', label: 'Leads' },
   { href: '/dashboard/coaching', label: 'Coaching' },
+  { href: '/dashboard/programs', label: 'Programs' },
   { href: '/dashboard/sources', label: 'Sources' },
   { href: '/dashboard/business', label: 'Business' },
   { href: '/dashboard/preview', label: 'Assets' },

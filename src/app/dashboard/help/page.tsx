@@ -1193,6 +1193,19 @@ export default function HelpPage() {
               <p>The suggestion is not a recommendation to accept blindly. It is the system&apos;s read of the client&apos;s current state based on available data. Read each reasoning note - if your coaching judgement disagrees with the reasoning, edit the field. The system explains its logic so you can interrogate it, not so you can skip the thinking.</p>
               <p className="mt-2">Movement competency in particular requires your direct assessment. The system defaults conservatively when no data is available - correct it if you know the client&apos;s actual movement capacity from in-person sessions.</p>
             </Training>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-6 mb-2">Programs Index (On the Floor View)</p>
+            <p>Top nav <strong>Programs</strong> (or <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">⌘K → Programs</code>) opens the floor view: every active client&apos;s current training block in a single mobile-first card grid. One tap on a card opens that client&apos;s training program page.</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm mt-2">
+              <li>Each card shows the client&apos;s package (face-to-face vs online), current block name, week number, progression phase, training goal, and current direction (On Track / Hold / Rebuild / Deload).</li>
+              <li>Cards are sorted with face-to-face clients first - the ones most likely to be on the gym floor today.</li>
+              <li>Filters: <strong>All</strong> · <strong>Face-to-Face</strong> · <strong>Online</strong> · <strong>No Program</strong> (active clients with no current block - tap to open their macro plan and build one).</li>
+              <li>Search by name for instant filtering.</li>
+              <li>Use this on your phone during in-person sessions instead of digging through Coaching → client → Training Program.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Deleting plans</p>
+            <p>The training program page now has a <strong>Delete Active Program</strong> button next to the Macro Plan link, and the nutrition plan page has the same for the active nutrition plan. Each archived entry in the Previous Programs / Previous Plans list also has its own Delete. Deleting an active plan permanently removes it and its weekly reviews - use it when the plan was generated against incomplete inputs (e.g. before a baseline submission) and needs to be regenerated cleanly.</p>
           </Section>
 
           <Section id="macro-arc" title="21. Macro Training Arc" colour="teal">
