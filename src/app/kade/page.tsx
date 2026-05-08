@@ -44,7 +44,7 @@ export default function KadePage() {
           >
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-teal-400 transition-colors">Performance Coaching</p>
-              <p className="text-xs text-stone-500 mt-0.5">Body State Scorecard + 1:1 coaching</p>
+              <p className="text-xs text-stone-500 mt-0.5">1:1 coaching, online and Brisbane</p>
             </div>
             <span className="text-stone-600 group-hover:text-teal-400 transition-colors text-lg">→</span>
           </a>
