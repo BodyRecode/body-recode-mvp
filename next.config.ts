@@ -2,8 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   async redirects() {
+    // NOTE: The /scorecard host redirect is handled by middleware.ts so it only
+    // fires on the bodyrecode.au IP host, not on localhost or the consumer subdomain.
+    // The entries below are SEO aliases that map within the consumer arm; middleware
+    // promotes them to performance.bodyrecode.au if they land on bodyrecode.au.
     return [
-      { source: '/scorecard', destination: 'https://performance.bodyrecode.au/scorecard', permanent: false },
       { source: '/online-performance-coaching', destination: '/performance-coaching/online', permanent: true },
       { source: '/performance-coach-brisbane', destination: '/performance-coaching/brisbane', permanent: true },
       { source: '/online-strength-coaching', destination: '/performance-coaching/strength/online', permanent: true },

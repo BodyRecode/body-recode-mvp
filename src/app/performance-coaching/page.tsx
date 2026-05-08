@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function PerformanceCoachingPage() {
   return (
     <>
-      <MarketingNav />
+      <MarketingNav variant="consumer" />
 
       {/* Hero */}
       <section className="bg-black pt-44 pb-32 px-5 overflow-hidden relative">
@@ -127,7 +127,7 @@ export default function PerformanceCoachingPage() {
         </div>
       </section>
 
-      <MarketingFooter />
+      <MarketingFooter variant="consumer" />
     </>
   )
 }

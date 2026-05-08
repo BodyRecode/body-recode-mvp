@@ -1,27 +1,117 @@
 import Image from 'next/image'
 
-export default function MarketingNav() {
+type Variant = 'ip' | 'consumer'
+
+const TEAL = '#10E1C2'
+
+export default function MarketingNav({ variant = 'consumer' }: { variant?: Variant }) {
+  const isIp = variant === 'ip'
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-white/5">
-      <div className="max-w-6xl mx-auto px-5 h-24 flex items-center justify-between">
-        <a href="/" className="cursor-pointer block">
-          <Image src="/logo-teal.png" alt="Body Recode" width={220} height={97} className="h-16 w-auto" />
+    <nav
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        background: 'rgba(12, 10, 9, 0.92)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        borderBottom: '1px solid #1c1917',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1280,
+          margin: '0 auto',
+          padding: '0 20px',
+          height: 80,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <a href="/" style={{ display: 'block', cursor: 'pointer' }}>
+          <Image
+            src="/logo-teal.png"
+            alt="Body Recode"
+            width={220}
+            height={97}
+            style={{ height: 56, width: 'auto' }}
+          />
         </a>
-        <div className="flex items-center gap-6">
-          <a
-            href="/scorecard"
-            className="text-sm font-semibold text-[#10E1C2] hover:text-[#0ecfb3] transition-colors tracking-wide"
-          >
-            Take the Scorecard
-          </a>
-          <a
-            href="mailto:info@bodyrecode.au"
-            className="text-sm font-semibold text-white/50 hover:text-white transition-colors tracking-wide"
-          >
-            info@bodyrecode.au
-          </a>
-        </div>
+
+        {isIp ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+            <a
+              href="#system"
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: '#a8a29e',
+                textDecoration: 'none',
+                letterSpacing: '0.02em',
+              }}
+              className="nav-link-hide-sm"
+            >
+              The system
+            </a>
+            <a
+              href="#licensing"
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: '#a8a29e',
+                textDecoration: 'none',
+                letterSpacing: '0.02em',
+              }}
+              className="nav-link-hide-sm"
+            >
+              Licensing
+            </a>
+            <a
+              href="#enquire"
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: '#0c0a09',
+                background: TEAL,
+                padding: '10px 18px',
+                borderRadius: 10,
+                textDecoration: 'none',
+                letterSpacing: '0.01em',
+              }}
+            >
+              Enquire
+            </a>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+            <a
+              href="/scorecard"
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: '#0c0a09',
+                background: TEAL,
+                padding: '10px 18px',
+                borderRadius: 10,
+                textDecoration: 'none',
+                letterSpacing: '0.01em',
+              }}
+            >
+              Take the Scorecard
+            </a>
+          </div>
+        )}
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .nav-link-hide-sm { display: none; }
+        }
+      `}</style>
     </nav>
   )
 }
