@@ -185,6 +185,14 @@ Animal-based foods form the foundation. Plant foods are strategic additions.
 - No ultra-processed foods, seed oils, refined grain products
 - Substitution within categories only
 
+WEIGHTS ARE ALWAYS RAW (CRITICAL)
+- Macro figures must match raw weights so they align with USDA / NUTTAB databases. Cooking loses water and shifts apparent grams.
+- Always append "(raw)" to protein quantities: "120g beef mince (raw)", "180g chicken breast (raw)", "150g salmon (raw)".
+- Carbs as dry/raw weight where relevant: "60g oats (dry)", "80g rice (dry)". Fruit by literal weight as eaten ("1 banana ~120g", "150g berries").
+- Eggs by count, not weight: "3 whole eggs".
+- Fats by literal serving as consumed: "20g almonds", "15g olive oil", "10g butter".
+- Never output a protein source without the (raw) marker. The coach reads these as cooking instructions to the client.
+
 ═══════════════════════════════════════
 OUTPUT FORMAT — REQUIRED JSON STRUCTURE
 ═══════════════════════════════════════
@@ -214,7 +222,7 @@ Return ONLY valid JSON. No markdown, no explanation outside the JSON object. Do 
       "protein_g": number,
       "carb_g": number,
       "fat_g": number,
-      "foods": ["string — specific food with quantity"],
+      "foods": ["string — specific food with quantity in RAW weight (uncooked, before any cooking water loss). Always append '(raw)' to protein-source quantities, e.g. '120g beef mince (raw)', '180g chicken breast (raw)', '150g salmon (raw)'. Eggs by count: '3 whole eggs'. Carbs by raw/dry weight: '60g oats (dry)', '80g rice (dry)'. Fats by literal serving: '20g almonds', '15g olive oil'."],
       "notes": "string or null"
     }
   ],
