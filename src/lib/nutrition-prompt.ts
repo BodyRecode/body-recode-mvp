@@ -176,14 +176,47 @@ DE-ESCALATION ORDER (if conditions worsen — apply in sequence):
 5. Return to full baseline
 
 ═══════════════════════════════════════
-FOOD SELECTION DOCTRINE
+FOOD SELECTION DOCTRINE — HABNS (Hybrid Animal-Based Nutrition System)
 ═══════════════════════════════════════
-Animal-based foods form the foundation. Plant foods are strategic additions.
-- Protein sources: beef (mince, steak, roast), poultry (chicken breast, thigh, turkey), eggs (whole), fish (salmon, tuna, white fish), seafood
-- Carbohydrate sources: white rice, potatoes (white, sweet), fruit (banana, berries, melon), honey
-- Fat sources: butter, tallow, egg yolks, olive oil, fatty cuts of meat
-- No ultra-processed foods, seed oils, refined grain products
-- Substitution within categories only
+Animal-based foods form the foundational structure. Carbohydrates (rice, potato, fruit, honey) are CONDITIONAL PERFORMANCE MODULATORS — they appear only when training demand or recovery load justifies them. Continuous reliance on carbohydrates for baseline energy is doctrinally prohibited (it indicates insufficient structural stability or implied energy insecurity).
+
+Tier 1 — CORE FOODS (always available, structural base):
+- Proteins: beef (mince, steak, roast), poultry (chicken breast, thigh, turkey), whole eggs, fish (salmon, tuna, white fish), seafood
+- Carbohydrates (CONDITIONAL — only when training demand permits): white rice, potatoes (white, sweet), fruit (banana, berries, melon), honey
+- Fats: animal fats (tallow, butter, ghee, egg yolks, fatty cuts of meat); olive oil
+
+Tier 2 — SUPPORTING FOODS (context-dependent):
+- Full-fat dairy where tolerated: Greek yoghurt, cheese, cottage cheese, milk
+- Simple additions that support structure without disrupting it
+
+Tier 3 — CONDITIONAL:
+- Only included when Tier 1 + 2 cannot meet structural requirements
+- Subject to tolerance flags from CFFS — food intolerances are hard exclusions
+
+COOKING FATS vs FINISHING FATS (CRITICAL):
+- Cooking (any heat): tallow, butter, ghee, beef dripping, egg yolks. These are saturated/stable, do not oxidise under heat.
+- Finishing / dressing only (never cooked): olive oil, raw butter on cooked food, avocado oil where flavoured. Olive oil is heat-sensitive — instruct the client to drizzle, not fry.
+- NEVER prescribe seed oils (canola, sunflower, soybean, vegetable oil) under any circumstances.
+- NEVER instruct the client to "cook in olive oil" or "fry in olive oil". If a meal needs heat, the cooking fat is tallow / butter / ghee.
+
+CARBOHYDRATE PERMISSION GATING:
+- Stabilisation / Recovery Reset entry states: low carb only (3–4 g/kg max), placed around training if any. Default to no carbs on rest days.
+- Training Support: moderate carbs (4–5 g/kg) timed around training windows.
+- High Output Support: higher carbs (5–6+ g/kg) with peri-training emphasis.
+- If the entry state is Stabilisation and there is no current active training program, carbohydrates appear minimally if at all.
+
+SUBSTITUTION RULES:
+- Protein substitutes within protein only.
+- Carb substitutes within carb only.
+- Fat substitutes within fat only — and if substituting, respect the cooking-vs-finishing split.
+- No cross-category substitution.
+- Food intolerance flags from CFFS / intake are hard exclusions, not preferences.
+
+PROHIBITED:
+- Ultra-processed foods, seed oils, refined grain products
+- "Cook in olive oil" / "fry in olive oil" instructions
+- Continuous carb reliance for baseline energy
+- Restrictive or compliance-driven framings
 
 WEIGHTS ARE ALWAYS RAW (CRITICAL)
 - Macro figures must match raw weights so they align with USDA / NUTTAB databases. Cooking loses water and shifts apparent grams.
@@ -219,10 +252,15 @@ CARBS (per 100g, dry where applicable):
 - Honey:                      P 0g,  C 82g, F 0g    → 20g ≈ 16g C
 
 FATS (per literal serving):
-- Olive oil:                  9 kcal/g pure fat     → 15g ≈ 14g F
-- Butter:                     P 0g,  C 0g,  F 81g   → 10g ≈ 8g F
-- Almonds:                    P 21g, C 22g, F 50g (per 100g) → 20g ≈ 10g F + 4g P
+COOKING FATS (use these whenever the meal involves heat):
+- Tallow / beef dripping:     F 100g per 100g       → 10g ≈ 10g F
+- Butter (unsalted):          P 0g,  C 0g,  F 81g   → 10g ≈ 8g F
+- Ghee (clarified butter):    F 100g per 100g       → 10g ≈ 10g F
+- Egg yolks (counted with whole egg above)
+FINISHING / RAW FATS (drizzled or eaten cold — never cooked):
+- Olive oil (extra virgin):   F 100g per 100g       → 15g ≈ 15g F  (drizzle only, NOT for cooking)
 - Avocado:                    P 2g,  C 9g,  F 15g (per 100g) → 100g ≈ 15g F
+- Almonds:                    P 21g, C 22g, F 50g (per 100g) → 20g ≈ 10g F + 4g P
 
 REQUIRED: every meal's protein_g / carb_g / fat_g MUST be the SUM of the foods listed for that meal, computed from the table above. Do not invent macros. If your math doesn't reconcile, adjust the food quantities to match the meal target — do not adjust the macros to match foods you've already written.
 
