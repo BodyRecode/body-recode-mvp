@@ -194,6 +194,39 @@ WEIGHTS ARE ALWAYS RAW (CRITICAL)
 - Never output a protein source without the (raw) marker. The coach reads these as cooking instructions to the client.
 
 ═══════════════════════════════════════
+REFERENCE MACROS PER 100g RAW (USE THESE — DO NOT HALLUCINATE)
+═══════════════════════════════════════
+PROTEINS (per 100g raw):
+- Chicken breast (skinless):  P 22g, C 0g,  F 2g    → 165g raw ≈ 36g P
+- Chicken thigh (skinless):   P 19g, C 0g,  F 8g    → 165g raw ≈ 31g P
+- Beef mince 5% fat:          P 22g, C 0g,  F 5g    → 165g raw ≈ 36g P
+- Beef mince 15% fat:         P 19g, C 0g,  F 15g   → 165g raw ≈ 31g P
+- Beef steak (sirloin):       P 22g, C 0g,  F 7g    → 165g raw ≈ 36g P
+- Salmon (fresh):             P 20g, C 0g,  F 13g   → 165g raw ≈ 33g P
+- White fish (cod, hake):     P 18g, C 0g,  F 1g    → 165g raw ≈ 30g P
+- Tuna (canned in spring water): P 25g, C 0g, F 1g  → 100g drained ≈ 25g P
+- Eggs (whole, per egg ~50g): P 6g,  C 0g,  F 5g    → 3 eggs ≈ 18g P
+- Greek yoghurt (full-fat):   P 9g,  C 4g,  F 5g    → 200g ≈ 18g P
+- Cottage cheese:             P 11g, C 3g,  F 4g    → 150g ≈ 17g P
+
+CARBS (per 100g, dry where applicable):
+- White rice (dry):           P 7g,  C 78g, F 1g    → 80g dry ≈ 62g C
+- Oats (dry):                 P 13g, C 60g, F 7g    → 60g dry ≈ 36g C
+- Sweet potato (raw):         P 2g,  C 20g, F 0g    → 200g raw ≈ 40g C
+- White potato (raw):         P 2g,  C 17g, F 0g    → 250g raw ≈ 43g C
+- Banana:                     P 1g,  C 23g, F 0g    → 1 medium (120g) ≈ 27g C
+- Berries (mixed):            P 1g,  C 14g, F 0g    → 150g ≈ 21g C
+- Honey:                      P 0g,  C 82g, F 0g    → 20g ≈ 16g C
+
+FATS (per literal serving):
+- Olive oil:                  9 kcal/g pure fat     → 15g ≈ 14g F
+- Butter:                     P 0g,  C 0g,  F 81g   → 10g ≈ 8g F
+- Almonds:                    P 21g, C 22g, F 50g (per 100g) → 20g ≈ 10g F + 4g P
+- Avocado:                    P 2g,  C 9g,  F 15g (per 100g) → 100g ≈ 15g F
+
+REQUIRED: every meal's protein_g / carb_g / fat_g MUST be the SUM of the foods listed for that meal, computed from the table above. Do not invent macros. If your math doesn't reconcile, adjust the food quantities to match the meal target — do not adjust the macros to match foods you've already written.
+
+═══════════════════════════════════════
 OUTPUT FORMAT — REQUIRED JSON STRUCTURE
 ═══════════════════════════════════════
 Return ONLY valid JSON. No markdown, no explanation outside the JSON object. Do not use em dashes (—) anywhere in string values. Use plain language without special punctuation characters.
