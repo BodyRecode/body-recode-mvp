@@ -21,6 +21,7 @@ const SECTIONS = [
   { id: 'foundational-reading',  title: '10b. Foundational Reading', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'weekly-checkins',       title: '11. Weekly Check-Ins',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'signal-monitoring',     title: '11b. Signal Monitoring',    colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'recovery-regulation',   title: '11c. Recovery and Regulation', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'coaching-package', title: '12. Coaching Package',   colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'clients-dashboard',title: '13. Clients Dashboard',  colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'automated-status', title: '14. Automated Status',   colour: 'teal' as const, category: 'coaching' as Category },
@@ -816,6 +817,75 @@ export default function HelpPage() {
             <Training title="Why thresholds, not just AI judgement">
               <p>The CFWS prompt itself can produce reassessment language when it judges drift to be material. That is interpretive, not rule-based. The doctrine adds a second layer: explicit conditions the engine monitors against, which fire regardless of how the AI interpreted the week. This means a signal that the AI didn&apos;t flag still surfaces if it meets the doctrine criteria.</p>
               <p className="mt-2">The two layers complement each other. The AI catches things the rules don&apos;t (subtle pattern changes the thresholds would miss). The rules catch things the AI might gloss over (consistent slow drift across multiple weeks).</p>
+            </Training>
+          </Section>
+
+          {/* Section 11c - Recovery and Regulation System */}
+          <Section id="recovery-regulation" title="11c. Recovery and Regulation" colour="teal">
+            <p>The Recovery and Regulation System is the platform&apos;s <strong>governance layer</strong> for when training and nutrition load must be constrained. It is not a prescription engine. It does not generate sleep targets, breathwork routines, or cold-exposure protocols. It defines the <strong>permission ceiling</strong> on training and nutrition while a recovery state is active.</p>
+            <p className="mt-2">Doctrine source: <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">~/Dropbox/01_BODY_RECODE/.../12_Recovery_and_Regulation_System/</code> (Layer 2) and <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">.../13D_Recovery_and_Regulation_Playbooks/</code> (Layer 3 execution). The full canonical reference renders live at <a className="text-teal-400 underline" href="/dashboard/recovery-regulation">Recovery</a>.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">The 10 playbooks (priority order, single dominant)</p>
+            <p>Per 13D_15, only one playbook governs a client at any moment. Higher-tier (lower number) overrides lower-tier:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>T1 NS Overload</strong> (13D_04) — sleep disruption &gt;3 nights + emotional/behavioural collapse → training removed 3–7 days, then 2–3 sessions/wk cap, ≤60% prior duration on reintro.</li>
+              <li><strong>T2 Burnout Return</strong> (13D_10) — phased re-entry after confirmed burnout. Phase 1 minimal/no training, Phase 2 1–2 sessions/wk ≤60% load, Phase 3 gradual rebuild.</li>
+              <li><strong>T2 Chronic Recovery Debt</strong> (13D_03) — recovery score ≤2 for 2+ consecutive weeks → load -20–40%, sessions -1–2/wk, 14–35 days.</li>
+              <li><strong>T3 Sleep Disruption</strong> (13D_05) — 2–3 nights inconsistent → load -10–30%, session ≤75% duration, 5–14 days.</li>
+              <li><strong>T3 Lifestyle Stress Dominant</strong> (13D_06) — CFWS Schedule + Capacity flagged with no training overload → load -10–25%, &quot;you do not reduce life stress, you adjust training to match it&quot;.</li>
+              <li><strong>T4 Acute Fatigue</strong> (13D_02) — soreness &gt;72h or declining repeatability ≥3 sessions → load -10–25%, max 10 days handling.</li>
+              <li><strong>T4 Overreaching</strong> (13D_07) — productive overreach with stable behaviour → minor temper, load -5–10%, maintain frequency.</li>
+              <li><strong>T5 Post-Diet</strong> (13D_08) — 14–28 days metabolic and behavioural stabilisation after sustained deficit.</li>
+              <li><strong>T5 Post-Competition</strong> (13D_09) — 21–42 days, &quot;the more extreme the peak, the stricter the exit must be&quot;.</li>
+              <li><strong>T6 Supportive Only</strong> (13D_12) — baseline. PRS / SRM / CRS allowed when stable; CRS removed when any other playbook active.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">RSIB — the weekly signal capture (Phase 2)</p>
+            <p>Per 13D_13, three questions submitted alongside the weekly check-in:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Recovery this week</strong>: 1 (not recovering) → 5 (fully recovered)</li>
+              <li><strong>Sessions vs last week</strong>: easier / same / harder</li>
+              <li><strong>Sleep consistency</strong>: consistent / inconsistent / severely inconsistent</li>
+            </ul>
+            <p>The router reads RSIB + CFWS Exposure Readiness (capacity, schedule, regulation, behaviour) each week and runs a 5-step decision tree per 13D_14: regulation check → chronic check → acute check → context check → conservative default.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Router modes (env-controlled)</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Disabled</strong> (<code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">RRS_ROUTER_ENABLED=false</code>): router does not run.</li>
+              <li><strong>Observe-only</strong> (Phase 0 default — <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">RRS_OBSERVE_ONLY=true</code>): router evaluates and writes shadow audit rows to <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">recovery_adjustments</code>. No states activated. No programs constrained.</li>
+              <li><strong>Live soft gate</strong> (<code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">RRS_OBSERVE_ONLY=false</code>): states activate. Constraints flagged on program/nutrition gen as override-able policy.</li>
+              <li><strong>Live hard gate</strong> (<code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">RRS_HARD_ENFORCEMENT=true</code>): states activate. Constraints hard-block program changes that violate doctrine.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Doctrine guards encoded</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Trigger ≠ Authorisation</strong> (12E_02) — signals route, they don&apos;t auto-change programs</li>
+              <li><strong>Single dominant playbook</strong> (13D_15) — DB partial unique index enforces this</li>
+              <li><strong>Lock-in durations</strong> (13D_14) — no switch within minimum unless escalation tier rule fires</li>
+              <li><strong>No relief-as-validation</strong> (12D_03) — exit needs multi-day stable markers, not a single good day</li>
+              <li><strong>No tool substitution</strong> (13D_12) — supportive therapies cannot replace primary load reduction</li>
+              <li><strong>No protocol prescription at Layer 2</strong> (12A) — engine emits constraint envelopes only</li>
+              <li><strong>RRS override absolute</strong> (MSA Domain Boundaries) — when active, progression locked</li>
+              <li><strong>Audit every transition</strong> (12E_04) — every router evaluation + state transition writes a <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">recovery_adjustments</code> row</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Where it surfaces</p>
+            <p><strong>Recovery dashboard</strong> at <a className="text-teal-400 underline" href="/dashboard/recovery-regulation">/dashboard/recovery-regulation</a>: read-only doctrine reference page showing all 10 playbook manifests with their numeric constraints, exit criteria, escalation rules, and prohibitions. Layer 2 doctrine sourced live from Dropbox (Folder 12 + MSA RRS pillar).</p>
+            <p>Per-client active state visualisation lands in Phase 4. Until then, audit rows in the <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">recovery_adjustments</code> table are the only output (visible via Supabase).</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Phase plan</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Phase 1 (current)</strong>: doctrine page + DB tables + router + state machine. Observe-only by default. Router has no signals to evaluate against until Phase 2 ships RSIB.</li>
+              <li><strong>Phase 2</strong>: RSIB block added to weekly check-in. Router runs in shadow after each CFWS lands. Read the audit log to see what would have fired.</li>
+              <li><strong>Phase 3</strong>: flip <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">RRS_OBSERVE_ONLY=false</code>. States activate. Program generation reads active state and applies constraints (soft gate by default).</li>
+              <li><strong>Phase 4</strong>: per-client recovery state visualisation, tier escalation alerts, recovery state history.</li>
+            </ul>
+
+            <Note>The router does not fire on a clean week. RSIB recovery 3+ + sessions same/easier + sleep consistent → no state activates → program generation runs unchanged. The system is invisible until a real signal pattern emerges.</Note>
+
+            <Training title="Why a governance layer, not a prescription engine">
+              <p>Per Layer 2 doctrine: recovery is a biological capacity, not a behaviour. The system cannot create recovery by prescribing sleep targets or breathwork routines. What it CAN do is constrain training and nutrition execution when accumulated stress exceeds recovery capacity, so that the client&apos;s biology gets the chance to restore.</p>
+              <p className="mt-2">The 13H_03 case snapshots make the cost of getting this wrong concrete: when Tani plateaus, the default reflex is &quot;tighten nutrition, push training harder&quot;. That&apos;s the failure pattern 13G_04 catalogues. With the recovery system in place, the misread gets caught — fatigue is named as fatigue, not lack of discipline.</p>
             </Training>
           </Section>
 

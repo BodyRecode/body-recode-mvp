@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/gym-sessions', label: 'Gym' },
   { href: '/dashboard/group-classes', label: 'Classes' },
   { href: '/dashboard/funnel', label: 'Funnel' },
+  { href: '/dashboard/recovery-regulation', label: 'Recovery' },
   { href: '/dashboard/help', label: 'Guide' },
   { href: '/dashboard/system-health', label: 'System' },
 ]
