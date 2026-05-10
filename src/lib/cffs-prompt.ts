@@ -151,9 +151,15 @@ Produce the CFFS as JSON only — no markdown, no commentary:
   "exposure_readiness_capacity": "Green" | "Amber" | "Red",
   "exposure_readiness_schedule": "Green" | "Amber" | "Red",
   "exposure_readiness_regulation": "Green" | "Amber" | "Red",
-  "exposure_readiness_behaviour": "Green" | "Amber" | "Red",
-  "reassessment_flagged": true | false
+  "exposure_readiness_behaviour": "Green" | "Amber" | "Red"
 }
+
+DO NOT INCLUDE a "reassessment_flagged" field. Reassessment is a temporal
+construct governed by Signal Monitoring v1.0: it can only be evaluated once
+longitudinal CFWS data exists (multi-week signal patterns, completed program
+blocks, sustained instability across consecutive weeks, the 12-week cap).
+At intake-time CFFS generation there is no trajectory to evaluate, so the
+field is set by the system separately and your output must omit it entirely.
 
 Conservative language throughout. No prescriptions. No causal claims. No diagnostic labels.`
 }

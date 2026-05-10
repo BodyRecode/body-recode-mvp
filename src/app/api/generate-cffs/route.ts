@@ -65,6 +65,15 @@ export async function POST(request: NextRequest) {
   // Strip em dashes from all generated text fields
   cffsData = stripEmDashes(cffsData)
 
+  // Doctrinal guard: reassessment is a TEMPORAL construct per Signal Monitoring v1.0.
+  // It can only be set true after longitudinal data exists (CFWS rows, completed
+  // blocks, sustained instability, 12-week cap, etc.). At intake-time CFFS
+  // generation there is no trajectory to evaluate, so the field must be false.
+  // The LLM was previously asked to set this in the JSON schema and would default
+  // to true on any "Partially Resolved" classification — which is most clients
+  // in Remediation. We override server-side regardless of what the LLM produced.
+  ;(cffsData as Record<string, unknown>).reassessment_flagged = false
+
   // Archive any existing CFFS for this client
   await supabase
     .from('cffs')
