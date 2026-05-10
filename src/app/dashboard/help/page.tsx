@@ -1284,6 +1284,25 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Deleting plans</p>
             <p>The training program page now has a <strong>Delete Active Program</strong> button next to the Macro Plan link, and the nutrition plan page has the same for the active nutrition plan. Each archived entry in the Previous Programs / Previous Plans list also has its own Delete. Deleting an active plan permanently removes it and its weekly reviews - use it when the plan was generated against incomplete inputs (e.g. before a baseline submission) and needs to be regenerated cleanly.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Workout logging (Phase A)</p>
+            <p>Clients can now log what they actually lifted, set by set, live in the gym. The flow:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>Client opens <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">/portal/&#123;token&#125;/program</code> and taps the new <strong>Log a session →</strong> button.</li>
+              <li>The log index lists all of this week&apos;s prescribed sessions. Today&apos;s session (matching the day of week) is highlighted at the top with a teal CTA.</li>
+              <li>Tapping <strong>Start logging</strong> opens the live UI: each prescribed exercise as a card, with set rows for weight × reps × RPE. Tap ✓ to commit each set. Saves are upserts — re-tapping updates the row in place.</li>
+              <li>Per-exercise notes saved on blur. Substitution toggle: client picks a swap (&quot;did goblet squat instead of back squat&quot;) and a reason. The log captures both prescribed and actually-performed.</li>
+              <li>Session-level notes textarea at the bottom. <strong>Mark session complete</strong> button finalises and routes back to the index.</li>
+            </ul>
+            <p className="mt-2">On your client profile page, the new <strong>Block progress</strong> card sits above the Recovery Router panel. It shows: week N of M, days until block end (with amber pill at ≤ 7 days), sessions completed this week / prescribed, in-progress count, total sessions logged this block, last logged time. <strong>Block ending in N days</strong> banners appear automatically as the block approaches its end.</p>
+
+            <Note>Logged data is captured in three new tables: <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">session_completions</code> (one per session × week), <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">session_exercise_completions</code> (one per exercise, with prescribed-vs-actual + substitutions), <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">exercise_set_logs</code> (one per set). The prescription is snapshotted at session start so a mid-block program regeneration cannot retroactively change what was logged.</Note>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">What&apos;s coming in Phase B + C</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Phase B</strong>: load progression sparklines per exercise on the client profile, block-ending email notifications (7 days before + on completion), missed-session detection, top-of-coaching-list block-ending banner.</li>
+              <li><strong>Phase C</strong>: auto-fill the Recovery Router&apos;s <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">session_repeatability</code> signal from logged data (compare last week&apos;s avg loads to this week&apos;s); surface &quot;missed &gt;2 sessions&quot; as a router signal.</li>
+            </ul>
           </Section>
 
           <Section id="macro-arc" title="21. Macro Training Arc" colour="teal">

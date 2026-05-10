@@ -158,6 +158,13 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
 
             <Link
+              href={`/portal/${token}/program/log`}
+              className="block w-full py-3.5 bg-[#14b8a6] hover:bg-[#5eead4] text-black font-bold text-sm rounded-2xl text-center transition-colors mb-2"
+            >
+              Log a session →
+            </Link>
+
+            <Link
               href={`/portal/${token}/training`}
               className="block w-full py-3.5 bg-[#1c1917] hover:bg-[#1c1917] text-white font-semibold text-sm rounded-2xl text-center transition-colors"
             >

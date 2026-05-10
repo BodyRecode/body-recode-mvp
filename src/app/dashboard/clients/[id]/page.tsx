@@ -27,6 +27,8 @@ import ClientCommunicationsPanel from '@/components/dashboard/client-communicati
 import { RecoveryRouterPanel } from './recovery-router-panel'
 import { loadRecoverySnapshot } from '@/lib/recovery-history'
 import { resolveRouterMode } from '@/lib/recovery-state-machine'
+import { BlockProgressPanel } from './block-progress-panel'
+import { loadBlockProgress } from '@/lib/block-progress'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -159,6 +161,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // Recovery and Regulation — Phase 2 shadow log + active state snapshot
   const recoverySnapshot = await loadRecoverySnapshot(admin, client.id)
   const recoveryMode = resolveRouterMode()
+
+  // Workout logging Phase A — block + session completion snapshot
+  const blockProgress = await loadBlockProgress(admin, client.id)
   const draftProgram = draftPrograms || null
   const activeNutritionPlan = activeNutritionPlans || null
   const draftNutritionPlan = draftNutritionPlans || null
@@ -622,6 +627,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               )}
             </div>
           )}
+
+          {/* Block progress + workout logging (Phase A) */}
+          <BlockProgressPanel data={blockProgress} />
 
           {/* Recovery Router (Phase 2 / observe-only) */}
           <RecoveryRouterPanel snapshot={recoverySnapshot} mode={recoveryMode} />
