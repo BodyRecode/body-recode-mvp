@@ -24,6 +24,9 @@ import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
 import OverrideSubscriptionButton from '@/components/override-subscription-button'
 import ClientCommunicationsPanel from '@/components/dashboard/client-communications-panel'
+import { RecoveryRouterPanel } from './recovery-router-panel'
+import { loadRecoverySnapshot } from '@/lib/recovery-history'
+import { resolveRouterMode } from '@/lib/recovery-state-machine'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -152,6 +155,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         client: { coaching_started_at: client.coaching_started_at },
       })
     : null
+
+  // Recovery and Regulation — Phase 2 shadow log + active state snapshot
+  const recoverySnapshot = await loadRecoverySnapshot(admin, client.id)
+  const recoveryMode = resolveRouterMode()
   const draftProgram = draftPrograms || null
   const activeNutritionPlan = activeNutritionPlans || null
   const draftNutritionPlan = draftNutritionPlans || null
@@ -615,6 +622,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               )}
             </div>
           )}
+
+          {/* Recovery Router (Phase 2 / observe-only) */}
+          <RecoveryRouterPanel snapshot={recoverySnapshot} mode={recoveryMode} />
 
           {/* What is a CFFS */}
           <div className="border-l-2 border-[#14b8a6] bg-[#111110]/50 border border-[#1c1917] rounded-2xl p-5 mb-4">

@@ -875,11 +875,14 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Phase plan</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
-              <li><strong>Phase 1 (current)</strong>: doctrine page + DB tables + router + state machine. Observe-only by default. Router has no signals to evaluate against until Phase 2 ships RSIB.</li>
-              <li><strong>Phase 2</strong>: RSIB block added to weekly check-in. Router runs in shadow after each CFWS lands. Read the audit log to see what would have fired.</li>
+              <li><strong>Phase 1 (DONE)</strong>: doctrine page + DB tables + router + state machine.</li>
+              <li><strong>Phase 2 (CURRENT)</strong>: RSIB ingest from existing weekly check-in answers (the three questions per 13D_13 are already in Form A and Form B verbatim — no client-facing changes). Router evaluates after each CFWS lands. Per-client shadow log lives on the client profile, just below the readiness drift section. Backfill API at <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">POST /api/recovery/backfill</code> derives RSIB from historical check-ins so the router has data to chew on immediately.</li>
               <li><strong>Phase 3</strong>: flip <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">RRS_OBSERVE_ONLY=false</code>. States activate. Program generation reads active state and applies constraints (soft gate by default).</li>
-              <li><strong>Phase 4</strong>: per-client recovery state visualisation, tier escalation alerts, recovery state history.</li>
+              <li><strong>Phase 4</strong>: hard-gate enforcement, tier escalation alerts, recovery state history view.</li>
             </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Where to watch the router (Phase 2)</p>
+            <p>Open any client profile. The <strong>Recovery Router</strong> panel sits between the readiness drift card and the &quot;What is a CFFS&quot; explainer. It shows: current router mode (observe-only / live), latest decision (which playbook would have activated and why), RSIB history for the last 8 weeks, and recent router runs with their triggers. If you&apos;re looking at a client who has not had any historical RSIB written yet, run the backfill API — it derives RSIB from every existing weekly_checkin response and re-evaluates the router per client.</p>
 
             <Note>The router does not fire on a clean week. RSIB recovery 3+ + sessions same/easier + sleep consistent → no state activates → program generation runs unchanged. The system is invisible until a real signal pattern emerges.</Note>
 

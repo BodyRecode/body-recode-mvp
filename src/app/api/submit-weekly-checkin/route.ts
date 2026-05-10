@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
+import { writeRecoverySignalBlock, evaluateRouterAfterCheckin } from '@/lib/recovery-ingest'
 
 export const maxDuration = 300
 
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Save check-in
-  const { error: insertError } = await admin
+  const { data: inserted, error: insertError } = await admin
     .from('weekly_checkins')
     .insert({
       client_id: clientId,
@@ -52,6 +53,8 @@ export async function POST(request: NextRequest) {
       form_type: formType,
       responses,
     })
+    .select('id')
+    .single()
 
   if (insertError) {
     console.error('Check-in insert error:', insertError)
@@ -62,6 +65,19 @@ export async function POST(request: NextRequest) {
   sendNotifications(client, weekNumber, formType).catch(err =>
     console.error('Notification error:', err)
   )
+
+  // Recovery and Regulation — Phase 2 RSIB ingest.
+  // The three RSIB questions per 13D_13 are already captured under
+  // a_recovery / a_sessions / a_sleep (and b_*) in the existing form,
+  // so we just normalise and write to recovery_signal_block here.
+  // Wrapped to never fail the parent submission.
+  writeRecoverySignalBlock(admin, {
+    clientId,
+    weekNumber,
+    formType: formType as 'A' | 'B',
+    responses,
+    weeklyCheckinId: inserted?.id ?? null,
+  }).catch(err => console.error('[recovery] RSIB ingest error:', err))
 
   // Generate CFWS using the most recent A and B available (may be from different weeks)
   const otherFormType = formType === 'A' ? 'B' : 'A'
@@ -79,6 +95,13 @@ export async function POST(request: NextRequest) {
     const formBResponses = formType === 'B' ? responses : (otherForm.responses as Record<string, string>)
     await generateCFWS(admin, client, weekNumber, formAResponses, formBResponses).catch(
       err => console.error('CFWS generation error:', err)
+    )
+
+    // After CFWS lands, evaluate the recovery router with the just-generated
+    // CFWS readiness + the RSIB row we just wrote. In observe-only mode this
+    // only writes a shadow audit row to recovery_adjustments.
+    evaluateRouterAfterCheckin(admin, clientId).catch(err =>
+      console.error('[recovery] router evaluation error:', err),
     )
   }
 
