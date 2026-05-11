@@ -128,10 +128,11 @@ export async function POST(request: NextRequest) {
 
   // Fetch macro plan context if plan_block_id provided
   let macroPlanContext = null
+  let coachGuidance: string | null = null
   if (plan_block_id) {
     const { data: planBlock } = await admin
       .from('plan_blocks')
-      .select('*, training_plans(plan_name, macro_objective)')
+      .select('*, training_plans(plan_name, macro_objective, coach_guidance)')
       .eq('id', plan_block_id)
       .maybeSingle()
 
@@ -147,9 +148,13 @@ export async function POST(request: NextRequest) {
       const prevBlock = allBlocks?.filter(b => b.position < planBlock.position && b.status === 'complete').pop() ?? null
       const nextBlock = allBlocks?.find(b => b.position > planBlock.position) ?? null
 
+      const trainingPlan = planBlock.training_plans as
+        | { plan_name: string; macro_objective: string | null; coach_guidance: string | null }
+        | null
+
       macroPlanContext = {
-        plan_name: (planBlock.training_plans as { plan_name: string; macro_objective: string | null } | null)?.plan_name,
-        macro_objective: (planBlock.training_plans as { plan_name: string; macro_objective: string | null } | null)?.macro_objective,
+        plan_name: trainingPlan?.plan_name,
+        macro_objective: trainingPlan?.macro_objective,
         current_block_position: planBlock.position,
         total_blocks: allBlocks?.length ?? 1,
         phase_category: planBlock.phase_category,
@@ -158,6 +163,11 @@ export async function POST(request: NextRequest) {
         previous_block: prevBlock ? `Block ${prevBlock.position}: ${prevBlock.block_name} (${prevBlock.progression_phase}, ${prevBlock.training_goal}, ${prevBlock.week_duration}w) — ${prevBlock.status}` : null,
         next_block: nextBlock ? `Block ${nextBlock.position}: ${nextBlock.block_name} (${nextBlock.progression_phase}, ${nextBlock.training_goal}, ${nextBlock.week_duration}w) — planned` : null,
       }
+
+      // Standing coach guidance — applied on every generation tied to this arc.
+      // Authority is bounded by the rules in program-prompt.ts system prompt
+      // ("COACH GUIDANCE (CONTEXT-LEVEL OVERRIDE)").
+      coachGuidance = trainingPlan?.coach_guidance ?? null
 
       // Mark the plan block as in_progress
       await admin.from('plan_blocks').update({ status: 'in_progress' }).eq('id', plan_block_id).eq('status', 'planned')
@@ -190,6 +200,10 @@ export async function POST(request: NextRequest) {
     ...injuryContext,
   }
 
+  if (coachGuidance) {
+    console.log('[generate-program] Coach guidance applied:', coachGuidance.slice(0, 120))
+  }
+
   // Recovery and Regulation — Phase 3.
   // If the client has an active recovery state, read its constraint manifest.
   // We inject the manifest into the system prompt so Claude generates a
@@ -210,7 +224,7 @@ export async function POST(request: NextRequest) {
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 6000,
       system: buildProgramSystemPrompt() + recoveryPromptSection,
-      messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.hormonal_support) }],
+      messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.hormonal_support, coachGuidance) }],
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)

@@ -35,6 +35,7 @@ const SECTIONS = [
   { id: 'training-program', title: '20. Training Program',   colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'program-reading',  title: '20b. Program Reading',   colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'macro-arc',        title: '21. Macro Training Arc', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'program-coach-guidance', title: '21b. Program Coach Guidance', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'nutrition-plan',   title: '22. Nutrition Plan',     colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'business-engine',  title: 'Business Engine',        colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-crm',           title: '23. CRM & Pipeline',     colour: 'amber' as const, category: 'business' as Category },
@@ -1383,6 +1384,36 @@ export default function HelpPage() {
             </ul>
 
             <Note>The macro plan gives Claude context it cannot derive from a single block in isolation - it knows where the client has been and where they are going. This produces more accurate phase transitions, better execution arc decisions, and appropriate intensity sequencing across blocks.</Note>
+          </Section>
+
+          <Section id="program-coach-guidance" title="21b. Program Coach Guidance" colour="teal">
+            <p>Standing free-text steering for the program generator at the macro-arc level. Lives on the macro arc (the <code>training_plans</code> row), so it auto-applies to every Generate or Regenerate of every phase you produce within that arc. Solves the problem where the engine&apos;s doctrine-default conservatism produces a first-phase program that is technically correct but too soft for clients whose training-age signals the form alone can&apos;t carry.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">When to use it</p>
+            <p>Open a draft program (after Generate Program in the macro arc flow). Above the draft program body you&apos;ll see the <strong>Coach Guidance (macro arc)</strong> card. Click <strong>Edit</strong>, write what the engine doesn&apos;t know from the form inputs alone, click <strong>Save guidance</strong>, then click <strong>Regenerate with guidance</strong> in the draft header. The current draft is replaced by a new one generated with your guidance applied.</p>
+
+            <p>Common things to write:</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>Training-age realities the form can&apos;t carry: <em>&quot;Training-age advanced (10+ years). Target RPE 8 on primaries from week 1.&quot;</em></li>
+              <li>Exercise-selection bias: <em>&quot;No machine variations where a barbell or dumbbell version exists. Free-weight primaries only.&quot;</em></li>
+              <li>Volume positioning: <em>&quot;Bias volume to the top of the prescribed range.&quot;</em></li>
+              <li>Session density: <em>&quot;Supersets allowed on accessories. EMOMs welcome.&quot;</em></li>
+              <li>Tone of the block: <em>&quot;He&apos;s coming out of a deload and wants to feel intensity again. Don&apos;t be cautious.&quot;</em></li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">What it can and cannot do</p>
+            <p>Coach guidance <strong>can</strong> override engine-default conservatism within doctrine: default RPE ceilings within the doctrine range, set/rep selection within the goal range, exercise complexity bias, session density, volume positioning within the prescribed range.</p>
+            <p>Coach guidance <strong>cannot</strong> override doctrine safety floors: an active recovery state (RRS clamps), injury contraindications, Fat Map Method hard limits, Level 0/1/2 eligibility floors, the exercise library, or doctrine RPE caps for the assigned phase. If your guidance conflicts with one of these on a safety-relevant variable, doctrine wins and the engine notes the partial application in the weekly pattern summary.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Scope and persistence</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>Lives on the macro arc. One guidance field per arc. Applies to every phase you generate from this arc.</li>
+              <li>Persists across regenerations of the same phase, and across new phase generations (phase 2, 3, 4...).</li>
+              <li>Edit it any time. The next Generate or Regenerate picks up the change.</li>
+              <li>Only visible when the draft is linked to a macro arc. Programs generated outside the macro-arc flow do not have a guidance editor.</li>
+            </ul>
+
+            <Note>The Regenerate button is the existing generate route under the hood — it auto-replaces the current draft. There is no separate &quot;regenerate&quot; state. If you want a specific phase to read differently from the arc-wide guidance, edit the guidance temporarily, regenerate, then change it back. Per-phase override fields are not yet built; add a registry future-work line if you start needing them.</Note>
           </Section>
 
           <Section id="nutrition-plan" title="22. Nutrition Plan - HABNS" colour="teal">

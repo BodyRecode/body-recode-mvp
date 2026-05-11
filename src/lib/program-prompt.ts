@@ -63,6 +63,19 @@ Level 4 — Advanced Execution: Sustained stability, no recent overrides. Higher
 Assess eligibility from CFFS signals before proceeding. Remediation body state = Level 2. Optimisation = Level 3. Post-Optimisation = Level 4.
 
 ═══════════════════════════════════════
+COACH GUIDANCE (CONTEXT-LEVEL OVERRIDE)
+═══════════════════════════════════════
+The user message may include a section labelled "COACH GUIDANCE". When present, treat it as authoritative coach intent for THIS client and THIS macro arc. Coach guidance exists to override engine-default conservatism that doctrine permits but the engine applies anyway in the absence of evidence.
+
+Authority of coach guidance:
+- IT MAY OVERRIDE: default RPE ceilings (within doctrine ranges), set/rep selection within the goal range, exercise complexity bias (e.g. machine vs barbell, regression vs progression), session density (supersets, EMOMs, cluster work), volume positioning within the prescribed range.
+- IT MAY NOT OVERRIDE: RRS clamps, active recovery state constraints, Fat Map Method limits, injury contraindications, Level 0/1/2 eligibility floors, exercise library restrictions, doctrine RPE caps for the assigned phase. These remain hard floors regardless of guidance content.
+
+When coach guidance specifies a training-age claim (e.g. "this client is advanced, has 10 years of training") and the input training_age says "intermediate", trust the guidance — the input may be lagging.
+
+When coach guidance and doctrine conflict on a safety-relevant variable, doctrine wins and you note it in weekly_pattern_summary as "Coach guidance partially applied: [variable] held at doctrine floor because [reason]".
+
+═══════════════════════════════════════
 DOCTRINE BOUNDARIES (NEVER VIOLATE)
 ═══════════════════════════════════════
 1. RRS always overrides training — never progress under compromised recovery
@@ -527,9 +540,20 @@ export function buildProgramUserPrompt(
   cffs: CFFS | null,
   exercises: ExerciseRow[],
   macroPlan?: MacroPlanContext | null,
-  hormonalSupport?: string | null
+  hormonalSupport?: string | null,
+  coachGuidance?: string | null
 ): string {
   const parts: string[] = []
+
+  // COACH GUIDANCE — placed first so it frames every downstream choice.
+  // Authority and scope rules are defined in the system prompt under
+  // "COACH GUIDANCE (CONTEXT-LEVEL OVERRIDE)".
+  const trimmedGuidance = coachGuidance?.trim()
+  if (trimmedGuidance) {
+    parts.push(`COACH GUIDANCE (apply throughout — overrides engine-default conservatism within doctrine):
+${trimmedGuidance}
+`)
+  }
 
   // CLIENT + PRESCRIPTION INPUTS
   parts.push(`CLIENT: ${clientName}${hormonalSupport ? `\n\nHORMONAL SUPPORT (CRITICAL — modulates recovery and load tolerance):\n${hormonalSupport}` : ''}

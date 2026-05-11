@@ -5,6 +5,8 @@ import DraftActions from './draft-actions'
 import DeleteProgramButton from './delete-button'
 import ProgramWeeklyReview from './weekly-review'
 import ProgramReadingPanel from './program-reading-panel'
+import CoachGuidanceEditor from './coach-guidance-editor'
+import RegenerateButton from './regenerate-button'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 
 interface Exercise {
@@ -285,6 +287,26 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
   const activeProgram = programs?.find(p => p.is_active) as Program | undefined
   const archivedPrograms = programs?.filter(p => !p.is_active && p.status !== 'draft') as Program[]
 
+  // Resolve the parent training_plan for the draft (via plan_blocks). If the
+  // draft was generated outside the macro-arc flow there will be no link and
+  // we skip the coach-guidance editor for that draft.
+  let draftTrainingPlan: { id: string; coach_guidance: string | null } | null = null
+  if (draftProgram) {
+    const { data: planBlock } = await admin
+      .from('plan_blocks')
+      .select('plan_id')
+      .eq('program_id', draftProgram.id)
+      .maybeSingle()
+    if (planBlock?.plan_id) {
+      const { data: tp } = await admin
+        .from('training_plans')
+        .select('id, coach_guidance')
+        .eq('id', planBlock.plan_id)
+        .maybeSingle()
+      if (tp) draftTrainingPlan = tp
+    }
+  }
+
   return (
     <div className="max-w-5xl mx-auto">
       {/* Header */}
@@ -324,8 +346,17 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">Draft - Pending Approval</span>
             </div>
-            <DraftActions programId={draftProgram.id} clientId={id} />
+            <div className="flex items-center gap-2">
+              {draftTrainingPlan && <RegenerateButton programId={draftProgram.id} />}
+              <DraftActions programId={draftProgram.id} clientId={id} />
+            </div>
           </div>
+          {draftTrainingPlan && (
+            <CoachGuidanceEditor
+              trainingPlanId={draftTrainingPlan.id}
+              initial={draftTrainingPlan.coach_guidance}
+            />
+          )}
           <ProgramBody program={draftProgram} idPrefix="draft-" />
         </div>
       )}
