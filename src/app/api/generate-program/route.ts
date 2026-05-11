@@ -3,6 +3,8 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { resolveEffectiveTier, clampProgramToDoctrine } from '@/lib/training-doctrine'
+import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
+import { clampProgramToRecoveryManifest, buildRecoveryPromptSection } from '@/lib/recovery-program-clamp'
 import {
   buildProgramSystemPrompt,
   buildProgramUserPrompt,
@@ -35,6 +37,9 @@ export async function POST(request: NextRequest) {
     week_duration,
     block_name,
     preferred_training_days,
+    // Phase 3 soft-gate override: when present, recovery clamp is skipped
+    // and an override audit row is written instead.
+    recovery_override_reason,
   } = body
 
   if (!client_id || !training_frequency || !training_goal || !training_age || !movement_competency || !progression_phase || !equipment_access || !week_duration || !block_name) {
@@ -185,6 +190,17 @@ export async function POST(request: NextRequest) {
     ...injuryContext,
   }
 
+  // Recovery and Regulation — Phase 3.
+  // If the client has an active recovery state, read its constraint manifest.
+  // We inject the manifest into the system prompt so Claude generates a
+  // program already respecting the constraints, then clamp post-LLM as
+  // defence in depth. If the coach has provided a documented override
+  // reason, we skip the clamp but still log the override for audit.
+  const activeRecoveryManifest = await getActiveConstraintManifest(client_id)
+  const recoveryPromptSection = activeRecoveryManifest && !recovery_override_reason
+    ? '\n\n' + buildRecoveryPromptSection(activeRecoveryManifest.playbook)
+    : ''
+
   // Generate program via Claude. Switched from Sonnet 4.6 to Haiku 4.5 for
   // speed (~3-5x faster). Programs are structure-heavy and rule-driven, so
   // the smaller model holds up well; revisit if quality drops.
@@ -193,7 +209,7 @@ export async function POST(request: NextRequest) {
     message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 6000,
-      system: buildProgramSystemPrompt(),
+      system: buildProgramSystemPrompt() + recoveryPromptSection,
       messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.hormonal_support) }],
     })
   } catch (err) {
@@ -243,6 +259,62 @@ export async function POST(request: NextRequest) {
       ? [doctrineNote, ...programData.weekly_pattern_summary]
       : [doctrineNote, ...(programData.weekly_pattern_summary ? [programData.weekly_pattern_summary] : [])]
     console.log('[generate-program] Doctrine clamp:', { rpeClamps: clamp.rpeClamps, setsAdded: clamp.setsAdded, tier: effectiveTier, phase: phaseForDoctrine })
+  }
+
+  // Recovery and Regulation clamp — runs AFTER training-doctrine clamp.
+  // Two paths: (a) state active and no override → clamp applied + audit row.
+  // (b) state active and coach overrode → no clamp, override audit row.
+  // (c) no state active → no-op.
+  if (activeRecoveryManifest) {
+    if (recovery_override_reason) {
+      // Coach explicitly overrode the recovery constraint. Log it.
+      await admin.from('recovery_adjustments').insert({
+        client_id,
+        recovery_state_id: activeRecoveryManifest.state.id,
+        event_type: 'constraint_overridden',
+        trigger_type: 'coach_override',
+        signals_acknowledged: { active_playbook: activeRecoveryManifest.playbook.id, days_active: activeRecoveryManifest.state.days_active },
+        constraints_recognised: { training: activeRecoveryManifest.playbook.trainingConstraints },
+        uncertainties_held: 'Coach overrode active recovery state during program generation',
+        permissible_category: activeRecoveryManifest.playbook.permissibleCategory,
+        authorisation_decision: 'overridden_with_reason',
+        override_reason: recovery_override_reason,
+        observe_only: false,
+      })
+      const overrideNote = `RECOVERY OVERRIDE: active state ${activeRecoveryManifest.playbook.source} (${activeRecoveryManifest.playbook.name}) was active but coach overrode the constraint clamp. Reason: ${recovery_override_reason}`
+      programData.weekly_pattern_summary = Array.isArray(programData.weekly_pattern_summary)
+        ? [overrideNote, ...programData.weekly_pattern_summary]
+        : [overrideNote, ...(programData.weekly_pattern_summary ? [programData.weekly_pattern_summary] : [])]
+      console.log('[generate-program] Recovery clamp OVERRIDDEN:', recovery_override_reason)
+    } else {
+      const rClamp = clampProgramToRecoveryManifest(programData.sessions || [], activeRecoveryManifest.playbook)
+      programData.sessions = rClamp.sessions
+      if (rClamp.notes.length > 0) {
+        const recoveryNote = `Recovery clamp applied (active state: ${activeRecoveryManifest.playbook.source}, ${activeRecoveryManifest.playbook.name}, day ${activeRecoveryManifest.state.days_active} of state). ${rClamp.notes.join(' ')}`
+        programData.weekly_pattern_summary = Array.isArray(programData.weekly_pattern_summary)
+          ? [recoveryNote, ...programData.weekly_pattern_summary]
+          : [recoveryNote, ...(programData.weekly_pattern_summary ? [programData.weekly_pattern_summary] : [])]
+      }
+      // Audit row for the constraint application
+      await admin.from('recovery_adjustments').insert({
+        client_id,
+        recovery_state_id: activeRecoveryManifest.state.id,
+        event_type: 'constraint_applied',
+        trigger_type: 'program_generation',
+        signals_acknowledged: { active_playbook: activeRecoveryManifest.playbook.id, days_active: activeRecoveryManifest.state.days_active, enforcement_mode: activeRecoveryManifest.enforcementMode },
+        constraints_recognised: {
+          training: activeRecoveryManifest.playbook.trainingConstraints,
+          rpe_reductions: rClamp.rpeReductions,
+          sessions_removed: rClamp.sessionsRemoved,
+          blocks_removed: rClamp.blocksRemoved,
+        },
+        uncertainties_held: rClamp.notes.join(' '),
+        permissible_category: activeRecoveryManifest.playbook.permissibleCategory,
+        authorisation_decision: 'authorised',
+        observe_only: false,
+      })
+      console.log('[generate-program] Recovery clamp:', { rpeReductions: rClamp.rpeReductions, sessionsRemoved: rClamp.sessionsRemoved, blocksRemoved: rClamp.blocksRemoved, playbook: activeRecoveryManifest.playbook.id })
+    }
   }
 
   // Archive any existing drafts for this client (only one draft at a time)

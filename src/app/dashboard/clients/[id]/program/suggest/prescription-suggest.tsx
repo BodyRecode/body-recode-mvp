@@ -146,18 +146,40 @@ function ReasonCard({
   )
 }
 
+interface RecoveryNotice {
+  playbookId: string
+  playbookName: string
+  playbookSource: string
+  tier: number
+  purpose: string
+  daysActive: number
+  enforcementMode: 'soft' | 'hard'
+  constraintsSummary: {
+    loadReductionPct: readonly [number, number] | null
+    sessionsPerWeekCap: number | null
+    sessionsRemovedPerWeek: readonly [number, number] | null
+    progressionLocked: boolean
+    conditioningBlocked: boolean
+    testingBlocked: boolean
+  }
+}
+
 export default function PrescriptionSuggest({
   clientId,
   clientName,
   planBlock,
   planBlockId,
+  recoveryNotice,
 }: {
   clientId: string
   clientName: string
   planBlock: PlanBlock | null
   planBlockId: string | null
+  recoveryNotice: RecoveryNotice | null
 }) {
   const router = useRouter()
+  const [overrideMode, setOverrideMode] = useState<'apply' | 'override'>('apply')
+  const [overrideReason, setOverrideReason] = useState('')
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -228,6 +250,13 @@ export default function PrescriptionSuggest({
     if (form.equipment_access.length === 0) { setError('Select at least one equipment type'); return }
     setGenerating(true)
     setError(null)
+    // Phase 3 — if a recovery state is active and the coach chose to override,
+    // require a documented reason so the audit trail captures it.
+    if (recoveryNotice && overrideMode === 'override' && overrideReason.trim().length < 10) {
+      setError('Override requires a documented reason (at least 10 characters)')
+      setGenerating(false)
+      return
+    }
     try {
       const res = await fetch('/api/generate-program', {
         method: 'POST',
@@ -237,6 +266,7 @@ export default function PrescriptionSuggest({
           plan_block_id: planBlockId,
           prescription_rationale: suggestion?.overall_rationale ?? null,
           ...form,
+          ...(recoveryNotice && overrideMode === 'override' ? { recovery_override_reason: overrideReason.trim() } : {}),
         }),
       })
       const data = await res.json()
@@ -265,6 +295,70 @@ export default function PrescriptionSuggest({
           Generated from CFFS, intake, and training history. Review the reasoning, edit if needed, then approve to generate the program.
         </p>
       </div>
+
+      {/* Phase 3 — Active recovery state notice */}
+      {recoveryNotice && (
+        <div className="mb-8 rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-500/15 to-amber-500/5 px-5 py-4">
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-amber-400 font-semibold mb-2">
+            ⚠ Active recovery state · {recoveryNotice.playbookSource} · Tier {recoveryNotice.tier} · {recoveryNotice.enforcementMode === 'hard' ? 'HARD GATE' : 'SOFT GATE'}
+          </div>
+          <h2 className="text-base font-bold text-white mb-1">{recoveryNotice.playbookName}</h2>
+          <p className="text-xs text-stone-300 mb-3">{recoveryNotice.purpose}</p>
+          <p className="text-xs text-stone-400 mb-3">Day {recoveryNotice.daysActive} of state. Constraints that will be auto-applied to this generation:</p>
+          <ul className="text-xs text-stone-300 space-y-1 mb-4 list-disc list-inside">
+            {recoveryNotice.constraintsSummary.loadReductionPct && (
+              <li>Load reduction <strong>{recoveryNotice.constraintsSummary.loadReductionPct[0]}–{recoveryNotice.constraintsSummary.loadReductionPct[1]}%</strong> (RPE drops 1–2 points across exercises)</li>
+            )}
+            {recoveryNotice.constraintsSummary.sessionsPerWeekCap != null && (
+              <li>Weekly session cap: <strong>{recoveryNotice.constraintsSummary.sessionsPerWeekCap}</strong></li>
+            )}
+            {recoveryNotice.constraintsSummary.sessionsRemovedPerWeek && recoveryNotice.constraintsSummary.sessionsRemovedPerWeek[0] > 0 && (
+              <li>Sessions removed: <strong>{recoveryNotice.constraintsSummary.sessionsRemovedPerWeek[0]}–{recoveryNotice.constraintsSummary.sessionsRemovedPerWeek[1]}</strong> per week</li>
+            )}
+            {recoveryNotice.constraintsSummary.progressionLocked && <li><strong>Progression locked</strong> for the duration of this state</li>}
+            {recoveryNotice.constraintsSummary.conditioningBlocked && <li>Conditioning / capacity / cardio blocks <strong>removed</strong></li>}
+            {recoveryNotice.constraintsSummary.testingBlocked && <li>Testing / 1RM / max-effort exercises <strong>removed</strong></li>}
+          </ul>
+
+          <div className="flex flex-col gap-2">
+            <label className="flex items-start gap-2 text-xs text-stone-300 cursor-pointer">
+              <input
+                type="radio"
+                name="recovery_mode"
+                checked={overrideMode === 'apply'}
+                onChange={() => { setOverrideMode('apply'); setOverrideReason('') }}
+                className="mt-0.5 accent-teal-400"
+              />
+              <span>
+                <strong className="text-teal-400">Apply constraints (recommended)</strong>
+                <span className="block text-stone-400 mt-0.5">Generate the program with the recovery clamp applied. Doctrinally correct path.</span>
+              </span>
+            </label>
+            <label className="flex items-start gap-2 text-xs text-stone-300 cursor-pointer">
+              <input
+                type="radio"
+                name="recovery_mode"
+                checked={overrideMode === 'override'}
+                onChange={() => setOverrideMode('override')}
+                className="mt-0.5 accent-amber-400"
+              />
+              <span>
+                <strong className="text-amber-400">Override constraints (documented)</strong>
+                <span className="block text-stone-400 mt-0.5">Skip the recovery clamp. Requires a written reason. Logged to recovery_adjustments audit trail.</span>
+              </span>
+            </label>
+            {overrideMode === 'override' && (
+              <textarea
+                value={overrideReason}
+                onChange={e => setOverrideReason(e.target.value)}
+                placeholder="Why is the recovery clamp being skipped? (audit trail will record this)"
+                rows={3}
+                className="mt-1 w-full rounded-lg bg-stone-900 border border-stone-700 text-stone-200 text-xs px-3 py-2 focus:outline-none focus:border-amber-500"
+              />
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Plan block context */}
       {planBlock && (

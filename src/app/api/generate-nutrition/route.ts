@@ -3,6 +3,8 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescriptionInputs } from '@/lib/nutrition-prompt'
+import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
+import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clamp'
 
 export const maxDuration = 300
 
@@ -150,7 +152,16 @@ export async function POST(request: NextRequest) {
     food_exclusions: food_exclusions || [],
   }
 
-  const systemPrompt = buildNutritionSystemPrompt()
+  // Recovery and Regulation — Phase 3.
+  // If a recovery state is active, inject the nutrition constraint section
+  // into the system prompt and write an audit row. There is no post-LLM
+  // clamp for nutrition because prescriptions are largely textual.
+  const activeRecoveryManifest = await getActiveConstraintManifest(client_id)
+  const recoveryPromptSection = activeRecoveryManifest
+    ? '\n\n' + buildRecoveryNutritionPromptSection(activeRecoveryManifest.playbook)
+    : ''
+
+  const systemPrompt = buildNutritionSystemPrompt() + recoveryPromptSection
   const userPrompt = buildNutritionUserPrompt(inputs, cffsText, intakeText, previousPlans, client.hormonal_support)
 
   let message
@@ -222,6 +233,22 @@ export async function POST(request: NextRequest) {
   if (saveError) {
     console.error('Save error:', saveError)
     return NextResponse.json({ error: 'Failed to save nutrition plan' }, { status: 500 })
+  }
+
+  // Recovery audit row when an active state's nutrition constraints were applied
+  if (activeRecoveryManifest) {
+    await admin.from('recovery_adjustments').insert({
+      client_id,
+      recovery_state_id: activeRecoveryManifest.state.id,
+      event_type: 'constraint_applied',
+      trigger_type: 'nutrition_generation',
+      signals_acknowledged: { active_playbook: activeRecoveryManifest.playbook.id, days_active: activeRecoveryManifest.state.days_active },
+      constraints_recognised: { nutrition: activeRecoveryManifest.playbook.nutritionConstraints },
+      uncertainties_held: 'Nutrition prompt-injected with recovery constraints; no post-LLM clamp (textual prescription).',
+      permissible_category: activeRecoveryManifest.playbook.permissibleCategory,
+      authorisation_decision: 'authorised',
+      observe_only: false,
+    })
   }
 
   return NextResponse.json({ plan_id: savedPlan.id, client_id })

@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound, redirect } from 'next/navigation'
 import PrescriptionSuggest from './prescription-suggest'
+import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 
 export default async function SuggestPage({
   params,
@@ -41,12 +42,37 @@ export default async function SuggestPage({
     redirect(`/dashboard/clients/${id}/plan`)
   }
 
+  // Phase 3 — surface the active recovery constraint manifest so the coach
+  // sees what will be auto-applied to this generation (and can choose to
+  // override with a documented reason).
+  const recoveryManifest = await getActiveConstraintManifest(id)
+  const recoveryNotice = recoveryManifest
+    ? {
+        playbookId: recoveryManifest.playbook.id,
+        playbookName: recoveryManifest.playbook.name,
+        playbookSource: recoveryManifest.playbook.source,
+        tier: recoveryManifest.playbook.tier,
+        purpose: recoveryManifest.playbook.purpose,
+        daysActive: recoveryManifest.state.days_active,
+        enforcementMode: recoveryManifest.enforcementMode,
+        constraintsSummary: {
+          loadReductionPct: recoveryManifest.playbook.trainingConstraints.loadReductionPct as readonly [number, number] | null,
+          sessionsPerWeekCap: recoveryManifest.playbook.trainingConstraints.sessionsPerWeekCap,
+          sessionsRemovedPerWeek: recoveryManifest.playbook.trainingConstraints.sessionsRemovedPerWeek as readonly [number, number] | null,
+          progressionLocked: recoveryManifest.playbook.trainingConstraints.progressionLocked,
+          conditioningBlocked: recoveryManifest.playbook.trainingConstraints.conditioningBlocked,
+          testingBlocked: recoveryManifest.playbook.trainingConstraints.testingBlocked,
+        },
+      }
+    : null
+
   return (
     <PrescriptionSuggest
       clientId={id}
       clientName={client.name}
       planBlock={planBlock}
       planBlockId={plan_block_id ?? null}
+      recoveryNotice={recoveryNotice}
     />
   )
 }
