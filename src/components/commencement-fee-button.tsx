@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function CommencementFeeButton({ leadId }: { leadId: string }) {
+  const router = useRouter()
   const [copying, setCopying] = useState(false)
   const [copied, setCopied] = useState(false)
   const [sending, setSending] = useState(false)
@@ -31,6 +33,9 @@ export default function CommencementFeeButton({ leadId }: { leadId: string }) {
     const data = await res.json()
     if (data.sent) {
       setSent(true)
+      // Re-fetch the server component so the "Last sent ..." line under the
+      // button reflects the just-logged lead_events row without a manual reload.
+      router.refresh()
       setTimeout(() => setSent(false), 3000)
     } else {
       setError(data.error ?? 'Failed to send email')
