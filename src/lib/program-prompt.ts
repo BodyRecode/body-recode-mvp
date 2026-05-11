@@ -73,6 +73,12 @@ Authority of coach guidance:
 
 When coach guidance specifies a training-age claim (e.g. "this client is advanced, has 10 years of training") and the input training_age says "intermediate", trust the guidance — the input may be lagging.
 
+Interpretation rules for common guidance phrases:
+- "top of range" / "bias volume to the top" / "more volume" / "wants more" → target the MAX of the calibration matrix for the assigned phase × tier, not the target. For advanced × accumulation this means 20 working sets per session, not 17.
+- "wants intensity" / "can handle intensity" / "push him" / "don't be conservative" → primary RPE at the ceiling from week 1 (e.g. 8 for advanced accumulation), no ramp-up from 6 or 7.
+- "supersets allowed" / "more density" → pair accessories as supersets and prefer 6–7 distinct movements per session over 4–5 movements with higher set counts.
+- "free-weight only" / "no machines where a free-weight version exists" → exclude exercises with equipment 'machine' or 'cable' from primary and secondary slots when an equivalent barbell or dumbbell exercise exists in the library for the same pattern.
+
 When coach guidance and doctrine conflict on a safety-relevant variable, doctrine wins and you note it in weekly_pattern_summary as "Coach guidance partially applied: [variable] held at doctrine floor because [reason]".
 
 ═══════════════════════════════════════
@@ -282,27 +288,29 @@ TRAINING AGE MODULATION (CRITICAL — applies in EVERY phase, especially Restora
 ═══════════════════════════════════════
 Phase intent (Restoration recovery-protective, Accumulation conservative-progressive, etc.) is constant. The THRESHOLD of "sub-maximal" must scale with training age. Get this wrong and we lose the client.
 
-Calibration matrix (final RPE ceilings, working sets per session):
+Calibration matrix (final RPE ceilings, working sets per session — synced with src/lib/training-doctrine.ts):
 
-BEGINNER training_age (in any phase):
+BEGINNER training_age:
 - Primary RPE ceiling: 6
 - Secondary RPE ceiling: 5–6
 - Accessory RPE ceiling: 5
-- Working sets per session: 6–9
+- Working sets per session: Restoration 6–9 / Accumulation 9–12 / Intensification 9–12 / Realization 9–12 (min–target–max ≈ floor / target / cap)
 - Rationale: System is learning movement patterns AND recovering. No conditioning to lose.
 
-INTERMEDIATE training_age (in any phase):
+INTERMEDIATE training_age:
 - Primary RPE ceiling: Restoration 7 / Accumulation 7–8 / Expression 8
 - Secondary RPE ceiling: 6–7
 - Accessory RPE ceiling: 5–7
-- Working sets per session: 9–12
+- Working sets per session: Restoration 9–10–12 / Accumulation 12–14–16 / Intensification 11–13–15 / Realization 11–13–15
 
-ADVANCED training_age (in any phase):
+ADVANCED training_age:
 - Primary RPE ceiling: Restoration 7–8 / Accumulation 8 / Expression 8–9
 - Secondary RPE ceiling: 7
 - Accessory RPE ceiling: 6–7
-- Working sets per session: 12–16
-- CRITICAL: Below RPE 6 / below 12 working sets per session, an advanced trainer will detrain inside two weeks AND quit. Restoration's recovery-protective intent for an advanced trainer is preserved by:
+- Working sets per session: Restoration 12–14–16 / **Accumulation 14–17–20** / Intensification 13–16–18 / Realization 13–16–18
+- Read these as min – target – max. Default to the TARGET. When coach guidance signals "top of range" / "more intensity" / "wants more volume", aim for the MAX. Never below MIN.
+- Exercise count per session for advanced is typically 5–7 distinct movements (one primary, one secondary, two to three accessories, one trunk/conditioning). When coach guidance signals more density, prefer 6–7 distinct movements with paired/superset accessories rather than 4 movements with more sets each.
+- CRITICAL: Below RPE 6 / below the MIN sets per session for the phase, an advanced trainer will detrain inside two weeks AND quit. Restoration's recovery-protective intent for an advanced trainer is preserved by:
   · No PR attempts
   · No novel high-CNS lifts
   · No failure work
