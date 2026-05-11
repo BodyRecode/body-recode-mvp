@@ -6,6 +6,8 @@ import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { ONLINE_PACKAGE_VALUES, IN_PERSON_PACKAGE_VALUES, TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
 import { PageHeader, Btn, EmptyState, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 import { evaluateReadiness, type ReadinessReport } from '@/lib/readiness-monitor'
+import { evaluateRpeCreep } from '@/lib/rpe-creep-monitor'
+import { currentBlockWeek } from '@/lib/workout-logging'
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ view?: string; type?: string }> }) {
   const supabase = createAdminClient()
@@ -74,7 +76,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  const clientsProcessed = (clients || []).map(client => {
+  const clientsProcessed = await Promise.all((clients || []).map(async client => {
     const startDate = client.coaching_started_at ? new Date(client.coaching_started_at) : null
     if (startDate) startDate.setHours(0, 0, 0, 0)
     const daysUntilStart = startDate ? Math.ceil((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : null
@@ -101,6 +103,15 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
     const upgradeCandidate = TWO_SESSION_PACKAGE_VALUES.includes(client.package) && (weekNumber ?? 0) >= 8 && (daysUntilStart ?? 0) <= 0
 
+    // RPE creep — Workout Logging Phase C. Fired per client in parallel so
+    // a roster of N adds at most one round-trip latency to the dashboard.
+    const blockWeek = activeProgram?.generated_at
+      ? currentBlockWeek(activeProgram.generated_at)
+      : null
+    const rpeCreep = activeProgram?.id && blockWeek
+      ? await evaluateRpeCreep(supabase, client.id, activeProgram.id, blockWeek)
+      : null
+
     // Doctrine: Signal Monitoring and Reassessment Triggers v1.0
     // Coaching has not actually started until coaching_started_at is in the past.
     const readiness: ReadinessReport | null = client.coaching_started_at && (daysUntilStart ?? 1) <= 0
@@ -109,11 +120,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           activeCffs: latestCffs,
           activeProgram,
           client: { coaching_started_at: client.coaching_started_at },
+          rpeCreep,
         })
       : null
 
     return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB, rebuildTraining: rebuildTrainingIds.has(client.id), rebuildNutrition: rebuildNutritionIds.has(client.id), upgradeCandidate, readiness }
-  })
+  }))
 
   const flaggedCount = clientsProcessed.filter(c => c.latestCffs?.reassessment_flagged).length
   const upgradeCandidateCount = clientsProcessed.filter(c => c.upgradeCandidate).length

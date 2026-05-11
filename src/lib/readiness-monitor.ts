@@ -10,6 +10,7 @@
  */
 
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
+import type { RpeCreepReport } from '@/lib/rpe-creep-monitor'
 
 export type Signal = 'Green' | 'Amber' | 'Red' | 'Unknown' | null
 export type ReadinessKey = 'capacity' | 'schedule' | 'regulation' | 'behaviour'
@@ -59,12 +60,24 @@ export interface ClientContext {
 export type Severity = 'advisory' | 'high'
 
 export interface DriftCondition {
+  /**
+   * CFWS-derived conditions key off one of the four readiness signals.
+   * RPE-creep conditions key off 'capacity' (it is the capacity-side
+   * objective signal) and carry their per-exercise detail in `rpeCreep`.
+   */
   key: ReadinessKey
   signal: Signal
   priorSignal: Signal
-  kind: 'single_notch_drop' | 'multi_notch_drop' | 'sustained_instability' | 'red_in_latest'
+  kind:
+    | 'single_notch_drop'
+    | 'multi_notch_drop'
+    | 'sustained_instability'
+    | 'red_in_latest'
+    | 'rpe_creep_current_week'
   severity: Severity
   message: string
+  /** Present only when kind === 'rpe_creep_current_week' */
+  rpeCreep?: RpeCreepReport
 }
 
 export type ReassessmentReason =
@@ -74,6 +87,7 @@ export type ReassessmentReason =
   | 'sustained_instability'
   | 'block_end'
   | 'twelve_week_cap'
+  | 'rpe_creep_current_week'
 
 export type ReassessmentDepth = 'lightweight' | 'delta' | 'full'
 
@@ -329,12 +343,24 @@ export function evaluateReadiness(input: {
   activeProgram: ActiveProgram | null
   /** Client context (for week math) */
   client: ClientContext
+  /**
+   * Optional RPE creep evaluation for the current week of the active
+   * block. When passed and severity is advisory or high, a DriftCondition
+   * (kind: 'rpe_creep_current_week') is added and a reassessment reason
+   * may also fire. When null/undefined, RPE creep is skipped entirely
+   * (preserves prior behaviour for callers that don't pass it).
+   */
+  rpeCreep?: RpeCreepReport | null
 }): ReadinessReport {
   const cfwsRows = (input.cfwsRows ?? []).filter(r => !r.is_archived)
   const latest = cfwsRows[0] ?? null
   const prior = cfwsRows[1] ?? null
+  const rpeCreepDrift = buildRpeCreepDrift(input.rpeCreep ?? null)
+  const rpeCreepReassessment = buildRpeCreepReassessment(input.rpeCreep ?? null)
 
-  // No CFWS yet means nothing to monitor
+  // No CFWS yet means CFWS drift is null. RPE creep can still fire — a
+  // client logging RPE 10 in their first week of training does not need
+  // a CFWS to be flagged.
   if (!latest) {
     const block = calculateBlockStatus(input.client, input.activeProgram)
     const reasons: ReassessmentRecommendation[] = []
@@ -345,17 +371,32 @@ export function evaluateReadiness(input: {
         message: `Block "${block.blockName}" is at the end of its planned ${block.weekDuration}-week duration.`,
       })
     }
+    if (rpeCreepReassessment) reasons.push(rpeCreepReassessment)
+
+    const drift = rpeCreepDrift ? [rpeCreepDrift] : []
+    const topSeverity: Severity | null = drift.some(d => d.severity === 'high')
+      ? 'high'
+      : drift.length > 0
+      ? 'advisory'
+      : null
+
+    let status: ReadinessReport['status'] = 'clean'
+    if (topSeverity === 'high') status = 'regression'
+    else if (reasons.length > 0) status = 'reassessment'
+    else if (topSeverity === 'advisory') status = 'advisory'
+
     return {
-      drift: [],
-      topSeverity: null,
+      drift,
+      topSeverity,
       reassessmentReasons: reasons,
       reassessmentRecommended: reasons.length > 0,
       block,
-      status: reasons.length > 0 ? 'reassessment' : 'clean',
+      status,
     }
   }
 
   const drift = detectDrift(latest, prior)
+  if (rpeCreepDrift) drift.push(rpeCreepDrift)
   const block = calculateBlockStatus(input.client, input.activeProgram)
 
   let daysSinceCffs: number | null = null
@@ -370,6 +411,7 @@ export function evaluateReadiness(input: {
     input.activeCffs ?? null,
     daysSinceCffs
   )
+  if (rpeCreepReassessment) reassessmentReasons.push(rpeCreepReassessment)
 
   const topSeverity: Severity | null = drift.some(d => d.severity === 'high')
     ? 'high'
@@ -390,5 +432,39 @@ export function evaluateReadiness(input: {
     reassessmentRecommended: reassessmentReasons.length > 0,
     block,
     status,
+  }
+}
+
+/* ===========================================================
+ * RPE creep adapters — fold rpe-creep-monitor output into the
+ * existing DriftCondition / ReassessmentRecommendation surface.
+ * =========================================================== */
+
+function buildRpeCreepDrift(rpeCreep: RpeCreepReport | null): DriftCondition | null {
+  if (!rpeCreep || rpeCreep.severity === 'none') return null
+  const top = rpeCreep.findings[0]
+  const topPhrase = top
+    ? ` Top: ${top.exerciseName} logged at avg RPE ${top.avgLoggedRpe} vs prescribed ${top.prescribedRpe} (+${top.delta}${top.severe ? ', severe' : ''}).`
+    : ''
+  const message = rpeCreep.severeCount > 0
+    ? `RPE creep this week: ${rpeCreep.creepingCount} exercise(s) above prescribed, ${rpeCreep.severeCount} severe.${topPhrase} Regression trigger.`
+    : `RPE creep this week: ${rpeCreep.creepingCount} exercise(s) logging above prescribed.${topPhrase}`
+  return {
+    key: 'capacity',
+    signal: null,
+    priorSignal: null,
+    kind: 'rpe_creep_current_week',
+    severity: rpeCreep.severity === 'high' ? 'high' : 'advisory',
+    message,
+    rpeCreep,
+  }
+}
+
+function buildRpeCreepReassessment(rpeCreep: RpeCreepReport | null): ReassessmentRecommendation | null {
+  if (!rpeCreep || !rpeCreep.recommendReassessment) return null
+  return {
+    reason: 'rpe_creep_current_week',
+    recommendedDepth: rpeCreep.severeCount > 0 ? 'delta' : 'lightweight',
+    message: `RPE creep on ${rpeCreep.creepingCount} exercise(s) in week ${rpeCreep.weekNumberInBlock} of the block${rpeCreep.severeCount > 0 ? ` (${rpeCreep.severeCount} severe)` : ''}. Consider whether prescribed load is too high.`,
   }
 }

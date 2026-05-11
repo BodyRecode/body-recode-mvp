@@ -22,6 +22,7 @@ const SECTIONS = [
   { id: 'weekly-checkins',       title: '11. Weekly Check-Ins',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'signal-monitoring',     title: '11b. Signal Monitoring',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'recovery-regulation',   title: '11c. Recovery and Regulation', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'rpe-creep',              title: '11d. RPE Creep Monitor',     colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'coaching-package', title: '12. Coaching Package',   colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'clients-dashboard',title: '13. Clients Dashboard',  colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'automated-status', title: '14. Automated Status',   colour: 'teal' as const, category: 'coaching' as Category },
@@ -907,6 +908,47 @@ export default function HelpPage() {
               <p>Per Layer 2 doctrine: recovery is a biological capacity, not a behaviour. The system cannot create recovery by prescribing sleep targets or breathwork routines. What it CAN do is constrain training and nutrition execution when accumulated stress exceeds recovery capacity, so that the client&apos;s biology gets the chance to restore.</p>
               <p className="mt-2">The 13H_03 case snapshots make the cost of getting this wrong concrete: when Tani plateaus, the default reflex is &quot;tighten nutrition, push training harder&quot;. That&apos;s the failure pattern 13G_04 catalogues. With the recovery system in place, the misread gets caught — fatigue is named as fatigue, not lack of discipline.</p>
             </Training>
+          </Section>
+
+          {/* Section 11d - RPE Creep Monitor */}
+          <Section id="rpe-creep" title="11d. RPE Creep Monitor" colour="teal">
+            <p>The objective half of Signal Monitoring. The four CFWS readiness signals (Capacity, Schedule, Regulation, Behaviour) are subjective — clients name them once a week and physical reality lags those words by 1–2 weeks. <strong>RPE creep</strong> closes that gap by comparing what was <em>prescribed</em> on the program against what the client <em>actually logged</em> in the gym this week.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">How it works</p>
+            <p>Whenever the readiness panel loads (Coaching dashboard or a client profile), the engine pulls every logged set for the current week of the active block and groups them by exercise. For each exercise with at least 2 logged RPE values, it computes the average logged RPE and compares it to the prescribed RPE on the program.</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm mt-2">
+              <li><strong>Creep:</strong> avg logged RPE ≥ prescribed RPE + 1.0. (Client lifted it harder than asked.)</li>
+              <li><strong>Severe creep:</strong> avg logged RPE ≥ prescribed RPE + 2.0, OR any single set logged at RPE ≥ 9.5 (effectively a 10).</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Severity tiers</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>0 creeping exercises:</strong> no signal. Silent.</li>
+              <li><strong>1–2 creeping exercises:</strong> drift advisory. Yellow pill on the dashboard list; informational panel on the client profile.</li>
+              <li><strong>3+ creeping exercises, OR any severe creep:</strong> regression-equivalent. Top-priority banner; fires a reassessment recommendation alongside the drift line.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">What you see</p>
+            <p>On the <strong>Coaching dashboard list</strong>, RPE creep rolls into the existing Active Regression / Reassessment Recommended / Drift Advisory pills and tooltips — no new pill type. On a <strong>client profile</strong>, the readiness panel adds an <strong>RPE creep — week N</strong> subsection listing the top 6 creeping exercises with prescribed → avg-logged, the delta, and set count. Severe creep renders in red.</p>
+
+            <Note>Silent when there is no data. If the client hasn&apos;t logged sets this block-week, or has only one logged set per exercise, RPE creep does not fire — too noisy. The signal only speaks when at least 2 logged sets exist for an exercise.</Note>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">What to do when it fires</p>
+            <p>RPE creep is a prompt, not an auto-action. The signal tells you the prescribed load was too high <em>this week</em>. Three responses, in order of how soft to start:</p>
+            <ol className="space-y-1.5 list-decimal list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Accept as noise</strong> if it was a one-off bad week (poor sleep, illness, life stress). The next CFWS will confirm.</li>
+              <li><strong>Hold the block</strong> via Weekly Review → set direction to <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">hold</code>. Keeps the prescription, signals no further progression this week.</li>
+              <li><strong>Regenerate with adjusted coach guidance</strong> — edit the macro arc&apos;s Coach Guidance to specify lower RPE or reduced volume, then Regenerate.</li>
+            </ol>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">What it does NOT do</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>Does not auto-clamp the next program generation. (That requires a separate doctrine addendum and is deferred.)</li>
+              <li>Does not look across weeks yet — sustained creep across 2+ weeks is a queued future feature.</li>
+              <li>Does not fire if the prescribed RPE was null (timed exercises, carries, runs — those have no RPE prescription).</li>
+            </ul>
+
+            <p className="text-xs text-[#57534e] mt-4">Doctrine: Signal Monitoring §10 (2026-05-11 addendum). Thresholds are named constants in <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">src/lib/rpe-creep-monitor.ts</code>; revise both in lockstep.</p>
           </Section>
 
           {/* Section 10 */}

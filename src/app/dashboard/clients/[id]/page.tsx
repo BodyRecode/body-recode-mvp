@@ -5,6 +5,8 @@ import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import Link from 'next/link'
 import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
 import { evaluateReadiness } from '@/lib/readiness-monitor'
+import { evaluateRpeCreep } from '@/lib/rpe-creep-monitor'
+import { currentBlockWeek } from '@/lib/workout-logging'
 import SetStartDate from '@/components/set-start-date'
 import PackageManager from '@/components/package-manager'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
@@ -149,12 +151,24 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   // Doctrine: Signal Monitoring and Reassessment Triggers v1.0
   const cfwsForMonitor = (cfwsRecords || []).filter(c => !c.is_archived)
+
+  // RPE creep — Workout Logging Phase C signal. Evaluated for the current
+  // week of the active block. Falls into evaluateReadiness as drift on the
+  // 'capacity' key + an optional reassessment recommendation.
+  const blockWeek = activeProgram?.generated_at
+    ? currentBlockWeek(activeProgram.generated_at)
+    : null
+  const rpeCreep = activeProgram?.id && blockWeek
+    ? await evaluateRpeCreep(admin, client.id, activeProgram.id, blockWeek)
+    : null
+
   const readinessReport = client.coaching_started_at
     ? evaluateReadiness({
         cfwsRows: cfwsForMonitor,
         activeCffs: activeCffs,
         activeProgram,
         client: { coaching_started_at: client.coaching_started_at },
+        rpeCreep,
       })
     : null
 
@@ -574,6 +588,48 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   </ul>
                 </div>
               )}
+
+              {/* RPE creep per-exercise breakdown — only when present */}
+              {(() => {
+                const creepEntry = readinessReport.drift.find(d => d.kind === 'rpe_creep_current_week')
+                const creep = creepEntry?.rpeCreep
+                if (!creep || creep.findings.length === 0) return null
+                return (
+                  <div className="px-5 py-4 border-b border-[#1c1917]">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-[10px] font-bold text-[#57534e] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+                        RPE creep — week {creep.weekNumberInBlock}
+                      </p>
+                      <span className="text-[10px] text-[#57534e]" style={{ fontFamily: MONO_FONT }}>
+                        {creep.creepingCount} exercise{creep.creepingCount === 1 ? '' : 's'}{creep.severeCount > 0 ? ` · ${creep.severeCount} severe` : ''}
+                      </span>
+                    </div>
+                    <ul className="space-y-1">
+                      {creep.findings.slice(0, 6).map((f, i) => (
+                        <li key={i} className="flex items-center justify-between gap-3 text-[12px]">
+                          <span className={f.severe ? 'text-[#e7e5e4]' : 'text-[#a8a29e]'}>{f.exerciseName}</span>
+                          <span className="shrink-0 tabular-nums" style={{ fontFamily: MONO_FONT }}>
+                            <span className="text-[#57534e]">RPE</span>{' '}
+                            <span className="text-[#57534e]">{f.prescribedRpe}</span>
+                            <span className="text-[#57534e]"> → </span>
+                            <span className={f.severe ? 'text-[#ef4444]' : 'text-[#f59e0b]'}>{f.avgLoggedRpe}</span>
+                            <span className={f.severe ? 'text-[#ef4444]' : 'text-[#f59e0b]'}> (+{f.delta})</span>
+                            {f.maxLoggedRpe >= 9.5 && (
+                              <span className="text-[#ef4444]"> · max {f.maxLoggedRpe}</span>
+                            )}
+                            <span className="text-[#57534e]"> · {f.setCount} set{f.setCount === 1 ? '' : 's'}</span>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    {creep.findings.length > 6 && (
+                      <p className="text-[11px] text-[#57534e] mt-2" style={{ fontFamily: MONO_FONT }}>
+                        +{creep.findings.length - 6} more not shown
+                      </p>
+                    )}
+                  </div>
+                )
+              })()}
 
               {/* Reassessment reasons */}
               {readinessReport.reassessmentReasons.length > 0 && (
