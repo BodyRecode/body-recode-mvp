@@ -913,9 +913,11 @@ export default function HelpPage() {
             <p>On the client profile, set the client&apos;s <strong>Coaching Package</strong> to record which plan they are on:</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li><strong>Online - $149/week</strong></li>
+              <li><strong>In-Person 1x + self-led - $199/week</strong> (coach-assessed)</li>
               <li><strong>In-Person 2x - $299/week</strong></li>
               <li><strong>In-Person 3x - $409/week</strong></li>
             </ul>
+            <p>Launch Rate (50% off) variants of all four are also available as the second row of buttons - use only when the launch rate has been verbally offered on the Zoom.</p>
             <p>Once a package is selected, three options appear: <strong>Send to Client</strong> (sends immediately), <strong>Copy Link</strong> (copies to clipboard), and <strong>Schedule Send</strong>. The link includes the client&apos;s ID so the system can identify them when they pay. When the client completes payment, the <strong>Subscription Active</strong> badge appears automatically on the client profile.</p>
             <p className="font-semibold text-white mt-4">Scheduling a delayed send</p>
             <p>If you want to queue the subscription link now but have it land in the client&apos;s inbox on a specific date, click <strong>Schedule Send</strong>, pick a date, and confirm. The system will send it automatically at 8am Brisbane time on that day. A yellow <em>Scheduled for [date]</em> badge appears on the profile - click Cancel next to it to remove the scheduled send before it fires. Once sent, the badge is replaced with the sent date.</p>
@@ -1218,6 +1220,7 @@ export default function HelpPage() {
               <li><strong>Commencement Fee - $240</strong> - Generated uniquely per lead. Triggers automatic client creation when paid.</li>
               <li><strong>In-Person 2x - $299/week</strong> - Static link. Standard entry package. Send after commencement fee is confirmed.</li>
               <li><strong>In-Person 3x - $409/week</strong> - Static link. Coach-assessed upgrade, offered during weekly check-ins not on the Zoom.</li>
+              <li><strong>In-Person 1x + self-led - $199/week</strong> - Static link. Coach-assessed, only for self-disciplined trainers with a consistent training history. Not a default option on the Zoom.</li>
               <li><strong>Online - $149/week</strong> - Static link. Fallback if lead objects to in-person pricing.</li>
             </ul>
             <p>Payment links for the weekly subscription are available in the Zoom companion Stage 8 Decision panel.</p>
