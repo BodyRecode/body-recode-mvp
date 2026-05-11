@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import ClientHeader from '@/components/client-header'
+import ProgramReadingInline from '@/components/program-reading-inline'
 import Link from 'next/link'
 
 interface Exercise {
@@ -52,10 +53,12 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
   const { data: program } = await admin
     .from('programs')
-    .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, sessions, weekly_pattern_summary, progression_notes, client_note, current_direction, last_review_at')
+    .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, sessions, weekly_pattern_summary, progression_notes, client_note, current_direction, last_review_at, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, program_reading_published_at')
     .eq('client_id', client.id)
     .eq('is_active', true)
     .maybeSingle()
+
+  const programReadingPublished = !!program?.program_reading_published_at
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
@@ -73,8 +76,23 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
           </div>
         ) : (
           <div className="space-y-5">
-            {/* Client note */}
-            {program.client_note && (
+            {/* Program Reading - the why frames every session view below */}
+            {programReadingPublished && (
+              <ProgramReadingInline
+                reading={{
+                  pr_why_this_block: program.pr_why_this_block,
+                  pr_what_this_program_is_doing: program.pr_what_this_program_is_doing,
+                  pr_how_well_know_its_working: program.pr_how_well_know_its_working,
+                  pr_what_were_not_doing_yet: program.pr_what_were_not_doing_yet,
+                  pr_coach_note: program.pr_coach_note,
+                  program_reading_published_at: program.program_reading_published_at,
+                }}
+                documentHref={`/portal/${token}/program/reading`}
+              />
+            )}
+
+            {/* Legacy client_note - shown only when no Program Reading has been published yet */}
+            {!programReadingPublished && program.client_note && (
               <div className="bg-[#14b8a6]/5 border border-[#14b8a6]/20 rounded-2xl px-5 py-4">
                 <p className="text-xs font-bold text-[#14b8a6] uppercase tracking-widest mb-2">About this block</p>
                 <p className="text-sm text-[#d4cfc9] leading-relaxed">{program.client_note}</p>

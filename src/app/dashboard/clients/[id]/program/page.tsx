@@ -4,6 +4,7 @@ import Link from 'next/link'
 import DraftActions from './draft-actions'
 import DeleteProgramButton from './delete-button'
 import ProgramWeeklyReview from './weekly-review'
+import ProgramReadingPanel from './program-reading-panel'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 
 interface Exercise {
@@ -268,7 +269,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name')
+    .select('id, name, onboarding_token')
     .eq('id', id)
     .maybeSingle()
 
@@ -353,6 +354,12 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               <div className="flex-1 h-px bg-stone-800" />
             </div>
           )}
+
+          {/* Client-facing Program Reading - generate / edit / publish */}
+          <ProgramReadingPanel
+            program={activeProgram as unknown as Parameters<typeof ProgramReadingPanel>[0]['program']}
+            clientToken={client.onboarding_token ?? null}
+          />
 
           <div className="flex gap-8">
             <StickyScrollNav sections={programNavSections(activeProgram)} />
