@@ -1310,7 +1310,8 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">What&apos;s coming in Phase B + C</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
-              <li><strong>Phase B</strong>: load progression sparklines per exercise on the client profile, block-ending email notifications (7 days before + on completion), missed-session detection, top-of-coaching-list block-ending banner.</li>
+              <li><strong>Phase B partial (DONE 2026-05-10)</strong>: block-end email notifications. Daily cron at 7:30am Brisbane scans all active programs and emails <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">kade@bodyrecode.au</code> when (a) any client&apos;s block has 7 days remaining, or (b) any client&apos;s block hits day 0. Branded dark template. Idempotent — one email per (client × program × event), so re-runs of the cron never spam. New table <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">block_end_notifications_sent</code> enforces it.</li>
+              <li><strong>Phase B remaining</strong>: load progression sparklines per exercise on the client profile, missed-session detection, top-of-coaching-list block-ending banner.</li>
               <li><strong>Phase C</strong>: auto-fill the Recovery Router&apos;s <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">session_repeatability</code> signal from logged data (compare last week&apos;s avg loads to this week&apos;s); surface &quot;missed &gt;2 sessions&quot; as a router signal.</li>
             </ul>
           </Section>
