@@ -254,22 +254,23 @@ export default function GenerateProgramForm({
           </div>
         </div>
 
-        {/* Training Days */}
+        {/* Available Training Days (POOL — engine distributes) */}
         <div>
           <label className={labelClass}>
-            Training Days
+            Available Training Days
             {trainingDays.length > 0 && (
               <span className="ml-2 text-[#10E1C2] normal-case font-normal">
-                {trainingDays.length} selected
+                {trainingDays.length} available
                 {trainingDays.length < form.training_frequency && (
-                  <span className="text-amber-400 ml-1">- select at least {form.training_frequency}</span>
+                  <span className="text-amber-400 ml-1">- need at least {form.training_frequency}</span>
                 )}
               </span>
             )}
           </label>
-          {intakeTrainingDays.length > 0 && (
-            <p className="text-xs text-stone-500 mb-2">Pre-filled from intake. Adjust as needed.</p>
-          )}
+          <p className="text-xs text-stone-500 mb-2">
+            Days the client <em>can</em> train (the pool). The engine picks {form.training_frequency} from this pool and spaces them for recovery — it does <strong>not</strong> use the first N. Pick exactly {form.training_frequency} only if you want to pin specific days.
+            {intakeTrainingDays.length > 0 && ' Pre-filled from intake availability.'}
+          </p>
           <div className="grid grid-cols-7 gap-1">
             {ALL_DAYS.map(day => (
               <button
@@ -287,11 +288,16 @@ export default function GenerateProgramForm({
             ))}
           </div>
           {trainingDays.length === 0 && (
-            <p className="text-xs text-stone-600 mt-1.5">No days selected. Sessions will use abstract labels (Day 1, Day 2).</p>
+            <p className="text-xs text-stone-600 mt-1.5">No days selected. Sessions will use abstract labels (Day 1, Day 2) with maximum recovery spacing.</p>
           )}
-          {trainingDays.length > 0 && trainingDays.length >= form.training_frequency && (
+          {trainingDays.length > 0 && trainingDays.length === form.training_frequency && (
             <p className="text-xs text-stone-500 mt-1.5">
-              Sessions assigned to: {trainingDays.join(', ')}
+              Pool size matches frequency — engine will use exactly these days: {trainingDays.join(', ')}.
+            </p>
+          )}
+          {trainingDays.length > form.training_frequency && (
+            <p className="text-xs text-stone-500 mt-1.5">
+              Pool of {trainingDays.length}; engine will pick {form.training_frequency} with recovery spacing (e.g. every-other-day where possible).
             </p>
           )}
         </div>

@@ -569,13 +569,33 @@ PRESCRIPTION INPUTS:
 - Equipment access: ${inputs.equipment_access.join(', ')}`)
 
   // TRAINING DAYS
+  // The input is the client's AVAILABILITY pool, not the literal schedule.
+  // The engine selects training_frequency days from the pool with recovery
+  // spacing. Never schedule N consecutive sessions when the pool admits a
+  // spaced alternative — three consecutive training days from a five-day
+  // pool is an engine bug, not a coach choice.
   if (inputs.preferred_training_days && inputs.preferred_training_days.length > 0) {
+    const poolSize = inputs.preferred_training_days.length
+    const freq = inputs.training_frequency
+    const poolEqualsFreq = poolSize === freq
     parts.push(`
-SCHEDULED TRAINING DAYS: ${inputs.preferred_training_days.join(', ')}
-Assign each session to one of these days in the order above. Apply session ordering principles (higher neural demand earlier in week). Use the actual day name as the day_label.`)
+AVAILABLE TRAINING DAYS (pool): ${inputs.preferred_training_days.join(', ')}
+TRAINING FREQUENCY: ${freq} sessions/week
+POOL SIZE: ${poolSize} day(s)
+
+This is an AVAILABILITY POOL — the days the client CAN train, not a literal schedule.${poolEqualsFreq ? ' Pool size equals frequency, so the coach has already curated the exact days — use all of them in the order given.' : ' Select EXACTLY ' + freq + ' days from the pool and distribute them for recovery using the rules below.'}
+
+DAY-SELECTION RULES (apply in order):
+1. Maximise recovery spacing. Never schedule consecutive training days when a non-consecutive distribution is possible from the pool. For 3 sessions from a 5+ day pool, prefer Mon/Wed/Fri (or equivalent every-other-day pattern). For 4 sessions from a 5+ day pool, prefer Mon/Tue/Thu/Fri or Mon/Wed/Thu/Sat — never four-in-a-row.
+2. Forbidden: three or more consecutive training days unless the pool itself only contains consecutive days. If the pool is [Mon, Tue, Wed, Thu, Fri] and frequency is 3, picking Mon/Tue/Wed is a doctrine violation.
+3. Higher neural-demand sessions earlier in the week.
+4. If the session split is Upper/Lower, place lower-body sessions with at least one rest or upper-body day between them.
+5. If the pool size equals the frequency, use all pool days as given — the coach has curated.
+
+Use the actual day name as the day_label (e.g. "Monday — Upper Push"). Do NOT take the first N days from the pool when better-spaced options exist within it.`)
   } else {
     parts.push(`
-SCHEDULED TRAINING DAYS: Not specified. Use abstract labels (Day 1, Day 2, etc.).`)
+AVAILABLE TRAINING DAYS: Not specified. Use abstract labels (Day 1, Day 2, etc.) and distribute the ${inputs.training_frequency} sessions assuming a 7-day week with maximum recovery spacing (e.g. 3x/week = Day 1 / Day 3 / Day 5; 4x/week = Day 1 / Day 2 / Day 4 / Day 5).`)
   }
 
   // INJURY / MOVEMENT LIMITATIONS
