@@ -133,19 +133,25 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
           ))}
         </div>
 
-        {/* Download form */}
+        {/* Download form (real PDF, server-rendered via puppeteer) */}
+        <a
+          href={`/api/portal/${token}/medical-clearance/pdf`}
+          className="flex items-center justify-between w-full bg-[#111110] border border-[#1c1917] rounded-2xl px-5 py-4 hover:border-[#292524] transition-colors mb-3"
+        >
+          <div>
+            <p className="text-sm font-semibold text-white">Download Medical Clearance Form</p>
+            <p className="text-xs text-[#57534e] mt-0.5">Single-page PDF, pre-filled with your name. Email it to your GP or print to take in.</p>
+          </div>
+          <svg className="w-5 h-5 text-[#a8a29e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+          </svg>
+        </a>
         <Link
           href={`/portal/${token}/medical-clearance/print`}
           target="_blank"
-          className="flex items-center justify-between w-full bg-[#111110] border border-[#1c1917] rounded-2xl px-5 py-4 hover:border-[#292524] transition-colors mb-8"
+          className="block text-center text-xs text-[#57534e] hover:text-[#a8a29e] transition-colors mb-8"
         >
-          <div>
-            <p className="text-sm font-semibold text-white">Medical Clearance Request Form</p>
-            <p className="text-xs text-[#57534e] mt-0.5">Opens in new tab. Print or save as PDF.</p>
-          </div>
-          <svg className="w-5 h-5 text-[#a8a29e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
+          Or open the form in a new tab →
         </Link>
 
         {/* Upload form */}

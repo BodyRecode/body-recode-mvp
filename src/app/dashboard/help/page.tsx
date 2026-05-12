@@ -652,7 +652,7 @@ export default function HelpPage() {
             <ol className="space-y-1.5 list-decimal list-inside text-[#d4cfc9] text-sm">
               <li><strong>Coaching Agreement</strong> - reviewed and e-signed in the portal. You receive a notification when signed.</li>
               <li><strong>Health Declaration</strong> - health and readiness screening. You receive a notification when submitted. If medical clearance is flagged, a Medical Clearance step is automatically inserted before intake unlocks.</li>
-              <li><strong>Medical Clearance</strong> (if required) - client downloads a form from the portal, takes it to their GP, and uploads the completed form. You review it and mark clearance received on the client profile, which unlocks the intake.</li>
+              <li><strong>Medical Clearance</strong> (if required) - the moment the health declaration flags clearance, the client gets an auto-email (Kade voice, dark template) pointing them at the Medical Clearance card on their portal. They download a real PDF (server-rendered via puppeteer, pre-filled with their name), take it to their GP, and upload the completed form. You review it and mark clearance received on the client profile, which unlocks the intake.</li>
               <li><strong>Foundational Intake</strong> - 208-question intake covering all signal domains. You receive a notification when submitted. CFFS generates automatically.</li>
               <li><strong>Baseline Documentation</strong> - bodyweight, waist, hips, chest, and three progress photos (front, side, back). You receive a notification when submitted.</li>
             </ol>
@@ -1100,7 +1100,7 @@ export default function HelpPage() {
             <p>You receive a notification email each time a client completes a step in their portal:</p>
             <div className="space-y-1">
               <SeqRow day="Step 1" label="Coaching Agreement signed - with client name and portal link" />
-              <SeqRow day="Step 2" label="Health Declaration submitted - flags if medical clearance is required" />
+              <SeqRow day="Step 2" label="Health Declaration submitted - flags if medical clearance is required (client also receives an auto-email pointing them at the Medical Clearance card on their portal)" />
               <SeqRow day="Step 3" label="Foundational Intake submitted - with portal link" />
               <SeqRow day="Step 4" label="Baseline Documentation submitted - with portal link" />
             </div>
@@ -1142,6 +1142,7 @@ export default function HelpPage() {
               <li>Portal access email</li>
               <li>Intake invitation</li>
               <li>Portal sign-in code (when the client requests one)</li>
+              <li>Medical clearance required (sent the moment the health declaration flags it)</li>
               <li>Medical clearance approved</li>
               <li>Coaching start reminder (day before)</li>
               <li>Onboarding nudges (3 / 7 / 14 day)</li>
