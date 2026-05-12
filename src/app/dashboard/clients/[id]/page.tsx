@@ -396,18 +396,43 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </div>
           ))}
         </div>
-        {client.medical_clearance_required && (
-          <div className="mt-3 pt-3 border-t border-[#1c1917] flex items-center justify-between">
-            {client.medical_clearance_received_at ? (
-              <p className="text-xs text-teal-400">Medical clearance received</p>
-            ) : (
-              <>
-                <p className="text-xs text-amber-400">Medical clearance required</p>
-                <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-xs text-amber-400 hover:text-amber-300 underline transition-colors">Manage →</Link>
-              </>
-            )}
-          </div>
-        )}
+        {client.medical_clearance_required && (() => {
+          // Surface whether the "clearance required" auto-email has fired so
+          // we can spot silent send failures without digging into the
+          // Communications panel. Pulls from the same communications array
+          // already fetched above; for a pre-onboarding client this entry,
+          // when present, sits well within the 15-row window.
+          const clearanceEmail = communications.find(c => c.kind === 'medical_clearance_required')
+          const emailSentAt = clearanceEmail?.sent_at as string | undefined
+          return (
+            <div className="mt-3 pt-3 border-t border-[#1c1917] space-y-2">
+              <div className="flex items-center justify-between">
+                {client.medical_clearance_received_at ? (
+                  <p className="text-xs text-teal-400">Medical clearance received</p>
+                ) : (
+                  <>
+                    <p className="text-xs text-amber-400">Medical clearance required</p>
+                    <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-xs text-amber-400 hover:text-amber-300 underline transition-colors">Manage →</Link>
+                  </>
+                )}
+              </div>
+              {!client.medical_clearance_received_at && (
+                <div className="flex items-center gap-2">
+                  <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${emailSentAt ? 'bg-teal-400' : 'bg-red-500'}`} />
+                  {emailSentAt ? (
+                    <p className="text-[10px] text-[#a8a29e]" title={new Date(emailSentAt).toLocaleString('en-AU')}>
+                      Client auto-email sent {new Date(emailSentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
+                    </p>
+                  ) : (
+                    <p className="text-[10px] text-red-400">
+                      Client auto-email not sent. Run <code className="bg-[#1c1917] px-1 rounded">scripts/send-clearance-required-email.ts {client.id}</code> or nudge manually.
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })()}
       </div>
 
       {/* Intake status */}
