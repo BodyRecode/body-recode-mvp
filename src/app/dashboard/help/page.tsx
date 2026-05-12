@@ -630,7 +630,14 @@ export default function HelpPage() {
               <li>View your program - full session-by-session program view</li>
               <li>View your nutrition plan - full meal-by-meal plan view</li>
               <li>Active Coaching Client Guide link</li>
+              <li>Share feedback - dedicated form at <strong>/portal/[token]/feedback</strong> (see below)</li>
             </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Client Feedback Channel</p>
+            <p>Every portal landing now has a <strong>Share feedback</strong> card under Resources. Clients submit free-text feedback under one of five categories: <code>portal_experience</code>, <code>coaching_experience</code>, <code>feature_request</code>, <code>bug</code>, <code>other</code>. Each submission writes to the <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">client_feedback</code> table and emails Kade a notification with the body inlined (so a reply can go straight from the email if needed).</p>
+            <p>Every broadcast email sent to clients now ends with a <strong>Tell us what would help</strong> section linking to the same form. Pattern is canonical via <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">src/lib/broadcast-feedback-footer.ts</code> - drop it into any future broadcast HTML template so the feedback channel is always present.</p>
+            <p>Coach-side inbox view is not yet UI-built; submissions live on the row. Reply via the notification email&apos;s reply-to (client email is on file). The <code>acknowledged_at</code> column is reserved for a future triage UI.</p>
+            <p>Migration: <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">sql/2026-05-13_client_feedback.sql</code>.</p>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Sessions (Face-to-Face Clients)</p>
             <p>Face-to-face clients see a <strong>Sessions</strong> section in their portal home that links to <strong>/portal/[token]/sessions</strong>. This page shows:</p>

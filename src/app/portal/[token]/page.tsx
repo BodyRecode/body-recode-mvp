@@ -630,7 +630,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             href="https://app.bodyrecode.au/coaching-guide"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between w-full bg-[#111110] border border-[#1c1917] rounded-2xl px-5 py-4 hover:border-[#1c1917] transition-colors"
+            className="flex items-center justify-between w-full bg-[#111110] border border-[#1c1917] rounded-2xl px-5 py-4 hover:border-[#1c1917] transition-colors mb-3"
           >
             <div>
               <p className="text-sm font-semibold text-white">Active Coaching Client Guide</p>
@@ -640,6 +640,16 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
+          <Link
+            href={`/portal/${token}/feedback`}
+            className="flex items-center justify-between w-full bg-[#111110] border border-[#1c1917] rounded-2xl px-5 py-4 hover:border-[#14b8a6]/40 hover:bg-[#14b8a6]/5 transition-colors"
+          >
+            <div>
+              <p className="text-sm font-semibold text-white">Share feedback</p>
+              <p className="text-xs text-[#57534e] mt-0.5">Tell us what is working, what is not, what would help.</p>
+            </div>
+            <span className="text-xs font-bold text-[#14b8a6] ml-4 shrink-0">Open →</span>
+          </Link>
         </div>
 
         <div className="h-10" />{/* spacer for fixed footer */}
