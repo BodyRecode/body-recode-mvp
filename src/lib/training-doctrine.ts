@@ -36,30 +36,35 @@ const TRT_KEYWORDS = [
 ]
 
 /**
- * Reads the free-text hormonal_support field on a client and returns the
- * supportive load level. Conservative: only recognises explicit signals.
+ * Reads the free-text `medications` field on a client and returns the
+ * hormonal-class supportive load level. Conservative: only recognises
+ * explicit hormonal-class signals. Non-hormonal medications in the same
+ * field (beta-blockers, SSRIs, statins, etc.) are ignored here — they
+ * don't shift the training tier, only signal interpretation, which is
+ * handled in the program prompt MEDICATIONS DOCTRINE section.
  */
-export function readHormonalLoad(hormonalSupport: string | null | undefined):
+export function readHormonalLoad(medications: string | null | undefined):
   'none' | 'trt' | 'supraphysiological' {
-  if (!hormonalSupport) return 'none'
-  const t = hormonalSupport.toLowerCase()
+  if (!medications) return 'none'
+  const t = medications.toLowerCase()
   if (SUPRAPHYSIOLOGICAL_KEYWORDS.some(k => t.includes(k))) return 'supraphysiological'
   if (TRT_KEYWORDS.some(k => t.includes(k))) return 'trt'
   return 'none'
 }
 
 /**
- * Effective training tier = base training age, shifted up by hormonal load.
+ * Effective training tier = base training age, shifted up by hormonal-class
+ * signal load read out of the medications text.
  * - none      → unchanged
  * - trt       → +1 step
  * - supra     → +2 steps
  */
 export function resolveEffectiveTier(
   trainingAge: TrainingAge,
-  hormonalSupport: string | null | undefined
+  medications: string | null | undefined
 ): EffectiveTier {
   const baseIdx = TIER_ORDER.indexOf(trainingAge)
-  const load = readHormonalLoad(hormonalSupport)
+  const load = readHormonalLoad(medications)
   const shift = load === 'supraphysiological' ? 2 : load === 'trt' ? 1 : 0
   return TIER_ORDER[Math.min(TIER_ORDER.length - 1, baseIdx + shift)]
 }

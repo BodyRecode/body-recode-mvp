@@ -96,6 +96,28 @@ DOCTRINE BOUNDARIES (NEVER VIOLATE)
 10. Multi-domain progression prohibited — only one domain progresses at a time
 
 ═══════════════════════════════════════
+MEDICATIONS DOCTRINE (apply when MEDICATIONS context is present)
+═══════════════════════════════════════
+The MEDICATIONS field may contain hormonal-class drugs AND non-hormonal drugs. Both shape the prescription, in different ways. Read the field for each category and apply the matching rule.
+
+HORMONAL-CLASS (already enforced deterministically by the doctrine clamp after generation, but you should anticipate it):
+- TRT / exogenous testosterone (physiological): training-age tolerance is +1 step. Intermediates can sit closer to advanced thresholds.
+- Supraphysiological androgens: treat as effective tier "advanced" or "elite" for load tolerance regardless of base training age. Volume at the upper bound, recovery debt accrues more slowly.
+- GLP-1 in deficit: training prescription does NOT scale up. Energy availability is constrained; recovery is intact but capacity is not.
+
+NON-HORMONAL CATEGORIES (apply directly in your selections — these are not clamped):
+- Beta-blockers (e.g. metoprolol, bisoprolol, propranolol, atenolol): HR is blunted. Do not use HR-based intensity or readiness signals. Conditioning, if prescribed, anchors to RPE / pace / breath. Note "HR signals unreliable — RPE-only" in weekly_pattern_summary.
+- SSRIs / SNRIs (e.g. sertraline, escitalopram, venlafaxine, duloxetine): mood and HRV signals may be flat independent of true readiness. Do not increase volume on the assumption that the client "feels fine" — anchor to performance and consistency.
+- Stimulants (ADHD: methylphenidate, amphetamine derivatives): baseline HR elevated, early fatigue masked. Apply slightly more conservative recovery margins. Do not push to the upper bound of volume on subjective tolerance alone.
+- Chronic NSAIDs (daily ibuprofen, naproxen, diclofenac): blunt hypertrophic adaptation and may mask warning pain. Do not stack additional volume to compensate. Prefer exposure-graded progression. Surface in weekly_pattern_summary.
+- Anticoagulants (warfarin, apixaban, rivaroxaban, dabigatran): contact and impact must be avoided. Exercise selection defaults to controlled machine and cable work. No ballistic, no plyometric, no anything where loss of balance under load is plausible.
+- Corticosteroids (oral or sustained prednisone, prednisolone, dexamethasone): connective tissue tolerance compromised. Reduce eccentric demand, avoid maximal loading on single-joint exercises, prioritise tissue-tolerant patterns (machines, cables, lighter free-weight compounds within range).
+- Statins: small risk of myalgia. If the client reports new muscle soreness inconsistent with prescribed work, flag in weekly_pattern_summary rather than progressing through it.
+- Combined contraceptives / HRT in females: do not interpret "cycle phase" signals if exogenous hormones are setting the pattern. CFFS cycle interpretations may not apply.
+
+If MEDICATIONS contains drugs not addressed above, surface them in weekly_pattern_summary and treat as informational rather than ignoring. Never override readiness gates — these rules calibrate threshold, not gate.
+
+═══════════════════════════════════════
 PHASE ARCHITECTURE — 5 LAYERS
 ═══════════════════════════════════════
 Every program has exactly ONE assignment per layer:
@@ -548,7 +570,7 @@ export function buildProgramUserPrompt(
   cffs: CFFS | null,
   exercises: ExerciseRow[],
   macroPlan?: MacroPlanContext | null,
-  hormonalSupport?: string | null,
+  medications?: string | null,
   coachGuidance?: string | null
 ): string {
   const parts: string[] = []
@@ -564,7 +586,7 @@ ${trimmedGuidance}
   }
 
   // CLIENT + PRESCRIPTION INPUTS
-  parts.push(`CLIENT: ${clientName}${hormonalSupport ? `\n\nHORMONAL SUPPORT (CRITICAL — modulates recovery and load tolerance):\n${hormonalSupport}` : ''}
+  parts.push(`CLIENT: ${clientName}${medications ? `\n\nMEDICATIONS (CRITICAL — read for hormonal-class signals that modulate recovery and load tolerance, AND for non-hormonal categories that shape exercise selection, signal interpretation, and recovery margins. See system prompt for category-specific rules):\n${medications}` : ''}
 
 PRESCRIPTION INPUTS:
 - Block name: ${inputs.block_name}

@@ -274,9 +274,10 @@ export const INTAKE_SECTIONS: Section[] = [
   },
   {
     id: 'supplement',
-    title: 'Section H — Supplement and Stimulant Use',
-    description: 'This section captures current supplement use, stimulant exposure, and substance-related factors that may influence recovery, stress response, sleep quality, and training tolerance. Answer based on your typical patterns across recent months.\n\n0 = Never / Not applicable · 1 = Occasionally · 2 = A few times per week · 3 = Most days · 4 = Daily or multiple times per day',
+    title: 'Section H — Medications, Supplements and Stimulant Use',
+    description: 'This section captures current medications, supplements, and stimulant exposure that may influence recovery, stress response, sleep quality, and training tolerance. The first question is free text — please answer thoroughly. The rest are 0–4 scale questions about your typical patterns across recent months.\n\n0 = Never / Not applicable · 1 = Occasionally · 2 = A few times per week · 3 = Most days · 4 = Daily or multiple times per day',
     questions: [
+      { id: 'medications', text: 'List any medications you take regularly. Include prescribed medications (hormonal support like TRT or GLP-1, cardiovascular medications, antidepressants, ADHD medications, contraceptives, etc.) and any chronic over-the-counter use (daily anti-inflammatories, painkillers). Include dose where known. Write "None" if you take no medications.', type: 'text', required: true },
       { id: 'sup_01', text: 'I consume caffeinated beverages (coffee, tea, energy drinks).', type: 'scale', scaleLabel: { low: 'Never', high: 'Daily / multiple times' } },
       { id: 'sup_02', text: 'I rely on caffeine to function during the day.', type: 'scale', scaleLabel: { low: 'Never', high: 'Daily / multiple times' } },
       { id: 'sup_03', text: 'I consume caffeine later in the day or evening.', type: 'scale', scaleLabel: { low: 'Never', high: 'Daily / multiple times' } },

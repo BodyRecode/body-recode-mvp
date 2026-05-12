@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     { data: activeProgram },
     { data: recentReviews },
   ] = await Promise.all([
-    admin.from('clients').select('id, name, hormonal_support').eq('id', client_id).maybeSingle(),
+    admin.from('clients').select('id, name, medications').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
       .select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_location_history, injury_primary_concern, injury_aggravating_movements, fat_map_responses, training_responses, nutrition_responses, schedule_responses, sleep_responses, stress_responses, supplement_responses, submitted_at')
@@ -71,8 +71,8 @@ export async function POST(request: NextRequest) {
   const contextParts: string[] = []
   contextParts.push(`CLIENT: ${client.name}`)
 
-  if (client.hormonal_support) {
-    contextParts.push(`\nHORMONAL SUPPORT (CRITICAL — modulates protein synthesis, recovery, energy partitioning):\n${client.hormonal_support}`)
+  if (client.medications) {
+    contextParts.push(`\nMEDICATIONS (CRITICAL — may include hormonal-class drugs that modulate protein synthesis and recovery, or non-hormonal drugs that affect appetite, hydration, electrolyte balance, or energy partitioning):\n${client.medications}`)
   }
 
   if (cffs) {

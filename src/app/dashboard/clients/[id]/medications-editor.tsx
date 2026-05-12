@@ -3,7 +3,23 @@
 import { useState } from 'react'
 import { MONO_FONT } from '@/components/dashboard/ui'
 
-export default function HormonalSupportEditor({
+/**
+ * Medications editor on the client profile.
+ *
+ * Captures the client's full pharmacological context, not just hormonal-class
+ * support. Free text so the coach can describe regimen + dose + duration. The
+ * program and nutrition prompts parse the text for:
+ *   - Hormonal-class signals (TRT, GLP-1, androgens, peptides) -> training-tier
+ *     shift + protein anchor modulation
+ *   - Non-hormonal categories (beta-blockers, SSRIs/SNRIs, stimulants, chronic
+ *     NSAIDs, anticoagulants, corticosteroids, contraceptives, statins) ->
+ *     signal interpretation, exercise selection, recovery margins
+ *
+ * Staleness banner fires when the active program or nutrition plan was
+ * generated before the most recent edit, so the coach knows the prescription
+ * doesn't reflect the current regimen.
+ */
+export default function MedicationsEditor({
   clientId,
   initialValue,
   updatedAt,
@@ -24,9 +40,6 @@ export default function HormonalSupportEditor({
 
   const dirty = value !== original
 
-  // Staleness check: was the active program or nutrition plan generated
-  // before the most recent change to hormonal_support? If so, the
-  // prescription doesn't reflect the current regimen.
   const updatedAtMs = updatedAt ? new Date(updatedAt).getTime() : null
   const programStale = updatedAtMs && activeProgramGeneratedAt
     ? new Date(activeProgramGeneratedAt).getTime() < updatedAtMs
@@ -46,7 +59,7 @@ export default function HormonalSupportEditor({
       const res = await fetch(`/api/clients/${clientId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hormonal_support: value.trim() || null }),
+        body: JSON.stringify({ medications: value.trim() || null }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -75,7 +88,7 @@ export default function HormonalSupportEditor({
             className="text-[11px] font-bold text-white uppercase"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
-            Hormonal Support
+            Medications
           </h2>
         </div>
         {!editing && (
@@ -88,17 +101,17 @@ export default function HormonalSupportEditor({
         )}
       </div>
       <p className="text-[#57534e] text-xs mb-3">
-        TRT, exogenous hormones, GLP-1, peptides, anabolic support. Free text — describe regimen and dose context. Drives prescription modulation across program + nutrition.
+        All prescribed medications and chronic over-the-counter use. Include hormonal support (TRT, GLP-1, peptides, anabolics), cardiovascular meds (beta-blockers, statins), CNS-active meds (SSRIs/SNRIs, stimulants, anxiolytics), anti-inflammatories (chronic NSAIDs, corticosteroids), anticoagulants, contraceptives/HRT, and similar. Free text, describe each with dose and duration if known. Drives prescription modulation and signal interpretation across program + nutrition.
       </p>
       {showStaleBanner && (
         <div className="mb-3 px-3 py-2.5 rounded-lg border border-amber-700/50 bg-amber-500/5">
           <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">
-            Prescription is older than current regimen
+            Prescription is older than current medications
           </p>
           <p className="text-xs text-[#d4cfc9] leading-relaxed">
-            Hormonal support {daysSinceUpdate !== null ? `was updated ${daysSinceUpdate}d ago` : 'has been updated'}. The active{' '}
+            Medications {daysSinceUpdate !== null ? `were updated ${daysSinceUpdate}d ago` : 'have been updated'}. The active{' '}
             {programStale && nutritionStale ? 'training program and nutrition plan' : programStale ? 'training program' : 'nutrition plan'}{' '}
-            {programStale && nutritionStale ? 'were' : 'was'} generated before that change. Recovery capacity, RPE ceilings, and protein synthesis assumptions may no longer match. Consider regenerating from the macro plan / nutrition page.
+            {programStale && nutritionStale ? 'were' : 'was'} generated before that change. Recovery capacity, RPE ceilings, exercise selection, and protein synthesis assumptions may no longer match. Consider regenerating from the macro plan / nutrition page.
           </p>
         </div>
       )}
@@ -107,8 +120,8 @@ export default function HormonalSupportEditor({
           <textarea
             value={value}
             onChange={e => setValue(e.target.value)}
-            placeholder="e.g. TRT 150mg test cypionate / week, year 2. No other peptides currently."
-            className="w-full bg-[#0c0a09] border border-[#1c1917] rounded-lg p-3 text-[#e7e5e4] text-sm leading-relaxed focus:outline-none focus:border-[#292524] placeholder-[#3c3835] min-h-[100px]"
+            placeholder="e.g. TRT 150mg test cypionate / week, year 2. Metoprolol 25mg / day for BP, year 1. No NSAIDs. No other meds."
+            className="w-full bg-[#0c0a09] border border-[#1c1917] rounded-lg p-3 text-[#e7e5e4] text-sm leading-relaxed focus:outline-none focus:border-[#292524] placeholder-[#3c3835] min-h-[120px]"
           />
           {error && <p className="text-xs text-red-400">{error}</p>}
           <div className="flex items-center gap-2">

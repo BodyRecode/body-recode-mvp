@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     { data: baseline },
     { data: previousPlans },
   ] = await Promise.all([
-    admin.from('clients').select('id, name, hormonal_support').eq('id', client_id).maybeSingle(),
+    admin.from('clients').select('id, name, medications').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
       .select('id, date_of_birth, gender, primary_goal, training_days_available, injury_location_current, injury_primary_concern, nutrition_responses, sleep_responses, stress_responses, training_responses')
@@ -162,7 +162,7 @@ export async function POST(request: NextRequest) {
     : ''
 
   const systemPrompt = buildNutritionSystemPrompt() + recoveryPromptSection
-  const userPrompt = buildNutritionUserPrompt(inputs, cffsText, intakeText, previousPlans, client.hormonal_support)
+  const userPrompt = buildNutritionUserPrompt(inputs, cffsText, intakeText, previousPlans, client.medications)
 
   let message
   try {

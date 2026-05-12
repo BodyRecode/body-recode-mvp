@@ -15,12 +15,13 @@ export async function POST(request: NextRequest) {
 
   const { intake_id, client_id } = await request.json()
 
-  // Fetch intake
-  const { data: intake, error: intakeError } = await supabase
-    .from('intakes')
-    .select('*')
-    .eq('id', intake_id)
-    .single()
+  // Fetch intake + client medications. Medications context is critical for
+  // pattern interpretation (HR-blunting drugs, mood-flattening drugs, etc.)
+  // so we always pass it to the CFFS prompt when available.
+  const [{ data: intake, error: intakeError }, { data: clientRow }] = await Promise.all([
+    supabase.from('intakes').select('*').eq('id', intake_id).single(),
+    supabase.from('clients').select('medications').eq('id', client_id).maybeSingle(),
+  ])
 
   if (intakeError || !intake) {
     return NextResponse.json({ error: 'Intake not found' }, { status: 404 })
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 6000,
       system: buildCFFSSystemPrompt(),
-      messages: [{ role: 'user', content: buildCFFSUserPrompt(intake) }],
+      messages: [{ role: 'user', content: buildCFFSUserPrompt(intake, clientRow?.medications ?? null) }],
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)

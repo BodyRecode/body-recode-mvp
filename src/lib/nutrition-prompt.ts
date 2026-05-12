@@ -413,21 +413,32 @@ export function buildNutritionUserPrompt(
   cffsText: string | null,
   intakeText: string | null,
   previousPlans: Array<{ plan_name: string; entry_state: string; generated_at: string }> | null,
-  hormonalSupport?: string | null
+  medications?: string | null
 ): string {
   const lines: string[] = []
 
-  if (hormonalSupport) {
+  if (medications) {
     lines.push('═══════════════════════════════════════')
-    lines.push('HORMONAL SUPPORT (CRITICAL — modulates protein synthesis + recovery + energy partitioning)')
+    lines.push('MEDICATIONS (CRITICAL — hormonal-class drugs modulate protein synthesis / recovery / energy partitioning; non-hormonal drugs affect appetite, hydration, electrolyte balance, fluid retention)')
     lines.push('═══════════════════════════════════════')
-    lines.push(hormonalSupport)
+    lines.push(medications)
     lines.push('')
-    lines.push('Modulation rules:')
+    lines.push('Hormonal-class modulation rules:')
     lines.push('- Exogenous testosterone / TRT: protein synthesis is elevated; protein anchor floor stays as prescribed but consider upper bound. Recovery margin is wider — meal-rhythm restoration windows can be tighter.')
     lines.push('- Supraphysiological androgen support: protein anchor sits at upper bound (2.0–2.2g/kg). Carbs should support training without unnecessary deficit.')
     lines.push('- GLP-1: protein anchor floor is 2.0g/kg minimum (preserve LBM). Calorie deficit is built in by the drug; do not stack additional aggressive deficit.')
     lines.push('- Other peptides / hormonal therapies: surface in rationale; reference how the regimen modulates the prescription.')
+    lines.push('')
+    lines.push('Non-hormonal category awareness (do NOT change calorie/macro targets unless explicitly indicated, but surface in rationale and note flags):')
+    lines.push('- Beta-blockers / antihypertensives: hydration and electrolyte balance matter more. Note in rationale; emphasise hydration habit.')
+    lines.push('- SSRIs / SNRIs / many antidepressants: appetite and bodyweight may shift independent of intake. Anchor compliance to protein/meal-rhythm targets, not bodyweight drift, for the first 4-6 weeks of any new prescription.')
+    lines.push('- Stimulants (ADHD meds): appetite is suppressed during the day. Protein anchor floor must be met; structure meals around the appetite window rather than fighting it.')
+    lines.push('- Chronic NSAIDs / corticosteroids: fluid retention may distort bodyweight readings; do not adjust calories on a single weigh-in spike. Corticosteroids elevate protein needs further (catabolic effect) — push protein anchor to upper bound.')
+    lines.push('- Metformin / antidiabetic meds: carb tolerance and glycaemic response are pharmacologically altered. Surface in rationale; conservative carb-timing if not already specified.')
+    lines.push('- Statins: no direct nutrition implication, but flag if the client reports muscle soreness so the coach can review.')
+    lines.push('- Combined contraceptives / HRT in females: bodyweight cycling may be exogenous-driven rather than diet-driven. Do not chase apparent fluctuations.')
+    lines.push('')
+    lines.push('If the MEDICATIONS field contains drugs not addressed above, surface them in the rationale and treat as informational rather than ignoring.')
     lines.push('')
   }
 

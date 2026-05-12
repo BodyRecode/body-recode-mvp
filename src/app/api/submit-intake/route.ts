@@ -102,6 +102,25 @@ export async function POST(request: NextRequest) {
     .update({ status: 'complete', completed_at: new Date().toISOString() })
     .eq('id', invitation.id)
 
+  // Persist the client's medications statement to clients.medications so the
+  // coach card on the profile is pre-filled. The field is longitudinal status
+  // (lives on clients, not on the intake snapshot), so we write directly to
+  // the source of truth. Coach can edit / add to it later as the regimen
+  // changes. "None" or similar gets stored verbatim; the prompts ignore
+  // strings with no clinically relevant content.
+  const medicationsAnswer = typeof formData.medications === 'string'
+    ? formData.medications.trim()
+    : ''
+  if (medicationsAnswer) {
+    await admin
+      .from('clients')
+      .update({
+        medications: medicationsAnswer,
+        medications_updated_at: new Date().toISOString(),
+      })
+      .eq('id', invitation.client_id)
+  }
+
   // Notify coach + send Portal Orientation to the client
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
@@ -164,7 +183,7 @@ export async function POST(request: NextRequest) {
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 3000,
       system: buildCFFSSystemPrompt(),
-      messages: [{ role: 'user', content: buildCFFSUserPrompt(intake) }],
+      messages: [{ role: 'user', content: buildCFFSUserPrompt(intake, medicationsAnswer || null) }],
     })
 
     const content = message.content[0]

@@ -1280,7 +1280,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">The Generation Flow</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm">
               <li><strong>Step 1 - Open the Macro Plan.</strong> Hit Generate program → on the meso block you want to build. The page reads the block&apos;s phase, goal, duration, and coach-set frequency as authoritative.</li>
-              <li><strong>Step 2 - Prescription Suggestion.</strong> The system reads the client&apos;s CFFS, intake JSONB blobs (training_responses, sleep_responses, stress_responses, fat_map_responses), bodyweight from baseline, hormonal support if set, injury context, and training history. It produces a suggested prescription - block name, phase, goal, frequency, training age, movement competency, duration - with reasoning. Review and edit before generating. Claude&apos;s frequency is overridden deterministically if the macro plan&apos;s training_frequency differs.</li>
+              <li><strong>Step 2 - Prescription Suggestion.</strong> The system reads the client&apos;s CFFS, intake JSONB blobs (training_responses, sleep_responses, stress_responses, fat_map_responses), bodyweight from baseline, medications if set, injury context, and training history. It produces a suggested prescription - block name, phase, goal, frequency, training age, movement competency, duration - with reasoning. Review and edit before generating. Claude&apos;s frequency is overridden deterministically if the macro plan&apos;s training_frequency differs.</li>
               <li><strong>Step 3 - Approve &amp; Generate.</strong> Confirm equipment access, adjust any fields if needed, then click Approve &amp; Generate Program. Claude Haiku 4.5 generates the full program (~30 seconds). Saved as draft.</li>
               <li><strong>Step 4 - Draft Review.</strong> The full draft renders with Discard and Approve Program buttons. Review sessions, blocks, exercises, weekly structure, progression strategy.</li>
               <li><strong>Step 5 - Approve Program.</strong> Promote the draft to active. The draft replaces any previously active program. Previous programs are retained as archived history.</li>
@@ -1295,14 +1295,26 @@ export default function HelpPage() {
             </ul>
             <p>If training age is ambiguous: the doctrine defaults UPWARD (cost of detraining is higher than cost of one heavier session).</p>
 
-            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Hormonal Support Modulation</p>
-            <p>If the <strong>Hormonal Support</strong> card on the client profile is populated (TRT, exogenous testosterone, anabolic support, GLP-1, peptides), the prompt scales recovery / load tolerance / protein synthesis upward:</p>
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Medications Modulation</p>
+            <p>The <strong>Medications</strong> card on the client profile (the field formerly called &quot;Hormonal Support&quot;) is now the canonical capture for ALL pharmacological context, not just hormonal-class drugs. When populated, the engine reads it for two distinct rule sets.</p>
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-3 mb-1">Hormonal-class (enforced deterministically by the doctrine clamp)</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li><strong>TRT / exogenous testosterone:</strong> training-age tolerance treated as +1 step (intermediate → close to advanced thresholds).</li>
               <li><strong>Supraphysiological androgens:</strong> primary RPE ceiling 8 in any non-Restoration phase, 7–8 in Restoration; volume at upper bound; recovery debt accrues more slowly.</li>
-              <li><strong>GLP-1 in deficit:</strong> protein anchor floor 2.0g/kg minimum (preserve LBM); training prescription does NOT scale up — energy availability is constrained.</li>
+              <li><strong>GLP-1 in deficit:</strong> protein anchor floor 2.0g/kg minimum (preserve LBM); training prescription does NOT scale up because energy availability is constrained.</li>
             </ul>
-            <p>These modulators don&apos;t bypass readiness gates (Red regulation still requires Restoration intent). They calibrate the threshold inside the chosen phase. See section 3 / Hormonal Support card for capture.</p>
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-3 mb-1">Non-hormonal categories (applied by the engine during generation, surfaced in weekly_pattern_summary)</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Beta-blockers</strong> (metoprolol, bisoprolol, propranolol, atenolol): HR signals blunted. RPE is the only reliable load gauge; conditioning anchors to pace, breath, perceived exertion.</li>
+              <li><strong>SSRIs / SNRIs</strong> (sertraline, escitalopram, venlafaxine, duloxetine): affect signal in check-ins may be flat, HRV often suppressed. Trust performance and consistency over reported mood / HRV trends.</li>
+              <li><strong>Stimulants</strong> (ADHD meds: methylphenidate, amphetamine derivatives): elevated baseline HR, fatigue masked. Apply slightly more conservative recovery margins; avoid the upper bound on subjective tolerance alone.</li>
+              <li><strong>Chronic NSAIDs</strong> (daily ibuprofen, naproxen, diclofenac): blunt hypertrophic adaptation, may mask warning pain. Do not stack volume to compensate; prefer exposure-graded progression.</li>
+              <li><strong>Anticoagulants</strong> (warfarin, apixaban, rivaroxaban, dabigatran): contact and impact avoided. Default to controlled machine and cable work; no ballistic, no plyometric.</li>
+              <li><strong>Corticosteroids</strong> (oral / sustained prednisone, prednisolone, dexamethasone): connective tissue tolerance compromised. Reduce eccentric demand, prioritise tissue-tolerant patterns. Fluid retention may distort bodyweight readings.</li>
+              <li><strong>Statins:</strong> small risk of myalgia. New muscle soreness inconsistent with prescribed work gets flagged rather than progressed through.</li>
+              <li><strong>Combined contraceptives / HRT in females:</strong> cycle interpretation may be exogenous-driven; treat &quot;cycle phase&quot; signals in CFFS with caution.</li>
+            </ul>
+            <p>These modulators don&apos;t bypass readiness gates (Red regulation still requires Restoration intent). They calibrate the threshold inside the chosen phase. CFFS generation also reads the Medications field at intake time so pattern interpretation factors it in (e.g. a low resting HR on a beta-blocker is pharmacological, not parasympathetic tone). Coach edits to the field after intake also flow into program + nutrition regenerations via the staleness banner on the card.</p>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Program Structure</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#d4cfc9] text-sm">
@@ -1462,7 +1474,7 @@ export default function HelpPage() {
             <p>The Nutrition Plan engine generates a doctrine-compliant daily nutrition prescription under the Hybrid Animal-Based Nutrition System (HABNS) - the 5th pillar of the Body Recode system. Plans follow a two-stage pipeline: draft → active. The same approval flow as the training program.</p>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Step 1 - Prescription Suggestion</p>
-            <p>From a client profile, click <strong>Generate Plan</strong> in the Nutrition Plan section. This opens the prescription suggestion page. Claude (Haiku 4.5) reads the CFFS, real intake JSONB blobs (nutrition_responses, sleep_responses, stress_responses, training_responses), <strong>bodyweight from the baseline submission</strong> (the canonical source — intake doesn&apos;t carry a flat bodyweight column), <strong>hormonal support</strong> if the client profile card is populated, age (derived from <code>date_of_birth</code>), sex (from <code>gender</code>), and any previous nutrition plans. Each field shows a reason. You can edit any field before proceeding.</p>
+            <p>From a client profile, click <strong>Generate Plan</strong> in the Nutrition Plan section. This opens the prescription suggestion page. Claude (Haiku 4.5) reads the CFFS, real intake JSONB blobs (nutrition_responses, sleep_responses, stress_responses, training_responses), <strong>bodyweight from the baseline submission</strong> (the canonical source — intake doesn&apos;t carry a flat bodyweight column), <strong>medications</strong> if the client profile card is populated, age (derived from <code>date_of_birth</code>), sex (from <code>gender</code>), and any previous nutrition plans. Each field shows a reason. You can edit any field before proceeding.</p>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Step 2 - Plan Generation</p>
             <p>Click <strong>Approve &amp; Generate Plan</strong> to send the prescription to Claude (Haiku 4.5). The engine applies all six sequential build layers from doctrine: structure → protein anchor → carb demand → distribution → day variation → food selection. The result is saved as a draft. If you prefer to fill in the prescription manually, use the <strong>Fill in manually instead</strong> link at the bottom of the suggestion page.</p>
@@ -1476,13 +1488,24 @@ export default function HelpPage() {
             </ul>
             <p>The reason field on the suggestion shows the override so it&apos;s auditable. Math through an LLM is unreliable — the floor enforces what the doctrine prescribes regardless of what Haiku produces.</p>
 
-            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Hormonal Support Modulation</p>
-            <p>If the <strong>Hormonal Support</strong> card on the client profile is populated, the prompt scales protein synthesis assumptions and carb support accordingly:</p>
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Medications Modulation</p>
+            <p>The <strong>Medications</strong> card on the client profile is read by the nutrition engine for both hormonal-class drugs (which directly modulate protein synthesis and carb support) and non-hormonal categories (which affect appetite, hydration, electrolyte balance, fluid retention, glycaemic response).</p>
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-3 mb-1">Hormonal-class</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li><strong>TRT / exogenous testosterone:</strong> protein anchor sits at the upper bound of the prescribed range; recovery margin is wider.</li>
               <li><strong>Supraphysiological androgen support:</strong> protein anchor 2.0–2.2g/kg; carbs support training without unnecessary deficit.</li>
-              <li><strong>GLP-1 in deficit:</strong> protein anchor floor 2.0g/kg minimum (preserve lean mass); the deficit is built in by the drug — do not stack additional aggressive deficit.</li>
-              <li><strong>Other peptides / hormonal therapies:</strong> surfaced in the rationale; modulation referenced where relevant.</li>
+              <li><strong>GLP-1 in deficit:</strong> protein anchor floor 2.0g/kg minimum (preserve lean mass); the deficit is built in by the drug, so the engine does not stack additional aggressive deficit.</li>
+              <li><strong>Other peptides / hormonal therapies:</strong> surfaced in rationale; modulation referenced where relevant.</li>
+            </ul>
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-3 mb-1">Non-hormonal categories (surfaced in rationale, do not change calorie / macro targets unless explicitly indicated)</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Beta-blockers / antihypertensives:</strong> hydration and electrolyte balance matter more; emphasis goes into the rationale and hydration habit.</li>
+              <li><strong>SSRIs / SNRIs / many antidepressants:</strong> appetite and bodyweight may shift independent of intake. Adherence anchors to protein and meal-rhythm targets, not bodyweight drift, for the first 4-6 weeks of any new prescription.</li>
+              <li><strong>Stimulants (ADHD meds):</strong> appetite suppressed during the day. Protein anchor floor must be met; the engine structures meals around the appetite window.</li>
+              <li><strong>Chronic NSAIDs / corticosteroids:</strong> fluid retention can distort bodyweight readings; no calorie adjustments on a single weigh-in spike. Corticosteroids elevate protein needs further (catabolic effect) → push protein anchor to upper bound.</li>
+              <li><strong>Metformin / antidiabetic meds:</strong> carb tolerance and glycaemic response pharmacologically altered. Conservative carb-timing if not already specified; surfaced in rationale.</li>
+              <li><strong>Statins:</strong> no direct nutrition implication, flagged if the client reports muscle soreness.</li>
+              <li><strong>Combined contraceptives / HRT in females:</strong> bodyweight cycling may be exogenous-driven; the engine does not chase apparent fluctuations.</li>
             </ul>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Step 3 - Draft Review</p>

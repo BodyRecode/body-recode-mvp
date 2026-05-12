@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
   // Fetch client
   const { data: client, error: clientError } = await admin
     .from('clients')
-    .select('id, name, hormonal_support')
+    .select('id, name, medications')
     .eq('id', client_id)
     .maybeSingle()
 
@@ -224,7 +224,7 @@ export async function POST(request: NextRequest) {
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 6000,
       system: buildProgramSystemPrompt() + recoveryPromptSection,
-      messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.hormonal_support, coachGuidance) }],
+      messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance) }],
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
@@ -254,10 +254,11 @@ export async function POST(request: NextRequest) {
   // Doctrine enforcement — never trust the LLM for RPE ceilings or set
   // counts. Walks every session/block/exercise and clamps to the floor
   // implied by the client's effective training tier (training_age shifted
-  // up by hormonal_support load) and the prescribed phase.
+  // up by hormonal-class signal load read out of the medications text)
+  // and the prescribed phase.
   const effectiveTier = resolveEffectiveTier(
     training_age as 'beginner' | 'intermediate' | 'advanced',
-    client.hormonal_support
+    client.medications
   )
   const phaseForDoctrine = (['restoration', 'accumulation', 'intensification', 'realization']
     .includes(progression_phase) ? progression_phase : 'accumulation') as 'restoration' | 'accumulation' | 'intensification' | 'realization'

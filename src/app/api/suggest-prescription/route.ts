@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     { data: planBlock },
     { data: recentReviews },
   ] = await Promise.all([
-    admin.from('clients').select('id, name, hormonal_support').eq('id', client_id).maybeSingle(),
+    admin.from('clients').select('id, name, medications').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
       .select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_location_history, injury_primary_concern, injury_aggravating_movements, training_responses, sleep_responses, stress_responses')
@@ -65,8 +65,8 @@ export async function POST(request: NextRequest) {
 
   contextParts.push(`CLIENT: ${client.name}`)
 
-  if (client.hormonal_support) {
-    contextParts.push(`\nHORMONAL SUPPORT (CRITICAL — modulates recovery and load tolerance):\n${client.hormonal_support}`)
+  if (client.medications) {
+    contextParts.push(`\nMEDICATIONS (CRITICAL — may include hormonal-class drugs that modulate recovery and load tolerance, or non-hormonal drugs that affect signal interpretation or adaptation):\n${client.medications}`)
   }
 
   if (cffs) {
@@ -235,18 +235,28 @@ Frequency: 2–3 sessions/week
 Use when: client is between phases, returning from hold, or managing external life stress
 
 ═══════════════════════════════════════
-HORMONAL SUPPORT MODULATION (CRITICAL when present)
+MEDICATIONS MODULATION (CRITICAL when present)
 ═══════════════════════════════════════
-If the HORMONAL SUPPORT section in the client context is populated (e.g. TRT, exogenous testosterone, anabolic support, growth hormone, GLP-1 used during a deficit, peptides), recovery capacity, load tolerance, and protein synthesis are all elevated above what training age alone would predict.
+If the MEDICATIONS section in the client context is populated, parse it for hormonal-class signals AND for non-hormonal categories that affect training interpretation. Both shape the prescription, in different ways.
 
-Modulation rules:
+HORMONAL-CLASS modulation (elevates recovery / load tolerance / protein synthesis above training age alone):
 - TRT / exogenous testosterone (within physiological range): treat training-age tolerance as +1 step (intermediate prescriptions can sit closer to advanced thresholds; advanced trainers can sustain more weekly volume without recovery debt).
 - Supraphysiological androgen support: treat as advanced regardless of training age for load tolerance; primary RPE ceiling can sit at 8 in any non-Restoration phase, 7–8 in Restoration. Volume per session can sit at the upper bound of the relevant range. Recovery debt accrues more slowly; do not apply the standard recovery-debt accumulation watch criteria as tightly.
 - GLP-1 in deficit: protein anchor floor stays at 2.0g/kg minimum. Training prescription does NOT scale up — energy availability is constrained even if recovery is intact.
 
-These modulators do not bypass readiness gates (Red regulation still requires Restoration intent). They calibrate the THRESHOLD inside the chosen phase. Sub-threshold for a TRT-supported advanced trainer is not the same load as sub-threshold for an unsupported beginner.
+NON-HORMONAL category awareness (these do NOT shift training age but DO shape interpretation and selection):
+- Beta-blockers (e.g. metoprolol, bisoprolol, propranolol, atenolol): heart-rate response is blunted. Do not use HR-derived intensity targets or heart-rate-based readiness signals. RPE is the only reliable load gauge. Conditioning prescription should anchor to pace, breath, and perceived exertion only.
+- SSRIs / SNRIs (e.g. sertraline, escitalopram, venlafaxine, duloxetine): affect signal in check-ins may be flattened; HRV is often suppressed independent of actual readiness. Trust behavioural and performance signals over reported mood or HRV trends.
+- Stimulants (ADHD meds: methylphenidate, amphetamine derivatives; or therapeutic doses of similar): elevate baseline HR and may mask early fatigue. Apply slightly more conservative recovery margins; do not push to the upper bound of volume on the assumption that the client "feels fine".
+- Chronic NSAIDs (daily ibuprofen, naproxen, diclofenac): blunt hypertrophic adaptation and may mask pain that would normally signal a problem. Note this in rationale; do not increase volume to compensate; encourage exposure-graded loading rather than mid-block jumps.
+- Anticoagulants (warfarin, apixaban, rivaroxaban, dabigatran): contact and impact must be avoided. Exercise selection should default to controlled, machine-and-cable-led movement rather than free-weight balance challenges or anything ballistic.
+- Corticosteroids (prednisone, prednisolone, dexamethasone — oral or sustained): connective-tissue tolerance is compromised. Reduce eccentric demand, avoid maximal loading on single-joint exercises, prioritise tissue-tolerant movement patterns. Fluid retention may distort bodyweight readings.
+- Statins: small but real risk of myalgia. If the client reports new muscle soreness inconsistent with the prescribed work, flag for review rather than progressing through it.
+- Combined contraceptives / HRT in females: cycle interpretation in CFFS may not apply. Be cautious calling something a "cycle phase signal" if exogenous hormones are setting the pattern.
 
-Always reference the hormonal_support text directly in training_age_reason and overall_rationale so the coach can audit the calibration.
+These modulators do not bypass readiness gates (Red regulation still requires Restoration intent). They calibrate the THRESHOLD inside the chosen phase. Sub-threshold for a TRT-supported advanced trainer is not the same load as sub-threshold for an unsupported beginner. Sub-threshold for a beta-blocker user means RPE alone, never HR.
+
+Always reference the medications text directly in training_age_reason and overall_rationale so the coach can audit the calibration. If the medications field contains drugs that are not addressed by these rules, surface them in the rationale and treat them as informational rather than ignoring them.
 
 ═══════════════════════════════════════
 READINESS GATE RULES (non-negotiable — these block progression prescription)

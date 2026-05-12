@@ -85,7 +85,10 @@ function summarizeScaleSection(
   return lines.join('\n')
 }
 
-export function buildCFFSUserPrompt(intake: Partial<Intake>): string {
+export function buildCFFSUserPrompt(
+  intake: Partial<Intake>,
+  medications?: string | null
+): string {
   const sectionResponseKeys: Record<string, keyof Intake> = {
     fat_map: 'fat_map_responses',
     injury: 'injury_responses',
@@ -105,6 +108,14 @@ Name: ${intake.full_name || 'Not provided'}
 Date of birth: ${intake.date_of_birth || 'Not provided'}
 Gender: ${intake.gender || 'Not provided'}
 Occupation: ${intake.occupation || 'Not provided'}`)
+
+  // Medications - critical context for pattern interpretation. Beta-blockers
+  // blunt HR signals, SSRIs flatten affect, stimulants elevate baseline HR,
+  // contraceptives/HRT can dominate cycle interpretation, etc. The CFFS must
+  // factor this in before classifying patterns.
+  if (medications && medications.trim()) {
+    parts.push(`\nMEDICATIONS (interpretation context — may confound HR, mood, sleep, and cycle signals):\n${medications.trim()}`)
+  }
 
   // Scale sections
   for (const section of INTAKE_SECTIONS) {

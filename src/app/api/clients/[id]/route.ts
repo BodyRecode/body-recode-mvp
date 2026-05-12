@@ -8,7 +8,7 @@ export async function PATCH(
   const { id } = await params
   const body = await request.json()
 
-  const allowed = ['coaching_started_at', 'package', 'active', 'phone', 'subscription_link_send_at', 'subscription_link_sent_at', 'hormonal_support']
+  const allowed = ['coaching_started_at', 'package', 'active', 'phone', 'subscription_link_send_at', 'subscription_link_sent_at', 'medications']
   const updates: Record<string, unknown> = {}
   for (const key of allowed) {
     if (key in body) updates[key] = body[key]
@@ -18,10 +18,10 @@ export async function PATCH(
     return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 })
   }
 
-  // Stamp hormonal_support_updated_at when the regimen actually changes so
+  // Stamp medications_updated_at when the regimen actually changes so
   // downstream prescriptions can detect staleness.
-  if ('hormonal_support' in updates) {
-    updates.hormonal_support_updated_at = new Date().toISOString()
+  if ('medications' in updates) {
+    updates.medications_updated_at = new Date().toISOString()
   }
 
   const admin = createAdminClient()

@@ -15,7 +15,7 @@ import CopyLinkButton from './copy-link-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
 import ClientReadingPanel from './client-reading-panel'
-import HormonalSupportEditor from './hormonal-support-editor'
+import MedicationsEditor from './medications-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
@@ -448,10 +448,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
 
-      <HormonalSupportEditor
+      <MedicationsEditor
         clientId={client.id}
-        initialValue={client.hormonal_support ?? null}
-        updatedAt={client.hormonal_support_updated_at ?? null}
+        initialValue={client.medications ?? null}
+        updatedAt={client.medications_updated_at ?? null}
         activeProgramGeneratedAt={activeProgram?.generated_at ?? null}
         activeNutritionGeneratedAt={activeNutritionPlan?.generated_at ?? null}
       />

@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     { data: nutritionPlan },
     { data: existingPlans },
   ] = await Promise.all([
-    admin.from('clients').select('id, name, coaching_started_at, hormonal_support').eq('id', client_id).maybeSingle(),
+    admin.from('clients').select('id, name, coaching_started_at, medications').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('body_state_classification, resolution_state, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, capacity_constraints_and_guardrails, primary_patterns_and_signals, client_context_summary').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes').select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_primary_concern, training_responses, sleep_responses, stress_responses, fat_map_responses, submitted_at').eq('client_id', client_id).order('submitted_at', { ascending: false }).limit(1).maybeSingle(),
     admin.from('baselines').select('bodyweight_kg, captured_at').eq('client_id', client_id).order('captured_at', { ascending: false }).limit(1).maybeSingle(),
@@ -135,8 +135,8 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
 
   const contextLines: string[] = []
 
-  if (client.hormonal_support) {
-    contextLines.push(`HORMONAL SUPPORT (CRITICAL — affects recovery capacity, load tolerance, arc pace):\n${client.hormonal_support}\n`)
+  if (client.medications) {
+    contextLines.push(`MEDICATIONS (CRITICAL — hormonal-class drugs shape recovery capacity, load tolerance, and arc pace; non-hormonal drugs may constrain exercise selection, signal interpretation, or pace of progression):\n${client.medications}\n`)
   }
 
   if (cffs) {
