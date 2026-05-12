@@ -134,6 +134,20 @@ Historical injury locations: ${(intake.injury_location_history || []).join(', ')
 Primary concern: ${intake.injury_primary_concern || 'None declared'}
 Aggravating movements: ${intake.injury_aggravating_movements || 'None declared'}`)
 
+  // Dietary context: free-text Section D answers. Restrictions and framework
+  // shape the system's energy and recovery interpretation (e.g. a vegan
+  // client's protein patterns must be read against plant-based sourcing, not
+  // animal-based deficiency). Typical day informs whether the client's actual
+  // intake matches their stated goal trajectory.
+  const dietaryLines: string[] = []
+  if (intake.dietary_restrictions) dietaryLines.push(`Restrictions (allergies, intolerances, medical): ${intake.dietary_restrictions}`)
+  if (intake.dietary_preferences) dietaryLines.push(`Preferences / framework: ${intake.dietary_preferences}`)
+  if (intake.typical_day_eating) dietaryLines.push(`Typical day's eating: ${intake.typical_day_eating}`)
+  if (intake.eating_context) dietaryLines.push(`Eating environment: ${intake.eating_context}`)
+  if (dietaryLines.length > 0) {
+    parts.push(`\nDIETARY CONTEXT (free-text from Section D - interpret patterns in light of this, do not flag a framework as a pattern abnormality):\n${dietaryLines.join('\n')}`)
+  }
+
   // Goals
   parts.push(`\nGOAL DECLARATION:
 Primary goal: ${intake.primary_goal || 'Not specified'}

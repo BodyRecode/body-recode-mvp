@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     admin.from('clients').select('id, name, medications').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
-      .select('id, date_of_birth, gender, primary_goal, training_days_available, injury_location_current, injury_primary_concern, nutrition_responses, sleep_responses, stress_responses, training_responses')
+      .select('id, date_of_birth, gender, primary_goal, training_days_available, injury_location_current, injury_primary_concern, nutrition_responses, sleep_responses, stress_responses, training_responses, dietary_restrictions, dietary_preferences, typical_day_eating, eating_context')
       .eq('client_id', client_id)
       .order('submitted_at', { ascending: false })
       .limit(1)
@@ -113,6 +113,14 @@ export async function POST(request: NextRequest) {
     if (intake.sleep_responses) intakeLines.push(`Sleep response blob (scale 0-4): ${JSON.stringify(intake.sleep_responses)}`)
     if (intake.stress_responses) intakeLines.push(`Stress response blob (scale 0-4): ${JSON.stringify(intake.stress_responses)}`)
     if (intake.training_responses) intakeLines.push(`Training response blob (tr_01..tr_30, scale 0-4): ${JSON.stringify(intake.training_responses)}`)
+    // Dietary context: HARD-CONSTRAINT free-text from Section D. Surface
+    // each field with its own label so the engine treats restrictions and
+    // preferences as constraints to never violate, the typical day as the
+    // baseline to design FROM, and eating context as adherence design info.
+    if (intake.dietary_restrictions) intakeLines.push(`\nDIETARY RESTRICTIONS (allergies, intolerances, medical — HARD CONSTRAINT, never violate):\n${intake.dietary_restrictions}`)
+    if (intake.dietary_preferences) intakeLines.push(`\nDIETARY PREFERENCES (personal, cultural, religious, framework — HARD CONSTRAINT):\n${intake.dietary_preferences}`)
+    if (intake.typical_day_eating) intakeLines.push(`\nTYPICAL DAY'S EATING (baseline to design FROM):\n${intake.typical_day_eating}`)
+    if (intake.eating_context) intakeLines.push(`\nEATING ENVIRONMENT (shapes adherence design):\n${intake.eating_context}`)
   } else {
     intakeLines.push(`Foundational intake: not yet submitted (using baseline data only).`)
   }

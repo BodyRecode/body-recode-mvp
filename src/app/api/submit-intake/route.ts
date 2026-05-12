@@ -73,6 +73,14 @@ export async function POST(request: NextRequest) {
     training_days_available: (formData.sch_days as string[]) || [],
     injury_primary_concern: (formData.inj_23 as string) || '',
     injury_aggravating_movements: (formData.inj_24 as string) || '',
+    // Dietary context (free-text answers from Section D - what the client
+    // actually eats / cannot eat / will not eat / and their eating environment).
+    // The nutrition + CFFS engines read these so the plan is adoptable, not
+    // just doctrinally correct under their pattern profile.
+    dietary_restrictions: (formData.dietary_restrictions as string) || '',
+    dietary_preferences: (formData.dietary_preferences as string) || '',
+    typical_day_eating: (formData.typical_day_eating as string) || '',
+    eating_context: (formData.eating_context as string) || '',
     // Goals
     primary_goal: (formData.goal_primary as string) || '',
     secondary_goals: (formData.goal_secondary as string) || '',

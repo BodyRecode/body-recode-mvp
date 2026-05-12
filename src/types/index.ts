@@ -96,6 +96,12 @@ export interface Intake {
   injury_location_history: string[]
   injury_primary_concern: string
   injury_aggravating_movements: string
+  // Dietary context (free-text Section D answers - what the client actually
+  // eats, cannot eat, will not eat, and their eating environment)
+  dietary_restrictions: string
+  dietary_preferences: string
+  typical_day_eating: string
+  eating_context: string
   // Goals
   primary_goal: string
   secondary_goals: string

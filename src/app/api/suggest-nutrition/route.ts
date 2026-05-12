@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     admin.from('clients').select('id, name, medications').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
-      .select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_location_history, injury_primary_concern, injury_aggravating_movements, fat_map_responses, training_responses, nutrition_responses, schedule_responses, sleep_responses, stress_responses, supplement_responses, submitted_at')
+      .select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_location_history, injury_primary_concern, injury_aggravating_movements, fat_map_responses, training_responses, nutrition_responses, schedule_responses, sleep_responses, stress_responses, supplement_responses, dietary_restrictions, dietary_preferences, typical_day_eating, eating_context, submitted_at')
       .eq('client_id', client_id)
       .order('submitted_at', { ascending: false })
       .limit(1)
@@ -131,6 +131,22 @@ CFFS — FOUNDATIONAL SYNTHESIS:
     intakeLines.push(`- Foundational intake: not yet submitted (using baseline data only).`)
   }
   contextParts.push(`\nINTAKE CONTEXT:\n${intakeLines.join('\n')}`)
+
+  // Dietary context: free-text answers from Section D. Critical for designing
+  // a plan the client can actually adopt. Restrictions are hard constraints
+  // (allergies / intolerances / medical). Preferences are framework / cultural
+  // constraints. Typical day is the baseline we design FROM. Eating context
+  // shapes adherence design (cooking, family meals, travel, takeaway habits).
+  if (intake) {
+    const dietaryLines: string[] = []
+    if (intake.dietary_restrictions) dietaryLines.push(`Allergies / intolerances / medical restrictions (HARD CONSTRAINT — never violate):\n${intake.dietary_restrictions}`)
+    if (intake.dietary_preferences) dietaryLines.push(`Personal, cultural, or religious avoidances / dietary framework (HARD CONSTRAINT):\n${intake.dietary_preferences}`)
+    if (intake.typical_day_eating) dietaryLines.push(`Typical day's eating (BASELINE — design FROM this, not against it):\n${intake.typical_day_eating}`)
+    if (intake.eating_context) dietaryLines.push(`Eating environment context:\n${intake.eating_context}`)
+    if (dietaryLines.length > 0) {
+      contextParts.push(`\nDIETARY CONTEXT (free-text from Section D — what the client actually eats, cannot eat, will not eat):\n\n${dietaryLines.join('\n\n')}`)
+    }
+  }
 
   if (activeProgram) {
     contextParts.push(`

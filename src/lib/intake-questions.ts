@@ -173,6 +173,10 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'nut_23', text: 'I have cultural or lifestyle eating preferences.', type: 'scale', scaleLabel: { low: 'Never', high: 'Consistently' } },
       { id: 'nut_24', text: 'I have limited time for food preparation.', type: 'scale', scaleLabel: { low: 'Never', high: 'Consistently' } },
       { id: 'nut_25', text: 'I prefer simple, repeatable meals.', type: 'scale', scaleLabel: { low: 'Never', high: 'Consistently' } },
+      { id: 'dietary_restrictions', text: 'List any food allergies, intolerances, or medical dietary restrictions you have. Include severity if relevant (e.g. "Peanut allergy, anaphylactic" vs "Lactose intolerant, mild bloating"). Write "None" if none.', type: 'text', required: true },
+      { id: 'dietary_preferences', text: 'List any foods you avoid for personal, cultural, or religious reasons, or any dietary framework you follow (e.g. vegetarian, vegan, halal, kosher, pescatarian, no pork, no red meat, no seafood, etc.). Write "None" if you eat everything.', type: 'text', required: true },
+      { id: 'typical_day_eating', text: 'Walk us through what you typically eat on an average day. Include breakfast, lunch, dinner, and any snacks. Be honest — this is what we design from, not what you think we want to hear. If your days vary a lot, describe a common pattern and a common variant.', type: 'text', required: true },
+      { id: 'eating_context', text: 'Anything we should know about your eating environment? Examples: who cooks at home, family meals, work-week meals (eat out, bring lunch, skip), frequent travel, takeaway habits, shared meals with a partner who eats differently. Optional but useful for designing a plan you can actually stick to.', type: 'text', required: false },
     ]
   },
   {
