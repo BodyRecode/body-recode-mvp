@@ -4,6 +4,7 @@ import Link from 'next/link'
 import NutritionDraftActions from './draft-actions'
 import DeleteNutritionPlanButton from './delete-button'
 import NutritionWeeklyReview from './weekly-review'
+import NutritionReadingPanel from './nutrition-reading-panel'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 
 interface Meal {
@@ -355,7 +356,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name')
+    .select('id, name, onboarding_token')
     .eq('id', id)
     .maybeSingle()
 
@@ -440,6 +441,12 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
               <div className="flex-1 h-px bg-stone-800" />
             </div>
           )}
+
+          {/* Nutrition Reading - client-facing interpretation card */}
+          <NutritionReadingPanel
+            plan={activePlan as unknown as Parameters<typeof NutritionReadingPanel>[0]['plan']}
+            clientToken={client.onboarding_token}
+          />
 
           <div className="flex gap-8">
             <StickyScrollNav sections={nutritionNavSections(activePlan)} />

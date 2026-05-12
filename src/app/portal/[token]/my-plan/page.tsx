@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import ClientHeader from '@/components/client-header'
+import NutritionReadingInline from '@/components/nutrition-reading-inline'
 import Link from 'next/link'
 
 interface Meal {
@@ -54,10 +55,12 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
 
   const { data: plan } = await admin
     .from('nutrition_plans')
-    .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at')
+    .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at')
     .eq('client_id', client.id)
     .eq('status', 'active')
     .maybeSingle()
+
+  const nutritionReadingPublished = !!plan?.nutrition_reading_published_at
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
@@ -75,6 +78,21 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
           </div>
         ) : (
           <div className="space-y-5">
+            {/* Nutrition Reading - the why frames every meal view below */}
+            {nutritionReadingPublished && (
+              <NutritionReadingInline
+                reading={{
+                  nr_why_this_plan: plan.nr_why_this_plan,
+                  nr_what_this_nutrition_is_doing: plan.nr_what_this_nutrition_is_doing,
+                  nr_how_well_know_its_working: plan.nr_how_well_know_its_working,
+                  nr_what_were_not_doing_yet: plan.nr_what_were_not_doing_yet,
+                  nr_coach_note: plan.nr_coach_note,
+                  nutrition_reading_published_at: plan.nutrition_reading_published_at,
+                }}
+                documentHref={`/portal/${token}/my-plan/reading`}
+              />
+            )}
+
             {/* Overview */}
             <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-5">
               <div className="flex items-start justify-between gap-3 mb-4">
