@@ -683,8 +683,20 @@ export default function HelpPage() {
 
           {/* Section 8 */}
           <Section id="cffs" title="10. CFFS - Coach-Facing Foundational Synthesis" colour="teal">
-            <p>The CFFS is generated automatically from the foundational intake. It is a structured interpretation of the client&apos;s current body state across 8 signal domains, labelled <strong>Foundational Synthesis - CFFS</strong> on the client profile.</p>
-            <p>It includes:</p>
+            <p>The CFFS is the structured interpretation of the client&apos;s current body state across 8 signal domains, labelled <strong>Foundational Synthesis - CFFS</strong> on the client profile.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">When is the CFFS generated</p>
+            <p>As of 2026-05-13, the CFFS is <strong>coach-triggered</strong>, not auto-generated. The trigger sequence is:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>Client completes foundational intake. You receive an email confirming intake is in; <strong>no CFFS yet</strong>.</li>
+              <li>Client submits baseline (measurements plus front, side, and back photos). You receive a second email: <em>&ldquo;{`{name}`} completed onboarding - CFFS ready for generation&rdquo;</em>.</li>
+              <li>You open the client profile and click <strong>Generate CFFS</strong> on the Foundational Synthesis panel. The Fat Map reads the baseline photos as part of Spatial Patterning (see Visual Signal Integration below).</li>
+            </ul>
+            <p>Both submission orders are handled - if a client somehow submits baseline before intake (rare), the second email fires on intake submission instead. The helper <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">notifyOnboardingCompleteIfReady</code> is the single source of truth for the trigger.</p>
+            <p><strong>Why coach-triggered:</strong> the CFFS is the interpretive seed. Every downstream artefact (Foundational Reading, Program Reading, Nutrition Reading, program generation, nutrition generation) reads from it. The coach being in the loop on its creation - reviewing the inputs first, optionally setting Coach Guidance, then generating - aligns with how every other reading on the platform works. CFFS was the lone auto-gen outlier; this commit closes that.</p>
+            <p><strong>Existing CFFS, baseline re-capture:</strong> if a CFFS is already published and the client re-submits a baseline (e.g. with new photos), the notification adapts: <em>&ldquo;{`{name}`} submitted baseline - CFFS can be regenerated with the new photos&rdquo;</em>. Regeneration is optional and not automatic; you decide whether the new visual evidence is material enough to refresh the interpretation.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">What the CFFS contains</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li>Body State Classification (Remediation, Optimisation, Post-Optimisation)</li>
               <li>Resolution State</li>

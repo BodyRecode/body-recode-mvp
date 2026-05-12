@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { notifyOnboardingCompleteIfReady } from '@/lib/onboarding-complete-notification'
 
 export const maxDuration = 300
 
@@ -58,25 +59,35 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to save baseline' }, { status: 500 })
   }
 
-  try {
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    const { data: client } = await admin.from('clients').select('name').eq('id', clientId).maybeSingle()
-    const name = client?.name ?? 'A client'
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
-    await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
-      to: 'kade@bodyrecode.au',
-      subject: `${name} submitted their baseline`,
-      html: buildCoachNotificationEmail({
-        eyebrow: 'Baseline',
-        heading: `${name} submitted their baseline`,
-        body: `${name} has uploaded their baseline measurements and progress photos. This is the calibration point for everything that follows. Their Deliberate Start Window can begin once you have reviewed it and generated their program.`,
-        ctaLabel: 'Open client profile',
-        ctaUrl: `${baseUrl}/dashboard/clients/${clientId}`,
-      }),
-    })
-  } catch (e) {
-    console.error('Notification email failed:', e)
+  // Try the onboarding-complete notification first. If intake is also in,
+  // it fires the richer "CFFS ready to generate" email and we skip the
+  // generic baseline-only one. If intake is not yet in (rare reverse order),
+  // it returns sent:false and we fall back to the existing baseline email.
+  const onboardingNotice = await notifyOnboardingCompleteIfReady(admin, clientId, {
+    trigger: 'baseline',
+  })
+
+  if (!onboardingNotice.sent) {
+    try {
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      const { data: client } = await admin.from('clients').select('name').eq('id', clientId).maybeSingle()
+      const name = client?.name ?? 'A client'
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+      await resend.emails.send({
+        from: 'Body Recode <kade@bodyrecode.au>',
+        to: 'kade@bodyrecode.au',
+        subject: `${name} submitted their baseline`,
+        html: buildCoachNotificationEmail({
+          eyebrow: 'Baseline',
+          heading: `${name} submitted their baseline`,
+          body: `${name} has uploaded their baseline measurements and progress photos. This is the calibration point for everything that follows. Their foundational intake is still outstanding; CFFS generation will be available once that is also in. You will receive a second email when both forms are complete and the CFFS is ready to generate.`,
+          ctaLabel: 'Open client profile',
+          ctaUrl: `${baseUrl}/dashboard/clients/${clientId}`,
+        }),
+      })
+    } catch (e) {
+      console.error('Notification email failed:', e)
+    }
   }
 
   return NextResponse.json({ success: true })
