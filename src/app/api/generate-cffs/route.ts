@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import {
   buildCFFSSystemPrompt,
   buildCFFSUserPrompt,
@@ -42,12 +43,18 @@ async function fetchImageAsBase64(
 }
 
 export async function POST(request: NextRequest) {
+  // Auth-gate on the user-bound client (verifies the coach is logged in).
   const supabase = await createClient()
-
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   }
+
+  // All data fetches + writes go through the admin client to bypass RLS,
+  // which would otherwise hide intakes / baselines from the coach. Mirrors
+  // the pattern in every other generate-* route (program reading,
+  // nutrition reading, etc.). Auth gating above is what protects the route.
+  const admin = createAdminClient()
 
   const { intake_id, client_id } = await request.json()
 
@@ -62,9 +69,9 @@ export async function POST(request: NextRequest) {
     { data: clientRow },
     { data: baselineRow },
   ] = await Promise.all([
-    supabase.from('intakes').select('*').eq('id', intake_id).single(),
-    supabase.from('clients').select('medications').eq('id', client_id).maybeSingle(),
-    supabase
+    admin.from('intakes').select('*').eq('id', intake_id).single(),
+    admin.from('clients').select('medications').eq('id', client_id).maybeSingle(),
+    admin
       .from('baselines')
       .select('bodyweight_kg, waist_cm, hips_cm, chest_cm, captured_at, photo_front_url, photo_side_url, photo_back_url')
       .eq('client_id', client_id)
@@ -183,14 +190,14 @@ export async function POST(request: NextRequest) {
   ;(cffsData as Record<string, unknown>).reassessment_flagged = false
 
   // Archive any existing CFFS for this client
-  await supabase
+  await admin
     .from('cffs')
     .update({ is_archived: true })
     .eq('client_id', client_id)
     .eq('is_archived', false)
 
   // Save CFFS to database
-  const { data: cffs, error: cffsError } = await supabase
+  const { data: cffs, error: cffsError } = await admin
     .from('cffs')
     .insert({ client_id, intake_id, ...(cffsData as Record<string, unknown>) })
     .select()
