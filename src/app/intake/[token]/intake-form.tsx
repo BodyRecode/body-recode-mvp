@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { INTAKE_SECTIONS, Question } from '@/lib/intake-questions'
 import { useFormDraft } from '@/lib/use-form-draft'
 
@@ -214,6 +214,20 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
     setDraft(prev => ({ ...prev, sectionIndex: typeof next === 'function' ? next(prev.sectionIndex) : next }))
   const setFormData = (next: FormData | ((p: FormData) => FormData)) =>
     setDraft(prev => ({ ...prev, formData: typeof next === 'function' ? next(prev.formData) : next }))
+
+  // Dev affordance: `?section=N` jumps straight to that section index. Lets
+  // you verify form rendering without clicking through every prior section.
+  // Read once on mount; ignored thereafter.
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const param = new URLSearchParams(window.location.search).get('section')
+    if (param === null) return
+    const target = parseInt(param, 10)
+    if (Number.isNaN(target) || target < 0 || target >= INTAKE_SECTIONS.length) return
+    setSectionIndex(target)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
