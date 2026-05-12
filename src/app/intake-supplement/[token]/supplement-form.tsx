@@ -118,7 +118,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
       <div className="min-h-screen bg-stone-950 text-stone-200 flex items-center justify-center px-6 py-12">
         <div className="max-w-md text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-teal.png" alt="Body Recode" className="h-10 w-auto mx-auto mb-8" />
+          <img src="/logo-teal.png" alt="Body Recode" className="h-20 w-auto mx-auto mb-8" />
           <h1 className="text-2xl font-semibold text-white mb-3">Thanks, that&apos;s in.</h1>
           <p className="text-stone-400 text-sm leading-relaxed">
             Your follow-up answers have been saved to your file. Kade will weave them into the next program and nutrition cycle.
@@ -134,7 +134,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
         {/* Header */}
         <div className="mb-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-teal.png" alt="Body Recode" className="h-8 w-auto mb-6" />
+          <img src="/logo-teal.png" alt="Body Recode" className="h-20 w-auto mb-8" />
           <p className="text-[11px] font-bold text-[#10E1C2] uppercase tracking-[0.2em] mb-2">Follow-up Intake</p>
           <h1 className="text-2xl font-semibold text-white mb-3">Hi {clientName.split(' ')[0]}, just a few more questions.</h1>
           <p className="text-stone-400 text-sm leading-relaxed">
