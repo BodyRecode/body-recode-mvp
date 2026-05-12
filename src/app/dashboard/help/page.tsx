@@ -765,6 +765,7 @@ export default function HelpPage() {
             </ul>
             <p>Every Friday at 6pm Brisbane time, clients receive an automated email and SMS notifying them that the window is open (cron: <code>checkin-window-open</code>). The notification links directly to their <strong>client portal at /portal/[token]</strong>.</p>
             <p>On Sunday at 5:30pm Brisbane (1 hour before close), clients who haven&apos;t submitted yet receive a closing reminder email and SMS (cron: <code>checkin-window-closing</code>) so nobody misses the window by accident.</p>
+            <Note>Both crons gate on <strong>active training program</strong>. Clients who have started coaching but don&apos;t yet have an approved program live (post-onboarding, pre-program-built window) are skipped — they receive no &quot;window open&quot; or &quot;window closing&quot; email or SMS. The portal-side check-in card is also hidden for them. Both cron responses return a <code>skippedNoProgram</code> count for audit.</Note>
             <p>Inside the portal, the <strong>This week</strong> section shows:</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li>The active form for this week with a Start link - or a ticked state if already submitted.</li>

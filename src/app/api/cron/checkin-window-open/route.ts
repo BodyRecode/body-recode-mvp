@@ -24,8 +24,22 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ emailsSent: 0, smsSent: 0 })
   }
 
+  // Build the set of client_ids that have an ACTIVE training program.
+  // Weekly check-ins evaluate training response — there is nothing to
+  // evaluate (and nothing for the client to report on) until a program is
+  // live, so we mirror the portal-side gate (see project_weekly_checkin_program_gate
+  // in feature registry) and skip anyone without one.
+  const { data: activePrograms } = await admin
+    .from('programs')
+    .select('client_id')
+    .eq('is_active', true)
+  const clientsWithActiveProgram = new Set(
+    (activePrograms ?? []).map((p: { client_id: string }) => p.client_id)
+  )
+
   let emailsSent = 0
   let smsSent = 0
+  let skippedNoProgram = 0
 
   for (const client of clients) {
     if (!client.onboarding_token) continue
@@ -34,6 +48,12 @@ export async function GET(request: NextRequest) {
     if (!client.coaching_started_at) continue
     const startDate = new Date(client.coaching_started_at)
     if (startDate > new Date()) continue
+
+    // No active training program = nothing to check in against. Skip.
+    if (!clientsWithActiveProgram.has(client.id)) {
+      skippedNoProgram++
+      continue
+    }
 
     const firstName = client.name.split(' ')[0]
     const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/portal/${client.onboarding_token}`
@@ -93,5 +113,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  return NextResponse.json({ emailsSent, smsSent })
+  return NextResponse.json({ emailsSent, smsSent, skippedNoProgram })
 }

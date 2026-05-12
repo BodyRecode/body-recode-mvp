@@ -39,14 +39,33 @@ export async function GET(request: NextRequest) {
     checkinsByClient.get(ci.client_id)!.add(`${ci.week_number}-${ci.form_type}`)
   }
 
+  // Build the set of client_ids that have an ACTIVE training program.
+  // Mirror the portal-side gate: weekly check-ins evaluate training response,
+  // so a client with no active program has nothing to evaluate and gets no
+  // closing reminder.
+  const { data: activePrograms } = await admin
+    .from('programs')
+    .select('client_id')
+    .eq('is_active', true)
+  const clientsWithActiveProgram = new Set(
+    (activePrograms ?? []).map((p: { client_id: string }) => p.client_id)
+  )
+
   let emailsSent = 0
   let smsSent = 0
+  let skippedNoProgram = 0
 
   for (const client of clients) {
     if (!client.onboarding_token || !client.coaching_started_at) continue
 
     // Skip clients whose coaching hasn't started yet
     if (new Date(client.coaching_started_at) > new Date()) continue
+
+    // No active training program = no check-in expected = no closing nudge.
+    if (!clientsWithActiveProgram.has(client.id)) {
+      skippedNoProgram++
+      continue
+    }
 
     // Determine their current week number
     const weekNumber = getWeekNumber(client.coaching_started_at)
@@ -118,5 +137,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  return NextResponse.json({ emailsSent, smsSent })
+  return NextResponse.json({ emailsSent, smsSent, skippedNoProgram })
 }
