@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
+import { sendMedicalClearanceRequiredEmail } from '@/lib/medical-clearance-required-email'
 
 export async function POST(req: NextRequest) {
   const { clientId, requiresClearance, data } = await req.json()
@@ -9,7 +10,11 @@ export async function POST(req: NextRequest) {
 
   const admin = createAdminClient()
 
-  const { data: client } = await admin.from('clients').select('name').eq('id', clientId).maybeSingle()
+  const { data: client } = await admin
+    .from('clients')
+    .select('name, email, onboarding_token')
+    .eq('id', clientId)
+    .maybeSingle()
 
   const { error } = await admin
     .from('clients')
@@ -48,6 +53,27 @@ export async function POST(req: NextRequest) {
     })
   } catch (e) {
     console.error('Notification email failed:', e)
+  }
+
+  // Client-facing follow-up: if clearance is required, point them at the
+  // Medical Clearance card on their portal so they don't have to wait for
+  // their next login to discover the next step. Best-effort; failure to
+  // send (e.g. missing email/token) never blocks the submission.
+  if (requiresClearance && client) {
+    try {
+      await sendMedicalClearanceRequiredEmail({
+        admin,
+        client: {
+          id: clientId,
+          name: client.name ?? '',
+          email: client.email ?? null,
+          onboarding_token: client.onboarding_token ?? null,
+        },
+        trigger: 'health_declaration_submit',
+      })
+    } catch (e) {
+      console.error('Clearance-required client email failed:', e)
+    }
   }
 
   return NextResponse.json({ success: true })

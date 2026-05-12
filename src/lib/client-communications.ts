@@ -11,6 +11,7 @@ export type ClientCommunicationKind =
   | 'portal_orientation'
   | 'intake_invite'
   | 'portal_login_code'
+  | 'medical_clearance_required'
   | 'medical_clearance_approved'
   | 'coaching_start_reminder'
   | 'onboarding_reminder'
@@ -24,6 +25,7 @@ export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> 
   portal_orientation: 'Portal orientation',
   intake_invite: 'Intake invitation',
   portal_login_code: 'Portal login code',
+  medical_clearance_required: 'Medical clearance required',
   medical_clearance_approved: 'Medical clearance approved',
   coaching_start_reminder: 'Coaching start reminder',
   onboarding_reminder: 'Onboarding reminder',
