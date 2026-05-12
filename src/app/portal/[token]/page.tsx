@@ -16,7 +16,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const { data: client } = await admin
     .from('clients')
-    .select('*, baselines(id), intake_invitations(status, token), weekly_checkins(week_number, form_type, submitted_at), session_type')
+    .select('*, baselines(id), intake_invitations(status, token, kind), weekly_checkins(week_number, form_type, submitted_at), session_type')
     .eq('onboarding_token', token)
     .single()
 
@@ -106,11 +106,19 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const firstName = client.name?.split(' ')[0] ?? 'there'
   const agreementDone = !!client.agreement_accepted_at
   const healthDone = !!client.health_declaration_submitted_at
-  const intakeDone = Array.isArray(client.intake_invitations) && client.intake_invitations.some((i: { status: string }) => i.status === 'complete')
-  const pendingInvitation = Array.isArray(client.intake_invitations)
-    ? client.intake_invitations.find((i: { status: string; token: string }) => i.status !== 'complete')
-    : null
+  // Foundational vs supplementary invitations are now stored on the same
+  // table distinguished by `kind`. Onboarding-side logic only cares about
+  // the foundational intake. The supplementary intake is its own card below.
+  const foundationalInvitations = (Array.isArray(client.intake_invitations) ? client.intake_invitations : [])
+    .filter((i: { kind?: string }) => (i.kind ?? 'foundational') === 'foundational')
+  const intakeDone = foundationalInvitations.some((i: { status: string }) => i.status === 'complete')
+  const pendingInvitation = foundationalInvitations.find((i: { status: string; token: string }) => i.status !== 'complete') ?? null
   const intakeToken = pendingInvitation?.token ?? null
+
+  // Pending supplementary intake (5-question follow-up). Surfaces as its own
+  // card on the portal so the client sees it the next time they sign in.
+  const pendingSupplementary = (Array.isArray(client.intake_invitations) ? client.intake_invitations : [])
+    .find((i: { status: string; token: string; kind?: string }) => i.kind === 'supplementary' && i.status === 'pending') ?? null
   const baselineDone = Array.isArray(client.baselines) && client.baselines.length > 0
   const clearanceRequired = !!client.medical_clearance_required
   const clearanceReceived = !!client.medical_clearance_received_at
@@ -283,6 +291,29 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Pending supplementary intake - shown when the coach has added a
+            follow-up intake task. Surfaces right at the top of post-onboarding
+            content so the client sees and completes it on next sign-in. */}
+        {pendingSupplementary && (
+          <div className="mb-10">
+            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">A quick follow-up from Kade</p></div>
+            <Link
+              href={`/intake-supplement/${pendingSupplementary.token}`}
+              className="block rounded-2xl border border-[#14b8a6]/30 bg-[#14b8a6]/5 p-5 hover:border-[#14b8a6]/60 hover:bg-[#14b8a6]/10 transition-colors"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-white mb-1">5 follow-up questions</p>
+                  <p className="text-xs text-[#a8a29e] leading-relaxed">
+                    A few new questions have been added since you completed your original intake — covering medications and dietary context. About 3 minutes.
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-[#14b8a6] ml-4 shrink-0">Start →</span>
+              </div>
+            </Link>
           </div>
         )}
 

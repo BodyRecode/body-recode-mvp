@@ -661,6 +661,16 @@ export default function HelpPage() {
               <p>The 208-question intake is not a form. It is the raw material for the CFFS - a structured read of the client&apos;s current body state across all signal domains. The questions exist because body response patterns don&apos;t reveal themselves in a short intake. Depth matters.</p>
               <p className="mt-2">The baseline measurements taken here are the reference point for everything that follows. Week 1 data only becomes meaningful because of what was captured here. Encourage the client to be accurate rather than aspirational with their numbers.</p>
             </Training>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-6 mb-2">Supplementary Intake (backfilling new fields)</p>
+            <p>When new fields are added to the foundational intake after a client has already submitted theirs (e.g. medications on 2026-05-11, dietary context on 2026-05-12), existing clients don&apos;t lose access to those fields. Use the <strong>Add follow-up to portal</strong> button on the client profile (sits next to the &quot;Foundational Intake&quot; row once it is marked complete).</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>What it does:</strong> creates a pending supplementary <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">intake_invitations</code> row with <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">kind=&apos;supplementary&apos;</code>. The portal landing page detects this and surfaces a teal &quot;A quick follow-up from Kade&quot; card next time the client signs in. No email is sent &mdash; the portal IS the channel.</li>
+              <li><strong>What the client sees:</strong> a 5-question form at <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">/intake-supplement/&#123;token&#125;</code>. Medications + 4 dietary context fields. ~3 minutes.</li>
+              <li><strong>What submit does:</strong> updates the most recent intake row with the dietary fields, writes medications to <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">clients.medications</code>, marks the invitation complete, then auto-regenerates the CFFS so the next program / nutrition / weekly synthesis use the updated context.</li>
+              <li><strong>Foundational Reading caveat:</strong> the CFFS auto-regenerate archives the existing CFFS row, which also archives any published Foundational Reading text on it. You get a coach notification flagging this; the client portal won&apos;t show an FR until you Regenerate it from the new CFFS. Or leave it &mdash; if the new CFFS interpretation is close to the old one, the previous FR archived state may be fine.</li>
+              <li><strong>Idempotent:</strong> clicking the button twice does not create duplicates. If a pending supplementary invitation already exists, the existing one is returned.</li>
+            </ul>
           </Section>
 
           {/* Section 8 */}

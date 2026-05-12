@@ -21,6 +21,7 @@ import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
 import SendPortalOrientationButton from '@/components/send-portal-orientation-button'
+import SendSupplementaryIntakeButton from '@/components/send-supplementary-intake-button'
 import ClientDangerActions from './client-danger-actions'
 import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
@@ -442,6 +443,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   />
                 )}
                 <CopyLinkButton token={latestInvitation.token} />
+              </div>
+            )}
+            {/* Supplementary intake CTA - only meaningful once the foundational
+                intake is complete. Adds a 5-question follow-up to the client's
+                portal as a task card (no email sent; the portal is the channel). */}
+            {latestInvitation.status === 'complete' && (
+              <div className="flex items-center gap-2">
+                <SendSupplementaryIntakeButton
+                  clientId={client.id}
+                  clientName={client.name}
+                />
               </div>
             )}
           </div>
