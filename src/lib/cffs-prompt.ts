@@ -52,7 +52,22 @@ PROHIBITED IN OUTPUT:
 - Readiness declarations or clearance statements
 - Causal explanations ("this is caused by...")
 - Optimisation targets or outcome promises
-- Instructions or how-to guidance`
+- Instructions or how-to guidance
+
+VISUAL SIGNAL INTEGRATION:
+When baseline photos are provided alongside the intake data, treat them as ONE signal stream feeding Spatial Patterning (the first of the four internal pillars per Fat Map zone). They are not the conclusion. They are evidence that must converge with the scale signals, temporal data, regulatory context, and resource availability before any structural interpretation is reached.
+
+Rules for reading photos:
+1. Describe spatial expression across the four Fat Map zones. Where does distribution favour? Where does it not? Note convergence or divergence with the scale signals in the intake.
+2. Read posture, breathing, and bracing as regulatory load evidence: chest carriage, shoulder elevation, abdominal bracing, anterior pelvic tilt, head-forward position.
+3. Resist single-signal conclusions. A visible stress belt without supporting intake evidence is a hypothesis, not a finding. Convergence remains the rule.
+4. Preserve the long-arc rule. Visible adipose distribution informs long-arc classification ONLY when convergent with intake patterns spanning weeks or months. Visible state alone is short-arc evidence.
+5. Use conservative language: "consistent with...", "would be worth confirming...", "appears to favour...". Never definitive.
+6. NEVER make aesthetic judgments. Do not use the words overweight, underweight, lean, soft, hard, athletic, out of shape, or any term that evaluates the body. Describe distribution and patterning only.
+7. NEVER frame the body as broken, deficient, or in need of fixing. The body is currently doing something coherent. Your job is to read what.
+8. Photos are present-state expression, not identity. Read what the body is doing now; the intake tells you how it got there.
+
+If photos are not provided, complete the CFFS from the scale and text intake alone, and explicitly note in your closing_interpretive_notes that visual evidence was not available so Spatial Patterning is inferred from the intake only.`
 }
 
 function summarizeScaleSection(
@@ -85,9 +100,19 @@ function summarizeScaleSection(
   return lines.join('\n')
 }
 
+export interface CFFSBaselineContext {
+  bodyweight_kg: number | null
+  waist_cm: number | null
+  hips_cm: number | null
+  chest_cm: number | null
+  captured_at: string | null
+  has_photos: boolean
+}
+
 export function buildCFFSUserPrompt(
   intake: Partial<Intake>,
-  medications?: string | null
+  medications?: string | null,
+  baseline?: CFFSBaselineContext | null
 ): string {
   const sectionResponseKeys: Record<string, keyof Intake> = {
     fat_map: 'fat_map_responses',
@@ -146,6 +171,24 @@ Aggravating movements: ${intake.injury_aggravating_movements || 'None declared'}
   if (intake.eating_context) dietaryLines.push(`Eating environment: ${intake.eating_context}`)
   if (dietaryLines.length > 0) {
     parts.push(`\nDIETARY CONTEXT (free-text from Section D - interpret patterns in light of this, do not flag a framework as a pattern abnormality):\n${dietaryLines.join('\n')}`)
+  }
+
+  // Baseline measurements + photo availability note. Photo content blocks are
+  // appended by the route AFTER this text prompt; this section gives Claude
+  // structural context for what it is looking at.
+  if (baseline) {
+    const m: string[] = []
+    if (baseline.bodyweight_kg) m.push(`Bodyweight: ${baseline.bodyweight_kg} kg`)
+    if (baseline.waist_cm)      m.push(`Waist: ${baseline.waist_cm} cm`)
+    if (baseline.hips_cm)       m.push(`Hips: ${baseline.hips_cm} cm`)
+    if (baseline.chest_cm)      m.push(`Chest: ${baseline.chest_cm} cm`)
+    if (baseline.captured_at)   m.push(`Captured: ${baseline.captured_at.slice(0, 10)}`)
+    if (m.length > 0) parts.push(`\nBASELINE MEASUREMENTS:\n${m.join('\n')}`)
+    if (baseline.has_photos) {
+      parts.push(`\nBASELINE PHOTOS:\nThree photos accompany this prompt (front, side, back). Read them per the VISUAL SIGNAL INTEGRATION rules in the system prompt: they are one signal stream feeding Spatial Patterning, not the conclusion. Note convergence or divergence with the scale data above.`)
+    } else {
+      parts.push(`\nBASELINE PHOTOS:\nNot provided. Infer Spatial Patterning from intake signals only. Note this absence in your closing_interpretive_notes.`)
+    }
   }
 
   // Goals
