@@ -11,7 +11,7 @@
 //     in client_communications for this client (override with --force)
 //   - Prints the resolved client and exits non-zero on any guard failure
 
-import 'dotenv/config'
+// Env loaded by caller: `set -a && source .env.local && set +a && npx tsx ...`
 import { createClient } from '@supabase/supabase-js'
 import { sendMedicalClearanceRequiredEmail } from '../src/lib/medical-clearance-required-email'
 
