@@ -697,6 +697,15 @@ export default function HelpPage() {
             <p>Practical effect: a client whose photos show clear stress-belt expression with the matching intake signals (sustained stress, sleep disruption, regulatory load) gets a sharper Fat Map read than text alone could produce. The same downstream surfaces (Foundational Reading, Program Reading, Nutrition Reading, program generation, nutrition generation) all read from the CFFS, so the photo signal propagates through the whole interpretation stack without any vision wiring in those generators.</p>
             <p>If a client&apos;s baseline didn&apos;t include photos (older clients onboarded before the baseline form, or partial submissions), the CFFS still generates and explicitly notes that Spatial Patterning was inferred from intake alone. Send them a baseline re-capture if you want the visual layer added; the next CFFS regeneration will pick them up.</p>
 
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">How to tell which CFFS read the photos</p>
+            <p>Each CFFS row that ran through the multimodal flow stores two extra fields, which surface on the coach panel:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Photo badge</strong> in the panel footer next to the Generated date. <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">Photos ✓ 3/3</code> in teal means the photos were attached at generation time. <code className="bg-[#1c1917] px-1 rounded text-stone-400 text-xs">Photos ✗ Not provided</code> in muted grey means no photos went into the prompt (older CFFS rows have no badge at all). Hovering shows the count.</li>
+              <li><strong>Visual Signal Summary section</strong>, a dedicated teal-accented card that sits above the seven standard CFFS sections when populated. Claude writes 2-4 sentences naming plainly what the photos showed across the four Fat Map zones, where they converged with the intake, and where they diverged. This is the &ldquo;at a glance&rdquo; read of what the visual layer actually contributed - faster than scanning the full <code>primary_patterns_and_signals</code> and <code>closing_interpretive_notes</code> sections for photo references.</li>
+            </ul>
+            <p>Both surfaces are additive - older CFFS rows generated before 2026-05-13 simply hide them. New regenerations populate them automatically.</p>
+            <p>Migration: <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">sql/2026-05-13_cffs_visual_signal_fields.sql</code>.</p>
+
             <p>The CFFS is paired with a client-facing version called the <strong>Foundational Reading</strong> (see next section). The two are generated from the same intake and stay consistent with each other. The CFFS is yours to interpret. The Foundational Reading is what the client sees.</p>
             <Note>The CFFS is a coaching reference document, not a diagnostic tool. It does not prescribe training changes.</Note>
             <Training title="How to use the CFFS">

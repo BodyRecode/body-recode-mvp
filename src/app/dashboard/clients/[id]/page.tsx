@@ -1,6 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
-import { ChevronLeft, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon } from 'lucide-react'
+import { ChevronLeft, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, Eye } from 'lucide-react'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import Link from 'next/link'
 import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
@@ -550,7 +550,31 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               </div>
             </div>
             <div className="flex items-center justify-between px-5 py-3">
-              <p className="text-[#3c3835] text-xs">Generated {formatDate(activeCffs.generated_at)}</p>
+              <div className="flex items-center gap-3 flex-wrap">
+                <p className="text-[#3c3835] text-xs">Generated {formatDate(activeCffs.generated_at)}</p>
+                {/* Visual Signal Integration: shows whether photos were read at generation time. */}
+                {typeof activeCffs.photos_used === 'number' && (
+                  <span
+                    className={`inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border uppercase ${
+                      activeCffs.photos_used > 0
+                        ? 'text-[#14b8a6] bg-[rgba(20,184,166,0.10)] border-[#0d2d29]'
+                        : 'text-[#57534e] bg-[#0c0a09] border-[#1c1917]'
+                    }`}
+                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+                    title={
+                      activeCffs.photos_used > 0
+                        ? `Baseline photos read by the Fat Map: ${activeCffs.photos_used} of 3`
+                        : 'No baseline photos attached at generation time'
+                    }
+                  >
+                    <span
+                      className="w-1 h-1 rounded-full"
+                      style={{ background: activeCffs.photos_used > 0 ? '#14b8a6' : '#57534e' }}
+                    />
+                    Photos {activeCffs.photos_used > 0 ? `✓ ${activeCffs.photos_used}/3` : '✗ Not provided'}
+                  </span>
+                )}
+              </div>
               <div className="flex items-center gap-2">
                 <Link
                   href={`/dashboard/clients/${client.id}/cffs-report`}
@@ -737,6 +761,33 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               The CFFS translates 208 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses - you remain the interpretive authority.
             </p>
           </div>
+
+          {/* Visual Signal Summary - dedicated read of what the photos contributed.
+              Only renders when the Fat Map had photo input at generation time. Sits
+              above the standard CFFS sections so coaches can scan the visual layer
+              at a glance. */}
+          {activeCffs.visual_signal_summary && (
+            <div className="mb-3 bg-[#111110] border border-[#0d2d29] rounded-xl overflow-hidden">
+              <div className="flex items-center gap-3 px-5 py-3 border-b border-[#0d2d29] bg-[rgba(20,184,166,0.06)]">
+                <Eye size={13} className="text-[#14b8a6]" />
+                <p
+                  className="text-[10px] font-bold text-[#14b8a6] uppercase tracking-widest"
+                  style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+                >
+                  Visual Signal Summary
+                </p>
+                <span
+                  className="ml-auto text-[10px] text-[#3c3835]"
+                  style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+                >
+                  What the {activeCffs.photos_used ?? 3} baseline photo{(activeCffs.photos_used ?? 3) === 1 ? '' : 's'} contributed
+                </span>
+              </div>
+              <div className="px-5 py-4">
+                <p className="text-sm text-[#e7e5e4] leading-relaxed">{activeCffs.visual_signal_summary}</p>
+              </div>
+            </div>
+          )}
 
           {/* CFFS Sections */}
           <div className="space-y-2 mb-6">
