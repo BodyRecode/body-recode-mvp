@@ -61,7 +61,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .from('intakes')
       .select('id')
       .eq('client_id', id)
-      .order('created_at', { ascending: false })
+      .order('submitted_at', { ascending: false, nullsFirst: false })
       .limit(1),
     admin
       .from('cfws')
