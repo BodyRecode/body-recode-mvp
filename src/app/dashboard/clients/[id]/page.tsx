@@ -486,13 +486,30 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
 
-      {/* Supplementary intake status. Always shown once the foundational
-          intake is complete so the coach can see at a glance whether the
-          5-question follow-up (medications + dietary context, added
-          2026-05-12) is unsent / pending in the client portal / completed.
-          The "Add follow-up to portal" button is idempotent and sits on
-          this row when no supplementary exists yet; once one exists the
-          row shows status + completion timestamp + email/copy actions. */}
+      {/* Updates section.
+          Container for any post-onboarding task the coach has queued for
+          the client to complete on their portal. Each item below is its
+          own named card; new item types (e.g. delta intake, full re-intake,
+          block-end auto-prompt per project_deferred_reassessment_flows)
+          slot in alongside as they're built.
+          Hidden until the foundational intake is complete - there's
+          nothing to "update" before the baseline is in. */}
+      {latestFoundationalInvitation?.status === 'complete' && (
+        <div id="updates" className="flex items-center justify-between mb-3 mt-2 scroll-mt-8">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" />
+            <h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>
+              Updates <span className="text-[#3c3835] font-normal">- post-onboarding follow-ups</span>
+            </h2>
+          </div>
+        </div>
+      )}
+
+      {/* Updates · Supplementary intake.
+          5-question follow-up (medications + dietary context) added
+          2026-05-12. Three states: not sent yet (CTA to add it to the
+          portal), pending (sitting in their portal — coach can email or
+          copy the link), complete (with completion timestamp).  */}
       {latestFoundationalInvitation?.status === 'complete' && (
         <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-5 mb-4">
           <div className="flex items-center justify-between">
