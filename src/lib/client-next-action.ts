@@ -1,0 +1,398 @@
+/**
+ * Per-client "what to do next" state machine.
+ *
+ * Given a snapshot of one client's onboarding artefacts (intake, baseline,
+ * CFFS, FR publish state, training plan, active program, PR publish state,
+ * nutrition plan, NR publish state) plus their readiness report and any
+ * unacknowledged feedback, compute the single most-relevant next action.
+ *
+ * Drives the Today's Focus widget on the coach dashboard so coaches can
+ * scan-glance who needs attention without opening each client profile.
+ *
+ * Architectural note: this helper is intentionally synchronous and takes
+ * pre-fetched data. The Today's Focus widget batches all queries up-front
+ * with Promise.all rather than running N async helpers in series.
+ */
+
+import type { ReadinessReport } from './readiness-monitor'
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Input snapshot — what we need to know about ONE client
+ * ────────────────────────────────────────────────────────────────────────── */
+
+export interface ClientNextActionInput {
+  clientId: string
+  clientName: string
+  coachingStartedAt: string | null
+
+  /** Has the client submitted their foundational intake? */
+  hasIntake: boolean
+  /** Has the client submitted their baseline (measurements + photos)? */
+  hasBaseline: boolean
+
+  /** Is there an active (non-archived) CFFS row? */
+  hasActiveCFFS: boolean
+  /** Has the FR been published on the active CFFS? */
+  frPublished: boolean
+
+  /** Is there a training plan (macro arc) row for this client? */
+  hasTrainingPlan: boolean
+
+  /** The active program row, if any. */
+  activeProgram: {
+    id: string
+    blockName: string
+    weekDuration: number | null
+    generatedAt: string | null
+    programReadingPublishedAt: string | null
+  } | null
+
+  /** The active nutrition_plans row, if any. */
+  activeNutritionPlan: {
+    id: string
+    planName: string
+    nutritionReadingPublishedAt: string | null
+  } | null
+
+  /** Optional readiness report from evaluateReadiness(). Overlays the stage. */
+  readiness?: ReadinessReport | null
+
+  /** Number of unacknowledged client_feedback rows. */
+  unacknowledgedFeedbackCount: number
+
+  /** Whether the current week's check-in has been submitted (computed by caller). */
+  thisWeeksCheckinSubmitted: boolean
+  /** The current coaching week number (1-indexed), or 0 if not yet started. */
+  currentWeekNumber: number
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Output — one structured action per client
+ * ────────────────────────────────────────────────────────────────────────── */
+
+export type NextActionStage =
+  | 'waiting_intake'
+  | 'waiting_baseline'
+  | 'waiting_cffs'
+  | 'waiting_fr'
+  | 'waiting_training_plan'
+  | 'waiting_program'
+  | 'waiting_pr'
+  | 'waiting_nutrition'
+  | 'waiting_nr'
+  | 'active_regression'
+  | 'active_reassessment'
+  | 'active_checkin_overdue'
+  | 'active_drift'
+  | 'active_steady'
+  | 'pre_start'
+
+export type NextActionAccent = 'teal' | 'amber' | 'red' | 'neutral'
+
+/**
+ * Priority controls sort order in Today's Focus.
+ *  10 = critical, top of list (regression / overdue / blocked-on-coach)
+ *  20 = high (action-required by coach)
+ *  30 = medium (drift advisory, feedback notes)
+ *  40 = low (steady state)
+ *  50 = pre-start (countdown only)
+ */
+export type NextActionPriority = 10 | 20 | 30 | 40 | 50
+
+export interface ClientNextAction {
+  clientId: string
+  clientName: string
+  stage: NextActionStage
+  /** Short label rendered as the primary action. e.g. "Generate CFFS" */
+  headline: string
+  /** Optional secondary line for context. e.g. "Block 1 · Week 2 of 4" */
+  sublabel: string | null
+  /** Where the Open Profile link goes (defaults to client profile). */
+  href: string
+  accent: NextActionAccent
+  priority: NextActionPriority
+  /** Optional badge shown to the side of the action. e.g. "3 feedback" */
+  badge: string | null
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * The state machine
+ * ────────────────────────────────────────────────────────────────────────── */
+
+export function computeClientNextAction(input: ClientNextActionInput): ClientNextAction {
+  const profileHref = `/dashboard/clients/${input.clientId}`
+
+  // Feedback badge overlay (independent of stage)
+  const feedbackBadge =
+    input.unacknowledgedFeedbackCount > 0
+      ? `${input.unacknowledgedFeedbackCount} feedback`
+      : null
+
+  // ── Pre-start: client signed up but coaching_started_at in future ──────
+  // We still surface their onboarding-stage progress, but flag it as pre-start
+  // so the widget can render it less urgently.
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const startDate = input.coachingStartedAt ? new Date(input.coachingStartedAt) : null
+  const isPreStart = startDate ? startDate > today : false
+
+  // ── Stage 1: waiting on intake ─────────────────────────────────────────
+  if (!input.hasIntake) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'waiting_intake',
+      headline: 'Waiting on intake form',
+      sublabel: 'Client to complete the foundational intake',
+      href: profileHref,
+      accent: 'neutral',
+      priority: 50,
+      badge: feedbackBadge,
+    }
+  }
+
+  // ── Stage 2: waiting on baseline ───────────────────────────────────────
+  if (!input.hasBaseline) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'waiting_baseline',
+      headline: 'Waiting on baseline submission',
+      sublabel: 'Client to upload measurements and progress photos',
+      href: profileHref,
+      accent: 'neutral',
+      priority: 50,
+      badge: feedbackBadge,
+    }
+  }
+
+  // ── Stage 3: both forms in, no CFFS ────────────────────────────────────
+  if (!input.hasActiveCFFS) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'waiting_cffs',
+      headline: 'Generate CFFS',
+      sublabel: 'Onboarding complete - ready for synthesis',
+      href: `${profileHref}#cffs`,
+      accent: 'teal',
+      priority: 20,
+      badge: feedbackBadge,
+    }
+  }
+
+  // ── Stage 4: CFFS exists, FR not published ─────────────────────────────
+  if (!input.frPublished) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'waiting_fr',
+      headline: 'Publish Foundational Reading',
+      sublabel: 'CFFS is generated - client is waiting on their reading',
+      href: `${profileHref}#cffs`,
+      accent: 'teal',
+      priority: 20,
+      badge: feedbackBadge,
+    }
+  }
+
+  // ── Stage 5: FR published, no training plan (macro arc) ────────────────
+  if (!input.hasTrainingPlan) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'waiting_training_plan',
+      headline: 'Build Macro Arc',
+      sublabel: 'No training plan yet - design the multi-block arc',
+      href: `${profileHref}/program`,
+      accent: 'teal',
+      priority: 20,
+      badge: feedbackBadge,
+    }
+  }
+
+  // ── Stage 6: training plan exists, no active program ───────────────────
+  if (!input.activeProgram) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'waiting_program',
+      headline: 'Generate first program',
+      sublabel: 'Macro arc is in - generate the first block',
+      href: `${profileHref}/program`,
+      accent: 'teal',
+      priority: 20,
+      badge: feedbackBadge,
+    }
+  }
+
+  const ap = input.activeProgram
+
+  // ── Stage 7: active program, no PR published ───────────────────────────
+  if (!ap.programReadingPublishedAt) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'waiting_pr',
+      headline: 'Publish Program Reading',
+      sublabel: `${ap.blockName} is live - publish the why before the what`,
+      href: `${profileHref}/program`,
+      accent: 'teal',
+      priority: 20,
+      badge: feedbackBadge,
+    }
+  }
+
+  // ── Stage 8: active program, no active nutrition plan ──────────────────
+  if (!input.activeNutritionPlan) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'waiting_nutrition',
+      headline: 'Generate nutrition plan',
+      sublabel: 'Program is live but no nutrition plan attached yet',
+      href: `${profileHref}/nutrition`,
+      accent: 'teal',
+      priority: 20,
+      badge: feedbackBadge,
+    }
+  }
+
+  const np = input.activeNutritionPlan
+
+  // ── Stage 9: nutrition plan exists, no NR published ────────────────────
+  if (!np.nutritionReadingPublishedAt) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'waiting_nr',
+      headline: 'Publish Nutrition Reading',
+      sublabel: `${np.planName} is live - publish the why behind the meals`,
+      href: `${profileHref}/nutrition`,
+      accent: 'teal',
+      priority: 20,
+      badge: feedbackBadge,
+    }
+  }
+
+  // ── Active client paths ────────────────────────────────────────────────
+  // Everything is in place. Now overlay readiness signals.
+
+  // Readiness regression (Signal Monitoring v1.0 - red status)
+  if (input.readiness?.status === 'regression') {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'active_regression',
+      headline: 'Active regression - coach review required',
+      sublabel: input.readiness.drift[0]?.message ?? 'Multiple signals trending down',
+      href: `${profileHref}#readiness`,
+      accent: 'red',
+      priority: 10,
+      badge: feedbackBadge,
+    }
+  }
+
+  // Readiness reassessment recommended (amber)
+  if (input.readiness?.status === 'reassessment') {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'active_reassessment',
+      headline: 'CFFS reassessment recommended',
+      sublabel: input.readiness.reassessmentReasons[0]?.message ?? 'Signal pattern warrants reassessment',
+      href: `${profileHref}#readiness`,
+      accent: 'amber',
+      priority: 10,
+      badge: feedbackBadge,
+    }
+  }
+
+  // Check-in overdue
+  if (
+    !isPreStart &&
+    input.currentWeekNumber > 0 &&
+    !input.thisWeeksCheckinSubmitted
+  ) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'active_checkin_overdue',
+      headline: `Check-in overdue (week ${input.currentWeekNumber})`,
+      sublabel: 'This week\'s weekly check-in has not been submitted yet',
+      href: profileHref,
+      accent: 'red',
+      priority: 10,
+      badge: feedbackBadge,
+    }
+  }
+
+  // Drift advisory (grey)
+  if (input.readiness?.status === 'advisory') {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'active_drift',
+      headline: 'Drift advisory',
+      sublabel: input.readiness.drift[0]?.message ?? 'Watch this week for further movement',
+      href: `${profileHref}#readiness`,
+      accent: 'amber',
+      priority: 30,
+      badge: feedbackBadge,
+    }
+  }
+
+  // Pre-start fallback (everything's ready but coaching hasn't begun)
+  if (isPreStart && startDate) {
+    const days = Math.max(0, Math.round((startDate.getTime() - today.getTime()) / 86400000))
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'pre_start',
+      headline:
+        days === 0 ? 'Starts today' : `Starts in ${days} day${days === 1 ? '' : 's'}`,
+      sublabel: 'All readings published - pre-start window',
+      href: profileHref,
+      accent: 'neutral',
+      priority: 50,
+      badge: feedbackBadge,
+    }
+  }
+
+  // ── Steady state ───────────────────────────────────────────────────────
+  // Active client, all artefacts published, no readiness flags, check-in done.
+  // BlockStatus uses overall coaching week + block start week, so compute
+  // week-within-block here.
+  const block = input.readiness?.block
+  let weekLabel: string = ap.blockName
+  if (block && block.currentWeek != null && block.blockStartWeek != null && block.weekDuration != null) {
+    const weekInBlock = block.currentWeek - block.blockStartWeek + 1
+    if (weekInBlock >= 1 && weekInBlock <= block.weekDuration) {
+      weekLabel = `${ap.blockName} · Week ${weekInBlock} of ${block.weekDuration}`
+    }
+  }
+
+  return {
+    clientId: input.clientId,
+    clientName: input.clientName,
+    stage: 'active_steady',
+    headline: 'Steady - on track',
+    sublabel: weekLabel,
+    href: profileHref,
+    accent: 'neutral',
+    priority: 40,
+    badge: feedbackBadge,
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Helpers for sorting
+ * ────────────────────────────────────────────────────────────────────────── */
+
+export function sortNextActions(actions: ClientNextAction[]): ClientNextAction[] {
+  // Priority asc (10 first), then alphabetical by client name as tiebreaker.
+  return [...actions].sort((a, b) => {
+    if (a.priority !== b.priority) return a.priority - b.priority
+    return a.clientName.localeCompare(b.clientName)
+  })
+}
