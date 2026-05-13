@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
+import { darkEmailShell } from '@/lib/email-shell'
 import { sendSms, formatPhone } from '@/lib/twilio'
 
 export async function POST(
@@ -102,15 +103,12 @@ export async function POST(
           from: 'Kade at Body Recode <kade@bodyrecode.au>',
           to: recipient.email,
           subject: campaign.subject ?? campaign.name,
-          html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-<div style="max-width:600px;margin:0 auto;padding:48px 32px;">
-  <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;"/>
-  <div style="font-size:15px;color:#aaa;line-height:1.9;">
-    ${personalised.replace(/\n/g, '<br/>')}
-  </div>
-</div>
-</body></html>`,
+          html: darkEmailShell(`
+      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;border:0;"/>
+      <div style="font-size:15px;color:#cfcfcf;line-height:1.9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+        ${personalised.replace(/\n/g, '<br/>')}
+      </div>
+`, { previewText: campaign.subject ?? campaign.name }),
         })
         sentCount++
       } catch (err) {

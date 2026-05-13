@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { writeRecoverySignalBlock, evaluateRouterAfterCheckin } from '@/lib/recovery-ingest'
 
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
   // Verify client exists
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, email')
+    .select('id, name, email, onboarding_token')
     .eq('id', clientId)
     .maybeSingle()
 
@@ -109,7 +110,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function sendNotifications(
-  client: { id: string; name: string; email?: string },
+  client: { id: string; name: string; email?: string; onboarding_token?: string | null },
   weekNumber: number,
   formType: string
 ) {
@@ -139,21 +140,15 @@ async function sendNotifications(
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: client.email,
       subject: `Week ${weekNumber} check-in received`,
-      html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
-<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:48px 32px;">
-    <div style="margin-bottom:40px;">
-      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
-    </div>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Hi ${firstName},</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Your Week ${weekNumber} check-in has been received. I'll review it and it'll inform your coaching this week.</p>
-    ${darkEmailSignature()}
-  </div>
-</body>
-</html>`,
+      html: darkEmailShell(`
+      <div style="margin-bottom:40px;">
+        <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+      </div>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your Week ${weekNumber} check-in has been received. I'll review it and it'll inform your coaching this week.</p>
+      ${client.onboarding_token ? emailUrlFallback(`https://app.bodyrecode.au/portal/${client.onboarding_token}`, 'Your portal') : ''}
+      ${darkEmailSignature()}
+`, { previewText: `Week ${weekNumber} check-in received.` }),
     })
   }
 }

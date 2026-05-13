@@ -1,4 +1,5 @@
 import { darkEmailSignature } from './email-signature'
+import { emailUrlFallback } from './email-shell'
 
 export interface ProgramReadingEmailParams {
   firstName: string
@@ -43,7 +44,8 @@ export function buildProgramReadingEmail({
                   </td>
                 </tr>
               </table>
-              <p style="font-size:13px;color:#57534e;">Take a minute to read the framing before your first session. It is short and it sets the lens for the next few weeks.</p>
+              <p style="font-size:13px;color:#a8a29e;">Take a minute to read the framing before your first session. It is short and it sets the lens for the next few weeks.</p>
+              ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
               ${darkEmailSignature()}
             </td>
           </tr>

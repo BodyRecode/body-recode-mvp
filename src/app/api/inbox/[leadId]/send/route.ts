@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
+import { darkEmailShell } from '@/lib/email-shell'
 
 export async function POST(
   request: NextRequest,
@@ -35,7 +36,8 @@ export async function POST(
     return NextResponse.json({ error: 'Email not configured' }, { status: 500 })
   }
 
-  const firstName = lead.name?.split(' ')[0] ?? 'there'
+  // Note: lead.name is intentionally not templated into the body — the coach
+  // writes the message free-text and personalises it themselves.
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   const { data: sent, error } = await resend.emails.send({
@@ -43,16 +45,13 @@ export async function POST(
     replyTo: 'kade@replies.bodyrecode.au',
     to: lead.email,
     subject,
-    html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-<div style="max-width:600px;margin:0 auto;padding:48px 32px;">
-  <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;"/>
-  <div style="font-size:15px;color:#aaa;line-height:1.9;">
-    ${message.replace(/\n/g, '<br/>')}
-  </div>
-  <p style="font-size:15px;color:#aaa;margin-top:32px;">Kade</p>
-</div>
-</body></html>`,
+    html: darkEmailShell(`
+      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;border:0;"/>
+      <div style="font-size:15px;color:#cfcfcf;line-height:1.9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+        ${message.replace(/\n/g, '<br/>')}
+      </div>
+      <p style="font-size:15px;color:#cfcfcf;margin-top:32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Kade</p>
+`, { previewText: subject }),
   })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })

@@ -1,4 +1,5 @@
 import { darkEmailSignature } from './email-signature'
+import { emailUrlFallback } from './email-shell'
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -132,7 +133,7 @@ export function buildPortalOrientationEmail({
                   </td>
                 </tr>
               </table>
-              <p style="font-size:13px;color:#57534e;margin:8px 0 0;">Or copy the link directly: ${portalUrl}</p>
+              ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
 
               <!-- Section 5: Personal close -->
               <p style="margin:32px 0 16px;">Take a few days to read through it. There is no rush. The portal is built to be discovered slowly.</p>

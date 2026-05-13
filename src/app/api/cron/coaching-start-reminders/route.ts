@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
 export async function GET(request: NextRequest) {
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
 
   const { data: clients } = await admin
     .from('clients')
-    .select('id, name, email, coaching_started_at')
+    .select('id, name, email, onboarding_token, coaching_started_at')
     .gte('coaching_started_at', tomorrowStart.toISOString())
     .lte('coaching_started_at', tomorrowEnd.toISOString())
 
@@ -36,28 +37,25 @@ export async function GET(request: NextRequest) {
   for (const client of clients) {
     if (!client.email) continue
     const firstName = client.name.split(' ')[0]
+    const portalUrl = client.onboarding_token
+      ? `https://app.bodyrecode.au/portal/${client.onboarding_token}`
+      : 'https://app.bodyrecode.au/portal/login'
 
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: client.email,
       subject,
-      html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
-<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:48px 32px;">
-    <div style="margin-bottom:40px;">
-      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
-    </div>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Hi ${firstName},</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Just a reminder that your coaching begins tomorrow.</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">I'll be in touch with your session details shortly. If you have any questions before we begin, reply to this email.</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0;">Looking forward to it.</p>
-    ${darkEmailSignature()}
-  </div>
-</body>
-</html>`,
+      html: darkEmailShell(`
+      <div style="margin-bottom:40px;">
+        <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+      </div>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Just a reminder that your coaching begins tomorrow.</p>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">I'll be in touch with your session details shortly. If you have any questions before we begin, reply to this email.</p>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Looking forward to it.</p>
+      ${emailUrlFallback(portalUrl, 'Your portal')}
+      ${darkEmailSignature()}
+`, { previewText: `${firstName}, coaching begins tomorrow.` }),
     })
     await logClientCommunication(admin, {
       clientId: client.id,

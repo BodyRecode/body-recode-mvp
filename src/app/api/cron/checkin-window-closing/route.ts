@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { darkEmailShell } from '@/lib/email-shell'
 import { sendSms, formatPhone } from '@/lib/twilio'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { logClientCommunication } from '@/lib/client-communications'
@@ -90,23 +91,22 @@ export async function GET(request: NextRequest) {
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: client.email,
         subject,
-        html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
-<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:48px 32px;">
-    <div style="margin-bottom:40px;">
-      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
-    </div>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 8px;">Hi ${firstName},</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Your weekly check-in window closes at 6:30pm today. You haven't submitted yet — takes less than 5 minutes.</p>
-    <a href="${portalUrl}" style="display:inline-block;margin:0 0 28px;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">Complete check-in →</a>
-    <p style="margin:0 0 0;font-size:13px;color:#444;line-height:1.5;">Or copy this link: ${portalUrl}</p>
-    ${darkEmailSignature()}
-  </div>
-</body>
-</html>`,
+        html: darkEmailShell(`
+      <div style="margin-bottom:40px;">
+        <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+      </div>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your weekly check-in window closes at 6:30pm today. You haven't submitted yet — takes less than 5 minutes.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
+        <tr>
+          <td bgcolor="#10E1C2" style="background-color:#10E1C2;border-radius:8px;">
+            <a href="${portalUrl}" style="display:inline-block;padding:14px 28px;color:#000000;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Complete check-in →</a>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:0;font-size:13px;color:#a8a29e;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${portalUrl}</p>
+      ${darkEmailSignature()}
+`, { previewText: `${firstName}, last hour to lock in this week's check-in.` }),
       })
       await logClientCommunication(admin, {
         clientId: client.id,

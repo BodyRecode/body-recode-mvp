@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { emailUrlFallback } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
 export async function GET(request: NextRequest) {
@@ -82,7 +83,8 @@ export async function GET(request: NextRequest) {
                 </td>
               </tr>
             </table>
-            <p style="margin:0 0 24px;font-size:13px;color:#57534e;line-height:1.6;">If you can't make it, log in to your portal and reschedule — or reply to this email.</p>
+            <p style="margin:0 0 24px;font-size:13px;color:#a8a29e;line-height:1.6;">If you can't make it, log in to your portal and reschedule — or reply to this email.</p>
+            ${emailUrlFallback(confirmUrl, 'Or paste this confirm link into your browser')}
             ${darkEmailSignature()}
           </td>
         </tr>

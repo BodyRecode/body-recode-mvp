@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
 export async function POST(request: NextRequest) {
@@ -25,24 +26,23 @@ export async function POST(request: NextRequest) {
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: clientEmail,
     subject,
-    html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
-<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:48px 32px;">
-    <div style="margin-bottom:40px;">
-      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
-    </div>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Hi ${firstName},</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Before we begin, I need you to complete your foundational intake. This is how I build an accurate picture of where you are starting from, your training history, recovery patterns, stress load, sleep, and lifestyle.</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 28px;">It takes around 15 to 20 minutes and there are no right or wrong answers. Just answer based on your typical experience, not your best or worst days. This intake forms the foundation of everything we do together, so take your time with it.</p>
-    <a href="${intakeUrl}" style="display:inline-block;margin:0 0 28px;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">Complete my intake</a>
-    ${darkEmailSignature()}
-    <p style="margin:20px 0 0;font-size:13px;color:#444;line-height:1.5;">Or copy this link: ${intakeUrl}</p>
-  </div>
-</body>
-</html>`,
+    html: darkEmailShell(`
+      <div style="margin-bottom:40px;">
+        <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+      </div>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Before we begin, I need you to complete your foundational intake. This is how I build an accurate picture of where you are starting from, your training history, recovery patterns, stress load, sleep, and lifestyle.</p>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">It takes around 15 to 20 minutes and there are no right or wrong answers. Just answer based on your typical experience, not your best or worst days. This intake forms the foundation of everything we do together, so take your time with it.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
+        <tr>
+          <td bgcolor="#10E1C2" style="background-color:#10E1C2;border-radius:8px;">
+            <a href="${intakeUrl}" style="display:inline-block;padding:14px 28px;color:#000000;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Complete my intake</a>
+          </td>
+        </tr>
+      </table>
+      ${emailUrlFallback(intakeUrl, 'Or paste this link into your browser')}
+      ${darkEmailSignature()}
+`, { previewText: `${firstName}, your foundational intake is ready.` }),
   })
 
   if (error) {

@@ -1,4 +1,5 @@
 import { darkEmailSignature } from './email-signature'
+import { emailUrlFallback } from './email-shell'
 
 export interface ReadingEmailParams {
   firstName: string
@@ -48,7 +49,8 @@ export function buildFoundationalReadingEmail({
                   </td>
                 </tr>
               </table>
-              <p style="font-size:13px;color:#57534e;">It lives in your portal alongside everything else, so you can return to it any time. You can also download it as a PDF from the top of the page.</p>
+              <p style="font-size:13px;color:#a8a29e;">It lives in your portal alongside everything else, so you can return to it any time. You can also download it as a PDF from the top of the page.</p>
+              ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
               ${darkEmailSignature()}
             </td>
           </tr>

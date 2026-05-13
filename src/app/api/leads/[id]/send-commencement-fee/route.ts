@@ -3,6 +3,7 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { darkEmailShell } from '@/lib/email-shell'
 import { logLeadEvent } from '@/lib/log-lead-event'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
@@ -64,25 +65,24 @@ export async function POST(
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: lead.email,
     subject: `${firstName}, your $240 commencement link`,
-    html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
-<body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:48px 32px;">
-    <div style="margin-bottom:40px;">
-      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
-    </div>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Hi ${firstName},</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Here is the $240 commencement link to get started. This covers the foundational read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 28px;">Once payment is in, your portal access, intake, and the first foundational steps unlock automatically. You will get a welcome email with everything you need to start the next stage.</p>
-    <a href="${session.url}" style="display:inline-block;margin:0 0 28px;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">Pay commencement fee</a>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">If anything comes up before you pay, reply to this email.</p>
-    ${darkEmailSignature()}
-    <p style="margin:20px 0 0;font-size:13px;color:#444;line-height:1.5;">Or copy this link: ${session.url}</p>
-  </div>
-</body>
-</html>`,
+    html: darkEmailShell(`
+      <div style="margin-bottom:40px;">
+        <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+      </div>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Here is the $240 commencement link to get started. This covers the foundational read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.</p>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Once payment is in, your portal access, intake, and the first foundational steps unlock automatically. You will get a welcome email with everything you need to start the next stage.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
+        <tr>
+          <td bgcolor="#10E1C2" style="background-color:#10E1C2;border-radius:8px;">
+            <a href="${session.url}" style="display:inline-block;padding:14px 28px;color:#000000;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Pay commencement fee</a>
+          </td>
+        </tr>
+      </table>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">If anything comes up before you pay, reply to this email.</p>
+      ${darkEmailSignature()}
+      <p style="margin:20px 0 0;font-size:13px;color:#a8a29e;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${session.url}</p>
+`, { previewText: `${firstName}, your $240 commencement link.` }),
   })
 
   await logLeadEvent({
