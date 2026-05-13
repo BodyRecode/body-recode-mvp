@@ -76,22 +76,10 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
       .limit(5),
     admin
       .from('be_payments')
-      .select('amount, status, be_products(category)')
+      .select('amount, status, paid_at, stripe_subscription_id, be_products(category, name)')
       .eq('client_id', clientId)
       .eq('status', 'paid'),
   ])
-
-  // Lifetime Performance Coaching value: sum amounts where product category is
-  // performance_coaching OR where no product is linked (legacy payments). Legacy
-  // payments with no product are treated as PC by default since this is a PC-only
-  // platform; once the user tags products with categories the filter sharpens.
-  const lifetimePC = (ltvRows ?? []).reduce<number>((sum, row) => {
-    const cat = Array.isArray(row.be_products)
-      ? row.be_products[0]?.category
-      : (row.be_products as { category: string | null } | null)?.category
-    if (cat == null || cat === 'performance_coaching') return sum + Number(row.amount ?? 0)
-    return sum
-  }, 0)
 
   // Pick the "primary" subscription (active first, else most recent)
   const primarySub = (subs ?? []).find(s => ['active', 'trialing'].includes(s.status))
@@ -104,8 +92,44 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
   const rawPlan = planRow?.payment_plans as PlanShape | PlanShape[] | null | undefined
   const plan: PlanShape | null = Array.isArray(rawPlan) ? (rawPlan[0] ?? null) : (rawPlan ?? null)
   const planLabel = plan?.name ?? '— no plan assigned —'
-  const expectedCommencement = plan?.commencement_fee
-  const commencementPaid = !!planRow?.commencement_fee_paid_at
+  const expectedCommencement = plan?.commencement_fee ?? 240
+  const planCommencementPaidAt = planRow?.commencement_fee_paid_at ?? null
+
+  // Identify a commencement payment from be_payments as a fallback. A payment
+  // is the commencement if it has no subscription link AND matches the plan's
+  // expected commencement amount (default $240). Used when the plan row hasn't
+  // been written yet — Luke's case — so the section still reads truthfully
+  // ("commencement paid" rather than "not tracked"). Backfilling client_payment_plan
+  // (Reconcile → Backfill commencement fees) makes this fallback redundant.
+  type LtvRow = {
+    amount: number | null
+    status: string | null
+    paid_at: string | null
+    stripe_subscription_id: string | null
+    be_products: { category: string | null; name: string | null } | { category: string | null; name: string | null }[] | null
+  }
+  const ltvRowsTyped = (ltvRows ?? []) as LtvRow[]
+  function isCommencementRow(row: { amount: number | null; stripe_subscription_id: string | null }): boolean {
+    return !row.stripe_subscription_id && Number(row.amount ?? 0) === Number(expectedCommencement)
+  }
+  const commencementPaymentRow = ltvRowsTyped.find(isCommencementRow) ?? null
+  const commencementPaidAt = planCommencementPaidAt ?? commencementPaymentRow?.paid_at ?? null
+  const commencementPaid = !!commencementPaidAt
+
+  // Lifetime SUBSCRIPTION revenue — recurring weekly payments only. Commencement
+  // fee is a fixed one-off and was previously folded into this rollup, which
+  // made a 1-week client look identical to a 1-year client on the tile. Now:
+  //   - include any payment with a stripe_subscription_id (definitely recurring)
+  //   - include legacy/manual payments only if they don't match the commencement
+  //     amount + the product (if linked) is performance_coaching or unlabeled
+  const lifetimeSubscription = ltvRowsTyped.reduce<number>((sum, row) => {
+    if (isCommencementRow(row)) return sum
+    const cat = Array.isArray(row.be_products)
+      ? row.be_products[0]?.category
+      : row.be_products?.category
+    if (cat == null || cat === 'performance_coaching') return sum + Number(row.amount ?? 0)
+    return sum
+  }, 0)
 
   // Explicit non-billing package (contra / no_charge) is the loudest signal:
   // the coach has marked this client as not-for-billing on purpose. Wins over
@@ -113,10 +137,12 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
   const nonBillingPackage = isNonBillingPackage(client?.package)
   const packageLabel = getCoachingPackage(client?.package)?.label ?? null
 
-  // Implicit exemption: no plan row + no subscriptions = no expectation of
-  // billing either. Same rule the dashboard overview Payments indicator and
-  // Today's Focus use, so the three surfaces agree.
-  const isTracked = !nonBillingPackage && (!!planRow || (subs?.length ?? 0) > 0)
+  // Implicit exemption: no plan row + no subscriptions + no commencement
+  // payment = no expectation of billing either. Same rule the dashboard
+  // overview Payments indicator and Today's Focus use, so the three surfaces
+  // agree. The commencementPaymentRow fallback catches Luke's case: $240 paid
+  // and recorded in be_payments but client_payment_plan was never written.
+  const isTracked = !nonBillingPackage && (!!planRow || (subs?.length ?? 0) > 0 || !!commencementPaymentRow)
 
   // Health flags — only computed for tracked clients.
   const flags: string[] = []
@@ -186,7 +212,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
             </p>
             {commencementPaid ? (
               <p className="text-xs text-teal-400">
-                Paid {formatDate(planRow?.commencement_fee_paid_at)} — recorded on this client.
+                Paid {formatDate(commencementPaidAt)} — ${expectedCommencement} recorded on this client.
               </p>
             ) : (
               <ClientCommencementFeeButton clientId={clientId} initialPaid={false} />
@@ -212,8 +238,9 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
             <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">Plan</p>
             <p className="text-sm font-medium text-white mb-1">{planLabel}</p>
             <p className="text-xs text-stone-500">
-              Commencement: {commencementPaid ? (
-                <span className="text-teal-400">paid {formatDate(planRow?.commencement_fee_paid_at)}</span>
+              Commencement fee (${expectedCommencement}):{' '}
+              {commencementPaid ? (
+                <span className="text-teal-400">paid {formatDate(commencementPaidAt)}</span>
               ) : (
                 <span className="text-amber-400">not paid</span>
               )}
@@ -253,22 +280,37 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
         </div>
       )}
 
-      {/* Lifetime + recent payments */}
+      {/* Lifetime subscription revenue + recent payments
+          Commencement is shown in the Plan card above and is intentionally
+          excluded from this rollup — it's a fixed one-off, not subscription
+          revenue, and folding it in made short-tenure clients look identical
+          to long-tenure clients on this tile. */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 mb-3">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <CircleDollarSign size={14} className="text-stone-400" />
-            <p className="text-xs font-semibold text-stone-300">Lifetime (Performance Coaching)</p>
+            <p className="text-xs font-semibold text-stone-300">Lifetime subscription revenue</p>
           </div>
-          <p className="text-lg font-bold text-white">{formatAud(lifetimePC)}</p>
+          <p className="text-lg font-bold text-white">{formatAud(lifetimeSubscription)}</p>
         </div>
+        <p className="text-[10px] text-stone-600 -mt-2 mb-3">
+          Recurring weekly subscription payments only. Commencement fee tracked above.
+        </p>
 
         {payments && payments.length > 0 ? (
           <div className="space-y-1.5">
             {payments.map(p => {
-              const productName = Array.isArray(p.be_products)
+              const rawName = Array.isArray(p.be_products)
                 ? p.be_products[0]?.name
-                : (p.be_products as { name: string } | null)?.name ?? 'Manual'
+                : (p.be_products as { name: string } | null)?.name ?? null
+              // Re-label what was being shown as "Manual" so the row tells the
+              // truth about what the money was for. A no-subscription-link
+              // payment at the expected commencement amount IS the
+              // commencement fee, regardless of whether it was logged manually.
+              const isCommencement = !p.stripe_subscription_id && Number(p.amount ?? 0) === Number(expectedCommencement)
+              const productName = isCommencement
+                ? 'Commencement Fee'
+                : rawName ?? 'Manual'
               const cfg = STATUS_META[p.status === 'paid' ? 'active' : p.status === 'failed' ? 'past_due' : 'incomplete']
               return (
                 <div key={p.id} className="flex items-center justify-between text-xs py-1">

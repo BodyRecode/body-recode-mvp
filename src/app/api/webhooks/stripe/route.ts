@@ -5,7 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { buildProgramBuyerEmails, buildReportFollowUpEmails, daysAfter9amBrisbane, nextMorning9amBrisbane } from '@/lib/generate-report'
 import { inngest } from '@/lib/inngest'
-import { syncSubscriptionFromStripe } from '@/lib/stripe-sync'
+import { syncSubscriptionFromStripe, markCommencementPaid } from '@/lib/stripe-sync'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -866,6 +866,21 @@ export async function POST(request: NextRequest) {
       stripe_payment_id: session.payment_intent as string ?? null,
       paid_at: new Date().toISOString(),
     })
+  }
+
+  // Populate client_payment_plan.commencement_fee_paid_at so the per-client
+  // Payments tracker recognises this client as paid. Without this, the
+  // section reads as "Not tracked for payments" even though the fee landed
+  // — Luke's case. Idempotent: skips if already marked paid.
+  try {
+    await markCommencementPaid(
+      admin,
+      client.id,
+      session.payment_intent as string ?? '',
+      new Date(),
+    )
+  } catch (e) {
+    console.error('commencement webhook: markCommencementPaid failed:', e)
   }
 
   // Notify coach

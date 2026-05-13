@@ -22,6 +22,7 @@ import { AlertTriangle, ExternalLink, Tag } from 'lucide-react'
 import Link from 'next/link'
 import PaymentsNav from '../payments-nav'
 import RunBackfillButton from '@/components/dashboard/run-backfill-button'
+import RunCommencementBackfillButton from '@/components/dashboard/run-commencement-backfill-button'
 import ProductCategoryEditor from '@/components/dashboard/product-category-editor'
 
 export default async function ReconcilePage() {
@@ -68,6 +69,18 @@ export default async function ReconcilePage() {
           <p className="text-sm text-stone-300 mb-1">Pull every Stripe customer and subscription into the cache.</p>
           <p className="text-xs text-stone-500 mb-4">Safe to re-run. Matches Stripe customers to clients by email, populates <code className="text-stone-400">stripe_customer_id</code>, and refreshes <code className="text-stone-400">client_subscriptions</code> from live Stripe state. Run this once after the Phase 1 schema migration, then anytime you suspect drift.</p>
           <RunBackfillButton />
+        </div>
+      </section>
+
+      {/* Commencement backfill */}
+      <section className="mb-8">
+        <div className="flex items-center gap-2 mb-3">
+          <h3 className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Commencement Fee Backfill</h3>
+        </div>
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+          <p className="text-sm text-stone-300 mb-1">Patch historical clients whose $240 commencement payment landed before the tracker was wired.</p>
+          <p className="text-xs text-stone-500 mb-4">Until recently, the lead-stage commencement webhook recorded payments in <code className="text-stone-400">be_payments</code> only — it never wrote to <code className="text-stone-400">client_payment_plan</code>. That left clients like Luke showing &quot;Not tracked for payments&quot; even though the fee landed. This walks every paid $240 no-subscription payment and marks the matching plan row as paid. Idempotent.</p>
+          <RunCommencementBackfillButton />
         </div>
       </section>
 
