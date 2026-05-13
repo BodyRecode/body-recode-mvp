@@ -9,17 +9,39 @@ export default function PlanDraftActions({ planId, clientId }: { planId: string;
 
   async function handleApprove() {
     setLoading('approve')
-    await fetch(`/api/plan/${planId}/promote`, { method: 'POST' })
-    router.refresh()
-    setLoading(null)
+    try {
+      const res = await fetch(`/api/plan/${planId}/promote`, { method: 'POST' })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({})) as { error?: string }
+        const msg = res.status === 401
+          ? 'Your session has expired. Reload the page and try again.'
+          : body.error || `Approve failed (${res.status}).`
+        alert(msg)
+        return
+      }
+      router.refresh()
+    } finally {
+      setLoading(null)
+    }
   }
 
   async function handleDiscard() {
     if (!confirm('Discard this draft macro arc? This cannot be undone.')) return
     setLoading('discard')
-    await fetch(`/api/plan/${planId}`, { method: 'DELETE' })
-    router.refresh()
-    setLoading(null)
+    try {
+      const res = await fetch(`/api/plan/${planId}`, { method: 'DELETE' })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({})) as { error?: string }
+        const msg = res.status === 401
+          ? 'Your session has expired. Reload the page and try again.'
+          : body.error || `Discard failed (${res.status}).`
+        alert(msg)
+        return
+      }
+      router.refresh()
+    } finally {
+      setLoading(null)
+    }
   }
 
   return (
