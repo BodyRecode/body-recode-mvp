@@ -22,6 +22,7 @@ import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
 import SendPortalOrientationButton from '@/components/send-portal-orientation-button'
 import SendSupplementaryIntakeButton from '@/components/send-supplementary-intake-button'
+import SendSupplementaryEmailButton from '@/components/send-supplementary-email-button'
 import ClientDangerActions from './client-danger-actions'
 import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
@@ -53,11 +54,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .eq('client_id', id)
       .order('generated_at', { ascending: false }),
     admin
+      // Pull all invitations (foundational + supplementary) so the page can
+      // surface both intake states independently. Ordering newest-first lets
+      // us pick the most recent of each kind below.
       .from('intake_invitations')
       .select('*')
       .eq('client_id', id)
-      .order('created_at', { ascending: false })
-      .limit(1),
+      .order('created_at', { ascending: false }),
     admin
       .from('intakes')
       .select('id')
@@ -132,9 +135,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   const activeCffs = cffsRecords?.find(c => !c.is_archived) || null
   const archivedCffs = cffsRecords?.filter(c => c.is_archived) || []
-  const latestInvitation = invitations?.[0] || null
+  // Split by kind. The foundational invitation is the original 208-question
+  // intake (drives status of the Intake row). The supplementary is the
+  // 5-question follow-up added 2026-05-12 (medications + dietary context)
+  // and gets its own status row beneath. Treat a row with no `kind` as
+  // foundational (default).
+  const latestFoundationalInvitation = (invitations ?? [])
+    .find(i => (i.kind ?? 'foundational') === 'foundational') || null
+  const latestSupplementaryInvitation = (invitations ?? [])
+    .find(i => i.kind === 'supplementary') || null
   const latestIntakeId = intakes?.[0]?.id || null
-  const intakeDone = !!latestIntakeId || latestInvitation?.status === 'complete'
+  const intakeDone = !!latestIntakeId || latestFoundationalInvitation?.status === 'complete'
   const latestCfws = cfwsRecords?.[0] || null
   const checkinToken = client.checkin_token as string | undefined
 
@@ -436,8 +447,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         })()}
       </div>
 
-      {/* Intake status */}
-      {latestInvitation && (
+      {/* Foundational intake status */}
+      {latestFoundationalInvitation && (
         <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-5 mb-4">
           <div className="flex items-center justify-between">
             <div>
@@ -445,43 +456,95 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <div className="flex items-center gap-2">
                 <span
                   className={`text-xs font-medium px-2.5 py-1 rounded-full border capitalize ${
-                    statusColour[latestInvitation.status as keyof typeof statusColour]
+                    statusColour[latestFoundationalInvitation.status as keyof typeof statusColour]
                   }`}
                 >
-                  {latestInvitation.status}
+                  {latestFoundationalInvitation.status}
                 </span>
-                {latestInvitation.status === 'complete' && latestInvitation.completed_at && (
+                {latestFoundationalInvitation.status === 'complete' && latestFoundationalInvitation.completed_at && (
                   <span className="text-xs text-[#57534e]">
-                    Completed {formatDate(latestInvitation.completed_at)}
+                    Completed {formatDate(latestFoundationalInvitation.completed_at)}
                   </span>
                 )}
               </div>
             </div>
-            {latestInvitation.status !== 'complete' && (
+            {latestFoundationalInvitation.status !== 'complete' && (
               <div className="flex items-center gap-2">
                 {client.email && (
                   <SendEmailButton
                     clientId={client.id}
                     clientName={client.name}
                     clientEmail={client.email}
-                    intakeToken={latestInvitation.token}
+                    intakeToken={latestFoundationalInvitation.token}
                     variant="outline"
                   />
                 )}
-                <CopyLinkButton token={latestInvitation.token} />
+                <CopyLinkButton token={latestFoundationalInvitation.token} />
               </div>
             )}
-            {/* Supplementary intake CTA - only meaningful once the foundational
-                intake is complete. Adds a 5-question follow-up to the client's
-                portal as a task card (no email sent; the portal is the channel). */}
-            {latestInvitation.status === 'complete' && (
-              <div className="flex items-center gap-2">
+          </div>
+        </div>
+      )}
+
+      {/* Supplementary intake status. Always shown once the foundational
+          intake is complete so the coach can see at a glance whether the
+          5-question follow-up (medications + dietary context, added
+          2026-05-12) is unsent / pending in the client portal / completed.
+          The "Add follow-up to portal" button is idempotent and sits on
+          this row when no supplementary exists yet; once one exists the
+          row shows status + completion timestamp + email/copy actions. */}
+      {latestFoundationalInvitation?.status === 'complete' && (
+        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-5 mb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-[#57534e] mb-1">Supplementary intake</p>
+              {latestSupplementaryInvitation ? (
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`text-xs font-medium px-2.5 py-1 rounded-full border capitalize ${
+                      statusColour[latestSupplementaryInvitation.status as keyof typeof statusColour]
+                    }`}
+                  >
+                    {latestSupplementaryInvitation.status}
+                  </span>
+                  {latestSupplementaryInvitation.status === 'complete' && latestSupplementaryInvitation.completed_at && (
+                    <span className="text-xs text-[#57534e]">
+                      Completed {formatDate(latestSupplementaryInvitation.completed_at)}
+                    </span>
+                  )}
+                  {latestSupplementaryInvitation.status === 'pending' && (
+                    <span className="text-xs text-[#57534e]">
+                      Sitting in their portal since {formatDate(latestSupplementaryInvitation.created_at)}
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <p className="text-xs text-[#57534e]">Not sent yet — adds a 5-question follow-up card to the client's portal.</p>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              {!latestSupplementaryInvitation && (
                 <SendSupplementaryIntakeButton
                   clientId={client.id}
                   clientName={client.name}
                 />
-              </div>
-            )}
+              )}
+              {latestSupplementaryInvitation?.status === 'pending' && (
+                <>
+                  {client.email && (
+                    <SendSupplementaryEmailButton
+                      clientId={client.id}
+                      clientName={client.name}
+                    />
+                  )}
+                  <CopyLinkButton
+                    token={latestSupplementaryInvitation.token}
+                    label="Copy follow-up link"
+                    path="/intake-supplement"
+                  />
+                </>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -502,7 +565,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div className="bg-[#111110] border border-[#1c1917] rounded-xl p-8 text-center">
           <p className="text-[#a8a29e] mb-2">No CFFS generated yet</p>
           <p className="text-[#3c3835] text-sm mb-4">
-            {latestInvitation?.status === 'pending'
+            {latestFoundationalInvitation?.status === 'pending'
               ? 'Waiting for the client to complete their intake.'
               : latestIntakeId
               ? 'Intake submitted but CFFS generation may have failed.'
