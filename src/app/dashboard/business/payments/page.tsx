@@ -3,6 +3,7 @@ import { CreditCard, Package, CheckCircle2, Clock, XCircle } from 'lucide-react'
 import CreateProductButton from './create-product-button'
 import RecordPaymentButton from './record-payment-button'
 import GetPaymentLinkButton from './get-payment-link-button'
+import PaymentsNav from './payments-nav'
 import Link from 'next/link'
 
 const statusConfig: Record<string, { label: string; icon: typeof Clock; colour: string }> = {
@@ -38,7 +39,7 @@ export default async function PaymentsPage() {
 
   return (
     <div className="max-w-3xl">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-semibold mb-1">Payments</h1>
           <p className="text-stone-400 text-sm">Products, invoices, and payment history</p>
@@ -48,6 +49,8 @@ export default async function PaymentsPage() {
           <CreateProductButton />
         </div>
       </div>
+
+      <PaymentsNav />
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 mb-8">

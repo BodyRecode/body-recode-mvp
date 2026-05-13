@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { buildProgramBuyerEmails, buildReportFollowUpEmails, daysAfter9amBrisbane, nextMorning9amBrisbane } from '@/lib/generate-report'
 import { inngest } from '@/lib/inngest'
+import { syncSubscriptionFromStripe } from '@/lib/stripe-sync'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -23,10 +24,29 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
+  // Handle subscription created / updated — keep client_subscriptions in sync
+  if (event.type === 'customer.subscription.created' || event.type === 'customer.subscription.updated') {
+    const subscription = event.data.object as Stripe.Subscription
+    const admin = createAdminClient()
+    try {
+      await syncSubscriptionFromStripe(admin, subscription)
+    } catch (e) {
+      console.error('subscription sync failed:', e)
+    }
+    return NextResponse.json({ received: true })
+  }
+
   // Handle subscription cancellation
   if (event.type === 'customer.subscription.deleted') {
     const subscription = event.data.object as Stripe.Subscription
     const admin = createAdminClient()
+
+    // Mirror the cancellation into our cache
+    try {
+      await syncSubscriptionFromStripe(admin, subscription)
+    } catch (e) {
+      console.error('subscription sync (deleted) failed:', e)
+    }
 
     // Performance coaching cancellation
     const clientRefId = subscription.metadata?.client_id
@@ -81,6 +101,25 @@ export async function POST(request: NextRequest) {
         stripe_payment_id: null,
         paid_at: new Date().toISOString(),
       })
+    }
+
+    // Refresh the parent subscription so client_subscriptions reflects the
+    // advanced current_period_end. In Stripe SDK v18+, invoice.subscription
+    // was removed from the typed surface; access the raw field defensively.
+    const invoiceWithSub = invoice as Stripe.Invoice & { subscription?: string | Stripe.Subscription | null }
+    const subId = typeof invoiceWithSub.subscription === 'string'
+      ? invoiceWithSub.subscription
+      : invoiceWithSub.subscription?.id ?? null
+    if (subId) {
+      try {
+        const admin = createAdminClient()
+        const sub = await stripe.subscriptions.retrieve(subId, {
+          expand: ['items.data.price.product'],
+        })
+        await syncSubscriptionFromStripe(admin, sub)
+      } catch (e) {
+        console.error('subscription refresh on invoice.payment_succeeded failed:', e)
+      }
     }
     return NextResponse.json({ received: true })
   }

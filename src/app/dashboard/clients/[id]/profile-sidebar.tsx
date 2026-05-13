@@ -11,10 +11,11 @@ const SCROLL_SECTIONS = [
   { id: 'cfws', title: 'CFWS' },
   { id: 'training', title: 'Training' },
   { id: 'nutrition', title: 'Nutrition' },
+  { id: 'payments', title: 'Payments' },
 ]
 
 const SECTIONS_BEFORE_DIRECTION = ['overview', 'cffs', 'baseline', 'cfws']
-const SECTIONS_AFTER_DIRECTION = ['training', 'nutrition']
+const SECTIONS_AFTER_DIRECTION = ['training', 'nutrition', 'payments']
 
 export default function ProfileSidebar({ clientId }: { clientId: string }) {
   const [active, setActive] = useState('overview')

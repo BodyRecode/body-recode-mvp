@@ -32,6 +32,7 @@ import { loadRecoverySnapshot } from '@/lib/recovery-history'
 import { resolveRouterMode } from '@/lib/recovery-state-machine'
 import { BlockProgressPanel } from './block-progress-panel'
 import { loadBlockProgress } from '@/lib/block-progress'
+import ClientPaymentsSection from '@/components/dashboard/client-payments-section'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -1153,6 +1154,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </div>
           ) : null}
         </div>
+      </div>
+
+      {/* Payments Section */}
+      <div className="mt-6">
+        <ClientPaymentsSection clientId={id} />
       </div>
 
       <ClientDangerActions clientId={id} isActive={client.active !== false} />

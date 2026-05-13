@@ -1865,6 +1865,53 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Failed Payments</p>
             <p>When a subscription payment fails, the payment is recorded with a <strong>Failed</strong> status and you receive a notification email. Follow up with the client directly - Stripe will retry automatically.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Sub-pages</p>
+            <p>Payments now has three tabs (sub-nav across the top):</p>
+            <StatusList items={[
+              { label: 'Overview', desc: 'The page above. Products, payment history, manual record, generate payment links.' },
+              { label: 'Clients', desc: 'Every client one row — plan, commencement status, live subscription status, next charge, last paid, lifetime PC value. Sorted with attention-needed rows on top.' },
+              { label: 'Reconcile', desc: 'Run the Stripe backfill (matches Stripe customers to client records by email and hydrates the subscription cache), see clients with no Stripe link, and tag every product by stream (Performance Coaching / Body Recode / Studio of Ten / Overhead).' },
+            ]} />
+          </Section>
+
+          <Section id="payments-tracker" title="29b. Client Payment Tracker" colour="amber">
+            <p>The Payments tracker answers two questions in one place: <strong>is every active client paying you what they should be</strong>, and <strong>is every recurring subscription correctly set up</strong>. It lives on top of the existing Stripe webhook plumbing — no new external software, no new monthly cost.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">First-time setup (run once)</p>
+            <StatusList items={[
+              { label: 'Run Supabase migration', desc: 'sql/2026-05-13_payments_tracker.sql. Done 2026-05-13. Adds clients.stripe_customer_id, be_products.category, plus client_subscriptions / payment_plans / client_payment_plan tables.' },
+              { label: 'Run Stripe backfill', desc: 'Business → Payments → Reconcile → "Run Stripe backfill". Pages every Stripe customer, matches to your client records by email, populates stripe_customer_id, and hydrates the subscription cache. Safe to re-run. Takes ~30 seconds depending on volume.' },
+              { label: 'Tag your products', desc: 'Same Reconcile page, "Product Categories" section. Drop each product into a stream: Performance Coaching (counts toward client LTV), Body Recode (report / Blueprint / Membership), Studio of Ten, Overhead, Other.' },
+            ]} />
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Per-client view</p>
+            <p>On any client profile, scroll to the <strong>Payments</strong> section (also reachable via the sidebar). It shows:</p>
+            <StatusList items={[
+              { label: 'Plan', desc: 'Which payment plan they\'re assigned to (default: "Hormozi default" — $240 commencement + weekly recurring). Commencement fee status: paid + date, or "not paid" with a manual mark button.' },
+              { label: 'Subscription', desc: 'Live status from Stripe — Active / Past due / Canceled / etc. Amount, billing interval, next charge date. "Cancels at period end" badge if applicable.' },
+              { label: 'Lifetime (PC)', desc: 'Sum of paid Performance Coaching payments for this client. Filtered by product category — Body Recode / Studio of Ten / Overhead payments do not count.' },
+              { label: 'Last 5 payments', desc: 'Recent history with product, amount, status, date.' },
+              { label: 'Health flags', desc: 'Red callout box at the top if anything\'s wrong: commencement not paid, no active subscription, subscription past due, no Stripe customer linked.' },
+              { label: 'Refresh from Stripe', desc: 'On-demand button. Pulls live subscription state from Stripe and rewrites the cache. Use when you\'ve just changed something in Stripe and want the dashboard to reflect it immediately rather than waiting for a webhook.' },
+              { label: 'Open in Stripe', desc: 'Direct link to the Stripe dashboard customer page if you need to manage the subscription itself.' },
+            ]} />
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Cross-cut Client Status table</p>
+            <p><strong>Business → Payments → Clients</strong>. One row per client, sorted with attention-needed rows on top: past_due first, then commencement-paid-but-no-sub, then commencement-not-paid, then healthy actives, then canceled. Four count cards at the top (Active / Past due / No active sub / No commencement). Click any row to jump to that client’s Payments section.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">How the cache stays fresh</p>
+            <p>Stripe is the source of truth. The cache (<code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">client_subscriptions</code> table) is maintained three ways:</p>
+            <StatusList items={[
+              { label: 'Webhook', desc: 'On customer.subscription.created/updated/deleted and invoice.payment_succeeded, the webhook calls syncSubscriptionFromStripe() and upserts the cache row. Real-time, no action needed.' },
+              { label: 'On-demand refresh', desc: 'The "Refresh from Stripe" button on the per-client Payments section. Use it any time.' },
+              { label: 'Periodic backfill', desc: 'Re-run the Stripe backfill from the Reconcile page whenever you suspect drift, after bulk changes in Stripe, or after onboarding new clients via methods the webhook doesn\'t cover.' },
+            ]} />
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">When commencement fee won’t auto-detect</p>
+            <p>The tracker doesn’t yet auto-detect commencement fees (you can use the manual <strong>Mark commencement paid</strong> button on any client without one). Auto-detection is queued for Phase 2 once we’ve seen enough real charges to write a reliable rule.</p>
+
+            <p className="text-xs text-[#57534e] mt-4">Doctrine / spec: <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-13_PAYMENTS_FOUNDATION.md</code>. Feature registry entry 26.</p>
           </Section>
 
           <Section id="be-analytics" title="30. Analytics" colour="amber">
