@@ -394,9 +394,24 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
   }
 
   // Check-in overdue
+  // Gate on the active program's age, not just coaching_started_at. The
+  // check-in evaluates the training program, so a program generated less
+  // than a week ago hasn't had a Fri-Sun check-in window fully elapse
+  // since it went live — there's no realistic missed window yet. This
+  // catches the "I just made their program but coaching_started_at was
+  // weeks ago" case (Amanda, Ruby-Cate) where the old logic flagged red
+  // for a check-in the client physically couldn't have done.
+  const programGeneratedAt = ap.generatedAt
+  const programAgeDays = programGeneratedAt
+    ? Math.floor(
+        (today.getTime() - new Date(programGeneratedAt).getTime()) / 86400000
+      )
+    : 0
+
   if (
     !isPreStart &&
     input.currentWeekNumber > 0 &&
+    programAgeDays >= 7 &&
     !input.thisWeeksCheckinSubmitted
   ) {
     return {
