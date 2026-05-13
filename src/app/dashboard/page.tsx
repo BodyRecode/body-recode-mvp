@@ -41,7 +41,7 @@ export default async function DashboardHomePage() {
     { data: paymentPlans },
   ] = await Promise.all([
     supabase.from('leads').select('id, status, created_at'),
-    supabase.from('clients').select('id, name, coaching_started_at, active'),
+    supabase.from('clients').select('id, name, coaching_started_at, active, package'),
     supabase.from('leads').select('id, name, email, status, created_at').order('created_at', { ascending: false }).limit(5),
     supabase.from('weekly_checkins').select('id, client_id, form_type, week_number, submitted_at, clients(name)').order('submitted_at', { ascending: false }).limit(5),
     admin
@@ -144,6 +144,7 @@ export default async function DashboardHomePage() {
     const { paymentSignal } = derivePaymentSignal({
       hasStarted,
       coachingStartedAt: c.coaching_started_at ?? null,
+      clientPackage: c.package ?? null,
       primarySub: primarySubByClient.get(c.id) ?? null,
       paymentPlan: paymentPlanByClient.get(c.id) ?? null,
       today,

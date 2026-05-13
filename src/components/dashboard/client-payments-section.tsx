@@ -16,6 +16,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { CheckCircle2, AlertTriangle, CircleDollarSign, ExternalLink, CreditCard, Clock, XCircle } from 'lucide-react'
 import RefreshStripeButton from './refresh-stripe-button'
 import MarkCommencementButton from './mark-commencement-button'
+import { isNonBillingPackage, getCoachingPackage } from '@/lib/coaching-packages'
 
 function formatAud(amount: number | null | undefined): string {
   if (amount == null) return '—'
@@ -55,7 +56,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
     { data: payments },
     { data: ltvRows },
   ] = await Promise.all([
-    admin.from('clients').select('id, name, email, stripe_customer_id').eq('id', clientId).single(),
+    admin.from('clients').select('id, name, email, stripe_customer_id, package').eq('id', clientId).single(),
     admin
       .from('client_payment_plan')
       .select('client_id, commencement_fee_paid_at, commencement_fee_stripe_payment_id, expected_subscription_amount, payment_plans(name, commencement_fee, subscription_interval)')
@@ -105,16 +106,18 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
   const expectedCommencement = plan?.commencement_fee
   const commencementPaid = !!planRow?.commencement_fee_paid_at
 
-  // A client is "payment-tracked" if they have a plan attached OR any
-  // subscription record. Anything else (no plan, no subs, no Stripe customer)
-  // is treated as implicit exemption — same rule the dashboard overview
-  // Payments indicator and Today's Focus use, so the three surfaces agree.
-  // Contra deals (e.g. Amanda) live here: no plan row, no subs, no flags.
-  const isTracked = !!planRow || (subs?.length ?? 0) > 0
+  // Explicit non-billing package (contra / no_charge) is the loudest signal:
+  // the coach has marked this client as not-for-billing on purpose. Wins over
+  // any plan / subscription data.
+  const nonBillingPackage = isNonBillingPackage(client?.package)
+  const packageLabel = getCoachingPackage(client?.package)?.label ?? null
 
-  // Health flags — only computed for tracked clients. An untracked client
-  // produces zero flags because there's no expectation of payment to compare
-  // against; the section renders an "Untracked" panel instead.
+  // Implicit exemption: no plan row + no subscriptions = no expectation of
+  // billing either. Same rule the dashboard overview Payments indicator and
+  // Today's Focus use, so the three surfaces agree.
+  const isTracked = !nonBillingPackage && (!!planRow || (subs?.length ?? 0) > 0)
+
+  // Health flags — only computed for tracked clients.
   const flags: string[] = []
   if (isTracked) {
     if (!commencementPaid) flags.push(`Commencement fee${expectedCommencement ? ` ($${expectedCommencement})` : ''} not marked paid`)
@@ -159,17 +162,31 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
         </div>
       )}
 
-      {/* Untracked clients (contra deals, comps) get a clean placeholder
-          instead of red flags + empty plan cards. */}
-      {!isTracked ? (
+      {/* Explicit non-billing package → named arrangement panel.
+          Implicit untracked (no plan + no subs, no package set) → generic
+          placeholder. Both suppress the plan/subscription grid below. */}
+      {nonBillingPackage ? (
+        <div className="bg-stone-900 border border-stone-700 rounded-xl p-4 mb-3 flex items-start gap-3">
+          <CreditCard size={14} className="text-stone-300 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-stone-100">{packageLabel ?? 'Non-billing arrangement'}</p>
+            <p className="text-xs text-stone-400 leading-relaxed">
+              This client is on a non-billing package. The Payments tracker
+              skips them — no commencement-fee flag, no Stripe-customer flag,
+              no overdue indicator. Change the package in the coaching-package
+              section if the arrangement changes.
+            </p>
+          </div>
+        </div>
+      ) : !isTracked ? (
         <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 mb-3 flex items-start gap-3">
           <CreditCard size={14} className="text-stone-500 shrink-0 mt-0.5" />
           <div className="space-y-1">
             <p className="text-sm font-medium text-stone-200">Not tracked for payments</p>
             <p className="text-xs text-stone-500 leading-relaxed">
-              No payment plan attached and no Stripe activity. Treated as a contra
-              or comp arrangement and skipped on the dashboard Payments indicator.
-              Use Refresh from Stripe if you start billing this client later.
+              No payment plan attached and no Stripe activity. If this is intentional
+              (contra, comp), set the coaching package to a non-billing tier so the
+              tracker explicitly knows. Otherwise use Refresh from Stripe to backfill.
             </p>
           </div>
         </div>

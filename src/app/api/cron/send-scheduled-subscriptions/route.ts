@@ -32,6 +32,9 @@ export async function GET(request: NextRequest) {
 
     const pkg = getCoachingPackage(client.package)
     if (!pkg) continue
+    // Non-billing packages have no Stripe link — skip silently. Coach should
+    // never have scheduled a send for one of these but guard anyway.
+    if (!pkg.stripe) continue
 
     const firstName = client.name.split(' ')[0]
     const subscriptionUrl = `${pkg.stripe}?client_reference_id=${client.id}`

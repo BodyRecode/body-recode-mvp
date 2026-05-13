@@ -30,6 +30,12 @@ export async function POST(
 
   const pkg = getCoachingPackage(client.package)
   if (!pkg) { console.error('Invalid package value:', client.package); return NextResponse.json({ error: 'Invalid package' }, { status: 400 }) }
+  if (!pkg.stripe) {
+    return NextResponse.json(
+      { error: `No subscription link to send: ${pkg.label} is a non-billing package` },
+      { status: 400 },
+    )
+  }
 
   const firstName = client.name.split(' ')[0]
   const subscriptionUrl = `${pkg.stripe}?client_reference_id=${id}`

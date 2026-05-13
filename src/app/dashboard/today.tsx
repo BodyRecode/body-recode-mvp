@@ -58,7 +58,7 @@ export default async function TodayWidget() {
   ] = await Promise.all([
     admin
       .from('clients')
-      .select('id, name, coaching_started_at')
+      .select('id, name, coaching_started_at, package')
       .eq('active', true)
       .order('name', { ascending: true }),
     admin.from('intakes').select('client_id'),
@@ -198,6 +198,7 @@ export default async function TodayWidget() {
     const { paymentSignal, paymentDetail } = derivePaymentSignal({
       hasStarted,
       coachingStartedAt: client.coaching_started_at ?? null,
+      clientPackage: client.package ?? null,
       primarySub: primarySubByClient.get(client.id) ?? null,
       paymentPlan: paymentPlanByClient.get(client.id) ?? null,
       today,

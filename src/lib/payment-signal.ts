@@ -10,10 +10,17 @@
  */
 
 import type { PaymentSignal } from './client-next-action'
+import { isNonBillingPackage } from './coaching-packages'
 
 export interface PaymentSignalInput {
   hasStarted: boolean
   coachingStartedAt: string | null
+  /**
+   * The client's coaching package value (clients.package). When set to a
+   * non-billing tier (contra / no_charge) the client is explicitly exempt
+   * from payment tracking — overrides any subscription/plan data.
+   */
+  clientPackage: string | null
   primarySub:
     | {
         status: string
@@ -48,8 +55,16 @@ export interface PaymentSignalResult {
  * exempt (contra deals, free legacy clients).
  */
 export function derivePaymentSignal(args: PaymentSignalInput): PaymentSignalResult {
-  const { primarySub, paymentPlan, hasStarted, coachingStartedAt, today } = args
+  const { primarySub, paymentPlan, hasStarted, coachingStartedAt, today, clientPackage } = args
 
+  // Explicit exemption: contra / no-charge packages skip the tracker entirely.
+  // Wins over any subscription or plan data — if the coach set the package to
+  // a non-billing tier, that's a deliberate "don't bill me about this client".
+  if (isNonBillingPackage(clientPackage)) {
+    return { paymentSignal: null, paymentDetail: null }
+  }
+
+  // Implicit exemption: no plan, no subscriptions = no expectation of billing.
   if (!primarySub && !paymentPlan) {
     return { paymentSignal: null, paymentDetail: null }
   }

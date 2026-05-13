@@ -7,13 +7,16 @@ export type CoachingPackageValue =
   | '1x_launch'
   | '2x_launch'
   | '3x_launch'
+  | 'contra'
+  | 'no_charge'
 
 export interface CoachingPackage {
   value: CoachingPackageValue
   label: string
   price: string
+  /** Stripe payment link. Empty string for non-billing packages (contra/comp). */
   stripe: string
-  tier: 'standard' | 'launch'
+  tier: 'standard' | 'launch' | 'comp'
   format: 'online' | 'in_person'
   sessionsPerWeek: number
 }
@@ -27,7 +30,26 @@ export const COACHING_PACKAGES: CoachingPackage[] = [
   { value: '1x_launch',      label: 'In-Person 1x + self-led (Launch)', price: '$99.50/week', stripe: 'https://buy.stripe.com/bJefZj0wqdlA3wrbJB5ZC0b', tier: 'launch',   format: 'in_person', sessionsPerWeek: 1 },
   { value: '2x_launch',      label: 'In-Person 2x (Launch)',    price: '$149.50/week',stripe: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05', tier: 'launch',   format: 'in_person', sessionsPerWeek: 2 },
   { value: '3x_launch',      label: 'In-Person 3x (Launch)',    price: '$204.50/week',stripe: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06', tier: 'launch',   format: 'in_person', sessionsPerWeek: 3 },
+  // Non-billing arrangements. Stripe link empty so the Send / Copy / Schedule
+  // controls in PackageManager are suppressed for these. Both excluded from
+  // every filter helper below (ONLINE/IN_PERSON/N-session), so they sit
+  // outside the upgrade-eligibility and format-filtering paths.
+  { value: 'contra',         label: 'Contra (trade)',           price: 'No charge',   stripe: '', tier: 'comp', format: 'in_person', sessionsPerWeek: 0 },
+  { value: 'no_charge',      label: 'No-charge / comp',         price: 'No charge',   stripe: '', tier: 'comp', format: 'in_person', sessionsPerWeek: 0 },
 ]
+
+/**
+ * Packages that don't generate revenue (contra deals, comps, founding-friend
+ * arrangements). The Payments indicator and Today's Focus skip these clients
+ * entirely so they don't trip "commencement missing" or "no Stripe customer"
+ * flags — there is no expectation of billing in the first place.
+ */
+export const NON_BILLING_PACKAGE_VALUES: CoachingPackageValue[] = COACHING_PACKAGES
+  .filter(p => p.tier === 'comp').map(p => p.value)
+
+export function isNonBillingPackage(value: string | null | undefined): boolean {
+  return !!value && (NON_BILLING_PACKAGE_VALUES as string[]).includes(value)
+}
 
 const BY_VALUE: Record<string, CoachingPackage> = Object.fromEntries(
   COACHING_PACKAGES.map(p => [p.value, p])

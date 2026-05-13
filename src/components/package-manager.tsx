@@ -102,6 +102,10 @@ export default function PackageManager({
   }
 
   const currentInfo = packages.find(p => p.value === pkg)
+  // Non-billing packages have no Stripe link, so the Send / Copy / Schedule
+  // controls don't apply. The "Package updated" toast and the section header
+  // still render; everything below this is suppressed for contra/comp.
+  const isNonBilling = !!currentInfo && !currentInfo.stripe
 
   const scheduledDate = subscriptionLinkSendAt
     ? new Date(subscriptionLinkSendAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Brisbane' })
@@ -154,10 +158,38 @@ export default function PackageManager({
             ))}
           </div>
         </div>
+        <div>
+          <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Non-billing (Contra / Comp)</p>
+          <div className="flex flex-wrap gap-2">
+            {packages.filter(p => p.tier === 'comp').map(p => (
+              <button
+                key={p.value}
+                onClick={() => save(p.value)}
+                disabled={saving}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
+                  pkg === p.value
+                    ? 'bg-stone-500/15 border-stone-500/40 text-stone-200'
+                    : 'border-[#1c1917] text-[#a8a29e] hover:border-stone-500/40 hover:text-stone-200'
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+          <p className="text-[10px] text-[#57534e] mt-1.5">
+            Skips the Payments tracker. No Stripe link sent, no commencement-fee flag, no overdue indicator.
+          </p>
+        </div>
       </div>
       {saved && <p className="text-xs text-teal-400">Package updated</p>}
 
-      {currentInfo && (
+      {currentInfo && isNonBilling && (
+        <div className="text-xs text-stone-400 bg-stone-900/40 border border-stone-800 rounded-lg px-3 py-2">
+          Non-billing arrangement — no subscription link to send.
+        </div>
+      )}
+
+      {currentInfo && !isNonBilling && (
         <div className="space-y-2">
           {/* Scheduled send indicator */}
           {isScheduled && (
