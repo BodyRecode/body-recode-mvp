@@ -16,6 +16,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { CheckCircle2, AlertTriangle, CircleDollarSign, ExternalLink, CreditCard, Clock, XCircle } from 'lucide-react'
 import RefreshStripeButton from './refresh-stripe-button'
 import MarkCommencementButton from './mark-commencement-button'
+import ClientCommencementFeeButton from '../client-commencement-fee-button'
 import { isNonBillingPackage, getCoachingPackage } from '@/lib/coaching-packages'
 
 function formatAud(amount: number | null | undefined): string {
@@ -166,16 +167,30 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
           Implicit untracked (no plan + no subs, no package set) → generic
           placeholder. Both suppress the plan/subscription grid below. */}
       {nonBillingPackage ? (
-        <div className="bg-stone-900 border border-stone-700 rounded-xl p-4 mb-3 flex items-start gap-3">
-          <CreditCard size={14} className="text-stone-300 shrink-0 mt-0.5" />
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-stone-100">{packageLabel ?? 'Non-billing arrangement'}</p>
-            <p className="text-xs text-stone-400 leading-relaxed">
-              This client is on a non-billing package. The Payments tracker
-              skips them — no commencement-fee flag, no Stripe-customer flag,
-              no overdue indicator. Change the package in the coaching-package
-              section if the arrangement changes.
+        <div className="bg-stone-900 border border-stone-700 rounded-xl p-4 mb-3">
+          <div className="flex items-start gap-3">
+            <CreditCard size={14} className="text-stone-300 shrink-0 mt-0.5" />
+            <div className="space-y-1 flex-1">
+              <p className="text-sm font-medium text-stone-100">{packageLabel ?? 'Non-billing arrangement'}</p>
+              <p className="text-xs text-stone-400 leading-relaxed">
+                This client is on a non-billing package. The Payments tracker
+                skips them by default — no commencement-fee flag, no Stripe-customer
+                flag, no overdue indicator. You can still choose to send the $240
+                commencement link below; it's optional per client.
+              </p>
+            </div>
+          </div>
+          <div className="mt-3 pt-3 border-t border-stone-800">
+            <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">
+              Commencement fee (optional)
             </p>
+            {commencementPaid ? (
+              <p className="text-xs text-teal-400">
+                Paid {formatDate(planRow?.commencement_fee_paid_at)} — recorded on this client.
+              </p>
+            ) : (
+              <ClientCommencementFeeButton clientId={clientId} initialPaid={false} />
+            )}
           </div>
         </div>
       ) : !isTracked ? (

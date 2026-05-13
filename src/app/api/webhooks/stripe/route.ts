@@ -692,8 +692,103 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   }
 
+  // Two paths for commencement_fee:
+  //   - metadata.client_id → existing client paying their own commencement
+  //     (typically a non-billing package the coach decided to charge after
+  //     all). No lead lookup; we record the payment + mark the plan paid.
+  //   - metadata.lead_id   → standard funnel (lead → fee → client created).
+  //     The existing flow below handles this and is unchanged.
+  const directClientId = session.metadata.client_id
+  if (directClientId) {
+    const admin = createAdminClient()
+
+    const { data: client } = await admin
+      .from('clients')
+      .select('id, name, email')
+      .eq('id', directClientId)
+      .maybeSingle()
+
+    if (!client) {
+      console.error('commencement_fee webhook: client_id in metadata not found:', directClientId)
+      return NextResponse.json({ error: 'Client not found' }, { status: 404 })
+    }
+
+    // Record the payment.
+    if (session.amount_total && session.amount_total > 0) {
+      await admin.from('be_payments').insert({
+        client_id: client.id,
+        amount: session.amount_total / 100,
+        status: 'paid',
+        stripe_payment_id: session.payment_intent as string ?? null,
+        paid_at: new Date().toISOString(),
+      })
+    }
+
+    // Mark the commencement fee paid on the plan row, creating one if it
+    // doesn't exist yet (the non-billing path skips plan creation by default,
+    // so the first commencement-fee payment is what materialises the row).
+    const paidAt = new Date().toISOString()
+    const { data: existingPlan } = await admin
+      .from('client_payment_plan')
+      .select('client_id')
+      .eq('client_id', client.id)
+      .maybeSingle()
+
+    if (existingPlan) {
+      await admin
+        .from('client_payment_plan')
+        .update({
+          commencement_fee_paid_at: paidAt,
+          commencement_fee_stripe_payment_id: session.payment_intent as string ?? null,
+        })
+        .eq('client_id', client.id)
+    } else {
+      // Attach to the coach's default plan if there is one. payment_plan_id is
+      // nullable so it's fine if the lookup misses (e.g. brand-new tenant).
+      const { data: coachRow } = await admin
+        .from('clients')
+        .select('coach_id')
+        .eq('id', client.id)
+        .single()
+      const { data: defaultPlan } = coachRow
+        ? await admin
+            .from('payment_plans')
+            .select('id')
+            .eq('coach_id', coachRow.coach_id)
+            .eq('is_default', true)
+            .maybeSingle()
+        : { data: null }
+
+      await admin.from('client_payment_plan').insert({
+        client_id: client.id,
+        payment_plan_id: defaultPlan?.id ?? null,
+        commencement_fee_paid_at: paidAt,
+        commencement_fee_stripe_payment_id: session.payment_intent as string ?? null,
+      })
+    }
+
+    // Notify coach.
+    if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      await resend.emails.send({
+        from: 'Body Recode <kade@bodyrecode.au>',
+        to: 'kade@bodyrecode.au',
+        subject: `Commencement fee received — ${client.name}`,
+        html: `
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${client.name} paid the commencement fee.</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">$240 confirmed. The Payments tracker now shows commencement as paid on their profile.</p>
+  <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/clients/${client.id}#payments" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client</a>
+</div>`,
+      })
+    }
+
+    return NextResponse.json({ received: true })
+  }
+
   const leadId = session.metadata.lead_id
-  if (!leadId) return NextResponse.json({ error: 'No lead_id in metadata' }, { status: 400 })
+  if (!leadId) return NextResponse.json({ error: 'No lead_id or client_id in metadata' }, { status: 400 })
 
   const admin = createAdminClient()
 
