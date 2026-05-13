@@ -105,12 +105,23 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
   const expectedCommencement = plan?.commencement_fee
   const commencementPaid = !!planRow?.commencement_fee_paid_at
 
-  // Health flags
+  // A client is "payment-tracked" if they have a plan attached OR any
+  // subscription record. Anything else (no plan, no subs, no Stripe customer)
+  // is treated as implicit exemption — same rule the dashboard overview
+  // Payments indicator and Today's Focus use, so the three surfaces agree.
+  // Contra deals (e.g. Amanda) live here: no plan row, no subs, no flags.
+  const isTracked = !!planRow || (subs?.length ?? 0) > 0
+
+  // Health flags — only computed for tracked clients. An untracked client
+  // produces zero flags because there's no expectation of payment to compare
+  // against; the section renders an "Untracked" panel instead.
   const flags: string[] = []
-  if (!commencementPaid) flags.push(`Commencement fee${expectedCommencement ? ` ($${expectedCommencement})` : ''} not marked paid`)
-  if (commencementPaid && !primarySub) flags.push('Commencement paid but no active subscription found')
-  if (primarySub && ['past_due', 'unpaid'].includes(primarySub.status)) flags.push(`Subscription is ${primarySub.status.replace('_', ' ')}`)
-  if (!client?.stripe_customer_id) flags.push('No Stripe customer linked yet — run backfill or refresh to match')
+  if (isTracked) {
+    if (!commencementPaid) flags.push(`Commencement fee${expectedCommencement ? ` ($${expectedCommencement})` : ''} not marked paid`)
+    if (commencementPaid && !primarySub) flags.push('Commencement paid but no active subscription found')
+    if (primarySub && ['past_due', 'unpaid'].includes(primarySub.status)) flags.push(`Subscription is ${primarySub.status.replace('_', ' ')}`)
+    if (!client?.stripe_customer_id) flags.push('No Stripe customer linked yet — run backfill or refresh to match')
+  }
 
   const subMeta = primarySub ? STATUS_META[primarySub.status] ?? STATUS_META.canceled : null
 
@@ -148,52 +159,67 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
         </div>
       )}
 
-      {/* Plan + status grid */}
-      <div className="grid grid-cols-2 gap-3 mb-3">
-        {/* Plan card */}
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
-          <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">Plan</p>
-          <p className="text-sm font-medium text-white mb-1">{planLabel}</p>
-          <p className="text-xs text-stone-500">
-            Commencement: {commencementPaid ? (
-              <span className="text-teal-400">paid {formatDate(planRow?.commencement_fee_paid_at)}</span>
-            ) : (
-              <span className="text-amber-400">not paid</span>
-            )}
-          </p>
-          {!commencementPaid && (
-            <div className="mt-3">
-              <MarkCommencementButton clientId={clientId} />
-            </div>
-          )}
+      {/* Untracked clients (contra deals, comps) get a clean placeholder
+          instead of red flags + empty plan cards. */}
+      {!isTracked ? (
+        <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 mb-3 flex items-start gap-3">
+          <CreditCard size={14} className="text-stone-500 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-stone-200">Not tracked for payments</p>
+            <p className="text-xs text-stone-500 leading-relaxed">
+              No payment plan attached and no Stripe activity. Treated as a contra
+              or comp arrangement and skipped on the dashboard Payments indicator.
+              Use Refresh from Stripe if you start billing this client later.
+            </p>
+          </div>
         </div>
-
-        {/* Subscription card */}
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
-          <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">Subscription</p>
-          {primarySub && subMeta ? (
-            <>
-              <div className="flex items-center gap-1.5 mb-1">
-                <subMeta.icon size={13} className={TONE_CLASS[subMeta.tone]} />
-                <p className={`text-sm font-medium ${TONE_CLASS[subMeta.tone]}`}>{subMeta.label}</p>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          {/* Plan card */}
+          <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+            <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">Plan</p>
+            <p className="text-sm font-medium text-white mb-1">{planLabel}</p>
+            <p className="text-xs text-stone-500">
+              Commencement: {commencementPaid ? (
+                <span className="text-teal-400">paid {formatDate(planRow?.commencement_fee_paid_at)}</span>
+              ) : (
+                <span className="text-amber-400">not paid</span>
+              )}
+            </p>
+            {!commencementPaid && (
+              <div className="mt-3">
+                <MarkCommencementButton clientId={clientId} />
               </div>
-              <p className="text-xs text-stone-400">
-                {formatAud(primarySub.amount)}{primarySub.billing_interval ? ` / ${primarySub.billing_interval}` : ''}
-              </p>
-              {primarySub.current_period_end && ['active', 'trialing', 'past_due'].includes(primarySub.status) && (
-                <p className="text-xs text-stone-500 mt-1">
-                  Next charge: {formatDate(primarySub.current_period_end)}
+            )}
+          </div>
+
+          {/* Subscription card */}
+          <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+            <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">Subscription</p>
+            {primarySub && subMeta ? (
+              <>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <subMeta.icon size={13} className={TONE_CLASS[subMeta.tone]} />
+                  <p className={`text-sm font-medium ${TONE_CLASS[subMeta.tone]}`}>{subMeta.label}</p>
+                </div>
+                <p className="text-xs text-stone-400">
+                  {formatAud(primarySub.amount)}{primarySub.billing_interval ? ` / ${primarySub.billing_interval}` : ''}
                 </p>
-              )}
-              {primarySub.cancel_at_period_end && (
-                <p className="text-xs text-amber-400 mt-1">Cancels at period end</p>
-              )}
-            </>
-          ) : (
-            <p className="text-sm text-stone-500">No subscription found</p>
-          )}
+                {primarySub.current_period_end && ['active', 'trialing', 'past_due'].includes(primarySub.status) && (
+                  <p className="text-xs text-stone-500 mt-1">
+                    Next charge: {formatDate(primarySub.current_period_end)}
+                  </p>
+                )}
+                {primarySub.cancel_at_period_end && (
+                  <p className="text-xs text-amber-400 mt-1">Cancels at period end</p>
+                )}
+              </>
+            ) : (
+              <p className="text-sm text-stone-500">No subscription found</p>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Lifetime + recent payments */}
       <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 mb-3">
