@@ -64,7 +64,27 @@ export interface ClientNextActionInput {
   thisWeeksCheckinSubmitted: boolean
   /** The current coaching week number (1-indexed), or 0 if not yet started. */
   currentWeekNumber: number
+
+  /**
+   * Payment signal from the Client Payment Tracker.
+   *
+   *   past_due / unpaid     → Stripe subscription is currently broken (red, p10)
+   *   canceled              → primary subscription canceled while client still active (red, p10)
+   *   commencement_missing  → on a plan, coaching has started, $240 commencement not received (amber, p20)
+   *
+   * Null means either no flagged signal or the client is exempt (no
+   * client_payment_plan + no client_subscriptions row — e.g. contra deals).
+   */
+  paymentSignal: PaymentSignal | null
+  /** Short context line for the payment signal. e.g. "Past due since 8 May". */
+  paymentDetail: string | null
 }
+
+export type PaymentSignal =
+  | 'past_due'
+  | 'unpaid'
+  | 'canceled'
+  | 'commencement_missing'
 
 /* ──────────────────────────────────────────────────────────────────────────
  * Output — one structured action per client
@@ -80,6 +100,10 @@ export type NextActionStage =
   | 'waiting_pr'
   | 'waiting_nutrition'
   | 'waiting_nr'
+  | 'payment_past_due'
+  | 'payment_unpaid'
+  | 'payment_canceled'
+  | 'payment_commencement_missing'
   | 'active_regression'
   | 'active_reassessment'
   | 'active_checkin_overdue'
@@ -270,6 +294,67 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       sublabel: `${np.planName} is live - publish the why behind the meals`,
       href: `${profileHref}/nutrition`,
       accent: 'teal',
+      priority: 20,
+      badge: feedbackBadge,
+    }
+  }
+
+  // ── Payments overlay ───────────────────────────────────────────────────
+  // Money problems preempt readiness signals: if the client isn't paying you
+  // (or the system says they should be but the subscription is broken),
+  // nothing else on the board matters until it's resolved.
+
+  if (input.paymentSignal === 'past_due') {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'payment_past_due',
+      headline: 'Subscription past due',
+      sublabel: input.paymentDetail ?? 'Stripe shows the recurring charge as past due',
+      href: `${profileHref}#payments`,
+      accent: 'red',
+      priority: 10,
+      badge: feedbackBadge,
+    }
+  }
+
+  if (input.paymentSignal === 'unpaid') {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'payment_unpaid',
+      headline: 'Subscription unpaid',
+      sublabel: input.paymentDetail ?? 'Stripe has stopped retrying - client action required',
+      href: `${profileHref}#payments`,
+      accent: 'red',
+      priority: 10,
+      badge: feedbackBadge,
+    }
+  }
+
+  if (input.paymentSignal === 'canceled') {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'payment_canceled',
+      headline: 'Subscription canceled',
+      sublabel: input.paymentDetail ?? 'Client is active but the recurring sub is no longer billing',
+      href: `${profileHref}#payments`,
+      accent: 'red',
+      priority: 10,
+      badge: feedbackBadge,
+    }
+  }
+
+  if (input.paymentSignal === 'commencement_missing') {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'payment_commencement_missing',
+      headline: 'Commencement fee outstanding',
+      sublabel: input.paymentDetail ?? 'On a plan, coaching has started, $240 fee not received',
+      href: `${profileHref}#payments`,
+      accent: 'amber',
       priority: 20,
       badge: feedbackBadge,
     }

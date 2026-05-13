@@ -1157,7 +1157,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Payments Section */}
-      <div className="mt-6">
+      <div id="payments" className="mt-6 scroll-mt-8">
         <ClientPaymentsSection clientId={id} />
       </div>
 

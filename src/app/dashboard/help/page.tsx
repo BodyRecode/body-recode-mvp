@@ -1029,6 +1029,7 @@ export default function HelpPage() {
 
           <Section id="clients-dashboard" title="13. Clients Dashboard" colour="teal">
             <p>The clients dashboard shows a live overview of all active clients. For each client in active coaching, the row displays:</p>
+            <p className="mt-3"><strong>Today&apos;s Focus</strong> (on the dashboard home) folds onboarding stage, readiness signals, overdue check-ins, and payment state into one priority-coded action per client. Money signals (Stripe subscription past_due / unpaid / canceled, or commencement fee outstanding 7+ days into coaching) sit at the top in red - they preempt readiness flags because billing failures matter before coaching nuance does. Clicking the row deep-links to the payments section on the client profile.</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li><strong>Week number</strong> - Current coaching week based on their start date.</li>
               <li><strong>A / B check-in status</strong> - Teal if submitted this week, grey if not yet submitted.</li>

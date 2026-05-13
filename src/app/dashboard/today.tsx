@@ -16,13 +16,21 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { evaluateReadiness, type ReadinessReport } from '@/lib/readiness-monitor'
-import { ArrowUpRight, AlertTriangle, CircleAlert, MessageSquare, Sparkles } from 'lucide-react'
+import {
+  ArrowUpRight,
+  AlertTriangle,
+  CircleAlert,
+  CreditCard,
+  MessageSquare,
+  Sparkles,
+} from 'lucide-react'
 import { Card, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 import {
   computeClientNextAction,
   sortNextActions,
   type ClientNextAction,
   type ClientNextActionInput,
+  type PaymentSignal,
 } from '@/lib/client-next-action'
 
 export default async function TodayWidget() {
@@ -45,6 +53,8 @@ export default async function TodayWidget() {
     { data: cfwsAll },
     { data: weeklyCheckins },
     { data: feedback },
+    { data: subscriptions },
+    { data: paymentPlans },
   ] = await Promise.all([
     admin
       .from('clients')
@@ -73,6 +83,13 @@ export default async function TodayWidget() {
       .from('client_feedback')
       .select('client_id')
       .is('acknowledged_at', null),
+    admin
+      .from('client_subscriptions')
+      .select('client_id, status, amount, currency, billing_interval, current_period_end, canceled_at, created_at')
+      .order('created_at', { ascending: false }),
+    admin
+      .from('client_payment_plan')
+      .select('client_id, commencement_fee_paid_at'),
   ])
 
   if (!clients) {
@@ -118,6 +135,26 @@ export default async function TodayWidget() {
     feedbackByClient.set(f.client_id, (feedbackByClient.get(f.client_id) ?? 0) + 1)
   }
 
+  // ── Payments lookup ─────────────────────────────────────────────────────
+  // Subscriptions arrive ordered created_at desc. Per client we want the
+  // "primary" one (active/trialing first, else the most recent record) — same
+  // selection rule as client-payments-section.tsx so signals stay consistent.
+  type SubRow = NonNullable<typeof subscriptions>[number]
+  const allSubsByClient = new Map<string, SubRow[]>()
+  for (const s of subscriptions ?? []) {
+    const list = allSubsByClient.get(s.client_id) ?? []
+    list.push(s)
+    allSubsByClient.set(s.client_id, list)
+  }
+  const primarySubByClient = new Map<string, SubRow>()
+  for (const [cid, list] of allSubsByClient.entries()) {
+    const live = list.find((s) => s.status === 'active' || s.status === 'trialing')
+    primarySubByClient.set(cid, live ?? list[0])
+  }
+
+  const paymentPlanByClient = new Map<string, NonNullable<typeof paymentPlans>[number]>()
+  for (const p of paymentPlans ?? []) paymentPlanByClient.set(p.client_id, p)
+
   // ── For each client, build the snapshot + run the state machine ────────
   const actions: ClientNextAction[] = []
   for (const client of clients) {
@@ -158,6 +195,14 @@ export default async function TodayWidget() {
       ? clientCheckins.some((ci) => ci.week_number === currentWeekNumber)
       : false
 
+    const { paymentSignal, paymentDetail } = derivePaymentSignal({
+      hasStarted,
+      coachingStartedAt: client.coaching_started_at ?? null,
+      primarySub: primarySubByClient.get(client.id) ?? null,
+      paymentPlan: paymentPlanByClient.get(client.id) ?? null,
+      today,
+    })
+
     const input: ClientNextActionInput = {
       clientId: client.id,
       clientName: client.name,
@@ -187,6 +232,8 @@ export default async function TodayWidget() {
       unacknowledgedFeedbackCount: feedbackByClient.get(client.id) ?? 0,
       thisWeeksCheckinSubmitted,
       currentWeekNumber,
+      paymentSignal,
+      paymentDetail,
     }
 
     actions.push(computeClientNextAction(input))
@@ -198,6 +245,12 @@ export default async function TodayWidget() {
   const awaitingCoach = sorted.filter((a) => a.priority <= 20).length
   const drifting = sorted.filter((a) => a.priority === 30).length
   const totalFeedback = Array.from(feedbackByClient.values()).reduce((s, n) => s + n, 0)
+  const paymentIssues = sorted.filter((a) =>
+    a.stage === 'payment_past_due' ||
+    a.stage === 'payment_unpaid' ||
+    a.stage === 'payment_canceled' ||
+    a.stage === 'payment_commencement_missing'
+  ).length
 
   return (
     <Card padding="md" className="mb-6">
@@ -229,6 +282,14 @@ export default async function TodayWidget() {
               value={drifting}
               label={`drifting`}
               accent="amber"
+            />
+          )}
+          {paymentIssues > 0 && (
+            <SummaryPill
+              value={paymentIssues}
+              label={`payment issue${paymentIssues === 1 ? '' : 's'}`}
+              accent="red"
+              icon={<CreditCard size={10} />}
             />
           )}
           {totalFeedback > 0 && (
@@ -346,9 +407,118 @@ function iconFor(action: ClientNextAction) {
     case 'active_reassessment':
     case 'active_drift':
       return AlertTriangle
+    case 'payment_past_due':
+    case 'payment_unpaid':
+    case 'payment_canceled':
+    case 'payment_commencement_missing':
+      return CreditCard
     default:
       return Sparkles
   }
+}
+
+/* ───────────────────────────────────────────────────────────────────────── */
+
+/**
+ * Map the cached Stripe subscription + client_payment_plan rows into a single
+ * paymentSignal for the state machine.
+ *
+ * Rules (mirrors the per-client payments section so signals stay consistent):
+ *   - past_due / unpaid on the primary sub  → red flag (most urgent)
+ *   - canceled primary sub while the client is in active coaching → red flag
+ *   - no live sub + on a plan + coaching started 7+ days ago + commencement
+ *     fee not received → amber flag (gives a brief grace window so the
+ *     dashboard doesn't scream the moment someone starts)
+ *
+ * Returns null for clients with no plan and no subscriptions — these are
+ * exempt (contra deals, free legacy clients).
+ */
+function derivePaymentSignal(args: {
+  hasStarted: boolean
+  coachingStartedAt: string | null
+  primarySub:
+    | {
+        status: string
+        amount: number | null
+        currency: string | null
+        billing_interval: string | null
+        current_period_end: string | null
+        canceled_at: string | null
+      }
+    | null
+  paymentPlan: { commencement_fee_paid_at: string | null } | null
+  today: Date
+}): { paymentSignal: PaymentSignal | null; paymentDetail: string | null } {
+  const { primarySub, paymentPlan, hasStarted, coachingStartedAt, today } = args
+
+  if (!primarySub && !paymentPlan) {
+    return { paymentSignal: null, paymentDetail: null }
+  }
+
+  if (primarySub?.status === 'past_due') {
+    return {
+      paymentSignal: 'past_due',
+      paymentDetail: formatSubAmount(primarySub) + ' · last charge failed',
+    }
+  }
+
+  if (primarySub?.status === 'unpaid') {
+    return {
+      paymentSignal: 'unpaid',
+      paymentDetail:
+        formatSubAmount(primarySub) +
+        ' · Stripe has stopped retrying, client action required',
+    }
+  }
+
+  if (primarySub?.status === 'canceled' && hasStarted) {
+    const when = primarySub.canceled_at
+      ? new Date(primarySub.canceled_at).toLocaleDateString('en-AU', {
+          day: 'numeric',
+          month: 'short',
+        })
+      : null
+    return {
+      paymentSignal: 'canceled',
+      paymentDetail: when
+        ? `Canceled ${when} · client still flagged active`
+        : 'Recurring sub no longer billing, client still flagged active',
+    }
+  }
+
+  // Commencement-missing: must have a plan attached, no fee received yet, and
+  // coaching has been running for at least a week. Avoids flagging on day 1.
+  if (
+    paymentPlan &&
+    !paymentPlan.commencement_fee_paid_at &&
+    hasStarted &&
+    coachingStartedAt
+  ) {
+    const startedAt = new Date(coachingStartedAt).getTime()
+    const daysSinceStart = Math.floor((today.getTime() - startedAt) / 86400000)
+    if (daysSinceStart >= 7) {
+      return {
+        paymentSignal: 'commencement_missing',
+        paymentDetail: `${daysSinceStart} days in, $240 commencement fee not received`,
+      }
+    }
+  }
+
+  return { paymentSignal: null, paymentDetail: null }
+}
+
+function formatSubAmount(sub: {
+  amount: number | null
+  currency: string | null
+  billing_interval: string | null
+}): string {
+  if (sub.amount == null) return 'Subscription'
+  const currency = (sub.currency ?? 'aud').toUpperCase()
+  const interval = sub.billing_interval ? `/${sub.billing_interval}` : ''
+  return `${currency} $${Number(sub.amount).toLocaleString('en-AU', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  })}${interval}`
 }
 
 function EmptyStateBlock() {
