@@ -1633,6 +1633,11 @@ export default function StrategyPage() {
       {/* ── ADS ── */}
       {tab === 'ads' && (
         <div className="space-y-4">
+          <Card className="border-pink-500/30 bg-pink-500/5">
+            <SectionLabel>Meta Ads Only</SectionLabel>
+            <p className="text-sm text-stone-300 leading-relaxed">All paid spend goes to Meta (Instagram feed + Reels + Facebook). LinkedIn stays organic-only - the executive-reframe channel is a slow-burn brand-build, not a paid acquisition channel. No LinkedIn ads, no LinkedIn boost budget.</p>
+          </Card>
+
           <Card className="border-amber-500/20 bg-amber-500/5">
             <SectionLabel>Sequence Rule</SectionLabel>
             <Body>Organic first. Ads second. Ads are a multiplier on a system that already converts - not a replacement for proving the funnel works. Run organic until you have consistent scorecard submissions from content. Then add ads to scale what's working.</Body>
