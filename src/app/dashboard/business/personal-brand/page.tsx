@@ -567,6 +567,29 @@ function CadenceTab() {
       </Card>
 
       <Card>
+        <SectionLabel>LinkedIn - Secondary Platform</SectionLabel>
+        <div className="flex items-center gap-2 mb-4">
+          <Tag color="amber">1 personal-brand post per week</Tag>
+        </div>
+        <p className="text-sm text-stone-400 leading-relaxed mb-3">
+          Personal brand content (the four pillars) also goes on LinkedIn alongside Studio of Ten posts and Body Recode executive reframe posts. Total LinkedIn feed: 4-6 posts/week across all three channels, posted from the same personal profile.
+        </p>
+        <div className="space-y-2">
+          {[
+            { channel: 'Studio of Ten', freq: '2-3 posts/wk' },
+            { channel: 'Personal Brand', freq: '1 post/wk' },
+            { channel: 'Body Recode (NEW May 2026)', freq: '1-2 posts/wk' },
+          ].map(r => (
+            <div key={r.channel} className="flex items-center gap-3 text-xs py-1.5 border-b border-stone-800/60 last:border-0">
+              <p className="text-white w-52 shrink-0">{r.channel}</p>
+              <p className="text-stone-400">{r.freq}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-stone-600 mt-3">See <strong className="text-stone-400">Marketing Strategy → LinkedIn tab</strong> for the Body Recode LinkedIn pillars, tone rules, and 12-week pipeline.</p>
+      </Card>
+
+      <Card>
         <SectionLabel>Tone</SectionLabel>
         <p className="text-sm text-stone-300 mb-4">Direct. Structured. No filler. Reads like someone who has thought about this for years and is now documenting it.</p>
         <div className="grid grid-cols-2 gap-4">

@@ -815,19 +815,19 @@ export default function StrategyPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Card>
-              <SectionLabel>Primary Platform</SectionLabel>
-              <p className="text-white font-semibold">Instagram</p>
-              <p className="text-xs text-stone-500 mt-1">Facebook auto cross-post. Meta ads on both.</p>
+              <SectionLabel>Primary Channels</SectionLabel>
+              <p className="text-white font-semibold">Instagram + LinkedIn</p>
+              <p className="text-xs text-stone-500 mt-1">IG 5×/wk (scorecard funnel, Meta ads). LinkedIn 1-2×/wk (executive reframe, no ads).</p>
             </Card>
             <Card>
               <SectionLabel>Posting Frequency</SectionLabel>
-              <p className="text-white font-semibold">5× per week</p>
-              <p className="text-xs text-stone-500 mt-1">3 graphics / carousels + 2 reels</p>
+              <p className="text-white font-semibold">5× IG + 1-2× LI</p>
+              <p className="text-xs text-stone-500 mt-1">IG: 3 graphics/carousels + 2 reels. LinkedIn: short essays Tue/Thu morning.</p>
             </Card>
             <Card>
               <SectionLabel>Ad Budget</SectionLabel>
               <p className="text-white font-semibold">$20–30/day AUD</p>
-              <p className="text-xs text-stone-500 mt-1">Run minimum 2 weeks before judging</p>
+              <p className="text-xs text-stone-500 mt-1">Meta only. LinkedIn stays organic.</p>
             </Card>
           </div>
 
