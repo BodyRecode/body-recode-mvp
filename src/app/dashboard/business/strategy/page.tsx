@@ -870,29 +870,20 @@ export default function StrategyPage() {
           </Card>
 
           <Card>
-            <SectionLabel>Two Parallel Objectives</SectionLabel>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <div className="flex items-center gap-2 mb-2"><Tag color="teal">Objective 1</Tag></div>
-                <Heading>Performance Coaching - Ongoing Acquisition</Heading>
-                <Body>Cold traffic → Scorecard → Zoom 1 booking → Zoom 2 → client. Organic first. Ads added once organic conversion is proven.</Body>
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-2"><Tag color="violet">Objective 2</Tag></div>
-                <Heading>Founding Client Program - 20 Spots</Heading>
-                <Body>Parallel track. Separate content angles. Application-based. Urgency through finite positions. People must feel selected, not sold to.</Body>
-              </div>
-            </div>
+            <SectionLabel>Primary Objective</SectionLabel>
+            <div className="flex items-center gap-2 mb-2"><Tag color="teal">Performance Coaching</Tag></div>
+            <Heading>Ongoing Acquisition</Heading>
+            <Body>Cold traffic → Scorecard → Zoom 1 booking → Zoom 2 → client. Two channels feeding the same scorecard: Instagram (consumer funnel, Meta ads) and LinkedIn (executive reframe, organic only). Both attributed separately in the CRM.</Body>
           </Card>
 
           <Card>
             <SectionLabel>What to Ignore Right Now</SectionLabel>
             <div className="flex flex-wrap gap-2">
-              {['TikTok', 'YouTube', 'LinkedIn', 'Twitter / X', 'Podcasts', 'Email newsletters'].map(p => (
+              {['TikTok', 'YouTube', 'Twitter / X', 'Podcasts', 'Email newsletters'].map(p => (
                 <span key={p} className="text-xs text-stone-600 bg-stone-800/50 border border-stone-800 px-2.5 py-1 rounded-full line-through">{p}</span>
               ))}
             </div>
-            <p className="text-xs text-stone-600 mt-3">One platform done well outperforms five done badly. Lock Instagram + Meta ads for 90 days first.</p>
+            <p className="text-xs text-stone-600 mt-3">Two channels done well outperform five done badly. Lock Instagram + LinkedIn + Meta ads first.</p>
           </Card>
         </div>
       )}
