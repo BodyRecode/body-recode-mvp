@@ -6,7 +6,7 @@ export type AdaptationArc = 'short' | 'mid' | 'long'
 
 export type ExposureReadiness = 'Green' | 'Amber' | 'Red' | 'Unknown'
 
-export type LeadSource = 'quiz' | 'instagram' | 'facebook' | 'google' | 'gym_floor' | 'referral' | 'direct' | 'other'
+export type LeadSource = 'quiz' | 'instagram' | 'facebook' | 'linkedin' | 'google' | 'gym_floor' | 'referral' | 'direct' | 'other'
 
 export type LeadStatus =
   | 'new_check_in'

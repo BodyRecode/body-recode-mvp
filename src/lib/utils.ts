@@ -65,6 +65,7 @@ export function getLeadSourceLabel(source: string) {
     website: 'Website',
     instagram: 'Instagram',
     facebook: 'Facebook',
+    linkedin: 'LinkedIn',
     google: 'Google',
     referral: 'Referral',
     direct: 'Direct',

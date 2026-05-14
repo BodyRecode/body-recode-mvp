@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
-type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'organic' | 'ads' | 'timeline' | 'pages' | 'calendar'
+type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'organic' | 'ads' | 'linkedin' | 'timeline' | 'pages' | 'calendar'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
@@ -12,6 +12,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'prelaunch', label: 'Pre-Launch' },
   { id: 'organic', label: 'Organic → Ads' },
   { id: 'ads', label: 'Paid Ads' },
+  { id: 'linkedin', label: 'LinkedIn' },
   { id: 'timeline', label: 'Launch Timeline' },
   { id: 'pages', label: 'Pages' },
   { id: 'calendar', label: 'Content Calendar' },
@@ -1798,6 +1799,173 @@ export default function StrategyPage() {
               ))}
             </div>
           </Card>
+        </div>
+      )}
+
+      {/* ── LINKEDIN ── */}
+      {tab === 'linkedin' && (
+        <div className="space-y-4">
+
+          {/* Overview */}
+          <Card className="border-blue-500/30 bg-blue-500/5">
+            <SectionLabel>LinkedIn — Body Recode Channel</SectionLabel>
+            <Body>Opened as a parallel funnel into the same scorecard, reaching the same demographic (high-functioning adults, executives, founders, professionals) through a different channel with different language. Instagram strategy stays locked. LinkedIn is additive, not a replacement.</Body>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="p-3 rounded-lg bg-stone-950 border border-stone-800">
+                <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Posted from</p>
+                <p className="text-xs text-white font-medium">Kade Dunstone personal profile</p>
+                <p className="text-[11px] text-stone-500 mt-1">No separate Body Recode LinkedIn page. Audience follows the person.</p>
+              </div>
+              <div className="p-3 rounded-lg bg-stone-950 border border-stone-800">
+                <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Source tracking</p>
+                <p className="text-xs text-teal-400 font-mono">?source=linkedin</p>
+                <p className="text-[11px] text-stone-500 mt-1">Leads tagged separately from Instagram in CRM.</p>
+              </div>
+            </div>
+          </Card>
+
+          {/* Cadence */}
+          <Card>
+            <SectionLabel>Cadence</SectionLabel>
+            <div className="space-y-1.5">
+              {[
+                { channel: 'Studio of Ten',    freq: '2-3 posts/week', note: 'Already running' },
+                { channel: 'Personal Brand',   freq: '1 post/week',    note: '4 personal pillars (Body, Thinking, AI, Rebuild)' },
+                { channel: 'Body Recode (NEW)', freq: '1-2 posts/week', note: 'Executive/performance reframe' },
+                { channel: 'TOTAL FEED',        freq: '4-6 posts/week', note: 'Sustainable for one person' },
+              ].map(r => (
+                <div key={r.channel} className={`flex items-center gap-3 text-xs py-2 px-3 rounded-lg ${r.channel === 'TOTAL FEED' ? 'bg-teal-500/5 border border-teal-500/20' : 'border border-stone-800'}`}>
+                  <span className={`w-44 shrink-0 font-medium ${r.channel === 'TOTAL FEED' ? 'text-teal-400' : 'text-white'}`}>{r.channel}</span>
+                  <span className={`w-32 shrink-0 ${r.channel === 'TOTAL FEED' ? 'text-teal-300' : 'text-stone-300'}`}>{r.freq}</span>
+                  <span className="text-stone-500 flex-1">{r.note}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-stone-600 mt-3">BR slot rotates Tue or Thu morning (~7am Brisbane) — when executives scroll before work.</p>
+          </Card>
+
+          {/* Four pillars */}
+          <Card>
+            <SectionLabel>The Four Content Pillars</SectionLabel>
+            <div className="space-y-3 mt-2">
+              {[
+                {
+                  num: '01',
+                  title: 'State over Discipline',
+                  color: 'teal' as const,
+                  desc: 'Why high performers do not have a willpower problem, they have a physiology problem.',
+                  hook: '"Discipline is a symptom. State is the variable."',
+                },
+                {
+                  num: '02',
+                  title: 'The Effort Trap',
+                  color: 'violet' as const,
+                  desc: 'Why adding more input fails when the body cannot convert it. Contrarian to LinkedIn\'s hustle default.',
+                  hook: '"When the system stops responding, the instinct is to add more effort. That\'s the problem."',
+                },
+                {
+                  num: '03',
+                  title: 'Physiology and Decision-Making',
+                  color: 'amber' as const,
+                  desc: 'How depleted state degrades executive function, judgement, energy. Career-relevant angle.',
+                  hook: '"The decisions you make at 2pm are not made by the same person who made them at 9am."',
+                },
+                {
+                  num: '04',
+                  title: 'Interpretation over Prescription',
+                  color: 'orange' as const,
+                  desc: 'The methodology layer. How BR actually works. Bridges into B2B/licensable later.',
+                  hook: '"Most coaches prescribe before they read. That\'s why most programs fail high performers."',
+                },
+              ].map(p => {
+                const colorMap = {
+                  teal:   { border: 'border-teal-500/30',   bg: 'bg-teal-500/5',   accent: 'text-teal-400' },
+                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-400' },
+                  amber:  { border: 'border-amber-500/30',  bg: 'bg-amber-500/5',  accent: 'text-amber-400' },
+                  orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-400' },
+                }[p.color]
+                return (
+                  <div key={p.num} className={`p-4 rounded-lg border ${colorMap.border} ${colorMap.bg}`}>
+                    <div className="flex items-start gap-3">
+                      <span className={`text-lg font-bold font-mono ${colorMap.accent} opacity-60`}>{p.num}</span>
+                      <div className="flex-1">
+                        <p className={`text-sm font-semibold ${colorMap.accent} mb-1`}>{p.title}</p>
+                        <p className="text-xs text-stone-400 mb-2 leading-relaxed">{p.desc}</p>
+                        <p className="text-xs text-stone-300 italic leading-relaxed">{p.hook}</p>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+            <p className="text-xs text-stone-600 mt-3">Each pillar has 8-12 angles in the bank. We don't burn them all in month one.</p>
+          </Card>
+
+          {/* Tone */}
+          <Card>
+            <SectionLabel>Tone Rules</SectionLabel>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-widest text-teal-500/60 mb-2 font-bold">Always</p>
+                <div className="space-y-1.5">
+                  {[
+                    'Performance, recovery, decision-making language',
+                    'Short essay format, 150-250 words',
+                    'One specific reframe per post',
+                    'CTA every 4-5 posts only',
+                    'First-person, structured, no fluff',
+                  ].map(t => (
+                    <div key={t} className="flex items-start gap-2 text-xs text-stone-300">
+                      <span className="text-teal-500/60 mt-0.5">+</span> {t}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-widest text-red-500/60 mb-2 font-bold">Never</p>
+                <div className="space-y-1.5">
+                  {[
+                    'Fat loss / weight loss / body composition language',
+                    'Scorecard-funnel hooks ("your body is in 3 states")',
+                    'Carousels (LinkedIn does not reward them)',
+                    'Links in post body (kills reach — put in profile)',
+                    'A separate Body Recode LinkedIn page',
+                  ].map(t => (
+                    <div key={t} className="flex items-start gap-2 text-xs text-stone-500">
+                      <span className="text-red-500/60 mt-0.5">−</span> {t}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* How IG and LinkedIn coexist */}
+          <Card>
+            <SectionLabel>How Instagram and LinkedIn Coexist</SectionLabel>
+            <Body>Both feed the same scorecard. Both reach the same demographic. Different language for the same physiology.</Body>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="p-3 rounded-lg bg-pink-500/5 border border-pink-500/20">
+                <p className="text-[10px] font-bold text-pink-400 uppercase tracking-widest mb-2">Instagram</p>
+                <p className="text-xs text-stone-300 mb-2 font-medium">Body state, fat loss, depleted/transitioning/ready</p>
+                <p className="text-[11px] text-stone-500 leading-relaxed">5×/week, scorecard funnel, Meta ads running, consumer voice</p>
+              </div>
+              <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
+                <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2">LinkedIn</p>
+                <p className="text-xs text-stone-300 mb-2 font-medium">Performance, recovery, decision-making, executive function</p>
+                <p className="text-[11px] text-stone-500 leading-relaxed">1-2×/week, organic only, no ads, executive voice</p>
+              </div>
+            </div>
+            <p className="text-xs text-stone-600 mt-3">Same physiology underneath. Different surface. The IG audience and LinkedIn audience are largely distinct, so no copy-paste between channels.</p>
+          </Card>
+
+          {/* Honest constraint */}
+          <Card className="border-amber-500/20 bg-amber-500/5">
+            <SectionLabel>Honest Constraint</SectionLabel>
+            <Body>LinkedIn is a slow-burn channel. It will not fill the AF Newstead diary this week or month. Realistic ramp: first BR LinkedIn booking probably 6-10 weeks in. Compounds from there.</Body>
+            <p className="text-xs text-stone-500 mt-3">Instagram funnel stays the conversion engine. LinkedIn is the brand-build and second-channel insurance.</p>
+          </Card>
+
         </div>
       )}
 

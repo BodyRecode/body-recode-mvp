@@ -2294,6 +2294,8 @@ export default function HelpPage() {
               {[
                 { source: 'Instagram bio', url: 'bodyrecode.au/scorecard?source=instagram' },
                 { source: 'Instagram story', url: 'bodyrecode.au/scorecard?source=instagram_story' },
+                { source: 'LinkedIn post', url: 'bodyrecode.au/scorecard?source=linkedin_post' },
+                { source: 'LinkedIn profile bio', url: 'bodyrecode.au/scorecard?source=linkedin_profile' },
                 { source: 'QR floor banner', url: 'bodyrecode.au/scorecard?source=qr_floor_banner' },
                 { source: 'QR flyer', url: 'bodyrecode.au/scorecard?source=qr_flyer' },
               ].map(row => (
@@ -2304,6 +2306,14 @@ export default function HelpPage() {
               ))}
             </div>
             <Note>All URLs redirect to performance.bodyrecode.au/scorecard with source preserved. Every lead that comes in is tagged by source automatically in the CRM.</Note>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">LinkedIn (Body Recode Channel)</p>
+            <p>Opened May 2026 as a parallel funnel into the same scorecard. Reaches the same demographic (high-functioning adults, executives, founders) through a different channel with different language. Instagram strategy is unchanged. LinkedIn is additive.</p>
+            <p className="mt-2">Posted from <strong>Kade Dunstone&apos;s personal LinkedIn profile</strong>. No separate Body Recode LinkedIn page - audience follows the person. Four pillars: State over Discipline / The Effort Trap / Physiology and Decision-Making / Interpretation over Prescription.</p>
+            <p className="mt-2"><strong>Cadence:</strong> 1-2 BR LinkedIn posts/week (Tue + Thu morning ~7am Brisbane), alongside Studio of Ten (2-3/wk) and Personal Brand (1/wk). Total feed 4-6 LinkedIn posts/wk.</p>
+            <p className="mt-2"><strong>Tone:</strong> performance, recovery, decision-making, executive function language. Never fat loss vocabulary. Never scorecard-funnel hooks. Short essay format 150-250 words. CTAs every 4-5 posts only. No links in post body (kills reach) - put CTAs in profile and first comment.</p>
+            <p className="mt-2">Full strategy at <strong>Business → Marketing Strategy → LinkedIn tab</strong>. 12-week pipeline document at <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/LINKEDIN-BODY-RECODE-12-WEEK-PIPELINE.md</code>.</p>
+            <p className="mt-2">Leads land tagged <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">source=linkedin</code> in the CRM, filterable separately from Instagram on the leads page. Realistic ramp to first booking is 6-10 weeks - slow-burn channel, not primary conversion engine.</p>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Highlight Covers</p>
             <p>Set up highlight covers before outreach begins - even if empty. An account with covers looks established.</p>

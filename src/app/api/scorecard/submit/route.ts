@@ -22,10 +22,16 @@ const SOURCE_MAP: Record<string, string> = {
   qr_flyer: 'gym_floor',
   // Gym DM follow-ups (complementary first session bookings)
   gym_complementary: 'gym_floor',
+  // LinkedIn (Body Recode executive reframe channel)
+  // All linkedin_* variants collapse to the single 'linkedin' constraint value;
+  // the original param is preserved on the lead row as source_detail.
+  linkedin_post: 'linkedin',
+  linkedin_comment: 'linkedin',
+  linkedin_profile: 'linkedin',
 }
 
 // Source values the leads.source CHECK constraint accepts directly.
-const ALLOWED_SOURCES = new Set(['quiz', 'other', 'gym_floor', 'instagram', 'facebook', 'direct'])
+const ALLOWED_SOURCES = new Set(['quiz', 'other', 'gym_floor', 'instagram', 'facebook', 'direct', 'linkedin'])
 
 export async function OPTIONS() {
   return new NextResponse(null, { status: 204, headers: CORS })
