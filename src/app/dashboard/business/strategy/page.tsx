@@ -1953,6 +1953,38 @@ export default function StrategyPage() {
             </div>
           </Card>
 
+          {/* Pipeline & Tracking */}
+          <Card>
+            <SectionLabel>Pipeline & Source Tracking</SectionLabel>
+            <div className="space-y-3">
+              <div className="p-3 rounded-lg bg-stone-950 border border-stone-800">
+                <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">12-week pipeline</p>
+                <p className="text-xs text-stone-300 mb-1.5">24 posts written, rotated across the 4 pillars. Tue + Thu cadence. CTAs every ~5 posts.</p>
+                <p className="text-[11px] text-stone-500 font-mono leading-relaxed">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/LINKEDIN-BODY-RECODE-12-WEEK-PIPELINE.md</p>
+              </div>
+              <div className="p-3 rounded-lg bg-teal-500/5 border border-teal-500/20">
+                <p className="text-[10px] font-bold text-teal-400 uppercase tracking-widest mb-1.5">First post</p>
+                <p className="text-xs text-white font-medium">Tue 19 May 2026 · 7am Brisbane · Post 1 of 24 (State over Discipline)</p>
+              </div>
+              <div className="p-3 rounded-lg bg-stone-950 border border-stone-800">
+                <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">Source URL variants</p>
+                <div className="space-y-1.5">
+                  {[
+                    { where: 'In-post CTA',         url: 'bodyrecode.au/scorecard?source=linkedin_post' },
+                    { where: 'Profile bio link',    url: 'bodyrecode.au/scorecard?source=linkedin_profile' },
+                    { where: 'First comment / DM',  url: 'bodyrecode.au/scorecard?source=linkedin_comment' },
+                  ].map(r => (
+                    <div key={r.where} className="flex items-center gap-3 text-[11px]">
+                      <span className="text-stone-400 w-32 shrink-0">{r.where}</span>
+                      <code className="text-teal-400 font-mono text-[10px]">{r.url}</code>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[11px] text-stone-600 mt-2">All variants collapse to <code className="text-teal-400 font-mono">source=linkedin</code> on the lead, with the variant preserved as <code className="text-teal-400 font-mono">source_detail</code> for granular attribution.</p>
+              </div>
+            </div>
+          </Card>
+
           {/* How IG and LinkedIn coexist */}
           <Card>
             <SectionLabel>How Instagram and LinkedIn Coexist</SectionLabel>
