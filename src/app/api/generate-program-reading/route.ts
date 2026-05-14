@@ -10,6 +10,7 @@ import {
   type ProgramReadingProgramContext,
 } from '@/lib/client-program-reading-prompt'
 import { buildProgramReadingEmail } from '@/lib/program-reading-email'
+import { appUrl } from '@/lib/app-url'
 
 export const maxDuration = 300
 
@@ -195,7 +196,7 @@ export async function POST(request: NextRequest) {
   if (!program.program_reading_email_sent_at && client.email && client.onboarding_token) {
     try {
       const firstName = client.name?.split(' ')[0] ?? 'there'
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+      const baseUrl = appUrl()
       const portalUrl = `${baseUrl}/portal/${client.onboarding_token}/program`
       const { subject, html } = buildProgramReadingEmail({
         firstName,

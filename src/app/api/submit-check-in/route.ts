@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildReportEmail, buildFollowUpEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from '@/lib/generate-report'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { appUrl } from '@/lib/app-url'
 
 export const maxDuration = 300
 
@@ -144,7 +145,7 @@ export async function POST(request: NextRequest) {
 
           <tr>
             <td bgcolor="#111110" style="background-color:#111110;padding:20px 40px 28px;border-top:1px solid #1c1917;">
-              <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads" style="display:inline-block;padding:11px 22px;background:#10E1C2;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">View in dashboard</a>
+              <a href="${appUrl()}/dashboard/leads" style="display:inline-block;padding:11px 22px;background:#10E1C2;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">View in dashboard</a>
             </td>
           </tr>
 

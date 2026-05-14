@@ -5,6 +5,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { darkEmailShell } from '@/lib/email-shell'
 import { sendSms, formatPhone } from '@/lib/twilio'
 import { logClientCommunication } from '@/lib/client-communications'
+import { appUrl } from '@/lib/app-url'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -57,7 +58,7 @@ export async function GET(request: NextRequest) {
     }
 
     const firstName = client.name.split(' ')[0]
-    const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/portal/${client.onboarding_token}`
+    const portalUrl = `${appUrl()}/portal/${client.onboarding_token}`
 
     const subject = 'Your weekly check-in is now open'
 

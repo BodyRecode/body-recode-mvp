@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
+import { appUrl } from '@/lib/app-url'
 
 const CATEGORIES = new Set([
   'portal_experience',
@@ -79,7 +80,7 @@ export async function POST(request: NextRequest) {
   // is in the DB and Kade can see it in the dashboard once the inbox view ships.
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const baseUrl = appUrl()
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',

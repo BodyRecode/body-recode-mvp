@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { markdownToHtml } from '@/lib/markdown'
 import fs from 'fs'
 import path from 'path'
+import { appUrl } from '@/lib/app-url'
 
 const STATE_LABELS: Record<string, string> = {
   depleted: 'Depleted',
@@ -42,7 +43,7 @@ export default async function ProgramPage({
 
   const sc = STATE_COLOURS[state] ?? STATE_COLOURS.depleted
   const firstName = lead.name.split(' ')[0]
-  const bookingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/book?source=self_guided_downsell&state=${state}`
+  const bookingUrl = `${appUrl()}/book?source=self_guided_downsell&state=${state}`
 
   return (
     <div style={{ background: '#0c0a09', minHeight: '100vh', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>

@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { buildReportEmail } from '@/lib/generate-report'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
+import { appUrl } from '@/lib/app-url'
 
 const SAMPLE_ANSWERS: Record<string, number> = {
   effort_vs_result: 2,
@@ -86,15 +87,14 @@ export async function POST(request: NextRequest) {
   }
 
   if (type === 'portal-orientation') {
-    // Test sends always reference production assets so images render in
-    // real email clients regardless of local NEXT_PUBLIC_APP_URL.
-    const previousAppUrl = process.env.NEXT_PUBLIC_APP_URL
-    process.env.NEXT_PUBLIC_APP_URL = 'https://app.bodyrecode.au'
+    // appUrl() already pins to the production domain (with safety checks
+    // against the historical Vercel-preview-URL leak), so test sends
+    // automatically reference production assets that render in real email
+    // clients regardless of local env-var state.
     const { subject, html } = buildPortalOrientationEmail({
       firstName: 'Kade',
-      portalUrl: 'https://app.bodyrecode.au/portal/test-token',
+      portalUrl: `${appUrl()}/portal/test-token`,
     })
-    process.env.NEXT_PUBLIC_APP_URL = previousAppUrl
     const result = await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',

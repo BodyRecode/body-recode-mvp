@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { sendMedicalClearanceRequiredEmail } from '@/lib/medical-clearance-required-email'
+import { appUrl } from '@/lib/app-url'
 
 export async function POST(req: NextRequest) {
   const { clientId, requiresClearance, data } = await req.json()
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const name = client?.name ?? 'A client'
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const baseUrl = appUrl()
 
     // Compose status line for the coach email reflecting what happened with
     // the client-facing follow-up. Only included when clearance is required.

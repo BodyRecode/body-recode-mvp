@@ -4,8 +4,9 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNoShowEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from '@/lib/generate-report'
 import { logLeadEvent } from '@/lib/log-lead-event'
+import { appUrl } from '@/lib/app-url'
 
-const BOOKING_LINK = process.env.BOOKING_LINK ?? `${process.env.NEXT_PUBLIC_APP_URL}/book`
+const BOOKING_LINK = process.env.BOOKING_LINK ?? `${appUrl()}/book`
 
 export async function POST(
   _request: NextRequest,

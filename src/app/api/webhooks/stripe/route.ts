@@ -6,6 +6,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { buildProgramBuyerEmails, buildReportFollowUpEmails, daysAfter9amBrisbane, nextMorning9amBrisbane } from '@/lib/generate-report'
 import { inngest } from '@/lib/inngest'
 import { syncSubscriptionFromStripe, markCommencementPaid } from '@/lib/stripe-sync'
+import { appUrl } from '@/lib/app-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -154,7 +155,7 @@ export async function POST(request: NextRequest) {
   <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">Payment failed — ${client.name}</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">A subscription payment for ${client.name} (${client.email}) has failed. Check Stripe for details.</p>
-  <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/business/payments" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Payments</a>
+  <a href="${appUrl()}/dashboard/business/payments" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Payments</a>
 </div>`,
           })
         }
@@ -216,7 +217,7 @@ export async function POST(request: NextRequest) {
       sent_at: new Date().toISOString(),
     })
 
-    const programUrl = `${process.env.NEXT_PUBLIC_APP_URL}/program/${token}`
+    const programUrl = `${appUrl()}/program/${token}`
     const firstName = name.split(' ')[0]
 
     if (email && process.env.RESEND_API_KEY) {
@@ -273,12 +274,12 @@ export async function POST(request: NextRequest) {
   <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${name} purchased the ${stateLabel} State Program</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">$97. Program delivered to ${email}. They are in the downsell funnel.</p>
-  <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads/${lead_id}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Lead</a>
+  <a href="${appUrl()}/dashboard/leads/${lead_id}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Lead</a>
 </div>`,
       })
 
       // Schedule program buyer nurture sequence (Week 4, 8, 12)
-      const BOOKING_LINK = process.env.BOOKING_LINK ?? `${process.env.NEXT_PUBLIC_APP_URL}/book`
+      const BOOKING_LINK = process.env.BOOKING_LINK ?? `${appUrl()}/book`
       const { email1: n1, email2: n2, email3: n3 } = buildProgramBuyerEmails(firstName, BOOKING_LINK)
       const now = new Date()
       const week4 = daysAfter9amBrisbane(now, 28)
@@ -342,8 +343,8 @@ export async function POST(request: NextRequest) {
     if (report && process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY)
       const firstName = name.split(' ')[0]
-      const reportUrl = `${process.env.NEXT_PUBLIC_APP_URL}/report/${report.token}`
-      const BOOKING_LINK = process.env.BOOKING_LINK ?? `${process.env.NEXT_PUBLIC_APP_URL}/book`
+      const reportUrl = `${appUrl()}/report/${report.token}`
+      const BOOKING_LINK = process.env.BOOKING_LINK ?? `${appUrl()}/book`
 
       // Deliver the report
       await resend.emails.send({
@@ -467,7 +468,7 @@ export async function POST(request: NextRequest) {
 
     if (enrollment && process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY)
-      const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/${enrollment.token}`
+      const portalUrl = `${appUrl()}/blueprint/${enrollment.token}`
 
       const patternLabel: Record<string, string> = {
         'stress-stored': 'Stress-Stored',
@@ -561,8 +562,8 @@ export async function POST(request: NextRequest) {
     if (membership && process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY)
       const portalUrl = blueprint_token
-        ? `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/${blueprint_token}`
-        : `${process.env.NEXT_PUBLIC_APP_URL}/membership/${membership.token}`
+        ? `${appUrl()}/blueprint/${blueprint_token}`
+        : `${appUrl()}/membership/${membership.token}`
 
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
@@ -639,7 +640,7 @@ export async function POST(request: NextRequest) {
 
     if (enrollment && process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY)
-      const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/extension/${enrollment.token}`
+      const portalUrl = `${appUrl()}/extension/${enrollment.token}`
 
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
@@ -779,7 +780,7 @@ export async function POST(request: NextRequest) {
   <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${client.name} paid the commencement fee.</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">$240 confirmed. The Payments tracker now shows commencement as paid on their profile.</p>
-  <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/clients/${client.id}#payments" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client</a>
+  <a href="${appUrl()}/dashboard/clients/${client.id}#payments" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client</a>
 </div>`,
       })
     }
@@ -895,7 +896,7 @@ export async function POST(request: NextRequest) {
   <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${lead.name} just paid.</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Commencement fee confirmed. Welcome email and intake link have been sent to ${lead.email}.</p>
-  <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads/${lead.id}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View lead</a>
+  <a href="${appUrl()}/dashboard/leads/${lead.id}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View lead</a>
 </div>`,
     })
   }
@@ -904,7 +905,7 @@ export async function POST(request: NextRequest) {
   if (lead.email && process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const firstName = lead.name.split(' ')[0]
-    const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/portal/${client.onboarding_token}`
+    const portalUrl = `${appUrl()}/portal/${client.onboarding_token}`
 
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',

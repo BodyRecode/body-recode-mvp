@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFFSSystemPrompt, buildCFFSUserPrompt } from '@/lib/cffs-prompt'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
+import { appUrl } from '@/lib/app-url'
 
 export const maxDuration = 300
 
@@ -175,7 +176,7 @@ export async function POST(request: NextRequest) {
       .eq('id', invitation.client_id)
       .single()
     const clientName = client?.name ?? 'A client'
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const baseUrl = appUrl()
 
     const bodyLines: string[] = []
     bodyLines.push(`${clientName} just completed the supplementary intake. The dietary context fields are now on their intake row and any new medications have been written to their profile.`)

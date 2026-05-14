@@ -10,6 +10,7 @@ import {
   type NutritionReadingPlanContext,
 } from '@/lib/client-nutrition-reading-prompt'
 import { buildNutritionReadingEmail } from '@/lib/nutrition-reading-email'
+import { appUrl } from '@/lib/app-url'
 
 export const maxDuration = 300
 
@@ -201,7 +202,7 @@ export async function POST(request: NextRequest) {
   if (!plan.nutrition_reading_email_sent_at && client.email && client.onboarding_token) {
     try {
       const firstName = client.name?.split(' ')[0] ?? 'there'
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+      const baseUrl = appUrl()
       const portalUrl = `${baseUrl}/portal/${client.onboarding_token}/my-plan`
       const { subject, html } = buildNutritionReadingEmail({
         firstName,

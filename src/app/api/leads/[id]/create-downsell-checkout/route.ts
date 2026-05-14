@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { appUrl } from '@/lib/app-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -73,8 +74,8 @@ export async function POST(
       name: lead.name,
       email: lead.email ?? '',
     },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/program/success`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/program/cancelled`,
+    success_url: `${appUrl()}/program/success`,
+    cancel_url: `${appUrl()}/program/cancelled`,
   })
 
   return NextResponse.json({ url: session.url })

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { appUrl } from '@/lib/app-url'
 
 type CheckStatus = 'ok' | 'fixed' | 'failed' | 'info'
 
@@ -62,7 +63,7 @@ async function checkAvailabilitySlots(admin: ReturnType<typeof createAdminClient
       }
     }
 
-    const slotsRes = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/booking-slots?days=7`)
+    const slotsRes = await fetch(`${appUrl()}/api/booking-slots?days=7`)
     const slots = await slotsRes.json()
     if (!Array.isArray(slots) || slots.length === 0) {
       return {

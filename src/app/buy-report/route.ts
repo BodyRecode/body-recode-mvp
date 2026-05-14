@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { appUrl } from '@/lib/app-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 function errorRedirect(reason: string) {
-  const url = new URL(`${process.env.NEXT_PUBLIC_APP_URL}/get-report`)
+  const url = new URL(`${appUrl()}/get-report`)
   url.searchParams.set('error', reason)
   return NextResponse.redirect(url, { status: 302 })
 }
@@ -76,8 +77,8 @@ export async function GET(request: NextRequest) {
       body_state,
       section_scores: JSON.stringify(section_scores),
     },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/report/pending?email=${encodeURIComponent(lead.email)}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/get-report`,
+    success_url: `${appUrl()}/report/pending?email=${encodeURIComponent(lead.email)}`,
+    cancel_url: `${appUrl()}/get-report`,
   })
 
   if (!session.url) return errorRedirect('stripe-failed')

@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { appUrl } from '@/lib/app-url'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -97,7 +98,7 @@ export async function POST(req: NextRequest) {
       `,
     })
 
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const baseUrl = appUrl()
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',

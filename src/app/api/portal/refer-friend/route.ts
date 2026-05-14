@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
+import { appUrl } from '@/lib/app-url'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
 
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const baseUrl = appUrl()
     const cleanNote = typeof note === 'string' ? note.trim().replace(/—/g, ', ') : null
     const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     const escapedNote = cleanNote ? escape(cleanNote).replace(/\n/g, '<br/>') : null

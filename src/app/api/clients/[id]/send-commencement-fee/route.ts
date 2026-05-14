@@ -18,6 +18,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { darkEmailShell } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
+import { appUrl } from '@/lib/app-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -78,8 +79,8 @@ export async function POST(
       client_id: id,
       type: 'commencement_fee',
     },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment-success`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/clients/${id}`,
+    success_url: `${appUrl()}/payment-success`,
+    cancel_url: `${appUrl()}/dashboard/clients/${id}`,
   })
 
   const firstName = client.name.split(' ')[0]
@@ -193,8 +194,8 @@ export async function PUT(
       },
     ],
     metadata: { client_id: id, type: 'commencement_fee' },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment-success`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/clients/${id}`,
+    success_url: `${appUrl()}/payment-success`,
+    cancel_url: `${appUrl()}/dashboard/clients/${id}`,
   })
 
   return NextResponse.json({ url: session.url })

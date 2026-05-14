@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { appUrl } from '@/lib/app-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -45,7 +46,7 @@ export async function POST(request: NextRequest) {
       body_state,
       section_scores: JSON.stringify(section_scores ?? {}),
     },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/report/pending?email=${encodeURIComponent(email)}`,
+    success_url: `${appUrl()}/report/pending?email=${encodeURIComponent(email)}`,
     cancel_url: `https://performance.bodyrecode.au/scorecard`,
   })
 

@@ -16,6 +16,7 @@
 import { Resend } from 'resend'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { buildCoachNotificationEmail } from './coach-notification-email'
+import { appUrl } from '@/lib/app-url'
 
 export interface NotifyOptions {
   /** Which form was just submitted; lets the email name the trigger. */
@@ -48,7 +49,7 @@ export async function notifyOnboardingCompleteIfReady(
   if (!baselines || baselines.length === 0) return { sent: false, reason: 'baseline not submitted' }
 
   const hasActiveCFFS = !!(existingCffs && existingCffs.length > 0)
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+  const baseUrl = appUrl()
   const clientProfileUrl = `${baseUrl}/dashboard/clients/${clientId}`
 
   let subject: string

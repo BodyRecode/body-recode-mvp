@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { emailUrlFallback } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
+import { appUrl } from '@/lib/app-url'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -48,7 +49,7 @@ export async function GET(request: NextRequest) {
       hour: 'numeric', minute: '2-digit', hour12: true,
     })
 
-    const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/portal/confirm-session?id=${session.id}`
+    const confirmUrl = `${appUrl()}/api/portal/confirm-session?id=${session.id}`
     const subject = `Session reminder - tomorrow at ${displayTime}`
 
     try {

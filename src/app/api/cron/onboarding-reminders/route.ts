@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { logClientCommunication } from '@/lib/client-communications'
+import { appUrl } from '@/lib/app-url'
 
 type Threshold = 3 | 7 | 14
 
@@ -26,7 +27,7 @@ interface TaskState {
   availableAt: string | null
 }
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://app.bodyrecode.au'
+const APP_URL = appUrl()
 
 function dayCard(html: string) {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>

@@ -2,6 +2,7 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { SupabaseClient } from '@supabase/supabase-js'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { appUrl } from '@/lib/app-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -72,8 +73,8 @@ export async function sendDownsellOffer(
       name: lead.name,
       email: lead.email,
     },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/program/success`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/program/cancelled`,
+    success_url: `${appUrl()}/program/success`,
+    cancel_url: `${appUrl()}/program/cancelled`,
   })
 
   const checkoutUrl = session.url!

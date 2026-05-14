@@ -5,6 +5,7 @@ import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notifyOnboardingCompleteIfReady } from '@/lib/onboarding-complete-notification'
+import { appUrl } from '@/lib/app-url'
 
 export const maxDuration = 300
 
@@ -130,7 +131,7 @@ export async function POST(request: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const clientName = intake.full_name || 'A client'
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const baseUrl = appUrl()
 
     // Notify Kade. CFFS is no longer auto-generated at intake-time (the
     // notifyOnboardingCompleteIfReady call further down handles the

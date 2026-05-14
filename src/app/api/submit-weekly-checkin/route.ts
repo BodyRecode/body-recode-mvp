@@ -7,6 +7,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { writeRecoverySignalBlock, evaluateRouterAfterCheckin } from '@/lib/recovery-ingest'
+import { appUrl } from '@/lib/app-url'
 
 export const maxDuration = 300
 
@@ -117,7 +118,7 @@ async function sendNotifications(
   if (!process.env.RESEND_API_KEY) return
   const resend = new Resend(process.env.RESEND_API_KEY)
   const firstName = client.name.split(' ')[0]
-  const clientUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/clients/${client.id}`
+  const clientUrl = `${appUrl()}/dashboard/clients/${client.id}`
   const formLabel = formType === 'A' ? 'Form A (Experience-Forward)' : 'Form B (Pattern-Aware)'
 
   // Notify Kade

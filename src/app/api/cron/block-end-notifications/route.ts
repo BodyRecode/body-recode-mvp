@@ -22,6 +22,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { daysUntilBlockEnd } from '@/lib/workout-logging'
+import { appUrl } from '@/lib/app-url'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -47,7 +48,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ scanned: 0, sent: 0, skipped: 0 })
   }
 
-  const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://bodyrecode.au'
+  const APP_URL = appUrl()
   const COACH_EMAIL = 'kade@bodyrecode.au'
 
   let sent = 0

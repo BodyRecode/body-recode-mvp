@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { sendSms, formatPhone } from './twilio'
 import { darkEmailSignature } from './email-signature'
 import type { TriggerContext } from './automation-engine'
+import { appUrl } from '@/lib/app-url'
 
 // ─── Challenge SMS Messages ───────────────────────────────────────────────────
 
@@ -820,7 +821,7 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
         // Send check-in prompt for the completed week
         if (process.env.RESEND_API_KEY) {
           const resend = new Resend(process.env.RESEND_API_KEY)
-          const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/${token}`
+          const portalUrl = `${appUrl()}/blueprint/${token}`
           const completedWeek = week - 1
           await resend.emails.send({
             from: 'Kade at Body Recode <kade@bodyrecode.au>',
@@ -876,7 +877,7 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
 
         if (process.env.RESEND_API_KEY) {
           const resend = new Resend(process.env.RESEND_API_KEY)
-          const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/${token}`
+          const portalUrl = `${appUrl()}/blueprint/${token}`
           await resend.emails.send({
             from: 'Kade at Body Recode <kade@bodyrecode.au>',
             to: email,
@@ -985,7 +986,7 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
           // Send check-in prompt for the completed week
           if (process.env.RESEND_API_KEY) {
             const resend = new Resend(process.env.RESEND_API_KEY)
-            const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/membership/${token}`
+            const portalUrl = `${appUrl()}/membership/${token}`
             await resend.emails.send({
               from: 'Kade at Body Recode <kade@bodyrecode.au>',
               to: email,
@@ -1042,7 +1043,7 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
 
           if (process.env.RESEND_API_KEY) {
             const resend = new Resend(process.env.RESEND_API_KEY)
-            const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/membership/${token}`
+            const portalUrl = `${appUrl()}/membership/${token}`
             await resend.emails.send({
               from: 'Kade at Body Recode <kade@bodyrecode.au>',
               to: email,
@@ -1129,7 +1130,7 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
         const completedWeek = week - 1
         if (process.env.RESEND_API_KEY) {
           const resend = new Resend(process.env.RESEND_API_KEY)
-          const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL}/extension/${token}`
+          const portalUrl = `${appUrl()}/extension/${token}`
           await resend.emails.send({
             from: 'Kade at Body Recode <kade@bodyrecode.au>',
             to: email,
@@ -1239,8 +1240,8 @@ export const reengagementSequenceFunction = inngest.createFunction(
       patternLabel?: string
     }
 
-    const extensionUrl = `${process.env.NEXT_PUBLIC_APP_URL}/extension`
-    const membershipUrl = `${process.env.NEXT_PUBLIC_APP_URL}/membership`
+    const extensionUrl = `${appUrl()}/extension`
+    const membershipUrl = `${appUrl()}/membership`
     const patternNote = patternLabel ? ` Your ${patternLabel} pattern doesn't reset when you stop - it's still there when you come back.` : ''
 
     // Email 1: Day 3 - check in

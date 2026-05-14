@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { appUrl } from '@/lib/app-url'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
@@ -57,7 +58,7 @@ export async function GET(request: NextRequest) {
   // Notify coach
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const baseUrl = appUrl()
     const clientName = (client as { name: string }).name
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',

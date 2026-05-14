@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
+import { appUrl } from '@/lib/app-url'
 
 export async function POST(req: NextRequest) {
   const { clientId, fullName } = await req.json()
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const baseUrl = appUrl()
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',

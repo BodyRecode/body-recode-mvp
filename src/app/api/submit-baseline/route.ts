@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notifyOnboardingCompleteIfReady } from '@/lib/onboarding-complete-notification'
+import { appUrl } from '@/lib/app-url'
 
 export const maxDuration = 300
 
@@ -72,7 +73,7 @@ export async function POST(req: NextRequest) {
       const resend = new Resend(process.env.RESEND_API_KEY)
       const { data: client } = await admin.from('clients').select('name').eq('id', clientId).maybeSingle()
       const name = client?.name ?? 'A client'
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+      const baseUrl = appUrl()
       await resend.emails.send({
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',

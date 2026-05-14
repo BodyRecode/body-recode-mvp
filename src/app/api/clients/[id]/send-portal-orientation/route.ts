@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
 import { logClientCommunication } from '@/lib/client-communications'
+import { appUrl } from '@/lib/app-url'
 
 export async function POST(
   _req: NextRequest,
@@ -29,7 +30,7 @@ export async function POST(
     return NextResponse.json({ error: 'Email service not configured' }, { status: 500 })
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+  const baseUrl = appUrl()
   const firstName = client.name?.split(' ')[0] ?? 'there'
   const portalUrl = `${baseUrl}/portal/${client.onboarding_token}`
   const { subject, html } = buildPortalOrientationEmail({ firstName, portalUrl })

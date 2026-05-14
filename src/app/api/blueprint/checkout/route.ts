@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { appUrl } from '@/lib/app-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -47,8 +48,8 @@ export async function POST(request: NextRequest) {
       email: email.toLowerCase().trim(),
       pattern_from_challenge: patternFromChallenge ?? '',
     },
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/blueprint/pending?email=${encodeURIComponent(email.toLowerCase().trim())}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/blueprint`,
+      success_url: `${appUrl()}/blueprint/pending?email=${encodeURIComponent(email.toLowerCase().trim())}`,
+      cancel_url: `${appUrl()}/blueprint`,
     })
   } catch (err) {
     console.error('Stripe checkout error:', err)

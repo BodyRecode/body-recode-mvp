@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { appUrl } from '@/lib/app-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -52,8 +53,8 @@ export async function POST(request: NextRequest) {
         pattern_from_blueprint: patternFromBlueprint ?? '',
         blueprint_token: blueprintEnrollment?.token ?? '',
       },
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/membership/welcome?email=${encodeURIComponent(email.toLowerCase().trim())}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/membership`,
+      success_url: `${appUrl()}/membership/welcome?email=${encodeURIComponent(email.toLowerCase().trim())}`,
+      cancel_url: `${appUrl()}/membership`,
     })
   } catch (err) {
     console.error('Stripe membership checkout error:', err)

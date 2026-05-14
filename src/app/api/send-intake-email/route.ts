@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
+import { appUrl } from '@/lib/app-url'
 
 export async function POST(request: NextRequest) {
   const { clientId, clientName, clientEmail, intakeToken } = await request.json()
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest) {
   if (!intakeToken) return NextResponse.json({ error: 'No intake token' }, { status: 400 })
 
   const firstName = clientName.split(' ')[0]
-  const intakeUrl = `${process.env.NEXT_PUBLIC_APP_URL}/intake/${intakeToken}`
+  const intakeUrl = `${appUrl()}/intake/${intakeToken}`
   const subject = `${firstName}, your Body Recode intake is ready`
 
   const resend = new Resend(process.env.RESEND_API_KEY)

@@ -5,6 +5,7 @@ import { Resend } from 'resend'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { appUrl } from '@/lib/app-url'
 
 function generateIcs({
   title, startTime, durationMinutes, location, description, uid,
@@ -301,7 +302,7 @@ export async function POST(request: NextRequest) {
             </table>
             <table cellpadding="0" cellspacing="0"><tr>
               ${meetingLink ? `<td style="padding-right:12px;"><a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a></td>` : ''}
-              <td><a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads/${lead.id}" style="display:inline-block;padding:12px 20px;border:1px solid #333;color:#a8a29e;font-size:13px;text-decoration:none;border-radius:8px;">View Lead →</a></td>
+              <td><a href="${appUrl()}/dashboard/leads/${lead.id}" style="display:inline-block;padding:12px 20px;border:1px solid #333;color:#a8a29e;font-size:13px;text-decoration:none;border-radius:8px;">View Lead →</a></td>
             </tr></table>
           </td>
         </tr>

@@ -2,6 +2,7 @@ import { darkEmailSignature } from './email-signature'
 import { emailUrlFallback } from './email-shell'
 import fs from 'node:fs'
 import path from 'node:path'
+import { appUrl } from '@/lib/app-url'
 
 export interface PortalOrientationEmailParams {
   firstName: string
@@ -22,7 +23,7 @@ function inlinePng(slug: string): string {
     return `data:image/png;base64,${buf.toString('base64')}`
   } catch (e) {
     console.error(`[portal-orientation-email] could not inline ${slug}:`, e)
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const baseUrl = appUrl()
     return `${baseUrl}/email-assets/${slug}.png`
   }
 }

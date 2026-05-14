@@ -9,6 +9,7 @@ import {
   type CFFSContext,
 } from '@/lib/client-reading-prompt'
 import { buildFoundationalReadingEmail } from '@/lib/foundational-reading-email'
+import { appUrl } from '@/lib/app-url'
 
 export const maxDuration = 300
 
@@ -182,7 +183,7 @@ export async function POST(request: NextRequest) {
   if (!cffs.client_reading_email_sent_at && client.email && client.onboarding_token) {
     try {
       const firstName = client.name?.split(' ')[0] ?? 'there'
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+      const baseUrl = appUrl()
       const portalUrl = `${baseUrl}/portal/${client.onboarding_token}/foundational-reading`
       const { subject, html } = buildFoundationalReadingEmail({
         firstName,

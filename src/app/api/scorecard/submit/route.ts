@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { generatePreCallBrief } from '@/lib/pre-call-brief'
+import { appUrl } from '@/lib/app-url'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -236,7 +237,7 @@ export async function POST(request: NextRequest) {
                 <p style="margin:0;font-size:13px;color:#a8a29e;line-height:1.6;">Approach: ${approach_response} · Investment: ${investment_readiness}</p>
               </div>
               ` : ''}
-              <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads" style="display:inline-block;padding:12px 24px;background:#14b8a6;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">View in dashboard</a>
+              <a href="${appUrl()}/dashboard/leads" style="display:inline-block;padding:12px 24px;background:#14b8a6;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">View in dashboard</a>
             </td>
           </tr>
         </table>

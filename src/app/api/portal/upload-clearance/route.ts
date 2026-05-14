@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
+import { appUrl } from '@/lib/app-url'
 
 export const maxDuration = 60
 
@@ -62,7 +63,7 @@ export async function POST(req: NextRequest) {
   // Notify Kade
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.bodyrecode.au'
+    const baseUrl = appUrl()
     const name = client?.name ?? 'A client'
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',

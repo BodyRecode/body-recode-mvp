@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { appUrl } from '@/lib/app-url'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
   // Notify coach
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const leadUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads/${lead.id}`
+    const leadUrl = `${appUrl()}/dashboard/leads/${lead.id}`
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',

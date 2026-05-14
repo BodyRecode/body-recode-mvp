@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { darkEmailShell } from '@/lib/email-shell'
 import { logLeadEvent } from '@/lib/log-lead-event'
+import { appUrl } from '@/lib/app-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -54,8 +55,8 @@ export async function POST(
       lead_id: id,
       type: 'commencement_fee',
     },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment-success`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/leads/${id}`,
+    success_url: `${appUrl()}/payment-success`,
+    cancel_url: `${appUrl()}/dashboard/leads/${id}`,
   })
 
   const firstName = lead.name.split(' ')[0]
