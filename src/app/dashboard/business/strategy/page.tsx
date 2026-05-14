@@ -1236,6 +1236,11 @@ export default function StrategyPage() {
       {tab === 'prelaunch' && (
         <div className="space-y-4">
 
+          <Card className="border-stone-700 bg-stone-900/60">
+            <SectionLabel>Historical Reference</SectionLabel>
+            <p className="text-sm text-stone-400 leading-relaxed">The 5-post pre-launch sequence ran <strong className="text-stone-300">8-15 April 2026</strong> and is complete. Kept here as the brand-arrival template for future channels (LinkedIn launch, future products, white-label rollouts). The Founding Client Program references that originally followed Post 5 have been removed - that program is no longer running.</p>
+          </Card>
+
           {/* Tracker */}
           {(() => {
             const publishedCount = PRELAUNCH_POSTS.filter(p => (postStatuses[p.id] ?? 'not_started') === 'published').length
@@ -1278,7 +1283,7 @@ export default function StrategyPage() {
                 </div>
                 {allDone && (
                   <div className="mt-3 p-3 bg-teal-500/10 border border-teal-500/30 rounded-lg">
-                    <p className="text-xs text-teal-400 font-semibold">All 5 posts published. Ready to drop the Founding Client offer and launch ads.</p>
+                    <p className="text-xs text-teal-400 font-semibold">All 5 posts published. Move to ongoing 5×/week cadence and launch Meta ads.</p>
                   </div>
                 )}
               </Card>
@@ -1304,7 +1309,7 @@ export default function StrategyPage() {
               ))}
             </div>
             <div className="mt-3 p-3 bg-teal-500/5 border border-teal-500/20 rounded-lg">
-              <p className="text-xs text-teal-400 font-medium">After Post 5 - drop the Founding Client Program offer. Then launch ads.</p>
+              <p className="text-xs text-teal-400 font-medium">After Post 5 - move to the ongoing 5×/week cadence and launch Meta ads.</p>
             </div>
           </Card>
 
@@ -1351,7 +1356,7 @@ export default function StrategyPage() {
             format="Photo card (photo-split or photo-top)"
             graphic='Photo card. Label: "Body Recode™". Text: "Find out which state your body is in." Sub: "Free. 2 minutes." Use: /api/content/graphic?style=photo-split&label=Body+Recode™&text=Find+out+which+state+your+body+is+in.&sub=Free.+2+minutes.'
             caption={`I built a free tool that tells you which state your body is currently operating in.\n\n5 sections. 2 minutes. No email required until you see your result.\n\nIt tells you:\n- Which body state you're in\n- Why your body is responding the way it is\n- What that means for your training and fat loss right now\n\nTake the Body State Scorecard - link in bio.`}
-            hashtags="#bodyrecode #bodystate #fatlosss #performancecoaching #cortisol #fatloss #trainingresponse #brisbanecoach #onlinecoaching #hormones #metabolichealth #interpretation"
+            hashtags="#bodyrecode #bodystate #performancecoaching #cortisol #onlinecoaching"
           />
         </div>
       )}
