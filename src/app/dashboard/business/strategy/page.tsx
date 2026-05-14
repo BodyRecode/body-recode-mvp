@@ -1365,10 +1365,15 @@ export default function StrategyPage() {
       {tab === 'organic' && (
         <div className="space-y-4">
 
+          <Card className="border-pink-500/30 bg-pink-500/5">
+            <SectionLabel>Instagram Organic System</SectionLabel>
+            <p className="text-sm text-stone-300 leading-relaxed">This tab is the <strong className="text-white">Instagram</strong> organic-to-ads pathway. LinkedIn runs a separate organic channel (1-2 BR posts/week, executive reframe) with no ad spend tied to it - it&apos;s a slow-burn parallel feed into the same scorecard. See the <strong className="text-blue-400">LinkedIn tab</strong> for that system.</p>
+          </Card>
+
           {/* Goal */}
           <Card className="border-teal-500/20 bg-teal-500/5">
             <SectionLabel>The Goal</SectionLabel>
-            <p className="text-teal-300 font-semibold text-sm">3 scorecard submissions per week from organic, for 2 consecutive weeks. That&apos;s the signal that the funnel converts. Then ads go on.</p>
+            <p className="text-teal-300 font-semibold text-sm">3 scorecard submissions per week from organic Instagram, for 2 consecutive weeks. That&apos;s the signal that the funnel converts. Then Meta ads go on.</p>
             <p className="text-stone-400 text-sm mt-2">Ads placed on a funnel that doesn&apos;t convert waste money. Ads placed on a funnel that already converts multiply what&apos;s working. Organic proves the model first.</p>
           </Card>
 
@@ -1438,10 +1443,7 @@ export default function StrategyPage() {
           {/* Weekly action plan */}
           <Card>
             <SectionLabel>Weekly Action Plan</SectionLabel>
-            <div className="flex items-start gap-3 mb-3 p-3 rounded-lg bg-amber-400/5 border border-amber-400/20">
-              <p className="text-xs text-amber-300 leading-relaxed">This rhythm starts <strong>after the pre-launch is complete</strong> (after Post 5 on April 15). Don&apos;t try to force it during pre-launch - those posts run on their own Day 1/2/4/6/8 schedule. First Monday of this rhythm: <strong>April 20</strong>.</p>
-            </div>
-            <p className="text-stone-500 text-xs mb-3">What to do each week - beyond just posting.</p>
+            <p className="text-stone-500 text-xs mb-3">Steady-state ongoing rhythm. Pre-launch is complete - this is the cadence to maintain week after week. What to do each week beyond just posting.</p>
             <div className="space-y-2">
               {[
                 { day: 'Mon', post: true,  action: 'Post (Pattern Recognition - Cold). Reply to all weekend comments within 1hr.' },
@@ -1501,7 +1503,7 @@ export default function StrategyPage() {
                   <div>
                     <p className="text-[10px] font-semibold text-stone-600 uppercase tracking-widest mb-1.5">Primary</p>
                     <div className="flex flex-wrap gap-1">
-                      {['#performancecoaching','#fatlosscoachin','#strengthcoaching','#bodyrecode','#brisbanefitness','#brisbanept','#brisbanecoach'].map(h => (
+                      {['#performancecoaching','#fatlosscoaching','#strengthcoaching','#bodyrecode','#brisbanefitness','#brisbanept','#brisbanecoach'].map(h => (
                         <span key={h} className="text-[10px] text-teal-400 bg-teal-500/10 border border-teal-500/20 px-1.5 py-0.5 rounded">{h}</span>
                       ))}
                     </div>
