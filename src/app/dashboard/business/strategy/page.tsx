@@ -2015,75 +2015,113 @@ export default function StrategyPage() {
       )}
 
       {/* ── TIMELINE ── */}
-      {tab === 'timeline' && (
-        <div className="space-y-4">
-          <Card>
-            <SectionLabel>60-Day Launch Plan</SectionLabel>
-            <Body>Consistent for 60–90 days while the funnel launches. After that, ads and retargeting carry acquisition. Organic content maintains authority and warm audience.</Body>
-          </Card>
+      {tab === 'timeline' && (() => {
+        const launchStart = new Date('2026-04-08T00:00:00+10:00')
+        const today = new Date()
+        const dayNumber = Math.floor((today.getTime() - launchStart.getTime()) / (1000 * 60 * 60 * 24)) + 1
 
-          {[
-            {
-              phase: 'Phase 1 - Pre-Launch',
-              days: 'Days 1–8',
-              color: 'teal' as const,
-              items: [
-                'Post 5 profile establishment posts (logo, who you are, the problem, three states, scorecard CTA)',
-                'No ads running yet',
-                'Profile looks established before anyone is sent there',
-              ],
-            },
-            {
-              phase: 'Phase 2 - Ads Launch',
-              days: 'Days 9–22',
-              color: 'amber' as const,
-              items: [
-                'Start Meta ads at $20–30/day AUD',
-                '3 ad angles running simultaneously (Silent Frustration / Contrarian / Diagnosis)',
-                'All ads send to the Body State Scorecard',
-                'Film gym reel session before this phase starts',
-                'Continue 4×/week organic posting',
-              ],
-            },
-            {
-              phase: 'Phase 3 - Optimise',
-              days: 'Days 23–45',
-              color: 'stone' as const,
-              items: [
-                'Review ad performance - cut 2 underperforming angles',
-                'Scale budget on winning angle to $40–50/day',
-                'Continue organic content rhythm',
-                'Review CPL in Ads dashboard',
-              ],
-            },
-            {
-              phase: 'Phase 4 - Scale',
-              days: 'Days 46–60+',
-              color: 'teal' as const,
-              items: [
-                'Add retargeting layer - people who visited check-in but didn\'t complete',
-                'Increase budget on proven creative',
-                'Produce 2nd round of ad creative from new scripts',
-                'AI avatar variations of winning scripts via Content Engine',
-                'Organic content continues - system is now a lead engine, not a full-time job',
-              ],
-            },
-          ].map(phase => (
-            <Card key={phase.phase}>
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-sm font-semibold text-white">{phase.phase}</p>
-                <Tag color={phase.color}>{phase.days}</Tag>
-              </div>
-              <BulletList items={phase.items} />
+        const phases = [
+          {
+            phase: 'Phase 1 - Pre-Launch',
+            days: 'Days 1-8',
+            dateRange: '8-15 April 2026',
+            startDay: 1, endDay: 8,
+            color: 'teal' as const,
+            items: [
+              'Post 5 profile establishment posts (logo, who you are, the problem, three states, scorecard CTA)',
+              'No ads running yet',
+              'Profile looks established before anyone is sent there',
+            ],
+          },
+          {
+            phase: 'Phase 2 - Ads Launch',
+            days: 'Days 9-22',
+            dateRange: '16-29 April 2026',
+            startDay: 9, endDay: 22,
+            color: 'amber' as const,
+            items: [
+              'Start Meta ads at $20-30/day AUD',
+              '3 ad angles running simultaneously (Silent Frustration / Contrarian / Diagnosis)',
+              'All ads send to the Body State Scorecard',
+              'Film gym reel session before this phase starts',
+              'Continue 4x/week organic posting',
+            ],
+          },
+          {
+            phase: 'Phase 3 - Optimise',
+            days: 'Days 23-45',
+            dateRange: '30 April - 22 May 2026',
+            startDay: 23, endDay: 45,
+            color: 'stone' as const,
+            items: [
+              'Review ad performance - cut 2 underperforming angles',
+              'Scale budget on winning angle to $40-50/day',
+              'Continue organic content rhythm',
+              'Review CPL in Ads dashboard',
+            ],
+          },
+          {
+            phase: 'Phase 4 - Scale',
+            days: 'Days 46-60+',
+            dateRange: '23 May 2026 onwards',
+            startDay: 46, endDay: 9999,
+            color: 'teal' as const,
+            items: [
+              'LinkedIn channel launches Tue 19 May 2026 - Tue + Thu cadence, BR executive reframe (parallel funnel into same scorecard)',
+              'Add retargeting layer - people who visited scorecard but did not complete',
+              'Increase budget on proven creative',
+              'Produce 2nd round of ad creative from new scripts',
+              'AI avatar variations of winning scripts via Content Engine',
+              'Organic content continues - system is now a lead engine, not a full-time job',
+            ],
+          },
+        ]
+
+        const currentPhase = phases.find(p => dayNumber >= p.startDay && dayNumber <= p.endDay) ?? phases[phases.length - 1]
+
+        return (
+          <div className="space-y-4">
+            <Card>
+              <SectionLabel>60-Day Launch Plan</SectionLabel>
+              <Body>Consistent for 60-90 days while the funnel launches. After that, ads and retargeting carry acquisition. Organic content maintains authority and warm audience.</Body>
+              <p className="text-xs text-stone-600 mt-3">Anchor date: <strong className="text-stone-400">8 April 2026</strong> (Pre-Launch Post 1 = Day 1).</p>
             </Card>
-          ))}
 
-          <Card className="border-teal-500/20 bg-teal-500/5">
-            <SectionLabel>The Rule</SectionLabel>
-            <p className="text-sm text-teal-300 font-medium">You don&apos;t need to be consistent forever. You need to be consistent for 60–90 days while the funnel launches. After that, the ads carry acquisition and content maintains trust.</p>
-          </Card>
-        </div>
-      )}
+            <Card className="border-teal-500/30 bg-teal-500/5">
+              <SectionLabel>You Are Here</SectionLabel>
+              <div className="flex items-baseline gap-3">
+                <span className="text-3xl font-bold text-teal-400">Day {dayNumber}</span>
+                <span className="text-sm text-stone-400">{currentPhase.phase}</span>
+              </div>
+              <p className="text-xs text-stone-500 mt-2">{currentPhase.dateRange}</p>
+            </Card>
+
+            {phases.map(phase => {
+              const isCurrent = dayNumber >= phase.startDay && dayNumber <= phase.endDay
+              const isPast = dayNumber > phase.endDay
+              return (
+                <Card key={phase.phase} className={isCurrent ? 'border-teal-500/30 bg-teal-500/5' : isPast ? 'opacity-60' : ''}>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-semibold text-white">{phase.phase}</p>
+                      {isCurrent && <span className="text-[10px] font-bold text-teal-400 bg-teal-500/10 border border-teal-500/30 px-2 py-0.5 rounded-full uppercase tracking-widest">Current</span>}
+                      {isPast && <span className="text-[10px] font-bold text-stone-500 bg-stone-800 border border-stone-700 px-2 py-0.5 rounded-full uppercase tracking-widest">Complete</span>}
+                    </div>
+                    <Tag color={phase.color}>{phase.days}</Tag>
+                  </div>
+                  <p className="text-xs text-stone-500 mb-3">{phase.dateRange}</p>
+                  <BulletList items={phase.items} />
+                </Card>
+              )
+            })}
+
+            <Card className="border-teal-500/20 bg-teal-500/5">
+              <SectionLabel>The Rule</SectionLabel>
+              <p className="text-sm text-teal-300 font-medium">You don&apos;t need to be consistent forever. You need to be consistent for 60-90 days while the funnel launches. After that, the ads carry acquisition and content maintains trust.</p>
+            </Card>
+          </div>
+        )
+      })()}
 
       {/* ── PAGES ── */}
       {tab === 'pages' && (
