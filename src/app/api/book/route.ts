@@ -5,6 +5,7 @@ import { Resend } from 'resend'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { emailUrlFallback } from '@/lib/email-shell'
 import { appUrl } from '@/lib/app-url'
 
 function generateIcs({
@@ -207,7 +208,8 @@ export async function POST(request: NextRequest) {
                 </td>
               </tr>
             </table>
-            <p style="margin:0 0 24px;font-size:13px;color:#555555;">Open the attached file to add this to your calendar.</p>
+            <p style="margin:0 0 24px;font-size:13px;color:#a8a29e;">Open the attached file to add this to your calendar.</p>
+            ${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
             ${darkEmailSignature()}
           </td>
         </tr>
@@ -245,6 +247,7 @@ export async function POST(request: NextRequest) {
                 </td>
               </tr>
             </table>
+            ${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
             ${darkEmailSignature()}
           </td>
         </tr>

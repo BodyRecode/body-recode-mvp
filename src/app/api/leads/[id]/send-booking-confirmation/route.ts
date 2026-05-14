@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { emailUrlFallback } from '@/lib/email-shell'
 import { logLeadEvent } from '@/lib/log-lead-event'
 
 function generateIcs({ title, startTime, durationMinutes, location, description, uid }: {
@@ -99,6 +100,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
               </tr>
             </table>
             <p style="margin:0 0 24px;font-size:13px;color:#555555;">Open the attached file to add this to your calendar.</p>
+            ${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
             ${darkEmailSignature()}
           </td>
         </tr>
@@ -146,6 +148,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
                 </td>
               </tr>
             </table>
+            ${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
             ${darkEmailSignature()}
           </td>
         </tr>

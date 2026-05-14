@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { emailUrlFallback } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 
@@ -60,10 +61,11 @@ function reminderEmail(firstName: string, taskTitle: string, threshold: Threshol
       : `It's been two weeks since your ${taskTitle} became available. If you've changed your mind that's okay — just let me know. Otherwise, this is the last automated reminder.`
 
   const body = `
-    <p style="margin:0 0 18px;font-size:15px;color:#aaa;line-height:1.75;">Hi ${firstName},</p>
-    <p style="margin:0 0 24px;font-size:15px;color:#aaa;line-height:1.75;">${intro}</p>
+    <p style="margin:0 0 18px;font-size:15px;color:#cfcfcf;line-height:1.75;">Hi ${firstName},</p>
+    <p style="margin:0 0 24px;font-size:15px;color:#cfcfcf;line-height:1.75;">${intro}</p>
     <a href="${portalUrl}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open your portal</a>
-    <p style="margin:24px 0 0;font-size:13px;color:#666;line-height:1.7;">If anything's blocking you or unclear, reply to this email.</p>
+    <p style="margin:24px 0 0;font-size:13px;color:#a8a29e;line-height:1.7;">If anything's blocking you or unclear, reply to this email.</p>
+    ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
     ${darkEmailSignature()}`
 
   return dayCard(body)
