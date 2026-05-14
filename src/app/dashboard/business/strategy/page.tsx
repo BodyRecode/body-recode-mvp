@@ -124,6 +124,7 @@ function ContentCalendar() {
   const [form, setForm] = useState<Partial<ScheduledPost>>({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', time: POST_TYPE_DEFAULT_TIMES['authority'] })
   const [editId, setEditId] = useState<string | null>(null)
   const [brandFilter, setBrandFilter] = useState<Brand | 'all'>('all')
+  const [platformFilter, setPlatformFilter] = useState<Platform | 'all'>('all')
 
   useEffect(() => {
     supabase
@@ -154,7 +155,11 @@ function ContentCalendar() {
   }
 
   function postsForDay(day: number) {
-    return posts.filter(p => p.date === dateStr(day) && (brandFilter === 'all' || (p.brand ?? 'body_recode') === brandFilter))
+    return posts.filter(p =>
+      p.date === dateStr(day) &&
+      (brandFilter === 'all' || (p.brand ?? 'body_recode') === brandFilter) &&
+      (platformFilter === 'all' || (p.platform ?? 'instagram') === platformFilter)
+    )
   }
 
   async function savePost() {
@@ -202,8 +207,18 @@ function ContentCalendar() {
   if (loading) return <div className="text-sm text-stone-500 py-8 text-center">Loading calendar...</div>
 
   const filteredSelectedPosts = selected
-    ? posts.filter(p => p.date === selected && (brandFilter === 'all' || (p.brand ?? 'body_recode') === brandFilter))
+    ? posts.filter(p =>
+        p.date === selected &&
+        (brandFilter === 'all' || (p.brand ?? 'body_recode') === brandFilter) &&
+        (platformFilter === 'all' || (p.platform ?? 'instagram') === platformFilter)
+      )
     : []
+
+  const platformChipStyles: Record<Platform, { label: string; dot: string; filter: string }> = {
+    instagram: { label: 'Instagram', dot: 'bg-pink-400',   filter: 'bg-pink-500/10 text-pink-400 border-pink-500/30' },
+    facebook:  { label: 'Facebook',  dot: 'bg-blue-500',   filter: 'bg-blue-500/10 text-blue-400 border-blue-500/30' },
+    linkedin:  { label: 'LinkedIn',  dot: 'bg-blue-300',   filter: 'bg-blue-400/10 text-blue-300 border-blue-400/30' },
+  }
 
   return (
     <div className="space-y-4">
@@ -218,6 +233,24 @@ function ContentCalendar() {
             key={k}
             onClick={() => setBrandFilter(k)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === k ? s.filter : 'text-stone-500 border-stone-800 hover:text-stone-300'}`}
+          >
+            <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${s.dot}`} />
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Platform filter */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <button
+          onClick={() => setPlatformFilter('all')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === 'all' ? 'bg-stone-700 text-white border-stone-600' : 'text-stone-500 border-stone-800 hover:text-stone-300'}`}
+        >All platforms</button>
+        {(Object.entries(platformChipStyles) as [Platform, typeof platformChipStyles[Platform]][]).map(([k, s]) => (
+          <button
+            key={k}
+            onClick={() => setPlatformFilter(k)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === k ? s.filter : 'text-stone-500 border-stone-800 hover:text-stone-300'}`}
           >
             <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${s.dot}`} />
             {s.label}
