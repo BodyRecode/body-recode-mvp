@@ -748,11 +748,16 @@ const PRELAUNCH_POSTS = [
 export default function StrategyPage() {
   const [tab, setTab] = useState<Tab>('overview')
   const [postStatuses, setPostStatuses] = useState<Record<string, PostStatus>>({})
+  const [profileSetup, setProfileSetup] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem('prelaunch_post_statuses')
       if (saved) setPostStatuses(JSON.parse(saved))
+    } catch {}
+    try {
+      const saved = localStorage.getItem('profile_setup_checklist')
+      if (saved) setProfileSetup(JSON.parse(saved))
     } catch {}
   }, [])
 
@@ -762,6 +767,15 @@ export default function StrategyPage() {
       const nextIndex = (POST_STATUS_CYCLE.indexOf(current) + 1) % POST_STATUS_CYCLE.length
       const next = { ...prev, [id]: POST_STATUS_CYCLE[nextIndex] }
       try { localStorage.setItem('prelaunch_post_statuses', JSON.stringify(next)) } catch {}
+      return next
+    })
+  }
+
+  function toggleProfileItem(key: string, defaultDone: boolean) {
+    setProfileSetup(prev => {
+      const current = prev[key] ?? defaultDone
+      const next = { ...prev, [key]: !current }
+      try { localStorage.setItem('profile_setup_checklist', JSON.stringify(next)) } catch {}
       return next
     })
   }
@@ -2148,6 +2162,14 @@ export default function StrategyPage() {
                   linkSet: 'bodyrecode.au/scorecard?source=facebook',
                   statusColor: 'teal' as const,
                 },
+                {
+                  platform: 'LinkedIn',
+                  handle: 'Kade Dunstone (personal)',
+                  status: 'Launching',
+                  bioUpdated: false,
+                  linkSet: 'bodyrecode.au/scorecard?source=linkedin_profile',
+                  statusColor: 'amber' as const,
+                },
               ].map(row => (
                 <div key={row.platform} className="grid grid-cols-4 gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800 text-xs">
                   <div>
@@ -2252,6 +2274,32 @@ export default function StrategyPage() {
             </div>
           </Card>
 
+          {/* LinkedIn */}
+          <Card className="border-blue-500/20 bg-blue-500/5">
+            <SectionLabel>LinkedIn Profile</SectionLabel>
+            <p className="text-xs text-stone-400 mb-4 leading-relaxed">Posted from Kade&apos;s personal LinkedIn profile. No separate Body Recode LinkedIn page. The profile carries Studio of Ten + Personal Brand + Body Recode (executive reframe) content - 4 to 6 posts/week total. See <strong className="text-blue-400">LinkedIn tab</strong> for the BR pillars and pipeline.</p>
+            <div className="grid sm:grid-cols-2 gap-3 text-xs">
+              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                <p className="text-stone-600 mb-1">Profile</p>
+                <p className="text-white font-medium">Kade Dunstone</p>
+              </div>
+              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                <p className="text-stone-600 mb-1">Profile bio link</p>
+                <p className="text-teal-400 break-all">bodyrecode.au/scorecard?source=linkedin_profile</p>
+              </div>
+              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                <p className="text-stone-600 mb-1">In-post CTA link</p>
+                <p className="text-teal-400 break-all">bodyrecode.au/scorecard?source=linkedin_post</p>
+                <p className="text-stone-600 mt-1">Put in first comment, not post body (kills reach)</p>
+              </div>
+              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
+                <p className="text-stone-600 mb-1">Comment / DM follow-up link</p>
+                <p className="text-teal-400 break-all">bodyrecode.au/scorecard?source=linkedin_comment</p>
+              </div>
+            </div>
+            <p className="text-xs text-stone-600 mt-3">All variants collapse to <code className="text-teal-400 font-mono">source=linkedin</code> in the CRM with the variant preserved as <code className="text-teal-400 font-mono">source_detail</code> for granular attribution.</p>
+          </Card>
+
           {/* Terminology rule */}
           <Card className="border-amber-500/20 bg-amber-500/5">
             <SectionLabel>Public-Facing Terminology Rule</SectionLabel>
@@ -2269,29 +2317,45 @@ export default function StrategyPage() {
             <p className="text-xs text-stone-600 mt-3">Never use CFFS classification terms in public content. The scorecard gives a signal - the CFFS gives the real classification. That gap protects the value of the paid system.</p>
           </Card>
 
-          {/* Launch checklist */}
+          {/* Profile setup checklist */}
           <Card>
-            <SectionLabel>Pre-Launch Checklist</SectionLabel>
+            <SectionLabel>Profile Setup Checklist</SectionLabel>
+            <p className="text-xs text-stone-500 mb-3">Click any item to toggle. State persists in your browser.</p>
             <div className="space-y-1.5">
               {[
-                { item: 'Username is @body_recode_', done: true },
-                { item: 'Instagram bio matches spec exactly', done: true },
-                { item: 'Bio link set to bodyrecode.au/scorecard?source=instagram', done: false },
-                { item: 'Profile photo on-brand and high contrast', done: false },
-                { item: 'Highlight covers set up (can be empty)', done: false },
-                { item: 'Account is Creator or Business (not Personal)', done: false },
-                { item: 'At least 1 post live before warm outreach begins', done: false },
-                { item: 'Facebook bio updated', done: true },
-                { item: 'Facebook website field set to performance.bodyrecode.au', done: false },
-                { item: 'Facebook CTA button pointing to scorecard', done: false },
-              ].map(({ item, done }) => (
-                <div key={item} className="flex items-center gap-2.5 text-xs py-1.5 border-b border-stone-800 last:border-0">
-                  <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${done ? 'bg-teal-500/20 border-teal-500/40' : 'bg-stone-900 border-stone-700'}`}>
-                    {done && <span className="text-teal-400 text-[10px] font-bold">✓</span>}
-                  </div>
-                  <span className={done ? 'text-stone-400 line-through' : 'text-stone-300'}>{item}</span>
-                </div>
-              ))}
+                // Instagram (pre-launch is complete)
+                { key: 'ig_username', item: 'Username is @body_recode_', defaultDone: true, group: 'Instagram' },
+                { key: 'ig_bio',      item: 'Instagram bio matches spec exactly', defaultDone: true, group: 'Instagram' },
+                { key: 'ig_biolink',  item: 'Bio link set to bodyrecode.au/scorecard?source=instagram', defaultDone: true, group: 'Instagram' },
+                { key: 'ig_photo',    item: 'Profile photo on-brand and high contrast', defaultDone: false, group: 'Instagram' },
+                { key: 'ig_highlights', item: 'Highlight covers set up (can be empty)', defaultDone: false, group: 'Instagram' },
+                { key: 'ig_account',  item: 'Account is Creator or Business (not Personal)', defaultDone: true, group: 'Instagram' },
+                // Facebook
+                { key: 'fb_bio',     item: 'Facebook bio updated', defaultDone: true, group: 'Facebook' },
+                { key: 'fb_website', item: 'Facebook website field set to performance.bodyrecode.au', defaultDone: false, group: 'Facebook' },
+                { key: 'fb_cta',     item: 'Facebook CTA button pointing to scorecard', defaultDone: false, group: 'Facebook' },
+                // LinkedIn (launching)
+                { key: 'li_bio',     item: 'LinkedIn personal bio includes Body Recode positioning', defaultDone: false, group: 'LinkedIn' },
+                { key: 'li_biolink', item: 'LinkedIn profile link set to bodyrecode.au/scorecard?source=linkedin_profile', defaultDone: false, group: 'LinkedIn' },
+                { key: 'li_banner',  item: 'LinkedIn banner image set (Studio of Ten banner can carry over until BR-specific is made)', defaultDone: false, group: 'LinkedIn' },
+                { key: 'li_post1',   item: 'First BR LinkedIn post scheduled / drafted (Tue 19 May 2026)', defaultDone: false, group: 'LinkedIn' },
+              ].map(({ key, item, defaultDone, group }) => {
+                const done = profileSetup[key] ?? defaultDone
+                const groupColor = group === 'Instagram' ? 'text-pink-400' : group === 'Facebook' ? 'text-blue-400' : 'text-blue-300'
+                return (
+                  <button
+                    key={key}
+                    onClick={() => toggleProfileItem(key, defaultDone)}
+                    className="flex items-center gap-2.5 text-xs py-1.5 border-b border-stone-800 last:border-0 w-full text-left hover:bg-stone-900/40 -mx-2 px-2 rounded transition-colors"
+                  >
+                    <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${done ? 'bg-teal-500/20 border-teal-500/40' : 'bg-stone-900 border-stone-700'}`}>
+                      {done && <span className="text-teal-400 text-[10px] font-bold">✓</span>}
+                    </div>
+                    <span className={`text-[10px] font-bold uppercase tracking-widest w-16 shrink-0 ${groupColor}`}>{group}</span>
+                    <span className={done ? 'text-stone-400 line-through' : 'text-stone-300'}>{item}</span>
+                  </button>
+                )
+              })}
             </div>
           </Card>
 
