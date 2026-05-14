@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
-import { darkEmailShell, COACH_BCC } from '@/lib/email-shell'
+import { darkEmailShell } from '@/lib/email-shell'
 
 export async function POST(
   request: NextRequest,
@@ -44,7 +44,6 @@ export async function POST(
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     replyTo: 'kade@replies.bodyrecode.au',
     to: lead.email,
-    bcc: COACH_BCC,
     subject,
     html: darkEmailShell(`
       <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;border:0;"/>

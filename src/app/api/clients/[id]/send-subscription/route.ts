@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell, COACH_BCC } from '@/lib/email-shell'
+import { darkEmailShell } from '@/lib/email-shell'
 import { getCoachingPackage } from '@/lib/coaching-packages'
 import { logClientCommunication } from '@/lib/client-communications'
 
@@ -48,7 +48,6 @@ export async function POST(
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: client.email,
-    bcc: COACH_BCC,
     subject,
     html: darkEmailShell(`
       <div style="margin-bottom:40px;">

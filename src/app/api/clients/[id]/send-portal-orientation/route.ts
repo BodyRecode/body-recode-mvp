@@ -5,8 +5,6 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
-import { COACH_BCC } from '@/lib/email-shell'
-
 export async function POST(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -40,7 +38,6 @@ export async function POST(
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: client.email,
-    bcc: COACH_BCC,
     subject,
     html,
   })
