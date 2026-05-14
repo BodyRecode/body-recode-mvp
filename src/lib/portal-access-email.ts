@@ -1,7 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell } from '@/lib/email-shell'
+import { darkEmailShell, COACH_BCC } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
 interface PortalAccessClient {
@@ -16,6 +16,9 @@ interface SendPortalAccessOpts {
   client: PortalAccessClient
   sentBy?: string | null
   trigger: string  // e.g. 'manual', 'convert_no_payment', 'convert_paid'
+  /** When true (default), BCCs the coach on the send so they can see what
+      went to the client. Pass false for automated sends (e.g. webhook). */
+  bccCoach?: boolean
 }
 
 /**
@@ -27,6 +30,7 @@ export async function sendPortalAccessEmail({
   client,
   sentBy = null,
   trigger,
+  bccCoach = true,
 }: SendPortalAccessOpts): Promise<boolean> {
   if (!client.email || !client.onboarding_token) return false
   if (!process.env.RESEND_API_KEY) return false
@@ -39,6 +43,7 @@ export async function sendPortalAccessEmail({
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: client.email,
+    bcc: bccCoach ? COACH_BCC : undefined,
     subject,
     html: darkEmailShell(`
       <div style="margin-bottom:40px;">

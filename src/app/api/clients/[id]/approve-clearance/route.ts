@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell } from '@/lib/email-shell'
+import { darkEmailShell, COACH_BCC } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -31,6 +31,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: client.email,
+      bcc: COACH_BCC,
       subject,
       html: darkEmailShell(`
       <div style="margin-bottom:40px;">

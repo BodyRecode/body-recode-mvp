@@ -31,6 +31,31 @@
  * the first visible text in the body.
  */
 /**
+ * BCC address for coach-triggered manual email sends.
+ *
+ * Whenever a coach clicks a button (or runs a one-off script) that sends
+ * a real client an email, the same email is BCC'd to this address so the
+ * coach has a copy in their own inbox to reference - useful for:
+ *   - Quoting back when the client replies
+ *   - Spotting send failures (if no copy lands, the send didn't happen)
+ *   - Auditing what was actually said
+ *
+ * Apply to MANUAL sends only. Do NOT apply to:
+ *   - Cron-driven sends (check-in window, session reminders, etc.) -
+ *     would flood the coach inbox
+ *   - Self-serve sends triggered by the client (sign-in code, portal
+ *     submissions) - the coach is not the actor
+ *   - Drip sequence steps fired by Inngest from a workflow
+ *
+ * Override via COACH_BCC_EMAIL env var if needed (e.g. to disable in
+ * dev by setting it to an empty string).
+ */
+export const COACH_BCC: string[] =
+  process.env.COACH_BCC_EMAIL === ''
+    ? []
+    : [process.env.COACH_BCC_EMAIL ?? 'kade@bodyrecode.au']
+
+/**
  * Plain-text URL fallback block. Required at the bottom of every email that
  * has a CTA button, because corporate Microsoft 365 deployments (Defender
  * Safe Links / ATP) often rewrite or strip clickable `<a>` URLs — Samantha

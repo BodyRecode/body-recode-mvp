@@ -101,12 +101,19 @@ const html = darkEmailShell(`
       ${darkEmailSignature()}
 `, { previewText: `${firstName}, five quick follow-up questions for your intake.` })
 
+// Mirrors COACH_BCC in src/lib/email-shell.ts. CLI scripts can't import
+// the TS module, so the address is duplicated here. Override with
+// COACH_BCC_EMAIL env var (set to '' to disable).
+const coachBcc =
+  process.env.COACH_BCC_EMAIL === '' ? [] : [process.env.COACH_BCC_EMAIL || 'kade@bodyrecode.au']
+
 const sendRes = await fetch('https://api.resend.com/emails', {
   method: 'POST',
   headers: { Authorization: `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
   body: JSON.stringify({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: client.email,
+    bcc: coachBcc,
     subject,
     html,
   }),

@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell } from '@/lib/email-shell'
+import { darkEmailShell, COACH_BCC } from '@/lib/email-shell'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { appUrl } from '@/lib/app-url'
 
@@ -65,6 +65,7 @@ export async function POST(
   const sendResult = await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: lead.email,
+    bcc: COACH_BCC,
     subject: `${firstName}, your $240 commencement link`,
     html: darkEmailShell(`
       <div style="margin-bottom:40px;">

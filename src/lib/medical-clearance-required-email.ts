@@ -1,7 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell } from '@/lib/email-shell'
+import { darkEmailShell, COACH_BCC } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
 interface MedicalClearanceRequiredClient {
@@ -47,6 +47,7 @@ export async function sendMedicalClearanceRequiredEmail({
   await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: client.email,
+    bcc: COACH_BCC,
     subject,
     html: darkEmailShell(`
       <div style="margin-bottom:40px;">
