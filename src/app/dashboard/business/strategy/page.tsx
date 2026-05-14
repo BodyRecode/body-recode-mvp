@@ -963,6 +963,10 @@ export default function StrategyPage() {
                 </div>
               ))}
             </div>
+            <div className="mt-4 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
+              <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">LinkedIn channel</p>
+              <p className="text-xs text-stone-300 leading-relaxed">The same intellectual territory drives LinkedIn content through 4 reframed pillars: <strong className="text-white">State over Discipline</strong>, <strong className="text-white">The Effort Trap</strong>, <strong className="text-white">Physiology and Decision-Making</strong>, <strong className="text-white">Interpretation over Prescription</strong>. Same physiology, executive vocabulary. See the <strong className="text-blue-400">LinkedIn tab</strong> for the full breakdown.</p>
+            </div>
           </Card>
 
           <Card>
@@ -971,10 +975,11 @@ export default function StrategyPage() {
               {[
                 { label: 'Make them feel', value: '"Finally, someone gets it."' },
                 { label: 'Then make them think', value: '"I need to take that scorecard."' },
-                { label: 'One CTA per post', value: 'Take the scorecard. That\'s it. One job per post.' },
+                { label: 'CTA rule — Instagram', value: 'One CTA per post. Take the scorecard. One job per post.' },
+                { label: 'CTA rule — LinkedIn', value: 'CTA every 4-5 posts only. Most posts build credibility without selling.' },
               ].map(({ label, value }) => (
                 <div key={label} className="flex items-start gap-3 py-2 border-b border-stone-800 last:border-0">
-                  <span className="text-xs text-stone-500 w-36 shrink-0 mt-0.5">{label}</span>
+                  <span className="text-xs text-stone-500 w-44 shrink-0 mt-0.5">{label}</span>
                   <span className="text-sm text-white">{value}</span>
                 </div>
               ))}
@@ -990,7 +995,6 @@ export default function StrategyPage() {
               'Hype or exaggerated promises',
               'Long-winded clinical explanations',
               'Direct selling - always guide, never push',
-              '"Discount" or "reduction in fees" for the Founding Client Program - it is a trade',
             ]} />
           </Card>
 
