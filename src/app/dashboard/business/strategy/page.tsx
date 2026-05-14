@@ -1043,6 +1043,11 @@ export default function StrategyPage() {
       {/* ── CONTENT SYSTEM ── */}
       {tab === 'content' && (
         <div className="space-y-4">
+          <Card className="border-pink-500/30 bg-pink-500/5">
+            <SectionLabel>Instagram Content System</SectionLabel>
+            <p className="text-sm text-stone-300 leading-relaxed">Everything in this tab is the <strong className="text-white">Instagram</strong> content system - temperature ladder, weekly cadence, post types, production tools. LinkedIn runs a different cadence (1-2/wk vs 5/wk), different format (short essays, no carousels), and different tone (executive reframe, no fat-loss language). See the <strong className="text-blue-400">LinkedIn tab</strong> for that system.</p>
+          </Card>
+
           <Card>
             <SectionLabel>Content Temperature - Hormozi Engagement Ladder</SectionLabel>
             <Body className="mb-4">Every post targets one temperature level. Cold content moves people from unaware to problem aware. Warm content moves them from problem aware to solution aware. Hot content pushes them to act. The ratio should be roughly 60% cold, 30% warm, 10% hot.</Body>
@@ -1064,6 +1069,7 @@ export default function StrategyPage() {
             </div>
             <div className="mt-3 p-3 bg-teal-500/5 border border-teal-500/20 rounded-lg">
               <p className="text-xs text-teal-400 font-medium">Primary lead getter: organic Instagram → scorecard. Go deep here before ads. Ads are the multiplier on a system that already converts.</p>
+              <p className="text-xs text-stone-500 mt-1.5">Secondary: LinkedIn (executive reframe, organic only, slow-burn). Same scorecard, separate attribution.</p>
             </div>
           </Card>
 
