@@ -130,26 +130,30 @@ const PATTERNS = [
   {
     name: 'Stress-Stored',
     colour: '#ef4444',
-    driver: 'Cortisol and adrenaline run the system',
-    focus: 'Fat sits stubbornly in the stomach and waist. Energy runs on adrenaline. The Blueprint pulls stress load first, then training and nutrition land properly.',
+    driver: 'Cortisol driver',
+    signal: 'Fat stored at waist and stomach. Wired but tired at night.',
+    correction: 'The Blueprint pulls stress load first. Sleep outranks training. The system comes out of compensation, and fat starts releasing.',
   },
   {
     name: 'Metabolic-Drift',
     colour: '#f59e0b',
-    driver: 'Insulin and blood sugar are unstable',
-    focus: 'Cravings, energy dips, fat that will not shift despite the work. The Blueprint times carbs around actual demand, stabilises blood sugar all day, and the fat starts releasing.',
+    driver: 'Insulin driver',
+    signal: 'Afternoon crash, sluggish after meals, lower gut bloating.',
+    correction: 'The Blueprint times carbs to a narrow post-session window. Blood sugar stabilises across the day, and the fat starts moving.',
   },
   {
     name: 'Hormonal-Shift',
     colour: '#8b5cf6',
-    driver: 'Reproductive hormones are out of sync',
-    focus: 'Body composition that fights everything you try. Energy that swings without warning. The Blueprint runs at consistency over intensity. No restriction. Recovery is the lever.',
+    driver: 'Reproductive hormone driver',
+    signal: 'Hips and thighs, cycle disruption, mood swings.',
+    correction: 'The Blueprint runs at consistency over intensity. No restriction. Cycle-aware adjustments throughout. Recovery is the lever.',
   },
   {
     name: 'System-Overload',
     colour: '#14b8a6',
-    driver: 'The nervous system is overloaded',
-    focus: 'You feel tired but wired. Recovery never lands. The Blueprint pulls total demand, controls RIR, and rebuilds capacity from the floor up.',
+    driver: 'Nervous system load',
+    signal: 'Upper body storage, flat and stalled, not responding.',
+    correction: 'The Blueprint pulls total demand. Controls RIR. Rebuilds capacity from the floor up.',
   },
 ]
 
@@ -312,9 +316,10 @@ export default function BlueprintPage() {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                 <span style={{ fontSize: '14px', fontWeight: 800, color: '#1c1917' }}>{p.name}</span>
-                <span style={{ fontSize: '12px', color: '#a8a29e' }}>- {p.driver}</span>
+                <span style={{ fontSize: '12px', color: '#a8a29e' }}>· {p.driver}</span>
               </div>
-              <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.6, margin: 0 }}>{p.focus}</p>
+              <p style={{ fontSize: '13px', color: '#44403c', lineHeight: 1.6, margin: '0 0 8px', fontWeight: 600 }}>{p.signal}</p>
+              <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.6, margin: 0 }}>{p.correction}</p>
             </div>
           ))}
         </div>

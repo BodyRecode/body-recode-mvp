@@ -141,21 +141,29 @@ const PATTERNS = [
   {
     name: 'Stress-Stored',
     colour: '#ef4444',
+    driver: 'Cortisol driver',
+    signal: 'Fat stored at waist and stomach. Wired but tired at night.',
     blockA: 'Cortisol anchor evening meal introduced. Caffeine cutoff tightened to 10am. Post-training carb window widens as training demand increases. Zone 2 only.',
   },
   {
     name: 'Metabolic-Drift',
     colour: '#f59e0b',
+    driver: 'Insulin driver',
+    signal: 'Afternoon crash, sluggish after meals, lower gut bloating.',
     blockA: 'Formal carb cycling introduced. Training days get more carbs, rest days fruit only. Protein target increases to 2.5 to 3 palms per day. Post-meal walk is non-negotiable.',
   },
   {
     name: 'Hormonal-Shift',
     colour: '#8b5cf6',
+    driver: 'Reproductive hormone driver',
+    signal: 'Hips and thighs, cycle disruption, mood swings.',
     blockA: 'Cycle-aware eating introduced. Follicular phase pushes harder. Luteal phase increases fat and rest-day carbs. Fat quality becomes the primary focus.',
   },
   {
     name: 'System-Overload',
     colour: '#14b8a6',
+    driver: 'Nervous system load',
+    signal: 'Upper body storage, flat and stalled, not responding.',
     blockA: 'Targeted recovery micronutrients from food: magnesium, zinc, iron, B vitamins. Pre-sleep nutrition protocol introduced. Check-in data determines when demand increases.',
   },
 ]
@@ -365,7 +373,12 @@ export default function MembershipPage() {
               borderLeft: `4px solid ${p.colour}`,
               borderRadius: '12px', padding: '18px 20px',
             }}>
-              <p style={{ fontSize: '14px', fontWeight: 800, color: '#1c1917', marginBottom: '6px' }}>{p.name}</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                <span style={{ fontSize: '14px', fontWeight: 800, color: '#1c1917' }}>{p.name}</span>
+                <span style={{ fontSize: '12px', color: '#a8a29e' }}>· {p.driver}</span>
+              </div>
+              <p style={{ fontSize: '13px', color: '#44403c', lineHeight: 1.6, margin: '0 0 10px', fontWeight: 600 }}>{p.signal}</p>
+              <p style={{ fontSize: '11px', fontWeight: 700, color: '#0f766e', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Block A prescription</p>
               <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.6, margin: 0 }}>{p.blockA}</p>
             </div>
           ))}
