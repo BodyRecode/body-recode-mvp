@@ -18,6 +18,7 @@ import ClientReadingPanel from './client-reading-panel'
 import MedicationsEditor from './medications-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import CoachResponseCard from './coach-response-card'
+import MajorSection from './major-section'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
@@ -240,6 +241,24 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     started: 'text-amber-300 bg-amber-950/50 border-amber-800',
     complete: 'text-green-300 bg-green-950/50 border-green-800',
   }
+
+  // ── Per-section defaultOpen flags ──────────────────────────────────────
+  // Major sections collapse by default; only sections that have a clear
+  // coach action open automatically so attention is never hidden behind a
+  // click. Mirrors the same action-required signals the Today's Focus
+  // state machine uses, but scoped to a single client profile.
+  const frPublished = !!activeCffs?.client_reading_published_at
+  const cffsActionRequired = !activeCffs || !frPublished
+  const baselineActionRequired = !latestBaseline
+  // Weekly Check-In opens if a submitted check-in has no coach response yet.
+  const anyUnansweredCheckin = (recentCheckins ?? []).some(ci => ci.id && !feedbackByCheckinId.has(ci.id))
+  const cfwsActionRequired = anyUnansweredCheckin || (!!latestCompleteWeek && (!latestCfws || latestCfws.week_number < latestCompleteWeek))
+  const trainingActionRequired = !activeProgram || !!draftProgram
+  const nutritionActionRequired = !activeNutritionPlan || !!draftNutritionPlan
+  // Payments signal isn't pre-fetched at this scope — leave closed by
+  // default; ClientPaymentsSection itself surfaces any past_due / unpaid /
+  // canceled flags inline once opened.
+  const paymentsActionRequired = false
 
   return (
     <div className="flex gap-8 max-w-5xl">
@@ -593,10 +612,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         activeNutritionGeneratedAt={activeNutritionPlan?.generated_at ?? null}
       />
 
-      <div id="cffs" className="flex items-center justify-between mb-3 mt-6 scroll-mt-8">
-        <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Foundational Synthesis <span className="text-[#3c3835] font-normal">- CFFS</span></h2></div>
-      </div>
-
+      <MajorSection
+        id="cffs"
+        title="Foundational Synthesis"
+        subtitle="- CFFS"
+        defaultOpen={cffsActionRequired}
+        attentionLabel={!activeCffs ? 'No CFFS yet' : (!frPublished ? 'FR not published' : null)}
+      >
       {!activeCffs ? (
         <div className="bg-[#111110] border border-[#1c1917] rounded-xl p-8 text-center">
           <p className="text-[#a8a29e] mb-2">No CFFS generated yet</p>
@@ -933,16 +955,20 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           )}
         </>
       )}
+      </MajorSection>
 
       {/* Baseline Section */}
-      <div id="baseline" className="mt-6 scroll-mt-8">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Baseline</h2></div>
-          {baselineToken && !latestBaseline && (
-            <CopyLinkButton token={baselineToken} label="Copy baseline link" path="/baseline" />
-          )}
-        </div>
-
+      <MajorSection
+        id="baseline"
+        title="Baseline"
+        defaultOpen={baselineActionRequired}
+        attentionLabel={baselineActionRequired ? 'Not submitted' : null}
+        actionRight={
+          baselineToken && !latestBaseline
+            ? <CopyLinkButton token={baselineToken} label="Copy baseline link" path="/baseline" />
+            : undefined
+        }
+      >
         {latestBaseline ? (
           <div className="bg-[#111110] border border-[#1c1917] rounded-xl p-5 space-y-4">
             <div className="flex items-center justify-between">
@@ -997,16 +1023,21 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <p className="text-[#3c3835] text-xs mt-1">Send the client their baseline link to begin</p>
           </div>
         )}
-      </div>
+      </MajorSection>
 
       {/* Weekly Check-In Section */}
-      <div id="cfws" className="mt-6 scroll-mt-8">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Weekly Synthesis <span className="text-[#3c3835] font-normal">- CFWS</span></h2></div>
-          {checkinToken && (
-            <CopyLinkButton token={checkinToken} label="Copy check-in link" path="/checkin" />
-          )}
-        </div>
+      <MajorSection
+        id="cfws"
+        title="Weekly Synthesis"
+        subtitle="- CFWS"
+        defaultOpen={cfwsActionRequired}
+        attentionLabel={anyUnansweredCheckin ? 'Unanswered check-in' : (cfwsActionRequired ? 'New CFWS ready to generate' : null)}
+        actionRight={
+          checkinToken
+            ? <CopyLinkButton token={checkinToken} label="Copy check-in link" path="/checkin" />
+            : undefined
+        }
+      >
 
         {/* Latest CFWS */}
         {latestCfws ? (
@@ -1153,22 +1184,24 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </div>
           </div>
         )}
-      </div>
+      </MajorSection>
 
       {/* Training Program Section */}
-      <div id="training" className="mt-6 scroll-mt-8">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Training Program <span className="text-[#3c3835] font-normal">PTS</span></h2></div>
-          <div className="flex items-center gap-2">
-            <Link
-              href={`/dashboard/clients/${id}/plan`}
-              className="text-xs font-medium px-3 py-1.5 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-[#292524] hover:text-[#e7e5e4] transition-colors"
-            >
-              Macro Plan
-            </Link>
-          </div>
-        </div>
-
+      <MajorSection
+        id="training"
+        title="Training Program"
+        subtitle="PTS"
+        defaultOpen={trainingActionRequired}
+        attentionLabel={!activeProgram ? 'No active program' : draftProgram ? 'Draft awaiting review' : null}
+        actionRight={
+          <Link
+            href={`/dashboard/clients/${id}/plan`}
+            className="text-xs font-medium px-3 py-1.5 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-[#292524] hover:text-[#e7e5e4] transition-colors"
+          >
+            Macro Plan
+          </Link>
+        }
+      >
         <div className="space-y-2">
           {/* Draft program */}
           {draftProgram && (
@@ -1220,20 +1253,24 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </div>
           ) : null}
         </div>
-      </div>
+      </MajorSection>
 
       {/* Nutrition Plan Section */}
-      <div id="nutrition" className="mt-6 scroll-mt-8">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Nutrition Plan <span className="text-[#3c3835] font-normal">HABNS</span></h2></div>
+      <MajorSection
+        id="nutrition"
+        title="Nutrition Plan"
+        subtitle="HABNS"
+        defaultOpen={nutritionActionRequired}
+        attentionLabel={!activeNutritionPlan ? 'No active plan' : draftNutritionPlan ? 'Draft awaiting review' : null}
+        actionRight={
           <Link
             href={`/dashboard/clients/${id}/nutrition/suggest`}
             className="text-xs font-medium px-3 py-1.5 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-[#292524] hover:text-[#e7e5e4] transition-colors"
           >
             {activeNutritionPlan ? 'Regenerate' : 'Generate Plan'}
           </Link>
-        </div>
-
+        }
+      >
         <div className="space-y-2">
           {/* Draft nutrition plan */}
           {draftNutritionPlan && (
@@ -1284,12 +1321,16 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </div>
           ) : null}
         </div>
-      </div>
+      </MajorSection>
 
       {/* Payments Section */}
-      <div id="payments" className="mt-6 scroll-mt-8">
+      <MajorSection
+        id="payments"
+        title="Payments"
+        defaultOpen={paymentsActionRequired}
+      >
         <ClientPaymentsSection clientId={id} />
-      </div>
+      </MajorSection>
 
       <ClientDangerActions clientId={id} isActive={client.active !== false} />
 
