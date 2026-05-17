@@ -12,9 +12,19 @@ interface ExistingFeedback {
   updated_at: string
 }
 
+/**
+ * Two modes:
+ *   - "view"  — feedback exists, render it as a Past response card (same shape
+ *               the client sees) with an Edit button to revise.
+ *   - "edit"  — show the editable form (3 textareas + Generate + Save buttons).
+ *
+ * Default to "view" when feedback already exists on page load, "edit" when not.
+ * After a successful save, switch back to "view" so the page reflects the
+ * stored state instead of staying in active-editing mode.
+ */
 export default function CheckinFeedbackForm({
   checkinId,
-  existing,
+  existing: existingFromServer,
   clientFirstName,
 }: {
   checkinId: string
@@ -22,9 +32,14 @@ export default function CheckinFeedbackForm({
   clientFirstName: string
 }) {
   const router = useRouter()
-  const [interpretation, setInterpretation] = useState(existing?.interpretation ?? '')
-  const [reframe, setReframe] = useState(existing?.reframe ?? '')
-  const [nextFocus, setNextFocus] = useState(existing?.next_focus ?? '')
+  // Local copy of the saved feedback so we can flip back to view mode without
+  // a router round-trip on save. Server stays the source of truth on reload.
+  const [existing, setExisting] = useState<ExistingFeedback | null>(existingFromServer)
+  const [mode, setMode] = useState<'view' | 'edit'>(existingFromServer ? 'view' : 'edit')
+
+  const [interpretation, setInterpretation] = useState(existingFromServer?.interpretation ?? '')
+  const [reframe, setReframe] = useState(existingFromServer?.reframe ?? '')
+  const [nextFocus, setNextFocus] = useState(existingFromServer?.next_focus ?? '')
   const [pending, startTransition] = useTransition()
   const [generating, setGenerating] = useState(false)
   const [status, setStatus] = useState<string | null>(null)
@@ -82,26 +97,92 @@ export default function CheckinFeedbackForm({
         setError(json.error ?? 'Failed to save')
         return
       }
+      // Update local copy with what we just saved so the view-mode card
+      // shows the latest values immediately, no refresh flicker.
+      const savedAt = new Date().toISOString()
+      const newExisting: ExistingFeedback = {
+        id: json.feedback?.id ?? existing?.id ?? 'unknown',
+        interpretation: interpretation.trim(),
+        reframe: reframe.trim() || null,
+        next_focus: nextFocus.trim(),
+        email_sent_at: sendEmail ? (json.feedback?.email_sent_at ?? savedAt) : existing?.email_sent_at ?? null,
+        updated_at: savedAt,
+      }
+      setExisting(newExisting)
       setStatus(
         sendEmail
           ? `Saved and emailed to ${clientFirstName}.`
           : 'Saved as draft. Client will not receive this until you send it.'
       )
+      setMode('view')
       router.refresh()
     })
   }
 
+  // ── VIEW MODE ───────────────────────────────────────────────────────────
+  if (mode === 'view' && existing) {
+    const sent = !!existing.email_sent_at
+    return (
+      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+        <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-3 flex-wrap">
+            <p className="text-xs font-bold uppercase tracking-widest text-teal-400">Coach response</p>
+            <span
+              className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${
+                sent
+                  ? 'bg-teal-500/10 border border-teal-500/30 text-teal-300'
+                  : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'
+              }`}
+            >
+              {sent ? `Emailed ${formatShort(existing.email_sent_at!)}` : 'Draft (not sent)'}
+            </span>
+            <span className="text-[10px] uppercase tracking-widest text-stone-500">
+              Last saved {formatShort(existing.updated_at)}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => { setMode('edit'); setStatus(null); setError(null) }}
+            className="text-xs font-bold text-teal-300 hover:text-teal-200 transition-colors"
+          >
+            Edit response →
+          </button>
+        </div>
+        <div className="px-5 py-5 space-y-5">
+          <SavedSection title="Interpretation" body={existing.interpretation} />
+          {existing.reframe && <SavedSection title="Reframe" body={existing.reframe} />}
+          <SavedSection title="This week, hold this" body={existing.next_focus} accent />
+        </div>
+        {status && <p className="px-5 pb-4 text-xs text-teal-400">{status}</p>}
+      </div>
+    )
+  }
+
+  // ── EDIT MODE ───────────────────────────────────────────────────────────
   const previouslyEmailed = !!existing?.email_sent_at
 
   return (
     <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-xs font-bold uppercase tracking-widest text-teal-400">Coach response</p>
-        {previouslyEmailed && (
-          <p className="text-[10px] uppercase tracking-widest text-stone-500">
-            Emailed {new Date(existing!.email_sent_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
-          </p>
-        )}
+      <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+        <p className="text-xs font-bold uppercase tracking-widest text-teal-400">
+          {existing ? 'Edit coach response' : 'Coach response'}
+        </p>
+        <div className="flex items-center gap-3">
+          {previouslyEmailed && (
+            <p className="text-[10px] uppercase tracking-widest text-stone-500">
+              Emailed {formatShort(existing!.email_sent_at!)}
+            </p>
+          )}
+          {existing && (
+            <button
+              type="button"
+              onClick={() => { setMode('view'); setStatus(null); setError(null) }}
+              className="text-xs text-stone-400 hover:text-stone-200 transition-colors"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
 
       <p className="text-xs text-stone-500 leading-relaxed mb-4">
@@ -111,7 +192,7 @@ export default function CheckinFeedbackForm({
       <div className="mb-5 flex items-center justify-between gap-3 rounded-lg border border-stone-800 bg-[#0c0a09] px-4 py-3">
         <div className="min-w-0">
           <p className="text-xs font-bold uppercase tracking-widest text-teal-400">Draft with AI</p>
-          <p className="text-xs text-stone-500 mt-1 leading-relaxed">Pulls this check-in, the CFFS, prior check-ins, and active program. You review and approve before anything sends.</p>
+          <p className="text-xs text-stone-500 mt-1 leading-relaxed">Pulls this check-in, the synthesis, prior check-ins, and active program. You review and approve before anything sends.</p>
         </div>
         <button
           type="button"
@@ -130,7 +211,7 @@ export default function CheckinFeedbackForm({
           value={interpretation}
           onChange={setInterpretation}
           required
-          rows={5}
+          rows={6}
           placeholder="e.g. Recovery has stepped down two notches in a week and capacity is starting to compress. Sleep and appetite are holding, so the foundations are intact, but the load source looks upstream of training..."
         />
         <Field
@@ -200,9 +281,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1">
-        {label}{required ? '' : ' '}<span className="text-stone-600 font-normal normal-case tracking-normal">{required ? '' : ''}</span>
-      </label>
+      <label className="block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1">{label}</label>
       <p className="text-xs text-stone-500 mb-2 leading-relaxed">{hint}</p>
       <textarea
         value={value}
@@ -213,4 +292,17 @@ function Field({
       />
     </div>
   )
+}
+
+function SavedSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
+  return (
+    <div>
+      <p className={`text-[11px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-teal-400' : 'text-stone-500'}`}>{title}</p>
+      <div className="text-sm text-stone-200 leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
+    </div>
+  )
+}
+
+function formatShort(isoDate: string): string {
+  return new Date(isoDate).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
 }
