@@ -1,0 +1,251 @@
+import { FORM_A_SECTIONS, FORM_B_SECTIONS } from './weekly-checkin-questions'
+
+/**
+ * Weekly Check-In Coach Feedback — prompt builders.
+ *
+ * Mirrors the Foundational/Program/Nutrition Reading generator pattern. The
+ * AI drafts the three-field response (interpretation, optional reframe,
+ * next_focus); the coach reviews and edits in the existing feedback form,
+ * then approves by clicking Save + email. Generation never sends or saves
+ * on its own — the coach is the gate.
+ *
+ * Design notes:
+ *  - Interpretation references THIS check-in's signal, contextualised by
+ *    the CFFS (so language stays in body-state terms, not clinical/medical).
+ *  - Prior check-ins are passed in so the model can see drift direction
+ *    (recovery 4 → 3 → 3, capacity "same" → "more limited", etc).
+ *  - Reframe is OPTIONAL and the model is instructed to return null when
+ *    the client is not misreading anything. We do not want a forced reframe
+ *    on every check-in just because the field exists.
+ *  - Next focus is ONE behavioral anchor — not a multi-step plan.
+ */
+
+export interface FeedbackCFFSContext {
+  body_state_classification: string | null
+  resolution_state: string | null
+  client_context_summary: string | null
+  primary_patterns_and_signals: string | null
+  capacity_constraints_and_guardrails: string | null
+  risk_flags_and_watch_items: string | null
+  exposure_readiness_capacity: string | null
+  exposure_readiness_regulation: string | null
+  exposure_readiness_behaviour: string | null
+}
+
+export interface PriorCheckinSummary {
+  weekNumber: number
+  formType: 'A' | 'B'
+  submittedAt: string
+  responses: Record<string, string>
+}
+
+export interface ProgramContext {
+  blockName: string | null
+  weekInBlock: number | null
+  weekDuration: number | null
+  rpeCreepSummary: string | null
+}
+
+export interface ClientFactsContext {
+  firstName: string
+  medications: string | null
+  dietaryRestrictions: string | null
+  dietaryPreferences: string | null
+  readinessStatus: 'on_track' | 'advisory' | 'reassessment' | 'regression' | null
+  readinessDriftMessages: string[]
+}
+
+export function buildFeedbackSystemPrompt(): string {
+  return `You are the Body Recode interpretation engine drafting a coach's response to a client's weekly check-in. The coach will review, edit if needed, and approve before sending. Your job is to produce a strong first draft in the coach's voice.
+
+PURPOSE:
+The coach response is the closing loop on a weekly check-in. It tells the client what their coach is seeing in their signal this week and gives them ONE thing to hold for the next seven days. It is not a summary of their answers and not a program change.
+
+THREE FIELDS YOU PRODUCE:
+
+1. interpretation (REQUIRED)
+   - The coach's read of THIS check-in, contextualised by the CFFS and prior check-ins.
+   - State what is drifting AND what is holding. Both matter.
+   - Body-state language, not clinical language. Use the CFFS body state classification when relevant.
+   - Reference observable signals from THIS check-in (recovery rating, capacity, sleep, eating, sessions, themes in free-text). When prior check-ins are present, name the direction of change in plain words.
+   - Conservative under uncertainty. If a single check-in is the only data point, say so. Do not project a trend from one reading.
+   - 100-180 words, 1-2 paragraphs. Plain prose, no bullet points.
+
+2. reframe (OPTIONAL — return null if not needed)
+   - Use this field ONLY when the client is misreading their own pattern in this check-in. Examples:
+       - Attributing bloating to weight gain when the CFFS spatial patterning calls out digestive variability.
+       - Calling a session "easier" when RPE creep shows they are actually pushing harder than prescribed.
+       - Framing emotional drainage as personal failure when CFFS shows sustained regulatory load.
+   - If you are not certain the client is misreading something specific, return null. A forced reframe is worse than no reframe.
+   - When present: 60-120 words. Name the misread, then the correct read in the CFFS's language.
+
+3. next_focus (REQUIRED)
+   - ONE behavioral anchor for the coming week. Not a list. Not "try harder."
+   - Must be specific enough to do, generic enough to fit a real week the client doesn't control.
+   - Should follow logically from the interpretation. If interpretation says regulatory load is the issue, next_focus is a regulatory anchor (sleep window, walk before training, etc), not a programming change.
+   - 40-100 words. Direct, second person.
+
+VOICE:
+- Warm but considered. Calm, not cheerful. Confident in interpretation, restrained in instruction.
+- Address the client by first name in the opening of interpretation.
+- Direct, not clinical. Avoid medical or diagnostic language.
+- The coach is interpreting a system that is doing something coherent, not diagnosing a broken machine.
+
+PROHIBITED:
+- Em dashes (-). Use commas, periods, or rewrite. This is a non-negotiable style rule.
+- Exclamation marks.
+- Training prescriptions (sets, reps, loads, intensities). Programming lives elsewhere.
+- Meal plans, calorie or macro targets. Nutrition lives elsewhere.
+- Diagnostic labels, disease names, medical advice.
+- Optimisation promises ("you will see results"), motivational language ("you've got this"), or moralising ("you should").
+- "Your body is broken" or any framing of the client as a problem.
+- Praise without substance ("great work this week"). Specifics only.
+
+OUTPUT FORMAT:
+Return ONLY a single JSON object, no preamble, no markdown fences. Schema:
+
+{
+  "interpretation": "string (required, 100-180 words)",
+  "reframe": "string OR null (optional, 60-120 words when present)",
+  "next_focus": "string (required, 40-100 words)"
+}
+
+If reframe is not warranted, the value MUST be the JSON literal null, not an empty string and not the string "null".`
+}
+
+export function buildFeedbackUserPrompt(input: {
+  client: ClientFactsContext
+  cffs: FeedbackCFFSContext | null
+  thisCheckin: {
+    weekNumber: number
+    formType: 'A' | 'B'
+    submittedAt: string
+    responses: Record<string, string>
+  }
+  priorCheckins: PriorCheckinSummary[]
+  program: ProgramContext | null
+}): string {
+  const { client, cffs, thisCheckin, priorCheckins, program } = input
+
+  const lines: string[] = []
+
+  lines.push('CLIENT')
+  lines.push(`First name: ${client.firstName}`)
+  if (client.medications && client.medications.trim()) {
+    lines.push(`Medications: ${client.medications.trim()}`)
+  }
+  if (client.dietaryRestrictions && client.dietaryRestrictions.trim()) {
+    lines.push(`Dietary restrictions: ${client.dietaryRestrictions.trim()}`)
+  }
+  if (client.dietaryPreferences && client.dietaryPreferences.trim()) {
+    lines.push(`Dietary preferences: ${client.dietaryPreferences.trim()}`)
+  }
+  if (client.readinessStatus) {
+    lines.push(`Readiness status (from signal monitor): ${client.readinessStatus}`)
+  }
+  if (client.readinessDriftMessages.length > 0) {
+    lines.push('Active drift signals:')
+    for (const m of client.readinessDriftMessages) lines.push(`  - ${m}`)
+  }
+  lines.push('')
+
+  if (cffs) {
+    lines.push('COACH-FACING FOUNDATIONAL SYNTHESIS (CFFS)')
+    if (cffs.body_state_classification) lines.push(`Body state: ${cffs.body_state_classification}`)
+    if (cffs.resolution_state) lines.push(`Resolution state: ${cffs.resolution_state}`)
+    if (cffs.exposure_readiness_capacity || cffs.exposure_readiness_regulation || cffs.exposure_readiness_behaviour) {
+      lines.push(
+        `Exposure readiness: capacity ${cffs.exposure_readiness_capacity ?? '-'}, regulation ${cffs.exposure_readiness_regulation ?? '-'}, behaviour ${cffs.exposure_readiness_behaviour ?? '-'}`
+      )
+    }
+    if (cffs.client_context_summary) {
+      lines.push('Client context summary:')
+      lines.push(cffs.client_context_summary)
+    }
+    if (cffs.primary_patterns_and_signals) {
+      lines.push('Primary patterns and signals:')
+      lines.push(cffs.primary_patterns_and_signals)
+    }
+    if (cffs.capacity_constraints_and_guardrails) {
+      lines.push('Capacity constraints and guardrails:')
+      lines.push(cffs.capacity_constraints_and_guardrails)
+    }
+    if (cffs.risk_flags_and_watch_items) {
+      lines.push('Risk flags and watch items:')
+      lines.push(cffs.risk_flags_and_watch_items)
+    }
+    lines.push('')
+  } else {
+    lines.push('COACH-FACING FOUNDATIONAL SYNTHESIS (CFFS): none on file yet. Interpret conservatively.')
+    lines.push('')
+  }
+
+  if (program) {
+    lines.push('ACTIVE PROGRAM')
+    if (program.blockName) lines.push(`Block: ${program.blockName}`)
+    if (program.weekInBlock && program.weekDuration) {
+      lines.push(`Week-in-block: ${program.weekInBlock} of ${program.weekDuration}`)
+    }
+    if (program.rpeCreepSummary) {
+      lines.push(`RPE creep monitor: ${program.rpeCreepSummary}`)
+    }
+    lines.push('')
+  }
+
+  lines.push(`THIS CHECK-IN — Week ${thisCheckin.weekNumber} Form ${thisCheckin.formType}`)
+  lines.push(`Submitted: ${new Date(thisCheckin.submittedAt).toISOString().slice(0, 10)}`)
+  lines.push(renderCheckinResponses(thisCheckin.formType, thisCheckin.responses))
+  lines.push('')
+
+  if (priorCheckins.length > 0) {
+    lines.push('PRIOR CHECK-INS (most recent first, use to read direction-of-change)')
+    for (const p of priorCheckins) {
+      lines.push(`--- Week ${p.weekNumber} Form ${p.formType} (submitted ${new Date(p.submittedAt).toISOString().slice(0, 10)})`)
+      lines.push(renderCheckinResponses(p.formType, p.responses))
+      lines.push('')
+    }
+  } else {
+    lines.push('PRIOR CHECK-INS: none. This is the client\'s first check-in — interpret without trend language.')
+    lines.push('')
+  }
+
+  lines.push('TASK')
+  lines.push(`Draft the three-field coach response for ${client.firstName} based on the check-in and context above. Return JSON only.`)
+
+  return lines.join('\n')
+}
+
+function renderCheckinResponses(
+  formType: 'A' | 'B',
+  responses: Record<string, string>
+): string {
+  const sections = formType === 'A' ? FORM_A_SECTIONS : FORM_B_SECTIONS
+  const out: string[] = []
+  for (const section of sections) {
+    const answered = section.questions.filter(q => (responses[q.id] ?? '').toString().trim())
+    if (answered.length === 0) continue
+    out.push(`[${section.title}]`)
+    for (const q of answered) {
+      out.push(`Q: ${q.text}`)
+      out.push(`A: ${responses[q.id]}`)
+    }
+  }
+  return out.join('\n')
+}
+
+/**
+ * Em dash stripper. Applied to every string in the JSON the model returns, so
+ * a stray dash from the model can't slip past the [[feedback_no_em_dashes]]
+ * rule and into a client email. Matches the cleaner used by the Foundational
+ * Reading generator.
+ */
+export function stripEmDashes<T>(value: T): T {
+  if (typeof value === 'string') return value.replace(/—/g, ', ') as T
+  if (Array.isArray(value)) return value.map(stripEmDashes) as T
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, stripEmDashes(v)])
+    ) as T
+  }
+  return value
+}

@@ -26,8 +26,39 @@ export default function CheckinFeedbackForm({
   const [reframe, setReframe] = useState(existing?.reframe ?? '')
   const [nextFocus, setNextFocus] = useState(existing?.next_focus ?? '')
   const [pending, startTransition] = useTransition()
+  const [generating, setGenerating] = useState(false)
   const [status, setStatus] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  async function generateDraft() {
+    setError(null)
+    setStatus(null)
+    const hasContent = interpretation.trim() || reframe.trim() || nextFocus.trim()
+    if (hasContent) {
+      const ok = confirm('This will overwrite your current draft with an AI-generated one. Continue?')
+      if (!ok) return
+    }
+    setGenerating(true)
+    try {
+      const res = await fetch(`/api/weekly-checkins/${checkinId}/feedback/generate`, {
+        method: 'POST',
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        setError(json.error ?? 'Generation failed')
+        return
+      }
+      const draft = json.draft ?? {}
+      setInterpretation(draft.interpretation ?? '')
+      setReframe(draft.reframe ?? '')
+      setNextFocus(draft.next_focus ?? '')
+      setStatus('Draft generated. Review, edit if needed, then click Save and email to approve.')
+    } catch (err) {
+      setError((err as Error).message ?? 'Generation failed')
+    } finally {
+      setGenerating(false)
+    }
+  }
 
   async function submit(sendEmail: boolean) {
     setError(null)
@@ -73,9 +104,24 @@ export default function CheckinFeedbackForm({
         )}
       </div>
 
-      <p className="text-xs text-stone-500 leading-relaxed mb-5">
+      <p className="text-xs text-stone-500 leading-relaxed mb-4">
         Three fields go to {clientFirstName} as a dark-template email and appear under this check-in in their portal. Reframe is optional, use it when {clientFirstName} is misreading their own signal.
       </p>
+
+      <div className="mb-5 flex items-center justify-between gap-3 rounded-lg border border-stone-800 bg-[#0c0a09] px-4 py-3">
+        <div className="min-w-0">
+          <p className="text-xs font-bold uppercase tracking-widest text-teal-400">Draft with AI</p>
+          <p className="text-xs text-stone-500 mt-1 leading-relaxed">Pulls this check-in, the CFFS, prior check-ins, and active program. You review and approve before anything sends.</p>
+        </div>
+        <button
+          type="button"
+          onClick={generateDraft}
+          disabled={generating || pending}
+          className="shrink-0 px-3 py-2 bg-teal-500/10 border border-teal-500/40 hover:bg-teal-500/20 text-teal-300 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
+        >
+          {generating ? 'Generating…' : 'Generate response'}
+        </button>
+      </div>
 
       <div className="space-y-5">
         <Field
