@@ -2,7 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
-import { getCheckInWindowStatus, getWeekNumber } from '@/lib/weekly-checkin-questions'
+import { getCheckInWindowStatus, getWeekNumber, isCheckinTestMode } from '@/lib/weekly-checkin-questions'
 import ClientHeader from '@/components/client-header'
 
 export default async function PortalPage({ params }: { params: Promise<{ token: string }> }) {
@@ -187,7 +187,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     : false
 
   const checkinWindow = getCheckInWindowStatus()
-  const testMode = process.env.CHECKIN_TEST_MODE?.trim().toLowerCase() === 'true'
+  const testMode = isCheckinTestMode()
   const windowOpen = checkinWindow.isOpen || testMode
   const startDate = client.coaching_started_at || client.created_at
   const weekNumber = startDate ? getWeekNumber(startDate) : null

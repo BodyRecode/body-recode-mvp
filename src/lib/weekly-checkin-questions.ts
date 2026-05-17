@@ -349,6 +349,13 @@ export interface CheckInWindowStatus {
   closesAt: Date  // this/next Sunday 6:30pm Brisbane
 }
 
+/** Test-mode flag for the weekly check-in. Always false in production builds
+ * so a stray env var can never bypass the once-per-week gate or flip A↔B. */
+export function isCheckinTestMode(): boolean {
+  if (process.env.NODE_ENV === 'production') return false
+  return process.env.CHECKIN_TEST_MODE?.trim().toLowerCase() === 'true'
+}
+
 /** Returns whether the check-in window is currently open and which form is active */
 export function getCheckInWindowStatus(): CheckInWindowStatus {
   const now = nowBrisbane()

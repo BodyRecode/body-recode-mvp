@@ -1,5 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
-import { getWeekNumber, getCheckInWindowStatus } from '@/lib/weekly-checkin-questions'
+import { getWeekNumber, getCheckInWindowStatus, isCheckinTestMode } from '@/lib/weekly-checkin-questions'
 import CheckInForm from './checkin-form'
 
 export default async function CheckInPage({ params }: { params: Promise<{ token: string }> }) {
@@ -25,7 +25,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
   }
 
   const window = getCheckInWindowStatus()
-  const testMode = process.env.CHECKIN_TEST_MODE?.trim().toLowerCase() === 'true'
+  const testMode = isCheckinTestMode()
 
   // Window is closed — show next open time
   if (!window.isOpen && !testMode) {

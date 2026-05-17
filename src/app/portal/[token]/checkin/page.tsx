@@ -1,6 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
-import { getWeekNumber, getCheckInWindowStatus } from '@/lib/weekly-checkin-questions'
+import { getWeekNumber, getCheckInWindowStatus, isCheckinTestMode } from '@/lib/weekly-checkin-questions'
 import CheckInForm from '@/app/checkin/[token]/checkin-form'
 
 export default async function PortalCheckinPage({ params }: { params: Promise<{ token: string }> }) {
@@ -41,7 +41,7 @@ export default async function PortalCheckinPage({ params }: { params: Promise<{ 
   }
 
   const window = getCheckInWindowStatus()
-  const testMode = process.env.CHECKIN_TEST_MODE?.trim().toLowerCase() === 'true'
+  const testMode = isCheckinTestMode()
 
   if (!window.isOpen && !testMode) {
     const opensAt = window.opensAt.toLocaleString('en-AU', {
