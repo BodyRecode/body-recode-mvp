@@ -6,6 +6,7 @@ import {
   buildFeedbackSystemPrompt,
   buildFeedbackUserPrompt,
   stripEmDashes,
+  findLeakedTerms,
   type FeedbackCFFSContext,
   type PriorCheckinSummary,
   type ProgramContext,
@@ -211,6 +212,25 @@ export async function POST(
     reframe,
     next_focus: parsed.next_focus,
   })
+
+  // Second line of defence against internal terminology slipping into client
+  // text. The prompt already forbids these explicitly; if anything still
+  // leaks, surface as a failure so the coach can regenerate rather than ship
+  // a draft with "CFFS" / "spatial patterning" / etc. visible to the client.
+  const leakedTerms = [
+    ...findLeakedTerms(draft.interpretation),
+    ...(draft.reframe ? findLeakedTerms(draft.reframe) : []),
+    ...findLeakedTerms(draft.next_focus),
+  ]
+  if (leakedTerms.length > 0) {
+    const unique = Array.from(new Set(leakedTerms.map(t => t.toLowerCase())))
+    return NextResponse.json(
+      {
+        error: `Draft contained internal terminology the client would not understand (${unique.join(', ')}). Click Generate again to redraft.`,
+      },
+      { status: 500 }
+    )
+  }
 
   return NextResponse.json({ draft })
 }

@@ -64,20 +64,20 @@ The coach response is the closing loop on a weekly check-in. It tells the client
 THREE FIELDS YOU PRODUCE:
 
 1. interpretation (REQUIRED)
-   - The coach's read of THIS check-in, contextualised by the CFFS and prior check-ins.
+   - The coach's read of THIS check-in, contextualised by the foundational synthesis and prior check-ins.
    - State what is drifting AND what is holding. Both matter.
-   - Body-state language, not clinical language. Use the CFFS body state classification when relevant.
+   - Plain, client-facing body-state language. You may reference the client's body state (e.g. "your body is in remediation right now," "this is a regulation pattern") but never quote internal terminology verbatim.
    - Reference observable signals from THIS check-in (recovery rating, capacity, sleep, eating, sessions, themes in free-text). When prior check-ins are present, name the direction of change in plain words.
    - Conservative under uncertainty. If a single check-in is the only data point, say so. Do not project a trend from one reading.
    - 100-180 words, 1-2 paragraphs. Plain prose, no bullet points.
 
 2. reframe (OPTIONAL — return null if not needed)
    - Use this field ONLY when the client is misreading their own pattern in this check-in. Examples:
-       - Attributing bloating to weight gain when the CFFS spatial patterning calls out digestive variability.
-       - Calling a session "easier" when RPE creep shows they are actually pushing harder than prescribed.
-       - Framing emotional drainage as personal failure when CFFS shows sustained regulatory load.
+       - Attributing bloating to weight gain when the synthesis shows digestive variability rather than fat storage.
+       - Calling a session "easier" when their logged effort shows they are actually pushing harder than prescribed.
+       - Framing emotional drainage as personal failure when the pattern shows sustained regulatory load.
    - If you are not certain the client is misreading something specific, return null. A forced reframe is worse than no reframe.
-   - When present: 60-120 words. Name the misread, then the correct read in the CFFS's language.
+   - When present: 60-120 words. Name the misread, then the correct read in plain, client-facing body-state language.
 
 3. next_focus (REQUIRED)
    - ONE behavioral anchor for the coming week. Not a list. Not "try harder."
@@ -90,6 +90,18 @@ VOICE:
 - Address the client by first name in the opening of interpretation.
 - Direct, not clinical. Avoid medical or diagnostic language.
 - The coach is interpreting a system that is doing something coherent, not diagnosing a broken machine.
+
+CLIENT-FACING LANGUAGE RULE:
+Everything you write goes directly into a client email and into the client's portal. The client has never seen our internal documentation. These are the terms we use internally that the client will NOT understand and that you must NEVER write verbatim:
+
+  - CFFS, CFWS, coach-facing synthesis, weekly synthesis, foundational synthesis
+  - spatial patterning, exposure readiness, regulation readiness, capacity readiness, behaviour readiness
+  - sympathetic dominance, parasympathetic, autonomic
+  - drift advisory, reassessment trigger, signal monitor, readiness monitor
+  - resolution state, body state classification, mid-arc, stress-belt, RPE creep
+  - any acronym from the input context that the client would not have encountered in their own Foundational Reading
+
+If you would use one of these terms, rewrite it in plain words the client would say themselves. "Your CFFS shows" becomes "what we've been seeing." "Spatial patterning indicates digestive variability" becomes "the way your midsection is moving day-to-day looks more like digestion than weight." "Exposure readiness is amber" becomes "you have room to do work but not to push." You may use the body-state vocabulary the client has already seen in their Foundational Reading (e.g. Remediation, Regulation, Capacity, Performance) because those words live in their portal.
 
 PROHIBITED:
 - Em dashes (-). Use commas, periods, or rewrite. This is a non-negotiable style rule.
@@ -248,4 +260,37 @@ export function stripEmDashes<T>(value: T): T {
     ) as T
   }
   return value
+}
+
+/**
+ * Internal terminology the client has never seen. Surfaces as a generation
+ * failure so the coach can regenerate rather than ship leaked jargon. The
+ * system prompt already forbids these explicitly; this is the second line
+ * of defence.
+ */
+const BANNED_CLIENT_TERMS: RegExp[] = [
+  /\bCFFS\b/i,
+  /\bCFWS\b/i,
+  /\bRPE creep\b/i,
+  /\bcoach[- ]facing\b/i,
+  /\b(foundational|weekly) synthesis\b/i,
+  /\bspatial patterning\b/i,
+  /\b(exposure|capacity|regulation|behaviour|behavior) readiness\b/i,
+  /\b(sympathetic|parasympathetic) dominance\b/i,
+  /\bautonomic\b/i,
+  /\bdrift advisory\b/i,
+  /\breassessment trigger\b/i,
+  /\b(signal|readiness) monitor\b/i,
+  /\bresolution state\b/i,
+  /\bbody state classification\b/i,
+  /\bstress[- ]belt\b/i,
+]
+
+export function findLeakedTerms(text: string): string[] {
+  const hits: string[] = []
+  for (const re of BANNED_CLIENT_TERMS) {
+    const match = text.match(re)
+    if (match) hits.push(match[0])
+  }
+  return hits
 }
