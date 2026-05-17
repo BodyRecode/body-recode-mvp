@@ -17,6 +17,7 @@ import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
 import ClientReadingPanel from './client-reading-panel'
 import MedicationsEditor from './medications-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
+import CoachResponseCard from './coach-response-card'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
@@ -1141,37 +1142,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <p className="text-[10px] text-[#3c3835] uppercase tracking-widest">{feedbackHistory.length} total</p>
             </div>
             <div className="space-y-3">
-              {feedbackHistory.map(fb => {
-                const meta = checkinMetaById.get(fb.weekly_checkin_id)
-                const week = meta?.week_number ?? '?'
-                const form = meta?.form_type ?? '?'
-                const sent = !!fb.email_sent_at
-                return (
-                  <div key={fb.id} className="bg-[#0c0a09] border border-[#1c1917] rounded-lg overflow-hidden">
-                    <div className="px-4 py-2.5 border-b border-[#1c1917] flex items-center justify-between gap-3 flex-wrap">
-                      <div className="flex items-center gap-2.5 flex-wrap">
-                        <p className="text-xs font-semibold text-[#e7e5e4]">Week {week} · Form {form}</p>
-                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-teal-500/10 border border-teal-500/30 text-teal-300' : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'}`}>
-                          {sent ? `Emailed ${formatDate(fb.email_sent_at!)}` : 'Draft (not sent)'}
-                        </span>
-                      </div>
-                      {meta && (
-                        <Link
-                          href={`/dashboard/clients/${id}/checkins/${meta.week_number}/${meta.form_type}`}
-                          className="text-[10px] font-bold uppercase tracking-widest text-teal-400 hover:text-teal-300"
-                        >
-                          Open →
-                        </Link>
-                      )}
-                    </div>
-                    <div className="px-4 py-3 space-y-3">
-                      <FeedbackSection title="Interpretation" body={fb.interpretation} />
-                      {fb.reframe && <FeedbackSection title="Reframe" body={fb.reframe} />}
-                      <FeedbackSection title="This week, hold this" body={fb.next_focus} accent />
-                    </div>
-                  </div>
-                )
-              })}
+              {feedbackHistory.map(fb => (
+                <CoachResponseCard
+                  key={fb.id}
+                  clientId={id}
+                  feedback={fb}
+                  meta={checkinMetaById.get(fb.weekly_checkin_id)}
+                />
+              ))}
             </div>
           </div>
         )}
@@ -1320,11 +1298,3 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   )
 }
 
-function FeedbackSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
-  return (
-    <div>
-      <p className={`text-[10px] font-bold uppercase tracking-widest mb-1.5 ${accent ? 'text-teal-400' : 'text-[#57534e]'}`}>{title}</p>
-      <div className="text-xs text-[#d4cfc9] leading-relaxed whitespace-pre-wrap">{body}</div>
-    </div>
-  )
-}
