@@ -268,6 +268,13 @@ const MANUAL_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'weekly-checkin-feedback',
+    name: 'Weekly Check-In Coach Feedback',
+    description: 'Saves a 3-field response (Interpretation, optional Reframe, This week hold this) on a weekly check-in and emails the client. Feedback also appears under the check-in in their portal. BCCs the coach. Re-saving overwrites the prior response and re-sends.',
+    trigger: 'Click "Save and email client" on /dashboard/clients/[id]/checkins/[week]/[form]',
+    steps: 1,
+  },
+  {
     id: 'inbox-reply',
     name: 'Inbox Reply (free-text)',
     description: 'Manually compose a custom email to a lead from the inbox view. Reply-To is set to kade@replies.bodyrecode.au so threading works.',

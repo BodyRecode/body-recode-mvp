@@ -16,7 +16,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const { data: client } = await admin
     .from('clients')
-    .select('*, baselines(id), intake_invitations(status, token, kind), weekly_checkins(week_number, form_type, submitted_at), session_type')
+    .select('*, baselines(id), intake_invitations(status, token, kind), weekly_checkins(id, week_number, form_type, submitted_at), session_type')
     .eq('onboarding_token', token)
     .single()
 
@@ -176,6 +176,16 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const recentCheckins = Array.isArray(client.weekly_checkins)
     ? [...client.weekly_checkins].sort((a: { submitted_at: string }, b: { submitted_at: string }) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime()).slice(0, 3)
     : []
+
+  // Per-check-in coach feedback lookup. Only the 3 recent IDs, so cheap.
+  const recentCheckinIds = (recentCheckins as Array<{ id?: string }>).map(c => c.id).filter(Boolean) as string[]
+  const { data: recentFeedbackRows } = recentCheckinIds.length > 0
+    ? await admin
+        .from('weekly_checkin_feedback')
+        .select('weekly_checkin_id')
+        .in('weekly_checkin_id', recentCheckinIds)
+    : { data: [] as Array<{ weekly_checkin_id: string }> }
+  const checkinIdsWithFeedback = new Set((recentFeedbackRows ?? []).map(r => r.weekly_checkin_id))
 
   const now = Date.now()
   const sevenDays = 7 * 24 * 60 * 60 * 1000
@@ -603,12 +613,24 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
               <Link href={`/portal/${token}/checkin-history`} className="text-xs text-[#14b8a6] hover:text-[#14b8a6] transition-colors">View all →</Link>
             </div>
             <div className="space-y-2">
-              {recentCheckins.map((c: { week_number: number; form_type: string; submitted_at: string }, i: number) => (
-                <div key={i} className="flex items-center justify-between rounded-xl bg-[#111110] px-4 py-3">
-                  <p className="text-sm text-white font-medium">Week {c.week_number}, Form {c.form_type}</p>
-                  <p className="text-xs text-[#57534e]">{new Date(c.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
-                </div>
-              ))}
+              {recentCheckins.map((c: { id?: string; week_number: number; form_type: string; submitted_at: string }, i: number) => {
+                const hasFeedback = c.id ? checkinIdsWithFeedback.has(c.id) : false
+                return (
+                  <Link
+                    key={c.id ?? i}
+                    href={`/portal/${token}/checkin/${c.week_number}/${c.form_type.toLowerCase()}`}
+                    className="flex items-center justify-between rounded-xl bg-[#111110] px-4 py-3 hover:bg-[#1c1917] transition-colors"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <p className="text-sm text-white font-medium">Week {c.week_number}, Form {c.form_type}</p>
+                      {hasFeedback && (
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#14b8a6] bg-[#14b8a6]/10 border border-[#14b8a6]/30 rounded px-1.5 py-0.5">Coach response</span>
+                      )}
+                    </div>
+                    <p className="text-xs text-[#57534e] ml-3 shrink-0">{new Date(c.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
+                  </Link>
+                )
+              })}
             </div>
           </div>
         )}

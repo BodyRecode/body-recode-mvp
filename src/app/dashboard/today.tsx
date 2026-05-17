@@ -55,6 +55,7 @@ export default async function TodayWidget() {
     { data: feedback },
     { data: subscriptions },
     { data: paymentPlans },
+    { data: checkinFeedbackRows },
   ] = await Promise.all([
     admin
       .from('clients')
@@ -78,7 +79,7 @@ export default async function TodayWidget() {
     admin
       .from('cfws')
       .select('client_id, week_number, generated_at, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, reassessment_language_triggered, is_archived'),
-    admin.from('weekly_checkins').select('client_id, week_number, submitted_at'),
+    admin.from('weekly_checkins').select('id, client_id, week_number, form_type, submitted_at'),
     admin
       .from('client_feedback')
       .select('client_id')
@@ -90,6 +91,11 @@ export default async function TodayWidget() {
     admin
       .from('client_payment_plan')
       .select('client_id, commencement_fee_paid_at'),
+    // Look up which check-ins already have a coach feedback row so we can
+    // surface the "respond to check-in" action for the unanswered ones.
+    admin
+      .from('weekly_checkin_feedback')
+      .select('weekly_checkin_id'),
   ])
 
   if (!clients) {
@@ -134,6 +140,10 @@ export default async function TodayWidget() {
   for (const f of feedback ?? []) {
     feedbackByClient.set(f.client_id, (feedbackByClient.get(f.client_id) ?? 0) + 1)
   }
+
+  // Check-ins that already have a coach response. Used to compute the
+  // "respond to check-in" Today's Focus action.
+  const checkinIdsAnswered = new Set((checkinFeedbackRows ?? []).map(r => r.weekly_checkin_id))
 
   // ── Payments lookup ─────────────────────────────────────────────────────
   // Subscriptions arrive ordered created_at desc. Per client we want the
@@ -195,6 +205,26 @@ export default async function TodayWidget() {
       ? clientCheckins.some((ci) => ci.week_number === currentWeekNumber)
       : false
 
+    // Most recent check-in without coach feedback. Days-since drives the
+    // accent (teal up to 2 days old, amber from day 3 on).
+    let unansweredCheckin: ClientNextActionInput['unansweredCheckin'] = null
+    const unansweredSorted = [...clientCheckins]
+      .filter(ci => !checkinIdsAnswered.has(ci.id))
+      .sort((a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())
+    if (unansweredSorted.length > 0) {
+      const ci = unansweredSorted[0]
+      const daysSince = Math.max(
+        0,
+        Math.floor((today.getTime() - new Date(ci.submitted_at).getTime()) / 86400000)
+      )
+      unansweredCheckin = {
+        weekNumber: ci.week_number,
+        formType: ci.form_type as 'A' | 'B',
+        submittedAt: ci.submitted_at,
+        daysSince,
+      }
+    }
+
     const { paymentSignal, paymentDetail } = derivePaymentSignal({
       hasStarted,
       coachingStartedAt: client.coaching_started_at ?? null,
@@ -233,6 +263,7 @@ export default async function TodayWidget() {
       unacknowledgedFeedbackCount: feedbackByClient.get(client.id) ?? 0,
       thisWeeksCheckinSubmitted,
       currentWeekNumber,
+      unansweredCheckin,
       paymentSignal,
       paymentDetail,
     }

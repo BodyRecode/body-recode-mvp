@@ -1161,6 +1161,9 @@ export default function HelpPage() {
             <p className="font-semibold text-white mt-4">Weekly Check-In Notification (to you)</p>
             <p>Sent automatically when a client submits a check-in form. Includes the form type and a link to the client profile.</p>
 
+            <p className="font-semibold text-white mt-4">Weekly Check-In Coach Feedback (manual — you trigger it)</p>
+            <p>Open any submitted check-in at <code>/dashboard/clients/[id]/checkins/[week]/[form]</code>. Above the responses you will see a <strong>Coach response</strong> card with three textareas: <strong>Interpretation</strong> (required — your read of the signal), <strong>Reframe</strong> (optional — for when the client is misreading their own pattern, e.g. bloating mistaken for weight gain), and <strong>This week, hold this</strong> (required — one anchor for the week). Click <strong>Save and email client</strong> to ship the dark-template email and stamp the feedback under the check-in on the client portal. The email BCCs you. Save without sending keeps it as a draft. Re-saving overwrites the prior feedback and re-sends the email. Today&apos;s Focus surfaces a <strong>Respond to Week N Form X check-in</strong> action for every check-in that has no coach response — teal up to 2 days old, amber from day 3 — so feedback can&apos;t silently slip.</p>
+
             <p className="font-semibold text-white mt-4">Face-to-Face Session Booked (to client + to you)</p>
             <p>Sent when a client books a reschedule slot from their portal Sessions page. The client receives a branded confirmation with date, time, and duration. You receive a notification showing who booked and when.</p>
 

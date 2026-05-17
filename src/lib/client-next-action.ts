@@ -66,6 +66,20 @@ export interface ClientNextActionInput {
   currentWeekNumber: number
 
   /**
+   * Latest check-in submitted by this client that has no coach feedback row
+   * yet. When set, Today's Focus surfaces a "respond to check-in" action so
+   * coach feedback doesn't slip through the cracks. Caller computes by
+   * left-joining weekly_checkins → weekly_checkin_feedback and picking the
+   * most recent unanswered one.
+   */
+  unansweredCheckin: {
+    weekNumber: number
+    formType: 'A' | 'B'
+    submittedAt: string
+    daysSince: number
+  } | null
+
+  /**
    * Payment signal from the Client Payment Tracker.
    *
    *   past_due / unpaid     → Stripe subscription is currently broken (red, p10)
@@ -107,6 +121,7 @@ export type NextActionStage =
   | 'active_regression'
   | 'active_reassessment'
   | 'active_checkin_overdue'
+  | 'active_checkin_feedback_pending'
   | 'active_drift'
   | 'active_steady'
   | 'pre_start'
@@ -423,6 +438,28 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: profileHref,
       accent: 'red',
       priority: 10,
+      badge: feedbackBadge,
+    }
+  }
+
+  // Coach feedback pending on the latest check-in. Surfaces after the more
+  // urgent regression/reassessment/overdue states so a missing response
+  // doesn't preempt a structural issue, but before drift advisory because
+  // responding to the client IS the action that addresses early drift.
+  if (input.unansweredCheckin) {
+    const u = input.unansweredCheckin
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'active_checkin_feedback_pending',
+      headline: `Respond to Week ${u.weekNumber} Form ${u.formType} check-in`,
+      sublabel:
+        u.daysSince <= 0
+          ? 'Submitted today - send your read'
+          : `Submitted ${u.daysSince} day${u.daysSince === 1 ? '' : 's'} ago - send your read`,
+      href: `${profileHref}/checkins/${u.weekNumber}/${u.formType.toLowerCase()}`,
+      accent: u.daysSince >= 3 ? 'amber' : 'teal',
+      priority: 20,
       badge: feedbackBadge,
     }
   }

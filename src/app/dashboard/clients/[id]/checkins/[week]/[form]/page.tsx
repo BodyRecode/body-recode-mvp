@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { FORM_A_SECTIONS, FORM_B_SECTIONS } from '@/lib/weekly-checkin-questions'
+import CheckinFeedbackForm from './feedback-form'
 
 export default async function CheckInDetailPage({
   params,
@@ -26,13 +27,19 @@ export default async function CheckInDetailPage({
 
   const { data: checkin } = await admin
     .from('weekly_checkins')
-    .select('responses, submitted_at')
+    .select('id, responses, submitted_at')
     .eq('client_id', id)
     .eq('week_number', weekNumber)
     .eq('form_type', formType)
     .maybeSingle()
 
   if (!checkin) notFound()
+
+  const { data: feedback } = await admin
+    .from('weekly_checkin_feedback')
+    .select('id, interpretation, reframe, next_focus, email_sent_at, updated_at')
+    .eq('weekly_checkin_id', checkin.id)
+    .maybeSingle()
 
   const sections = formType === 'A' ? FORM_A_SECTIONS : FORM_B_SECTIONS
   const responses = checkin.responses as Record<string, string>
@@ -70,6 +77,12 @@ export default async function CheckInDetailPage({
         </div>
 
         <div className="space-y-6">
+          <CheckinFeedbackForm
+            checkinId={checkin.id}
+            existing={feedback ?? null}
+            clientFirstName={client.name?.split(' ')[0] ?? 'your client'}
+          />
+
           {sections.map(section => {
             const answered = section.questions.filter(q => responses[q.id])
             if (answered.length === 0) return null
