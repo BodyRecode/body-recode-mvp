@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ApproveClearanceButton from './approve-clearance-button'
 import RemoveClearanceButton from './remove-clearance-button'
+import PdfViewer from './pdf-viewer'
 
 export default async function MedicalClearancePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -96,11 +97,7 @@ Kade`
           {isImage ? (
             <img src={docSignedUrl} alt="Medical clearance form" className="w-full rounded-lg border border-stone-700" />
           ) : (
-            <iframe
-              src={docSignedUrl}
-              title="Medical clearance form"
-              className="w-full h-[80vh] rounded-lg border border-stone-700 bg-white"
-            />
+            <PdfViewer url={docSignedUrl} />
           )}
         </div>
       )}
