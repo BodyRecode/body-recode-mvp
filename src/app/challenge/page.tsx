@@ -161,12 +161,12 @@ const WHAT_YOU_GET = [
   {
     icon: '🧬',
     title: 'Body Decode Check-In',
-    desc: 'Unlocks on Day 7. A structured audit of 8 biological markers combined with a pattern identification tool that identifies what your body has been doing and why.',
+    desc: 'Unlocks on Day 7. Find out why your body has stopped losing fat. A structured audit of 8 biological markers shows which pattern is active and what is driving it.',
   },
   {
     icon: '📊',
     title: 'Body Decode Result',
-    desc: 'Your personalised result delivered automatically. Your biological pattern, what is driving it, and three specific actions for the next 7 days.',
+    desc: 'Your personalised result delivered automatically. Why your fat loss has stalled, the pattern your body is locked in, and three specific actions for the next 7 days.',
   },
 ]
 
@@ -232,19 +232,19 @@ export default function ChallengePage() {
             color: '#1c1917',
             marginBottom: '24px',
           }}>
-            Your body is not broken.
+            You're training. You're eating clean.
             <br />
-            <span style={{ color: '#14b8a6' }}>It is stuck in the wrong state.</span>
+            <span style={{ color: '#14b8a6' }}>The fat won't move.</span>
           </h1>
 
           {/* Divider line */}
           <div style={{ width: '48px', height: '3px', background: '#14b8a6', borderRadius: '2px', marginBottom: '24px' }} />
 
           <p style={{ fontSize: '19px', color: '#57534e', lineHeight: 1.7, marginBottom: '14px' }}>
-            You are doing the work. You are not getting the result. That is not a discipline problem. That is a biology problem.
+            There is a specific reason your body has stopped responding. It is not a discipline problem. It is a biology problem.
           </p>
           <p style={{ fontSize: '19px', color: '#57534e', lineHeight: 1.7, marginBottom: '40px' }}>
-            The 14-Day Body Decode Challenge is a structured reset designed to lower biological noise, stabilise your energy, and let your body start responding again.
+            The 14-Day Body Decode Challenge is a structured reset that lowers biological noise, stabilises your energy, and lets your body start releasing again.
           </p>
 
           {/* Stats */}
@@ -316,20 +316,20 @@ export default function ChallengePage() {
             The real problem
           </p>
           <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '20px', color: '#1c1917' }}>
-            Your biology is protecting you, not resisting you.
+            Your body has stopped losing fat. Here is why.
           </h2>
           <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '16px' }}>
-            Most people who struggle with their body are not lacking discipline. They are stuck in patterns their biology cannot stabilise on its own.
+            Most people stuck with fat loss are not lacking discipline. Their body has stopped responding to the inputs that used to work. It is in protection mode, not resistance.
           </p>
           <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '24px' }}>
-            When your rhythm collapses, inflammation rises, fluid retention increases, energy becomes unpredictable, and your body shifts into protection mode. Pushing harder makes it worse, not better.
+            When your rhythm collapses, inflammation rises, fluid retention increases, and energy becomes unpredictable. Your body shifts to storage mode. Fat goes to the holding zones and stays there. Pushing harder confirms the threat. The harder you push, the tighter it holds.
           </p>
           <div style={{
             background: 'rgba(20,184,166,0.1)', border: '1px solid rgba(20,184,166,0.25)',
             borderRadius: '12px', padding: '20px 22px',
           }}>
             <p style={{ fontSize: '17px', color: '#1c1917', fontWeight: 700, margin: 0, lineHeight: 1.5 }}>
-              The solution is not more effort. It is the right environment for your system to recalibrate.
+              The solution is not more effort. It is the right conditions for your body to start releasing again.
             </p>
           </div>
         </div>
