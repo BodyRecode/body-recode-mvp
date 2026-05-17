@@ -131,42 +131,42 @@ const WHAT_YOU_GET = [
   {
     icon: '🏋️',
     title: '14-Day Training Plan',
-    desc: 'Session-by-session structure to lower tension, stabilise energy, and support recovery. Not high intensity.',
+    desc: 'Built for a body in a Depleted State, not a body that is already responding. Lower intensity by design. The job is to pull load, not add it.',
   },
   {
     icon: '🥗',
     title: 'Nutrition Guide',
-    desc: 'Simple whole foods and predictable meal timing that calms your system rather than overwhelms it.',
+    desc: 'Predictable food, predictable timing. The goal is to signal safety to a body that has been in protection mode. Not a diet. Not a deficit. A reset of the inputs.',
   },
   {
     icon: '☀️',
     title: 'Morning Reset Sequence',
-    desc: 'A short morning protocol to prime your nervous system and set a stable rhythm for the day.',
+    desc: 'The first 20 minutes of your day set the cortisol curve for everything that follows. This sequence brings cortisol down, not up. Five minutes, done before coffee.',
   },
   {
     icon: '🌙',
     title: 'Evening Rhythm Sequence',
-    desc: 'A wind-down routine to support sleep quality and overnight recovery.',
+    desc: 'Sleep is where depleted recovery happens. This is the sequence that gets your body into the deep recovery state it needs to start releasing, not just resting.',
   },
   {
     icon: '📋',
     title: 'Daily Coaching Notes',
-    desc: 'Short daily notes delivered inside your portal each morning. Context and focus for every day of the challenge.',
+    desc: 'One note from me each morning inside your portal. What is happening in your body that day, what to expect, and what to actually pay attention to. Sixty seconds.',
   },
   {
     icon: '🎥',
     title: 'Week One Progress Session',
-    desc: 'A 30-minute recorded coaching session unlocks on Day 5. Breaks down what your body has been doing and what comes next.',
+    desc: 'Unlocks Day 5. Thirty minutes of me walking you through what your body has been doing for the first five days, why, and what to look for in week two.',
   },
   {
     icon: '🧬',
     title: 'Body Decode Check-In',
-    desc: 'Unlocks on Day 7. Find out why your body has stopped losing fat. A structured audit of 8 biological markers shows which pattern is active and what is driving it.',
+    desc: 'Unlocks Day 7. The full read. Eight biological markers, scored. Tells you exactly where your body sits, whether you are still Depleted, moving into Transitioning, or already Ready, and which pattern is holding the system.',
   },
   {
     icon: '📊',
     title: 'Body Decode Result',
-    desc: 'Your personalised result delivered automatically. Why your fat loss has stalled, the pattern your body is locked in, and three specific actions for the next 7 days.',
+    desc: 'Delivered automatically the moment you finish the Check-In. Your state. Why fat loss has stalled. The specific pattern your body is locked in. And the three things to actually do next.',
   },
 ]
 
@@ -241,10 +241,10 @@ export default function ChallengePage() {
           <div style={{ width: '48px', height: '3px', background: '#14b8a6', borderRadius: '2px', marginBottom: '24px' }} />
 
           <p style={{ fontSize: '19px', color: '#57534e', lineHeight: 1.7, marginBottom: '14px' }}>
-            There is a specific reason your body has stopped responding. It is not a discipline problem. It is a biology problem.
+            There is a specific reason your body has stopped responding to effort. It is not a discipline problem. It is biology. Your body has shifted into protection mode, and protection mode resists fat loss by design.
           </p>
           <p style={{ fontSize: '19px', color: '#57534e', lineHeight: 1.7, marginBottom: '40px' }}>
-            The 14-Day Body Decode Challenge is a structured reset that lowers biological noise, stabilises your energy, and lets your body start releasing again.
+            If your energy is on the floor, you are relying on caffeine to function, and fat loss has been stalled for months, your body is in a Depleted State. The 14-Day Body Decode Challenge is built specifically for this. Fourteen days to lower the load, settle your system, and bring your body back online enough to be read properly. By Day 14 you know exactly what it needs next.
           </p>
 
           {/* Stats */}
@@ -284,13 +284,13 @@ export default function ChallengePage() {
         </h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0', borderTop: '1px solid #e7e5e0' }}>
           {[
-            'Waking up puffy or swollen',
-            'Energy that crashes in the afternoon',
-            'Tired even after a full night of sleep',
-            'Training consistently with no visible change',
-            'Appetite and cravings that feel out of control',
-            'A body that feels harder and harder to manage',
-            'Constantly starting over',
+            'Waking up puffy or swollen and unable to explain it',
+            'Energy crashes by mid-afternoon despite a full night of sleep',
+            'Caffeine has stopped working the way it used to',
+            'Training consistently for months with no visible result',
+            'Fat sitting in new places, especially stomach and waist',
+            'Appetite and cravings that feel completely out of control',
+            'Third or fourth attempt and watching it not land again',
           ].map(item => (
             <div key={item} style={{
               display: 'flex', alignItems: 'center', gap: '16px',
@@ -302,6 +302,9 @@ export default function ChallengePage() {
             </div>
           ))}
         </div>
+        <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginTop: '32px', marginBottom: 0 }}>
+          Every signal on this list points to one thing. Your body is in protection mode. Fat loss is the first thing the body shuts down under protection. Effort does not fix it. Conditions do.
+        </p>
       </div>
 
       {/* REAL PROBLEM */}
@@ -319,17 +322,20 @@ export default function ChallengePage() {
             Your body has stopped losing fat. Here is why.
           </h2>
           <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '16px' }}>
-            Most people stuck with fat loss are not lacking discipline. Their body has stopped responding to the inputs that used to work. It is in protection mode, not resistance.
+            Most people whose fat loss has stalled are not lacking discipline. Their body has shifted into a state where it is actively resisting the inputs that used to work. This is biology, not weakness.
+          </p>
+          <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '16px' }}>
+            At this level of stress and depletion, the body runs on cortisol. Metabolism gets suppressed. Fat goes to the storage zones, mainly stomach and waist, and stays there. The system is hanging on to everything because nothing in the environment is telling it that it is safe to release. Pushing harder confirms the threat. The harder you push, the tighter it holds.
           </p>
           <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '24px' }}>
-            When your rhythm collapses, inflammation rises, fluid retention increases, and energy becomes unpredictable. Your body shifts to storage mode. Fat goes to the holding zones and stays there. Pushing harder confirms the threat. The harder you push, the tighter it holds.
+            This is exactly why what you have tried before stopped producing. Whoever wrote that program was not reading your body. They were prescribing into a Depleted system. The standard answer of more training and less food is the wrong answer for a body in this state. It makes the depletion worse, not better.
           </p>
           <div style={{
             background: 'rgba(20,184,166,0.1)', border: '1px solid rgba(20,184,166,0.25)',
             borderRadius: '12px', padding: '20px 22px',
           }}>
             <p style={{ fontSize: '17px', color: '#1c1917', fontWeight: 700, margin: 0, lineHeight: 1.5 }}>
-              The solution is not more effort. It is the right conditions for your body to start releasing again.
+              The solution is not more effort. It is the right conditions for your body to come out of protection mode and start releasing again.
             </p>
           </div>
         </div>
@@ -384,10 +390,10 @@ export default function ChallengePage() {
       }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', padding: '64px 24px' }}>
           <h2 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '8px', lineHeight: 1.25, color: '#134e4a' }}>
-            14 days. No pressure. Just clarity.
+            Fourteen days. No deficit. No high intensity. Just the read.
           </h2>
           <p style={{ fontSize: '16px', color: '#0f766e', marginBottom: '28px', lineHeight: 1.6 }}>
-            Free to join. Instant access. Start whenever you are ready.
+            Free to join. Instant portal access. Daily coaching messages start the moment you sign up.
           </p>
           <SignupForm position="mid" teal />
         </div>
@@ -440,12 +446,12 @@ export default function ChallengePage() {
           borderRadius: '14px', padding: '20px 22px',
         }}>
           <p style={{ fontSize: '16px', color: '#1c1917', fontWeight: 600, lineHeight: 1.65, margin: 0 }}>
-            When I simplified everything and gave my body the right environment, it recalibrated. The patterns from that season became the foundation of Body Recode. This challenge is built from the same structure that helped me come back.
+            When I simplified everything and gave my body the right environment, it recalibrated. The patterns from that season became the foundation of Body Recode. I built this challenge for the Depleted State specifically because that is the state I came out of, and it is the state I can read and bring people out of more reliably than anything else.
           </p>
         </div>
       </div>
 
-      {/* WHO THIS IS FOR */}
+      {/* IS THIS FOR YOU - STATE FILTER */}
       <div style={{
         background: '#f5f4f0',
         borderTop: '1px solid #e7e5e0',
@@ -453,33 +459,69 @@ export default function ChallengePage() {
       }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
-            Who this is for
+            Is this for you?
           </p>
-          <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '24px', color: '#1c1917' }}>
-            For adults who are done pushing harder and getting less.
+          <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '20px', color: '#1c1917' }}>
+            This is built for a Depleted State.
           </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '20px' }}>
+            The 14-Day Body Decode Challenge is built specifically for adults in a Depleted State. If your scorecard came back 5-8, this is your starting point. If you have not taken the scorecard yet, the symptoms above will tell you whether you are in the right place.
+          </p>
+          <p style={{ fontSize: '15px', color: '#1c1917', lineHeight: 1.7, marginBottom: '24px', fontWeight: 700 }}>
+            If you are in a different state, the right starting point is different.
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
             {[
-              'You are doing the work and your body is not responding',
-              'You want to feel more like yourself again',
-              'You want stable energy without relying on caffeine',
-              'You want to break the restart cycle for good',
-              'You are not looking for extreme dieting or high-intensity programs',
-            ].map(item => (
-              <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                <div style={{
-                  width: '22px', height: '22px', borderRadius: '50%',
-                  background: 'rgba(20,184,166,0.15)', border: '1px solid rgba(20,184,166,0.3)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px',
+              {
+                state: 'Transitioning State (9-11)',
+                desc: 'Your body has capacity but is not producing consistently. The $37 Body Decode Report is the faster fit. It tells you exactly which bottleneck is holding the system before you add any input.',
+                cta: 'Get the Report',
+                href: '/buy-report',
+              },
+              {
+                state: 'Ready State (12-15)',
+                desc: 'Your biology is already in position to respond. You do not need a reset. You need prescription. Apply for coaching.',
+                cta: 'Apply for Coaching',
+                href: '/book-a-conversation',
+              },
+              {
+                state: "Don't know your state yet?",
+                desc: 'Take the 2-minute scorecard first. It tells you which state you are in and which next step is built for you.',
+                cta: 'Take the Scorecard',
+                href: 'https://performance.bodyrecode.au/scorecard?source=challenge_filter',
+              },
+            ].map(row => (
+              <div key={row.state} style={{
+                background: '#ffffff',
+                border: '1px solid #e7e5e0',
+                borderRadius: '12px',
+                padding: '18px 20px',
+              }}>
+                <p style={{ fontSize: '13px', fontWeight: 800, color: '#0f766e', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  {row.state}
+                </p>
+                <p style={{ fontSize: '14px', color: '#57534e', lineHeight: 1.6, marginBottom: '14px' }}>
+                  {row.desc}
+                </p>
+                <a href={row.href} style={{
+                  display: 'inline-block',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: '#14b8a6',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid #14b8a6',
+                  paddingBottom: '2px',
                 }}>
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </div>
-                <p style={{ fontSize: '16px', color: '#44403c', margin: 0, lineHeight: 1.6 }}>{item}</p>
+                  {row.cta} →
+                </a>
               </div>
             ))}
           </div>
+
+          <p style={{ fontSize: '17px', color: '#1c1917', fontWeight: 700, lineHeight: 1.5, margin: 0 }}>
+            If you are Depleted, your starting point is right here. Sign up below.
+          </p>
         </div>
       </div>
 
@@ -487,11 +529,11 @@ export default function ChallengePage() {
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '80px 24px 100px' }}>
         <div style={{ width: '40px', height: '3px', background: '#14b8a6', marginBottom: '28px', borderRadius: '2px' }} />
         <h2 style={{ fontSize: 'clamp(28px, 5vw, 36px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: '16px', color: '#1c1917' }}>
-          Rebuild your rhythm.<br />
-          <span style={{ color: '#a8a29e' }}>Let your body respond again.</span>
+          Fourteen days.<br />
+          <span style={{ color: '#a8a29e' }}>Then you know.</span>
         </h2>
         <p style={{ fontSize: '16px', color: '#78716c', lineHeight: 1.7, marginBottom: '36px' }}>
-          When your rhythm returns, your system becomes more responsive and your body begins to shift. This challenge gives your biology the environment it needs to settle and reset.
+          Free. Daily structure. A coach watching the markers that matter. By Day 14 you know exactly which state your body is in, what is holding it, and exactly what to do next. That is the cheapest, fastest answer I can give you right now.
         </p>
         <SignupForm position="footer" />
       </div>
