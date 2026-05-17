@@ -29,7 +29,10 @@ alter table weekly_checkin_feedback enable row level security;
 
 -- Service role only. All reads/writes happen via the admin client in
 -- server routes (coach dashboard + portal pages), so no anon-role policy.
-create policy if not exists "service role manages weekly_checkin_feedback"
+-- Note: Postgres does not support `create policy if not exists`, so we
+-- drop-then-create to keep this script idempotent.
+drop policy if exists "service role manages weekly_checkin_feedback" on weekly_checkin_feedback;
+create policy "service role manages weekly_checkin_feedback"
   on weekly_checkin_feedback
   for all
   using (auth.role() = 'service_role')
