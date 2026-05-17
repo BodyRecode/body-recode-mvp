@@ -150,87 +150,118 @@ export async function POST(
     program: programCtx,
   })
 
-  // ── Call Claude ────────────────────────────────────────────────────────
+  // ── Call Claude (with leak-retry loop) ─────────────────────────────────
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json({ error: 'ANTHROPIC_API_KEY not configured' }, { status: 500 })
   }
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 3 })
 
-  let message
-  try {
-    message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 2000,
-      system: buildFeedbackSystemPrompt(),
-      messages: [{ role: 'user', content: userPrompt }],
-    })
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('Anthropic API error (feedback generate):', msg)
-    return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
-  }
-
-  const content = message.content[0]
-  if (!content || content.type !== 'text') {
-    return NextResponse.json({ error: 'Unexpected response from AI' }, { status: 500 })
-  }
-
-  // Match the first balanced JSON object in the response.
-  const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) {
-    return NextResponse.json(
-      { error: `Could not parse draft. AI returned: ${content.text.slice(0, 160)}` },
-      { status: 500 }
-    )
-  }
-
-  let parsed: { interpretation?: unknown; reframe?: unknown; next_focus?: unknown }
-  try {
-    parsed = JSON.parse(jsonMatch[0])
-  } catch (err) {
-    return NextResponse.json(
-      { error: `Invalid JSON from AI: ${(err as Error).message}` },
-      { status: 500 }
-    )
-  }
-
-  if (typeof parsed.interpretation !== 'string' || !parsed.interpretation.trim()) {
-    return NextResponse.json({ error: 'AI draft missing required field: interpretation' }, { status: 500 })
-  }
-  if (typeof parsed.next_focus !== 'string' || !parsed.next_focus.trim()) {
-    return NextResponse.json({ error: 'AI draft missing required field: next_focus' }, { status: 500 })
-  }
-  // reframe must be string-or-null. Coerce other shapes to null.
-  const reframeRaw = parsed.reframe
-  const reframe: string | null =
-    typeof reframeRaw === 'string' && reframeRaw.trim() && reframeRaw.trim().toLowerCase() !== 'null'
-      ? reframeRaw
-      : null
-
-  const draft = stripEmDashes({
-    interpretation: parsed.interpretation,
-    reframe,
-    next_focus: parsed.next_focus,
-  })
-
-  // Second line of defence against internal terminology slipping into client
-  // text. The prompt already forbids these explicitly; if anything still
-  // leaks, surface as a failure so the coach can regenerate rather than ship
-  // a draft with "CFFS" / "spatial patterning" / etc. visible to the client.
-  const leakedTerms = [
-    ...findLeakedTerms(draft.interpretation),
-    ...(draft.reframe ? findLeakedTerms(draft.reframe) : []),
-    ...findLeakedTerms(draft.next_focus),
+  // Conversation seed. On a leak we append the assistant's bad draft and a
+  // user-side correction listing the exact terms that must not appear. Up to
+  // 3 attempts total; after that we surface the error to the coach so they
+  // can decide (rather than silently shipping leaked jargon).
+  const conversation: { role: 'user' | 'assistant'; content: string }[] = [
+    { role: 'user', content: userPrompt },
   ]
-  if (leakedTerms.length > 0) {
-    const unique = Array.from(new Set(leakedTerms.map(t => t.toLowerCase())))
+  const MAX_ATTEMPTS = 3
+  let attempts = 0
+  let lastError: string | null = null
+  let draft: { interpretation: string; reframe: string | null; next_focus: string } | null = null
+  let totalLeaksSeen: string[] = []
+
+  while (attempts < MAX_ATTEMPTS) {
+    attempts++
+    let message
+    try {
+      message = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 2000,
+        system: buildFeedbackSystemPrompt(),
+        messages: conversation,
+      })
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      console.error('Anthropic API error (feedback generate):', msg)
+      return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
+    }
+
+    const content = message.content[0]
+    if (!content || content.type !== 'text') {
+      lastError = 'Unexpected response from AI'
+      continue
+    }
+
+    const jsonMatch = content.text.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) {
+      lastError = `Could not parse draft. AI returned: ${content.text.slice(0, 160)}`
+      continue
+    }
+
+    let parsed: { interpretation?: unknown; reframe?: unknown; next_focus?: unknown }
+    try {
+      parsed = JSON.parse(jsonMatch[0])
+    } catch (err) {
+      lastError = `Invalid JSON from AI: ${(err as Error).message}`
+      continue
+    }
+
+    if (typeof parsed.interpretation !== 'string' || !parsed.interpretation.trim()) {
+      lastError = 'AI draft missing required field: interpretation'
+      continue
+    }
+    if (typeof parsed.next_focus !== 'string' || !parsed.next_focus.trim()) {
+      lastError = 'AI draft missing required field: next_focus'
+      continue
+    }
+
+    const reframeRaw = parsed.reframe
+    const reframe: string | null =
+      typeof reframeRaw === 'string' && reframeRaw.trim() && reframeRaw.trim().toLowerCase() !== 'null'
+        ? reframeRaw
+        : null
+
+    const candidate = stripEmDashes({
+      interpretation: parsed.interpretation,
+      reframe,
+      next_focus: parsed.next_focus,
+    })
+
+    const leakedTerms = [
+      ...findLeakedTerms(candidate.interpretation),
+      ...(candidate.reframe ? findLeakedTerms(candidate.reframe) : []),
+      ...findLeakedTerms(candidate.next_focus),
+    ]
+
+    if (leakedTerms.length === 0) {
+      draft = candidate
+      break
+    }
+
+    // Leak detected. Push the bad draft into the conversation and ask the
+    // model to redraft with the specific banned terms called out.
+    totalLeaksSeen = Array.from(new Set([...totalLeaksSeen, ...leakedTerms].map(t => t.toLowerCase())))
+    if (attempts < MAX_ATTEMPTS) {
+      conversation.push({ role: 'assistant', content: jsonMatch[0] })
+      conversation.push({
+        role: 'user',
+        content: `That draft contained internal terminology the client has never seen and that the system will reject. Specifically these terms must not appear: ${leakedTerms.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words to express the same idea. Return only the corrected JSON, no commentary.`,
+      })
+      lastError = `Leaked: ${leakedTerms.join(', ')}`
+      continue
+    }
+  }
+
+  if (!draft) {
+    const unique = totalLeaksSeen.length > 0
+      ? totalLeaksSeen.join(', ')
+      : lastError ?? 'unknown'
     return NextResponse.json(
       {
-        error: `Draft contained internal terminology the client would not understand (${unique.join(', ')}). Click Generate again to redraft.`,
+        error: `Could not produce a clean draft after ${MAX_ATTEMPTS} attempts (${unique}). Try again, or write the response manually.`,
       },
       { status: 500 }
     )
   }
 
-  return NextResponse.json({ draft })
+  return NextResponse.json({ draft, attempts })
 }
