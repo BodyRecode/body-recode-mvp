@@ -5,6 +5,7 @@ import { sendSms, formatPhone } from './twilio'
 import { darkEmailSignature } from './email-signature'
 import type { TriggerContext } from './automation-engine'
 import { appUrl } from '@/lib/app-url'
+import { logLeadEvent } from './log-lead-event'
 
 // ─── Challenge SMS Messages ───────────────────────────────────────────────────
 
@@ -438,10 +439,11 @@ async function executeAction(
       const resend = new Resend(process.env.RESEND_API_KEY)
       const bodyHtml = interpolate(config.body ?? '', templateVars)
         .replace(/\n/g, '<br/>')
-      await resend.emails.send({
+      const interpolatedSubject = interpolate(config.subject ?? '', templateVars)
+      const { data: sent, error: sendError } = await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: contact.email,
-        subject: interpolate(config.subject ?? '', templateVars),
+        subject: interpolatedSubject,
         html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
 <body style="margin:0;padding:0;background-color:#0c0a09;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
@@ -465,6 +467,19 @@ async function executeAction(
   </table>
 </body></html>`,
       })
+      if (sendError) {
+        console.error('[automation send_email] Resend error:', sendError, 'to:', contact.email, 'subject:', interpolatedSubject)
+        break
+      }
+      if (ctx.leadId) {
+        await logLeadEvent({
+          leadId: ctx.leadId,
+          type: 'email_sent',
+          subject: interpolatedSubject,
+          resendEmailId: sent?.id,
+          notes: `Automation step ${step.position}`,
+        })
+      }
       break
     }
 
@@ -1413,37 +1428,43 @@ export const executeWorkflowFunction = inngest.createFunction(
       // between drip emails) mean the lead's state may have moved on by the
       // time we wake; we don't want a freshly-converted client receiving
       // 'finish your scorecard' nudges.
-      if (ctx.leadId) {
-        const stopReason: string | null = await step.run(`check-lead-state-${i}`, async () => {
-          const admin = createAdminClient()
-          const { data } = await admin
-            .from('leads')
-            .select('converted_to_client_id, status, active')
-            .eq('id', ctx.leadId!)
-            .maybeSingle()
-          if (!data) return 'lead_deleted'
-          if (data.active === false) return 'lead_inactive'
-          if (data.converted_to_client_id) return 'converted_to_client'
-          if (data.status === 'closed_declined') return 'closed_declined'
-          return null
-        })
+      const stopReason: string | null = await step.run(`check-lead-state-${i}`, async () => {
+        const admin = createAdminClient()
+        const { data: wf } = await admin
+          .from('be_workflows')
+          .select('is_active')
+          .eq('id', workflowId)
+          .maybeSingle()
+        if (!wf) return 'workflow_deleted'
+        if (wf.is_active === false) return 'workflow_deactivated'
+        if (!ctx.leadId) return null
+        const { data } = await admin
+          .from('leads')
+          .select('converted_to_client_id, status, active')
+          .eq('id', ctx.leadId)
+          .maybeSingle()
+        if (!data) return 'lead_deleted'
+        if (data.active === false) return 'lead_inactive'
+        if (data.converted_to_client_id) return 'converted_to_client'
+        if (data.status === 'closed_declined') return 'closed_declined'
+        return null
+      })
 
-        if (stopReason) {
-          if (executionId) {
-            await step.run('mark-cancelled', async () => {
-              const admin = createAdminClient()
-              await admin
-                .from('be_workflow_executions')
-                .update({
-                  status: 'cancelled',
-                  completed_at: new Date().toISOString(),
-                  error_message: `Stopped at step ${i}: ${stopReason}`,
-                })
-                .eq('id', executionId)
-            })
-          }
-          return
+      if (stopReason) {
+        if (executionId) {
+          await step.run('mark-cancelled', async () => {
+            const admin = createAdminClient()
+            await admin
+              .from('be_workflow_executions')
+              .update({
+                status: 'cancelled',
+                completed_at: new Date().toISOString(),
+                error_message: `Stopped at step ${i}: ${stopReason}`,
+              })
+              .eq('id', executionId)
+          })
         }
+        return
       }
 
       // Update current step in execution log
