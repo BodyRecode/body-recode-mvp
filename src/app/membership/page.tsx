@@ -86,27 +86,27 @@ function CheckoutForm({ position, teal }: { position: string; teal?: boolean }) 
 const WHAT_YOU_GET = [
   {
     title: 'Progressive training blocks',
-    desc: 'Block A picks up from Blueprint Week 6. Every six weeks a new block unlocks with more demanding movement patterns. Gym, home with dumbbells, or bodyweight - all three versions every session.',
+    desc: 'Block A picks up from Blueprint Week 6. Every six weeks a new block unlocks. More demanding movement patterns, more sophisticated programming. Gym, home with dumbbells, or bodyweight. All three versions every session.',
   },
   {
     title: 'Nutrition layer updates each block',
-    desc: 'The HABNS foundation stays. Each block adds a new precision layer - carb cycling, cycle-aware eating, recovery nutrition protocols - matched to your pattern.',
+    desc: 'The HABNS foundation stays. Each block adds a new precision layer matched to your pattern. Carb cycling, cycle-aware eating, recovery nutrition protocols.',
   },
   {
     title: 'Monthly coach Loom',
-    desc: 'Once a month, Kade reviews your check-in data and records a personal 3-5 minute Loom response. Not a generic email. Specific to your numbers - what is shifting, what needs adjusting.',
+    desc: 'Once a month I review your check-in data and record a personal 3 to 5 minute Loom for you. Not a generic email. Specific to your numbers. What is shifting, what needs adjusting, what to watch for in the next block.',
   },
   {
     title: 'Monthly group Q&A call',
-    desc: 'Live once a month. Kade answers the questions that come up most across the membership. Replays available in your portal.',
+    desc: 'Live once a month. I answer the questions that come up most across the membership that month. Replays available in your portal.',
   },
   {
     title: 'Pattern resource library',
-    desc: 'Deep-dive guides built for your biological pattern. Supplement protocols, sleep strategies, stress management tools, and lifestyle adjustments. Grows every block.',
+    desc: 'Deep-dive guides built for your specific pattern. Supplement protocols, sleep strategies, stress management tools, and lifestyle adjustments. New material added every block.',
   },
   {
     title: 'Check-in trend dashboard',
-    desc: 'Your weekly check-in data visualised over time. See energy, sleep, recovery, and mood markers across 6, 12, and 18 weeks. The pattern becomes visible in the data.',
+    desc: 'Your weekly check-in data visualised over time. Energy, sleep, recovery, fat loss, and mood markers across 6, 12, and 18 weeks. The pattern becomes visible in the data.',
   },
 ]
 
@@ -115,25 +115,25 @@ const BLOCKS = [
     label: 'Blueprint',
     weeks: 'Weeks 1-6',
     status: 'complete',
-    desc: 'Three phases: Regulate, Adapt, Embed. Pattern identified and corrected at the foundation level.',
+    desc: 'Three phases: Regulate, Adapt, Embed. Pattern identified and corrected. Body comes out of compensation. Foundation locked.',
   },
   {
     label: 'Block A - Consolidate',
     weeks: 'Weeks 7-12',
     status: 'active',
-    desc: 'Foundation locked in. Training progresses to more demanding movement patterns. Nutrition adds precision - carb cycling, cycle-aware strategies, recovery protocols.',
+    desc: 'Foundation holds under more demanding work. Training progresses to harder movement patterns. Nutrition adds precision through carb timing, cycle-aware strategies, and recovery protocols matched to your pattern.',
   },
   {
     label: 'Block B - Advance',
     weeks: 'Weeks 13-18',
     status: 'upcoming',
-    desc: 'Training intensity increases. More complex movement patterns. Nutrition introduces calorie periodisation across training and rest days.',
+    desc: 'Training intensity steps up. Complex movement patterns introduced. Nutrition introduces calorie periodisation across training and rest days. The system handles real load now.',
   },
   {
     label: 'Block C - Refine',
     weeks: 'Weeks 19-24',
     status: 'upcoming',
-    desc: 'Peak intensity for the cycle. Pattern re-assessment at the end of Block C. The system continues or shifts based on what the data shows.',
+    desc: 'Peak intensity for the cycle. Pattern reassessment at the end. The data tells us whether to repeat the structure at higher intensity or shift your pattern routing.',
   },
 ]
 
@@ -146,7 +146,7 @@ const PATTERNS = [
   {
     name: 'Metabolic-Drift',
     colour: '#f59e0b',
-    blockA: 'Formal carb cycling introduced - training days get more carbs, rest days fruit only. Protein target increases to 2.5-3 palms per day. Post-meal walk is non-negotiable.',
+    blockA: 'Formal carb cycling introduced. Training days get more carbs, rest days fruit only. Protein target increases to 2.5 to 3 palms per day. Post-meal walk is non-negotiable.',
   },
   {
     name: 'Hormonal-Shift',
@@ -156,7 +156,7 @@ const PATTERNS = [
   {
     name: 'System-Overload',
     colour: '#14b8a6',
-    blockA: 'Targeted recovery micronutrients from food - magnesium, zinc, iron, B vitamins. Pre-sleep nutrition protocol introduced. Check-in data determines when demand increases.',
+    blockA: 'Targeted recovery micronutrients from food: magnesium, zinc, iron, B vitamins. Pre-sleep nutrition protocol introduced. Check-in data determines when demand increases.',
   },
 ]
 
@@ -217,18 +217,18 @@ export default function MembershipPage() {
             color: '#1c1917',
             marginBottom: '24px',
           }}>
-            The Blueprint worked.
+            Your body is responding.
             <br />
-            <span style={{ color: '#14b8a6' }}>Now keep going.</span>
+            <span style={{ color: '#14b8a6' }}>Now compound it.</span>
           </h1>
 
           <div style={{ width: '48px', height: '3px', background: '#14b8a6', borderRadius: '2px', marginBottom: '24px' }} />
 
           <p style={{ fontSize: '19px', color: '#57534e', lineHeight: 1.7, marginBottom: '14px' }}>
-            Six weeks showed you what changes when training and nutrition are built around your biology. The membership is where that work compounds.
+            If your body is responding, your fat loss is moving, and your training is producing consistently, you are in a Ready State. The work now is not rescue. It is precision over time.
           </p>
           <p style={{ fontSize: '19px', color: '#57534e', lineHeight: 1.7, marginBottom: '40px' }}>
-            Same pattern. Same portal. New blocks every six weeks - with a coach watching your numbers.
+            The Body Recode Membership is where that precision lives. Same portal you would have from the Blueprint, plus new training blocks every six weeks, monthly coach review of your numbers, and progression built around your specific pattern.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '32px' }}>
@@ -262,10 +262,10 @@ export default function MembershipPage() {
           Not a restart. A continuation.
         </h2>
         <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '16px' }}>
-          Most people finish a programme and go back to guessing. A different app, a different trainer, a different plan that has nothing to do with what their body actually showed them.
+          Most people finish a programme and watch their fat loss stall again. A different app, a different trainer, a different plan that ignores everything their body just taught them. Whatever momentum was built gets reset to zero.
         </p>
         <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '16px' }}>
-          The membership picks up exactly where the Blueprint ended. Your pattern is already identified. Your portal is already open. Block A loads automatically and your progression continues without interruption.
+          The Membership picks up exactly where the Blueprint ended. Your pattern is already identified. Your portal is already open. Block A loads automatically and the progression continues without a gap.
         </p>
         <div style={{
           background: 'rgba(20,184,166,0.08)', border: '1px solid rgba(20,184,166,0.2)',
@@ -283,7 +283,7 @@ export default function MembershipPage() {
           The progression
         </p>
         <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '28px', color: '#1c1917' }}>
-          24 weeks of structured progression. Then it resets with new data.
+          Twenty-four weeks. Four blocks. Pattern reassessment at the end.
         </h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {BLOCKS.map((block) => (
@@ -390,47 +390,83 @@ export default function MembershipPage() {
         </div>
       </div>
 
-      {/* WHO THIS IS FOR */}
+      {/* IS THIS FOR YOU - STATE FILTER */}
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
-          Who this is for
+          Is this for you?
         </p>
-        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '24px', color: '#1c1917' }}>
-          For people who want to keep the momentum.
+        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '20px', color: '#1c1917' }}>
+          This is built for Ready State.
         </h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '20px' }}>
+          The Body Recode Membership is built specifically for adults in a Ready State. Your biology is in flow. The work now is precision and trajectory, not rescue. This is the system that takes you from responding to compounding.
+        </p>
+        <p style={{ fontSize: '15px', color: '#1c1917', lineHeight: 1.7, marginBottom: '24px', fontWeight: 700 }}>
+          If you are in a different state, the right starting point is different.
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
           {[
-            'You finished the Blueprint and felt the difference',
-            'You want to know what happens when you go deeper into your pattern',
-            'You want a coach reviewing your numbers, not just a portal to log into',
-            'You want progression that makes sense - not arbitrary plan changes',
-            'You are not looking for a quick fix that stops when the weeks run out',
-          ].map(item => (
-            <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-              <div style={{
-                width: '22px', height: '22px', borderRadius: '50%',
-                background: 'rgba(20,184,166,0.15)', border: '1px solid rgba(20,184,166,0.3)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px',
+            {
+              state: 'Depleted State (5-8)',
+              desc: 'Your body is in protection mode. The Membership assumes biology is already responding. Start with the free 14-Day Challenge first. Get out of protection, then come back.',
+              cta: 'Start the Free Challenge',
+              href: '/challenge',
+            },
+            {
+              state: 'Transitioning State (9-11)',
+              desc: 'Your body has capacity but is not converting it yet. The 6-week Blueprint corrects the specific pattern holding the system. Then this Membership becomes the natural next step.',
+              cta: 'Start with the Blueprint',
+              href: '/blueprint',
+            },
+            {
+              state: "Don't know your state yet?",
+              desc: 'Take the 2-minute scorecard first. It tells you which state you are in and which next step is built for you.',
+              cta: 'Take the Scorecard',
+              href: 'https://performance.bodyrecode.au/scorecard?source=membership_filter',
+            },
+          ].map(row => (
+            <div key={row.state} style={{
+              background: '#ffffff',
+              border: '1px solid #e7e5e0',
+              borderRadius: '12px',
+              padding: '18px 20px',
+            }}>
+              <p style={{ fontSize: '13px', fontWeight: 800, color: '#0f766e', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                {row.state}
+              </p>
+              <p style={{ fontSize: '14px', color: '#57534e', lineHeight: 1.6, marginBottom: '14px' }}>
+                {row.desc}
+              </p>
+              <a href={row.href} style={{
+                display: 'inline-block',
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#14b8a6',
+                textDecoration: 'none',
+                borderBottom: '1px solid #14b8a6',
+                paddingBottom: '2px',
               }}>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
-              <p style={{ fontSize: '16px', color: '#44403c', margin: 0, lineHeight: 1.6 }}>{item}</p>
+                {row.cta} →
+              </a>
             </div>
           ))}
         </div>
+
+        <p style={{ fontSize: '17px', color: '#1c1917', fontWeight: 700, lineHeight: 1.5, margin: 0 }}>
+          If you are Ready, your starting point is right here. Sign up below.
+        </p>
       </div>
 
       {/* FINAL CTA */}
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '80px 24px 100px' }}>
         <div style={{ width: '40px', height: '3px', background: '#14b8a6', marginBottom: '28px', borderRadius: '2px' }} />
         <h2 style={{ fontSize: 'clamp(28px, 5vw, 36px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: '16px', color: '#1c1917' }}>
-          The pattern is identified.<br />
-          <span style={{ color: '#a8a29e' }}>Now go deeper into it.</span>
+          Your body is responding.<br />
+          <span style={{ color: '#a8a29e' }}>Now compound it.</span>
         </h2>
         <p style={{ fontSize: '16px', color: '#78716c', lineHeight: 1.7, marginBottom: '36px' }}>
-          The membership picks up exactly where the Blueprint ended. Your pattern is already identified. Your portal is already built. Block A starts the moment you join.
+          $49 per week. Cancel anytime. Block A loads automatically the moment you join. Pattern continuity carries through from the Blueprint. Your portal is already built.
         </p>
         <CheckoutForm position="footer" />
         <p style={{ fontSize: '13px', color: '#a8a29e', marginTop: '20px', lineHeight: 1.6 }}>
