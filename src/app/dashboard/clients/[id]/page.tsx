@@ -75,10 +75,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .limit(4),
     admin
       .from('weekly_checkins')
-      .select('week_number, form_type, submitted_at')
+      .select('id, week_number, form_type, submitted_at')
       .eq('client_id', id)
-      .order('week_number', { ascending: false })
-      .limit(8),
+      .order('week_number', { ascending: false }),
     admin
       .from('baselines')
       .select('*')
@@ -109,6 +108,25 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .eq('status', 'draft')
       .maybeSingle(),
   ])
+
+  // Coach response history for this client. Joined to recentCheckins by id
+  // so the UI can show a "Coach response" pill on the submission rows AND
+  // render the full text in a dedicated history section below.
+  const { data: feedbackHistory } = await admin
+    .from('weekly_checkin_feedback')
+    .select('id, weekly_checkin_id, interpretation, reframe, next_focus, email_sent_at, updated_at, created_at')
+    .eq('client_id', id)
+    .order('created_at', { ascending: false })
+
+  const feedbackByCheckinId = new Map<string, NonNullable<typeof feedbackHistory>[number]>()
+  for (const f of feedbackHistory ?? []) feedbackByCheckinId.set(f.weekly_checkin_id, f)
+
+  // Lookup from feedback row back to its check-in (week + form), for the
+  // history section headers.
+  const checkinMetaById = new Map<string, { week_number: number; form_type: string; submitted_at: string }>()
+  for (const ci of recentCheckins ?? []) {
+    if (ci.id) checkinMetaById.set(ci.id, { week_number: ci.week_number, form_type: ci.form_type, submitted_at: ci.submitted_at })
+  }
 
   const { data: upcomingClientSessions } = await admin
     .from('client_sessions')
@@ -1090,16 +1108,70 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <div className="bg-[#111110]/50 border border-[#1c1917] rounded-xl p-4">
             <p className="text-xs uppercase tracking-wider text-[#57534e] mb-3">Recent Submissions</p>
             <div className="space-y-2">
-              {recentCheckins.map((ci, i) => (
-                <Link
-                  key={i}
-                  href={`/dashboard/clients/${id}/checkins/${ci.week_number}/${ci.form_type}`}
-                  className="flex items-center justify-between text-xs hover:bg-[#1c1917]/50 -mx-2 px-2 py-1 rounded-lg transition-colors"
-                >
-                  <span className="text-[#a8a29e]">Week {ci.week_number} · Form {ci.form_type}</span>
-                  <span className="text-[#3c3835]">{formatDate(ci.submitted_at)}</span>
-                </Link>
-              ))}
+              {recentCheckins.slice(0, 8).map((ci, i) => {
+                const fb = ci.id ? feedbackByCheckinId.get(ci.id) : undefined
+                const sent = !!fb?.email_sent_at
+                return (
+                  <Link
+                    key={i}
+                    href={`/dashboard/clients/${id}/checkins/${ci.week_number}/${ci.form_type}`}
+                    className="flex items-center justify-between text-xs hover:bg-[#1c1917]/50 -mx-2 px-2 py-1 rounded-lg transition-colors"
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-[#a8a29e]">Week {ci.week_number} · Form {ci.form_type}</span>
+                      {fb && (
+                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-teal-500/10 border border-teal-500/30 text-teal-300' : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'}`}>
+                          {sent ? 'Response sent' : 'Draft'}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-[#3c3835]">{formatDate(ci.submitted_at)}</span>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Coach response history */}
+        {feedbackHistory && feedbackHistory.length > 0 && (
+          <div className="bg-[#111110]/50 border border-[#1c1917] rounded-xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs uppercase tracking-wider text-[#57534e]">Coach Response History</p>
+              <p className="text-[10px] text-[#3c3835] uppercase tracking-widest">{feedbackHistory.length} total</p>
+            </div>
+            <div className="space-y-3">
+              {feedbackHistory.map(fb => {
+                const meta = checkinMetaById.get(fb.weekly_checkin_id)
+                const week = meta?.week_number ?? '?'
+                const form = meta?.form_type ?? '?'
+                const sent = !!fb.email_sent_at
+                return (
+                  <div key={fb.id} className="bg-[#0c0a09] border border-[#1c1917] rounded-lg overflow-hidden">
+                    <div className="px-4 py-2.5 border-b border-[#1c1917] flex items-center justify-between gap-3 flex-wrap">
+                      <div className="flex items-center gap-2.5 flex-wrap">
+                        <p className="text-xs font-semibold text-[#e7e5e4]">Week {week} · Form {form}</p>
+                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-teal-500/10 border border-teal-500/30 text-teal-300' : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'}`}>
+                          {sent ? `Emailed ${formatDate(fb.email_sent_at!)}` : 'Draft (not sent)'}
+                        </span>
+                      </div>
+                      {meta && (
+                        <Link
+                          href={`/dashboard/clients/${id}/checkins/${meta.week_number}/${meta.form_type}`}
+                          className="text-[10px] font-bold uppercase tracking-widest text-teal-400 hover:text-teal-300"
+                        >
+                          Open →
+                        </Link>
+                      )}
+                    </div>
+                    <div className="px-4 py-3 space-y-3">
+                      <FeedbackSection title="Interpretation" body={fb.interpretation} />
+                      {fb.reframe && <FeedbackSection title="Reframe" body={fb.reframe} />}
+                      <FeedbackSection title="This week, hold this" body={fb.next_focus} accent />
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
         )}
@@ -1244,6 +1316,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <ClientDangerActions clientId={id} isActive={client.active !== false} />
 
       </div>
+    </div>
+  )
+}
+
+function FeedbackSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
+  return (
+    <div>
+      <p className={`text-[10px] font-bold uppercase tracking-widest mb-1.5 ${accent ? 'text-teal-400' : 'text-[#57534e]'}`}>{title}</p>
+      <div className="text-xs text-[#d4cfc9] leading-relaxed whitespace-pre-wrap">{body}</div>
     </div>
   )
 }
