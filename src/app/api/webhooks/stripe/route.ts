@@ -70,9 +70,9 @@ export async function POST(request: NextRequest) {
 
       const patternLabels: Record<string, string> = {
         'stress-stored': 'Stress-Stored',
-        'metabolic-drift': 'Metabolic-Drift',
-        'hormonal-shift': 'Hormonal-Shift',
-        'system-overload': 'System-Overload',
+        'metabolic-drift': 'Insulin-Drift',
+        'hormonal-shift': 'Estrogen-Shift',
+        'system-overload': 'Androgen-Decline',
       }
 
       await inngest.send({
@@ -472,9 +472,9 @@ export async function POST(request: NextRequest) {
 
       const patternLabel: Record<string, string> = {
         'stress-stored': 'Stress-Stored',
-        'metabolic-drift': 'Metabolic-Drift',
-        'hormonal-shift': 'Hormonal-Shift',
-        'system-overload': 'System-Overload',
+        'metabolic-drift': 'Insulin-Drift',
+        'hormonal-shift': 'Estrogen-Shift',
+        'system-overload': 'Androgen-Decline',
       }
       const patternDisplay = pattern ? patternLabel[pattern] ?? pattern : null
 

@@ -14,9 +14,9 @@ const PATTERN_COLOURS: Record<string, string> = {
 
 const PATTERN_LABELS: Record<string, string> = {
   'stress-stored': 'Stress-Stored',
-  'metabolic-drift': 'Metabolic-Drift',
-  'hormonal-shift': 'Hormonal-Shift',
-  'system-overload': 'System-Overload',
+  'metabolic-drift': 'Insulin-Drift',
+  'hormonal-shift': 'Estrogen-Shift',
+  'system-overload': 'Androgen-Decline',
   'pending': 'Pending',
 }
 

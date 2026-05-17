@@ -11,7 +11,7 @@ type SectionKey = '01' | '02' | '03' | '04' | '05'
 type SectionScores = Partial<Record<SectionKey, number>>
 type Quality = 'green' | 'yellow' | 'red'
 type StateName = 'Depleted State' | 'Transitioning State' | 'Ready State'
-type Profile = 'Stress-Stored' | 'Metabolic-Drift' | 'Hormonal-Shift' | 'System-Overload' | 'Indeterminate'
+type Profile = 'Stress-Stored' | 'Insulin-Drift' | 'Estrogen-Shift' | 'Androgen-Decline' | 'Indeterminate'
 type AnswerLetter = 'A' | 'B' | 'C' | 'D'
 
 export interface LeadBriefInput {
@@ -104,14 +104,22 @@ function pickFloor(scores: SectionScores): SectionKey | null {
  *
  * Logic:
  *   - Stress-Stored: stress is at the floor or stress=1 dominantly
- *   - System-Overload: sleep AND energy both low (NS recovery channel
- *     wrecked), even if stress reads "managed"
- *   - Metabolic-Drift: fat loss specifically stalled while foundations OK
- *   - Hormonal-Shift: long-arc resistance — training AND fat loss both
- *     stuck while foundations OK
+ *   - Androgen-Decline: sleep AND energy both low (testosterone-signalling
+ *     channel wrecked), even if stress reads "managed". Male-skewed in
+ *     practice; coach confirms gender on intake.
+ *   - Insulin-Drift: fat loss specifically stalled while foundations OK.
+ *     Male-dominant per doctrine; coach confirms gender on intake.
+ *   - Estrogen-Shift: long-arc resistance, training AND fat loss both
+ *     stuck while foundations OK. Female per doctrine; coach confirms
+ *     gender on intake.
+ *
+ * Coach-facing note: profile assignment from scorecard alone cannot apply
+ * the doctrinal gender keying. The brief surfaces the most likely profile;
+ * the coach reconciles against the client's gender at the start of the
+ * session.
  *
  * When the pattern doesn't clearly fit any, fall back to whichever the floor
- * suggests (low confidence) — but never default unconditionally to
+ * suggests (low confidence), but never default unconditionally to
  * Stress-Stored just because we ran out of branches.
  */
 function pickProfile(
@@ -152,10 +160,10 @@ function pickProfile(
   // 2. Nervous-system blown — sleep + energy both compromised.
   //    Common pattern: high-functioner who says stress is fine but can't sleep.
   if (sleep === 1 && energy != null && energy <= 2) {
-    return { profile: 'System-Overload', confidence: 'high' }
+    return { profile: 'Androgen-Decline', confidence: 'high' }
   }
   if (energy === 1 && sleep != null && sleep <= 2) {
-    return { profile: 'System-Overload', confidence: 'high' }
+    return { profile: 'Androgen-Decline', confidence: 'high' }
   }
 
   // 3. Long-arc hormonal — training and fat loss both stuck, foundations OK.
@@ -164,15 +172,15 @@ function pickProfile(
     fatLoss <= 2 && training <= 2 && (fatLoss === 1 || training === 1) &&
     stress >= 2 && sleep >= 2
   ) {
-    return { profile: 'Hormonal-Shift', confidence: 'high' }
+    return { profile: 'Estrogen-Shift', confidence: 'high' }
   }
 
-  // 4. Metabolic-only — fat loss alone is the floor, foundations strong.
+  // 4. Insulin-only — fat loss alone is the floor, foundations strong.
   if (
     fatLoss === 1 && stress != null && sleep != null && energy != null && training != null &&
     stress >= 2 && sleep >= 2 && energy >= 2 && training >= 2
   ) {
-    return { profile: 'Metabolic-Drift', confidence: 'high' }
+    return { profile: 'Insulin-Drift', confidence: 'high' }
   }
 
   // 5. Floor-based soft fallback when the patterns above don't quite fit.
@@ -180,9 +188,9 @@ function pickProfile(
   switch (floor) {
     case '03': return { profile: 'Stress-Stored', confidence: 'low' }
     case '02':
-    case '01': return { profile: 'System-Overload', confidence: 'low' }
-    case '04': return { profile: 'Hormonal-Shift', confidence: 'low' }
-    case '05': return { profile: 'Metabolic-Drift', confidence: 'low' }
+    case '01': return { profile: 'Androgen-Decline', confidence: 'low' }
+    case '04': return { profile: 'Estrogen-Shift', confidence: 'low' }
+    case '05': return { profile: 'Insulin-Drift', confidence: 'low' }
   }
 
   return { profile: 'Indeterminate', confidence: 'high' }
@@ -190,17 +198,17 @@ function pickProfile(
 
 const PROFILE_DRIVERS: Record<Profile, string> = {
   'Stress-Stored': 'cortisol-driven',
-  'Metabolic-Drift': 'digestion/insulin-driven',
-  'Hormonal-Shift': 'long-term hormonal',
-  'System-Overload': 'nervous-system-driven',
+  'Insulin-Drift': 'insulin-driven (male-dominant)',
+  'Estrogen-Shift': 'oestrogen-driven (female)',
+  'Androgen-Decline': 'testosterone-driven (male)',
   'Indeterminate': 'TBD on intake',
 }
 
 const PROFILE_DESCRIPTORS: Record<Profile, string> = {
   'Stress-Stored': 'Managing a lot, holding on. Harder you push, tighter the body holds.',
-  'Metabolic-Drift': 'Effort going in but the metabolism is mistiming the response.',
-  'Hormonal-Shift': 'Pattern building over time. Slow to shift, but moves once the read is right.',
-  'System-Overload': 'Output going up but the nervous system never settles. Drives the rest.',
+  'Insulin-Drift': 'Effort going in but insulin signalling has drifted. Storage is full-body, response is suppressed.',
+  'Estrogen-Shift': 'Long-arc oestrogen-driven conservation. Slow to shift, but moves once restriction stops and the cycle is respected.',
+  'Androgen-Decline': 'Output going up but the testosterone-signalling channel never recovers. Drive and capacity slipping.',
   'Indeterminate': 'Scorecard alone doesn\'t cleanly point at one of the four. The intake will tell us which.',
 }
 
@@ -624,9 +632,9 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   // Fat Map zone marker
   const fatMapZones = [
     `  - Stomach/waist = stress + cortisol${profile === 'Stress-Stored' ? '         ← YOURS, before I open the intake' : ''}`,
-    `  - Under ribs = digestion + insulin${profile === 'Metabolic-Drift' ? '          ← YOURS, before I open the intake' : ''}`,
-    `  - Hips/thighs = long-term hormonal${profile === 'Hormonal-Shift' ? '          ← YOURS, before I open the intake' : ''}`,
-    `  - Upper back/traps = nervous system hot${profile === 'System-Overload' ? '     ← YOURS, before I open the intake' : ''}`,
+    `  - Full-body softening = insulin drift${profile === 'Insulin-Drift' ? '         ← YOURS, before I open the intake' : ''}`,
+    `  - Hips/thighs = oestrogen-driven${profile === 'Estrogen-Shift' ? '            ← YOURS, before I open the intake' : ''}`,
+    `  - Reduced tone + drive = androgen decline${profile === 'Androgen-Decline' ? '   ← YOURS, before I open the intake' : ''}`,
   ]
 
   const lines: string[] = []

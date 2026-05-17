@@ -2535,9 +2535,9 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">The four biological patterns</p>
             <StatusList items={[
               { label: 'Stress-Stored (a)', desc: 'Cortisol and adrenaline driving storage around the midsection. Maps to Fat Map MZ1. Colour: red #ef4444.' },
-              { label: 'Metabolic-Drift (b)', desc: 'Insulin staying elevated too long - blood sugar instability, cravings, post-meal heaviness. Maps to Fat Map MZ2. Colour: amber #f59e0b.' },
-              { label: 'Hormonal-Shift (c)', desc: 'Reproductive hormone conservation state - lower body retention, cycle disruption. Maps to Fat Map MZ3. Colour: purple #8b5cf6.' },
-              { label: 'System-Overload (d)', desc: 'Nervous system carrying total load it cannot process - body has become unresponsive. Maps to Fat Map MZ4. Colour: teal #14b8a6.' },
+              { label: 'Insulin-Drift (b)', desc: 'DB slug: metabolic-drift. Insulin staying elevated too long, blood sugar instability, full-body softening, carb cravings, post-meal fatigue. Male-dominant per doctrine. Maps to Fat Map MZ2. Colour: amber #f59e0b.' },
+              { label: 'Estrogen-Shift (c)', desc: 'DB slug: hormonal-shift. Oestrogen-driven conservation state, hip and thigh storage, water retention, cycle irregularity, mood variability. Female-only per doctrine. Maps to Fat Map MZ3. Colour: purple #8b5cf6.' },
+              { label: 'Androgen-Decline (d)', desc: 'DB slug: system-overload. Testosterone signalling decline, reduced muscle tone, reduced drive, capacity slipping despite consistent effort. Male-only per doctrine. Maps to Fat Map MZ4. Colour: teal #14b8a6.' },
             ]} />
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">On submission</p>
@@ -2694,9 +2694,9 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">The four biological patterns</p>
             <StatusList items={[
               { label: 'Stress-Stored', desc: 'Cortisol driver. Fat stored at waist and stomach. Wired but tired at night.' },
-              { label: 'Metabolic-Drift', desc: 'Insulin driver. Afternoon crash, sluggish after meals, lower gut bloating.' },
-              { label: 'Hormonal-Shift', desc: 'Reproductive hormone driver. Hips and thighs, cycle disruption, mood swings.' },
-              { label: 'System-Overload', desc: 'Nervous system load. Upper body storage, flat and stalled, not responding.' },
+              { label: 'Insulin-Drift', desc: 'Insulin driver. Full-body softening, carb cravings, post-meal fatigue, energy variability through the day. Male-dominant per doctrine.' },
+              { label: 'Estrogen-Shift', desc: 'Oestrogen driver. Hip and thigh storage, water retention, cycle irregularity, mood variability. Female-only per doctrine.' },
+              { label: 'Androgen-Decline', desc: 'Testosterone driver. Reduced muscle tone, reduced drive, capacity slipping despite consistent effort. Male-only per doctrine.' },
             ]} />
           </Section>
 
@@ -2758,9 +2758,9 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Pattern-specific rules (key differences)</p>
             <StatusList items={[
               { label: 'Stress-Stored', desc: 'Skip Session B finisher. Zone 2 walking only. Sleep outranks training. 3 RIR throughout, deload at Week 6 with 30% set reduction.' },
-              { label: 'Metabolic-Drift', desc: 'Session B finisher mandatory. Post-session walk required. Train fasted where possible. Carbs timed to 90-min post-session window only.' },
-              { label: 'Hormonal-Shift', desc: 'Finisher optional at 6/10 effort. Never miss a session. Never add extra sessions. Hold intensity if cycle timing disrupts recovery.' },
-              { label: 'System-Overload', desc: 'Skip finisher. No extra cardio. 2-3 min rest between sets. Drop to 2 working sets if energy is significantly depleted.' },
+              { label: 'Insulin-Drift', desc: 'Session B finisher mandatory. Post-session walk required. Train fasted where possible. Carbs timed to 90-min post-session window only.' },
+              { label: 'Estrogen-Shift', desc: 'Finisher optional at 6/10 effort. Never miss a session. Never add extra sessions. Hold intensity if cycle timing disrupts recovery.' },
+              { label: 'Androgen-Decline', desc: 'Skip finisher. No extra cardio. 2-3 min rest between sets. Protect resistance training stimulus. Drop to 2 working sets if energy is significantly depleted.' },
             ]} />
           </Section>
 

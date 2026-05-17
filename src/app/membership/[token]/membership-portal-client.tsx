@@ -20,19 +20,19 @@ const PATTERN_CONFIG: Record<string, { label: string; colour: string; descriptio
     description: 'Cortisol is the driver. Block A introduces the cortisol anchor evening meal and tightens caffeine protocol. Training load increases with strict RIR controls.',
   },
   'metabolic-drift': {
-    label: 'Metabolic-Drift',
+    label: 'Insulin-Drift',
     colour: '#f59e0b',
     description: 'Insulin sensitivity is the target. Block A introduces formal carb cycling and increases protein volume. The post-meal walk is now non-negotiable.',
   },
   'hormonal-shift': {
-    label: 'Hormonal-Shift',
+    label: 'Estrogen-Shift',
     colour: '#8b5cf6',
     description: 'Block A introduces cycle-aware eating. Fat quality becomes the primary focus. The programme bends to your biology, not the other way around.',
   },
   'system-overload': {
-    label: 'System-Overload',
+    label: 'Androgen-Decline',
     colour: '#14b8a6',
-    description: 'Targeted recovery micronutrients from food introduced this block. Check-in data determines when demand increases - not the calendar.',
+    description: 'Testosterone signalling is the target. Block A protects muscle, controls load, and rebuilds the inputs that support androgen function. Check-in data determines when demand increases, not the calendar.',
   },
 }
 
@@ -543,7 +543,7 @@ const BLOCK_C_NUTRITION: Record<string, { headline: string; newStrategy: { title
           'Drop carbs back to Block A levels in week 6.',
           'This deliberate contrast after peak intake gives a clear read on how insulin sensitivity has shifted.',
           'Monitor energy on rest days specifically - a well-adapted metabolic system maintains energy without starchy carbs.',
-          'This data informs whether the next cycle should continue as Metabolic-Drift or shift pattern.',
+          'This data informs whether the next cycle should continue as Insulin-Drift or shift pattern.',
         ],
       },
     ],
@@ -571,7 +571,7 @@ const BLOCK_C_NUTRITION: Record<string, { headline: string; newStrategy: { title
         points: [
           'Maintain full food volume in week 6 regardless of reduced training.',
           'Observe: has the luteal phase become more manageable? Are cravings lower? Is mood more stable across the cycle?',
-          'These changes indicate whether the pattern has shifted or the Hormonal-Shift pattern needs another cycle.',
+          'These changes indicate whether the pattern has shifted or the Estrogen-Shift pattern needs another cycle.',
         ],
       },
     ],
@@ -600,7 +600,7 @@ const BLOCK_C_NUTRITION: Record<string, { headline: string; newStrategy: { title
           'Week 6 is the lightest training week of the entire programme.',
           'Use the reduced demand to observe baseline energy - how does the nervous system feel when the load is low?',
           'Significant improvement in baseline energy over 18 weeks indicates the system has recovered.',
-          'Persistent fatigue despite the deload suggests another cycle of System-Overload work is warranted before shifting pattern.',
+          'Persistent fatigue despite the deload suggests another cycle of Androgen-Decline work is warranted before shifting pattern.',
         ],
       },
     ],
@@ -983,18 +983,18 @@ const RESOURCES: Record<string, { title: string; content: string }[]> = {
   ],
   'metabolic-drift': [
     { title: 'How Insulin Sensitivity Works', content: 'Insulin is a storage hormone. When cells are sensitive to it, small amounts move glucose efficiently. When resistant, the pancreas secretes more insulin to compensate - and excess insulin signals fat storage. The two most powerful drivers of insulin sensitivity are: resistance training (creates glucose sink in muscle) and fasting gaps between meals (allows insulin to drop fully). Both are built into your programme.' },
-    { title: 'Supplement Protocol - Metabolic-Drift', content: 'Priority 1: Creatine monohydrate 5g daily. Increases phosphocreatine stores, directly improves training output which drives insulin sensitivity gains. Priority 2: Magnesium glycinate 300mg before bed. Supports glucose metabolism and sleep. Priority 3: Berberine 500mg with your largest carbohydrate meal. Mimics metformin mechanism - improves glucose uptake at the cellular level.' },
+    { title: 'Supplement Protocol - Insulin-Drift', content: 'Priority 1: Creatine monohydrate 5g daily. Increases phosphocreatine stores, directly improves training output which drives insulin sensitivity gains. Priority 2: Magnesium glycinate 300mg before bed. Supports glucose metabolism and sleep. Priority 3: Berberine 500mg with your largest carbohydrate meal. Mimics metformin mechanism, improving glucose uptake at the cellular level.' },
     { title: 'The Post-Meal Walk - Why It Works', content: 'A 15-minute walk after eating reduces post-meal blood glucose by 20-30% compared to sitting. The mechanism: muscle contraction (even low intensity) activates GLUT4 transporters independently of insulin - meaning glucose moves into muscle cells without requiring more insulin to be secreted. Over time, repeated post-meal walks rebuild the metabolic capacity that has drifted.' },
   ],
   'hormonal-shift': [
-    { title: 'Hormone Synthesis and Fat', content: 'Sex hormones (oestrogen, progesterone, testosterone) are synthesised from cholesterol. Low dietary fat directly reduces the raw material available for hormone production. This is why restriction makes the Hormonal-Shift pattern worse - it removes the building blocks the body needs to produce the hormones that regulate metabolism, mood, and body composition. Fat is not a concession in this programme. It is the intervention.' },
-    { title: 'Supplement Protocol - Hormonal-Shift', content: 'Priority 1: Magnesium glycinate 300-400mg before bed. Supports progesterone receptor sensitivity and sleep quality. Priority 2: Omega-3 (EPA+DHA) 2-3g daily. Reduces inflammation, supports oestrogen metabolism. Can come from food (salmon, sardines) or supplement. Priority 3: Zinc 15-25mg with dinner. Supports testosterone production and oestrogen clearance via the liver.' },
+    { title: 'Hormone Synthesis and Fat', content: 'Sex hormones (oestrogen, progesterone, testosterone) are synthesised from cholesterol. Low dietary fat directly reduces the raw material available for hormone production. This is why restriction makes the Estrogen-Shift pattern worse. It removes the building blocks the body needs to produce the hormones that regulate metabolism, mood, and body composition. Fat is not a concession in this programme. It is the intervention.' },
+    { title: 'Supplement Protocol - Estrogen-Shift', content: 'Priority 1: Magnesium glycinate 300-400mg before bed. Supports progesterone receptor sensitivity and sleep quality. Priority 2: Omega-3 (EPA+DHA) 2-3g daily. Reduces inflammation, supports oestrogen metabolism. Can come from food (salmon, sardines) or supplement. Priority 3: Zinc 15-25mg with dinner. Supports oestrogen clearance via the liver.' },
     { title: 'Cycle Syncing - Practical Guide', content: 'Follicular (days 1-14): Energy rises, oestrogen climbs. Best phase for high-intensity training and larger carb windows. Ovulatory (days 14-16): Peak physical capacity. Push training here. Luteal (days 17-28): Progesterone rises, energy and mood may dip, appetite increases. Reduce training intensity, increase fat and carbs, do not restrict. Menstrual (days 1-5): Iron-rich foods, rest priority. Allow starchy carbs freely.' },
   ],
   'system-overload': [
-    { title: 'Nervous System Recovery - The Basics', content: 'The autonomic nervous system operates in two modes: sympathetic (fight-or-flight, high alert, stress response) and parasympathetic (rest, digest, recover). System-Overload is a state of chronic sympathetic dominance - the nervous system cannot fully switch into recovery mode. The programme is designed to reduce sympathetic inputs (training volume, calorie restriction, time pressure) while increasing parasympathetic inputs (sleep, magnesium, red meat, Zone 2 movement, social connection).' },
-    { title: 'Supplement Protocol - System-Overload', content: 'Priority 1: Magnesium glycinate 400mg before bed. The most impactful intervention for nervous system recovery. Non-negotiable. Priority 2: Zinc 15-25mg with dinner. Supports neurotransmitter function and testosterone. Priority 3: Vitamin D3 + K2 if sunlight exposure is limited. Neurological function depends on adequate Vitamin D. Priority 4 (if available): Liver capsules or desiccated liver 4-6 capsules daily. Provides concentrated B vitamins, iron, and zinc in highly bioavailable form.' },
-    { title: 'HRV as a Readiness Signal', content: 'Heart Rate Variability (HRV) is the variation in time between heartbeats. Higher HRV = greater parasympathetic activity = better recovery state. For this pattern, tracking morning HRV (using a wearable or the free app Elite HRV) provides objective data to guide training decisions. On low HRV days, reduce training to 2 working sets per exercise and skip conditioning entirely. On high HRV days, train normally. The check-in energy markers are a subjective proxy for this - but HRV adds objectivity.' },
+    { title: 'Androgen Decline and Recovery', content: 'Testosterone signalling drives muscle protein synthesis, drive, recovery, and motivation. When androgen function declines, the body still trains but the response is suppressed. The Androgen-Decline pattern is a state of insufficient testosterone signalling at the receptor level. The programme is designed to protect the inputs that support androgen function (deep sleep, resistance training, adequate protein and fat, zinc and Vitamin D status) while removing the inputs that suppress it (chronic high-intensity volume, calorie restriction, sleep debt, alcohol).' },
+    { title: 'Supplement Protocol - Androgen-Decline', content: 'Priority 1: Magnesium glycinate 400mg before bed. Supports deep sleep, the primary window for testosterone synthesis. Non-negotiable. Priority 2: Zinc 15-25mg with dinner. Direct precursor to testosterone production. Priority 3: Vitamin D3 + K2 if sunlight exposure is limited. Testosterone synthesis depends on adequate Vitamin D. Priority 4 (if available): Liver capsules or desiccated liver 4-6 capsules daily. Provides concentrated B vitamins, iron, and zinc in highly bioavailable form.' },
+    { title: 'HRV as a Readiness Signal', content: 'Heart Rate Variability (HRV) is the variation in time between heartbeats. Higher HRV = greater parasympathetic activity = better recovery state. For this pattern, tracking morning HRV (using a wearable or the free app Elite HRV) provides objective data to guide training decisions. On low HRV days, reduce training to 2 working sets per exercise and skip conditioning entirely. On high HRV days, train normally. The check-in energy markers are a subjective proxy for this. HRV adds objectivity.' },
   ],
 }
 

@@ -20,19 +20,19 @@ const PATTERN_CONFIG: Record<string, { label: string; colour: string; descriptio
     description: 'Your programme is built around lowering cortisol load, supporting your stress hormone curve, and creating the biological conditions for your body to release stored fat.',
   },
   'metabolic-drift': {
-    label: 'Metabolic-Drift',
+    label: 'Insulin-Drift',
     colour: '#f59e0b',
-    description: 'Your programme is built around restoring insulin sensitivity, stabilising blood sugar across the day, and timing your nutrition to work with your metabolic rhythm.',
+    description: 'Your programme is built around restoring insulin sensitivity, stabilising blood sugar across the day, and timing your nutrition to work with your metabolic rhythm. The full-body softening reverses as insulin signalling rebuilds.',
   },
   'hormonal-shift': {
-    label: 'Hormonal-Shift',
+    label: 'Estrogen-Shift',
     colour: '#8b5cf6',
-    description: 'Your programme is built around supporting reproductive hormone balance, avoiding the restriction patterns that make this pattern worse, and prioritising recovery as a training variable.',
+    description: 'Your programme is built around supporting oestrogen balance, avoiding the restriction patterns that make this pattern worse, and prioritising recovery as a training variable. Cycle-aware adjustments are layered throughout.',
   },
   'system-overload': {
-    label: 'System-Overload',
+    label: 'Androgen-Decline',
     colour: '#14b8a6',
-    description: 'Your programme is built around reducing total neurological demand, keeping training intensity controlled, and creating the conditions for your nervous system to become responsive again.',
+    description: 'Your programme is built around protecting muscle, controlling load, and rebuilding the conditions that support testosterone signalling. Recovery is the lever. Drive and capacity return as the system comes back online.',
   },
 }
 
@@ -1223,7 +1223,7 @@ const COACHING_NOTES: Record<string, Record<number, string>> = {
     3: `Adapt phase begins. Load increases this week but the RIR target stays at three for your pattern. Gradual is the word. Your nervous system adapts to progressive increases only when those increases are small enough to absorb fully between sessions. Chasing numbers now would undo the regulation work of the first two weeks.\n\nMagnesium this week is worth prioritising. Pumpkin seeds, dark chocolate, or a supplement in the evening. Magnesium directly supports nervous system recovery and most people in this pattern are running low. It is a small input with a disproportionate effect on sleep quality and recovery rate.`,
     4: `Midpoint. Your energy should be noticeably different to Week 1. Not perfect, but different. The flat, unresponsive feeling that characterises this pattern early in the programme tends to shift by Week 4 when the other inputs - sleep, nutrition, controlled training - have been consistently in place.\n\nDo not chase the progress by adding volume. The system is responding to quality, not quantity. Keep the sets at the prescribed number, keep the rest periods at two to three minutes, and keep the session B finisher skipped. The discipline here is in restraint, not effort.`,
     5: `Week 5. Two to three RIR across all sessions. This is the peak of the programme for your pattern and it is still controlled. If your energy and recovery have been improving week on week, these sessions should feel genuinely strong - more output from the same effort level, faster recovery between sets, better readiness coming into each session.\n\nSleep and magnesium remain non-negotiable this week. The training is asking more than it has been - the recovery needs to match it. Red meat at least once this day this week for zinc and iron density. Your nervous system needs both.`,
-    6: `Deload week. Reduce sets by 40 percent for your pattern. This is the deepest deload in the programme and it is prescribed specifically because your nervous system recovers on rest more than on active work. Lighter sessions, full food, long sleep.\n\nThis week is also a good time to reflect on the journey. System-Overload is the hardest pattern to shift because it requires doing less when every instinct says to do more. If you have followed the structure, your nervous system is in a significantly better state than it was six weeks ago. The next phase builds from here.`,
+    6: `Deload week. Reduce sets by 40 percent for your pattern. This is the deepest deload in the programme and it is prescribed specifically because androgen signalling rebuilds on rest more than on active work. Lighter sessions, full food, long sleep.\n\nThis week is also a good time to reflect on the journey. Androgen-Decline is one of the hardest patterns to shift because it requires doing less when every instinct says to do more. If you have followed the structure, your testosterone signalling is in a significantly better state than it was six weeks ago. The next phase builds from here.`,
   },
 }
 

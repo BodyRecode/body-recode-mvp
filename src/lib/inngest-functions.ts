@@ -570,10 +570,10 @@ async function executeAction(
 // ─── Blueprint Email Sequence ─────────────────────────────────────────────────
 
 const BLUEPRINT_PATTERN_CONFIG: Record<string, { label: string; colour: string }> = {
-  'stress-stored':   { label: 'Stress-Stored',   colour: '#ef4444' },
-  'metabolic-drift': { label: 'Metabolic-Drift', colour: '#f59e0b' },
-  'hormonal-shift':  { label: 'Hormonal-Shift',  colour: '#8b5cf6' },
-  'system-overload': { label: 'System-Overload', colour: '#14b8a6' },
+  'stress-stored':   { label: 'Stress-Stored',    colour: '#ef4444' },
+  'metabolic-drift': { label: 'Insulin-Drift',    colour: '#f59e0b' },
+  'hormonal-shift':  { label: 'Estrogen-Shift',   colour: '#8b5cf6' },
+  'system-overload': { label: 'Androgen-Decline', colour: '#14b8a6' },
 }
 
 const BLUEPRINT_WEEK_EMAILS: Record<number, {
@@ -943,9 +943,9 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
 
       const patternLabels: Record<string, string> = {
         'stress-stored': 'Stress-Stored',
-        'metabolic-drift': 'Metabolic-Drift',
-        'hormonal-shift': 'Hormonal-Shift',
-        'system-overload': 'System-Overload',
+        'metabolic-drift': 'Insulin-Drift',
+        'hormonal-shift': 'Estrogen-Shift',
+        'system-overload': 'Androgen-Decline',
       }
 
       await inngest.send({
@@ -1196,9 +1196,9 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
 
       const patternLabels: Record<string, string> = {
         'stress-stored': 'Stress-Stored',
-        'metabolic-drift': 'Metabolic-Drift',
-        'hormonal-shift': 'Hormonal-Shift',
-        'system-overload': 'System-Overload',
+        'metabolic-drift': 'Insulin-Drift',
+        'hormonal-shift': 'Estrogen-Shift',
+        'system-overload': 'Androgen-Decline',
       }
 
       await inngest.send({
