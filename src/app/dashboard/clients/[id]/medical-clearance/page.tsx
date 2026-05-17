@@ -23,15 +23,11 @@ export default async function MedicalClearancePage({ params }: { params: Promise
   // Generate signed URL if doc exists
   let docSignedUrl: string | null = null
   if (client.medical_clearance_doc_url) {
-    const { data, error: signError } = await admin.storage
+    const { data } = await admin.storage
       .from('clearance-docs')
       .createSignedUrl(client.medical_clearance_doc_url, 60 * 60) // 1 hour
-    if (signError) console.error('Clearance signed URL error:', signError)
     docSignedUrl = data?.signedUrl ?? null
   }
-  const isImage = client.medical_clearance_doc_url
-    ? /\.(jpg|jpeg|png|gif|webp)$/i.test(client.medical_clearance_doc_url)
-    : false
 
   const whatsappMessage = `Hi ${firstName},
 
@@ -82,25 +78,21 @@ Kade`
       {/* Uploaded document */}
       {submitted && docSignedUrl && (
         <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-bold tracking-widest text-stone-500 uppercase">Uploaded Document</p>
+          <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">Uploaded Document</p>
+          {docSignedUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+            <img src={docSignedUrl} alt="Medical clearance form" className="w-full rounded-lg border border-stone-700" />
+          ) : (
             <a
               href={docSignedUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-stone-400 hover:text-teal-400 transition-colors"
+              className="flex items-center gap-3 text-sm text-teal-400 hover:text-teal-300 transition-colors"
             >
-              Open in new tab ↗
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Open uploaded PDF ↗
             </a>
-          </div>
-          {isImage ? (
-            <img src={docSignedUrl} alt="Medical clearance form" className="w-full rounded-lg border border-stone-700" />
-          ) : (
-            <iframe
-              src={docSignedUrl}
-              title="Medical clearance form"
-              className="w-full h-[80vh] rounded-lg border border-stone-700 bg-white"
-            />
           )}
         </div>
       )}
