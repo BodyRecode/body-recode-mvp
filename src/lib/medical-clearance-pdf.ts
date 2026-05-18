@@ -226,6 +226,7 @@ async function loadLogo(doc: PDFDocument): Promise<PDFImage> {
 export async function renderMedicalClearancePdf(opts: {
   clientName: string
   clientEmail: string | null
+  clearanceReasons?: string[]
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create()
   doc.setTitle('Body Recode Medical Clearance Request Form')
@@ -303,12 +304,47 @@ export async function renderMedicalClearancePdf(opts: {
 
   // ── 03 Reason for Clearance Request ─────────────────────────────────
   drawSectionHeader(cur, '03', 'Reason for Clearance Request')
-  drawParagraph(cur,
-    'Medical clearance has been requested due to the following self-declared condition or screening response:')
-  spacer(cur, 6)
-  drawBlankLine(cur)
-  drawBlankLine(cur)
-  drawBlankLine(cur)
+  const reasons = (opts.clearanceReasons ?? []).filter(r => r && r.trim().length > 0)
+  if (reasons.length > 0) {
+    drawParagraph(cur,
+      'The client self-declared the following during pre-coaching health screening:')
+    spacer(cur, 8)
+    // Soft framed list of trigger reasons
+    ensureSpace(cur, reasons.length * 16 + 18)
+    const listTop = cur.y
+    const rowH = 16
+    for (let i = 0; i < reasons.length; i++) {
+      const yRow = listTop - (i + 1) * rowH
+      // Teal dot
+      cur.page.drawCircle({ x: MARGIN_X + 10, y: yRow + 4, size: 1.8, color: TEAL })
+      cur.page.drawText(reasons[i], {
+        x: MARGIN_X + 22, y: yRow, size: 9.5, font: cur.regular, color: INK_900,
+      })
+    }
+    const listBottom = listTop - reasons.length * rowH - 4
+    cur.page.drawRectangle({
+      x: MARGIN_X, y: listBottom,
+      width: CONTENT_WIDTH, height: listTop - listBottom,
+      borderColor: INK_300, borderWidth: 0.5,
+    })
+    cur.page.drawRectangle({
+      x: MARGIN_X, y: listBottom,
+      width: 2, height: listTop - listBottom, color: TEAL,
+    })
+    cur.y = listBottom - 12
+    drawParagraph(cur, 'Additional context (optional, completed by coach or practitioner):',
+      { size: 8, color: INK_500 })
+    spacer(cur, 2)
+    drawBlankLine(cur, 20)
+    drawBlankLine(cur, 20)
+  } else {
+    drawParagraph(cur,
+      'Medical clearance has been requested due to the following self-declared condition or screening response:')
+    spacer(cur, 6)
+    drawBlankLine(cur)
+    drawBlankLine(cur)
+    drawBlankLine(cur)
+  }
   spacer(cur, 2)
   drawParagraph(cur, 'This request is precautionary and relates only to exercise participation eligibility.',
     { size: 8, color: INK_500 })
