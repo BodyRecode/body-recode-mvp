@@ -19,6 +19,7 @@ const SECTIONS = [
   { id: 'client-onboarding',title: '9. Client Onboarding',   colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'cffs',                  title: '10. CFFS',                  colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'foundational-reading',  title: '10b. Foundational Reading', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'medications-analysis',  title: '10c. Medications Analysis + Reading', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'weekly-checkins',       title: '11. Weekly Check-Ins',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'signal-monitoring',     title: '11b. Signal Monitoring',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'recovery-regulation',   title: '11c. Recovery and Regulation', colour: 'teal' as const, category: 'coaching' as Category },
@@ -794,6 +795,44 @@ export default function HelpPage() {
               <p>The reading prompt inherits the CFFS doctrine: pattern-based interpretation, conservative under uncertainty, no prescriptions, no diagnostic labels, no causal claims. It also explicitly forbids motivational language, em dashes, and exclamation marks. The prompt is in <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">src/lib/client-reading-prompt.ts</code>.</p>
               <p className="mt-2">Generated content is run through an em-dash strip before being saved, as a belt-and-braces guarantee.</p>
             </Training>
+          </Section>
+
+          <Section id="medications-analysis" title="10c. Medications Analysis + Reading" colour="teal">
+            <p>The <strong>Medications</strong> field on the client profile captures a free-text list of what a client is currently taking (Yaz, Doxycycline, Salbutamol inhaler, etc.). The Analysis + Reading feature turns that blob into two artefacts: a coach-facing structured per-medication breakdown, and a client-facing prose reading the client sees in their portal.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-1">Coach view: Medications Analysis</p>
+            <p>On <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">/dashboard/clients/[id]</code> directly below the Medications editor card. Click <strong>Generate analysis</strong> to draft. Claude (Haiku 4.5) reads the medications text + the latest CFFS + intake (DOB, gender, occupation, goal) + active program block + active nutrition plan, and returns a JSON structure with one row per medication. Each row shows:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li><strong>Name</strong> — canonical, brand-with-generic when known (e.g. &quot;Yaz (ethinyl estradiol + drospirenone)&quot;).</li>
+              <li><strong>Purpose</strong> — what it is, what it&apos;s prescribed for.</li>
+              <li><strong>Client influence</strong> — observable day-to-day signals to watch for (energy, mood, appetite, GI, sleep, etc.).</li>
+              <li><strong>Program influence</strong> — training implications, named with specific physiology (HR blunting, tendon load tolerance, glycaemic response, etc.).</li>
+              <li><strong>Nutrition influence</strong> — appetite, GI, micronutrient depletion, food-drug interactions, hydration, dose-meal timing.</li>
+              <li><strong>Recovery + regulation influence</strong> — sleep architecture, sympathetic load, HPA axis modulation, fluid/electrolyte shifts, hormonal context.</li>
+            </ul>
+            <p>Below the per-medication rows, a <strong>Combined picture</strong> paragraph names how multiple meds interact or compound for THIS client (anticholinergic burden, additive sedation, fluid retention compounding, etc.) and ends with the single most important coaching adjustment the medication picture implies. The analysis is coach-only, never shown to the client. Coach-facing technical vocabulary (beta-blocker, COX inhibition, SSRI) is allowed and expected.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-1">Client view: Medications Reading</p>
+            <p>Once the analysis is generated, click <strong>Generate reading</strong> to draft the client-facing version. Same Claude call but with a different system prompt that translates every technical mechanism into observable signal language and forbids drug-class names, dose numbers, diagnostic labels, &quot;ask your doctor&quot; framings, and the full internal-jargon banned list (CFFS, spatial patterning, sympathetic dominance, mid-arc, etc.). Auto-retries up to 3 times if any banned term leaks through.</p>
+            <p>The reading has four sections, FR/PR/NR voice:</p>
+            <ol className="space-y-1 list-decimal list-inside text-[#d4cfc9] text-sm">
+              <li><strong>What you&apos;re taking</strong> — each medication named simply, what each is for.</li>
+              <li><strong>Why it matters</strong> — how they shape the signals their body sends and what the coach reads differently because of them.</li>
+              <li><strong>How we account for it</strong> — what their program and nutrition do to work WITH these medications. Specific, behavioural.</li>
+              <li><strong>What to watch</strong> — signals to flag to the coach if they shift.</li>
+            </ol>
+            <p>The reading is a <strong>draft until you Publish</strong>. Click <strong>Publish to portal</strong> to expose it to the client at <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">/portal/[token]/medications-reading</code>; it also appears as a card next to the Foundational Reading on the portal landing. Click <strong>Unpublish</strong> to hide it again without deleting. No email is sent on publish — the client discovers the reading next time they open their portal.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-1">Staleness signals</p>
+            <p>Both cards show a <strong>Rebuild recommended</strong> amber pill when:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>Coach analysis: <code>medications_updated_at &gt; medications_analyzed_at</code> (you edited the medications text after the analysis was generated).</li>
+              <li>Client reading: either <code>medications_analyzed_at &gt; medications_reading_generated_at</code> (analysis is newer than reading) OR <code>medications_updated_at &gt; medications_reading_generated_at</code> (the underlying text changed).</li>
+            </ul>
+            <p>Click Regenerate on the stale card to refresh. The Publish state persists across regenerations (if it was published before, the new version is also live).</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-1">Empty state</p>
+            <p>If the client has no medications recorded, the analysis returns immediately with an empty-meds JSON structure (no Claude call), and the reading is generated with a pre-canned &quot;nothing to account for right now&quot; copy. Saves a Claude credit.</p>
           </Section>
 
           {/* Section 9 */}

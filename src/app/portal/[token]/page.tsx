@@ -333,7 +333,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Your Reading</p></div>
             <Link
               href={`/portal/${token}/foundational-reading`}
-              className="block rounded-2xl border border-[#1c1917] bg-[#111110] p-5 hover:border-[#14b8a6]/40 hover:bg-[#14b8a6]/5 transition-colors"
+              className="block rounded-2xl border border-[#1c1917] bg-[#111110] p-5 hover:border-[#14b8a6]/40 hover:bg-[#14b8a6]/5 transition-colors mb-3"
             >
               <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
@@ -346,6 +346,22 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 <span className="text-xs font-bold text-[#14b8a6] ml-4 shrink-0">View →</span>
               </div>
             </Link>
+            {client.medications_reading_published_at && (
+              <Link
+                href={`/portal/${token}/medications-reading`}
+                className="block rounded-2xl border border-[#1c1917] bg-[#111110] p-5 hover:border-[#14b8a6]/40 hover:bg-[#14b8a6]/5 transition-colors"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-white mb-1">Medications Reading</p>
+                    <p className="text-xs text-[#a8a29e] leading-relaxed">
+                      What you&apos;re currently taking, why it matters for your coaching, and what we account for in your program and nutrition.
+                    </p>
+                  </div>
+                  <span className="text-xs font-bold text-[#14b8a6] ml-4 shrink-0">View →</span>
+                </div>
+              </Link>
+            )}
           </div>
         )}
 

@@ -19,6 +19,7 @@ import MedicationsEditor from './medications-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import CoachResponseCard from './coach-response-card'
 import MajorSection from './major-section'
+import MedicationsAnalysisPanel from './medications-analysis-panel'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
@@ -610,6 +611,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         updatedAt={client.medications_updated_at ?? null}
         activeProgramGeneratedAt={activeProgram?.generated_at ?? null}
         activeNutritionGeneratedAt={activeNutritionPlan?.generated_at ?? null}
+      />
+
+      <MedicationsAnalysisPanel
+        clientId={client.id}
+        clientFirstName={client.name?.split(' ')[0] ?? 'client'}
+        medicationsText={client.medications ?? null}
+        medicationsUpdatedAt={client.medications_updated_at ?? null}
+        analysis={(client.medications_analysis as null | { medications: Array<{ name: string; purpose: string; client_influence: string; program_influence: string; nutrition_influence: string; recovery_influence: string }>; combined_picture: string }) ?? null}
+        analyzedAt={client.medications_analyzed_at ?? null}
+        reading={(client.medications_reading as null | { mr_what_youre_taking: string; mr_why_it_matters: string; mr_how_we_account_for_it: string; mr_what_to_watch: string }) ?? null}
+        readingGeneratedAt={client.medications_reading_generated_at ?? null}
+        readingPublishedAt={client.medications_reading_published_at ?? null}
       />
 
       <MajorSection
