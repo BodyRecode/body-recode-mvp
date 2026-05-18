@@ -214,6 +214,28 @@ function detectDrift(latest: CfwsRow, prior: CfwsRow | null): DriftCondition[] {
  * §3  Reassessment trigger evaluation
  * =========================================================== */
 
+/**
+ * Early-program signal-based trigger suppression (added 2026-05-18).
+ *
+ * Reassessment triggers that depend on signal interpretation (CFWS language,
+ * multi-notch drop, two-or-more-amber-red, sustained instability) are
+ * suppressed until the active CFFS is at least 21 days old. Rationale: a
+ * reassessment makes no sense if the foundational synthesis is brand new —
+ * re-running it would produce essentially the same read, since one or two
+ * weeks of CFWS signal isn't enough new evidence to invalidate it.
+ *
+ * The 21-day floor matches the "three weeks of signal needed before
+ * re-interpreting" doctrine principle. Time-based triggers (block_end,
+ * twelve_week_cap) still fire regardless of age — they're not signal-driven.
+ *
+ * Without this gate, freshly-onboarded clients trip false reassessment
+ * recommendations on their first complete CFWS (e.g. Ruby-Cate's W2 CFWS
+ * came back with all four readiness signals at Amber, tripping
+ * two_or_more_amber_red on a 6-day-old CFFS where the CFFS itself already
+ * said regulation + behaviour were Amber).
+ */
+const SIGNAL_BASED_TRIGGER_FLOOR_DAYS = 21
+
 function evaluateReassessment(
   latest: CfwsRow,
   drift: DriftCondition[],
@@ -223,45 +245,53 @@ function evaluateReassessment(
 ): ReassessmentRecommendation[] {
   const reasons: ReassessmentRecommendation[] = []
 
-  // CFWS engine itself flagged it
-  if (latest.reassessment_language_triggered) {
-    reasons.push({
-      reason: 'cfws_language_triggered',
-      recommendedDepth: 'lightweight',
-      message: 'The CFWS engine flagged reassessment language for this week.',
-    })
+  const signalBasedTriggersAllowed =
+    daysSinceCffs == null || daysSinceCffs >= SIGNAL_BASED_TRIGGER_FLOOR_DAYS
+
+  if (signalBasedTriggersAllowed) {
+    // CFWS engine itself flagged it
+    if (latest.reassessment_language_triggered) {
+      reasons.push({
+        reason: 'cfws_language_triggered',
+        recommendedDepth: 'lightweight',
+        message: 'The CFWS engine flagged reassessment language for this week.',
+      })
+    }
+
+    // Multi-notch drop on any signal
+    if (drift.some(d => d.kind === 'multi_notch_drop')) {
+      reasons.push({
+        reason: 'multi_notch_drop',
+        recommendedDepth: 'delta',
+        message: 'A readiness signal dropped two notches in one week.',
+      })
+    }
+
+    // Two or more Amber/Red simultaneously in latest CFWS
+    const amberOrRedCount = KEYS.filter(k => {
+      const s = getSignal(latest, k)
+      return s === 'Amber' || s === 'Red'
+    }).length
+    if (amberOrRedCount >= 2) {
+      reasons.push({
+        reason: 'two_or_more_amber_red',
+        recommendedDepth: 'delta',
+        message: `${amberOrRedCount} readiness signals are at Amber or Red in the latest CFWS.`,
+      })
+    }
+
+    // Sustained instability
+    if (drift.some(d => d.kind === 'sustained_instability' && d.severity === 'high')) {
+      reasons.push({
+        reason: 'sustained_instability',
+        recommendedDepth: 'lightweight',
+        message: 'Sustained instability across two consecutive CFWS.',
+      })
+    }
   }
 
-  // Multi-notch drop on any signal
-  if (drift.some(d => d.kind === 'multi_notch_drop')) {
-    reasons.push({
-      reason: 'multi_notch_drop',
-      recommendedDepth: 'delta',
-      message: 'A readiness signal dropped two notches in one week.',
-    })
-  }
-
-  // Two or more Amber/Red simultaneously in latest CFWS
-  const amberOrRedCount = KEYS.filter(k => {
-    const s = getSignal(latest, k)
-    return s === 'Amber' || s === 'Red'
-  }).length
-  if (amberOrRedCount >= 2) {
-    reasons.push({
-      reason: 'two_or_more_amber_red',
-      recommendedDepth: 'delta',
-      message: `${amberOrRedCount} readiness signals are at Amber or Red in the latest CFWS.`,
-    })
-  }
-
-  // Sustained instability
-  if (drift.some(d => d.kind === 'sustained_instability' && d.severity === 'high')) {
-    reasons.push({
-      reason: 'sustained_instability',
-      recommendedDepth: 'lightweight',
-      message: 'Sustained instability across two consecutive CFWS.',
-    })
-  }
+  // Time-based triggers — fire regardless of CFFS age. Block end and the
+  // 12-week cap don't depend on signal interpretation.
 
   // Block end
   if (block?.isAtBlockEnd) {

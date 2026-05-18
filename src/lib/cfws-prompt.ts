@@ -29,6 +29,25 @@ WHAT A CFWS NEVER PRODUCES:
 RE-ASSESSMENT CONSIDERATION LANGUAGE:
 Only include if: responses suggest sustained stability or notable drift across the full week, no escalating constraints are present, and no safety flags exist. If included, use ONLY this phrasing: "Based on the patterns we're seeing, it may be appropriate to consider a re-assessment." This does not imply eligibility, outcome, or required action.
 
+READINESS RATING RUBRIC (added 2026-05-18 — read this before assigning Green/Amber/Red on any of the four exposure_readiness fields):
+
+The CFFS baseline (provided in the user prompt) is your anchor. The CFWS rating reflects how THIS WEEK'S signals deviate from that baseline, not a fresh interpretation of the week in isolation. Without the CFFS as your starting point you cannot rate any dimension.
+
+Anchoring rules — apply per dimension (capacity, schedule, regulation, behaviour):
+1. If the CFFS rated this dimension Green AND this week's signals are stable or improved, rate Green.
+2. If the CFFS rated this dimension Green AND a SINGLE check-in answer downgrades the signal but the other form does not corroborate, rate Green. Mention the isolated signal in dominant_weekly_patterns but do NOT change the rating. Single-form answers are informational only (governing principle #1).
+3. If the CFFS rated this dimension Green AND BOTH forms converge on a downward signal in the same week, rate Amber (one notch deviation max from baseline). Do not jump to Red on a single week's evidence.
+4. If the CFFS rated this dimension Amber, stay Amber unless: (a) both forms converge on improvement, in which case Green; or (b) both forms converge on worsening AND the rolling window shows the same direction last week, in which case Red.
+5. If the CFFS rated this dimension Red, stay Red unless multiple consecutive weeks show convergent improvement (then Amber). Never escalate Red to "Worse than Red" — Red is the floor.
+6. Two-notch deviations from baseline in a single week (Green → Red) are not permitted unless the client EXPLICITLY names a safety event (injury, medical episode, hospitalisation) in the week's responses.
+
+What counts as "convergence":
+- BOTH Form A and Form B touch the dimension AND point the same direction.
+- OR: Form A or B touches it AND the rolling window (previous CFWS) confirms the same direction.
+- A single Form A answer naming "more limited than usual" does NOT downgrade capacity on its own. A single Form B answer naming "compressed or rushed" does NOT downgrade schedule on its own.
+
+When in doubt, hold the CFFS rating. The CFFS represents 17+ intake signals; one week's check-in is two responses. Re-interpretation requires real evidence weight.
+
 OUTPUT LANGUAGE:
 - Descriptive, not evaluative
 - Observational, not directional
@@ -42,10 +61,23 @@ export interface WeeklyCheckInPair {
   formB: Record<string, string>
 }
 
+export interface CFWSCffsBaseline {
+  body_state_classification: string | null
+  resolution_state: string | null
+  exposure_readiness_capacity: string | null
+  exposure_readiness_schedule: string | null
+  exposure_readiness_regulation: string | null
+  exposure_readiness_behaviour: string | null
+  capacity_constraints_and_guardrails: string | null
+  risk_flags_and_watch_items: string | null
+  generated_at: string | null
+}
+
 export function buildCFWSUserPrompt(
   clientName: string,
   currentPair: WeeklyCheckInPair,
-  recentPairs: WeeklyCheckInPair[]
+  recentPairs: WeeklyCheckInPair[],
+  cffsBaseline?: CFWSCffsBaseline | null
 ): string {
   function formatResponses(responses: Record<string, string>): string {
     return Object.entries(responses)
@@ -57,6 +89,25 @@ export function buildCFWSUserPrompt(
 
   parts.push(`CLIENT: ${clientName}`)
   parts.push(`WEEK NUMBER: ${currentPair.weekNumber}`)
+
+  if (cffsBaseline) {
+    parts.push(`\n=== CFFS BASELINE (your anchor — rate THIS WEEK relative to this) ===`)
+    if (cffsBaseline.body_state_classification) parts.push(`Body state: ${cffsBaseline.body_state_classification}`)
+    if (cffsBaseline.resolution_state) parts.push(`Resolution state: ${cffsBaseline.resolution_state}`)
+    parts.push(`Baseline exposure readiness:`)
+    parts.push(`  capacity = ${cffsBaseline.exposure_readiness_capacity ?? 'unknown'}`)
+    parts.push(`  schedule = ${cffsBaseline.exposure_readiness_schedule ?? 'unknown'}`)
+    parts.push(`  regulation = ${cffsBaseline.exposure_readiness_regulation ?? 'unknown'}`)
+    parts.push(`  behaviour = ${cffsBaseline.exposure_readiness_behaviour ?? 'unknown'}`)
+    if (cffsBaseline.capacity_constraints_and_guardrails) {
+      parts.push(`Established capacity constraints (do not re-derive these):`)
+      parts.push(cffsBaseline.capacity_constraints_and_guardrails)
+    }
+    if (cffsBaseline.risk_flags_and_watch_items) {
+      parts.push(`Established risk flags (already known, do not re-flag):`)
+      parts.push(cffsBaseline.risk_flags_and_watch_items)
+    }
+  }
 
   parts.push(`\n=== CURRENT WEEK (Week ${currentPair.weekNumber}) ===`)
   parts.push(`FORM A — Experience-Forward:\n${formatResponses(currentPair.formA)}`)

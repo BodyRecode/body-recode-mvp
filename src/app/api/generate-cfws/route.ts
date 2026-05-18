@@ -70,13 +70,26 @@ export async function POST(request: NextRequest) {
 
   const currentPair: WeeklyCheckInPair = { weekNumber: week_number, formA, formB }
 
+  // Pull the active CFFS so the CFWS can anchor its readiness ratings to the
+  // established baseline. Without this the prompt has no reference and tends
+  // to over-call Amber on single-week deviations (see readiness-monitor.ts
+  // notes on Ruby-Cate's W2 CFWS, 2026-05-18).
+  const { data: cffsRows } = await admin
+    .from('cffs')
+    .select('body_state_classification, resolution_state, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, capacity_constraints_and_guardrails, risk_flags_and_watch_items, generated_at, is_archived')
+    .eq('client_id', client_id)
+    .eq('is_archived', false)
+    .order('generated_at', { ascending: false })
+    .limit(1)
+  const cffsBaseline = cffsRows?.[0] ?? null
+
   let message
   try {
     message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 6000,
       system: buildCFWSSystemPrompt(),
-      messages: [{ role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs) }],
+      messages: [{ role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline) }],
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)

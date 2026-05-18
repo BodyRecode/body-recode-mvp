@@ -880,14 +880,30 @@ export default function HelpPage() {
             </ul>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">CFFS reassessment triggers</p>
-            <p>A reassessment is recommended when ANY of the following fires:</p>
+            <p>A reassessment is recommended when ANY of the following fires.</p>
+            <p className="text-xs text-[#a8a29e] mt-3 mb-1"><strong>Signal-based triggers</strong> (suppressed when CFFS &lt; 21 days old, see Early-program suppression below):</p>
             <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li>The CFWS engine sets <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">reassessment_language_triggered: true</code></li>
               <li>A multi-notch drop occurs on any signal</li>
               <li>Two or more readiness signals are at Amber or Red simultaneously</li>
               <li>Sustained instability persists across two consecutive CFWS</li>
+            </ul>
+            <p className="text-xs text-[#a8a29e] mt-3 mb-1"><strong>Time-based triggers</strong> (always fire regardless of CFFS age):</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
               <li>The active program block reaches its end (current week ≥ block_start_week + week_duration - 1)</li>
               <li>Time since the active CFFS exceeds 12 weeks (annual upper bound)</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Early-program signal-trigger suppression (added 2026-05-18)</p>
+            <p>The four signal-based triggers above are suppressed until the active CFFS is at least <strong>21 days old</strong>. A reassessment on a freshly-generated CFFS would produce essentially the same read, since one or two weeks of CFWS signal isn&apos;t enough new evidence to invalidate it. The 21-day floor matches the &quot;three weeks of signal needed before re-interpreting&quot; principle. Time-based triggers (block end, 12-week cap) are NOT suppressed because they aren&apos;t signal-driven.</p>
+            <p>Constant: <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">SIGNAL_BASED_TRIGGER_FLOOR_DAYS = 21</code> in <code className="bg-[#1c1917] px-1 rounded text-teal-300 text-xs">src/lib/readiness-monitor.ts</code>. Rationale captured in §3a of the doctrine doc.</p>
+
+            <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">CFWS readiness rating discipline (tightened 2026-05-18)</p>
+            <p>The CFWS prompt previously had no rating rubric and would over-call Amber on a single check-in answer (e.g. one &quot;more limited than usual&quot; flipped capacity from Green to Amber). Now the prompt receives the CFFS baseline (body state + the four exposure_readiness values + constraints + risk flags) as the anchor, and ratings reflect deviation FROM the baseline rather than a fresh interpretation of the week in isolation. Rules:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#d4cfc9] text-sm">
+              <li>A single Form A or Form B answer does NOT downgrade a signal on its own. Both forms must converge, OR the rolling window must confirm the same direction.</li>
+              <li>Two-notch deviations from baseline in a single week (Green → Red) require an explicit safety event named by the client.</li>
+              <li>When in doubt, hold the CFFS rating.</li>
             </ul>
 
             <p className="text-xs font-bold text-[#a8a29e] uppercase tracking-wider mt-4 mb-2">Reassessment is a temporal construct - it cannot apply at intake-time</p>
