@@ -174,7 +174,10 @@ export async function POST(request: NextRequest) {
 
   if (updateErr) {
     console.error('Failed to save reading:', updateErr)
-    return NextResponse.json({ error: 'Failed to save reading' }, { status: 500 })
+    return NextResponse.json(
+      { error: `Failed to save reading: ${updateErr.message}` },
+      { status: 500 }
+    )
   }
 
   // Notify the client - first time only, never on regenerations
