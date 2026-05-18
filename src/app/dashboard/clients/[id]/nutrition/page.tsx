@@ -230,6 +230,13 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
         const proteinDelta = proteinAnchor ? totals.protein_g - proteinAnchor : null
         const proteinOk = proteinDelta !== null && Math.abs(proteinDelta) <= 5
         const kcalInBand = band ? totals.kcal >= band.low * 0.95 && totals.kcal <= band.high * 1.05 : null
+        const proteinKcal = totals.protein_g * 4
+        const carbKcal = totals.carb_g * 4
+        const fatKcal = totals.fat_g * 9
+        const denom = proteinKcal + carbKcal + fatKcal || 1
+        const proteinPct = Math.round((proteinKcal / denom) * 100)
+        const carbPct = Math.round((carbKcal / denom) * 100)
+        const fatPct = 100 - proteinPct - carbPct
         return (
           <div id={`${idPrefix}daily-totals`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
             <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
@@ -253,6 +260,18 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
                   ) : (
                     <p className="text-stone-500">No band stated</p>
                   )}
+                </div>
+              </div>
+              <div className="pt-1">
+                <div className="flex h-2 rounded-full overflow-hidden bg-stone-800">
+                  <div style={{ width: `${proteinPct}%` }} className="bg-[#10E1C2]" />
+                  <div style={{ width: `${carbPct}%` }} className="bg-amber-500" />
+                  <div style={{ width: `${fatPct}%` }} className="bg-violet-400" />
+                </div>
+                <div className="flex justify-between mt-2 text-[10px] uppercase tracking-wider tabular-nums">
+                  <span className="text-[#10E1C2]">P {proteinPct}%</span>
+                  <span className="text-amber-400">C {carbPct}%</span>
+                  <span className="text-violet-300">F {fatPct}%</span>
                 </div>
               </div>
               {proteinAnchor > 0 && (

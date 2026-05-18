@@ -162,10 +162,29 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
             {/* Daily totals — shown above meals as the headline number */}
             {Array.isArray(plan.meals) && plan.meals.length > 0 && (() => {
               const totals = computeNutritionTotals(plan.meals as Meal[])
+              const proteinKcal = totals.protein_g * 4
+              const carbKcal = totals.carb_g * 4
+              const fatKcal = totals.fat_g * 9
+              const denom = proteinKcal + carbKcal + fatKcal || 1
+              const proteinPct = Math.round((proteinKcal / denom) * 100)
+              const carbPct = Math.round((carbKcal / denom) * 100)
+              const fatPct = 100 - proteinPct - carbPct
               return (
                 <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-5">
                   <p className="text-xs font-bold text-[#57534e] uppercase tracking-widest mb-3">Daily totals</p>
                   <p className="text-3xl font-bold text-white tabular-nums">{totals.kcal.toLocaleString()} <span className="text-base font-normal text-[#57534e]">kcal</span></p>
+                  <div className="mt-4">
+                    <div className="flex h-2 rounded-full overflow-hidden bg-[#1c1917]">
+                      <div style={{ width: `${proteinPct}%` }} className="bg-[#10E1C2]" />
+                      <div style={{ width: `${carbPct}%` }} className="bg-amber-500" />
+                      <div style={{ width: `${fatPct}%` }} className="bg-violet-400" />
+                    </div>
+                    <div className="flex justify-between mt-2 text-[10px] uppercase tracking-wider tabular-nums">
+                      <span className="text-[#10E1C2]">P {proteinPct}%</span>
+                      <span className="text-amber-400">C {carbPct}%</span>
+                      <span className="text-violet-300">F {fatPct}%</span>
+                    </div>
+                  </div>
                   <div className="grid grid-cols-3 gap-3 mt-4">
                     <div className="bg-[#1c1917]/60 rounded-xl px-3 py-2.5 text-center">
                       <p className="text-sm font-bold text-white tabular-nums">{totals.protein_g}g</p>
