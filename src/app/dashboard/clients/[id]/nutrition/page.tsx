@@ -296,32 +296,18 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
         <div className="space-y-3">
           {plan.meals.map((meal) => {
             const mealMacros = computeMealMacros(meal)
-            const mp = meal.protein_g * 4
-            const mc = meal.carb_g * 4
-            const mf = meal.fat_g * 9
-            const md = mp + mc + mf || 1
-            const mpp = Math.round((mp / md) * 100)
-            const mcp = Math.round((mc / md) * 100)
-            const mfp = 100 - mpp - mcp
             return (
               <div key={meal.meal_number} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-                <div className="px-5 py-3 border-b border-stone-800">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="font-semibold text-stone-100 text-sm">{meal.meal_name}</h3>
-                      <p className="text-[10px] text-stone-600 mt-0.5">{meal.timing}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-semibold text-white tabular-nums">{mealMacros.kcal} kcal</p>
-                      <p className="text-[10px] text-stone-500 mt-0.5 tabular-nums">
-                        {meal.protein_g}g P · {meal.carb_g}g C · {meal.fat_g}g F
-                      </p>
-                    </div>
+                <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold text-stone-100 text-sm">{meal.meal_name}</h3>
+                    <p className="text-[10px] text-stone-600 mt-0.5">{meal.timing}</p>
                   </div>
-                  <div className="flex h-1.5 rounded-full overflow-hidden bg-stone-800 mt-3">
-                    <div style={{ width: `${mpp}%` }} className="bg-[#10E1C2]" />
-                    <div style={{ width: `${mcp}%` }} className="bg-amber-500" />
-                    <div style={{ width: `${mfp}%` }} className="bg-violet-400" />
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-white tabular-nums">{mealMacros.kcal} kcal</p>
+                    <p className="text-[10px] text-stone-500 mt-0.5 tabular-nums">
+                      {meal.protein_g}g P · {meal.carb_g}g C · {meal.fat_g}g F
+                    </p>
                   </div>
                 </div>
                 <div className="px-5 py-4">

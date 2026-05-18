@@ -209,13 +209,6 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                 <p className="text-xs font-bold text-[#57534e] uppercase tracking-widest">Meals</p>
                 {(plan.meals as Meal[]).map((meal, i) => {
                   const totalCals = Math.round(meal.protein_g * 4 + meal.carb_g * 4 + meal.fat_g * 9)
-                  const mp = meal.protein_g * 4
-                  const mc = meal.carb_g * 4
-                  const mf = meal.fat_g * 9
-                  const md = mp + mc + mf || 1
-                  const mpp = Math.round((mp / md) * 100)
-                  const mcp = Math.round((mc / md) * 100)
-                  const mfp = 100 - mpp - mcp
                   return (
                     <div key={i} className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden">
                       <div className="px-5 py-3 border-b border-[#1c1917]">
@@ -239,11 +232,6 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                             <p className="text-sm font-bold text-white">{meal.fat_g}g</p>
                             <p className="text-xs text-[#3c3835]">Fat</p>
                           </div>
-                        </div>
-                        <div className="flex h-1.5 rounded-full overflow-hidden bg-[#1c1917] mt-3">
-                          <div style={{ width: `${mpp}%` }} className="bg-[#10E1C2]" />
-                          <div style={{ width: `${mcp}%` }} className="bg-amber-500" />
-                          <div style={{ width: `${mfp}%` }} className="bg-violet-400" />
                         </div>
                       </div>
                       {meal.foods && meal.foods.length > 0 && (
