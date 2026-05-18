@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import ClientHeader from '@/components/client-header'
 import NutritionReadingInline from '@/components/nutrition-reading-inline'
 import Link from 'next/link'
+import { computeNutritionTotals, normalizeFood, type FoodInput } from '@/lib/nutrition-validation'
 
 interface Meal {
   meal_number: number
@@ -11,7 +12,7 @@ interface Meal {
   protein_g: number
   carb_g: number
   fat_g: number
-  foods: string[]
+  foods: FoodInput[]
   notes: string | null
 }
 
@@ -158,6 +159,31 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
               )
             })()}
 
+            {/* Daily totals — shown above meals as the headline number */}
+            {Array.isArray(plan.meals) && plan.meals.length > 0 && (() => {
+              const totals = computeNutritionTotals(plan.meals as Meal[])
+              return (
+                <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-5">
+                  <p className="text-xs font-bold text-[#57534e] uppercase tracking-widest mb-3">Daily totals</p>
+                  <p className="text-3xl font-bold text-white tabular-nums">{totals.kcal.toLocaleString()} <span className="text-base font-normal text-[#57534e]">kcal</span></p>
+                  <div className="grid grid-cols-3 gap-3 mt-4">
+                    <div className="bg-[#1c1917]/60 rounded-xl px-3 py-2.5 text-center">
+                      <p className="text-sm font-bold text-white tabular-nums">{totals.protein_g}g</p>
+                      <p className="text-xs text-[#57534e] mt-0.5">Protein</p>
+                    </div>
+                    <div className="bg-[#1c1917]/60 rounded-xl px-3 py-2.5 text-center">
+                      <p className="text-sm font-bold text-white tabular-nums">{totals.carb_g}g</p>
+                      <p className="text-xs text-[#57534e] mt-0.5">Carbs</p>
+                    </div>
+                    <div className="bg-[#1c1917]/60 rounded-xl px-3 py-2.5 text-center">
+                      <p className="text-sm font-bold text-white tabular-nums">{totals.fat_g}g</p>
+                      <p className="text-xs text-[#57534e] mt-0.5">Fat</p>
+                    </div>
+                  </div>
+                </div>
+              )
+            })()}
+
             {/* Meals */}
             {Array.isArray(plan.meals) && plan.meals.length > 0 && (
               <div className="space-y-3">
@@ -191,13 +217,21 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                       </div>
                       {meal.foods && meal.foods.length > 0 && (
                         <div className="px-5 py-3">
-                          <ul className="space-y-1">
-                            {meal.foods.map((food, fi) => (
-                              <li key={fi} className="text-xs text-[#a8a29e] flex gap-2">
-                                <span className="text-[#3c3835] shrink-0">·</span>
-                                <span>{food}</span>
-                              </li>
-                            ))}
+                          <ul className="space-y-1.5">
+                            {meal.foods.map((food, fi) => {
+                              const f = normalizeFood(food)
+                              return (
+                                <li key={fi} className="text-xs text-[#a8a29e] flex items-start justify-between gap-3">
+                                  <div className="flex items-start gap-2 flex-1 min-w-0">
+                                    <span className="text-[#3c3835] shrink-0">·</span>
+                                    <span>{f.name}</span>
+                                  </div>
+                                  {f.kcal !== null && (
+                                    <span className="text-[#3c3835] tabular-nums shrink-0">{f.kcal} kcal</span>
+                                  )}
+                                </li>
+                              )
+                            })}
                           </ul>
                           {meal.notes && <p className="text-xs text-[#3c3835] mt-2 italic">{meal.notes}</p>}
                         </div>

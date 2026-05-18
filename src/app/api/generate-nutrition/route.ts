@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescriptionInputs } from '@/lib/nutrition-prompt'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clamp'
+import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike } from '@/lib/nutrition-validation'
 
 export const maxDuration = 300
 
@@ -172,30 +173,70 @@ export async function POST(request: NextRequest) {
   const systemPrompt = buildNutritionSystemPrompt() + recoveryPromptSection
   const userPrompt = buildNutritionUserPrompt(inputs, cffsText, intakeText, previousPlans, client.medications)
 
-  let message
-  try {
-    message = await anthropic.messages.create({
+  // One-shot retry on validation failure. The validator catches:
+  //   - per-meal macro / food-sum mismatches
+  //   - daily protein anchor mismatch
+  //   - calorie band not derived from meal totals
+  //   - carb / fat floors vs bodyweight
+  // If the first generation fails any rule, we feed the issues back to the
+  // model as a correction note and try once more. A second failure 422s with
+  // the issues surfaced so the coach can see what went wrong.
+  async function callModel(correctionNote: string): Promise<Record<string, unknown>> {
+    const finalUserPrompt = correctionNote
+      ? `${userPrompt}\n\n═══════════════════════════════════════\nVALIDATION CORRECTION REQUIRED\n═══════════════════════════════════════\nYour previous output was rejected by automatic validation. Issues:\n${correctionNote}\n\nRegenerate the plan correcting every issue above. Recompute every food's macros from the reference table; recompute each meal's protein_g/carb_g/fat_g as the sum of its foods; derive estimated_calorie_band from the meal totals last. Increase portion sizes if necessary to meet the daily floors.`
+      : userPrompt
+    const message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 8000,
       system: systemPrompt,
-      messages: [{ role: 'user', content: userPrompt }],
+      messages: [{ role: 'user', content: finalUserPrompt }],
     })
+    const content = message.content[0]
+    if (content.type !== 'text') throw new Error('Unexpected AI response')
+    const jsonMatch = content.text.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) throw new Error('Could not parse nutrition plan output')
+    return JSON.parse(jsonMatch[0])
+  }
+
+  // Generation + validation loop. The model writes structured foods; we
+  // recompute meal-level macros AND the daily calorie band server-side from
+  // the food macros (Haiku is unreliable at summing). The validator then only
+  // enforces structural rules: foods are structured, protein anchor matches,
+  // sane daily safety floors.
+  function runValidate(p: Record<string, unknown>) {
+    normalizeMealAndDayTotals(p as { meals?: MealLike[]; estimated_calorie_band?: string | null })
+    return validateNutritionPlan({
+      meals: (p.meals as MealLike[]) || [],
+      estimated_calorie_band: (p.estimated_calorie_band as string) || null,
+      protein_anchor_g: Number(p.protein_anchor_g) || resolvedProtein,
+      bodyweight_kg: bodyweightKg,
+      entry_state: String(p.entry_state || entry_state),
+    })
+  }
+
+  let plan: Record<string, unknown>
+  let validation
+  try {
+    plan = await callModel('')
+    validation = runValidate(plan)
+    if (!validation.ok) {
+      console.warn('[generate-nutrition] First-pass validation failed:', validation.issues.map(i => i.code))
+      const correctionNote = validation.issues.map(i => `- ${i.message}`).join('\n')
+      plan = await callModel(correctionNote)
+      validation = runValidate(plan)
+    }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
     return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
   }
 
-  const content = message.content[0]
-  if (content.type !== 'text') return NextResponse.json({ error: 'Unexpected AI response' }, { status: 500 })
-
-  const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) return NextResponse.json({ error: 'Could not parse nutrition plan output' }, { status: 500 })
-
-  let plan: Record<string, unknown>
-  try {
-    plan = JSON.parse(jsonMatch[0])
-  } catch {
-    return NextResponse.json({ error: 'JSON parse failed' }, { status: 500 })
+  if (!validation.ok) {
+    return NextResponse.json({
+      error: 'Generated plan failed validation after one retry',
+      issues: validation.issues,
+      totals: validation.totals,
+      band: validation.band,
+    }, { status: 422 })
   }
 
   // Save as draft

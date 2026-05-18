@@ -6,6 +6,14 @@ import DeleteNutritionPlanButton from './delete-button'
 import NutritionWeeklyReview from './weekly-review'
 import NutritionReadingPanel from './nutrition-reading-panel'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
+import {
+  computeNutritionTotals,
+  computeMealMacros,
+  normalizeFood,
+  parseCalorieBand,
+  kcalFromMacros,
+  type FoodInput,
+} from '@/lib/nutrition-validation'
 
 interface Meal {
   meal_number: number
@@ -14,7 +22,7 @@ interface Meal {
   protein_g: number
   carb_g: number
   fat_g: number
-  foods: string[]
+  foods: FoodInput[]
   notes: string | null
 }
 
@@ -80,6 +88,7 @@ function nutritionNavSections(plan: NutritionPlan) {
     { id: 'identity', title: 'Overview' },
     ...(plan.entry_state_summary ? [{ id: 'current-focus', title: 'Current Focus' }] : []),
     ...(plan.weekly_structure_notes ? [{ id: 'structure', title: 'Structure' }] : []),
+    { id: 'daily-totals', title: 'Daily Totals' },
     { id: 'meals', title: 'Meals' },
     ...(plan.training_day_adjustments ? [{ id: 'adjustments', title: 'Adjustments' }] : []),
     ...(plan.execution_rules?.length ? [{ id: 'execution', title: 'Execution' }] : []),
@@ -213,38 +222,99 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
         )
       })()}
 
+      {/* Daily totals + match readout */}
+      {(() => {
+        const totals = computeNutritionTotals(plan.meals)
+        const band = parseCalorieBand(plan.estimated_calorie_band)
+        const proteinAnchor = plan.protein_anchor_g
+        const proteinDelta = proteinAnchor ? totals.protein_g - proteinAnchor : null
+        const proteinOk = proteinDelta !== null && Math.abs(proteinDelta) <= 5
+        const kcalInBand = band ? totals.kcal >= band.low * 0.95 && totals.kcal <= band.high * 1.05 : null
+        return (
+          <div id={`${idPrefix}daily-totals`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
+              <span className="text-[11px] font-black text-[#10E1C2]">↑</span>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Daily Totals (sum of meals)</p>
+            </div>
+            <div className="px-5 py-4 space-y-3">
+              <div className="flex items-baseline justify-between">
+                <div>
+                  <p className="text-2xl font-bold text-white tabular-nums">{totals.kcal.toLocaleString()} <span className="text-sm font-normal text-stone-500">kcal</span></p>
+                  <p className="text-xs text-stone-500 mt-1 tabular-nums">
+                    {totals.protein_g}g P · {totals.carb_g}g C · {totals.fat_g}g F
+                  </p>
+                </div>
+                <div className="text-right text-xs">
+                  {band ? (
+                    <div className={kcalInBand ? 'text-teal-400' : 'text-red-400'}>
+                      <p className="font-semibold">{kcalInBand ? 'Inside band' : 'Outside band'}</p>
+                      <p className="text-stone-500 mt-0.5 tabular-nums">Target {band.low}–{band.high} kcal</p>
+                    </div>
+                  ) : (
+                    <p className="text-stone-500">No band stated</p>
+                  )}
+                </div>
+              </div>
+              {proteinAnchor > 0 && (
+                <div className="flex items-center justify-between text-xs pt-3 border-t border-stone-800">
+                  <p className="text-stone-500">Protein anchor</p>
+                  <p className={proteinOk ? 'text-teal-400' : 'text-red-400'}>
+                    <span className="tabular-nums">{totals.protein_g}g</span> vs anchor <span className="tabular-nums">{proteinAnchor}g</span>
+                    {proteinDelta !== null && (
+                      <span className="text-stone-500 ml-1">({proteinDelta > 0 ? '+' : ''}{proteinDelta}g)</span>
+                    )}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )
+      })()}
+
       {/* Meals */}
       <div id={`${idPrefix}meals`} className="scroll-mt-8">
         <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 px-1">Meal Structure</p>
         <div className="space-y-3">
-          {plan.meals.map((meal) => (
-            <div key={meal.meal_number} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-              <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between">
-                <div>
-                  <h3 className="font-semibold text-stone-100 text-sm">{meal.meal_name}</h3>
-                  <p className="text-[10px] text-stone-600 mt-0.5">{meal.timing}</p>
+          {plan.meals.map((meal) => {
+            const mealMacros = computeMealMacros(meal)
+            return (
+              <div key={meal.meal_number} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+                <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold text-stone-100 text-sm">{meal.meal_name}</h3>
+                    <p className="text-[10px] text-stone-600 mt-0.5">{meal.timing}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-white tabular-nums">{mealMacros.kcal} kcal</p>
+                    <p className="text-[10px] text-stone-500 mt-0.5 tabular-nums">
+                      {meal.protein_g}g P · {meal.carb_g}g C · {meal.fat_g}g F
+                    </p>
+                  </div>
                 </div>
-                <div className="flex gap-3 text-xs tabular-nums">
-                  <span className="text-stone-300">{meal.protein_g}g P</span>
-                  <span className="text-stone-500">{meal.carb_g}g C</span>
-                  <span className="text-stone-500">{meal.fat_g}g F</span>
+                <div className="px-5 py-4">
+                  <div className="space-y-1.5">
+                    {meal.foods.map((food, i) => {
+                      const f = normalizeFood(food)
+                      return (
+                        <div key={i} className="flex items-start justify-between gap-3">
+                          <div className="flex items-start gap-2 flex-1 min-w-0">
+                            <span className="text-stone-600 mt-0.5 shrink-0">•</span>
+                            <p className="text-sm text-stone-300">{clean(f.name)}</p>
+                          </div>
+                          {f.kcal !== null && (
+                            <span className="text-xs text-stone-500 tabular-nums shrink-0 pt-0.5">{f.kcal} kcal</span>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                  {meal.notes && (
+                    <p className="text-xs text-stone-600 italic mt-2">{clean(meal.notes)}</p>
+                  )}
                 </div>
               </div>
-              <div className="px-5 py-4">
-                <div className="space-y-1.5">
-                  {meal.foods.map((food, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <span className="text-stone-600 mt-0.5">•</span>
-                      <p className="text-sm text-stone-300">{clean(food)}</p>
-                    </div>
-                  ))}
-                </div>
-                {meal.notes && (
-                  <p className="text-xs text-stone-600 italic mt-2">{clean(meal.notes)}</p>
-                )}
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 

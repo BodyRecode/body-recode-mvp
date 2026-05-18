@@ -353,7 +353,27 @@ FINISHING / RAW FATS (drizzled or eaten cold — never cooked):
 - Avocado:                    P 2g,  C 9g,  F 15g (per 100g) → 100g ≈ 15g F
 - Almonds:                    P 21g, C 22g, F 50g (per 100g) → 20g ≈ 10g F + 4g P
 
-REQUIRED: every meal's protein_g / carb_g / fat_g MUST be the SUM of the foods listed for that meal, computed from the table above. Do not invent macros. If your math doesn't reconcile, adjust the food quantities to match the meal target — do not adjust the macros to match foods you've already written.
+REQUIRED — MACRO RECONCILIATION (CRITICAL — auto-validated, plans that fail will be rejected):
+
+Foods are emitted as STRUCTURED OBJECTS, not free-text strings. Every food in every meal must be an object of the shape:
+  { "name": "120g beef mince (raw)", "protein_g": 26, "carb_g": 0, "fat_g": 6 }
+
+Each food's protein_g / carb_g / fat_g must be COMPUTED FROM THE REFERENCE TABLE ABOVE using the quantity in the name. Do not invent macros.
+
+Then every meal's top-level protein_g / carb_g / fat_g MUST EXACTLY EQUAL the sum of its foods' macros (±1g allowed for rounding).
+
+Then the day's calorie band MUST be derived from the meals themselves:
+  daily_kcal = Σ over meals of (protein_g × 4 + carb_g × 4 + fat_g × 9)
+  estimated_calorie_band = "${'${daily_kcal - 100}'}–${'${daily_kcal + 100}'} kcal"
+
+Do NOT pick an aspirational band first and then write meals — write the meals first, then derive the band from their sum. The band is a REPORT of what the meals deliver, not a target chosen separately.
+
+DAILY MACRO TARGETS (design the meals to hit these):
+- Protein: sum of meal protein_g must equal protein_anchor_g ±5g
+- Carbs: sum of meal carb_g must align with carb_demand_level for the client's bodyweight (Stabilisation/Recovery Reset: 2.5–3.5 g/kg, Training Support: 4–5 g/kg, High Output Support: 5–6+ g/kg). For a 70kg client at Stabilisation that is 175–245g daily.
+- Fat: sum of meal fat_g must provide at least 0.9 g/kg bodyweight (essential fat-soluble nutrient floor) — for a 70kg client that is at least 63g daily.
+
+If your meal totals do not hit these targets, INCREASE PORTION SIZES until they do. A 70kg client at Stabilisation eating 1,000 kcal/day is a plan failure, not a conservative prescription.
 
 ═══════════════════════════════════════
 OUTPUT FORMAT — REQUIRED JSON STRUCTURE
@@ -384,7 +404,14 @@ Return ONLY valid JSON. No markdown, no explanation outside the JSON object. Do 
       "protein_g": number,
       "carb_g": number,
       "fat_g": number,
-      "foods": ["string — specific food with quantity in RAW weight (uncooked, before any cooking water loss). Always append '(raw)' to protein-source quantities, e.g. '120g beef mince (raw)', '180g chicken breast (raw)', '150g salmon (raw)'. Eggs by count: '3 whole eggs'. Carbs by raw/dry weight: '60g oats (dry)', '80g rice (dry)'. Fats by literal serving: '20g almonds', '15g olive oil'."],
+      "foods": [
+        {
+          "name": "string — quantity + food in RAW weight, e.g. '120g beef mince (raw)', '180g chicken breast (raw)', '3 whole eggs', '80g rice (dry)', '200g white potato (raw)', '15g olive oil'",
+          "protein_g": number,
+          "carb_g": number,
+          "fat_g": number
+        }
+      ],
       "notes": "string or null"
     }
   ],
@@ -413,8 +440,12 @@ Return ONLY valid JSON. No markdown, no explanation outside the JSON object. Do 
   "coach_reasoning": "string — 3–5 sentences explaining why this structure was chosen given the entry state and client context"
 }
 
-VALIDATION RULES BEFORE OUTPUT:
-- protein_anchor_g must be present and consistent across all meals (sum of meal protein_g = protein_anchor_g ±5g)
+VALIDATION RULES BEFORE OUTPUT (auto-checked — plans that fail any rule are rejected):
+- Every food is a structured object with name + protein_g + carb_g + fat_g — never a bare string
+- For each meal: meal.protein_g === Σ(food.protein_g) ±1g; same for carb_g and fat_g
+- protein_anchor_g must be present and consistent across all meals (Σ meal.protein_g = protein_anchor_g ±5g)
+- estimated_calorie_band must be derived from the meal totals: low = Σkcal − 100, high = Σkcal + 100 (where Σkcal = Σ(protein_g·4 + carb_g·4 + fat_g·9))
+- Daily macro floors must be met: Σ carb_g ≥ bodyweight × 2.5 (Stabilisation/Recovery Reset); Σ fat_g ≥ bodyweight × 0.9
 - modulation_level must match entry state: Stabilisation/Recovery Reset → prohibited, Training Support → restricted, High Output Support → permitted
 - carb_demand_level must respect entry state ceiling
 - active_strategies must be empty array if modulation_level is prohibited
