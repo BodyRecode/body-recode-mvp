@@ -270,7 +270,7 @@ const MANUAL_AUTOMATIONS = [
   {
     id: 'weekly-checkin-feedback',
     name: 'Weekly Check-In Coach Feedback',
-    description: 'Saves a 3-field response (Interpretation, optional Reframe, This week hold this) on a weekly check-in and emails the client. Feedback also appears under the check-in in their portal. BCCs the coach. Re-saving overwrites the prior response and re-sends.',
+    description: 'Saves a 3-field response (Interpretation, optional Reframe, This week hold this) on a weekly check-in and emails the client. Click Generate response to have Claude draft all three fields from the check-in + synthesis + prior check-ins + active program (you review and approve before anything sends). Feedback also appears under the check-in in their portal. BCCs the coach. Re-saving overwrites the prior response and re-sends.',
     trigger: 'Click "Save and email client" on /dashboard/clients/[id]/checkins/[week]/[form]',
     steps: 1,
   },
