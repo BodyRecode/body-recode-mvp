@@ -27,7 +27,7 @@ export default async function CheckInDetailPage({
 
   const { data: checkin } = await admin
     .from('weekly_checkins')
-    .select('id, responses, submitted_at')
+    .select('id, responses, submitted_at, coach_skipped_at, coach_skip_reason')
     .eq('client_id', id)
     .eq('week_number', weekNumber)
     .eq('form_type', formType)
@@ -81,6 +81,8 @@ export default async function CheckInDetailPage({
             checkinId={checkin.id}
             existing={feedback ?? null}
             clientFirstName={client.name?.split(' ')[0] ?? 'your client'}
+            skippedAt={checkin.coach_skipped_at ?? null}
+            skipReason={checkin.coach_skip_reason ?? null}
           />
 
           {sections.map(section => {

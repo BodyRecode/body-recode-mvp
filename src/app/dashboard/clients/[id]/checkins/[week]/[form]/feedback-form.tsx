@@ -26,15 +26,21 @@ export default function CheckinFeedbackForm({
   checkinId,
   existing: existingFromServer,
   clientFirstName,
+  skippedAt: skippedAtFromServer,
+  skipReason: skipReasonFromServer,
 }: {
   checkinId: string
   existing: ExistingFeedback | null
   clientFirstName: string
+  skippedAt: string | null
+  skipReason: string | null
 }) {
   const router = useRouter()
   // Local copy of the saved feedback so we can flip back to view mode without
   // a router round-trip on save. Server stays the source of truth on reload.
   const [existing, setExisting] = useState<ExistingFeedback | null>(existingFromServer)
+  const [skippedAt, setSkippedAt] = useState<string | null>(skippedAtFromServer)
+  const [skipReason, setSkipReason] = useState<string | null>(skipReasonFromServer)
   const [mode, setMode] = useState<'view' | 'edit'>(existingFromServer ? 'view' : 'edit')
 
   const [interpretation, setInterpretation] = useState(existingFromServer?.interpretation ?? '')
@@ -42,8 +48,54 @@ export default function CheckinFeedbackForm({
   const [nextFocus, setNextFocus] = useState(existingFromServer?.next_focus ?? '')
   const [pending, startTransition] = useTransition()
   const [generating, setGenerating] = useState(false)
+  const [skipping, setSkipping] = useState(false)
   const [status, setStatus] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  async function skip() {
+    setError(null); setStatus(null)
+    const reason = prompt(`Mark this check-in as skipped (no coach response needed)? Optional note for your own records:`)
+    if (reason === null) return // cancelled
+    setSkipping(true)
+    try {
+      const res = await fetch(`/api/weekly-checkins/${checkinId}/skip`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'skip', reason: reason.trim() || null }),
+      })
+      const json = await res.json()
+      if (!res.ok) { setError(json.error ?? 'Skip failed'); return }
+      setSkippedAt(json.checkin?.coach_skipped_at ?? new Date().toISOString())
+      setSkipReason(json.checkin?.coach_skip_reason ?? null)
+      setStatus('Check-in marked as skipped. It will not appear as a pending action.')
+      router.refresh()
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setSkipping(false)
+    }
+  }
+
+  async function unskip() {
+    setError(null); setStatus(null); setSkipping(true)
+    try {
+      const res = await fetch(`/api/weekly-checkins/${checkinId}/skip`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'unskip' }),
+      })
+      const json = await res.json()
+      if (!res.ok) { setError(json.error ?? 'Unskip failed'); return }
+      setSkippedAt(null)
+      setSkipReason(null)
+      setStatus('Skip cleared. This check-in will appear as pending again if it has no response.')
+      router.refresh()
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setSkipping(false)
+    }
+  }
 
   async function generateDraft() {
     setError(null)
@@ -117,6 +169,47 @@ export default function CheckinFeedbackForm({
       setMode('view')
       router.refresh()
     })
+  }
+
+  // ── SKIPPED + NO FEEDBACK ─────────────────────────────────────────────
+  // If the coach has skipped this check-in and there's no feedback row,
+  // render a small "Skipped" card with an Unskip control. If they want to
+  // write feedback retroactively, they unskip first then the form appears.
+  if (skippedAt && !existing) {
+    return (
+      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+        <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-3 flex-wrap">
+            <p className="text-xs font-bold uppercase tracking-widest text-stone-400">Coach response</p>
+            <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-[#1c1917] border border-[#292524] text-stone-400">
+              Skipped {new Date(skippedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={unskip}
+            disabled={skipping}
+            className="text-xs font-bold text-teal-300 hover:text-teal-200 transition-colors disabled:opacity-50"
+          >
+            {skipping ? 'Working…' : 'Unskip and write response →'}
+          </button>
+        </div>
+        <div className="px-5 py-5">
+          <p className="text-sm text-stone-300 leading-relaxed">
+            You marked this check-in as not needing a coach response.
+            {clientFirstName} sees no Coach response card on their portal for this check-in.
+          </p>
+          {skipReason && (
+            <div className="mt-3 rounded-lg bg-[#0c0a09] border border-stone-800 p-3">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1">Your note</p>
+              <p className="text-xs text-stone-300 whitespace-pre-wrap leading-relaxed">{skipReason}</p>
+            </div>
+          )}
+        </div>
+        {error && <p className="px-5 pb-4 text-xs text-red-400">{error}</p>}
+        {status && <p className="px-5 pb-4 text-xs text-teal-400">{status}</p>}
+      </div>
+    )
   }
 
   // ── VIEW MODE ───────────────────────────────────────────────────────────
@@ -257,6 +350,16 @@ export default function CheckinFeedbackForm({
         >
           Save without sending
         </button>
+        {!existing && !skippedAt && (
+          <button
+            type="button"
+            disabled={skipping}
+            onClick={skip}
+            className="ml-auto text-xs font-medium text-stone-500 hover:text-stone-300 transition-colors disabled:opacity-50"
+          >
+            {skipping ? 'Working…' : 'Skip without responding'}
+          </button>
+        )}
       </div>
     </div>
   )

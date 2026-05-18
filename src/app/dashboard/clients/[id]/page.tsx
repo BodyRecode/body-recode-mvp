@@ -78,7 +78,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .limit(4),
     admin
       .from('weekly_checkins')
-      .select('id, week_number, form_type, submitted_at')
+      .select('id, week_number, form_type, submitted_at, coach_skipped_at')
       .eq('client_id', id)
       .order('week_number', { ascending: false }),
     admin
@@ -251,9 +251,19 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const frPublished = !!activeCffs?.client_reading_published_at
   const cffsActionRequired = !activeCffs || !frPublished
   const baselineActionRequired = !latestBaseline
-  // Weekly Check-In opens if a submitted check-in has no coach response yet.
-  const anyUnansweredCheckin = (recentCheckins ?? []).some(ci => ci.id && !feedbackByCheckinId.has(ci.id))
-  const cfwsActionRequired = anyUnansweredCheckin || (!!latestCompleteWeek && (!latestCfws || latestCfws.week_number < latestCompleteWeek))
+  // Weekly Check-In opens if the LATEST submitted check-in has no coach
+  // response AND was not marked Skipped by the coach. Older check-ins are
+  // ignored — see also Today's Focus, same rule applies there. Skip is an
+  // explicit per-check-in override.
+  const latestCheckin = (recentCheckins ?? [])
+    .slice()
+    .sort((a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())[0] ?? null
+  const latestCheckinNeedsResponse =
+    !!latestCheckin &&
+    !!latestCheckin.id &&
+    !feedbackByCheckinId.has(latestCheckin.id) &&
+    !latestCheckin.coach_skipped_at
+  const cfwsActionRequired = latestCheckinNeedsResponse || (!!latestCompleteWeek && (!latestCfws || latestCfws.week_number < latestCompleteWeek))
   const trainingActionRequired = !activeProgram || !!draftProgram
   const nutritionActionRequired = !activeNutritionPlan || !!draftNutritionPlan
   // Payments signal isn't pre-fetched at this scope — leave closed by
@@ -1071,7 +1081,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         title="Weekly Synthesis"
         subtitle="- CFWS"
         defaultOpen={cfwsActionRequired}
-        attentionLabel={anyUnansweredCheckin ? 'Unanswered check-in' : (cfwsActionRequired ? 'New CFWS ready to generate' : null)}
+        attentionLabel={latestCheckinNeedsResponse ? 'Latest check-in needs response' : (cfwsActionRequired ? 'New CFWS ready to generate' : null)}
         actionRight={
           checkinToken
             ? <CopyLinkButton token={checkinToken} label="Copy check-in link" path="/checkin" />
@@ -1183,6 +1193,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               {recentCheckins.slice(0, 8).map((ci, i) => {
                 const fb = ci.id ? feedbackByCheckinId.get(ci.id) : undefined
                 const sent = !!fb?.email_sent_at
+                const skipped = !!ci.coach_skipped_at && !fb
                 return (
                   <Link
                     key={i}
@@ -1194,6 +1205,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       {fb && (
                         <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-teal-500/10 border border-teal-500/30 text-teal-300' : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'}`}>
                           {sent ? 'Response sent' : 'Draft'}
+                        </span>
+                      )}
+                      {skipped && (
+                        <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-[#1c1917] border border-[#292524] text-[#a8a29e]">
+                          Skipped
                         </span>
                       )}
                     </div>

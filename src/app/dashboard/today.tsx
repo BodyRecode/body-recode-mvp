@@ -79,7 +79,7 @@ export default async function TodayWidget() {
     admin
       .from('cfws')
       .select('client_id, week_number, generated_at, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, reassessment_language_triggered, is_archived'),
-    admin.from('weekly_checkins').select('id, client_id, week_number, form_type, submitted_at'),
+    admin.from('weekly_checkins').select('id, client_id, week_number, form_type, submitted_at, coach_skipped_at'),
     admin
       .from('client_feedback')
       .select('client_id')
@@ -205,22 +205,23 @@ export default async function TodayWidget() {
       ? clientCheckins.some((ci) => ci.week_number === currentWeekNumber)
       : false
 
-    // Most recent check-in without coach feedback. Days-since drives the
-    // accent (teal up to 2 days old, amber from day 3 on).
+    // ONLY the latest check-in is considered. Older un-responded check-ins
+    // do not generate Today's Focus rows — a per-check-in Skip exists for
+    // explicit coach control if needed. Days-since drives the accent
+    // (teal up to 2 days old, amber from day 3 on).
     let unansweredCheckin: ClientNextActionInput['unansweredCheckin'] = null
-    const unansweredSorted = [...clientCheckins]
-      .filter(ci => !checkinIdsAnswered.has(ci.id))
-      .sort((a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())
-    if (unansweredSorted.length > 0) {
-      const ci = unansweredSorted[0]
+    const latest = [...clientCheckins].sort(
+      (a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime()
+    )[0]
+    if (latest && !checkinIdsAnswered.has(latest.id) && !latest.coach_skipped_at) {
       const daysSince = Math.max(
         0,
-        Math.floor((today.getTime() - new Date(ci.submitted_at).getTime()) / 86400000)
+        Math.floor((today.getTime() - new Date(latest.submitted_at).getTime()) / 86400000)
       )
       unansweredCheckin = {
-        weekNumber: ci.week_number,
-        formType: ci.form_type as 'A' | 'B',
-        submittedAt: ci.submitted_at,
+        weekNumber: latest.week_number,
+        formType: latest.form_type as 'A' | 'B',
+        submittedAt: latest.submitted_at,
         daysSince,
       }
     }
