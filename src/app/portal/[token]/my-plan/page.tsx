@@ -209,6 +209,10 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                 <p className="text-xs font-bold text-[#57534e] uppercase tracking-widest">Meals</p>
                 {(plan.meals as Meal[]).map((meal, i) => {
                   const totalCals = Math.round(meal.protein_g * 4 + meal.carb_g * 4 + meal.fat_g * 9)
+                  const denom = totalCals || 1
+                  const pp = Math.round((meal.protein_g * 4 / denom) * 100)
+                  const cp = Math.round((meal.carb_g * 4 / denom) * 100)
+                  const fp = 100 - pp - cp
                   return (
                     <div key={i} className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden">
                       <div className="px-5 py-3 border-b border-[#1c1917]">
@@ -233,6 +237,9 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                             <p className="text-xs text-[#3c3835]">Fat</p>
                           </div>
                         </div>
+                        <p className="text-[10px] text-[#57534e] text-center mt-2 tabular-nums uppercase tracking-wider">
+                          P {pp}% · C {cp}% · F {fp}%
+                        </p>
                       </div>
                       {meal.foods && meal.foods.length > 0 && (
                         <div className="px-5 py-3">

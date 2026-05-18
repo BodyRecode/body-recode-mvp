@@ -296,6 +296,10 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
         <div className="space-y-3">
           {plan.meals.map((meal) => {
             const mealMacros = computeMealMacros(meal)
+            const denom = mealMacros.kcal || 1
+            const pp = Math.round((meal.protein_g * 4 / denom) * 100)
+            const cp = Math.round((meal.carb_g * 4 / denom) * 100)
+            const fp = 100 - pp - cp
             return (
               <div key={meal.meal_number} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
                 <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between">
@@ -307,6 +311,9 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
                     <p className="text-sm font-semibold text-white tabular-nums">{mealMacros.kcal} kcal</p>
                     <p className="text-[10px] text-stone-500 mt-0.5 tabular-nums">
                       {meal.protein_g}g P · {meal.carb_g}g C · {meal.fat_g}g F
+                    </p>
+                    <p className="text-[10px] text-stone-600 mt-0.5 tabular-nums uppercase tracking-wider">
+                      P {pp}% · C {cp}% · F {fp}%
                     </p>
                   </div>
                 </div>
