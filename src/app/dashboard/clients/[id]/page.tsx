@@ -261,6 +261,26 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // canceled flags inline once opened.
   const paymentsActionRequired = false
 
+  // Medications: open if there's an action for the coach.
+  const hasMedsText = !!(client.medications && (client.medications as string).trim())
+  const medsAnalysis = client.medications_analysis ?? null
+  const medsReading = client.medications_reading ?? null
+  const medsAnalyzedAt = client.medications_analyzed_at ?? null
+  const medsReadingAt = client.medications_reading_generated_at ?? null
+  const medsPublishedAt = client.medications_reading_published_at ?? null
+  const medsUpdatedAt = client.medications_updated_at ?? null
+  const analysisStale = !!medsUpdatedAt && !!medsAnalyzedAt && new Date(medsUpdatedAt) > new Date(medsAnalyzedAt)
+  const readingStale =
+    (!!medsAnalyzedAt && !!medsReadingAt && new Date(medsAnalyzedAt) > new Date(medsReadingAt)) ||
+    (!!medsUpdatedAt && !!medsReadingAt && new Date(medsUpdatedAt) > new Date(medsReadingAt))
+  let medsAttention: string | null = null
+  if (hasMedsText && !medsAnalysis) medsAttention = 'Analysis not generated'
+  else if (analysisStale) medsAttention = 'Analysis rebuild recommended'
+  else if (medsAnalysis && !medsReading) medsAttention = 'Reading not generated'
+  else if (readingStale) medsAttention = 'Reading rebuild recommended'
+  else if (medsReading && !medsPublishedAt) medsAttention = 'Reading not published'
+  const medicationsActionRequired = !!medsAttention
+
   return (
     <div className="flex gap-8 max-w-5xl">
       <ProfileSidebar clientId={id} />
@@ -605,25 +625,32 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
 
-      <MedicationsEditor
-        clientId={client.id}
-        initialValue={client.medications ?? null}
-        updatedAt={client.medications_updated_at ?? null}
-        activeProgramGeneratedAt={activeProgram?.generated_at ?? null}
-        activeNutritionGeneratedAt={activeNutritionPlan?.generated_at ?? null}
-      />
+      <MajorSection
+        id="medications"
+        title="Medications"
+        defaultOpen={medicationsActionRequired}
+        attentionLabel={medsAttention}
+      >
+        <MedicationsEditor
+          clientId={client.id}
+          initialValue={client.medications ?? null}
+          updatedAt={client.medications_updated_at ?? null}
+          activeProgramGeneratedAt={activeProgram?.generated_at ?? null}
+          activeNutritionGeneratedAt={activeNutritionPlan?.generated_at ?? null}
+        />
 
-      <MedicationsAnalysisPanel
-        clientId={client.id}
-        clientFirstName={client.name?.split(' ')[0] ?? 'client'}
-        medicationsText={client.medications ?? null}
-        medicationsUpdatedAt={client.medications_updated_at ?? null}
-        analysis={(client.medications_analysis as null | { medications: Array<{ name: string; purpose: string; client_influence: string; program_influence: string; nutrition_influence: string; recovery_influence: string }>; combined_picture: string }) ?? null}
-        analyzedAt={client.medications_analyzed_at ?? null}
-        reading={(client.medications_reading as null | { mr_what_youre_taking: string; mr_why_it_matters: string; mr_how_we_account_for_it: string; mr_what_to_watch: string }) ?? null}
-        readingGeneratedAt={client.medications_reading_generated_at ?? null}
-        readingPublishedAt={client.medications_reading_published_at ?? null}
-      />
+        <MedicationsAnalysisPanel
+          clientId={client.id}
+          clientFirstName={client.name?.split(' ')[0] ?? 'client'}
+          medicationsText={client.medications ?? null}
+          medicationsUpdatedAt={client.medications_updated_at ?? null}
+          analysis={(client.medications_analysis as null | { medications: Array<{ name: string; purpose: string; client_influence: string; program_influence: string; nutrition_influence: string; recovery_influence: string }>; combined_picture: string }) ?? null}
+          analyzedAt={client.medications_analyzed_at ?? null}
+          reading={(client.medications_reading as null | { mr_what_youre_taking: string; mr_why_it_matters: string; mr_how_we_account_for_it: string; mr_what_to_watch: string }) ?? null}
+          readingGeneratedAt={client.medications_reading_generated_at ?? null}
+          readingPublishedAt={client.medications_reading_published_at ?? null}
+        />
+      </MajorSection>
 
       <MajorSection
         id="cffs"
