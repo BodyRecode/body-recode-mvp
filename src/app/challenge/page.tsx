@@ -3,14 +3,14 @@
 import { useState, useRef } from 'react'
 
 function SignupForm({ position, teal }: { position: string; teal?: boolean }) {
-  const [form, setForm] = useState({ first_name: '', email: '', phone: '' })
+  const [form, setForm] = useState({ first_name: '', email: '', phone: '', gender: '' })
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
-    if (!form.first_name.trim() || !form.email.trim() || !form.phone.trim()) return
+    if (!form.first_name.trim() || !form.email.trim() || !form.phone.trim() || !form.gender) return
     setSubmitting(true)
     setError(null)
     try {
@@ -96,12 +96,32 @@ function SignupForm({ position, teal }: { position: string; teal?: boolean }) {
         required
         style={inputStyle}
       />
+      <select
+        value={form.gender}
+        onChange={e => setForm(f => ({ ...f, gender: e.target.value }))}
+        required
+        style={{
+          ...inputStyle,
+          color: form.gender ? '#1c1917' : '#a8a29e',
+          appearance: 'none',
+          backgroundImage: 'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2378716c\' stroke-width=\'3\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><polyline points=\'6 9 12 15 18 9\'/></svg>")',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'right 16px center',
+          backgroundSize: '12px',
+          paddingRight: '40px',
+        }}
+      >
+        <option value="" disabled>Biological sex (required for accurate pattern read)</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="prefer_not_to_say">Prefer not to say</option>
+      </select>
       {error && (
         <p style={{ fontSize: '13px', color: '#dc2626', margin: 0 }}>{error}</p>
       )}
       <button
         type="submit"
-        disabled={submitting || !form.first_name.trim() || !form.email.trim() || !form.phone.trim()}
+        disabled={submitting || !form.first_name.trim() || !form.email.trim() || !form.phone.trim() || !form.gender}
         style={{
           width: '100%', padding: '17px', borderRadius: '10px', border: 'none',
           background: submitting ? 'rgba(20,184,166,0.6)' : '#14b8a6',

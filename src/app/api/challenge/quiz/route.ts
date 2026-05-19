@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { pickPatternSlug, type Gender, type QuizAnswer } from '@/lib/pattern-mapping'
 
 const PATTERNS: Record<string, { label: string; desc: string; color: string; actions: string[] }> = {
-  a: {
+  'stress-stored': {
     label: 'Stress-Stored Pattern',
     color: '#ef4444',
     desc: 'Your body is storing and retaining in response to a chronic stress load. Cortisol and adrenaline are keeping your system in a state of low-grade alert, which signals your body to hold fat around the midsection as an energy reserve. The reset you have done this week is directly targeting this. The full picture requires understanding exactly how your stress hormones are behaving across the day.',
@@ -14,7 +15,7 @@ const PATTERNS: Record<string, { label: string; desc: string; color: string; act
       'Eat breakfast within 60 minutes of waking. This supports your morning cortisol curve and begins the process of hormonal regulation for the day.',
     ],
   },
-  b: {
+  'metabolic-drift': {
     label: 'Insulin-Drift Pattern',
     color: '#f59e0b',
     desc: 'Your body\'s ability to manage blood sugar has drifted. Insulin is staying elevated longer than it should, which drives energy crashes, persistent cravings, and the heaviness you feel after meals. Common in former athletes whose training response has changed but whose fuelling strategy has not adjusted. The nutrition structure you have been following this week is designed specifically for this. Restricting starchy carbohydrates to the post-training window forces your body to rebuild insulin sensitivity over time.',
@@ -24,7 +25,7 @@ const PATTERNS: Record<string, { label: string; desc: string; color: string; act
       'Keep starchy carbohydrates strictly to the post-training window. Fruit is fine throughout the day. It metabolises differently to refined carbohydrates.',
     ],
   },
-  c: {
+  'hormonal-shift': {
     label: 'Estrogen-Shift Pattern',
     color: '#8b5cf6',
     desc: 'Your body is in an oestrogen-driven conservation state. Storing and retaining as a protective mechanism driven by reproductive hormone signalling. Commonly associated with perimenopause, post-hormonal contraceptive adjustment, and states of chronic under-eating. One of the most common patterns and one of the most mismanaged. Typically treated with more restriction, which makes it worse.',
@@ -34,7 +35,7 @@ const PATTERNS: Record<string, { label: string; desc: string; color: string; act
       'Be consistent with meal timing. Irregular eating disrupts the hormonal signals your body uses to decide whether to conserve or release stored energy.',
     ],
   },
-  d: {
+  'system-overload': {
     label: 'Androgen-Decline Pattern',
     color: '#14b8a6',
     desc: 'Your body is in a state of declining androgen function. Testosterone is no longer signalling muscle maintenance and recovery the way it once did. The result is reduced drive, slower recovery, and a sense that capacity is slipping despite consistent effort. Commonly presenting in men from their mid-thirties onward, and frequently missed or attributed to ageing as a fixed variable rather than a manageable hormonal state. Progress requires reducing total system demand and rebuilding the inputs that support testosterone signalling.',
@@ -89,11 +90,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 })
   }
 
+  // The portal submits result as the Q2 answer letter ('a'|'b'|'c'|'d').
+  // Compute the gender-keyed canonical pattern slug from (gender, answer).
+  const answerLetter = (['a', 'b', 'c', 'd'].includes(result) ? result : 'a') as QuizAnswer
+
   const admin = createAdminClient()
 
   const { data: enrollment, error: fetchError } = await admin
     .from('challenge_enrollments')
-    .select('id, leads(name, email)')
+    .select('id, leads(name, email, gender)')
     .eq('token', token)
     .eq('status', 'active')
     .single()
@@ -102,11 +107,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Enrollment not found.' }, { status: 404 })
   }
 
+  const leadRecord = Array.isArray(enrollment.leads) ? enrollment.leads[0] : enrollment.leads
+  const gender = (leadRecord?.gender ?? null) as Gender
+  const patternSlug = pickPatternSlug(answerLetter, gender)
+
   const { error: updateError } = await admin
     .from('challenge_enrollments')
     .update({
       quiz_completed_at: new Date().toISOString(),
-      quiz_result: result,
+      quiz_result: patternSlug,
       quiz_answers: answers,
     })
     .eq('id', enrollment.id)
@@ -121,12 +130,11 @@ export async function POST(request: NextRequest) {
     .filter(([key, val]) => !key.startsWith('sq') && val === 'better')
     .length
 
-  const lead = Array.isArray(enrollment.leads) ? enrollment.leads[0] : enrollment.leads
-  const firstName = lead?.name?.split(' ')[0] ?? 'there'
-  const email = lead?.email
+  const firstName = leadRecord?.name?.split(' ')[0] ?? 'there'
+  const email = leadRecord?.email
 
-  if (email && PATTERNS[result]) {
-    const p = PATTERNS[result]
+  if (email && PATTERNS[patternSlug]) {
+    const p = PATTERNS[patternSlug]
     try {
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
@@ -172,7 +180,7 @@ export async function POST(request: NextRequest) {
 
           <div style="background:#0d2d29;border:1px solid rgba(20,184,166,0.2);border-radius:12px;padding:20px 24px;margin:24px 0;">
             <p style="font-size:14px;color:#99d6d0;line-height:1.7;margin:0 0 16px;">
-              This is the beginning. The full picture — your complete biological map, your specific hormone drivers, and what is structurally driving your pattern — comes through the Body State Scorecard.
+              This is the beginning. The full picture, your complete biological map, your specific hormone drivers, and what is structurally driving your pattern, comes through the Body State Scorecard.
             </p>
             <a href="https://bodyrecode.au/scorecard" style="display:inline-block;padding:12px 22px;border-radius:8px;background:#14b8a6;color:#0c0a09;font-size:13px;font-weight:700;text-decoration:none;">
               Take the Full Body State Scorecard
@@ -187,5 +195,5 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  return NextResponse.json({ success: true })
+  return NextResponse.json({ success: true, pattern: patternSlug })
 }

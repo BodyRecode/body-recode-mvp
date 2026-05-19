@@ -12,10 +12,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 })
   }
 
-  const { first_name, email, phone } = body as { first_name: string; email: string; phone: string }
+  const { first_name, email, phone, gender } = body as {
+    first_name: string
+    email: string
+    phone: string
+    gender?: string
+  }
 
   if (!first_name?.trim() || !email?.trim() || !phone?.trim()) {
     return NextResponse.json({ error: 'Name, email and mobile number are required.' }, { status: 400 })
+  }
+
+  const validGender = gender && ['male', 'female', 'prefer_not_to_say'].includes(gender)
+    ? gender
+    : null
+
+  if (!validGender) {
+    return NextResponse.json({ error: 'Biological sex is required for accurate pattern assignment.' }, { status: 400 })
   }
 
   const admin = createAdminClient()
@@ -30,8 +43,8 @@ export async function POST(request: NextRequest) {
 
   if (existingRows && existingRows.length > 0) {
     leadId = existingRows[0].id
-    // Update phone if provided
-    await admin.from('leads').update({ phone: phone.trim() }).eq('id', leadId)
+    // Update phone + gender (overwrite if previously unset or different)
+    await admin.from('leads').update({ phone: phone.trim(), gender: validGender }).eq('id', leadId)
   } else {
     const { data: newLead, error: leadError } = await admin
       .from('leads')
@@ -39,6 +52,7 @@ export async function POST(request: NextRequest) {
         name: first_name.trim(),
         email: email.toLowerCase().trim(),
         phone: phone.trim(),
+        gender: validGender,
         source: 'other',
         source_detail: '14-day-body-decode-challenge',
         status: 'new_check_in',

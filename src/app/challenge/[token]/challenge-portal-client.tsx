@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { legacyLetterToSlug } from '@/lib/pattern-mapping'
 
 const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
   1: {
@@ -141,7 +142,7 @@ const SIGNAL_QUESTIONS = [
 ]
 
 const CHECKIN_PATTERNS: Record<string, { label: string; color: string; desc: string; actions: string[] }> = {
-  a: {
+  'stress-stored': {
     label: 'Stress-Stored Pattern',
     color: '#ef4444',
     desc: 'Your body is storing and retaining in response to a chronic stress load. Cortisol and adrenaline are keeping your system in a state of low-grade alert, which signals your body to hold fat around the midsection as an energy reserve. The reset you have done this week is directly targeting this. The full picture requires understanding exactly how your stress hormones are behaving across the day.',
@@ -151,7 +152,7 @@ const CHECKIN_PATTERNS: Record<string, { label: string; color: string; desc: str
       'Eat breakfast within 60 minutes of waking. This supports your morning cortisol curve and begins the process of hormonal regulation for the day.',
     ],
   },
-  b: {
+  'metabolic-drift': {
     label: 'Insulin-Drift Pattern',
     color: '#f59e0b',
     desc: 'Your body\'s ability to manage blood sugar has drifted. Insulin is staying elevated longer than it should, which drives energy crashes, persistent cravings, and the heaviness you feel after meals. Common in former athletes whose training response has changed but whose fuelling strategy has not adjusted. The nutrition structure you have been following this week is designed specifically for this. Restricting starchy carbohydrates to the post-training window forces your body to rebuild insulin sensitivity over time.',
@@ -161,7 +162,7 @@ const CHECKIN_PATTERNS: Record<string, { label: string; color: string; desc: str
       'Keep starchy carbohydrates strictly to the post-training window. Fruit is fine throughout the day. It metabolises differently to refined carbohydrates.',
     ],
   },
-  c: {
+  'hormonal-shift': {
     label: 'Estrogen-Shift Pattern',
     color: '#8b5cf6',
     desc: 'Your body is in an oestrogen-driven conservation state. Storing and retaining as a protective mechanism driven by reproductive hormone signalling. Commonly associated with perimenopause, post-hormonal contraceptive adjustment, and states of chronic under-eating. One of the most common patterns and one of the most mismanaged. Typically treated with more restriction, which makes it worse.',
@@ -171,7 +172,7 @@ const CHECKIN_PATTERNS: Record<string, { label: string; color: string; desc: str
       'Be consistent with meal timing. Irregular eating disrupts the hormonal signals your body uses to decide whether to conserve or release stored energy.',
     ],
   },
-  d: {
+  'system-overload': {
     label: 'Androgen-Decline Pattern',
     color: '#14b8a6',
     desc: 'Your body is in a state of declining androgen function. Testosterone is no longer signalling muscle maintenance and recovery the way it once did. The result is reduced drive, slower recovery, and a sense that capacity is slipping despite consistent effort. Commonly presenting in men from their mid-thirties onward, and frequently missed or attributed to ageing as a fixed variable rather than a manageable hormonal state. Progress requires reducing total system demand and rebuilding the inputs that support testosterone signalling.',
@@ -341,10 +342,12 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
 }
 
 function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult: string | null }) {
-  const [step, setStep] = useState<'progress' | 'signal' | 'result'>(savedResult ? 'result' : 'progress')
+  // Translate any legacy letter quiz_result ('a'-'d') to canonical slug for rendering.
+  const initialResultKey = savedResult ? legacyLetterToSlug(savedResult) : null
+  const [step, setStep] = useState<'progress' | 'signal' | 'result'>(initialResultKey ? 'result' : 'progress')
   const [progress, setProgress] = useState<Record<string, string>>({})
   const [signals, setSignals] = useState<Record<string, string>>({})
-  const [resultKey, setResultKey] = useState<string | null>(savedResult)
+  const [resultKey, setResultKey] = useState<string | null>(initialResultKey)
   const [submitting, setSubmitting] = useState(false)
 
   const allProgressDone = PROGRESS_MARKERS.every(m => progress[m.id])
@@ -354,18 +357,22 @@ function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult:
   async function handleSubmit() {
     if (!allSignalsDone || submitting) return
     setSubmitting(true)
-    const result = signals['sq2'] // Q2 is primary determinant
+    const result = signals['sq2'] // Q2 letter, gender-keyed by API
     const answers = { ...progress, ...signals }
+    // Optimistic: fall back to letter mapping if the API doesn't return a slug.
+    let resolvedPattern = legacyLetterToSlug(result)
     try {
-      await fetch('/api/challenge/quiz', {
+      const res = await fetch('/api/challenge/quiz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token, result, answers }),
       })
+      const data = await res.json().catch(() => null)
+      if (data?.pattern) resolvedPattern = data.pattern
     } catch {
       // still show result even if save fails
     }
-    setResultKey(result)
+    setResultKey(resolvedPattern)
     setStep('result')
     setSubmitting(false)
   }
