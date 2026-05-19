@@ -252,12 +252,37 @@ export default function ChallengePage() {
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '8px',
             background: 'rgba(27, 109, 252,0.1)', border: '1px solid rgba(27, 109, 252,0.25)',
-            borderRadius: '99px', padding: '7px 16px', marginBottom: '32px',
+            borderRadius: '99px', padding: '7px 16px', marginBottom: '20px',
           }}>
             <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#1B6DFC' }} />
             <span style={{ fontSize: '12px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               Free 14-Day Challenge
             </span>
+          </div>
+
+          {/* Founder byline */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '12px',
+            marginBottom: '28px',
+          }}>
+            <img
+              src="/kade.jpg"
+              alt="Kade Dunstone"
+              style={{
+                width: '40px', height: '40px', borderRadius: '50%',
+                objectFit: 'cover', objectPosition: 'top center',
+                border: '1px solid #E5E5E5',
+                flexShrink: 0,
+              }}
+            />
+            <div>
+              <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
+                Built by Kade Dunstone
+              </p>
+              <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.3 }}>
+                Exercise Scientist · Body Recode Founder · Brisbane
+              </p>
+            </div>
           </div>
 
           {/* Headline */}
