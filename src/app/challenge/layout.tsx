@@ -1,28 +1,21 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: '14-Day Body Decode Challenge — Free',
-  description: 'A structured 14-day reset to lower biological noise, stabilise your energy, and let your body start responding again. Free. Instant access.',
+  title: "The 14-Day Body Decode. Free.",
+  description: "You're training. You're eating clean. The fat won't move. The 14-Day Body Decode reads your body first. By Day 14 you know which of four patterns is holding it, and exactly what to do next. Free.",
   openGraph: {
-    title: '14-Day Body Decode Challenge — Free',
-    description: 'A structured 14-day reset to lower biological noise, stabilise your energy, and let your body start responding again.',
-    url: 'https://app.bodyrecode.au/challenge',
+    title: "The 14-Day Body Decode. Free.",
+    description: "You're training. You're eating clean. The fat won't move. The 14-Day Body Decode reads your body first.",
+    url: 'https://bodyrecode.au/challenge',
     siteName: 'Body Recode',
-    images: [
-      {
-        url: 'https://app.bodyrecode.au/og-challenge.png',
-        width: 1200,
-        height: 630,
-        alt: '14-Day Body Decode Challenge',
-      },
-    ],
     type: 'website',
+    // og image auto-generated from opengraph-image.tsx in this folder
   },
   twitter: {
     card: 'summary_large_image',
-    title: '14-Day Body Decode Challenge — Free',
-    description: 'A structured 14-day reset to lower biological noise, stabilise your energy, and let your body start responding again.',
-    images: ['https://app.bodyrecode.au/og-challenge.png'],
+    title: "The 14-Day Body Decode. Free.",
+    description: "You're training. You're eating clean. The fat won't move. The 14-Day Body Decode reads your body first.",
+    // twitter image auto-generated from opengraph-image.tsx in this folder
   },
 }
 
