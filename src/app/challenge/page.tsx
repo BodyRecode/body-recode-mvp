@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Dumbbell, Salad, Sunrise, Moon, FileText, Video, Activity, LineChart, ChevronRight, Play } from 'lucide-react'
+import { Dumbbell, Salad, Sunrise, Moon, FileText, Video, Activity, LineChart, ChevronRight, Play, Zap } from 'lucide-react'
 
-function SignupForm({ position, teal }: { position: string; teal?: boolean }) {
+function SignupForm({ position, teal, darkBg }: { position: string; teal?: boolean; darkBg?: boolean }) {
   const [form, setForm] = useState({ first_name: '', email: '', phone: '', gender: '' })
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
@@ -134,14 +134,14 @@ function SignupForm({ position, teal }: { position: string; teal?: boolean }) {
       >
         {submitting ? 'Starting your challenge...' : 'Start My Free 14-Day Challenge'}
       </button>
-      <p style={{ fontSize: '12px', color: '#999999', textAlign: 'center', margin: 0 }}>
+      <p style={{ fontSize: '12px', color: darkBg ? '#999999' : '#999999', textAlign: 'center', margin: 0 }}>
         Free. No credit card. Instant portal access.
       </p>
-      <p style={{ fontSize: '12px', color: '#999999', textAlign: 'center', margin: 0, lineHeight: 1.6 }}>
+      <p style={{ fontSize: '12px', color: darkBg ? '#999999' : '#999999', textAlign: 'center', margin: 0, lineHeight: 1.6 }}>
         By signing up you agree to our{' '}
-        <a href="/privacy" style={{ color: '#1056D6', textDecoration: 'underline' }}>Privacy Policy</a>
+        <a href="/privacy" style={{ color: darkBg ? '#6B9BFC' : '#1056D6', textDecoration: 'underline' }}>Privacy Policy</a>
         {' '}and{' '}
-        <a href="/terms" style={{ color: '#1056D6', textDecoration: 'underline' }}>Terms</a>.
+        <a href="/terms" style={{ color: darkBg ? '#6B9BFC' : '#1056D6', textDecoration: 'underline' }}>Terms</a>.
         You will receive challenge emails from Body Recode.
       </p>
     </form>
@@ -262,10 +262,10 @@ export default function ChallengePage() {
 
           {/* Headline */}
           <h1 style={{
-            fontSize: 'clamp(36px, 7vw, 54px)',
+            fontSize: 'clamp(44px, 8vw, 68px)',
             fontWeight: 900,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.08,
+            letterSpacing: '-0.035em',
+            lineHeight: 1.05,
             color: '#1A1A1A',
             marginBottom: '24px',
           }}>
@@ -321,7 +321,7 @@ export default function ChallengePage() {
               margin: 0, fontStyle: 'italic',
               position: 'relative',
             }}>
-              Placeholder — production in progress with Amanda
+              Placeholder. Production in progress with Amanda.
             </p>
           </div>
 
@@ -361,10 +361,10 @@ export default function ChallengePage() {
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
           What you have been feeling
         </p>
-        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '8px', color: '#1A1A1A' }}>
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '6px', color: '#1A1A1A' }}>
           These are not failures.
         </h2>
-        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, color: '#999999', marginBottom: '24px' }}>
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, color: '#999999', marginBottom: '28px' }}>
           They are signals.
         </h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0', borderTop: '1px solid #E5E5E5' }}>
@@ -379,10 +379,17 @@ export default function ChallengePage() {
           ].map(item => (
             <div key={item} style={{
               display: 'flex', alignItems: 'center', gap: '16px',
-              padding: '16px 0',
+              padding: '18px 0',
               borderBottom: '1px solid #E5E5E5',
             }}>
-              <span style={{ fontSize: '16px', flexShrink: 0 }}>⚡</span>
+              <div style={{
+                width: '28px', height: '28px', borderRadius: '8px',
+                background: 'rgba(27, 109, 252, 0.08)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <Zap size={14} strokeWidth={2.5} color="#1B6DFC" />
+              </div>
               <p style={{ fontSize: '16px', color: '#3A3A3A', margin: 0, lineHeight: 1.4 }}>{item}</p>
             </div>
           ))}
@@ -403,17 +410,14 @@ export default function ChallengePage() {
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
             The real problem
           </p>
-          <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '20px', color: '#1A1A1A' }}>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: '#1A1A1A' }}>
             Your body has stopped losing fat. Here is why.
           </h2>
-          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '16px' }}>
-            Most people whose fat loss has stalled are not lacking discipline. Their body has shifted into a state where it is actively resisting the inputs that used to work. This is biology, not weakness.
+          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>
+            Your body has shifted into a state where it is actively resisting the inputs that used to work. Cortisol elevates. Metabolism suppresses. Fat goes to the storage zones, mainly stomach and waist, and stays there. The system is hanging on to everything because nothing in the environment is telling it that it is safe to release.
           </p>
-          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '16px' }}>
-            At this level of stress and depletion, the body runs on cortisol. Metabolism gets suppressed. Fat goes to the storage zones, mainly stomach and waist, and stays there. The system is hanging on to everything because nothing in the environment is telling it that it is safe to release. Pushing harder confirms the threat. The harder you push, the tighter it holds.
-          </p>
-          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '24px' }}>
-            This is exactly why what you have tried before stopped producing. Whoever wrote that program was not reading your body. They were prescribing into a Depleted system. The standard answer of more training and less food is the wrong answer for a body in this state. It makes the depletion worse, not better.
+          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '28px' }}>
+            This is exactly why what you have tried before stopped producing. Whoever wrote that program was not reading your body. The standard answer of more training and less food is the wrong answer for a body in this state. Pushing harder confirms the threat. The harder you push, the tighter your body holds.
           </p>
           <div style={{
             background: 'rgba(27, 109, 252,0.1)', border: '1px solid rgba(27, 109, 252,0.25)',
@@ -571,28 +575,38 @@ export default function ChallengePage() {
 
       {/* MID CTA */}
       <div style={{
-        background: 'linear-gradient(135deg, #E8F0FE 0%, #C0D7FC 100%)',
-        borderTop: '1px solid rgba(27, 109, 252,0.25)',
-        borderBottom: '1px solid rgba(27, 109, 252,0.25)',
+        background: '#1A1A1A',
+        position: 'relative',
+        overflow: 'hidden',
       }}>
-        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '64px 24px' }}>
-          <h2 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '8px', lineHeight: 1.25, color: '#0A337A' }}>
+        {/* subtle Signal Blue radial accent */}
+        <div style={{
+          position: 'absolute', top: '-200px', right: '-200px',
+          width: '500px', height: '500px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.15) 0%, transparent 65%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px', position: 'relative' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
+            Start the read
+          </p>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '12px', lineHeight: 1.2, color: '#FFFFFF' }}>
             Fourteen days. No deficit. No high intensity. Just the read.
           </h2>
-          <p style={{ fontSize: '16px', color: '#1056D6', marginBottom: '28px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '16px', color: '#999999', marginBottom: '32px', lineHeight: 1.65 }}>
             Free to join. Instant portal access. Daily coaching messages start the moment you sign up.
           </p>
-          <SignupForm position="mid" teal />
+          <SignupForm position="mid" darkBg />
         </div>
       </div>
 
       {/* ABOUT */}
-      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
+      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
           The coach behind Body Recode
         </p>
-        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '24px', color: '#1A1A1A' }}>
-          Built from the same reset that helped me rebuild.
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '28px', color: '#1A1A1A' }}>
+          I built this from my own Depleted State.
         </h2>
 
         {/* Photo */}
@@ -618,22 +632,16 @@ export default function ChallengePage() {
           </div>
         </div>
 
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '16px' }}>
-          Body Recode was built during one of the hardest seasons of my life. My relationship ended, I stepped away from the business I had built, and the structure I had relied on disappeared overnight.
-        </p>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '16px' }}>
-          My body changed fast. I woke puffy. I held fat in new places. My appetite shifted. My energy dropped. None of it made sense after decades in fitness competing nationally and internationally. This was not a knowledge problem.
-        </p>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '24px' }}>
-          It was biology. My hormones, sleep, nervous system, and appetite were reacting to instability. Pushing harder made everything worse.
+        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '24px' }}>
+          After two decades competing nationally and internationally in fitness, my body collapsed under personal stress in a way training and discipline could not explain. The patterns I had to learn to come back out of that became Body Recode.
         </p>
         <div style={{
           background: '#ffffff', border: '1px solid #E5E5E5',
           borderLeft: '3px solid #1B6DFC',
-          borderRadius: '14px', padding: '20px 22px',
+          borderRadius: '14px', padding: '22px 24px',
         }}>
-          <p style={{ fontSize: '16px', color: '#1A1A1A', fontWeight: 600, lineHeight: 1.65, margin: 0 }}>
-            When I simplified everything and gave my body the right environment, it recalibrated. The patterns from that season became the foundation of Body Recode. I built this challenge for the Depleted State specifically because that is the state I came out of, and it is the state I can read and bring people out of more reliably than anything else.
+          <p style={{ fontSize: '16px', color: '#1A1A1A', fontWeight: 600, lineHeight: 1.7, margin: 0 }}>
+            I built this challenge for the Depleted State specifically. That is the state I came out of. It is the state I can read and bring people out of more reliably than anything else.
           </p>
         </div>
       </div>
@@ -648,7 +656,7 @@ export default function ChallengePage() {
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
             Is this for you?
           </p>
-          <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '20px', color: '#1A1A1A' }}>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: '#1A1A1A' }}>
             This is built for a Depleted State.
           </h2>
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '20px' }}>
@@ -668,9 +676,9 @@ export default function ChallengePage() {
               },
               {
                 state: 'Ready State (12-15)',
-                desc: 'Your biology is already in position to respond. You do not need a reset. You need prescription. Apply for coaching.',
-                cta: 'Apply for Coaching',
-                href: '/book-a-conversation',
+                desc: 'Your biology is already in position to respond. You do not need a reset. You need the ongoing precision system that takes you from responding to compounding.',
+                cta: 'See the Membership',
+                href: '/membership',
               },
               {
                 state: "Don't know your state yet?",
