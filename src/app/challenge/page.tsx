@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Dumbbell, Salad, Sunrise, Moon, FileText, Video, Activity, LineChart, ChevronRight } from 'lucide-react'
+import { Dumbbell, Salad, Sunrise, Moon, FileText, Video, Activity, LineChart, ChevronRight, Play } from 'lucide-react'
 
 function SignupForm({ position, teal }: { position: string; teal?: boolean }) {
   const [form, setForm] = useState({ first_name: '', email: '', phone: '', gender: '' })
@@ -275,7 +275,55 @@ export default function ChallengePage() {
           </h1>
 
           {/* Divider line */}
-          <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
+          <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '32px' }} />
+
+          {/* EXPLAINER VIDEO PLACEHOLDER - to be replaced with actual video when Amanda delivers */}
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            aspectRatio: '16 / 9',
+            background: '#1A1A1A',
+            borderRadius: '14px',
+            marginBottom: '32px',
+            overflow: 'hidden',
+            border: '1px solid #2C2C2C',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            gap: '14px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+          }}>
+            {/* subtle radial glow to suggest a still frame */}
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'radial-gradient(ellipse at center, rgba(27, 109, 252, 0.08) 0%, transparent 60%)',
+              pointerEvents: 'none',
+            }} />
+            <div style={{
+              width: '68px', height: '68px', borderRadius: '50%',
+              background: '#1B6DFC',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 4px 16px rgba(27, 109, 252, 0.4)',
+              position: 'relative',
+            }}>
+              <Play size={28} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} style={{ marginLeft: '4px' }} />
+            </div>
+            <p style={{
+              fontSize: '12px', fontWeight: 700, color: '#999999',
+              margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase',
+              position: 'relative',
+            }}>
+              Explainer video · 75 seconds
+            </p>
+            <p style={{
+              fontSize: '11px', color: '#6B6B6B',
+              margin: 0, fontStyle: 'italic',
+              position: 'relative',
+            }}>
+              Placeholder — production in progress with Amanda
+            </p>
+          </div>
 
           <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '14px' }}>
             Most people assess fat loss by effort. But effort can stay high while your body shifts into protection mode and resists fat loss by design.
