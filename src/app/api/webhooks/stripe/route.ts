@@ -92,6 +92,59 @@ export async function POST(request: NextRequest) {
   // Handle recurring subscription invoice paid (auto-renewal)
   if (event.type === 'invoice.payment_succeeded') {
     const invoice = event.data.object as Stripe.Invoice
+    const invoiceWithSubEarly = invoice as Stripe.Invoice & { subscription?: string | Stripe.Subscription | null }
+    const earlySubId = typeof invoiceWithSubEarly.subscription === 'string'
+      ? invoiceWithSubEarly.subscription
+      : invoiceWithSubEarly.subscription?.id ?? null
+
+    // Split-commencement second installment (subscription_cycle = the 7-day-later renewal).
+    // The first installment is recorded via the checkout.session.completed handler;
+    // here we only handle the auto-charged second $120 to avoid a duplicate row.
+    if (earlySubId && invoice.billing_reason === 'subscription_cycle') {
+      try {
+        const sub = await stripe.subscriptions.retrieve(earlySubId)
+        if (sub.metadata?.type === 'commencement_fee' && sub.metadata?.installments === '2') {
+          const leadId = sub.metadata.lead_id
+          if (leadId) {
+            const admin = createAdminClient()
+            const { data: lead } = await admin
+              .from('leads')
+              .select('id, name, email, converted_to_client_id')
+              .eq('id', leadId)
+              .maybeSingle()
+            if (lead?.converted_to_client_id && invoice.amount_paid > 0) {
+              await admin.from('be_payments').insert({
+                lead_id: leadId,
+                client_id: lead.converted_to_client_id,
+                amount: invoice.amount_paid / 100,
+                status: 'paid',
+                stripe_payment_id: null,
+                stripe_subscription_id: earlySubId,
+                paid_at: new Date().toISOString(),
+              })
+              if (process.env.RESEND_API_KEY) {
+                const resend = new Resend(process.env.RESEND_API_KEY)
+                await resend.emails.send({
+                  from: 'Body Recode <kade@bodyrecode.au>',
+                  to: 'kade@bodyrecode.au',
+                  subject: `Second commencement installment received — ${lead.name}`,
+                  html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${lead.name} paid the second $120.</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Commencement fee fully paid ($240 total). The split subscription will auto-cancel within the next 24 hours.</p>
+  <a href="${appUrl()}/dashboard/clients/${lead.converted_to_client_id}#payments" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client</a>
+</div>`,
+                })
+              }
+            }
+            return NextResponse.json({ received: true })
+          }
+        }
+      } catch (e) {
+        console.error('split-commencement invoice.payment_succeeded check failed:', e)
+      }
+    }
+
     const clientId = invoice.lines?.data?.[0]?.metadata?.client_id
     if (clientId && invoice.amount_paid > 0) {
       const admin = createAdminClient()
@@ -693,6 +746,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   }
 
+  // Split-commencement: cap the subscription at 2 invoices by setting cancel_at
+  // ~8 days out. Stripe doesn't accept cancel_at on subscription_data at create
+  // time, so we do it here once we know the subscription id. Day 0 invoice is
+  // already paid (this webhook); day 7 invoice will auto-bill; the cancellation
+  // hits before day 14 so no third invoice is generated.
+  if (session.mode === 'subscription' && session.metadata.installments === '2' && session.subscription) {
+    try {
+      const subId = typeof session.subscription === 'string' ? session.subscription : session.subscription.id
+      await stripe.subscriptions.update(subId, {
+        cancel_at: Math.floor(Date.now() / 1000) + 8 * 24 * 60 * 60,
+      })
+    } catch (e) {
+      console.error('commencement webhook: failed to set cancel_at on split subscription:', e)
+    }
+  }
+
   // Two paths for commencement_fee:
   //   - metadata.client_id → existing client paying their own commencement
   //     (typically a non-billing package the coach decided to charge after
@@ -857,7 +926,11 @@ export async function POST(request: NextRequest) {
     .update(leadUpdate)
     .eq('id', leadId)
 
-  // Record commencement fee payment
+  // Record commencement fee payment. In subscription mode (split installments)
+  // session.payment_intent is null, so we fall back to the subscription id for
+  // traceability. session.amount_total is the first-invoice amount ($120 in
+  // split mode, $240 in one-off mode), so it reflects what actually landed.
+  const subscriptionIdForPayment = session.subscription as string | null
   if (session.amount_total && session.amount_total > 0) {
     await admin.from('be_payments').insert({
       lead_id: leadId,
@@ -865,6 +938,7 @@ export async function POST(request: NextRequest) {
       amount: session.amount_total / 100,
       status: 'paid',
       stripe_payment_id: session.payment_intent as string ?? null,
+      stripe_subscription_id: subscriptionIdForPayment ?? null,
       paid_at: new Date().toISOString(),
     })
   }
@@ -872,12 +946,15 @@ export async function POST(request: NextRequest) {
   // Populate client_payment_plan.commencement_fee_paid_at so the per-client
   // Payments tracker recognises this client as paid. Without this, the
   // section reads as "Not tracked for payments" even though the fee landed
-  // — Luke's case. Idempotent: skips if already marked paid.
+  // — Luke's case. Idempotent: skips if already marked paid. For split
+  // installments we mark on the first $120 (matches the "portal opens on
+  // first payment" decision); the second $120 lands separately via
+  // invoice.payment_succeeded above.
   try {
     await markCommencementPaid(
       admin,
       client.id,
-      session.payment_intent as string ?? '',
+      (session.payment_intent as string) || subscriptionIdForPayment || '',
       new Date(),
     )
   } catch (e) {
