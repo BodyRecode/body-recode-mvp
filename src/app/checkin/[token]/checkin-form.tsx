@@ -27,7 +27,7 @@ function QuestionInput({
   if (question.type === 'text') {
     return (
       <div>
-        <label className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-700' : 'text-white'}`}>{question.text}</label>
+        <label className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>{question.text}</label>
         {question.helper && (
           <p className="text-[13px] text-stone-500 mb-3 leading-relaxed">{question.helper}</p>
         )}
@@ -36,7 +36,7 @@ function QuestionInput({
           onChange={e => onChange(e.target.value)}
           rows={4}
           placeholder="Your response..."
-          className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:border-stone-600 resize-none transition-colors border ${hasError ? 'border-red-400' : 'border-stone-800'}`}
+          className={`w-full bg-stone-100 rounded-xl px-4 py-3 text-[15px] text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-stone-400 resize-none transition-colors border ${hasError ? 'border-red-400' : 'border-stone-200'}`}
         />
       </div>
     )
@@ -45,7 +45,7 @@ function QuestionInput({
   if (question.type === 'choice') {
     return (
       <div>
-        <p className={`text-[15px] font-medium mb-3 leading-snug ${hasError ? 'text-red-700' : 'text-white'}`}>{question.text}</p>
+        <p className={`text-[15px] font-medium mb-3 leading-snug ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>{question.text}</p>
         <div className="space-y-2">
           {question.options?.map(opt => (
             <button
@@ -54,10 +54,10 @@ function QuestionInput({
               onClick={() => onChange(opt)}
               className={`w-full text-left text-[14px] px-4 py-3 rounded-xl border transition-all duration-150 ${
                 value === opt
-                  ? 'bg-teal-500/10 border-teal-500 text-teal-300'
+                  ? 'bg-blue-500/10 border-blue-500 text-blue-300'
                   : hasError
-                  ? 'bg-stone-900 border-red-400 text-stone-300'
-                  : 'bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-600'
+                  ? 'bg-stone-100 border-red-400 text-stone-700'
+                  : 'bg-stone-100 border-stone-200 text-stone-700 hover:border-stone-400'
               }`}
             >
               {opt}
@@ -201,12 +201,12 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-8">
         <div className="text-center max-w-sm">
           <img src="https://bodyrecode.au/logo-black.png" width="120" alt="Body Recode" style={{ display: 'block', margin: '0 auto 24px' }} />
-          <div className="w-14 h-14 bg-teal-500/10 border border-teal-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-14 h-14 bg-blue-500/10 border border-blue-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-7 h-7 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-3 tracking-tight">Received, {firstName}.</h1>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-3 tracking-tight">Received, {firstName}.</h1>
           <p className="text-stone-500 text-[15px] leading-relaxed">
             Your check-in has been submitted. Your coach will review it and be in touch.
           </p>
@@ -219,27 +219,27 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
     <div className="min-h-screen bg-[#FFFFFF]">
 
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 right-0 h-[2px] bg-stone-900 z-20">
+      <div className="fixed top-0 left-0 right-0 h-[2px] bg-stone-100 z-20">
         <div
-          className="h-full bg-teal-400 transition-all duration-500 ease-out"
+          className="h-full bg-blue-500 transition-all duration-500 ease-out"
           style={{ width: `${progressPct}%` }}
         />
       </div>
 
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-900 px-5 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-100 px-5 py-3 flex items-center justify-between">
         <img src="https://bodyrecode.au/logo-black.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
-        <p className="text-[11px] font-medium text-stone-600">{sectionIndex + 1} / {sections.length}</p>
+        <p className="text-[11px] font-medium text-stone-400">{sectionIndex + 1} / {sections.length}</p>
       </div>
 
       <div className="max-w-lg mx-auto px-5 pt-8 pb-32">
 
         {/* Section header */}
         <div className="mb-8">
-          <p className="text-[10px] font-bold tracking-[0.15em] text-stone-600 uppercase mb-3">
+          <p className="text-[10px] font-bold tracking-[0.15em] text-stone-400 uppercase mb-3">
             Week {weekNumber} · Form {formType} · {progressPct}% complete
           </p>
-          <h1 className="text-[22px] font-bold text-white tracking-tight">{section.title}</h1>
+          <h1 className="text-[22px] font-bold text-[#1A1A1A] tracking-tight">{section.title}</h1>
         </div>
 
         {/* Validation message */}
@@ -251,7 +251,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
         )}
 
         {/* Divider */}
-        <div className="h-px bg-stone-900 mb-8" />
+        <div className="h-px bg-stone-100 mb-8" />
 
         {/* Questions */}
         <div className="space-y-8">
@@ -285,12 +285,12 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
       </div>
 
       {/* Fixed bottom navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-900 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-100 px-5 py-4 z-10">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
           <button
             type="button"
             onClick={() => goToSection(sectionIndex - 1)}
-            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-300 ${
+            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-700 ${
               sectionIndex === 0 ? 'invisible' : ''
             }`}
           >
@@ -302,7 +302,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
               type="button"
               onClick={handleSubmit}
               disabled={submitting}
-              className="flex-1 bg-teal-500 text-black text-[15px] font-bold py-4 rounded-xl hover:bg-teal-400 transition-colors disabled:opacity-40 tracking-tight"
+              className="flex-1 bg-blue-500 text-black text-[15px] font-bold py-4 rounded-xl hover:bg-blue-500 transition-colors disabled:opacity-40 tracking-tight"
             >
               {submitting ? 'Submitting…' : 'Submit check-in'}
             </button>
@@ -310,7 +310,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
             <button
               type="button"
               onClick={handleContinue}
-              className="flex-1 bg-white text-black text-[15px] font-bold py-4 rounded-xl hover:bg-stone-100 transition-colors tracking-tight"
+              className="flex-1 bg-white text-black text-[15px] font-bold py-4 rounded-xl hover:bg-stone-900 transition-colors tracking-tight"
             >
               Continue
             </button>

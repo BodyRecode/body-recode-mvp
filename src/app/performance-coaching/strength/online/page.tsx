@@ -17,15 +17,15 @@ export default function OnlineStrengthCoachingPage() {
       <section className="bg-black pt-44 pb-28 px-5">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Online · 1:1 Strength Coaching</p>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-12">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] leading-tight tracking-tight mb-12">
             Online Strength Coaching
           </h1>
-          <p className="text-xl text-stone-600 leading-relaxed max-w-2xl mb-12">
+          <p className="text-xl text-stone-400 leading-relaxed max-w-2xl mb-12">
             Building strength isn&apos;t just about lifting more weight. It&apos;s about creating the right biological conditions for your body to actually respond to training, and sustaining that over time. Delivered 1:1, fully online.
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-[#1A1A1A] font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free performance check-in
           </Link>
@@ -33,26 +33,26 @@ export default function OnlineStrengthCoachingPage() {
       </section>
 
       {/* Why strength training fails */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Why strength training often stops working</h2>
-          <p className="text-stone-600 text-lg leading-relaxed mb-4">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Why strength training often stops working</h2>
+          <p className="text-stone-400 text-lg leading-relaxed mb-4">
             Most people who plateau in the gym aren&apos;t training wrong. They&apos;re training without understanding where their body actually is. Strength is a biological output. If the underlying system is under stress, under-recovered, or hormonally dysregulated, adding more volume or intensity will not produce better results. It will produce worse ones.
           </p>
-          <p className="text-stone-600 text-lg leading-relaxed mb-4">
+          <p className="text-stone-400 text-lg leading-relaxed mb-4">
             Hard-working people who train consistently but make slow or no progress, because the training load doesn&apos;t match the body&apos;s actual capacity to adapt, is one of the most common patterns we see.
           </p>
-          <p className="text-stone-600 text-lg leading-relaxed">
+          <p className="text-stone-400 text-lg leading-relaxed">
             Body Recode™ starts by establishing what that capacity actually is, before any loading decisions are made.
           </p>
         </div>
       </section>
 
       {/* How it works */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-black py-32 px-5 border-t border-stone-800">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">How online strength coaching works</h2>
-          <p className="text-stone-600 text-lg leading-relaxed mb-12">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">How online strength coaching works</h2>
+          <p className="text-stone-400 text-lg leading-relaxed mb-12">
             Every client begins with a full biological intake. This is not a movement screen or a fitness test. It is a structured assessment of the eight domains that determine how your body responds to training load.
           </p>
           <div className="space-y-4 mb-12">
@@ -62,10 +62,10 @@ export default function OnlineStrengthCoachingPage() {
               { step: '03', title: 'Design around your capacity', body: 'Volume, intensity, frequency, and exercise selection are all built around your individual profile. There is no template. The program exists to serve your biology.' },
               { step: '04', title: 'Monitor and adjust', body: 'Strength is not linear. Your body responds differently week to week depending on sleep, stress, and recovery. Weekly check-ins feed directly into your coaching so adjustments are made ahead of problems, not after.' },
             ].map((item) => (
-              <div key={item.step} className="flex gap-5 border border-stone-200 rounded-xl p-5">
+              <div key={item.step} className="flex gap-5 border border-stone-800 rounded-xl p-5">
                 <p className="text-[11px] font-bold tracking-[0.15em] text-[#1B6DFC] uppercase shrink-0 mt-0.5">{item.step}</p>
                 <div>
-                  <p className="text-base font-bold text-white mb-1">{item.title}</p>
+                  <p className="text-base font-bold text-[#1A1A1A] mb-1">{item.title}</p>
                   <p className="text-base text-stone-500 leading-relaxed">{item.body}</p>
                 </div>
               </div>
@@ -75,10 +75,10 @@ export default function OnlineStrengthCoachingPage() {
       </section>
 
       {/* Client portal */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Client Portal</p>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-6">
             Your program, your data,<br />all in one place.
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed max-w-2xl mb-12">
@@ -92,7 +92,7 @@ export default function OnlineStrengthCoachingPage() {
               { title: 'Progress Tracking', desc: 'Your data tracked over time. Strength numbers, body responses, and coaching observations, all in one place.' },
             ].map((item, i) => (
               <div key={i} className="bg-stone-50 rounded-2xl p-6">
-                <h3 className="text-base font-bold text-white mb-3">{item.title}</h3>
+                <h3 className="text-base font-bold text-[#1A1A1A] mb-3">{item.title}</h3>
                 <p className="text-stone-500 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -101,9 +101,9 @@ export default function OnlineStrengthCoachingPage() {
       </section>
 
       {/* Who this is for */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-black py-32 px-5 border-t border-stone-800">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Who online strength coaching is for</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Who online strength coaching is for</h2>
           <div className="grid md:grid-cols-2 gap-10 mb-12">
             {[
               'You want to build genuine, lasting strength, not just short-term numbers',
@@ -117,7 +117,7 @@ export default function OnlineStrengthCoachingPage() {
                 <div className="w-5 h-5 rounded-full bg-[#1B6DFC]/20 flex items-center justify-center shrink-0 mt-0.5">
                   <div className="w-2 h-2 rounded-full bg-[#1B6DFC]" />
                 </div>
-                <p className="text-stone-600 text-base leading-relaxed">{item}</p>
+                <p className="text-stone-400 text-base leading-relaxed">{item}</p>
               </div>
             ))}
           </div>
@@ -129,9 +129,9 @@ export default function OnlineStrengthCoachingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-14">Frequently asked questions</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-6">
             {[
               { q: 'Do I need to be experienced to start?', a: 'No. Your current training history is assessed as part of the intake process. The program is built around where you are right now, not where you think you should be.' },
@@ -140,8 +140,8 @@ export default function OnlineStrengthCoachingPage() {
               { q: 'What do I need access to?', a: 'Your program is designed around your actual training environment. Whether you have access to a full gym or train at home, the system is structured accordingly.' },
               { q: 'How do I get started?', a: 'Start with the free Performance Check-In. It takes a few minutes and gives you a clear picture of where your body is right now.' },
             ].map((item, i) => (
-              <div key={i} className="border-b border-stone-200 pb-6">
-                <h3 className="text-base font-bold text-white mb-2">{item.q}</h3>
+              <div key={i} className="border-b border-stone-800 pb-6">
+                <h3 className="text-base font-bold text-[#1A1A1A] mb-2">{item.q}</h3>
                 <p className="text-stone-500 text-base leading-relaxed">{item.a}</p>
               </div>
             ))}
@@ -150,9 +150,9 @@ export default function OnlineStrengthCoachingPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-black py-32 px-5 border-t border-stone-800">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-4">
             Find out where your strength actually is
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed mb-12 max-w-xl mx-auto">
@@ -160,7 +160,7 @@ export default function OnlineStrengthCoachingPage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-[#1A1A1A] font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free check-in →
           </Link>

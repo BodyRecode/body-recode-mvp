@@ -55,8 +55,8 @@ export default function FunnelCapturePage({
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center px-6">
         <div className="max-w-md w-full text-center">
           <img src="https://bodyrecode.au/logo-black.png" width="120" alt="Body Recode" className="mx-auto mb-10" />
-          <h1 className="text-2xl font-bold text-white mb-3">You&apos;re in.</h1>
-          <p className="text-stone-400 text-sm leading-relaxed">
+          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-3">You&apos;re in.</h1>
+          <p className="text-stone-600 text-sm leading-relaxed">
             We&apos;ve received your details. Kade will be in touch shortly.
           </p>
         </div>
@@ -70,13 +70,13 @@ export default function FunnelCapturePage({
         <img src="https://bodyrecode.au/logo-black.png" width="120" alt="Body Recode" className="mb-10" />
 
         {headline && (
-          <h1 className="text-3xl font-bold text-white leading-tight mb-4">{headline}</h1>
+          <h1 className="text-3xl font-bold text-[#1A1A1A] leading-tight mb-4">{headline}</h1>
         )}
         {subheadline && (
-          <p className="text-lg text-teal-400 font-medium mb-6">{subheadline}</p>
+          <p className="text-lg text-blue-500 font-medium mb-6">{subheadline}</p>
         )}
         {body && (
-          <div className="text-stone-400 text-sm leading-relaxed mb-8 whitespace-pre-line">{body}</div>
+          <div className="text-stone-600 text-sm leading-relaxed mb-8 whitespace-pre-line">{body}</div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -86,7 +86,7 @@ export default function FunnelCapturePage({
             value={name}
             onChange={e => setName(e.target.value)}
             required
-            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500"
+            className="w-full bg-stone-100 border border-stone-200 rounded-lg px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500"
           />
           <input
             type="email"
@@ -94,14 +94,14 @@ export default function FunnelCapturePage({
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
-            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500"
+            className="w-full bg-stone-100 border border-stone-200 rounded-lg px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500"
           />
           <input
             type="tel"
             placeholder="Phone (optional)"
             value={phone}
             onChange={e => setPhone(e.target.value)}
-            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500"
+            className="w-full bg-stone-100 border border-stone-200 rounded-lg px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500"
           />
 
           {error && (
@@ -111,13 +111,13 @@ export default function FunnelCapturePage({
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 font-bold text-sm py-3 rounded-lg transition-colors"
+            className="w-full bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 font-bold text-sm py-3 rounded-lg transition-colors"
           >
             {submitting ? 'Submitting...' : ctaLabel}
           </button>
         </form>
 
-        <p className="text-stone-700 text-xs mt-6 text-center">
+        <p className="text-stone-300 text-xs mt-6 text-center">
           No spam. Unsubscribe any time.
         </p>
       </div>

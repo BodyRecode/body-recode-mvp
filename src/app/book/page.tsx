@@ -121,13 +121,13 @@ export default function BookPage() {
   const selectedTime = selectedSlot ? formatTime(selectedSlot) : null
 
   return (
-    <div className="min-h-screen bg-stone-950 text-white">
+    <div className="min-h-screen bg-stone-50 text-[#1A1A1A]">
       {/* Header */}
-      <div className="border-b border-stone-800 px-6 py-5 flex items-center justify-between">
+      <div className="border-b border-stone-200 px-6 py-5 flex items-center justify-between">
         <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" />
         <a
           href="https://performance.bodyrecode.au"
-          className="text-sm text-stone-500 hover:text-stone-300 transition-colors"
+          className="text-sm text-stone-500 hover:text-stone-700 transition-colors"
         >
           ← Back to website
         </a>
@@ -140,18 +140,18 @@ export default function BookPage() {
           <>
             <div className="mb-10">
               <h1 className="text-3xl font-bold mb-3">Let&apos;s go through your results.</h1>
-              <p className="text-stone-400 text-base leading-relaxed">
+              <p className="text-stone-600 text-base leading-relaxed">
                 30 minutes. We identify the specific driver behind what is not working and map out exactly what needs to change first. Free. No pitch.
               </p>
             </div>
 
-            <div className="flex items-center gap-4 text-sm text-stone-400 mb-10">
+            <div className="flex items-center gap-4 text-sm text-stone-600 mb-10">
               <div className="flex items-center gap-1.5">
-                <Clock size={14} className="text-teal-400" />
+                <Clock size={14} className="text-blue-500" />
                 30 minutes
               </div>
               <div className="flex items-center gap-1.5">
-                <Calendar size={14} className="text-teal-400" />
+                <Calendar size={14} className="text-blue-500" />
                 Brisbane time
               </div>
             </div>
@@ -165,8 +165,8 @@ export default function BookPage() {
               <>
                 {days.length === 0 ? (
                   <div className="text-center py-12">
-                    <p className="text-stone-400 text-base mb-2">No available times right now.</p>
-                    <p className="text-stone-600 text-sm">Request a time below or email kade@bodyrecode.au</p>
+                    <p className="text-stone-600 text-base mb-2">No available times right now.</p>
+                    <p className="text-stone-400 text-sm">Request a time below or email kade@bodyrecode.au</p>
                   </div>
                 ) : (
                   <div className="space-y-6">
@@ -180,7 +180,7 @@ export default function BookPage() {
                             <button
                               key={slot}
                               onClick={() => { setSelectedSlot(slot); setSelectedDay(day); setStep('details') }}
-                              className="px-4 py-2.5 text-sm font-medium rounded-lg border border-stone-700 text-stone-300 hover:border-teal-500 hover:text-teal-400 hover:bg-teal-500/5 transition-colors"
+                              className="px-4 py-2.5 text-sm font-medium rounded-lg border border-stone-300 text-stone-700 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/5 transition-colors"
                             >
                               {formatTime(slot)}
                             </button>
@@ -191,11 +191,11 @@ export default function BookPage() {
                   </div>
                 )}
 
-                <div className="mt-10 pt-6 border-t border-stone-800 text-center">
+                <div className="mt-10 pt-6 border-t border-stone-200 text-center">
                   <p className="text-stone-500 text-sm mb-2">None of these times work for you?</p>
                   <button
                     onClick={() => setStep('request')}
-                    className="text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors"
+                    className="text-sm font-medium text-blue-500 hover:text-blue-300 transition-colors"
                   >
                     Request a different time →
                   </button>
@@ -210,7 +210,7 @@ export default function BookPage() {
           <>
             <button
               onClick={() => setStep('slots')}
-              className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-white transition-colors mb-8"
+              className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-[#1A1A1A] transition-colors mb-8"
             >
               <ChevronLeft size={15} />
               Back
@@ -218,46 +218,46 @@ export default function BookPage() {
 
             <div className="mb-8">
               <h1 className="text-2xl font-bold mb-2">Your details</h1>
-              <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 flex items-center gap-3 mt-4">
-                <div className="p-2 bg-teal-500/10 rounded-lg">
-                  <Calendar size={15} className="text-teal-400" />
+              <div className="bg-stone-100 border border-stone-200 rounded-xl p-4 flex items-center gap-3 mt-4">
+                <div className="p-2 bg-blue-500/10 rounded-lg">
+                  <Calendar size={15} className="text-blue-500" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white">{selectedDate}</p>
-                  <p className="text-xs text-stone-400">{selectedTime} Brisbane · 30 min</p>
+                  <p className="text-sm font-semibold text-[#1A1A1A]">{selectedDate}</p>
+                  <p className="text-xs text-stone-600">{selectedTime} Brisbane · 30 min</p>
                 </div>
               </div>
             </div>
 
             <div className="space-y-4 mb-8">
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Full Name</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Full Name</label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                   placeholder="John Smith"
-                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors"
+                  className="w-full bg-stone-100 border border-stone-300 rounded-xl px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Email</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Email</label>
                 <input
                   type="email"
                   value={form.email}
                   onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                   placeholder="john@example.com"
-                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors"
+                  className="w-full bg-stone-100 border border-stone-300 rounded-xl px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Phone (optional)</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Phone (optional)</label>
                 <input
                   type="tel"
                   value={form.phone}
                   onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
                   placeholder="0400 000 000"
-                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors"
+                  className="w-full bg-stone-100 border border-stone-300 rounded-xl px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 transition-colors"
                 />
               </div>
             </div>
@@ -271,13 +271,13 @@ export default function BookPage() {
             <button
               onClick={submit}
               disabled={!form.name || !form.email || submitting}
-              className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-400 text-stone-950 font-semibold text-sm py-4 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 font-semibold text-sm py-4 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {submitting && <Loader2 size={15} className="animate-spin" />}
               Confirm Booking
             </button>
 
-            <p className="text-xs text-stone-600 text-center mt-4">
+            <p className="text-xs text-stone-400 text-center mt-4">
               A confirmation email with your Zoom link will be sent immediately.
             </p>
           </>
@@ -287,12 +287,12 @@ export default function BookPage() {
         {step === 'confirmed' && (
           <div className="text-center py-8">
             <div className="flex justify-center mb-6">
-              <div className="p-4 bg-teal-500/10 rounded-2xl">
-                <CheckCircle2 size={40} className="text-teal-400" />
+              <div className="p-4 bg-blue-500/10 rounded-2xl">
+                <CheckCircle2 size={40} className="text-blue-500" />
               </div>
             </div>
             <h1 className="text-2xl font-bold mb-3">You're booked in.</h1>
-            <p className="text-stone-400 text-base mb-2">
+            <p className="text-stone-600 text-base mb-2">
               {selectedDate} at {selectedTime} Brisbane
             </p>
             <p className="text-stone-500 text-sm mb-8">
@@ -300,7 +300,7 @@ export default function BookPage() {
             </p>
             <a
               href="https://performance.bodyrecode.au"
-              className="text-sm text-teal-400 hover:text-teal-300 transition-colors"
+              className="text-sm text-blue-500 hover:text-blue-300 transition-colors"
             >
               ← Back to Body Recode
             </a>
@@ -312,7 +312,7 @@ export default function BookPage() {
           <>
             <button
               onClick={() => setStep('slots')}
-              className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-white transition-colors mb-8"
+              className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-[#1A1A1A] transition-colors mb-8"
             >
               <ChevronLeft size={15} />
               Back
@@ -320,60 +320,60 @@ export default function BookPage() {
 
             <div className="mb-8">
               <h1 className="text-2xl font-bold mb-2">Request a different time</h1>
-              <p className="text-stone-400 text-sm leading-relaxed">
+              <p className="text-stone-600 text-sm leading-relaxed">
                 Tell me when works for you. I'll get back to you within 24 hours to confirm or suggest the closest match.
               </p>
             </div>
 
             <div className="space-y-4 mb-8">
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Full Name</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Full Name</label>
                 <input
                   type="text"
                   value={requestForm.name}
                   onChange={e => setRequestForm(f => ({ ...f, name: e.target.value }))}
                   placeholder="John Smith"
-                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors"
+                  className="w-full bg-stone-100 border border-stone-300 rounded-xl px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Email</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Email</label>
                 <input
                   type="email"
                   value={requestForm.email}
                   onChange={e => setRequestForm(f => ({ ...f, email: e.target.value }))}
                   placeholder="john@example.com"
-                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors"
+                  className="w-full bg-stone-100 border border-stone-300 rounded-xl px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Phone (optional)</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Phone (optional)</label>
                 <input
                   type="tel"
                   value={requestForm.phone}
                   onChange={e => setRequestForm(f => ({ ...f, phone: e.target.value }))}
                   placeholder="0400 000 000"
-                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors"
+                  className="w-full bg-stone-100 border border-stone-300 rounded-xl px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">What time works for you?</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">What time works for you?</label>
                 <textarea
                   value={requestForm.preferredTime}
                   onChange={e => setRequestForm(f => ({ ...f, preferredTime: e.target.value }))}
                   placeholder="e.g. Tuesday or Thursday around 3pm Brisbane"
                   rows={3}
-                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors resize-none"
+                  className="w-full bg-stone-100 border border-stone-300 rounded-xl px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 transition-colors resize-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Anything else? (optional)</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Anything else? (optional)</label>
                 <textarea
                   value={requestForm.note}
                   onChange={e => setRequestForm(f => ({ ...f, note: e.target.value }))}
                   placeholder="Schedule constraints, time zone, anything useful"
                   rows={2}
-                  className="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 transition-colors resize-none"
+                  className="w-full bg-stone-100 border border-stone-300 rounded-xl px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 transition-colors resize-none"
                 />
               </div>
             </div>
@@ -387,13 +387,13 @@ export default function BookPage() {
             <button
               onClick={submitRequest}
               disabled={!requestForm.name || !requestForm.email || !requestForm.preferredTime || submitting}
-              className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-400 text-stone-950 font-semibold text-sm py-4 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 font-semibold text-sm py-4 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {submitting && <Loader2 size={15} className="animate-spin" />}
               Send Request
             </button>
 
-            <p className="text-xs text-stone-600 text-center mt-4">
+            <p className="text-xs text-stone-400 text-center mt-4">
               Kade will reply within 24 hours.
             </p>
           </>
@@ -403,12 +403,12 @@ export default function BookPage() {
         {step === 'request_confirmed' && (
           <div className="text-center py-8">
             <div className="flex justify-center mb-6">
-              <div className="p-4 bg-teal-500/10 rounded-2xl">
-                <CheckCircle2 size={40} className="text-teal-400" />
+              <div className="p-4 bg-blue-500/10 rounded-2xl">
+                <CheckCircle2 size={40} className="text-blue-500" />
               </div>
             </div>
             <h1 className="text-2xl font-bold mb-3">Request received.</h1>
-            <p className="text-stone-400 text-base mb-2">
+            <p className="text-stone-600 text-base mb-2">
               Kade will get back to you within 24 hours.
             </p>
             <p className="text-stone-500 text-sm mb-8">
@@ -416,7 +416,7 @@ export default function BookPage() {
             </p>
             <a
               href="https://performance.bodyrecode.au"
-              className="text-sm text-teal-400 hover:text-teal-300 transition-colors"
+              className="text-sm text-blue-500 hover:text-blue-300 transition-colors"
             >
               ← Back to Body Recode
             </a>

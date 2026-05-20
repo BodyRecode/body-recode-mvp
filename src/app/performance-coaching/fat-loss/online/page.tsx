@@ -17,15 +17,15 @@ export default function OnlineFatLossCoachingPage() {
       <section className="bg-black pt-44 pb-28 px-5">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Online · 1:1 Fat Loss Coaching</p>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-12">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] leading-tight tracking-tight mb-12">
             Online Fat Loss Coaching
           </h1>
-          <p className="text-xl text-stone-600 leading-relaxed max-w-2xl mb-12">
+          <p className="text-xl text-stone-400 leading-relaxed max-w-2xl mb-12">
             Fat loss isn&apos;t a willpower problem. It&apos;s a biological one. Body Recode™ addresses the system driving your body composition, not just the calories in and out. Delivered 1:1, fully online.
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-[#1A1A1A] font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free performance check-in
           </Link>
@@ -33,26 +33,26 @@ export default function OnlineFatLossCoachingPage() {
       </section>
 
       {/* Why fat loss is harder than it should be */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Why fat loss is harder than it should be</h2>
-          <p className="text-stone-600 text-lg leading-relaxed mb-4">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Why fat loss is harder than it should be</h2>
+          <p className="text-stone-400 text-lg leading-relaxed mb-4">
             Most fat loss programs are built on two assumptions: eat less, move more. This works up to a point. The problem is that the body is not a simple calculator. When stress is high, sleep is poor, or the regulatory system is under load, the body actively resists fat loss regardless of caloric deficit.
           </p>
-          <p className="text-stone-600 text-lg leading-relaxed mb-4">
+          <p className="text-stone-400 text-lg leading-relaxed mb-4">
             Cortisol elevates. Insulin sensitivity drops. Muscle is broken down for energy while fat storage is preserved. This is not a failure of effort. It is a predictable biological response to a system under strain.
           </p>
-          <p className="text-stone-600 text-lg leading-relaxed">
+          <p className="text-stone-400 text-lg leading-relaxed">
             Body Recode™ starts by identifying whether your system is in a state where fat loss is biologically viable, and if not, what needs to change first.
           </p>
         </div>
       </section>
 
       {/* What actually drives fat loss */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-black py-32 px-5 border-t border-stone-800">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">What actually drives fat loss</h2>
-          <p className="text-stone-600 text-lg leading-relaxed mb-12">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">What actually drives fat loss</h2>
+          <p className="text-stone-400 text-lg leading-relaxed mb-12">
             Sustainable fat loss depends on the interplay of several biological systems. Understanding which of these is limiting your progress is the starting point for everything.
           </p>
           <div className="grid md:grid-cols-2 gap-10 mb-12">
@@ -64,8 +64,8 @@ export default function OnlineFatLossCoachingPage() {
               { title: 'Hormonal environment', desc: 'Testosterone, oestrogen, thyroid function, and insulin sensitivity all influence how and where your body stores and releases fat. These cannot be ignored.' },
               { title: 'Body pattern recognition', desc: 'Where your body distributes fat tells a story about your underlying biology. Body Recode™ uses this as a diagnostic signal, not just an aesthetic concern.' },
             ].map((item, i) => (
-              <div key={i} className="border border-stone-200 rounded-xl p-5">
-                <p className="text-base font-bold text-white mb-1">{item.title}</p>
+              <div key={i} className="border border-stone-800 rounded-xl p-5">
+                <p className="text-base font-bold text-[#1A1A1A] mb-1">{item.title}</p>
                 <p className="text-base text-stone-500 leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -74,16 +74,16 @@ export default function OnlineFatLossCoachingPage() {
       </section>
 
       {/* The Body Recode approach */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">The Body Recode™ approach to fat loss</h2>
-          <p className="text-stone-600 text-lg leading-relaxed mb-4">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">The Body Recode™ approach to fat loss</h2>
+          <p className="text-stone-400 text-lg leading-relaxed mb-4">
             Before any fat loss prescription is made, Body Recode™ builds a complete picture of your biological state using a structured eight-domain intake. This tells us whether fat loss is viable right now, what is currently working against it, and what needs to change first.
           </p>
-          <p className="text-stone-600 text-lg leading-relaxed mb-4">
+          <p className="text-stone-400 text-lg leading-relaxed mb-4">
             For clients whose regulatory system is under stress, attempting aggressive fat loss is counterproductive. The body fights back. The first phase is stabilisation, not restriction.
           </p>
-          <p className="text-stone-600 text-lg leading-relaxed mb-12">
+          <p className="text-stone-400 text-lg leading-relaxed mb-12">
             Once the system is stable, fat loss becomes realistic and sustainable. Training load, nutrition structure, and lifestyle adjustments are all calibrated to the individual, not applied from a template.
           </p>
           <Link href="/performance-coaching/online" className="text-[#1B6DFC] text-sm font-semibold hover:underline">
@@ -93,10 +93,10 @@ export default function OnlineFatLossCoachingPage() {
       </section>
 
       {/* Client portal */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-black py-32 px-5 border-t border-stone-800">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Client Portal</p>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-6">
             Your program, your data,<br />all in one place.
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed max-w-2xl mb-12">
@@ -110,7 +110,7 @@ export default function OnlineFatLossCoachingPage() {
               { title: 'Foundation Synthesis', desc: 'The complete biological read of your system. The document that determines whether fat loss is viable and what approach makes sense for you right now.' },
             ].map((item, i) => (
               <div key={i} className="bg-stone-50 rounded-2xl p-6">
-                <h3 className="text-base font-bold text-white mb-3">{item.title}</h3>
+                <h3 className="text-base font-bold text-[#1A1A1A] mb-3">{item.title}</h3>
                 <p className="text-stone-500 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -119,9 +119,9 @@ export default function OnlineFatLossCoachingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-14">Frequently asked questions</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-6">
             {[
               { q: 'Is fat loss coaching just about diet?', a: 'No. Diet is one input in a larger biological system. Body Recode™ looks at stress, sleep, training load, hormonal patterns, and body composition signals, and builds a program around all of them.' },
@@ -131,8 +131,8 @@ export default function OnlineFatLossCoachingPage() {
               { q: 'How does online coaching actually work?', a: 'Your full intake is completed through a structured online assessment. Everything else, your program, nutrition guidelines, synthesis documents, weekly check-ins, and progress data, is delivered through your dedicated client portal. Coaching communication happens directly with Kade throughout.' },
               { q: 'How do I get started?', a: 'The starting point is the free Performance Check-In. It takes a few minutes and gives you a clear picture of where your body is right now and what approach makes sense for you.' },
             ].map((item, i) => (
-              <div key={i} className="border-b border-stone-200 pb-6">
-                <h3 className="text-base font-bold text-white mb-2">{item.q}</h3>
+              <div key={i} className="border-b border-stone-800 pb-6">
+                <h3 className="text-base font-bold text-[#1A1A1A] mb-2">{item.q}</h3>
                 <p className="text-stone-500 text-base leading-relaxed">{item.a}</p>
               </div>
             ))}
@@ -141,9 +141,9 @@ export default function OnlineFatLossCoachingPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-black py-32 px-5 border-t border-stone-800">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-4">
             Find out what&apos;s actually holding your progress back
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed mb-12 max-w-xl mx-auto">
@@ -151,7 +151,7 @@ export default function OnlineFatLossCoachingPage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-[#1A1A1A] font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free check-in →
           </Link>

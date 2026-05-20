@@ -369,9 +369,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                           {[1, 2, 3].map(n => (
                             <div key={n} className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold"
                               style={{
-                                background: n === s ? bg : 'rgba(28,25,23,1)',
-                                border: `1.5px solid ${n === s ? color : '#2c2826'}`,
-                                color: n === s ? color : '#4A4A4A',
+                                background: n === s ? bg : '#F4F4F4',
+                                border: `1.5px solid ${n === s ? color : '#E5E5E5'}`,
+                                color: n === s ? color : '#6B6B6B',
                               }}>
                               {n}
                             </div>
@@ -390,24 +390,24 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <div className="space-y-3">
               <p className="text-sm text-[#6B6B6B] leading-relaxed border-t border-[#E5E5E5] pt-4">{STATE_GUIDANCE[scorecardState].primaryFocus}</p>
               <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg p-3 bg-red-950/20 border border-red-900/30">
+                <div className="rounded-lg p-3 bg-red-50 border border-red-200">
                   <p className="text-xs font-bold text-red-700 uppercase tracking-wider mb-2">Stop doing</p>
                   <ul className="space-y-1.5">
                     {STATE_GUIDANCE[scorecardState].stopDoing.map((item, i) => (
                       <li key={i} className="flex gap-2 items-start">
-                        <span className="text-red-500 mt-0.5 shrink-0">·</span>
-                        <span className="text-xs text-[#6B6B6B] leading-relaxed">{item}</span>
+                        <span className="text-red-700 mt-0.5 shrink-0">·</span>
+                        <span className="text-xs text-[#3A3A3A] leading-relaxed">{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="rounded-lg p-3 bg-blue-950/20 border border-blue-950/30">
-                  <p className="text-xs font-bold text-blue-500 uppercase tracking-wider mb-2">Start doing</p>
+                <div className="rounded-lg p-3 bg-blue-50 border border-blue-200">
+                  <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Start doing</p>
                   <ul className="space-y-1.5">
                     {STATE_GUIDANCE[scorecardState].startDoing.map((item, i) => (
                       <li key={i} className="flex gap-2 items-start">
-                        <span className="text-blue-500 mt-0.5 shrink-0">·</span>
-                        <span className="text-xs text-[#6B6B6B] leading-relaxed">{item}</span>
+                        <span className="text-blue-700 mt-0.5 shrink-0">·</span>
+                        <span className="text-xs text-[#3A3A3A] leading-relaxed">{item}</span>
                       </li>
                     ))}
                   </ul>

@@ -61,7 +61,7 @@ export default function CoachingGuidePage() {
         {/* Sidebar */}
         <aside className="hidden lg:block w-48 shrink-0">
           <div className="sticky top-16">
-            <p className="text-[9px] text-stone-600 uppercase tracking-[0.2em] font-semibold mb-5">Contents</p>
+            <p className="text-[9px] text-stone-400 uppercase tracking-[0.2em] font-semibold mb-5">Contents</p>
             <nav className="space-y-0.5">
               {sections.map(({ id, label }) => (
                 <button
@@ -69,8 +69,8 @@ export default function CoachingGuidePage() {
                   onClick={() => scrollTo(id)}
                   className={`block w-full text-left text-xs leading-snug px-2 py-1.5 rounded transition-colors ${
                     activeId === id
-                      ? 'text-teal-400 bg-teal-400/5'
-                      : 'text-stone-500 hover:text-stone-300'
+                      ? 'text-blue-500 bg-blue-500/5'
+                      : 'text-stone-500 hover:text-stone-700'
                   }`}
                 >
                   {label}
@@ -85,17 +85,17 @@ export default function CoachingGuidePage() {
 
           {/* Header */}
           <div className="mb-16">
-            <p className="text-[10px] text-stone-600 uppercase tracking-[0.25em] font-semibold mb-10">Body Recode&trade; &middot; Performance Coaching</p>
-            <div className="w-8 h-px bg-teal-400/60 mb-8" />
-            <h1 className="text-4xl font-light text-white mb-4 leading-tight tracking-tight">Active Coaching<br />Client Guide</h1>
-            <p className="text-stone-400 text-base leading-relaxed">Your roadmap for how coaching works, how we train, and how progress is built.</p>
+            <p className="text-[10px] text-stone-400 uppercase tracking-[0.25em] font-semibold mb-10">Body Recode&trade; &middot; Performance Coaching</p>
+            <div className="w-8 h-px bg-blue-500/60 mb-8" />
+            <h1 className="text-4xl font-light text-[#1A1A1A] mb-4 leading-tight tracking-tight">Active Coaching<br />Client Guide</h1>
+            <p className="text-stone-600 text-base leading-relaxed">Your roadmap for how coaching works, how we train, and how progress is built.</p>
           </div>
 
-          <div className="border-l-2 border-teal-400/30 pl-6 mb-16">
-            <p className="text-stone-400 text-sm leading-relaxed italic">This guide explains the structure, expectations, and process you will follow throughout your coaching journey inside the Body Recode&trade; system.</p>
+          <div className="border-l-2 border-blue-500/30 pl-6 mb-16">
+            <p className="text-stone-600 text-sm leading-relaxed italic">This guide explains the structure, expectations, and process you will follow throughout your coaching journey inside the Body Recode&trade; system.</p>
           </div>
 
-          <div className="space-y-20 text-stone-300 text-[15px] leading-relaxed">
+          <div className="space-y-20 text-stone-700 text-[15px] leading-relaxed">
 
             <GuideSection id="coach" title="A Note from Your Coach">
               <div className="flex items-center gap-5 mb-6">
@@ -107,7 +107,7 @@ export default function CoachingGuidePage() {
                   className="rounded-full object-cover object-top shrink-0"
                 />
                 <div>
-                  <p className="text-white font-semibold text-sm">Kade Dunstone</p>
+                  <p className="text-[#1A1A1A] font-semibold text-sm">Kade Dunstone</p>
                   <p className="text-stone-500 text-xs mt-0.5">Performance Coach · Founder, Body Recode&trade;</p>
                 </div>
               </div>
@@ -196,7 +196,7 @@ export default function CoachingGuidePage() {
                 { label: 'Optimisation', desc: 'A position of balanced capacity where adaptation can accumulate predictably.' },
                 { label: 'Post-Optimisation', desc: 'A higher level of structural resilience where controlled progression can occur with greater tolerance.' },
               ]} />
-              <p>Once state is clarified, the question shifts from <em>&ldquo;How hard can we push?&rdquo;</em> to <strong className="text-white">&ldquo;What does this body currently have the capacity to sustain and adapt to?&rdquo;</strong></p>
+              <p>Once state is clarified, the question shifts from <em>&ldquo;How hard can we push?&rdquo;</em> to <strong className="text-[#1A1A1A]">&ldquo;What does this body currently have the capacity to sustain and adapt to?&rdquo;</strong></p>
               <Emphasis>Interpretation precedes exposure. The CFFS is that interpretation.</Emphasis>
             </GuideSection>
 
@@ -311,7 +311,7 @@ export default function CoachingGuidePage() {
             </GuideSection>
 
             <GuideSection id="communication" title="Communication Standards and WhatsApp Protocol">
-              <p><strong className="text-white">WhatsApp is the required communication platform for all clients.</strong> Every client must download and maintain active access for the duration of coaching.</p>
+              <p><strong className="text-[#1A1A1A]">WhatsApp is the required communication platform for all clients.</strong> Every client must download and maintain active access for the duration of coaching.</p>
               <Emphasis>Communication inside this system is structured. It is not open-ended or reactive.</Emphasis>
               <p>The primary formal communication window each week is the Check-In Window (6:00pm Friday to 6:30pm Sunday). All weekly analysis, CFWS generation, and adjustments occur after this window closes.</p>
               <p>Standard weekday response time is within 24 hours. Weekend responses outside the Check-In Window may extend beyond this.</p>
@@ -322,7 +322,7 @@ export default function CoachingGuidePage() {
                 'Minor training questions',
                 'Non-urgent guidance',
               ]} />
-              <p>WhatsApp is <strong className="text-white">not</strong> designed for real-time emotional processing, immediate program overhauls, crisis intervention, medical advice, or rapid reaction to temporary fluctuations.</p>
+              <p>WhatsApp is <strong className="text-[#1A1A1A]">not</strong> designed for real-time emotional processing, immediate program overhauls, crisis intervention, medical advice, or rapid reaction to temporary fluctuations.</p>
               <p>When a concern arises, it is noted. When the Check-In Window opens, it is assessed properly within the CFWS process.</p>
               <Emphasis>Boundaries do not reduce support. They protect the quality of it. This is a high-integrity coaching model, not a high-frequency messaging one.</Emphasis>
             </GuideSection>
@@ -333,21 +333,21 @@ export default function CoachingGuidePage() {
               <p>As your coach, I am invested in this process. Your foundational synthesis, your exposure sequencing, and your weekly interpretation are not automated decisions. They are deliberate.</p>
               <Emphasis>This is my craft. This is my discipline. This is my passion.</Emphasis>
               <div className="pt-4">
-                <div className="w-8 h-px bg-teal-400/30 mb-8" />
-                <div className="space-y-2 text-stone-400 text-sm leading-relaxed">
+                <div className="w-8 h-px bg-blue-500/30 mb-8" />
+                <div className="space-y-2 text-stone-600 text-sm leading-relaxed">
                   <p>From this point forward, your role is simple.</p>
-                  <p className="text-white font-medium">Execute consistently.</p>
-                  <p className="text-white font-medium">Communicate honestly.</p>
-                  <p className="text-white font-medium">Respect the cadence.</p>
-                  <p className="text-stone-400 mt-4 italic">The system will handle the rest.</p>
-                  <p className="text-teal-400/70 font-semibold mt-2">Welcome to Active Coaching.</p>
+                  <p className="text-[#1A1A1A] font-medium">Execute consistently.</p>
+                  <p className="text-[#1A1A1A] font-medium">Communicate honestly.</p>
+                  <p className="text-[#1A1A1A] font-medium">Respect the cadence.</p>
+                  <p className="text-stone-600 mt-4 italic">The system will handle the rest.</p>
+                  <p className="text-blue-500/70 font-semibold mt-2">Welcome to Active Coaching.</p>
                 </div>
               </div>
             </GuideSection>
 
           </div>
 
-          <p className="text-[10px] text-stone-700 uppercase tracking-[0.25em] mt-24">Body Recode&trade;</p>
+          <p className="text-[10px] text-stone-300 uppercase tracking-[0.25em] mt-24">Body Recode&trade;</p>
         </main>
       </div>
     </div>
@@ -358,9 +358,9 @@ function GuideSection({ id, title, children }: { id: string; title: string; chil
   return (
     <section id={id} className="scroll-mt-16">
       <div className="flex items-center gap-4 mb-6">
-        <div className="w-1 h-4 bg-teal-400/50 rounded-full shrink-0" />
+        <div className="w-1 h-4 bg-blue-500/50 rounded-full shrink-0" />
         <h2
-          className="text-xs font-semibold text-teal-400/70 uppercase tracking-[0.15em]"
+          className="text-xs font-semibold text-blue-500/70 uppercase tracking-[0.15em]"
           dangerouslySetInnerHTML={{ __html: title }}
         />
       </div>
@@ -373,7 +373,7 @@ function GuideSection({ id, title, children }: { id: string; title: string; chil
 
 function Emphasis({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-white font-medium leading-relaxed">{children}</p>
+    <p className="text-[#1A1A1A] font-medium leading-relaxed">{children}</p>
   )
 }
 
@@ -381,11 +381,11 @@ function BulletList({ items }: { items: { label: string; desc: string }[] }) {
   return (
     <div className="space-y-2 my-2">
       {items.map(item => (
-        <div key={item.label} className="flex items-start gap-3 bg-stone-900/80 border border-stone-800 rounded-lg px-4 py-3">
-          <div className="w-1.5 h-1.5 rounded-full bg-teal-400/60 mt-1.5 shrink-0" />
+        <div key={item.label} className="flex items-start gap-3 bg-stone-100/80 border border-stone-200 rounded-lg px-4 py-3">
+          <div className="w-1.5 h-1.5 rounded-full bg-blue-500/60 mt-1.5 shrink-0" />
           <div>
-            <span className="text-white font-medium text-sm">{item.label}</span>
-            <span className="text-stone-400 text-sm">: {item.desc}</span>
+            <span className="text-[#1A1A1A] font-medium text-sm">{item.label}</span>
+            <span className="text-stone-600 text-sm">: {item.desc}</span>
           </div>
         </div>
       ))}
@@ -397,8 +397,8 @@ function SimpleList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-1 my-2 pl-1">
       {items.map(item => (
-        <li key={item} className="flex items-start gap-2 text-stone-300 text-sm">
-          <div className="w-1 h-1 rounded-full bg-teal-400/50 mt-2 shrink-0" />
+        <li key={item} className="flex items-start gap-2 text-stone-700 text-sm">
+          <div className="w-1 h-1 rounded-full bg-blue-500/50 mt-2 shrink-0" />
           {item}
         </li>
       ))}
@@ -408,9 +408,9 @@ function SimpleList({ items }: { items: string[] }) {
 
 function PhaseBlock({ week, desc }: { week: string; desc: string }) {
   return (
-    <div className="bg-stone-900/80 border border-stone-800 rounded-lg px-4 py-3">
-      <p className="text-teal-400/80 text-xs font-semibold uppercase tracking-wider mb-1">{week}</p>
-      <p className="text-stone-300 text-sm leading-relaxed">{desc}</p>
+    <div className="bg-stone-100/80 border border-stone-200 rounded-lg px-4 py-3">
+      <p className="text-blue-500/80 text-xs font-semibold uppercase tracking-wider mb-1">{week}</p>
+      <p className="text-stone-700 text-sm leading-relaxed">{desc}</p>
     </div>
   )
 }

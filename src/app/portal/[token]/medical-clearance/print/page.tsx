@@ -43,15 +43,15 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
           <div className="space-y-4">
             <div>
               <p className="text-xs font-semibold text-[#999999] uppercase tracking-wide mb-1">Full Legal Name</p>
-              <p className="font-semibold text-base border-b border-stone-700 pb-1">{client.name}</p>
+              <p className="font-semibold text-base border-b border-stone-300 pb-1">{client.name}</p>
             </div>
             <div>
               <p className="text-xs font-semibold text-[#999999] uppercase tracking-wide mb-1">Date of Birth</p>
-              <div className="border-b border-stone-700 pb-1 h-6" />
+              <div className="border-b border-stone-300 pb-1 h-6" />
             </div>
             <div>
               <p className="text-xs font-semibold text-[#999999] uppercase tracking-wide mb-1">Primary Contact Details</p>
-              <p className="border-b border-stone-700 pb-1">{client.email ?? ''}</p>
+              <p className="border-b border-stone-300 pb-1">{client.email ?? ''}</p>
             </div>
           </div>
         </section>
@@ -60,9 +60,9 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
           <h2 className="font-bold text-base mb-3">3. Reason for Clearance Request</h2>
           <p className="text-[#999999] mb-3">Medical clearance has been requested due to the following self-declared condition or screening response:</p>
           <div className="space-y-2">
-            <div className="border-b border-stone-700 pb-1 h-6" />
-            <div className="border-b border-stone-700 pb-1 h-6" />
-            <div className="border-b border-stone-700 pb-1 h-6" />
+            <div className="border-b border-stone-300 pb-1 h-6" />
+            <div className="border-b border-stone-300 pb-1 h-6" />
+            <div className="border-b border-stone-300 pb-1 h-6" />
           </div>
           <p className="text-[#999999] text-xs mt-2">This request is precautionary and relates only to exercise participation eligibility.</p>
         </section>
@@ -80,14 +80,14 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
           <p className="text-[#999999] mt-2">No medical treatment or rehabilitation services are provided. Training exposure is adjusted according to tolerance and any medical limitations specified below.</p>
         </section>
 
-        <section className="border border-stone-700 rounded-lg p-5">
+        <section className="border border-stone-300 rounded-lg p-5">
           <h2 className="font-bold text-base mb-3">5. Medical Clearance Declaration <span className="font-normal text-[#999999]">(Completed by Medical Practitioner)</span></h2>
           <p className="text-[#999999] mb-4">I confirm that I am a qualified medical practitioner authorised to provide exercise participation clearance.</p>
           <div className="space-y-4">
             {['Medical Practitioner Name', 'Provider Number', 'Practice Name', 'Contact Details'].map(label => (
               <div key={label}>
                 <p className="text-xs font-semibold text-[#999999] uppercase tracking-wide mb-1">{label}</p>
-                <div className="border-b border-stone-700 pb-1 h-6" />
+                <div className="border-b border-stone-300 pb-1 h-6" />
               </div>
             ))}
           </div>
@@ -97,8 +97,8 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
               <label className="flex items-center gap-3"><input type="checkbox" className="w-4 h-4" /><span>Cleared for participation without restriction</span></label>
               <label className="flex items-center gap-3"><input type="checkbox" className="w-4 h-4" /><span>Cleared for participation with the following limitations or precautions:</span></label>
               <div className="ml-7 space-y-2">
-                <div className="border-b border-stone-700 pb-1 h-6" />
-                <div className="border-b border-stone-700 pb-1 h-6" />
+                <div className="border-b border-stone-300 pb-1 h-6" />
+                <div className="border-b border-stone-300 pb-1 h-6" />
               </div>
               <label className="flex items-center gap-3"><input type="checkbox" className="w-4 h-4" /><span>Not cleared for progressive exercise participation at this time</span></label>
             </div>
@@ -115,11 +115,11 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
           <div className="grid grid-cols-2 gap-6">
             <div>
               <p className="text-xs font-semibold text-[#999999] uppercase tracking-wide mb-1">Effective Date</p>
-              <div className="border-b border-stone-700 pb-1 h-6" />
+              <div className="border-b border-stone-300 pb-1 h-6" />
             </div>
             <div>
               <p className="text-xs font-semibold text-[#999999] uppercase tracking-wide mb-1">Review / Expiry Date</p>
-              <div className="border-b border-stone-700 pb-1 h-6" />
+              <div className="border-b border-stone-300 pb-1 h-6" />
             </div>
           </div>
         </section>
@@ -130,16 +130,16 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
           <div className="grid grid-cols-2 gap-6">
             <div>
               <p className="text-xs font-semibold text-[#999999] uppercase tracking-wide mb-1">Signature</p>
-              <div className="border-b border-stone-700 pb-1 h-10" />
+              <div className="border-b border-stone-300 pb-1 h-10" />
             </div>
             <div>
               <p className="text-xs font-semibold text-[#999999] uppercase tracking-wide mb-1">Date</p>
-              <div className="border-b border-stone-700 pb-1 h-10" />
+              <div className="border-b border-stone-300 pb-1 h-10" />
             </div>
           </div>
         </section>
 
-        <div className="border-t border-stone-800 pt-6 text-xs text-[#6B6B6B]">
+        <div className="border-t border-stone-200 pt-6 text-xs text-[#6B6B6B]">
           <p>Body Recode™ | Kade Dunstone | ABN 90 535 525 708 | Anytime Fitness Newstead, Brisbane</p>
         </div>
       </div>

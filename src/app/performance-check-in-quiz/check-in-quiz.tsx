@@ -147,13 +147,13 @@ export default function CheckInQuiz() {
             </svg>
           </div>
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Received</p>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight mb-4">Thank you for taking the time.</h1>
+          <h1 className="text-2xl font-extrabold text-[#1A1A1A] tracking-tight mb-4">Thank you for taking the time.</h1>
           <p className="text-stone-500 text-base leading-relaxed mb-8">
             Your submission is being reviewed. Your report will be sent to your email within one business day. There is nothing further required.
           </p>
           <a
             href="https://bodyrecode.au"
-            className="inline-block px-6 py-3 bg-[#1B6DFC] text-white text-sm font-bold rounded-lg hover:bg-[#1056D6] transition-colors"
+            className="inline-block px-6 py-3 bg-[#1B6DFC] text-[#1A1A1A] text-sm font-bold rounded-lg hover:bg-[#1056D6] transition-colors"
           >
             Return to home
           </a>
@@ -166,23 +166,23 @@ export default function CheckInQuiz() {
     const canSubmit = name.trim().length > 0 && email.trim().length > 0
     return (
       <div className="min-h-screen bg-black">
-        <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-100 z-20">
+        <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-900 z-20">
           <div className="h-full bg-[#1B6DFC] w-full" />
         </div>
 
-        <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
-          <a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.15em] text-white uppercase hover:text-stone-600 transition-colors">Body Recode™</a>
+        <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-stone-800 px-5 py-3 flex items-center justify-between">
+          <a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.15em] text-[#1A1A1A] uppercase hover:text-stone-400 transition-colors">Body Recode™</a>
           <p className="text-[11px] font-medium text-stone-500">Last step</p>
         </div>
 
         <div className="max-w-2xl mx-auto px-5 pt-12 pb-32">
           <div className="mb-10">
             <div className="flex items-center gap-2 mb-4">
-              <div className="h-px flex-1 bg-stone-100" />
-              <p className="text-[10px] font-bold tracking-[0.15em] text-stone-400 uppercase">100% complete</p>
-              <div className="h-px flex-1 bg-stone-100" />
+              <div className="h-px flex-1 bg-stone-900" />
+              <p className="text-[10px] font-bold tracking-[0.15em] text-stone-600 uppercase">100% complete</p>
+              <div className="h-px flex-1 bg-stone-900" />
             </div>
-            <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-snug mb-2">
+            <h2 className="text-xl md:text-2xl font-bold text-[#1A1A1A] tracking-tight leading-snug mb-2">
               Where should we send your results?
             </h2>
             <p className="text-stone-500 text-sm leading-relaxed">
@@ -192,33 +192,33 @@ export default function CheckInQuiz() {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-[13px] font-semibold text-stone-600 mb-2 uppercase tracking-wider">Name</label>
+              <label className="block text-[13px] font-semibold text-stone-400 mb-2 uppercase tracking-wider">Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="Your full name"
-                className="w-full bg-stone-50 border border-stone-200 rounded-2xl px-5 py-4 text-[15px] text-white placeholder-white/20 focus:outline-none focus:border-[#1B6DFC]/50 focus:bg-stone-100 transition-all"
+                className="w-full bg-stone-50 border border-stone-800 rounded-2xl px-5 py-4 text-[15px] text-[#1A1A1A] placeholder-white/20 focus:outline-none focus:border-[#1B6DFC]/50 focus:bg-stone-900 transition-all"
               />
             </div>
             <div>
-              <label className="block text-[13px] font-semibold text-stone-600 mb-2 uppercase tracking-wider">Email</label>
+              <label className="block text-[13px] font-semibold text-stone-400 mb-2 uppercase tracking-wider">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="w-full bg-stone-50 border border-stone-200 rounded-2xl px-5 py-4 text-[15px] text-white placeholder-white/20 focus:outline-none focus:border-[#1B6DFC]/50 transition-all"
+                className="w-full bg-stone-50 border border-stone-800 rounded-2xl px-5 py-4 text-[15px] text-[#1A1A1A] placeholder-white/20 focus:outline-none focus:border-[#1B6DFC]/50 transition-all"
               />
             </div>
             <div>
-              <label className="block text-[13px] font-semibold text-stone-600 mb-2 uppercase tracking-wider">Mobile <span className="text-stone-400 font-normal normal-case tracking-normal">(optional)</span></label>
+              <label className="block text-[13px] font-semibold text-stone-400 mb-2 uppercase tracking-wider">Mobile <span className="text-stone-600 font-normal normal-case tracking-normal">(optional)</span></label>
               <input
                 type="tel"
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
                 placeholder="04xx xxx xxx"
-                className="w-full bg-stone-50 border border-stone-200 rounded-2xl px-5 py-4 text-[15px] text-white placeholder-white/20 focus:outline-none focus:border-[#1B6DFC]/50 transition-all"
+                className="w-full bg-stone-50 border border-stone-800 rounded-2xl px-5 py-4 text-[15px] text-[#1A1A1A] placeholder-white/20 focus:outline-none focus:border-[#1B6DFC]/50 transition-all"
               />
             </div>
           </div>
@@ -230,12 +230,12 @@ export default function CheckInQuiz() {
           )}
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-stone-200 px-5 py-4 z-10">
+        <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-stone-800 px-5 py-4 z-10">
           <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
             <button
               type="button"
               onClick={back}
-              className="text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-600"
+              className="text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-400"
             >
               ← Back
             </button>
@@ -243,7 +243,7 @@ export default function CheckInQuiz() {
               type="button"
               onClick={handleSubmit}
               disabled={!canSubmit || submitting}
-              className="flex-1 bg-[#1B6DFC] text-white text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-30 disabled:cursor-not-allowed tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-[#1A1A1A] text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-30 disabled:cursor-not-allowed tracking-tight"
             >
               {submitting ? 'Sending…' : 'Submit check-in'}
             </button>
@@ -255,31 +255,31 @@ export default function CheckInQuiz() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-100 z-20">
+      <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-900 z-20">
         <div
           className="h-full bg-[#1B6DFC] transition-all duration-500 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
 
-      <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
-        <p className="text-[11px] font-bold tracking-[0.15em] text-white uppercase">Body Recode™</p>
+      <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-stone-800 px-5 py-3 flex items-center justify-between">
+        <p className="text-[11px] font-bold tracking-[0.15em] text-[#1A1A1A] uppercase">Body Recode™</p>
         <p className="text-[11px] font-medium text-stone-500">{current + 1} / {QUESTIONS.length}</p>
       </div>
 
       <div className="max-w-2xl mx-auto px-5 pt-12 pb-32">
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-4">
-            <div className="h-px flex-1 bg-stone-100" />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-stone-400 uppercase">{progress}% complete</p>
-            <div className="h-px flex-1 bg-stone-100" />
+            <div className="h-px flex-1 bg-stone-900" />
+            <p className="text-[10px] font-bold tracking-[0.15em] text-stone-600 uppercase">{progress}% complete</p>
+            <div className="h-px flex-1 bg-stone-900" />
           </div>
           {current === 0 && (
             <p className="text-sm text-stone-500 leading-relaxed mb-5">
               This short performance check-in is designed to help you notice patterns in how training, recovery, and day-to-day demands currently fit together for you. There are no right or wrong answers and you may stop at any point.
             </p>
           )}
-          <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-snug">
+          <h2 className="text-xl md:text-2xl font-bold text-[#1A1A1A] tracking-tight leading-snug">
             {question.text}
           </h2>
         </div>
@@ -295,8 +295,8 @@ export default function CheckInQuiz() {
                 onClick={() => selectAnswer(val)}
                 className={`w-full text-left px-5 py-4 rounded-2xl border transition-all duration-150 ${
                   selected
-                    ? 'border-[#1B6DFC] bg-blue-50 text-white'
-                    : 'border-stone-200 bg-stone-50 text-stone-600 hover:border-stone-300 hover:text-stone-700'
+                    ? 'border-[#1B6DFC] bg-blue-50 text-[#1A1A1A]'
+                    : 'border-stone-800 bg-stone-50 text-stone-400 hover:border-stone-700 hover:text-stone-300'
                 }`}
               >
                 <span className="text-[15px] leading-relaxed">{opt}</span>
@@ -306,12 +306,12 @@ export default function CheckInQuiz() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-stone-200 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-stone-800 px-5 py-4 z-10">
         <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
           <button
             type="button"
             onClick={back}
-            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-600 ${
+            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-400 ${
               current === 0 ? 'invisible' : ''
             }`}
           >
@@ -321,7 +321,7 @@ export default function CheckInQuiz() {
             type="button"
             onClick={next}
             disabled={!answered}
-            className="flex-1 bg-[#1B6DFC] text-white text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-30 disabled:cursor-not-allowed tracking-tight"
+            className="flex-1 bg-[#1B6DFC] text-[#1A1A1A] text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-30 disabled:cursor-not-allowed tracking-tight"
           >
             {current === QUESTIONS.length - 1 ? 'Next' : 'Next'}
           </button>

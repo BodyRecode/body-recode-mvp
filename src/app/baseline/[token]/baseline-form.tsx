@@ -168,13 +168,13 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
             </svg>
           </div>
           <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style={{ display: 'block', margin: '0 auto 20px' }} />
-          <h1 className="text-2xl font-bold text-white mb-3">Baseline received.</h1>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-3">Baseline received.</h1>
           <p className="text-[#6B6B6B] text-sm leading-relaxed">Baseline documentation protects interpretive integrity. It allows exposure to be guided by structure rather than emotion. This marks the starting calibration point of your coaching arc.</p>
           <p className="text-[#999999] text-xs mt-4 mb-7">Your coach will review your documentation and your Deliberate Start Window will begin shortly.</p>
           {portalHref && (
             <a
               href={portalHref}
-              className="inline-flex items-center gap-2 bg-[#1B6DFC] text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#5390FF] transition-colors"
+              className="inline-flex items-center gap-2 bg-[#1B6DFC] text-[#1A1A1A] text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#5390FF] transition-colors"
             >
               Back to your portal
             </a>
@@ -188,8 +188,8 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <div className="w-10 h-10 border-2 border-teal-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-stone-400 text-sm">Submitting your baseline…</p>
+          <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-stone-600 text-sm">Submitting your baseline…</p>
         </div>
       </div>
     )
@@ -202,16 +202,16 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
 
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-2xl font-bold text-white mb-1">Baseline Documentation</h1>
-          <p className="text-stone-400 text-sm">Hi {firstName} — this is a formal calibration event, not a cosmetic assessment.</p>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-1">Baseline Documentation</h1>
+          <p className="text-stone-600 text-sm">Hi {firstName} — this is a formal calibration event, not a cosmetic assessment.</p>
         </div>
 
         {/* STEP: Intro */}
         {step === 'intro' && (
           <div className="space-y-6">
-            <div className="bg-stone-900 rounded-2xl p-6 space-y-4">
-              <h2 className="text-base font-semibold text-white">Before you start</h2>
-              <p className="text-stone-400 text-sm leading-relaxed">This documentation establishes your structural reference point for all future interpretation. It exists to protect interpretive precision — accuracy matters, appearance does not.</p>
+            <div className="bg-stone-100 rounded-2xl p-6 space-y-4">
+              <h2 className="text-base font-semibold text-[#1A1A1A]">Before you start</h2>
+              <p className="text-stone-600 text-sm leading-relaxed">This documentation establishes your structural reference point for all future interpretation. It exists to protect interpretive precision — accuracy matters, appearance does not.</p>
               <div className="space-y-3 pt-2">
                 {[
                   'Complete this in the morning, before food or training',
@@ -223,17 +223,17 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                   'Repeat all future re-captures at the same time of day under the same conditions',
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-teal-400/10 border border-teal-400/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-teal-400" />
+                    <div className="w-5 h-5 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                     </div>
-                    <p className="text-stone-300 text-sm">{item}</p>
+                    <p className="text-stone-700 text-sm">{item}</p>
                   </div>
                 ))}
               </div>
             </div>
             <button
               onClick={() => setStep('measurements')}
-              className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors"
+              className="w-full bg-blue-500 text-black text-sm font-bold py-4 rounded-2xl hover:bg-blue-300 transition-colors"
             >
               I'm ready — continue
             </button>
@@ -244,7 +244,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
         {step === 'measurements' && (
           <div className="space-y-6">
             <div className="space-y-1">
-              <h2 className="text-base font-semibold text-white">Measurements</h2>
+              <h2 className="text-base font-semibold text-[#1A1A1A]">Measurements</h2>
               <p className="text-stone-500 text-sm">Record in the units shown. Use a soft tape, don't compress tissue.</p>
             </div>
 
@@ -264,8 +264,8 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
               ].map(({ id, label, unit, value, set, helper }) => {
                 const hasError = missing.has(id)
                 return (
-                  <div key={label} className={`bg-stone-900 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
-                    <label className={`block text-sm font-medium mb-1 ${hasError ? 'text-red-700' : 'text-white'}`}>{label}</label>
+                  <div key={label} className={`bg-stone-100 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
+                    <label className={`block text-sm font-medium mb-1 ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>{label}</label>
                     <p className="text-stone-500 text-xs mb-3">{helper}</p>
                     <div className="flex items-center gap-3">
                       <input
@@ -275,9 +275,9 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                         value={value}
                         onChange={e => { set(e.target.value); clearMissing(id) }}
                         placeholder="0.0"
-                        className={`flex-1 bg-stone-800 text-white text-base rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${hasError ? 'border-red-400' : 'border-transparent'}`}
+                        className={`flex-1 bg-stone-200 text-[#1A1A1A] text-base rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/50 placeholder-stone-400 border ${hasError ? 'border-red-400' : 'border-transparent'}`}
                       />
-                      <span className="text-stone-400 text-sm font-medium w-8">{unit}</span>
+                      <span className="text-stone-600 text-sm font-medium w-8">{unit}</span>
                     </div>
                     {hasError && <p className="text-red-700 text-xs mt-2 font-medium">Please enter a value.</p>}
                   </div>
@@ -287,7 +287,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
 
             <button
               onClick={handleContinueMeasurements}
-              className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors"
+              className="w-full bg-blue-500 text-black text-sm font-bold py-4 rounded-2xl hover:bg-blue-300 transition-colors"
             >
               Continue to photos
             </button>
@@ -298,7 +298,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
         {step === 'photos' && (
           <div className="space-y-6">
             <div className="space-y-1">
-              <h2 className="text-base font-semibold text-white">Composition documentation</h2>
+              <h2 className="text-base font-semibold text-[#1A1A1A]">Composition documentation</h2>
               <p className="text-stone-500 text-sm">Three positions required. Images must reflect structural reality, not posed presentation.</p>
             </div>
 
@@ -309,9 +309,9 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
               </div>
             )}
 
-            <div className="bg-stone-900 rounded-2xl p-5 space-y-2">
-              <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider">Photo standards</p>
-              <ul className="space-y-1.5 text-stone-400 text-sm">
+            <div className="bg-stone-100 rounded-2xl p-5 space-y-2">
+              <p className="text-xs font-semibold text-stone-600 uppercase tracking-wider">Photo standards</p>
+              <ul className="space-y-1.5 text-stone-600 text-sm">
                 <li>· Minimal, consistent clothing — neutral colours, no compression garments</li>
                 <li>· Natural light where possible — face the light source</li>
                 <li>· Camera at mid-torso height, level angle, full body in frame</li>
@@ -328,31 +328,31 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                 const hasError = missing.has(id)
                 const isProcessing = processing.has(id)
                 return (
-                  <div key={label} className={`bg-stone-900 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
-                    <p className={`text-sm font-medium mb-3 ${hasError ? 'text-red-700' : 'text-white'}`}>{label}</p>
+                  <div key={label} className={`bg-stone-100 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
+                    <p className={`text-sm font-medium mb-3 ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>{label}</p>
                     {isProcessing ? (
                       <div className="flex items-center gap-3 py-2">
-                        <div className="w-5 h-5 border-2 border-teal-400 border-t-transparent rounded-full animate-spin" />
-                        <span className="text-stone-400 text-sm">Optimising photo...</span>
+                        <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                        <span className="text-stone-600 text-sm">Optimising photo...</span>
                       </div>
                     ) : file ? (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-8 h-8 rounded-lg bg-teal-400/10 flex items-center justify-center flex-shrink-0">
-                            <svg className="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                            <svg className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                           </div>
                           <div className="min-w-0">
-                            <p className="text-stone-300 text-sm truncate max-w-[180px]">{file.name}</p>
+                            <p className="text-stone-700 text-sm truncate max-w-[180px]">{file.name}</p>
                             <p className="text-stone-500 text-xs">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                           </div>
                         </div>
-                        <button onClick={() => set(null)} className="text-stone-500 text-xs hover:text-white">Remove</button>
+                        <button onClick={() => set(null)} className="text-stone-500 text-xs hover:text-[#1A1A1A]">Remove</button>
                       </div>
                     ) : (
                       <label className="block cursor-pointer">
-                        <div className={`border-2 border-dashed rounded-xl p-6 text-center hover:border-teal-400/50 transition-colors ${hasError ? 'border-red-400' : 'border-stone-700'}`}>
+                        <div className={`border-2 border-dashed rounded-xl p-6 text-center hover:border-blue-500/50 transition-colors ${hasError ? 'border-red-400' : 'border-stone-300'}`}>
                           <svg className="w-6 h-6 text-stone-500 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
                           </svg>
@@ -377,12 +377,12 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
 
             <button
               onClick={handleSubmit}
-              className="w-full bg-teal-400 text-black text-sm font-bold py-4 rounded-2xl hover:bg-teal-300 transition-colors"
+              className="w-full bg-blue-500 text-black text-sm font-bold py-4 rounded-2xl hover:bg-blue-300 transition-colors"
             >
               Submit baseline
             </button>
 
-            <button onClick={() => { setMissing(new Set()); setValidationMessage(''); setStep('measurements') }} className="w-full text-stone-500 text-sm py-2 hover:text-white transition-colors">
+            <button onClick={() => { setMissing(new Set()); setValidationMessage(''); setStep('measurements') }} className="w-full text-stone-500 text-sm py-2 hover:text-[#1A1A1A] transition-colors">
               ← Back to measurements
             </button>
           </div>

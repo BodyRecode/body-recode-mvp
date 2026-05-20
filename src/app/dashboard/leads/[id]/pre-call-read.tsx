@@ -155,7 +155,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
       if (b.kind === 'script') {
         out.push(
           <div key={i} className="bg-blue-50 border-l-2 border-[#1B6DFC] rounded-r-lg pl-4 pr-4 py-3 ml-1">
-            <p className="text-[#e7e5e4] text-sm leading-relaxed whitespace-pre-line">&ldquo;{b.text}&rdquo;</p>
+            <p className="text-[#1A1A1A] text-sm leading-relaxed whitespace-pre-line">&ldquo;{b.text}&rdquo;</p>
           </div>
         )
         return
@@ -172,8 +172,8 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
 
       if (b.kind === 'conditional') {
         out.push(
-          <div key={i} className="bg-amber-400/5 border-l-2 border-amber-400/50 rounded-r-lg pl-4 pr-4 py-3 ml-1">
-            <p className="text-[#e7e5e4] text-sm leading-relaxed whitespace-pre-line">{b.text}</p>
+          <div key={i} className="bg-amber-50 border-l-2 border-amber-300 rounded-r-lg pl-4 pr-4 py-3 ml-1">
+            <p className="text-[#1A1A1A] text-sm leading-relaxed whitespace-pre-line">{b.text}</p>
           </div>
         )
         return
@@ -246,7 +246,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
           value={draft}
           onChange={e => setDraft(e.target.value)}
           placeholder="Paste or write the pre-call brief for this lead. Pattern, hot spot triggers, key lines..."
-          className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-4 text-[#e7e5e4] text-sm font-mono leading-relaxed focus:outline-none focus:border-[#D4D4D4] placeholder-[#4A4A4A]"
+          className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-4 text-[#1A1A1A] text-sm font-mono leading-relaxed focus:outline-none focus:border-[#D4D4D4] placeholder-[#999999]"
           style={{ minHeight: '480px' }}
         />
       ) : brief ? (
@@ -270,11 +270,11 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
 
           <div className="pt-4 mt-2 border-t border-[#E5E5E5] flex flex-wrap gap-3 text-[11px] text-[#4A4A4A]">
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-[#1B6DFC]/40 rounded-sm" />
+              <span className="w-2 h-2 bg-[#1B6DFC] rounded-sm" />
               What you say
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-amber-400/50 rounded-sm" />
+              <span className="w-2 h-2 bg-amber-400 rounded-sm" />
               Conditional response
             </span>
             <span className="flex items-center gap-1.5">

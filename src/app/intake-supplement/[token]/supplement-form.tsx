@@ -115,12 +115,12 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-stone-950 text-stone-200 flex items-center justify-center px-6 py-12">
+      <div className="min-h-screen bg-stone-50 text-stone-800 flex items-center justify-center px-6 py-12">
         <div className="max-w-md text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-black.png" alt="Body Recode" className="h-20 w-auto mx-auto mb-8" />
-          <h1 className="text-2xl font-semibold text-white mb-3">Thanks, that&apos;s in.</h1>
-          <p className="text-stone-400 text-sm leading-relaxed">
+          <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-3">Thanks, that&apos;s in.</h1>
+          <p className="text-stone-600 text-sm leading-relaxed">
             Your follow-up answers have been saved to your file. Kade will weave them into the next program and nutrition cycle.
           </p>
         </div>
@@ -129,15 +129,15 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-stone-950 text-stone-200">
+    <div className="min-h-screen bg-stone-50 text-stone-800">
       <div className="max-w-2xl mx-auto px-6 py-12">
         {/* Header */}
         <div className="mb-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-black.png" alt="Body Recode" className="h-20 w-auto mb-8" />
           <p className="text-[11px] font-bold text-[#1B6DFC] uppercase tracking-[0.2em] mb-2">Follow-up Intake</p>
-          <h1 className="text-2xl font-semibold text-white mb-3">Hi {clientName.split(' ')[0]}, just a few more questions.</h1>
-          <p className="text-stone-400 text-sm leading-relaxed">
+          <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-3">Hi {clientName.split(' ')[0]}, just a few more questions.</h1>
+          <p className="text-stone-600 text-sm leading-relaxed">
             We have added a few questions to the intake since you completed yours, covering medications and dietary context. They feed directly into how your program and nutrition plan are built. About 3 minutes. As with the original intake, there are no right or wrong answers, just answer honestly.
           </p>
         </div>
@@ -149,7 +149,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
             return (
               <div key={q.id} id={`q-${q.id}`}>
                 <label
-                  className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-700' : 'text-white'}`}
+                  className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}
                 >
                   {q.label}
                   {q.required && <span className="text-[#1B6DFC] ml-1">*</span>}
@@ -162,7 +162,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
                   onChange={e => setValue(q.id, e.target.value)}
                   rows={4}
                   placeholder="Your answer..."
-                  className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${hasError ? 'border-red-500/50' : 'border-stone-800'}`}
+                  className={`w-full bg-stone-200 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${hasError ? 'border-red-500/50' : 'border-stone-200'}`}
                 />
               </div>
             )
@@ -181,7 +181,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
           <button
             onClick={submit}
             disabled={submitting}
-            className="px-8 py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-xl transition-colors disabled:opacity-50"
+            className="px-8 py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-[#1A1A1A] font-bold text-sm rounded-xl transition-colors disabled:opacity-50"
           >
             {submitting ? 'Submitting…' : 'Submit follow-up'}
           </button>

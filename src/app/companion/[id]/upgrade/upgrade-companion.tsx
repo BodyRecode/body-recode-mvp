@@ -113,26 +113,26 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       {/* Header */}
-      <div className="border-b border-stone-800 px-6 py-4 flex items-center justify-between">
+      <div className="border-b border-stone-200 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href={`/dashboard/clients/${clientId}`} className="text-stone-500 hover:text-white text-sm transition-colors">
+          <Link href={`/dashboard/clients/${clientId}`} className="text-stone-500 hover:text-[#1A1A1A] text-sm transition-colors">
             ← {clientName}
           </Link>
-          <span className="text-stone-700">·</span>
-          <span className="text-stone-400 text-sm font-medium">Upgrade Conversation</span>
+          <span className="text-stone-300">·</span>
+          <span className="text-stone-600 text-sm font-medium">Upgrade Conversation</span>
         </div>
         <div className="flex items-center gap-3">
           {weekNumber !== null && (
             <span className="text-xs text-stone-500">Week {weekNumber}</span>
           )}
           {bodyState && (
-            <span className="text-xs px-2.5 py-1 rounded-full bg-stone-800 text-stone-300 border border-stone-700">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-stone-200 text-stone-700 border border-stone-300">
               {bodyState}
             </span>
           )}
           <span className={`text-xs px-2.5 py-1 rounded-full border font-semibold ${
             isThreeSession
-              ? 'bg-teal-900/30 text-teal-400 border-teal-800/50'
+              ? 'bg-blue-950/30 text-blue-500 border-blue-900/50'
               : 'bg-amber-900/30 text-amber-700 border-amber-800/50'
           }`}>
             {isThreeSession ? '3x - Already upgraded' : '2x - Upgrade candidate'}
@@ -151,9 +151,9 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
       )}
 
       {isThreeSession && (
-        <div className="mx-6 mt-6 bg-teal-950/40 border border-teal-800/50 rounded-xl px-5 py-4">
-          <p className="text-teal-300 text-sm font-medium">Already on 3x</p>
-          <p className="text-teal-400/70 text-xs mt-1">
+        <div className="mx-6 mt-6 bg-blue-950/40 border border-blue-900/50 rounded-xl px-5 py-4">
+          <p className="text-blue-300 text-sm font-medium">Already on 3x</p>
+          <p className="text-blue-500/70 text-xs mt-1">
             {clientName} is already on the 3-session package. This companion is for the 2x to 3x upgrade conversation.
           </p>
         </div>
@@ -168,12 +168,12 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
               onClick={() => setActiveStage(i)}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
                 i === activeStage
-                  ? 'bg-teal-500 text-black font-semibold'
-                  : 'text-stone-500 hover:text-white hover:bg-stone-800'
+                  ? 'bg-blue-500 text-black font-semibold'
+                  : 'text-stone-500 hover:text-[#1A1A1A] hover:bg-stone-200'
               }`}
             >
               <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                i === activeStage ? 'bg-black/20' : 'bg-stone-800 text-stone-400'
+                i === activeStage ? 'bg-black/20' : 'bg-stone-200 text-stone-600'
               }`}>{s.id}</span>
               <span className="hidden sm:block">{s.name}</span>
             </button>
@@ -184,15 +184,15 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-1">
             <h2 className="text-xl font-semibold">{stage.name}</h2>
-            <span className="text-xs text-stone-500 bg-stone-800 px-2.5 py-1 rounded-full">{stage.duration}</span>
+            <span className="text-xs text-stone-500 bg-stone-200 px-2.5 py-1 rounded-full">{stage.duration}</span>
           </div>
-          <p className="text-stone-400 text-sm">{stage.goal}</p>
+          <p className="text-stone-600 text-sm">{stage.goal}</p>
         </div>
 
         <div className="grid gap-5">
           {/* Prompts */}
           {stage.prompts && stage.prompts.length > 0 && (
-            <div className="bg-[#FFFFFF] border border-stone-800 rounded-xl p-5">
+            <div className="bg-[#FFFFFF] border border-stone-200 rounded-xl p-5">
               <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">Prompts</p>
               <ul className="space-y-2">
                 {stage.prompts.map((p, i) => {
@@ -208,12 +208,12 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
                         isReframe
                           ? 'text-violet-300 font-medium pl-0'
                           : isPath
-                          ? 'text-teal-400 font-semibold text-xs uppercase tracking-widest pt-1'
+                          ? 'text-blue-500 font-semibold text-xs uppercase tracking-widest pt-1'
                           : isAction
                           ? 'text-amber-700/80 text-xs pl-4'
                           : isIndent
-                          ? 'text-stone-400 pl-4'
-                          : 'text-stone-300'
+                          ? 'text-stone-600 pl-4'
+                          : 'text-stone-700'
                       }`}
                     >
                       {p}
@@ -226,9 +226,9 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
 
           {/* Tips */}
           {stage.tips && (
-            <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-4">
+            <div className="bg-stone-100/50 border border-stone-200 rounded-xl p-4">
               <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Coach Note</p>
-              <p className="text-stone-400 text-sm leading-relaxed">{stage.tips}</p>
+              <p className="text-stone-600 text-sm leading-relaxed">{stage.tips}</p>
             </div>
           )}
 
@@ -242,26 +242,26 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
         </div>
 
         {/* Navigation */}
-        <div className="flex items-center justify-between mt-8 pt-6 border-t border-stone-800">
+        <div className="flex items-center justify-between mt-8 pt-6 border-t border-stone-200">
           <button
             onClick={() => setActiveStage(i => Math.max(0, i - 1))}
             disabled={isFirst}
-            className="text-sm text-stone-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-4 py-2 rounded-lg hover:bg-stone-800"
+            className="text-sm text-stone-600 hover:text-[#1A1A1A] disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-4 py-2 rounded-lg hover:bg-stone-200"
           >
             ← Back
           </button>
-          <span className="text-xs text-stone-600">{activeStage + 1} / {STAGES.length}</span>
+          <span className="text-xs text-stone-400">{activeStage + 1} / {STAGES.length}</span>
           {isLast ? (
             <Link
               href={`/dashboard/clients/${clientId}`}
-              className="text-sm bg-teal-500 text-black font-semibold px-4 py-2 rounded-lg hover:bg-teal-400 transition-colors"
+              className="text-sm bg-blue-500 text-black font-semibold px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors"
             >
               Back to client
             </Link>
           ) : (
             <button
               onClick={() => setActiveStage(i => Math.min(STAGES.length - 1, i + 1))}
-              className="text-sm text-stone-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-stone-800"
+              className="text-sm text-stone-600 hover:text-[#1A1A1A] transition-colors px-4 py-2 rounded-lg hover:bg-stone-200"
             >
               Next →
             </button>
