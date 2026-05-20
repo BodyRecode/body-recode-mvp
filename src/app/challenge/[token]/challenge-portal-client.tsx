@@ -123,8 +123,8 @@ const SIGNAL_QUESTIONS = [
     id: 'sq1',
     question: 'Where do you most notice excess puffiness or softness in your body?',
     options: [
-      { value: 'a', label: 'Stomach and waist — above and below the navel' },
-      { value: 'b', label: 'Lower gut and abdomen — even when you have not eaten much' },
+      { value: 'a', label: 'Stomach and waist, above and below the navel' },
+      { value: 'b', label: 'Lower gut and abdomen, even when you have not eaten much' },
       { value: 'c', label: 'Hips, thighs, and lower body' },
       { value: 'd', label: 'Upper back, chest, or arms' },
     ],
@@ -174,7 +174,7 @@ const CHECKIN_PATTERNS: Record<string, { label: string; color: string; desc: str
   },
   'system-overload': {
     label: 'Androgen-Decline Pattern',
-    color: '#14b8a6',
+    color: '#1B6DFC',
     desc: 'Your body is in a state of declining androgen function. Testosterone is no longer signalling muscle maintenance and recovery the way it once did. The result is reduced drive, slower recovery, and a sense that capacity is slipping despite consistent effort. Commonly presenting in men from their mid-thirties onward, and frequently missed or attributed to ageing as a fixed variable rather than a manageable hormonal state. Progress requires reducing total system demand and rebuilding the inputs that support testosterone signalling.',
     actions: [
       'Protect deep sleep. Testosterone synthesis happens during deep sleep. It is non-negotiable. Prioritise it above everything.',
@@ -189,7 +189,7 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
 
   return (
     <div style={{
-      background: '#111110', border: '1px solid #1c1917',
+      background: '#FFFFFF', border: '1px solid #E5E5E5',
       borderRadius: '12px', overflow: 'hidden',
     }}>
       <div
@@ -201,20 +201,20 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
       >
         <div style={{
           width: '42px', height: '42px', borderRadius: '10px',
-          background: 'rgba(20,184,166,0.1)', border: '1px solid rgba(20,184,166,0.2)',
+          background: 'rgba(27, 109, 252,0.1)', border: '1px solid rgba(27, 109, 252,0.2)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           flexShrink: 0, fontSize: '20px',
         }}>
           {resource.icon}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', margin: '0 0 3px' }}>{resource.title}</p>
-          <p style={{ fontSize: '13px', color: '#78716c', margin: 0, lineHeight: 1.4 }}>{resource.desc}</p>
+          <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 3px' }}>{resource.title}</p>
+          <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.4 }}>{resource.desc}</p>
         </div>
         {resource.locked ? (
           <span style={{
             flexShrink: 0, padding: '8px 14px', borderRadius: '8px',
-            background: '#1c1917', color: '#44403c',
+            background: '#E5E5E5', color: '#D4D4D4',
             fontSize: '12px', fontWeight: 700, whiteSpace: 'nowrap',
           }}>
             🔒 Locked
@@ -227,7 +227,7 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
             onClick={e => e.stopPropagation()}
             style={{
               flexShrink: 0, padding: '8px 16px', borderRadius: '8px',
-              background: '#14b8a6', color: '#0c0a09',
+              background: '#1B6DFC', color: '#FFFFFF',
               fontSize: '12px', fontWeight: 700, textDecoration: 'none',
               whiteSpace: 'nowrap',
             }}
@@ -235,22 +235,22 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
             View
           </a>
         ) : (
-          <span style={{ fontSize: '13px', color: '#57534e', flexShrink: 0 }}>
+          <span style={{ fontSize: '13px', color: '#4A4A4A', flexShrink: 0 }}>
             {open ? '▲' : '▼'}
           </span>
         )}
       </div>
       {resource.steps && open && (
-        <div style={{ borderTop: '1px solid #1c1917', padding: '16px 20px' }}>
+        <div style={{ borderTop: '1px solid #E5E5E5', padding: '16px 20px' }}>
           {resource.steps.map((step, i) => (
             <div key={i} style={{ display: 'flex', gap: '12px', marginBottom: i < resource.steps!.length - 1 ? '12px' : 0 }}>
               <span style={{
-                fontSize: '11px', fontWeight: 800, color: '#14b8a6',
+                fontSize: '11px', fontWeight: 800, color: '#1B6DFC',
                 width: '20px', flexShrink: 0, paddingTop: '2px',
               }}>
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <p style={{ fontSize: '14px', color: '#a8a29e', margin: 0, lineHeight: 1.6 }}>{step}</p>
+              <p style={{ fontSize: '14px', color: '#999999', margin: 0, lineHeight: 1.6 }}>{step}</p>
             </div>
           ))}
         </div>
@@ -266,29 +266,29 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
       {/* Progress summary */}
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '20px 22px' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '20px 22px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
           Your 7-Day Progress
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '10px' }}>
-          <span style={{ fontSize: '32px', fontWeight: 900, color: '#14b8a6', letterSpacing: '-0.02em' }}>{progressScore}</span>
-          <span style={{ fontSize: '14px', color: '#57534e' }}>of 8 markers improving</span>
+          <span style={{ fontSize: '32px', fontWeight: 900, color: '#1B6DFC', letterSpacing: '-0.02em' }}>{progressScore}</span>
+          <span style={{ fontSize: '14px', color: '#4A4A4A' }}>of 8 markers improving</span>
         </div>
-        <div style={{ height: '6px', background: '#1c1917', borderRadius: '99px', overflow: 'hidden' }}>
-          <div style={{ height: '100%', background: '#14b8a6', borderRadius: '99px', width: `${(progressScore / 8) * 100}%`, transition: 'width 0.6s ease' }} />
+        <div style={{ height: '6px', background: '#E5E5E5', borderRadius: '99px', overflow: 'hidden' }}>
+          <div style={{ height: '100%', background: '#1B6DFC', borderRadius: '99px', width: `${(progressScore / 8) * 100}%`, transition: 'width 0.6s ease' }} />
         </div>
-        <p style={{ fontSize: '13px', color: '#57534e', marginTop: '10px', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '13px', color: '#4A4A4A', marginTop: '10px', lineHeight: 1.6 }}>
           {progressScore >= 6
             ? 'Strong week. Your system is responding well to the structure.'
             : progressScore >= 4
             ? 'Solid progress. The markers that have not shifted yet will often follow in week two.'
-            : 'Your body is still adjusting. Week two is typically where the clearer shifts happen — stay consistent.'}
+            : 'Your body is still adjusting. Week two is typically where the clearer shifts happen. Stay consistent.'}
         </p>
       </div>
 
       {/* Pattern result */}
       <div style={{
-        background: '#111110',
+        background: '#FFFFFF',
         border: `1px solid ${pattern.color}30`,
         borderLeft: `3px solid ${pattern.color}`,
         borderRadius: '12px', padding: '24px',
@@ -296,17 +296,17 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
         <p style={{ fontSize: '11px', fontWeight: 700, color: pattern.color, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
           Your Biological Pattern
         </p>
-        <p style={{ fontSize: '21px', fontWeight: 800, color: '#ffffff', marginBottom: '14px', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
+        <p style={{ fontSize: '21px', fontWeight: 800, color: '#1A1A1A', marginBottom: '14px', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
           {pattern.label}
         </p>
-        <p style={{ fontSize: '14px', color: '#a8a29e', lineHeight: 1.75, margin: 0 }}>
+        <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
           {pattern.desc}
         </p>
       </div>
 
       {/* Actions */}
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '22px' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '22px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '16px' }}>
           What to focus on this week
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -315,22 +315,22 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
               <span style={{ fontSize: '11px', fontWeight: 800, color: pattern.color, minWidth: '20px', paddingTop: '2px' }}>
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <p style={{ fontSize: '14px', color: '#a8a29e', lineHeight: 1.7, margin: 0 }}>{action}</p>
+              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>{action}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* CTA */}
-      <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.2)', borderRadius: '12px', padding: '22px' }}>
-        <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, margin: '0 0 16px' }}>
-          This is the beginning. The full picture — your complete biological map, your specific hormone drivers, and what is structurally driving your pattern — comes through the Body State Scorecard.
+      <div style={{ background: '#1A1A1A', border: '1px solid rgba(27, 109, 252,0.3)', borderRadius: '12px', padding: '22px' }}>
+        <p style={{ fontSize: '14px', color: '#B5CFFC', lineHeight: 1.7, margin: '0 0 16px' }}>
+          This is the beginning. The full picture, your complete biological map, your specific hormone drivers, and what is structurally driving your pattern, comes through the Body State Scorecard.
         </p>
         <a
           href="https://bodyrecode.au/scorecard"
           style={{
             display: 'inline-block', padding: '12px 22px', borderRadius: '8px',
-            background: '#14b8a6', color: '#0c0a09',
+            background: '#1B6DFC', color: '#FFFFFF',
             fontSize: '13px', fontWeight: 700, textDecoration: 'none',
           }}
         >
@@ -382,25 +382,25 @@ function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult:
   }
 
   const progressOptions = [
-    { value: 'better',    label: 'Improving',         color: '#14b8a6' },
-    { value: 'same',      label: 'About the same',    color: '#57534e' },
-    { value: 'challenge', label: 'Still a challenge', color: '#78716c' },
+    { value: 'better',    label: 'Improving',         color: '#1B6DFC' },
+    { value: 'same',      label: 'About the same',    color: '#4A4A4A' },
+    { value: 'challenge', label: 'Still a challenge', color: '#6B6B6B' },
   ]
 
   if (step === 'progress') {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
-          <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.7, margin: 0 }}>
-            Rate each marker honestly based on how it has changed since Day 1. There is no right answer — this is a reflection, not a test.
+        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
+          <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
+            Rate each marker honestly based on how it has changed since Day 1. There is no right answer. This is a reflection, not a test.
           </p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
           {PROGRESS_MARKERS.map(marker => (
-            <div key={marker.id} style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '16px 18px' }}>
+            <div key={marker.id} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '16px 18px' }}>
               <div style={{ marginBottom: '12px' }}>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: '#ffffff', margin: '0 0 2px' }}>{marker.label}</p>
-                <p style={{ fontSize: '12px', color: '#57534e', margin: 0 }}>{marker.sub}</p>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 2px' }}>{marker.label}</p>
+                <p style={{ fontSize: '12px', color: '#4A4A4A', margin: 0 }}>{marker.sub}</p>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
                 {progressOptions.map(opt => (
@@ -410,14 +410,14 @@ function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult:
                     style={{
                       flex: 1, padding: '8px 6px', borderRadius: '8px', border: 'none',
                       background: progress[marker.id] === opt.value
-                        ? opt.value === 'better' ? 'rgba(20,184,166,0.12)' : '#222220'
-                        : '#1c1917',
+                        ? opt.value === 'better' ? 'rgba(27, 109, 252,0.12)' : '#222220'
+                        : '#E5E5E5',
                       color: progress[marker.id] === opt.value
-                        ? opt.value === 'better' ? '#14b8a6' : '#ffffff'
-                        : '#57534e',
+                        ? opt.value === 'better' ? '#1B6DFC' : '#ffffff'
+                        : '#4A4A4A',
                       fontSize: '12px', fontWeight: 600, cursor: 'pointer',
                       outline: progress[marker.id] === opt.value
-                        ? opt.value === 'better' ? '1px solid rgba(20,184,166,0.3)' : '1px solid #44403c'
+                        ? opt.value === 'better' ? '1px solid rgba(27, 109, 252,0.3)' : '1px solid #D4D4D4'
                         : 'none',
                       transition: 'all 0.12s ease', lineHeight: 1.3, textAlign: 'center',
                     }}
@@ -434,8 +434,8 @@ function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult:
           disabled={!allProgressDone}
           style={{
             width: '100%', padding: '15px', borderRadius: '10px', border: 'none',
-            background: allProgressDone ? '#14b8a6' : '#1c1917',
-            color: allProgressDone ? '#0c0a09' : '#57534e',
+            background: allProgressDone ? '#1B6DFC' : '#E5E5E5',
+            color: allProgressDone ? '#FFFFFF' : '#4A4A4A',
             fontSize: '15px', fontWeight: 700,
             cursor: allProgressDone ? 'pointer' : 'not-allowed',
             transition: 'all 0.2s ease',
@@ -449,16 +449,16 @@ function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult:
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
-        <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.7, margin: 0 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
+        <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
           Two more questions. These help identify the biological pattern most active in your body right now.
         </p>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '24px' }}>
         {SIGNAL_QUESTIONS.map((q, qi) => (
           <div key={q.id}>
-            <p style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', marginBottom: '12px', lineHeight: 1.5 }}>
-              <span style={{ color: '#14b8a6', marginRight: '8px' }}>{qi + 1}.</span>
+            <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', marginBottom: '12px', lineHeight: 1.5 }}>
+              <span style={{ color: '#1B6DFC', marginRight: '8px' }}>{qi + 1}.</span>
               {q.question}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -468,9 +468,9 @@ function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult:
                   onClick={() => setSignals(s => ({ ...s, [q.id]: opt.value }))}
                   style={{
                     width: '100%', padding: '13px 16px', borderRadius: '10px',
-                    border: signals[q.id] === opt.value ? '1px solid rgba(20,184,166,0.4)' : '1px solid #1c1917',
-                    background: signals[q.id] === opt.value ? 'rgba(20,184,166,0.07)' : '#111110',
-                    color: signals[q.id] === opt.value ? '#ffffff' : '#78716c',
+                    border: signals[q.id] === opt.value ? '1px solid rgba(27, 109, 252,0.4)' : '1px solid #E5E5E5',
+                    background: signals[q.id] === opt.value ? 'rgba(27, 109, 252,0.07)' : '#FFFFFF',
+                    color: signals[q.id] === opt.value ? '#ffffff' : '#6B6B6B',
                     fontSize: '14px', textAlign: 'left', cursor: 'pointer',
                     transition: 'all 0.15s ease', lineHeight: 1.5,
                   }}
@@ -486,8 +486,8 @@ function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult:
         <button
           onClick={() => setStep('progress')}
           style={{
-            padding: '15px 20px', borderRadius: '10px', border: '1px solid #1c1917',
-            background: 'transparent', color: '#57534e',
+            padding: '15px 20px', borderRadius: '10px', border: '1px solid #E5E5E5',
+            background: 'transparent', color: '#4A4A4A',
             fontSize: '14px', fontWeight: 600, cursor: 'pointer',
           }}
         >
@@ -498,8 +498,8 @@ function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult:
           disabled={!allSignalsDone || submitting}
           style={{
             flex: 1, padding: '15px', borderRadius: '10px', border: 'none',
-            background: allSignalsDone ? '#14b8a6' : '#1c1917',
-            color: allSignalsDone ? '#0c0a09' : '#57534e',
+            background: allSignalsDone ? '#1B6DFC' : '#E5E5E5',
+            color: allSignalsDone ? '#FFFFFF' : '#4A4A4A',
             fontSize: '15px', fontWeight: 700,
             cursor: allSignalsDone && !submitting ? 'pointer' : 'not-allowed',
             transition: 'all 0.2s ease',
@@ -571,16 +571,16 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '20px' }}>
-        <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.7, margin: 0 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '20px' }}>
+        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
           The PAR-Q is a standard physical activity readiness questionnaire. Please answer all questions honestly. If you answer YES to any question, you must consult a doctor before beginning the training component of this challenge.
         </p>
       </div>
 
       {PARQ_QUESTIONS.map((q, i) => (
         <div key={q.id}>
-          <p style={{ fontSize: '14px', fontWeight: 600, color: '#d4cfc9', lineHeight: 1.6, marginBottom: '12px' }}>
-            <span style={{ color: '#14b8a6', marginRight: '8px', fontWeight: 800 }}>{i + 1}.</span>
+          <p style={{ fontSize: '14px', fontWeight: 600, color: '#3A3A3A', lineHeight: 1.6, marginBottom: '12px' }}>
+            <span style={{ color: '#1B6DFC', marginRight: '8px', fontWeight: 800 }}>{i + 1}.</span>
             {q.text}
           </p>
           <div style={{ display: 'flex', gap: '10px' }}>
@@ -591,14 +591,14 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
                 style={{
                   flex: 1, padding: '10px', borderRadius: '8px', border: 'none',
                   background: answers[q.id] === val
-                    ? val === 'no' ? 'rgba(20,184,166,0.12)' : 'rgba(239,68,68,0.12)'
-                    : '#1c1917',
+                    ? val === 'no' ? 'rgba(27, 109, 252,0.12)' : 'rgba(239,68,68,0.12)'
+                    : '#E5E5E5',
                   color: answers[q.id] === val
-                    ? val === 'no' ? '#14b8a6' : '#ef4444'
-                    : '#57534e',
+                    ? val === 'no' ? '#1B6DFC' : '#ef4444'
+                    : '#4A4A4A',
                   fontSize: '14px', fontWeight: 700, cursor: 'pointer',
                   outline: answers[q.id] === val
-                    ? val === 'no' ? '1px solid rgba(20,184,166,0.3)' : '1px solid rgba(239,68,68,0.3)'
+                    ? val === 'no' ? '1px solid rgba(27, 109, 252,0.3)' : '1px solid rgba(239,68,68,0.3)'
                     : '1px solid transparent',
                   textTransform: 'uppercase', letterSpacing: '0.05em',
                   transition: 'all 0.15s ease',
@@ -619,7 +619,7 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
           <p style={{ fontSize: '14px', color: '#ef4444', fontWeight: 700, marginBottom: '8px' }}>
             Medical clearance required
           </p>
-          <p style={{ fontSize: '13px', color: '#a8a29e', lineHeight: 1.7, margin: 0 }}>
+          <p style={{ fontSize: '13px', color: '#999999', lineHeight: 1.7, margin: 0 }}>
             You have answered YES to one or more questions. Please consult your doctor before beginning the physical training component of this challenge. You can still access all other challenge resources. If your doctor clears you, please contact us at kade@bodyrecode.au.
           </p>
         </div>
@@ -634,8 +634,8 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
         disabled={!allAnswered || anyYes || submitting}
         style={{
           width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
-          background: allAnswered && !anyYes ? '#14b8a6' : '#1c1917',
-          color: allAnswered && !anyYes ? '#0c0a09' : '#57534e',
+          background: allAnswered && !anyYes ? '#1B6DFC' : '#E5E5E5',
+          color: allAnswered && !anyYes ? '#FFFFFF' : '#4A4A4A',
           fontSize: '15px', fontWeight: 700,
           cursor: allAnswered && !anyYes && !submitting ? 'pointer' : 'not-allowed',
           transition: 'all 0.2s ease',
@@ -688,8 +688,8 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '20px' }}>
-        <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.7, margin: 0 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '20px' }}>
+        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
           Please read and confirm each declaration below. By submitting this form you acknowledge and agree to the following statements.
         </p>
       </div>
@@ -700,26 +700,26 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
           onClick={() => setChecks(c => ({ ...c, [d.id]: !c[d.id] }))}
           style={{
             display: 'flex', gap: '14px', alignItems: 'flex-start',
-            background: checks[d.id] ? 'rgba(20,184,166,0.06)' : '#111110',
-            border: checks[d.id] ? '1px solid rgba(20,184,166,0.25)' : '1px solid #1c1917',
+            background: checks[d.id] ? 'rgba(27, 109, 252,0.06)' : '#FFFFFF',
+            border: checks[d.id] ? '1px solid rgba(27, 109, 252,0.25)' : '1px solid #E5E5E5',
             borderRadius: '10px', padding: '16px', cursor: 'pointer',
             transition: 'all 0.15s ease',
           }}
         >
           <div style={{
             width: '20px', height: '20px', borderRadius: '5px', flexShrink: 0, marginTop: '1px',
-            background: checks[d.id] ? '#14b8a6' : '#1c1917',
-            border: checks[d.id] ? 'none' : '1px solid #44403c',
+            background: checks[d.id] ? '#1B6DFC' : '#E5E5E5',
+            border: checks[d.id] ? 'none' : '1px solid #D4D4D4',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'all 0.15s ease',
           }}>
             {checks[d.id] && (
               <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
-                <path d="M1 4L4.5 7.5L11 1" stroke="#0c0a09" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M1 4L4.5 7.5L11 1" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             )}
           </div>
-          <p style={{ fontSize: '14px', color: checks[d.id] ? '#d4cfc9' : '#78716c', lineHeight: 1.6, margin: 0, transition: 'color 0.15s ease' }}>
+          <p style={{ fontSize: '14px', color: checks[d.id] ? '#3A3A3A' : '#6B6B6B', lineHeight: 1.6, margin: 0, transition: 'color 0.15s ease' }}>
             {d.text}
           </p>
         </div>
@@ -734,8 +734,8 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
         disabled={!allChecked || submitting}
         style={{
           width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
-          background: allChecked ? '#14b8a6' : '#1c1917',
-          color: allChecked ? '#0c0a09' : '#57534e',
+          background: allChecked ? '#1B6DFC' : '#E5E5E5',
+          color: allChecked ? '#FFFFFF' : '#4A4A4A',
           fontSize: '15px', fontWeight: 700,
           cursor: allChecked && !submitting ? 'pointer' : 'not-allowed',
           transition: 'all 0.2s ease',
@@ -777,19 +777,19 @@ export default function ChallengePortalClient({
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#0c0a09', color: '#ffffff',
+      minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
 
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #1c1917', padding: '18px 24px' }}>
+      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px' }}>
         <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <img src="https://bodyrecode.au/logo-teal.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
           <div style={{
-            background: 'rgba(20,184,166,0.08)', border: '1px solid rgba(20,184,166,0.2)',
+            background: 'rgba(27, 109, 252,0.08)', border: '1px solid rgba(27, 109, 252,0.2)',
             borderRadius: '99px', padding: '5px 14px',
           }}>
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#14b8a6' }}>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: '#1B6DFC' }}>
               Day {currentDay} of 14
             </span>
           </div>
@@ -803,7 +803,7 @@ export default function ChallengePortalClient({
           <h1 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '6px' }}>
             Welcome back, {firstName}.
           </h1>
-          <p style={{ fontSize: '15px', color: '#57534e', margin: 0 }}>
+          <p style={{ fontSize: '15px', color: '#4A4A4A', margin: 0 }}>
             14-Day Body Decode Challenge
           </p>
         </div>
@@ -811,18 +811,18 @@ export default function ChallengePortalClient({
         {/* Progress bar */}
         <div style={{ marginBottom: '48px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#57534e', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Progress</span>
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#14b8a6' }}>{progress}%</span>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: '#4A4A4A', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Progress</span>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: '#1B6DFC' }}>{progress}%</span>
           </div>
-          <div style={{ height: '6px', background: '#1c1917', borderRadius: '99px', overflow: 'hidden' }}>
+          <div style={{ height: '6px', background: '#E5E5E5', borderRadius: '99px', overflow: 'hidden' }}>
             <div style={{
-              height: '100%', background: '#14b8a6', borderRadius: '99px',
+              height: '100%', background: '#1B6DFC', borderRadius: '99px',
               width: `${progress}%`, transition: 'width 0.4s ease',
             }} />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
-            <span style={{ fontSize: '11px', color: '#2a2826' }}>Day 1</span>
-            <span style={{ fontSize: '11px', color: '#2a2826' }}>Day 14</span>
+            <span style={{ fontSize: '11px', color: '#999999' }}>Day 1</span>
+            <span style={{ fontSize: '11px', color: '#999999' }}>Day 14</span>
           </div>
         </div>
 
@@ -839,7 +839,7 @@ export default function ChallengePortalClient({
                 <p style={{ fontSize: '14px', fontWeight: 700, color: '#fbbf24', marginBottom: '4px' }}>
                   Required before training
                 </p>
-                <p style={{ fontSize: '13px', color: '#a8a29e', lineHeight: 1.6, margin: 0 }}>
+                <p style={{ fontSize: '13px', color: '#999999', lineHeight: 1.6, margin: 0 }}>
                   Complete your PAR-Q and Health Declaration to unlock the training and nutrition resources. This takes 2 minutes.
                 </p>
               </div>
@@ -855,14 +855,14 @@ export default function ChallengePortalClient({
                   key={tab.key}
                   onClick={() => !tab.done && setActiveForm(tab.key)}
                   style={{
-                    flex: 1, padding: '10px 14px', borderRadius: '8px', border: 'none',
+                    flex: 1, padding: '10px 14px', borderRadius: '8px',
                     background: tab.done
-                      ? 'rgba(20,184,166,0.1)'
-                      : activeForm === tab.key ? '#1c1917' : '#111110',
-                    color: tab.done ? '#14b8a6' : activeForm === tab.key ? '#ffffff' : '#57534e',
+                      ? 'rgba(27, 109, 252,0.1)'
+                      : activeForm === tab.key ? '#1B6DFC' : '#FFFFFF',
+                    color: tab.done ? '#1B6DFC' : activeForm === tab.key ? '#FFFFFF' : '#4A4A4A',
+                    border: tab.done ? '1px solid rgba(27, 109, 252, 0.2)' : activeForm === tab.key ? '1px solid #1B6DFC' : '1px solid #E5E5E5',
                     fontSize: '13px', fontWeight: 700,
                     cursor: tab.done ? 'default' : 'pointer',
-                    outline: activeForm === tab.key && !tab.done ? '1px solid #44403c' : 'none',
                     transition: 'all 0.15s ease',
                   }}
                 >
@@ -894,12 +894,12 @@ export default function ChallengePortalClient({
 
         {formsComplete && (
           <div style={{
-            background: 'rgba(20,184,166,0.06)', border: '1px solid rgba(20,184,166,0.2)',
+            background: 'rgba(27, 109, 252,0.06)', border: '1px solid rgba(27, 109, 252,0.2)',
             borderRadius: '10px', padding: '14px 18px', marginBottom: '32px',
             display: 'flex', gap: '10px', alignItems: 'center',
           }}>
             <span style={{ fontSize: '16px' }}>✓</span>
-            <p style={{ fontSize: '13px', color: '#14b8a6', fontWeight: 600, margin: 0 }}>
+            <p style={{ fontSize: '13px', color: '#1B6DFC', fontWeight: 600, margin: 0 }}>
               You are cleared for training. All resources are unlocked.
             </p>
           </div>
@@ -908,18 +908,18 @@ export default function ChallengePortalClient({
         {/* Today's note */}
         {todayNote && (
           <div style={{ marginBottom: '48px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              Today — Day {currentDay}
+            <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+              Today · Day {currentDay}
             </p>
             <div style={{
-              background: '#111110', border: '1px solid #1c1917',
-              borderLeft: '3px solid #14b8a6',
+              background: '#FFFFFF', border: '1px solid #E5E5E5',
+              borderLeft: '3px solid #1B6DFC',
               borderRadius: '12px', padding: '22px 22px',
             }}>
-              <p style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
+              <p style={{ fontSize: '13px', fontWeight: 700, color: '#1B6DFC', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
                 {todayNote.focus}
               </p>
-              <p style={{ fontSize: '15px', color: '#d4cfc9', lineHeight: 1.75, margin: 0 }}>
+              <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.75, margin: 0 }}>
                 {todayNote.note}
               </p>
             </div>
@@ -928,7 +928,7 @@ export default function ChallengePortalClient({
 
         {/* Resources */}
         <div style={{ marginBottom: '48px' }}>
-          <p style={{ fontSize: '11px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
             Your Resources
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -941,24 +941,24 @@ export default function ChallengePortalClient({
         {/* Day 5 Live Session */}
         {currentDay >= 5 && (
           <div style={{ marginBottom: '48px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+            <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
               Live Session
             </p>
             <div style={{
               background: 'linear-gradient(135deg, #0d2d29 0%, #0a2320 100%)',
-              border: '1px solid rgba(20,184,166,0.25)',
+              border: '1px solid rgba(27, 109, 252,0.25)',
               borderRadius: '16px', padding: '24px',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
                 <div style={{
                   width: '8px', height: '8px', borderRadius: '50%',
-                  background: '#14b8a6', boxShadow: '0 0 0 3px rgba(20,184,166,0.25)',
+                  background: '#1B6DFC', boxShadow: '0 0 0 3px rgba(27, 109, 252,0.25)',
                 }} />
-                <span style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   Week One Progress Session
                 </span>
               </div>
-              <p style={{ fontSize: '19px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em', margin: '0 0 10px', lineHeight: 1.3 }}>
+              <p style={{ fontSize: '19px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em', margin: '0 0 10px', lineHeight: 1.3 }}>
                 Decode what your body has been doing this week.
               </p>
               <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, margin: '0 0 20px' }}>
@@ -972,7 +972,7 @@ export default function ChallengePortalClient({
                   'The shift from reset to results',
                 ].map(item => (
                   <div key={item} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                    <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#14b8a6', flexShrink: 0, marginTop: '7px' }} />
+                    <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#1B6DFC', flexShrink: 0, marginTop: '7px' }} />
                     <p style={{ fontSize: '13px', color: '#99d6d0', margin: 0, lineHeight: 1.55 }}>{item}</p>
                   </div>
                 ))}
@@ -983,7 +983,7 @@ export default function ChallengePortalClient({
                 rel="noopener noreferrer"
                 style={{
                   display: 'inline-block', padding: '13px 24px', borderRadius: '10px',
-                  background: '#14b8a6', color: '#0c0a09',
+                  background: '#1B6DFC', color: '#FFFFFF',
                   fontSize: '14px', fontWeight: 800, textDecoration: 'none',
                 }}
               >
@@ -995,18 +995,18 @@ export default function ChallengePortalClient({
 
         {/* Day 7 Body Decode Check-In */}
         <div style={{ marginBottom: '48px' }}>
-          <p style={{ fontSize: '11px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
             Body Decode Check-In
           </p>
           {quizUnlocked ? (
             <div>
               {!savedQuizResult && (
                 <div style={{ marginBottom: '20px' }}>
-                  <p style={{ fontSize: '17px', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>
+                  <p style={{ fontSize: '17px', fontWeight: 700, color: '#1A1A1A', marginBottom: '8px' }}>
                     How has your body responded this week?
                   </p>
-                  <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.6, margin: 0 }}>
-                    Rate 8 biological markers, then answer 2 signal questions. Your result identifies the pattern most active in your body right now — and what to do about it.
+                  <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>
+                    Rate 8 biological markers, then answer 2 signal questions. Your result identifies the pattern most active in your body right now, and what to do about it.
                   </p>
                 </div>
               )}
@@ -1014,20 +1014,20 @@ export default function ChallengePortalClient({
             </div>
           ) : (
             <div style={{
-              background: '#111110', border: '1px solid #1c1917',
+              background: '#FFFFFF', border: '1px solid #E5E5E5',
               borderRadius: '12px', padding: '24px', textAlign: 'center',
             }}>
               <div style={{
                 width: '48px', height: '48px', borderRadius: '50%',
-                background: '#1c1917', display: 'flex', alignItems: 'center',
+                background: '#E5E5E5', display: 'flex', alignItems: 'center',
                 justifyContent: 'center', margin: '0 auto 14px', fontSize: '22px',
               }}>
                 🔒
               </div>
-              <p style={{ fontSize: '15px', fontWeight: 700, color: '#57534e', marginBottom: '6px' }}>
+              <p style={{ fontSize: '15px', fontWeight: 700, color: '#4A4A4A', marginBottom: '6px' }}>
                 Unlocks on Day 7
               </p>
-              <p style={{ fontSize: '13px', color: '#2a2826', margin: 0 }}>
+              <p style={{ fontSize: '13px', color: '#E5E5E5', margin: 0 }}>
                 {7 - currentDay} day{7 - currentDay === 1 ? '' : 's'} to go
               </p>
             </div>
@@ -1038,13 +1038,13 @@ export default function ChallengePortalClient({
         {currentDay >= 14 && (
           <div style={{
             background: 'linear-gradient(135deg, #0d2d29 0%, #0a2320 100%)',
-            border: '1px solid rgba(20,184,166,0.25)',
+            border: '1px solid rgba(27, 109, 252,0.25)',
             borderRadius: '16px', padding: '28px 24px', marginBottom: '48px',
           }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
+            <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
               What comes next
             </p>
-            <p style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
+            <p style={{ fontSize: '20px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
               You have built the foundation. Now build on it.
             </p>
             <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '20px' }}>
@@ -1054,7 +1054,7 @@ export default function ChallengePortalClient({
               href="https://bodyrecode.au"
               style={{
                 display: 'inline-block', padding: '14px 24px', borderRadius: '10px',
-                background: '#14b8a6', color: '#0c0a09',
+                background: '#1B6DFC', color: '#FFFFFF',
                 fontSize: '14px', fontWeight: 800, textDecoration: 'none',
               }}
             >
