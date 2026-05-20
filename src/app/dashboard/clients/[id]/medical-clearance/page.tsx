@@ -54,14 +54,14 @@ Kade`
       </div>
 
       {approved ? (
-        <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-5 mb-6">
+        <div className="bg-blue-50 border border-blue-500/20 rounded-xl p-5 mb-6">
           <p className="text-sm font-semibold text-blue-500 mb-1">Clearance approved</p>
           <p className="text-xs text-stone-600">Approved on {new Date(client.medical_clearance_received_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}. Intake and baseline are unlocked.</p>
         </div>
       ) : submitted ? (
-        <div className="bg-amber-400/10 border border-amber-400/30 rounded-xl p-5 mb-6 flex items-start justify-between gap-4">
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6 flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-amber-400 mb-1">Form uploaded - awaiting your approval</p>
+            <p className="text-sm font-semibold text-amber-700 mb-1">Form uploaded - awaiting your approval</p>
             <p className="text-xs text-stone-600">
               Submitted {new Date(client.medical_clearance_submitted_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}. Review the document below and approve when satisfied.
             </p>
@@ -70,7 +70,7 @@ Kade`
         </div>
       ) : (
         <div className="bg-stone-100 border border-stone-200 rounded-xl p-5 mb-6">
-          <p className="text-sm font-semibold text-amber-400 mb-1">Waiting for client upload</p>
+          <p className="text-sm font-semibold text-amber-700 mb-1">Waiting for client upload</p>
           <p className="text-xs text-stone-600">The client has been notified. This page will update once they upload their completed form.</p>
         </div>
       )}
@@ -86,7 +86,7 @@ Kade`
               href={docSignedUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 text-sm text-blue-500 hover:text-blue-300 transition-colors"
+              className="flex items-center gap-3 text-sm text-blue-500 hover:text-blue-700 transition-colors"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

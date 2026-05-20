@@ -53,12 +53,12 @@ export default function DownsellButton({ leadId, alreadyPurchased }: { leadId: s
 
   return (
     <div className="space-y-2">
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-700">{error}</p>}
       <div className="flex items-center gap-3">
         <button
           onClick={sendEmail}
           disabled={sending || sent}
-          className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-black rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
         >
           {sending ? 'Sending...' : sent ? 'Email Sent' : 'Send Offer Email'}
         </button>

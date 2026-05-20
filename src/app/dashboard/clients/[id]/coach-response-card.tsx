@@ -38,14 +38,14 @@ export default function CoachResponseCard({ clientId, feedback, meta }: CoachRes
       <div className="px-4 py-2.5 border-b border-[#E5E5E5] flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2.5 flex-wrap">
           <p className="text-xs font-semibold text-[#e7e5e4]">Week {week} · Form {form}</p>
-          <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-blue-500/10 border border-blue-500/30 text-blue-300' : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'}`}>
+          <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
             {sentLabel}
           </span>
         </div>
         {meta && (
           <Link
             href={`/dashboard/clients/${clientId}/checkins/${meta.week_number}/${meta.form_type}`}
-            className="text-[10px] font-bold uppercase tracking-widest text-blue-500 hover:text-blue-300"
+            className="text-[10px] font-bold uppercase tracking-widest text-blue-500 hover:text-blue-700"
           >
             Open check-in →
           </Link>
@@ -78,7 +78,7 @@ function CollapsibleSection({ title, body, accent }: { title: string; body: stri
             <p className="text-xs text-[#6B6B6B] truncate">{preview}</p>
           )}
         </div>
-        <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest text-blue-500 hover:text-blue-300">
+        <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest text-blue-500 hover:text-blue-700">
           {open ? 'Close' : 'Open'}
         </span>
       </button>

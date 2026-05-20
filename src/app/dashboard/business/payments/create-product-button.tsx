@@ -101,7 +101,7 @@ export default function CreateProductButton() {
                       onClick={() => setForm(f => ({ ...f, type: opt.value as 'one_time' | 'subscription' }))}
                       className={`flex-1 text-xs font-medium py-2 rounded-lg border transition-colors ${
                         form.type === opt.value
-                          ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                          ? 'bg-blue-50 border-blue-300 text-blue-500'
                           : 'border-stone-300 text-stone-600 hover:border-stone-400 hover:text-[#1A1A1A]'
                       }`}
                     >
@@ -125,7 +125,7 @@ export default function CreateProductButton() {
                         onClick={() => setForm(f => ({ ...f, billing_interval: opt.value as 'weekly' | 'fortnightly' | 'monthly' }))}
                         className={`flex-1 text-xs font-medium py-2 rounded-lg border transition-colors ${
                           form.billing_interval === opt.value
-                            ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                            ? 'bg-blue-50 border-blue-300 text-blue-500'
                             : 'border-stone-300 text-stone-600 hover:border-stone-400 hover:text-[#1A1A1A]'
                         }`}
                       >

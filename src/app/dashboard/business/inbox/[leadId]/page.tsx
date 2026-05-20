@@ -7,14 +7,14 @@ import InboxCompose from './inbox-compose'
 
 const EVENT_CONFIG: Record<string, { label: string; icon: typeof Mail; colour: string }> = {
   email_sent: { label: 'You', icon: Mail, colour: 'text-blue-500' },
-  email_received: { label: 'Reply received', icon: Mail, colour: 'text-blue-400' },
+  email_received: { label: 'Reply received', icon: Mail, colour: 'text-blue-700' },
   zoom_booked: { label: 'Zoom booked', icon: Calendar, colour: 'text-blue-500' },
   check_in_submitted: { label: 'Check-in submitted', icon: FileText, colour: 'text-stone-600' },
-  followup_scheduled: { label: 'Follow-up scheduled', icon: Send, colour: 'text-amber-400' },
+  followup_scheduled: { label: 'Follow-up scheduled', icon: Send, colour: 'text-amber-700' },
   followup_cancelled: { label: 'Follow-up cancelled', icon: AlertCircle, colour: 'text-stone-500' },
   reengagement_sent: { label: 'Re-engagement sent', icon: Mail, colour: 'text-blue-500' },
   orientation_sent: { label: 'Orientation sent', icon: Mail, colour: 'text-blue-500' },
-  noshow_sequence_scheduled: { label: 'No-show sequence started', icon: RefreshCw, colour: 'text-amber-400' },
+  noshow_sequence_scheduled: { label: 'No-show sequence started', icon: RefreshCw, colour: 'text-amber-700' },
   report_scheduled: { label: 'Report scheduled', icon: FileText, colour: 'text-stone-600' },
 }
 

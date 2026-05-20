@@ -32,8 +32,8 @@ interface TrainingDayAdjustments {
 
 const directionColour: Record<string, string> = {
   progress: 'text-green-400 bg-green-400/10 border-green-400/30',
-  hold: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
-  rebuild: 'text-red-400 bg-red-400/10 border-red-400/30',
+  hold: 'text-amber-700 bg-amber-50 border-amber-200',
+  rebuild: 'text-red-700 bg-red-50 border-red-200',
 }
 
 const directionLabel: Record<string, string> = {
@@ -181,7 +181,7 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                     </div>
                     <div className="flex justify-between mt-2 text-[10px] uppercase tracking-wider tabular-nums">
                       <span className="text-[#1B6DFC]">P {proteinPct}%</span>
-                      <span className="text-amber-400">C {carbPct}%</span>
+                      <span className="text-amber-700">C {carbPct}%</span>
                       <span className="text-violet-300">F {fatPct}%</span>
                     </div>
                   </div>

@@ -42,21 +42,21 @@ const SECTION_INTERPRETATIONS: Record<string, Record<number, string>> = {
 
 const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string; opening: string; interpretation: string; pattern: string }> = {
   'Depleted State': {
-    colour: 'text-red-400 border-red-400/30 bg-red-400/10',
+    colour: 'text-red-700 border-red-200 bg-red-50',
     badge: 'bg-red-400',
     opening: 'Their scorecard came back as Depleted State. This means the body is in protection mode - cortisol elevated, metabolism suppressed, biology actively working against fat loss and performance. The scorecard gave us the signal. This call is about understanding what\'s driving it.',
     interpretation: 'What you\'re experiencing is a biological response, not a willpower or effort problem. When the body registers sustained demand - poor sleep, high stress, inconsistent recovery, training that isn\'t producing results - it shifts into a state where it protects rather than performs. That\'s what the scorecard picked up. It\'s not a coincidence that fat loss has stalled and training feels harder than it should. Those are two symptoms of the same underlying state.',
     pattern: 'Depleted State: The body is in protection mode. Cortisol elevated, metabolism suppressed. Adding more training stimulus typically makes this worse. The fix is not harder - it\'s smarter management of the system.',
   },
   'Transitioning State': {
-    colour: 'text-amber-400 border-amber-400/30 bg-amber-400/10',
+    colour: 'text-amber-700 border-amber-200 bg-amber-50',
     badge: 'bg-amber-400',
     opening: 'Their scorecard came back as Transitioning State. They have capacity but something is limiting consistent response. Could be sleep, stress, recovery rhythm, or a mismatch between training load and current biological state. The call is about identifying which.',
     interpretation: 'The Transitioning State means the body has capacity but isn\'t consistently expressing it. Some weeks things click, other weeks they don\'t. That inconsistency is the signal. It usually means there\'s one or two limiting factors keeping the system from settling into a reliable response pattern. The scorecard narrowed down where those are - the section scores point to what\'s holding things back.',
     pattern: 'Transitioning State: Has capacity but not consistency. Something is limiting the response - usually one or two sections dragging the overall picture. The work is identifying the specific drivers and addressing them in order.',
   },
   'Ready State': {
-    colour: 'text-blue-500 border-blue-500/30 bg-blue-500/10',
+    colour: 'text-blue-500 border-blue-200 bg-blue-50',
     badge: 'bg-blue-500',
     opening: 'Their scorecard came back as Ready State. Biology is in a position to respond well. If fat loss or performance isn\'t happening at this score, the issue is in the prescription - the what and how of training and nutrition, not the biological foundation. This call is about identifying where the prescription gap is.',
     interpretation: 'A Ready State score means the biology is in a good position - energy, sleep, stress, and recovery are not the limiting factors. When someone in this state isn\'t getting results, it\'s typically a prescription problem. The training or nutrition approach isn\'t matched to what the body needs right now. That\'s actually good news - because it\'s a much more solvable problem than trying to fix depleted biology.',
@@ -266,9 +266,9 @@ export default function ZoomCompanion({
   }
 
   const sectionColour = (score: number) =>
-    score === 1 ? 'text-red-400 border-red-400/30 bg-red-400/10'
-    : score === 2 ? 'text-amber-400 border-amber-400/30 bg-amber-400/10'
-    : 'text-blue-500 border-blue-500/30 bg-blue-500/10'
+    score === 1 ? 'text-red-700 border-red-200 bg-red-50'
+    : score === 2 ? 'text-amber-700 border-amber-200 bg-amber-50'
+    : 'text-blue-500 border-blue-200 bg-blue-50'
 
   const sectionDot = (score: number) =>
     score === 1 ? 'bg-red-400' : score === 2 ? 'bg-amber-400' : 'bg-blue-500'
@@ -356,7 +356,7 @@ export default function ZoomCompanion({
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col">
 
       {/* Top bar */}
-      <div className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
+      <div className="border-b border-stone-200 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div>
             <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold mb-0.5">Zoom 1 - Companion</p>
@@ -381,13 +381,13 @@ export default function ZoomCompanion({
           <div className="flex items-center bg-stone-100 border border-stone-200 rounded-lg p-0.5">
             <button
               onClick={() => setView('live')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#1B6DFC] text-black' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#1B6DFC] text-white' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
             >
               Live
             </button>
             <button
               onClick={() => setView('postcall')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#1B6DFC] text-black' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#1B6DFC] text-white' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
             >
               Post-Call
             </button>
@@ -398,7 +398,7 @@ export default function ZoomCompanion({
             <span className="text-2xl font-mono font-bold text-[#1A1A1A] tabular-nums">{formatTime(seconds)}</span>
             <button
               onClick={() => setRunning(r => !r)}
-              className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-300 hover:bg-stone-400 text-[#1A1A1A]' : 'bg-[#1B6DFC] text-black hover:bg-[#1056D6]'}`}
+              className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-300 hover:bg-stone-400 text-[#1A1A1A]' : 'bg-[#1B6DFC] text-white hover:bg-[#1056D6]'}`}
             >
               {running ? 'Pause' : seconds === 0 ? 'Start' : 'Resume'}
             </button>
@@ -428,7 +428,7 @@ export default function ZoomCompanion({
                 <button
                   onClick={generateSummary}
                   disabled={!transcript.trim() || generating}
-                  className="bg-[#1B6DFC] text-black font-bold px-6 py-3 rounded-lg text-sm hover:bg-[#1056D6] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="bg-[#1B6DFC] text-white font-bold px-6 py-3 rounded-lg text-sm hover:bg-[#1056D6] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {generating ? 'Generating summary...' : 'Generate Summary'}
                 </button>
@@ -449,7 +449,7 @@ export default function ZoomCompanion({
                   <button
                     onClick={saveSummaryToNotes}
                     disabled={savingSummary || summarySaved}
-                    className="bg-[#1B6DFC] text-black font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-[#1056D6] transition-colors disabled:opacity-50"
+                    className="bg-[#1B6DFC] text-white font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-[#1056D6] transition-colors disabled:opacity-50"
                   >
                     {summarySaved ? 'Saved to notes' : savingSummary ? 'Saving...' : 'Save to lead notes'}
                   </button>
@@ -470,7 +470,7 @@ export default function ZoomCompanion({
       <div className="flex flex-1 overflow-hidden">
 
         {/* Stage nav - left sidebar */}
-        <div className="w-52 border-r border-white/10 p-4 flex flex-col gap-1">
+        <div className="w-52 border-r border-stone-200 p-4 flex flex-col gap-1">
           <p className="text-xs text-stone-400 uppercase tracking-widest font-semibold mb-3">Stages</p>
           {STAGES.map((s, i) => (
             <button
@@ -478,7 +478,7 @@ export default function ZoomCompanion({
               onClick={() => setCurrentStage(i)}
               className={`text-left px-3 py-2.5 rounded-lg transition-colors ${
                 i === currentStage
-                  ? 'bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 text-[#1B6DFC]'
+                  ? 'bg-blue-50 border border-blue-200 text-[#1B6DFC]'
                   : i < currentStage
                   ? 'text-stone-500 hover:text-stone-700'
                   : 'text-stone-600 hover:text-stone-800'
@@ -489,15 +489,15 @@ export default function ZoomCompanion({
             </button>
           ))}
 
-          <div className="mt-auto pt-4 border-t border-white/10">
+          <div className="mt-auto pt-4 border-t border-stone-200">
             <div className="flex gap-2">
               {currentStage > 0 && (
-                <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-[#1A1A1A] py-1.5 rounded-lg border border-white/10 hover:border-white/20 transition-colors">
+                <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-[#1A1A1A] py-1.5 rounded-lg border border-stone-200 hover:border-stone-300 transition-colors">
                   Back
                 </button>
               )}
               {currentStage < STAGES.length - 1 && (
-                <button onClick={() => setCurrentStage(s => s + 1)} className="flex-1 text-xs text-[#1B6DFC] py-1.5 rounded-lg border border-[#1B6DFC]/30 hover:bg-[#1B6DFC]/10 transition-colors">
+                <button onClick={() => setCurrentStage(s => s + 1)} className="flex-1 text-xs text-[#1B6DFC] py-1.5 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors">
                   Next
                 </button>
               )}
@@ -519,7 +519,7 @@ export default function ZoomCompanion({
               <p className="text-stone-600 text-sm leading-relaxed mb-6">{stage.goal}</p>
 
               {/* Tabs */}
-              <div className="flex gap-1 mb-5 border-b border-white/10">
+              <div className="flex gap-1 mb-5 border-b border-stone-200">
                 {(['prompts', 'scorecard', 'language'] as const).map(tab => (
                   <button
                     key={tab}
@@ -536,21 +536,21 @@ export default function ZoomCompanion({
               {activeTab === 'prompts' && (
                 <div className="space-y-2">
                   {stage.script && (
-                    <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/30 rounded-xl p-5 mb-4">
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-4">
                       <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-wider mb-3">Script</p>
                       <p className="text-stone-800 text-sm leading-relaxed whitespace-pre-line">{stage.script}</p>
                     </div>
                   )}
                   {(stage.prompts as Prompt[]).map((p, i) => renderPrompt(p, i))}
                   {stage.tips && (
-                    <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-xl p-4 mt-4">
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mt-4">
                       <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">Coach note</p>
                       <p className="text-stone-600 text-sm leading-relaxed">{stage.tips}</p>
                     </div>
                   )}
                   {stage.boundary && (
-                    <div className="bg-red-400/5 border border-red-400/20 rounded-xl p-4">
-                      <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Boundary</p>
+                    <div className="bg-red-400/5 border border-red-200 rounded-xl p-4">
+                      <p className="text-xs font-bold text-red-700 uppercase tracking-wider mb-1">Boundary</p>
                       <p className="text-stone-600 text-sm leading-relaxed">{stage.boundary}</p>
                     </div>
                   )}
@@ -603,7 +603,7 @@ export default function ZoomCompanion({
                       <div className="space-y-3">
                         {sectionEntries.filter(([, s]) => s === 1).map(([key]) => (
                           <div key={key}>
-                            <p className="text-xs font-semibold text-red-400 mb-1">{SECTION_LABELS[key]}</p>
+                            <p className="text-xs font-semibold text-red-700 mb-1">{SECTION_LABELS[key]}</p>
                             <p className="text-stone-600 text-sm leading-relaxed italic">&ldquo;{SECTION_INTERPRETATIONS[key]?.[1]}&rdquo;</p>
                           </div>
                         ))}
@@ -616,8 +616,8 @@ export default function ZoomCompanion({
           </div>
 
           {/* Notes panel - right */}
-          <div className="w-72 border-l border-white/10 flex flex-col">
-            <div className="p-4 border-b border-white/10 flex items-center justify-between">
+          <div className="w-72 border-l border-stone-200 flex flex-col">
+            <div className="p-4 border-b border-stone-200 flex items-center justify-between">
               <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold">Live Notes</p>
               <button
                 onClick={saveNotes}
@@ -632,22 +632,22 @@ export default function ZoomCompanion({
               placeholder="Type observations as the call unfolds..."
               className="flex-1 bg-transparent text-stone-700 text-sm p-4 resize-none focus:outline-none placeholder-stone-300 leading-relaxed"
             />
-            <div className="p-4 border-t border-white/10 space-y-3">
+            <div className="p-4 border-t border-stone-200 space-y-3">
 
               {/* Readiness Check */}
               <div className="bg-stone-100 border border-stone-200 rounded-lg p-3">
                 <p className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-2.5">Readiness</p>
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-[10px] font-bold text-blue-500">A</span>
+                    <span className="w-5 h-5 rounded-full bg-blue-100 border border-blue-300 flex items-center justify-center text-[10px] font-bold text-blue-500">A</span>
                     <span className="text-xs text-stone-600">Ready, wants to proceed</span>
                   </div>
                   <div className="flex items-center gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-[10px] font-bold text-amber-400">B</span>
+                    <span className="w-5 h-5 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center text-[10px] font-bold text-amber-700">B</span>
                     <span className="text-xs text-stone-600">Interested but hesitant</span>
                   </div>
                   <div className="flex items-center gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-[10px] font-bold text-red-400">C</span>
+                    <span className="w-5 h-5 rounded-full bg-red-100 border border-red-300 flex items-center justify-center text-[10px] font-bold text-red-700">C</span>
                     <span className="text-xs text-stone-600">Not ready / not right fit</span>
                   </div>
                 </div>
@@ -657,7 +657,7 @@ export default function ZoomCompanion({
               <button
                 onClick={markZoom1Complete}
                 disabled={statusUpdated}
-                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${statusUpdated ? 'bg-blue-500/10 border border-blue-500/20 text-blue-500' : 'bg-stone-200 border border-stone-300 text-stone-700 hover:border-stone-500 hover:text-[#1A1A1A]'}`}
+                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${statusUpdated ? 'bg-blue-50 border border-blue-500/20 text-blue-500' : 'bg-stone-200 border border-stone-300 text-stone-700 hover:border-stone-500 hover:text-[#1A1A1A]'}`}
               >
                 {statusUpdated ? 'Zoom 1 Marked Complete' : 'Mark Zoom 1 Complete'}
               </button>

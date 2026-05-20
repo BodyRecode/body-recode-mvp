@@ -67,10 +67,10 @@ export default function KadePage() {
             className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-violet-500/40 hover:bg-violet-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-violet-400 transition-colors">AI Co-Founder Method</p>
+              <p className="text-sm font-semibold text-white group-hover:text-violet-700 transition-colors">AI Co-Founder Method</p>
               <p className="text-xs text-stone-500 mt-0.5">Build with AI as your co-founder</p>
             </div>
-            <span className="text-stone-600 group-hover:text-violet-400 transition-colors text-lg">→</span>
+            <span className="text-stone-600 group-hover:text-violet-700 transition-colors text-lg">→</span>
           </a>
 
           {/* Chapters - Tracing Myself */}
@@ -88,13 +88,13 @@ export default function KadePage() {
           {/* Contact */}
           <a
             href="mailto:kade@bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-blue-500/40 hover:bg-blue-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-blue-300 hover:bg-blue-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">Get in touch</p>
+              <p className="text-sm font-semibold text-white group-hover:text-blue-700 transition-colors">Get in touch</p>
               <p className="text-xs text-stone-500 mt-0.5">kade@bodyrecode.au</p>
             </div>
-            <span className="text-stone-600 group-hover:text-blue-400 transition-colors text-lg">→</span>
+            <span className="text-stone-600 group-hover:text-blue-700 transition-colors text-lg">→</span>
           </a>
 
         </div>

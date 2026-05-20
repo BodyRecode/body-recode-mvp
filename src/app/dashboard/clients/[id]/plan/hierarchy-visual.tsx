@@ -29,9 +29,9 @@ interface NutritionPlan {
 }
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'bg-blue-400/10 border-blue-400/30 text-blue-400',
+  accumulation: 'bg-blue-50 border-blue-200 text-blue-700',
   intensification: 'bg-orange-400/10 border-orange-400/30 text-orange-400',
-  realization: 'bg-red-400/10 border-red-400/30 text-red-400',
+  realization: 'bg-red-50 border-red-200 text-red-700',
   restoration: 'bg-green-400/10 border-green-400/30 text-green-400',
 }
 
@@ -43,10 +43,10 @@ const statusDot: Record<string, string> = {
 }
 
 const PILLARS = [
-  { label: 'RRS', full: 'Recovery + Regulation', colour: 'text-red-400', desc: 'Governs all execution' },
+  { label: 'RRS', full: 'Recovery + Regulation', colour: 'text-red-700', desc: 'Governs all execution' },
   { label: 'Fat Map', full: 'Fat Map Method', colour: 'text-orange-400', desc: 'Constraint authority' },
   { label: 'BIRS', full: 'Behaviour + Identity', colour: 'text-yellow-400', desc: 'Complexity limits' },
-  { label: 'PTS', full: 'Progressive Training', colour: 'text-blue-400', desc: 'Training demand' },
+  { label: 'PTS', full: 'Progressive Training', colour: 'text-blue-700', desc: 'Training demand' },
   { label: 'HABNS', full: 'Nutrition Support', colour: 'text-blue-500', desc: 'Nutrition support' },
 ]
 
@@ -202,7 +202,7 @@ export default function HierarchyVisual({
             {nutritionPlan ? (
               <div className="flex gap-2 flex-wrap">
                 {nutritionPlan.entry_state && (
-                  <span className="text-[9px] px-2 py-1 bg-blue-500/10 border border-blue-500/20 rounded text-blue-500 capitalize">
+                  <span className="text-[9px] px-2 py-1 bg-blue-50 border border-blue-500/20 rounded text-blue-500 capitalize">
                     {nutritionPlan.entry_state}
                   </span>
                 )}

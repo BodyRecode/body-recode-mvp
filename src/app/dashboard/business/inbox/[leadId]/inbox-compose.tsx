@@ -74,7 +74,7 @@ export default function InboxCompose({ leadId, leadName, leadEmail }: Props) {
         className="w-full bg-transparent px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none resize-none"
       />
       <div className="px-4 py-3 border-t border-stone-200 flex items-center justify-between">
-        {error && <p className="text-red-400 text-xs">{error}</p>}
+        {error && <p className="text-red-700 text-xs">{error}</p>}
         {sent && <p className="text-blue-500 text-xs">Sent.</p>}
         {!error && !sent && <span />}
         <button

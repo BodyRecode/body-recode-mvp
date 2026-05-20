@@ -98,22 +98,22 @@ function nutritionNavSections(plan: NutritionPlan) {
 }
 
 const entryStateColour: Record<string, string> = {
-  stabilisation: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
-  training_support: 'text-blue-500 bg-blue-500/10 border-blue-500/30',
-  high_output_support: 'text-violet-400 bg-violet-400/10 border-violet-400/30',
-  recovery_reset: 'text-red-400 bg-red-400/10 border-red-400/30',
+  stabilisation: 'text-amber-700 bg-amber-50 border-amber-200',
+  training_support: 'text-blue-500 bg-blue-50 border-blue-200',
+  high_output_support: 'text-violet-700 bg-violet-50 border-violet-200',
+  recovery_reset: 'text-red-700 bg-red-50 border-red-200',
 }
 
 const carbColour: Record<string, string> = {
-  low: 'text-blue-400 bg-blue-400/10 border-blue-400/30',
+  low: 'text-blue-700 bg-blue-50 border-blue-200',
   moderate: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
   high: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const directionColour: Record<string, string> = {
   progress: 'text-green-400 bg-green-400/10 border-green-400/30',
-  hold: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
-  rebuild: 'text-red-400 bg-red-400/10 border-red-400/30',
+  hold: 'text-amber-700 bg-amber-50 border-amber-200',
+  rebuild: 'text-red-700 bg-red-50 border-red-200',
 }
 
 const directionLabel: Record<string, string> = {
@@ -253,7 +253,7 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
                 </div>
                 <div className="text-right text-xs">
                   {band ? (
-                    <div className={kcalInBand ? 'text-blue-500' : 'text-red-400'}>
+                    <div className={kcalInBand ? 'text-blue-500' : 'text-red-700'}>
                       <p className="font-semibold">{kcalInBand ? 'Inside band' : 'Outside band'}</p>
                       <p className="text-stone-500 mt-0.5 tabular-nums">Target {band.low}–{band.high} kcal</p>
                     </div>
@@ -270,14 +270,14 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
                 </div>
                 <div className="flex justify-between mt-2 text-[10px] uppercase tracking-wider tabular-nums">
                   <span className="text-[#1B6DFC]">P {proteinPct}%</span>
-                  <span className="text-amber-400">C {carbPct}%</span>
+                  <span className="text-amber-700">C {carbPct}%</span>
                   <span className="text-violet-300">F {fatPct}%</span>
                 </div>
               </div>
               {proteinAnchor > 0 && (
                 <div className="flex items-center justify-between text-xs pt-3 border-t border-stone-200">
                   <p className="text-stone-500">Protein anchor</p>
-                  <p className={proteinOk ? 'text-blue-500' : 'text-red-400'}>
+                  <p className={proteinOk ? 'text-blue-500' : 'text-red-700'}>
                     <span className="tabular-nums">{totals.protein_g}g</span> vs anchor <span className="tabular-nums">{proteinAnchor}g</span>
                     {proteinDelta !== null && (
                       <span className="text-stone-500 ml-1">({proteinDelta > 0 ? '+' : ''}{proteinDelta}g)</span>
@@ -504,7 +504,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
       {draftPlan && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">
+            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">
               Draft - Pending Approval
             </span>
             <NutritionDraftActions planId={draftPlan.id} clientId={id} />
@@ -516,14 +516,14 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
       {/* Rebuild alert */}
       {activePlan?.current_direction === 'rebuild' && (
         <div className="mb-4 flex items-start gap-3 bg-red-950/40 border border-red-800/60 rounded-xl px-4 py-3">
-          <svg className="w-4 h-4 text-red-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-4 h-4 text-red-700 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
           </svg>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-red-400">Client is struggling with nutrition</p>
-            <p className="text-xs text-red-400/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the plan or generating a new one.</p>
+            <p className="text-sm font-semibold text-red-700">Client is struggling with nutrition</p>
+            <p className="text-xs text-red-700/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the plan or generating a new one.</p>
           </div>
-          <Link href="./nutrition/suggest" className="text-xs font-semibold text-red-400 hover:text-red-300 shrink-0 mt-0.5">Regenerate →</Link>
+          <Link href="./nutrition/suggest" className="text-xs font-semibold text-red-700 hover:text-red-700 shrink-0 mt-0.5">Regenerate →</Link>
         </div>
       )}
 

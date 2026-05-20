@@ -11,10 +11,10 @@ const typeLabel: Record<string, string> = {
 }
 
 const statusConfig: Record<string, { label: string; icon: typeof Clock; colour: string }> = {
-  scheduled: { label: 'Scheduled', icon: Clock, colour: 'text-amber-400' },
+  scheduled: { label: 'Scheduled', icon: Clock, colour: 'text-amber-700' },
   completed: { label: 'Completed', icon: CheckCircle2, colour: 'text-blue-500' },
   cancelled: { label: 'Cancelled', icon: XCircle, colour: 'text-stone-500' },
-  no_show: { label: 'No Show', icon: AlertCircle, colour: 'text-red-400' },
+  no_show: { label: 'No Show', icon: AlertCircle, colour: 'text-red-700' },
 }
 
 export default async function BookingsPage() {

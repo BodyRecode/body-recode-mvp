@@ -8,8 +8,8 @@ import Link from 'next/link'
 
 const statusConfig: Record<string, { label: string; icon: typeof Clock; colour: string }> = {
   paid: { label: 'Paid', icon: CheckCircle2, colour: 'text-blue-500' },
-  pending: { label: 'Pending', icon: Clock, colour: 'text-amber-400' },
-  failed: { label: 'Failed', icon: XCircle, colour: 'text-red-400' },
+  pending: { label: 'Pending', icon: Clock, colour: 'text-amber-700' },
+  failed: { label: 'Failed', icon: XCircle, colour: 'text-red-700' },
   refunded: { label: 'Refunded', icon: XCircle, colour: 'text-stone-500' },
 }
 
@@ -60,7 +60,7 @@ export default async function PaymentsPage() {
         </div>
         <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Pending</p>
-          <p className="text-3xl font-bold text-amber-400">${pendingRevenue.toLocaleString('en-AU')}</p>
+          <p className="text-3xl font-bold text-amber-700">${pendingRevenue.toLocaleString('en-AU')}</p>
         </div>
       </div>
 

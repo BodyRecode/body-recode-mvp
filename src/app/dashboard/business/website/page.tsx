@@ -17,7 +17,7 @@ function StatCard({ label, value, sub, highlight }: {
   highlight?: boolean
 }) {
   return (
-    <div className={`bg-[#FFFFFF] border rounded-xl p-5 ${highlight ? 'border-blue-500/40' : 'border-stone-200'}`}>
+    <div className={`bg-[#FFFFFF] border rounded-xl p-5 ${highlight ? 'border-blue-300' : 'border-stone-200'}`}>
       <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</p>
       <p className={`text-3xl font-black ${highlight ? 'text-blue-500' : 'text-[#1A1A1A]'}`}>{value}</p>
       {sub && <p className="text-xs mt-1 font-medium text-stone-500">{sub}</p>}
@@ -138,7 +138,7 @@ export default function WebsitePage() {
             <button
               key={d}
               onClick={() => setDays(d)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${days === d ? 'bg-blue-500/20 text-blue-500 border border-blue-500/30' : 'bg-stone-200 text-stone-600 border border-stone-300 hover:text-[#1A1A1A]'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${days === d ? 'bg-blue-100 text-blue-500 border border-blue-200' : 'bg-stone-200 text-stone-600 border border-stone-300 hover:text-[#1A1A1A]'}`}
             >
               {d}d
             </button>
@@ -157,15 +157,15 @@ export default function WebsitePage() {
       {loading && <p className="text-sm text-stone-500 py-8 text-center">Loading analytics...</p>}
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-5">
-          <p className="text-sm font-semibold text-red-400 mb-1">Analytics unavailable</p>
+        <div className="bg-red-50 border border-red-200 rounded-xl p-5">
+          <p className="text-sm font-semibold text-red-700 mb-1">Analytics unavailable</p>
           <p className="text-xs text-stone-600">{error}</p>
         </div>
       )}
 
       {!loading && data && isSparse && (
-        <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3">
-          <p className="text-xs text-amber-400/80">Analytics tracking was enabled in April 2026 - visitor data only covers the last few days. Conversion rate and bounce rate will stabilise as more traffic accumulates over the coming weeks.</p>
+        <div className="bg-amber-50 border border-amber-500/20 rounded-xl px-4 py-3">
+          <p className="text-xs text-amber-700/80">Analytics tracking was enabled in April 2026 - visitor data only covers the last few days. Conversion rate and bounce rate will stabilise as more traffic accumulates over the coming weeks.</p>
         </div>
       )}
 
@@ -223,7 +223,7 @@ export default function WebsitePage() {
               <span className="text-[#1A1A1A] font-medium">What needs to keep happening:</span> daily Instagram activity - posts, stories, and direct outreach - is what drives consistent traffic. The chart should start showing a rhythm that maps to your posting schedule. Weeks without posts will show up as flatlines.
             </p>
             {isSparse && (
-              <p className="text-amber-400/70">The chart currently only has a few days of data. It will fill out over the coming weeks and become much more useful as a pattern-recognition tool once there are 14+ days of activity to compare.</p>
+              <p className="text-amber-700/70">The chart currently only has a few days of data. It will fill out over the coming weeks and become much more useful as a pattern-recognition tool once there are 14+ days of activity to compare.</p>
             )}
           </Insight>
         </>

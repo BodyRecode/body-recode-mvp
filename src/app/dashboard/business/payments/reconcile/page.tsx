@@ -103,7 +103,7 @@ export default async function ReconcilePage() {
                   <p className="text-xs text-stone-500 truncate">{c.email ?? 'No email'}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-[10px] text-amber-400 font-semibold uppercase tracking-wider">No link</span>
+                  <span className="text-[10px] text-amber-700 font-semibold uppercase tracking-wider">No link</span>
                   <ExternalLink size={12} className="text-stone-400" />
                 </div>
               </Link>
@@ -127,7 +127,7 @@ export default async function ReconcilePage() {
             <span className="text-xs text-stone-400">{products?.length ?? 0}</span>
           </div>
           {untaggedProducts.length > 0 && (
-            <div className="flex items-center gap-1.5 text-xs text-amber-400">
+            <div className="flex items-center gap-1.5 text-xs text-amber-700">
               <AlertTriangle size={12} />
               {untaggedProducts.length} untagged
             </div>

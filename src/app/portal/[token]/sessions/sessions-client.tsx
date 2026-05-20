@@ -97,12 +97,12 @@ export default function SessionsClient({ token, clientId }: { token: string; cli
       {recentlyBooked.length > 0 && (
         <div className="space-y-2 mb-4">
           {recentlyBooked.map(slot => (
-            <div key={slot} className="rounded-xl border border-[#1B6DFC]/20 bg-[#1B6DFC]/5 px-4 py-3 flex items-center justify-between">
+            <div key={slot} className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-[#1A1A1A]">{formatSlotFull(slot)}</p>
                 <p className="text-xs text-[#999999] mt-0.5">Confirmation email sent</p>
               </div>
-              <span className="text-xs font-bold text-[#1B6DFC] bg-[#1B6DFC]/10 px-2.5 py-1 rounded-full">Booked</span>
+              <span className="text-xs font-bold text-[#1B6DFC] bg-blue-50 px-2.5 py-1 rounded-full">Booked</span>
             </div>
           ))}
         </div>
@@ -133,8 +133,8 @@ export default function SessionsClient({ token, clientId }: { token: string; cli
                     onClick={() => setSelected(slot)}
                     className={`px-4 py-2.5 text-sm font-medium rounded-lg border transition-colors ${
                       selected === slot
-                        ? 'border-blue-500 bg-[#1B6DFC]/10 text-[#1B6DFC]'
-                        : 'border-[#E5E5E5] text-[#3A3A3A] hover:border-blue-500 hover:text-[#1B6DFC] hover:bg-[#1B6DFC]/5'
+                        ? 'border-blue-500 bg-blue-50 text-[#1B6DFC]'
+                        : 'border-[#E5E5E5] text-[#3A3A3A] hover:border-blue-500 hover:text-[#1B6DFC] hover:bg-blue-50'
                     }`}
                   >
                     {formatSlotTime(slot)}
@@ -144,12 +144,12 @@ export default function SessionsClient({ token, clientId }: { token: string; cli
             </div>
           ))}
 
-          {error && <p className="text-sm text-red-400">{error}</p>}
+          {error && <p className="text-sm text-red-700">{error}</p>}
 
           <button
             onClick={handleBook}
             disabled={!selected || submitting}
-            className="w-full py-3.5 rounded-xl bg-[#1B6DFC] text-black text-sm font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1B6DFC] transition-colors"
+            className="w-full py-3.5 rounded-xl bg-[#1B6DFC] text-white text-sm font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1B6DFC] transition-colors"
           >
             {submitting ? 'Booking...' : selected ? `Book ${formatSlotTime(selected)}` : 'Select a time'}
           </button>

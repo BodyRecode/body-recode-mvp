@@ -192,7 +192,7 @@ export default async function AnalyticsPage() {
           {[
             { label: 'Total', value: totalBookings, colour: 'text-[#1A1A1A]' },
             { label: 'Completed', value: completedBookings, colour: 'text-blue-500' },
-            { label: 'No Show', value: noShows, colour: 'text-red-400' },
+            { label: 'No Show', value: noShows, colour: 'text-red-700' },
             { label: 'Show-up Rate', value: `${showUpRate}%`, colour: 'text-[#1A1A1A]' },
           ].map(({ label, value, colour }) => (
             <div key={label} className="text-center">

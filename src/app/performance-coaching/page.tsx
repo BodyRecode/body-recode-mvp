@@ -24,23 +24,23 @@ export default function PerformanceCoachingPage() {
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-8">
             Performance Coaching
           </h1>
-          <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-8">
+          <p className="text-xl text-stone-600 leading-relaxed max-w-2xl mb-8">
             The first execution layer of the Body Recode™ system. 1:1 coaching for high-functioning adults whose bodies have stopped responding to effort. Every training decision, every nutrition structure, every recovery adjustment is derived from the biological interpretation. Not from goals, not from preference, not from a template.
           </p>
-          <p className="text-white/40 text-base leading-relaxed max-w-xl">
+          <p className="text-stone-500 text-base leading-relaxed max-w-xl">
             Available online worldwide and face-to-face in Brisbane.
           </p>
         </div>
       </section>
 
       {/* What it is */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">The Execution Layer</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-8">
             Coaching derived entirely from the CFFS.
           </h2>
-          <div className="max-w-2xl space-y-6 text-white/60 text-lg leading-relaxed">
+          <div className="max-w-2xl space-y-6 text-stone-600 text-lg leading-relaxed">
             <p>
               Performance Coaching is the downstream application of the Body Recode™ interpretive system in the health and fitness environment. It does not begin with a program. It begins with interpretation. A full biological intake across eight domains produces the CFFS: the Coach-Facing Foundational Synthesis. Every decision operates within the boundaries the CFFS defines.
             </p>
@@ -52,13 +52,13 @@ export default function PerformanceCoachingPage() {
       </section>
 
       {/* Client population */}
-      <section className="bg-black py-32 px-5 border-t border-white/5">
+      <section className="bg-black py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Client Population</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-8">
             General population. High-functioning adults.
           </h2>
-          <div className="max-w-2xl space-y-6 text-white/60 text-lg leading-relaxed">
+          <div className="max-w-2xl space-y-6 text-stone-600 text-lg leading-relaxed">
             <p>
               The Performance Coaching environment serves general population clients: high-functioning adults whose bodies have stopped responding to effort despite consistent training and nutrition compliance. The common thread is not age, gender, or goal. It is a body operating under load it cannot resolve.
             </p>
@@ -73,57 +73,57 @@ export default function PerformanceCoachingPage() {
       </section>
 
       {/* Delivery */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase text-center mb-6">Delivery</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
             The same system.<br />Two ways to access it.
           </h2>
-          <p className="text-white/50 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
+          <p className="text-stone-500 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
             Whether you are in Brisbane or anywhere in the world, the methodology, the depth, and the quality are identical.
           </p>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="border border-[#1B6DFC]/30 rounded-2xl p-8 bg-[#1B6DFC]/5">
+            <div className="border border-blue-200 rounded-2xl p-8 bg-blue-50">
               <div className="flex items-center justify-between mb-6">
                 <p className="text-sm font-bold text-[#1B6DFC] uppercase tracking-wider">Online 1:1</p>
                 <span className="text-[10px] font-bold text-black bg-[#1B6DFC] px-2.5 py-1 rounded-full uppercase tracking-wider">Worldwide</span>
               </div>
-              <p className="text-white/60 text-base leading-relaxed mb-6">
+              <p className="text-stone-600 text-base leading-relaxed mb-6">
                 Full 1:1 coaching delivered remotely. Same structured intake, same biological assessment, same program design. Everything lives in your client portal: your program, your synthesis documents, your weekly check-ins, your progress data.
               </p>
               <a href="https://performance.bodyrecode.au/online" className="text-sm font-semibold text-[#1B6DFC] hover:underline">Online Coaching →</a>
             </div>
-            <div className="border border-white/10 rounded-2xl p-8">
+            <div className="border border-stone-200 rounded-2xl p-8">
               <div className="flex items-center justify-between mb-6">
-                <p className="text-sm font-bold text-white/40 uppercase tracking-wider">Face-to-Face</p>
-                <span className="text-[10px] font-bold text-white/30 border border-white/10 px-2.5 py-1 rounded-full uppercase tracking-wider">Brisbane</span>
+                <p className="text-sm font-bold text-stone-500 uppercase tracking-wider">Face-to-Face</p>
+                <span className="text-[10px] font-bold text-stone-400 border border-stone-200 px-2.5 py-1 rounded-full uppercase tracking-wider">Brisbane</span>
               </div>
-              <p className="text-white/60 text-base leading-relaxed mb-6">
+              <p className="text-stone-600 text-base leading-relaxed mb-6">
                 The same Body Recode™ system delivered face-to-face at Anytime Fitness Newstead. One-on-one only. Availability is intentionally limited to maintain the coaching depth the system requires.
               </p>
-              <a href="https://performance.bodyrecode.au/brisbane" className="text-sm font-semibold text-white/40 hover:text-white/70 transition-colors">Brisbane Coaching →</a>
+              <a href="https://performance.bodyrecode.au/brisbane" className="text-sm font-semibold text-stone-500 hover:text-stone-600 transition-colors">Brisbane Coaching →</a>
             </div>
           </div>
         </div>
       </section>
 
       {/* Closing */}
-      <section className="bg-black py-32 px-5 border-t border-white/5">
+      <section className="bg-black py-32 px-5 border-t border-stone-200">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Environment 01: Live</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
             Built, validated, and accepting clients.
           </h2>
-          <p className="text-white/50 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+          <p className="text-stone-500 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
             Performance Coaching is the first live deployment of the Body Recode™ system. Available online worldwide and face-to-face in Brisbane.
           </p>
           <a
             href="https://performance.bodyrecode.au"
-            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb3] transition-colors mb-4"
+            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb3] transition-colors mb-4"
           >
             Visit Performance Coaching
           </a>
-          <p className="text-white/30 text-sm mt-2">performance.bodyrecode.au</p>
+          <p className="text-stone-400 text-sm mt-2">performance.bodyrecode.au</p>
         </div>
       </section>
 

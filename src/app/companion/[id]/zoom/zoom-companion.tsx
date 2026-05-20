@@ -74,7 +74,7 @@ const SECTION_INTERPRETATIONS: Record<string, Record<number, string>> = {
 
 const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string; opening: string; interpretation: string; pattern: string }> = {
   'Depleted State': {
-    colour: 'text-red-400 border-red-400/30 bg-red-400/10',
+    colour: 'text-red-700 border-red-200 bg-red-50',
     badge: 'bg-red-400',
     // Coach-facing — what's going on under the hood. Not spoken aloud.
     opening: 'Their scorecard came back as Depleted State. Body is in protection mode — cortisol elevated, metabolism suppressed, fat loss and performance shut down. The scorecard surfaced the signal. The call is about understanding what\'s driving it.',
@@ -83,7 +83,7 @@ const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string; openi
     pattern: 'Depleted State: body in protection mode. Cortisol up, metabolism down. Adding more training stimulus makes it worse. The fix is smarter management, not harder work.',
   },
   'Transitioning State': {
-    colour: 'text-amber-400 border-amber-400/30 bg-amber-400/10',
+    colour: 'text-amber-700 border-amber-200 bg-amber-50',
     badge: 'bg-amber-400',
     opening: 'Their scorecard came back as Transitioning State. They\'ve got capacity but something\'s blocking consistent response. Sleep, stress, recovery rhythm, or a mismatch between training load and where their body is right now. Call is about identifying which.',
     interpretation: 'You\'ve got the capacity — you\'re just not consistently expressing it. Some weeks things click, other weeks they don\'t. That inconsistency is the actual issue. Usually it\'s one or two things holding the rest of it back.',
@@ -546,9 +546,9 @@ export default function ZoomCompanion({
   const isDecisionStage = currentStage === 3
 
   const sectionColour = (score: number) =>
-    score === 1 ? 'text-red-400 border-red-400/30 bg-red-400/10'
-    : score === 2 ? 'text-amber-400 border-amber-400/30 bg-amber-400/10'
-    : 'text-emerald-400 border-emerald-400/30 bg-emerald-400/10'
+    score === 1 ? 'text-red-700 border-red-200 bg-red-50'
+    : score === 2 ? 'text-amber-700 border-amber-200 bg-amber-50'
+    : 'text-emerald-700 border-emerald-200 bg-emerald-50'
 
   const sectionDot = (score: number) =>
     score === 1 ? 'bg-red-400' : score === 2 ? 'bg-amber-400' : 'bg-teal-400'
@@ -583,7 +583,7 @@ export default function ZoomCompanion({
     return prompts.map((p, i) => (
       <div key={i} className={`rounded-xl p-4 ${
         p.startsWith('↳') ? 'bg-transparent border border-stone-800' :
-        p.startsWith('IF ') ? 'bg-amber-400/5 border border-amber-400/20' :
+        p.startsWith('IF ') ? 'bg-amber-400/5 border border-amber-200' :
         'bg-stone-900 border border-stone-800'
       }`}>
         <p className="text-white text-sm leading-relaxed">{p}</p>
@@ -595,7 +595,7 @@ export default function ZoomCompanion({
     <div className="h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col overflow-hidden">
 
       {/* Top bar */}
-      <div className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
+      <div className="border-b border-stone-200 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div>
             <a href={`/dashboard/leads/${leadId}`} className="text-xs text-stone-600 hover:text-stone-400 transition-colors mb-0.5 block">
@@ -608,14 +608,14 @@ export default function ZoomCompanion({
               <span className={`w-1.5 h-1.5 rounded-full ${stateInfo.badge}`} />
               {bodyState}{scoreDisplay}
             </div>
-            <div className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${isFirstHalf ? 'border-stone-700 text-stone-500 bg-stone-900' : 'border-[#1B6DFC]/30 text-[#1B6DFC] bg-[#1B6DFC]/5'}`}>
+            <div className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${isFirstHalf ? 'border-stone-700 text-stone-500 bg-stone-900' : 'border-blue-200 text-[#1B6DFC] bg-blue-50'}`}>
               {isFirstHalf ? 'Listen' : 'Pitch'}
             </div>
             {trainingStatus && (
               <div className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
-                trainingStatus === 'active' ? 'border-[#1B6DFC]/30 text-[#1B6DFC] bg-[#1B6DFC]/5'
-                : trainingStatus === 'returning' ? 'border-amber-400/30 text-amber-400 bg-amber-400/5'
-                : 'border-violet-400/30 text-violet-400 bg-violet-400/5'
+                trainingStatus === 'active' ? 'border-blue-200 text-[#1B6DFC] bg-blue-50'
+                : trainingStatus === 'returning' ? 'border-amber-200 text-amber-700 bg-amber-400/5'
+                : 'border-violet-200 text-violet-700 bg-violet-400/5'
               }`}>
                 {trainingStatus === 'active' ? 'Active trainer' : trainingStatus === 'returning' ? 'Returning' : 'New to training'}
               </div>
@@ -625,21 +625,21 @@ export default function ZoomCompanion({
         <div className="flex items-center gap-3">
           <button
             onClick={toggleCompact}
-            className={`text-xs font-bold px-3 py-2 rounded-lg border transition-colors ${compactMode ? 'border-[#1B6DFC]/40 text-[#1B6DFC] bg-[#1B6DFC]/10' : 'border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200'}`}
+            className={`text-xs font-bold px-3 py-2 rounded-lg border transition-colors ${compactMode ? 'border-[#1B6DFC]/40 text-[#1B6DFC] bg-blue-50' : 'border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200'}`}
             title="Compact mode hides scripts, tips, and boundary panels — leaving only the prompts and action buttons. Best for in-person calls."
           >
             {compactMode ? 'Compact ✓' : 'Compact'}
           </button>
           <button
             onClick={() => { setDrawerSection('objection'); setDrawerOpen(o => !o) }}
-            className={`text-xs font-bold px-3 py-2 rounded-lg border transition-colors ${drawerOpen ? 'border-amber-400/40 text-amber-400 bg-amber-400/10' : 'border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200'}`}
+            className={`text-xs font-bold px-3 py-2 rounded-lg border transition-colors ${drawerOpen ? 'border-amber-400/40 text-amber-700 bg-amber-50' : 'border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200'}`}
           >
             Coach Drawer
           </button>
           <span className="text-2xl font-mono font-bold text-white tabular-nums">{formatTime(seconds)}</span>
           <button
             onClick={() => setRunning(r => !r)}
-            className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-700 hover:bg-stone-600 text-white' : 'bg-[#1B6DFC] text-black hover:bg-[#1056D6]'}`}
+            className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-700 hover:bg-stone-600 text-white' : 'bg-[#1B6DFC] text-white hover:bg-[#1056D6]'}`}
           >
             {running ? 'Pause' : seconds === 0 ? 'Start' : 'Resume'}
           </button>
@@ -652,7 +652,7 @@ export default function ZoomCompanion({
       <div className="flex flex-1 overflow-hidden">
 
         {/* Stage nav */}
-        <div className="w-52 border-r border-white/10 p-4 flex flex-col gap-1 overflow-y-auto">
+        <div className="w-52 border-r border-stone-200 p-4 flex flex-col gap-1 overflow-y-auto">
           <p className="text-xs text-stone-600 uppercase tracking-widest font-semibold mb-2">Listen</p>
           {STAGES.filter(s => s.half === 1).map(s => {
             const idx = STAGES.indexOf(s)
@@ -662,7 +662,7 @@ export default function ZoomCompanion({
                 onClick={() => setCurrentStage(idx)}
                 className={`text-left px-3 py-2.5 rounded-lg transition-colors ${
                   idx === currentStage
-                    ? 'bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 text-[#1B6DFC]'
+                    ? 'bg-blue-50 border border-blue-200 text-[#1B6DFC]'
                     : idx < currentStage
                     ? 'text-stone-500 hover:text-stone-300'
                     : 'text-stone-400 hover:text-stone-200'
@@ -683,7 +683,7 @@ export default function ZoomCompanion({
                 onClick={() => setCurrentStage(idx)}
                 className={`text-left px-3 py-2.5 rounded-lg transition-colors ${
                   idx === currentStage
-                    ? 'bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 text-[#1B6DFC]'
+                    ? 'bg-blue-50 border border-blue-200 text-[#1B6DFC]'
                     : idx < currentStage
                     ? 'text-stone-500 hover:text-stone-300'
                     : 'text-stone-400 hover:text-stone-200'
@@ -695,14 +695,14 @@ export default function ZoomCompanion({
             )
           })}
 
-          <div className="mt-auto pt-4 border-t border-white/10 flex gap-2">
+          <div className="mt-auto pt-4 border-t border-stone-200 flex gap-2">
             {currentStage > 0 && (
-              <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-white py-1.5 rounded-lg border border-white/10 hover:border-white/20 transition-colors">
+              <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-white py-1.5 rounded-lg border border-stone-200 hover:border-stone-300 transition-colors">
                 Back
               </button>
             )}
             {currentStage < STAGES.length - 1 && (
-              <button onClick={() => setCurrentStage(s => s + 1)} className="flex-1 text-xs text-[#1B6DFC] py-1.5 rounded-lg border border-[#1B6DFC]/30 hover:bg-[#1B6DFC]/10 transition-colors">
+              <button onClick={() => setCurrentStage(s => s + 1)} className="flex-1 text-xs text-[#1B6DFC] py-1.5 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors">
                 Next
               </button>
             )}
@@ -728,9 +728,9 @@ export default function ZoomCompanion({
                   <p className="text-xs text-stone-400 mb-4">Pick what matches before moving on. Stage 2 adapts to this.</p>
                   <div className="grid grid-cols-3 gap-2">
                     {([
-                      { key: 'active' as const, label: 'Currently training', dot: 'bg-[#1B6DFC]', cls: 'border-[#1B6DFC]/40 bg-[#1B6DFC]/10 text-[#1B6DFC]' },
-                      { key: 'returning' as const, label: 'Returning to it', dot: 'bg-amber-400', cls: 'border-amber-400/40 bg-amber-400/10 text-amber-400' },
-                      { key: 'new' as const, label: 'New to training', dot: 'bg-violet-400', cls: 'border-violet-400/40 bg-violet-400/10 text-violet-400' },
+                      { key: 'active' as const, label: 'Currently training', dot: 'bg-[#1B6DFC]', cls: 'border-[#1B6DFC]/40 bg-blue-50 text-[#1B6DFC]' },
+                      { key: 'returning' as const, label: 'Returning to it', dot: 'bg-amber-400', cls: 'border-amber-400/40 bg-amber-50 text-amber-700' },
+                      { key: 'new' as const, label: 'New to training', dot: 'bg-violet-400', cls: 'border-violet-400/40 bg-violet-50 text-violet-700' },
                     ]).map(opt => {
                       const selected = trainingStatus === opt.key
                       return (
@@ -809,7 +809,7 @@ export default function ZoomCompanion({
               {stage.id === 3 && (
                 <div className="space-y-3 mb-6">
                   {/* Opening tie-back */}
-                  <div className="border border-[#1B6DFC]/30 bg-[#1B6DFC]/5 rounded-xl p-5">
+                  <div className="border border-blue-200 bg-blue-50 rounded-xl p-5">
                     <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">Open with</p>
                     <p className="text-sm text-stone-200 italic leading-relaxed">&ldquo;OK. Based on what you just told me about [their hot spot] — here&rsquo;s exactly how my coaching gets to that. Let me walk you through it.&rdquo;</p>
                   </div>
@@ -869,8 +869,8 @@ export default function ZoomCompanion({
                       )}
 
                       {'bridge' in card && card.bridge && (
-                        <div className="bg-amber-400/5 border border-amber-400/20 rounded-lg p-3 mb-3">
-                          <p className="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-1">How they connect</p>
+                        <div className="bg-amber-400/5 border border-amber-200 rounded-lg p-3 mb-3">
+                          <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1">How they connect</p>
                           <p className="text-[13px] text-stone-300 leading-relaxed">{card.bridge}</p>
                         </div>
                       )}
@@ -883,7 +883,7 @@ export default function ZoomCompanion({
                   ))}
 
                   {/* Closing line */}
-                  <div className="border border-[#1B6DFC]/30 bg-[#1B6DFC]/5 rounded-xl p-5">
+                  <div className="border border-blue-200 bg-blue-50 rounded-xl p-5">
                     <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">Close with</p>
                     <p className="text-sm text-stone-200 italic leading-relaxed">&ldquo;That&rsquo;s how I get to the thing you just told me.&rdquo;</p>
                   </div>
@@ -912,7 +912,7 @@ export default function ZoomCompanion({
                           <div className="flex items-center gap-2 flex-wrap">
                             <p className="text-sm font-bold text-white">{pkg.tier}</p>
                             {pkg.coachAssessed && (
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 border border-amber-400/30 bg-amber-400/10 px-1.5 py-0.5 rounded">Coach-assessed</span>
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 border border-amber-200 bg-amber-50 px-1.5 py-0.5 rounded">Coach-assessed</span>
                             )}
                           </div>
                           <div className="text-right">
@@ -930,7 +930,7 @@ export default function ZoomCompanion({
                     <p className="text-base font-bold text-white tabular-nums">{COMMENCEMENT_FEE}</p>
                   </div>
 
-                  <div className="border border-[#1B6DFC]/30 bg-[#1B6DFC]/5 rounded-xl p-4">
+                  <div className="border border-blue-200 bg-blue-50 rounded-xl p-4">
                     <p className="text-[11px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-1">{FOUNDING_OFFER.headline}</p>
                     <p className="text-stone-300 text-sm leading-relaxed">{FOUNDING_OFFER.blurb}</p>
                   </div>
@@ -939,7 +939,7 @@ export default function ZoomCompanion({
 
               {/* Script — hidden in compact mode */}
               {stage.script && !compactMode && (
-                <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/30 rounded-xl p-5 mb-3">
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-3">
                   <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-wider mb-3">Script</p>
                   <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{stage.script}</p>
                 </div>
@@ -956,7 +956,7 @@ export default function ZoomCompanion({
 
               {/* Tips — hidden in compact mode */}
               {stage.tips && !compactMode && (
-                <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-xl p-4 mt-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mt-4">
                   <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">Coach note</p>
                   <p className="text-stone-400 text-sm leading-relaxed">{stage.tips}</p>
                 </div>
@@ -964,8 +964,8 @@ export default function ZoomCompanion({
 
               {/* Boundary — hidden in compact mode */}
               {stage.boundary && !compactMode && (
-                <div className="bg-red-400/5 border border-red-400/20 rounded-xl p-4 mt-3">
-                  <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Boundary</p>
+                <div className="bg-red-400/5 border border-red-200 rounded-xl p-4 mt-3">
+                  <p className="text-xs font-bold text-red-700 uppercase tracking-wider mb-1">Boundary</p>
                   <p className="text-stone-400 text-sm leading-relaxed">{stage.boundary}</p>
                 </div>
               )}
@@ -974,8 +974,8 @@ export default function ZoomCompanion({
           </div>
 
           {/* Notes + Decision panel */}
-          <div className="w-72 border-l border-white/10 flex flex-col overflow-y-auto">
-            <div className="p-4 border-b border-white/10 flex items-center justify-between">
+          <div className="w-72 border-l border-stone-200 flex flex-col overflow-y-auto">
+            <div className="p-4 border-b border-stone-200 flex items-center justify-between">
               <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold">Live Notes</p>
               <button onClick={saveNotes} className="text-xs text-[#1B6DFC] hover:text-white transition-colors font-semibold">
                 {saving ? 'Saving...' : 'Save'}
@@ -989,7 +989,7 @@ export default function ZoomCompanion({
               style={{ minHeight: '200px' }}
             />
 
-            <div className="p-4 border-t border-white/10 space-y-3">
+            <div className="p-4 border-t border-stone-200 space-y-3">
 
               {/* Decision panel — only on Stage 4 */}
               {isDecisionStage && (
@@ -997,20 +997,20 @@ export default function ZoomCompanion({
                   <p className="text-xs text-stone-600 uppercase tracking-wider font-semibold">Mark outcome</p>
                   {!decisionPath ? (
                     <>
-                      <button onClick={() => markDecision('A')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-colors">
+                      <button onClick={() => markDecision('A')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-red-50 border border-red-500/20 text-red-700 hover:bg-red-100 transition-colors">
                         Path A — Declined
                       </button>
-                      <button onClick={() => markDecision('B')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 transition-colors">
+                      <button onClick={() => markDecision('B')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-amber-50 border border-amber-500/20 text-amber-700 hover:bg-amber-100 transition-colors">
                         Path B — Needs Time
                       </button>
-                      <button onClick={() => markDecision('C')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 text-[#1B6DFC] hover:bg-[#1B6DFC]/20 transition-colors">
+                      <button onClick={() => markDecision('C')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-blue-50 border border-blue-200 text-[#1B6DFC] hover:bg-[#1B6DFC]/20 transition-colors">
                         Path C — Proceeding
                       </button>
                     </>
                   ) : decisionPath === 'C' && !pathwayType ? (
                     <>
                       <p className="text-xs text-stone-500 mb-1">How did they proceed?</p>
-                      <button onClick={() => markPathway('full_rate')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 text-[#1B6DFC] hover:bg-[#1B6DFC]/20 transition-colors">
+                      <button onClick={() => markPathway('full_rate')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-blue-50 border border-blue-200 text-[#1B6DFC] hover:bg-[#1B6DFC]/20 transition-colors">
                         Full Rate (In-Person)
                       </button>
                       <button onClick={() => markPathway('online')} className="w-full text-xs font-bold px-3 py-2 rounded-lg bg-stone-700/50 border border-stone-600 text-stone-300 hover:bg-stone-700 transition-colors">
@@ -1020,14 +1020,14 @@ export default function ZoomCompanion({
                   ) : decisionPath !== 'C' ? (
                     <div className={`text-xs font-bold px-3 py-2 rounded-lg text-center ${
                       decisionPath === 'A'
-                        ? 'bg-red-500/10 border border-red-500/20 text-red-400'
-                        : 'bg-amber-500/10 border border-amber-500/20 text-amber-400'
+                        ? 'bg-red-50 border border-red-500/20 text-red-700'
+                        : 'bg-amber-50 border border-amber-500/20 text-amber-700'
                     }`}>
                       Path {decisionPath} recorded
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      <div className="text-xs font-bold px-3 py-2 rounded-lg bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 text-[#1B6DFC] text-center">
+                      <div className="text-xs font-bold px-3 py-2 rounded-lg bg-blue-50 border border-blue-200 text-[#1B6DFC] text-center">
                         {pathwayType === 'full_rate' ? 'Full Rate' : 'Online'} — send commencement fee
                       </div>
                       <CommencementFeeButton leadId={leadId} />
@@ -1056,7 +1056,7 @@ export default function ZoomCompanion({
               <button
                 onClick={markCallComplete}
                 disabled={callComplete}
-                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${callComplete ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-stone-800 border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white'}`}
+                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${callComplete ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-700' : 'bg-stone-800 border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white'}`}
               >
                 {callComplete ? 'Call Marked Complete' : 'Mark Call Complete'}
               </button>
@@ -1065,7 +1065,7 @@ export default function ZoomCompanion({
               <button
                 onClick={sendDeclinedSequence}
                 disabled={declinedSent || sendingDeclined}
-                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${declinedSent ? 'bg-stone-900 border border-stone-800 text-stone-600' : 'bg-stone-800 border border-stone-700 text-amber-400 hover:border-amber-500/40 hover:text-amber-300'}`}
+                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${declinedSent ? 'bg-stone-900 border border-stone-800 text-stone-600' : 'bg-stone-800 border border-stone-700 text-amber-700 hover:border-amber-300 hover:text-amber-700'}`}
               >
                 {declinedSent ? 'Declined sequence sent' : sendingDeclined ? 'Sending...' : 'Send declined follow-up'}
               </button>
@@ -1078,7 +1078,7 @@ export default function ZoomCompanion({
       {drawerOpen && (
         <div className="fixed inset-0 z-40 flex">
           <div className="flex-1 bg-black/40" onClick={() => setDrawerOpen(false)} />
-          <div className="w-[420px] bg-[#0d0d0d] border-l border-white/10 overflow-y-auto p-5 space-y-4">
+          <div className="w-[420px] bg-[#0d0d0d] border-l border-stone-200 overflow-y-auto p-5 space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-xs font-bold text-stone-500 uppercase tracking-widest">Coach Drawer</p>
               <button onClick={() => setDrawerOpen(false)} className="text-stone-500 hover:text-white text-sm">×</button>
@@ -1095,7 +1095,7 @@ export default function ZoomCompanion({
                   onClick={() => setDrawerSection(t.key)}
                   className={`text-xs font-semibold px-3 py-2 border-b-2 -mb-px transition-colors ${
                     drawerSection === t.key
-                      ? 'border-amber-400 text-amber-400'
+                      ? 'border-amber-400 text-amber-700'
                       : 'border-transparent text-stone-500 hover:text-stone-300'
                   }`}
                 >{t.label}</button>
@@ -1104,18 +1104,18 @@ export default function ZoomCompanion({
 
             {drawerSection === 'objection' && (
               <div className="space-y-3">
-                <div className="bg-amber-400/10 border border-amber-400/30 rounded-xl p-3">
-                  <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">{OBJECTION_HANDLING.toneIndicator}</p>
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
+                  <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-1">{OBJECTION_HANDLING.toneIndicator}</p>
                   <p className="text-stone-400 text-xs leading-relaxed">{OBJECTION_HANDLING.when}</p>
                 </div>
                 {OBJECTION_HANDLING.steps.map((step, i) => (
                   <div key={i} className="bg-stone-900 border border-stone-800 rounded-xl p-4">
-                    <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">{step.label}</p>
+                    <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">{step.label}</p>
                     <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{step.content}</p>
                   </div>
                 ))}
-                <div className="bg-red-400/5 border border-red-400/20 rounded-xl p-3">
-                  <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Boundary</p>
+                <div className="bg-red-400/5 border border-red-200 rounded-xl p-3">
+                  <p className="text-xs font-bold text-red-700 uppercase tracking-wider mb-1">Boundary</p>
                   <p className="text-stone-400 text-xs">{OBJECTION_HANDLING.boundary}</p>
                 </div>
               </div>
@@ -1123,15 +1123,15 @@ export default function ZoomCompanion({
 
             {drawerSection === 'online' && (
               <div className="space-y-3">
-                <div className="bg-amber-400/5 border border-amber-400/20 rounded-xl p-4">
-                  <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Online Coaching script</p>
+                <div className="bg-amber-400/5 border border-amber-200 rounded-xl p-4">
+                  <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">Online Coaching script</p>
                   <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{ONLINE_SCRIPT}</p>
                 </div>
                 <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
                   <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2">Package</p>
                   <div className="flex items-center justify-between">
                     <p className="text-white text-sm font-semibold">Online Performance Coaching</p>
-                    <p className="text-amber-400 text-sm font-bold">$149/week</p>
+                    <p className="text-amber-700 text-sm font-bold">$149/week</p>
                   </div>
                 </div>
               </div>

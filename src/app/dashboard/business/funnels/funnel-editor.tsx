@@ -105,7 +105,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
               </a>
               <button
                 onClick={deleteFunnel}
-                className="p-2 text-stone-400 hover:text-red-400 transition-colors"
+                className="p-2 text-stone-400 hover:text-red-700 transition-colors"
               >
                 <Trash2 size={15} />
               </button>
@@ -121,7 +121,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
       </div>
 
       {error && (
-        <div className="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 text-red-400 text-sm">
+        <div className="mb-6 bg-red-50 border border-red-500/20 rounded-lg px-4 py-3 text-red-700 text-sm">
           {error}
         </div>
       )}

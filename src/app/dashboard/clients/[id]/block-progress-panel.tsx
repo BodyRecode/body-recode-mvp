@@ -48,7 +48,7 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
   return (
     <div
       className={`bg-[#FFFFFF] border rounded-2xl px-5 py-4 mb-6 ${
-        blockEnded ? 'border-amber-500/40' : blockEndingSoon ? 'border-amber-500/20' : 'border-[#E5E5E5]'
+        blockEnded ? 'border-amber-300' : blockEndingSoon ? 'border-amber-500/20' : 'border-[#E5E5E5]'
       }`}
     >
       <div className="flex items-center justify-between gap-3 mb-3">

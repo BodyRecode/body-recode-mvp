@@ -162,7 +162,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <div className="w-14 h-14 bg-[#1B6DFC]/10 rounded-full flex items-center justify-center mx-auto mb-5">
+          <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-5">
             <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
@@ -174,7 +174,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
           {portalHref && (
             <a
               href={portalHref}
-              className="inline-flex items-center gap-2 bg-[#1B6DFC] text-black text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#5390FF] transition-colors"
+              className="inline-flex items-center gap-2 bg-[#1B6DFC] text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#5390FF] transition-colors"
             >
               Back to your portal
             </a>
@@ -250,8 +250,8 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
 
             {validationMessage && (
               <div className="border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
-                <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
-                <p className="text-red-400/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
+                <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
+                <p className="text-red-700/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
               </div>
             )}
 
@@ -265,7 +265,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                 const hasError = missing.has(id)
                 return (
                   <div key={label} className={`bg-stone-900 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
-                    <label className={`block text-sm font-medium mb-1 ${hasError ? 'text-red-400' : 'text-white'}`}>{label}</label>
+                    <label className={`block text-sm font-medium mb-1 ${hasError ? 'text-red-700' : 'text-white'}`}>{label}</label>
                     <p className="text-stone-500 text-xs mb-3">{helper}</p>
                     <div className="flex items-center gap-3">
                       <input
@@ -275,11 +275,11 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                         value={value}
                         onChange={e => { set(e.target.value); clearMissing(id) }}
                         placeholder="0.0"
-                        className={`flex-1 bg-stone-800 text-white text-base rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${hasError ? 'border-red-500/60' : 'border-transparent'}`}
+                        className={`flex-1 bg-stone-800 text-white text-base rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-stone-600 border ${hasError ? 'border-red-400' : 'border-transparent'}`}
                       />
                       <span className="text-stone-400 text-sm font-medium w-8">{unit}</span>
                     </div>
-                    {hasError && <p className="text-red-400 text-xs mt-2 font-medium">Please enter a value.</p>}
+                    {hasError && <p className="text-red-700 text-xs mt-2 font-medium">Please enter a value.</p>}
                   </div>
                 )
               })}
@@ -304,8 +304,8 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
 
             {validationMessage && (
               <div className="border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
-                <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
-                <p className="text-red-400/70 text-xs mt-1">Missing photos are highlighted in red below.</p>
+                <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
+                <p className="text-red-700/70 text-xs mt-1">Missing photos are highlighted in red below.</p>
               </div>
             )}
 
@@ -329,7 +329,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                 const isProcessing = processing.has(id)
                 return (
                   <div key={label} className={`bg-stone-900 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
-                    <p className={`text-sm font-medium mb-3 ${hasError ? 'text-red-400' : 'text-white'}`}>{label}</p>
+                    <p className={`text-sm font-medium mb-3 ${hasError ? 'text-red-700' : 'text-white'}`}>{label}</p>
                     {isProcessing ? (
                       <div className="flex items-center gap-3 py-2">
                         <div className="w-5 h-5 border-2 border-teal-400 border-t-transparent rounded-full animate-spin" />
@@ -352,7 +352,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                       </div>
                     ) : (
                       <label className="block cursor-pointer">
-                        <div className={`border-2 border-dashed rounded-xl p-6 text-center hover:border-teal-400/50 transition-colors ${hasError ? 'border-red-500/60' : 'border-stone-700'}`}>
+                        <div className={`border-2 border-dashed rounded-xl p-6 text-center hover:border-teal-400/50 transition-colors ${hasError ? 'border-red-400' : 'border-stone-700'}`}>
                           <svg className="w-6 h-6 text-stone-500 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
                           </svg>
@@ -367,13 +367,13 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                         />
                       </label>
                     )}
-                    {hasError && <p className="text-red-400 text-xs mt-2 font-medium">Please upload this photo.</p>}
+                    {hasError && <p className="text-red-700 text-xs mt-2 font-medium">Please upload this photo.</p>}
                   </div>
                 )
               })}
             </div>
 
-            {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+            {error && <p className="text-red-700 text-sm text-center">{error}</p>}
 
             <button
               onClick={handleSubmit}

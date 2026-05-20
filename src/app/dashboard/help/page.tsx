@@ -169,7 +169,7 @@ export default function HelpPage() {
               }}
               className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors border ${
                 activeTab === cat.id
-                  ? 'bg-blue-500/20 text-blue-500 border-blue-500/30'
+                  ? 'bg-blue-100 text-blue-500 border-blue-200'
                   : 'bg-[#E5E5E5] text-[#6B6B6B] border-[#E5E5E5] hover:text-[#1A1A1A]'
               }`}
             >
@@ -186,7 +186,7 @@ export default function HelpPage() {
           <ul className="space-y-0.5">
             {SECTIONS.filter(s => s.category === activeTab).map(({ id, title, colour }) => {
               const isActive = activeSection === id
-              const activeColour = colour === 'violet' ? 'text-violet-400' : colour === 'amber' ? 'text-amber-400' : 'text-blue-500'
+              const activeColour = colour === 'violet' ? 'text-violet-700' : colour === 'amber' ? 'text-amber-700' : 'text-blue-500'
               return (
                 <li key={id}>
                   <button
@@ -345,9 +345,9 @@ export default function HelpPage() {
 
             <p className="font-semibold text-[#1A1A1A] mt-4">Reference docs</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
-              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-04-30_Buyer_Language_Rewrite.md</code> - full diagnostic, every before/after, IG bio variants</li>
-              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-01_Pre_Call_Brief_Template.md</code> - locked 13-section template for pre-call briefs</li>
-              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-01_May_Post_Revisions.json</code> - 22 revised IG post captions, all in the new voice</li>
+              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-04-30_Buyer_Language_Rewrite.md</code> - full diagnostic, every before/after, IG bio variants</li>
+              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-01_Pre_Call_Brief_Template.md</code> - locked 13-section template for pre-call briefs</li>
+              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-01_May_Post_Revisions.json</code> - 22 revised IG post captions, all in the new voice</li>
             </ul>
 
             <Note>When you draft anything new (DM, email, post, ad creative, script), check it against these rules before publishing. The cold-layer rule is the most often violated - it&apos;s tempting to lead with brand vocabulary because it&apos;s sharp. Resist. Lead with what they&apos;re feeling first.</Note>
@@ -382,7 +382,7 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Scorecard Lead Creation</p>
             <p>When someone completes the Body State Scorecard on performance.bodyrecode.au, a lead is <strong>automatically created</strong> in the CRM - no manual entry required. Their name, email, score, body state, and section scores are all captured. You receive a branded notification email immediately on every scorecard submission.</p>
-            <p className="mt-2">Leads created this way are tagged with <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">source_detail: scorecard</code>. This is now the primary lead entry path.</p>
+            <p className="mt-2">Leads created this way are tagged with <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">source_detail: scorecard</code>. This is now the primary lead entry path.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Lead Quality Filter (Red Flag Test)</p>
             <p>Two qualifier questions are asked between the email step and the result. Based on Hormozi&apos;s &quot;red flag test&quot; - a single mindset/behaviour question identified leads with half the show rate and half the close rate. Body Recode uses two:</p>
@@ -390,16 +390,16 @@ export default function HelpPage() {
               <li><strong>Approach (behaviour):</strong> When training/nutrition stops producing results, what is your honest first response? <span className="text-[#999999]">A/B = good fit. C (push harder) and D (frustrated, want program changed) = red flag - exactly the prescription-over-interpretation mindset BR is built to correct.</span></li>
               <li><strong>Investment readiness (qualification):</strong> If we identify what is blocking your progress, are you in a position to invest? <span className="text-[#999999]">A (ready now) / B (1-3 months) = good. C (just exploring) / D (free only) = red flag - not a coaching buyer.</span></li>
             </ul>
-            <p className="mt-2">Each lead is scored: <strong className="text-blue-500">green</strong> (zero red flags), <strong className="text-amber-400">yellow</strong> (one), <strong className="text-red-400">red</strong> (both). Quality dot appears on the avatar in the leads list and a Lead Quality block appears on the lead detail page below the section breakdown. Red-flagged leads should not be pushed to a Zoom call unless they push for it themselves.</p>
+            <p className="mt-2">Each lead is scored: <strong className="text-blue-500">green</strong> (zero red flags), <strong className="text-amber-700">yellow</strong> (one), <strong className="text-red-700">red</strong> (both). Quality dot appears on the avatar in the leads list and a Lead Quality block appears on the lead detail page below the section breakdown. Red-flagged leads should not be pushed to a Zoom call unless they push for it themselves.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Post-Scorecard CTAs (state-based split)</p>
             <p>After completing the scorecard, the CTA shown on the result page <strong>depends on the lead&apos;s body state</strong>. This was changed 2026-04-30 to remove the $37/free-call cannibalisation that had been driving $37 conversion to zero. Each state now sees ONE primary path matched to where their body actually is:</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
-              <li><strong>Depleted (5-8):</strong> Free 15-minute call only. A PDF will not unstick a body in protection mode. CTA links to <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">bodyrecode.au/book?from=scorecard_depleted</code>.</li>
+              <li><strong>Depleted (5-8):</strong> Free 15-minute call only. A PDF will not unstick a body in protection mode. CTA links to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">bodyrecode.au/book?from=scorecard_depleted</code>.</li>
               <li><strong>Transitioning (9-11):</strong> $37 Body Decode Report only. The bullseye buyer. No competing free option drains conversions.</li>
               <li><strong>Ready (12-15):</strong> $37 Body Decode Report with custom framing (&quot;Your biology is ready. The prescription is the gap.&quot;). High-intent lead, $37 acts as a self-screening commit signal.</li>
             </ul>
-            <p className="mt-2">The Body Decode Report itself: a personalised web-based analysis of their body state, section scores, and what to stop and start doing. Purchased via Stripe at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">$37 AUD</code> and delivered automatically by email as a unique link at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">app.bodyrecode.au/report/[token]</code>.</p>
+            <p className="mt-2">The Body Decode Report itself: a personalised web-based analysis of their body state, section scores, and what to stop and start doing. Purchased via Stripe at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">$37 AUD</code> and delivered automatically by email as a unique link at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">app.bodyrecode.au/report/[token]</code>.</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
               <li>Personalised to their exact body state (Depleted / Transitioning / Ready)</li>
               <li>Section-by-section breakdown with interpretations for each score level</li>
@@ -407,7 +407,7 @@ export default function HelpPage() {
               <li>Book a call CTA at the bottom</li>
               <li>PDF download via print</li>
             </ul>
-            <p className="mt-2">Report purchases are recorded as <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">scorecard_reports</code> rows in the database. No manual handling required - Stripe webhook creates the report and sends the email automatically.</p>
+            <p className="mt-2">Report purchases are recorded as <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">scorecard_reports</code> rows in the database. No manual handling required - Stripe webhook creates the report and sends the email automatically.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Self-Guided Program (Downsell)</p>
             <p>Any lead with scorecard data will show a <strong>Self-Guided Program</strong> section on their detail page. This shows whether they have purchased the $97 program and lets you manually send the offer or copy the checkout link.</p>
@@ -444,7 +444,7 @@ export default function HelpPage() {
 
             <p className="font-semibold text-[#1A1A1A] mt-3">Pre-Call Read</p>
             <p>Above the Coaching Entry section on the lead detail page, the <strong>Pre-Call Read</strong> card holds the lead-specific brief for the upcoming call. Their pattern, what to listen for, lines to have ready. Click <strong>Add</strong> or <strong>Edit</strong> to write or update it. The brief persists per-lead and is independent of the companion notes.</p>
-            <p>Briefs follow a locked 13-section template (Opening → Reading Scorecard Back → Building the Picture → Hot Spot → Pushback Handling → How This Gets You There → Offer → If That&apos;s a Lot → Yes/Path C closing → Path B → Path A → One Thing to Hold → Key Lines). The OPENING and READING-BACK sections lead with the prospect&apos;s lived experience (buyer language) before introducing body state vocabulary. The system-explanation section (How This Gets You There) is where CFFS / fat-storage zones / four profiles / CFWS earn their place. Template doc lives at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-01_Pre_Call_Brief_Template.md</code>. Two reference briefs to mirror: Riley (Ready State, 13/15) and Samantha (Transitioning State, 9/15).</p>
+            <p>Briefs follow a locked 13-section template (Opening → Reading Scorecard Back → Building the Picture → Hot Spot → Pushback Handling → How This Gets You There → Offer → If That&apos;s a Lot → Yes/Path C closing → Path B → Path A → One Thing to Hold → Key Lines). The OPENING and READING-BACK sections lead with the prospect&apos;s lived experience (buyer language) before introducing body state vocabulary. The system-explanation section (How This Gets You There) is where CFFS / fat-storage zones / four profiles / CFWS earn their place. Template doc lives at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-01_Pre_Call_Brief_Template.md</code>. Two reference briefs to mirror: Riley (Ready State, 13/15) and Samantha (Transitioning State, 9/15).</p>
 
             <p className="font-semibold text-[#1A1A1A] mt-3">Lead-specific Stage 1 (Recap)</p>
             <p>Stage 1 is fully populated with the lead&apos;s actual scorecard data - their score, body state, and per-section breakdown including the exact description text they selected (e.g. for Energy 1/3 they read &quot;Tired most of the day. Relying on caffeine. Crashes after lunch or training.&quot;). When you reference what they said, you&apos;re literally pointing at it on screen.</p>
@@ -635,10 +635,10 @@ export default function HelpPage() {
             </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Client Feedback Channel</p>
-            <p>Every portal landing now has a <strong>Share feedback</strong> card under Resources. Clients submit free-text feedback under one of five categories: <code>portal_experience</code>, <code>coaching_experience</code>, <code>feature_request</code>, <code>bug</code>, <code>other</code>. Each submission writes to the <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">client_feedback</code> table and emails Kade a notification with the body inlined (so a reply can go straight from the email if needed).</p>
-            <p>Every broadcast email sent to clients now ends with a <strong>Tell us what would help</strong> section linking to the same form. Pattern is canonical via <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">src/lib/broadcast-feedback-footer.ts</code> - drop it into any future broadcast HTML template so the feedback channel is always present.</p>
+            <p>Every portal landing now has a <strong>Share feedback</strong> card under Resources. Clients submit free-text feedback under one of five categories: <code>portal_experience</code>, <code>coaching_experience</code>, <code>feature_request</code>, <code>bug</code>, <code>other</code>. Each submission writes to the <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">client_feedback</code> table and emails Kade a notification with the body inlined (so a reply can go straight from the email if needed).</p>
+            <p>Every broadcast email sent to clients now ends with a <strong>Tell us what would help</strong> section linking to the same form. Pattern is canonical via <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">src/lib/broadcast-feedback-footer.ts</code> - drop it into any future broadcast HTML template so the feedback channel is always present.</p>
             <p>Coach-side inbox view is not yet UI-built; submissions live on the row. Reply via the notification email&apos;s reply-to (client email is on file). The <code>acknowledged_at</code> column is reserved for a future triage UI.</p>
-            <p>Migration: <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">sql/2026-05-13_client_feedback.sql</code>.</p>
+            <p>Migration: <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">sql/2026-05-13_client_feedback.sql</code>.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Sessions (Face-to-Face Clients)</p>
             <p>Face-to-face clients see a <strong>Sessions</strong> section in their portal home that links to <strong>/portal/[token]/sessions</strong>. This page shows:</p>
@@ -648,7 +648,7 @@ export default function HelpPage() {
               <li>A reschedule section - shows available face-to-face slots for the next 21 days. The client selects a time and confirms the booking. You and the client both receive a branded confirmation email.</li>
             </ul>
             <p className="mt-2">To set up a client&apos;s fixed sessions, go to their client profile and click <strong>Set up →</strong> next to the Face-to-Face Session card. Click <strong>+ Add slot</strong> for each recurring day - pick the day, time, and duration. Slots appear as a list and can be removed individually with the ✕ button.</p>
-            <p className="mt-2">To book an individual session from the dashboard, go to the Face-to-Face Sessions page and use the <strong>Book a session</strong> form in the Booked Sessions panel. Pick the date, time, and duration - this creates a <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">client_sessions</code> record. The session then shows as <strong>Confirmed</strong> in the client portal once the client confirms attendance via the reminder email.</p>
+            <p className="mt-2">To book an individual session from the dashboard, go to the Face-to-Face Sessions page and use the <strong>Book a session</strong> form in the Booked Sessions panel. Pick the date, time, and duration - this creates a <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">client_sessions</code> record. The session then shows as <strong>Confirmed</strong> in the client portal once the client confirms attendance via the reminder email.</p>
             <p>Every portal page shows a sticky header with the Body Recode logo and sign-out button, and a fixed footer with a WhatsApp link to message you directly.</p>
             <Training title="Why one portal instead of multiple links">
               <p>Previous builds sent separate links for intake, baseline, and check-ins. Each link was another thing to track and another point of failure. A single portal link eliminates that. The client bookmarks it once and uses it throughout the entire coaching relationship - onboarding, check-ins, resources. Everything is in one place, in the right order, with the right steps unlocked at the right time.</p>
@@ -672,17 +672,17 @@ export default function HelpPage() {
             </Training>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-6 mb-2">Updates section (post-onboarding follow-ups)</p>
-            <p>The <strong>Updates</strong> section on the client profile (under the Intake row) is the container for any post-onboarding task the coach has queued for the client to complete on their portal. It only appears once the foundational intake is complete &mdash; there&apos;s nothing to &quot;update&quot; before the baseline is in. Each item below is its own named card so when more update types ship (delta intake, full re-intake, block-end auto-prompt &mdash; see <a href="https://github.com/BodyRecode/body-recode-mvp" className="text-blue-300">project_deferred_reassessment_flows</a>) they slot in alongside without restructuring.</p>
+            <p>The <strong>Updates</strong> section on the client profile (under the Intake row) is the container for any post-onboarding task the coach has queued for the client to complete on their portal. It only appears once the foundational intake is complete &mdash; there&apos;s nothing to &quot;update&quot; before the baseline is in. Each item below is its own named card so when more update types ship (delta intake, full re-intake, block-end auto-prompt &mdash; see <a href="https://github.com/BodyRecode/body-recode-mvp" className="text-blue-700">project_deferred_reassessment_flows</a>) they slot in alongside without restructuring.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Updates &middot; Supplementary intake (backfilling new fields)</p>
             <p>When new fields are added to the foundational intake after a client has already submitted theirs (e.g. medications on 2026-05-11, dietary context on 2026-05-12), existing clients don&apos;t lose access to those fields. The supplementary intake card on the Updates section has three states:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li><strong>Not sent yet</strong> &mdash; click <strong>Add follow-up to portal</strong> to create a pending supplementary <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">intake_invitations</code> row with <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">kind=&apos;supplementary&apos;</code>. The portal landing page detects this and surfaces a teal &quot;A quick follow-up from Kade&quot; card next time the client signs in.</li>
-              <li><strong>Pending</strong> &mdash; once the card exists, two extra actions appear: <strong>Email link</strong> (sends the client a branded reminder via Resend with the Outlook-safe shell + plain-text URL fallback, logged as <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">supplementary_intake_invite</code> in client_communications) and <strong>Copy follow-up link</strong> (puts the <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">/intake-supplement/&#123;token&#125;</code> URL on the clipboard for DM/SMS). The default is still portal-only; the email is the explicit escape hatch for clients who don&apos;t log in between weeks.</li>
+              <li><strong>Not sent yet</strong> &mdash; click <strong>Add follow-up to portal</strong> to create a pending supplementary <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">intake_invitations</code> row with <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">kind=&apos;supplementary&apos;</code>. The portal landing page detects this and surfaces a teal &quot;A quick follow-up from Kade&quot; card next time the client signs in.</li>
+              <li><strong>Pending</strong> &mdash; once the card exists, two extra actions appear: <strong>Email link</strong> (sends the client a branded reminder via Resend with the Outlook-safe shell + plain-text URL fallback, logged as <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">supplementary_intake_invite</code> in client_communications) and <strong>Copy follow-up link</strong> (puts the <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/intake-supplement/&#123;token&#125;</code> URL on the clipboard for DM/SMS). The default is still portal-only; the email is the explicit escape hatch for clients who don&apos;t log in between weeks.</li>
               <li><strong>Complete</strong> &mdash; row collapses to the completion timestamp. No actions.</li>
             </ul>
-            <p className="mt-3"><strong>What the client sees:</strong> a 5-question form at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">/intake-supplement/&#123;token&#125;</code>. Medications + 4 dietary context fields. ~3 minutes.</p>
-            <p><strong>What submit does:</strong> updates the most recent intake row with the dietary fields, writes medications to <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">clients.medications</code>, marks the invitation complete, then auto-regenerates the CFFS so the next program / nutrition / weekly synthesis use the updated context.</p>
+            <p className="mt-3"><strong>What the client sees:</strong> a 5-question form at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/intake-supplement/&#123;token&#125;</code>. Medications + 4 dietary context fields. ~3 minutes.</p>
+            <p><strong>What submit does:</strong> updates the most recent intake row with the dietary fields, writes medications to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">clients.medications</code>, marks the invitation complete, then auto-regenerates the CFFS so the next program / nutrition / weekly synthesis use the updated context.</p>
             <p><strong>Foundational Reading caveat:</strong> the CFFS auto-regenerate archives the existing CFFS row, which also archives any published Foundational Reading text on it. You get a coach notification flagging this; the client portal won&apos;t show an FR until you Regenerate it from the new CFFS. Or leave it &mdash; if the new CFFS interpretation is close to the old one, the previous FR archived state may be fine.</p>
             <p><strong>Idempotent:</strong> clicking <strong>Add follow-up to portal</strong> twice does not create duplicates. Same for the email send &mdash; refuses if no pending supplementary exists.</p>
           </Section>
@@ -698,7 +698,7 @@ export default function HelpPage() {
               <li>Client submits baseline (measurements plus front, side, and back photos). You receive a second email: <em>&ldquo;{`{name}`} completed onboarding - CFFS ready for generation&rdquo;</em>.</li>
               <li>You open the client profile and click <strong>Generate CFFS</strong> on the Foundational Synthesis panel. The Fat Map reads the baseline photos as part of Spatial Patterning (see Visual Signal Integration below).</li>
             </ul>
-            <p>Both submission orders are handled - if a client somehow submits baseline before intake (rare), the second email fires on intake submission instead. The helper <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">notifyOnboardingCompleteIfReady</code> is the single source of truth for the trigger.</p>
+            <p>Both submission orders are handled - if a client somehow submits baseline before intake (rare), the second email fires on intake submission instead. The helper <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">notifyOnboardingCompleteIfReady</code> is the single source of truth for the trigger.</p>
             <p><strong>Why coach-triggered:</strong> the CFFS is the interpretive seed. Every downstream artefact (Foundational Reading, Program Reading, Nutrition Reading, program generation, nutrition generation) reads from it. The coach being in the loop on its creation - reviewing the inputs first, optionally setting Coach Guidance, then generating - aligns with how every other reading on the platform works. CFFS was the lone auto-gen outlier; this commit closes that.</p>
             <p><strong>Existing CFFS, baseline re-capture:</strong> if a CFFS is already published and the client re-submits a baseline (e.g. with new photos), the notification adapts: <em>&ldquo;{`{name}`} submitted baseline - CFFS can be regenerated with the new photos&rdquo;</em>. Regeneration is optional and not automatic; you decide whether the new visual evidence is material enough to refresh the interpretation.</p>
 
@@ -725,11 +725,11 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">How to tell which CFFS read the photos</p>
             <p>Each CFFS row that ran through the multimodal flow stores two extra fields, which surface on the coach panel:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li><strong>Photo badge</strong> in the panel footer next to the Generated date. <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">Photos ✓ 3/3</code> in teal means the photos were attached at generation time. <code className="bg-[#E5E5E5] px-1 rounded text-stone-600 text-xs">Photos ✗ Not provided</code> in muted grey means no photos went into the prompt (older CFFS rows have no badge at all). Hovering shows the count.</li>
+              <li><strong>Photo badge</strong> in the panel footer next to the Generated date. <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">Photos ✓ 3/3</code> in teal means the photos were attached at generation time. <code className="bg-[#E5E5E5] px-1 rounded text-stone-600 text-xs">Photos ✗ Not provided</code> in muted grey means no photos went into the prompt (older CFFS rows have no badge at all). Hovering shows the count.</li>
               <li><strong>Visual Signal Summary section</strong>, a dedicated teal-accented card that sits above the seven standard CFFS sections when populated. Claude writes 2-4 sentences naming plainly what the photos showed across the four Fat Map zones, where they converged with the intake, and where they diverged. This is the &ldquo;at a glance&rdquo; read of what the visual layer actually contributed - faster than scanning the full <code>primary_patterns_and_signals</code> and <code>closing_interpretive_notes</code> sections for photo references.</li>
             </ul>
             <p>Both surfaces are additive - older CFFS rows generated before 2026-05-13 simply hide them. New regenerations populate them automatically.</p>
-            <p>Migration: <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">sql/2026-05-13_cffs_visual_signal_fields.sql</code>.</p>
+            <p>Migration: <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">sql/2026-05-13_cffs_visual_signal_fields.sql</code>.</p>
 
             <p>The CFFS is paired with a client-facing version called the <strong>Foundational Reading</strong> (see next section). The two are generated from the same intake and stay consistent with each other. The CFFS is yours to interpret. The Foundational Reading is what the client sees.</p>
             <Note>The CFFS is a coaching reference document, not a diagnostic tool. It does not prescribe training changes.</Note>
@@ -758,7 +758,7 @@ export default function HelpPage() {
             <p>One click does three things at once:</p>
             <ol className="space-y-1 list-decimal list-inside text-[#3A3A3A] text-sm">
               <li>Drafts the reading via Claude (~10 seconds).</li>
-              <li>Auto-publishes it to the client portal at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">/portal/[token]/foundational-reading</code>.</li>
+              <li>Auto-publishes it to the client portal at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/portal/[token]/foundational-reading</code>.</li>
               <li>Sends a branded email from <strong>kade@bodyrecode.au</strong> letting the client know the reading is ready.</li>
             </ol>
 
@@ -792,7 +792,7 @@ export default function HelpPage() {
             </Training>
 
             <Training title="Prompt safety rails">
-              <p>The reading prompt inherits the CFFS doctrine: pattern-based interpretation, conservative under uncertainty, no prescriptions, no diagnostic labels, no causal claims. It also explicitly forbids motivational language, em dashes, and exclamation marks. The prompt is in <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">src/lib/client-reading-prompt.ts</code>.</p>
+              <p>The reading prompt inherits the CFFS doctrine: pattern-based interpretation, conservative under uncertainty, no prescriptions, no diagnostic labels, no causal claims. It also explicitly forbids motivational language, em dashes, and exclamation marks. The prompt is in <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">src/lib/client-reading-prompt.ts</code>.</p>
               <p className="mt-2">Generated content is run through an em-dash strip before being saved, as a belt-and-braces guarantee.</p>
             </Training>
           </Section>
@@ -801,7 +801,7 @@ export default function HelpPage() {
             <p>The <strong>Medications</strong> field on the client profile captures a free-text list of what a client is currently taking (Yaz, Doxycycline, Salbutamol inhaler, etc.). The Analysis + Reading feature turns that blob into two artefacts: a coach-facing structured per-medication breakdown, and a client-facing prose reading the client sees in their portal.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-1">Coach view: Medications Analysis</p>
-            <p>On <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">/dashboard/clients/[id]</code> directly below the Medications editor card. Click <strong>Generate analysis</strong> to draft. Claude (Haiku 4.5) reads the medications text + the latest CFFS + intake (DOB, gender, occupation, goal) + active program block + active nutrition plan, and returns a JSON structure with one row per medication. Each row shows:</p>
+            <p>On <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/dashboard/clients/[id]</code> directly below the Medications editor card. Click <strong>Generate analysis</strong> to draft. Claude (Haiku 4.5) reads the medications text + the latest CFFS + intake (DOB, gender, occupation, goal) + active program block + active nutrition plan, and returns a JSON structure with one row per medication. Each row shows:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>Name</strong> — canonical, brand-with-generic when known (e.g. &quot;Yaz (ethinyl estradiol + drospirenone)&quot;).</li>
               <li><strong>Purpose</strong> — what it is, what it&apos;s prescribed for.</li>
@@ -821,7 +821,7 @@ export default function HelpPage() {
               <li><strong>How we account for it</strong> — what their program and nutrition do to work WITH these medications. Specific, behavioural.</li>
               <li><strong>What to watch</strong> — signals to flag to the coach if they shift.</li>
             </ol>
-            <p>The reading is a <strong>draft until you Publish</strong>. Click <strong>Publish to portal</strong> to expose it to the client at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">/portal/[token]/medications-reading</code>; it also appears as a card next to the Foundational Reading on the portal landing. Click <strong>Unpublish</strong> to hide it again without deleting. No email is sent on publish — the client discovers the reading next time they open their portal.</p>
+            <p>The reading is a <strong>draft until you Publish</strong>. Click <strong>Publish to portal</strong> to expose it to the client at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/portal/[token]/medications-reading</code>; it also appears as a card next to the Foundational Reading on the portal landing. Click <strong>Unpublish</strong> to hide it again without deleting. No email is sent on publish — the client discovers the reading next time they open their portal.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-1">Staleness signals</p>
             <p>Both cards show a <strong>Rebuild recommended</strong> amber pill when:</p>
@@ -869,7 +869,7 @@ export default function HelpPage() {
 
           {/* Section 11b - Signal Monitoring v1.0 */}
           <Section id="signal-monitoring" title="11b. Signal Monitoring and Reassessment Triggers" colour="teal">
-            <p>The system watches the four CFWS readiness signals (Capacity, Schedule, Regulation, Behaviour) week over week and surfaces flags when conditions defined in the <strong>Signal Monitoring and Reassessment Triggers v1.0</strong> doctrine are met. The doctrine itself is at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">~/Dropbox/01_BODY_RECODE/.../Performance_Coaching_Framework_Master_Folder_v1/Signal_Monitoring_and_Reassessment_Triggers_v1.0.md</code>.</p>
+            <p>The system watches the four CFWS readiness signals (Capacity, Schedule, Regulation, Behaviour) week over week and surfaces flags when conditions defined in the <strong>Signal Monitoring and Reassessment Triggers v1.0</strong> doctrine are met. The doctrine itself is at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/.../Performance_Coaching_Framework_Master_Folder_v1/Signal_Monitoring_and_Reassessment_Triggers_v1.0.md</code>.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Drift definitions</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
@@ -883,7 +883,7 @@ export default function HelpPage() {
             <p>A reassessment is recommended when ANY of the following fires.</p>
             <p className="text-xs text-[#6B6B6B] mt-3 mb-1"><strong>Signal-based triggers</strong> (suppressed when CFFS &lt; 21 days old, see Early-program suppression below):</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li>The CFWS engine sets <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">reassessment_language_triggered: true</code></li>
+              <li>The CFWS engine sets <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">reassessment_language_triggered: true</code></li>
               <li>A multi-notch drop occurs on any signal</li>
               <li>Two or more readiness signals are at Amber or Red simultaneously</li>
               <li>Sustained instability persists across two consecutive CFWS</li>
@@ -896,7 +896,7 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Early-program signal-trigger suppression (added 2026-05-18)</p>
             <p>The four signal-based triggers above are suppressed until the active CFFS is at least <strong>21 days old</strong>. A reassessment on a freshly-generated CFFS would produce essentially the same read, since one or two weeks of CFWS signal isn&apos;t enough new evidence to invalidate it. The 21-day floor matches the &quot;three weeks of signal needed before re-interpreting&quot; principle. Time-based triggers (block end, 12-week cap) are NOT suppressed because they aren&apos;t signal-driven.</p>
-            <p>Constant: <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">SIGNAL_BASED_TRIGGER_FLOOR_DAYS = 21</code> in <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">src/lib/readiness-monitor.ts</code>. Rationale captured in §3a of the doctrine doc.</p>
+            <p>Constant: <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">SIGNAL_BASED_TRIGGER_FLOOR_DAYS = 21</code> in <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">src/lib/readiness-monitor.ts</code>. Rationale captured in §3a of the doctrine doc.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">CFWS readiness rating discipline (tightened 2026-05-18)</p>
             <p>The CFWS prompt previously had no rating rubric and would over-call Amber on a single check-in answer (e.g. one &quot;more limited than usual&quot; flipped capacity from Green to Amber). Now the prompt receives the CFFS baseline (body state + the four exposure_readiness values + constraints + risk flags) as the anchor, and ratings reflect deviation FROM the baseline rather than a fresh interpretation of the week in isolation. Rules:</p>
@@ -908,8 +908,8 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Reassessment is a temporal construct - it cannot apply at intake-time</p>
             <p>Every trigger above requires longitudinal data: multi-week CFWS patterns, completed program blocks, sustained instability across consecutive weeks, or the 12-week elapsed cap. None of these conditions can possibly exist at intake-time CFFS generation, because there is no trajectory yet to evaluate. There is only a single point in time.</p>
-            <p className="mt-2">Therefore: <strong>an intake-derived CFFS will never have <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">reassessment_flagged: true</code></strong>. The CFFS prompt does not ask the LLM to set this field at generation; the server forces it to <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">false</code> on insert. The flag becomes settable only later, by the Signal Monitoring engine, when one of the trigger conditions actually fires against accumulated CFWS data.</p>
-            <Note>Historical bug fixed 2026-05-09. Prior to the fix, the CFFS prompt asked the LLM to write <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">reassessment_flagged: true | false</code> at intake with no guidance, and the model defaulted to true on most "Remediation / Partially Resolved" classifications. Five clients carried stale flags as a result; all were cleared and the prompt + insert path are now defensive against the same drift.</Note>
+            <p className="mt-2">Therefore: <strong>an intake-derived CFFS will never have <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">reassessment_flagged: true</code></strong>. The CFFS prompt does not ask the LLM to set this field at generation; the server forces it to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">false</code> on insert. The flag becomes settable only later, by the Signal Monitoring engine, when one of the trigger conditions actually fires against accumulated CFWS data.</p>
+            <Note>Historical bug fixed 2026-05-09. Prior to the fix, the CFFS prompt asked the LLM to write <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">reassessment_flagged: true | false</code> at intake with no guidance, and the model defaulted to true on most "Remediation / Partially Resolved" classifications. Five clients carried stale flags as a result; all were cleared and the prompt + insert path are now defensive against the same drift.</Note>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Where it surfaces</p>
             <p><strong>On the Coaching dashboard list:</strong> three priority-ordered banners at the top — Active Regression (red), CFFS Reassessment Recommended (amber), Drift Advisories (neutral). Each client row shows a status pill if any condition fires.</p>
@@ -937,7 +937,7 @@ export default function HelpPage() {
           {/* Section 11c - Recovery and Regulation System */}
           <Section id="recovery-regulation" title="11c. Recovery and Regulation" colour="teal">
             <p>The Recovery and Regulation System is the platform&apos;s <strong>governance layer</strong> for when training and nutrition load must be constrained. It is not a prescription engine. It does not generate sleep targets, breathwork routines, or cold-exposure protocols. It defines the <strong>permission ceiling</strong> on training and nutrition while a recovery state is active.</p>
-            <p className="mt-2">Doctrine source: <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">~/Dropbox/01_BODY_RECODE/.../12_Recovery_and_Regulation_System/</code> (Layer 2) and <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">.../13D_Recovery_and_Regulation_Playbooks/</code> (Layer 3 execution). The full canonical reference renders live at <a className="text-blue-500 underline" href="/dashboard/recovery-regulation">Recovery</a>.</p>
+            <p className="mt-2">Doctrine source: <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/.../12_Recovery_and_Regulation_System/</code> (Layer 2) and <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">.../13D_Recovery_and_Regulation_Playbooks/</code> (Layer 3 execution). The full canonical reference renders live at <a className="text-blue-500 underline" href="/dashboard/recovery-regulation">Recovery</a>.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">The 10 playbooks (priority order, single dominant)</p>
             <p>Per 13D_15, only one playbook governs a client at any moment. Higher-tier (lower number) overrides lower-tier:</p>
@@ -965,10 +965,10 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Router modes (env-controlled)</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li><strong>Disabled</strong> (<code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">RRS_ROUTER_ENABLED=false</code>): router does not run.</li>
-              <li><strong>Observe-only</strong> (Phase 0 default — <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">RRS_OBSERVE_ONLY=true</code>): router evaluates and writes shadow audit rows to <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">recovery_adjustments</code>. No states activated. No programs constrained.</li>
-              <li><strong>Live soft gate</strong> (<code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">RRS_OBSERVE_ONLY=false</code>): states activate. Constraints flagged on program/nutrition gen as override-able policy.</li>
-              <li><strong>Live hard gate</strong> (<code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">RRS_HARD_ENFORCEMENT=true</code>): states activate. Constraints hard-block program changes that violate doctrine.</li>
+              <li><strong>Disabled</strong> (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">RRS_ROUTER_ENABLED=false</code>): router does not run.</li>
+              <li><strong>Observe-only</strong> (Phase 0 default — <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">RRS_OBSERVE_ONLY=true</code>): router evaluates and writes shadow audit rows to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">recovery_adjustments</code>. No states activated. No programs constrained.</li>
+              <li><strong>Live soft gate</strong> (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">RRS_OBSERVE_ONLY=false</code>): states activate. Constraints flagged on program/nutrition gen as override-able policy.</li>
+              <li><strong>Live hard gate</strong> (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">RRS_HARD_ENFORCEMENT=true</code>): states activate. Constraints hard-block program changes that violate doctrine.</li>
             </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Doctrine guards encoded</p>
@@ -980,28 +980,28 @@ export default function HelpPage() {
               <li><strong>No tool substitution</strong> (13D_12) — supportive therapies cannot replace primary load reduction</li>
               <li><strong>No protocol prescription at Layer 2</strong> (12A) — engine emits constraint envelopes only</li>
               <li><strong>RRS override absolute</strong> (MSA Domain Boundaries) — when active, progression locked</li>
-              <li><strong>Audit every transition</strong> (12E_04) — every router evaluation + state transition writes a <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">recovery_adjustments</code> row</li>
+              <li><strong>Audit every transition</strong> (12E_04) — every router evaluation + state transition writes a <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">recovery_adjustments</code> row</li>
             </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Where it surfaces</p>
             <p><strong>Recovery dashboard</strong> at <a className="text-blue-500 underline" href="/dashboard/recovery-regulation">/dashboard/recovery-regulation</a>: read-only doctrine reference page showing all 10 playbook manifests with their numeric constraints, exit criteria, escalation rules, and prohibitions. Layer 2 doctrine sourced live from Dropbox (Folder 12 + MSA RRS pillar).</p>
-            <p>Per-client active state visualisation lands in Phase 4. Until then, audit rows in the <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">recovery_adjustments</code> table are the only output (visible via Supabase).</p>
+            <p>Per-client active state visualisation lands in Phase 4. Until then, audit rows in the <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">recovery_adjustments</code> table are the only output (visible via Supabase).</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Phase plan</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>Phase 1 (DONE)</strong>: doctrine page + DB tables + router + state machine.</li>
-              <li><strong>Phase 2 (DONE)</strong>: RSIB ingest from existing weekly check-in answers (the three questions per 13D_13 are already in Form A and Form B verbatim — no client-facing changes). Router evaluates after each CFWS lands. Per-client shadow log lives on the client profile, just below the readiness drift section. Backfill API at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">POST /api/recovery/backfill</code> derives RSIB from historical check-ins.</li>
-              <li><strong>Phase 3 (CURRENT — soft-gate enforcement)</strong>: program generation and nutrition generation now read the active recovery state and apply the playbook&apos;s constraint envelope. Two layers: (a) the LLM is given a prompt section that tells it the active constraints, (b) post-LLM <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">clampProgramToRecoveryManifest</code> walks every exercise and enforces them as defence in depth. On the program-suggest page you&apos;ll see an amber <strong>Active recovery state</strong> banner with the constraints summary and a radio: <strong>Apply constraints</strong> (default, doctrinally correct) or <strong>Override with documented reason</strong> (writes a <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">constraint_overridden</code> audit row). Activation requires <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">RRS_OBSERVE_ONLY=false</code> in env — set in <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">.env.local</code> by default; production needs the flag flipped manually.</li>
-              <li><strong>Phase 4</strong>: hard-gate enforcement (<code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">RRS_HARD_ENFORCEMENT=true</code>) — coach loses the override path entirely. Tier escalation alerts. Recovery state history view per client.</li>
+              <li><strong>Phase 2 (DONE)</strong>: RSIB ingest from existing weekly check-in answers (the three questions per 13D_13 are already in Form A and Form B verbatim — no client-facing changes). Router evaluates after each CFWS lands. Per-client shadow log lives on the client profile, just below the readiness drift section. Backfill API at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">POST /api/recovery/backfill</code> derives RSIB from historical check-ins.</li>
+              <li><strong>Phase 3 (CURRENT — soft-gate enforcement)</strong>: program generation and nutrition generation now read the active recovery state and apply the playbook&apos;s constraint envelope. Two layers: (a) the LLM is given a prompt section that tells it the active constraints, (b) post-LLM <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">clampProgramToRecoveryManifest</code> walks every exercise and enforces them as defence in depth. On the program-suggest page you&apos;ll see an amber <strong>Active recovery state</strong> banner with the constraints summary and a radio: <strong>Apply constraints</strong> (default, doctrinally correct) or <strong>Override with documented reason</strong> (writes a <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">constraint_overridden</code> audit row). Activation requires <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">RRS_OBSERVE_ONLY=false</code> in env — set in <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">.env.local</code> by default; production needs the flag flipped manually.</li>
+              <li><strong>Phase 4</strong>: hard-gate enforcement (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">RRS_HARD_ENFORCEMENT=true</code>) — coach loses the override path entirely. Tier escalation alerts. Recovery state history view per client.</li>
             </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">What the recovery clamp actually does</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>RPE drop</strong>: derived from the playbook&apos;s load-reduction range. 10–25% load reduction → -1 RPE on every exercise. 30%+ → -2 RPE. Floors at RPE 3.</li>
-              <li><strong>Session removal / cap</strong>: removes the LAST N sessions of the week (preserves earliest = priority work). Caps total weekly sessions if <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">sessionsPerWeekCap</code> set.</li>
-              <li><strong>Conditioning blocks stripped</strong>: any block whose label matches conditioning / capacity / finisher / cardio is removed when <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">conditioningBlocked</code> is true (most playbooks).</li>
-              <li><strong>Testing exercises stripped</strong>: 1RM/3RM/5RM, max attempts, PR attempts removed when <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">testingBlocked</code> is true.</li>
-              <li><strong>Progression-locked banner</strong>: stamped onto <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">weekly_pattern_summary</code> for the duration of the state.</li>
+              <li><strong>Session removal / cap</strong>: removes the LAST N sessions of the week (preserves earliest = priority work). Caps total weekly sessions if <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">sessionsPerWeekCap</code> set.</li>
+              <li><strong>Conditioning blocks stripped</strong>: any block whose label matches conditioning / capacity / finisher / cardio is removed when <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">conditioningBlocked</code> is true (most playbooks).</li>
+              <li><strong>Testing exercises stripped</strong>: 1RM/3RM/5RM, max attempts, PR attempts removed when <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">testingBlocked</code> is true.</li>
+              <li><strong>Progression-locked banner</strong>: stamped onto <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">weekly_pattern_summary</code> for the duration of the state.</li>
               <li><strong>Nutrition</strong>: prompt-injection only (no post-LLM clamp). Tells the LLM no aggressive deficit, no fuel restriction, maintain protein floor, maintain carb support proportional to training.</li>
             </ul>
 
@@ -1043,7 +1043,7 @@ export default function HelpPage() {
             <p>RPE creep is a prompt, not an auto-action. The signal tells you the prescribed load was too high <em>this week</em>. Three responses, in order of how soft to start:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-[#3A3A3A] text-sm">
               <li><strong>Accept as noise</strong> if it was a one-off bad week (poor sleep, illness, life stress). The next CFWS will confirm.</li>
-              <li><strong>Hold the block</strong> via Weekly Review → set direction to <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">hold</code>. Keeps the prescription, signals no further progression this week.</li>
+              <li><strong>Hold the block</strong> via Weekly Review → set direction to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">hold</code>. Keeps the prescription, signals no further progression this week.</li>
               <li><strong>Regenerate with adjusted coach guidance</strong> — edit the macro arc&apos;s Coach Guidance to specify lower RPE or reduced volume, then Regenerate.</li>
             </ol>
 
@@ -1054,7 +1054,7 @@ export default function HelpPage() {
               <li>Does not fire if the prescribed RPE was null (timed exercises, carries, runs — those have no RPE prescription).</li>
             </ul>
 
-            <p className="text-xs text-[#999999] mt-4">Doctrine: Signal Monitoring §10 (2026-05-11 addendum). Thresholds are named constants in <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">src/lib/rpe-creep-monitor.ts</code>; revise both in lockstep.</p>
+            <p className="text-xs text-[#999999] mt-4">Doctrine: Signal Monitoring §10 (2026-05-11 addendum). Thresholds are named constants in <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">src/lib/rpe-creep-monitor.ts</code>; revise both in lockstep.</p>
           </Section>
 
           {/* Section 10 */}
@@ -1138,7 +1138,7 @@ export default function HelpPage() {
             <Note><strong>Coach BCC on one-off extras only (2026-05-14).</strong> The <code>COACH_BCC</code> export from <code>@/lib/email-shell</code> is applied ONLY to ad-hoc / one-off "extra nudge" sends that aren't part of any standard automated flow. Right now that is exactly two paths: <code>/api/send-supplementary-intake-email</code> (the &ldquo;Email link&rdquo; button on the supplementary intake row) and <code>scripts/send-supplementary-intake-email.mjs</code>. Standard sends &mdash; welcome, intake invite, commencement fee link, subscription link, sign-in code, weekly check-in window, session reminders, drip steps, etc. &mdash; do NOT BCC the coach. Rule of thumb: if the system would have sent it anyway as part of normal flow, no BCC. If you/script chose to send something extra on top, BCC.</Note>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">Scorecard Follow-up Sequence (automatic)</p>
-            <p>Fires when someone completes the Body State Scorecard. <strong>5 emails over 13 days</strong>. Each email is personalised to the lead&apos;s score and body state using <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">{`{{scorecard_score}}`}</code>, <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">{`{{scorecard_state}}`}</code>, and <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">{`{{first_name}}`}</code>. Voice: leads with fat loss as the symptom (buyer language), introduces body state vocabulary as the diagnostic. Emails 1-2 push the $37 Body Decode Report; emails 3-4 push the free strategy call; email 5 names both options based on state.</p>
+            <p>Fires when someone completes the Body State Scorecard. <strong>5 emails over 13 days</strong>. Each email is personalised to the lead&apos;s score and body state using <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{scorecard_score}}`}</code>, <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{scorecard_state}}`}</code>, and <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{first_name}}`}</code>. Voice: leads with fat loss as the symptom (buyer language), introduces body state vocabulary as the diagnostic. Emails 1-2 push the $37 Body Decode Report; emails 3-4 push the free strategy call; email 5 names both options based on state.</p>
             <div className="space-y-1">
               <SeqRow day="Immediate" label="Email 1 - Your Body State result + book a call or get the report" />
               <SeqRow day="Day 2" label="Email 2 - What your body state result actually means" />
@@ -1455,8 +1455,8 @@ export default function HelpPage() {
             <p className="mt-2"><strong>Direction labels - what they mean and what to do:</strong></p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
               <li><strong className="text-green-400">Making progress</strong> - sessions are going well, client is adapting. No action needed. Continue the current program.</li>
-              <li><strong className="text-amber-400">Staying steady</strong> - no notable change, client is maintaining. Monitor for a week or two before acting. Consider whether progression variables can be nudged.</li>
-              <li><strong className="text-red-400">Struggling</strong> - client is finding sessions hard, energy low, or performance dropping. Action required. A red banner will appear on the Training Program page. Review the check-in notes, write coach feedback for the client, and consider adjusting the program or generating a new block. When you regenerate, the AI will see this history and prescribe accordingly.</li>
+              <li><strong className="text-amber-700">Staying steady</strong> - no notable change, client is maintaining. Monitor for a week or two before acting. Consider whether progression variables can be nudged.</li>
+              <li><strong className="text-red-700">Struggling</strong> - client is finding sessions hard, energy low, or performance dropping. Action required. A red banner will appear on the Training Program page. Review the check-in notes, write coach feedback for the client, and consider adjusting the program or generating a new block. When you regenerate, the AI will see this history and prescribe accordingly.</li>
             </ul>
             <p className="mt-2"><strong>Coach notes:</strong> After reviewing, click <strong>+ Add feedback for client</strong> under any review entry to write a note. This note appears on the client&apos;s portal home page under &quot;From your coach&quot;. Only the most recent note with content is shown to the client.</p>
 
@@ -1466,7 +1466,7 @@ export default function HelpPage() {
             </Training>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-6 mb-2">Programs Index (On the Floor View)</p>
-            <p>Top nav <strong>Programs</strong> (or <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">⌘K → Programs</code>) opens the floor view: every active client&apos;s current training block in a single mobile-first card grid. One tap on a card opens that client&apos;s training program page.</p>
+            <p>Top nav <strong>Programs</strong> (or <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">⌘K → Programs</code>) opens the floor view: every active client&apos;s current training block in a single mobile-first card grid. One tap on a card opens that client&apos;s training program page.</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm mt-2">
               <li>Each card shows the client&apos;s package (face-to-face vs online), current block name, week number, progression phase, training goal, and current direction (On Track / Hold / Rebuild / Deload).</li>
               <li>Cards are sorted with face-to-face clients first - the ones most likely to be on the gym floor today.</li>
@@ -1481,7 +1481,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Workout logging (Phase A)</p>
             <p>Clients can now log what they actually lifted, set by set, live in the gym. The flow:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li>Client opens <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">/portal/&#123;token&#125;/program</code> and taps the new <strong>Log a session →</strong> button.</li>
+              <li>Client opens <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/portal/&#123;token&#125;/program</code> and taps the new <strong>Log a session →</strong> button.</li>
               <li>The log index lists all of this week&apos;s prescribed sessions. Today&apos;s session (matching the day of week) is highlighted at the top with a teal CTA.</li>
               <li>Tapping <strong>Start logging</strong> opens the live UI: each prescribed exercise as a card, with set rows for weight × reps × RPE. Tap ✓ to commit each set. Saves are upserts — re-tapping updates the row in place.</li>
               <li>Per-exercise notes saved on blur. Substitution toggle: client picks a swap (&quot;did goblet squat instead of back squat&quot;) and a reason. The log captures both prescribed and actually-performed.</li>
@@ -1489,13 +1489,13 @@ export default function HelpPage() {
             </ul>
             <p className="mt-2">On your client profile page, the new <strong>Block progress</strong> card sits above the Recovery Router panel. It shows: week N of M, days until block end (with amber pill at ≤ 7 days), sessions completed this week / prescribed, in-progress count, total sessions logged this block, last logged time. <strong>Block ending in N days</strong> banners appear automatically as the block approaches its end.</p>
 
-            <Note>Logged data is captured in three new tables: <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">session_completions</code> (one per session × week), <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">session_exercise_completions</code> (one per exercise, with prescribed-vs-actual + substitutions), <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">exercise_set_logs</code> (one per set). The prescription is snapshotted at session start so a mid-block program regeneration cannot retroactively change what was logged.</Note>
+            <Note>Logged data is captured in three new tables: <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">session_completions</code> (one per session × week), <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">session_exercise_completions</code> (one per exercise, with prescribed-vs-actual + substitutions), <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">exercise_set_logs</code> (one per set). The prescription is snapshotted at session start so a mid-block program regeneration cannot retroactively change what was logged.</Note>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">What&apos;s coming in Phase B + C</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li><strong>Phase B partial (DONE 2026-05-10)</strong>: block-end email notifications. Daily cron at 7:30am Brisbane scans all active programs and emails <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">kade@bodyrecode.au</code> when (a) any client&apos;s block has 7 days remaining, or (b) any client&apos;s block hits day 0. Branded dark template. Idempotent — one email per (client × program × event), so re-runs of the cron never spam. New table <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">block_end_notifications_sent</code> enforces it.</li>
+              <li><strong>Phase B partial (DONE 2026-05-10)</strong>: block-end email notifications. Daily cron at 7:30am Brisbane scans all active programs and emails <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">kade@bodyrecode.au</code> when (a) any client&apos;s block has 7 days remaining, or (b) any client&apos;s block hits day 0. Branded dark template. Idempotent — one email per (client × program × event), so re-runs of the cron never spam. New table <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">block_end_notifications_sent</code> enforces it.</li>
               <li><strong>Phase B remaining</strong>: load progression sparklines per exercise on the client profile, missed-session detection, top-of-coaching-list block-ending banner.</li>
-              <li><strong>Phase C</strong>: auto-fill the Recovery Router&apos;s <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">session_repeatability</code> signal from logged data (compare last week&apos;s avg loads to this week&apos;s); surface &quot;missed &gt;2 sessions&quot; as a router signal.</li>
+              <li><strong>Phase C</strong>: auto-fill the Recovery Router&apos;s <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">session_repeatability</code> signal from logged data (compare last week&apos;s avg loads to this week&apos;s); surface &quot;missed &gt;2 sessions&quot; as a router signal.</li>
             </ul>
           </Section>
 
@@ -1510,9 +1510,9 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li>Reads the latest published Foundational Reading for voice and state context (required — the panel will refuse to generate without one).</li>
               <li>Reads the active program row for prescription context (block name, phase, goal, frequency, prescription rationale, weekly pattern summary, progression notes, sessions shape).</li>
-              <li>Auto-publishes it to the top of <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">/portal/[token]/program</code>.</li>
+              <li>Auto-publishes it to the top of <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/portal/[token]/program</code>.</li>
               <li>Sends a notification email to the client (first publish per program row only — regenerations never re-email, but a new program row from a new block naturally triggers one email).</li>
-              <li>Also makes the cream-on-black premium-deliverable version available at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">/portal/[token]/program/reading</code> via the &quot;View as document&quot; link on the portal card.</li>
+              <li>Also makes the cream-on-black premium-deliverable version available at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/portal/[token]/program/reading</code> via the &quot;View as document&quot; link on the portal card.</li>
             </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">The five sections</p>
@@ -1655,8 +1655,8 @@ export default function HelpPage() {
             <p className="mt-2"><strong>Direction labels - what they mean and what to do:</strong></p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
               <li><strong className="text-green-400">Making progress</strong> - client feels on track, plan is working. No action needed. Continue the current plan.</li>
-              <li><strong className="text-amber-400">Staying steady</strong> - no notable change. Monitor for a week or two. Consider whether macros need a small adjustment.</li>
-              <li><strong className="text-red-400">Struggling</strong> - client is not coping with the plan (hard to follow, under-fuelled, recovery issues). Action required. A red banner will appear on the Nutrition Plan page. Review the check-in notes, write coach feedback, and consider adjusting or regenerating the plan. The AI will factor this history into the new prescription.</li>
+              <li><strong className="text-amber-700">Staying steady</strong> - no notable change. Monitor for a week or two. Consider whether macros need a small adjustment.</li>
+              <li><strong className="text-red-700">Struggling</strong> - client is not coping with the plan (hard to follow, under-fuelled, recovery issues). Action required. A red banner will appear on the Nutrition Plan page. Review the check-in notes, write coach feedback, and consider adjusting or regenerating the plan. The AI will factor this history into the new prescription.</li>
             </ul>
             <p className="mt-2"><strong>Coach notes:</strong> Click <strong>+ Add feedback for client</strong> under any review entry to write a note back to the client. This appears on their portal home page under &quot;From your coach&quot;.</p>
 
@@ -1727,7 +1727,7 @@ export default function HelpPage() {
                 { label: 'Analytics', desc: 'Live business metrics - revenue, leads, conversion rate, show-up rate, pipeline breakdown' },
               ].map(item => (
                 <div key={item.label} className="flex items-start gap-3 bg-[#E5E5E5]/50 rounded-lg px-3 py-2">
-                  <span className="text-amber-400 font-semibold text-xs shrink-0 mt-0.5 w-24">{item.label}</span>
+                  <span className="text-amber-700 font-semibold text-xs shrink-0 mt-0.5 w-24">{item.label}</span>
                   <span className="text-[#6B6B6B] text-xs">{item.desc}</span>
                 </div>
               ))}
@@ -1778,14 +1778,14 @@ export default function HelpPage() {
             </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Face-to-Face Session Booking (from Client Portal)</p>
-            <p>Face-to-face clients can reschedule a session directly from their portal. When they book a slot, a <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">client_sessions</code> record is created with <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">status = scheduled</code>, and a branded confirmation email goes to both the client and you. Booked slots are blocked and won&apos;t appear for other clients.</p>
+            <p>Face-to-face clients can reschedule a session directly from their portal. When they book a slot, a <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">client_sessions</code> record is created with <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">status = scheduled</code>, and a branded confirmation email goes to both the client and you. Booked slots are blocked and won&apos;t appear for other clients.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Session Reminder Emails</p>
-            <p>Every day at 8:00 am Brisbane time, a cron job scans for sessions scheduled in the next 20–28 hours that haven&apos;t had a reminder sent yet. The client receives a branded email with a <strong>Confirm attendance →</strong> button. Clicking that link marks the session as confirmed (<code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">confirmed_at</code> is set) and notifies you by email. The session then shows a <strong>Confirmed</strong> badge in the portal and on the dashboard client profile. If the session is already confirmed, the link shows a friendly &quot;already confirmed&quot; message instead.</p>
+            <p>Every day at 8:00 am Brisbane time, a cron job scans for sessions scheduled in the next 20–28 hours that haven&apos;t had a reminder sent yet. The client receives a branded email with a <strong>Confirm attendance →</strong> button. Clicking that link marks the session as confirmed (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">confirmed_at</code> is set) and notifies you by email. The session then shows a <strong>Confirmed</strong> badge in the portal and on the dashboard client profile. If the session is already confirmed, the link shows a friendly &quot;already confirmed&quot; message instead.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Calendar Auto-Sync (Mac Calendar)</p>
             <p>All scheduled bookings sync automatically to your Mac Calendar via a <strong>webcal subscription</strong>. The feed URL is:</p>
-            <p className="mt-1 font-mono text-xs text-blue-300 bg-[#FFFFFF] rounded-lg px-4 py-2">webcal://bodyrecode.au/api/calendar/feed?key=CALENDAR_FEED_KEY</p>
+            <p className="mt-1 font-mono text-xs text-blue-700 bg-[#FFFFFF] rounded-lg px-4 py-2">webcal://bodyrecode.au/api/calendar/feed?key=CALENDAR_FEED_KEY</p>
             <p className="mt-2">To subscribe: open Calendar on your Mac → File → New Calendar Subscription → paste the webcal:// URL → set auto-refresh to Every 15 Minutes. The calendar updates automatically as bookings are made or changed. No manual export needed.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Manual Bookings</p>
@@ -1846,11 +1846,11 @@ export default function HelpPage() {
             </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Scorecard Follow-up Sequence (Custom Workflow)</p>
-            <p>The 9-step sequence lives as a custom workflow in the DB. It uses trigger <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">form_submitted</code> with <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">{`{ form: 'scorecard' }`}</code>. Emails are personalised using:</p>
+            <p>The 9-step sequence lives as a custom workflow in the DB. It uses trigger <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">form_submitted</code> with <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{ form: 'scorecard' }`}</code>. Emails are personalised using:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-2">
-              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">{`{{scorecard_score}}`}</code> - e.g. 7</li>
-              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">{`{{scorecard_state}}`}</code> - e.g. Transitioning State</li>
-              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">{`{{first_name}}`}</code> - lead&apos;s first name</li>
+              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{scorecard_score}}`}</code> - e.g. 7</li>
+              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{scorecard_state}}`}</code> - e.g. Transitioning State</li>
+              <li><code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{first_name}}`}</code> - lead&apos;s first name</li>
             </ul>
             <p className="mt-2">The <strong>Re-sync</strong> button on the workflow row rewrites the steps with the latest copy. It does not affect sequences already running for existing leads.</p>
             <Note>Wait steps are handled by Inngest - a background job service. A "wait 3 days" step will actually wait 3 days, even across server restarts.</Note>
@@ -1863,7 +1863,7 @@ export default function HelpPage() {
             <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm">
               <li>Go to <strong>Business → Campaigns → New Campaign</strong></li>
               <li>Set a name, type (Email, SMS, Social), and subject line (email only)</li>
-              <li>Write the body - use <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">{`{{first_name}}`}</code> to personalise</li>
+              <li>Write the body - use <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{first_name}}`}</code> to personalise</li>
               <li>Choose your audience: All Leads, All Clients, a specific Pipeline Stage, or a Tag</li>
               <li>Save as draft, send now, or schedule for a specific date and time</li>
             </ul>
@@ -1981,7 +1981,7 @@ export default function HelpPage() {
             <p><strong>Business → Payments → Clients</strong>. One row per client, sorted with attention-needed rows on top: past_due first, then commencement-paid-but-no-sub, then commencement-not-paid, then healthy actives, then canceled. Four count cards at the top (Active / Past due / No active sub / No commencement). Click any row to jump to that client’s Payments section.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">How the cache stays fresh</p>
-            <p>Stripe is the source of truth. The cache (<code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">client_subscriptions</code> table) is maintained three ways:</p>
+            <p>Stripe is the source of truth. The cache (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">client_subscriptions</code> table) is maintained three ways:</p>
             <StatusList items={[
               { label: 'Webhook', desc: 'On customer.subscription.created/updated/deleted and invoice.payment_succeeded, the webhook calls syncSubscriptionFromStripe() and upserts the cache row. Real-time, no action needed.' },
               { label: 'On-demand refresh', desc: 'The "Refresh from Stripe" button on the per-client Payments section. Use it any time.' },
@@ -1991,7 +1991,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">When commencement fee won’t auto-detect</p>
             <p>The tracker doesn’t yet auto-detect commencement fees (you can use the manual <strong>Mark commencement paid</strong> button on any client without one). Auto-detection is queued for Phase 2 once we’ve seen enough real charges to write a reliable rule.</p>
 
-            <p className="text-xs text-[#999999] mt-4">Doctrine / spec: <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-13_PAYMENTS_FOUNDATION.md</code>. Feature registry entry 26.</p>
+            <p className="text-xs text-[#999999] mt-4">Doctrine / spec: <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-13_PAYMENTS_FOUNDATION.md</code>. Feature registry entry 26.</p>
           </Section>
 
           <Section id="be-analytics" title="30. Analytics" colour="amber">
@@ -2031,7 +2031,7 @@ export default function HelpPage() {
               { label: 'Facebook', desc: 'performance.bodyrecode.au/scorecard?source=facebook' },
               { label: 'Gym DM (complementary first session)', desc: 'performance.bodyrecode.au/scorecard?source=gym_complementary - for the DM you send gym members who book a complementary session. Maps to source=gym_floor with source_detail=gym_complementary in the CRM for attribution.' },
             ]} />
-            <Note>The leads.source column has a CHECK constraint that only accepts a fixed set of values (quiz, other, gym_floor, instagram, facebook, direct). Any unmapped <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">?source=</code> param falls through to <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">source=other</code> with the raw value preserved in source_detail. This was tightened 2026-04-30 after a gym_complementary submission failed. To add a new normalised source, edit <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">SOURCE_MAP</code> in <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">src/app/api/scorecard/submit/route.ts</code>.</Note>
+            <Note>The leads.source column has a CHECK constraint that only accepts a fixed set of values (quiz, other, gym_floor, instagram, facebook, direct). Any unmapped <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">?source=</code> param falls through to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">source=other</code> with the raw value preserved in source_detail. This was tightened 2026-04-30 after a gym_complementary submission failed. To add a new normalised source, edit <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">SOURCE_MAP</code> in <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">src/app/api/scorecard/submit/route.ts</code>.</Note>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Digital Channel URLs</p>
             <p>For the Performance Check-In quiz - use these if sending traffic directly to the longer check-in rather than the scorecard.</p>
@@ -2046,17 +2046,17 @@ export default function HelpPage() {
           </Section>
 
           <Section id="be-ads" title="32. Ads" colour="amber">
-            <p>Meta ads feed the top of the funnel. Clicks go to <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">performance.bodyrecode.au/scorecard</code> where the Meta Pixel (ID <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">972772552072010</code>) fires four events as the prospect moves through the funnel:</p>
+            <p>Meta ads feed the top of the funnel. Clicks go to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">performance.bodyrecode.au/scorecard</code> where the Meta Pixel (ID <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">972772552072010</code>) fires four events as the prospect moves through the funnel:</p>
             <StatusList items={[
               { label: 'PageView', desc: 'Fires on every page load across performance.bodyrecode.au. Mounted globally in app/layout.tsx via the MetaPixel component.' },
               { label: 'ViewContent', desc: 'Fires when the scorecard page mounts (content_name: scorecard_start). Marks the moment the lead starts engaging with the lead magnet.' },
               { label: 'Lead', desc: 'Fires on successful email submit at the end of the scorecard. content_name: scorecard_complete.' },
               { label: 'InitiateCheckout', desc: 'Fires when the prospect clicks the $37 Body Decode Report button on the result page. value: 37 AUD. content_name: body_decode_report.' },
             ]} />
-            <p className="mt-3">The actual Purchase event still needs wiring on bodyrecode.au&apos;s Stripe success page (separate repo) and Schedule on /book confirmation. Until those are wired, conversion attribution stops at InitiateCheckout. All ad-data analysis lives in <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">~/Dropbox/01_BODY_RECODE/07_ADS</code>.</p>
+            <p className="mt-3">The actual Purchase event still needs wiring on bodyrecode.au&apos;s Stripe success page (separate repo) and Schedule on /book confirmation. Until those are wired, conversion attribution stops at InitiateCheckout. All ad-data analysis lives in <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/07_ADS</code>.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">File Structure</p>
-            <p>All ads analysis lives at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">Dropbox/01_BODY_RECODE/07_ADS/</code></p>
+            <p>All ads analysis lives at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">Dropbox/01_BODY_RECODE/07_ADS/</code></p>
             <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>New_Leads_Campaign/RAW_DATA/</strong> - drop Meta CSV or Numbers exports here, named with the date range</li>
               <li><strong>New_Leads_Campaign/ANALYSIS/WEEKLY_TRACKER.md</strong> - fill in metrics each week</li>
@@ -2067,7 +2067,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Weekly Report - Every Friday</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm">
               <li>Export data from Meta Ads Manager - Ad Sets tab - set date range - export CSV or Numbers</li>
-              <li>Drop the file into <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">RAW_DATA/</code> before 9am Friday</li>
+              <li>Drop the file into <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">RAW_DATA/</code> before 9am Friday</li>
               <li>At 9am Friday, the automated report runs, saves to ANALYSIS/, and emails to kade@bodyrecode.au</li>
               <li>Report includes: performance table, ranking, observations, scaling recommendation, fatigue warnings</li>
             </ul>
@@ -2078,12 +2078,12 @@ export default function HelpPage() {
               <li><strong>Ad sets:</strong> Silent Frustration, Diagnosis, Contrarian - all at $10/day, Australia, broad audience</li>
               <li><strong>Optimisation:</strong> Maximize number of conversions - Body Recode pixel (ID: 972772552072010) - Lead event</li>
               <li><strong>Ad account:</strong> 190093840320613 - under Body Recode Business Manager</li>
-              <li><strong>Destination:</strong> <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">bodyrecode.au/scorecard?source=facebook_ad_[adset]</code></li>
+              <li><strong>Destination:</strong> <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">bodyrecode.au/scorecard?source=facebook_ad_[adset]</code></li>
             </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Pixel</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li>Pixel ID: <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">972772552072010</code> - named Body Recode in Meta</li>
+              <li>Pixel ID: <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">972772552072010</code> - named Body Recode in Meta</li>
               <li>PageView fires on every page via layout.tsx</li>
               <li>Lead event fires in report-client.tsx when someone lands on their scorecard result</li>
               <li>To verify: Meta Events Manager - Body Recode dataset - Test Events tab - complete the scorecard and confirm Lead event appears</li>
@@ -2379,8 +2379,8 @@ export default function HelpPage() {
             <p className="mt-2">Posted from <strong>Kade Dunstone&apos;s personal LinkedIn profile</strong>. No separate Body Recode LinkedIn page - audience follows the person. Four pillars: State over Discipline / The Effort Trap / Physiology and Decision-Making / Interpretation over Prescription.</p>
             <p className="mt-2"><strong>Cadence:</strong> 1-2 BR LinkedIn posts/week (Tue + Thu morning ~7am Brisbane), alongside Studio of Ten (2-3/wk) and Personal Brand (1/wk). Total feed 4-6 LinkedIn posts/wk.</p>
             <p className="mt-2"><strong>Tone:</strong> performance, recovery, decision-making, executive function language. Never fat loss vocabulary. Never scorecard-funnel hooks. Short essay format 150-250 words. CTAs every 4-5 posts only. No links in post body (kills reach) - put CTAs in profile and first comment.</p>
-            <p className="mt-2">Full strategy at <strong>Business → Marketing Strategy → LinkedIn tab</strong>. 12-week pipeline document at <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/LINKEDIN-BODY-RECODE-12-WEEK-PIPELINE.md</code>.</p>
-            <p className="mt-2">Leads land tagged <code className="bg-[#E5E5E5] px-1 rounded text-blue-300 text-xs">source=linkedin</code> in the CRM, filterable separately from Instagram on the leads page. Realistic ramp to first booking is 6-10 weeks - slow-burn channel, not primary conversion engine.</p>
+            <p className="mt-2">Full strategy at <strong>Business → Marketing Strategy → LinkedIn tab</strong>. 12-week pipeline document at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/LINKEDIN-BODY-RECODE-12-WEEK-PIPELINE.md</code>.</p>
+            <p className="mt-2">Leads land tagged <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">source=linkedin</code> in the CRM, filterable separately from Instagram on the leads page. Realistic ramp to first booking is 6-10 weeks - slow-burn channel, not primary conversion engine.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Highlight Covers</p>
             <p>Set up highlight covers before outreach begins - even if empty. An account with covers looks established.</p>
@@ -2694,7 +2694,7 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Required SQL migrations</p>
             <p>If setting up from scratch or adding to an existing challenge_enrollments table, run the following in the Supabase SQL editor:</p>
-            <pre className="text-xs bg-[#E5E5E5] text-blue-300 rounded-lg p-4 mt-2 overflow-x-auto whitespace-pre-wrap">{`ALTER TABLE challenge_enrollments
+            <pre className="text-xs bg-[#E5E5E5] text-blue-700 rounded-lg p-4 mt-2 overflow-x-auto whitespace-pre-wrap">{`ALTER TABLE challenge_enrollments
   ADD COLUMN IF NOT EXISTS parq_completed_at timestamptz,
   ADD COLUMN IF NOT EXISTS parq_responses jsonb,
   ADD COLUMN IF NOT EXISTS health_dec_completed_at timestamptz,
@@ -3121,7 +3121,7 @@ function Note({ children }: { children: React.ReactNode }) {
 function FlowRow({ trigger, from, to, auto }: { trigger: string; from: string; to: string; auto: boolean }) {
   return (
     <div className="flex items-start gap-3 bg-[#E5E5E5]/50 rounded-lg px-3 py-2.5">
-      <span className={`text-xs font-bold shrink-0 mt-0.5 w-16 ${auto ? 'text-blue-500' : 'text-amber-400'}`}>
+      <span className={`text-xs font-bold shrink-0 mt-0.5 w-16 ${auto ? 'text-blue-500' : 'text-amber-700'}`}>
         {auto ? 'AUTO' : 'MANUAL'}
       </span>
       <div className="flex-1 min-w-0">

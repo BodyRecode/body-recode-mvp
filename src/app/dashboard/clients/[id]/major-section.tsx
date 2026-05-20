@@ -55,11 +55,11 @@ export default function MajorSection({
             {subtitle && <span className="text-[#4A4A4A] font-normal"> {subtitle}</span>}
           </h2>
           {attentionLabel && !open && (
-            <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-300">
+            <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-700">
               {attentionLabel}
             </span>
           )}
-          <span className="text-[10px] font-bold uppercase tracking-widest text-blue-500 group-hover:text-blue-300 transition-colors">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-blue-500 group-hover:text-blue-700 transition-colors">
             {open ? 'Close' : 'Open'}
           </span>
         </button>

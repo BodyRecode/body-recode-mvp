@@ -14,8 +14,8 @@ const SIGNAL_OPTIONS = [
 
 const directionColour: Record<string, string> = {
   progress: 'border-green-500 bg-green-500/10 text-green-300',
-  hold: 'border-amber-500 bg-amber-500/10 text-amber-300',
-  rebuild: 'border-red-500 bg-red-500/10 text-red-300',
+  hold: 'border-amber-500 bg-amber-50 text-amber-700',
+  rebuild: 'border-red-500 bg-red-50 text-red-700',
 }
 
 export default function ProgramReviewForm({
@@ -76,7 +76,7 @@ export default function ProgramReviewForm({
 
   if (submitted) {
     return (
-      <div className="rounded-2xl border border-[#1B6DFC]/20 bg-[#1B6DFC]/5 p-8 text-center">
+      <div className="rounded-2xl border border-blue-200 bg-blue-50 p-8 text-center">
         <div className="w-12 h-12 rounded-full bg-[#1B6DFC] flex items-center justify-center mx-auto mb-4">
           <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -113,7 +113,7 @@ export default function ProgramReviewForm({
         <button
           onClick={() => setAdherenceConfirmed(!adherenceConfirmed)}
           className={`flex items-center gap-3 px-4 py-3 rounded-2xl border w-full text-left transition-colors ${
-            adherenceConfirmed ? 'border-blue-500 bg-[#1B6DFC]/10' : 'border-[#E5E5E5] hover:border-[#D4D4D4]'
+            adherenceConfirmed ? 'border-blue-500 bg-blue-50' : 'border-[#E5E5E5] hover:border-[#D4D4D4]'
           }`}
         >
           <div className={`w-5 h-5 rounded-full border shrink-0 flex items-center justify-center ${
@@ -140,7 +140,7 @@ export default function ProgramReviewForm({
               key={opt.value}
               onClick={() => setSignalCategories(prev => prev.includes(opt.value) ? prev.filter(v => v !== opt.value) : [...prev, opt.value])}
               className={`flex items-start gap-3 w-full text-left px-4 py-3 rounded-2xl border transition-colors ${
-                signalCategories.includes(opt.value) ? 'border-blue-500 bg-[#1B6DFC]/10' : 'border-[#E5E5E5] hover:border-[#E5E5E5]'
+                signalCategories.includes(opt.value) ? 'border-blue-500 bg-blue-50' : 'border-[#E5E5E5] hover:border-[#E5E5E5]'
               }`}
             >
               <div className={`w-4 h-4 rounded border shrink-0 mt-0.5 flex items-center justify-center ${
@@ -163,7 +163,7 @@ export default function ProgramReviewForm({
 
       {/* Direction */}
       <div id="f-direction" className="scroll-mt-24">
-        <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${missing.has('direction') ? 'text-red-400' : 'text-[#999999]'}`}>Overall - how is training going?</p>
+        <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${missing.has('direction') ? 'text-red-700' : 'text-[#999999]'}`}>Overall - how is training going?</p>
         <div className="grid grid-cols-3 gap-2">
           {([
             { value: 'progress', label: 'Making progress' },
@@ -180,7 +180,7 @@ export default function ProgramReviewForm({
                 direction === opt.value
                   ? directionColour[opt.value]
                   : missing.has('direction')
-                  ? 'border-red-500/60 text-[#999999]'
+                  ? 'border-red-400 text-[#999999]'
                   : 'border-[#E5E5E5] text-[#999999] hover:border-[#E5E5E5]'
               }`}
             >
@@ -188,7 +188,7 @@ export default function ProgramReviewForm({
             </button>
           ))}
         </div>
-        {missing.has('direction') && <p className="text-red-400 text-xs mt-2 font-medium">Please select an option.</p>}
+        {missing.has('direction') && <p className="text-red-700 text-xs mt-2 font-medium">Please select an option.</p>}
       </div>
 
       {/* Notes */}
@@ -205,14 +205,14 @@ export default function ProgramReviewForm({
 
       {error && (
         <div className="bg-red-950/30 border border-red-800 rounded-xl px-4 py-3">
-          <p className="text-sm text-red-400">{error}</p>
+          <p className="text-sm text-red-700">{error}</p>
         </div>
       )}
 
       <button
         onClick={handleSubmit}
         disabled={submitting}
-        className="w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] disabled:bg-[#E5E5E5] disabled:text-[#999999] text-black font-bold text-sm rounded-2xl transition-colors"
+        className="w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] disabled:bg-[#E5E5E5] disabled:text-[#999999] text-white font-bold text-sm rounded-2xl transition-colors"
       >
         {submitting ? 'Submitting...' : 'Submit Review'}
       </button>

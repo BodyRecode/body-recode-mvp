@@ -133,7 +133,7 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
           <span className={`text-xs px-2.5 py-1 rounded-full border font-semibold ${
             isThreeSession
               ? 'bg-teal-900/30 text-teal-400 border-teal-800/50'
-              : 'bg-amber-900/30 text-amber-400 border-amber-800/50'
+              : 'bg-amber-900/30 text-amber-700 border-amber-800/50'
           }`}>
             {isThreeSession ? '3x - Already upgraded' : '2x - Upgrade candidate'}
           </span>
@@ -143,8 +143,8 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
       {/* Not yet ready warning */}
       {!isUpgradeCandidate && !isThreeSession && (
         <div className="mx-6 mt-6 bg-amber-950/40 border border-amber-800/50 rounded-xl px-5 py-4">
-          <p className="text-amber-300 text-sm font-medium">Early stage client</p>
-          <p className="text-amber-400/70 text-xs mt-1">
+          <p className="text-amber-700 text-sm font-medium">Early stage client</p>
+          <p className="text-amber-700/70 text-xs mt-1">
             {clientName} is at Week {weekNumber ?? 0}. The upgrade conversation works best at Week 8+ when consistent patterns are visible in the data.
           </p>
         </div>
@@ -210,7 +210,7 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
                           : isPath
                           ? 'text-teal-400 font-semibold text-xs uppercase tracking-widest pt-1'
                           : isAction
-                          ? 'text-amber-400/80 text-xs pl-4'
+                          ? 'text-amber-700/80 text-xs pl-4'
                           : isIndent
                           ? 'text-stone-400 pl-4'
                           : 'text-stone-300'
@@ -235,8 +235,8 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
           {/* Boundary */}
           {stage.boundary && (
             <div className="bg-red-950/30 border border-red-800/40 rounded-xl p-4">
-              <p className="text-xs font-bold text-red-400 uppercase tracking-widest mb-1">Boundary</p>
-              <p className="text-red-300/80 text-sm leading-relaxed">{stage.boundary}</p>
+              <p className="text-xs font-bold text-red-700 uppercase tracking-widest mb-1">Boundary</p>
+              <p className="text-red-700/80 text-sm leading-relaxed">{stage.boundary}</p>
             </div>
           )}
         </div>

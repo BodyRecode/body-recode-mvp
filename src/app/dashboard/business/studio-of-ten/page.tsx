@@ -31,12 +31,12 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 'teal' | 'violet' | 'amber' | 'orange' | 'stone' | 'blue' }) {
   const styles: Record<string, string> = {
-    teal:   'bg-blue-500/10 text-blue-500 border-blue-500/20',
-    violet: 'bg-violet-500/10 text-violet-400 border-violet-500/20',
-    amber:  'bg-amber-500/10 text-amber-400 border-amber-500/20',
+    teal:   'bg-blue-50 text-blue-500 border-blue-500/20',
+    violet: 'bg-violet-500/10 text-violet-700 border-violet-500/20',
+    amber:  'bg-amber-50 text-amber-700 border-amber-500/20',
     orange: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
     stone:  'bg-stone-500/10 text-stone-600 border-stone-500/20',
-    blue:   'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    blue:   'bg-blue-50 text-blue-700 border-blue-500/20',
   }
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${styles[color]}`}>
@@ -61,16 +61,16 @@ function PositioningTab() {
             'Not for tradies, consultants, or course creators',
           ].map(s => (
             <div key={s} className="flex items-center gap-2 text-sm text-stone-600">
-              <span className="text-red-400">-</span> {s}
+              <span className="text-red-700">-</span> {s}
             </div>
           ))}
           <div className="flex items-start gap-2 text-sm text-stone-800 mt-3">
-            <span className="text-blue-400 mt-0.5">+</span>
+            <span className="text-blue-700 mt-0.5">+</span>
             <span>A studio that integrates AI properly into coaching and allied health practices - so the operator stops doing busywork and gets back to clients.</span>
           </div>
         </div>
         <div className="mt-4 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
-          <p className="text-xs text-blue-300">Body Recode is the case study. We built and run a full custom platform for it - lead capture, AI reports, client portal, automations. Now we ship the same level of work for clients in the same niche.</p>
+          <p className="text-xs text-blue-700">Body Recode is the case study. We built and run a full custom platform for it - lead capture, AI reports, client portal, automations. Now we ship the same level of work for clients in the same niche.</p>
         </div>
       </Card>
 
@@ -112,7 +112,7 @@ Capped at 10 clients. Yours never gets second priority.
                 <p className="text-sm font-medium text-[#1A1A1A]">{r.platform}</p>
                 <p className="text-xs text-stone-600">{r.handle}</p>
               </div>
-              <code className="text-xs text-blue-400 bg-blue-500/10 px-2 py-1 rounded">{r.link}</code>
+              <code className="text-xs text-blue-700 bg-blue-50 px-2 py-1 rounded">{r.link}</code>
             </div>
           ))}
         </div>
@@ -501,7 +501,7 @@ function ScriptsTab() {
             onClick={() => setScriptTab(k)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
               scriptTab === k
-                ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
+                ? 'bg-blue-50 text-blue-700 border-blue-200'
                 : 'text-stone-500 border-stone-200 hover:text-stone-700'
             }`}
           >{v.label}</button>
@@ -536,7 +536,7 @@ function ScriptsTab() {
                       <p className="text-[10px] uppercase tracking-widest text-stone-400">Copy</p>
                       <button
                         onClick={() => navigator.clipboard.writeText(s.copy ?? [s.hook, s.body].filter(Boolean).join('\n\n'))}
-                        className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                        className="text-xs text-blue-700 hover:text-blue-700 transition-colors"
                       >Copy</button>
                     </div>
                     <div className="bg-stone-100 rounded-lg p-3 text-sm text-stone-800 leading-relaxed whitespace-pre-line">
@@ -694,7 +694,7 @@ function LaunchTab() {
             { week: 'Weeks 9-12', action: 'First 1-2 client engagements running, start documenting first case study.' },
           ].map(r => (
             <div key={r.week} className="border border-stone-200 rounded-lg p-3">
-              <p className="text-xs font-mono text-blue-400 mb-1">{r.week}</p>
+              <p className="text-xs font-mono text-blue-700 mb-1">{r.week}</p>
               <p className="text-sm text-stone-700">{r.action}</p>
             </div>
           ))}
@@ -714,7 +714,7 @@ function LaunchTab() {
           ].map(r => (
             <div key={r.platform} className="flex items-center justify-between py-2 border-b border-stone-200/60 last:border-0">
               <p className="text-sm text-stone-600 w-36 shrink-0">{r.platform}</p>
-              <code className="text-xs text-blue-400 bg-blue-500/10 px-2 py-1 rounded">{r.url}</code>
+              <code className="text-xs text-blue-700 bg-blue-50 px-2 py-1 rounded">{r.url}</code>
             </div>
           ))}
         </div>

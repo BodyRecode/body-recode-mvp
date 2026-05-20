@@ -36,7 +36,7 @@ export default async function AgreementViewPage({ params }: { params: Promise<{ 
         </div>
         <div className="flex items-center gap-2">
           {signedDate && (
-            <span className="text-xs font-semibold text-blue-500 bg-blue-500/10 border border-blue-500/30 px-3 py-1.5 rounded-lg">
+            <span className="text-xs font-semibold text-blue-500 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-lg">
               Signed {signedDate}
             </span>
           )}

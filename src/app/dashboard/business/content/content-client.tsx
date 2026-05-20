@@ -78,27 +78,27 @@ const PLATFORMS = [
 
 const OUTPUT_STATUSES = [
   { value: 'draft', label: 'Draft', color: 'text-stone-600 bg-stone-200 border-stone-300' },
-  { value: 'approved', label: 'Approved', color: 'text-blue-500 bg-blue-500/10 border-blue-500/20' },
-  { value: 'deployed', label: 'Deployed', color: 'text-blue-400 bg-blue-500/10 border-blue-500/20' },
+  { value: 'approved', label: 'Approved', color: 'text-blue-500 bg-blue-50 border-blue-500/20' },
+  { value: 'deployed', label: 'Deployed', color: 'text-blue-700 bg-blue-50 border-blue-500/20' },
   { value: 'winning', label: 'Winning', color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' },
-  { value: 'removed', label: 'Removed', color: 'text-red-400 bg-red-500/10 border-red-500/20' },
+  { value: 'removed', label: 'Removed', color: 'text-red-700 bg-red-50 border-red-500/20' },
 ]
 
 const SCORE_LABELS: Record<number, { label: string; color: string }> = {
   0: { label: 'Unscored', color: 'text-stone-500' },
-  1: { label: 'Losing', color: 'text-red-400' },
+  1: { label: 'Losing', color: 'text-red-700' },
   2: { label: 'Neutral', color: 'text-stone-600' },
   3: { label: 'Winning', color: 'text-blue-500' },
 }
 
 function categoryColor(cat: string) {
   const map: Record<string, string> = {
-    problem_aware: 'bg-red-500/10 text-red-400 border-red-500/20',
-    solution_aware: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+    problem_aware: 'bg-red-50 text-red-700 border-red-500/20',
+    solution_aware: 'bg-blue-50 text-blue-500 border-blue-500/20',
     unaware: 'bg-stone-300 text-stone-600 border-stone-400',
     contrarian: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
     curiosity: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-    authority: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    authority: 'bg-blue-50 text-blue-700 border-blue-500/20',
   }
   return map[cat] ?? 'bg-stone-300 text-stone-600 border-stone-400'
 }
@@ -109,10 +109,10 @@ function categoryLabel(cat: string) {
 
 function messageTypeColor(type: string) {
   const map: Record<string, string> = {
-    education: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+    education: 'bg-blue-50 text-blue-500 border-blue-500/20',
     myth_busting: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
     story: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-    system_explanation: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    system_explanation: 'bg-blue-50 text-blue-700 border-blue-500/20',
     authority: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
   }
   return map[type] ?? 'bg-stone-300 text-stone-600 border-stone-400'
@@ -331,7 +331,7 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
                     <button onClick={() => startEdit(hook)} className="p-1.5 text-stone-500 hover:text-stone-700">
                       <Pencil size={13} />
                     </button>
-                    <button onClick={() => deleteHook(hook.id)} disabled={deletingId === hook.id} className="p-1.5 text-stone-500 hover:text-red-400 disabled:opacity-50">
+                    <button onClick={() => deleteHook(hook.id)} disabled={deletingId === hook.id} className="p-1.5 text-stone-500 hover:text-red-700 disabled:opacity-50">
                       <Trash2 size={13} />
                     </button>
                   </div>
@@ -456,7 +456,7 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
                   <button onClick={() => startEdit(msg)} className="p-1.5 text-stone-500 hover:text-stone-700">
                     <Pencil size={13} />
                   </button>
-                  <button onClick={() => deleteMessage(msg.id)} disabled={deletingId === msg.id} className="p-1.5 text-stone-500 hover:text-red-400 disabled:opacity-50">
+                  <button onClick={() => deleteMessage(msg.id)} disabled={deletingId === msg.id} className="p-1.5 text-stone-500 hover:text-red-700 disabled:opacity-50">
                     <Trash2 size={13} />
                   </button>
                 </div>
@@ -575,7 +575,7 @@ function CtasTab({ ctas, setCtas }: { ctas: Cta[]; setCtas: React.Dispatch<React
                     <button onClick={() => { setEditingId(cta.id); setForm({ cta_text: cta.cta_text }); setShowForm(false) }} className="p-1.5 text-stone-500 hover:text-stone-700">
                       <Pencil size={13} />
                     </button>
-                    <button onClick={() => deleteCta(cta.id)} disabled={deletingId === cta.id} className="p-1.5 text-stone-500 hover:text-red-400 disabled:opacity-50">
+                    <button onClick={() => deleteCta(cta.id)} disabled={deletingId === cta.id} className="p-1.5 text-stone-500 hover:text-red-700 disabled:opacity-50">
                       <Trash2 size={13} />
                     </button>
                   </div>
@@ -683,7 +683,7 @@ function GenerateTab({
               onClick={() => setPlatform(p.value)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                 platform === p.value
-                  ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                  ? 'bg-blue-50 border-blue-300 text-blue-500'
                   : 'bg-stone-100 border-stone-300 text-stone-600 hover:text-[#1A1A1A] hover:border-stone-400'
               }`}
             >
@@ -750,12 +750,12 @@ function GenerateTab({
           </button>
         </div>
 
-        {error && <p className="text-xs text-red-400">{error}</p>}
+        {error && <p className="text-xs text-red-700">{error}</p>}
 
         {result && (
-          <div className="flex items-center justify-between bg-blue-500/10 border border-blue-500/20 rounded-lg px-4 py-3">
+          <div className="flex items-center justify-between bg-blue-50 border border-blue-500/20 rounded-lg px-4 py-3">
             <p className="text-sm text-blue-500 font-medium">{result.generated.toLocaleString()} pieces of content generated.</p>
-            <button onClick={onViewOutputs} className="text-xs text-blue-500 hover:text-blue-300 underline">
+            <button onClick={onViewOutputs} className="text-xs text-blue-500 hover:text-blue-700 underline">
               View Outputs
             </button>
           </div>
@@ -1005,7 +1005,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                   <button onClick={() => copyText(output.id, output.content_text)} className="p-1.5 text-stone-500 hover:text-stone-700 transition-colors">
                     {copiedId === output.id ? <Check size={13} className="text-blue-500" /> : <Copy size={13} />}
                   </button>
-                  <button onClick={() => deleteOutput(output.id)} className="p-1.5 text-stone-500 hover:text-red-400 transition-colors">
+                  <button onClick={() => deleteOutput(output.id)} className="p-1.5 text-stone-500 hover:text-red-700 transition-colors">
                     <Trash2 size={13} />
                   </button>
                 </div>
@@ -1026,7 +1026,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                           onClick={() => setGraphicStyle(g => ({ ...g, [output.id]: s.value }))}
                           className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
                             (graphicStyle[output.id] ?? 'quote') === s.value
-                              ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                              ? 'bg-blue-50 border-blue-300 text-blue-500'
                               : 'bg-stone-200 border-stone-300 text-stone-600 hover:text-[#1A1A1A]'
                           }`}
                         >
@@ -1125,7 +1125,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                 </div>
               ) : output.video_status === 'failed' ? (
                 <div className="flex items-center gap-2 mt-2 pt-2 border-t border-stone-200">
-                  <span className="text-xs text-red-400">Reel generation failed</span>
+                  <span className="text-xs text-red-700">Reel generation failed</span>
                   <button onClick={() => setShowScriptFor(output.id)} className="ml-auto text-xs text-stone-500 hover:text-stone-700">
                     Retry
                   </button>
@@ -1270,7 +1270,7 @@ function SelectableList({
                 onClick={() => onToggle(item.id)}
                 className={`w-full text-left flex items-start gap-2.5 px-3 py-2 rounded-lg border text-xs transition-colors ${
                   active
-                    ? 'bg-blue-500/10 border-blue-500/30 text-[#1A1A1A]'
+                    ? 'bg-blue-50 border-blue-200 text-[#1A1A1A]'
                     : 'bg-stone-100 border-stone-200 text-stone-600 hover:border-stone-300 hover:text-stone-700'
                 }`}
               >

@@ -23,7 +23,7 @@ const PLATFORM_LABELS: Record<string, string> = {
 }
 
 const PLATFORM_COLORS: Record<string, string> = {
-  meta: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+  meta: 'bg-blue-50 text-blue-700 border-blue-500/20',
   google: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
 }
 
@@ -319,7 +319,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
                     <button
                       onClick={() => deleteCampaign(campaign.id)}
                       disabled={deletingId === campaign.id}
-                      className="p-1.5 text-stone-500 hover:text-red-400 transition-colors disabled:opacity-50"
+                      className="p-1.5 text-stone-500 hover:text-red-700 transition-colors disabled:opacity-50"
                     >
                       <Trash2 size={13} />
                     </button>

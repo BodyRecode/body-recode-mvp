@@ -78,7 +78,7 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
                 key={row.id}
                 className="flex items-start gap-3 px-3 py-2.5 bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg"
               >
-                <div className="mt-0.5 w-7 h-7 rounded-md bg-blue-500/10 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
+                <div className="mt-0.5 w-7 h-7 rounded-md bg-blue-50 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
                   <Icon className="w-3.5 h-3.5 text-blue-500" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -106,7 +106,7 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
                           href={url}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-blue-500 hover:text-blue-300 transition-colors"
+                          className="text-blue-500 hover:text-blue-700 transition-colors"
                         >
                           link
                         </a>

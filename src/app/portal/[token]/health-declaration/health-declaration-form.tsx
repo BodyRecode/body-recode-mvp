@@ -203,11 +203,11 @@ export default function HealthDeclarationForm({
     router.push(`/portal/${portalToken}`)
   }
 
-  const errClass = (id: string) => missing.has(id) ? 'border-red-500/60' : 'border-[#E5E5E5]'
-  const errLabel = (id: string) => missing.has(id) ? 'text-red-400' : 'text-[#3A3A3A]'
+  const errClass = (id: string) => missing.has(id) ? 'border-red-400' : 'border-[#E5E5E5]'
+  const errLabel = (id: string) => missing.has(id) ? 'text-red-700' : 'text-[#3A3A3A]'
   const errMessage = (id: string) =>
     missing.has(id) ? (
-      <p className="text-red-400 text-xs mt-2 font-medium">Please answer this question.</p>
+      <p className="text-red-700 text-xs mt-2 font-medium">Please answer this question.</p>
     ) : null
 
   const yesNoButton = (id: string, current: YesNo, setter: (v: YesNo) => void, opt: 'Yes' | 'No') => {
@@ -222,7 +222,7 @@ export default function HealthDeclarationForm({
           isSelected
             ? 'bg-[#1B6DFC]/20 text-[#1B6DFC] border-[#1B6DFC]/40'
             : hasError
-            ? 'bg-[#E5E5E5] text-[#6B6B6B] border-red-500/60'
+            ? 'bg-[#E5E5E5] text-[#6B6B6B] border-red-400'
             : 'bg-[#E5E5E5] text-[#6B6B6B] border-[#E5E5E5] hover:border-[#D4D4D4]'
         }`}
       >
@@ -242,8 +242,8 @@ export default function HealthDeclarationForm({
 
         {validationMessage && (
           <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
-            <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
-            <p className="text-red-400/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
+            <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
+            <p className="text-red-700/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
           </div>
         )}
 
@@ -347,7 +347,7 @@ export default function HealthDeclarationForm({
                         onClick={() => { setHealthRating(r); clearMissing('healthRating') }}
                         className={`py-2.5 rounded-xl text-sm font-semibold transition-colors border ${
                           isSelected ? 'bg-[#1B6DFC]/20 text-[#1B6DFC] border-[#1B6DFC]/40'
-                          : hasError ? 'bg-[#E5E5E5] text-[#6B6B6B] border-red-500/60'
+                          : hasError ? 'bg-[#E5E5E5] text-[#6B6B6B] border-red-400'
                           : 'bg-[#E5E5E5] text-[#6B6B6B] border-[#E5E5E5] hover:border-[#D4D4D4]'
                         }`}
                       >{r}</button>
@@ -585,9 +585,9 @@ export default function HealthDeclarationForm({
 
           {/* Medical clearance notice */}
           {requiresClearance && (
-            <div className="bg-amber-400/10 border border-amber-400/30 rounded-xl p-4">
-              <p className="text-sm text-amber-400 font-semibold mb-1">Medical clearance required</p>
-              <p className="text-xs text-amber-400/70">Based on your responses, your coach will request written clearance from your GP before training begins. This is a standard precautionary requirement.</p>
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+              <p className="text-sm text-amber-700 font-semibold mb-1">Medical clearance required</p>
+              <p className="text-xs text-amber-700/70">Based on your responses, your coach will request written clearance from your GP before training begins. This is a standard precautionary requirement.</p>
             </div>
           )}
 
@@ -614,9 +614,9 @@ export default function HealthDeclarationForm({
                     id={`f-${id}`}
                     className={`flex items-start gap-3 cursor-pointer p-4 rounded-xl border transition-colors scroll-mt-24 ${
                       state
-                        ? 'border-[#1B6DFC]/30 bg-[#1B6DFC]/5'
+                        ? 'border-blue-200 bg-blue-50'
                         : hasError
-                        ? 'border-red-500/60 bg-red-950/20'
+                        ? 'border-red-400 bg-red-950/20'
                         : 'border-[#E5E5E5] bg-[#FFFFFF] hover:border-[#E5E5E5]'
                     }`}
                   >
@@ -626,7 +626,7 @@ export default function HealthDeclarationForm({
                       onChange={e => { setter(e.target.checked); clearMissing(id) }}
                       className="mt-0.5 w-4 h-4 rounded accent-blue-500 flex-shrink-0"
                     />
-                    <span className={`text-sm leading-relaxed ${hasError ? 'text-red-300' : 'text-[#3A3A3A]'}`}>{text}</span>
+                    <span className={`text-sm leading-relaxed ${hasError ? 'text-red-700' : 'text-[#3A3A3A]'}`}>{text}</span>
                   </label>
                 )
               })}
@@ -636,26 +636,26 @@ export default function HealthDeclarationForm({
           {/* Declaration */}
           <section>
             <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-4">Declaration</p>
-            <div id="f-declarationName" className={`bg-[#FFFFFF] rounded-xl p-5 space-y-4 border scroll-mt-24 ${missing.has('declarationName') ? 'border-red-500/60' : 'border-[#E5E5E5]'}`}>
-              <p className={`text-sm ${missing.has('declarationName') ? 'text-red-300' : 'text-[#6B6B6B]'}`}>By typing your full name below, you confirm that all information provided in this form is accurate and complete, and that you agree to the declarations above.</p>
+            <div id="f-declarationName" className={`bg-[#FFFFFF] rounded-xl p-5 space-y-4 border scroll-mt-24 ${missing.has('declarationName') ? 'border-red-400' : 'border-[#E5E5E5]'}`}>
+              <p className={`text-sm ${missing.has('declarationName') ? 'text-red-700' : 'text-[#6B6B6B]'}`}>By typing your full name below, you confirm that all information provided in this form is accurate and complete, and that you agree to the declarations above.</p>
               <input
                 type="text"
                 value={declarationName}
                 onChange={e => { setDeclarationName(e.target.value); if (e.target.value.trim().length >= 3) clearMissing('declarationName') }}
                 placeholder="Type your full name"
-                className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#1A1A1A] outline-none focus:ring-2 focus:ring-blue-500/50 placeholder-[#999999] border ${missing.has('declarationName') ? 'border-red-500/60' : 'border-[#E5E5E5]'}`}
+                className={`w-full bg-[#FFFFFF] rounded-xl px-4 py-3 text-sm text-[#1A1A1A] outline-none focus:ring-2 focus:ring-blue-500/50 placeholder-[#999999] border ${missing.has('declarationName') ? 'border-red-400' : 'border-[#E5E5E5]'}`}
               />
               <p className="text-xs text-[#999999]">Date: {new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
               {errMessage('declarationName')}
             </div>
           </section>
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-red-700 text-sm">{error}</p>}
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-[#1B6DFC] text-black text-sm font-bold py-4 rounded-2xl hover:bg-[#5390FF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#5390FF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           >
             {submitting ? 'Saving…' : 'Submit Health Declaration →'}
           </button>

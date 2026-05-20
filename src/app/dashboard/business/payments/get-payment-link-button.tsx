@@ -40,7 +40,7 @@ export default function GetPaymentLinkButton({ productId, cachedUrl }: Props) {
         onClick={copy}
         className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border transition-colors ${
           copied
-            ? 'border-blue-500/40 text-blue-500 bg-blue-500/10'
+            ? 'border-blue-300 text-blue-500 bg-blue-50'
             : 'border-stone-300 text-stone-600 hover:border-stone-500 hover:text-[#1A1A1A]'
         }`}
         title={url}

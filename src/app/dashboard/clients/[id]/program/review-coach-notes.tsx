@@ -58,7 +58,7 @@ export default function ReviewCoachNotes({ reviewId, existingNotes }: { reviewId
         <button
           onClick={handleSave}
           disabled={saving}
-          className="text-xs font-semibold bg-blue-500 hover:bg-blue-300 disabled:bg-stone-300 text-black px-3 py-1.5 rounded-lg transition-colors"
+          className="text-xs font-semibold bg-blue-500 hover:bg-blue-300 disabled:bg-stone-300 text-white px-3 py-1.5 rounded-lg transition-colors"
         >
           {saving ? 'Saving...' : 'Save'}
         </button>

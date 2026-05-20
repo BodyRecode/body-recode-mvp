@@ -250,7 +250,7 @@ export default function LogClient(props: Props) {
         return (
           <div
             key={ex.id}
-            className={`bg-[#FFFFFF] border rounded-2xl p-4 ${allSetsSaved ? 'border-blue-500/30' : 'border-[#E5E5E5]'}`}
+            className={`bg-[#FFFFFF] border rounded-2xl p-4 ${allSetsSaved ? 'border-blue-200' : 'border-[#E5E5E5]'}`}
           >
             {/* Exercise header */}
             <div className="mb-3">
@@ -343,7 +343,7 @@ export default function LogClient(props: Props) {
                       disabled={isCompleted || s.saving}
                       className={`h-9 rounded-lg text-xs font-bold transition-colors ${
                         s.saved
-                          ? 'bg-blue-500/20 text-blue-500 border border-blue-500/30'
+                          ? 'bg-blue-100 text-blue-500 border border-blue-200'
                           : 'bg-[#E5E5E5] text-[#6B6B6B] hover:bg-[#262421] border border-[#E5E5E5]'
                       }`}
                       aria-label={`Save set ${n}`}
@@ -357,7 +357,7 @@ export default function LogClient(props: Props) {
               {Array.from({ length: setCount }, (_, i) => i + 1).map(n => {
                 const s = setStates[ROW_KEY(ex.id, n)]
                 if (!s?.error) return null
-                return <p key={`err-${n}`} className="text-[11px] text-red-400 pl-9">Set {n}: {s.error}</p>
+                return <p key={`err-${n}`} className="text-[11px] text-red-700 pl-9">Set {n}: {s.error}</p>
               })}
             </div>
 
@@ -371,7 +371,7 @@ export default function LogClient(props: Props) {
               rows={2}
               className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2 text-xs text-[#1A1A1A] placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4] resize-none"
             />
-            {exState?.error && <p className="mt-1 text-[11px] text-red-400">{exState.error}</p>}
+            {exState?.error && <p className="mt-1 text-[11px] text-red-700">{exState.error}</p>}
           </div>
         )
       })}
@@ -394,12 +394,12 @@ export default function LogClient(props: Props) {
           type="button"
           onClick={handleComplete}
           disabled={completing}
-          className="w-full py-4 bg-[#1B6DFC] hover:bg-[#5390FF] text-black font-bold text-sm rounded-2xl transition-colors disabled:opacity-50"
+          className="w-full py-4 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-2xl transition-colors disabled:opacity-50"
         >
           {completing ? 'Saving…' : 'Mark session complete'}
         </button>
       )}
-      {completeError && <p className="text-xs text-red-400 text-center">{completeError}</p>}
+      {completeError && <p className="text-xs text-red-700 text-center">{completeError}</p>}
     </div>
   )
 }

@@ -48,7 +48,7 @@ export default function StageMover({ leadId, currentStatus, stageOrder, stageLab
       <button
         onClick={() => moveStage(stageOrder[currentIndex + 1])}
         disabled={!canGoForward || isPending}
-        className="flex items-center gap-1.5 text-xs text-[#1A1A1A] bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 hover:border-blue-500/60 disabled:opacity-30 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors ml-auto"
+        className="flex items-center gap-1.5 text-xs text-[#1A1A1A] bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-500/60 disabled:opacity-30 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors ml-auto"
       >
         {canGoForward ? stageLabel[stageOrder[currentIndex + 1]] : 'Done'}
         <ChevronRight size={13} />

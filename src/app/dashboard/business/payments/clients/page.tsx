@@ -39,15 +39,15 @@ const STATUS_META: Record<SubStatus | 'none', { label: string; tone: 'good' | 'w
 
 const TONE_CLASS = {
   good:  'text-blue-500',
-  warn:  'text-amber-400',
-  bad:   'text-red-400',
+  warn:  'text-amber-700',
+  bad:   'text-red-700',
   muted: 'text-stone-500',
 } as const
 
 const TONE_BG = {
-  good:  'bg-blue-500/10',
-  warn:  'bg-amber-500/10',
-  bad:   'bg-red-500/10',
+  good:  'bg-blue-50',
+  warn:  'bg-amber-50',
+  bad:   'bg-red-50',
   muted: 'bg-stone-200/40',
 } as const
 
@@ -219,7 +219,7 @@ export default async function ClientStatusPage() {
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-[#1A1A1A] truncate">{r.name}</p>
                   {!r.stripeLinked && (
-                    <p className="text-[10px] text-amber-400/80 mt-0.5">No Stripe link</p>
+                    <p className="text-[10px] text-amber-700/80 mt-0.5">No Stripe link</p>
                   )}
                 </div>
                 <div className="text-xs text-stone-600 truncate">{r.planName}</div>
@@ -227,7 +227,7 @@ export default async function ClientStatusPage() {
                   {r.commencementPaid ? (
                     <span className="text-blue-500">Paid</span>
                   ) : (
-                    <span className="text-amber-400">Not paid</span>
+                    <span className="text-amber-700">Not paid</span>
                   )}
                 </div>
                 <div className="text-xs min-w-0">
@@ -241,7 +241,7 @@ export default async function ClientStatusPage() {
                       {r.nextCharge && ['active', 'trialing', 'past_due'].includes(r.sub) && (
                         <span className="text-stone-400"> · next {formatDate(r.nextCharge)}</span>
                       )}
-                      {r.cancelAtPeriodEnd && <span className="text-amber-400"> · cancels</span>}
+                      {r.cancelAtPeriodEnd && <span className="text-amber-700"> · cancels</span>}
                     </p>
                   )}
                 </div>

@@ -33,16 +33,16 @@ interface Suggestion {
 }
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-blue-400 bg-blue-400/10 border-blue-400/30',
+  accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
   intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-  realization: 'text-red-400 bg-red-400/10 border-red-400/30',
+  realization: 'text-red-700 bg-red-50 border-red-200',
   restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const goalColour: Record<string, string> = {
-  strength: 'text-violet-400 bg-violet-400/10 border-violet-400/30',
+  strength: 'text-violet-700 bg-violet-50 border-violet-200',
   hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-blue-500 bg-blue-500/10 border-blue-500/30',
+  capacity: 'text-blue-500 bg-blue-50 border-blue-200',
 }
 
 const PHASES = ['accumulation', 'intensification', 'realization', 'restoration']
@@ -196,7 +196,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
   if (error && !suggestion) {
     return (
       <div className="bg-red-950/30 border border-red-800 rounded-xl p-5">
-        <p className="text-red-400 text-sm">{error}</p>
+        <p className="text-red-700 text-sm">{error}</p>
         <a href={`/dashboard/clients/${clientId}/plan`} className="text-xs text-stone-500 hover:text-stone-700 mt-3 inline-block">
           Back to plan →
         </a>
@@ -276,7 +276,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
                   </button>
                   <button
                     onClick={() => removeBlock(i)}
-                    className="text-[10px] text-stone-300 hover:text-red-400 px-1 transition-colors"
+                    className="text-[10px] text-stone-300 hover:text-red-700 px-1 transition-colors"
                   >
                     ✕
                   </button>
@@ -377,7 +377,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
 
       {error && (
         <div className="bg-red-950/30 border border-red-800 rounded-lg px-4 py-3">
-          <p className="text-red-400 text-sm">{error}</p>
+          <p className="text-red-700 text-sm">{error}</p>
         </div>
       )}
 
@@ -391,7 +391,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
         <button
           onClick={handleApprove}
           disabled={saving}
-          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-black font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {saving ? 'Saving arc...' : 'Save as Draft'}
         </button>

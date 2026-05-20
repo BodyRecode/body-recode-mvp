@@ -4,34 +4,34 @@ import Link from 'next/link'
 import ProfileSidebar from '../profile-sidebar'
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-blue-400 bg-blue-400/10 border-blue-400/30',
+  accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
   intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-  realization: 'text-red-400 bg-red-400/10 border-red-400/30',
+  realization: 'text-red-700 bg-red-50 border-red-200',
   restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const goalColour: Record<string, string> = {
-  strength: 'text-violet-400 bg-violet-400/10 border-violet-400/30',
+  strength: 'text-violet-700 bg-violet-50 border-violet-200',
   hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-blue-500 bg-blue-500/10 border-blue-500/30',
+  capacity: 'text-blue-500 bg-blue-50 border-blue-200',
 }
 
 const entryStateColour: Record<string, string> = {
-  stabilisation: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
-  training_support: 'text-blue-500 bg-blue-500/10 border-blue-500/30',
-  high_output_support: 'text-violet-400 bg-violet-400/10 border-violet-400/30',
-  recovery_reset: 'text-red-400 bg-red-400/10 border-red-400/30',
+  stabilisation: 'text-amber-700 bg-amber-50 border-amber-200',
+  training_support: 'text-blue-500 bg-blue-50 border-blue-200',
+  high_output_support: 'text-violet-700 bg-violet-50 border-violet-200',
+  recovery_reset: 'text-red-700 bg-red-50 border-red-200',
 }
 
 const readinessColour: Record<string, string> = {
   Green: 'bg-green-950/40 border-green-500 text-green-400',
-  Amber: 'bg-amber-950/40 border-amber-500 text-amber-400',
-  Red: 'bg-red-950/40 border-red-500 text-red-400',
+  Amber: 'bg-amber-950/40 border-amber-500 text-amber-700',
+  Red: 'bg-red-950/40 border-red-500 text-red-700',
 }
 
 const blockStatusStyle: Record<string, string> = {
   planned: 'border-stone-300 bg-stone-100 text-stone-500',
-  in_progress: 'border-amber-700 bg-amber-400/10 text-amber-400',
+  in_progress: 'border-amber-700 bg-amber-50 text-amber-700',
   complete: 'border-green-700 bg-green-400/10 text-green-400',
   skipped: 'border-stone-200 bg-stone-100/50 text-stone-300',
 }
@@ -98,7 +98,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
               <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Current Body State</p>
               <div className="flex items-center gap-2">
                 {cfws && (
-                  <span className="text-[10px] text-blue-500 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded-full">Week {cfws.week_number} readiness</span>
+                  <span className="text-[10px] text-blue-500 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">Week {cfws.week_number} readiness</span>
                 )}
                 <Link href={`/dashboard/clients/${id}`} className="text-[10px] text-stone-400 hover:text-stone-600 transition-colors">View CFFS →</Link>
               </div>
@@ -170,7 +170,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                             {block.block_name}
                           </p>
                           {block.status === 'in_progress' && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-400 uppercase tracking-wide">Current</span>
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 uppercase tracking-wide">Current</span>
                           )}
                         </div>
                         <div className="flex items-center gap-1.5">
@@ -189,7 +189,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                       {block.status === 'in_progress' && block.program_id && (
                         <Link
                           href={`/dashboard/clients/${id}/program`}
-                          className="text-[10px] text-blue-500 hover:text-blue-300 mt-1.5 inline-block transition-colors"
+                          className="text-[10px] text-blue-500 hover:text-blue-700 mt-1.5 inline-block transition-colors"
                         >
                           View program →
                         </Link>
@@ -197,7 +197,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                       {block.status === 'in_progress' && !block.program_id && (
                         <Link
                           href={`/dashboard/clients/${id}/program/suggest?plan_block_id=${block.id}`}
-                          className="text-[10px] text-amber-400 hover:text-amber-300 mt-1.5 inline-block transition-colors"
+                          className="text-[10px] text-amber-700 hover:text-amber-700 mt-1.5 inline-block transition-colors"
                         >
                           Generate program →
                         </Link>
@@ -212,7 +212,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
           ) : (
             <div className="px-5 py-5 text-center">
               <p className="text-stone-500 text-sm">No macro plan created yet</p>
-              <Link href={`/dashboard/clients/${id}/plan`} className="text-xs text-blue-500 hover:text-blue-300 mt-2 inline-block transition-colors">
+              <Link href={`/dashboard/clients/${id}/plan`} className="text-xs text-blue-500 hover:text-blue-700 mt-2 inline-block transition-colors">
                 Create macro plan →
               </Link>
             </div>
@@ -255,7 +255,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
           ) : (
             <div className="px-5 py-5 text-center">
               <p className="text-stone-500 text-sm">No active program</p>
-              <Link href={`/dashboard/clients/${id}/plan`} className="text-xs text-blue-500 hover:text-blue-300 mt-2 inline-block transition-colors">
+              <Link href={`/dashboard/clients/${id}/plan`} className="text-xs text-blue-500 hover:text-blue-700 mt-2 inline-block transition-colors">
                 Open macro plan →
               </Link>
             </div>
@@ -304,8 +304,8 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
               {activeNutritionPlan.current_direction && (
                 <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium capitalize mb-3 ${
                   activeNutritionPlan.current_direction === 'progress' ? 'text-green-400 bg-green-400/10 border-green-700' :
-                  activeNutritionPlan.current_direction === 'rebuild' ? 'text-red-400 bg-red-400/10 border-red-700' :
-                  'text-amber-400 bg-amber-400/10 border-amber-700'
+                  activeNutritionPlan.current_direction === 'rebuild' ? 'text-red-700 bg-red-50 border-red-700' :
+                  'text-amber-700 bg-amber-50 border-amber-700'
                 }`}>
                   Weekly direction: {activeNutritionPlan.current_direction}
                 </div>
@@ -328,7 +328,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
           ) : (
             <div className="px-5 py-5 text-center">
               <p className="text-stone-500 text-sm">No active nutrition plan</p>
-              <Link href={`/dashboard/clients/${id}/nutrition/suggest`} className="text-xs text-blue-500 hover:text-blue-300 mt-2 inline-block transition-colors">
+              <Link href={`/dashboard/clients/${id}/nutrition/suggest`} className="text-xs text-blue-500 hover:text-blue-700 mt-2 inline-block transition-colors">
                 Generate plan →
               </Link>
             </div>
@@ -363,8 +363,8 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                   <span className="text-stone-500">Nutrition Direction</span>
                   <span className={`font-medium capitalize ${
                     activeNutritionPlan.current_direction === 'progress' ? 'text-green-400' :
-                    activeNutritionPlan.current_direction === 'rebuild' ? 'text-red-400' :
-                    'text-amber-400'
+                    activeNutritionPlan.current_direction === 'rebuild' ? 'text-red-700' :
+                    'text-amber-700'
                   }`}>{activeNutritionPlan.current_direction}</span>
                 </div>
               )}

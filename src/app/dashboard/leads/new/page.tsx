@@ -57,7 +57,7 @@ export default function NewLeadPage() {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-stone-700 mb-1.5">Name <span className="text-red-400">*</span></label>
+          <label className="block text-sm font-medium text-stone-700 mb-1.5">Name <span className="text-red-700">*</span></label>
           <input
             name="name"
             required
@@ -87,7 +87,7 @@ export default function NewLeadPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-stone-700 mb-1.5">Source <span className="text-red-400">*</span></label>
+          <label className="block text-sm font-medium text-stone-700 mb-1.5">Source <span className="text-red-700">*</span></label>
           <select
             name="source"
             required
@@ -118,7 +118,7 @@ export default function NewLeadPage() {
           />
         </div>
 
-        {error && <p className="text-red-400 text-sm">{error}</p>}
+        {error && <p className="text-red-700 text-sm">{error}</p>}
 
         <div className="flex gap-3 pt-2">
           <button

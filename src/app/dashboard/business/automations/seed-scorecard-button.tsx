@@ -39,13 +39,13 @@ export default function SeedScorecardButton() {
   return (
     <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4 flex items-center justify-between gap-4 mb-6">
       <div className="flex items-center gap-3">
-        <div className="p-2 bg-blue-500/10 rounded-lg shrink-0">
+        <div className="p-2 bg-blue-50 rounded-lg shrink-0">
           <Zap size={14} className="text-blue-500" strokeWidth={1.8} />
         </div>
         <div>
           <p className="text-sm font-medium text-[#1A1A1A]">Scorecard Follow-up Sequence</p>
           <p className="text-xs text-stone-500 mt-0.5">9-step sequence triggered when someone completes the Body State Scorecard</p>
-          {error && <p className="text-xs text-red-400 mt-1">{error}</p>}
+          {error && <p className="text-xs text-red-700 mt-1">{error}</p>}
         </div>
       </div>
       <button

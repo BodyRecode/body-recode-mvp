@@ -49,7 +49,7 @@ export default function AddSessionForm({ clientId, defaultDuration }: { clientId
     return (
       <button
         onClick={() => setOpen(true)}
-        className="mt-4 pt-4 border-t border-stone-200 w-full text-left text-xs text-blue-500 hover:text-blue-300 transition-colors"
+        className="mt-4 pt-4 border-t border-stone-200 w-full text-left text-xs text-blue-500 hover:text-blue-700 transition-colors"
       >
         + Book a session
       </button>
@@ -81,12 +81,12 @@ export default function AddSessionForm({ clientId, defaultDuration }: { clientId
           {[45, 60, 75, 90].map(d => <option key={d} value={d}>{d} min</option>)}
         </select>
       </div>
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-700">{error}</p>}
       <div className="flex gap-2">
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-4 py-2 bg-blue-500 text-black text-xs font-bold rounded-lg disabled:opacity-40 hover:bg-blue-500 transition-colors"
+          className="px-4 py-2 bg-blue-500 text-white text-xs font-bold rounded-lg disabled:opacity-40 hover:bg-blue-500 transition-colors"
         >
           {saving ? 'Saving...' : 'Confirm booking'}
         </button>

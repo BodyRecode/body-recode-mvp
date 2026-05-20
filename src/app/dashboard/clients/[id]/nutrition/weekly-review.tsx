@@ -3,8 +3,8 @@ import NutritionReviewCoachNotes from './review-coach-notes'
 
 const directionColour: Record<string, string> = {
   progress: 'text-green-400 bg-green-400/10 border-green-400/30',
-  hold: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
-  rebuild: 'text-red-400 bg-red-400/10 border-red-400/30',
+  hold: 'text-amber-700 bg-amber-50 border-amber-200',
+  rebuild: 'text-red-700 bg-red-50 border-red-200',
 }
 
 const directionLabel: Record<string, string> = {
@@ -88,7 +88,7 @@ export default async function NutritionWeeklyReview({
               <div className="space-y-1.5">
                 <div className="flex gap-2">
                   <span className="text-xs text-stone-400 w-36 shrink-0">Followed plan</span>
-                  <span className={`text-xs font-medium ${review.adherence_confirmed ? 'text-blue-500' : 'text-red-400'}`}>
+                  <span className={`text-xs font-medium ${review.adherence_confirmed ? 'text-blue-500' : 'text-red-700'}`}>
                     {review.adherence_confirmed ? 'Yes' : 'No'}
                   </span>
                 </div>

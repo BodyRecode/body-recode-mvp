@@ -136,8 +136,8 @@ function SortableStep({
             <GripVertical size={14} />
           </button>
 
-          {step.type === 'wait' && <Clock size={14} className="text-amber-400 shrink-0" />}
-          {step.type === 'condition' && <GitBranch size={14} className="text-violet-400 shrink-0" />}
+          {step.type === 'wait' && <Clock size={14} className="text-amber-700 shrink-0" />}
+          {step.type === 'condition' && <GitBranch size={14} className="text-violet-700 shrink-0" />}
           {step.type === 'action' && ActionIcon && <ActionIcon size={14} className="text-blue-500 shrink-0" />}
 
           <span className="text-sm font-medium text-[#1A1A1A] flex-1">
@@ -151,7 +151,7 @@ function SortableStep({
           <button onClick={() => setExpanded(e => !e)} className="text-stone-500 hover:text-stone-700 p-1">
             {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </button>
-          <button onClick={() => onDelete(step.id)} className="text-stone-400 hover:text-red-400 transition-colors p-1">
+          <button onClick={() => onDelete(step.id)} className="text-stone-400 hover:text-red-700 transition-colors p-1">
             <Trash2 size={13} />
           </button>
         </div>
@@ -173,7 +173,7 @@ function SortableStep({
                           onClick={() => onUpdate(step.id, { action_type: def.type, config: {} })}
                           className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs border transition-colors ${
                             step.action_type === def.type
-                              ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                              ? 'bg-blue-50 border-blue-300 text-blue-500'
                               : 'border-stone-300 text-stone-600 hover:border-stone-400 hover:text-[#1A1A1A]'
                           }`}
                         >
@@ -290,8 +290,8 @@ function AddStepButton({ onAdd }: { onAdd: (type: StepType) => void }) {
           <div className="absolute top-8 z-20 bg-stone-100 border border-stone-300 rounded-xl shadow-2xl overflow-hidden w-44">
             {[
               { type: 'action' as StepType, label: 'Action', icon: Zap, colour: 'text-blue-500' },
-              { type: 'wait' as StepType, label: 'Wait / Delay', icon: Clock, colour: 'text-amber-400' },
-              { type: 'condition' as StepType, label: 'Condition', icon: GitBranch, colour: 'text-violet-400' },
+              { type: 'wait' as StepType, label: 'Wait / Delay', icon: Clock, colour: 'text-amber-700' },
+              { type: 'condition' as StepType, label: 'Condition', icon: GitBranch, colour: 'text-violet-700' },
             ].map(opt => {
               const Icon = opt.icon
               return (
@@ -418,7 +418,7 @@ export default function WorkflowEditor({ initial }: Props) {
             onClick={() => setIsActive(a => !a)}
             className={`flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg border transition-colors ${
               isActive
-                ? 'bg-blue-500/10 border-blue-500/30 text-blue-500'
+                ? 'bg-blue-50 border-blue-200 text-blue-500'
                 : 'bg-stone-200 border-stone-300 text-stone-600'
             }`}
           >
@@ -441,7 +441,7 @@ export default function WorkflowEditor({ initial }: Props) {
         <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-2 ml-1">Trigger</p>
         {selectedTrigger && !showTriggerPicker ? (
           <div
-            className="bg-stone-100 border border-blue-500/30 rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-blue-500/60 transition-colors"
+            className="bg-stone-100 border border-blue-200 rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-blue-500/60 transition-colors"
             onClick={() => setShowTriggerPicker(true)}
           >
             <div>
@@ -462,7 +462,7 @@ export default function WorkflowEditor({ initial }: Props) {
                   onClick={() => { setTriggerType(trigger.value); setShowTriggerPicker(false) }}
                   className={`w-full text-left px-3 py-2.5 rounded-lg border transition-colors ${
                     triggerType === trigger.value
-                      ? 'bg-blue-500/10 border-blue-500/40'
+                      ? 'bg-blue-50 border-blue-300'
                       : 'border-stone-200 hover:border-stone-300 hover:bg-stone-200/50'
                   }`}
                 >

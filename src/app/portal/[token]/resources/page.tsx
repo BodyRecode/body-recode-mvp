@@ -90,7 +90,7 @@ export default async function ResourcesHubPage({ params }: { params: Promise<{ t
               <Link
                 key={card.href}
                 href={card.href}
-                className="group block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#1B6DFC]/5 transition-colors"
+                className="group block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] flex items-center justify-center shrink-0 mt-0.5">

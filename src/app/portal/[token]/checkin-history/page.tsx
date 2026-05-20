@@ -66,14 +66,14 @@ export default async function CheckinHistoryPage({ params }: { params: Promise<{
                       className="px-5 py-3 flex items-center justify-between hover:bg-[#E5E5E5]/40 transition-colors"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-7 h-7 rounded-full bg-[#1B6DFC]/10 border border-[#1B6DFC]/20 flex items-center justify-center shrink-0">
+                        <div className="w-7 h-7 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center shrink-0">
                           <svg className="w-3.5 h-3.5 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
                         <p className="text-sm text-[#1A1A1A] font-medium">Form {c.form_type}</p>
                         {feedbackSet.has(c.id) && (
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 rounded px-1.5 py-0.5">Coach response</span>
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] bg-blue-50 border border-blue-200 rounded px-1.5 py-0.5">Coach response</span>
                         )}
                       </div>
                       <p className="text-xs text-[#999999] ml-3 shrink-0">

@@ -30,12 +30,12 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 'teal' | 'violet' | 'amber' | 'orange' | 'stone' | 'blue' }) {
   const styles: Record<string, string> = {
-    teal:   'bg-blue-500/10 text-blue-500 border-blue-500/20',
-    violet: 'bg-violet-500/10 text-violet-400 border-violet-500/20',
-    amber:  'bg-amber-500/10 text-amber-400 border-amber-500/20',
+    teal:   'bg-blue-50 text-blue-500 border-blue-500/20',
+    violet: 'bg-violet-500/10 text-violet-700 border-violet-500/20',
+    amber:  'bg-amber-50 text-amber-700 border-amber-500/20',
     orange: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
     stone:  'bg-stone-500/10 text-stone-600 border-stone-500/20',
-    blue:   'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    blue:   'bg-blue-50 text-blue-700 border-blue-500/20',
   }
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${styles[color]}`}>
@@ -58,7 +58,7 @@ function PositioningTab() {
             { no: 'Not a tool tutorial' },
           ].map(s => (
             <div key={s.no} className="flex items-center gap-2 text-sm text-stone-600">
-              <span className="text-red-400">-</span> {s.no}
+              <span className="text-red-700">-</span> {s.no}
             </div>
           ))}
           <div className="flex items-start gap-2 text-sm text-stone-800 mt-3">
@@ -90,7 +90,7 @@ function PositioningTab() {
         <div className="mt-3 pt-3 border-t border-stone-200">
           <div className="flex items-center justify-between">
             <p className="text-xs text-stone-500">Website</p>
-            <code className="text-xs text-blue-500 bg-blue-500/10 px-2 py-1 rounded">aicofoundermethod.com</code>
+            <code className="text-xs text-blue-500 bg-blue-50 px-2 py-1 rounded">aicofoundermethod.com</code>
           </div>
         </div>
       </Card>
@@ -143,9 +143,9 @@ function FunnelTab() {
           {steps.map((s, i) => (
             <div key={s.step} className="flex items-start gap-4">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                s.color === 'violet' ? 'bg-violet-500/20 text-violet-400' :
-                s.color === 'teal'   ? 'bg-blue-500/20 text-blue-500' :
-                'bg-amber-500/20 text-amber-400'
+                s.color === 'violet' ? 'bg-violet-500/20 text-violet-700' :
+                s.color === 'teal'   ? 'bg-blue-100 text-blue-500' :
+                'bg-amber-100 text-amber-700'
               }`}>{s.step}</div>
               <div className="flex-1 pt-1">
                 <p className="text-sm font-medium text-[#1A1A1A]">{s.label}</p>
@@ -184,7 +184,7 @@ function FunnelTab() {
             { rule: 'HeyGen videos can serve all three channels with different scripts', allow: true },
           ].map(r => (
             <div key={r.rule} className="flex items-start gap-2 py-1.5 border-b border-stone-200/60 last:border-0">
-              <span className={`text-sm mt-0.5 shrink-0 ${r.allow ? 'text-blue-500' : 'text-red-400'}`}>
+              <span className={`text-sm mt-0.5 shrink-0 ${r.allow ? 'text-blue-500' : 'text-red-700'}`}>
                 {r.allow ? '+' : '-'}
               </span>
               <p className="text-sm text-stone-700">{r.rule}</p>
@@ -262,7 +262,7 @@ function ContentTab() {
 
       <Card>
         <SectionLabel>The Core Idea Behind All Content</SectionLabel>
-        <blockquote className="border-l-2 border-blue-500/40 pl-4 text-stone-700 text-sm leading-relaxed">
+        <blockquote className="border-l-2 border-blue-300 pl-4 text-stone-700 text-sm leading-relaxed">
           AI does not create value. It distributes structured value. If your thinking isn't structured, AI amplifies noise.
         </blockquote>
         <p className="mt-4 text-xs text-stone-500">
@@ -279,7 +279,7 @@ function AdsTab() {
       <Card>
         <SectionLabel>Ads Strategy - Phase 2</SectionLabel>
         <div className="p-3 bg-amber-500/5 border border-amber-500/20 rounded-lg mb-4">
-          <p className="text-xs text-amber-400">Once Body Recode ads are optimised, run a separate Meta campaign for AI Co-Founder Method.</p>
+          <p className="text-xs text-amber-700">Once Body Recode ads are optimised, run a separate Meta campaign for AI Co-Founder Method.</p>
         </div>
         <div className="space-y-3">
           {[

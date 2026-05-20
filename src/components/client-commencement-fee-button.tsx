@@ -109,7 +109,7 @@ export default function ClientCommencementFeeButton({
 
   return (
     <div className="space-y-2">
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-700">{error}</p>}
       <div className="flex items-center gap-2 flex-wrap">
         <button
           onClick={send}

@@ -27,9 +27,9 @@ interface Session {
 
 const directionColour: Record<string, string> = {
   progress: 'text-green-400 bg-green-400/10 border-green-400/30',
-  hold: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
-  rebuild: 'text-red-400 bg-red-400/10 border-red-400/30',
-  deload: 'text-blue-400 bg-blue-400/10 border-blue-400/30',
+  hold: 'text-amber-700 bg-amber-50 border-amber-200',
+  rebuild: 'text-red-700 bg-red-50 border-red-200',
+  deload: 'text-blue-700 bg-blue-50 border-blue-200',
 }
 
 const directionLabel: Record<string, string> = {
@@ -93,7 +93,7 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
             {/* Legacy client_note - shown only when no Program Reading has been published yet */}
             {!programReadingPublished && program.client_note && (
-              <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-2xl px-5 py-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4">
                 <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">About this block</p>
                 <p className="text-sm text-[#3A3A3A] leading-relaxed">{program.client_note}</p>
               </div>
@@ -177,7 +177,7 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
             <Link
               href={`/portal/${token}/program/log`}
-              className="block w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-black font-bold text-sm rounded-2xl text-center transition-colors mb-2"
+              className="block w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-2xl text-center transition-colors mb-2"
             >
               Log a session →
             </Link>

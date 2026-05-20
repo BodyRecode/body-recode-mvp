@@ -34,7 +34,7 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
         <div className="max-w-lg mx-auto px-6 py-12">
           <Link href={`/portal/${token}`} className="text-xs text-[#999999] hover:text-[#3A3A3A] transition-colors mb-8 inline-block">← Back to portal</Link>
           <div className="text-center mb-8">
-            <div className="w-14 h-14 bg-[#1B6DFC]/10 rounded-full flex items-center justify-center mx-auto mb-5">
+            <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-5">
               <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
@@ -124,7 +124,7 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
             { step: '3', title: 'Upload completed form', desc: 'Scan or photograph the completed form and upload it here.' },
           ].map(s => (
             <div key={s.step} className="flex items-start gap-4 bg-[#FFFFFF] rounded-xl p-4 border border-[#E5E5E5]">
-              <div className="w-7 h-7 rounded-full bg-[#1B6DFC] flex items-center justify-center flex-shrink-0 text-black text-xs font-bold">{s.step}</div>
+              <div className="w-7 h-7 rounded-full bg-[#1B6DFC] flex items-center justify-center flex-shrink-0 text-white text-xs font-bold">{s.step}</div>
               <div>
                 <p className="text-sm font-semibold text-[#1A1A1A] mb-0.5">{s.title}</p>
                 <p className="text-xs text-[#999999]">{s.desc}</p>

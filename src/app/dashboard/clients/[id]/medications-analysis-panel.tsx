@@ -155,7 +155,7 @@ export default function MedicationsAnalysisPanel({
               </span>
             )}
             {analysisStale && (
-              <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-300">
+              <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-700">
                 Rebuild recommended
               </span>
             )}
@@ -194,7 +194,7 @@ export default function MedicationsAnalysisPanel({
               ))
             )}
             {analysis.combined_picture && (
-              <div className="bg-[#FFFFFF] border border-blue-500/30 rounded-lg p-4">
+              <div className="bg-[#FFFFFF] border border-blue-200 rounded-lg p-4">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-blue-500 mb-1.5">Combined picture</p>
                 <p className="text-xs text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{analysis.combined_picture}</p>
               </div>
@@ -213,11 +213,11 @@ export default function MedicationsAnalysisPanel({
                   Generated {new Date(readingGeneratedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                 </span>
               )}
-              <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${readingPublishedAt ? 'bg-blue-500/10 border border-blue-500/30 text-blue-300' : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'}`}>
+              <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${readingPublishedAt ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
                 {readingPublishedAt ? 'Published' : 'Draft (not on portal)'}
               </span>
               {(readingStale || readingOutOfDateVsMeds) && (
-                <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-300">
+                <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-700">
                   Rebuild recommended
                 </span>
               )}
@@ -236,7 +236,7 @@ export default function MedicationsAnalysisPanel({
                   type="button"
                   onClick={togglePublish}
                   disabled={publishing}
-                  className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${readingPublishedAt ? 'border border-stone-300 text-stone-700 hover:border-stone-500' : 'bg-blue-500 text-black hover:bg-blue-500'}`}
+                  className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${readingPublishedAt ? 'border border-stone-300 text-stone-700 hover:border-stone-500' : 'bg-blue-500 text-white hover:bg-blue-500'}`}
                 >
                   {publishing ? 'Working…' : readingPublishedAt ? 'Unpublish' : 'Publish to portal'}
                 </button>
@@ -260,7 +260,7 @@ export default function MedicationsAnalysisPanel({
         </div>
       )}
 
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-700">{error}</p>}
       {status && <p className="text-xs text-blue-500">{status}</p>}
     </div>
   )

@@ -55,14 +55,14 @@ export default function RunBackfillButton() {
         type="button"
         onClick={run}
         disabled={pending}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#1A1A1A] bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500/15 hover:border-blue-500/50 rounded-lg transition-colors disabled:opacity-50"
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#1A1A1A] bg-blue-50 border border-blue-200 hover:bg-blue-500/15 hover:border-blue-500/50 rounded-lg transition-colors disabled:opacity-50"
       >
         <RefreshCw size={14} className={pending ? 'animate-spin' : ''} />
         {pending ? 'Running backfill…' : 'Run Stripe backfill'}
       </button>
 
       {error && (
-        <p className="text-xs text-red-400 mt-2">Error: {error}</p>
+        <p className="text-xs text-red-700 mt-2">Error: {error}</p>
       )}
 
       {result && (
@@ -90,7 +90,7 @@ export default function RunBackfillButton() {
           </p>
           {result.errors.length > 0 && (
             <div className="mt-2 pt-2 border-t border-stone-200">
-              <p className="text-amber-400 font-medium mb-1">Warnings:</p>
+              <p className="text-amber-700 font-medium mb-1">Warnings:</p>
               {result.errors.slice(0, 5).map((e, i) => (
                 <p key={i} className="text-stone-500 text-[11px]">• {e}</p>
               ))}

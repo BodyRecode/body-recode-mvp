@@ -165,7 +165,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
             {lead.converted_to_client_id && (
               <Link
                 href={`/dashboard/clients/${lead.converted_to_client_id}`}
-                className="flex items-center gap-1.5 text-xs text-blue-500 hover:text-blue-300 border border-blue-500/30 hover:border-blue-500/60 px-3 py-1.5 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 text-xs text-blue-500 hover:text-blue-700 border border-blue-200 hover:border-blue-500/60 px-3 py-1.5 rounded-lg transition-colors"
               >
                 <ArrowUpRight size={12} />
                 View Client Profile

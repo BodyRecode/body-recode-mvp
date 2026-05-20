@@ -94,12 +94,12 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
             Week <span className="text-[#1A1A1A]">{blockWeek}</span> of {program.week_duration}
           </span>
           {blockEndingSoon && (
-            <span className="bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full px-2.5 py-0.5">
+            <span className="bg-amber-50 border border-amber-200 text-amber-700 rounded-full px-2.5 py-0.5">
               Block ending in {daysLeft === 0 ? 'today' : `${daysLeft} day${daysLeft === 1 ? '' : 's'}`}
             </span>
           )}
           {blockEnded && (
-            <span className="bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full px-2.5 py-0.5">
+            <span className="bg-amber-50 border border-amber-200 text-amber-700 rounded-full px-2.5 py-0.5">
               Block complete · awaiting reassessment
             </span>
           )}
@@ -107,7 +107,7 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
 
         {/* Today's session callout */}
         {todaySessionIndex >= 0 && (
-          <div className="mb-6 bg-gradient-to-br from-blue-500/15 to-blue-500/5 border border-blue-500/30 rounded-2xl p-5">
+          <div className="mb-6 bg-gradient-to-br from-blue-500/15 to-blue-500/5 border border-blue-200 rounded-2xl p-5">
             <p className="text-[10px] text-blue-500 uppercase tracking-widest font-semibold mb-2">Today · {today}</p>
             <h2 className="text-xl font-bold text-[#1A1A1A] mb-1">{prescribedSessions[todaySessionIndex].day_label} · {prescribedSessions[todaySessionIndex].skeleton ?? 'Session'}</h2>
             <p className="text-sm text-[#6B6B6B] mb-4">
@@ -136,9 +136,9 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
                 key={idx}
                 className={`bg-[#FFFFFF] border rounded-2xl p-4 ${
                   completion?.status === 'completed'
-                    ? 'border-blue-500/40'
+                    ? 'border-blue-300'
                     : completion?.status === 'in_progress'
-                      ? 'border-amber-500/40'
+                      ? 'border-amber-300'
                       : isToday
                         ? 'border-blue-500/20'
                         : 'border-[#E5E5E5]'
@@ -153,7 +153,7 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
                     <span className="text-[10px] uppercase tracking-widest text-blue-500 shrink-0">Completed</span>
                   )}
                   {completion?.status === 'in_progress' && (
-                    <span className="text-[10px] uppercase tracking-widest text-amber-400 shrink-0">In progress</span>
+                    <span className="text-[10px] uppercase tracking-widest text-amber-700 shrink-0">In progress</span>
                   )}
                 </div>
                 <StartSessionButton

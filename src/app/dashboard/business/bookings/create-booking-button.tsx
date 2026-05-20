@@ -144,7 +144,7 @@ export default function CreateBookingButton() {
                       onClick={() => setForm(f => ({ ...f, type: opt.value }))}
                       className={`flex-1 text-xs font-medium py-2 rounded-lg border transition-colors ${
                         form.type === opt.value
-                          ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                          ? 'bg-blue-50 border-blue-300 text-blue-500'
                           : 'border-stone-300 text-stone-600 hover:border-stone-400 hover:text-[#1A1A1A]'
                       }`}
                     >

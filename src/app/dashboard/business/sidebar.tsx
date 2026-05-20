@@ -118,7 +118,7 @@ export default function BusinessSidebar() {
                     href={item.href}
                     className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
                       active
-                        ? 'bg-blue-500/10 text-blue-500 font-medium'
+                        ? 'bg-blue-50 text-blue-500 font-medium'
                         : 'text-stone-600 hover:text-[#1A1A1A] hover:bg-stone-200'
                     }`}
                   >

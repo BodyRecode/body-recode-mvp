@@ -11,7 +11,7 @@ interface Props {
 
 const options = [
   { value: 'completed', label: 'Completed', icon: CheckCircle2, colour: 'text-blue-500' },
-  { value: 'no_show', label: 'No Show', icon: AlertCircle, colour: 'text-red-400' },
+  { value: 'no_show', label: 'No Show', icon: AlertCircle, colour: 'text-red-700' },
   { value: 'cancelled', label: 'Cancel', icon: XCircle, colour: 'text-stone-600' },
 ]
 

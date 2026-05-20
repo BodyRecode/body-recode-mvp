@@ -138,7 +138,7 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
         ) : (
           <>
             {/* Fixed slots summary */}
-            <div className="rounded-2xl border border-[#1B6DFC]/20 bg-[#1B6DFC]/5 p-5 mb-8">
+            <div className="rounded-2xl border border-blue-200 bg-blue-50 p-5 mb-8">
               <p className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-3">Your fixed slots</p>
               <div className="space-y-1">
                 {(fixedSlots ?? []).map(slot => (
@@ -167,7 +167,7 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
                         <p className="text-xs text-[#999999] mt-0.5">{session.displayTime} · {session.durMin} min</p>
                       </div>
                       {session.confirmed ? (
-                        <span className="text-xs font-bold text-[#1B6DFC] bg-[#1B6DFC]/10 px-2.5 py-1 rounded-full">Confirmed</span>
+                        <span className="text-xs font-bold text-[#1B6DFC] bg-blue-50 px-2.5 py-1 rounded-full">Confirmed</span>
                       ) : (
                         <span className="text-xs text-[#999999]">Scheduled</span>
                       )}

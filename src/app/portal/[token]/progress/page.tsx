@@ -25,7 +25,7 @@ function diffColour(current: number | null, baseline: number | null, lowerIsBett
   const d = current - baseline
   if (d === 0) return 'text-[#999999]'
   const improved = lowerIsBetter ? d < 0 : d > 0
-  return improved ? 'text-[#1B6DFC]' : 'text-red-400'
+  return improved ? 'text-[#1B6DFC]' : 'text-red-700'
 }
 
 export default async function PortalProgressPage({ params }: { params: Promise<{ token: string }> }) {

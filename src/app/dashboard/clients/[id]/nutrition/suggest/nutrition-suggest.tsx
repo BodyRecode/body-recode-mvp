@@ -258,7 +258,7 @@ export default function NutritionPrescriptionSuggest({
   if (error) {
     return (
       <div className="bg-red-950/30 border border-red-800 rounded-xl p-5">
-        <p className="text-red-400 text-sm">{error}</p>
+        <p className="text-red-700 text-sm">{error}</p>
         <a href={`/dashboard/clients/${clientId}/nutrition/generate`} className="text-xs text-stone-500 hover:text-stone-700 mt-3 inline-block">
           Fill in manually instead →
         </a>
@@ -332,7 +332,7 @@ export default function NutritionPrescriptionSuggest({
               onClick={() => setEntryState(opt.value)}
               className={`text-left px-3 py-2 rounded-lg border text-xs transition-colors ${
                 entryState === opt.value
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700'
                   : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
@@ -360,7 +360,7 @@ export default function NutritionPrescriptionSuggest({
               onClick={() => setBodyState(opt)}
               className={`px-3 py-1.5 rounded-lg border text-xs capitalize transition-colors ${
                 bodyState === opt
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700'
                   : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
@@ -428,7 +428,7 @@ export default function NutritionPrescriptionSuggest({
               onClick={() => setCarbDemandLevel(opt)}
               className={`px-4 py-1.5 rounded-lg border text-xs capitalize transition-colors ${
                 carbDemandLevel === opt
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700'
                   : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
@@ -455,7 +455,7 @@ export default function NutritionPrescriptionSuggest({
               onClick={() => setMealFrequency(n)}
               className={`px-4 py-1.5 rounded-lg border text-xs transition-colors ${
                 mealFrequency === n
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700'
                   : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
@@ -482,7 +482,7 @@ export default function NutritionPrescriptionSuggest({
               onClick={() => setTrainingDaysPerWeek(n)}
               className={`px-3 py-1.5 rounded-lg border text-xs transition-colors ${
                 trainingDaysPerWeek === n
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700'
                   : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
@@ -509,7 +509,7 @@ export default function NutritionPrescriptionSuggest({
                   onClick={() => setter(opt)}
                   className={`px-3 py-1 rounded-lg border text-xs capitalize transition-colors ${
                     value === opt
-                      ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
                       : 'border-stone-300 text-stone-600 hover:border-stone-500'
                   }`}
                 >
@@ -545,7 +545,7 @@ export default function NutritionPrescriptionSuggest({
         <button
           onClick={handleGenerate}
           disabled={generating}
-          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-black font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {generating ? 'Generating plan...' : 'Approve & Generate Plan'}
         </button>
@@ -553,7 +553,7 @@ export default function NutritionPrescriptionSuggest({
 
       {error && (
         <div className="bg-red-950/30 border border-red-800 rounded-lg px-4 py-3">
-          <p className="text-red-400 text-sm">{error}</p>
+          <p className="text-red-700 text-sm">{error}</p>
         </div>
       )}
       </div>

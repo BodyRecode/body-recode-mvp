@@ -43,7 +43,7 @@ function ScaleInput({
 }) {
   return (
     <div className="py-1">
-      <p className={`text-[15px] font-medium mb-4 leading-snug ${hasError ? 'text-red-400' : 'text-white'}`}>{question.text}</p>
+      <p className={`text-[15px] font-medium mb-4 leading-snug ${hasError ? 'text-red-700' : 'text-white'}`}>{question.text}</p>
       <div className="flex gap-2">
         {[0, 1, 2, 3, 4].map(n => (
           <button
@@ -52,9 +52,9 @@ function ScaleInput({
             onClick={() => onChange(n)}
             className={`flex-1 py-3.5 rounded-2xl text-sm font-bold transition-all duration-150 ${
               value === n
-                ? 'bg-[#1B6DFC] text-black shadow-sm'
+                ? 'bg-[#1B6DFC] text-white shadow-sm'
                 : hasError
-                ? 'bg-stone-800 text-stone-400 border border-red-500/60'
+                ? 'bg-stone-800 text-stone-400 border border-red-400'
                 : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
             }`}
           >
@@ -85,8 +85,8 @@ function QuestionInput({
   onToggle: (opt: string) => void
   hasError: boolean
 }) {
-  const errorBorder = hasError ? 'border-red-500/60' : 'border-stone-700'
-  const errorText = hasError ? 'text-red-400' : 'text-white'
+  const errorBorder = hasError ? 'border-red-400' : 'border-stone-700'
+  const errorText = hasError ? 'text-red-700' : 'text-white'
 
   if (question.type === 'scale') {
     return (
@@ -159,9 +159,9 @@ function QuestionInput({
               onClick={() => onToggle(opt)}
               className={`text-[13px] font-medium px-4 py-2.5 rounded-2xl transition-all duration-150 ${
                 selected.includes(opt)
-                  ? 'bg-[#1B6DFC] text-black'
+                  ? 'bg-[#1B6DFC] text-white'
                   : hasError
-                  ? 'bg-stone-800 text-stone-400 border border-red-500/60'
+                  ? 'bg-stone-800 text-stone-400 border border-red-400'
                   : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
               }`}
             >
@@ -186,7 +186,7 @@ function QuestionInput({
             checked
               ? 'bg-[#1B6DFC]'
               : hasError
-              ? 'bg-stone-800 border border-red-500/60'
+              ? 'bg-stone-800 border border-red-400'
               : 'bg-stone-800 border border-stone-600'
           }`}
         >
@@ -196,7 +196,7 @@ function QuestionInput({
             </svg>
           )}
         </span>
-        <span className={`text-[14px] leading-relaxed ${hasError ? 'text-red-400' : 'text-stone-300'}`}>{question.text}</span>
+        <span className={`text-[14px] leading-relaxed ${hasError ? 'text-red-700' : 'text-stone-300'}`}>{question.text}</span>
       </button>
     )
   }
@@ -365,7 +365,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
           {portalToken && (
             <a
               href={`/portal/${portalToken}`}
-              className="inline-block px-6 py-3 bg-[#1B6DFC] hover:bg-teal-300 text-black font-bold text-sm rounded-2xl transition-colors"
+              className="inline-block px-6 py-3 bg-[#1B6DFC] hover:bg-teal-300 text-white font-bold text-sm rounded-2xl transition-colors"
             >
               Back to your portal
             </a>
@@ -412,8 +412,8 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
         {/* Validation message */}
         {validationMessage && (
           <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
-            <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
-            <p className="text-red-400/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
+            <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
+            <p className="text-red-700/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
           </div>
         )}
 
@@ -438,7 +438,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
                   hasError={hasError}
                 />
                 {hasError && (
-                  <p className="text-red-400 text-xs mt-2 font-medium">Please answer this question.</p>
+                  <p className="text-red-700 text-xs mt-2 font-medium">Please answer this question.</p>
                 )}
               </div>
             )
@@ -447,7 +447,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
 
         {error && (
           <div className="mt-6 bg-red-950/50 border border-red-800 rounded-2xl px-4 py-3">
-            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-red-700 text-sm">{error}</p>
           </div>
         )}
       </div>
@@ -470,7 +470,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
               type="button"
               onClick={handleSubmit}
               disabled={submitting}
-              className="flex-1 bg-[#1B6DFC] text-black text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-40 tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-white text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-40 tracking-tight"
             >
               {submitting ? 'Submitting…' : 'Submit intake'}
             </button>
@@ -478,7 +478,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
             <button
               type="button"
               onClick={handleContinue}
-              className="flex-1 bg-[#1B6DFC] text-black text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-white text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors tracking-tight"
             >
               Continue
             </button>

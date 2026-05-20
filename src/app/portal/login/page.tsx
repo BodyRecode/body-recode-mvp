@@ -30,7 +30,7 @@ export default async function PortalLoginPage({
         </div>
         {errorMessage && (
           <div className="mb-6 bg-red-950/30 border border-red-800 rounded-xl px-4 py-3">
-            <p className="text-sm text-red-400">{errorMessage}</p>
+            <p className="text-sm text-red-700">{errorMessage}</p>
           </div>
         )}
         <LoginForm redirect={redirectTo} />

@@ -26,7 +26,7 @@ export default function CancelSequenceButton({ leadId }: { leadId: string }) {
     <button
       onClick={handleClick}
       disabled={loading}
-      className="text-xs text-[#999999] hover:text-red-400 transition-colors disabled:opacity-50"
+      className="text-xs text-[#999999] hover:text-red-700 transition-colors disabled:opacity-50"
     >
       {loading ? 'Cancelling…' : 'Cancel follow-up sequence'}
     </button>

@@ -27,7 +27,7 @@ function QuestionInput({
   if (question.type === 'text') {
     return (
       <div>
-        <label className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-400' : 'text-white'}`}>{question.text}</label>
+        <label className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-700' : 'text-white'}`}>{question.text}</label>
         {question.helper && (
           <p className="text-[13px] text-stone-500 mb-3 leading-relaxed">{question.helper}</p>
         )}
@@ -36,7 +36,7 @@ function QuestionInput({
           onChange={e => onChange(e.target.value)}
           rows={4}
           placeholder="Your response..."
-          className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:border-stone-600 resize-none transition-colors border ${hasError ? 'border-red-500/60' : 'border-stone-800'}`}
+          className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:border-stone-600 resize-none transition-colors border ${hasError ? 'border-red-400' : 'border-stone-800'}`}
         />
       </div>
     )
@@ -45,7 +45,7 @@ function QuestionInput({
   if (question.type === 'choice') {
     return (
       <div>
-        <p className={`text-[15px] font-medium mb-3 leading-snug ${hasError ? 'text-red-400' : 'text-white'}`}>{question.text}</p>
+        <p className={`text-[15px] font-medium mb-3 leading-snug ${hasError ? 'text-red-700' : 'text-white'}`}>{question.text}</p>
         <div className="space-y-2">
           {question.options?.map(opt => (
             <button
@@ -56,7 +56,7 @@ function QuestionInput({
                 value === opt
                   ? 'bg-teal-500/10 border-teal-500 text-teal-300'
                   : hasError
-                  ? 'bg-stone-900 border-red-500/60 text-stone-300'
+                  ? 'bg-stone-900 border-red-400 text-stone-300'
                   : 'bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-600'
               }`}
             >
@@ -245,8 +245,8 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
         {/* Validation message */}
         {validationMessage && (
           <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
-            <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
-            <p className="text-red-400/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
+            <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
+            <p className="text-red-700/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
           </div>
         )}
 
@@ -270,7 +270,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
                   hasError={hasError}
                 />
                 {hasError && (
-                  <p className="text-red-400 text-xs mt-2 font-medium">Please answer this question.</p>
+                  <p className="text-red-700 text-xs mt-2 font-medium">Please answer this question.</p>
                 )}
               </div>
             )
@@ -279,7 +279,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
 
         {error && (
           <div className="mt-6 bg-red-950/50 border border-red-900 rounded-xl px-4 py-3">
-            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-red-700 text-sm">{error}</p>
           </div>
         )}
       </div>

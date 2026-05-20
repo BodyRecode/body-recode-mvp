@@ -42,7 +42,7 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
           {portalToken && (
             <a
               href={`/portal/${portalToken}`}
-              className="inline-block px-6 py-3 bg-[#1B6DFC] hover:bg-teal-300 text-black font-bold text-sm rounded-2xl transition-colors"
+              className="inline-block px-6 py-3 bg-[#1B6DFC] hover:bg-teal-300 text-white font-bold text-sm rounded-2xl transition-colors"
             >
               Back to your portal
             </a>

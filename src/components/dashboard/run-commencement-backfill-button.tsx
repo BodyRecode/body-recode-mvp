@@ -56,13 +56,13 @@ export default function RunCommencementBackfillButton() {
         type="button"
         onClick={run}
         disabled={pending}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#1A1A1A] bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500/15 hover:border-blue-500/50 rounded-lg transition-colors disabled:opacity-50"
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#1A1A1A] bg-blue-50 border border-blue-200 hover:bg-blue-500/15 hover:border-blue-500/50 rounded-lg transition-colors disabled:opacity-50"
       >
         <Wrench size={14} className={pending ? 'animate-pulse' : ''} />
         {pending ? 'Backfilling…' : 'Backfill commencement fees'}
       </button>
 
-      {error && <p className="text-xs text-red-400 mt-2">Error: {error}</p>}
+      {error && <p className="text-xs text-red-700 mt-2">Error: {error}</p>}
 
       {result && (
         <div className="mt-3 bg-stone-100 border border-stone-200 rounded-xl p-4 text-xs space-y-1.5">
@@ -78,7 +78,7 @@ export default function RunCommencementBackfillButton() {
             <span className="text-stone-500">Newly marked paid:</span> {result.newlyMarked}
             <span className="text-stone-500 ml-3">Already marked:</span> {result.alreadyMarked}
             {result.failed > 0 && (
-              <span className="text-amber-400 ml-3">Failed: {result.failed}</span>
+              <span className="text-amber-700 ml-3">Failed: {result.failed}</span>
             )}
           </p>
         </div>

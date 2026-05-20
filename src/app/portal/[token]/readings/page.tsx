@@ -55,10 +55,10 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
                 per archived/active CFFS pair, so this list grows as reassessments occur. */}
             <Link
               href={`/portal/${token}/foundational-reading`}
-              className="group block rounded-2xl border border-[#1B6DFC]/30 bg-[#1B6DFC]/5 p-5 hover:border-[#1B6DFC]/50 transition-colors"
+              className="group block rounded-2xl border border-blue-200 bg-blue-50 p-5 hover:border-[#1B6DFC]/50 transition-colors"
             >
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-[#FFFFFF] border border-[#1B6DFC]/30 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-10 h-10 rounded-xl bg-[#FFFFFF] border border-blue-200 flex items-center justify-center shrink-0 mt-0.5">
                   <FileText size={16} className="text-[#1B6DFC]" />
                 </div>
                 <div className="flex-1 min-w-0">

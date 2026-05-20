@@ -149,7 +149,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
             return (
               <div key={q.id} id={`q-${q.id}`}>
                 <label
-                  className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-400' : 'text-white'}`}
+                  className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-700' : 'text-white'}`}
                 >
                   {q.label}
                   {q.required && <span className="text-[#1B6DFC] ml-1">*</span>}
@@ -171,7 +171,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
 
         {/* Errors */}
         {error && (
-          <div className="mt-6 px-4 py-3 rounded-xl border border-red-500/30 bg-red-500/5 text-red-400 text-sm">
+          <div className="mt-6 px-4 py-3 rounded-xl border border-red-200 bg-red-500/5 text-red-700 text-sm">
             {error}
           </div>
         )}
@@ -181,7 +181,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
           <button
             onClick={submit}
             disabled={submitting}
-            className="px-8 py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-black font-bold text-sm rounded-xl transition-colors disabled:opacity-50"
+            className="px-8 py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-xl transition-colors disabled:opacity-50"
           >
             {submitting ? 'Submitting…' : 'Submit follow-up'}
           </button>

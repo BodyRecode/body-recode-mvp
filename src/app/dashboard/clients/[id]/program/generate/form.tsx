@@ -165,7 +165,7 @@ export default function GenerateProgramForm({
       </div>
 
       {planBlock && (
-        <div className="mb-6 bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-xl p-4">
+        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
           <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">From Macro Plan</p>
           <p className="text-sm text-stone-800">{planBlock.block_name}</p>
           <div className="flex flex-wrap gap-2 mt-1.5 text-xs text-stone-500">
@@ -262,7 +262,7 @@ export default function GenerateProgramForm({
               <span className="ml-2 text-[#1B6DFC] normal-case font-normal">
                 {trainingDays.length} available
                 {trainingDays.length < form.training_frequency && (
-                  <span className="text-amber-400 ml-1">- need at least {form.training_frequency}</span>
+                  <span className="text-amber-700 ml-1">- need at least {form.training_frequency}</span>
                 )}
               </span>
             )}
@@ -396,7 +396,7 @@ export default function GenerateProgramForm({
         </div>
 
         {error && (
-          <p className="text-sm text-red-400 bg-red-950/50 border border-red-800 rounded-md px-3 py-2">
+          <p className="text-sm text-red-700 bg-red-950/50 border border-red-800 rounded-md px-3 py-2">
             {error}
           </p>
         )}

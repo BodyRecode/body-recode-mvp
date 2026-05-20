@@ -149,8 +149,8 @@ export default function PackageManager({
                 disabled={saving}
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
-                    ? 'bg-amber-500/10 border-amber-500/40 text-amber-300'
-                    : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-amber-500/40 hover:text-amber-300'
+                    ? 'bg-amber-50 border-amber-300 text-amber-700'
+                    : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-amber-300 hover:text-amber-700'
                 }`}
               >
                 {p.label}
@@ -194,13 +194,13 @@ export default function PackageManager({
           {/* Scheduled send indicator */}
           {isScheduled && (
             <div className="flex items-center gap-3 text-xs">
-              <span className="text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded-full">
+              <span className="text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
                 Subscription link scheduled for {scheduledDate}
               </span>
               <button
                 onClick={cancelSchedule}
                 disabled={cancelling}
-                className="text-[#999999] hover:text-red-400 transition-colors"
+                className="text-[#999999] hover:text-red-700 transition-colors"
               >
                 {cancelling ? 'Cancelling...' : 'Cancel'}
               </button>
@@ -214,13 +214,13 @@ export default function PackageManager({
             </div>
           )}
 
-          {scheduleSaved && <p className="text-xs text-amber-400">Send scheduled</p>}
+          {scheduleSaved && <p className="text-xs text-amber-700">Send scheduled</p>}
 
           <div className="flex items-center gap-3 flex-wrap">
             <button
               onClick={sendLink}
               disabled={sending || sent}
-              className="text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-black rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+              className="text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
             >
               {sending ? 'Sending...' : sent ? 'Sent!' : 'Send to Client'}
             </button>
@@ -233,7 +233,7 @@ export default function PackageManager({
             {!isScheduled && (
               <button
                 onClick={() => setShowSchedule(v => !v)}
-                className="text-xs font-bold px-4 py-2 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-amber-500/40 hover:text-amber-300 transition-colors"
+                className="text-xs font-bold px-4 py-2 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-amber-300 hover:text-amber-700 transition-colors"
               >
                 Schedule Send
               </button>
@@ -252,7 +252,7 @@ export default function PackageManager({
               <button
                 onClick={scheduleLink}
                 disabled={scheduling || !scheduleDate}
-                className="text-xs font-bold px-3 py-1.5 bg-amber-500/20 border border-amber-500/30 text-amber-300 rounded-lg hover:bg-amber-500/30 transition-colors disabled:opacity-50"
+                className="text-xs font-bold px-3 py-1.5 bg-amber-100 border border-amber-200 text-amber-700 rounded-lg hover:bg-amber-500/30 transition-colors disabled:opacity-50"
               >
                 {scheduling ? 'Saving...' : 'Confirm'}
               </button>

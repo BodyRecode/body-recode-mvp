@@ -104,7 +104,7 @@ export default function LoginForm({ redirect }: { redirect: string }) {
     return (
       <form onSubmit={verifyCode} className="space-y-4">
         <div className="text-center mb-2">
-          <div className="w-14 h-14 rounded-full bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 flex items-center justify-center mx-auto mb-5">
+          <div className="w-14 h-14 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center mx-auto mb-5">
             <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
@@ -131,14 +131,14 @@ export default function LoginForm({ redirect }: { redirect: string }) {
 
         {error && (
           <div className="bg-red-950/30 border border-red-800 rounded-xl px-4 py-3">
-            <p className="text-sm text-red-400">{error}</p>
+            <p className="text-sm text-red-700">{error}</p>
           </div>
         )}
 
         <button
           type="submit"
           disabled={submitting || code.length !== 6}
-          className="w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] disabled:bg-[#E5E5E5] disabled:text-[#999999] text-black font-bold text-sm rounded-2xl transition-colors"
+          className="w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] disabled:bg-[#E5E5E5] disabled:text-[#999999] text-white font-bold text-sm rounded-2xl transition-colors"
         >
           {submitting ? 'Signing in...' : 'Sign in'}
         </button>
@@ -170,14 +170,14 @@ export default function LoginForm({ redirect }: { redirect: string }) {
 
       {error && (
         <div className="bg-red-950/30 border border-red-800 rounded-xl px-4 py-3">
-          <p className="text-sm text-red-400">{error}</p>
+          <p className="text-sm text-red-700">{error}</p>
         </div>
       )}
 
       <button
         type="submit"
         disabled={submitting || !email.trim()}
-        className="w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] disabled:bg-[#E5E5E5] disabled:text-[#999999] text-black font-bold text-sm rounded-2xl transition-colors"
+        className="w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] disabled:bg-[#E5E5E5] disabled:text-[#999999] text-white font-bold text-sm rounded-2xl transition-colors"
       >
         {submitting ? 'Sending...' : 'Send sign-in code'}
       </button>

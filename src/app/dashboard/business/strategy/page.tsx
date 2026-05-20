@@ -27,7 +27,7 @@ type Platform = 'instagram' | 'facebook' | 'linkedin'
 
 const PLATFORM_STYLES: Record<Platform, { label: string; badge: string }> = {
   instagram: { label: 'Instagram', badge: 'bg-pink-500/15 text-pink-400 border-pink-500/25' },
-  facebook:  { label: 'Facebook',  badge: 'bg-blue-500/15 text-blue-400 border-blue-500/25' },
+  facebook:  { label: 'Facebook',  badge: 'bg-blue-500/15 text-blue-700 border-blue-500/25' },
   linkedin:  { label: 'LinkedIn',  badge: 'bg-sky-500/15 text-sky-400 border-sky-500/25' },
 }
 
@@ -65,10 +65,10 @@ function isAicmPost(p: { title?: string; notes?: string }): boolean {
 const AICM_BADGE_CLASS = 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30'
 
 const BRAND_STYLES: Record<Brand, { label: string; handle: string; dot: string; filter: string }> = {
-  body_recode:    { label: 'Body Recode',    handle: 'body_recode_',       dot: 'bg-blue-500',   filter: 'bg-blue-500/10 text-blue-500 border-blue-500/30' },
-  personal_brand: { label: 'Personal Brand', handle: 'kade_dunstone_',     dot: 'bg-violet-400', filter: 'bg-violet-500/10 text-violet-400 border-violet-500/30' },
-  ai_cofounder:   { label: 'AI Co-Founder',  handle: 'aicofoundermethod.com', dot: 'bg-amber-400',  filter: 'bg-amber-500/10 text-amber-400 border-amber-500/30' },
-  studio_of_ten:  { label: 'Studio of Ten',  handle: 'studiooften.com',    dot: 'bg-blue-400',   filter: 'bg-blue-500/10 text-blue-400 border-blue-500/30' },
+  body_recode:    { label: 'Body Recode',    handle: 'body_recode_',       dot: 'bg-blue-500',   filter: 'bg-blue-50 text-blue-500 border-blue-200' },
+  personal_brand: { label: 'Personal Brand', handle: 'kade_dunstone_',     dot: 'bg-violet-400', filter: 'bg-violet-500/10 text-violet-700 border-violet-500/30' },
+  ai_cofounder:   { label: 'AI Co-Founder',  handle: 'aicofoundermethod.com', dot: 'bg-amber-400',  filter: 'bg-amber-50 text-amber-700 border-amber-200' },
+  studio_of_ten:  { label: 'Studio of Ten',  handle: 'studiooften.com',    dot: 'bg-blue-400',   filter: 'bg-blue-50 text-blue-700 border-blue-200' },
 }
 
 const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: string; border: string }> = {
@@ -85,8 +85,8 @@ const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: str
 
 const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
   prelaunch: { label: 'Pre-Launch',    color: 'text-stone-600' },
-  ads:       { label: 'Ads Launch',    color: 'text-blue-400' },
-  optimise:  { label: 'Optimise',      color: 'text-amber-400' },
+  ads:       { label: 'Ads Launch',    color: 'text-blue-700' },
+  optimise:  { label: 'Optimise',      color: 'text-amber-700' },
   scale:     { label: 'Scale',         color: 'text-blue-500' },
 }
 
@@ -216,8 +216,8 @@ function ContentCalendar() {
 
   const platformChipStyles: Record<Platform, { label: string; dot: string; filter: string }> = {
     instagram: { label: 'Instagram', dot: 'bg-pink-400',   filter: 'bg-pink-500/10 text-pink-400 border-pink-500/30' },
-    facebook:  { label: 'Facebook',  dot: 'bg-blue-500',   filter: 'bg-blue-500/10 text-blue-400 border-blue-500/30' },
-    linkedin:  { label: 'LinkedIn',  dot: 'bg-blue-300',   filter: 'bg-blue-400/10 text-blue-300 border-blue-400/30' },
+    facebook:  { label: 'Facebook',  dot: 'bg-blue-500',   filter: 'bg-blue-50 text-blue-700 border-blue-200' },
+    linkedin:  { label: 'LinkedIn',  dot: 'bg-blue-300',   filter: 'bg-blue-50 text-blue-700 border-blue-200' },
   }
 
   return (
@@ -358,7 +358,7 @@ function ContentCalendar() {
             </p>
             <button
               onClick={() => { setForm({ type: 'authority', phase: 'prelaunch', brand: brandFilter !== 'all' ? brandFilter : 'body_recode', platform: 'instagram', date: selected, time: POST_TYPE_DEFAULT_TIMES['authority'] }); setEditId(null); setShowForm(true) }}
-              className="text-xs text-blue-500 hover:text-blue-300 transition-colors font-medium"
+              className="text-xs text-blue-500 hover:text-blue-700 transition-colors font-medium"
             >
               + Add post
             </button>
@@ -382,16 +382,16 @@ function ContentCalendar() {
                       </div>
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-[#1A1A1A]">{p.title}</p>
-                        <span className="text-xs font-semibold text-blue-500 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full shrink-0">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type]}</span>
+                        <span className="text-xs font-semibold text-blue-500 bg-blue-50 border border-blue-500/20 px-2 py-0.5 rounded-full shrink-0">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type]}</span>
                       </div>
                       {p.caption && <p className="text-xs text-stone-600 mt-1 line-clamp-2">{p.caption}</p>}
                     </div>
                     <div className="flex items-center gap-1 shrink-0" onClick={e => e.stopPropagation()}>
-                      <button onClick={() => toggleScheduled(p)} className={`text-xs transition-colors px-2 py-1 rounded border font-medium ${p.scheduled ? 'bg-blue-500/15 text-blue-500 border-blue-500/40' : 'text-stone-500 border-stone-300 hover:text-blue-500 hover:border-blue-500/30'}`} title={p.scheduled ? 'Mark as unscheduled' : 'Mark as scheduled'}>
+                      <button onClick={() => toggleScheduled(p)} className={`text-xs transition-colors px-2 py-1 rounded border font-medium ${p.scheduled ? 'bg-blue-500/15 text-blue-500 border-blue-300' : 'text-stone-500 border-stone-300 hover:text-blue-500 hover:border-blue-200'}`} title={p.scheduled ? 'Mark as unscheduled' : 'Mark as scheduled'}>
                         {p.scheduled ? '✓ Scheduled' : 'Schedule'}
                       </button>
                       <button onClick={() => startEdit(p)} className="text-xs text-stone-500 hover:text-stone-700 transition-colors px-2 py-1">Edit</button>
-                      <button onClick={() => deletePost(p.id)} className="text-xs text-stone-500 hover:text-red-400 transition-colors px-2 py-1">Delete</button>
+                      <button onClick={() => deletePost(p.id)} className="text-xs text-stone-500 hover:text-red-700 transition-colors px-2 py-1">Delete</button>
                     </div>
                   </div>
                 )
@@ -421,7 +421,7 @@ function ContentCalendar() {
                   <span className={`text-xs font-medium ${ph.color}`}>{ph.label}</span>
                   {(() => { const pl = PLATFORM_STYLES[(activePost.platform ?? 'instagram') as Platform]; return <span className={`text-xs px-2 py-0.5 rounded border font-medium ${pl.badge}`}>{pl.label}</span> })()}
                   <span className="text-xs text-stone-400">{dateLabel}</span>
-                  <span className="text-xs font-semibold text-blue-500 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full">{activePost.time ?? POST_TYPE_DEFAULT_TIMES[activePost.type]}</span>
+                  <span className="text-xs font-semibold text-blue-500 bg-blue-50 border border-blue-500/20 px-2 py-0.5 rounded-full">{activePost.time ?? POST_TYPE_DEFAULT_TIMES[activePost.type]}</span>
                 </div>
                 <p className="text-base font-semibold text-[#1A1A1A]">{activePost.title}</p>
               </div>
@@ -518,7 +518,7 @@ function ContentCalendar() {
                           const full = [activePost.caption, activePost.notes].filter(Boolean).join('\n\n')
                           navigator.clipboard.writeText(full)
                         }}
-                        className="text-xs text-blue-500 hover:text-blue-300 transition-colors font-medium"
+                        className="text-xs text-blue-500 hover:text-blue-700 transition-colors font-medium"
                       >Copy all</button>
                     </div>
                     <p className="text-sm text-stone-800 leading-relaxed whitespace-pre-line">{activePost.caption}</p>
@@ -531,7 +531,7 @@ function ContentCalendar() {
                     <p className="text-sm text-stone-400 mb-1">No caption written yet.</p>
                     <button
                       onClick={() => { setActivePost(null); startEdit(activePost) }}
-                      className="text-xs text-blue-500 hover:text-blue-300 transition-colors"
+                      className="text-xs text-blue-500 hover:text-blue-700 transition-colors"
                     >Add caption →</button>
                   </div>
                 )}
@@ -664,10 +664,10 @@ function Body({ children, className }: { children: React.ReactNode; className?: 
 
 function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 'teal' | 'amber' | 'red' | 'violet' | 'stone' }) {
   const colors = {
-    teal: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-    amber: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-    red: 'bg-red-500/10 text-red-400 border-red-500/20',
-    violet: 'bg-violet-500/10 text-violet-400 border-violet-500/20',
+    teal: 'bg-blue-50 text-blue-500 border-blue-500/20',
+    amber: 'bg-amber-50 text-amber-700 border-amber-500/20',
+    red: 'bg-red-50 text-red-700 border-red-500/20',
+    violet: 'bg-violet-500/10 text-violet-700 border-violet-500/20',
     stone: 'bg-stone-200 text-stone-600 border-stone-300',
   }
   return (
@@ -694,7 +694,7 @@ function ScriptBlock({ number, angle, hook, script, duration }: { number: number
     <Card>
       <div className="flex items-start justify-between gap-4 mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-500 shrink-0">{number}</div>
+          <div className="w-7 h-7 rounded-full bg-blue-50 border border-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-500 shrink-0">{number}</div>
           <div>
             <p className="text-sm font-semibold text-[#1A1A1A]">{angle}</p>
             <p className="text-xs text-stone-500 mt-0.5 italic">&ldquo;{hook}&rdquo;</p>
@@ -702,7 +702,7 @@ function ScriptBlock({ number, angle, hook, script, duration }: { number: number
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <Tag color="stone">{duration}</Tag>
-          <button onClick={() => setExpanded(e => !e)} className="text-xs text-blue-500 hover:text-blue-300 transition-colors font-medium">
+          <button onClick={() => setExpanded(e => !e)} className="text-xs text-blue-500 hover:text-blue-700 transition-colors font-medium">
             {expanded ? 'Hide' : 'View script'}
           </button>
         </div>
@@ -733,7 +733,7 @@ function PostBlock({ number, title, day, format, graphic, caption, hashtags }: {
             </div>
           </div>
         </div>
-        <button onClick={() => setExpanded(e => !e)} className="text-xs text-blue-500 hover:text-blue-300 transition-colors font-medium shrink-0">
+        <button onClick={() => setExpanded(e => !e)} className="text-xs text-blue-500 hover:text-blue-700 transition-colors font-medium shrink-0">
           {expanded ? 'Hide' : 'View copy'}
         </button>
       </div>
@@ -765,9 +765,9 @@ const POST_STATUS_CYCLE: PostStatus[] = ['not_started', 'drafted', 'scheduled', 
 
 const POST_STATUS_CONFIG: Record<PostStatus, { label: string; color: string; bg: string; border: string }> = {
   not_started: { label: 'Not Started', color: 'text-stone-500',  bg: 'bg-stone-200/50',    border: 'border-stone-300' },
-  drafted:     { label: 'Drafted',     color: 'text-amber-400',  bg: 'bg-amber-400/10',    border: 'border-amber-400/30' },
-  scheduled:   { label: 'Scheduled',   color: 'text-blue-400',   bg: 'bg-blue-400/10',     border: 'border-blue-400/30' },
-  published:   { label: 'Published',   color: 'text-blue-500',   bg: 'bg-blue-500/10',     border: 'border-blue-500/30' },
+  drafted:     { label: 'Drafted',     color: 'text-amber-700',  bg: 'bg-amber-50',    border: 'border-amber-200' },
+  scheduled:   { label: 'Scheduled',   color: 'text-blue-700',   bg: 'bg-blue-50',     border: 'border-blue-200' },
+  published:   { label: 'Published',   color: 'text-blue-500',   bg: 'bg-blue-50',     border: 'border-blue-200' },
 }
 
 const PRELAUNCH_POSTS = [
@@ -884,10 +884,10 @@ export default function StrategyPage() {
               <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
                 {[
                   { label: 'Attraction', value: 'Scorecard', note: 'Free', color: 'text-stone-700' },
-                  { label: 'Upsell', value: '$37 Report', note: 'Immediate', color: 'text-amber-400' },
+                  { label: 'Upsell', value: '$37 Report', note: 'Immediate', color: 'text-amber-700' },
                   { label: 'Commencement', value: '$240 Fee', note: 'On conversion', color: 'text-blue-500' },
                   { label: 'Continuity', value: '$299–$409/wk', note: 'Recurring', color: 'text-blue-500' },
-                  { label: 'Downsell', value: '$97 Program', note: 'Zoom 1 decline', color: 'text-violet-400' },
+                  { label: 'Downsell', value: '$97 Program', note: 'Zoom 1 decline', color: 'text-violet-700' },
                 ].map(item => (
                   <div key={item.label} className="bg-stone-200/50 border border-stone-300 rounded-lg px-3 py-2.5 text-center">
                     <p className="text-xs text-stone-500 mb-1">{item.label}</p>
@@ -1011,8 +1011,8 @@ export default function StrategyPage() {
               ))}
             </div>
             <div className="mt-4 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
-              <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">LinkedIn channel</p>
-              <p className="text-xs text-stone-700 leading-relaxed">The same intellectual territory drives LinkedIn content through 4 reframed pillars: <strong className="text-[#1A1A1A]">State over Discipline</strong>, <strong className="text-[#1A1A1A]">The Effort Trap</strong>, <strong className="text-[#1A1A1A]">Physiology and Decision-Making</strong>, <strong className="text-[#1A1A1A]">Interpretation over Prescription</strong>. Same physiology, executive vocabulary. See the <strong className="text-blue-400">LinkedIn tab</strong> for the full breakdown.</p>
+              <p className="text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">LinkedIn channel</p>
+              <p className="text-xs text-stone-700 leading-relaxed">The same intellectual territory drives LinkedIn content through 4 reframed pillars: <strong className="text-[#1A1A1A]">State over Discipline</strong>, <strong className="text-[#1A1A1A]">The Effort Trap</strong>, <strong className="text-[#1A1A1A]">Physiology and Decision-Making</strong>, <strong className="text-[#1A1A1A]">Interpretation over Prescription</strong>. Same physiology, executive vocabulary. See the <strong className="text-blue-700">LinkedIn tab</strong> for the full breakdown.</p>
             </div>
           </Card>
 
@@ -1092,7 +1092,7 @@ export default function StrategyPage() {
         <div className="space-y-4">
           <Card className="border-pink-500/30 bg-pink-500/5">
             <SectionLabel>Instagram Content System</SectionLabel>
-            <p className="text-sm text-stone-700 leading-relaxed">Everything in this tab is the <strong className="text-[#1A1A1A]">Instagram</strong> content system - temperature ladder, weekly cadence, post types, production tools. LinkedIn runs a different cadence (1-2/wk vs 5/wk), different format (short essays, no carousels), and different tone (executive reframe, no fat-loss language). See the <strong className="text-blue-400">LinkedIn tab</strong> for that system.</p>
+            <p className="text-sm text-stone-700 leading-relaxed">Everything in this tab is the <strong className="text-[#1A1A1A]">Instagram</strong> content system - temperature ladder, weekly cadence, post types, production tools. LinkedIn runs a different cadence (1-2/wk vs 5/wk), different format (short essays, no carousels), and different tone (executive reframe, no fat-loss language). See the <strong className="text-blue-700">LinkedIn tab</strong> for that system.</p>
           </Card>
 
           <Card>
@@ -1100,9 +1100,9 @@ export default function StrategyPage() {
             <Body className="mb-4">Every post targets one temperature level. Cold content moves people from unaware to problem aware. Warm content moves them from problem aware to solution aware. Hot content pushes them to act. The ratio should be roughly 60% cold, 30% warm, 10% hot.</Body>
             <div className="space-y-2">
               {[
-                { temp: 'Cold', colour: 'text-blue-400', bg: 'bg-blue-400/5 border-blue-400/20', ratio: '~60% of posts', desc: 'Unaware → Problem aware. Education and pattern recognition. No CTA or soft "does this sound familiar?" Never ask for action.', types: 'Authority, Pattern Recognition, Coach Perspective' },
-                { temp: 'Warm', colour: 'text-amber-400', bg: 'bg-amber-400/5 border-amber-400/20', ratio: '~30% of posts', desc: 'Problem aware → Solution aware. Introduce the system. "There is a reason for this and it can be read." Soft CTA - link in bio.', types: 'Coach Perspective, Diagnostic (soft)' },
-                { temp: 'Hot', colour: 'text-red-400', bg: 'bg-red-400/5 border-red-400/20', ratio: '~10% of posts', desc: 'Solution aware → Ready to act. Direct CTA. "Take the scorecard. 2 minutes. Free. Find out your state." One job: get them to the scorecard.', types: 'Diagnostic / Funnel' },
+                { temp: 'Cold', colour: 'text-blue-700', bg: 'bg-blue-400/5 border-blue-400/20', ratio: '~60% of posts', desc: 'Unaware → Problem aware. Education and pattern recognition. No CTA or soft "does this sound familiar?" Never ask for action.', types: 'Authority, Pattern Recognition, Coach Perspective' },
+                { temp: 'Warm', colour: 'text-amber-700', bg: 'bg-amber-400/5 border-amber-200', ratio: '~30% of posts', desc: 'Problem aware → Solution aware. Introduce the system. "There is a reason for this and it can be read." Soft CTA - link in bio.', types: 'Coach Perspective, Diagnostic (soft)' },
+                { temp: 'Hot', colour: 'text-red-700', bg: 'bg-red-400/5 border-red-200', ratio: '~10% of posts', desc: 'Solution aware → Ready to act. Direct CTA. "Take the scorecard. 2 minutes. Free. Find out your state." One job: get them to the scorecard.', types: 'Diagnostic / Funnel' },
               ].map(row => (
                 <div key={row.temp} className={`p-3 rounded-lg border ${row.bg}`}>
                   <div className="flex items-center justify-between mb-1">
@@ -1133,7 +1133,7 @@ export default function StrategyPage() {
                 <div key={row.day} className="grid grid-cols-5 gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200 text-xs">
                   <div><p className="text-stone-400 mb-0.5">Day</p><p className="font-semibold text-[#1A1A1A]">{row.day}</p></div>
                   <div><p className="text-stone-400 mb-0.5">Type</p><p className="font-medium text-blue-500">{row.type}</p></div>
-                  <div><p className="text-stone-400 mb-0.5">Temp</p><p className={row.temp === 'Hot' ? 'text-red-400' : row.temp === 'Warm' ? 'text-amber-400' : 'text-blue-400'}>{row.temp}</p></div>
+                  <div><p className="text-stone-400 mb-0.5">Temp</p><p className={row.temp === 'Hot' ? 'text-red-700' : row.temp === 'Warm' ? 'text-amber-700' : 'text-blue-700'}>{row.temp}</p></div>
                   <div><p className="text-stone-400 mb-0.5">Format</p><p className="text-stone-600">{row.format}</p></div>
                   <div><p className="text-stone-400 mb-0.5">CTA</p><p className="text-stone-600">{row.cta}</p></div>
                 </div>
@@ -1147,7 +1147,7 @@ export default function StrategyPage() {
               day: 'Monday',
               color: 'teal' as const,
               temp: 'Cold',
-              tempColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+              tempColor: 'text-blue-700 bg-blue-50 border-blue-400/20',
               tempDesc: 'Unaware → Problem aware',
               goal: 'Position Body Recode as a different philosophy from the fitness industry. Make people think: "This coach understands the body differently." No CTA - plant the idea.',
               topics: [
@@ -1167,7 +1167,7 @@ export default function StrategyPage() {
               day: 'Wednesday',
               color: 'amber' as const,
               temp: 'Cold',
-              tempColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+              tempColor: 'text-blue-700 bg-blue-50 border-blue-400/20',
               tempDesc: 'Unaware → Problem aware',
               goal: 'Show people the patterns they are already stuck in. They read it and think: "That\'s exactly me." Recognition creates engagement. Soft CTA at most - "does this sound familiar?"',
               topics: [
@@ -1187,7 +1187,7 @@ export default function StrategyPage() {
               day: 'Friday',
               color: 'violet' as const,
               temp: 'Warm',
-              tempColor: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
+              tempColor: 'text-amber-700 bg-amber-50 border-amber-200',
               tempDesc: 'Problem aware → Solution aware',
               goal: 'Build personal authority and trust. Introduce the system through experience-based storytelling. People buy the person guiding the system. Soft CTA - link in bio.',
               topics: [
@@ -1206,7 +1206,7 @@ export default function StrategyPage() {
               day: 'Tuesday (5th post)',
               color: 'amber' as const,
               temp: 'Cold / Warm',
-              tempColor: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+              tempColor: 'text-blue-700 bg-blue-50 border-blue-400/20',
               tempDesc: 'Unaware → Problem aware (challenges existing belief)',
               goal: 'Challenge the standard fitness narrative. Make people question what they\'ve been told. Highest share potential. No direct CTA - let the idea do the work.',
               topics: [
@@ -1224,7 +1224,7 @@ export default function StrategyPage() {
               day: 'Sunday',
               color: 'red' as const,
               temp: 'Hot',
-              tempColor: 'text-red-400 bg-red-400/10 border-red-400/20',
+              tempColor: 'text-red-700 bg-red-50 border-red-200',
               tempDesc: 'Solution aware → Ready to act',
               goal: 'Drive people to the scorecard. One job: get them to take it. This is the conversion post. Hard CTA - link in bio.',
               topics: [
@@ -1316,7 +1316,7 @@ export default function StrategyPage() {
                           <p className="text-stone-700 text-xs font-medium">{p.date}</p>
                           <p className="text-stone-400 text-xs">{p.day}</p>
                         </div>
-                        <span className={`text-xs font-bold px-1.5 py-0.5 rounded border shrink-0 ${p.temp === 'Hot' ? 'text-red-400 bg-red-400/10 border-red-400/20' : 'text-blue-400 bg-blue-400/10 border-blue-400/20'}`}>{p.temp}</span>
+                        <span className={`text-xs font-bold px-1.5 py-0.5 rounded border shrink-0 ${p.temp === 'Hot' ? 'text-red-700 bg-red-50 border-red-200' : 'text-blue-700 bg-blue-50 border-blue-400/20'}`}>{p.temp}</span>
                         <span className="text-stone-700 text-sm flex-1">{p.title}</span>
                         <button
                           onClick={() => cycleStatus(p.id)}
@@ -1329,7 +1329,7 @@ export default function StrategyPage() {
                   })}
                 </div>
                 {allDone && (
-                  <div className="mt-3 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                  <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                     <p className="text-xs text-blue-500 font-semibold">All 5 posts published. Move to ongoing 5×/week cadence and launch Meta ads.</p>
                   </div>
                 )}
@@ -1350,7 +1350,7 @@ export default function StrategyPage() {
               ].map(r => (
                 <div key={r.post} className="flex items-center gap-3 text-xs p-2 rounded-lg bg-stone-50 border border-stone-200">
                   <span className="text-stone-500 w-10 shrink-0">{r.post}</span>
-                  <span className={`font-bold px-1.5 py-0.5 rounded border shrink-0 ${r.temp === 'Hot' ? 'text-red-400 bg-red-400/10 border-red-400/20' : 'text-blue-400 bg-blue-400/10 border-blue-400/20'}`}>{r.temp}</span>
+                  <span className={`font-bold px-1.5 py-0.5 rounded border shrink-0 ${r.temp === 'Hot' ? 'text-red-700 bg-red-50 border-red-200' : 'text-blue-700 bg-blue-50 border-blue-400/20'}`}>{r.temp}</span>
                   <span className="text-stone-600">{r.desc}</span>
                 </div>
               ))}
@@ -1414,13 +1414,13 @@ export default function StrategyPage() {
 
           <Card className="border-pink-500/30 bg-pink-500/5">
             <SectionLabel>Instagram Organic System</SectionLabel>
-            <p className="text-sm text-stone-700 leading-relaxed">This tab is the <strong className="text-[#1A1A1A]">Instagram</strong> organic-to-ads pathway. LinkedIn runs a separate organic channel (1-2 BR posts/week, executive reframe) with no ad spend tied to it - it&apos;s a slow-burn parallel feed into the same scorecard. See the <strong className="text-blue-400">LinkedIn tab</strong> for that system.</p>
+            <p className="text-sm text-stone-700 leading-relaxed">This tab is the <strong className="text-[#1A1A1A]">Instagram</strong> organic-to-ads pathway. LinkedIn runs a separate organic channel (1-2 BR posts/week, executive reframe) with no ad spend tied to it - it&apos;s a slow-burn parallel feed into the same scorecard. See the <strong className="text-blue-700">LinkedIn tab</strong> for that system.</p>
           </Card>
 
           {/* Goal */}
           <Card className="border-blue-500/20 bg-blue-500/5">
             <SectionLabel>The Goal</SectionLabel>
-            <p className="text-blue-300 font-semibold text-sm">3 scorecard submissions per week from organic Instagram, for 2 consecutive weeks. That&apos;s the signal that the funnel converts. Then Meta ads go on.</p>
+            <p className="text-blue-700 font-semibold text-sm">3 scorecard submissions per week from organic Instagram, for 2 consecutive weeks. That&apos;s the signal that the funnel converts. Then Meta ads go on.</p>
             <p className="text-stone-600 text-sm mt-2">Ads placed on a funnel that doesn&apos;t convert waste money. Ads placed on a funnel that already converts multiply what&apos;s working. Organic proves the model first.</p>
           </Card>
 
@@ -1432,7 +1432,7 @@ export default function StrategyPage() {
                 {
                   num: '1',
                   title: 'Content',
-                  color: 'text-blue-400',
+                  color: 'text-blue-700',
                   border: 'border-blue-400/20',
                   bg: 'bg-blue-400/5',
                   items: [
@@ -1445,8 +1445,8 @@ export default function StrategyPage() {
                 {
                   num: '2',
                   title: 'Profile',
-                  color: 'text-amber-400',
-                  border: 'border-amber-400/20',
+                  color: 'text-amber-700',
+                  border: 'border-amber-200',
                   bg: 'bg-amber-400/5',
                   items: [
                     'Bio link goes directly to the scorecard - not homepage',
@@ -1520,8 +1520,8 @@ export default function StrategyPage() {
             <div className="space-y-2">
               {[
                 { weeks: 'Week 1–2', subs: '0–1/week', label: 'Normal', color: 'text-stone-600', bg: 'bg-stone-200/50', border: 'border-stone-300', note: 'Profile is new. No audience yet. Keep posting and doing outreach.' },
-                { weeks: 'Week 3–4', subs: '1–2/week', label: 'Traction', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20', note: 'Content is landing. Warm outreach is working. Dial in hook quality.' },
-                { weeks: 'Week 5–6', subs: '3+/week', label: 'Converting', color: 'text-blue-500', bg: 'bg-blue-500/10', border: 'border-blue-500/20', note: 'Funnel is proven. Hold for 2 consecutive weeks at this level, then launch ads.' },
+                { weeks: 'Week 3–4', subs: '1–2/week', label: 'Traction', color: 'text-amber-700', bg: 'bg-amber-50', border: 'border-amber-200', note: 'Content is landing. Warm outreach is working. Dial in hook quality.' },
+                { weeks: 'Week 5–6', subs: '3+/week', label: 'Converting', color: 'text-blue-500', bg: 'bg-blue-50', border: 'border-blue-500/20', note: 'Funnel is proven. Hold for 2 consecutive weeks at this level, then launch ads.' },
               ].map(m => (
                 <div key={m.weeks} className={`border ${m.border} ${m.bg} rounded-xl p-4`}>
                   <div className="flex items-center justify-between mb-1.5">
@@ -1551,7 +1551,7 @@ export default function StrategyPage() {
                     <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1.5">Primary</p>
                     <div className="flex flex-wrap gap-1">
                       {['#performancecoaching','#fatlosscoaching','#strengthcoaching','#bodyrecode','#brisbanefitness','#brisbanept','#brisbanecoach'].map(h => (
-                        <span key={h} className="text-[10px] text-blue-500 bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded">{h}</span>
+                        <span key={h} className="text-[10px] text-blue-500 bg-blue-50 border border-blue-500/20 px-1.5 py-0.5 rounded">{h}</span>
                       ))}
                     </div>
                   </div>
@@ -1594,7 +1594,7 @@ export default function StrategyPage() {
               </div>
 
               <div className="p-3 bg-red-500/5 rounded-lg border border-red-500/20">
-                <p className="text-xs font-semibold text-red-400 mb-2">Comment quality rules - non-negotiable</p>
+                <p className="text-xs font-semibold text-red-700 mb-2">Comment quality rules - non-negotiable</p>
                 <div className="space-y-1">
                   {[
                     { bad: '"Great post!" / "Love this!" / "So true!"', good: 'Never. Generic comments are invisible and signal a bot.' },
@@ -1602,7 +1602,7 @@ export default function StrategyPage() {
                     { bad: 'Example of a good comment', good: '"The cortisol-fat loss connection is underrated. Most people push harder when they\'re stuck and wonder why nothing moves. Usually the opposite is needed."' },
                   ].map((r, i) => (
                     <div key={i} className="flex items-start gap-2 text-xs py-1 border-b border-red-500/10 last:border-0">
-                      <span className="text-red-400 shrink-0 mt-0.5">-</span>
+                      <span className="text-red-700 shrink-0 mt-0.5">-</span>
                       <div>
                         <span className="text-stone-600 font-medium">{r.bad}: </span>
                         <span className="text-stone-500">{r.good}</span>
@@ -1670,7 +1670,7 @@ export default function StrategyPage() {
           {/* The trigger */}
           <Card className="border-blue-500/20 bg-blue-500/5">
             <SectionLabel>The Ads Trigger</SectionLabel>
-            <p className="text-blue-300 font-semibold text-sm mb-2">3 scorecard submissions/week for 2 consecutive weeks. Then go to the Paid Ads tab and launch.</p>
+            <p className="text-blue-700 font-semibold text-sm mb-2">3 scorecard submissions/week for 2 consecutive weeks. Then go to the Paid Ads tab and launch.</p>
             <p className="text-stone-500 text-xs">At that point you have proof that cold traffic can find you, the profile converts them, and the scorecard holds attention. Ads buy more of that. Without those two weeks of data, you&apos;re paying to test whether the funnel works instead of to scale what already does.</p>
           </Card>
 
@@ -1867,7 +1867,7 @@ export default function StrategyPage() {
         <div className="space-y-4">
 
           {/* Overview */}
-          <Card className="border-blue-500/30 bg-blue-500/5">
+          <Card className="border-blue-200 bg-blue-500/5">
             <SectionLabel>LinkedIn — Body Recode Channel</SectionLabel>
             <Body>Opened as a parallel funnel into the same scorecard, reaching the same demographic (high-functioning adults, executives, founders, professionals) through a different channel with different language. Instagram strategy stays locked. LinkedIn is additive, not a replacement.</Body>
             <div className="mt-4 grid grid-cols-2 gap-3">
@@ -1896,7 +1896,7 @@ export default function StrategyPage() {
               ].map(r => (
                 <div key={r.channel} className={`flex items-center gap-3 text-xs py-2 px-3 rounded-lg ${r.channel === 'TOTAL FEED' ? 'bg-blue-500/5 border border-blue-500/20' : 'border border-stone-200'}`}>
                   <span className={`w-44 shrink-0 font-medium ${r.channel === 'TOTAL FEED' ? 'text-blue-500' : 'text-[#1A1A1A]'}`}>{r.channel}</span>
-                  <span className={`w-32 shrink-0 ${r.channel === 'TOTAL FEED' ? 'text-blue-300' : 'text-stone-700'}`}>{r.freq}</span>
+                  <span className={`w-32 shrink-0 ${r.channel === 'TOTAL FEED' ? 'text-blue-700' : 'text-stone-700'}`}>{r.freq}</span>
                   <span className="text-stone-500 flex-1">{r.note}</span>
                 </div>
               ))}
@@ -1939,9 +1939,9 @@ export default function StrategyPage() {
                 },
               ].map(p => {
                 const colorMap = {
-                  teal:   { border: 'border-blue-500/30',   bg: 'bg-blue-500/5',   accent: 'text-blue-500' },
-                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-400' },
-                  amber:  { border: 'border-amber-500/30',  bg: 'bg-amber-500/5',  accent: 'text-amber-400' },
+                  teal:   { border: 'border-blue-200',   bg: 'bg-blue-500/5',   accent: 'text-blue-500' },
+                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-700' },
+                  amber:  { border: 'border-amber-200',  bg: 'bg-amber-500/5',  accent: 'text-amber-700' },
                   orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-400' },
                 }[p.color]
                 return (
@@ -2043,7 +2043,7 @@ export default function StrategyPage() {
                 <p className="text-[11px] text-stone-500 leading-relaxed">5×/week, scorecard funnel, Meta ads running, consumer voice</p>
               </div>
               <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
-                <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2">LinkedIn</p>
+                <p className="text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-2">LinkedIn</p>
                 <p className="text-xs text-stone-700 mb-2 font-medium">Performance, recovery, decision-making, executive function</p>
                 <p className="text-[11px] text-stone-500 leading-relaxed">1-2×/week, organic only, no ads, executive voice</p>
               </div>
@@ -2134,7 +2134,7 @@ export default function StrategyPage() {
               <p className="text-xs text-stone-400 mt-3">Anchor date: <strong className="text-stone-600">8 April 2026</strong> (Pre-Launch Post 1 = Day 1).</p>
             </Card>
 
-            <Card className="border-blue-500/30 bg-blue-500/5">
+            <Card className="border-blue-200 bg-blue-500/5">
               <SectionLabel>You Are Here</SectionLabel>
               <div className="flex items-baseline gap-3">
                 <span className="text-3xl font-bold text-blue-500">Day {dayNumber}</span>
@@ -2147,11 +2147,11 @@ export default function StrategyPage() {
               const isCurrent = dayNumber >= phase.startDay && dayNumber <= phase.endDay
               const isPast = dayNumber > phase.endDay
               return (
-                <Card key={phase.phase} className={isCurrent ? 'border-blue-500/30 bg-blue-500/5' : isPast ? 'opacity-60' : ''}>
+                <Card key={phase.phase} className={isCurrent ? 'border-blue-200 bg-blue-500/5' : isPast ? 'opacity-60' : ''}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <p className="text-sm font-semibold text-[#1A1A1A]">{phase.phase}</p>
-                      {isCurrent && <span className="text-[10px] font-bold text-blue-500 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded-full uppercase tracking-widest">Current</span>}
+                      {isCurrent && <span className="text-[10px] font-bold text-blue-500 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full uppercase tracking-widest">Current</span>}
                       {isPast && <span className="text-[10px] font-bold text-stone-500 bg-stone-200 border border-stone-300 px-2 py-0.5 rounded-full uppercase tracking-widest">Complete</span>}
                     </div>
                     <Tag color={phase.color}>{phase.days}</Tag>
@@ -2164,7 +2164,7 @@ export default function StrategyPage() {
 
             <Card className="border-blue-500/20 bg-blue-500/5">
               <SectionLabel>The Rule</SectionLabel>
-              <p className="text-sm text-blue-300 font-medium">You don&apos;t need to be consistent forever. You need to be consistent for 60-90 days while the funnel launches. After that, the ads carry acquisition and content maintains trust.</p>
+              <p className="text-sm text-blue-700 font-medium">You don&apos;t need to be consistent forever. You need to be consistent for 60-90 days while the funnel launches. After that, the ads carry acquisition and content maintains trust.</p>
             </Card>
           </div>
         )
@@ -2216,7 +2216,7 @@ export default function StrategyPage() {
                   </div>
                   <div>
                     <p className="text-stone-400 mb-0.5">Bio</p>
-                    <p className={row.bioUpdated ? 'text-blue-500 font-medium' : 'text-red-400 font-medium'}>{row.bioUpdated ? 'Updated' : 'Needs update'}</p>
+                    <p className={row.bioUpdated ? 'text-blue-500 font-medium' : 'text-red-700 font-medium'}>{row.bioUpdated ? 'Updated' : 'Needs update'}</p>
                   </div>
                   <div>
                     <p className="text-stone-400 mb-0.5">Link</p>
@@ -2310,7 +2310,7 @@ export default function StrategyPage() {
           {/* LinkedIn */}
           <Card className="border-blue-500/20 bg-blue-500/5">
             <SectionLabel>LinkedIn Profile</SectionLabel>
-            <p className="text-xs text-stone-600 mb-4 leading-relaxed">Posted from Kade&apos;s personal LinkedIn profile. No separate Body Recode LinkedIn page. The profile carries Studio of Ten + Personal Brand + Body Recode (executive reframe) content - 4 to 6 posts/week total. See <strong className="text-blue-400">LinkedIn tab</strong> for the BR pillars and pipeline.</p>
+            <p className="text-xs text-stone-600 mb-4 leading-relaxed">Posted from Kade&apos;s personal LinkedIn profile. No separate Body Recode LinkedIn page. The profile carries Studio of Ten + Personal Brand + Body Recode (executive reframe) content - 4 to 6 posts/week total. See <strong className="text-blue-700">LinkedIn tab</strong> for the BR pillars and pipeline.</p>
             <div className="grid sm:grid-cols-2 gap-3 text-xs">
               <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
                 <p className="text-stone-400 mb-1">Profile</p>
@@ -2343,7 +2343,7 @@ export default function StrategyPage() {
               ].map(row => (
                 <div key={row.context} className="flex items-start gap-3 text-xs py-2 border-b border-amber-500/10 last:border-0">
                   <span className="text-stone-500 w-52 shrink-0">{row.context}</span>
-                  <span className="text-amber-300 font-medium">{row.terms}</span>
+                  <span className="text-amber-700 font-medium">{row.terms}</span>
                 </div>
               ))}
             </div>
@@ -2374,14 +2374,14 @@ export default function StrategyPage() {
                 { key: 'li_post1',   item: 'First BR LinkedIn post scheduled / drafted (Tue 19 May 2026)', defaultDone: false, group: 'LinkedIn' },
               ].map(({ key, item, defaultDone, group }) => {
                 const done = profileSetup[key] ?? defaultDone
-                const groupColor = group === 'Instagram' ? 'text-pink-400' : group === 'Facebook' ? 'text-blue-400' : 'text-blue-300'
+                const groupColor = group === 'Instagram' ? 'text-pink-400' : group === 'Facebook' ? 'text-blue-700' : 'text-blue-700'
                 return (
                   <button
                     key={key}
                     onClick={() => toggleProfileItem(key, defaultDone)}
                     className="flex items-center gap-2.5 text-xs py-1.5 border-b border-stone-200 last:border-0 w-full text-left hover:bg-stone-100/40 -mx-2 px-2 rounded transition-colors"
                   >
-                    <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${done ? 'bg-blue-500/20 border-blue-500/40' : 'bg-stone-100 border-stone-300'}`}>
+                    <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${done ? 'bg-blue-100 border-blue-300' : 'bg-stone-100 border-stone-300'}`}>
                       {done && <span className="text-blue-500 text-[10px] font-bold">✓</span>}
                     </div>
                     <span className={`text-[10px] font-bold uppercase tracking-widest w-16 shrink-0 ${groupColor}`}>{group}</span>

@@ -49,13 +49,13 @@ export default function DraftActions({
   return (
     <div>
       {error && (
-        <p className="text-xs text-red-400 mb-3">{error}</p>
+        <p className="text-xs text-red-700 mb-3">{error}</p>
       )}
       <div className="flex items-center gap-2">
         <button
           onClick={handleDiscard}
           disabled={discarding || promoting}
-          className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-400 transition-colors disabled:opacity-40"
+          className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-700 transition-colors disabled:opacity-40"
         >
           {discarding ? 'Discarding…' : 'Discard Draft'}
         </button>

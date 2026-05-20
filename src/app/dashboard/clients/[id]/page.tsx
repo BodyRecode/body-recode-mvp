@@ -239,7 +239,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   const statusColour = {
     pending: 'text-[#6B6B6B] bg-[#E5E5E5] border-[#E5E5E5]',
-    started: 'text-amber-300 bg-amber-950/50 border-amber-800',
+    started: 'text-amber-700 bg-amber-950/50 border-amber-800',
     complete: 'text-green-300 bg-green-950/50 border-green-800',
   }
 
@@ -359,7 +359,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <p className="text-xs uppercase tracking-wider text-[#999999]">Face-to-Face Session</p>
           <Link
             href={`/dashboard/clients/${id}/fixed-session`}
-            className="text-xs text-blue-500 hover:text-blue-300 transition-colors"
+            className="text-xs text-blue-500 hover:text-blue-700 transition-colors"
           >
             {(clientFixedSlots ?? []).length > 0 ? 'Manage →' : 'Set up →'}
           </Link>
@@ -411,7 +411,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div className="flex items-center justify-between mb-3">
           <p className="text-xs uppercase tracking-wider text-[#999999]">Coaching Package</p>
           {client.subscription_active ? (
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-500/30 text-blue-500 bg-blue-500/10">
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-200 text-blue-500 bg-blue-50">
               Subscription Active
             </span>
           ) : (
@@ -438,7 +438,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <p className="text-xs text-blue-500">Eligible for 2x to 3x upgrade (Week {weekNumber})</p>
               <Link
                 href={`/companion/${id}/upgrade`}
-                className="text-xs font-semibold text-blue-500 hover:text-blue-300 border border-blue-900/50 px-3 py-1.5 rounded-lg transition-colors"
+                className="text-xs font-semibold text-blue-500 hover:text-blue-700 border border-blue-900/50 px-3 py-1.5 rounded-lg transition-colors"
               >
                 Upgrade Companion →
               </Link>
@@ -470,7 +470,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <div key={item.label} className="flex items-center gap-2">
               <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.done ? 'bg-blue-500' : 'bg-[#E5E5E5]'}`} />
               {item.href ? (
-                <Link href={item.href} className="text-xs text-blue-500 hover:text-blue-300 transition-colors">{item.label} →</Link>
+                <Link href={item.href} className="text-xs text-blue-500 hover:text-blue-700 transition-colors">{item.label} →</Link>
               ) : (
                 <span className={`text-xs ${item.done ? 'text-[#3A3A3A]' : 'text-[#4A4A4A]'}`}>{item.label}</span>
               )}
@@ -492,8 +492,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <p className="text-xs text-blue-500">Medical clearance received</p>
                 ) : (
                   <>
-                    <p className="text-xs text-amber-400">Medical clearance required</p>
-                    <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-xs text-amber-400 hover:text-amber-300 underline transition-colors">Manage →</Link>
+                    <p className="text-xs text-amber-700">Medical clearance required</p>
+                    <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-xs text-amber-700 hover:text-amber-700 underline transition-colors">Manage →</Link>
                   </>
                 )}
               </div>
@@ -505,7 +505,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       Client auto-email sent {new Date(emailSentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                     </p>
                   ) : (
-                    <p className="text-[10px] text-red-400">
+                    <p className="text-[10px] text-red-700">
                       Client auto-email not sent. Run <code className="bg-[#E5E5E5] px-1 rounded">scripts/send-clearance-required-email.ts {client.id}</code> or nudge manually.
                     </p>
                   )}
@@ -711,8 +711,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     }`}>
                       <p className={`text-xs font-bold mb-0.5 ${
                         item.value === 'Green' ? 'text-green-400' :
-                        item.value === 'Amber' ? 'text-amber-400' :
-                        item.value === 'Red' ? 'text-red-400' :
+                        item.value === 'Amber' ? 'text-amber-700' :
+                        item.value === 'Red' ? 'text-red-700' :
                         'text-[#6B6B6B]'
                       }`}>{item.value}</p>
                       <p className="text-[10px] text-[#999999] font-medium uppercase tracking-wide">{item.label}</p>
@@ -1114,8 +1114,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     }`}>
                       <p className={`text-xs font-bold mb-0.5 ${
                         item.value === 'Green' ? 'text-green-400' :
-                        item.value === 'Amber' ? 'text-amber-400' :
-                        item.value === 'Red' ? 'text-red-400' :
+                        item.value === 'Amber' ? 'text-amber-700' :
+                        item.value === 'Red' ? 'text-red-700' :
                         'text-[#6B6B6B]'
                       }`}>{item.value}</p>
                       <p className="text-[10px] text-[#999999] font-medium uppercase tracking-wide">{item.label}</p>
@@ -1203,7 +1203,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="text-[#6B6B6B]">Week {ci.week_number} · Form {ci.form_type}</span>
                       {fb && (
-                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-blue-500/10 border border-blue-500/30 text-blue-300' : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'}`}>
+                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
                           {sent ? 'Response sent' : 'Draft'}
                         </span>
                       )}
@@ -1268,7 +1268,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <div className="flex items-start justify-between mb-2">
                 <p className="text-sm font-semibold text-[#e7e5e4]">{draftProgram.block_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">Draft</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">Draft</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{draftProgram.progression_phase}</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{draftProgram.training_goal}</span>
                 </div>
@@ -1337,7 +1337,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <div className="flex items-start justify-between mb-2">
                 <p className="text-sm font-semibold text-[#e7e5e4]">{draftNutritionPlan.plan_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">Draft</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">Draft</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{draftNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{draftNutritionPlan.carb_demand_level} carbs</span>
                 </div>
@@ -1360,8 +1360,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{activeNutritionPlan.carb_demand_level} carbs</span>
                   {activeNutritionPlan.current_direction && (
                     <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full capitalize ${
-                      activeNutritionPlan.current_direction === 'progress' ? 'bg-blue-500/10 text-blue-500' :
-                      activeNutritionPlan.current_direction === 'rebuild' ? 'bg-red-500/10 text-red-400' :
+                      activeNutritionPlan.current_direction === 'progress' ? 'bg-blue-50 text-blue-500' :
+                      activeNutritionPlan.current_direction === 'rebuild' ? 'bg-red-50 text-red-700' :
                       'bg-[#E5E5E5] text-[#6B6B6B]'
                     }`}>{activeNutritionPlan.current_direction}</span>
                   )}

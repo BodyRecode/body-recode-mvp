@@ -154,7 +154,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
 
       if (b.kind === 'script') {
         out.push(
-          <div key={i} className="bg-[#1B6DFC]/5 border-l-2 border-[#1B6DFC] rounded-r-lg pl-4 pr-4 py-3 ml-1">
+          <div key={i} className="bg-blue-50 border-l-2 border-[#1B6DFC] rounded-r-lg pl-4 pr-4 py-3 ml-1">
             <p className="text-[#e7e5e4] text-sm leading-relaxed whitespace-pre-line">&ldquo;{b.text}&rdquo;</p>
           </div>
         )
@@ -225,7 +225,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               <button
                 onClick={save}
                 disabled={saving}
-                className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-black rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+                className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>

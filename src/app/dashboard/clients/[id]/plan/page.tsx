@@ -34,16 +34,16 @@ interface Plan {
 }
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-blue-400 bg-blue-400/10 border-blue-400/30',
+  accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
   intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-  realization: 'text-red-400 bg-red-400/10 border-red-400/30',
+  realization: 'text-red-700 bg-red-50 border-red-200',
   restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const goalColour: Record<string, string> = {
-  strength: 'text-violet-400 bg-violet-400/10 border-violet-400/30',
+  strength: 'text-violet-700 bg-violet-50 border-violet-200',
   hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-blue-500 bg-blue-500/10 border-blue-500/30',
+  capacity: 'text-blue-500 bg-blue-50 border-blue-200',
 }
 
 function DraftPlanPreview({ plan }: { plan: Plan }) {
@@ -162,7 +162,7 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
       {draftPlan && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/10 border border-amber-700 text-amber-400 uppercase tracking-wide">
+            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">
               Draft Arc - Pending Approval
             </span>
             <PlanDraftActions planId={draftPlan.id} clientId={id} />

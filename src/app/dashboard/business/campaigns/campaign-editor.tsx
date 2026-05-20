@@ -252,7 +252,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
           {!isNew && campaign?.status === 'draft' && (
             <button
               onClick={deleteCampaign}
-              className="p-2 text-stone-400 hover:text-red-400 transition-colors"
+              className="p-2 text-stone-400 hover:text-red-700 transition-colors"
             >
               <Trash2 size={16} />
             </button>
@@ -267,7 +267,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
       </div>
 
       {error && (
-        <div className="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 text-red-400 text-sm">
+        <div className="mb-6 bg-red-50 border border-red-500/20 rounded-lg px-4 py-3 text-red-700 text-sm">
           {error}
         </div>
       )}
@@ -299,7 +299,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
                   disabled={isSent}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors disabled:opacity-50 ${
                     type === opt.value
-                      ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                      ? 'bg-blue-50 border-blue-300 text-blue-500'
                       : 'border-stone-200 text-stone-600 hover:border-stone-300'
                   }`}
                 >
@@ -465,7 +465,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
             <button
               onClick={schedule}
               disabled={sending}
-              className="px-4 py-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-medium rounded-lg hover:bg-amber-500/20 transition-colors disabled:opacity-50"
+              className="px-4 py-2 bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium rounded-lg hover:bg-amber-100 transition-colors disabled:opacity-50"
             >
               {sending ? 'Scheduling...' : 'Confirm Schedule'}
             </button>

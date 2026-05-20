@@ -19,7 +19,7 @@ type Reviewer = {
 
 const STATUS_COLOURS: Record<ReviewerStatus, string> = {
   'Not contacted': 'bg-stone-200 text-stone-600',
-  'Contacted':     'bg-blue-500/15 text-blue-400',
+  'Contacted':     'bg-blue-500/15 text-blue-700',
   'Accessed site': 'bg-yellow-500/15 text-yellow-400',
   'Responded':     'bg-blue-500/15 text-blue-500',
   'Call booked':   'bg-purple-500/15 text-purple-400',
@@ -319,7 +319,7 @@ export default function PeerReviewPage() {
           <h2 className="text-sm font-semibold text-stone-700">Reviewer Tracker</h2>
           <button
             onClick={addReviewer}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded-lg hover:bg-blue-500/20 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-50 text-blue-500 border border-blue-500/20 rounded-lg hover:bg-blue-100 transition-colors"
           >
             <Plus size={13} />
             Add Reviewer

@@ -91,8 +91,8 @@ export default function AgreementForm({
 
         {validationMessage && (
           <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
-            <p className="text-red-300 text-sm font-medium">{validationMessage}</p>
-            <p className="text-red-400/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
+            <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
+            <p className="text-red-700/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
           </div>
         )}
 
@@ -102,7 +102,7 @@ export default function AgreementForm({
 
             <div className="space-y-4">
               <div id="f-fullName" className="scroll-mt-24">
-                <label className={`block text-xs font-semibold uppercase tracking-wide mb-2 ${missing.has('fullName') ? 'text-red-400' : 'text-[#6B6B6B]'}`}>Full name</label>
+                <label className={`block text-xs font-semibold uppercase tracking-wide mb-2 ${missing.has('fullName') ? 'text-red-700' : 'text-[#6B6B6B]'}`}>Full name</label>
                 <input
                   type="text"
                   value={fullName}
@@ -113,14 +113,14 @@ export default function AgreementForm({
                     }
                   }}
                   placeholder={clientName}
-                  className={`w-full bg-[#E5E5E5] text-[#1A1A1A] text-sm rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/50 placeholder-[#999999] border ${missing.has('fullName') ? 'border-red-500/60' : 'border-[#E5E5E5]'}`}
+                  className={`w-full bg-[#E5E5E5] text-[#1A1A1A] text-sm rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/50 placeholder-[#999999] border ${missing.has('fullName') ? 'border-red-400' : 'border-[#E5E5E5]'}`}
                 />
-                {missing.has('fullName') && <p className="text-red-400 text-xs mt-2 font-medium">Please type your full name.</p>}
+                {missing.has('fullName') && <p className="text-red-700 text-xs mt-2 font-medium">Please type your full name.</p>}
               </div>
 
               <label
                 id="f-accepted"
-                className={`flex items-start gap-3 cursor-pointer scroll-mt-24 p-3 rounded-xl border ${missing.has('accepted') ? 'border-red-500/60 bg-red-950/20' : 'border-transparent'}`}
+                className={`flex items-start gap-3 cursor-pointer scroll-mt-24 p-3 rounded-xl border ${missing.has('accepted') ? 'border-red-400 bg-red-950/20' : 'border-transparent'}`}
               >
                 <input
                   type="checkbox"
@@ -133,18 +133,18 @@ export default function AgreementForm({
                   }}
                   className="mt-0.5 w-4 h-4 rounded accent-blue-500"
                 />
-                <span className={`text-sm ${missing.has('accepted') ? 'text-red-300' : 'text-[#3A3A3A]'}`}>I have read and agree to the Body Recode™ Coaching Agreement.</span>
+                <span className={`text-sm ${missing.has('accepted') ? 'text-red-700' : 'text-[#3A3A3A]'}`}>I have read and agree to the Body Recode™ Coaching Agreement.</span>
               </label>
-              {missing.has('accepted') && <p className="text-red-400 text-xs -mt-2 ml-7 font-medium">Please tick this box to continue.</p>}
+              {missing.has('accepted') && <p className="text-red-700 text-xs -mt-2 ml-7 font-medium">Please tick this box to continue.</p>}
             </div>
           </div>
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-red-700 text-sm">{error}</p>}
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-[#1B6DFC] text-black text-sm font-bold py-4 rounded-2xl hover:bg-[#5390FF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#5390FF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           >
             {submitting ? 'Saving…' : 'Sign and continue →'}
           </button>

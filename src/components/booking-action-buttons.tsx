@@ -251,7 +251,7 @@ export default function BookingActionButtons({
           <button
             onClick={confirmCustomBooking}
             disabled={!customDate || !customTime}
-            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-black text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-white text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Book {leadName.split(' ')[0]}
           </button>
@@ -268,7 +268,7 @@ export default function BookingActionButtons({
           <p className="text-xs text-[#6B6B6B] mb-4">{selectedTime} Brisbane · 30 min · {leadName}</p>
           <button
             onClick={confirmBooking}
-            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-black text-sm font-bold transition-colors"
+            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-white text-sm font-bold transition-colors"
           >
             Confirm
           </button>
@@ -289,7 +289,7 @@ export default function BookingActionButtons({
 
       {step === 'error' && (
         <div className="space-y-2">
-          <div className="px-4 py-3 rounded-lg border border-red-500/30 bg-red-500/5 text-sm text-red-400">
+          <div className="px-4 py-3 rounded-lg border border-red-200 bg-red-500/5 text-sm text-red-700">
             {errorMsg || 'Something went wrong.'}
           </div>
           <button onClick={() => setStep('idle')} className="text-xs text-[#999999] hover:text-[#3A3A3A] transition-colors">Try again</button>
@@ -324,7 +324,7 @@ export default function BookingActionButtons({
       )}
 
       {(linkState === 'error' || confirmState === 'error') && errorMsg && (
-        <p className="text-xs text-red-400">{errorMsg}</p>
+        <p className="text-xs text-red-700">{errorMsg}</p>
       )}
     </div>
   )

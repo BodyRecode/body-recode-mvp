@@ -58,7 +58,7 @@ export default async function AutomationsPage() {
                 href={`/dashboard/business/automations/${workflow.id}`}
                 className="flex items-center gap-4 bg-stone-100 border border-stone-200 rounded-xl p-4 hover:border-stone-300 transition-colors group"
               >
-                <div className={`p-2 rounded-lg ${workflow.is_active ? 'bg-blue-500/10' : 'bg-stone-200'}`}>
+                <div className={`p-2 rounded-lg ${workflow.is_active ? 'bg-blue-50' : 'bg-stone-200'}`}>
                   <Zap
                     size={15}
                     className={workflow.is_active ? 'text-blue-500' : 'text-stone-500'}

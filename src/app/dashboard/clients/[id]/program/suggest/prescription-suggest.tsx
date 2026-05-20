@@ -67,15 +67,15 @@ const EQUIPMENT_OPTIONS = [
 ]
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-blue-400 border-blue-400/40 bg-blue-400/10',
+  accumulation: 'text-blue-700 border-blue-400/40 bg-blue-50',
   intensification: 'text-orange-400 border-orange-400/40 bg-orange-400/10',
-  realization: 'text-red-400 border-red-400/40 bg-red-400/10',
+  realization: 'text-red-700 border-red-400/40 bg-red-50',
   restoration: 'text-green-400 border-green-400/40 bg-green-400/10',
 }
 const goalColour: Record<string, string> = {
-  strength: 'text-violet-400 border-violet-400/40 bg-violet-400/10',
+  strength: 'text-violet-700 border-violet-400/40 bg-violet-50',
   hypertrophy: 'text-pink-400 border-pink-400/40 bg-pink-400/10',
-  capacity: 'text-blue-500 border-blue-500/40 bg-blue-500/10',
+  capacity: 'text-blue-500 border-blue-300 bg-blue-50',
 }
 
 const inputCls = 'bg-stone-200 border border-stone-300 text-stone-900 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#1B6DFC] focus:border-transparent'
@@ -298,8 +298,8 @@ export default function PrescriptionSuggest({
 
       {/* Phase 3 — Active recovery state notice */}
       {recoveryNotice && (
-        <div className="mb-8 rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-500/15 to-amber-500/5 px-5 py-4">
-          <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-amber-400 font-semibold mb-2">
+        <div className="mb-8 rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-500/15 to-amber-500/5 px-5 py-4">
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-amber-700 font-semibold mb-2">
             ⚠ Active recovery state · {recoveryNotice.playbookSource} · Tier {recoveryNotice.tier} · {recoveryNotice.enforcementMode === 'hard' ? 'HARD GATE' : 'SOFT GATE'}
           </div>
           <h2 className="text-base font-bold text-[#1A1A1A] mb-1">{recoveryNotice.playbookName}</h2>
@@ -343,7 +343,7 @@ export default function PrescriptionSuggest({
                 className="mt-0.5 accent-amber-400"
               />
               <span>
-                <strong className="text-amber-400">Override constraints (documented)</strong>
+                <strong className="text-amber-700">Override constraints (documented)</strong>
                 <span className="block text-stone-600 mt-0.5">Skip the recovery clamp. Requires a written reason. Logged to recovery_adjustments audit trail.</span>
               </span>
             </label>
@@ -362,7 +362,7 @@ export default function PrescriptionSuggest({
 
       {/* Plan block context */}
       {planBlock && (
-        <div className="mb-6 bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-xl p-4">
+        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
           <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">From Macro Plan</p>
           <p className="text-sm text-stone-800">{planBlock.training_plans?.plan_name}</p>
           {planBlock.training_plans?.macro_objective && (
@@ -387,7 +387,7 @@ export default function PrescriptionSuggest({
 
       {error && !loading && (
         <div className="bg-red-950/50 border border-red-800 rounded-xl p-4 mb-4">
-          <p className="text-sm text-red-400">{error}</p>
+          <p className="text-sm text-red-700">{error}</p>
           <Link
             href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`}
             className="text-xs text-stone-600 hover:text-stone-800 mt-2 block"
@@ -403,7 +403,7 @@ export default function PrescriptionSuggest({
 
           <div className="flex-1 min-w-0 space-y-4">
             {/* Overall rationale */}
-            <div id="rationale" className="scroll-mt-8 bg-stone-100 border border-[#1B6DFC]/20 rounded-xl p-5">
+            <div id="rationale" className="scroll-mt-8 bg-stone-100 border border-blue-200 rounded-xl p-5">
               <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">Prescription Rationale</p>
               {(() => {
                 const { intro, points } = parseReason(suggestion.overall_rationale)
@@ -413,7 +413,7 @@ export default function PrescriptionSuggest({
                     {points.length > 1 ? (
                       <div className="space-y-2 mt-1">
                         {points.map((point, i) => (
-                          <div key={i} className="flex items-start gap-2.5 border-l-2 border-[#1B6DFC]/20 pl-3">
+                          <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-200 pl-3">
                             <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
                           </div>
                         ))}
@@ -535,7 +535,7 @@ export default function PrescriptionSuggest({
             </div>
 
             {error && (
-              <p className="text-sm text-red-400 bg-red-950/50 border border-red-800 rounded-md px-3 py-2">{error}</p>
+              <p className="text-sm text-red-700 bg-red-950/50 border border-red-800 rounded-md px-3 py-2">{error}</p>
             )}
 
             <button

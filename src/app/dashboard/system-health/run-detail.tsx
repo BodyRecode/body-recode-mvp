@@ -44,10 +44,10 @@ export default function RunDetail({ run }: { run: Run }) {
   })
 
   const overallColor = run.status === 'ok'
-    ? 'text-blue-500 border-blue-500/30 bg-blue-500/5'
+    ? 'text-blue-500 border-blue-200 bg-blue-500/5'
     : run.status === 'fixed'
-    ? 'text-amber-400 border-amber-400/30 bg-amber-400/5'
-    : 'text-red-400 border-red-400/30 bg-red-400/5'
+    ? 'text-amber-700 border-amber-200 bg-amber-400/5'
+    : 'text-red-700 border-red-200 bg-red-400/5'
 
   const overallLabel = run.status === 'ok'
     ? 'All systems operational'
@@ -70,15 +70,15 @@ export default function RunDetail({ run }: { run: Run }) {
 
   const statusIcon = (s: CheckStatus) => {
     if (s === 'ok') return <span className="text-blue-500 font-bold">&#10003;</span>
-    if (s === 'fixed') return <span className="text-amber-400 font-bold">&#9889;</span>
-    if (s === 'failed') return <span className="text-red-400 font-bold">&#10007;</span>
+    if (s === 'fixed') return <span className="text-amber-700 font-bold">&#9889;</span>
+    if (s === 'failed') return <span className="text-red-700 font-bold">&#10007;</span>
     return <span className="text-stone-400">&#8212;</span>
   }
 
   const statusTextColor = (s: CheckStatus) => {
     if (s === 'ok') return 'text-[#1A1A1A]'
-    if (s === 'fixed') return 'text-amber-400'
-    if (s === 'failed') return 'text-red-400'
+    if (s === 'fixed') return 'text-amber-700'
+    if (s === 'failed') return 'text-red-700'
     return 'text-stone-600'
   }
 
@@ -106,7 +106,7 @@ export default function RunDetail({ run }: { run: Run }) {
         {/* Summary callouts */}
         {failures.length > 0 && (
           <div className="mt-4 pt-4 border-t border-stone-200">
-            <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">Needs manual attention</p>
+            <p className="text-xs font-bold text-red-700 uppercase tracking-wider mb-2">Needs manual attention</p>
             <div className="space-y-1.5">
               {failures.map((f, i) => (
                 <div key={i}>
@@ -120,7 +120,7 @@ export default function RunDetail({ run }: { run: Run }) {
 
         {fixes.length > 0 && (
           <div className="mt-4 pt-4 border-t border-stone-200">
-            <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Auto-fixed</p>
+            <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">Auto-fixed</p>
             <div className="space-y-1">
               {fixes.map((f, i) => (
                 <p key={i} className="text-xs text-stone-600">{f.name} - {f.action}</p>
@@ -147,10 +147,10 @@ export default function RunDetail({ run }: { run: Run }) {
                     </div>
                     <p className="text-xs text-stone-500 pl-5">{c.detail}</p>
                     {c.action && (
-                      <p className="text-xs text-amber-400 pl-5 mt-1">&#9889; {c.action}</p>
+                      <p className="text-xs text-amber-700 pl-5 mt-1">&#9889; {c.action}</p>
                     )}
                     {c.manualFix && (
-                      <p className="text-xs text-red-400 pl-5 mt-1">Action needed: {c.manualFix}</p>
+                      <p className="text-xs text-red-700 pl-5 mt-1">Action needed: {c.manualFix}</p>
                     )}
                   </div>
                 ))}

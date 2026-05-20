@@ -54,7 +54,7 @@ export default function RegenerateButton({ programId }: { programId: string }) {
         {busy || isPending ? <Loader2 size={12} className="animate-spin" /> : <RefreshCcw size={12} />}
         {busy ? 'Regenerating...' : isPending ? 'Loading...' : 'Regenerate with guidance'}
       </button>
-      {error && <p className="text-[11px] text-amber-400">{error}</p>}
+      {error && <p className="text-[11px] text-amber-700">{error}</p>}
     </div>
   )
 }

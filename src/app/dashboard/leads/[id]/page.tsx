@@ -320,12 +320,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                   {lead.lead_quality}{lead.red_flag ? ' · red flag' : ''}
                 </div>
                 <div className="flex-1 text-xs text-[#6B6B6B] space-y-1">
-                  <p><span className="text-[#999999]">Approach:</span> <span className="font-medium text-[#3A3A3A]">{lead.approach_response}</span> {(lead.approach_response === 'C' || lead.approach_response === 'D') && <span className="text-red-400">- red flag</span>}</p>
-                  <p><span className="text-[#999999]">Investment:</span> <span className="font-medium text-[#3A3A3A]">{lead.investment_readiness}</span> {(lead.investment_readiness === 'C' || lead.investment_readiness === 'D') && <span className="text-red-400">- red flag</span>}</p>
+                  <p><span className="text-[#999999]">Approach:</span> <span className="font-medium text-[#3A3A3A]">{lead.approach_response}</span> {(lead.approach_response === 'C' || lead.approach_response === 'D') && <span className="text-red-700">- red flag</span>}</p>
+                  <p><span className="text-[#999999]">Investment:</span> <span className="font-medium text-[#3A3A3A]">{lead.investment_readiness}</span> {(lead.investment_readiness === 'C' || lead.investment_readiness === 'D') && <span className="text-red-700">- red flag</span>}</p>
                 </div>
               </div>
               {lead.red_flag && (
-                <p className="text-xs text-red-400/70 mt-3 leading-relaxed">
+                <p className="text-xs text-red-700/70 mt-3 leading-relaxed">
                   Hormozi red flag rule: leads flagged on these questions historically convert at half the show rate and half the close rate. Consider not booking a Zoom unless they push for it themselves.
                 </p>
               )}
@@ -343,7 +343,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               <Link
                 href={`/report/${scorecardReport.token}`}
                 target="_blank"
-                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-black rounded-lg hover:bg-[#5390FF] transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors"
               >
                 Open Scorecard Report ↗
               </Link>
@@ -391,7 +391,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               <p className="text-sm text-[#6B6B6B] leading-relaxed border-t border-[#E5E5E5] pt-4">{STATE_GUIDANCE[scorecardState].primaryFocus}</p>
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-lg p-3 bg-red-950/20 border border-red-900/30">
-                  <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">Stop doing</p>
+                  <p className="text-xs font-bold text-red-700 uppercase tracking-wider mb-2">Stop doing</p>
                   <ul className="space-y-1.5">
                     {STATE_GUIDANCE[scorecardState].stopDoing.map((item, i) => (
                       <li key={i} className="flex gap-2 items-start">
@@ -445,7 +445,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <Link
               href={`/companion/${lead.id}/zoom`}
               target="_blank"
-              className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-black rounded-lg hover:bg-[#5390FF] transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors"
             >
               Open Call Companion ↗
             </Link>
@@ -496,7 +496,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <div className="space-y-3">
               {isConverted && (
                 <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg px-4 py-3">
-                  <p className="text-amber-400 text-xs font-bold uppercase tracking-wider mb-1">Converted, fee outstanding</p>
+                  <p className="text-amber-700 text-xs font-bold uppercase tracking-wider mb-1">Converted, fee outstanding</p>
                   <p className="text-[#6B6B6B] text-xs leading-relaxed">{lead.name}&apos;s portal is open. Send the commencement fee link below when you&apos;re ready to bill.</p>
                 </div>
               )}
@@ -557,7 +557,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 <a
                   href={`/program/${lead.downsell_program_token}`}
                   target="_blank"
-                  className="text-xs text-blue-500 hover:text-blue-300 transition-colors mt-1 inline-block"
+                  className="text-xs text-blue-500 hover:text-blue-700 transition-colors mt-1 inline-block"
                 >
                   View program page ↗
                 </a>
@@ -636,7 +636,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <Link
               href={`/dashboard/leads/${lead.id}/report`}
               target="_blank"
-              className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded-lg hover:bg-blue-500/20 transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 bg-blue-50 text-blue-500 border border-blue-500/20 rounded-lg hover:bg-blue-100 transition-colors"
             >
               View report ↗
             </Link>

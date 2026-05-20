@@ -81,7 +81,7 @@ export default async function PortalCheckinDetail({
         </div>
 
         {feedback ? (
-          <div className="mb-10 rounded-2xl border border-[#1B6DFC]/30 bg-[#FFFFFF] overflow-hidden">
+          <div className="mb-10 rounded-2xl border border-blue-200 bg-[#FFFFFF] overflow-hidden">
             <div className="px-5 py-3 border-b border-[#E5E5E5] flex items-center justify-between">
               <p className="text-[11px] font-bold uppercase tracking-widest text-[#1B6DFC]">Coach response</p>
               {feedback.email_sent_at && (

@@ -6,7 +6,7 @@ const typeIcon = { email: Mail, sms: MessageSquare, social: Megaphone }
 
 const statusConfig: Record<string, { label: string; colour: string; icon: typeof Clock }> = {
   draft: { label: 'Draft', colour: 'text-stone-500', icon: FileText },
-  scheduled: { label: 'Scheduled', colour: 'text-amber-400', icon: Clock },
+  scheduled: { label: 'Scheduled', colour: 'text-amber-700', icon: Clock },
   active: { label: 'Sending', colour: 'text-blue-500', icon: Send },
   completed: { label: 'Sent', colour: 'text-blue-500', icon: CheckCircle2 },
   cancelled: { label: 'Cancelled', colour: 'text-stone-500', icon: XCircle },

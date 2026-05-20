@@ -105,7 +105,7 @@ export default function MedicationsEditor({
       </p>
       {showStaleBanner && (
         <div className="mb-3 px-3 py-2.5 rounded-lg border border-amber-700/50 bg-amber-500/5">
-          <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">
+          <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-1">
             Prescription is older than current medications
           </p>
           <p className="text-xs text-[#3A3A3A] leading-relaxed">
@@ -123,12 +123,12 @@ export default function MedicationsEditor({
             placeholder="e.g. TRT 150mg test cypionate / week, year 2. Metoprolol 25mg / day for BP, year 1. No NSAIDs. No other meds."
             className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-3 text-[#e7e5e4] text-sm leading-relaxed focus:outline-none focus:border-[#D4D4D4] placeholder-[#4A4A4A] min-h-[120px]"
           />
-          {error && <p className="text-xs text-red-400">{error}</p>}
+          {error && <p className="text-xs text-red-700">{error}</p>}
           <div className="flex items-center gap-2">
             <button
               onClick={save}
               disabled={saving || !dirty}
-              className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-black rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
+              className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
             >
               {saving ? 'Saving…' : 'Save'}
             </button>

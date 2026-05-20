@@ -44,7 +44,7 @@ export default async function PortalProgramReviewPage({ params }: { params: Prom
             <p className="text-[#999999] text-sm">No active training program yet. Your coach will set this up for you.</p>
           </div>
         ) : reviewedThisWeek ? (
-          <div className="rounded-2xl border border-[#1B6DFC]/20 bg-[#1B6DFC]/5 p-8 text-center">
+          <div className="rounded-2xl border border-blue-200 bg-blue-50 p-8 text-center">
             <div className="w-12 h-12 rounded-full bg-[#1B6DFC] flex items-center justify-center mx-auto mb-4">
               <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />

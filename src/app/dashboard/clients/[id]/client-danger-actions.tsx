@@ -47,7 +47,7 @@ export default function ClientDangerActions({ clientId, isActive }: { clientId: 
         <button
           onClick={deleteClient}
           disabled={!!loading}
-          className="text-sm font-medium px-4 py-2 rounded-lg border border-red-900 text-red-400 hover:border-red-700 hover:text-red-300 transition-colors disabled:opacity-50"
+          className="text-sm font-medium px-4 py-2 rounded-lg border border-red-900 text-red-700 hover:border-red-700 hover:text-red-700 transition-colors disabled:opacity-50"
         >
           {loading === 'delete' ? 'Deleting...' : 'Delete client'}
         </button>

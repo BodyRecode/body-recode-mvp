@@ -42,8 +42,8 @@ const STATUS_META: Record<string, { label: string; tone: 'good' | 'warn' | 'bad'
 
 const TONE_CLASS = {
   good:  'text-blue-500',
-  warn:  'text-amber-400',
-  bad:   'text-red-400',
+  warn:  'text-amber-700',
+  bad:   'text-red-700',
   muted: 'text-stone-500',
 } as const
 
@@ -179,10 +179,10 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
       {flags.length > 0 && (
         <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-4 mb-3">
           <div className="flex items-start gap-2.5">
-            <AlertTriangle size={14} className="text-red-400 shrink-0 mt-0.5" />
+            <AlertTriangle size={14} className="text-red-700 shrink-0 mt-0.5" />
             <div className="space-y-1">
               {flags.map((f, i) => (
-                <p key={i} className="text-xs text-red-300">{f}</p>
+                <p key={i} className="text-xs text-red-700">{f}</p>
               ))}
             </div>
           </div>
@@ -242,7 +242,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
               {commencementPaid ? (
                 <span className="text-blue-500">paid {formatDate(commencementPaidAt)}</span>
               ) : (
-                <span className="text-amber-400">not paid</span>
+                <span className="text-amber-700">not paid</span>
               )}
             </p>
             {!commencementPaid && (
@@ -270,7 +270,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
                   </p>
                 )}
                 {primarySub.cancel_at_period_end && (
-                  <p className="text-xs text-amber-400 mt-1">Cancels at period end</p>
+                  <p className="text-xs text-amber-700 mt-1">Cancels at period end</p>
                 )}
               </>
             ) : (

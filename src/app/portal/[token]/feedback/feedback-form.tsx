@@ -160,7 +160,7 @@ export default function FeedbackForm({
         <div className="flex items-center justify-between mt-2">
           <p className="text-[11px] text-[#999999]">
             {tooLong ? (
-              <span className="text-amber-400">Trim by {body.length - MAX_LEN} characters.</span>
+              <span className="text-amber-700">Trim by {body.length - MAX_LEN} characters.</span>
             ) : (
               `${body.length} / ${MAX_LEN}`
             )}

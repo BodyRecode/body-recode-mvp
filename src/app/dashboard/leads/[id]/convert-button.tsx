@@ -83,7 +83,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     <button
       onClick={convert}
       disabled={loading}
-      className="bg-blue-500 text-black text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-blue-500 transition-colors disabled:opacity-50"
+      className="bg-blue-500 text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-blue-500 transition-colors disabled:opacity-50"
     >
       {loading ? 'Converting...' : 'Convert to Client'}
     </button>

@@ -84,7 +84,7 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
               <button
                 onClick={() => handleRemove(row.id)}
                 disabled={removing === row.id}
-                className="text-stone-400 hover:text-red-400 transition-colors text-xs ml-4"
+                className="text-stone-400 hover:text-red-700 transition-colors text-xs ml-4"
               >
                 {removing === row.id ? '...' : '✕'}
               </button>
@@ -96,7 +96,7 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
       {!adding ? (
         <button
           onClick={() => setAdding(true)}
-          className="text-xs text-blue-500 hover:text-blue-300 transition-colors"
+          className="text-xs text-blue-500 hover:text-blue-700 transition-colors"
         >
           + Block out time
         </button>
@@ -147,13 +147,13 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
             />
           </div>
 
-          {error && <p className="text-xs text-red-400">{error}</p>}
+          {error && <p className="text-xs text-red-700">{error}</p>}
 
           <div className="flex gap-2">
             <button
               onClick={handleAdd}
               disabled={saving}
-              className="px-4 py-2 bg-blue-500 text-black text-xs font-bold rounded-lg disabled:opacity-40 hover:bg-blue-500 transition-colors"
+              className="px-4 py-2 bg-blue-500 text-white text-xs font-bold rounded-lg disabled:opacity-40 hover:bg-blue-500 transition-colors"
             >
               {saving ? 'Saving...' : 'Block time'}
             </button>

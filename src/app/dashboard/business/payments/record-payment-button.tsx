@@ -179,7 +179,7 @@ export default function RecordPaymentButton({ products }: Props) {
                       onClick={() => setForm(f => ({ ...f, status: opt.value as 'paid' | 'pending' }))}
                       className={`flex-1 text-xs font-medium py-2 rounded-lg border transition-colors ${
                         form.status === opt.value
-                          ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                          ? 'bg-blue-50 border-blue-300 text-blue-500'
                           : 'border-stone-300 text-stone-600 hover:border-stone-400 hover:text-[#1A1A1A]'
                       }`}
                     >

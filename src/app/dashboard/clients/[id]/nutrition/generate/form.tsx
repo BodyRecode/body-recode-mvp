@@ -76,7 +76,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
           onClick={() => setter(opt)}
           className={`px-3 py-1.5 rounded-lg border text-xs capitalize transition-colors ${
             val === opt
-              ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+              ? 'border-blue-500 bg-blue-50 text-blue-700'
               : 'border-stone-300 text-stone-600 hover:border-stone-500'
           }`}
         >
@@ -112,11 +112,11 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setEntryState(opt.value)}
               className={`text-left px-4 py-3 rounded-xl border transition-colors ${
                 entryState === opt.value
-                  ? 'border-blue-500 bg-blue-500/10'
+                  ? 'border-blue-500 bg-blue-50'
                   : 'border-stone-200 bg-stone-100 hover:border-stone-400'
               }`}
             >
-              <p className={`text-sm font-semibold ${entryState === opt.value ? 'text-blue-300' : 'text-stone-700'}`}>{opt.label}</p>
+              <p className={`text-sm font-semibold ${entryState === opt.value ? 'text-blue-700' : 'text-stone-700'}`}>{opt.label}</p>
               <p className="text-xs text-stone-500 mt-1 leading-snug">{opt.desc}</p>
             </button>
           ))}
@@ -134,7 +134,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setBodyState(opt.value)}
               className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
                 bodyState === opt.value
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700'
                   : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
@@ -190,7 +190,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setMealFrequency(n)}
               className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
                 mealFrequency === n
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700'
                   : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
@@ -211,7 +211,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setTrainingDaysPerWeek(n)}
               className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
                 trainingDaysPerWeek === n
-                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700'
                   : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
@@ -250,7 +250,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
       {error && (
         <div className="bg-red-950/30 border border-red-800 rounded-lg px-4 py-3">
-          <p className="text-red-400 text-sm">{error}</p>
+          <p className="text-red-700 text-sm">{error}</p>
         </div>
       )}
 
@@ -264,7 +264,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
         <button
           type="submit"
           disabled={loading}
-          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-black font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {loading ? 'Generating plan...' : 'Generate Plan'}
         </button>

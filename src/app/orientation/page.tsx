@@ -54,7 +54,7 @@ export default function OrientationPage() {
                   onClick={() => scrollTo(s.id)}
                   className={`block w-full text-left text-[11px] leading-snug py-1.5 px-2 rounded transition-colors ${
                     activeId === s.id
-                      ? 'text-blue-500 bg-blue-500/10'
+                      ? 'text-blue-500 bg-blue-50'
                       : 'text-stone-500 hover:text-stone-700'
                   }`}
                 >
@@ -77,7 +77,7 @@ export default function OrientationPage() {
           </div>
 
           {/* Intro note */}
-          <div className="border-l-2 border-blue-500/30 pl-6 mb-16">
+          <div className="border-l-2 border-blue-200 pl-6 mb-16">
             <p className="text-stone-600 text-sm leading-relaxed italic">A calm introduction to the structure, pacing, and the philosophy behind Body Recode Performance Coaching.</p>
           </div>
 

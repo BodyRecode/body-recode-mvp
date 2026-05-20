@@ -222,15 +222,15 @@ export default function DraftEditor({
   }
 
   const phaseColour: Record<string, string> = {
-    accumulation: 'text-blue-400 bg-blue-400/10 border-blue-400/30',
+    accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
     intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-    realization: 'text-red-400 bg-red-400/10 border-red-400/30',
+    realization: 'text-red-700 bg-red-50 border-red-200',
     restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
   }
   const goalColour: Record<string, string> = {
-    strength: 'text-violet-400 bg-violet-400/10 border-violet-400/30',
+    strength: 'text-violet-700 bg-violet-50 border-violet-200',
     hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-    capacity: 'text-blue-500 bg-blue-500/10 border-blue-500/30',
+    capacity: 'text-blue-500 bg-blue-50 border-blue-200',
   }
 
   const inputCls =
@@ -267,13 +267,13 @@ export default function DraftEditor({
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-[#1A1A1A]">{program.block_name}</h1>
-            <p className="text-sm text-amber-400 mt-1">Draft - pending coach review</p>
+            <p className="text-sm text-amber-700 mt-1">Draft - pending coach review</p>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={handleDiscard}
               disabled={discarding || promoting}
-              className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-400 transition-colors disabled:opacity-40"
+              className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-700 transition-colors disabled:opacity-40"
             >
               {discarding ? 'Discarding…' : 'Discard Draft'}
             </button>
@@ -298,13 +298,13 @@ export default function DraftEditor({
       </div>
 
       {error && (
-        <p className="text-sm text-red-400 bg-red-950/50 border border-red-800 rounded-md px-3 py-2 mb-4">
+        <p className="text-sm text-red-700 bg-red-950/50 border border-red-800 rounded-md px-3 py-2 mb-4">
           {error}
         </p>
       )}
 
       {dirty && (
-        <div className="mb-4 text-xs text-amber-400 bg-amber-950/30 border border-amber-800/50 rounded-lg px-3 py-2">
+        <div className="mb-4 text-xs text-amber-700 bg-amber-950/30 border border-amber-800/50 rounded-lg px-3 py-2">
           You have unsaved changes. Save before promoting or your edits will be lost.
         </div>
       )}
@@ -539,7 +539,7 @@ export default function DraftEditor({
         <button
           onClick={handleDiscard}
           disabled={discarding || promoting}
-          className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-400 transition-colors disabled:opacity-40"
+          className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-700 transition-colors disabled:opacity-40"
         >
           {discarding ? 'Discarding…' : 'Discard Draft'}
         </button>

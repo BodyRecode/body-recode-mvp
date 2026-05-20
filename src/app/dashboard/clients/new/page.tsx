@@ -195,7 +195,7 @@ export default function NewClientPage() {
         </div>
       </div>
 
-      {error && <p className="text-red-400 text-sm mt-3">{error}</p>}
+      {error && <p className="text-red-700 text-sm mt-3">{error}</p>}
 
       <div className="mt-4 flex gap-3">
         <Link

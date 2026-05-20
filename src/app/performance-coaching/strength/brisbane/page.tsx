@@ -20,12 +20,12 @@ export default function StrengthCoachBrisbanePage() {
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-12">
             Strength Coach Brisbane
           </h1>
-          <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-12">
+          <p className="text-xl text-stone-600 leading-relaxed max-w-2xl mb-12">
             Building strength isn&apos;t just about lifting more weight. It&apos;s about creating the right biological conditions for your body to actually respond to training, and sustaining that over time.
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free performance check-in
           </Link>
@@ -33,26 +33,26 @@ export default function StrengthCoachBrisbanePage() {
       </section>
 
       {/* Why strength training fails */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Why strength training often stops working</h2>
-          <p className="text-white/60 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             Most people who plateau in the gym aren&apos;t training wrong. They&apos;re training without understanding where their body actually is. Strength is a biological output. If the underlying system is under stress, under-recovered, or hormonally dysregulated, adding more volume or intensity will not produce better results. It will produce worse ones.
           </p>
-          <p className="text-white/60 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             This is one of the most common patterns in Brisbane gyms: hard-working clients who train consistently but make slow or no progress because the training load doesn&apos;t match the body&apos;s actual capacity to adapt.
           </p>
-          <p className="text-white/60 text-lg leading-relaxed">
+          <p className="text-stone-600 text-lg leading-relaxed">
             Body Recode™ starts by establishing what that capacity actually is, before any loading decisions are made.
           </p>
         </div>
       </section>
 
       {/* How strength coaching works */}
-      <section className="bg-black py-32 px-5 border-t border-white/5">
+      <section className="bg-black py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">How strength coaching works at Body Recode™</h2>
-          <p className="text-white/60 text-lg leading-relaxed mb-12">
+          <p className="text-stone-600 text-lg leading-relaxed mb-12">
             Every client begins with a full biological intake. This is not a movement screen or a fitness test. It is a structured assessment of the eight domains that determine how your body responds to training load.
           </p>
           <div className="space-y-4 mb-12">
@@ -62,11 +62,11 @@ export default function StrengthCoachBrisbanePage() {
               { step: '03', title: 'Design around your capacity', body: 'Volume, intensity, frequency, and exercise selection are all built around your individual profile. There is no template. The program exists to serve your biology.' },
               { step: '04', title: 'Monitor and adjust', body: 'Strength is not linear. Your body responds differently week to week depending on sleep, stress, and recovery. Coaching means staying ahead of those shifts, not just running a static program.' },
             ].map((item) => (
-              <div key={item.step} className="flex gap-5 border border-white/10 rounded-xl p-5">
+              <div key={item.step} className="flex gap-5 border border-stone-200 rounded-xl p-5">
                 <p className="text-[11px] font-bold tracking-[0.15em] text-[#1B6DFC] uppercase shrink-0 mt-0.5">{item.step}</p>
                 <div>
                   <p className="text-base font-bold text-white mb-1">{item.title}</p>
-                  <p className="text-base text-white/40 leading-relaxed">{item.body}</p>
+                  <p className="text-base text-stone-500 leading-relaxed">{item.body}</p>
                 </div>
               </div>
             ))}
@@ -75,7 +75,7 @@ export default function StrengthCoachBrisbanePage() {
       </section>
 
       {/* Who this is for */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Who strength coaching at Body Recode™ is for</h2>
           <div className="grid md:grid-cols-2 gap-10 mb-12">
@@ -87,11 +87,11 @@ export default function StrengthCoachBrisbanePage() {
               'You have a high-stress lifestyle and need a program that fits your actual recovery capacity',
               'You want to understand why your body responds the way it does',
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3 bg-white/5 rounded-xl p-4">
+              <div key={i} className="flex items-start gap-3 bg-stone-50 rounded-xl p-4">
                 <div className="w-5 h-5 rounded-full bg-[#1B6DFC]/20 flex items-center justify-center shrink-0 mt-0.5">
                   <div className="w-2 h-2 rounded-full bg-[#1B6DFC]" />
                 </div>
-                <p className="text-white/70 text-base leading-relaxed">{item}</p>
+                <p className="text-stone-600 text-base leading-relaxed">{item}</p>
               </div>
             ))}
           </div>
@@ -99,16 +99,16 @@ export default function StrengthCoachBrisbanePage() {
       </section>
 
       {/* Location */}
-      <section className="bg-black py-32 px-5 border-t border-white/5">
+      <section className="bg-black py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Strength coaching in Brisbane, Newstead</h2>
-          <p className="text-white/60 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             Face-to-face strength coaching is conducted at Anytime Fitness Newstead, Brisbane. All sessions are one-on-one. Availability is intentionally limited to maintain the quality and depth of coaching that the system requires.
           </p>
-          <p className="text-white/60 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             Body Recode™ strength coaching is also available fully online for clients anywhere in the world. Same system, same depth, delivered remotely through your dedicated client portal.
           </p>
-          <p className="text-white/60 text-lg leading-relaxed mb-12">
+          <p className="text-stone-600 text-lg leading-relaxed mb-12">
             The starting point is always the free Performance Check-In. It is a structured intake that tells you exactly where your body is right now and how the Body Recode™ system applies to you.
           </p>
           <div className="flex flex-wrap gap-6">
@@ -120,7 +120,7 @@ export default function StrengthCoachBrisbanePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-6">
@@ -131,9 +131,9 @@ export default function StrengthCoachBrisbanePage() {
               { q: 'How do sessions work?', a: 'Face-to-face sessions are held at Anytime Fitness Newstead, Brisbane. Session structure depends on your body state and programming phase. Everything is guided: form, load, tempo, and rest are all coached. Body Recode™ strength coaching is also available fully online, the same system, delivered remotely through your client portal.' },
               { q: 'How do I get started?', a: 'Start with the free Performance Check-In. It takes a few minutes and gives you a clear picture of where your body is right now.' },
             ].map((item, i) => (
-              <div key={i} className="border-b border-white/10 pb-6">
+              <div key={i} className="border-b border-stone-200 pb-6">
                 <h3 className="text-base font-bold text-white mb-2">{item.q}</h3>
-                <p className="text-white/50 text-base leading-relaxed">{item.a}</p>
+                <p className="text-stone-500 text-base leading-relaxed">{item.a}</p>
               </div>
             ))}
           </div>
@@ -141,17 +141,17 @@ export default function StrengthCoachBrisbanePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-black py-32 px-5 border-t border-white/5">
+      <section className="bg-black py-32 px-5 border-t border-stone-200">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
             Find out where your strength actually is
           </h2>
-          <p className="text-white/50 text-lg leading-relaxed mb-12 max-w-xl mx-auto">
+          <p className="text-stone-500 text-lg leading-relaxed mb-12 max-w-xl mx-auto">
             The free Performance Check-In takes a few minutes and gives you a real picture of your current body state and what it means for how you should be training.
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free check-in →
           </Link>

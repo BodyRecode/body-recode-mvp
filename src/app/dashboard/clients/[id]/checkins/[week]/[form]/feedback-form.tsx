@@ -189,7 +189,7 @@ export default function CheckinFeedbackForm({
             type="button"
             onClick={unskip}
             disabled={skipping}
-            className="text-xs font-bold text-blue-300 hover:text-blue-200 transition-colors disabled:opacity-50"
+            className="text-xs font-bold text-blue-700 hover:text-blue-200 transition-colors disabled:opacity-50"
           >
             {skipping ? 'Working…' : 'Unskip and write response →'}
           </button>
@@ -206,7 +206,7 @@ export default function CheckinFeedbackForm({
             </div>
           )}
         </div>
-        {error && <p className="px-5 pb-4 text-xs text-red-400">{error}</p>}
+        {error && <p className="px-5 pb-4 text-xs text-red-700">{error}</p>}
         {status && <p className="px-5 pb-4 text-xs text-blue-500">{status}</p>}
       </div>
     )
@@ -223,8 +223,8 @@ export default function CheckinFeedbackForm({
             <span
               className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${
                 sent
-                  ? 'bg-blue-500/10 border border-blue-500/30 text-blue-300'
-                  : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'
+                  ? 'bg-blue-50 border border-blue-200 text-blue-700'
+                  : 'bg-amber-50 border border-amber-200 text-amber-700'
               }`}
             >
               {sent ? `Emailed ${formatShort(existing.email_sent_at!)}` : 'Draft (not sent)'}
@@ -236,7 +236,7 @@ export default function CheckinFeedbackForm({
           <button
             type="button"
             onClick={() => { setMode('edit'); setStatus(null); setError(null) }}
-            className="text-xs font-bold text-blue-300 hover:text-blue-200 transition-colors"
+            className="text-xs font-bold text-blue-700 hover:text-blue-200 transition-colors"
           >
             Edit response →
           </button>
@@ -291,7 +291,7 @@ export default function CheckinFeedbackForm({
           type="button"
           onClick={generateDraft}
           disabled={generating || pending}
-          className="shrink-0 px-3 py-2 bg-blue-500/10 border border-blue-500/40 hover:bg-blue-500/20 text-blue-300 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
+          className="shrink-0 px-3 py-2 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
         >
           {generating ? 'Generating…' : 'Generate response'}
         </button>
@@ -327,7 +327,7 @@ export default function CheckinFeedbackForm({
       </div>
 
       {error && (
-        <p className="mt-4 text-xs text-red-400">{error}</p>
+        <p className="mt-4 text-xs text-red-700">{error}</p>
       )}
       {status && (
         <p className="mt-4 text-xs text-blue-500">{status}</p>
@@ -338,7 +338,7 @@ export default function CheckinFeedbackForm({
           type="button"
           disabled={pending}
           onClick={() => submit(true)}
-          className="px-4 py-2.5 bg-blue-500 hover:bg-blue-500 text-black text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
+          className="px-4 py-2.5 bg-blue-500 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
         >
           {pending ? 'Working…' : previouslyEmailed ? 'Save and re-send email' : 'Save and email client'}
         </button>
