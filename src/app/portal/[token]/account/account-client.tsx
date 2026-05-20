@@ -174,7 +174,7 @@ function PauseCard({ clientId, clientName, packageLabel }: { clientId: string; c
         <button
           onClick={submit}
           disabled={submitting}
-          className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors disabled:opacity-40"
+          className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-40"
         >
           {submitting && <Loader2 size={13} className="animate-spin" />}
           {submitting ? 'Sending request...' : 'Request pause'}
@@ -255,7 +255,7 @@ function ReferCard({ clientId, clientName }: { clientId: string; clientName: str
         <button
           onClick={submit}
           disabled={submitting || !name.trim() || !contactEmail.trim()}
-          className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors disabled:opacity-40"
+          className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-40"
         >
           {submitting && <Loader2 size={13} className="animate-spin" />}
           {submitting ? 'Sending...' : 'Refer'}
@@ -272,7 +272,7 @@ function DownloadCard({ portalToken }: { portalToken: string }) {
     <Section icon={Download} title="Download your data" description="Export everything we hold about you as a JSON file. Your intake, baselines, check-ins, readings.">
       <a
         href={`/api/portal/${portalToken}/export`}
-        className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors"
+        className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
       >
         <Download size={13} /> Download my data (JSON)
       </a>

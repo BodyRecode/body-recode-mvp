@@ -201,7 +201,7 @@ export default function GymSessionsPage() {
               onClick={() => setActiveState(s.id)}
               style={active ? { borderColor: s.border, color: s.color, background: s.bg } : undefined}
               className={`flex-1 py-3 px-4 rounded-xl border text-[13px] font-semibold transition-colors ${
-                active ? '' : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4]'
+                active ? '' : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
               }`}
             >
               <span className="block">{s.label}</span>
@@ -227,7 +227,7 @@ export default function GymSessionsPage() {
               className={`flex-1 py-2 px-3 rounded-lg border text-[11px] font-semibold transition-colors ${
                 active
                   ? 'border-[#D4D4D4] text-[#1A1A1A] bg-[#E5E5E5]'
-                  : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4]'
+                  : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
               }`}
             >
               {p.label}

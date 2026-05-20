@@ -751,7 +751,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 <Link
                   href={`/dashboard/clients/${client.id}/cffs-report`}
                   target="_blank"
-                  className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#e7e5e4] transition-colors"
+                  className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
                 >
                   Download PDF
                 </Link>
@@ -1129,7 +1129,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <Link
                     href={`/dashboard/clients/${client.id}/cfws-report`}
                     target="_blank"
-                    className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#e7e5e4] transition-colors"
+                    className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
                   >
                     Download PDF
                   </Link>
@@ -1252,7 +1252,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         actionRight={
           <Link
             href={`/dashboard/clients/${id}/plan`}
-            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#e7e5e4] transition-colors"
+            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
           >
             Macro Plan
           </Link>
@@ -1321,7 +1321,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         actionRight={
           <Link
             href={`/dashboard/clients/${id}/nutrition/suggest`}
-            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#e7e5e4] transition-colors"
+            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
           >
             {activeNutritionPlan ? 'Regenerate' : 'Generate Plan'}
           </Link>

@@ -175,7 +175,7 @@ export default function BookingActionButtons({
       {step === 'idle' && (
         <button
           onClick={openSlotPicker}
-          className="w-full text-left px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors"
+          className="w-full text-left px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
         >
           Book a call
         </button>
@@ -301,7 +301,7 @@ export default function BookingActionButtons({
         <button
           onClick={sendBookingLink}
           disabled={linkState === 'loading'}
-          className="w-full text-left px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
+          className="w-full text-left px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
         >
           {linkState === 'loading' ? 'Sending...' : linkState === 'sent' ? 'Booking link sent ✓' : linkState === 'error' ? 'Failed to send' : 'Send booking link'}
         </button>
@@ -313,7 +313,7 @@ export default function BookingActionButtons({
           onClick={sendConfirmation}
           disabled={confirmState === 'loading' || !hasZoomDate}
           title={!hasZoomDate ? 'Book a call or set a Zoom date in Actions first' : undefined}
-          className="w-full text-left px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full text-left px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {confirmState === 'loading' ? 'Sending...' : confirmState === 'sent' ? 'Confirmation sent ✓' : confirmState === 'error' ? (errorMsg || 'Failed to send') : 'Send booking confirmation'}
         </button>

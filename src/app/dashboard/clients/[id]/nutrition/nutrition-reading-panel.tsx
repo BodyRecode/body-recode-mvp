@@ -156,7 +156,7 @@ export default function NutritionReadingPanel({
             disabled={generating || isPending}
             className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
               generated
-                ? 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A]'
+                ? 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
                 : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
             }`}
           >
@@ -167,7 +167,7 @@ export default function NutritionReadingPanel({
             <button
               onClick={togglePublish}
               disabled={publishing || isPending}
-              className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
             >
               {publishing ? <Loader2 size={13} className="animate-spin" /> : (published ? <EyeOff size={13} /> : <Eye size={13} />)}
               {publishing ? 'Updating...' : (published ? 'Unpublish' : 'Republish')}
@@ -224,7 +224,7 @@ export default function NutritionReadingPanel({
                 <Link
                   href={`/portal/${clientToken}/my-plan/reading`}
                   target="_blank"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
                 >
                   <ExternalLink size={11} /> Document
                 </Link>
@@ -458,7 +458,7 @@ function EditableSection({
             <button
               onClick={cancel}
               disabled={saving}
-              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4] transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] text-[#6B6B6B] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
             >
               <X size={11} /> Cancel
             </button>

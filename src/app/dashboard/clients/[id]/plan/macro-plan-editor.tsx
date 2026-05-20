@@ -189,7 +189,7 @@ export default function MacroPlanEditor({
   return (
     <div>
       {error && (
-        <p className="text-sm text-red-700 bg-red-950/50 border border-red-800 rounded-md px-3 py-2 mb-4">{error}</p>
+        <p className="text-sm text-red-700 bg-red-950/50 border border-red-200 rounded-md px-3 py-2 mb-4">{error}</p>
       )}
 
       {/* No plan yet - create one */}

@@ -71,7 +71,7 @@ export default async function PortalNutritionReadingPage({
       <div className="no-print" style={{ position: 'fixed', top: 16, left: 16, zIndex: 50 }}>
         <Link
           href={`/portal/${token}/my-plan`}
-          className="inline-flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-lg bg-[#FFFFFF]/80 backdrop-blur border border-[#E5E5E5] text-[#3A3A3A] hover:text-[#1A1A1A] hover:border-[#D4D4D4] transition-colors"
+          className="inline-flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-lg bg-[#FFFFFF]/80 backdrop-blur border border-[#E5E5E5] text-[#3A3A3A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors"
         >
           <ChevronLeft size={13} /> Back to plan
         </Link>

@@ -553,7 +553,7 @@ export default function GroupClassesPage() {
               className={`flex-1 min-w-[120px] py-3 px-4 rounded-xl border text-[13px] font-semibold transition-colors ${
                 active
                   ? 'border-[#B5CFFC] text-[#1B6DFC] bg-[rgba(27,109,252,0.08)]'
-                  : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4]'
+                  : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
               }`}
             >
               {c.label}
@@ -573,7 +573,7 @@ export default function GroupClassesPage() {
               className={`flex-1 py-2 px-3 rounded-lg border text-[11px] font-semibold transition-colors ${
                 active
                   ? 'border-[#D4D4D4] text-[#1A1A1A] bg-[#E5E5E5]'
-                  : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4]'
+                  : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
               }`}
             >
               Day {day.toUpperCase()}

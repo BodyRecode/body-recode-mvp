@@ -61,7 +61,7 @@ export default function SendSupplementaryIntakeButton({
       onClick={trigger}
       disabled={status === 'sending'}
       title="Add a 5-question follow-up intake (medications + dietary context) to the client's portal as a task card"
-      className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
+      className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
     >
       {status === 'sending'
         ? <><Loader2 size={12} className="animate-spin" /> Adding…</>

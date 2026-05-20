@@ -131,7 +131,7 @@ export default function PackageManager({
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
                     ? 'bg-blue-50 border-blue-200 text-blue-500'
-                    : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-[#D4D4D4] hover:text-[#e7e5e4]'
+                    : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
                 }`}
               >
                 {p.label}

@@ -446,7 +446,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
             <button
               onClick={() => setShowSchedule(v => !v)}
               disabled={saving || sending}
-              className="flex items-center gap-2 px-4 py-2 border border-stone-200 hover:border-stone-300 text-stone-600 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 border border-stone-200 hover:border-[#1B6DFC] hover:bg-blue-50 text-stone-600 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
             >
               <Clock size={14} />
               Schedule

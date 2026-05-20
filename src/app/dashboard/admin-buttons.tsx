@@ -33,7 +33,7 @@ function ActionButton({
   const palette =
     tone === 'caution'
       ? 'border border-[#F0DCB4] text-[#B7791F] bg-[#FEF6E7] hover:border-[#D9B976] hover:text-[#8A5A14]'
-      : 'border border-[#E5E5E5] text-[#3A3A3A] bg-[#FFFFFF] hover:border-[#D4D4D4] hover:text-[#1A1A1A]'
+      : 'border border-[#E5E5E5] text-[#3A3A3A] bg-[#FFFFFF] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
 
   return (
     <button

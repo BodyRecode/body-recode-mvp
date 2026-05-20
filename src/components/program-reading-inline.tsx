@@ -66,7 +66,7 @@ export default function ProgramReadingInline({
         </div>
         <Link
           href={documentHref}
-          className="inline-flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4] transition-colors shrink-0"
+          className="inline-flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors shrink-0"
         >
           <FileText size={10} /> View as document
         </Link>

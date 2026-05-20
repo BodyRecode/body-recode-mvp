@@ -194,7 +194,7 @@ export default function CoachGuidanceEditor({
                           className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                             active
                               ? 'bg-[rgba(27,109,252,0.12)] border-[#B5CFFC] text-[#1B6DFC]'
-                              : 'bg-[#FFFFFF] border-[#E5E5E5] text-[#6B6B6B] hover:border-[#D4D4D4]'
+                              : 'bg-[#FFFFFF] border-[#E5E5E5] text-[#6B6B6B] hover:border-[#1B6DFC] hover:bg-blue-50'
                           }`}
                         >
                           {opt.label}
@@ -221,7 +221,7 @@ export default function CoachGuidanceEditor({
                           className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                             active
                               ? 'bg-[rgba(27,109,252,0.12)] border-[#B5CFFC] text-[#1B6DFC]'
-                              : 'bg-[#FFFFFF] border-[#E5E5E5] text-[#6B6B6B] hover:border-[#D4D4D4]'
+                              : 'bg-[#FFFFFF] border-[#E5E5E5] text-[#6B6B6B] hover:border-[#1B6DFC] hover:bg-blue-50'
                           }`}
                         >
                           {opt.label}

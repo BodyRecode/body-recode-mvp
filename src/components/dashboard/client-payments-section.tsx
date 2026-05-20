@@ -165,7 +165,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
               href={`https://dashboard.stripe.com/customers/${client.stripe_customer_id}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-600 hover:text-[#1A1A1A] border border-stone-200 hover:border-stone-300 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-600 hover:text-[#1B6DFC] border border-stone-200 hover:border-[#1B6DFC] hover:bg-blue-50 rounded-lg transition-colors"
             >
               <ExternalLink size={12} />
               Open in Stripe

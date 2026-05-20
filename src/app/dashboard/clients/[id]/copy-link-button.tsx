@@ -22,7 +22,7 @@ export default function CopyLinkButton({
   return (
     <button
       onClick={copy}
-      className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#e7e5e4] transition-colors"
+      className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
     >
       {copied ? 'Copied!' : label}
     </button>

@@ -94,7 +94,7 @@ export default async function LeadsPage({
                     className={`text-[11px] px-3 py-1.5 rounded-full border transition-colors ${
                       active
                         ? getLeadStatusColour(s)
-                        : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-[#D4D4D4] hover:text-[#1A1A1A] bg-[#FFFFFF]'
+                        : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] bg-[#FFFFFF]'
                     }`}
                   >
                     {getLeadStatusLabel(s)}

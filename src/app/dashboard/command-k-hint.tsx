@@ -21,7 +21,7 @@ export default function CommandKHint() {
     <button
       onClick={open}
       aria-label="Open command palette"
-      className="hidden md:inline-flex items-center gap-2 text-[11px] text-[#6B6B6B] hover:text-[#1A1A1A] px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] hover:border-[#D4D4D4] transition-colors"
+      className="hidden md:inline-flex items-center gap-2 text-[11px] text-[#6B6B6B] hover:text-[#1B6DFC] px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors"
     >
       <Search size={12} />
       <span>Search</span>

@@ -27,7 +27,7 @@ export default function NutritionDraftActions({ planId, clientId }: { planId: st
       <button
         onClick={handleDiscard}
         disabled={loading !== null}
-        className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-700 transition-colors disabled:opacity-50"
+        className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-50"
       >
         {loading === 'discard' ? 'Discarding...' : 'Discard Draft'}
       </button>

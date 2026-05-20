@@ -94,7 +94,7 @@ export default function MedicationsEditor({
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#e7e5e4] transition-colors"
+            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
           >
             {value ? 'Edit' : 'Add'}
           </button>
@@ -135,7 +135,7 @@ export default function MedicationsEditor({
             <button
               onClick={cancel}
               disabled={saving}
-              className="text-sm font-bold px-4 py-2 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors"
+              className="text-sm font-bold px-4 py-2 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
             >
               Cancel
             </button>

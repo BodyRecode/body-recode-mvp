@@ -101,7 +101,7 @@ export default function ProgramsGrid({ items }: { items: ProgramCard[] }) {
                 className={`text-[12px] px-3 py-1.5 rounded-md border transition-colors whitespace-nowrap ${
                   active
                     ? 'bg-[#E5E5E5] text-[#1A1A1A] border-[#D4D4D4]'
-                    : 'bg-transparent text-[#6B6B6B] border-[#E5E5E5] hover:text-[#1A1A1A] hover:border-[#D4D4D4]'
+                    : 'bg-transparent text-[#6B6B6B] border-[#E5E5E5] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
                 }`}
               >
                 {f.label}

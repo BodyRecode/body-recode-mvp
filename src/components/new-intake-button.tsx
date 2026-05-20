@@ -42,7 +42,7 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
       <button
         onClick={createInvitation}
         disabled={status === 'loading'}
-        className="text-sm px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#D4D4D4] transition-colors disabled:opacity-50"
+        className="text-sm px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
       >
         {status === 'loading' ? 'Creating…' : 'New intake'}
       </button>
