@@ -269,9 +269,11 @@ export default function MembershipPage() {
             color: '#1A1A1A',
             marginBottom: '24px',
           }}>
-            State shift is not a six-week event.
+            You do the work.
             <br />
-            <span style={{ color: '#1B6DFC' }}>It is a long arc.</span>
+            The results come.
+            <br />
+            <span style={{ color: '#1B6DFC' }}>They never last.</span>
           </h1>
 
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '32px' }} />
@@ -324,10 +326,10 @@ export default function MembershipPage() {
           </div>
 
           <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '14px' }}>
-            Going from Depleted to Transitioning takes months. Going from Transitioning to Ready takes longer. Six weeks of Blueprint is enough to correct the pattern. It is not enough to shift the state.
+            Most programmes deliver the work for a fixed window. Six weeks. Twelve weeks. Three months. The window closes, the structure disappears, and the body slowly returns to where it was.
           </p>
           <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '40px' }}>
-            The Body Recode Membership is the infrastructure for the long arc. Block by block. Pattern continuity carries every block. A monthly Loom from me reading your check-in data. The training intensity scales as your body comes online. $49 per week. Cancel anytime.
+            The Body Recode Membership is the infrastructure for the long arc. Block by block. Pattern continuity. A monthly Loom from me reading your check-in data. $49 per week. Cancel anytime.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '32px' }}>

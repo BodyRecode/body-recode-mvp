@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
-export const alt = "State shift is not a six-week event. It is a long arc. The Body Recode Membership is the infrastructure. $49/week."
+export const alt = "You do the work. The results come. They never last. The Body Recode Membership is the infrastructure for the long arc. $49/week."
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -93,18 +93,19 @@ export default async function Image() {
         >
           <div
             style={{
-              fontSize: '70px',
+              fontSize: '80px',
               fontWeight: 900,
               color: '#1A1A1A',
-              lineHeight: 1.05,
+              lineHeight: 1.0,
               letterSpacing: '-0.035em',
-              marginBottom: '28px',
+              marginBottom: '24px',
               display: 'flex',
               flexDirection: 'column',
             }}
           >
-            <div>State shift is not a six-week event.</div>
-            <div style={{ color: '#1B6DFC' }}>It is a long arc.</div>
+            <div>You do the work.</div>
+            <div>The results come.</div>
+            <div style={{ color: '#1B6DFC' }}>They never last.</div>
           </div>
 
           <div
@@ -113,20 +114,20 @@ export default async function Image() {
               height: '4px',
               background: '#1B6DFC',
               borderRadius: '2px',
-              marginBottom: '24px',
+              marginBottom: '20px',
             }}
           />
 
           <div
             style={{
-              fontSize: '28px',
+              fontSize: '26px',
               fontWeight: 500,
               color: '#4A4A4A',
               lineHeight: 1.4,
               maxWidth: '1000px',
             }}
           >
-            The infrastructure for the months-long state shift. Block by block. Calibrated to your data.
+            The infrastructure for the long arc. Block by block. Calibrated to your data.
           </div>
         </div>
 
