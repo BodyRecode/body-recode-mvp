@@ -383,13 +383,13 @@ export default function ZoomCompanion({
           <div className="flex items-center bg-stone-900 border border-stone-800 rounded-lg p-0.5">
             <button
               onClick={() => setView('live')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#1B6DFC] text-[#1A1A1A]' : 'text-stone-400 hover:text-[#1A1A1A]'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#1B6DFC] text-white' : 'text-stone-400 hover:text-white'}`}
             >
               Live
             </button>
             <button
               onClick={() => setView('postcall')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#1B6DFC] text-[#1A1A1A]' : 'text-stone-400 hover:text-[#1A1A1A]'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#1B6DFC] text-white' : 'text-stone-400 hover:text-white'}`}
             >
               Post-Call
             </button>
@@ -400,7 +400,7 @@ export default function ZoomCompanion({
             <span className="text-2xl font-mono font-bold text-[#1A1A1A] tabular-nums">{formatTime(seconds)}</span>
             <button
               onClick={() => setRunning(r => !r)}
-              className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-700 hover:bg-stone-600 text-[#1A1A1A]' : 'bg-[#1B6DFC] text-[#1A1A1A] hover:bg-[#1056D6]'}`}
+              className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-700 hover:bg-stone-600 text-white' : 'bg-[#1B6DFC] text-white hover:bg-[#1056D6]'}`}
             >
               {running ? 'Pause' : seconds === 0 ? 'Start' : 'Resume'}
             </button>
@@ -430,7 +430,7 @@ export default function ZoomCompanion({
                 <button
                   onClick={generateSummary}
                   disabled={!transcript.trim() || generating}
-                  className="bg-[#1B6DFC] text-[#1A1A1A] font-bold px-6 py-3 rounded-lg text-sm hover:bg-[#1056D6] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="bg-[#1B6DFC] text-white font-bold px-6 py-3 rounded-lg text-sm hover:bg-[#1056D6] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {generating ? 'Generating summary...' : 'Generate Summary'}
                 </button>
@@ -451,7 +451,7 @@ export default function ZoomCompanion({
                   <button
                     onClick={saveSummaryToNotes}
                     disabled={savingSummary || summarySaved}
-                    className="bg-[#1B6DFC] text-[#1A1A1A] font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-[#1056D6] transition-colors disabled:opacity-50"
+                    className="bg-[#1B6DFC] text-white font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-[#1056D6] transition-colors disabled:opacity-50"
                   >
                     {summarySaved ? 'Saved to notes' : savingSummary ? 'Saving...' : 'Save to lead notes'}
                   </button>
@@ -659,7 +659,7 @@ export default function ZoomCompanion({
               <button
                 onClick={markZoom1Complete}
                 disabled={statusUpdated}
-                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${statusUpdated ? 'bg-blue-600/10 border border-blue-600/20 text-emerald-700' : 'bg-stone-800 border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-[#1A1A1A]'}`}
+                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${statusUpdated ? 'bg-blue-600/10 border border-blue-600/20 text-emerald-700' : 'bg-stone-800 border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white'}`}
               >
                 {statusUpdated ? 'Zoom 1 Marked Complete' : 'Mark Zoom 1 Complete'}
               </button>

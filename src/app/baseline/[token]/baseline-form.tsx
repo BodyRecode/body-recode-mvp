@@ -174,7 +174,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
           {portalHref && (
             <a
               href={portalHref}
-              className="inline-flex items-center gap-2 bg-[#1B6DFC] text-[#1A1A1A] text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#5390FF] transition-colors"
+              className="inline-flex items-center gap-2 bg-[#1B6DFC] text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#5390FF] transition-colors"
             >
               Back to your portal
             </a>

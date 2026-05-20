@@ -56,7 +56,7 @@ export default function RunCommencementBackfillButton() {
         type="button"
         onClick={run}
         disabled={pending}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#1A1A1A] bg-blue-50 border border-blue-200 hover:bg-blue-500/15 hover:border-blue-500/50 rounded-lg transition-colors disabled:opacity-50"
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-50 border border-blue-200 hover:bg-blue-500/15 hover:border-blue-500/50 rounded-lg transition-colors disabled:opacity-50"
       >
         <Wrench size={14} className={pending ? 'animate-pulse' : ''} />
         {pending ? 'Backfilling…' : 'Backfill commencement fees'}

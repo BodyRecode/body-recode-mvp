@@ -251,7 +251,7 @@ export default function BookingActionButtons({
           <button
             onClick={confirmCustomBooking}
             disabled={!customDate || !customTime}
-            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-[#1A1A1A] text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-white text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Book {leadName.split(' ')[0]}
           </button>
@@ -268,7 +268,7 @@ export default function BookingActionButtons({
           <p className="text-xs text-[#6B6B6B] mb-4">{selectedTime} Brisbane · 30 min · {leadName}</p>
           <button
             onClick={confirmBooking}
-            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-[#1A1A1A] text-sm font-bold transition-colors"
+            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-white text-sm font-bold transition-colors"
           >
             Confirm
           </button>

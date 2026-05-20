@@ -381,13 +381,13 @@ export default function ZoomCompanion({
           <div className="flex items-center bg-stone-100 border border-stone-200 rounded-lg p-0.5">
             <button
               onClick={() => setView('live')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#1B6DFC] text-white' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#1B6DFC] text-white' : 'text-stone-600 hover:text-white'}`}
             >
               Live
             </button>
             <button
               onClick={() => setView('postcall')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#1B6DFC] text-white' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#1B6DFC] text-white' : 'text-stone-600 hover:text-white'}`}
             >
               Post-Call
             </button>
@@ -398,7 +398,7 @@ export default function ZoomCompanion({
             <span className="text-2xl font-mono font-bold text-[#1A1A1A] tabular-nums">{formatTime(seconds)}</span>
             <button
               onClick={() => setRunning(r => !r)}
-              className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-300 hover:bg-stone-400 text-[#1A1A1A]' : 'bg-[#1B6DFC] text-white hover:bg-[#1056D6]'}`}
+              className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-300 hover:bg-stone-400 text-white' : 'bg-[#1B6DFC] text-white hover:bg-[#1056D6]'}`}
             >
               {running ? 'Pause' : seconds === 0 ? 'Start' : 'Resume'}
             </button>

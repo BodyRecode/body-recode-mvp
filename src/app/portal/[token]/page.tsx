@@ -258,7 +258,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Onboarding tasks */}
         {!allOnboardingDone && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">Getting started</p></div>
+            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Getting started</p></div>
             <div className="space-y-3">
               {tasks.map((task) => (
                 <div
@@ -309,7 +309,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             content so the client sees and completes it on next sign-in. */}
         {pendingSupplementary && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">A quick follow-up from Kade</p></div>
+            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">A quick follow-up from Kade</p></div>
             <Link
               href={`/intake-supplement/${pendingSupplementary.token}`}
               className="block rounded-2xl border border-blue-200 bg-blue-50 p-5 hover:border-[#1B6DFC]/60 hover:bg-blue-50 transition-colors"
@@ -330,7 +330,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Foundational Reading - shown the moment Kade publishes it */}
         {publishedReading && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">Your Reading</p></div>
+            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Your Reading</p></div>
             <Link
               href={`/portal/${token}/foundational-reading`}
               className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors mb-3"
@@ -368,7 +368,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Sessions - face-to-face clients */}
         {allOnboardingDone && client.session_type === 'face_to_face' && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">Sessions</p></div>
+            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Sessions</p></div>
             <Link
               href={`/portal/${token}/sessions`}
               className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
@@ -399,7 +399,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             evaluates training response, so it only opens once a program exists. */}
         {allOnboardingDone && client.coaching_started_at && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">This week</p></div>
+            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">This week</p></div>
             {!activeProgram ? (
               <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5">
                 <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Your program is being built</p>
@@ -464,14 +464,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Preview header during onboarding */}
         {!allOnboardingDone && (
           <div className="mb-6">
-            <div className="flex items-center gap-2.5 mb-2"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">Your portal</p></div>
+            <div className="flex items-center gap-2.5 mb-2"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Your portal</p></div>
             <p className="text-xs text-[#999999] leading-relaxed">A look at what unlocks as your coach builds your plan. You can take measurements anytime.</p>
           </div>
         )}
 
         {/* Training */}
         <div className="mb-10">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">Training</p></div>
+          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Training</p></div>
             {activeProgram ? (
               <div className="space-y-3">
                 {programReviewedThisWeek ? (
@@ -525,7 +525,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
         {/* Nutrition */}
         <div className="mb-10">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">Nutrition</p></div>
+          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Nutrition</p></div>
             {activeNutritionPlan ? (
               <div className="space-y-3">
                 {nutritionReviewedThisWeek ? (
@@ -579,7 +579,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
         {/* Progress */}
         <div className="mb-10">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">Progress</p></div>
+          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Progress</p></div>
           <Link
             href={`/portal/${token}/progress`}
             className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-4 hover:border-[#E5E5E5] transition-colors"
@@ -597,7 +597,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Coach feedback */}
         {(latestProgramReview?.coach_notes || latestNutritionReview?.coach_notes) && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">From your coach</p></div>
+            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">From your coach</p></div>
             <div className="space-y-3">
               {latestProgramReview?.coach_notes && (
                 <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5">
@@ -653,7 +653,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
         {/* Resources */}
         <div className="mb-10">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1A1A1A] uppercase">Resources</p></div>
+          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Resources</p></div>
           <Link
             href={`/portal/${token}/resources`}
             className="flex items-center justify-between w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-5 py-4 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors mb-3"

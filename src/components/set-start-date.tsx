@@ -34,7 +34,7 @@ export default function SetStartDate({ clientId, currentDate }: { clientId: stri
       <button
         onClick={save}
         disabled={saving || !date}
-        className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-[#1A1A1A] rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+        className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
       >
         {saving ? 'Saving...' : saved ? 'Saved!' : 'Set Date'}
       </button>

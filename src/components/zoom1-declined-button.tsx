@@ -34,7 +34,7 @@ export default function Zoom1DeclinedButton({ leadId }: { leadId: string }) {
       <button
         onClick={send}
         disabled={loading}
-        className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-[#1A1A1A] rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+        className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
       >
         {loading ? 'Starting...' : 'Start Declined Follow-up'}
       </button>

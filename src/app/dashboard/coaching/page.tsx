@@ -171,7 +171,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               key={opt.value}
               href={buildHref({ type: opt.value === 'all' ? null : opt.value })}
               className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                typeFilter === opt.value ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
+                typeFilter === opt.value ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#6B6B6B] hover:text-white'
               }`}
             >
               {opt.label}

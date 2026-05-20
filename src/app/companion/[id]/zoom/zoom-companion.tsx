@@ -639,7 +639,7 @@ export default function ZoomCompanion({
           <span className="text-2xl font-mono font-bold text-[#1A1A1A] tabular-nums">{formatTime(seconds)}</span>
           <button
             onClick={() => setRunning(r => !r)}
-            className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-700 hover:bg-stone-600 text-[#1A1A1A]' : 'bg-[#1B6DFC] text-[#1A1A1A] hover:bg-[#1056D6]'}`}
+            className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-700 hover:bg-stone-600 text-white' : 'bg-[#1B6DFC] text-white hover:bg-[#1056D6]'}`}
           >
             {running ? 'Pause' : seconds === 0 ? 'Start' : 'Resume'}
           </button>
@@ -1056,7 +1056,7 @@ export default function ZoomCompanion({
               <button
                 onClick={markCallComplete}
                 disabled={callComplete}
-                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${callComplete ? 'bg-blue-600/10 border border-blue-600/20 text-emerald-700' : 'bg-stone-800 border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-[#1A1A1A]'}`}
+                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${callComplete ? 'bg-blue-600/10 border border-blue-600/20 text-emerald-700' : 'bg-stone-800 border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white'}`}
               >
                 {callComplete ? 'Call Marked Complete' : 'Mark Call Complete'}
               </button>

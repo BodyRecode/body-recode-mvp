@@ -181,7 +181,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
           <button
             onClick={submit}
             disabled={submitting}
-            className="px-8 py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-[#1A1A1A] font-bold text-sm rounded-xl transition-colors disabled:opacity-50"
+            className="px-8 py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-xl transition-colors disabled:opacity-50"
           >
             {submitting ? 'Submitting…' : 'Submit follow-up'}
           </button>

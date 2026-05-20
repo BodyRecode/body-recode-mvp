@@ -119,7 +119,7 @@ export default function PerformanceCoachingPage() {
           </p>
           <a
             href="https://performance.bodyrecode.au"
-            className="inline-block bg-[#1B6DFC] text-[#1A1A1A] font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb3] transition-colors mb-4"
+            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb3] transition-colors mb-4"
           >
             Visit Performance Coaching
           </a>

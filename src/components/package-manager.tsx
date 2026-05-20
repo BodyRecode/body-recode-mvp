@@ -220,13 +220,13 @@ export default function PackageManager({
             <button
               onClick={sendLink}
               disabled={sending || sent}
-              className="text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-[#1A1A1A] rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+              className="text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
             >
               {sending ? 'Sending...' : sent ? 'Sent!' : 'Send to Client'}
             </button>
             <button
               onClick={copyLink}
-              className="text-xs font-bold px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors"
+              className="text-xs font-bold px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-blue-50 transition-colors"
             >
               {copied ? 'Copied!' : 'Copy Link'}
             </button>

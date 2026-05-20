@@ -25,7 +25,7 @@ export default function OnlinePerformanceCoachingPage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#1B6DFC] text-[#1A1A1A] font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free performance check-in
           </Link>
@@ -353,7 +353,7 @@ export default function OnlinePerformanceCoachingPage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#1B6DFC] text-[#1A1A1A] font-bold px-10 py-5 rounded-full text-lg hover:bg-[#1056D6] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-white font-bold px-10 py-5 rounded-full text-lg hover:bg-[#1056D6] transition-colors"
           >
             Start your free check-in →
           </Link>

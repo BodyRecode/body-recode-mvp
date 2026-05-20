@@ -1394,4 +1394,3 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     </div>
   )
 }
-

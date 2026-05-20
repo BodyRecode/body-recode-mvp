@@ -73,7 +73,7 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
                 ) : (
                   <Link
                     href={checkinUrl}
-                    className="text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-[#1A1A1A] rounded-lg hover:bg-[#1056D6] transition-colors"
+                    className="text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1056D6] transition-colors"
                   >
                     Complete
                   </Link>

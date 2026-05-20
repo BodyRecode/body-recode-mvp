@@ -256,7 +256,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       {/* Scorecard Result */}
       {scorecardScore && scorecardState && (
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Body State Scorecard</h2></div>
+          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Body State Scorecard</h2></div>
           <div className="flex items-start gap-6">
             <div className="text-center shrink-0">
               <div className="text-5xl font-black leading-none" style={{ color: scorecardStyle?.color ?? '#6B6B6B' }}>
@@ -338,7 +338,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       {scorecardScore && scorecardState && (
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
           <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Body Decode Report</h2></div>
+            <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Body Decode Report</h2></div>
             {scorecardReport?.token && (
               <Link
                 href={`/report/${scorecardReport.token}`}
@@ -422,7 +422,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Zoom</h2></div>
+            <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Zoom</h2></div>
             <p className="text-[#999999] text-sm">
               {lead.zoom_meeting_url ? 'Opens companion screen and Zoom call.' : 'Open the call companion screen for this call.'}
             </p>
@@ -437,7 +437,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               <Link
                 href={lead.zoom_meeting_url}
                 target="_blank"
-                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-blue-50 transition-colors"
               >
                 Join Zoom ↗
               </Link>
@@ -471,7 +471,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Convert to client */}
       <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
-        <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Coaching Entry</h2></div>
+        <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Coaching Entry</h2></div>
         <p className="text-[#999999] text-sm mb-4">
           Generate a unique commencement fee link to send to the client. Once paid, their client profile and intake link are created automatically.
         </p>
@@ -547,7 +547,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Self-Guided Program</h2></div>
+              <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Self-Guided Program</h2></div>
               <p className="text-[#999999] text-sm">
                 {lead.downsell_purchased
                   ? `${lead.downsell_state ? lead.downsell_state.charAt(0).toUpperCase() + lead.downsell_state.slice(1) : ''} State Program purchased.`
@@ -572,7 +572,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       {lead.status === 'closed_no_show' && (
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4 flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Re-engagement Sequence</h2></div>
+            <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Re-engagement Sequence</h2></div>
             <p className="text-[#999999] text-sm">3 emails over 10 days. Day 1, Day 4, Day 10. Calm re-invitation to rebook.</p>
           </div>
           <NoShowSequenceButton leadId={lead.id} />
@@ -583,7 +583,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       {lead.status === 'closed_declined' && (
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4 flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Declined Follow-up Sequence</h2></div>
+            <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Declined Follow-up Sequence</h2></div>
             <p className="text-[#999999] text-sm">3 emails over 12 days. Keeps the door open without pressure.</p>
           </div>
           <Zoom1DeclinedButton leadId={lead.id} />
@@ -596,7 +596,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       {/* Check-in answers */}
       {hasLeadData && (
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Performance Check-In</h2></div>
+          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Performance Check-In</h2></div>
           <div className="space-y-4">
             {Object.entries(CHECK_IN_QUESTIONS).map(([key, label]) => {
               const val = answers?.[key]
@@ -617,7 +617,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       {lead.report_html && (
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Scheduled Report</h2></div>
+            <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Scheduled Report</h2></div>
             {lead.report_scheduled_at && (
               <span className="text-xs text-blue-500 font-medium">
                 Sends {new Date(lead.report_scheduled_at).toLocaleString('en-AU', {
@@ -649,7 +649,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
           <div className="flex items-center justify-between">
             <div>
-              <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Scheduled Follow-ups</h2></div>
+              <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Scheduled Follow-ups</h2></div>
               <p className="text-xs text-[#999999] mt-1">{(lead.followup_email_ids as string[]).length} email{(lead.followup_email_ids as string[]).length > 1 ? 's' : ''} queued</p>
             </div>
             <CancelSequenceButton leadId={lead.id} />
@@ -659,7 +659,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Communications */}
       <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
-        <div className="flex items-center gap-2.5 mb-5"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Communications</h2></div>
+        <div className="flex items-center gap-2.5 mb-5"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Communications</h2></div>
         {events && events.length > 0 ? (
           <div className="relative">
             <div className="absolute left-[7px] top-2 bottom-2 w-px bg-[#E5E5E5]" />
@@ -702,7 +702,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Notes */}
       <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6">
-        <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Notes</h2></div>
+        <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Notes</h2></div>
         <p className="text-[#6B6B6B] text-sm leading-relaxed whitespace-pre-wrap">
           {lead.notes || 'No notes yet.'}
         </p>

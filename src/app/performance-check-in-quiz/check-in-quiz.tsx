@@ -153,7 +153,7 @@ export default function CheckInQuiz() {
           </p>
           <a
             href="https://bodyrecode.au"
-            className="inline-block px-6 py-3 bg-[#1B6DFC] text-[#1A1A1A] text-sm font-bold rounded-lg hover:bg-[#1056D6] transition-colors"
+            className="inline-block px-6 py-3 bg-[#1B6DFC] text-white text-sm font-bold rounded-lg hover:bg-[#1056D6] transition-colors"
           >
             Return to home
           </a>
@@ -243,7 +243,7 @@ export default function CheckInQuiz() {
               type="button"
               onClick={handleSubmit}
               disabled={!canSubmit || submitting}
-              className="flex-1 bg-[#1B6DFC] text-[#1A1A1A] text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-30 disabled:cursor-not-allowed tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-white text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-30 disabled:cursor-not-allowed tracking-tight"
             >
               {submitting ? 'Sending…' : 'Submit check-in'}
             </button>
@@ -321,7 +321,7 @@ export default function CheckInQuiz() {
             type="button"
             onClick={next}
             disabled={!answered}
-            className="flex-1 bg-[#1B6DFC] text-[#1A1A1A] text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-30 disabled:cursor-not-allowed tracking-tight"
+            className="flex-1 bg-[#1B6DFC] text-white text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-30 disabled:cursor-not-allowed tracking-tight"
           >
             {current === QUESTIONS.length - 1 ? 'Next' : 'Next'}
           </button>

@@ -52,7 +52,7 @@ function ScaleInput({
             onClick={() => onChange(n)}
             className={`flex-1 py-3.5 rounded-2xl text-sm font-bold transition-all duration-150 ${
               value === n
-                ? 'bg-[#1B6DFC] text-[#1A1A1A] shadow-sm'
+                ? 'bg-[#1B6DFC] text-white shadow-sm'
                 : hasError
                 ? 'bg-stone-800 text-stone-400 border border-red-400'
                 : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
@@ -159,7 +159,7 @@ function QuestionInput({
               onClick={() => onToggle(opt)}
               className={`text-[13px] font-medium px-4 py-2.5 rounded-2xl transition-all duration-150 ${
                 selected.includes(opt)
-                  ? 'bg-[#1B6DFC] text-[#1A1A1A]'
+                  ? 'bg-[#1B6DFC] text-white'
                   : hasError
                   ? 'bg-stone-800 text-stone-400 border border-red-400'
                   : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
@@ -365,7 +365,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
           {portalToken && (
             <a
               href={`/portal/${portalToken}`}
-              className="inline-block px-6 py-3 bg-[#1B6DFC] hover:bg-blue-300 text-[#1A1A1A] font-bold text-sm rounded-2xl transition-colors"
+              className="inline-block px-6 py-3 bg-[#1B6DFC] hover:bg-blue-300 text-white font-bold text-sm rounded-2xl transition-colors"
             >
               Back to your portal
             </a>
@@ -470,7 +470,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
               type="button"
               onClick={handleSubmit}
               disabled={submitting}
-              className="flex-1 bg-[#1B6DFC] text-[#1A1A1A] text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-40 tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-white text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-40 tracking-tight"
             >
               {submitting ? 'Submitting…' : 'Submit intake'}
             </button>
@@ -478,7 +478,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
             <button
               type="button"
               onClick={handleContinue}
-              className="flex-1 bg-[#1B6DFC] text-[#1A1A1A] text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-white text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors tracking-tight"
             >
               Continue
             </button>

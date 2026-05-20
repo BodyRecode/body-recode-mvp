@@ -25,7 +25,7 @@ export default function PerformanceCheckInPage() {
           </p>
           <Link
             href="/not-a-sign-up"
-            className="inline-block bg-[#1B6DFC] text-[#1A1A1A] font-bold px-10 py-5 rounded-full text-lg hover:bg-[#1056D6] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-white font-bold px-10 py-5 rounded-full text-lg hover:bg-[#1056D6] transition-colors"
           >
             Begin the check-in
           </Link>
@@ -137,7 +137,7 @@ export default function PerformanceCheckInPage() {
           </p>
           <Link
             href="/not-a-sign-up"
-            className="inline-block bg-[#1B6DFC] text-[#1A1A1A] font-bold px-10 py-5 rounded-full text-lg hover:bg-[#1056D6] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-white font-bold px-10 py-5 rounded-full text-lg hover:bg-[#1056D6] transition-colors"
           >
             Begin the check-in →
           </Link>
