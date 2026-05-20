@@ -22,7 +22,7 @@ const STATE_CONTENT: Record<string, {
     border: 'rgba(239,68,68,0.2)',
     headline: 'Your body is in protection mode.',
     biology: 'When cortisol stays chronically elevated from stress, poor sleep, high training load, or low food intake, your body shifts into a conservation state. Metabolism slows. Fat storage increases, particularly around the midsection. Testosterone and thyroid output drop. Recovery between sessions becomes incomplete. Your body is not broken. It is doing exactly what it is designed to do when it perceives threat. The problem is that most of the interventions people apply in this state (more training, less food, stricter protocols) accelerate the problem rather than solving it.',
-    whatIsHappening: 'In a depleted state, fat loss and performance adaptation are biologically downregulated. Your body is prioritising survival functions over body composition change. This is not a willpower issue. No amount of discipline overrides physiology when the system is in threat mode. The path out is not harder — it is smarter.',
+    whatIsHappening: 'In a depleted state, fat loss and performance adaptation are biologically downregulated. Your body is prioritising survival functions over body composition change. This is not a willpower issue. No amount of discipline overrides physiology when the system is in threat mode. The path out is not harder, it is smarter.',
     primaryFocus: 'Restore before you push. The first priority is reducing the biological stress load: sleep quality, recovery between sessions, and removing the inputs that are keeping cortisol elevated. Fat loss and performance follow. They do not lead.',
     stopDoing: [
       'Training at high intensity when recovery is incomplete',
@@ -32,7 +32,7 @@ const STATE_CONTENT: Record<string, {
     ],
     startDoing: [
       'Prioritise 7–9 hours of sleep above all other interventions',
-      'Reduce training intensity and volume temporarily — not permanently',
+      'Reduce training intensity and volume temporarily, not permanently',
       'Eat at or above maintenance for 2–4 weeks to restore metabolic function',
       'Identify and reduce the primary chronic stress source',
     ],
@@ -57,20 +57,20 @@ const STATE_CONTENT: Record<string, {
     ],
   },
   'Ready State': {
-    color: '#14b8a6',
-    bg: 'rgba(20,184,166,0.06)',
-    border: 'rgba(20,184,166,0.2)',
+    color: '#1B6DFC',
+    bg: 'rgba(27, 109, 252,0.06)',
+    border: 'rgba(27, 109, 252,0.2)',
     headline: 'Your biology is in a position to respond.',
     biology: 'A ready state means your core biological systems (energy, sleep, stress, and recovery) are functioning well enough that your body can actually respond to the inputs you give it. Cortisol is not chronically elevated. Recovery between sessions is happening. Your metabolism is not suppressed. This is the state where training and nutrition changes produce visible, consistent results.',
     whatIsHappening: 'If you are in a ready state but fat loss or performance is still not moving, the issue is in the prescription, not the biology. Your training, nutrition, or both need to be adjusted to actually drive adaptation. You have the foundation. The question now is whether the programme is precise enough to produce the outcome you are after.',
-    primaryFocus: 'Optimise the prescription. Your body is ready to respond — make sure what you are giving it is accurate enough to produce results. Vague protocols do not produce precise outcomes. At this state, specificity is everything.',
+    primaryFocus: 'Optimise the prescription. Your body is ready to respond, make sure what you are giving it is accurate enough to produce results. Vague protocols do not produce precise outcomes. At this state, specificity is everything.',
     stopDoing: [
       'Running generic programmes that are not calibrated to your specific goals',
-      'Maintaining the same approach because it used to work — adapt as you progress',
-      'Underestimating recovery — even in a ready state, overreaching will erode it',
+      'Maintaining the same approach because it used to work, adapt as you progress',
+      'Underestimating recovery, even in a ready state, overreaching will erode it',
     ],
     startDoing: [
-      'Dial in your training stimulus — progressive overload, frequency, and specificity',
+      'Dial in your training stimulus, progressive overload, frequency, and specificity',
       'Audit your nutrition: total intake, protein target, and meal timing relative to training',
       'Track your response over 4–6 week blocks and adjust based on data',
     ],
@@ -85,30 +85,30 @@ const SECTION_INTERPRETATIONS: Record<string, Record<number, string>> = {
   },
   Sleep: {
     1: 'Your sleep is not restoring you. Poor sleep quality and broken sleep are among the most powerful suppressors of fat loss and performance. Growth hormone release, testosterone production, and cortisol clearance all occur during deep sleep. Without it, recovery is incomplete, hunger signals are disrupted, and the system stays under stress.',
-    2: 'Your sleep is inconsistent. Most nights are okay but not reliably restorative. This creates an unpredictable recovery baseline — your body cannot consistently clear the stress load from training and daily life, which creates inconsistent results even when your other inputs are on point.',
+    2: 'Your sleep is inconsistent. Most nights are okay but not reliably restorative. This creates an unpredictable recovery baseline, your body cannot consistently clear the stress load from training and daily life, which creates inconsistent results even when your other inputs are on point.',
     3: 'You are sleeping well and waking rested. This is the foundation everything else is built on. Consistent quality sleep means your recovery system is functioning, hormonal rhythm is maintained, and your body has the capacity to adapt to training stimuli.',
   },
   'Stress Load': {
     1: 'Your stress load is high. Chronic psychological and physiological stress keeps cortisol elevated continuously, which directly competes with fat loss, muscle retention, and recovery. High stress is often the hidden driver behind plateaus that do not respond to changes in training or nutrition. The real problem is systemic, not programmatic.',
-    2: 'Your stress load is moderate. It is manageable most of the time but it is not low. This level of background stress is enough to create inconsistency in results — particularly in fat loss response and recovery. It may not feel like a significant issue day-to-day, but it is affecting your body\'s ability to respond.',
-    3: 'Your stress load is low to moderate. This is a meaningful advantage. When the system is not under chronic stress pressure, it can allocate resources toward adaptation — fat loss, muscle development, and performance improvement. This is the foundation of a responsive state.',
+    2: 'Your stress load is moderate. It is manageable most of the time but it is not low. This level of background stress is enough to create inconsistency in results, particularly in fat loss response and recovery. It may not feel like a significant issue day-to-day, but it is affecting your body\'s ability to respond.',
+    3: 'Your stress load is low to moderate. This is a meaningful advantage. When the system is not under chronic stress pressure, it can allocate resources toward adaptation, fat loss, muscle development, and performance improvement. This is the foundation of a responsive state.',
   },
   'Training Response': {
-    1: 'Your training is not producing adaptation. Flat or declining performance and a body that feels beaten up are signs of accumulated fatigue, incomplete recovery, or a mismatch between training load and your current biological capacity. More training in this state does not solve the problem — it deepens it.',
+    1: 'Your training is not producing adaptation. Flat or declining performance and a body that feels beaten up are signs of accumulated fatigue, incomplete recovery, or a mismatch between training load and your current biological capacity. More training in this state does not solve the problem, it deepens it.',
     2: 'Your training response is inconsistent. You are making some progress but cannot build momentum. This pattern usually indicates that recovery is not keeping pace with training demand. Either the volume is slightly too high, sleep and nutrition are not supporting it, or stress load is interfering with adaptation.',
     3: 'You are responding well to training. Consistent progress, increasing performance, and recovering between sessions are the hallmarks of a responsive system. Your training load and recovery capacity are aligned. This is the state where structured progressive overload produces reliable results.',
   },
   'Fat Loss Response': {
     1: 'Your body is actively resisting fat loss. When someone is doing everything right on paper (clean eating, consistent training) and the body is not responding, it is almost always a biological state issue, not a discipline issue. The body in a depleted or high-stress state suppresses fat oxidation as a survival mechanism. Eating less and training more in this state makes it worse.',
     2: 'Your fat loss is slow or stalled. Movement is inconsistent relative to the effort going in. This gap between input and output usually points to a metabolic adaptation from dieting history, training load exceeding recovery, or a hormonal imbalance that is blunting response. The fix is rarely more effort. It is usually a recalibration.',
-    3: 'Your body is responding and composition is shifting. This is the clearest signal that your biological state is aligned with your goals. The system is not in resistance mode. If you are in this position, the focus should be on precision — making sure the programme is specific enough to drive the outcome you are after at the rate you want.',
+    3: 'Your body is responding and composition is shifting. This is the clearest signal that your biological state is aligned with your goals. The system is not in resistance mode. If you are in this position, the focus should be on precision, making sure the programme is specific enough to drive the outcome you are after at the rate you want.',
   },
 }
 
 function getScoreColor(score: number) {
   if (score === 1) return '#ef4444'
   if (score === 2) return '#f59e0b'
-  return '#14b8a6'
+  return '#1B6DFC'
 }
 
 function getScoreLabel(score: number) {
@@ -144,7 +144,7 @@ export default function ReportClient({ report }: { report: {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0c0a09', color: 'white', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: 'white', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       <style>{`
         @media print {
           body { background: white !important; color: black !important; }
@@ -154,13 +154,13 @@ export default function ReportClient({ report }: { report: {
       `}</style>
 
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #1c1917', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <img src="/logo-teal.png" alt="Body Recode" style={{ height: '80px' }} />
+      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <img src="/logo-black.png" alt="Body Recode" style={{ height: '80px' }} />
         <button
           className="no-print"
           onClick={handleDownload}
           style={{
-            padding: '10px 20px', background: '#14b8a6', color: '#0c0a09',
+            padding: '10px 20px', background: '#1B6DFC', color: '#FFFFFF',
             border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 700,
             cursor: 'pointer',
           }}
@@ -173,11 +173,11 @@ export default function ReportClient({ report }: { report: {
 
         {/* Title */}
         <div style={{ marginBottom: '48px' }}>
-          <p style={{ fontSize: '12px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>Body Decode Report</p>
+          <p style={{ fontSize: '12px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>Body Decode Report</p>
           <h1 style={{ fontSize: '32px', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '12px' }}>
             {firstName}, here is what your body is telling you.
           </h1>
-          <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.6 }}>
             Based on your Body State Scorecard results. Score: {report.score}/15.
           </p>
         </div>
@@ -188,17 +188,17 @@ export default function ReportClient({ report }: { report: {
             <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: state.color, flexShrink: 0 }} />
             <span style={{ fontSize: '11px', fontWeight: 700, color: state.color, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{report.body_state}</span>
           </div>
-          <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '16px', lineHeight: 1.3 }}>
+          <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '16px', lineHeight: 1.3 }}>
             {state.headline}
           </h2>
-          <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.75, margin: 0 }}>
+          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.75, margin: 0 }}>
             {state.biology}
           </p>
         </div>
 
         {/* Score Breakdown */}
         <div style={{ marginBottom: '40px' }}>
-          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#57534e', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '20px' }}>
+          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '20px' }}>
             Your section scores
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -207,25 +207,25 @@ export default function ReportClient({ report }: { report: {
               const s = scores[key] ?? 2
               const c = getScoreColor(s)
               return (
-                <div key={key} style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '16px 20px' }}>
+                <div key={key} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '16px 20px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#ffffff' }}>{section}</span>
+                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A' }}>{section}</span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span style={{ fontSize: '11px', fontWeight: 600, color: c }}>{getScoreLabel(s)}</span>
                       <div style={{ display: 'flex', gap: '4px' }}>
                         {[1, 2, 3].map(n => (
                           <div key={n} style={{
                             width: '20px', height: '20px', borderRadius: '50%',
-                            background: n === s ? `rgba(${s === 1 ? '239,68,68' : s === 2 ? '245,158,11' : '20,184,166'},0.15)` : '#1c1917',
-                            border: `1.5px solid ${n === s ? c : '#2c2826'}`,
+                            background: n === s ? `rgba(${s === 1 ? '239,68,68' : s === 2 ? '245,158,11' : '20,184,166'},0.15)` : '#E5E5E5',
+                            border: `1.5px solid ${n === s ? c : '#E5E5E5'}`,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '9px', fontWeight: 700, color: n === s ? c : '#3c3835',
+                            fontSize: '9px', fontWeight: 700, color: n === s ? c : '#4A4A4A',
                           }}>{n}</div>
                         ))}
                       </div>
                     </div>
                   </div>
-                  <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.65, margin: 0 }}>
+                  <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.65, margin: 0 }}>
                     {SECTION_INTERPRETATIONS[section]?.[s] ?? ''}
                   </p>
                 </div>
@@ -235,20 +235,20 @@ export default function ReportClient({ report }: { report: {
         </div>
 
         {/* What is working against you */}
-        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
-          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#57534e', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
+          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
             What is working against you right now
           </h3>
-          <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.75, marginBottom: '16px' }}>
+          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.75, marginBottom: '16px' }}>
             {state.whatIsHappening}
           </p>
-          <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.7, marginBottom: '0' }}>
-            Your lowest-scoring areas (<strong style={{ color: '#a8a29e' }}>{lowestSections[0]?.name}</strong>{lowestSections[1] ? <> and <strong style={{ color: '#a8a29e' }}>{lowestSections[1].name}</strong></> : null}) are the most likely bottlenecks. Address these before adding more intensity elsewhere.
+          <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, marginBottom: '0' }}>
+            Your lowest-scoring areas (<strong style={{ color: '#999999' }}>{lowestSections[0]?.name}</strong>{lowestSections[1] ? <> and <strong style={{ color: '#999999' }}>{lowestSections[1].name}</strong></> : null}) are the most likely bottlenecks. Address these before adding more intensity elsewhere.
           </p>
         </div>
 
         {/* Stop doing */}
-        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
           <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#ef4444', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
             Stop doing
           </h3>
@@ -256,43 +256,43 @@ export default function ReportClient({ report }: { report: {
             {state.stopDoing.map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                 <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ef4444', marginTop: '7px', flexShrink: 0 }} />
-                <p style={{ fontSize: '14px', color: '#a8a29e', lineHeight: 1.65, margin: 0 }}>{item}</p>
+                <p style={{ fontSize: '14px', color: '#999999', lineHeight: 1.65, margin: 0 }}>{item}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Start doing */}
-        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
-          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
+          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
             What to focus on first
           </h3>
-          <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.75, marginBottom: '20px' }}>
+          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.75, marginBottom: '20px' }}>
             {state.primaryFocus}
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {state.startDoing.map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#14b8a6', marginTop: '7px', flexShrink: 0 }} />
-                <p style={{ fontSize: '14px', color: '#a8a29e', lineHeight: 1.65, margin: 0 }}>{item}</p>
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#1B6DFC', marginTop: '7px', flexShrink: 0 }} />
+                <p style={{ fontSize: '14px', color: '#999999', lineHeight: 1.65, margin: 0 }}>{item}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* CTA */}
-        <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.3)', borderRadius: '16px', padding: '32px' }}>
-          <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
+        <div style={{ background: '#1A1A1A', border: '1px solid rgba(27, 109, 252,0.3)', borderRadius: '16px', padding: '32px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
             The report tells you the state. A call tells you the fix.
           </h3>
-          <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
+          <p style={{ fontSize: '14px', color: '#B5CFFC', lineHeight: 1.7, marginBottom: '24px' }}>
             We go through your results together, identify the specific driver behind what is not working, and map out exactly what needs to change first. Free. 30 minutes. No pitch.
           </p>
           <a
             href="https://bodyrecode.au/book"
             style={{
               display: 'inline-block', padding: '14px 28px', borderRadius: '10px',
-              background: '#14b8a6', color: '#0c0a09',
+              background: '#1B6DFC', color: '#FFFFFF',
               fontSize: '14px', fontWeight: 700, textDecoration: 'none',
             }}
           >
