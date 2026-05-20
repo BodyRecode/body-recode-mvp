@@ -1,19 +1,21 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: '6-Week Body Rewire Blueprint — Body Recode',
-  description: 'A 6-week programme built around your biological pattern. Training, nutrition, and weekly education personalised to the hormone driving your results. $97.',
+  title: "The 6-Week Body Rewire. $97.",
+  description: "Knowing your pattern is not correcting it. The 6-Week Body Rewire is focused corrective work built specifically for your pattern. Training calibrated. Nutrition timed. Weekly coaching written for your pattern. By Week 6 the pattern is corrected and your body is ready to compound. $97 AUD.",
   openGraph: {
-    title: '6-Week Body Rewire Blueprint',
-    description: 'A 6-week programme built around your biological pattern. Training, nutrition, and weekly education personalised to the hormone driving your results.',
-    url: 'https://app.bodyrecode.au/blueprint',
+    title: "The 6-Week Body Rewire. $97.",
+    description: "Knowing your pattern is not correcting it. The 6-Week Body Rewire is focused corrective work built specifically for your pattern.",
+    url: 'https://bodyrecode.au/blueprint',
     siteName: 'Body Recode',
     type: 'website',
+    // og image auto-generated from opengraph-image.tsx in this folder
   },
   twitter: {
-    card: 'summary',
-    title: '6-Week Body Rewire Blueprint',
-    description: 'A 6-week programme built around your biological pattern. Training, nutrition, and weekly education personalised to the hormone driving your results.',
+    card: 'summary_large_image',
+    title: "The 6-Week Body Rewire. $97.",
+    description: "Knowing your pattern is not correcting it. The 6-Week Body Rewire is focused corrective work built specifically for your pattern.",
+    // twitter image auto-generated from opengraph-image.tsx in this folder
   },
 }
 

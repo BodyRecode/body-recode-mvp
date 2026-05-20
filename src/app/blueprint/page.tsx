@@ -2,8 +2,9 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { Dna, Dumbbell, Salad, BookOpen, FileText, BarChart3, Compass, ArrowRight } from 'lucide-react'
 
-function CheckoutForm({ position, teal }: { position: string; teal?: boolean }) {
+function CheckoutForm({ position, teal, darkBg }: { position: string; teal?: boolean; darkBg?: boolean }) {
   const router = useRouter()
   const [form, setForm] = useState({ name: '', email: '' })
   const [loading, setLoading] = useState(false)
@@ -35,9 +36,9 @@ function CheckoutForm({ position, teal }: { position: string; teal?: boolean }) 
 
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '15px 16px', borderRadius: '10px',
-    border: teal ? '1px solid rgba(20,184,166,0.3)' : '1px solid #d6d3d1',
+    border: teal ? '1px solid rgba(27, 109, 252,0.3)' : '1px solid #D4D4D4',
     background: teal ? 'rgba(255,255,255,0.7)' : '#ffffff',
-    color: '#1c1917', fontSize: '15px', outline: 'none',
+    color: '#1A1A1A', fontSize: '15px', outline: 'none',
     boxSizing: 'border-box',
   }
 
@@ -67,16 +68,16 @@ function CheckoutForm({ position, teal }: { position: string; teal?: boolean }) 
         disabled={loading || !form.name.trim() || !form.email.trim()}
         style={{
           width: '100%', padding: '17px', borderRadius: '10px', border: 'none',
-          background: loading ? 'rgba(20,184,166,0.6)' : '#14b8a6',
+          background: loading ? 'rgba(27, 109, 252,0.6)' : '#1B6DFC',
           color: '#ffffff', fontSize: '16px', fontWeight: 800,
           cursor: loading ? 'not-allowed' : 'pointer',
           letterSpacing: '0.01em', transition: 'background 0.2s',
           boxSizing: 'border-box',
         }}
       >
-        {loading ? 'Redirecting to checkout...' : 'Start the Rewire - $97 AUD'}
+        {loading ? 'Redirecting to checkout...' : 'Start the 6-Week Body Rewire · $97 AUD'}
       </button>
-      <p style={{ fontSize: '12px', color: '#a8a29e', textAlign: 'center', margin: 0 }}>
+      <p style={{ fontSize: '12px', color: darkBg ? '#999999' : '#999999', textAlign: 'center', margin: 0 }}>
         Secure checkout via Stripe. Instant portal access on payment.
       </p>
     </form>
@@ -85,44 +86,60 @@ function CheckoutForm({ position, teal }: { position: string; teal?: boolean }) 
 
 const WHAT_YOU_GET = [
   {
-    icon: '🧬',
+    icon: Dna,
     title: 'Pattern-specific programme',
-    desc: 'Every part of this programme is built around your specific pattern. Not a generic template with adjustments. The training, nutrition, and weekly notes all read the same pattern.',
+    timing: 'Day 1',
+    featured: true,
+    desc: 'Every part of this programme is calibrated to your specific pattern. Training intensity, nutrition timing, weekly coaching, biology lessons all read the same pattern. Not a generic template with adjustments.',
   },
   {
-    icon: '🏋️',
-    title: '6-week training blueprint',
-    desc: 'Progressive sessions across three phases, matched to your pattern. Gym, home with dumbbells, or no equipment. Every session has a version for your setup.',
+    icon: Dumbbell,
+    title: '6-week training programme',
+    timing: 'Day 1',
+    featured: false,
+    desc: 'Three sessions a week across three phases. Pattern-specific RIR targets, finisher rules, and rest intervals. Gym, home with dumbbells, or bodyweight. Every session has a version for your setup.',
   },
   {
-    icon: '🥗',
+    icon: Salad,
     title: 'Nutrition framework',
-    desc: 'Whole foods structured around your pattern\'s demand curve. Portion guidance, meal timing, early-training adaptation. No tracking, no calorie counting, no restriction.',
+    timing: 'Day 1',
+    featured: false,
+    desc: 'Whole foods structured around your pattern\'s demand curve. Portion guidance, meal timing, training-day adaptations. No tracking. No calorie counting. No restriction.',
   },
   {
-    icon: '📚',
-    title: '5 biology education lessons',
-    desc: 'Understand the hormone driving your pattern, why this programme is structured the way it is, and what to expect each phase. Sequenced for your pattern specifically.',
+    icon: BookOpen,
+    title: '5 biology lessons',
+    timing: 'Weekly',
+    featured: false,
+    desc: 'One per week. Cortisol, insulin, testosterone, thyroid, sleep. Each lesson explains the hormone driving your pattern, why this programme is structured the way it is, and what to expect this phase. Pattern-specific callout in every lesson.',
   },
   {
-    icon: '📋',
+    icon: FileText,
     title: 'Weekly coaching notes',
-    desc: 'A coaching note each week, written for your pattern. What is shifting, what to expect, and where to put your attention.',
+    timing: 'Every week',
+    featured: true,
+    desc: 'A note from me each week, written for your pattern specifically. What is shifting biologically. What to expect this week. Where to put your attention. Twenty-four unique notes across the four patterns and six weeks.',
   },
   {
-    icon: '📊',
-    title: 'Weekly check-in form',
-    desc: 'In-portal tracking across 8 biological markers, every week. Tracks what is moving and what still needs work. Updates your pattern read as the system responds.',
+    icon: BarChart3,
+    title: 'Weekly Check-In',
+    timing: 'Every week',
+    featured: false,
+    desc: 'In-portal tracking across 8 biological markers. Tracks what is moving and what still needs work. The data feeds your pattern read so the work can be calibrated as the system responds.',
   },
   {
-    icon: '🔍',
+    icon: Compass,
     title: 'Midpoint reflection',
-    desc: 'Structured review at Week 3. Assesses what is working, surfaces what is not, and recalibrates the back half if your body has moved faster or slower than expected.',
+    timing: 'Week 3',
+    featured: false,
+    desc: 'Structured review at the halfway point. Four pattern-specific questions to surface what has already shifted before the Adapt phase intensifies. Recalibrates the back half if your body has moved faster or slower than expected.',
   },
   {
-    icon: '→',
-    title: 'Ascension to Stage 3',
-    desc: 'Week 6 bridges directly into the Body Rebuild Membership. No gap between stages, your pattern continuity carries through. Skip if you do not want it.',
+    icon: ArrowRight,
+    title: 'Ascension to the Membership',
+    timing: 'Week 6',
+    featured: false,
+    desc: 'Week 6 bridges directly into the Body Recode Membership. Your pattern continuity carries through. No gap between stages. Optional, skip if you do not want it.',
   },
 ]
 
@@ -150,7 +167,7 @@ const PATTERNS = [
   },
   {
     name: 'Androgen-Decline',
-    colour: '#14b8a6',
+    colour: '#1B6DFC',
     driver: 'Testosterone driver',
     signal: 'Reduced muscle tone, reduced drive, capacity slipping despite consistent effort.',
     correction: 'The Blueprint protects muscle by controlling load and prioritising recovery. Testosterone signalling rebuilds. Drive and capacity return.',
@@ -188,15 +205,15 @@ export default function BlueprintPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#fafaf9',
-      color: '#1c1917',
+      background: '#FFFFFF',
+      color: '#1A1A1A',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
 
       {/* Nav */}
       <div style={{ padding: '20px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-          <img src="https://bodyrecode.au/logo-teal.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
         </div>
       </div>
 
@@ -205,13 +222,13 @@ export default function BlueprintPage() {
         <div style={{
           position: 'absolute', top: '-120px', right: '-120px',
           width: '500px', height: '500px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(20,184,166,0.12) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(27, 109, 252,0.12) 0%, transparent 65%)',
           pointerEvents: 'none',
         }} />
         <div style={{
           position: 'absolute', bottom: '0', left: '-100px',
           width: '340px', height: '340px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(20,184,166,0.07) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(27, 109, 252,0.07) 0%, transparent 70%)',
           pointerEvents: 'none',
         }} />
 
@@ -219,35 +236,60 @@ export default function BlueprintPage() {
 
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '8px',
-            background: 'rgba(20,184,166,0.1)', border: '1px solid rgba(20,184,166,0.25)',
-            borderRadius: '99px', padding: '7px 16px', marginBottom: '32px',
+            background: 'rgba(27, 109, 252,0.1)', border: '1px solid rgba(27, 109, 252,0.25)',
+            borderRadius: '99px', padding: '7px 16px', marginBottom: '20px',
           }}>
-            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#14b8a6' }} />
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#0f766e', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#1B6DFC' }} />
+            <span style={{ fontSize: '12px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               6-Week Body Rewire Blueprint
             </span>
           </div>
 
+          {/* Founder byline */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '12px',
+            marginBottom: '28px',
+          }}>
+            <img
+              src="/kade.jpg"
+              alt="Kade Dunstone"
+              style={{
+                width: '40px', height: '40px', borderRadius: '50%',
+                objectFit: 'cover', objectPosition: 'top center',
+                border: '1px solid #E5E5E5',
+                flexShrink: 0,
+              }}
+            />
+            <div>
+              <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
+                Built by Kade Dunstone
+              </p>
+              <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.3 }}>
+                Human Movement Scientist · Business Entrepreneur · Body Recode Founder
+              </p>
+            </div>
+          </div>
+
           <h1 style={{
-            fontSize: 'clamp(36px, 7vw, 54px)',
+            fontSize: 'clamp(44px, 8vw, 68px)',
             fontWeight: 900,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.08,
-            color: '#1c1917',
+            letterSpacing: '-0.035em',
+            lineHeight: 1.05,
+            color: '#1A1A1A',
             marginBottom: '24px',
           }}>
-            Your body is functional.
+            Knowing your pattern
             <br />
-            <span style={{ color: '#14b8a6' }}>But it is not producing.</span>
+            <span style={{ color: '#1B6DFC' }}>is not correcting it.</span>
           </h1>
 
-          <div style={{ width: '48px', height: '3px', background: '#14b8a6', borderRadius: '2px', marginBottom: '24px' }} />
+          <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
 
-          <p style={{ fontSize: '19px', color: '#57534e', lineHeight: 1.7, marginBottom: '14px' }}>
-            This is Transitioning State. Your body has capacity but is not converting it. Sleep, training, food. Everything is going in. Fat loss, energy, performance. Nothing is coming back.
+          <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '14px' }}>
+            Most people, once they know their pattern, look for the right programme. But programmes that do not read your pattern cannot correct your pattern. They prescribe into the same compensation that stalled you before.
           </p>
-          <p style={{ fontSize: '19px', color: '#57534e', lineHeight: 1.7, marginBottom: '40px' }}>
-            The Rewire Blueprint is 6 weeks of corrective work built around the specific pattern holding your body in compensation. From the Challenge result or via the pattern assessment on entry. By Week 6 the system is producing again.
+          <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '40px' }}>
+            The 6-Week Body Rewire is six weeks of focused corrective work built specifically for your pattern. Training calibrated. Nutrition timed. Weekly coaching written for your pattern. By Week 6 the pattern is corrected and your body is ready to compound. $97.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '32px' }}>
@@ -257,11 +299,11 @@ export default function BlueprintPage() {
               { value: 'Day 1', label: 'Instant access' },
             ].map(stat => (
               <div key={stat.label} style={{
-                background: '#ffffff', border: '1px solid #e7e5e0',
+                background: '#ffffff', border: '1px solid #E5E5E5',
                 borderRadius: '12px', padding: '16px', textAlign: 'center',
               }}>
-                <p style={{ fontSize: '22px', fontWeight: 900, color: '#14b8a6', margin: '0 0 4px', letterSpacing: '-0.02em' }}>{stat.value}</p>
-                <p style={{ fontSize: '11px', color: '#a8a29e', margin: 0, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{stat.label}</p>
+                <p style={{ fontSize: '22px', fontWeight: 900, color: '#1B6DFC', margin: '0 0 4px', letterSpacing: '-0.02em' }}>{stat.value}</p>
+                <p style={{ fontSize: '11px', color: '#999999', margin: 0, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{stat.label}</p>
               </div>
             ))}
           </div>
@@ -273,27 +315,27 @@ export default function BlueprintPage() {
       </div>
 
       {/* BRIDGE FROM CHALLENGE */}
-      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px 0', borderTop: '1px solid #e7e5e0' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
+      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px 0', borderTop: '1px solid #E5E5E5' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
           Where the challenge left off
         </p>
-        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '8px', color: '#1c1917' }}>
-          The Challenge pulled the load.
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '8px', color: '#1A1A1A' }}>
+          The Challenge identified the pattern.
         </h2>
-        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, color: '#a8a29e', marginBottom: '24px' }}>
-          The Blueprint corrects the pattern.
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, color: '#999999', marginBottom: '28px' }}>
+          The Blueprint corrects it.
         </h2>
-        <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '16px' }}>
-          Fourteen days of structured reset gave your body the chance to come out of protection mode. The system stabilised. Your Day 7 Check-In and Day 14 Result identified the specific pattern that has been holding your body in compensation.
+        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>
+          Fourteen days lowered the load enough for your body to be read. The Day 7 Check-In and Day 14 Result told you which of four patterns is holding your fat loss. That is the diagnostic.
         </p>
-        <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '24px' }}>
-          Stabilising is not correcting. The Blueprint is six weeks of direct work against that pattern. The training emphasis, nutrition structure, and weekly coaching notes are all built around it. Not a generic template with minor adjustments.
+        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '28px' }}>
+          Knowing the pattern is not correcting it. The 6-Week Body Rewire is focused corrective work, six weeks, built around your specific pattern. The training emphasis, nutrition timing, weekly coaching notes, and biology lessons all read the same pattern. Your body is still Depleted, but now the work is targeted.
         </p>
         <div style={{
-          background: 'rgba(20,184,166,0.08)', border: '1px solid rgba(20,184,166,0.2)',
+          background: 'rgba(27, 109, 252,0.08)', border: '1px solid rgba(27, 109, 252,0.2)',
           borderRadius: '12px', padding: '20px 22px',
         }}>
-          <p style={{ fontSize: '16px', color: '#1c1917', fontWeight: 700, margin: 0, lineHeight: 1.55 }}>
+          <p style={{ fontSize: '16px', color: '#1A1A1A', fontWeight: 700, margin: 0, lineHeight: 1.55 }}>
             If you skipped the Challenge and came straight here, a two-question pattern assessment runs before your portal opens. Same routing, same programme.
           </p>
         </div>
@@ -301,25 +343,25 @@ export default function BlueprintPage() {
 
       {/* PATTERNS */}
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px 0' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
           The four patterns
         </p>
-        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '24px', color: '#1c1917' }}>
-          One of these is what is holding your body in compensation. The Blueprint corrects it directly.
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: '#1A1A1A' }}>
+          One of these is yours. The Blueprint corrects it directly.
         </h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {PATTERNS.map(p => (
             <div key={p.name} style={{
-              background: '#ffffff', border: '1px solid #e7e5e0',
+              background: '#ffffff', border: '1px solid #E5E5E5',
               borderLeft: `4px solid ${p.colour}`,
               borderRadius: '12px', padding: '18px 20px',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                <span style={{ fontSize: '14px', fontWeight: 800, color: '#1c1917' }}>{p.name}</span>
-                <span style={{ fontSize: '12px', color: '#a8a29e' }}>· {p.driver}</span>
+                <span style={{ fontSize: '14px', fontWeight: 800, color: '#1A1A1A' }}>{p.name}</span>
+                <span style={{ fontSize: '12px', color: '#999999' }}>· {p.driver}</span>
               </div>
-              <p style={{ fontSize: '13px', color: '#44403c', lineHeight: 1.6, margin: '0 0 8px', fontWeight: 600 }}>{p.signal}</p>
-              <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.6, margin: 0 }}>{p.correction}</p>
+              <p style={{ fontSize: '13px', color: '#3A3A3A', lineHeight: 1.6, margin: '0 0 8px', fontWeight: 600 }}>{p.signal}</p>
+              <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>{p.correction}</p>
             </div>
           ))}
         </div>
@@ -327,42 +369,42 @@ export default function BlueprintPage() {
 
       {/* THREE PHASES */}
       <div style={{
-        background: '#f5f4f0',
-        borderTop: '1px solid #e7e5e0',
-        borderBottom: '1px solid #e7e5e0',
+        background: '#F7F7F7',
+        borderTop: '1px solid #E5E5E5',
+        borderBottom: '1px solid #E5E5E5',
         marginTop: '72px',
       }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px' }}>
-          <p style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
             The three phases
           </p>
-          <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '8px', color: '#1c1917' }}>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '10px', color: '#1A1A1A' }}>
             Regulate. Adapt. Embed.
           </h2>
-          <p style={{ fontSize: '16px', color: '#78716c', lineHeight: 1.7, marginBottom: '32px' }}>
+          <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.7, marginBottom: '32px' }}>
             Each phase has a specific biological purpose. The progression is not arbitrary. It follows how the body actually adapts.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {PHASES.map((phase, i) => (
               <div key={phase.name} style={{
-                background: '#ffffff', border: '1px solid #e7e5e0',
+                background: '#ffffff', border: '1px solid #E5E5E5',
                 borderRadius: '12px', padding: '20px 22px',
                 display: 'flex', gap: '18px', alignItems: 'flex-start',
               }}>
                 <div style={{
                   width: '40px', height: '40px', borderRadius: '10px',
-                  background: 'rgba(20,184,166,0.1)', border: '1px solid rgba(20,184,166,0.2)',
+                  background: 'rgba(27, 109, 252,0.1)', border: '1px solid rgba(27, 109, 252,0.2)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0, fontSize: '13px', fontWeight: 800, color: '#14b8a6',
+                  flexShrink: 0, fontSize: '13px', fontWeight: 800, color: '#1B6DFC',
                 }}>
                   {phase.number}
                 </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '6px' }}>
-                    <span style={{ fontSize: '16px', fontWeight: 800, color: '#1c1917' }}>{phase.name}</span>
-                    <span style={{ fontSize: '12px', color: '#a8a29e', fontWeight: 600 }}>{phase.weeks}</span>
+                    <span style={{ fontSize: '16px', fontWeight: 800, color: '#1A1A1A' }}>{phase.name}</span>
+                    <span style={{ fontSize: '12px', color: '#999999', fontWeight: 600 }}>{phase.weeks}</span>
                   </div>
-                  <p style={{ fontSize: '14px', color: '#78716c', lineHeight: 1.65, margin: 0 }}>{phase.desc}</p>
+                  <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.65, margin: 0 }}>{phase.desc}</p>
                 </div>
               </div>
             ))}
@@ -372,147 +414,183 @@ export default function BlueprintPage() {
 
       {/* WHAT YOU GET */}
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
           What is inside
         </p>
-        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '8px', color: '#1c1917' }}>
-          Everything delivered to your portal on Day 1.
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '10px', color: '#1A1A1A' }}>
+          Everything you need, in one portal.
         </h2>
-        <p style={{ fontSize: '16px', color: '#78716c', lineHeight: 1.7, marginBottom: '28px' }}>
+        <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.7, marginBottom: '28px' }}>
           No external apps. No separate downloads. Everything lives in your Blueprint portal from the moment you purchase.
         </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {WHAT_YOU_GET.map(item => (
-            <div key={item.title} style={{
-              background: '#ffffff', border: '1px solid #e7e5e0',
-              borderRadius: '12px', padding: '18px 20px',
-              display: 'flex', gap: '16px', alignItems: 'flex-start',
-            }}>
-              <div style={{
-                width: '40px', height: '40px', borderRadius: '10px',
-                background: 'rgba(20,184,166,0.1)', border: '1px solid rgba(20,184,166,0.2)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0, fontSize: '18px',
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {WHAT_YOU_GET.map(item => {
+            const Icon = item.icon
+            return (
+              <div key={item.title} style={{
+                background: '#FFFFFF',
+                border: item.featured ? '1px solid #1B6DFC' : '1px solid #E5E5E5',
+                borderLeft: item.featured ? '3px solid #1B6DFC' : '1px solid #E5E5E5',
+                borderRadius: '12px',
+                padding: '20px 22px',
+                display: 'flex', gap: '18px', alignItems: 'flex-start',
+                boxShadow: item.featured ? '0 1px 3px rgba(27, 109, 252, 0.06)' : 'none',
               }}>
-                {item.icon}
+                <div style={{
+                  width: '40px', height: '40px', borderRadius: '10px',
+                  background: item.featured ? '#1B6DFC' : 'rgba(27, 109, 252, 0.08)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0,
+                }}>
+                  <Icon size={20} strokeWidth={2} color={item.featured ? '#FFFFFF' : '#1B6DFC'} />
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px', flexWrap: 'wrap' }}>
+                    <p style={{ fontSize: '15px', fontWeight: 800, color: '#1A1A1A', margin: 0, letterSpacing: '-0.005em' }}>
+                      {item.title}
+                    </p>
+                    <span style={{
+                      fontSize: '10px', fontWeight: 700, color: item.featured ? '#1056D6' : '#6B6B6B',
+                      background: item.featured ? 'rgba(27, 109, 252, 0.1)' : '#F5F5F5',
+                      padding: '3px 8px', borderRadius: '4px',
+                      textTransform: 'uppercase', letterSpacing: '0.06em',
+                    }}>
+                      {item.timing}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>
+                    {item.desc}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: '#1c1917', marginBottom: '4px' }}>{item.title}</p>
-                <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 
       {/* MID CTA */}
       <div style={{
-        background: 'linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%)',
-        borderTop: '1px solid rgba(20,184,166,0.25)',
-        borderBottom: '1px solid rgba(20,184,166,0.25)',
+        background: '#1A1A1A',
+        position: 'relative',
+        overflow: 'hidden',
       }}>
-        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '64px 24px' }}>
-          <h2 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '8px', lineHeight: 1.25, color: '#134e4a' }}>
+        <div style={{
+          position: 'absolute', top: '-200px', right: '-200px',
+          width: '500px', height: '500px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.15) 0%, transparent 65%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px', position: 'relative' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
+            Start the correction
+          </p>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '12px', lineHeight: 1.2, color: '#FFFFFF' }}>
             Six weeks. Pattern-specific. Done.
           </h2>
-          <p style={{ fontSize: '16px', color: '#0f766e', marginBottom: '28px', lineHeight: 1.6 }}>
-            One-time $97. Instant portal access. Pattern assessment runs in 2 minutes if you skipped the Challenge.
+          <p style={{ fontSize: '16px', color: '#999999', marginBottom: '32px', lineHeight: 1.65 }}>
+            One-time $97 AUD. Instant portal access. Pattern assessment runs in 2 minutes if you skipped the Challenge.
           </p>
-          <CheckoutForm position="mid" teal />
+          <CheckoutForm position="mid" darkBg />
         </div>
       </div>
 
       {/* IS THIS FOR YOU - STATE FILTER */}
-      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
-          Is this for you?
-        </p>
-        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '20px', color: '#1c1917' }}>
-          This is built for Transitioning State.
-        </h2>
-        <p style={{ fontSize: '16px', color: '#57534e', lineHeight: 1.7, marginBottom: '20px' }}>
-          The Rewire Blueprint is built specifically for adults in a Transitioning State. Your body has capacity but is not converting it. The specific pattern holding the system is what gets corrected here.
-        </p>
-        <p style={{ fontSize: '15px', color: '#1c1917', lineHeight: 1.7, marginBottom: '24px', fontWeight: 700 }}>
-          If you are in a different state, the right starting point is different.
-        </p>
+      <div style={{
+        background: '#F7F7F7',
+        borderTop: '1px solid #E5E5E5',
+        borderBottom: '1px solid #E5E5E5',
+      }}>
+        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
+            Is this for you?
+          </p>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: '#1A1A1A' }}>
+            Still Depleted. Pattern identified.
+          </h2>
+          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '20px' }}>
+            The 6-Week Body Rewire is built for adults still in a Depleted State who now know their pattern. Fourteen days of structured reset is not enough to bring a body out of Depleted. Six weeks of focused pattern-specific correction is the next dose.
+          </p>
+          <p style={{ fontSize: '15px', color: '#1A1A1A', lineHeight: 1.7, marginBottom: '24px', fontWeight: 700 }}>
+            If you are at a different stage, the right starting point is different.
+          </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
-          {[
-            {
-              state: 'Depleted State (5-8)',
-              desc: 'Your body is in protection mode. It is not stable enough yet to be read or corrected. Start with the free 14-Day Challenge. By Day 14 you will know whether you are ready for the Blueprint.',
-              cta: 'Start the Free Challenge',
-              href: '/challenge',
-            },
-            {
-              state: 'Ready State (12-15)',
-              desc: 'Your biology is already in flow. You do not need a six-week corrective block. You need ongoing prescription with a coach watching the numbers.',
-              cta: 'See the Membership',
-              href: '/membership',
-            },
-            {
-              state: "Don't know your state yet?",
-              desc: 'Take the 2-minute scorecard first. It tells you which state you are in and which next step is built for you.',
-              cta: 'Take the Scorecard',
-              href: 'https://performance.bodyrecode.au/scorecard?source=blueprint_filter',
-            },
-          ].map(row => (
-            <div key={row.state} style={{
-              background: '#ffffff',
-              border: '1px solid #e7e5e0',
-              borderRadius: '12px',
-              padding: '18px 20px',
-            }}>
-              <p style={{ fontSize: '13px', fontWeight: 800, color: '#0f766e', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                {row.state}
-              </p>
-              <p style={{ fontSize: '14px', color: '#57534e', lineHeight: 1.6, marginBottom: '14px' }}>
-                {row.desc}
-              </p>
-              <a href={row.href} style={{
-                display: 'inline-block',
-                fontSize: '13px',
-                fontWeight: 700,
-                color: '#14b8a6',
-                textDecoration: 'none',
-                borderBottom: '1px solid #14b8a6',
-                paddingBottom: '2px',
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
+            {[
+              {
+                state: 'No pattern read yet',
+                desc: 'Take the free 14-Day Challenge first. By Day 14 your pattern is identified through the Body Decode Check-In. Then you come back here.',
+                cta: 'Start the Free Challenge',
+                href: '/challenge',
+              },
+              {
+                state: 'Past Depleted (Ready State)',
+                desc: 'Your biology is already responding. You do not need a six-week corrective block. You need the ongoing precision system that takes you from responding to compounding.',
+                cta: 'See the Membership',
+                href: '/membership',
+              },
+              {
+                state: "Don't know your state yet?",
+                desc: 'Take the 2-minute scorecard first. It tells you which state you are in and which next step is built for you.',
+                cta: 'Take the Scorecard',
+                href: 'https://performance.bodyrecode.au/scorecard?source=blueprint_filter',
+              },
+            ].map(row => (
+              <div key={row.state} style={{
+                background: '#FFFFFF',
+                border: '1px solid #E5E5E5',
+                borderRadius: '12px',
+                padding: '18px 20px',
               }}>
-                {row.cta} →
-              </a>
-            </div>
-          ))}
-        </div>
+                <p style={{ fontSize: '13px', fontWeight: 800, color: '#1056D6', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  {row.state}
+                </p>
+                <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.6, marginBottom: '14px' }}>
+                  {row.desc}
+                </p>
+                <a href={row.href} style={{
+                  display: 'inline-block',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: '#1B6DFC',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid #1B6DFC',
+                  paddingBottom: '2px',
+                }}>
+                  {row.cta} →
+                </a>
+              </div>
+            ))}
+          </div>
 
-        <p style={{ fontSize: '17px', color: '#1c1917', fontWeight: 700, lineHeight: 1.5, margin: 0 }}>
-          If you are Transitioning, your starting point is right here. Sign up below.
-        </p>
+          <p style={{ fontSize: '17px', color: '#1A1A1A', fontWeight: 700, lineHeight: 1.5, margin: 0 }}>
+            If you are Depleted with your pattern read, your starting point is right here. Sign up below.
+          </p>
+        </div>
       </div>
 
       {/* FINAL CTA */}
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '80px 24px 100px' }}>
-        <div style={{ width: '40px', height: '3px', background: '#14b8a6', marginBottom: '28px', borderRadius: '2px' }} />
-        <h2 style={{ fontSize: 'clamp(28px, 5vw, 36px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: '16px', color: '#1c1917' }}>
-          Six weeks.<br />
-          <span style={{ color: '#a8a29e' }}>The pattern corrects.</span>
+        <div style={{ width: '40px', height: '3px', background: '#1B6DFC', marginBottom: '28px', borderRadius: '2px' }} />
+        <h2 style={{ fontSize: 'clamp(28px, 5vw, 40px)', fontWeight: 900, letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '20px', color: '#1A1A1A' }}>
+          Six concentrated weeks.<br />
+          <span style={{ color: '#999999' }}>Your pattern. The correction.</span>
         </h2>
-        <p style={{ fontSize: '16px', color: '#78716c', lineHeight: 1.7, marginBottom: '36px' }}>
-          $97. Instant portal access. Your pattern is mapped before Week 1. By Week 6 the system is producing again. Then continuity through the Membership, if you want it.
+        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '36px' }}>
+          $97 AUD. Instant portal access. Your pattern is mapped before Week 1. By Week 6 the pattern is corrected and your body is ready to compound. Then continuity through the Membership, if you want it.
         </p>
         <CheckoutForm position="footer" />
       </div>
 
       {/* Footer */}
-      <div style={{ borderTop: '1px solid #e7e5e0', padding: '28px 24px' }}>
+      <div style={{ borderTop: '1px solid #E5E5E5', padding: '28px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', justifyContent: 'space-between' }}>
-          <p style={{ fontSize: '13px', color: '#a8a29e', margin: 0 }}>
+          <p style={{ fontSize: '13px', color: '#999999', margin: 0 }}>
             &copy; {new Date().getFullYear()} Body Recode. All rights reserved.
           </p>
           <div style={{ display: 'flex', gap: '20px' }}>
-            <a href="/privacy" style={{ fontSize: '13px', color: '#78716c', textDecoration: 'none' }}>Privacy Policy</a>
-            <a href="/terms" style={{ fontSize: '13px', color: '#78716c', textDecoration: 'none' }}>Terms</a>
-            <a href="mailto:info@bodyrecode.au" style={{ fontSize: '13px', color: '#78716c', textDecoration: 'none' }}>Contact</a>
+            <a href="/privacy" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Privacy Policy</a>
+            <a href="/terms" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Terms</a>
+            <a href="mailto:info@bodyrecode.au" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Contact</a>
           </div>
         </div>
       </div>
