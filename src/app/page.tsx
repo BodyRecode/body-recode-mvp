@@ -9,22 +9,22 @@ export const metadata: Metadata = {
     'Body Recode™ is a biological interpretation system. One interpretive engine. Five environments. Licensable across performance coaching, executive, tactical, clinical and developmental contexts.',
 }
 
-const TEAL = '#10E1C2'
+const TEAL = '#1B6DFC'
 
 export default function HomePage() {
   return (
-    <div style={{ background: '#0c0a09', minHeight: '100vh' }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh' }}>
       <MarketingNav variant="ip" />
 
       {/* HERO */}
       <section
         style={{
-          background: '#0c0a09',
+          background: '#FFFFFF',
           paddingTop: 160,
           paddingBottom: 120,
           paddingLeft: 20,
           paddingRight: 20,
-          borderBottom: '1px solid #1c1917',
+          borderBottom: '1px solid #E5E5E5',
         }}
       >
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
@@ -53,7 +53,7 @@ export default function HomePage() {
             style={{
               fontSize: 'clamp(34px, 6vw, 56px)',
               fontWeight: 800,
-              color: '#ffffff',
+              color: '#1A1A1A',
               letterSpacing: '-0.025em',
               lineHeight: 1.05,
               marginBottom: 28,
@@ -65,7 +65,7 @@ export default function HomePage() {
             style={{
               fontSize: 17,
               lineHeight: 1.7,
-              color: '#a8a29e',
+              color: '#6B6B6B',
               maxWidth: 640,
               marginBottom: 36,
             }}
@@ -80,7 +80,7 @@ export default function HomePage() {
               href="#enquire"
               style={{
                 background: TEAL,
-                color: '#0c0a09',
+                color: '#FFFFFF',
                 fontWeight: 700,
                 fontSize: 14,
                 padding: '14px 28px',
@@ -94,13 +94,13 @@ export default function HomePage() {
             <a
               href="#system"
               style={{
-                background: '#111110',
-                color: '#d4cfc9',
+                background: '#FFFFFF',
+                color: '#3A3A3A',
                 fontWeight: 600,
                 fontSize: 14,
                 padding: '14px 28px',
                 borderRadius: 10,
-                border: '1px solid #1c1917',
+                border: '1px solid #E5E5E5',
                 textDecoration: 'none',
               }}
             >
@@ -113,12 +113,12 @@ export default function HomePage() {
       {/* THE PROBLEM */}
       <section
         id="system"
-        style={{ background: '#0c0a09', padding: '96px 20px', borderBottom: '1px solid #1c1917' }}
+        style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}
       >
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
           <SectionLabel>The Problem</SectionLabel>
           <SectionHeading>Every intervention fails at the same point.</SectionHeading>
-          <div style={{ maxWidth: 640, color: '#a8a29e', fontSize: 16, lineHeight: 1.85 }}>
+          <div style={{ maxWidth: 640, color: '#6B6B6B', fontSize: 16, lineHeight: 1.85 }}>
             <p style={{ marginBottom: 18 }}>
               The conventional model is to assess goals, prescribe an approach, measure output and
               adjust. This works when the body is in a state to respond. Most of the time, it is
@@ -134,14 +134,14 @@ export default function HomePage() {
       </section>
 
       {/* THE SOLUTION */}
-      <section style={{ background: '#0c0a09', padding: '96px 20px', borderBottom: '1px solid #1c1917' }}>
+      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
           <SectionLabel>The Solution</SectionLabel>
           <SectionHeading>Read the body first. Then prescribe.</SectionHeading>
           <p
             style={{
               maxWidth: 640,
-              color: '#a8a29e',
+              color: '#6B6B6B',
               fontSize: 16,
               lineHeight: 1.85,
               marginBottom: 40,
@@ -166,14 +166,14 @@ export default function HomePage() {
       </section>
 
       {/* TWO LAYERS */}
-      <section style={{ background: '#0c0a09', padding: '96px 20px', borderBottom: '1px solid #1c1917' }}>
+      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>Architecture</SectionLabel>
           <SectionHeading>Two layers. Neither collapses into the other.</SectionHeading>
           <p
             style={{
               maxWidth: 720,
-              color: '#a8a29e',
+              color: '#6B6B6B',
               fontSize: 16,
               lineHeight: 1.85,
               marginBottom: 40,
@@ -212,14 +212,14 @@ export default function HomePage() {
       </section>
 
       {/* PLATFORM DIAGRAM */}
-      <section style={{ background: '#0c0a09', padding: '96px 20px', borderBottom: '1px solid #1c1917' }}>
+      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>Platform</SectionLabel>
           <SectionHeading>One engine. Built to scale across industries.</SectionHeading>
           <p
             style={{
               maxWidth: 720,
-              color: '#a8a29e',
+              color: '#6B6B6B',
               fontSize: 16,
               lineHeight: 1.85,
               marginBottom: 40,
@@ -231,10 +231,10 @@ export default function HomePage() {
           </p>
           <div
             style={{
-              border: '1px solid #1c1917',
+              border: '1px solid #E5E5E5',
               borderRadius: 16,
               overflow: 'hidden',
-              background: '#111110',
+              background: '#FFFFFF',
             }}
           >
             <div
@@ -256,7 +256,7 @@ export default function HomePage() {
               >
                 Body Recode™ Interpretation Engine
               </p>
-              <p style={{ fontSize: 11, color: '#78716c', marginTop: 6 }}>
+              <p style={{ fontSize: 11, color: '#6B6B6B', marginTop: 6 }}>
                 Intake · Classification · CFFS
               </p>
             </div>
@@ -264,7 +264,7 @@ export default function HomePage() {
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(5, 1fr)',
-                borderTop: '1px solid #1c1917',
+                borderTop: '1px solid #E5E5E5',
               }}
             >
               {[
@@ -279,7 +279,7 @@ export default function HomePage() {
                   style={{
                     padding: 16,
                     textAlign: 'center',
-                    borderRight: i < 4 ? '1px solid #1c1917' : 'none',
+                    borderRight: i < 4 ? '1px solid #E5E5E5' : 'none',
                     background: env.live ? 'rgba(16, 225, 194, 0.05)' : 'transparent',
                   }}
                 >
@@ -288,7 +288,7 @@ export default function HomePage() {
                       fontSize: 10,
                       fontWeight: 700,
                       letterSpacing: '0.12em',
-                      color: env.live ? TEAL : '#57534e',
+                      color: env.live ? TEAL : '#999999',
                       textTransform: 'uppercase',
                       lineHeight: 1.4,
                     }}
@@ -300,7 +300,7 @@ export default function HomePage() {
                       width: 6,
                       height: 6,
                       borderRadius: '50%',
-                      background: env.live ? TEAL : '#1c1917',
+                      background: env.live ? TEAL : '#E5E5E5',
                       margin: '8px auto 0',
                     }}
                   />
@@ -312,14 +312,14 @@ export default function HomePage() {
       </section>
 
       {/* SIGNAL DOMAINS */}
-      <section style={{ background: '#0c0a09', padding: '96px 20px', borderBottom: '1px solid #1c1917' }}>
+      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>Foundational Intake</SectionLabel>
           <SectionHeading>208 structured signals. Eight domains.</SectionHeading>
           <p
             style={{
               maxWidth: 720,
-              color: '#a8a29e',
+              color: '#6B6B6B',
               fontSize: 16,
               lineHeight: 1.85,
               marginBottom: 40,
@@ -349,8 +349,8 @@ export default function HomePage() {
               <div
                 key={d.num}
                 style={{
-                  background: '#111110',
-                  border: '1px solid #1c1917',
+                  background: '#FFFFFF',
+                  border: '1px solid #E5E5E5',
                   borderRadius: 16,
                   padding: 24,
                 }}
@@ -367,10 +367,10 @@ export default function HomePage() {
                 >
                   {d.num}
                 </p>
-                <p style={{ fontSize: 14, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: '#1A1A1A', marginBottom: 8 }}>
                   {d.name}
                 </p>
-                <p style={{ fontSize: 12, color: '#a8a29e', lineHeight: 1.7 }}>{d.desc}</p>
+                <p style={{ fontSize: 12, color: '#6B6B6B', lineHeight: 1.7 }}>{d.desc}</p>
               </div>
             ))}
           </div>
@@ -378,14 +378,14 @@ export default function HomePage() {
       </section>
 
       {/* INTERPRETIVE PILLARS */}
-      <section style={{ background: '#0c0a09', padding: '96px 20px', borderBottom: '1px solid #1c1917' }}>
+      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>Interpretive Pillars</SectionLabel>
           <SectionHeading>Five pillars. One synthesised read.</SectionHeading>
           <p
             style={{
               maxWidth: 720,
-              color: '#a8a29e',
+              color: '#6B6B6B',
               fontSize: 16,
               lineHeight: 1.85,
               marginBottom: 40,
@@ -430,7 +430,7 @@ export default function HomePage() {
                   fontSize: 10,
                   fontWeight: 700,
                   background: TEAL,
-                  color: '#0c0a09',
+                  color: '#FFFFFF',
                   padding: '4px 10px',
                   borderRadius: 999,
                   textTransform: 'uppercase',
@@ -440,10 +440,10 @@ export default function HomePage() {
                 Primary
               </span>
             </div>
-            <h3 style={{ fontSize: 20, fontWeight: 700, color: '#ffffff', marginBottom: 12 }}>
+            <h3 style={{ fontSize: 20, fontWeight: 700, color: '#1A1A1A', marginBottom: 12 }}>
               Fat Map Method™
             </h3>
-            <p style={{ fontSize: 14, color: '#a8a29e', lineHeight: 1.85, marginBottom: 24 }}>
+            <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.85, marginBottom: 24 }}>
               Fat accumulation patterns are read as hormonal and metabolic signalling, not simple
               energy surplus. Where the body stores fat reflects its adaptive response to the
               current hormonal and regulatory environment.
@@ -484,12 +484,12 @@ export default function HomePage() {
                     >
                       {z.zone}
                     </p>
-                    <p style={{ fontSize: 11, color: '#78716c' }}>{z.loc}</p>
+                    <p style={{ fontSize: 11, color: '#6B6B6B' }}>{z.loc}</p>
                   </div>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A', marginBottom: 4 }}>
                     {z.name}
                   </p>
-                  <p style={{ fontSize: 11, color: '#a8a29e', lineHeight: 1.6 }}>{z.signal}</p>
+                  <p style={{ fontSize: 11, color: '#6B6B6B', lineHeight: 1.6 }}>{z.signal}</p>
                 </div>
               ))}
             </div>
@@ -532,8 +532,8 @@ export default function HomePage() {
               <div
                 key={p.num}
                 style={{
-                  background: '#111110',
-                  border: '1px solid #1c1917',
+                  background: '#FFFFFF',
+                  border: '1px solid #E5E5E5',
                   borderRadius: 16,
                   padding: 24,
                 }}
@@ -551,7 +551,7 @@ export default function HomePage() {
                       fontSize: 11,
                       fontWeight: 700,
                       letterSpacing: '0.18em',
-                      color: '#78716c',
+                      color: '#6B6B6B',
                       textTransform: 'uppercase',
                     }}
                   >
@@ -561,8 +561,8 @@ export default function HomePage() {
                     style={{
                       fontSize: 10,
                       fontWeight: 700,
-                      color: '#a8a29e',
-                      border: '1px solid #1c1917',
+                      color: '#6B6B6B',
+                      border: '1px solid #E5E5E5',
                       padding: '2px 8px',
                       borderRadius: 999,
                       textTransform: 'uppercase',
@@ -572,10 +572,10 @@ export default function HomePage() {
                     {p.abbr}
                   </span>
                 </div>
-                <p style={{ fontSize: 15, fontWeight: 700, color: '#ffffff', marginBottom: 10 }}>
+                <p style={{ fontSize: 15, fontWeight: 700, color: '#1A1A1A', marginBottom: 10 }}>
                   {p.name}
                 </p>
-                <p style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.7 }}>{p.desc}</p>
+                <p style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.7 }}>{p.desc}</p>
               </div>
             ))}
           </div>
@@ -583,14 +583,14 @@ export default function HomePage() {
       </section>
 
       {/* BODY STATES */}
-      <section style={{ background: '#0c0a09', padding: '96px 20px', borderBottom: '1px solid #1c1917' }}>
+      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>Classification Output</SectionLabel>
           <SectionHeading>Three body states. Every body, every environment.</SectionHeading>
           <p
             style={{
               maxWidth: 720,
-              color: '#a8a29e',
+              color: '#6B6B6B',
               fontSize: 16,
               lineHeight: 1.85,
               marginBottom: 40,
@@ -623,12 +623,12 @@ export default function HomePage() {
             <BodyStateCard
               label="Post-Optimisation"
               public="Ready"
-              colour="#14b8a6"
-              bg="#0d2d29"
+              colour="#1B6DFC"
+              bg="#B5CFFC"
               text="The body is performing. The goal shifts to identity-level performance and long-term system maintenance. Built over time. Cannot be forced."
             />
           </div>
-          <p style={{ fontSize: 12, color: '#57534e', marginTop: 24, maxWidth: 720, lineHeight: 1.7 }}>
+          <p style={{ fontSize: 12, color: '#999999', marginTop: 24, maxWidth: 720, lineHeight: 1.7 }}>
             Practitioner-facing labels are shown above. Consumer-facing translations (Depleted /
             Transitioning / Ready) are used in client communication, never in the CFFS.
           </p>
@@ -636,14 +636,14 @@ export default function HomePage() {
       </section>
 
       {/* ENVIRONMENTS */}
-      <section style={{ background: '#0c0a09', padding: '96px 20px', borderBottom: '1px solid #1c1917' }}>
+      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>Environments</SectionLabel>
           <SectionHeading>One engine. Five environments.</SectionHeading>
           <p
             style={{
               maxWidth: 720,
-              color: '#a8a29e',
+              color: '#6B6B6B',
               fontSize: 16,
               lineHeight: 1.85,
               marginBottom: 40,
@@ -694,7 +694,7 @@ export default function HomePage() {
       {/* LICENSING OPTIONS */}
       <section
         id="licensing"
-        style={{ background: '#0c0a09', padding: '96px 20px', borderBottom: '1px solid #1c1917' }}
+        style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}
       >
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>For Practitioners and Organisations</SectionLabel>
@@ -702,7 +702,7 @@ export default function HomePage() {
           <p
             style={{
               maxWidth: 720,
-              color: '#a8a29e',
+              color: '#6B6B6B',
               fontSize: 16,
               lineHeight: 1.85,
               marginBottom: 40,
@@ -738,14 +738,14 @@ export default function HomePage() {
       {/* ENQUIRY */}
       <section
         id="enquire"
-        style={{ background: '#0c0a09', padding: '96px 20px', borderBottom: '1px solid #1c1917' }}
+        style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}
       >
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
           <SectionLabel>Enquire</SectionLabel>
           <SectionHeading>Talk to us about deploying the system.</SectionHeading>
           <p
             style={{
-              color: '#a8a29e',
+              color: '#6B6B6B',
               fontSize: 16,
               lineHeight: 1.85,
               marginBottom: 32,
@@ -794,7 +794,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
       style={{
         fontSize: 'clamp(26px, 4vw, 36px)',
         fontWeight: 800,
-        color: '#ffffff',
+        color: '#1A1A1A',
         letterSpacing: '-0.02em',
         lineHeight: 1.15,
         marginBottom: 24,
@@ -809,15 +809,15 @@ function StatCard({ value, label, detail }: { value: string; label: string; deta
   return (
     <div
       style={{
-        background: '#111110',
-        border: '1px solid #1c1917',
+        background: '#FFFFFF',
+        border: '1px solid #E5E5E5',
         borderRadius: 16,
         padding: 24,
       }}
     >
       <p style={{ fontSize: 26, fontWeight: 800, color: TEAL, marginBottom: 6 }}>{value}</p>
-      <p style={{ fontSize: 14, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>{label}</p>
-      <p style={{ fontSize: 12, color: '#a8a29e', lineHeight: 1.7 }}>{detail}</p>
+      <p style={{ fontSize: 14, fontWeight: 700, color: '#1A1A1A', marginBottom: 8 }}>{label}</p>
+      <p style={{ fontSize: 12, color: '#6B6B6B', lineHeight: 1.7 }}>{detail}</p>
     </div>
   )
 }
@@ -826,8 +826,8 @@ function Card({ accent, children }: { accent?: boolean; children: React.ReactNod
   return (
     <div
       style={{
-        background: accent ? 'rgba(16, 225, 194, 0.05)' : '#111110',
-        border: accent ? '1px solid rgba(16, 225, 194, 0.25)' : '1px solid #1c1917',
+        background: accent ? 'rgba(16, 225, 194, 0.05)' : '#FFFFFF',
+        border: accent ? '1px solid rgba(16, 225, 194, 0.25)' : '1px solid #E5E5E5',
         borderRadius: 16,
         padding: 32,
       }}
@@ -844,7 +844,7 @@ function CardLabel({ accent, children }: { accent?: boolean; children: React.Rea
         fontSize: 11,
         fontWeight: 700,
         letterSpacing: '0.18em',
-        color: accent ? TEAL : '#78716c',
+        color: accent ? TEAL : '#6B6B6B',
         textTransform: 'uppercase',
         marginBottom: 14,
       }}
@@ -855,7 +855,7 @@ function CardLabel({ accent, children }: { accent?: boolean; children: React.Rea
 }
 
 function CardBody({ children }: { children: React.ReactNode }) {
-  return <p style={{ fontSize: 14, color: '#a8a29e', lineHeight: 1.85 }}>{children}</p>
+  return <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.85 }}>{children}</p>
 }
 
 function BodyStateCard({
@@ -874,7 +874,7 @@ function BodyStateCard({
   return (
     <div
       style={{
-        background: '#111110',
+        background: '#FFFFFF',
         border: `1px solid ${colour}33`,
         borderRadius: 16,
         padding: 28,
@@ -896,14 +896,14 @@ function BodyStateCard({
       <p
         style={{
           fontSize: 11,
-          color: '#57534e',
+          color: '#999999',
           marginBottom: 14,
           letterSpacing: '0.05em',
         }}
       >
         Public: {publicLabel}
       </p>
-      <p style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.8 }}>{text}</p>
+      <p style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.8 }}>{text}</p>
     </div>
   )
 }
@@ -924,8 +924,8 @@ function EnvCard({
   return (
     <div
       style={{
-        background: live ? 'rgba(16, 225, 194, 0.05)' : '#111110',
-        border: live ? '1px solid rgba(16, 225, 194, 0.3)' : '1px solid #1c1917',
+        background: live ? 'rgba(16, 225, 194, 0.05)' : '#FFFFFF',
+        border: live ? '1px solid rgba(16, 225, 194, 0.3)' : '1px solid #E5E5E5',
         borderRadius: 16,
         padding: 28,
       }}
@@ -943,7 +943,7 @@ function EnvCard({
             fontSize: 11,
             fontWeight: 700,
             letterSpacing: '0.18em',
-            color: live ? TEAL : '#57534e',
+            color: live ? TEAL : '#999999',
             textTransform: 'uppercase',
           }}
         >
@@ -954,8 +954,8 @@ function EnvCard({
             fontSize: 10,
             fontWeight: 700,
             background: live ? TEAL : 'transparent',
-            color: live ? '#0c0a09' : '#57534e',
-            border: live ? 'none' : '1px solid #1c1917',
+            color: live ? '#FFFFFF' : '#999999',
+            border: live ? 'none' : '1px solid #E5E5E5',
             padding: '4px 10px',
             borderRadius: 999,
             textTransform: 'uppercase',
@@ -965,8 +965,8 @@ function EnvCard({
           {live ? 'Live' : 'In Development'}
         </span>
       </div>
-      <h3 style={{ fontSize: 17, fontWeight: 700, color: '#ffffff', marginBottom: 10 }}>{title}</h3>
-      <p style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.75, marginBottom: link ? 18 : 0 }}>
+      <h3 style={{ fontSize: 17, fontWeight: 700, color: '#1A1A1A', marginBottom: 10 }}>{title}</h3>
+      <p style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.75, marginBottom: link ? 18 : 0 }}>
         {desc}
       </p>
       {link && (
@@ -990,8 +990,8 @@ function LicenseCard({ title, desc }: { title: string; desc: string }) {
   return (
     <div
       style={{
-        background: '#111110',
-        border: '1px solid #1c1917',
+        background: '#FFFFFF',
+        border: '1px solid #E5E5E5',
         borderRadius: 16,
         padding: 28,
       }}
@@ -1008,7 +1008,7 @@ function LicenseCard({ title, desc }: { title: string; desc: string }) {
       >
         {title}
       </p>
-      <p style={{ fontSize: 14, color: '#a8a29e', lineHeight: 1.8 }}>{desc}</p>
+      <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.8 }}>{desc}</p>
     </div>
   )
 }

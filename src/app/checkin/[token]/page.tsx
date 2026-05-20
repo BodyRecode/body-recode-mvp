@@ -14,7 +14,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
 
   if (!client) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
           <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-xl font-semibold text-white mb-2">Link not found</h1>
@@ -37,7 +37,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
       hour12: true,
     })
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
           <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <h1 className="text-xl font-semibold text-white mb-2">Window not open</h1>
@@ -63,7 +63,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
 
   if (existing) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
           <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6"><a href="https://bodyrecode.au" className="text-xs font-bold tracking-widest text-teal-400 uppercase">Body Recode™</a></p>
           <div className="w-14 h-14 bg-stone-900 border border-stone-800 rounded-full flex items-center justify-center mx-auto mb-5">

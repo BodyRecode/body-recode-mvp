@@ -11,8 +11,8 @@
  * wrapper class so it never leaks into the dashboard chrome.
  */
 
-const TEAL = '#14b8a6'
-const TEAL_HOVER = '#5eead4'
+const TEAL = '#1B6DFC'
+const TEAL_HOVER = '#5390FF'
 const INK = '#0f0f0f'
 const WHITE = '#ffffff'
 const PAGE_BG = '#fafaf7'
@@ -77,7 +77,7 @@ export default function ReadingLayout({
         <div style={{ background: '#000000', padding: '44px 52px 0' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/logo-teal.png"
+            src="/logo-black.png"
             alt="Body Recode"
             style={{ height: 64, width: 'auto', display: 'block', marginBottom: 44 }}
           />
@@ -176,7 +176,7 @@ export default function ReadingLayout({
           })}
 
           <div style={{ marginTop: 48, paddingTop: 24, borderTop: `2px solid ${INK}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <p style={{ fontSize: 10, fontWeight: 600, color: '#888888', letterSpacing: '0.05em' }}>
+            <p style={{ fontSize: 10, fontWeight: 600, color: '#999999', letterSpacing: '0.05em' }}>
               © Body Recode · www.bodyrecode.au
             </p>
             <p style={{ fontSize: 10, fontWeight: 600, color: '#aaaaaa', letterSpacing: '0.05em' }}>

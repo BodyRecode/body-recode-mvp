@@ -48,14 +48,14 @@ export default async function MedicationsReadingPage({
   })
 
   return (
-    <div className="min-h-screen bg-[#0c0a09] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-[#57534e] hover:text-[#d4cfc9] text-sm transition-colors">← Back</Link>
-          <p className="text-[11px] font-bold tracking-widest text-[#14b8a6] uppercase mt-5 mb-2">Medications Reading</p>
-          <h1 className="text-2xl font-bold text-white tracking-tight mb-1">How your medications shape your coaching</h1>
-          <p className="text-[#57534e] text-sm">Published {publishedDate}</p>
+          <Link href={`/portal/${token}`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">← Back</Link>
+          <p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase mt-5 mb-2">Medications Reading</p>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight mb-1">How your medications shape your coaching</h1>
+          <p className="text-[#999999] text-sm">Published {publishedDate}</p>
         </div>
 
         <div className="space-y-5">
@@ -73,9 +73,9 @@ export default async function MedicationsReadingPage({
 
 function Section({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
-    <div className="rounded-2xl border border-[#1c1917] bg-[#111110] p-5">
-      <p className={`text-[11px] font-bold uppercase tracking-widest mb-3 ${accent ? 'text-[#14b8a6]' : 'text-[#a8a29e]'}`}>{title}</p>
-      <div className="text-sm text-[#d4cfc9] leading-relaxed whitespace-pre-wrap">{body}</div>
+    <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5">
+      <p className={`text-[11px] font-bold uppercase tracking-widest mb-3 ${accent ? 'text-[#1B6DFC]' : 'text-[#6B6B6B]'}`}>{title}</p>
+      <div className="text-sm text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

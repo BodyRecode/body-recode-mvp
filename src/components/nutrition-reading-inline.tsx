@@ -52,11 +52,11 @@ export default function NutritionReadingInline({
     .filter(s => !!s.content)
 
   return (
-    <div className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden">
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden">
       {/* Header strip */}
-      <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-[#1c1917]">
+      <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-[#E5E5E5]">
         <div className="flex items-center gap-2.5 min-w-0">
-          <span className="w-7 h-[3px] rounded-full bg-[#14b8a6] shrink-0" />
+          <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC] shrink-0" />
           <p
             className="text-[10px] font-bold text-white uppercase truncate"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
@@ -66,16 +66,16 @@ export default function NutritionReadingInline({
         </div>
         <Link
           href={documentHref}
-          className="inline-flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-md border border-[#1c1917] bg-[#0c0a09] text-[#a8a29e] hover:text-white hover:border-[#292524] transition-colors shrink-0"
+          className="inline-flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-white hover:border-[#D4D4D4] transition-colors shrink-0"
         >
           <FileText size={10} /> View as document
         </Link>
       </div>
 
       {/* Why this plan - always visible */}
-      <div className="px-5 py-4 border-b border-[#1c1917]/60">
+      <div className="px-5 py-4 border-b border-[#E5E5E5]/60">
         <p
-          className="text-[10px] font-bold text-[#14b8a6] uppercase mb-2"
+          className="text-[10px] font-bold text-[#1B6DFC] uppercase mb-2"
           style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
         >
           01 · Why this plan
@@ -89,11 +89,11 @@ export default function NutritionReadingInline({
       {rest.length > 0 && (
         <>
           {expanded && (
-            <div className="divide-y divide-[#1c1917]/60">
+            <div className="divide-y divide-[#E5E5E5]/60">
               {rest.map((s, i) => (
                 <div key={s.key} className="px-5 py-4">
                   <p
-                    className="text-[10px] font-bold text-[#14b8a6] uppercase mb-2"
+                    className="text-[10px] font-bold text-[#1B6DFC] uppercase mb-2"
                     style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
                   >
                     {String(i + 2).padStart(2, '0')} · {s.label}
@@ -107,7 +107,7 @@ export default function NutritionReadingInline({
           )}
           <button
             onClick={() => setExpanded(v => !v)}
-            className="w-full flex items-center justify-center gap-1.5 px-5 py-3 text-[12px] font-semibold text-[#a8a29e] hover:text-white hover:bg-[#1c1917]/40 transition-colors border-t border-[#1c1917]"
+            className="w-full flex items-center justify-center gap-1.5 px-5 py-3 text-[12px] font-semibold text-[#6B6B6B] hover:text-white hover:bg-[#E5E5E5]/40 transition-colors border-t border-[#E5E5E5]"
           >
             {expanded ? (
               <>

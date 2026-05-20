@@ -111,7 +111,7 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
   const isThreeSession = THREE_SESSION_PACKAGE_VALUES.includes(currentPackage as never)
 
   return (
-    <div className="min-h-screen bg-[#0c0a09] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       {/* Header */}
       <div className="border-b border-stone-800 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -192,7 +192,7 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
         <div className="grid gap-5">
           {/* Prompts */}
           {stage.prompts && stage.prompts.length > 0 && (
-            <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
+            <div className="bg-[#FFFFFF] border border-stone-800 rounded-xl p-5">
               <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">Prompts</p>
               <ul className="space-y-2">
                 {stage.prompts.map((p, i) => {

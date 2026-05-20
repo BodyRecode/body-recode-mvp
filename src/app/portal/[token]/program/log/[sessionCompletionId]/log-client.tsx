@@ -250,30 +250,30 @@ export default function LogClient(props: Props) {
         return (
           <div
             key={ex.id}
-            className={`bg-[#111110] border rounded-2xl p-4 ${allSetsSaved ? 'border-teal-500/30' : 'border-[#1c1917]'}`}
+            className={`bg-[#FFFFFF] border rounded-2xl p-4 ${allSetsSaved ? 'border-blue-500/30' : 'border-[#E5E5E5]'}`}
           >
             {/* Exercise header */}
             <div className="mb-3">
-              {ex.block_label && <p className="text-[10px] text-[#57534e] uppercase tracking-widest mb-1">{ex.block_label}</p>}
-              <h3 className="text-base font-bold text-white">{ex.prescribed_exercise_name}</h3>
-              <p className="text-xs text-[#a8a29e] mt-0.5">
+              {ex.block_label && <p className="text-[10px] text-[#999999] uppercase tracking-widest mb-1">{ex.block_label}</p>}
+              <h3 className="text-base font-bold text-[#1A1A1A]">{ex.prescribed_exercise_name}</h3>
+              <p className="text-xs text-[#6B6B6B] mt-0.5">
                 {ex.prescribed_sets ?? '?'} × {ex.prescribed_reps ?? '?'}
                 {ex.prescribed_rpe != null ? ` @ RPE ${ex.prescribed_rpe}` : ''}
                 {ex.prescribed_rest ? ` · ${ex.prescribed_rest}` : ''}
               </p>
-              {ex.prescribed_notes && <p className="text-xs text-[#a8a29e] mt-1.5 leading-relaxed">{ex.prescribed_notes}</p>}
+              {ex.prescribed_notes && <p className="text-xs text-[#6B6B6B] mt-1.5 leading-relaxed">{ex.prescribed_notes}</p>}
             </div>
 
             {/* Substitution toggle */}
             <div className="mb-3 text-xs">
-              <label className="flex items-center gap-2 text-[#a8a29e] cursor-pointer">
+              <label className="flex items-center gap-2 text-[#6B6B6B] cursor-pointer">
                 <input
                   type="checkbox"
                   checked={exState?.substituted ?? false}
                   disabled={isCompleted}
                   onChange={e => setExStates(prev => ({ ...prev, [ex.id]: { ...prev[ex.id], substituted: e.target.checked } }))}
                   onBlur={() => saveExerciseMeta(ex.id)}
-                  className="accent-teal-400"
+                  className="accent-blue-500"
                 />
                 Substituted with a different exercise
               </label>
@@ -286,7 +286,7 @@ export default function LogClient(props: Props) {
                     disabled={isCompleted}
                     onChange={e => setExStates(prev => ({ ...prev, [ex.id]: { ...prev[ex.id], subName: e.target.value } }))}
                     onBlur={() => saveExerciseMeta(ex.id)}
-                    className="w-full bg-[#0a0a0a] border border-[#1c1917] rounded-lg px-3 py-2 text-xs text-white placeholder-[#57534e] focus:outline-none focus:border-[#3a3835]"
+                    className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2 text-xs text-[#1A1A1A] placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4]"
                   />
                   <input
                     type="text"
@@ -295,7 +295,7 @@ export default function LogClient(props: Props) {
                     disabled={isCompleted}
                     onChange={e => setExStates(prev => ({ ...prev, [ex.id]: { ...prev[ex.id], subReason: e.target.value } }))}
                     onBlur={() => saveExerciseMeta(ex.id)}
-                    className="w-full bg-[#0a0a0a] border border-[#1c1917] rounded-lg px-3 py-2 text-xs text-white placeholder-[#57534e] focus:outline-none focus:border-[#3a3835]"
+                    className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2 text-xs text-[#1A1A1A] placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4]"
                   />
                 </div>
               )}
@@ -309,7 +309,7 @@ export default function LogClient(props: Props) {
                 if (!s) return null
                 return (
                   <div key={n} className="grid grid-cols-[28px_1fr_1fr_1fr_36px] gap-1.5 items-center">
-                    <span className="text-xs text-[#57534e] tabular-nums text-center">{n}</span>
+                    <span className="text-xs text-[#999999] tabular-nums text-center">{n}</span>
                     <input
                       type="number"
                       inputMode="decimal"
@@ -317,7 +317,7 @@ export default function LogClient(props: Props) {
                       value={s.weight}
                       disabled={isCompleted}
                       onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], weight: e.target.value, saved: false } }))}
-                      className="w-full bg-[#0a0a0a] border border-[#1c1917] rounded-lg px-2 py-2.5 text-sm text-white text-center placeholder-[#57534e] focus:outline-none focus:border-[#3a3835] tabular-nums"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-2 py-2.5 text-sm text-[#1A1A1A] text-center placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4] tabular-nums"
                     />
                     <input
                       type="number"
@@ -326,7 +326,7 @@ export default function LogClient(props: Props) {
                       value={s.reps}
                       disabled={isCompleted}
                       onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], reps: e.target.value, saved: false } }))}
-                      className="w-full bg-[#0a0a0a] border border-[#1c1917] rounded-lg px-2 py-2.5 text-sm text-white text-center placeholder-[#57534e] focus:outline-none focus:border-[#3a3835] tabular-nums"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-2 py-2.5 text-sm text-[#1A1A1A] text-center placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4] tabular-nums"
                     />
                     <input
                       type="number"
@@ -335,7 +335,7 @@ export default function LogClient(props: Props) {
                       value={s.rpe}
                       disabled={isCompleted}
                       onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], rpe: e.target.value, saved: false } }))}
-                      className="w-full bg-[#0a0a0a] border border-[#1c1917] rounded-lg px-2 py-2.5 text-sm text-white text-center placeholder-[#57534e] focus:outline-none focus:border-[#3a3835] tabular-nums"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-2 py-2.5 text-sm text-[#1A1A1A] text-center placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4] tabular-nums"
                     />
                     <button
                       type="button"
@@ -343,8 +343,8 @@ export default function LogClient(props: Props) {
                       disabled={isCompleted || s.saving}
                       className={`h-9 rounded-lg text-xs font-bold transition-colors ${
                         s.saved
-                          ? 'bg-teal-500/20 text-teal-400 border border-teal-500/30'
-                          : 'bg-[#1c1917] text-[#a8a29e] hover:bg-[#262421] border border-[#1c1917]'
+                          ? 'bg-blue-500/20 text-blue-500 border border-blue-500/30'
+                          : 'bg-[#E5E5E5] text-[#6B6B6B] hover:bg-[#262421] border border-[#E5E5E5]'
                       }`}
                       aria-label={`Save set ${n}`}
                     >
@@ -369,7 +369,7 @@ export default function LogClient(props: Props) {
               onChange={e => setExStates(prev => ({ ...prev, [ex.id]: { ...prev[ex.id], notes: e.target.value } }))}
               onBlur={() => saveExerciseMeta(ex.id)}
               rows={2}
-              className="w-full bg-[#0a0a0a] border border-[#1c1917] rounded-lg px-3 py-2 text-xs text-white placeholder-[#57534e] focus:outline-none focus:border-[#3a3835] resize-none"
+              className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2 text-xs text-[#1A1A1A] placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4] resize-none"
             />
             {exState?.error && <p className="mt-1 text-[11px] text-red-400">{exState.error}</p>}
           </div>
@@ -377,15 +377,15 @@ export default function LogClient(props: Props) {
       })}
 
       {/* Session-level notes + complete button */}
-      <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-4">
-        <p className="text-[10px] text-[#57534e] uppercase tracking-widest mb-2">Session notes (optional)</p>
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-4">
+        <p className="text-[10px] text-[#999999] uppercase tracking-widest mb-2">Session notes (optional)</p>
         <textarea
           placeholder="Anything you want Kade to know about this session as a whole?"
           value={sessionNotes}
           disabled={isCompleted}
           onChange={e => setSessionNotes(e.target.value)}
           rows={3}
-          className="w-full bg-[#0a0a0a] border border-[#1c1917] rounded-lg px-3 py-2 text-xs text-white placeholder-[#57534e] focus:outline-none focus:border-[#3a3835] resize-none"
+          className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2 text-xs text-[#1A1A1A] placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4] resize-none"
         />
       </div>
 
@@ -394,7 +394,7 @@ export default function LogClient(props: Props) {
           type="button"
           onClick={handleComplete}
           disabled={completing}
-          className="w-full py-4 bg-[#14b8a6] hover:bg-[#5eead4] text-black font-bold text-sm rounded-2xl transition-colors disabled:opacity-50"
+          className="w-full py-4 bg-[#1B6DFC] hover:bg-[#5390FF] text-black font-bold text-sm rounded-2xl transition-colors disabled:opacity-50"
         >
           {completing ? 'Saving…' : 'Mark session complete'}
         </button>

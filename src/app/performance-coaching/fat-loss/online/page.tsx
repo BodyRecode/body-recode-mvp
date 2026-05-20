@@ -16,7 +16,7 @@ export default function OnlineFatLossCoachingPage() {
       {/* Hero */}
       <section className="bg-black pt-44 pb-28 px-5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Online · 1:1 Fat Loss Coaching</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Online · 1:1 Fat Loss Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-12">
             Online Fat Loss Coaching
           </h1>
@@ -25,7 +25,7 @@ export default function OnlineFatLossCoachingPage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb2] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free performance check-in
           </Link>
@@ -33,7 +33,7 @@ export default function OnlineFatLossCoachingPage() {
       </section>
 
       {/* Why fat loss is harder than it should be */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Why fat loss is harder than it should be</h2>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
@@ -74,7 +74,7 @@ export default function OnlineFatLossCoachingPage() {
       </section>
 
       {/* The Body Recode approach */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">The Body Recode™ approach to fat loss</h2>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
@@ -86,7 +86,7 @@ export default function OnlineFatLossCoachingPage() {
           <p className="text-white/60 text-lg leading-relaxed mb-12">
             Once the system is stable, fat loss becomes realistic and sustainable. Training load, nutrition structure, and lifestyle adjustments are all calibrated to the individual, not applied from a template.
           </p>
-          <Link href="/performance-coaching/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">
+          <Link href="/performance-coaching/online" className="text-[#1B6DFC] text-sm font-semibold hover:underline">
             Learn about the full Body Recode™ system →
           </Link>
         </div>
@@ -95,7 +95,7 @@ export default function OnlineFatLossCoachingPage() {
       {/* Client portal */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Client Portal</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Client Portal</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
             Your program, your data,<br />all in one place.
           </h2>
@@ -119,7 +119,7 @@ export default function OnlineFatLossCoachingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-6">
@@ -151,7 +151,7 @@ export default function OnlineFatLossCoachingPage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb2] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free check-in →
           </Link>

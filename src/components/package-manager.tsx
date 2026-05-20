@@ -121,7 +121,7 @@ export default function PackageManager({
     <div className="space-y-3">
       <div className="space-y-2">
         <div>
-          <p className="text-[10px] font-semibold text-[#57534e] uppercase tracking-widest mb-1.5">Standard</p>
+          <p className="text-[10px] font-semibold text-[#999999] uppercase tracking-widest mb-1.5">Standard</p>
           <div className="flex flex-wrap gap-2">
             {packages.filter(p => p.tier === 'standard').map(p => (
               <button
@@ -131,7 +131,7 @@ export default function PackageManager({
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
                     ? 'bg-teal-500/10 border-teal-500/30 text-teal-400'
-                    : 'border-[#1c1917] text-[#a8a29e] hover:border-[#292524] hover:text-[#e7e5e4]'
+                    : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-[#D4D4D4] hover:text-[#e7e5e4]'
                 }`}
               >
                 {p.label}
@@ -150,7 +150,7 @@ export default function PackageManager({
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
                     ? 'bg-amber-500/10 border-amber-500/40 text-amber-300'
-                    : 'border-[#1c1917] text-[#a8a29e] hover:border-amber-500/40 hover:text-amber-300'
+                    : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-amber-500/40 hover:text-amber-300'
                 }`}
               >
                 {p.label}
@@ -169,14 +169,14 @@ export default function PackageManager({
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
                     ? 'bg-stone-500/15 border-stone-500/40 text-stone-200'
-                    : 'border-[#1c1917] text-[#a8a29e] hover:border-stone-500/40 hover:text-stone-200'
+                    : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-stone-500/40 hover:text-stone-200'
                 }`}
               >
                 {p.label}
               </button>
             ))}
           </div>
-          <p className="text-[10px] text-[#57534e] mt-1.5">
+          <p className="text-[10px] text-[#999999] mt-1.5">
             Skips the Payments tracker. No Stripe link sent, no commencement-fee flag, no overdue indicator.
           </p>
         </div>
@@ -200,7 +200,7 @@ export default function PackageManager({
               <button
                 onClick={cancelSchedule}
                 disabled={cancelling}
-                className="text-[#57534e] hover:text-red-400 transition-colors"
+                className="text-[#999999] hover:text-red-400 transition-colors"
               >
                 {cancelling ? 'Cancelling...' : 'Cancel'}
               </button>
@@ -208,9 +208,9 @@ export default function PackageManager({
           )}
 
           {alreadySent && (
-            <div className="text-xs text-[#57534e]">
+            <div className="text-xs text-[#999999]">
               Subscription link sent {new Date(subscriptionLinkSentAt!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Brisbane' })}
-              {subscriptionLinkSendAt && <span className="ml-1 text-[#3c3835]">(scheduled send)</span>}
+              {subscriptionLinkSendAt && <span className="ml-1 text-[#999999]">(scheduled send)</span>}
             </div>
           )}
 
@@ -220,20 +220,20 @@ export default function PackageManager({
             <button
               onClick={sendLink}
               disabled={sending || sent}
-              className="text-xs font-bold px-4 py-2 bg-[#14b8a6] text-black rounded-lg hover:bg-[#5eead4] transition-colors disabled:opacity-50"
+              className="text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-black rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
             >
               {sending ? 'Sending...' : sent ? 'Sent!' : 'Send to Client'}
             </button>
             <button
               onClick={copyLink}
-              className="text-xs font-bold px-4 py-2 border border-[#1c1917] text-[#d4cfc9] rounded-lg hover:border-[#292524] hover:text-white transition-colors"
+              className="text-xs font-bold px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#D4D4D4] hover:text-white transition-colors"
             >
               {copied ? 'Copied!' : 'Copy Link'}
             </button>
             {!isScheduled && (
               <button
                 onClick={() => setShowSchedule(v => !v)}
-                className="text-xs font-bold px-4 py-2 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-amber-500/40 hover:text-amber-300 transition-colors"
+                className="text-xs font-bold px-4 py-2 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-amber-500/40 hover:text-amber-300 transition-colors"
               >
                 Schedule Send
               </button>
@@ -247,7 +247,7 @@ export default function PackageManager({
                 value={scheduleDate || todayStr}
                 min={todayStr}
                 onChange={e => setScheduleDate(e.target.value)}
-                className="text-xs bg-[#1c1917] border border-[#1c1917] text-[#e7e5e4] rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-500/50"
+                className="text-xs bg-[#E5E5E5] border border-[#E5E5E5] text-[#e7e5e4] rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-500/50"
               />
               <button
                 onClick={scheduleLink}
@@ -258,11 +258,11 @@ export default function PackageManager({
               </button>
               <button
                 onClick={() => setShowSchedule(false)}
-                className="text-xs text-[#3c3835] hover:text-[#a8a29e] transition-colors"
+                className="text-xs text-[#999999] hover:text-[#6B6B6B] transition-colors"
               >
                 Cancel
               </button>
-              <span className="text-xs text-[#3c3835]">Will send at 8am Brisbane time</span>
+              <span className="text-xs text-[#999999]">Will send at 8am Brisbane time</span>
             </div>
           )}
         </div>

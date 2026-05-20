@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 type Variant = 'ip' | 'consumer'
 
-const TEAL = '#10E1C2'
+const TEAL = '#1B6DFC'
 
 export default function MarketingFooter({ variant = 'consumer' }: { variant?: Variant }) {
   const isIp = variant === 'ip'
@@ -10,8 +10,8 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
   return (
     <footer
       style={{
-        background: '#0c0a09',
-        borderTop: '1px solid #1c1917',
+        background: '#FFFFFF',
+        borderTop: '1px solid #E5E5E5',
         padding: '64px 20px 32px',
       }}
     >
@@ -27,13 +27,13 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
           {/* Brand */}
           <div>
             <Image
-              src="/logo-teal.png"
+              src="/logo-black.png"
               alt="Body Recode"
               width={220}
               height={97}
               style={{ height: 48, width: 'auto', marginBottom: 18 }}
             />
-            <p style={{ fontSize: 13, color: '#78716c', lineHeight: 1.7 }}>
+            <p style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.7 }}>
               {isIp ? (
                 <>
                   Biological interpretation platform.
@@ -55,7 +55,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: '0.15em',
-                color: '#57534e',
+                color: '#999999',
                 textTransform: 'uppercase',
                 marginBottom: 4,
               }}
@@ -81,7 +81,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
                       fontSize: 9,
                       fontWeight: 700,
                       background: TEAL,
-                      color: '#0c0a09',
+                      color: '#FFFFFF',
                       padding: '2px 7px',
                       borderRadius: 999,
                       textTransform: 'uppercase',
@@ -113,7 +113,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: '0.15em',
-                color: '#57534e',
+                color: '#999999',
                 textTransform: 'uppercase',
                 marginBottom: 4,
               }}
@@ -143,7 +143,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
 
         <div
           style={{
-            borderTop: '1px solid #1c1917',
+            borderTop: '1px solid #E5E5E5',
             paddingTop: 24,
             display: 'flex',
             flexWrap: 'wrap',
@@ -166,12 +166,12 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
 
 const footerLink: React.CSSProperties = {
   fontSize: 13,
-  color: '#a8a29e',
+  color: '#6B6B6B',
   textDecoration: 'none',
 }
 
 const footerLinkMuted: React.CSSProperties = {
   fontSize: 12,
-  color: '#57534e',
+  color: '#999999',
   textDecoration: 'none',
 }

@@ -16,7 +16,7 @@ export default function PerformanceCheckInPage() {
       {/* Hero */}
       <section className="bg-black pt-44 pb-28 px-5">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4"><a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase">Body Recode™</a> Performance Coaching</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4"><a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase">Body Recode™</a> Performance Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-12">
             Performance Check-In
           </h1>
@@ -25,7 +25,7 @@ export default function PerformanceCheckInPage() {
           </p>
           <Link
             href="/not-a-sign-up"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-10 py-5 rounded-full text-lg hover:bg-[#0ecfb2] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-10 py-5 rounded-full text-lg hover:bg-[#1056D6] transition-colors"
           >
             Begin the check-in
           </Link>
@@ -34,7 +34,7 @@ export default function PerformanceCheckInPage() {
       </section>
 
       {/* What it is */}
-      <section className="bg-[#0a0a0a] py-28 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-28 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12">
           <div>
             <h2 className="text-xl font-extrabold text-white tracking-tight mb-5">What this is</h2>
@@ -45,8 +45,8 @@ export default function PerformanceCheckInPage() {
                 'A clarity-building instrument, not an evaluation',
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full bg-[#10E1C2]/20 flex items-center justify-center shrink-0 mt-0.5">
-                    <div className="w-2 h-2 rounded-full bg-[#10E1C2]" />
+                  <div className="w-5 h-5 rounded-full bg-[#1B6DFC]/20 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-2 h-2 rounded-full bg-[#1B6DFC]" />
                   </div>
                   <p className="text-white/60 text-base leading-relaxed">{item}</p>
                 </div>
@@ -85,7 +85,7 @@ export default function PerformanceCheckInPage() {
               { step: '03', title: 'Decide what to do with it', body: 'Some people read it and leave it there. Others notice things they\'d like to understand more deeply. If you choose to explore further, the email will include an optional link. That decision is entirely yours.' },
             ].map((item) => (
               <div key={item.step} className="border border-white/10 rounded-2xl p-6">
-                <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-3">{item.step}</p>
+                <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-3">{item.step}</p>
                 <h3 className="text-base font-bold text-white mb-2">{item.title}</h3>
                 <p className="text-white/50 text-base leading-relaxed">{item.body}</p>
               </div>
@@ -95,7 +95,7 @@ export default function PerformanceCheckInPage() {
       </section>
 
       {/* How to answer */}
-      <section className="bg-[#0a0a0a] py-28 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-28 px-5 border-t border-white/5">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">How to answer</h2>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
@@ -127,7 +127,7 @@ export default function PerformanceCheckInPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#0a0a0a] py-28 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-28 px-5 border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
             When you&apos;re ready
@@ -137,7 +137,7 @@ export default function PerformanceCheckInPage() {
           </p>
           <Link
             href="/not-a-sign-up"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-10 py-5 rounded-full text-lg hover:bg-[#0ecfb2] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-10 py-5 rounded-full text-lg hover:bg-[#1056D6] transition-colors"
           >
             Begin the check-in →
           </Link>

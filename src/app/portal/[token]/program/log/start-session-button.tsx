@@ -67,8 +67,8 @@ export default function StartSessionButton(props: Props) {
   const baseClass = 'block w-full text-center font-semibold rounded-xl transition-colors disabled:opacity-50'
   const sizeClass = props.variant === 'primary' ? 'py-3.5 text-sm' : 'py-2.5 text-xs mt-2'
   const colourClass = isCompleted
-    ? 'bg-[#1c1917] text-[#d4cfc9] hover:bg-[#262421]'
-    : 'bg-[#14b8a6] text-black hover:bg-[#5eead4]'
+    ? 'bg-[#E5E5E5] text-[#3A3A3A] hover:bg-[#262421]'
+    : 'bg-[#1B6DFC] text-black hover:bg-[#5390FF]'
 
   return (
     <>

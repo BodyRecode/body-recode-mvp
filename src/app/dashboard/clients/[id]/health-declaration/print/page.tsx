@@ -30,7 +30,7 @@ export default async function HealthDeclarationPrintPage({ params }: { params: P
 
   const d = client.health_declaration_data as Record<string, any> | null
   const G = '#0f0f0f'
-  const TEAL = '#10E1C2'
+  const TEAL = '#1B6DFC'
 
   const submittedDate = new Date(client.health_declaration_submitted_at).toLocaleDateString('en-AU', {
     day: 'numeric', month: 'long', year: 'numeric',
@@ -53,7 +53,7 @@ export default async function HealthDeclarationPrintPage({ params }: { params: P
       <div style={{ maxWidth: '740px', margin: '0 auto', padding: '48px 40px' }}>
         <div style={{ borderBottom: `3px solid ${G}`, paddingBottom: '24px', marginBottom: '32px' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-teal.png" alt="Body Recode" style={{ height: '36px', marginBottom: '24px', display: 'block' }} />
+          <img src="/logo-black.png" alt="Body Recode" style={{ height: '36px', marginBottom: '24px', display: 'block' }} />
           <h1 style={{ fontSize: '22px', fontWeight: 800, color: G, marginBottom: '4px' }}>Health Declaration</h1>
           <div style={{ display: 'flex', gap: '40px', marginTop: '16px' }}>
             <div>

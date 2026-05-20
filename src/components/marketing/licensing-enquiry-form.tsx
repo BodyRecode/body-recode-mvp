@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-const TEAL = '#10E1C2'
+const TEAL = '#1B6DFC'
 
 const ENVIRONMENTS = [
   'Performance Coaching',
@@ -92,7 +92,7 @@ export default function LicensingEnquiryForm() {
         <h3 style={{ fontSize: 20, fontWeight: 700, color: '#ffffff', marginBottom: 12 }}>
           Thank you. Your enquiry is in.
         </h3>
-        <p style={{ fontSize: 14, color: '#a8a29e', lineHeight: 1.8 }}>
+        <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.8 }}>
           We will respond within two business days from kade@bodyrecode.au. If your enquiry is
           time-sensitive, reply directly to that email.
         </p>
@@ -142,7 +142,7 @@ export default function LicensingEnquiryForm() {
           disabled={status === 'submitting'}
           style={{
             background: TEAL,
-            color: '#0c0a09',
+            color: '#FFFFFF',
             fontWeight: 700,
             fontSize: 14,
             padding: '14px 28px',
@@ -155,9 +155,9 @@ export default function LicensingEnquiryForm() {
         >
           {status === 'submitting' ? 'Sending…' : 'Send enquiry'}
         </button>
-        <p style={{ fontSize: 12, color: '#57534e' }}>
+        <p style={{ fontSize: 12, color: '#999999' }}>
           Or email{' '}
-          <a href="mailto:info@bodyrecode.au" style={{ color: '#a8a29e', textDecoration: 'underline' }}>
+          <a href="mailto:info@bodyrecode.au" style={{ color: '#6B6B6B', textDecoration: 'underline' }}>
             info@bodyrecode.au
           </a>
         </p>
@@ -188,7 +188,7 @@ function Field({
           fontSize: 11,
           fontWeight: 700,
           letterSpacing: '0.12em',
-          color: '#a8a29e',
+          color: '#6B6B6B',
           textTransform: 'uppercase',
         }}
       >
@@ -221,7 +221,7 @@ function SelectField({
           fontSize: 11,
           fontWeight: 700,
           letterSpacing: '0.12em',
-          color: '#a8a29e',
+          color: '#6B6B6B',
           textTransform: 'uppercase',
         }}
       >
@@ -259,7 +259,7 @@ function TextareaField({
           fontSize: 11,
           fontWeight: 700,
           letterSpacing: '0.12em',
-          color: '#a8a29e',
+          color: '#6B6B6B',
           textTransform: 'uppercase',
         }}
       >
@@ -277,12 +277,12 @@ function TextareaField({
 }
 
 const fieldInputStyle: React.CSSProperties = {
-  background: '#111110',
-  border: '1px solid #1c1917',
+  background: '#FFFFFF',
+  border: '1px solid #E5E5E5',
   borderRadius: 10,
   padding: '12px 14px',
   fontSize: 14,
-  color: '#d4cfc9',
+  color: '#3A3A3A',
   outline: 'none',
   width: '100%',
 }

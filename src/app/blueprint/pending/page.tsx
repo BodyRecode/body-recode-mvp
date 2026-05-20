@@ -8,11 +8,11 @@ function PendingContent() {
   const email = params.get('email') ?? ''
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0c0a09', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>
       <div style={{ maxWidth: 520, width: '100%', textAlign: 'center' }}>
-        <img src="https://bodyrecode.au/logo-teal.png" width={120} alt="Body Recode" style={{ display: 'block', margin: '0 auto 40px' }} />
-        <div style={{ width: 56, height: 56, borderRadius: '50%', background: '#14b8a6', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px' }}>
-          <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#0c0a09" strokeWidth={2.5}>
+        <img src="https://bodyrecode.au/logo-black.png" width={120} alt="Body Recode" style={{ display: 'block', margin: '0 auto 40px' }} />
+        <div style={{ width: 56, height: 56, borderRadius: '50%', background: '#1B6DFC', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px' }}>
+          <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#FFFFFF" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>

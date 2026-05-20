@@ -16,7 +16,7 @@ export default function FatLossCoachBrisbanePage() {
       {/* Hero */}
       <section className="bg-black pt-44 pb-28 px-5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Brisbane · Fat Loss Coaching</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Brisbane · Fat Loss Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-12">
             Fat Loss Coach Brisbane
           </h1>
@@ -25,7 +25,7 @@ export default function FatLossCoachBrisbanePage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb2] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free performance check-in
           </Link>
@@ -33,7 +33,7 @@ export default function FatLossCoachBrisbanePage() {
       </section>
 
       {/* Why fat loss is harder than it should be */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Why fat loss is harder than it should be</h2>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
@@ -74,7 +74,7 @@ export default function FatLossCoachBrisbanePage() {
       </section>
 
       {/* The Body Recode approach */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">The Body Recode™ approach to fat loss</h2>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
@@ -87,8 +87,8 @@ export default function FatLossCoachBrisbanePage() {
             Once the system is stable, fat loss becomes realistic and sustainable. Training load, nutrition structure, and lifestyle adjustments are all calibrated to the individual, not applied from a template.
           </p>
           <div className="flex flex-wrap gap-6">
-            <Link href="/performance-coaching/fat-loss/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online fat loss coaching →</Link>
-            <Link href="/performance-coaching/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Full system overview →</Link>
+            <Link href="/performance-coaching/fat-loss/online" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Online fat loss coaching →</Link>
+            <Link href="/performance-coaching/brisbane" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Full system overview →</Link>
           </div>
         </div>
       </section>
@@ -116,7 +116,7 @@ export default function FatLossCoachBrisbanePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
             Find out what&apos;s actually holding your progress back
@@ -126,7 +126,7 @@ export default function FatLossCoachBrisbanePage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb2] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free check-in →
           </Link>

@@ -38,45 +38,45 @@ export default async function CheckinHistoryPage({ params }: { params: Promise<{
   }, {} as Record<string, typeof checkins>)
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-[#57534e] hover:text-[#d4cfc9] text-sm transition-colors">← Back</Link>
-          <h1 className="text-2xl font-bold text-white mt-4 mb-1">Check-in History</h1>
-          <p className="text-[#a8a29e] text-sm">All your weekly check-in submissions.</p>
+          <Link href={`/portal/${token}`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">← Back</Link>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] mt-4 mb-1">Check-in History</h1>
+          <p className="text-[#6B6B6B] text-sm">All your weekly check-in submissions.</p>
         </div>
 
         {!checkins || checkins.length === 0 ? (
-          <div className="rounded-2xl border border-[#1c1917] bg-[#111110] p-6 text-center">
-            <p className="text-[#57534e] text-sm">No check-ins submitted yet.</p>
+          <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-6 text-center">
+            <p className="text-[#999999] text-sm">No check-ins submitted yet.</p>
           </div>
         ) : (
           <div className="space-y-4">
             {Object.entries(grouped).map(([weekLabel, entries]) => (
-              <div key={weekLabel} className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden">
-                <div className="px-5 py-3 border-b border-[#1c1917]">
-                  <p className="text-xs font-bold text-[#57534e] uppercase tracking-widest">{weekLabel}</p>
+              <div key={weekLabel} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden">
+                <div className="px-5 py-3 border-b border-[#E5E5E5]">
+                  <p className="text-xs font-bold text-[#999999] uppercase tracking-widest">{weekLabel}</p>
                 </div>
-                <div className="divide-y divide-[#1c1917]/60">
+                <div className="divide-y divide-[#E5E5E5]/60">
                   {(entries || []).map((c) => (
                     <Link
                       key={c.id}
                       href={`/portal/${token}/checkin/${c.week_number}/${c.form_type.toLowerCase()}`}
-                      className="px-5 py-3 flex items-center justify-between hover:bg-[#1c1917]/40 transition-colors"
+                      className="px-5 py-3 flex items-center justify-between hover:bg-[#E5E5E5]/40 transition-colors"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-7 h-7 rounded-full bg-[#14b8a6]/10 border border-[#14b8a6]/20 flex items-center justify-center shrink-0">
-                          <svg className="w-3.5 h-3.5 text-[#14b8a6]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <div className="w-7 h-7 rounded-full bg-[#1B6DFC]/10 border border-[#1B6DFC]/20 flex items-center justify-center shrink-0">
+                          <svg className="w-3.5 h-3.5 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <p className="text-sm text-white font-medium">Form {c.form_type}</p>
+                        <p className="text-sm text-[#1A1A1A] font-medium">Form {c.form_type}</p>
                         {feedbackSet.has(c.id) && (
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#14b8a6] bg-[#14b8a6]/10 border border-[#14b8a6]/30 rounded px-1.5 py-0.5">Coach response</span>
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 rounded px-1.5 py-0.5">Coach response</span>
                         )}
                       </div>
-                      <p className="text-xs text-[#57534e] ml-3 shrink-0">
+                      <p className="text-xs text-[#999999] ml-3 shrink-0">
                         {new Date(c.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </Link>

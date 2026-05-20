@@ -76,17 +76,17 @@ export default function ProgramReviewForm({
 
   if (submitted) {
     return (
-      <div className="rounded-2xl border border-[#14b8a6]/20 bg-[#14b8a6]/5 p-8 text-center">
-        <div className="w-12 h-12 rounded-full bg-[#14b8a6] flex items-center justify-center mx-auto mb-4">
+      <div className="rounded-2xl border border-[#1B6DFC]/20 bg-[#1B6DFC]/5 p-8 text-center">
+        <div className="w-12 h-12 rounded-full bg-[#1B6DFC] flex items-center justify-center mx-auto mb-4">
           <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <p className="text-lg font-semibold text-[#14b8a6] mb-1">Review submitted</p>
-        <p className="text-[#a8a29e] text-sm mb-6">Your coach will see this when they review your program.</p>
+        <p className="text-lg font-semibold text-[#1B6DFC] mb-1">Review submitted</p>
+        <p className="text-[#6B6B6B] text-sm mb-6">Your coach will see this when they review your program.</p>
         <button
           onClick={() => router.push(`/portal/${token}`)}
-          className="text-sm font-semibold text-black bg-[#14b8a6] px-6 py-2.5 rounded-xl hover:bg-[#5eead4] transition-colors"
+          className="text-sm font-semibold text-black bg-[#1B6DFC] px-6 py-2.5 rounded-xl hover:bg-[#5390FF] transition-colors"
         >
           Back to portal
         </button>
@@ -97,27 +97,27 @@ export default function ProgramReviewForm({
   return (
     <div className="space-y-5">
       {lastReviewAt && (
-        <p className="text-xs text-[#3c3835]">
+        <p className="text-xs text-[#999999]">
           Last reviewed {new Date(lastReviewAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
         </p>
       )}
 
-      <div className="bg-[#111110] border border-[#1c1917] rounded-2xl px-4 py-3">
-        <p className="text-xs text-[#57534e]">Current block</p>
-        <p className="text-sm font-semibold text-white mt-0.5">{blockName}</p>
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-4 py-3">
+        <p className="text-xs text-[#999999]">Current block</p>
+        <p className="text-sm font-semibold text-[#1A1A1A] mt-0.5">{blockName}</p>
       </div>
 
       {/* Adherence */}
       <div>
-        <p className="text-xs font-bold text-[#57534e] uppercase tracking-widest mb-3">Did you complete your sessions?</p>
+        <p className="text-xs font-bold text-[#999999] uppercase tracking-widest mb-3">Did you complete your sessions?</p>
         <button
           onClick={() => setAdherenceConfirmed(!adherenceConfirmed)}
           className={`flex items-center gap-3 px-4 py-3 rounded-2xl border w-full text-left transition-colors ${
-            adherenceConfirmed ? 'border-teal-500 bg-[#14b8a6]/10' : 'border-[#1c1917] hover:border-[#292524]'
+            adherenceConfirmed ? 'border-blue-500 bg-[#1B6DFC]/10' : 'border-[#E5E5E5] hover:border-[#D4D4D4]'
           }`}
         >
           <div className={`w-5 h-5 rounded-full border shrink-0 flex items-center justify-center ${
-            adherenceConfirmed ? 'border-teal-500 bg-[#14b8a6]' : 'border-[#292524]'
+            adherenceConfirmed ? 'border-blue-500 bg-[#1B6DFC]' : 'border-[#D4D4D4]'
           }`}>
             {adherenceConfirmed && (
               <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -125,7 +125,7 @@ export default function ProgramReviewForm({
               </svg>
             )}
           </div>
-          <p className={`text-sm font-medium ${adherenceConfirmed ? 'text-[#5eead4]' : 'text-[#a8a29e]'}`}>
+          <p className={`text-sm font-medium ${adherenceConfirmed ? 'text-[#5390FF]' : 'text-[#6B6B6B]'}`}>
             Yes - I completed my sessions as programmed
           </p>
         </button>
@@ -133,18 +133,18 @@ export default function ProgramReviewForm({
 
       {/* Signal */}
       <div>
-        <p className="text-xs font-bold text-[#57534e] uppercase tracking-widest mb-3">How did training feel?</p>
+        <p className="text-xs font-bold text-[#999999] uppercase tracking-widest mb-3">How did training feel?</p>
         <div className="space-y-2">
           {SIGNAL_OPTIONS.map(opt => (
             <button
               key={opt.value}
               onClick={() => setSignalCategories(prev => prev.includes(opt.value) ? prev.filter(v => v !== opt.value) : [...prev, opt.value])}
               className={`flex items-start gap-3 w-full text-left px-4 py-3 rounded-2xl border transition-colors ${
-                signalCategories.includes(opt.value) ? 'border-teal-500 bg-[#14b8a6]/10' : 'border-[#1c1917] hover:border-[#1c1917]'
+                signalCategories.includes(opt.value) ? 'border-blue-500 bg-[#1B6DFC]/10' : 'border-[#E5E5E5] hover:border-[#E5E5E5]'
               }`}
             >
               <div className={`w-4 h-4 rounded border shrink-0 mt-0.5 flex items-center justify-center ${
-                signalCategories.includes(opt.value) ? 'border-teal-500 bg-[#14b8a6]' : 'border-[#292524]'
+                signalCategories.includes(opt.value) ? 'border-blue-500 bg-[#1B6DFC]' : 'border-[#D4D4D4]'
               }`}>
                 {signalCategories.includes(opt.value) && (
                   <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -153,8 +153,8 @@ export default function ProgramReviewForm({
                 )}
               </div>
               <div>
-                <p className={`text-sm font-medium ${signalCategories.includes(opt.value) ? 'text-[#5eead4]' : 'text-[#d4cfc9]'}`}>{opt.label}</p>
-                <p className="text-xs text-[#3c3835] mt-0.5">{opt.desc}</p>
+                <p className={`text-sm font-medium ${signalCategories.includes(opt.value) ? 'text-[#5390FF]' : 'text-[#3A3A3A]'}`}>{opt.label}</p>
+                <p className="text-xs text-[#999999] mt-0.5">{opt.desc}</p>
               </div>
             </button>
           ))}
@@ -163,7 +163,7 @@ export default function ProgramReviewForm({
 
       {/* Direction */}
       <div id="f-direction" className="scroll-mt-24">
-        <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${missing.has('direction') ? 'text-red-400' : 'text-[#57534e]'}`}>Overall - how is training going?</p>
+        <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${missing.has('direction') ? 'text-red-400' : 'text-[#999999]'}`}>Overall - how is training going?</p>
         <div className="grid grid-cols-3 gap-2">
           {([
             { value: 'progress', label: 'Making progress' },
@@ -180,8 +180,8 @@ export default function ProgramReviewForm({
                 direction === opt.value
                   ? directionColour[opt.value]
                   : missing.has('direction')
-                  ? 'border-red-500/60 text-[#57534e]'
-                  : 'border-[#1c1917] text-[#57534e] hover:border-[#1c1917]'
+                  ? 'border-red-500/60 text-[#999999]'
+                  : 'border-[#E5E5E5] text-[#999999] hover:border-[#E5E5E5]'
               }`}
             >
               {opt.label}
@@ -193,13 +193,13 @@ export default function ProgramReviewForm({
 
       {/* Notes */}
       <div>
-        <p className="text-xs font-bold text-[#57534e] uppercase tracking-widest mb-2">Anything else to note? <span className="text-[#292524] normal-case font-normal">(optional)</span></p>
+        <p className="text-xs font-bold text-[#999999] uppercase tracking-widest mb-2">Anything else to note? <span className="text-[#D4D4D4] normal-case font-normal">(optional)</span></p>
         <textarea
           value={signalsNoted}
           onChange={e => setSignalsNoted(e.target.value)}
           rows={3}
           placeholder="e.g. left knee was sore on squats, energy was low Thursday..."
-          className="w-full bg-[#111110] border border-[#1c1917] rounded-2xl px-4 py-3 text-sm text-white placeholder-[#3c3835] resize-none focus:outline-none focus:border-[#292524]"
+          className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-4 py-3 text-sm text-[#1A1A1A] placeholder-[#999999] resize-none focus:outline-none focus:border-[#D4D4D4]"
         />
       </div>
 
@@ -212,7 +212,7 @@ export default function ProgramReviewForm({
       <button
         onClick={handleSubmit}
         disabled={submitting}
-        className="w-full py-3.5 bg-[#14b8a6] hover:bg-[#5eead4] disabled:bg-[#1c1917] disabled:text-[#3c3835] text-black font-bold text-sm rounded-2xl transition-colors"
+        className="w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] disabled:bg-[#E5E5E5] disabled:text-[#999999] text-black font-bold text-sm rounded-2xl transition-colors"
       >
         {submitting ? 'Submitting...' : 'Submit Review'}
       </button>

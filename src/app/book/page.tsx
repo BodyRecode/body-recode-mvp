@@ -124,7 +124,7 @@ export default function BookPage() {
     <div className="min-h-screen bg-stone-950 text-white">
       {/* Header */}
       <div className="border-b border-stone-800 px-6 py-5 flex items-center justify-between">
-        <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" />
+        <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" />
         <a
           href="https://performance.bodyrecode.au"
           className="text-sm text-stone-500 hover:text-stone-300 transition-colors"

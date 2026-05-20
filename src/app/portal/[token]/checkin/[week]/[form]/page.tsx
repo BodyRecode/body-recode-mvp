@@ -70,22 +70,22 @@ export default async function PortalCheckinDetail({
   const answeredCount = Object.values(responses).filter(v => (v ?? '').toString().trim().length > 0).length
 
   return (
-    <div className="min-h-screen bg-[#0c0a09] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <Link href={`/portal/${token}/checkin-history`} className="text-[#57534e] hover:text-[#d4cfc9] text-sm transition-colors">← All check-ins</Link>
-          <p className="text-[11px] font-bold tracking-widest text-[#14b8a6] uppercase mt-5 mb-2">Week {weekNumber} · Form {formType}</p>
-          <h1 className="text-2xl font-bold text-white tracking-tight mb-1">Your check-in</h1>
-          <p className="text-[#57534e] text-sm">Submitted {submittedAt} · {answeredCount} responses</p>
+          <Link href={`/portal/${token}/checkin-history`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">← All check-ins</Link>
+          <p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase mt-5 mb-2">Week {weekNumber} · Form {formType}</p>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight mb-1">Your check-in</h1>
+          <p className="text-[#999999] text-sm">Submitted {submittedAt} · {answeredCount} responses</p>
         </div>
 
         {feedback ? (
-          <div className="mb-10 rounded-2xl border border-[#14b8a6]/30 bg-[#111110] overflow-hidden">
-            <div className="px-5 py-3 border-b border-[#1c1917] flex items-center justify-between">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-[#14b8a6]">Coach response</p>
+          <div className="mb-10 rounded-2xl border border-[#1B6DFC]/30 bg-[#FFFFFF] overflow-hidden">
+            <div className="px-5 py-3 border-b border-[#E5E5E5] flex items-center justify-between">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-[#1B6DFC]">Coach response</p>
               {feedback.email_sent_at && (
-                <p className="text-[10px] uppercase tracking-widest text-[#57534e]">
+                <p className="text-[10px] uppercase tracking-widest text-[#999999]">
                   Sent {new Date(feedback.email_sent_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                 </p>
               )}
@@ -97,15 +97,15 @@ export default async function PortalCheckinDetail({
             </div>
           </div>
         ) : (
-          <div className="mb-10 rounded-2xl border border-[#1c1917] bg-[#111110] px-5 py-4">
-            <p className="text-[11px] font-bold uppercase tracking-widest text-[#57534e]">Coach response</p>
-            <p className="mt-2 text-sm text-[#a8a29e]">Your coach has not responded to this check-in yet. You will receive an email when they do.</p>
+          <div className="mb-10 rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] px-5 py-4">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-[#999999]">Coach response</p>
+            <p className="mt-2 text-sm text-[#6B6B6B]">Your coach has not responded to this check-in yet. You will receive an email when they do.</p>
           </div>
         )}
 
-        <div className="rounded-2xl border border-[#1c1917] bg-[#111110] px-5 py-5">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-[#57534e] mb-3">Your responses</p>
-          <p className="text-sm text-[#a8a29e] leading-relaxed">
+        <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] px-5 py-5">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-[#999999] mb-3">Your responses</p>
+          <p className="text-sm text-[#6B6B6B] leading-relaxed">
             Your full {answeredCount}-response check-in is in your coach's view. If you want to see your own answers again, your coach can share them.
           </p>
         </div>
@@ -119,8 +119,8 @@ export default async function PortalCheckinDetail({
 function Section({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
     <div>
-      <p className={`text-[11px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-[#14b8a6]' : 'text-[#a8a29e]'}`}>{title}</p>
-      <div className="text-sm text-[#d4cfc9] leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
+      <p className={`text-[11px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-[#1B6DFC]' : 'text-[#6B6B6B]'}`}>{title}</p>
+      <div className="text-sm text-[#3A3A3A] leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

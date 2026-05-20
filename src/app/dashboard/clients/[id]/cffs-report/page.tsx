@@ -83,7 +83,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
         {/* Header bar (black) */}
         <div style={{ background: '#000000', padding: '44px 52px 0' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-teal.png" alt="Body Recode" style={{ height: 64, width: 'auto', display: 'block', marginBottom: 44 }} />
+          <img src="/logo-black.png" alt="Body Recode" style={{ height: 64, width: 'auto', display: 'block', marginBottom: 44 }} />
 
           <p style={{ fontSize: 10, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>
             Coach-Facing Foundational Synthesis
@@ -184,7 +184,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                     <p style={{ fontSize: 13, fontWeight: 800, color: readinessColour[item.value] || '#9ca3af', marginBottom: 4 }}>
                       {item.value}
                     </p>
-                    <p style={{ fontSize: 10, fontWeight: 600, color: '#888888', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    <p style={{ fontSize: 10, fontWeight: 600, color: '#999999', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                       {item.label}
                     </p>
                   </div>
@@ -234,7 +234,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
 
           {/* Footer */}
           <div style={{ marginTop: 48, paddingTop: 24, borderTop: `2px solid ${INK}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <p style={{ fontSize: 10, fontWeight: 600, color: '#888888', letterSpacing: '0.05em' }}>
+            <p style={{ fontSize: 10, fontWeight: 600, color: '#999999', letterSpacing: '0.05em' }}>
               © Body Recode · www.bodyrecode.au · info@bodyrecode.au
             </p>
             <p style={{ fontSize: 10, fontWeight: 600, color: '#aaaaaa', letterSpacing: '0.05em' }}>

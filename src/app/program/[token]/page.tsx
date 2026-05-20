@@ -14,7 +14,7 @@ const STATE_LABELS: Record<string, string> = {
 const STATE_COLOURS: Record<string, { color: string; bg: string; border: string; ctaBg: string; ctaBorder: string; ctaText: string }> = {
   depleted: { color: '#DC2626', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.25)', ctaBg: '#2d0d0d', ctaBorder: 'rgba(239,68,68,0.3)', ctaText: '#fca5a5' },
   transitioning: { color: '#B7791F', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)', ctaBg: '#2d1f0d', ctaBorder: 'rgba(245,158,11,0.3)', ctaText: '#fcd34d' },
-  ready: { color: '#14b8a6', bg: 'rgba(27,109,252,0.08)', border: 'rgba(27,109,252,0.25)', ctaBg: '#0d2d29', ctaBorder: 'rgba(27,109,252,0.3)', ctaText: '#99d6d0' },
+  ready: { color: '#1B6DFC', bg: 'rgba(27,109,252,0.08)', border: 'rgba(27,109,252,0.25)', ctaBg: '#B5CFFC', ctaBorder: 'rgba(27,109,252,0.3)', ctaText: '#99d6d0' },
 }
 
 export default async function ProgramPage({
@@ -46,11 +46,11 @@ export default async function ProgramPage({
   const bookingUrl = `${appUrl()}/book?source=self_guided_downsell&state=${state}`
 
   return (
-    <div style={{ background: '#0c0a09', minHeight: '100vh', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+    <div style={{ background: '#FFFFFF', minHeight: '100vh', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
 
       {/* Header */}
-      <div style={{ background: '#111110', borderBottom: '1px solid #1c1917', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" />
+      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" />
         <span style={{
           fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em',
           textTransform: 'uppercase' as const,
@@ -67,19 +67,19 @@ export default async function ProgramPage({
         {/* Welcome */}
         <div style={{ marginBottom: '40px' }}>
           <div style={{ width: '32px', height: '3px', background: sc.color, marginBottom: '20px', borderRadius: '2px' }} />
-          <p style={{ fontSize: '13px', color: '#78716c', marginBottom: '6px' }}>
+          <p style={{ fontSize: '13px', color: '#6B6B6B', marginBottom: '6px' }}>
             {firstName}, your program is ready.
           </p>
           <h1 style={{ fontSize: '26px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '12px' }}>
             12-Week {STATE_LABELS[state]} State Program
           </h1>
-          <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '15px', color: '#6B6B6B', lineHeight: 1.6 }}>
             Bookmark this page. Everything you need is here and you can return to it any time.
           </p>
         </div>
 
         {/* Program content card */}
-        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '16px', padding: '32px', marginBottom: '24px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '32px', marginBottom: '24px' }}>
           <style>{`
             .program-content h1 { display: none; }
             .program-content h2 {
@@ -90,7 +90,7 @@ export default async function ProgramPage({
               color: ${sc.color};
               margin: 48px 0 20px;
               padding-top: 48px;
-              border-top: 1px solid #1c1917;
+              border-top: 1px solid #E5E5E5;
             }
             .program-content h2:first-of-type {
               margin-top: 0;
@@ -116,12 +116,12 @@ export default async function ProgramPage({
             .program-content h4 {
               font-size: 13px;
               font-weight: 600;
-              color: #d4cfc9;
+              color: #3A3A3A;
               margin: 20px 0 8px;
             }
             .program-content p {
               font-size: 14px;
-              color: #a8a29e;
+              color: #6B6B6B;
               line-height: 1.8;
               margin: 0 0 14px;
             }
@@ -132,7 +132,7 @@ export default async function ProgramPage({
             }
             .program-content ul li {
               font-size: 14px;
-              color: #a8a29e;
+              color: #6B6B6B;
               line-height: 1.8;
               margin-bottom: 6px;
               padding-left: 16px;
@@ -155,7 +155,7 @@ export default async function ProgramPage({
             }
             .program-content ol li {
               font-size: 14px;
-              color: #a8a29e;
+              color: #6B6B6B;
               line-height: 1.8;
               margin-bottom: 8px;
             }
@@ -164,30 +164,30 @@ export default async function ProgramPage({
               border-collapse: collapse;
               margin: 16px 0 20px;
               font-size: 13px;
-              background: #0c0a09;
+              background: #FFFFFF;
               border-radius: 10px;
               overflow: hidden;
-              border: 1px solid #1c1917;
+              border: 1px solid #E5E5E5;
             }
             .program-content th {
               text-align: left;
               padding: 10px 14px;
-              background: #111110;
-              color: #57534e;
+              background: #FFFFFF;
+              color: #999999;
               font-size: 10px;
               font-weight: 700;
               letter-spacing: 0.1em;
               text-transform: uppercase;
-              border-bottom: 1px solid #1c1917;
+              border-bottom: 1px solid #E5E5E5;
             }
             .program-content td {
               padding: 11px 14px;
-              color: #d4cfc9;
-              border-bottom: 1px solid #1c1917;
+              color: #3A3A3A;
+              border-bottom: 1px solid #E5E5E5;
               vertical-align: top;
               line-height: 1.6;
             }
-            .program-content td:first-child { color: #a8a29e; }
+            .program-content td:first-child { color: #6B6B6B; }
             .program-content tr:last-child td { border-bottom: none; }
             .program-content strong { color: #ffffff; font-weight: 600; }
             .program-content hr { display: none; }
@@ -197,16 +197,16 @@ export default async function ProgramPage({
               padding: 12px 16px;
               margin: 16px 0;
               font-size: 13px;
-              color: #a8a29e;
+              color: #6B6B6B;
               border-radius: 0 8px 8px 0;
             }
-            .program-content a { color: #14b8a6; text-decoration: none; }
+            .program-content a { color: #1B6DFC; text-decoration: none; }
             .program-content code {
-              background: #1c1917;
+              background: #E5E5E5;
               padding: 2px 6px;
               border-radius: 4px;
               font-size: 12px;
-              color: #14b8a6;
+              color: #1B6DFC;
             }
           `}</style>
           <div className="program-content" dangerouslySetInnerHTML={{ __html: html }} />
@@ -224,7 +224,7 @@ export default async function ProgramPage({
             href={bookingUrl}
             style={{
               display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
-              background: '#14b8a6', color: '#0c0a09',
+              background: '#1B6DFC', color: '#FFFFFF',
               fontSize: '15px', fontWeight: 700, textAlign: 'center' as const,
               textDecoration: 'none', boxSizing: 'border-box' as const,
             }}

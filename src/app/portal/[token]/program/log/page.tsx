@@ -39,11 +39,11 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
 
   if (!program) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
         <ClientHeader />
         <div className="max-w-lg mx-auto px-6 py-10">
           <h1 className="text-2xl font-bold mb-3">No active program</h1>
-          <p className="text-[#a8a29e] text-sm">Your training program isn&apos;t set up yet. Once Kade publishes it, you&apos;ll be able to log sessions from here.</p>
+          <p className="text-[#6B6B6B] text-sm">Your training program isn&apos;t set up yet. Once Kade publishes it, you&apos;ll be able to log sessions from here.</p>
         </div>
       </div>
     )
@@ -76,22 +76,22 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
   const blockEnded = daysLeft < 0
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white pb-24">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] pb-24">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-5 py-8">
-        <Link href={`/portal/${token}`} className="text-[#57534e] hover:text-[#d4cfc9] text-sm transition-colors">
+        <Link href={`/portal/${token}`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">
           ← Back
         </Link>
 
         <div className="mt-6 mb-2">
-          <p className="text-[10px] text-teal-400 uppercase tracking-widest mb-2">Training Log</p>
-          <h1 className="text-2xl font-bold text-white">Log this week</h1>
+          <p className="text-[10px] text-blue-500 uppercase tracking-widest mb-2">Training Log</p>
+          <h1 className="text-2xl font-bold text-[#1A1A1A]">Log this week</h1>
         </div>
 
         {/* Block status pill */}
-        <div className="flex items-center gap-2 text-xs text-[#a8a29e] mb-6">
-          <span className="bg-[#111110] border border-[#1c1917] rounded-full px-2.5 py-0.5">
-            Week <span className="text-white">{blockWeek}</span> of {program.week_duration}
+        <div className="flex items-center gap-2 text-xs text-[#6B6B6B] mb-6">
+          <span className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-full px-2.5 py-0.5">
+            Week <span className="text-[#1A1A1A]">{blockWeek}</span> of {program.week_duration}
           </span>
           {blockEndingSoon && (
             <span className="bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full px-2.5 py-0.5">
@@ -107,10 +107,10 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
 
         {/* Today's session callout */}
         {todaySessionIndex >= 0 && (
-          <div className="mb-6 bg-gradient-to-br from-teal-500/15 to-teal-500/5 border border-teal-500/30 rounded-2xl p-5">
-            <p className="text-[10px] text-teal-400 uppercase tracking-widest font-semibold mb-2">Today · {today}</p>
-            <h2 className="text-xl font-bold text-white mb-1">{prescribedSessions[todaySessionIndex].day_label} · {prescribedSessions[todaySessionIndex].skeleton ?? 'Session'}</h2>
-            <p className="text-sm text-[#a8a29e] mb-4">
+          <div className="mb-6 bg-gradient-to-br from-blue-500/15 to-blue-500/5 border border-blue-500/30 rounded-2xl p-5">
+            <p className="text-[10px] text-blue-500 uppercase tracking-widest font-semibold mb-2">Today · {today}</p>
+            <h2 className="text-xl font-bold text-[#1A1A1A] mb-1">{prescribedSessions[todaySessionIndex].day_label} · {prescribedSessions[todaySessionIndex].skeleton ?? 'Session'}</h2>
+            <p className="text-sm text-[#6B6B6B] mb-4">
               {prescribedSessions[todaySessionIndex].flatExercises.length} exercise{prescribedSessions[todaySessionIndex].flatExercises.length === 1 ? '' : 's'}
             </p>
             <StartSessionButton
@@ -126,7 +126,7 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
         )}
 
         {/* All sessions for this week */}
-        <p className="text-[10px] text-[#a8a29e] uppercase tracking-widest font-semibold mb-3">All sessions, week {blockWeek}</p>
+        <p className="text-[10px] text-[#6B6B6B] uppercase tracking-widest font-semibold mb-3">All sessions, week {blockWeek}</p>
         <div className="space-y-2">
           {prescribedSessions.map((s, idx) => {
             const completion = completionByIndex.get(idx)
@@ -134,23 +134,23 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
             return (
               <div
                 key={idx}
-                className={`bg-[#111110] border rounded-2xl p-4 ${
+                className={`bg-[#FFFFFF] border rounded-2xl p-4 ${
                   completion?.status === 'completed'
-                    ? 'border-teal-500/40'
+                    ? 'border-blue-500/40'
                     : completion?.status === 'in_progress'
                       ? 'border-amber-500/40'
                       : isToday
-                        ? 'border-teal-500/20'
-                        : 'border-[#1c1917]'
+                        ? 'border-blue-500/20'
+                        : 'border-[#E5E5E5]'
                 }`}
               >
                 <div className="flex items-center justify-between gap-3 mb-1">
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-white truncate">{s.day_label}{s.skeleton ? ` · ${s.skeleton}` : ''}</p>
-                    <p className="text-xs text-[#a8a29e]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
+                    <p className="text-sm font-bold text-[#1A1A1A] truncate">{s.day_label}{s.skeleton ? ` · ${s.skeleton}` : ''}</p>
+                    <p className="text-xs text-[#6B6B6B]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
                   </div>
                   {completion?.status === 'completed' && (
-                    <span className="text-[10px] uppercase tracking-widest text-teal-400 shrink-0">Completed</span>
+                    <span className="text-[10px] uppercase tracking-widest text-blue-500 shrink-0">Completed</span>
                   )}
                   {completion?.status === 'in_progress' && (
                     <span className="text-[10px] uppercase tracking-widest text-amber-400 shrink-0">In progress</span>

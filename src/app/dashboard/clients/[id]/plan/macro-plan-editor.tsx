@@ -68,7 +68,7 @@ const PHASE_OBJECTIVES = [
   'Capacity Restoration', 'Capacity Building', 'Performance Expression', 'Consolidation and Stability',
 ]
 
-const inputCls = 'w-full bg-stone-200 border border-stone-300 text-stone-900 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#10E1C2] focus:border-transparent'
+const inputCls = 'w-full bg-stone-200 border border-stone-300 text-stone-900 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B6DFC] focus:border-transparent'
 const labelCls = 'block text-xs font-bold text-stone-600 uppercase tracking-wider mb-1.5'
 
 const emptyBlock = {
@@ -220,7 +220,7 @@ export default function MacroPlanEditor({
             <button
               onClick={handleCreatePlan}
               disabled={saving}
-              className="w-full py-2.5 bg-[#10E1C2] text-stone-100 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 transition-colors"
+              className="w-full py-2.5 bg-[#1B6DFC] text-stone-100 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 transition-colors"
             >
               {saving ? 'Creating…' : 'Create Plan'}
             </button>
@@ -255,7 +255,7 @@ export default function MacroPlanEditor({
                 <input type="text" value={planForm.plan_name} onChange={e => setPlanForm(p => ({ ...p, plan_name: e.target.value }))} placeholder="Plan name" className={inputCls} />
                 <input type="text" value={planForm.macro_objective} onChange={e => setPlanForm(p => ({ ...p, macro_objective: e.target.value }))} placeholder="Macro objective" className={inputCls} />
                 <div className="flex gap-2">
-                  <button onClick={handleCreatePlan} disabled={saving} className="flex-1 py-2 bg-[#10E1C2] text-stone-100 font-semibold rounded-md text-sm disabled:opacity-40">{saving ? 'Saving…' : 'Save'}</button>
+                  <button onClick={handleCreatePlan} disabled={saving} className="flex-1 py-2 bg-[#1B6DFC] text-stone-100 font-semibold rounded-md text-sm disabled:opacity-40">{saving ? 'Saving…' : 'Save'}</button>
                   <button onClick={() => setShowCreatePlan(false)} className="px-4 py-2 border border-stone-300 text-stone-600 rounded-md text-sm hover:border-stone-500">Cancel</button>
                 </div>
               </div>
@@ -322,14 +322,14 @@ export default function MacroPlanEditor({
                         {block.program_id ? (
                           <Link
                             href={`/dashboard/clients/${clientId}/program`}
-                            className="text-xs text-[#10E1C2] hover:underline"
+                            className="text-xs text-[#1B6DFC] hover:underline"
                           >
                             View program →
                           </Link>
                         ) : block.status !== 'complete' && block.status !== 'skipped' ? (
                           <Link
                             href={`/dashboard/clients/${clientId}/program/suggest?plan_block_id=${block.id}`}
-                            className="text-xs text-[#10E1C2] hover:underline"
+                            className="text-xs text-[#1B6DFC] hover:underline"
                           >
                             Generate program →
                           </Link>
@@ -395,7 +395,7 @@ function BlockAddForm({
       <p className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-4">Add Meso Block</p>
       <BlockFormFields form={blockForm} setForm={setBlockForm} />
       <div className="flex gap-2 mt-4">
-        <button onClick={onAdd} disabled={saving} className="flex-1 py-2.5 bg-[#10E1C2] text-stone-100 font-semibold rounded-md text-sm disabled:opacity-40">
+        <button onClick={onAdd} disabled={saving} className="flex-1 py-2.5 bg-[#1B6DFC] text-stone-100 font-semibold rounded-md text-sm disabled:opacity-40">
           {saving ? 'Adding…' : 'Add Block'}
         </button>
         <button onClick={onCancel} className="px-4 py-2 border border-stone-300 text-stone-600 rounded-md text-sm hover:border-stone-500">
@@ -444,7 +444,7 @@ function BlockEditForm({
         </select>
       </div>
       <div className="flex gap-2 mt-4">
-        <button onClick={() => onSave(form)} disabled={saving} className="flex-1 py-2.5 bg-[#10E1C2] text-stone-100 font-semibold rounded-md text-sm disabled:opacity-40">
+        <button onClick={() => onSave(form)} disabled={saving} className="flex-1 py-2.5 bg-[#1B6DFC] text-stone-100 font-semibold rounded-md text-sm disabled:opacity-40">
           {saving ? 'Saving…' : 'Save'}
         </button>
         <button onClick={onCancel} className="px-4 py-2 border border-stone-300 text-stone-600 rounded-md text-sm hover:border-stone-500">

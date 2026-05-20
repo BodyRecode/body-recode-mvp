@@ -18,7 +18,7 @@ export default function PerformanceCoachingPage() {
       <section className="bg-black pt-44 pb-32 px-5 overflow-hidden relative">
         <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs pointer-events-none select-none" opacity={0.06} />
         <div className="max-w-4xl mx-auto relative z-10">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">
             Environment 01: Health &amp; Fitness
           </p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-8">
@@ -34,9 +34,9 @@ export default function PerformanceCoachingPage() {
       </section>
 
       {/* What it is */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">The Execution Layer</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">The Execution Layer</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-8">
             Coaching derived entirely from the CFFS.
           </h2>
@@ -54,7 +54,7 @@ export default function PerformanceCoachingPage() {
       {/* Client population */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Client Population</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Client Population</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-8">
             General population. High-functioning adults.
           </h2>
@@ -73,9 +73,9 @@ export default function PerformanceCoachingPage() {
       </section>
 
       {/* Delivery */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Delivery</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase text-center mb-6">Delivery</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
             The same system.<br />Two ways to access it.
           </h2>
@@ -83,15 +83,15 @@ export default function PerformanceCoachingPage() {
             Whether you are in Brisbane or anywhere in the world, the methodology, the depth, and the quality are identical.
           </p>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="border border-[#10E1C2]/30 rounded-2xl p-8 bg-[#10E1C2]/5">
+            <div className="border border-[#1B6DFC]/30 rounded-2xl p-8 bg-[#1B6DFC]/5">
               <div className="flex items-center justify-between mb-6">
-                <p className="text-sm font-bold text-[#10E1C2] uppercase tracking-wider">Online 1:1</p>
-                <span className="text-[10px] font-bold text-black bg-[#10E1C2] px-2.5 py-1 rounded-full uppercase tracking-wider">Worldwide</span>
+                <p className="text-sm font-bold text-[#1B6DFC] uppercase tracking-wider">Online 1:1</p>
+                <span className="text-[10px] font-bold text-black bg-[#1B6DFC] px-2.5 py-1 rounded-full uppercase tracking-wider">Worldwide</span>
               </div>
               <p className="text-white/60 text-base leading-relaxed mb-6">
                 Full 1:1 coaching delivered remotely. Same structured intake, same biological assessment, same program design. Everything lives in your client portal: your program, your synthesis documents, your weekly check-ins, your progress data.
               </p>
-              <a href="https://performance.bodyrecode.au/online" className="text-sm font-semibold text-[#10E1C2] hover:underline">Online Coaching →</a>
+              <a href="https://performance.bodyrecode.au/online" className="text-sm font-semibold text-[#1B6DFC] hover:underline">Online Coaching →</a>
             </div>
             <div className="border border-white/10 rounded-2xl p-8">
               <div className="flex items-center justify-between mb-6">
@@ -110,7 +110,7 @@ export default function PerformanceCoachingPage() {
       {/* Closing */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Environment 01: Live</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Environment 01: Live</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
             Built, validated, and accepting clients.
           </h2>
@@ -119,7 +119,7 @@ export default function PerformanceCoachingPage() {
           </p>
           <a
             href="https://performance.bodyrecode.au"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb3] transition-colors mb-4"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb3] transition-colors mb-4"
           >
             Visit Performance Coaching
           </a>

@@ -74,20 +74,20 @@ function nl2p(text: string): string {
 function blockText(text: string): string {
   return text
     .split('\n\n')
-    .map(p => `<p style="margin:0 0 12px;font-size:14px;color:#a8a29e;line-height:1.7;">${p.trim()}</p>`)
+    .map(p => `<p style="margin:0 0 12px;font-size:14px;color:#6B6B6B;line-height:1.7;">${p.trim()}</p>`)
     .join('')
 }
 
 function bullets(raw: string): string {
   const items = raw.split('|').map(b => b.trim()).filter(Boolean)
-  return `<ul style="margin:0;padding:0 0 0 20px;">${items.map(b => `<li style="font-size:14px;color:#a8a29e;line-height:1.7;margin-bottom:8px;">${b}</li>`).join('')}</ul>`
+  return `<ul style="margin:0;padding:0 0 0 20px;">${items.map(b => `<li style="font-size:14px;color:#6B6B6B;line-height:1.7;margin-bottom:8px;">${b}</li>`).join('')}</ul>`
 }
 
 function section(heading: string, content: string): string {
   return `
     <tr>
       <td style="padding:0 0 32px;">
-        <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#10E1C2;">${heading}</p>
+        <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1B6DFC;">${heading}</p>
         ${content}
       </td>
     </tr>`
@@ -97,8 +97,8 @@ function signalBlock(heading: string, title: string, content: string): string {
   return `
     <tr>
       <td style="padding:0 0 24px;">
-        <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#555555;">${heading}</p>
-        <p style="margin:0 0 10px;font-size:13px;font-weight:600;color:#d4cfc9;">${title}</p>
+        <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#999999;">${heading}</p>
+        <p style="margin:0 0 10px;font-size:13px;font-weight:600;color:#3A3A3A;">${title}</p>
         ${blockText(content)}
       </td>
     </tr>`
@@ -125,9 +125,9 @@ export async function buildReportEmail(
   const bookingSection = bookingLink
     ? `<tr><td style="padding:0 0 40px;">
         <p style="margin:0 0 8px;font-size:17px;font-weight:700;color:#ffffff;line-height:1.4;">Your pattern has a reason.</p>
-        <p style="margin:0 0 24px;font-size:14px;color:#888888;line-height:1.7;">The report shows what's showing up. A 30-minute conversation is where we work out why, and what it means for how you should actually be training and eating right now.</p>
-        <a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Explore this with Kade →</a>
-        <p style="margin:12px 0 0;font-size:13px;color:#555555;">No obligation. Just clarity on what your body is actually doing.</p>
+        <p style="margin:0 0 24px;font-size:14px;color:#999999;line-height:1.7;">The report shows what's showing up. A 30-minute conversation is where we work out why, and what it means for how you should actually be training and eating right now.</p>
+        <a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Explore this with Kade →</a>
+        <p style="margin:12px 0 0;font-size:13px;color:#999999;">No obligation. Just clarity on what your body is actually doing.</p>
       </td></tr>`
     : ''
 
@@ -138,40 +138,40 @@ export async function buildReportEmail(
   <meta name="color-scheme" content="dark" />
   <meta name="supported-color-schemes" content="dark" />
 </head>
-<body style="margin:0;padding:0;background-color:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#0c0a09">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#FFFFFF">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:580px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:580px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
 
           <!-- Header -->
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:32px 40px 28px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px 28px;border-bottom:1px solid #E5E5E5;">
+              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
               <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;">Initial Performance Check-In Report</p>
-              <p style="margin:6px 0 0;font-size:13px;color:#555555;">Prepared for ${firstName}</p>
+              <p style="margin:6px 0 0;font-size:13px;color:#999999;">Prepared for ${firstName}</p>
             </td>
           </tr>
 
           <!-- Body -->
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 8px;">
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 8px;">
               <table width="100%" cellpadding="0" cellspacing="0">
 
                 ${bookingSection}
 
                 ${section('Opening Frame', nl2p(FIXED_SECTIONS.openingFrame))}
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #E5E5E5;"><tr><td height="1" bgcolor="#E5E5E5"></td></tr></table></td></tr>
 
                 ${section('How to Read This Report', nl2p(FIXED_SECTIONS.howToRead))}
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #E5E5E5;"><tr><td height="1" bgcolor="#E5E5E5"></td></tr></table></td></tr>
 
                 <!-- Pattern Snapshot -->
                 <tr>
                   <td style="padding:0 0 32px;">
-                    <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#10E1C2;">Pattern Snapshot</p>
+                    <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1B6DFC;">Pattern Snapshot</p>
                     <p style="margin:0 0 16px;font-size:18px;font-weight:700;color:#ffffff;">${narrative.bandTitle}</p>
                     ${nl2p(narrative.patternSnapshot)}
                   </td>
@@ -180,18 +180,18 @@ export async function buildReportEmail(
                 <!-- What This Pattern Often Includes -->
                 <tr>
                   <td style="padding:0 0 32px;">
-                    <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#10E1C2;">What This Pattern Often Includes</p>
-                    <p style="margin:0 0 12px;font-size:14px;color:#a8a29e;line-height:1.7;">People in this pattern commonly report:</p>
+                    <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1B6DFC;">What This Pattern Often Includes</p>
+                    <p style="margin:0 0 12px;font-size:14px;color:#6B6B6B;line-height:1.7;">People in this pattern commonly report:</p>
                     ${bullets(narrative.whatThisIncludes)}
                   </td>
                 </tr>
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #E5E5E5;"><tr><td height="1" bgcolor="#E5E5E5"></td></tr></table></td></tr>
 
                 <!-- Signal Blocks -->
                 <tr>
                   <td style="padding:0 0 24px;">
-                    <p style="margin:0 0 20px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#10E1C2;">Load, Recovery, and Consistency Signals</p>
+                    <p style="margin:0 0 20px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1B6DFC;">Load, Recovery, and Consistency Signals</p>
                   </td>
                 </tr>
 
@@ -199,29 +199,29 @@ export async function buildReportEmail(
                 ${signalBlock('Recovery Predictability Signals', rps.title, rps.text)}
                 ${signalBlock('Regulation and Identity Load Signals', rils.title, rils.text)}
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #E5E5E5;"><tr><td height="1" bgcolor="#E5E5E5"></td></tr></table></td></tr>
 
                 ${section('Stability Note', nl2p(FIXED_SECTIONS.stabilityNote))}
                 ${section('Agency Reminder', nl2p(FIXED_SECTIONS.agencyReminder))}
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #E5E5E5;"><tr><td height="1" bgcolor="#E5E5E5"></td></tr></table></td></tr>
 
                 <!-- Exploring Further -->
                 <tr>
                   <td style="padding:0 0 32px;">
-                    <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#10E1C2;">Exploring This Further</p>
+                    <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1B6DFC;">Exploring This Further</p>
                     ${nl2p(FIXED_SECTIONS.exploringFurther)}
                   </td>
                 </tr>
 
                 ${bookingSection}
 
-                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #1c1917;"><tr><td height="1" bgcolor="#1c1917"></td></tr></table></td></tr>
+                <tr><td style="padding:0 0 32px;"><table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #E5E5E5;"><tr><td height="1" bgcolor="#E5E5E5"></td></tr></table></td></tr>
 
                 <!-- Structural Clarification -->
                 <tr>
                   <td style="padding:0 0 40px;">
-                    <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#555555;">Structural Clarification</p>
+                    <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#999999;">Structural Clarification</p>
                     ${blockText(FIXED_SECTIONS.structuralClarification)}
                   </td>
                 </tr>
@@ -232,13 +232,13 @@ export async function buildReportEmail(
 
           <!-- Footer -->
           <tr>
-            <td bgcolor="#0d0d0d" style="background-color:#0d0d0d;padding:20px 40px;border-top:1px solid #1c1917;">
-              <p style="margin:0 0 8px;font-size:12px;color:#555555;line-height:1.6;">
-                To make sure you receive future emails from Body Recode™, add <strong style="color:#888888;">kade@bodyrecode.au</strong> to your contacts.
+            <td bgcolor="#0d0d0d" style="background-color:#0d0d0d;padding:20px 40px;border-top:1px solid #E5E5E5;">
+              <p style="margin:0 0 8px;font-size:12px;color:#999999;line-height:1.6;">
+                To make sure you receive future emails from Body Recode™, add <strong style="color:#999999;">kade@bodyrecode.au</strong> to your contacts.
               </p>
               <p style="margin:0;font-size:12px;color:#444444;line-height:1.6;">
                 Body Recode™ · Anytime Fitness Newstead, Brisbane<br/>
-                <a href="mailto:info@bodyrecode.au" style="color:#10E1C2;text-decoration:none;">info@bodyrecode.au</a>
+                <a href="mailto:info@bodyrecode.au" style="color:#1B6DFC;text-decoration:none;">info@bodyrecode.au</a>
               </p>
             </td>
           </tr>
@@ -279,21 +279,21 @@ function followUpEmail(firstName: string, body: string, ctaText: string, booking
   <meta name="color-scheme" content="dark" />
   <meta name="supported-color-schemes" content="dark" />
 </head>
-<body style="margin:0;padding:0;background-color:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#0c0a09">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#FFFFFF">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;">
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;">
               ${body}
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">${ctaText}</a></td></tr>
+                <tr><td><a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">${ctaText}</a></td></tr>
               </table>
               ${darkEmailSignature()}
             </td>
@@ -307,7 +307,7 @@ function followUpEmail(firstName: string, body: string, ctaText: string, booking
 }
 
 function p(text: string): string {
-  return `<p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">${text}</p>`
+  return `<p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">${text}</p>`
 }
 
 export function buildFollowUpEmails(firstName: string, bookingLink: string): {

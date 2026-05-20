@@ -20,7 +20,7 @@ export default async function AgreementPrintPage({ params }: { params: Promise<{
   })
 
   const G = '#0f0f0f'
-  const TEAL = '#10E1C2'
+  const TEAL = '#1B6DFC'
 
   return (
     <>
@@ -40,7 +40,7 @@ export default async function AgreementPrintPage({ params }: { params: Promise<{
         {/* Header */}
         <div style={{ borderBottom: `3px solid ${G}`, paddingBottom: '24px', marginBottom: '32px' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-teal.png" alt="Body Recode" style={{ height: '36px', marginBottom: '24px', display: 'block' }} />
+          <img src="/logo-black.png" alt="Body Recode" style={{ height: '36px', marginBottom: '24px', display: 'block' }} />
           <h1 style={{ fontSize: '22px', fontWeight: 800, color: G, marginBottom: '4px' }}>Body Recode™ Coaching Agreement</h1>
           <p style={{ fontSize: '12px', color: '#666', marginBottom: '20px' }}>Version 2.5 - Sole Trader, Queensland, Australia</p>
           <div style={{ display: 'flex', gap: '40px' }}>

@@ -353,7 +353,7 @@ export default function ZoomCompanion({
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-[#1A1A1A] flex flex-col">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col">
 
       {/* Top bar */}
       <div className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
@@ -381,13 +381,13 @@ export default function ZoomCompanion({
           <div className="flex items-center bg-stone-100 border border-stone-200 rounded-lg p-0.5">
             <button
               onClick={() => setView('live')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#10E1C2] text-black' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#1B6DFC] text-black' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
             >
               Live
             </button>
             <button
               onClick={() => setView('postcall')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#10E1C2] text-black' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#1B6DFC] text-black' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
             >
               Post-Call
             </button>
@@ -398,7 +398,7 @@ export default function ZoomCompanion({
             <span className="text-2xl font-mono font-bold text-[#1A1A1A] tabular-nums">{formatTime(seconds)}</span>
             <button
               onClick={() => setRunning(r => !r)}
-              className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-300 hover:bg-stone-400 text-[#1A1A1A]' : 'bg-[#10E1C2] text-black hover:bg-[#0ecfb2]'}`}
+              className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-300 hover:bg-stone-400 text-[#1A1A1A]' : 'bg-[#1B6DFC] text-black hover:bg-[#1056D6]'}`}
             >
               {running ? 'Pause' : seconds === 0 ? 'Start' : 'Resume'}
             </button>
@@ -428,7 +428,7 @@ export default function ZoomCompanion({
                 <button
                   onClick={generateSummary}
                   disabled={!transcript.trim() || generating}
-                  className="bg-[#10E1C2] text-black font-bold px-6 py-3 rounded-lg text-sm hover:bg-[#0ecfb2] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="bg-[#1B6DFC] text-black font-bold px-6 py-3 rounded-lg text-sm hover:bg-[#1056D6] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {generating ? 'Generating summary...' : 'Generate Summary'}
                 </button>
@@ -449,7 +449,7 @@ export default function ZoomCompanion({
                   <button
                     onClick={saveSummaryToNotes}
                     disabled={savingSummary || summarySaved}
-                    className="bg-[#10E1C2] text-black font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-[#0ecfb2] transition-colors disabled:opacity-50"
+                    className="bg-[#1B6DFC] text-black font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-[#1056D6] transition-colors disabled:opacity-50"
                   >
                     {summarySaved ? 'Saved to notes' : savingSummary ? 'Saving...' : 'Save to lead notes'}
                   </button>
@@ -478,7 +478,7 @@ export default function ZoomCompanion({
               onClick={() => setCurrentStage(i)}
               className={`text-left px-3 py-2.5 rounded-lg transition-colors ${
                 i === currentStage
-                  ? 'bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2]'
+                  ? 'bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 text-[#1B6DFC]'
                   : i < currentStage
                   ? 'text-stone-500 hover:text-stone-700'
                   : 'text-stone-600 hover:text-stone-800'
@@ -497,7 +497,7 @@ export default function ZoomCompanion({
                 </button>
               )}
               {currentStage < STAGES.length - 1 && (
-                <button onClick={() => setCurrentStage(s => s + 1)} className="flex-1 text-xs text-[#10E1C2] py-1.5 rounded-lg border border-[#10E1C2]/30 hover:bg-[#10E1C2]/10 transition-colors">
+                <button onClick={() => setCurrentStage(s => s + 1)} className="flex-1 text-xs text-[#1B6DFC] py-1.5 rounded-lg border border-[#1B6DFC]/30 hover:bg-[#1B6DFC]/10 transition-colors">
                   Next
                 </button>
               )}
@@ -525,7 +525,7 @@ export default function ZoomCompanion({
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`text-xs font-semibold px-3 py-2 capitalize border-b-2 -mb-px transition-colors ${
-                      activeTab === tab ? 'border-[#10E1C2] text-[#10E1C2]' : 'border-transparent text-stone-500 hover:text-stone-700'
+                      activeTab === tab ? 'border-[#1B6DFC] text-[#1B6DFC]' : 'border-transparent text-stone-500 hover:text-stone-700'
                     }`}
                   >
                     {tab === 'prompts' ? 'Prompts' : tab === 'scorecard' ? 'Scorecard Breakdown' : 'Interpretation Language'}
@@ -536,15 +536,15 @@ export default function ZoomCompanion({
               {activeTab === 'prompts' && (
                 <div className="space-y-2">
                   {stage.script && (
-                    <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/30 rounded-xl p-5 mb-4">
-                      <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-3">Script</p>
+                    <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/30 rounded-xl p-5 mb-4">
+                      <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-wider mb-3">Script</p>
                       <p className="text-stone-800 text-sm leading-relaxed whitespace-pre-line">{stage.script}</p>
                     </div>
                   )}
                   {(stage.prompts as Prompt[]).map((p, i) => renderPrompt(p, i))}
                   {stage.tips && (
-                    <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/20 rounded-xl p-4 mt-4">
-                      <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-1">Coach note</p>
+                    <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-xl p-4 mt-4">
+                      <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">Coach note</p>
                       <p className="text-stone-600 text-sm leading-relaxed">{stage.tips}</p>
                     </div>
                   )}
@@ -621,7 +621,7 @@ export default function ZoomCompanion({
               <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold">Live Notes</p>
               <button
                 onClick={saveNotes}
-                className="text-xs text-[#10E1C2] hover:text-[#1A1A1A] transition-colors font-semibold"
+                className="text-xs text-[#1B6DFC] hover:text-[#1A1A1A] transition-colors font-semibold"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>

@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
             <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:28px;">
               <tr>
                 <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
-                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#2dd4bf;text-transform:uppercase;letter-spacing:0.08em;">Face-to-Face Session</p>
+                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#3F85FD;text-transform:uppercase;letter-spacing:0.08em;">Face-to-Face Session</p>
                   <p style="margin:0 0 2px;font-size:16px;font-weight:700;color:#1A1A1A;">${displayDate}</p>
                   <p style="margin:0 0 20px;font-size:14px;color:#6B6B6B;">${displayTime} · ${session.duration_minutes} min · AF Newstead</p>
                   <a href="${confirmUrl}" style="display:inline-block;padding:12px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Confirm attendance →</a>

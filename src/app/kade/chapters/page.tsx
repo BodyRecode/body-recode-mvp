@@ -16,7 +16,7 @@ const PARTS = [
 
 export default function ChaptersIndexPage() {
   return (
-    <div className="min-h-screen bg-[#0c0a09] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <div className="max-w-2xl mx-auto px-5 py-16">
 
         {/* Back link */}

@@ -902,7 +902,7 @@ export async function GET(request: NextRequest) {
     }
 
     const sectionHeader = (label: string) =>
-      `<tr><td style="padding:18px 0 6px;"><p style="margin:0;font-size:10px;font-weight:700;color:#3c3835;letter-spacing:0.1em;text-transform:uppercase;">${label}</p></td></tr>`
+      `<tr><td style="padding:18px 0 6px;"><p style="margin:0;font-size:10px;font-weight:700;color:#999999;letter-spacing:0.1em;text-transform:uppercase;">${label}</p></td></tr>`
 
     const checkRow = (c: CheckResult) => `
       <tr>

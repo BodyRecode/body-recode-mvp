@@ -40,13 +40,13 @@ export default function OrientationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <div className="max-w-5xl mx-auto px-6 py-16 lg:flex lg:gap-14">
 
         {/* Sidebar */}
         <aside className="hidden lg:block w-48 shrink-0">
           <div className="sticky top-16">
-            <p className="text-[9px] text-stone-600 uppercase tracking-[0.2em] font-semibold mb-4">Orientation</p>
+            <p className="text-[9px] text-stone-400 uppercase tracking-[0.2em] font-semibold mb-4">Orientation</p>
             <nav className="space-y-1">
               {sections.map((s) => (
                 <button
@@ -54,8 +54,8 @@ export default function OrientationPage() {
                   onClick={() => scrollTo(s.id)}
                   className={`block w-full text-left text-[11px] leading-snug py-1.5 px-2 rounded transition-colors ${
                     activeId === s.id
-                      ? 'text-teal-400 bg-teal-400/10'
-                      : 'text-stone-500 hover:text-stone-300'
+                      ? 'text-blue-500 bg-blue-500/10'
+                      : 'text-stone-500 hover:text-stone-700'
                   }`}
                 >
                   {s.label}
@@ -70,18 +70,18 @@ export default function OrientationPage() {
 
           {/* Header */}
           <div className="mb-16">
-            <p className="text-[10px] text-stone-600 uppercase tracking-[0.25em] font-semibold mb-10">Body Recode&trade; &middot; Performance Coaching</p>
-            <div className="w-8 h-px bg-teal-400/60 mb-8" />
-            <h1 className="text-4xl font-light text-white mb-4 leading-tight tracking-tight">Performance Coaching<br />Orientation</h1>
-            <p className="text-stone-400 text-base leading-relaxed">How this works. What to expect. How we begin.</p>
+            <p className="text-[10px] text-stone-400 uppercase tracking-[0.25em] font-semibold mb-10">Body Recode&trade; &middot; Performance Coaching</p>
+            <div className="w-8 h-px bg-blue-500/60 mb-8" />
+            <h1 className="text-4xl font-light text-[#1A1A1A] mb-4 leading-tight tracking-tight">Performance Coaching<br />Orientation</h1>
+            <p className="text-stone-600 text-base leading-relaxed">How this works. What to expect. How we begin.</p>
           </div>
 
           {/* Intro note */}
-          <div className="border-l-2 border-teal-400/30 pl-6 mb-16">
-            <p className="text-stone-400 text-sm leading-relaxed italic">A calm introduction to the structure, pacing, and the philosophy behind Body Recode Performance Coaching.</p>
+          <div className="border-l-2 border-blue-500/30 pl-6 mb-16">
+            <p className="text-stone-600 text-sm leading-relaxed italic">A calm introduction to the structure, pacing, and the philosophy behind Body Recode Performance Coaching.</p>
           </div>
 
-          <div className="space-y-14 text-stone-300 text-[15px] leading-relaxed">
+          <div className="space-y-14 text-stone-700 text-[15px] leading-relaxed">
 
             <OrientationSection id="coach" title="A Note from Your Coach">
               <div className="flex items-center gap-5 mb-6">
@@ -93,7 +93,7 @@ export default function OrientationPage() {
                   className="rounded-full object-cover object-top shrink-0"
                 />
                 <div>
-                  <p className="text-white font-semibold text-sm">Kade Dunstone</p>
+                  <p className="text-[#1A1A1A] font-semibold text-sm">Kade Dunstone</p>
                   <p className="text-stone-500 text-xs mt-0.5">Performance Coach · Founder, Body Recode&trade;</p>
                 </div>
               </div>
@@ -161,13 +161,13 @@ export default function OrientationPage() {
 
             {/* Closing */}
             <div className="pt-2">
-              <div className="w-8 h-px bg-teal-400/30 mb-8" />
+              <div className="w-8 h-px bg-blue-500/30 mb-8" />
               <p className="text-stone-500 text-sm italic leading-relaxed">Body Recode doesn&apos;t ask for blind commitment. It asks for clarity. Take what resonates. Leave what doesn&apos;t. Move forward in a way that feels deliberate, grounded, and aligned with what your system can truly hold.</p>
             </div>
 
           </div>
 
-          <p className="text-[10px] text-stone-700 uppercase tracking-[0.25em] mt-20">Body Recode&trade;</p>
+          <p className="text-[10px] text-stone-300 uppercase tracking-[0.25em] mt-20">Body Recode&trade;</p>
 
         </main>
       </div>
@@ -179,8 +179,8 @@ function OrientationSection({ id, title, children }: { id: string; title: string
   return (
     <section id={id} data-section className="scroll-mt-16">
       <div className="flex items-center gap-4 mb-6">
-        <div className="w-1 h-4 bg-teal-400/50 rounded-full shrink-0" />
-        <h2 className="text-xs font-semibold text-teal-400/70 uppercase tracking-[0.15em]"
+        <div className="w-1 h-4 bg-blue-500/50 rounded-full shrink-0" />
+        <h2 className="text-xs font-semibold text-blue-500/70 uppercase tracking-[0.15em]"
           dangerouslySetInnerHTML={{ __html: title }}
         />
       </div>

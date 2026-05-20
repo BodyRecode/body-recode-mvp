@@ -50,14 +50,14 @@ export default function CommencementFeeButton({ leadId }: { leadId: string }) {
         <button
           onClick={sendToClient}
           disabled={sending || sent}
-          className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#14b8a6] text-black rounded-lg hover:bg-[#5eead4] transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-black rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
         >
           {sending ? 'Sending...' : sent ? 'Email Sent' : 'Send to Client'}
         </button>
         <button
           onClick={copyLink}
           disabled={copying || copied}
-          className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 border border-[#1c1917] text-[#d4cfc9] rounded-lg hover:border-[#292524] hover:text-white transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#D4D4D4] hover:text-white transition-colors disabled:opacity-50"
         >
           {copying ? 'Generating...' : copied ? 'Copied!' : 'Copy Link'}
         </button>

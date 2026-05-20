@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 type Variant = 'ip' | 'consumer'
 
-const TEAL = '#10E1C2'
+const TEAL = '#1B6DFC'
 
 export default function MarketingNav({ variant = 'consumer' }: { variant?: Variant }) {
   const isIp = variant === 'ip'
@@ -18,7 +18,7 @@ export default function MarketingNav({ variant = 'consumer' }: { variant?: Varia
         background: 'rgba(12, 10, 9, 0.92)',
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
-        borderBottom: '1px solid #1c1917',
+        borderBottom: '1px solid #E5E5E5',
       }}
     >
       <div
@@ -34,7 +34,7 @@ export default function MarketingNav({ variant = 'consumer' }: { variant?: Varia
       >
         <a href="/" style={{ display: 'block', cursor: 'pointer' }}>
           <Image
-            src="/logo-teal.png"
+            src="/logo-black.png"
             alt="Body Recode"
             width={220}
             height={97}
@@ -49,7 +49,7 @@ export default function MarketingNav({ variant = 'consumer' }: { variant?: Varia
               style={{
                 fontSize: 13,
                 fontWeight: 600,
-                color: '#a8a29e',
+                color: '#6B6B6B',
                 textDecoration: 'none',
                 letterSpacing: '0.02em',
               }}
@@ -62,7 +62,7 @@ export default function MarketingNav({ variant = 'consumer' }: { variant?: Varia
               style={{
                 fontSize: 13,
                 fontWeight: 600,
-                color: '#a8a29e',
+                color: '#6B6B6B',
                 textDecoration: 'none',
                 letterSpacing: '0.02em',
               }}
@@ -75,7 +75,7 @@ export default function MarketingNav({ variant = 'consumer' }: { variant?: Varia
               style={{
                 fontSize: 13,
                 fontWeight: 700,
-                color: '#0c0a09',
+                color: '#FFFFFF',
                 background: TEAL,
                 padding: '10px 18px',
                 borderRadius: 10,
@@ -93,7 +93,7 @@ export default function MarketingNav({ variant = 'consumer' }: { variant?: Varia
               style={{
                 fontSize: 13,
                 fontWeight: 700,
-                color: '#0c0a09',
+                color: '#FFFFFF',
                 background: TEAL,
                 padding: '10px 18px',
                 borderRadius: 10,

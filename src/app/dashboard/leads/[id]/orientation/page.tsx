@@ -1,6 +1,6 @@
 export default function OrientationPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-[#1A1A1A]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <div className="max-w-2xl mx-auto px-8 py-16">
 
         {/* Header */}

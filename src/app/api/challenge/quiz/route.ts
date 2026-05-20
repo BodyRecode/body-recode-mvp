@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
           <p>Hi ${firstName},</p>
           <p>You completed the Day 7 Body Decode Check-In. Here is your result.</p>
 
-          <div style="background:#1a1a19;border:1px solid #2a2826;border-radius:12px;padding:18px 22px;margin:20px 0;">
+          <div style="background:#FFFFFF;border:1px solid #2a2826;border-radius:12px;padding:18px 22px;margin:20px 0;">
             <p style="font-size:11px;font-weight:700;color:#999999;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 8px;">Your 7-Day Progress</p>
             <p style="font-size:28px;font-weight:900;color:#1B6DFC;margin:0 0 4px;letter-spacing:-0.02em;">${progressScore}<span style="font-size:15px;font-weight:500;color:#999999;letter-spacing:0;"> of 8 markers improving</span></p>
             <p style="font-size:13px;color:#999999;margin:0;line-height:1.6;">
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
             </p>
           </div>
 
-          <div style="background:#1a1a19;border:1px solid ${p.color}25;border-left:3px solid ${p.color};border-radius:12px;padding:20px 24px;margin:20px 0;">
+          <div style="background:#FFFFFF;border:1px solid ${p.color}25;border-left:3px solid ${p.color};border-radius:12px;padding:20px 24px;margin:20px 0;">
             <p style="font-size:11px;font-weight:700;color:${p.color};letter-spacing:0.1em;text-transform:uppercase;margin:0 0 6px;">Your Biological Pattern</p>
             <p style="font-size:19px;font-weight:800;color:#1A1A1A;margin:0 0 14px;letter-spacing:-0.01em;line-height:1.2;">${p.label}</p>
             <p style="font-size:14px;color:#6B6B6B;line-height:1.75;margin:0;">${p.desc}</p>
@@ -178,7 +178,7 @@ export async function POST(request: NextRequest) {
             `).join('')}
           </table>
 
-          <div style="background:#0d2d29;border:1px solid rgba(27,109,252,0.2);border-radius:12px;padding:20px 24px;margin:24px 0;">
+          <div style="background:#B5CFFC;border:1px solid rgba(27,109,252,0.2);border-radius:12px;padding:20px 24px;margin:24px 0;">
             <p style="font-size:14px;color:#99d6d0;line-height:1.7;margin:0 0 16px;">
               This is the beginning. The full picture, your complete biological map, your specific hormone drivers, and what is structurally driving your pattern, comes through the Body State Scorecard.
             </p>

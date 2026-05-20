@@ -44,15 +44,15 @@ export default async function PortalFoundationalReadingPage({
   const cffs = cffsRows?.[0] ?? null
   if (!cffs) {
     return (
-      <div className="min-h-screen bg-[#0c0a09] text-white flex flex-col items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md bg-[#111110] border border-[#1c1917] rounded-2xl p-8 text-center">
-          <p className="text-white text-lg font-semibold mb-2">Foundational Reading not yet available</p>
-          <p className="text-[#a8a29e] text-sm mb-6">
+      <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-8 text-center">
+          <p className="text-[#1A1A1A] text-lg font-semibold mb-2">Foundational Reading not yet available</p>
+          <p className="text-[#6B6B6B] text-sm mb-6">
             Your reading will appear here once it has been finalised and shared with you.
           </p>
           <Link
             href={`/portal/${token}`}
-            className="inline-flex items-center gap-1.5 text-[12px] text-[#14b8a6] hover:text-[#5eead4] transition-colors"
+            className="inline-flex items-center gap-1.5 text-[12px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors"
           >
             <ChevronLeft size={13} /> Back to portal
           </Link>

@@ -39,7 +39,7 @@ export default async function PreviewProgramPage({
         {['depleted', 'transitioning', 'ready'].map(s => (
           <a key={s} href={`/dashboard/preview/program/${s}`} style={{
             fontSize: '12px', fontWeight: 600,
-            color: s === state ? '#10E1C2' : '#555',
+            color: s === state ? '#1B6DFC' : '#555',
             textDecoration: 'none',
           }}>
             {STATE_LABELS[s]}
@@ -49,7 +49,7 @@ export default async function PreviewProgramPage({
 
       {/* Header */}
       <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" />
+        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" />
         <span style={{
           fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em',
           textTransform: 'uppercase' as const,

@@ -55,7 +55,7 @@ export default function CoachingGuidePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <div className="max-w-5xl mx-auto px-6 py-16 lg:flex lg:gap-14">
 
         {/* Sidebar */}

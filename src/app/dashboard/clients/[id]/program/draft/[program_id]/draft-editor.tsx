@@ -234,7 +234,7 @@ export default function DraftEditor({
   }
 
   const inputCls =
-    'bg-stone-200 border border-stone-300 text-stone-900 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[#10E1C2] focus:border-transparent'
+    'bg-stone-200 border border-stone-300 text-stone-900 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[#1B6DFC] focus:border-transparent'
 
   // Filtered swap results
   const currentPatterns = swapPath
@@ -289,7 +289,7 @@ export default function DraftEditor({
             <button
               onClick={handlePromote}
               disabled={promoting || saving || discarding}
-              className="text-xs px-4 py-1.5 bg-[#10E1C2] text-stone-100 font-semibold rounded-lg hover:bg-[#0dcfb2] transition-colors disabled:opacity-40"
+              className="text-xs px-4 py-1.5 bg-[#1B6DFC] text-stone-100 font-semibold rounded-lg hover:bg-[#0dcfb2] transition-colors disabled:opacity-40"
             >
               {promoting ? 'Promoting…' : 'Promote to Active'}
             </button>
@@ -352,7 +352,7 @@ export default function DraftEditor({
               {/* Movement Prep - editable */}
               {session.movement_prep?.length > 0 && (
                 <div className="px-5 py-4 bg-stone-200/30">
-                  <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-1">
+                  <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-1">
                     Preparatory Entry - Movement Preparation
                   </p>
                   <p className="text-[10px] text-stone-400 mb-3">Non-Slot · Prepare joints, tissues, and coordination</p>
@@ -364,7 +364,7 @@ export default function DraftEditor({
                           type="text"
                           value={item}
                           onChange={e => updateMovementPrep(sIdx, i, e.target.value)}
-                          className="flex-1 bg-transparent border-b border-stone-300 text-sm text-stone-700 py-0.5 focus:outline-none focus:border-[#10E1C2] transition-colors"
+                          className="flex-1 bg-transparent border-b border-stone-300 text-sm text-stone-700 py-0.5 focus:outline-none focus:border-[#1B6DFC] transition-colors"
                         />
                       </div>
                     ))}
@@ -375,7 +375,7 @@ export default function DraftEditor({
               {/* Blocks */}
               {session.blocks.map((block, bIdx) => (
                 <div key={bIdx} className="px-5 py-4">
-                  <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-3">{block.block_label}</p>
+                  <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">{block.block_label}</p>
                   <div className="space-y-2">
                     {block.exercises.map((ex, eIdx) => {
                       const path: EditingPath = { sessionIdx: sIdx, blockIdx: bIdx, exerciseIdx: eIdx }
@@ -411,7 +411,7 @@ export default function DraftEditor({
                                 <span className="text-sm font-semibold text-stone-900 flex-1">{ex.exercise_name}</span>
                                 <button
                                   onClick={() => isSwapping ? closeSwap() : openSwap(path)}
-                                  className="text-xs px-2.5 py-1 border border-stone-400 text-stone-600 rounded hover:border-[#10E1C2] hover:text-[#10E1C2] transition-colors"
+                                  className="text-xs px-2.5 py-1 border border-stone-400 text-stone-600 rounded hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
                                 >
                                   {isSwapping ? 'Cancel' : 'Swap'}
                                 </button>
@@ -432,7 +432,7 @@ export default function DraftEditor({
                                       placeholder="Search exercises…"
                                       value={swapSearch}
                                       onChange={e => setSwapSearch(e.target.value)}
-                                      className="w-full bg-stone-200 border border-stone-300 text-stone-900 rounded px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-[#10E1C2]"
+                                      className="w-full bg-stone-200 border border-stone-300 text-stone-900 rounded px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-[#1B6DFC]"
                                       autoFocus
                                     />
                                     {!libraryLoaded && <p className="text-xs text-stone-400 mt-1 px-1">Loading library…</p>}
@@ -556,7 +556,7 @@ export default function DraftEditor({
           <button
             onClick={handlePromote}
             disabled={promoting || saving || discarding}
-            className="text-xs px-4 py-1.5 bg-[#10E1C2] text-stone-100 font-semibold rounded-lg hover:bg-[#0dcfb2] transition-colors disabled:opacity-40"
+            className="text-xs px-4 py-1.5 bg-[#1B6DFC] text-stone-100 font-semibold rounded-lg hover:bg-[#0dcfb2] transition-colors disabled:opacity-40"
           >
             {promoting ? 'Promoting…' : 'Promote to Active'}
           </button>

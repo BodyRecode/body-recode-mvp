@@ -90,13 +90,13 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
       {data.blockName && <p className="text-sm font-semibold text-[#1A1A1A] mb-3">{data.blockName}</p>}
 
       <div className="grid grid-cols-3 gap-3 mb-3">
-        <div className="bg-[#0a0a0a] border border-[#E5E5E5] rounded-xl px-3 py-2.5">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5">
           <p className="text-[10px] uppercase tracking-widest text-[#999999]" style={{ fontFamily: MONO_FONT }}>Week</p>
           <p className="text-lg font-bold text-[#1A1A1A] tabular-nums" style={{ fontFamily: MONO_FONT }}>
             {data.blockWeek} <span className="text-[#999999] text-sm font-normal">/ {data.weekDuration}</span>
           </p>
         </div>
-        <div className="bg-[#0a0a0a] border border-[#E5E5E5] rounded-xl px-3 py-2.5">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5">
           <p className="text-[10px] uppercase tracking-widest text-[#999999]" style={{ fontFamily: MONO_FONT }}>This week</p>
           <p className="text-lg font-bold text-[#1A1A1A] tabular-nums" style={{ fontFamily: MONO_FONT }}>
             {data.sessionsCompletedThisWeek}
@@ -106,7 +106,7 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
             {data.sessionsInProgressThisWeek > 0 ? `${data.sessionsInProgressThisWeek} in progress` : `${completionPct}% logged`}
           </p>
         </div>
-        <div className="bg-[#0a0a0a] border border-[#E5E5E5] rounded-xl px-3 py-2.5">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5">
           <p className="text-[10px] uppercase tracking-widest text-[#999999]" style={{ fontFamily: MONO_FONT }}>Block total</p>
           <p className="text-lg font-bold text-[#1A1A1A] tabular-nums" style={{ fontFamily: MONO_FONT }}>
             {data.totalSessionsLoggedThisBlock}

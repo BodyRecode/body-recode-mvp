@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
             <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#1A1A1A;">Session confirmed</p>
             <p style="margin:0 0 24px;font-size:14px;color:#6B6B6B;line-height:1.6;">Hey ${firstName}, your session has been booked.</p>
             <div style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:24px;">
-              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#2dd4bf;text-transform:uppercase;letter-spacing:0.08em;">Face-to-Face Session</p>
+              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#3F85FD;text-transform:uppercase;letter-spacing:0.08em;">Face-to-Face Session</p>
               <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#1A1A1A;">${displayDate}</p>
               <p style="margin:0;font-size:14px;color:#6B6B6B;">${displayTime} · ${durationMinutes} min · AF Newstead</p>
             </div>

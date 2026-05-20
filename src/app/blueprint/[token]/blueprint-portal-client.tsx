@@ -251,7 +251,7 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {q1Options.map(opt => (
-                <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: q1 === opt.value ? '#E5E5E5' : '#FFFFFF', border: `1px solid ${q1 === opt.value ? '#1B6DFC' : '#292524'}`, borderRadius: 8 }}>
+                <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: q1 === opt.value ? '#E5E5E5' : '#FFFFFF', border: `1px solid ${q1 === opt.value ? '#1B6DFC' : '#D4D4D4'}`, borderRadius: 8 }}>
                   <input type="radio" name="q1" value={opt.value} checked={q1 === opt.value} onChange={() => setQ1(opt.value)} style={{ marginTop: 2, accentColor: '#1B6DFC' }} />
                   <span style={{ fontSize: 14, color: '#d4d0cc', lineHeight: 1.6, fontFamily: 'system-ui, sans-serif' }}>{opt.label}</span>
                 </label>
@@ -264,7 +264,7 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {q2Options.map(opt => (
-                <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: q2 === opt.value ? '#E5E5E5' : '#FFFFFF', border: `1px solid ${q2 === opt.value ? '#1B6DFC' : '#292524'}`, borderRadius: 8 }}>
+                <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: q2 === opt.value ? '#E5E5E5' : '#FFFFFF', border: `1px solid ${q2 === opt.value ? '#1B6DFC' : '#D4D4D4'}`, borderRadius: 8 }}>
                   <input type="radio" name="q2" value={opt.value} checked={q2 === opt.value} onChange={() => setQ2(opt.value)} style={{ marginTop: 2, accentColor: '#1B6DFC' }} />
                   <span style={{ fontSize: 14, color: '#d4d0cc', lineHeight: 1.6, fontFamily: 'system-ui, sans-serif' }}>{opt.label}</span>
                 </label>
@@ -523,7 +523,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           <button
             key={s.id}
             onClick={() => setSection(s.id)}
-            style={{ padding: '9px 16px', fontSize: 13, fontWeight: 600, color: section === s.id ? '#FFFFFF' : '#4A4A4A', background: section === s.id ? '#1B6DFC' : '#FFFFFF', border: `1px solid ${section === s.id ? '#1B6DFC' : '#292524'}`, borderRadius: 8, cursor: 'pointer' }}
+            style={{ padding: '9px 16px', fontSize: 13, fontWeight: 600, color: section === s.id ? '#FFFFFF' : '#4A4A4A', background: section === s.id ? '#1B6DFC' : '#FFFFFF', border: `1px solid ${section === s.id ? '#1B6DFC' : '#D4D4D4'}`, borderRadius: 8, cursor: 'pointer' }}
           >
             {s.label}
           </button>
@@ -563,7 +563,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {nutritionData.avoid.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                  <div style={{ width: 14, height: 14, borderRadius: 3, background: '#E5E5E5', border: '1px solid #292524', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 3, background: '#E5E5E5', border: '1px solid #D4D4D4', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span style={{ fontSize: 10, color: '#DC2626' }}>✕</span>
                   </div>
                   <span style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>{item}</span>
@@ -671,7 +671,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {REMOVE_FOODS.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                  <div style={{ width: 14, height: 14, borderRadius: 3, background: '#E5E5E5', border: '1px solid #292524', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 3, background: '#E5E5E5', border: '1px solid #D4D4D4', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span style={{ fontSize: 10, color: '#DC2626' }}>✕</span>
                   </div>
                   <span style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>{item}</span>
@@ -933,14 +933,14 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
           const callout = lesson.patternCallouts[pattern as keyof typeof lesson.patternCallouts]
 
           return (
-            <div key={lesson.week} style={{ background: '#FFFFFF', border: `1px solid ${isOpen ? '#292524' : '#E5E5E5'}`, borderRadius: 12, overflow: 'hidden', opacity: unlocked ? 1 : 0.45 }}>
+            <div key={lesson.week} style={{ background: '#FFFFFF', border: `1px solid ${isOpen ? '#D4D4D4' : '#E5E5E5'}`, borderRadius: 12, overflow: 'hidden', opacity: unlocked ? 1 : 0.45 }}>
               {/* Header row */}
               <button
                 onClick={() => unlocked && setOpenLesson(isOpen ? null : lesson.week)}
                 style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 20px', background: 'none', border: 'none', cursor: unlocked ? 'pointer' : 'default', textAlign: 'left' }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: unlocked ? config.colour : '#E5E5E5', border: `2px solid ${unlocked ? config.colour : '#292524'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: unlocked ? config.colour : '#E5E5E5', border: `2px solid ${unlocked ? config.colour : '#D4D4D4'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <span style={{ fontSize: 12, fontWeight: 700, color: unlocked ? '#FFFFFF' : '#4A4A4A' }}>{lesson.week}</span>
                   </div>
                   <div>
@@ -969,7 +969,7 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
                         />
                       </div>
                     ) : (
-                      <div style={{ background: '#E5E5E5', border: '1px dashed #292524', borderRadius: 10, padding: '40px 20px', textAlign: 'center', marginBottom: 20 }}>
+                      <div style={{ background: '#E5E5E5', border: '1px dashed #D4D4D4', borderRadius: 10, padding: '40px 20px', textAlign: 'center', marginBottom: 20 }}>
                         <div style={{ fontSize: 13, color: '#4A4A4A', marginBottom: 6 }}>Video coming soon</div>
                         <div style={{ fontSize: 12, color: '#3d3935' }}>Paste Loom embed URL into LESSONS[{lesson.week - 1}].loomUrl</div>
                       </div>
@@ -1126,7 +1126,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
             <button
               key={s.id}
               onClick={() => setActiveSession(s.id)}
-              style={{ padding: '10px 18px', fontSize: 13, fontWeight: 600, color: activeSession === s.id ? '#FFFFFF' : '#4A4A4A', background: activeSession === s.id ? '#1B6DFC' : '#FFFFFF', border: `1px solid ${activeSession === s.id ? '#1B6DFC' : '#292524'}`, borderRadius: 8, cursor: 'pointer' }}
+              style={{ padding: '10px 18px', fontSize: 13, fontWeight: 600, color: activeSession === s.id ? '#FFFFFF' : '#4A4A4A', background: activeSession === s.id ? '#1B6DFC' : '#FFFFFF', border: `1px solid ${activeSession === s.id ? '#1B6DFC' : '#D4D4D4'}`, borderRadius: 8, cursor: 'pointer' }}
             >
               Session {s.id}
             </button>
@@ -1349,7 +1349,7 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
                           fontWeight: 700,
                           color: markers[marker.key] === val ? '#FFFFFF' : '#4A4A4A',
                           background: markers[marker.key] === val ? config.colour : '#E5E5E5',
-                          border: `1px solid ${markers[marker.key] === val ? config.colour : '#292524'}`,
+                          border: `1px solid ${markers[marker.key] === val ? config.colour : '#D4D4D4'}`,
                           borderRadius: 8,
                           cursor: 'pointer',
                         }}
@@ -1373,7 +1373,7 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
                 onChange={e => setNotes(e.target.value)}
                 placeholder="Symptoms, energy patterns, anything unexpected..."
                 rows={3}
-                style={{ width: '100%', background: '#FFFFFF', border: '1px solid #292524', borderRadius: 8, padding: '12px 14px', fontSize: 13, color: '#999999', resize: 'vertical', fontFamily: 'system-ui, sans-serif', boxSizing: 'border-box' }}
+                style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D4D4D4', borderRadius: 8, padding: '12px 14px', fontSize: 13, color: '#999999', resize: 'vertical', fontFamily: 'system-ui, sans-serif', boxSizing: 'border-box' }}
               />
             </div>
 
@@ -1593,7 +1593,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
                   </a>
                   <a
                     href="mailto:kade@bodyrecode.au?subject=Blueprint complete - question about next step"
-                    style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#4A4A4A', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #292524' }}
+                    style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#4A4A4A', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #D4D4D4' }}
                   >
                     Ask a question first
                   </a>
@@ -1624,7 +1624,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
                   return (
                     <div key={phase.number} style={{ display: 'flex', gap: 16, paddingBottom: i < 2 ? 20 : 0 }}>
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <div style={{ width: 28, height: 28, borderRadius: '50%', background: isActive ? '#1B6DFC' : isPast ? '#292524' : '#E5E5E5', border: `2px solid ${isActive ? '#1B6DFC' : '#292524'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <div style={{ width: 28, height: 28, borderRadius: '50%', background: isActive ? '#1B6DFC' : isPast ? '#D4D4D4' : '#E5E5E5', border: `2px solid ${isActive ? '#1B6DFC' : '#D4D4D4'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                           <span style={{ fontSize: 11, fontWeight: 700, color: isActive ? '#FFFFFF' : '#4A4A4A' }}>{phase.number}</span>
                         </div>
                         {i < 2 && <div style={{ width: 2, flex: 1, background: '#E5E5E5', marginTop: 4 }} />}

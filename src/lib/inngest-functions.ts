@@ -227,7 +227,7 @@ export const challengeSequenceFunction = inngest.createFunction(
             <li style="margin-bottom:6px;">The next step after the challenge for those who want to go deeper</li>
           </ul>
           <p>I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset - it will make Week 2 feel much clearer.</p>
-          <div style="background:#0d2d29;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
+          <div style="background:#B5CFFC;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
             <p style="color:#1B6DFC;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Now Available</p>
             <p style="color:#1A1A1A;font-weight:700;font-size:16px;margin:0 0 4px;">Week One Progress Session</p>
             <p style="color:#6B6B6B;font-size:13px;margin:0 0 16px;">30 minutes</p>
@@ -273,7 +273,7 @@ export const challengeSequenceFunction = inngest.createFunction(
           </ul>
           <p>This is your baseline now. The question is: what do you build on top of it?</p>
           <p>The 6-Week Body Recode Blueprint takes everything you have started and adds structure, progressive training, signal-guided nutrition, and real accountability. It is where the results become visible.</p>
-          <div style="background:#0d2d29;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
+          <div style="background:#B5CFFC;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
             <p style="color:#1B6DFC;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Next Step</p>
             <p style="color:#1A1A1A;font-weight:700;font-size:16px;margin:0 0 4px;">6-Week Body Recode Blueprint</p>
             <p style="color:#6B6B6B;font-size:13px;margin:0 0 16px;">Where rhythm becomes results.</p>
@@ -1315,7 +1315,7 @@ export const reengagementSequenceFunction = inngest.createFunction(
         subject: `A lower-commitment way back in`,
         html: reengagementEmailShell(`
           <p>If the weekly membership commitment felt like too much right now, there's another option.</p>
-          <div style="background:#0d2d29;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
+          <div style="background:#B5CFFC;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
             <p style="color:#1B6DFC;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">90-Day Body Rewire Extension</p>
             <p style="color:#1A1A1A;font-weight:700;font-size:16px;margin:0 0 4px;">$197 one-time</p>
             <p style="color:#6B6B6B;font-size:13px;margin:0 0 16px;">12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.</p>

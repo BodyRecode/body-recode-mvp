@@ -144,7 +144,7 @@ export default function ReportClient({ report }: { report: {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: 'white', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       <style>{`
         @media print {
           body { background: white !important; color: black !important; }
@@ -216,7 +216,7 @@ export default function ReportClient({ report }: { report: {
                         {[1, 2, 3].map(n => (
                           <div key={n} style={{
                             width: '20px', height: '20px', borderRadius: '50%',
-                            background: n === s ? `rgba(${s === 1 ? '239,68,68' : s === 2 ? '245,158,11' : '20,184,166'},0.15)` : '#E5E5E5',
+                            background: n === s ? `rgba(${s === 1 ? '220,38,38' : s === 2 ? '183,121,31' : '27,109,252'},0.15)` : '#E5E5E5',
                             border: `1.5px solid ${n === s ? c : '#E5E5E5'}`,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             fontSize: '9px', fontWeight: 700, color: n === s ? c : '#4A4A4A',
@@ -282,7 +282,7 @@ export default function ReportClient({ report }: { report: {
 
         {/* CTA */}
         <div style={{ background: '#1A1A1A', border: '1px solid rgba(27, 109, 252,0.3)', borderRadius: '16px', padding: '32px' }}>
-          <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
+          <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
             The report tells you the state. A call tells you the fix.
           </h3>
           <p style={{ fontSize: '14px', color: '#B5CFFC', lineHeight: 1.7, marginBottom: '24px' }}>

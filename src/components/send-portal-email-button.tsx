@@ -22,7 +22,7 @@ export default function SendPortalEmailButton({ clientId }: { clientId: string }
     }
   }
 
-  const cls = 'text-sm font-medium px-4 py-2.5 rounded-lg border border-[#1c1917] text-[#d4cfc9] hover:border-[#292524] transition-colors disabled:opacity-50'
+  const cls = 'text-sm font-medium px-4 py-2.5 rounded-lg border border-[#E5E5E5] text-[#3A3A3A] hover:border-[#D4D4D4] transition-colors disabled:opacity-50'
 
   if (status === 'sent') {
     return (

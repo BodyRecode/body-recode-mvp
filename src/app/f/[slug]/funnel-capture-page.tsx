@@ -52,9 +52,9 @@ export default function FunnelCapturePage({
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-6">
+      <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center px-6">
         <div className="max-w-md w-full text-center">
-          <img src="https://bodyrecode.au/logo-teal.png" width="120" alt="Body Recode" className="mx-auto mb-10" />
+          <img src="https://bodyrecode.au/logo-black.png" width="120" alt="Body Recode" className="mx-auto mb-10" />
           <h1 className="text-2xl font-bold text-white mb-3">You&apos;re in.</h1>
           <p className="text-stone-400 text-sm leading-relaxed">
             We&apos;ve received your details. Kade will be in touch shortly.
@@ -65,9 +65,9 @@ export default function FunnelCapturePage({
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-6 py-16">
+    <div className="min-h-screen bg-[#FFFFFF] flex flex-col items-center justify-center px-6 py-16">
       <div className="max-w-lg w-full">
-        <img src="https://bodyrecode.au/logo-teal.png" width="120" alt="Body Recode" className="mb-10" />
+        <img src="https://bodyrecode.au/logo-black.png" width="120" alt="Body Recode" className="mb-10" />
 
         {headline && (
           <h1 className="text-3xl font-bold text-white leading-tight mb-4">{headline}</h1>

@@ -16,7 +16,7 @@ export default function PersonalTrainerBrisbanePage() {
       {/* Hero */}
       <section className="bg-black pt-44 pb-28 px-5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Brisbane · Personal Training</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Brisbane · Personal Training</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-12">
             Personal Trainer Brisbane
           </h1>
@@ -25,7 +25,7 @@ export default function PersonalTrainerBrisbanePage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb2] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free performance check-in
           </Link>
@@ -33,7 +33,7 @@ export default function PersonalTrainerBrisbanePage() {
       </section>
 
       {/* What's different */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">What makes this different from standard personal training</h2>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
@@ -71,8 +71,8 @@ export default function PersonalTrainerBrisbanePage() {
                 ))}
               </ul>
             </div>
-            <div className="border border-[#10E1C2]/30 rounded-xl p-6 bg-[#10E1C2]/5">
-              <p className="text-sm font-bold text-[#10E1C2] uppercase tracking-wider mb-4">Body Recode™</p>
+            <div className="border border-[#1B6DFC]/30 rounded-xl p-6 bg-[#1B6DFC]/5">
+              <p className="text-sm font-bold text-[#1B6DFC] uppercase tracking-wider mb-4">Body Recode™</p>
               <ul className="space-y-3">
                 {[
                   'Program built on a complete biological assessment',
@@ -83,7 +83,7 @@ export default function PersonalTrainerBrisbanePage() {
                   'Individual program built for your biology specifically',
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-base text-white/70 leading-relaxed">
-                    <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#10E1C2] shrink-0" />
+                    <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#1B6DFC] shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -94,7 +94,7 @@ export default function PersonalTrainerBrisbanePage() {
       </section>
 
       {/* Who it's for */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Who Body Recode™ is for</h2>
           <p className="text-white/60 text-lg leading-relaxed mb-12">
@@ -110,8 +110,8 @@ export default function PersonalTrainerBrisbanePage() {
               'You want to understand your body, not just follow someone else\'s plan',
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3 bg-white/5 rounded-xl p-4">
-                <div className="w-5 h-5 rounded-full bg-[#10E1C2]/20 flex items-center justify-center shrink-0 mt-0.5">
-                  <div className="w-2 h-2 rounded-full bg-[#10E1C2]" />
+                <div className="w-5 h-5 rounded-full bg-[#1B6DFC]/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-2 h-2 rounded-full bg-[#1B6DFC]" />
                 </div>
                 <p className="text-white/70 text-base leading-relaxed">{item}</p>
               </div>
@@ -125,22 +125,22 @@ export default function PersonalTrainerBrisbanePage() {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-12">Based in Newstead, Brisbane</h2>
           <p className="text-white/60 text-lg leading-relaxed mb-4">
-            Body Recode™ operates exclusively at <a href="https://www.anytimefitness.com/en-au/locations/newstead-queensland-au-1937" target="_blank" rel="noopener noreferrer" className="text-[#10E1C2] hover:underline">Anytime Fitness Newstead</a>, Brisbane. All coaching is face-to-face and one-on-one. This is not a group fitness model or a high-volume gym environment. Availability is limited by design, because the system requires a level of attention that cannot be delivered at scale.
+            Body Recode™ operates exclusively at <a href="https://www.anytimefitness.com/en-au/locations/newstead-queensland-au-1937" target="_blank" rel="noopener noreferrer" className="text-[#1B6DFC] hover:underline">Anytime Fitness Newstead</a>, Brisbane. All coaching is face-to-face and one-on-one. This is not a group fitness model or a high-volume gym environment. Availability is limited by design, because the system requires a level of attention that cannot be delivered at scale.
           </p>
           <p className="text-white/60 text-lg leading-relaxed mb-12">
             To find out if there is current availability and whether Body Recode™ is the right fit for you, start with the free Performance Check-In.
           </p>
           <div className="flex flex-wrap gap-6">
-            <Link href="/performance-coaching/personal-training/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online personal training →</Link>
-            <Link href="/performance-coaching/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Performance coaching →</Link>
-            <Link href="/performance-coaching/strength/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Strength coaching →</Link>
-            <Link href="/performance-coaching/fat-loss/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Fat loss coaching →</Link>
+            <Link href="/performance-coaching/personal-training/online" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Online personal training →</Link>
+            <Link href="/performance-coaching/brisbane" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Performance coaching →</Link>
+            <Link href="/performance-coaching/strength/brisbane" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Strength coaching →</Link>
+            <Link href="/performance-coaching/fat-loss/brisbane" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Fat loss coaching →</Link>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-6">
@@ -171,7 +171,7 @@ export default function PersonalTrainerBrisbanePage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb2] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free check-in →
           </Link>

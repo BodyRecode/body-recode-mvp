@@ -27,14 +27,14 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
 
   if (invitation.status === 'complete') {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-8">
+      <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-8">
         <div className="text-center max-w-sm">
           <div className="w-14 h-14 bg-teal-400/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-7 h-7 text-[#10E1C2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Submitted</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Submitted</p>
           <h1 className="text-2xl font-bold text-white mb-3 tracking-tight">Already submitted</h1>
           <p className="text-stone-400 text-[15px] leading-relaxed mb-8">
             Your intake has been completed. Your coach will review it and be in touch shortly.
@@ -42,7 +42,7 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
           {portalToken && (
             <a
               href={`/portal/${portalToken}`}
-              className="inline-block px-6 py-3 bg-[#10E1C2] hover:bg-teal-300 text-black font-bold text-sm rounded-2xl transition-colors"
+              className="inline-block px-6 py-3 bg-[#1B6DFC] hover:bg-teal-300 text-black font-bold text-sm rounded-2xl transition-colors"
             >
               Back to your portal
             </a>

@@ -30,16 +30,16 @@ export function buildBroadcastFeedbackFooter({
   // Trim a trailing slash so we always join cleanly to /feedback.
   const feedbackUrl = `${portalUrl.replace(/\/$/, '')}/feedback`
   return `
-    <table cellpadding="0" cellspacing="0" width="100%" style="margin:32px 0 0;border-top:1px solid #1c1917;padding-top:32px;">
+    <table cellpadding="0" cellspacing="0" width="100%" style="margin:32px 0 0;border-top:1px solid #E5E5E5;padding-top:32px;">
       <tr>
         <td>
-          <p style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:#14b8a6;text-transform:uppercase;margin:0 0 10px;">Feedback</p>
+          <p style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:#1B6DFC;text-transform:uppercase;margin:0 0 10px;">Feedback</p>
           <p style="color:#ffffff;font-size:17px;font-weight:700;letter-spacing:-0.01em;line-height:1.3;margin:0 0 12px;">${escapeHtml(heading)}</p>
-          <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#a8a29e;">${escapeHtml(intro)}</p>
+          <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#6B6B6B;">${escapeHtml(intro)}</p>
           <table cellpadding="0" cellspacing="0">
             <tr>
-              <td bgcolor="#14b8a6" style="background-color:#14b8a6;border-radius:10px;">
-                <a href="${feedbackUrl}" style="display:inline-block;padding:12px 22px;color:#0c0a09;font-size:13px;font-weight:700;text-decoration:none;letter-spacing:0.02em;">${escapeHtml(ctaLabel)}</a>
+              <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:10px;">
+                <a href="${feedbackUrl}" style="display:inline-block;padding:12px 22px;color:#FFFFFF;font-size:13px;font-weight:700;text-decoration:none;letter-spacing:0.02em;">${escapeHtml(ctaLabel)}</a>
               </td>
             </tr>
           </table>

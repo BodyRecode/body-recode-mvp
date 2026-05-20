@@ -24,13 +24,13 @@ export default async function AccountPage({ params }: { params: Promise<{ token:
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-10">
-          <Link href={`/portal/${token}/resources`} className="text-[12px] text-[#57534e] hover:text-[#d4cfc9] transition-colors">← Back to resources</Link>
-          <h1 className="text-[30px] font-extrabold text-white tracking-tight leading-[1.1] mt-4 mb-2">Account and service</h1>
-          <p className="text-[#a8a29e] text-[15px]">Update your details, manage your coaching, and download your data.</p>
+          <Link href={`/portal/${token}/resources`} className="text-[12px] text-[#999999] hover:text-[#3A3A3A] transition-colors">← Back to resources</Link>
+          <h1 className="text-[30px] font-extrabold text-[#1A1A1A] tracking-tight leading-[1.1] mt-4 mb-2">Account and service</h1>
+          <p className="text-[#6B6B6B] text-[15px]">Update your details, manage your coaching, and download your data.</p>
         </div>
 
         <AccountClient

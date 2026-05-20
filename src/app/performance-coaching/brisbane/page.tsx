@@ -16,7 +16,7 @@ export default function PerformanceCoachBrisbanePage() {
       {/* Hero */}
       <section className="bg-black pt-44 pb-32 px-5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Brisbane · Face-to-Face Performance Coaching</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Brisbane · Face-to-Face Performance Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-8">
             Performance Coaching Brisbane
           </h1>
@@ -25,7 +25,7 @@ export default function PerformanceCoachBrisbanePage() {
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb2] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
           >
             Start your free performance check-in
           </Link>
@@ -33,9 +33,9 @@ export default function PerformanceCoachBrisbanePage() {
       </section>
 
       {/* Recognition */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Sound familiar?</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase text-center mb-6">Sound familiar?</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-16">
             The effort is still there.<br />The response has gone quiet.
           </h2>
@@ -51,8 +51,8 @@ export default function PerformanceCoachBrisbanePage() {
               'Something has shifted. You just do not know what.',
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-4 bg-white/5 rounded-2xl p-5">
-                <div className="w-5 h-5 rounded-full bg-[#10E1C2]/20 flex items-center justify-center shrink-0 mt-0.5">
-                  <div className="w-2 h-2 rounded-full bg-[#10E1C2]" />
+                <div className="w-5 h-5 rounded-full bg-[#1B6DFC]/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-2 h-2 rounded-full bg-[#1B6DFC]" />
                 </div>
                 <p className="text-white/70 text-base leading-relaxed">{item}</p>
               </div>
@@ -67,7 +67,7 @@ export default function PerformanceCoachBrisbanePage() {
       {/* What performance coaching is */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">The Approach</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">The Approach</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-8">
             Biology first. Training second.
           </h2>
@@ -84,9 +84,9 @@ export default function PerformanceCoachBrisbanePage() {
       </section>
 
       {/* Four biological patterns */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase text-center mb-6">Who This Is For</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase text-center mb-6">Who This Is For</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center tracking-tight mb-6">
             Four biological patterns.<br />One system built around all of them.
           </h2>
@@ -134,7 +134,7 @@ export default function PerformanceCoachBrisbanePage() {
       {/* The system */}
       <section className="bg-black py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">The System</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">The System</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-16">Decode. Rewire. Rebuild.</h2>
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {[
@@ -143,25 +143,25 @@ export default function PerformanceCoachBrisbanePage() {
               { step: '03', title: 'Rebuild', body: 'Sustained progress built on a foundation that understands your biology. Stronger, leaner, and more resilient. Not through pressure, but through precision.' },
             ].map(item => (
               <div key={item.step} className="border border-white/10 rounded-2xl p-8">
-                <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">{item.step}</p>
+                <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">{item.step}</p>
                 <h3 className="text-xl font-bold text-white mb-4">{item.title}</h3>
                 <p className="text-white/50 text-base leading-relaxed">{item.body}</p>
               </div>
             ))}
           </div>
           <div className="flex flex-wrap gap-6">
-            <Link href="/performance-coaching/online" className="text-[#10E1C2] text-sm font-semibold hover:underline">Online coaching →</Link>
-            <Link href="/performance-coaching/strength/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Strength coaching →</Link>
-            <Link href="/performance-coaching/fat-loss/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Fat loss coaching →</Link>
-            <Link href="/performance-coaching/personal-training/brisbane" className="text-[#10E1C2] text-sm font-semibold hover:underline">Personal training →</Link>
+            <Link href="/performance-coaching/online" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Online coaching →</Link>
+            <Link href="/performance-coaching/strength/brisbane" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Strength coaching →</Link>
+            <Link href="/performance-coaching/fat-loss/brisbane" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Fat loss coaching →</Link>
+            <Link href="/performance-coaching/personal-training/brisbane" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Personal training →</Link>
           </div>
         </div>
       </section>
 
       {/* Inside the coaching system */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Inside the System</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Inside the System</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
             What happens once you are accepted into coaching
           </h2>
@@ -171,7 +171,7 @@ export default function PerformanceCoachBrisbanePage() {
 
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <div className="border border-white/10 rounded-2xl p-8">
-              <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">CFFS</p>
+              <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">CFFS</p>
               <h3 className="text-lg font-bold text-white mb-4">Coach-Facing Foundational Synthesis</h3>
               <p className="text-white/50 text-base leading-relaxed mb-4">
                 Produced at intake. Foundational, interpretive, and non-temporal. It does not change week to week. The CFFS establishes what is structurally true about your system: dominant patterns, limiting factors, non-negotiable constraints, and risk signals.
@@ -181,7 +181,7 @@ export default function PerformanceCoachBrisbanePage() {
               </p>
             </div>
             <div className="border border-white/10 rounded-2xl p-8">
-              <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">CFWS</p>
+              <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">CFWS</p>
               <h3 className="text-lg font-bold text-white mb-4">Coach-Facing Weekly Synthesis</h3>
               <p className="text-white/50 text-base leading-relaxed mb-4">
                 Generated weekly throughout active coaching. Observational, not interpretive. It captures how your system is responding to applied load in real time: changes in recovery, tolerance, regulation, and any emerging risks or patterns.
@@ -212,8 +212,8 @@ export default function PerformanceCoachBrisbanePage() {
               },
               {
                 state: 'Post-Optimisation',
-                colour: 'border-[#10E1C2]/30',
-                label: 'text-[#10E1C2]',
+                colour: 'border-[#1B6DFC]/30',
+                label: 'text-[#1B6DFC]',
                 desc: 'A long-arc performance phase. The system is resilient and capable of sustained high-level output. It is built over time and cannot be forced. This is where the Body Recode™ approach produces its most complete expression.',
               },
             ].map((item) => (
@@ -230,9 +230,9 @@ export default function PerformanceCoachBrisbanePage() {
       </section>
 
       {/* Coach */}
-      <section id="kade" className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section id="kade" className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-6">Your Coach</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Your Coach</p>
           <div className="grid md:grid-cols-2 gap-16 items-start">
             <div>
               <img
@@ -270,7 +270,7 @@ export default function PerformanceCoachBrisbanePage() {
                 </p>
               </div>
               <p className="mt-10 text-sm text-white/30 leading-relaxed">
-                <a href="https://www.anytimefitness.com/en-au/locations/newstead-queensland-au-1937" target="_blank" rel="noopener noreferrer" className="text-[#10E1C2] hover:underline">Anytime Fitness Newstead</a> · Brisbane · <a href="mailto:info@bodyrecode.au" className="text-[#10E1C2] hover:underline">info@bodyrecode.au</a>
+                <a href="https://www.anytimefitness.com/en-au/locations/newstead-queensland-au-1937" target="_blank" rel="noopener noreferrer" className="text-[#1B6DFC] hover:underline">Anytime Fitness Newstead</a> · Brisbane · <a href="mailto:info@bodyrecode.au" className="text-[#1B6DFC] hover:underline">info@bodyrecode.au</a>
               </p>
             </div>
           </div>
@@ -300,18 +300,18 @@ export default function PerformanceCoachBrisbanePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#0a0a0a] py-32 px-5 border-t border-white/5">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-white/5">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-6">
             Start with the check-in.<br />
-            <span className="text-[#10E1C2]">It&apos;s free.</span>
+            <span className="text-[#1B6DFC]">It&apos;s free.</span>
           </h2>
           <p className="text-white/50 text-lg leading-relaxed mb-12 max-w-xl mx-auto">
             A short performance check-in that identifies the patterns currently showing up across your training, recovery, and how your body is responding to life load. No obligation. No pressure. Just clarity.
           </p>
           <Link
             href="/performance-check-in"
-            className="inline-block bg-[#10E1C2] text-black font-bold px-10 py-5 rounded-full text-lg hover:bg-[#0ecfb2] transition-colors"
+            className="inline-block bg-[#1B6DFC] text-black font-bold px-10 py-5 rounded-full text-lg hover:bg-[#1056D6] transition-colors"
           >
             Start your free check-in →
           </Link>

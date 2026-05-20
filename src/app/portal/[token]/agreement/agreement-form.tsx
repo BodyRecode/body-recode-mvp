@@ -64,24 +64,24 @@ export default function AgreementForm({
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-1">Coaching Agreement</h1>
-          <p className="text-[#57534e] text-xs mb-1">Version 2.5 - Sole Trader, Queensland, Australia</p>
-          <p className="text-[#a8a29e] text-sm">Please read the full agreement before signing.</p>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-1">Coaching Agreement</h1>
+          <p className="text-[#999999] text-xs mb-1">Version 2.5 - Sole Trader, Queensland, Australia</p>
+          <p className="text-[#6B6B6B] text-sm">Please read the full agreement before signing.</p>
         </div>
 
         <div className="space-y-8 mb-10">
           {AGREEMENT_SECTIONS.map((section) => (
             <div key={section.title}>
-              <h2 className="text-xs font-bold tracking-widest text-[#14b8a6] uppercase mb-4">{section.title}</h2>
+              <h2 className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-4">{section.title}</h2>
               <div className="space-y-4">
                 {section.subsections.map((sub) => (
                   <div key={sub.title}>
-                    <p className="text-sm font-semibold text-white mb-1">{sub.title}</p>
-                    <p className="text-sm text-[#a8a29e] leading-relaxed">{sub.content}</p>
+                    <p className="text-sm font-semibold text-[#1A1A1A] mb-1">{sub.title}</p>
+                    <p className="text-sm text-[#6B6B6B] leading-relaxed">{sub.content}</p>
                   </div>
                 ))}
               </div>
@@ -97,12 +97,12 @@ export default function AgreementForm({
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="bg-[#111110] rounded-2xl p-5 border border-[#1c1917]">
-            <p className="text-sm text-[#d4cfc9] mb-4">By typing your full name and ticking below, you confirm that you have read, understood, and agree to the terms of this Coaching Agreement.</p>
+          <div className="bg-[#FFFFFF] rounded-2xl p-5 border border-[#E5E5E5]">
+            <p className="text-sm text-[#3A3A3A] mb-4">By typing your full name and ticking below, you confirm that you have read, understood, and agree to the terms of this Coaching Agreement.</p>
 
             <div className="space-y-4">
               <div id="f-fullName" className="scroll-mt-24">
-                <label className={`block text-xs font-semibold uppercase tracking-wide mb-2 ${missing.has('fullName') ? 'text-red-400' : 'text-[#a8a29e]'}`}>Full name</label>
+                <label className={`block text-xs font-semibold uppercase tracking-wide mb-2 ${missing.has('fullName') ? 'text-red-400' : 'text-[#6B6B6B]'}`}>Full name</label>
                 <input
                   type="text"
                   value={fullName}
@@ -113,7 +113,7 @@ export default function AgreementForm({
                     }
                   }}
                   placeholder={clientName}
-                  className={`w-full bg-[#1c1917] text-white text-sm rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-400/50 placeholder-[#3c3835] border ${missing.has('fullName') ? 'border-red-500/60' : 'border-[#1c1917]'}`}
+                  className={`w-full bg-[#E5E5E5] text-[#1A1A1A] text-sm rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/50 placeholder-[#999999] border ${missing.has('fullName') ? 'border-red-500/60' : 'border-[#E5E5E5]'}`}
                 />
                 {missing.has('fullName') && <p className="text-red-400 text-xs mt-2 font-medium">Please type your full name.</p>}
               </div>
@@ -131,9 +131,9 @@ export default function AgreementForm({
                       setMissing(prev => { const n = new Set(prev); n.delete('accepted'); return n })
                     }
                   }}
-                  className="mt-0.5 w-4 h-4 rounded accent-teal-400"
+                  className="mt-0.5 w-4 h-4 rounded accent-blue-500"
                 />
-                <span className={`text-sm ${missing.has('accepted') ? 'text-red-300' : 'text-[#d4cfc9]'}`}>I have read and agree to the Body Recode™ Coaching Agreement.</span>
+                <span className={`text-sm ${missing.has('accepted') ? 'text-red-300' : 'text-[#3A3A3A]'}`}>I have read and agree to the Body Recode™ Coaching Agreement.</span>
               </label>
               {missing.has('accepted') && <p className="text-red-400 text-xs -mt-2 ml-7 font-medium">Please tick this box to continue.</p>}
             </div>
@@ -144,7 +144,7 @@ export default function AgreementForm({
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-[#14b8a6] text-black text-sm font-bold py-4 rounded-2xl hover:bg-[#5eead4] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-full bg-[#1B6DFC] text-black text-sm font-bold py-4 rounded-2xl hover:bg-[#5390FF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           >
             {submitting ? 'Saving…' : 'Sign and continue →'}
           </button>

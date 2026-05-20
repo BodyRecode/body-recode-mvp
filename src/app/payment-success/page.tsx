@@ -2,7 +2,7 @@ import PurchaseTracker from './purchase-tracker'
 
 export default function PaymentSuccessPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
       <PurchaseTracker value={240} contentName="commencement_fee" />
       <div className="text-center max-w-sm">
         <p className="text-xs font-bold tracking-widest text-teal-400 uppercase mb-6">Body Recode</p>

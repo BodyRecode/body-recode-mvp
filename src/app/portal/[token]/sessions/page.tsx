@@ -119,57 +119,57 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
   ].sort((a, b) => new Date(a.startUtc).getTime() - new Date(b.startUtc).getTime())
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-xs text-[#57534e] hover:text-[#d4cfc9] transition-colors mb-4 block">
+          <Link href={`/portal/${token}`} className="text-xs text-[#999999] hover:text-[#3A3A3A] transition-colors mb-4 block">
             ← Back to portal
           </Link>
-          <h1 className="text-2xl font-bold text-white mb-1">Your Sessions</h1>
-          <p className="text-[#a8a29e] text-sm">Face-to-face coaching at AF Newstead.</p>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-1">Your Sessions</h1>
+          <p className="text-[#6B6B6B] text-sm">Face-to-face coaching at AF Newstead.</p>
         </div>
 
         {!hasFixedSlots ? (
-          <div className="rounded-2xl border border-[#1c1917] bg-[#111110]/50 p-6">
-            <p className="text-sm font-semibold text-[#a8a29e] mb-1">No fixed session assigned yet</p>
-            <p className="text-xs text-[#3c3835] leading-relaxed">Your coach will assign your fixed session slot. You will see your schedule here once it is set up.</p>
+          <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-6">
+            <p className="text-sm font-semibold text-[#6B6B6B] mb-1">No fixed session assigned yet</p>
+            <p className="text-xs text-[#999999] leading-relaxed">Your coach will assign your fixed session slot. You will see your schedule here once it is set up.</p>
           </div>
         ) : (
           <>
             {/* Fixed slots summary */}
-            <div className="rounded-2xl border border-[#14b8a6]/20 bg-[#14b8a6]/5 p-5 mb-8">
-              <p className="text-xs font-bold tracking-widest text-[#14b8a6] uppercase mb-3">Your fixed slots</p>
+            <div className="rounded-2xl border border-[#1B6DFC]/20 bg-[#1B6DFC]/5 p-5 mb-8">
+              <p className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-3">Your fixed slots</p>
               <div className="space-y-1">
                 {(fixedSlots ?? []).map(slot => (
                   <div key={slot.id} className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-white">{DAYS[slot.day_of_week]}s</span>
-                    <span className="text-sm text-[#a8a29e]">
+                    <span className="text-sm font-bold text-[#1A1A1A]">{DAYS[slot.day_of_week]}s</span>
+                    <span className="text-sm text-[#6B6B6B]">
                       · {new Date(`1970-01-01T${slot.session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })} · {slot.duration_minutes} min
                     </span>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-[#57534e] mt-2">AF Newstead</p>
+              <p className="text-xs text-[#999999] mt-2">AF Newstead</p>
             </div>
 
             {/* All upcoming sessions */}
             <div className="mb-8">
-              <p className="text-xs font-bold tracking-widest text-[#57534e] uppercase mb-4">Upcoming sessions</p>
+              <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-4">Upcoming sessions</p>
               {allSessions.length === 0 ? (
-                <p className="text-sm text-[#3c3835]">No sessions scheduled yet.</p>
+                <p className="text-sm text-[#999999]">No sessions scheduled yet.</p>
               ) : (
                 <div className="space-y-2">
                   {allSessions.slice(0, 10).map((session, i) => (
-                    <div key={i} className="flex items-center justify-between rounded-xl bg-[#111110] border border-[#1c1917] px-4 py-3">
+                    <div key={i} className="flex items-center justify-between rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] px-4 py-3">
                       <div>
-                        <p className="text-sm font-medium text-white">{session.displayDate}</p>
-                        <p className="text-xs text-[#57534e] mt-0.5">{session.displayTime} · {session.durMin} min</p>
+                        <p className="text-sm font-medium text-[#1A1A1A]">{session.displayDate}</p>
+                        <p className="text-xs text-[#999999] mt-0.5">{session.displayTime} · {session.durMin} min</p>
                       </div>
                       {session.confirmed ? (
-                        <span className="text-xs font-bold text-[#14b8a6] bg-[#14b8a6]/10 px-2.5 py-1 rounded-full">Confirmed</span>
+                        <span className="text-xs font-bold text-[#1B6DFC] bg-[#1B6DFC]/10 px-2.5 py-1 rounded-full">Confirmed</span>
                       ) : (
-                        <span className="text-xs text-[#3c3835]">Scheduled</span>
+                        <span className="text-xs text-[#999999]">Scheduled</span>
                       )}
                     </div>
                   ))}

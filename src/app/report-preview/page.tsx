@@ -35,7 +35,7 @@ export default async function ReportPreviewPage({
       <div style={{
         position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)',
         display: 'flex', gap: '8px', zIndex: 9999,
-        background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '8px',
+        background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '8px',
         boxShadow: '0 4px 24px rgba(0,0,0,0.6)',
       }}>
         {(['depleted', 'transitioning', 'ready'] as const).map(s => (
@@ -45,8 +45,8 @@ export default async function ReportPreviewPage({
             style={{
               padding: '8px 16px', borderRadius: '8px', fontSize: '12px', fontWeight: 700,
               textDecoration: 'none',
-              background: key === s ? '#14b8a6' : 'transparent',
-              color: key === s ? '#0c0a09' : '#78716c',
+              background: key === s ? '#1B6DFC' : 'transparent',
+              color: key === s ? '#FFFFFF' : '#6B6B6B',
               textTransform: 'capitalize',
             }}
           >

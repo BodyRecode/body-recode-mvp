@@ -37,16 +37,16 @@ export default function MessageForm({ clientId, clientName, portalToken }: { cli
   }
 
   return (
-    <form onSubmit={submit} className="rounded-2xl border border-[#1c1917] bg-[#111110] p-5">
-      <p className="text-[12px] text-[#57534e] mb-3">From {clientName}</p>
+    <form onSubmit={submit} className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5">
+      <p className="text-[12px] text-[#999999] mb-3">From {clientName}</p>
       <textarea
         value={body}
         onChange={e => setBody(e.target.value)}
         placeholder="Write your message..."
         rows={6}
-        className="w-full bg-[#0c0a09] border border-[#1c1917] rounded-xl px-3 py-3 text-[14px] text-[#e7e5e4] placeholder:text-[#3c3835] focus:outline-none focus:border-[#292524] leading-relaxed resize-y"
+        className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-3 text-[14px] text-[#e7e5e4] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
       />
-      <p className="text-[11px] text-[#3c3835] mt-2">{body.length}/5000 characters</p>
+      <p className="text-[11px] text-[#999999] mt-2">{body.length}/5000 characters</p>
 
       {error && (
         <div className="mt-3 bg-[#FEF6E7] border border-[#F0DCB4] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14]">
@@ -55,7 +55,7 @@ export default function MessageForm({ clientId, clientName, portalToken }: { cli
       )}
 
       {sent && (
-        <div className="mt-3 bg-[rgba(27,109,252,0.08)] border border-[#0d2d29] rounded-lg px-3 py-2 text-[12px] text-[#14b8a6]">
+        <div className="mt-3 bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] rounded-lg px-3 py-2 text-[12px] text-[#1B6DFC]">
           Your message has been sent. Your coach will reply by email.
         </div>
       )}
@@ -63,7 +63,7 @@ export default function MessageForm({ clientId, clientName, portalToken }: { cli
       <button
         type="submit"
         disabled={!body.trim() || sending}
-        className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-[#14b8a6] text-[#0c0a09] text-[14px] font-bold py-3 rounded-xl hover:bg-[#5eead4] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-[#1B6DFC] text-[#FFFFFF] text-[14px] font-bold py-3 rounded-xl hover:bg-[#5390FF] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {sending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
         {sending ? 'Sending...' : 'Send message'}

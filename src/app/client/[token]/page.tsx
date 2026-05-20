@@ -30,7 +30,7 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
   const checkinUrl = `/checkin/${token}`
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <div className="max-w-lg mx-auto px-6 py-12">
 
         {/* Header */}
@@ -73,7 +73,7 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
                 ) : (
                   <Link
                     href={checkinUrl}
-                    className="text-xs font-bold px-4 py-2 bg-[#10E1C2] text-black rounded-lg hover:bg-[#0ecfb2] transition-colors"
+                    className="text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-black rounded-lg hover:bg-[#1056D6] transition-colors"
                   >
                     Complete
                   </Link>

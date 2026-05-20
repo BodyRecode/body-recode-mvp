@@ -164,7 +164,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
       {program.weekly_pattern_summary && (
         <div id={`${idPrefix}weekly-structure`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200 bg-stone-100/80">
-            <span className="text-[11px] font-black text-[#10E1C2]">01</span>
+            <span className="text-[11px] font-black text-[#1B6DFC]">01</span>
             <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Weekly Structure</p>
           </div>
           <div className="px-5 py-4 space-y-3">
@@ -175,7 +175,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
               const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
               return (
                 <div key={i} className="border-l-2 border-stone-300 pl-3">
-                  {label && <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-wider mb-1">{clean(label)}</p>}
+                  {label && <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">{clean(label)}</p>}
                   <p className="text-sm text-stone-800 leading-relaxed">{clean(content)}</p>
                 </div>
               )
@@ -188,7 +188,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
       {program.progression_notes && (
         <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200 bg-stone-100/80">
-            <span className="text-[11px] font-black text-[#10E1C2]">02</span>
+            <span className="text-[11px] font-black text-[#1B6DFC]">02</span>
             <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Progression Strategy</p>
           </div>
           <div className="px-5 py-4 space-y-3">
@@ -199,7 +199,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
               const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
               return (
                 <div key={i} className="border-l-2 border-stone-300 pl-3">
-                  {label && <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-wider mb-1">{clean(label)}</p>}
+                  {label && <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">{clean(label)}</p>}
                   <p className="text-sm text-stone-800 leading-relaxed">{clean(content)}</p>
                 </div>
               )
@@ -221,7 +221,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
               <div className="divide-y divide-stone-200/60">
                 {session.movement_prep?.length > 0 && (
                   <div className="px-5 py-4 bg-stone-200/30">
-                    <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-1">
+                    <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-1">
                       Preparatory Entry - Movement Preparation
                     </p>
                     <p className="text-[10px] text-stone-400 mb-3">Non-Slot · Prepare joints, tissues, and coordination for the session&apos;s primary exposures</p>
@@ -238,7 +238,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
                 )}
                 {session.blocks.map((block, bIdx) => (
                   <div key={bIdx} className="px-5 py-4">
-                    <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-3">{block.block_label}</p>
+                    <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">{block.block_label}</p>
                     <div className="space-y-2.5">
                       {block.exercises.map((ex, eIdx) => (
                         <div key={eIdx}>

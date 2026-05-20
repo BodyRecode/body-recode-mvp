@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function KadePage() {
   return (
-    <div className="min-h-screen bg-[#0c0a09] flex flex-col items-center justify-center px-5 py-16">
+    <div className="min-h-screen bg-[#FFFFFF] flex flex-col items-center justify-center px-5 py-16">
       <div className="w-full max-w-sm">
 
         {/* Identity */}
@@ -26,7 +26,7 @@ export default function KadePage() {
           {/* Studio of Ten - new venture */}
           <a
             href="https://studiooften.com"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-sky-500/40 hover:bg-sky-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-sky-500/40 hover:bg-sky-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-sky-400 transition-colors">
@@ -40,7 +40,7 @@ export default function KadePage() {
           {/* Performance Coaching */}
           <a
             href="https://performance.bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-teal-500/40 hover:bg-teal-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-teal-500/40 hover:bg-teal-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-teal-400 transition-colors">Performance Coaching</p>
@@ -52,7 +52,7 @@ export default function KadePage() {
           {/* Body Recode Platform */}
           <a
             href="https://bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-teal-500/40 hover:bg-teal-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-teal-500/40 hover:bg-teal-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-teal-400 transition-colors">Body Recode™</p>
@@ -64,7 +64,7 @@ export default function KadePage() {
           {/* AI Co-Founder Method */}
           <a
             href="https://aicofoundermethod.com"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-violet-500/40 hover:bg-violet-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-violet-500/40 hover:bg-violet-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-violet-400 transition-colors">AI Co-Founder Method</p>
@@ -76,7 +76,7 @@ export default function KadePage() {
           {/* Chapters - Tracing Myself */}
           <Link
             href="/kade/chapters"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-stone-500/50 hover:bg-stone-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-stone-500/50 hover:bg-stone-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-stone-200 transition-colors">Tracing Myself</p>
@@ -88,7 +88,7 @@ export default function KadePage() {
           {/* Contact */}
           <a
             href="mailto:kade@bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#111110] border border-stone-800 hover:border-blue-500/40 hover:bg-blue-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-blue-500/40 hover:bg-blue-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">Get in touch</p>

@@ -61,18 +61,18 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
   const programReadingPublished = !!program?.program_reading_published_at
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
       <div className="max-w-2xl mx-auto px-6 py-10">
         <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-[#57534e] hover:text-[#d4cfc9] text-sm transition-colors">← Back</Link>
-          <h1 className="text-2xl font-bold text-white mt-4 mb-1">Your Program</h1>
-          <p className="text-[#a8a29e] text-sm">Your current training block.</p>
+          <Link href={`/portal/${token}`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">← Back</Link>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] mt-4 mb-1">Your Program</h1>
+          <p className="text-[#6B6B6B] text-sm">Your current training block.</p>
         </div>
 
         {!program ? (
-          <div className="rounded-2xl border border-[#1c1917] bg-[#111110] p-6 text-center">
-            <p className="text-[#57534e] text-sm">No active training program yet. Your coach will set this up for you.</p>
+          <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-6 text-center">
+            <p className="text-[#999999] text-sm">No active training program yet. Your coach will set this up for you.</p>
           </div>
         ) : (
           <div className="space-y-5">
@@ -93,33 +93,33 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
             {/* Legacy client_note - shown only when no Program Reading has been published yet */}
             {!programReadingPublished && program.client_note && (
-              <div className="bg-[#14b8a6]/5 border border-[#14b8a6]/20 rounded-2xl px-5 py-4">
-                <p className="text-xs font-bold text-[#14b8a6] uppercase tracking-widest mb-2">About this block</p>
-                <p className="text-sm text-[#d4cfc9] leading-relaxed">{program.client_note}</p>
+              <div className="bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-2xl px-5 py-4">
+                <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">About this block</p>
+                <p className="text-sm text-[#3A3A3A] leading-relaxed">{program.client_note}</p>
               </div>
             )}
 
             {/* Block overview */}
-            <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-5">
+            <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5">
               <div className="flex items-start justify-between gap-3 mb-4">
                 <div>
-                  <p className="text-lg font-bold text-white">{program.block_name}</p>
-                  <p className="text-xs text-[#57534e] mt-0.5">{program.progression_phase} · {program.training_goal}</p>
+                  <p className="text-lg font-bold text-[#1A1A1A]">{program.block_name}</p>
+                  <p className="text-xs text-[#999999] mt-0.5">{program.progression_phase} · {program.training_goal}</p>
                 </div>
                 {program.current_direction && (
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize shrink-0 ${directionColour[program.current_direction] || 'text-[#a8a29e] bg-[#1c1917] border-[#1c1917]'}`}>
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize shrink-0 ${directionColour[program.current_direction] || 'text-[#6B6B6B] bg-[#E5E5E5] border-[#E5E5E5]'}`}>
                     {directionLabel[program.current_direction] ?? program.current_direction}
                   </span>
                 )}
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-[#1c1917]/60 rounded-xl px-3 py-2.5">
-                  <p className="text-xs text-[#57534e] mb-0.5">Sessions / week</p>
-                  <p className="text-sm font-semibold text-white">{program.training_frequency}x</p>
+                <div className="bg-[#E5E5E5]/60 rounded-xl px-3 py-2.5">
+                  <p className="text-xs text-[#999999] mb-0.5">Sessions / week</p>
+                  <p className="text-sm font-semibold text-[#1A1A1A]">{program.training_frequency}x</p>
                 </div>
-                <div className="bg-[#1c1917]/60 rounded-xl px-3 py-2.5">
-                  <p className="text-xs text-[#57534e] mb-0.5">Block length</p>
-                  <p className="text-sm font-semibold text-white">{program.week_duration} weeks</p>
+                <div className="bg-[#E5E5E5]/60 rounded-xl px-3 py-2.5">
+                  <p className="text-xs text-[#999999] mb-0.5">Block length</p>
+                  <p className="text-sm font-semibold text-[#1A1A1A]">{program.week_duration} weeks</p>
                 </div>
               </div>
             </div>
@@ -127,22 +127,22 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
             {/* Sessions */}
             {Array.isArray(program.sessions) && program.sessions.length > 0 && (
               <div className="space-y-4">
-                <p className="text-xs font-bold text-[#57534e] uppercase tracking-widest">Sessions</p>
+                <p className="text-xs font-bold text-[#999999] uppercase tracking-widest">Sessions</p>
                 {(program.sessions as Session[]).map((session, si) => (
-                  <div key={si} className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden">
-                    <div className="px-5 py-3 border-b border-[#1c1917]">
-                      <p className="text-sm font-bold text-white">{session.day_label}</p>
-                      <p className="text-xs text-[#57534e] mt-0.5">{session.skeleton}</p>
+                  <div key={si} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden">
+                    <div className="px-5 py-3 border-b border-[#E5E5E5]">
+                      <p className="text-sm font-bold text-[#1A1A1A]">{session.day_label}</p>
+                      <p className="text-xs text-[#999999] mt-0.5">{session.skeleton}</p>
                     </div>
 
                     {/* Movement prep */}
                     {session.movement_prep && session.movement_prep.length > 0 && (
-                      <div className="px-5 py-3 border-b border-[#1c1917]/60">
-                        <p className="text-xs font-semibold text-[#3c3835] uppercase tracking-wider mb-2">Movement Preparation</p>
+                      <div className="px-5 py-3 border-b border-[#E5E5E5]/60">
+                        <p className="text-xs font-semibold text-[#999999] uppercase tracking-wider mb-2">Movement Preparation</p>
                         <ul className="space-y-1">
                           {session.movement_prep.map((item, i) => (
-                            <li key={i} className="text-xs text-[#a8a29e] flex gap-2">
-                              <span className="text-[#3c3835] shrink-0">·</span>
+                            <li key={i} className="text-xs text-[#6B6B6B] flex gap-2">
+                              <span className="text-[#999999] shrink-0">·</span>
                               <span>{item}</span>
                             </li>
                           ))}
@@ -152,18 +152,18 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
                     {/* Blocks */}
                     {session.blocks.map((block, bi) => (
-                      <div key={bi} className="px-5 py-3 border-b border-[#1c1917]/40 last:border-0">
-                        <p className="text-xs font-bold text-[#14b8a6] uppercase tracking-widest mb-2">{block.block_label}</p>
+                      <div key={bi} className="px-5 py-3 border-b border-[#E5E5E5]/40 last:border-0">
+                        <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">{block.block_label}</p>
                         <div className="space-y-3">
                           {block.exercises.map((ex, ei) => (
                             <div key={ei} className="flex flex-col gap-1">
-                              <p className="text-sm font-semibold text-white">{ex.exercise_name}</p>
+                              <p className="text-sm font-semibold text-[#1A1A1A]">{ex.exercise_name}</p>
                               <div className="flex flex-wrap gap-2">
-                                <span className="text-xs bg-[#1c1917] text-[#d4cfc9] px-2 py-0.5 rounded-lg">{ex.sets} × {ex.reps}</span>
-                                {ex.rpe && <span className="text-xs bg-[#1c1917] text-[#a8a29e] px-2 py-0.5 rounded-lg">RPE {ex.rpe}</span>}
-                                {ex.rest && <span className="text-xs bg-[#1c1917] text-[#a8a29e] px-2 py-0.5 rounded-lg">{ex.rest} rest</span>}
+                                <span className="text-xs bg-[#E5E5E5] text-[#3A3A3A] px-2 py-0.5 rounded-lg">{ex.sets} × {ex.reps}</span>
+                                {ex.rpe && <span className="text-xs bg-[#E5E5E5] text-[#6B6B6B] px-2 py-0.5 rounded-lg">RPE {ex.rpe}</span>}
+                                {ex.rest && <span className="text-xs bg-[#E5E5E5] text-[#6B6B6B] px-2 py-0.5 rounded-lg">{ex.rest} rest</span>}
                               </div>
-                              {ex.notes && <p className="text-xs text-[#57534e] leading-relaxed">{ex.notes}</p>}
+                              {ex.notes && <p className="text-xs text-[#999999] leading-relaxed">{ex.notes}</p>}
                             </div>
                           ))}
                         </div>
@@ -177,14 +177,14 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
             <Link
               href={`/portal/${token}/program/log`}
-              className="block w-full py-3.5 bg-[#14b8a6] hover:bg-[#5eead4] text-black font-bold text-sm rounded-2xl text-center transition-colors mb-2"
+              className="block w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-black font-bold text-sm rounded-2xl text-center transition-colors mb-2"
             >
               Log a session →
             </Link>
 
             <Link
               href={`/portal/${token}/training`}
-              className="block w-full py-3.5 bg-[#1c1917] hover:bg-[#1c1917] text-white font-semibold text-sm rounded-2xl text-center transition-colors"
+              className="block w-full py-3.5 bg-[#E5E5E5] hover:bg-[#E5E5E5] text-[#1A1A1A] font-semibold text-sm rounded-2xl text-center transition-colors"
             >
               Submit weekly training check-in →
             </Link>

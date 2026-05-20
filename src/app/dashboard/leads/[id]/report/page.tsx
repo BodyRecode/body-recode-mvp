@@ -27,7 +27,7 @@ export default async function LeadReportPage({ params }: { params: Promise<{ id:
     : null
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF' }}>
       {/* Toolbar */}
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
@@ -36,15 +36,15 @@ export default async function LeadReportPage({ params }: { params: Promise<{ id:
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <a href={`/dashboard/leads/${id}`} style={{ color: '#555555', fontSize: '13px', textDecoration: 'none' }}>
+          <a href={`/dashboard/leads/${id}`} style={{ color: '#999999', fontSize: '13px', textDecoration: 'none' }}>
             ← {lead.name}
           </a>
           <span style={{ color: '#333333' }}>|</span>
-          <span style={{ color: '#10E1C2', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <span style={{ color: '#1B6DFC', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
             Performance Check-In Report
           </span>
           {scheduledAt && (
-            <span style={{ color: '#555555', fontSize: '12px' }}>Sends {scheduledAt} Brisbane</span>
+            <span style={{ color: '#999999', fontSize: '12px' }}>Sends {scheduledAt} Brisbane</span>
           )}
         </div>
         <PrintButton clientName={lead.name} />

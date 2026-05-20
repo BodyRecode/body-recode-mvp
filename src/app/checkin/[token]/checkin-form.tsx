@@ -198,9 +198,9 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-8">
+      <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-8">
         <div className="text-center max-w-sm">
-          <img src="https://bodyrecode.au/logo-teal.png" width="120" alt="Body Recode" style={{ display: 'block', margin: '0 auto 24px' }} />
+          <img src="https://bodyrecode.au/logo-black.png" width="120" alt="Body Recode" style={{ display: 'block', margin: '0 auto 24px' }} />
           <div className="w-14 h-14 bg-teal-500/10 border border-teal-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-7 h-7 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -216,7 +216,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-[#FFFFFF]">
 
       {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 h-[2px] bg-stone-900 z-20">
@@ -227,8 +227,8 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
       </div>
 
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-stone-900 px-5 py-3 flex items-center justify-between">
-        <img src="https://bodyrecode.au/logo-teal.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
+      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-900 px-5 py-3 flex items-center justify-between">
+        <img src="https://bodyrecode.au/logo-black.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
         <p className="text-[11px] font-medium text-stone-600">{sectionIndex + 1} / {sections.length}</p>
       </div>
 
@@ -285,7 +285,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
       </div>
 
       {/* Fixed bottom navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#0a0a0a] border-t border-stone-900 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-900 px-5 py-4 z-10">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
           <button
             type="button"

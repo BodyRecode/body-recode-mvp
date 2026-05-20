@@ -48,7 +48,7 @@ export default function PortalReadingDownload({
       style={{
         background: 'rgba(12, 10, 9, 0.78)',
         backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid #1c1917',
+        borderBottom: '1px solid #E5E5E5',
       }}
     >
       <div
@@ -64,7 +64,7 @@ export default function PortalReadingDownload({
       >
         <Link
           href={backHref}
-          className="inline-flex items-center gap-1 text-[12px] text-[#a8a29e] hover:text-white transition-colors"
+          className="inline-flex items-center gap-1 text-[12px] text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors"
           style={{ fontFamily: SCREEN_FONT }}
         >
           <ChevronLeft size={13} /> Back to portal
@@ -78,8 +78,8 @@ export default function PortalReadingDownload({
             disabled={downloading}
             className="inline-flex items-center gap-2 transition-colors"
             style={{
-              background: downloading ? '#0d9488' : '#14b8a6',
-              color: '#0c0a09',
+              background: downloading ? '#0d9488' : '#1B6DFC',
+              color: '#FFFFFF',
               border: 'none',
               padding: '8px 16px',
               fontSize: 12,

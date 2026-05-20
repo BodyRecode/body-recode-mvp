@@ -49,19 +49,19 @@ export default async function PortalLogSessionPage({
     : { data: [] }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white pb-32">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] pb-32">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-5 py-6">
-        <Link href={`/portal/${token}/program/log`} className="text-[#57534e] hover:text-[#d4cfc9] text-sm transition-colors">
+        <Link href={`/portal/${token}/program/log`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">
           ← Back to log
         </Link>
 
         <div className="mt-5 mb-1">
-          <p className="text-[10px] text-teal-400 uppercase tracking-widest">Week {session.week_number_in_block}</p>
-          <h1 className="text-2xl font-bold text-white">{session.day_label}{session.session_name ? ` · ${session.session_name}` : ''}</h1>
+          <p className="text-[10px] text-blue-500 uppercase tracking-widest">Week {session.week_number_in_block}</p>
+          <h1 className="text-2xl font-bold text-[#1A1A1A]">{session.day_label}{session.session_name ? ` · ${session.session_name}` : ''}</h1>
         </div>
         {session.status === 'completed' && (
-          <p className="text-xs text-teal-400 mb-4">Logged {session.completed_at ? new Date(session.completed_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' }) : ''}</p>
+          <p className="text-xs text-blue-500 mb-4">Logged {session.completed_at ? new Date(session.completed_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' }) : ''}</p>
         )}
 
         <LogClient

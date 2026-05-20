@@ -31,21 +31,21 @@ export default function GetReportPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0c0a09', color: 'white', fontFamily: 'system-ui, -apple-system, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A', fontFamily: 'system-ui, -apple-system, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ maxWidth: '480px', width: '100%', padding: '40px 24px' }}>
 
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <img src="/logo-teal.png" alt="Body Recode" style={{ height: '80px', marginBottom: '48px', display: 'block', margin: '0 auto 48px' }} />
-          <div style={{ width: '32px', height: '3px', background: '#14b8a6', margin: '0 auto 24px' }} />
-          <h1 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '12px' }}>
+          <img src="/logo-black.png" alt="Body Recode" style={{ height: '80px', marginBottom: '48px', display: 'block', margin: '0 auto 48px' }} />
+          <div style={{ width: '32px', height: '3px', background: '#1B6DFC', margin: '0 auto 24px' }} />
+          <h1 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '12px', color: '#1A1A1A' }}>
             Why your body has stopped losing fat, and the order to fix it.
           </h1>
-          <p style={{ fontSize: '15px', color: '#a8a29e', lineHeight: 1.7 }}>
+          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7 }}>
             A written breakdown of your scorecard result. The specific physiology behind your score, the fat-storage pattern your body is locked in, what is quietly making it worse, and the exact order to unstick it.
           </p>
         </div>
 
-        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '14px', padding: '24px', marginBottom: '24px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px', marginBottom: '24px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {[
               'What your body state means biologically',
@@ -54,18 +54,18 @@ export default function GetReportPage() {
               'What needs to change first and why',
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                <div style={{ width: '5px', height: '5px', background: '#14b8a6', borderRadius: '50%', marginTop: '8px', flexShrink: 0 }} />
-                <p style={{ fontSize: '14px', color: '#a8a29e', lineHeight: 1.6, margin: 0 }}>{item}</p>
+                <div style={{ width: '5px', height: '5px', background: '#1B6DFC', borderRadius: '50%', marginTop: '8px', flexShrink: 0 }} />
+                <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.6, margin: 0 }}>{item}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '14px', padding: '28px' }}>
-          <p style={{ fontSize: '13px', fontWeight: 700, color: '#57534e', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '28px' }}>
+          <p style={{ fontSize: '13px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>
             $37 AUD
           </p>
-          <p style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', marginBottom: '20px' }}>
+          <p style={{ fontSize: '15px', fontWeight: 600, color: '#1A1A1A', marginBottom: '20px' }}>
             Enter the email you used for your scorecard to get your report.
           </p>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -76,9 +76,9 @@ export default function GetReportPage() {
               placeholder="you@email.com"
               required
               style={{
-                width: '100%', padding: '14px 16px', background: '#0c0a09',
-                border: '1.5px solid #1c1917', borderRadius: '10px',
-                color: 'white', fontSize: '15px', outline: 'none',
+                width: '100%', padding: '14px 16px', background: '#FFFFFF',
+                border: '1.5px solid #E5E5E5', borderRadius: '10px',
+                color: '#1A1A1A', fontSize: '15px', outline: 'none',
                 fontFamily: 'inherit', boxSizing: 'border-box',
               }}
             />
@@ -90,8 +90,8 @@ export default function GetReportPage() {
               disabled={loading || !email.trim()}
               style={{
                 width: '100%', padding: '16px', borderRadius: '10px', border: 'none',
-                background: loading || !email.trim() ? '#1c1917' : '#14b8a6',
-                color: loading || !email.trim() ? '#57534e' : '#0c0a09',
+                background: loading || !email.trim() ? '#E5E5E5' : '#1B6DFC',
+                color: loading || !email.trim() ? '#999999' : '#FFFFFF',
                 fontSize: '15px', fontWeight: 700, cursor: loading || !email.trim() ? 'not-allowed' : 'pointer',
                 transition: 'all 0.15s ease',
               }}
@@ -99,14 +99,14 @@ export default function GetReportPage() {
               {loading ? 'Loading...' : 'Get my full breakdown · $37'}
             </button>
           </form>
-          <p style={{ fontSize: '12px', color: '#57534e', textAlign: 'center', marginTop: '16px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '12px', color: '#6B6B6B', textAlign: 'center', marginTop: '16px', lineHeight: 1.6 }}>
             Delivered to your inbox within minutes of payment.
           </p>
         </div>
 
-        <p style={{ fontSize: '13px', color: '#3c3835', textAlign: 'center', marginTop: '24px' }}>
+        <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', marginTop: '24px' }}>
           Have not completed the scorecard yet?{' '}
-          <a href="https://performance.bodyrecode.au/scorecard" style={{ color: '#57534e', textDecoration: 'underline' }}>
+          <a href="https://performance.bodyrecode.au/scorecard" style={{ color: '#1B6DFC', textDecoration: 'underline' }}>
             Take it here first.
           </a>
         </p>

@@ -52,7 +52,7 @@ function ScaleInput({
             onClick={() => onChange(n)}
             className={`flex-1 py-3.5 rounded-2xl text-sm font-bold transition-all duration-150 ${
               value === n
-                ? 'bg-[#10E1C2] text-black shadow-sm'
+                ? 'bg-[#1B6DFC] text-black shadow-sm'
                 : hasError
                 ? 'bg-stone-800 text-stone-400 border border-red-500/60'
                 : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
@@ -108,7 +108,7 @@ function QuestionInput({
           onChange={e => onChange(e.target.value)}
           rows={3}
           placeholder="Your answer..."
-          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 resize-none transition-all border ${errorBorder}`}
+          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white placeholder-stone-600 focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${errorBorder}`}
         />
       </div>
     )
@@ -122,7 +122,7 @@ function QuestionInput({
           type="date"
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
-          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 transition-all border ${errorBorder}`}
+          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all border ${errorBorder}`}
         />
       </div>
     )
@@ -135,7 +135,7 @@ function QuestionInput({
         <select
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
-          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#10E1C2]/30 transition-all appearance-none border ${errorBorder}`}
+          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all appearance-none border ${errorBorder}`}
         >
           <option value="">Select an option</option>
           {question.options?.map(opt => (
@@ -159,7 +159,7 @@ function QuestionInput({
               onClick={() => onToggle(opt)}
               className={`text-[13px] font-medium px-4 py-2.5 rounded-2xl transition-all duration-150 ${
                 selected.includes(opt)
-                  ? 'bg-[#10E1C2] text-black'
+                  ? 'bg-[#1B6DFC] text-black'
                   : hasError
                   ? 'bg-stone-800 text-stone-400 border border-red-500/60'
                   : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
@@ -184,7 +184,7 @@ function QuestionInput({
         <span
           className={`mt-0.5 w-5 h-5 rounded-md flex items-center justify-center shrink-0 transition-all duration-150 ${
             checked
-              ? 'bg-[#10E1C2]'
+              ? 'bg-[#1B6DFC]'
               : hasError
               ? 'bg-stone-800 border border-red-500/60'
               : 'bg-stone-800 border border-stone-600'
@@ -350,14 +350,14 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-8">
+      <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-8">
         <div className="text-center max-w-sm">
           <div className="w-14 h-14 bg-teal-400/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-7 h-7 text-[#10E1C2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#10E1C2] uppercase mb-4">Submitted</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Submitted</p>
           <h1 className="text-2xl font-bold text-white mb-3 tracking-tight">You&apos;re all done.</h1>
           <p className="text-stone-400 text-[15px] leading-relaxed mb-8">
             Your intake has been submitted. Your coach will review everything and be in touch shortly.
@@ -365,7 +365,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
           {portalToken && (
             <a
               href={`/portal/${portalToken}`}
-              className="inline-block px-6 py-3 bg-[#10E1C2] hover:bg-teal-300 text-black font-bold text-sm rounded-2xl transition-colors"
+              className="inline-block px-6 py-3 bg-[#1B6DFC] hover:bg-teal-300 text-black font-bold text-sm rounded-2xl transition-colors"
             >
               Back to your portal
             </a>
@@ -376,19 +376,19 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-[#FFFFFF]">
 
       {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-800 z-20">
         <div
-          className="h-full bg-[#10E1C2] transition-all duration-500 ease-out"
+          className="h-full bg-[#1B6DFC] transition-all duration-500 ease-out"
           style={{ width: `${progressPct}%` }}
         />
       </div>
 
       {/* Sticky header */}
-      <div className="sticky top-0 z-10 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-stone-800 px-5 py-3 flex items-center justify-between">
-        <img src="https://bodyrecode.au/logo-teal.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
+      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-800 px-5 py-3 flex items-center justify-between">
+        <img src="https://bodyrecode.au/logo-black.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
         <p className="text-[11px] font-medium text-stone-500">{sectionIndex + 1} / {INTAKE_SECTIONS.length}</p>
       </div>
 
@@ -453,7 +453,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
       </div>
 
       {/* Fixed bottom navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#0a0a0a] border-t border-stone-800 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-800 px-5 py-4 z-10">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
           <button
             type="button"
@@ -470,7 +470,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
               type="button"
               onClick={handleSubmit}
               disabled={submitting}
-              className="flex-1 bg-[#10E1C2] text-black text-[15px] font-bold py-4 rounded-2xl hover:bg-[#0ecfb2] transition-colors disabled:opacity-40 tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-black text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors disabled:opacity-40 tracking-tight"
             >
               {submitting ? 'Submitting…' : 'Submit intake'}
             </button>
@@ -478,7 +478,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
             <button
               type="button"
               onClick={handleContinue}
-              className="flex-1 bg-[#10E1C2] text-black text-[15px] font-bold py-4 rounded-2xl hover:bg-[#0ecfb2] transition-colors tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-black text-[15px] font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors tracking-tight"
             >
               Continue
             </button>

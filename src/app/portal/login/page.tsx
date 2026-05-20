@@ -16,17 +16,17 @@ export default async function PortalLoginPage({
     : null
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col items-center justify-center px-6 py-12">
       <div className="w-full max-w-sm">
         <div className="text-center mb-10">
           <img
-            src="https://bodyrecode.au/logo-teal.png"
+            src="https://bodyrecode.au/logo-black.png"
             width="280"
             alt="Body Recode"
             className="mx-auto mb-8"
           />
-          <h1 className="text-2xl font-bold text-white mb-2">Client Portal</h1>
-          <p className="text-[#a8a29e] text-sm">Sign in to your coaching portal.</p>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-2">Client Portal</h1>
+          <p className="text-[#6B6B6B] text-sm">Sign in to your coaching portal.</p>
         </div>
         {errorMessage && (
           <div className="mb-6 bg-red-950/30 border border-red-800 rounded-xl px-4 py-3">
