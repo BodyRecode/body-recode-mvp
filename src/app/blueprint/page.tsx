@@ -388,6 +388,37 @@ export default function BlueprintPage() {
         </div>
       </div>
 
+      {/* MECHANISM */}
+      <div style={{
+        background: '#F3F7FF',
+        borderTop: '1px solid rgba(27, 109, 252, 0.2)',
+        borderBottom: '1px solid rgba(27, 109, 252, 0.2)',
+        marginTop: '72px',
+      }}>
+        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
+            Why the standard answer fails
+          </p>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: '#1A1A1A' }}>
+            Generic programmes prescribe into compensation.
+          </h2>
+          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>
+            Every body that has stalled is in some form of compensation. But the compensation is not generic. Cortisol-driven storage looks different to insulin-driven storage looks different to oestrogen-driven storage. The signal a Stress-Stored body needs to come out of compensation is the opposite of what an Insulin-Drift body needs. Same prescription, opposite effect.
+          </p>
+          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '28px' }}>
+            Generic programmes prescribe the same intensity, the same nutrition timing, the same set count to every body. When your body has a specific pattern holding it, that uniform prescription either does nothing or makes the compensation tighter. The Blueprint is built around your specific pattern. Training intensity, nutrition timing, weekly coaching, biology lessons. Four pattern variants because the prescription has to match the pattern.
+          </p>
+          <div style={{
+            background: 'rgba(27, 109, 252, 0.1)', border: '1px solid rgba(27, 109, 252, 0.25)',
+            borderRadius: '12px', padding: '20px 22px',
+          }}>
+            <p style={{ fontSize: '17px', color: '#1A1A1A', fontWeight: 700, margin: 0, lineHeight: 1.5 }}>
+              The pattern determines the order. Which stressor to pull first. Which input to add first. Which intensity to hold.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* PATTERNS */}
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px 0' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
@@ -414,12 +445,34 @@ export default function BlueprintPage() {
         </div>
       </div>
 
+      {/* EDGE LINE */}
+      <div style={{
+        background: '#1A1A1A',
+        position: 'relative',
+        overflow: 'hidden',
+        marginTop: '72px',
+      }}>
+        <div style={{
+          position: 'absolute', top: '-200px', right: '-200px',
+          width: '500px', height: '500px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.15) 0%, transparent 65%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px', position: 'relative' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '20px' }}>
+            The difference
+          </p>
+          <h2 style={{ fontSize: 'clamp(28px, 4.5vw, 38px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.15, color: '#FFFFFF', margin: 0 }}>
+            Most programmes prescribe into compensation. We pull the compensation first, then prescribe to your pattern.
+          </h2>
+        </div>
+      </div>
+
       {/* THREE PHASES */}
       <div style={{
         background: '#F7F7F7',
         borderTop: '1px solid #E5E5E5',
         borderBottom: '1px solid #E5E5E5',
-        marginTop: '72px',
       }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
@@ -515,6 +568,125 @@ export default function BlueprintPage() {
         </div>
       </div>
 
+      {/* SAMPLE PREVIEW */}
+      <div style={{
+        background: '#F7F7F7',
+        borderTop: '1px solid #E5E5E5',
+        borderBottom: '1px solid #E5E5E5',
+      }}>
+        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
+            Sample preview
+          </p>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '10px', color: '#1A1A1A' }}>
+            What your Week 1 looks like.
+          </h2>
+          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '36px' }}>
+            Same six-week structure across all four patterns, but every variable that matters is calibrated to yours. Here is Week 1 for a Stress-Stored buyer.
+          </p>
+
+          {/* Mockup card */}
+          <div style={{
+            background: '#FFFFFF',
+            border: '1px solid #E5E5E5',
+            borderRadius: '16px',
+            overflow: 'hidden',
+            boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)',
+          }}>
+            {/* Card header */}
+            <div style={{
+              background: '#1A1A1A',
+              padding: '16px 24px',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            }}>
+              <p style={{ fontSize: '11px', fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>
+                Your Blueprint · Week 1 of 6
+              </p>
+              <p style={{ fontSize: '10px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>
+                Sample
+              </p>
+            </div>
+
+            {/* Body */}
+            <div style={{ padding: '28px 26px' }}>
+              {/* Pattern banner */}
+              <div style={{
+                background: 'rgba(239, 68, 68, 0.06)',
+                border: '1px solid rgba(239, 68, 68, 0.2)',
+                borderLeft: '4px solid #ef4444',
+                borderRadius: '10px',
+                padding: '14px 18px',
+                marginBottom: '22px',
+              }}>
+                <p style={{ fontSize: '10px', fontWeight: 700, color: '#dc2626', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 4px' }}>
+                  Your pattern
+                </p>
+                <p style={{ fontSize: '17px', fontWeight: 800, color: '#1A1A1A', margin: 0 }}>
+                  Stress-Stored Pattern
+                </p>
+              </div>
+
+              {/* Coaching note */}
+              <div style={{ marginBottom: '22px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                  <div style={{
+                    width: '32px', height: '32px', borderRadius: '8px',
+                    background: '#1B6DFC',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <FileText size={16} strokeWidth={2.5} color="#FFFFFF" />
+                  </div>
+                  <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0 }}>
+                    Week 1 coaching note
+                  </p>
+                </div>
+                <p style={{ fontSize: '14px', color: '#3A3A3A', lineHeight: 1.7, margin: 0 }}>
+                  This week is about removing load, not adding it. Your cortisol has been elevated for a while and the first thing your body needs is a clear signal that the pressure is coming down. The training is intentionally controlled. The meal structure is consistent. That is the work.
+                </p>
+              </div>
+
+              {/* Session + lesson */}
+              <div style={{ paddingTop: '22px', borderTop: '1px solid #E5E5E5', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                    <div style={{
+                      width: '28px', height: '28px', borderRadius: '6px',
+                      background: 'rgba(27, 109, 252, 0.08)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <Dumbbell size={14} strokeWidth={2.5} color="#1B6DFC" />
+                    </div>
+                    <p style={{ fontSize: '11px', fontWeight: 800, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>
+                      Session A
+                    </p>
+                  </div>
+                  <p style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.55, margin: 0 }}>
+                    Strength base. RIR 3 throughout. Skip the Session B finisher. Rest 90 seconds minimum between sets.
+                  </p>
+                </div>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                    <div style={{
+                      width: '28px', height: '28px', borderRadius: '6px',
+                      background: 'rgba(27, 109, 252, 0.08)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <BookOpen size={14} strokeWidth={2.5} color="#1B6DFC" />
+                    </div>
+                    <p style={{ fontSize: '11px', fontWeight: 800, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>
+                      Lesson 1
+                    </p>
+                  </div>
+                  <p style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.55, margin: 0 }}>
+                    Cortisol and the stress response. Why the entire structure of your programme is designed to bring this curve back down.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* MID CTA */}
       <div style={{
         background: '#1A1A1A',
@@ -538,6 +710,56 @@ export default function BlueprintPage() {
             One-time $97 AUD. Instant portal access. Pattern assessment runs in 2 minutes if you skipped the Challenge.
           </p>
           <CheckoutForm position="mid" darkBg />
+        </div>
+      </div>
+
+      {/* FOUNDER */}
+      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
+          Why pattern-specific
+        </p>
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '28px', color: '#1A1A1A' }}>
+          Two decades writing programmes. One observation.
+        </h2>
+
+        {/* Photo */}
+        <div style={{
+          position: 'relative', borderRadius: '18px', overflow: 'hidden',
+          marginBottom: '28px',
+          boxShadow: '0 0 0 1px rgba(27, 109, 252, 0.15), 0 24px 48px rgba(0,0,0,0.12)',
+        }}>
+          <img
+            src="/kade.jpg"
+            alt="Kade Dunstone"
+            style={{ width: '100%', display: 'block', maxHeight: '360px', objectFit: 'cover', objectPosition: 'top center' }}
+          />
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to bottom, transparent 50%, rgba(12,10,9,0.88) 100%)',
+          }} />
+          <div style={{ position: 'absolute', bottom: '22px', left: '24px', right: '24px' }}>
+            <p style={{ fontSize: '17px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 3px' }}>Kade Dunstone</p>
+            <p style={{ fontSize: '13px', color: '#1B6DFC', margin: 0, fontWeight: 600 }}>
+              Human Movement Scientist · Business Entrepreneur · Body Recode Founder
+            </p>
+          </div>
+        </div>
+
+        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>
+          After two decades of writing training programmes, I kept watching the same thing. Programmes worked for some bodies, did nothing for others, made some worse. Same prescription. Different outcomes. The bodies that did not respond were not broken. They had a specific pattern.
+        </p>
+        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '28px' }}>
+          The 6-Week Body Rewire is built around that observation. Four pattern variants of the same six-week structure. Each calibrated to the hormone driving that pattern. The prescription matches the pattern.
+        </p>
+
+        <div style={{
+          background: '#FFFFFF', border: '1px solid #E5E5E5',
+          borderLeft: '3px solid #1B6DFC',
+          borderRadius: '14px', padding: '22px 24px',
+        }}>
+          <p style={{ fontSize: '16px', color: '#1A1A1A', fontWeight: 600, lineHeight: 1.7, margin: 0 }}>
+            Generic prescription is a guess. Pattern-specific prescription is a read. The Blueprint is the read made into a programme.
+          </p>
         </div>
       </div>
 
