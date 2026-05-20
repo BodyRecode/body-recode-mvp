@@ -146,20 +146,20 @@ export default function GenerateProgramForm({
     }
   }
 
-  const inputClass = 'w-full bg-stone-800 border border-stone-700 text-stone-100 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#10E1C2] focus:border-transparent'
-  const labelClass = 'block text-xs font-bold text-stone-400 uppercase tracking-wider mb-2'
+  const inputClass = 'w-full bg-stone-200 border border-stone-300 text-stone-900 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#10E1C2] focus:border-transparent'
+  const labelClass = 'block text-xs font-bold text-stone-600 uppercase tracking-wider mb-2'
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
       <div className="mb-8">
         <button
           onClick={() => router.back()}
-          className="text-sm text-stone-500 hover:text-stone-300 mb-4 block transition-colors"
+          className="text-sm text-stone-500 hover:text-stone-700 mb-4 block transition-colors"
         >
           ← Back
         </button>
-        <h1 className="text-2xl font-bold text-white">Generate Training Program</h1>
-        <p className="text-sm text-stone-400 mt-1">
+        <h1 className="text-2xl font-bold text-[#1A1A1A]">Generate Training Program</h1>
+        <p className="text-sm text-stone-600 mt-1">
           Set prescription inputs. All doctrine rules will be applied automatically.
         </p>
       </div>
@@ -167,14 +167,14 @@ export default function GenerateProgramForm({
       {planBlock && (
         <div className="mb-6 bg-[#10E1C2]/5 border border-[#10E1C2]/20 rounded-xl p-4">
           <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-1">From Macro Plan</p>
-          <p className="text-sm text-stone-200">{planBlock.block_name}</p>
+          <p className="text-sm text-stone-800">{planBlock.block_name}</p>
           <div className="flex flex-wrap gap-2 mt-1.5 text-xs text-stone-500">
             <span className="capitalize">{planBlock.progression_phase}</span>
             {planBlock.execution_arc && <span className="capitalize">· {planBlock.execution_arc} arc</span>}
             {planBlock.phase_category && <span>· {planBlock.phase_category}</span>}
             {planBlock.phase_objective && <span>· {planBlock.phase_objective}</span>}
           </div>
-          {planBlock.notes && <p className="text-xs text-stone-600 italic mt-1.5">{planBlock.notes}</p>}
+          {planBlock.notes && <p className="text-xs text-stone-400 italic mt-1.5">{planBlock.notes}</p>}
         </div>
       )}
 
@@ -221,8 +221,8 @@ export default function GenerateProgramForm({
                 onClick={() => setForm(prev => ({ ...prev, training_goal: goal }))}
                 className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.training_goal === goal
-                    ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]'
-                    : 'bg-stone-800 text-stone-300 border-stone-700 hover:border-stone-500'
+                    ? 'bg-[#10E1C2] text-stone-100 border-[#10E1C2]'
+                    : 'bg-stone-200 text-stone-700 border-stone-300 hover:border-stone-500'
                 }`}
               >
                 {goal.charAt(0).toUpperCase() + goal.slice(1)}
@@ -249,7 +249,7 @@ export default function GenerateProgramForm({
             onChange={e => setForm(prev => ({ ...prev, training_frequency: parseInt(e.target.value) }))}
             className="w-full accent-[#10E1C2]"
           />
-          <div className="flex justify-between text-xs text-stone-600 mt-1">
+          <div className="flex justify-between text-xs text-stone-400 mt-1">
             <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
           </div>
         </div>
@@ -279,8 +279,8 @@ export default function GenerateProgramForm({
                 onClick={() => toggleDay(day)}
                 className={`py-2 rounded-md text-xs font-medium border transition-colors ${
                   trainingDays.includes(day)
-                    ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]'
-                    : 'bg-stone-800 text-stone-400 border-stone-700 hover:border-stone-500'
+                    ? 'bg-[#10E1C2] text-stone-100 border-[#10E1C2]'
+                    : 'bg-stone-200 text-stone-600 border-stone-300 hover:border-stone-500'
                 }`}
               >
                 {day.slice(0, 3)}
@@ -288,7 +288,7 @@ export default function GenerateProgramForm({
             ))}
           </div>
           {trainingDays.length === 0 && (
-            <p className="text-xs text-stone-600 mt-1.5">No days selected. Sessions will use abstract labels (Day 1, Day 2) with maximum recovery spacing.</p>
+            <p className="text-xs text-stone-400 mt-1.5">No days selected. Sessions will use abstract labels (Day 1, Day 2) with maximum recovery spacing.</p>
           )}
           {trainingDays.length > 0 && trainingDays.length === form.training_frequency && (
             <p className="text-xs text-stone-500 mt-1.5">
@@ -313,8 +313,8 @@ export default function GenerateProgramForm({
                 onClick={() => setForm(prev => ({ ...prev, training_age: age }))}
                 className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.training_age === age
-                    ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]'
-                    : 'bg-stone-800 text-stone-300 border-stone-700 hover:border-stone-500'
+                    ? 'bg-[#10E1C2] text-stone-100 border-[#10E1C2]'
+                    : 'bg-stone-200 text-stone-700 border-stone-300 hover:border-stone-500'
                 }`}
               >
                 {age.charAt(0).toUpperCase() + age.slice(1)}
@@ -339,8 +339,8 @@ export default function GenerateProgramForm({
                 onClick={() => setForm(prev => ({ ...prev, movement_competency: level }))}
                 className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.movement_competency === level
-                    ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]'
-                    : 'bg-stone-800 text-stone-300 border-stone-700 hover:border-stone-500'
+                    ? 'bg-[#10E1C2] text-stone-100 border-[#10E1C2]'
+                    : 'bg-stone-200 text-stone-700 border-stone-300 hover:border-stone-500'
                 }`}
               >
                 {level.charAt(0).toUpperCase() + level.slice(1)}
@@ -365,8 +365,8 @@ export default function GenerateProgramForm({
                 onClick={() => setForm(prev => ({ ...prev, week_duration: weeks }))}
                 className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.week_duration === weeks
-                    ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]'
-                    : 'bg-stone-800 text-stone-300 border-stone-700 hover:border-stone-500'
+                    ? 'bg-[#10E1C2] text-stone-100 border-[#10E1C2]'
+                    : 'bg-stone-200 text-stone-700 border-stone-300 hover:border-stone-500'
                 }`}
               >
                 {weeks} weeks
@@ -385,9 +385,9 @@ export default function GenerateProgramForm({
                   type="checkbox"
                   checked={form.equipment_access.includes(opt.value)}
                   onChange={() => toggleEquipment(opt.value)}
-                  className="rounded border-stone-600 bg-stone-800 accent-[#10E1C2]"
+                  className="rounded border-stone-400 bg-stone-200 accent-[#10E1C2]"
                 />
-                <span className={`text-sm transition-colors ${form.equipment_access.includes(opt.value) ? 'text-stone-200' : 'text-stone-500'}`}>
+                <span className={`text-sm transition-colors ${form.equipment_access.includes(opt.value) ? 'text-stone-800' : 'text-stone-500'}`}>
                   {opt.label}
                 </span>
               </label>
@@ -404,7 +404,7 @@ export default function GenerateProgramForm({
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-4 bg-[#10E1C2] text-stone-900 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 px-4 bg-[#10E1C2] text-stone-100 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? 'Generating program… this may take 30–60s' : 'Generate Program'}
         </button>

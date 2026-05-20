@@ -129,7 +129,7 @@ const STATES = [
     id: 'ready',
     label: 'Ready',
     score: '12 - 15',
-    color: '#14b8a6',
+    color: '#1B6DFC',
     bg: 'rgba(20,184,166,0.08)',
     border: 'rgba(20,184,166,0.25)',
     tagBg: 'rgba(20,184,166,0.12)',
@@ -201,7 +201,7 @@ export default function GymSessionsPage() {
               onClick={() => setActiveState(s.id)}
               style={active ? { borderColor: s.border, color: s.color, background: s.bg } : undefined}
               className={`flex-1 py-3 px-4 rounded-xl border text-[13px] font-semibold transition-colors ${
-                active ? '' : 'border-[#1c1917] bg-[#111110] text-[#a8a29e] hover:text-white hover:border-[#292524]'
+                active ? '' : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4]'
               }`}
             >
               <span className="block">{s.label}</span>
@@ -226,8 +226,8 @@ export default function GymSessionsPage() {
               onClick={() => setActiveProgram(p.id as ProgramType)}
               className={`flex-1 py-2 px-3 rounded-lg border text-[11px] font-semibold transition-colors ${
                 active
-                  ? 'border-[#292524] text-white bg-[#1c1917]'
-                  : 'border-[#1c1917] bg-[#111110] text-[#a8a29e] hover:text-white hover:border-[#292524]'
+                  ? 'border-[#D4D4D4] text-[#1A1A1A] bg-[#E5E5E5]'
+                  : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4]'
               }`}
             >
               {p.label}
@@ -246,8 +246,8 @@ export default function GymSessionsPage() {
         <ScriptSection label="Warm-up - 3 min">
           {state.warmup.map((item, i) => (
             <div key={i} className="flex items-start gap-2">
-              <div className="w-1 h-1 rounded-full bg-[#57534e] mt-2 shrink-0" />
-              <p className="text-[14px] text-[#d4cfc9]">{item}</p>
+              <div className="w-1 h-1 rounded-full bg-[#999999] mt-2 shrink-0" />
+              <p className="text-[14px] text-[#3A3A3A]">{item}</p>
             </div>
           ))}
         </ScriptSection>
@@ -255,7 +255,7 @@ export default function GymSessionsPage() {
           {program.primer && (
             <div className="mb-2">
               <p
-                className="text-[10px] font-medium text-[#57534e] uppercase mb-2"
+                className="text-[10px] font-medium text-[#999999] uppercase mb-2"
                 style={{ fontFamily: MONO_FONT, letterSpacing: '0.1em' }}
               >
                 Strength primer
@@ -264,7 +264,7 @@ export default function GymSessionsPage() {
                 {program.primer.map((ex, i) => <ExerciseCard key={i} ex={ex} />)}
               </div>
               <p
-                className="text-[10px] font-medium text-[#57534e] uppercase mb-2"
+                className="text-[10px] font-medium text-[#999999] uppercase mb-2"
                 style={{ fontFamily: MONO_FONT, letterSpacing: '0.1em' }}
               >
                 AMRAP
@@ -275,14 +275,14 @@ export default function GymSessionsPage() {
             {program.exercises.map((ex, i) => <ExerciseCard key={i} ex={ex} />)}
           </div>
           {program.note && (
-            <p className="text-[12px] text-[#57534e] mt-3 italic">{program.note}</p>
+            <p className="text-[12px] text-[#999999] mt-3 italic">{program.note}</p>
           )}
         </ScriptSection>
         <ScriptSection label="Close - 2 min">
           {state.close.map((item, i) => (
             <div key={i} className="flex items-start gap-2">
-              <div className="w-1 h-1 rounded-full bg-[#57534e] mt-2 shrink-0" />
-              <p className="text-[14px] text-[#d4cfc9]">{item}</p>
+              <div className="w-1 h-1 rounded-full bg-[#999999] mt-2 shrink-0" />
+              <p className="text-[14px] text-[#3A3A3A]">{item}</p>
             </div>
           ))}
         </ScriptSection>
@@ -291,37 +291,37 @@ export default function GymSessionsPage() {
       {/* Handoff into the sit-down */}
       <ScriptCard label="Handoff into the sit-down">
         <div className="px-5 py-4">
-          <p className="text-[10px] font-bold text-[#57534e] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+          <p className="text-[10px] font-bold text-[#999999] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
             Bridge from training → table
           </p>
-          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic">"{state.handoff}"</p>
+          <p className="text-[14px] text-[#3A3A3A] leading-relaxed italic">"{state.handoff}"</p>
         </div>
       </ScriptCard>
 
       {/* Paths after the sit-down */}
       <ScriptCard label="After the sit-down · paths">
         {/* PATH C — proceeding now */}
-        <div className="px-5 py-4 border-b border-[#1c1917]">
+        <div className="px-5 py-4 border-b border-[#E5E5E5]">
           <div className="flex items-center gap-2 mb-2">
             <span
-              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[rgba(20,184,166,0.12)] text-[#14b8a6] border border-[#0d2d29] uppercase"
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[rgba(20,184,166,0.12)] text-[#1B6DFC] border border-[#B5CFFC] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               Path C
             </span>
             <p
-              className="text-[10px] font-bold text-[#a8a29e] uppercase"
+              className="text-[10px] font-bold text-[#6B6B6B] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
             >
               Locking in now
             </p>
           </div>
-          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic mb-3">"Good. Here's exactly what happens next. I'll send you a link straight to your inbox now for the $240 commencement fee. Once that's through, three things happen automatically. Welcome email with portal access. Your foundational intake unlocks - 208 questions across 8 areas. And I get notified at every step. Once your intake's in, your CFFS generates. I review it, send you the subscription link at the launch rate, and we lock in your start date. Sound good?"</p>
-          <p className="text-[12px] text-[#57534e] leading-relaxed">Open the lead in <span className="text-[#a8a29e]">/dashboard/leads</span>, run companion → Path C → pick pathway (in-person / online) → Send commencement fee → Mark Complete. Stripe link goes to her instantly.</p>
+          <p className="text-[14px] text-[#3A3A3A] leading-relaxed italic mb-3">"Good. Here's exactly what happens next. I'll send you a link straight to your inbox now for the $240 commencement fee. Once that's through, three things happen automatically. Welcome email with portal access. Your foundational intake unlocks - 208 questions across 8 areas. And I get notified at every step. Once your intake's in, your CFFS generates. I review it, send you the subscription link at the launch rate, and we lock in your start date. Sound good?"</p>
+          <p className="text-[12px] text-[#999999] leading-relaxed">Open the lead in <span className="text-[#6B6B6B]">/dashboard/leads</span>, run companion → Path C → pick pathway (in-person / online) → Send commencement fee → Mark Complete. Stripe link goes to her instantly.</p>
         </div>
 
         {/* PATH B — needs time */}
-        <div className="px-5 py-4 border-b border-[#1c1917]">
+        <div className="px-5 py-4 border-b border-[#E5E5E5]">
           <div className="flex items-center gap-2 mb-2">
             <span
               className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[rgba(245,158,11,0.12)] text-[#f59e0b] border border-[#3a2e10] uppercase"
@@ -330,34 +330,34 @@ export default function GymSessionsPage() {
               Path B
             </span>
             <p
-              className="text-[10px] font-bold text-[#a8a29e] uppercase"
+              className="text-[10px] font-bold text-[#6B6B6B] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
             >
               Needs time · most common
             </p>
           </div>
-          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic mb-3">"Take whatever time you need to sit with it. The launch rate stays open. If anything comes up between now and when you decide, message me and I'll answer it. No pressure either way."</p>
-          <p className="text-[12px] text-[#57534e] leading-relaxed">Send the post-session recap email same day (Post Session Email Template). Companion → Path B → Mark Complete. Follow up ~5-7 days out if no reply (Follow-up Email Template).</p>
+          <p className="text-[14px] text-[#3A3A3A] leading-relaxed italic mb-3">"Take whatever time you need to sit with it. The launch rate stays open. If anything comes up between now and when you decide, message me and I'll answer it. No pressure either way."</p>
+          <p className="text-[12px] text-[#999999] leading-relaxed">Send the post-session recap email same day (Post Session Email Template). Companion → Path B → Mark Complete. Follow up ~5-7 days out if no reply (Follow-up Email Template).</p>
         </div>
 
         {/* PATH A — out */}
         <div className="px-5 py-4">
           <div className="flex items-center gap-2 mb-2">
             <span
-              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#0c0a09] text-[#a8a29e] border border-[#1c1917] uppercase"
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFFFFF] text-[#6B6B6B] border border-[#E5E5E5] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               Path A
             </span>
             <p
-              className="text-[10px] font-bold text-[#a8a29e] uppercase"
+              className="text-[10px] font-bold text-[#6B6B6B] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
             >
               Not the right fit
             </p>
           </div>
-          <p className="text-[14px] text-[#d4cfc9] leading-relaxed italic mb-3">"All good. The scorecard read still stands on its own and you've got the breakdown to sit with. If anything shifts in your thinking later, the door's open."</p>
-          <p className="text-[12px] text-[#57534e] leading-relaxed">Companion → Path A → Mark Complete. Click 'Send declined follow-up' to fire the 3-email re-engagement sequence + $97 downsell offer.</p>
+          <p className="text-[14px] text-[#3A3A3A] leading-relaxed italic mb-3">"All good. The scorecard read still stands on its own and you've got the breakdown to sit with. If anything shifts in your thinking later, the door's open."</p>
+          <p className="text-[12px] text-[#999999] leading-relaxed">Companion → Path A → Mark Complete. Click 'Send declined follow-up' to fire the 3-email re-engagement sequence + $97 downsell offer.</p>
         </div>
       </ScriptCard>
     </div>
@@ -366,17 +366,17 @@ export default function GymSessionsPage() {
 
 function ScriptCard({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden mb-4">
-      <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#1c1917]">
-        <span className="w-7 h-[3px] rounded-full bg-[#14b8a6] shrink-0" />
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-4">
+      <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#E5E5E5]">
+        <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC] shrink-0" />
         <p
-          className="text-[10px] font-bold text-white uppercase"
+          className="text-[10px] font-bold text-[#1A1A1A] uppercase"
           style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
         >
           {label}
         </p>
       </div>
-      <div className="divide-y divide-[#1c1917]">{children}</div>
+      <div className="divide-y divide-[#E5E5E5]">{children}</div>
     </div>
   )
 }
@@ -385,12 +385,12 @@ function ScriptSection({ label, sublabel, children }: { label: string; sublabel?
   return (
     <div className="px-5 py-4">
       <p
-        className="text-[10px] font-bold text-[#57534e] uppercase mb-2"
+        className="text-[10px] font-bold text-[#999999] uppercase mb-2"
         style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
       >
         {label}
       </p>
-      {sublabel && <p className="text-[12px] text-[#57534e] mb-3">{sublabel}</p>}
+      {sublabel && <p className="text-[12px] text-[#999999] mb-3">{sublabel}</p>}
       <div className="space-y-2">{children}</div>
     </div>
   )
@@ -398,11 +398,11 @@ function ScriptSection({ label, sublabel, children }: { label: string; sublabel?
 
 function ExerciseCard({ ex }: { ex: Exercise }) {
   return (
-    <div className="bg-[#0c0a09] border border-[#1c1917] rounded-xl px-3 py-3">
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-3">
       <div className="flex items-start justify-between gap-3 mb-2">
-        <span className="text-[14px] font-semibold text-white">{ex.name}</span>
+        <span className="text-[14px] font-semibold text-[#1A1A1A]">{ex.name}</span>
         <span
-          className="text-[11px] text-[#a8a29e] shrink-0"
+          className="text-[11px] text-[#6B6B6B] shrink-0"
           style={{ fontFamily: MONO_FONT }}
         >
           {ex.detail}
@@ -410,10 +410,10 @@ function ExerciseCard({ ex }: { ex: Exercise }) {
       </div>
       <div className="space-y-1 mb-2">
         {ex.cues.map((cue, i) => (
-          <p key={i} className="text-[12px] text-[#a8a29e]">→ {cue}</p>
+          <p key={i} className="text-[12px] text-[#6B6B6B]">→ {cue}</p>
         ))}
       </div>
-      <p className="text-[12px] text-[#57534e] italic">{ex.why}</p>
+      <p className="text-[12px] text-[#999999] italic">{ex.why}</p>
     </div>
   )
 }

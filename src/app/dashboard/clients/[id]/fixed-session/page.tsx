@@ -35,28 +35,28 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
   return (
     <div className="max-w-lg">
       <div className="mb-6">
-        <Link href={`/dashboard/clients/${id}`} className="text-xs text-stone-500 hover:text-stone-300 transition-colors block mb-4">
+        <Link href={`/dashboard/clients/${id}`} className="text-xs text-stone-500 hover:text-stone-700 transition-colors block mb-4">
           ← Back to {client.name}
         </Link>
-        <h1 className="text-xl font-semibold text-white">Face-to-Face Sessions</h1>
-        <p className="text-stone-400 text-sm mt-1">Set recurring weekly slots and manage individual bookings.</p>
+        <h1 className="text-xl font-semibold text-[#1A1A1A]">Face-to-Face Sessions</h1>
+        <p className="text-stone-600 text-sm mt-1">Set recurring weekly slots and manage individual bookings.</p>
       </div>
 
       {/* Fixed recurring slots */}
       <FixedSlotsManager clientId={id} slots={slots ?? []} />
 
       {/* Individual session bookings */}
-      <div className="mt-6 bg-stone-900 border border-stone-800 rounded-xl p-5">
+      <div className="mt-6 bg-stone-100 border border-stone-200 rounded-xl p-5">
         <p className="text-xs uppercase tracking-wider text-stone-500 mb-4">Booked Sessions</p>
 
         {(sessions ?? []).length === 0 ? (
-          <p className="text-sm text-stone-600">No sessions booked yet.</p>
+          <p className="text-sm text-stone-400">No sessions booked yet.</p>
         ) : (
           <div className="space-y-2 mb-2">
             {sessions!.map(s => (
-              <div key={s.id} className="flex items-center justify-between py-2 border-b border-stone-800 last:border-0">
+              <div key={s.id} className="flex items-center justify-between py-2 border-b border-stone-200 last:border-0">
                 <div>
-                  <span className="text-sm text-white">
+                  <span className="text-sm text-[#1A1A1A]">
                     {new Date(s.scheduled_at).toLocaleDateString('en-AU', {
                       timeZone: 'Australia/Brisbane',
                       weekday: 'short', day: 'numeric', month: 'short',
@@ -69,7 +69,7 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
                     })} · {s.duration_minutes} min
                   </span>
                 </div>
-                <span className={`text-xs ${s.confirmed_at ? 'text-teal-400' : 'text-stone-500'}`}>
+                <span className={`text-xs ${s.confirmed_at ? 'text-blue-500' : 'text-stone-500'}`}>
                   {s.confirmed_at ? 'Confirmed' : 'Pending'}
                 </span>
               </div>

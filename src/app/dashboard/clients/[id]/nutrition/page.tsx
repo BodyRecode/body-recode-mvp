@@ -99,7 +99,7 @@ function nutritionNavSections(plan: NutritionPlan) {
 
 const entryStateColour: Record<string, string> = {
   stabilisation: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
-  training_support: 'text-teal-400 bg-teal-400/10 border-teal-400/30',
+  training_support: 'text-blue-500 bg-blue-500/10 border-blue-500/30',
   high_output_support: 'text-violet-400 bg-violet-400/10 border-violet-400/30',
   recovery_reset: 'text-red-400 bg-red-400/10 border-red-400/30',
 }
@@ -131,19 +131,19 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
     <div className="space-y-4">
 
       {/* Identity card */}
-      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-5">
+      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <h2 className="text-lg font-semibold text-white">{plan.plan_name}</h2>
+            <h2 className="text-lg font-semibold text-[#1A1A1A]">{plan.plan_name}</h2>
             <p className="text-xs text-stone-500 mt-1">
               {plan.meal_frequency} meals/day · {plan.protein_anchor_g}g protein · {plan.pts_phase}
             </p>
           </div>
           <div className="flex gap-1.5 flex-wrap justify-end">
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${entryStateColour[plan.entry_state] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${entryStateColour[plan.entry_state] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
               {plan.entry_state.replace(/_/g, ' ')}
             </span>
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${carbColour[plan.carb_demand_level] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${carbColour[plan.carb_demand_level] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
               {plan.carb_demand_level} carbs
             </span>
           </div>
@@ -156,29 +156,29 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
             {directionLabel[plan.current_direction] ?? plan.current_direction}
           </span>
         )}
-        <p className="text-xs text-stone-600 mt-3">
+        <p className="text-xs text-stone-400 mt-3">
           Generated {new Date(plan.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
         </p>
       </div>
 
       {/* Entry State Summary */}
       {plan.entry_state_summary && (
-        <div id={`${idPrefix}current-focus`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
+        <div id={`${idPrefix}current-focus`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
             <span className="text-[11px] font-black text-[#10E1C2]">01</span>
-            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Current Focus</p>
+            <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Current Focus</p>
           </div>
           <div className="px-5 py-4 space-y-3">
-            <p className="text-sm text-white font-medium">{clean(plan.entry_state_summary.current_focus)}</p>
-            <p className="text-sm text-stone-300 leading-relaxed">{clean(plan.entry_state_summary.what_this_means)}</p>
+            <p className="text-sm text-[#1A1A1A] font-medium">{clean(plan.entry_state_summary.current_focus)}</p>
+            <p className="text-sm text-stone-700 leading-relaxed">{clean(plan.entry_state_summary.what_this_means)}</p>
             {plan.entry_state_summary.prioritise?.length > 0 && (
               <div>
                 <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-wider mb-1.5">Prioritise</p>
                 <div className="space-y-1">
                   {plan.entry_state_summary.prioritise.map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <span className="text-teal-400 mt-0.5">•</span>
-                      <p className="text-sm text-stone-300">{clean(item)}</p>
+                      <span className="text-blue-500 mt-0.5">•</span>
+                      <p className="text-sm text-stone-700">{clean(item)}</p>
                     </div>
                   ))}
                 </div>
@@ -190,8 +190,8 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
                 <div className="space-y-1">
                   {plan.entry_state_summary.avoid.map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <span className="text-stone-600 mt-0.5">•</span>
-                      <p className="text-sm text-stone-400">{clean(item)}</p>
+                      <span className="text-stone-400 mt-0.5">•</span>
+                      <p className="text-sm text-stone-600">{clean(item)}</p>
                     </div>
                   ))}
                 </div>
@@ -205,18 +205,18 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
       {plan.weekly_structure_notes && (() => {
         const { intro, points } = parseText(clean(plan.weekly_structure_notes))
         return (
-          <div id={`${idPrefix}structure`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
+          <div id={`${idPrefix}structure`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
               <span className="text-[11px] font-black text-[#10E1C2]">02</span>
-              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Structure Logic</p>
+              <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Structure Logic</p>
             </div>
             <div className="px-5 py-4 space-y-2">
-              {intro && <p className="text-sm text-stone-200 leading-relaxed">{intro}</p>}
+              {intro && <p className="text-sm text-stone-800 leading-relaxed">{intro}</p>}
               {points.length > 1 ? points.map((point, i) => (
-                <div key={i} className="flex items-start gap-2.5 border-l-2 border-stone-700 pl-3">
-                  <p className="text-sm text-stone-300 leading-relaxed">{point}</p>
+                <div key={i} className="flex items-start gap-2.5 border-l-2 border-stone-300 pl-3">
+                  <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
                 </div>
-              )) : <p className="text-sm text-stone-200 leading-relaxed">{points[0]}</p>}
+              )) : <p className="text-sm text-stone-800 leading-relaxed">{points[0]}</p>}
             </div>
           </div>
         )
@@ -238,22 +238,22 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
         const carbPct = Math.round((carbKcal / denom) * 100)
         const fatPct = 100 - proteinPct - carbPct
         return (
-          <div id={`${idPrefix}daily-totals`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
+          <div id={`${idPrefix}daily-totals`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
               <span className="text-[11px] font-black text-[#10E1C2]">↑</span>
-              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Daily Totals (sum of meals)</p>
+              <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Daily Totals (sum of meals)</p>
             </div>
             <div className="px-5 py-4 space-y-3">
               <div className="flex items-baseline justify-between">
                 <div>
-                  <p className="text-2xl font-bold text-white tabular-nums">{totals.kcal.toLocaleString()} <span className="text-sm font-normal text-stone-500">kcal</span></p>
+                  <p className="text-2xl font-bold text-[#1A1A1A] tabular-nums">{totals.kcal.toLocaleString()} <span className="text-sm font-normal text-stone-500">kcal</span></p>
                   <p className="text-xs text-stone-500 mt-1 tabular-nums">
                     {totals.protein_g}g P · {totals.carb_g}g C · {totals.fat_g}g F
                   </p>
                 </div>
                 <div className="text-right text-xs">
                   {band ? (
-                    <div className={kcalInBand ? 'text-teal-400' : 'text-red-400'}>
+                    <div className={kcalInBand ? 'text-blue-500' : 'text-red-400'}>
                       <p className="font-semibold">{kcalInBand ? 'Inside band' : 'Outside band'}</p>
                       <p className="text-stone-500 mt-0.5 tabular-nums">Target {band.low}–{band.high} kcal</p>
                     </div>
@@ -263,7 +263,7 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
                 </div>
               </div>
               <div className="pt-1">
-                <div className="flex h-2 rounded-full overflow-hidden bg-stone-800">
+                <div className="flex h-2 rounded-full overflow-hidden bg-stone-200">
                   <div style={{ width: `${proteinPct}%` }} className="bg-[#10E1C2]" />
                   <div style={{ width: `${carbPct}%` }} className="bg-amber-500" />
                   <div style={{ width: `${fatPct}%` }} className="bg-violet-400" />
@@ -275,9 +275,9 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
                 </div>
               </div>
               {proteinAnchor > 0 && (
-                <div className="flex items-center justify-between text-xs pt-3 border-t border-stone-800">
+                <div className="flex items-center justify-between text-xs pt-3 border-t border-stone-200">
                   <p className="text-stone-500">Protein anchor</p>
-                  <p className={proteinOk ? 'text-teal-400' : 'text-red-400'}>
+                  <p className={proteinOk ? 'text-blue-500' : 'text-red-400'}>
                     <span className="tabular-nums">{totals.protein_g}g</span> vs anchor <span className="tabular-nums">{proteinAnchor}g</span>
                     {proteinDelta !== null && (
                       <span className="text-stone-500 ml-1">({proteinDelta > 0 ? '+' : ''}{proteinDelta}g)</span>
@@ -301,18 +301,18 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
             const cp = Math.round((meal.carb_g * 4 / denom) * 100)
             const fp = 100 - pp - cp
             return (
-              <div key={meal.meal_number} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-                <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between">
+              <div key={meal.meal_number} className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+                <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold text-stone-100 text-sm">{meal.meal_name}</h3>
-                    <p className="text-[10px] text-stone-600 mt-0.5">{meal.timing}</p>
+                    <h3 className="font-semibold text-stone-900 text-sm">{meal.meal_name}</h3>
+                    <p className="text-[10px] text-stone-400 mt-0.5">{meal.timing}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-semibold text-white tabular-nums">{mealMacros.kcal} kcal</p>
+                    <p className="text-sm font-semibold text-[#1A1A1A] tabular-nums">{mealMacros.kcal} kcal</p>
                     <p className="text-[10px] text-stone-500 mt-0.5 tabular-nums">
                       {meal.protein_g}g P · {meal.carb_g}g C · {meal.fat_g}g F
                     </p>
-                    <p className="text-[10px] text-stone-600 mt-0.5 tabular-nums uppercase tracking-wider">
+                    <p className="text-[10px] text-stone-400 mt-0.5 tabular-nums uppercase tracking-wider">
                       P {pp}% · C {cp}% · F {fp}%
                     </p>
                   </div>
@@ -324,8 +324,8 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
                       return (
                         <div key={i} className="flex items-start justify-between gap-3">
                           <div className="flex items-start gap-2 flex-1 min-w-0">
-                            <span className="text-stone-600 mt-0.5 shrink-0">•</span>
-                            <p className="text-sm text-stone-300">{clean(f.name)}</p>
+                            <span className="text-stone-400 mt-0.5 shrink-0">•</span>
+                            <p className="text-sm text-stone-700">{clean(f.name)}</p>
                           </div>
                           {f.kcal !== null && (
                             <span className="text-xs text-stone-500 tabular-nums shrink-0 pt-0.5">{f.kcal} kcal</span>
@@ -335,7 +335,7 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
                     })}
                   </div>
                   {meal.notes && (
-                    <p className="text-xs text-stone-600 italic mt-2">{clean(meal.notes)}</p>
+                    <p className="text-xs text-stone-400 italic mt-2">{clean(meal.notes)}</p>
                   )}
                 </div>
               </div>
@@ -346,20 +346,20 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
 
       {/* Training Day Adjustments */}
       {plan.training_day_adjustments && (
-        <div id={`${idPrefix}adjustments`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
+        <div id={`${idPrefix}adjustments`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
             <span className="text-[11px] font-black text-[#10E1C2]">03</span>
-            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Training Day Adjustments</p>
+            <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Training Day Adjustments</p>
           </div>
           <div className="px-5 py-4 space-y-2">
             <div className="flex gap-4 text-sm">
-              <span className="text-stone-400">+{plan.training_day_adjustments.carb_increase_g}g carbs</span>
+              <span className="text-stone-600">+{plan.training_day_adjustments.carb_increase_g}g carbs</span>
               {plan.training_day_adjustments.fat_reduction_g > 0 && (
                 <span className="text-stone-500">−{plan.training_day_adjustments.fat_reduction_g}g fat</span>
               )}
             </div>
             {plan.training_day_adjustments.timing_note && (
-              <p className="text-sm text-stone-300">{clean(plan.training_day_adjustments.timing_note)}</p>
+              <p className="text-sm text-stone-700">{clean(plan.training_day_adjustments.timing_note)}</p>
             )}
             {plan.training_day_adjustments.meals_affected?.length > 0 && (
               <p className="text-xs text-stone-500">Applies to: {plan.training_day_adjustments.meals_affected.join(', ')}</p>
@@ -370,16 +370,16 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
 
       {/* Execution Rules */}
       {plan.execution_rules?.length > 0 && (
-        <div id={`${idPrefix}execution`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
+        <div id={`${idPrefix}execution`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
             <span className="text-[11px] font-black text-[#10E1C2]">04</span>
-            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Execution Rules</p>
+            <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Execution Rules</p>
           </div>
           <div className="px-5 py-4 space-y-2">
             {plan.execution_rules.map((rule, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span className="text-teal-400 mt-0.5 shrink-0">•</span>
-                <p className="text-sm text-stone-300">{clean(rule)}</p>
+                <span className="text-blue-500 mt-0.5 shrink-0">•</span>
+                <p className="text-sm text-stone-700">{clean(rule)}</p>
               </div>
             ))}
           </div>
@@ -388,13 +388,13 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
 
       {/* What Not to Change */}
       {plan.what_not_to_change?.length > 0 && (
-        <div className="bg-stone-800/40 border border-stone-800 rounded-xl px-5 py-4">
+        <div className="bg-stone-200/40 border border-stone-200 rounded-xl px-5 py-4">
           <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">What Not to Change</p>
           <div className="space-y-1.5">
             {plan.what_not_to_change.map((item, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span className="text-stone-600 mt-0.5 shrink-0">-</span>
-                <p className="text-xs text-stone-400">{clean(item)}</p>
+                <span className="text-stone-400 mt-0.5 shrink-0">-</span>
+                <p className="text-xs text-stone-600">{clean(item)}</p>
               </div>
             ))}
           </div>
@@ -405,18 +405,18 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
       {plan.progression_notes && (() => {
         const { intro, points } = parseText(clean(plan.progression_notes))
         return (
-          <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-800">
+          <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
               <span className="text-[11px] font-black text-[#10E1C2]">05</span>
-              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Progression Notes</p>
+              <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Progression Notes</p>
             </div>
             <div className="px-5 py-4 space-y-2">
-              {intro && <p className="text-sm text-stone-200 leading-relaxed">{intro}</p>}
+              {intro && <p className="text-sm text-stone-800 leading-relaxed">{intro}</p>}
               {points.length > 1 ? points.map((point, i) => (
-                <div key={i} className="flex items-start gap-2.5 border-l-2 border-stone-700 pl-3">
-                  <p className="text-sm text-stone-300 leading-relaxed">{point}</p>
+                <div key={i} className="flex items-start gap-2.5 border-l-2 border-stone-300 pl-3">
+                  <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
                 </div>
-              )) : <p className="text-sm text-stone-200 leading-relaxed">{points[0]}</p>}
+              )) : <p className="text-sm text-stone-800 leading-relaxed">{points[0]}</p>}
             </div>
           </div>
         )
@@ -424,16 +424,16 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
 
       {/* Substitutions */}
       {plan.substitution_options && (
-        <div id={`${idPrefix}substitutions`} className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div id={`${idPrefix}substitutions`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5">
           <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">Food Substitutions</p>
           <div className="grid grid-cols-3 gap-4">
             {(['protein', 'carbohydrate', 'fat'] as const).map(cat => (
               plan.substitution_options![cat]?.length > 0 && (
                 <div key={cat}>
-                  <p className="text-[10px] font-bold text-stone-600 uppercase tracking-wider mb-2 capitalize">{cat}</p>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2 capitalize">{cat}</p>
                   <div className="space-y-1">
                     {plan.substitution_options![cat].map((item, i) => (
-                      <p key={i} className="text-xs text-stone-400">• {clean(item)}</p>
+                      <p key={i} className="text-xs text-stone-600">• {clean(item)}</p>
                     ))}
                   </div>
                 </div>
@@ -474,11 +474,11 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
       <div className="mb-8 flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-            <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-300 transition-colors">{client.name}</Link>
+            <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
             <span>/</span>
-            <span className="text-stone-300">Nutrition Plan</span>
+            <span className="text-stone-700">Nutrition Plan</span>
           </div>
-          <h1 className="text-2xl font-semibold text-white">Nutrition Plan</h1>
+          <h1 className="text-2xl font-semibold text-[#1A1A1A]">Nutrition Plan</h1>
         </div>
         <div className="flex items-center gap-2">
           {activePlan && (
@@ -493,7 +493,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
           )}
           <Link
             href={`/dashboard/clients/${id}/nutrition/suggest`}
-            className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+            className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors"
           >
             {activePlan || draftPlan ? 'Regenerate' : 'Generate Plan'}
           </Link>
@@ -532,9 +532,9 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
         <div>
           {draftPlan && (
             <div className="flex items-center gap-3 mb-4 mt-2">
-              <div className="flex-1 h-px bg-stone-800" />
-              <p className="text-xs text-stone-600 uppercase tracking-widest">Current Active Plan</p>
-              <div className="flex-1 h-px bg-stone-800" />
+              <div className="flex-1 h-px bg-stone-200" />
+              <p className="text-xs text-stone-400 uppercase tracking-widest">Current Active Plan</p>
+              <div className="flex-1 h-px bg-stone-200" />
             </div>
           )}
 
@@ -562,10 +562,10 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
               <p className="text-stone-500 text-sm mb-3">Previous Plans ({archivedPlans.length})</p>
               <div className="space-y-2">
                 {archivedPlans.map(p => (
-                  <div key={p.id} className="bg-stone-900/50 border border-stone-800 rounded-lg px-4 py-3 flex items-center justify-between">
-                    <span className="text-sm text-stone-400 opacity-70">{p.plan_name}</span>
+                  <div key={p.id} className="bg-stone-100/50 border border-stone-200 rounded-lg px-4 py-3 flex items-center justify-between">
+                    <span className="text-sm text-stone-600 opacity-70">{p.plan_name}</span>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs text-stone-600">
+                      <span className="text-xs text-stone-400">
                         {new Date(p.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                         {' · '}<span className="capitalize">{p.entry_state.replace(/_/g, ' ')}</span>
                       </span>
@@ -582,11 +582,11 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
           )}
         </div>
       ) : !draftPlan ? (
-        <div className="text-center py-16 border-2 border-dashed border-stone-800 rounded-xl">
+        <div className="text-center py-16 border-2 border-dashed border-stone-200 rounded-xl">
           <p className="text-stone-500 mb-4">No nutrition plan generated yet.</p>
           <Link
             href={`/dashboard/clients/${id}/nutrition/suggest`}
-            className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors"
+            className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors"
           >
             Generate Plan
           </Link>

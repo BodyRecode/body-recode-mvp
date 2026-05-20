@@ -17,34 +17,34 @@ export default async function DashboardLayout({
   if (!user) redirect('/login')
 
   return (
-    <div className="min-h-screen bg-[#0c0a09] text-white">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <header
-        className="sticky top-0 z-50 border-b border-[#1c1917] backdrop-blur-xl print:hidden"
-        style={{ background: 'rgba(12, 10, 9, 0.78)' }}
+        className="sticky top-0 z-50 border-b border-[#E5E5E5] backdrop-blur-xl print:hidden"
+        style={{ background: 'rgba(255, 255, 255, 0.85)' }}
       >
         <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between gap-8">
           <div className="flex items-center gap-9 min-w-0">
             <Link href="/dashboard" className="flex items-center gap-3 shrink-0">
               <span
-                className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#14b8a6] text-[#0c0a09] font-bold text-[13px] tracking-tight"
+                className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#1B6DFC] text-[#FFFFFF] font-bold text-[13px] tracking-tight"
                 style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}
               >
                 BR
               </span>
-              <span className="text-[16px] font-semibold text-white tracking-tight">Body Recode</span>
+              <span className="text-[16px] font-semibold text-[#1A1A1A] tracking-tight">Body Recode</span>
             </Link>
             <DashboardNav />
           </div>
           <div className="flex items-center gap-3 shrink-0">
             <CommandKHint />
             <span
-              className="hidden md:inline-flex items-center gap-1.5 text-[11px] text-[#a8a29e] px-2.5 py-1 rounded-full border border-[#1c1917] bg-[#111110]"
+              className="hidden md:inline-flex items-center gap-1.5 text-[11px] text-[#6B6B6B] px-2.5 py-1 rounded-full border border-[#E5E5E5] bg-[#F8F8F8]"
               style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#14b8a6] shadow-[0_0_6px_#14b8a6]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1B6DFC] shadow-[0_0_6px_#1B6DFC]" />
               live
             </span>
-            <span className="hidden lg:inline text-[#57534e] text-[11px] tracking-wide">{user.email}</span>
+            <span className="hidden lg:inline text-[#999999] text-[11px] tracking-wide">{user.email}</span>
             <LogoutButton />
           </div>
         </div>

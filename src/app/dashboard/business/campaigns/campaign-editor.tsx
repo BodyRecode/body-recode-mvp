@@ -252,14 +252,14 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
           {!isNew && campaign?.status === 'draft' && (
             <button
               onClick={deleteCampaign}
-              className="p-2 text-stone-600 hover:text-red-400 transition-colors"
+              className="p-2 text-stone-400 hover:text-red-400 transition-colors"
             >
               <Trash2 size={16} />
             </button>
           )}
           <button
             onClick={() => router.back()}
-            className="p-2 text-stone-600 hover:text-stone-400 transition-colors"
+            className="p-2 text-stone-400 hover:text-stone-600 transition-colors"
           >
             <X size={16} />
           </button>
@@ -275,20 +275,20 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
       <div className="space-y-6">
         {/* Name */}
         <div>
-          <label className="block text-xs font-medium text-stone-400 mb-2">Campaign Name</label>
+          <label className="block text-xs font-medium text-stone-600 mb-2">Campaign Name</label>
           <input
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="e.g. July Check-In Blast"
             disabled={isSent}
-            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-4 py-2.5 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 disabled:opacity-50"
+            className="w-full bg-stone-100 border border-stone-200 rounded-lg px-4 py-2.5 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 disabled:opacity-50"
           />
         </div>
 
         {/* Type */}
         <div>
-          <label className="block text-xs font-medium text-stone-400 mb-2">Type</label>
+          <label className="block text-xs font-medium text-stone-600 mb-2">Type</label>
           <div className="flex gap-2">
             {typeOptions.map(opt => {
               const Icon = opt.icon
@@ -299,8 +299,8 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
                   disabled={isSent}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors disabled:opacity-50 ${
                     type === opt.value
-                      ? 'bg-teal-500/10 border-teal-500/40 text-teal-400'
-                      : 'border-stone-800 text-stone-400 hover:border-stone-700'
+                      ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                      : 'border-stone-200 text-stone-600 hover:border-stone-300'
                   }`}
                 >
                   <Icon size={13} />
@@ -314,57 +314,57 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
         {/* Subject (email only) */}
         {type === 'email' && (
           <div>
-            <label className="block text-xs font-medium text-stone-400 mb-2">Subject Line</label>
+            <label className="block text-xs font-medium text-stone-600 mb-2">Subject Line</label>
             <input
               type="text"
               value={subject}
               onChange={e => setSubject(e.target.value)}
               placeholder="Your email subject..."
               disabled={isSent}
-              className="w-full bg-stone-900 border border-stone-800 rounded-lg px-4 py-2.5 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 disabled:opacity-50"
+              className="w-full bg-stone-100 border border-stone-200 rounded-lg px-4 py-2.5 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 disabled:opacity-50"
             />
           </div>
         )}
 
         {/* Content */}
         <div>
-          <label className="block text-xs font-medium text-stone-400 mb-2">
+          <label className="block text-xs font-medium text-stone-600 mb-2">
             {type === 'email' ? 'Email Body' : type === 'sms' ? 'SMS Message' : 'Post Content'}
           </label>
-          <p className="text-xs text-stone-600 mb-2">Use {'{{first_name}}'} to personalise</p>
+          <p className="text-xs text-stone-400 mb-2">Use {'{{first_name}}'} to personalise</p>
           <textarea
             value={content}
             onChange={e => setContent(e.target.value)}
             placeholder={type === 'email' ? 'Write your email...' : 'Write your message...'}
             rows={type === 'email' ? 12 : 5}
             disabled={isSent}
-            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 resize-none disabled:opacity-50"
+            className="w-full bg-stone-100 border border-stone-200 rounded-lg px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none disabled:opacity-50"
           />
         </div>
 
         {/* Test Send (SMS only) */}
         {type === 'sms' && (
-          <div className="border border-stone-800 rounded-lg p-4">
-            <p className="text-xs font-medium text-stone-400 mb-3">Test Send</p>
+          <div className="border border-stone-200 rounded-lg p-4">
+            <p className="text-xs font-medium text-stone-600 mb-3">Test Send</p>
             <div className="flex gap-2">
               <input
                 type="tel"
                 value={testPhone}
                 onChange={e => { setTestPhone(e.target.value); setTestResult(null) }}
                 placeholder="04xx xxx xxx"
-                className="flex-1 bg-stone-900 border border-stone-800 rounded-lg px-4 py-2.5 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500"
+                className="flex-1 bg-stone-100 border border-stone-200 rounded-lg px-4 py-2.5 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500"
               />
               <button
                 onClick={sendTestSms}
                 disabled={testSending || !testPhone.trim() || !content.trim()}
-                className="flex items-center gap-2 px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-300 text-sm font-medium rounded-lg transition-colors disabled:opacity-40"
+                className="flex items-center gap-2 px-4 py-2.5 bg-stone-200 hover:bg-stone-300 text-stone-700 text-sm font-medium rounded-lg transition-colors disabled:opacity-40"
               >
                 <Send size={13} />
                 {testSending ? 'Sending...' : 'Send Test'}
               </button>
             </div>
             {testResult === 'sent' && (
-              <p className="text-xs text-teal-400 mt-2">Test SMS sent successfully.</p>
+              <p className="text-xs text-blue-500 mt-2">Test SMS sent successfully.</p>
             )}
           </div>
         )}
@@ -372,13 +372,13 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
         {/* Recipients */}
         {!isSent && (
           <div>
-            <label className="block text-xs font-medium text-stone-400 mb-2">Recipients</label>
+            <label className="block text-xs font-medium text-stone-600 mb-2">Recipients</label>
             <div className="flex gap-2">
               <div className="relative flex-1">
                 <select
                   value={recipientType}
                   onChange={e => { setRecipientType(e.target.value); setRecipientValue('') }}
-                  className="w-full appearance-none bg-stone-900 border border-stone-800 rounded-lg px-4 py-2.5 pr-8 text-sm text-white focus:outline-none focus:border-teal-500"
+                  className="w-full appearance-none bg-stone-100 border border-stone-200 rounded-lg px-4 py-2.5 pr-8 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
                 >
                   {recipientOptions.map(o => (
                     <option key={o.value} value={o.value}>{o.label}</option>
@@ -392,7 +392,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
                   <select
                     value={recipientValue}
                     onChange={e => setRecipientValue(e.target.value)}
-                    className="w-full appearance-none bg-stone-900 border border-stone-800 rounded-lg px-4 py-2.5 pr-8 text-sm text-white focus:outline-none focus:border-teal-500"
+                    className="w-full appearance-none bg-stone-100 border border-stone-200 rounded-lg px-4 py-2.5 pr-8 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
                   >
                     <option value="">Select stage...</option>
                     {PIPELINE_STAGES.map(s => (
@@ -408,7 +408,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
                   <select
                     value={recipientValue}
                     onChange={e => setRecipientValue(e.target.value)}
-                    className="w-full appearance-none bg-stone-900 border border-stone-800 rounded-lg px-4 py-2.5 pr-8 text-sm text-white focus:outline-none focus:border-teal-500"
+                    className="w-full appearance-none bg-stone-100 border border-stone-200 rounded-lg px-4 py-2.5 pr-8 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
                   >
                     <option value="">Select tag...</option>
                     {tags.map(t => (
@@ -428,7 +428,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
             <button
               onClick={() => save()}
               disabled={saving || sending}
-              className="flex items-center gap-2 px-4 py-2 bg-stone-800 hover:bg-stone-700 text-stone-300 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
             >
               <Save size={14} />
               Save Draft
@@ -437,7 +437,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
             <button
               onClick={sendNow}
               disabled={saving || sending}
-              className="flex items-center gap-2 px-4 py-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-sm font-semibold rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold rounded-lg transition-colors disabled:opacity-50"
             >
               <Send size={14} />
               {sending ? 'Sending...' : 'Send Now'}
@@ -446,7 +446,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
             <button
               onClick={() => setShowSchedule(v => !v)}
               disabled={saving || sending}
-              className="flex items-center gap-2 px-4 py-2 border border-stone-800 hover:border-stone-700 text-stone-400 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 border border-stone-200 hover:border-stone-300 text-stone-600 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
             >
               <Clock size={14} />
               Schedule
@@ -460,7 +460,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
               type="datetime-local"
               value={scheduleAt}
               onChange={e => setScheduleAt(e.target.value)}
-              className="bg-stone-900 border border-stone-800 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-teal-500"
+              className="bg-stone-100 border border-stone-200 rounded-lg px-4 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
             />
             <button
               onClick={schedule}
@@ -473,7 +473,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
         )}
 
         {isSent && (
-          <div className="bg-teal-500/5 border border-teal-500/20 rounded-lg px-4 py-3 text-teal-400 text-sm">
+          <div className="bg-blue-500/5 border border-blue-500/20 rounded-lg px-4 py-3 text-blue-500 text-sm">
             This campaign has been sent and can no longer be edited.
           </div>
         )}

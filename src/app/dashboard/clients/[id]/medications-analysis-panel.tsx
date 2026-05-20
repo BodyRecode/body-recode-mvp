@@ -137,20 +137,20 @@ export default function MedicationsAnalysisPanel({
 
   if (!hasMeds) {
     return (
-      <div className="mt-3 bg-[#111110]/40 border border-[#1c1917] rounded-xl p-4">
-        <p className="text-xs text-[#57534e]">No medications recorded. Once {clientFirstName}&apos;s medications are saved above, Generate Analysis to produce the coach breakdown + client reading.</p>
+      <div className="mt-3 bg-[#FFFFFF]/40 border border-[#E5E5E5] rounded-xl p-4">
+        <p className="text-xs text-[#999999]">No medications recorded. Once {clientFirstName}&apos;s medications are saved above, Generate Analysis to produce the coach breakdown + client reading.</p>
       </div>
     )
   }
 
   return (
     <div className="mt-3 space-y-3">
-      <div className="bg-[#111110] border border-[#1c1917] rounded-xl overflow-hidden">
-        <div className="px-4 py-3 border-b border-[#1c1917] flex items-center justify-between gap-3 flex-wrap">
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
+        <div className="px-4 py-3 border-b border-[#E5E5E5] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2.5 flex-wrap">
-            <p className="text-[11px] font-bold uppercase tracking-widest text-teal-400">Medications Analysis (coach)</p>
+            <p className="text-[11px] font-bold uppercase tracking-widest text-blue-500">Medications Analysis (coach)</p>
             {analyzedAt && (
-              <span className="text-[10px] uppercase tracking-widest text-[#57534e]">
+              <span className="text-[10px] uppercase tracking-widest text-[#999999]">
                 Generated {new Date(analyzedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
               </span>
             )}
@@ -164,7 +164,7 @@ export default function MedicationsAnalysisPanel({
             type="button"
             onClick={analyze}
             disabled={analyzing}
-            className="text-xs font-medium px-3 py-1.5 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-[#292524] hover:text-[#e7e5e4] transition-colors disabled:opacity-50"
+            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#e7e5e4] transition-colors disabled:opacity-50"
           >
             {analyzing ? 'Analyzing…' : analysis ? 'Regenerate analysis' : 'Generate analysis'}
           </button>
@@ -172,19 +172,19 @@ export default function MedicationsAnalysisPanel({
 
         {!analysis ? (
           <div className="px-4 py-6 text-center">
-            <p className="text-sm text-[#a8a29e] mb-1">No analysis generated yet</p>
-            <p className="text-xs text-[#57534e]">Click Generate analysis to draft the structured per-medication breakdown.</p>
+            <p className="text-sm text-[#6B6B6B] mb-1">No analysis generated yet</p>
+            <p className="text-xs text-[#999999]">Click Generate analysis to draft the structured per-medication breakdown.</p>
           </div>
         ) : (
           <div className="px-4 py-4 space-y-4">
             {analysis.medications.length === 0 ? (
-              <p className="text-sm text-[#a8a29e]">No medications recorded.</p>
+              <p className="text-sm text-[#6B6B6B]">No medications recorded.</p>
             ) : (
               analysis.medications.map((med, i) => (
-                <div key={i} className="bg-[#0c0a09] border border-[#1c1917] rounded-lg p-4 space-y-3">
+                <div key={i} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-4 space-y-3">
                   <div>
                     <p className="text-sm font-semibold text-[#e7e5e4]">{med.name}</p>
-                    <p className="text-xs text-[#a8a29e] mt-1 leading-relaxed">{med.purpose}</p>
+                    <p className="text-xs text-[#6B6B6B] mt-1 leading-relaxed">{med.purpose}</p>
                   </div>
                   <InfluenceRow label="Client influence" body={med.client_influence} />
                   <InfluenceRow label="Program influence" body={med.program_influence} />
@@ -194,9 +194,9 @@ export default function MedicationsAnalysisPanel({
               ))
             )}
             {analysis.combined_picture && (
-              <div className="bg-[#0c0a09] border border-teal-500/30 rounded-lg p-4">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-teal-400 mb-1.5">Combined picture</p>
-                <p className="text-xs text-[#d4cfc9] leading-relaxed whitespace-pre-wrap">{analysis.combined_picture}</p>
+              <div className="bg-[#FFFFFF] border border-blue-500/30 rounded-lg p-4">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-blue-500 mb-1.5">Combined picture</p>
+                <p className="text-xs text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{analysis.combined_picture}</p>
               </div>
             )}
           </div>
@@ -204,16 +204,16 @@ export default function MedicationsAnalysisPanel({
       </div>
 
       {analysis && (
-        <div className="bg-[#111110] border border-[#1c1917] rounded-xl overflow-hidden">
-          <div className="px-4 py-3 border-b border-[#1c1917] flex items-center justify-between gap-3 flex-wrap">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-[#E5E5E5] flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-teal-400">Medications Reading (client)</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-blue-500">Medications Reading (client)</p>
               {readingGeneratedAt && (
-                <span className="text-[10px] uppercase tracking-widest text-[#57534e]">
+                <span className="text-[10px] uppercase tracking-widest text-[#999999]">
                   Generated {new Date(readingGeneratedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                 </span>
               )}
-              <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${readingPublishedAt ? 'bg-teal-500/10 border border-teal-500/30 text-teal-300' : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'}`}>
+              <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${readingPublishedAt ? 'bg-blue-500/10 border border-blue-500/30 text-blue-300' : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'}`}>
                 {readingPublishedAt ? 'Published' : 'Draft (not on portal)'}
               </span>
               {(readingStale || readingOutOfDateVsMeds) && (
@@ -227,7 +227,7 @@ export default function MedicationsAnalysisPanel({
                 type="button"
                 onClick={generateReading}
                 disabled={generatingReading}
-                className="text-xs font-medium px-3 py-1.5 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-[#292524] hover:text-[#e7e5e4] transition-colors disabled:opacity-50"
+                className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#e7e5e4] transition-colors disabled:opacity-50"
               >
                 {generatingReading ? 'Generating…' : reading ? 'Regenerate reading' : 'Generate reading'}
               </button>
@@ -236,7 +236,7 @@ export default function MedicationsAnalysisPanel({
                   type="button"
                   onClick={togglePublish}
                   disabled={publishing}
-                  className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${readingPublishedAt ? 'border border-stone-700 text-stone-300 hover:border-stone-500' : 'bg-teal-500 text-black hover:bg-teal-400'}`}
+                  className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${readingPublishedAt ? 'border border-stone-300 text-stone-700 hover:border-stone-500' : 'bg-blue-500 text-black hover:bg-blue-500'}`}
                 >
                   {publishing ? 'Working…' : readingPublishedAt ? 'Unpublish' : 'Publish to portal'}
                 </button>
@@ -246,8 +246,8 @@ export default function MedicationsAnalysisPanel({
 
           {!reading ? (
             <div className="px-4 py-6 text-center">
-              <p className="text-sm text-[#a8a29e] mb-1">No client reading generated yet</p>
-              <p className="text-xs text-[#57534e]">Click Generate reading to produce the client-facing version. Reviews before you publish.</p>
+              <p className="text-sm text-[#6B6B6B] mb-1">No client reading generated yet</p>
+              <p className="text-xs text-[#999999]">Click Generate reading to produce the client-facing version. Reviews before you publish.</p>
             </div>
           ) : (
             <div className="px-4 py-4 space-y-4">
@@ -261,7 +261,7 @@ export default function MedicationsAnalysisPanel({
       )}
 
       {error && <p className="text-xs text-red-400">{error}</p>}
-      {status && <p className="text-xs text-teal-400">{status}</p>}
+      {status && <p className="text-xs text-blue-500">{status}</p>}
     </div>
   )
 }
@@ -269,17 +269,17 @@ export default function MedicationsAnalysisPanel({
 function InfluenceRow({ label, body }: { label: string; body: string }) {
   return (
     <div>
-      <p className="text-[10px] font-bold uppercase tracking-widest text-[#57534e] mb-1">{label}</p>
-      <p className="text-xs text-[#d4cfc9] leading-relaxed whitespace-pre-wrap">{body}</p>
+      <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999] mb-1">{label}</p>
+      <p className="text-xs text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{body}</p>
     </div>
   )
 }
 
 function ReadingSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
-    <div className="bg-[#0c0a09] border border-[#1c1917] rounded-lg p-4">
-      <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-teal-400' : 'text-[#57534e]'}`}>{title}</p>
-      <div className="text-xs text-[#d4cfc9] leading-relaxed whitespace-pre-wrap">{body}</div>
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-4">
+      <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-blue-500' : 'text-[#999999]'}`}>{title}</p>
+      <div className="text-xs text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

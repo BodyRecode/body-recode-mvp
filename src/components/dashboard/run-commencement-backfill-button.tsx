@@ -56,7 +56,7 @@ export default function RunCommencementBackfillButton() {
         type="button"
         onClick={run}
         disabled={pending}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-500/10 border border-teal-500/30 hover:bg-teal-500/15 hover:border-teal-500/50 rounded-lg transition-colors disabled:opacity-50"
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#1A1A1A] bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500/15 hover:border-blue-500/50 rounded-lg transition-colors disabled:opacity-50"
       >
         <Wrench size={14} className={pending ? 'animate-pulse' : ''} />
         {pending ? 'Backfilling…' : 'Backfill commencement fees'}
@@ -65,16 +65,16 @@ export default function RunCommencementBackfillButton() {
       {error && <p className="text-xs text-red-400 mt-2">Error: {error}</p>}
 
       {result && (
-        <div className="mt-3 bg-stone-900 border border-stone-800 rounded-xl p-4 text-xs space-y-1.5">
-          <div className="flex items-center gap-1.5 text-teal-400 mb-1">
+        <div className="mt-3 bg-stone-100 border border-stone-200 rounded-xl p-4 text-xs space-y-1.5">
+          <div className="flex items-center gap-1.5 text-blue-500 mb-1">
             <CheckCircle2 size={13} />
             <span className="font-medium">Backfill complete</span>
           </div>
-          <p className="text-stone-300">
+          <p className="text-stone-700">
             <span className="text-stone-500">Scanned:</span> {result.scanned}
             <span className="text-stone-500 ml-3">Unique clients:</span> {result.uniqueClients}
           </p>
-          <p className="text-stone-300">
+          <p className="text-stone-700">
             <span className="text-stone-500">Newly marked paid:</span> {result.newlyMarked}
             <span className="text-stone-500 ml-3">Already marked:</span> {result.alreadyMarked}
             {result.failed > 0 && (

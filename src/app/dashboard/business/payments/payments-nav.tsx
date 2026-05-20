@@ -20,7 +20,7 @@ export default function PaymentsNav() {
   ]
 
   return (
-    <div className="flex items-center gap-1 mb-6 border-b border-stone-800">
+    <div className="flex items-center gap-1 mb-6 border-b border-stone-200">
       {tabs.map(t => {
         const active = t.exact ? pathname === t.href : pathname?.startsWith(t.href)
         return (
@@ -29,8 +29,8 @@ export default function PaymentsNav() {
             href={t.href}
             className={`px-3 py-2 text-xs font-medium transition-colors border-b-2 -mb-px ${
               active
-                ? 'text-teal-400 border-teal-400'
-                : 'text-stone-500 hover:text-stone-300 border-transparent'
+                ? 'text-blue-500 border-blue-500'
+                : 'text-stone-500 hover:text-stone-700 border-transparent'
             }`}
           >
             {t.label}

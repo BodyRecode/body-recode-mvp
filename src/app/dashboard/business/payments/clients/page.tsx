@@ -38,17 +38,17 @@ const STATUS_META: Record<SubStatus | 'none', { label: string; tone: 'good' | 'w
 }
 
 const TONE_CLASS = {
-  good:  'text-teal-400',
+  good:  'text-blue-500',
   warn:  'text-amber-400',
   bad:   'text-red-400',
   muted: 'text-stone-500',
 } as const
 
 const TONE_BG = {
-  good:  'bg-teal-500/10',
+  good:  'bg-blue-500/10',
   warn:  'bg-amber-500/10',
   bad:   'bg-red-500/10',
-  muted: 'bg-stone-800/40',
+  muted: 'bg-stone-200/40',
 } as const
 
 function formatAud(amount: number | null | undefined): string {
@@ -177,13 +177,13 @@ export default async function ClientStatusPage() {
     <div className="max-w-6xl">
       <div className="mb-6">
         <h1 className="text-2xl font-semibold mb-1">Payments</h1>
-        <p className="text-stone-400 text-sm">Products, invoices, and payment history</p>
+        <p className="text-stone-600 text-sm">Products, invoices, and payment history</p>
       </div>
 
       <PaymentsNav />
 
       <div className="mb-4">
-        <h2 className="text-lg font-semibold text-white mb-1">Client Status</h2>
+        <h2 className="text-lg font-semibold text-[#1A1A1A] mb-1">Client Status</h2>
         <p className="text-stone-500 text-sm">Every client and their payment plan health. Sorted with attention-needed rows on top.</p>
       </div>
 
@@ -196,8 +196,8 @@ export default async function ClientStatusPage() {
       </div>
 
       {/* Table */}
-      <div className="border border-stone-800 rounded-xl overflow-hidden">
-        <div className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 bg-stone-900 border-b border-stone-800 text-[10px] font-semibold text-stone-500 uppercase tracking-wider">
+      <div className="border border-stone-200 rounded-xl overflow-hidden">
+        <div className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 bg-stone-100 border-b border-stone-200 text-[10px] font-semibold text-stone-500 uppercase tracking-wider">
           <div>Client</div>
           <div>Plan</div>
           <div>Commencement</div>
@@ -214,18 +214,18 @@ export default async function ClientStatusPage() {
               <Link
                 key={r.id}
                 href={`/dashboard/clients/${r.id}#payments`}
-                className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 border-b border-stone-800 last:border-b-0 hover:bg-stone-900/50 transition-colors items-center"
+                className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 border-b border-stone-200 last:border-b-0 hover:bg-stone-100/50 transition-colors items-center"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-white truncate">{r.name}</p>
+                  <p className="text-sm font-medium text-[#1A1A1A] truncate">{r.name}</p>
                   {!r.stripeLinked && (
                     <p className="text-[10px] text-amber-400/80 mt-0.5">No Stripe link</p>
                   )}
                 </div>
-                <div className="text-xs text-stone-400 truncate">{r.planName}</div>
+                <div className="text-xs text-stone-600 truncate">{r.planName}</div>
                 <div className="text-xs">
                   {r.commencementPaid ? (
-                    <span className="text-teal-400">Paid</span>
+                    <span className="text-blue-500">Paid</span>
                   ) : (
                     <span className="text-amber-400">Not paid</span>
                   )}
@@ -239,21 +239,21 @@ export default async function ClientStatusPage() {
                     <p className="text-stone-500 text-[11px] mt-0.5 truncate">
                       {formatAud(r.subAmount)}{r.subInterval ? `/${r.subInterval}` : ''}
                       {r.nextCharge && ['active', 'trialing', 'past_due'].includes(r.sub) && (
-                        <span className="text-stone-600"> · next {formatDate(r.nextCharge)}</span>
+                        <span className="text-stone-400"> · next {formatDate(r.nextCharge)}</span>
                       )}
                       {r.cancelAtPeriodEnd && <span className="text-amber-400"> · cancels</span>}
                     </p>
                   )}
                 </div>
-                <div className="text-xs text-stone-400 text-right">{formatDate(r.lastPaid)}</div>
-                <div className="text-xs text-white text-right font-medium">{formatAud(r.lifetimePC)}</div>
+                <div className="text-xs text-stone-600 text-right">{formatDate(r.lastPaid)}</div>
+                <div className="text-xs text-[#1A1A1A] text-right font-medium">{formatAud(r.lifetimePC)}</div>
               </Link>
             )
           })
         )}
       </div>
 
-      <p className="text-xs text-stone-600 mt-3">
+      <p className="text-xs text-stone-400 mt-3">
         Click any row to jump to that client&apos;s Payments section. Status is cached from Stripe; use the &quot;Refresh from Stripe&quot; button on a client to pull live state.
       </p>
     </div>
@@ -262,7 +262,7 @@ export default async function ClientStatusPage() {
 
 function CountCard({ label, value, icon: Icon, tone }: { label: string; value: number; icon: typeof CheckCircle2; tone: 'good' | 'warn' | 'bad' | 'muted' }) {
   return (
-    <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+    <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-2">
         <Icon size={13} className={TONE_CLASS[tone]} />
         <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider">{label}</p>

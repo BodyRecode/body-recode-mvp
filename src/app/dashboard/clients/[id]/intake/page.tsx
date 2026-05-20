@@ -16,16 +16,16 @@ function Row({ label, value }: { label: string; value: unknown }) {
     display = String(value)
   }
   return (
-    <div className="flex items-start justify-between gap-4 py-2.5 border-b border-stone-800 last:border-0">
+    <div className="flex items-start justify-between gap-4 py-2.5 border-b border-stone-200 last:border-0">
       <p className="text-xs text-stone-500 flex-shrink-0 w-52">{label}</p>
-      <p className="text-sm text-stone-200 text-right">{display}</p>
+      <p className="text-sm text-stone-800 text-right">{display}</p>
     </div>
   )
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+    <div className="bg-stone-100 border border-stone-200 rounded-xl p-5 mb-4">
       <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">{title}</p>
       {children}
     </div>
@@ -95,21 +95,21 @@ export default async function IntakeViewPage({ params }: { params: Promise<{ id:
   return (
     <div className="max-w-2xl">
       <div className="flex items-center gap-3 mb-8">
-        <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-white text-sm transition-colors">← Back</Link>
-        <span className="text-stone-700">/</span>
-        <p className="text-sm text-stone-400">Intake - {client.name}</p>
+        <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-[#1A1A1A] text-sm transition-colors">← Back</Link>
+        <span className="text-stone-300">/</span>
+        <p className="text-sm text-stone-600">Intake - {client.name}</p>
       </div>
 
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-xl font-semibold text-white">{client.name}</h1>
+          <h1 className="text-xl font-semibold text-[#1A1A1A]">{client.name}</h1>
           {submittedDate && <p className="text-xs text-stone-500 mt-1">Submitted {submittedDate}</p>}
         </div>
         {intake && (
           <Link
             href={`/dashboard/clients/${id}/intake/print`}
             target="_blank"
-            className="text-sm font-medium px-4 py-2.5 rounded-lg border border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200 transition-colors"
+            className="text-sm font-medium px-4 py-2.5 rounded-lg border border-stone-300 text-stone-600 hover:border-stone-500 hover:text-stone-800 transition-colors"
           >
             Download PDF
           </Link>
@@ -117,7 +117,7 @@ export default async function IntakeViewPage({ params }: { params: Promise<{ id:
       </div>
 
       {!intake ? (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <p className="text-stone-500 text-sm">Intake not yet submitted.</p>
         </div>
       ) : (

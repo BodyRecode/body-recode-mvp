@@ -41,7 +41,7 @@ const STATUS_META: Record<string, { label: string; tone: 'good' | 'warn' | 'bad'
 }
 
 const TONE_CLASS = {
-  good:  'text-teal-400',
+  good:  'text-blue-500',
   warn:  'text-amber-400',
   bad:   'text-red-400',
   muted: 'text-stone-500',
@@ -165,7 +165,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
               href={`https://dashboard.stripe.com/customers/${client.stripe_customer_id}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-400 hover:text-white border border-stone-800 hover:border-stone-700 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-600 hover:text-[#1A1A1A] border border-stone-200 hover:border-stone-300 rounded-lg transition-colors"
             >
               <ExternalLink size={12} />
               Open in Stripe
@@ -193,12 +193,12 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
           Implicit untracked (no plan + no subs, no package set) → generic
           placeholder. Both suppress the plan/subscription grid below. */}
       {nonBillingPackage ? (
-        <div className="bg-stone-900 border border-stone-700 rounded-xl p-4 mb-3">
+        <div className="bg-stone-100 border border-stone-300 rounded-xl p-4 mb-3">
           <div className="flex items-start gap-3">
-            <CreditCard size={14} className="text-stone-300 shrink-0 mt-0.5" />
+            <CreditCard size={14} className="text-stone-700 shrink-0 mt-0.5" />
             <div className="space-y-1 flex-1">
-              <p className="text-sm font-medium text-stone-100">{packageLabel ?? 'Non-billing arrangement'}</p>
-              <p className="text-xs text-stone-400 leading-relaxed">
+              <p className="text-sm font-medium text-stone-900">{packageLabel ?? 'Non-billing arrangement'}</p>
+              <p className="text-xs text-stone-600 leading-relaxed">
                 This client is on a non-billing package. The Payments tracker
                 skips them by default — no commencement-fee flag, no Stripe-customer
                 flag, no overdue indicator. You can still choose to send the $240
@@ -206,12 +206,12 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
               </p>
             </div>
           </div>
-          <div className="mt-3 pt-3 border-t border-stone-800">
+          <div className="mt-3 pt-3 border-t border-stone-200">
             <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">
               Commencement fee (optional)
             </p>
             {commencementPaid ? (
-              <p className="text-xs text-teal-400">
+              <p className="text-xs text-blue-500">
                 Paid {formatDate(commencementPaidAt)} — ${expectedCommencement} recorded on this client.
               </p>
             ) : (
@@ -220,10 +220,10 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
           </div>
         </div>
       ) : !isTracked ? (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 mb-3 flex items-start gap-3">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-4 mb-3 flex items-start gap-3">
           <CreditCard size={14} className="text-stone-500 shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <p className="text-sm font-medium text-stone-200">Not tracked for payments</p>
+            <p className="text-sm font-medium text-stone-800">Not tracked for payments</p>
             <p className="text-xs text-stone-500 leading-relaxed">
               No payment plan attached and no Stripe activity. If this is intentional
               (contra, comp), set the coaching package to a non-billing tier so the
@@ -234,13 +234,13 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
       ) : (
         <div className="grid grid-cols-2 gap-3 mb-3">
           {/* Plan card */}
-          <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+          <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
             <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">Plan</p>
-            <p className="text-sm font-medium text-white mb-1">{planLabel}</p>
+            <p className="text-sm font-medium text-[#1A1A1A] mb-1">{planLabel}</p>
             <p className="text-xs text-stone-500">
               Commencement fee (${expectedCommencement}):{' '}
               {commencementPaid ? (
-                <span className="text-teal-400">paid {formatDate(commencementPaidAt)}</span>
+                <span className="text-blue-500">paid {formatDate(commencementPaidAt)}</span>
               ) : (
                 <span className="text-amber-400">not paid</span>
               )}
@@ -253,7 +253,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
           </div>
 
           {/* Subscription card */}
-          <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+          <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
             <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">Subscription</p>
             {primarySub && subMeta ? (
               <>
@@ -261,7 +261,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
                   <subMeta.icon size={13} className={TONE_CLASS[subMeta.tone]} />
                   <p className={`text-sm font-medium ${TONE_CLASS[subMeta.tone]}`}>{subMeta.label}</p>
                 </div>
-                <p className="text-xs text-stone-400">
+                <p className="text-xs text-stone-600">
                   {formatAud(primarySub.amount)}{primarySub.billing_interval ? ` / ${primarySub.billing_interval}` : ''}
                 </p>
                 {primarySub.current_period_end && ['active', 'trialing', 'past_due'].includes(primarySub.status) && (
@@ -285,15 +285,15 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
           excluded from this rollup — it's a fixed one-off, not subscription
           revenue, and folding it in made short-tenure clients look identical
           to long-tenure clients on this tile. */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-4 mb-3">
+      <div className="bg-stone-100 border border-stone-200 rounded-xl p-4 mb-3">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <CircleDollarSign size={14} className="text-stone-400" />
-            <p className="text-xs font-semibold text-stone-300">Lifetime subscription revenue</p>
+            <CircleDollarSign size={14} className="text-stone-600" />
+            <p className="text-xs font-semibold text-stone-700">Lifetime subscription revenue</p>
           </div>
-          <p className="text-lg font-bold text-white">{formatAud(lifetimeSubscription)}</p>
+          <p className="text-lg font-bold text-[#1A1A1A]">{formatAud(lifetimeSubscription)}</p>
         </div>
-        <p className="text-[10px] text-stone-600 -mt-2 mb-3">
+        <p className="text-[10px] text-stone-400 -mt-2 mb-3">
           Recurring weekly subscription payments only. Commencement fee tracked above.
         </p>
 
@@ -314,12 +314,12 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
               const cfg = STATUS_META[p.status === 'paid' ? 'active' : p.status === 'failed' ? 'past_due' : 'incomplete']
               return (
                 <div key={p.id} className="flex items-center justify-between text-xs py-1">
-                  <div className="text-stone-400">
-                    <span className="text-stone-300">{productName}</span>
-                    <span className="text-stone-600 ml-2">{formatDate(p.paid_at ?? p.created_at)}</span>
+                  <div className="text-stone-600">
+                    <span className="text-stone-700">{productName}</span>
+                    <span className="text-stone-400 ml-2">{formatDate(p.paid_at ?? p.created_at)}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-stone-300">{formatAud(p.amount)}</span>
+                    <span className="text-stone-700">{formatAud(p.amount)}</span>
                     <span className={`uppercase text-[10px] font-semibold ${cfg ? TONE_CLASS[cfg.tone] : 'text-stone-500'}`}>
                       {p.status}
                     </span>
@@ -338,7 +338,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
 
       {/* All subscriptions (if more than one) */}
       {(subs?.length ?? 0) > 1 && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
           <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">All subscriptions</p>
           <div className="space-y-1.5">
             {subs!.map(s => {
@@ -347,8 +347,8 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
                 <div key={s.id} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-1.5">
                     <meta.icon size={11} className={TONE_CLASS[meta.tone]} />
-                    <span className="text-stone-300">{s.plan_label ?? s.stripe_subscription_id}</span>
-                    <span className="text-stone-600 ml-1">{formatAud(s.amount)}{s.billing_interval ? `/${s.billing_interval}` : ''}</span>
+                    <span className="text-stone-700">{s.plan_label ?? s.stripe_subscription_id}</span>
+                    <span className="text-stone-400 ml-1">{formatAud(s.amount)}{s.billing_interval ? `/${s.billing_interval}` : ''}</span>
                   </div>
                   <span className={`uppercase text-[10px] font-semibold ${TONE_CLASS[meta.tone]}`}>{meta.label}</span>
                 </div>

@@ -46,20 +46,20 @@ export default function MajorSection({
           className="flex items-center gap-2.5 min-w-0 group"
           aria-expanded={open}
         >
-          <span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" />
+          <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
           <h2
-            className="text-[11px] font-bold text-white uppercase"
+            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
             style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', letterSpacing: '0.14em' }}
           >
             {title}
-            {subtitle && <span className="text-[#3c3835] font-normal"> {subtitle}</span>}
+            {subtitle && <span className="text-[#4A4A4A] font-normal"> {subtitle}</span>}
           </h2>
           {attentionLabel && !open && (
             <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-300">
               {attentionLabel}
             </span>
           )}
-          <span className="text-[10px] font-bold uppercase tracking-widest text-teal-400 group-hover:text-teal-300 transition-colors">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-blue-500 group-hover:text-blue-300 transition-colors">
             {open ? 'Close' : 'Open'}
           </span>
         </button>

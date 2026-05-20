@@ -123,24 +123,24 @@ function SortableStep({
   return (
     <div ref={setNodeRef} style={style} className="relative">
       {/* Connector line */}
-      <div className="absolute left-7 -top-4 w-px h-4 bg-stone-800" />
+      <div className="absolute left-7 -top-4 w-px h-4 bg-stone-200" />
 
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+      <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
         {/* Header */}
         <div className="flex items-center gap-3 p-3">
           <button
             {...attributes}
             {...listeners}
-            className="text-stone-600 hover:text-stone-400 cursor-grab active:cursor-grabbing p-1"
+            className="text-stone-400 hover:text-stone-600 cursor-grab active:cursor-grabbing p-1"
           >
             <GripVertical size={14} />
           </button>
 
           {step.type === 'wait' && <Clock size={14} className="text-amber-400 shrink-0" />}
           {step.type === 'condition' && <GitBranch size={14} className="text-violet-400 shrink-0" />}
-          {step.type === 'action' && ActionIcon && <ActionIcon size={14} className="text-teal-400 shrink-0" />}
+          {step.type === 'action' && ActionIcon && <ActionIcon size={14} className="text-blue-500 shrink-0" />}
 
-          <span className="text-sm font-medium text-white flex-1">
+          <span className="text-sm font-medium text-[#1A1A1A] flex-1">
             {step.type === 'wait'
               ? `Wait ${step.config.amount || '?'} ${step.config.unit || 'hours'}`
               : step.type === 'condition'
@@ -148,17 +148,17 @@ function SortableStep({
               : actionDef?.label ?? 'Action'}
           </span>
 
-          <button onClick={() => setExpanded(e => !e)} className="text-stone-500 hover:text-stone-300 p-1">
+          <button onClick={() => setExpanded(e => !e)} className="text-stone-500 hover:text-stone-700 p-1">
             {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </button>
-          <button onClick={() => onDelete(step.id)} className="text-stone-600 hover:text-red-400 transition-colors p-1">
+          <button onClick={() => onDelete(step.id)} className="text-stone-400 hover:text-red-400 transition-colors p-1">
             <Trash2 size={13} />
           </button>
         </div>
 
         {/* Config */}
         {expanded && (
-          <div className="px-4 pb-4 pt-1 border-t border-stone-800 space-y-3">
+          <div className="px-4 pb-4 pt-1 border-t border-stone-200 space-y-3">
             {step.type === 'action' && (
               <>
                 {/* Action type picker */}
@@ -173,8 +173,8 @@ function SortableStep({
                           onClick={() => onUpdate(step.id, { action_type: def.type, config: {} })}
                           className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs border transition-colors ${
                             step.action_type === def.type
-                              ? 'bg-teal-500/10 border-teal-500/40 text-teal-400'
-                              : 'border-stone-700 text-stone-400 hover:border-stone-600 hover:text-white'
+                              ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                              : 'border-stone-300 text-stone-600 hover:border-stone-400 hover:text-[#1A1A1A]'
                           }`}
                         >
                           <Icon size={11} />
@@ -197,7 +197,7 @@ function SortableStep({
                         })}
                         rows={3}
                         placeholder={`Enter ${field.label.toLowerCase()}...`}
-                        className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-xs text-white placeholder-stone-600 resize-none focus:outline-none focus:border-stone-500"
+                        className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-xs text-[#1A1A1A] placeholder-stone-400 resize-none focus:outline-none focus:border-stone-500"
                       />
                     ) : field.type === 'select' ? (
                       <select
@@ -205,7 +205,7 @@ function SortableStep({
                         onChange={e => onUpdate(step.id, {
                           config: { ...step.config, [field.key]: e.target.value }
                         })}
-                        className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-stone-500"
+                        className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-xs text-[#1A1A1A] focus:outline-none focus:border-stone-500"
                       >
                         <option value="">Select...</option>
                         {field.options?.map(opt => (
@@ -220,14 +220,14 @@ function SortableStep({
                           config: { ...step.config, [field.key]: e.target.value }
                         })}
                         placeholder={`Enter ${field.label.toLowerCase()}...`}
-                        className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-stone-500"
+                        className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-xs text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-stone-500"
                       />
                     )}
                   </div>
                 ))}
 
                 {/* Variable hint */}
-                <p className="text-[10px] text-stone-600">
+                <p className="text-[10px] text-stone-400">
                   Variables: {'{{contact_name}}'} {'{{contact_email}}'} {'{{booking_date}}'} {'{{zoom_link}}'}
                 </p>
               </>
@@ -244,7 +244,7 @@ function SortableStep({
                     onChange={e => onUpdate(step.id, {
                       config: { ...step.config, amount: e.target.value }
                     })}
-                    className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-stone-500"
+                    className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-xs text-[#1A1A1A] focus:outline-none focus:border-stone-500"
                   />
                 </div>
                 <div className="flex-1">
@@ -254,7 +254,7 @@ function SortableStep({
                     onChange={e => onUpdate(step.id, {
                       config: { ...step.config, unit: e.target.value }
                     })}
-                    className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-stone-500"
+                    className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-xs text-[#1A1A1A] focus:outline-none focus:border-stone-500"
                   >
                     {WAIT_UNITS.map(u => (
                       <option key={u.value} value={u.value}>{u.label}</option>
@@ -276,10 +276,10 @@ function AddStepButton({ onAdd }: { onAdd: (type: StepType) => void }) {
   const [open, setOpen] = useState(false)
   return (
     <div className="relative flex flex-col items-center">
-      <div className="w-px h-4 bg-stone-800" />
+      <div className="w-px h-4 bg-stone-200" />
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-white border border-stone-700 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors bg-stone-950"
+        className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors bg-stone-50"
       >
         <Plus size={12} />
         Add Step
@@ -287,9 +287,9 @@ function AddStepButton({ onAdd }: { onAdd: (type: StepType) => void }) {
       {open && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute top-8 z-20 bg-stone-900 border border-stone-700 rounded-xl shadow-2xl overflow-hidden w-44">
+          <div className="absolute top-8 z-20 bg-stone-100 border border-stone-300 rounded-xl shadow-2xl overflow-hidden w-44">
             {[
-              { type: 'action' as StepType, label: 'Action', icon: Zap, colour: 'text-teal-400' },
+              { type: 'action' as StepType, label: 'Action', icon: Zap, colour: 'text-blue-500' },
               { type: 'wait' as StepType, label: 'Wait / Delay', icon: Clock, colour: 'text-amber-400' },
               { type: 'condition' as StepType, label: 'Condition', icon: GitBranch, colour: 'text-violet-400' },
             ].map(opt => {
@@ -298,7 +298,7 @@ function AddStepButton({ onAdd }: { onAdd: (type: StepType) => void }) {
                 <button
                   key={opt.type}
                   onClick={() => { onAdd(opt.type); setOpen(false) }}
-                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs text-stone-300 hover:bg-stone-800 transition-colors"
+                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs text-stone-700 hover:bg-stone-200 transition-colors"
                 >
                   <Icon size={13} className={opt.colour} />
                   {opt.label}
@@ -410,7 +410,7 @@ export default function WorkflowEditor({ initial }: Props) {
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Workflow name..."
-            className="w-full bg-transparent text-2xl font-semibold text-white placeholder-stone-600 focus:outline-none border-b border-transparent focus:border-stone-700 pb-1 transition-colors"
+            className="w-full bg-transparent text-2xl font-semibold text-[#1A1A1A] placeholder-stone-400 focus:outline-none border-b border-transparent focus:border-stone-300 pb-1 transition-colors"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -418,8 +418,8 @@ export default function WorkflowEditor({ initial }: Props) {
             onClick={() => setIsActive(a => !a)}
             className={`flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg border transition-colors ${
               isActive
-                ? 'bg-teal-500/10 border-teal-500/30 text-teal-400'
-                : 'bg-stone-800 border-stone-700 text-stone-400'
+                ? 'bg-blue-500/10 border-blue-500/30 text-blue-500'
+                : 'bg-stone-200 border-stone-300 text-stone-600'
             }`}
           >
             {isActive ? <Play size={11} /> : <Pause size={11} />}
@@ -428,7 +428,7 @@ export default function WorkflowEditor({ initial }: Props) {
           <button
             onClick={save}
             disabled={!name || !triggerType || isPending}
-            className="flex items-center gap-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {isPending ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
             Save
@@ -438,22 +438,22 @@ export default function WorkflowEditor({ initial }: Props) {
 
       {/* Trigger block */}
       <div className="mb-2">
-        <p className="text-[10px] font-semibold text-stone-600 uppercase tracking-widest mb-2 ml-1">Trigger</p>
+        <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-2 ml-1">Trigger</p>
         {selectedTrigger && !showTriggerPicker ? (
           <div
-            className="bg-stone-900 border border-teal-500/30 rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-teal-500/60 transition-colors"
+            className="bg-stone-100 border border-blue-500/30 rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-blue-500/60 transition-colors"
             onClick={() => setShowTriggerPicker(true)}
           >
             <div>
-              <p className="text-sm font-semibold text-teal-400">{selectedTrigger.label}</p>
+              <p className="text-sm font-semibold text-blue-500">{selectedTrigger.label}</p>
               <p className="text-xs text-stone-500 mt-0.5">{selectedTrigger.description}</p>
             </div>
-            <button className="text-stone-600 hover:text-stone-400">
+            <button className="text-stone-400 hover:text-stone-600">
               <X size={14} />
             </button>
           </div>
         ) : (
-          <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+          <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
             <p className="text-xs text-stone-500 mb-3">Choose what starts this workflow:</p>
             <div className="space-y-2">
               {TRIGGERS.map(trigger => (
@@ -462,11 +462,11 @@ export default function WorkflowEditor({ initial }: Props) {
                   onClick={() => { setTriggerType(trigger.value); setShowTriggerPicker(false) }}
                   className={`w-full text-left px-3 py-2.5 rounded-lg border transition-colors ${
                     triggerType === trigger.value
-                      ? 'bg-teal-500/10 border-teal-500/40'
-                      : 'border-stone-800 hover:border-stone-700 hover:bg-stone-800/50'
+                      ? 'bg-blue-500/10 border-blue-500/40'
+                      : 'border-stone-200 hover:border-stone-300 hover:bg-stone-200/50'
                   }`}
                 >
-                  <p className={`text-sm font-medium ${triggerType === trigger.value ? 'text-teal-400' : 'text-white'}`}>
+                  <p className={`text-sm font-medium ${triggerType === trigger.value ? 'text-blue-500' : 'text-[#1A1A1A]'}`}>
                     {trigger.label}
                   </p>
                   <p className="text-xs text-stone-500 mt-0.5">{trigger.description}</p>
@@ -480,7 +480,7 @@ export default function WorkflowEditor({ initial }: Props) {
       {/* Steps */}
       {triggerType && (
         <div className="mt-2">
-          <p className="text-[10px] font-semibold text-stone-600 uppercase tracking-widest mb-2 ml-1 mt-4">Steps</p>
+          <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-2 ml-1 mt-4">Steps</p>
 
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
             <SortableContext items={steps.map(s => s.id)} strategy={verticalListSortingStrategy}>
@@ -500,7 +500,7 @@ export default function WorkflowEditor({ initial }: Props) {
           <AddStepButton onAdd={addStep} />
 
           {steps.length === 0 && (
-            <p className="text-center text-stone-600 text-xs mt-2">
+            <p className="text-center text-stone-400 text-xs mt-2">
               Add your first step above
             </p>
           )}

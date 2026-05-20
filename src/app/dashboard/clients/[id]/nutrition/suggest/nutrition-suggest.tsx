@@ -21,12 +21,12 @@ function ReasonDisplay({ text }: { text: string }) {
   const { intro, points } = parseReason(text)
   return (
     <div className="space-y-1.5 mt-2">
-      {intro && <p className="text-xs text-stone-300 leading-relaxed">{intro}</p>}
+      {intro && <p className="text-xs text-stone-700 leading-relaxed">{intro}</p>}
       {points.map((point, i) => (
         <div key={i} className="flex items-start gap-2">
-          {points.length > 1 && <span className="text-teal-400 shrink-0 mt-0.5 text-[10px]">•</span>}
-          {points.length === 1 && <span className="text-teal-400 text-xs mt-0.5 shrink-0">→</span>}
-          <p className="text-xs text-stone-400 leading-relaxed">{point}</p>
+          {points.length > 1 && <span className="text-blue-500 shrink-0 mt-0.5 text-[10px]">•</span>}
+          {points.length === 1 && <span className="text-blue-500 text-xs mt-0.5 shrink-0">→</span>}
+          <p className="text-xs text-stone-600 leading-relaxed">{point}</p>
         </div>
       ))}
     </div>
@@ -108,20 +108,20 @@ function ReasonCard({
     : value
 
   return (
-    <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+    <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
       <div className="px-5 py-4">
         <div className="flex items-start justify-between gap-4 mb-3">
           <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{label}</p>
           <button
             onClick={onEdit}
-            className="text-[10px] text-stone-600 hover:text-teal-400 transition-colors shrink-0"
+            className="text-[10px] text-stone-400 hover:text-blue-500 transition-colors shrink-0"
           >
             {editing ? 'Done' : 'Edit'}
           </button>
         </div>
 
         {!editing && (
-          <span className="inline-block text-sm font-semibold text-white bg-stone-800 border border-stone-700 px-3 py-1 rounded-lg capitalize mb-3">
+          <span className="inline-block text-sm font-semibold text-[#1A1A1A] bg-stone-200 border border-stone-300 px-3 py-1 rounded-lg capitalize mb-3">
             {displayValue}
           </span>
         )}
@@ -240,14 +240,14 @@ export default function NutritionPrescriptionSuggest({
   if (loading) {
     return (
       <div className="space-y-3">
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
-            <p className="text-sm text-stone-400">Reading client context and generating prescription suggestion...</p>
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+            <p className="text-sm text-stone-600">Reading client context and generating prescription suggestion...</p>
           </div>
           <div className="space-y-2">
             {[...Array(7)].map((_, i) => (
-              <div key={i} className="h-4 bg-stone-800 rounded animate-pulse" style={{ width: `${60 + (i % 3) * 15}%` }} />
+              <div key={i} className="h-4 bg-stone-200 rounded animate-pulse" style={{ width: `${60 + (i % 3) * 15}%` }} />
             ))}
           </div>
         </div>
@@ -259,7 +259,7 @@ export default function NutritionPrescriptionSuggest({
     return (
       <div className="bg-red-950/30 border border-red-800 rounded-xl p-5">
         <p className="text-red-400 text-sm">{error}</p>
-        <a href={`/dashboard/clients/${clientId}/nutrition/generate`} className="text-xs text-stone-500 hover:text-stone-300 mt-3 inline-block">
+        <a href={`/dashboard/clients/${clientId}/nutrition/generate`} className="text-xs text-stone-500 hover:text-stone-700 mt-3 inline-block">
           Fill in manually instead →
         </a>
       </div>
@@ -276,23 +276,23 @@ export default function NutritionPrescriptionSuggest({
       <div className="flex-1 min-w-0 space-y-4">
 
       {/* Overall rationale */}
-      <div id="rationale" className="scroll-mt-8 bg-teal-950/30 border border-teal-800/40 rounded-xl px-5 py-4">
-        <p className="text-[10px] font-bold text-teal-400 uppercase tracking-widest mb-3">Overall Rationale</p>
+      <div id="rationale" className="scroll-mt-8 bg-blue-950/30 border border-blue-900/40 rounded-xl px-5 py-4">
+        <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-3">Overall Rationale</p>
         {(() => {
           const { intro, points } = parseReason(suggestion.overall_rationale)
           return (
             <div className="space-y-2">
-              {intro && <p className="text-sm text-stone-200 leading-relaxed">{intro}</p>}
+              {intro && <p className="text-sm text-stone-800 leading-relaxed">{intro}</p>}
               {points.length > 1 ? (
                 <div className="space-y-2 mt-1">
                   {points.map((point, i) => (
-                    <div key={i} className="flex items-start gap-2.5 border-l-2 border-teal-800/40 pl-3">
-                      <p className="text-sm text-stone-300 leading-relaxed">{point}</p>
+                    <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-900/40 pl-3">
+                      <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-stone-200 leading-relaxed">{points[0]}</p>
+                <p className="text-sm text-stone-800 leading-relaxed">{points[0]}</p>
               )}
             </div>
           )
@@ -311,7 +311,7 @@ export default function NutritionPrescriptionSuggest({
         <input
           value={planName}
           onChange={e => setPlanName(e.target.value)}
-          className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white mb-3"
+          className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] mb-3"
         />
       </ReasonCard>
       </div>
@@ -332,8 +332,8 @@ export default function NutritionPrescriptionSuggest({
               onClick={() => setEntryState(opt.value)}
               className={`text-left px-3 py-2 rounded-lg border text-xs transition-colors ${
                 entryState === opt.value
-                  ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                  : 'border-stone-700 text-stone-400 hover:border-stone-500'
+                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
               <p className="font-semibold capitalize">{opt.label}</p>
@@ -360,8 +360,8 @@ export default function NutritionPrescriptionSuggest({
               onClick={() => setBodyState(opt)}
               className={`px-3 py-1.5 rounded-lg border text-xs capitalize transition-colors ${
                 bodyState === opt
-                  ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                  : 'border-stone-700 text-stone-400 hover:border-stone-500'
+                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
               {opt.replace(/_/g, ' ')}
@@ -383,7 +383,7 @@ export default function NutritionPrescriptionSuggest({
         <input
           value={ptsPhase}
           onChange={e => setPtsPhase(e.target.value)}
-          className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white mb-3"
+          className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] mb-3"
         />
       </ReasonCard>
       </div>
@@ -402,7 +402,7 @@ export default function NutritionPrescriptionSuggest({
             type="number"
             value={proteinAnchorG}
             onChange={e => setProteinAnchorG(Number(e.target.value))}
-            className="w-28 bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white"
+            className="w-28 bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A]"
             min={80}
             max={300}
             step={5}
@@ -428,8 +428,8 @@ export default function NutritionPrescriptionSuggest({
               onClick={() => setCarbDemandLevel(opt)}
               className={`px-4 py-1.5 rounded-lg border text-xs capitalize transition-colors ${
                 carbDemandLevel === opt
-                  ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                  : 'border-stone-700 text-stone-400 hover:border-stone-500'
+                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
               {opt}
@@ -455,8 +455,8 @@ export default function NutritionPrescriptionSuggest({
               onClick={() => setMealFrequency(n)}
               className={`px-4 py-1.5 rounded-lg border text-xs transition-colors ${
                 mealFrequency === n
-                  ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                  : 'border-stone-700 text-stone-400 hover:border-stone-500'
+                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
               {n} meals
@@ -482,8 +482,8 @@ export default function NutritionPrescriptionSuggest({
               onClick={() => setTrainingDaysPerWeek(n)}
               className={`px-3 py-1.5 rounded-lg border text-xs transition-colors ${
                 trainingDaysPerWeek === n
-                  ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                  : 'border-stone-700 text-stone-400 hover:border-stone-500'
+                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
               {n}x
@@ -500,7 +500,7 @@ export default function NutritionPrescriptionSuggest({
           { label: 'Recovery Status', value: recoveryStatus, field: 'recovery', options: RECOVERY_OPTIONS, setter: setRecoveryStatus, reason: suggestion.recovery_status_reason },
           { label: 'Uncertainty Level', value: uncertaintyLevel, field: 'uncertainty', options: UNCERTAINTY_OPTIONS, setter: setUncertaintyLevel, reason: suggestion.uncertainty_level_reason },
         ].map(({ label, value, field, options, setter, reason }) => (
-          <div key={field} className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+          <div key={field} className="bg-stone-100 border border-stone-200 rounded-xl p-4">
             <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</p>
             <div className="flex flex-col gap-1.5 mb-3">
               {options.map(opt => (
@@ -509,27 +509,27 @@ export default function NutritionPrescriptionSuggest({
                   onClick={() => setter(opt)}
                   className={`px-3 py-1 rounded-lg border text-xs capitalize transition-colors ${
                     value === opt
-                      ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                      : 'border-stone-700 text-stone-400 hover:border-stone-500'
+                      ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                      : 'border-stone-300 text-stone-600 hover:border-stone-500'
                   }`}
                 >
                   {opt}
                 </button>
               ))}
             </div>
-            <p className="text-[10px] text-stone-600 leading-relaxed">{reason}</p>
+            <p className="text-[10px] text-stone-400 leading-relaxed">{reason}</p>
           </div>
         ))}
       </div>
 
       {/* Food Exclusions */}
-      <div id="exclusions" className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-5">
+      <div id="exclusions" className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5">
         <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">Food Exclusions</p>
         <input
           value={foodExclusionsText}
           onChange={e => setFoodExclusionsText(e.target.value)}
           placeholder="e.g. dairy, shellfish (comma separated)"
-          className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600"
+          className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400"
         />
         <ReasonDisplay text={suggestion.food_exclusions_reason} />
       </div>
@@ -538,14 +538,14 @@ export default function NutritionPrescriptionSuggest({
       <div className="flex items-center justify-between pt-2">
         <a
           href={`/dashboard/clients/${clientId}/nutrition/generate`}
-          className="text-xs text-stone-600 hover:text-stone-400 transition-colors"
+          className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
         >
           Fill in manually instead
         </a>
         <button
           onClick={handleGenerate}
           disabled={generating}
-          className="px-5 py-2.5 bg-teal-500 hover:bg-teal-400 disabled:bg-stone-700 disabled:text-stone-500 text-black font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-black font-semibold text-sm rounded-lg transition-colors"
         >
           {generating ? 'Generating plan...' : 'Approve & Generate Plan'}
         </button>

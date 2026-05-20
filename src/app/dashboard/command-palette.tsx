@@ -188,22 +188,22 @@ export default function CommandPalette() {
       <div
         onClick={e => e.stopPropagation()}
         onKeyDown={onListKey}
-        className="w-full max-w-[640px] bg-[#111110] border border-[#1c1917] rounded-2xl shadow-[0_24px_60px_-12px_rgba(0,0,0,0.6)] overflow-hidden"
+        className="w-full max-w-[640px] bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl shadow-[0_24px_60px_-12px_rgba(0,0,0,0.6)] overflow-hidden"
         role="dialog"
         aria-label="Command palette"
       >
         {/* Search input */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#1c1917]">
-          <Search size={16} className="text-[#57534e] shrink-0" />
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#E5E5E5]">
+          <Search size={16} className="text-[#999999] shrink-0" />
           <input
             ref={inputRef}
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Search pages, actions…"
-            className="flex-1 bg-transparent text-[14px] text-white placeholder:text-[#57534e] outline-none"
+            className="flex-1 bg-transparent text-[14px] text-[#1A1A1A] placeholder:text-[#999999] outline-none"
           />
           <span
-            className="hidden sm:inline-flex items-center gap-1 text-[10px] text-[#57534e] px-1.5 py-0.5 rounded border border-[#1c1917] bg-[#0c0a09]"
+            className="hidden sm:inline-flex items-center gap-1 text-[10px] text-[#999999] px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-[#FFFFFF]"
             style={{ fontFamily: MONO_FONT }}
           >
             esc
@@ -214,14 +214,14 @@ export default function CommandPalette() {
         <div ref={listRef} className="max-h-[420px] overflow-y-auto p-2">
           {filtered.length === 0 ? (
             <div className="text-center py-10">
-              <p className="text-[13px] text-[#a8a29e]">No matches</p>
-              <p className="text-[11px] text-[#57534e] mt-1">Try a different search</p>
+              <p className="text-[13px] text-[#6B6B6B]">No matches</p>
+              <p className="text-[11px] text-[#999999] mt-1">Try a different search</p>
             </div>
           ) : (
             grouped.map(([group, items]) => (
               <div key={group} className="mb-2 last:mb-0">
                 <div
-                  className="text-[10px] text-[#57534e] uppercase px-3 pt-2 pb-1"
+                  className="text-[10px] text-[#999999] uppercase px-3 pt-2 pb-1"
                   style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
                 >
                   {group}
@@ -238,18 +238,18 @@ export default function CommandPalette() {
                       onMouseEnter={() => setActiveIdx(idx)}
                       onClick={() => { router.push(item.href); setOpen(false) }}
                       className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${
-                        active ? 'bg-[#1c1917]' : 'hover:bg-[#1c1917]/60'
+                        active ? 'bg-[#E5E5E5]' : 'hover:bg-[#E5E5E5]/60'
                       }`}
                     >
-                      <Icon size={15} className={active ? 'text-[#14b8a6]' : 'text-[#a8a29e]'} />
+                      <Icon size={15} className={active ? 'text-[#1B6DFC]' : 'text-[#6B6B6B]'} />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[13px] text-white truncate">{item.label}</p>
+                        <p className="text-[13px] text-[#1A1A1A] truncate">{item.label}</p>
                         {item.hint && (
-                          <p className="text-[11px] text-[#57534e] truncate">{item.hint}</p>
+                          <p className="text-[11px] text-[#999999] truncate">{item.hint}</p>
                         )}
                       </div>
                       {active && (
-                        <CornerDownLeft size={13} className="text-[#57534e] shrink-0" />
+                        <CornerDownLeft size={13} className="text-[#999999] shrink-0" />
                       )}
                     </button>
                   )
@@ -261,7 +261,7 @@ export default function CommandPalette() {
 
         {/* Footer hints */}
         <div
-          className="flex items-center justify-between gap-3 px-4 py-2.5 border-t border-[#1c1917] text-[10px] text-[#57534e]"
+          className="flex items-center justify-between gap-3 px-4 py-2.5 border-t border-[#E5E5E5] text-[10px] text-[#999999]"
           style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
         >
           <div className="flex items-center gap-3">

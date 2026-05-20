@@ -41,7 +41,7 @@ export default function DeleteProgramButton({
       <button
         onClick={handleDelete}
         disabled={loading}
-        className="text-xs px-3 py-1.5 border border-stone-700 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-400 transition-colors disabled:opacity-50"
+        className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-400 transition-colors disabled:opacity-50"
       >
         {loading ? 'Deleting...' : label}
       </button>

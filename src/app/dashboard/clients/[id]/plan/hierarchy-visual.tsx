@@ -36,10 +36,10 @@ const phaseColour: Record<string, string> = {
 }
 
 const statusDot: Record<string, string> = {
-  planned: 'bg-stone-600',
+  planned: 'bg-stone-400',
   in_progress: 'bg-amber-400',
   complete: 'bg-green-500',
-  skipped: 'bg-stone-800',
+  skipped: 'bg-stone-200',
 }
 
 const PILLARS = [
@@ -47,7 +47,7 @@ const PILLARS = [
   { label: 'Fat Map', full: 'Fat Map Method', colour: 'text-orange-400', desc: 'Constraint authority' },
   { label: 'BIRS', full: 'Behaviour + Identity', colour: 'text-yellow-400', desc: 'Complexity limits' },
   { label: 'PTS', full: 'Progressive Training', colour: 'text-blue-400', desc: 'Training demand' },
-  { label: 'HABNS', full: 'Nutrition Support', colour: 'text-teal-400', desc: 'Nutrition support' },
+  { label: 'HABNS', full: 'Nutrition Support', colour: 'text-blue-500', desc: 'Nutrition support' },
 ]
 
 export default function HierarchyVisual({
@@ -63,27 +63,27 @@ export default function HierarchyVisual({
   const currentBlock = plan?.plan_blocks.find(b => b.status === 'in_progress')
 
   return (
-    <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-      <div className="px-5 py-3 border-b border-stone-800">
-        <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">System Hierarchy</p>
-        <p className="text-xs text-stone-600 mt-0.5">How macro, meso, micro and nutrition interact</p>
+    <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+      <div className="px-5 py-3 border-b border-stone-200">
+        <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">System Hierarchy</p>
+        <p className="text-xs text-stone-400 mt-0.5">How macro, meso, micro and nutrition interact</p>
       </div>
 
       <div className="p-5 flex gap-6">
 
         {/* Left: Pillar stack */}
         <div className="shrink-0 w-40">
-          <p className="text-[9px] font-bold text-stone-600 uppercase tracking-widest mb-3">Cross-Pillar Order</p>
+          <p className="text-[9px] font-bold text-stone-400 uppercase tracking-widest mb-3">Cross-Pillar Order</p>
           <div className="space-y-1">
             {PILLARS.map((p, i) => (
               <div key={p.label} className="flex items-start gap-2">
                 <div className="flex flex-col items-center shrink-0 mt-1">
-                  <div className={`w-1.5 h-1.5 rounded-full ${i === 3 ? 'bg-blue-400' : i === 4 ? 'bg-teal-400' : 'bg-stone-600'}`} />
-                  {i < PILLARS.length - 1 && <div className="w-px h-4 bg-stone-700" />}
+                  <div className={`w-1.5 h-1.5 rounded-full ${i === 3 ? 'bg-blue-400' : i === 4 ? 'bg-blue-500' : 'bg-stone-400'}`} />
+                  {i < PILLARS.length - 1 && <div className="w-px h-4 bg-stone-300" />}
                 </div>
                 <div>
                   <p className={`text-[10px] font-bold ${p.colour}`}>{p.label}</p>
-                  <p className="text-[9px] text-stone-600 leading-tight">{p.desc}</p>
+                  <p className="text-[9px] text-stone-400 leading-tight">{p.desc}</p>
                 </div>
               </div>
             ))}
@@ -91,7 +91,7 @@ export default function HierarchyVisual({
         </div>
 
         {/* Vertical divider */}
-        <div className="w-px bg-stone-800 shrink-0" />
+        <div className="w-px bg-stone-200 shrink-0" />
 
         {/* Right: Macro → Meso → Micro → Nutrition */}
         <div className="flex-1 min-w-0 space-y-4">
@@ -101,12 +101,12 @@ export default function HierarchyVisual({
             <div className="flex items-center gap-2 mb-2">
               <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
               <p className="text-[9px] font-bold text-stone-500 uppercase tracking-widest">Macro Arc</p>
-              {plan && <p className="text-[9px] text-stone-600 ml-auto">{totalWeeks}w total</p>}
+              {plan && <p className="text-[9px] text-stone-400 ml-auto">{totalWeeks}w total</p>}
             </div>
 
             {plan ? (
               <div>
-                <p className="text-xs font-semibold text-stone-200 mb-2">{plan.plan_name}</p>
+                <p className="text-xs font-semibold text-stone-800 mb-2">{plan.plan_name}</p>
                 {plan.macro_objective && (
                   <p className="text-[10px] text-stone-500 mb-2 leading-relaxed">{plan.macro_objective}</p>
                 )}
@@ -116,17 +116,17 @@ export default function HierarchyVisual({
                       <div key={block.id} className="flex items-center gap-1">
                         <div className={`flex items-center gap-1.5 px-2 py-1 rounded border text-[9px] ${
                           block.status === 'in_progress'
-                            ? `${phaseColour[block.progression_phase] || 'bg-stone-800 border-stone-700 text-stone-400'} ring-1 ring-amber-400/50`
+                            ? `${phaseColour[block.progression_phase] || 'bg-stone-200 border-stone-300 text-stone-600'} ring-1 ring-amber-400/50`
                             : block.status === 'complete'
-                            ? 'bg-stone-800/30 border-stone-800 text-stone-600'
-                            : phaseColour[block.progression_phase] || 'bg-stone-800 border-stone-700 text-stone-400'
+                            ? 'bg-stone-200/30 border-stone-200 text-stone-400'
+                            : phaseColour[block.progression_phase] || 'bg-stone-200 border-stone-300 text-stone-600'
                         }`}>
                           <div className={`w-1 h-1 rounded-full shrink-0 ${statusDot[block.status]}`} />
                           <span className="font-medium truncate max-w-[80px]">{block.block_name}</span>
                           <span className="opacity-60">{block.week_duration}w</span>
                         </div>
                         {i < plan.plan_blocks.length - 1 && (
-                          <span className="text-stone-700 text-[9px]">›</span>
+                          <span className="text-stone-300 text-[9px]">›</span>
                         )}
                       </div>
                     ))}
@@ -134,14 +134,14 @@ export default function HierarchyVisual({
                 )}
               </div>
             ) : (
-              <p className="text-[10px] text-stone-600 italic">No macro arc planned</p>
+              <p className="text-[10px] text-stone-400 italic">No macro arc planned</p>
             )}
           </div>
 
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
-            <div className="w-px h-3 bg-stone-700 ml-0.5" />
-            <span className="text-[9px] text-stone-700">current block</span>
+            <div className="w-px h-3 bg-stone-300 ml-0.5" />
+            <span className="text-[9px] text-stone-300">current block</span>
           </div>
 
           {/* Layer 2: Meso Block */}
@@ -152,19 +152,19 @@ export default function HierarchyVisual({
             </div>
 
             {currentBlock ? (
-              <div className={`px-3 py-2 rounded-lg border ${phaseColour[currentBlock.progression_phase] || 'bg-stone-800 border-stone-700'}`}>
+              <div className={`px-3 py-2 rounded-lg border ${phaseColour[currentBlock.progression_phase] || 'bg-stone-200 border-stone-300'}`}>
                 <p className="text-xs font-semibold">{currentBlock.block_name}</p>
                 <p className="text-[9px] opacity-70 mt-0.5 capitalize">{currentBlock.progression_phase} · {currentBlock.training_goal} · {currentBlock.week_duration}w</p>
               </div>
             ) : (
-              <p className="text-[10px] text-stone-600 italic">{plan ? 'No block in progress' : 'No meso block active'}</p>
+              <p className="text-[10px] text-stone-400 italic">{plan ? 'No block in progress' : 'No meso block active'}</p>
             )}
           </div>
 
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
-            <div className="w-px h-3 bg-stone-700 ml-0.5" />
-            <span className="text-[9px] text-stone-700">generates program</span>
+            <div className="w-px h-3 bg-stone-300 ml-0.5" />
+            <span className="text-[9px] text-stone-300">generates program</span>
           </div>
 
           {/* Layer 3: Micro Program */}
@@ -175,50 +175,50 @@ export default function HierarchyVisual({
             </div>
 
             {activeProgram ? (
-              <div className="px-3 py-2 rounded-lg bg-stone-800/50 border border-stone-700">
-                <p className="text-xs font-semibold text-stone-200">{activeProgram.block_name}</p>
+              <div className="px-3 py-2 rounded-lg bg-stone-200/50 border border-stone-300">
+                <p className="text-xs font-semibold text-stone-800">{activeProgram.block_name}</p>
                 <p className="text-[9px] text-stone-500 mt-0.5 capitalize">
                   {activeProgram.progression_phase} · {activeProgram.training_goal} · {activeProgram.training_frequency}x/week · {activeProgram.week_duration}w
                 </p>
               </div>
             ) : (
-              <p className="text-[10px] text-stone-600 italic">No active program</p>
+              <p className="text-[10px] text-stone-400 italic">No active program</p>
             )}
           </div>
 
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
-            <div className="w-px h-3 bg-stone-700 ml-0.5" />
-            <span className="text-[9px] text-stone-700">supported by</span>
+            <div className="w-px h-3 bg-stone-300 ml-0.5" />
+            <span className="text-[9px] text-stone-300">supported by</span>
           </div>
 
           {/* Layer 4: Nutrition */}
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0" />
+              <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
               <p className="text-[9px] font-bold text-stone-500 uppercase tracking-widest">Nutrition Support</p>
             </div>
 
             {nutritionPlan ? (
               <div className="flex gap-2 flex-wrap">
                 {nutritionPlan.entry_state && (
-                  <span className="text-[9px] px-2 py-1 bg-teal-400/10 border border-teal-400/20 rounded text-teal-400 capitalize">
+                  <span className="text-[9px] px-2 py-1 bg-blue-500/10 border border-blue-500/20 rounded text-blue-500 capitalize">
                     {nutritionPlan.entry_state}
                   </span>
                 )}
                 {nutritionPlan.carb_demand_level && (
-                  <span className="text-[9px] px-2 py-1 bg-stone-800 border border-stone-700 rounded text-stone-400 capitalize">
+                  <span className="text-[9px] px-2 py-1 bg-stone-200 border border-stone-300 rounded text-stone-600 capitalize">
                     Carbs: {nutritionPlan.carb_demand_level}
                   </span>
                 )}
                 {nutritionPlan.modulation_level && (
-                  <span className="text-[9px] px-2 py-1 bg-stone-800 border border-stone-700 rounded text-stone-400 capitalize">
+                  <span className="text-[9px] px-2 py-1 bg-stone-200 border border-stone-300 rounded text-stone-600 capitalize">
                     Modulation: {nutritionPlan.modulation_level}
                   </span>
                 )}
               </div>
             ) : (
-              <p className="text-[10px] text-stone-600 italic">No active nutrition plan</p>
+              <p className="text-[10px] text-stone-400 italic">No active nutrition plan</p>
             )}
           </div>
 
@@ -226,15 +226,15 @@ export default function HierarchyVisual({
       </div>
 
       {/* Footer legend */}
-      <div className="px-5 py-3 border-t border-stone-800 flex items-center gap-4 flex-wrap">
+      <div className="px-5 py-3 border-t border-stone-200 flex items-center gap-4 flex-wrap">
         {[
-          { dot: 'bg-stone-600', label: 'Planned' },
+          { dot: 'bg-stone-400', label: 'Planned' },
           { dot: 'bg-amber-400', label: 'In Progress' },
           { dot: 'bg-green-500', label: 'Complete' },
         ].map(item => (
           <div key={item.label} className="flex items-center gap-1.5">
             <div className={`w-1.5 h-1.5 rounded-full ${item.dot}`} />
-            <span className="text-[9px] text-stone-600">{item.label}</span>
+            <span className="text-[9px] text-stone-400">{item.label}</span>
           </div>
         ))}
       </div>

@@ -82,9 +82,9 @@ export default function PreviewIndexPage() {
           return (
             <div key={group.title}>
               <div className="flex items-center gap-2.5 mb-3">
-                <Icon size={14} className="text-[#14b8a6]" />
+                <Icon size={14} className="text-[#1B6DFC]" />
                 <p
-                  className="text-[10px] font-bold text-[#57534e] uppercase"
+                  className="text-[10px] font-bold text-[#999999] uppercase"
                   style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
                 >
                   {group.title}
@@ -100,11 +100,11 @@ export default function PreviewIndexPage() {
                       href={asset.href}
                       target={asset.external ? '_blank' : undefined}
                       rel={asset.external ? 'noopener noreferrer' : undefined}
-                      className="group flex items-center justify-between gap-4 bg-[#111110] border border-[#1c1917] rounded-xl px-5 py-4 hover:border-[#292524] transition-colors"
+                      className="group flex items-center justify-between gap-4 bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-5 py-4 hover:border-[#D4D4D4] transition-colors"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[14px] font-semibold text-white group-hover:text-[#14b8a6] transition-colors truncate">{asset.label}</span>
+                          <span className="text-[14px] font-semibold text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors truncate">{asset.label}</span>
                           {asset.tag && tag && (
                             <span
                               className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border whitespace-nowrap"
@@ -114,9 +114,9 @@ export default function PreviewIndexPage() {
                             </span>
                           )}
                         </div>
-                        <p className="text-[12px] text-[#57534e] leading-relaxed">{asset.description}</p>
+                        <p className="text-[12px] text-[#999999] leading-relaxed">{asset.description}</p>
                       </div>
-                      <ArrowIcon size={14} className="text-[#57534e] group-hover:text-[#14b8a6] transition-colors shrink-0" />
+                      <ArrowIcon size={14} className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors shrink-0" />
                     </Link>
                   )
                 })}

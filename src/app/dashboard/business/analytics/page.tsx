@@ -76,54 +76,54 @@ export default async function AnalyticsPage() {
     <div className="max-w-4xl">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold mb-1">Analytics</h1>
-        <p className="text-stone-400 text-sm">Live view of your business performance</p>
+        <p className="text-stone-600 text-sm">Live view of your business performance</p>
       </div>
 
       {/* Top stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <div className="flex items-center gap-2 mb-3">
-            <DollarSign size={14} className="text-teal-400" />
+            <DollarSign size={14} className="text-blue-500" />
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Total Revenue</p>
           </div>
-          <p className="text-2xl font-bold text-white">${totalRevenue.toLocaleString('en-AU')}</p>
+          <p className="text-2xl font-bold text-[#1A1A1A]">${totalRevenue.toLocaleString('en-AU')}</p>
           <p className="text-xs text-stone-500 mt-1">${revenueThisMonth.toLocaleString('en-AU')} this month</p>
         </div>
 
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <div className="flex items-center gap-2 mb-3">
-            <Users size={14} className="text-teal-400" />
+            <Users size={14} className="text-blue-500" />
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Total Leads</p>
           </div>
-          <p className="text-2xl font-bold text-white">{totalLeads}</p>
+          <p className="text-2xl font-bold text-[#1A1A1A]">{totalLeads}</p>
           <p className="text-xs text-stone-500 mt-1">{leadsThisWeek} this week · {activeLeads} active</p>
         </div>
 
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <div className="flex items-center gap-2 mb-3">
-            <TrendingUp size={14} className="text-teal-400" />
+            <TrendingUp size={14} className="text-blue-500" />
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Conversion</p>
           </div>
-          <p className="text-2xl font-bold text-white">{conversionRate}%</p>
+          <p className="text-2xl font-bold text-[#1A1A1A]">{conversionRate}%</p>
           <p className="text-xs text-stone-500 mt-1">{converted} of {totalLeads} converted</p>
         </div>
 
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <div className="flex items-center gap-2 mb-3">
-            <CheckCircle2 size={14} className="text-teal-400" />
+            <CheckCircle2 size={14} className="text-blue-500" />
             <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Show-up Rate</p>
           </div>
-          <p className="text-2xl font-bold text-white">{showUpRate}%</p>
+          <p className="text-2xl font-bold text-[#1A1A1A]">{showUpRate}%</p>
           <p className="text-xs text-stone-500 mt-1">{completedBookings} completed · {noShows} no show</p>
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         {/* Pipeline funnel */}
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-6">
           <div className="flex items-center gap-2 mb-5">
-            <BarChart2 size={14} className="text-stone-400" />
-            <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider">Pipeline Breakdown</h2>
+            <BarChart2 size={14} className="text-stone-600" />
+            <h2 className="text-xs font-semibold text-stone-600 uppercase tracking-wider">Pipeline Breakdown</h2>
           </div>
           <div className="space-y-3">
             {stageOrder.map(({ key, label }) => {
@@ -132,12 +132,12 @@ export default async function AnalyticsPage() {
               return (
                 <div key={key}>
                   <div className="flex items-center justify-between mb-1">
-                    <p className="text-xs text-stone-400">{label}</p>
-                    <p className="text-xs font-semibold text-white">{count}</p>
+                    <p className="text-xs text-stone-600">{label}</p>
+                    <p className="text-xs font-semibold text-[#1A1A1A]">{count}</p>
                   </div>
-                  <div className="h-1.5 bg-stone-800 rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-stone-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-teal-500 rounded-full transition-all"
+                      className="h-full bg-blue-500 rounded-full transition-all"
                       style={{ width: `${pct}%` }}
                     />
                   </div>
@@ -148,10 +148,10 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* Lead sources */}
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-6">
           <div className="flex items-center gap-2 mb-5">
-            <TrendingUp size={14} className="text-stone-400" />
-            <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider">Lead Sources</h2>
+            <TrendingUp size={14} className="text-stone-600" />
+            <h2 className="text-xs font-semibold text-stone-600 uppercase tracking-wider">Lead Sources</h2>
           </div>
           {topSources.length > 0 ? (
             <div className="space-y-3">
@@ -160,13 +160,13 @@ export default async function AnalyticsPage() {
                 return (
                   <div key={source}>
                     <div className="flex items-center justify-between mb-1">
-                      <p className="text-xs text-stone-400 capitalize">{source.replace(/_/g, ' ')}</p>
+                      <p className="text-xs text-stone-600 capitalize">{source.replace(/_/g, ' ')}</p>
                       <div className="flex items-center gap-2">
                         <p className="text-xs text-stone-500">{pct}%</p>
-                        <p className="text-xs font-semibold text-white">{count}</p>
+                        <p className="text-xs font-semibold text-[#1A1A1A]">{count}</p>
                       </div>
                     </div>
-                    <div className="h-1.5 bg-stone-800 rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-stone-200 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-violet-500 rounded-full transition-all"
                         style={{ width: `${pct}%` }}
@@ -183,17 +183,17 @@ export default async function AnalyticsPage() {
       </div>
 
       {/* Bookings summary */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
+      <div className="bg-stone-100 border border-stone-200 rounded-xl p-6">
         <div className="flex items-center gap-2 mb-5">
-          <Calendar size={14} className="text-stone-400" />
-          <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider">Bookings</h2>
+          <Calendar size={14} className="text-stone-600" />
+          <h2 className="text-xs font-semibold text-stone-600 uppercase tracking-wider">Bookings</h2>
         </div>
         <div className="grid grid-cols-4 gap-4">
           {[
-            { label: 'Total', value: totalBookings, colour: 'text-white' },
-            { label: 'Completed', value: completedBookings, colour: 'text-teal-400' },
+            { label: 'Total', value: totalBookings, colour: 'text-[#1A1A1A]' },
+            { label: 'Completed', value: completedBookings, colour: 'text-blue-500' },
             { label: 'No Show', value: noShows, colour: 'text-red-400' },
-            { label: 'Show-up Rate', value: `${showUpRate}%`, colour: 'text-white' },
+            { label: 'Show-up Rate', value: `${showUpRate}%`, colour: 'text-[#1A1A1A]' },
           ].map(({ label, value, colour }) => (
             <div key={label} className="text-center">
               <p className={`text-2xl font-bold ${colour}`}>{value}</p>

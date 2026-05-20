@@ -37,7 +37,7 @@ export default function StageMover({ leadId, currentStatus, stageOrder, stageLab
       <button
         onClick={() => moveStage(stageOrder[currentIndex - 1])}
         disabled={!canGoBack || isPending}
-        className="flex items-center gap-1.5 text-xs text-stone-400 hover:text-white border border-stone-700 hover:border-stone-500 disabled:opacity-30 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors"
+        className="flex items-center gap-1.5 text-xs text-stone-600 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 disabled:opacity-30 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors"
       >
         <ChevronLeft size={13} />
         {canGoBack ? stageLabel[stageOrder[currentIndex - 1]] : 'Back'}
@@ -48,7 +48,7 @@ export default function StageMover({ leadId, currentStatus, stageOrder, stageLab
       <button
         onClick={() => moveStage(stageOrder[currentIndex + 1])}
         disabled={!canGoForward || isPending}
-        className="flex items-center gap-1.5 text-xs text-white bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/30 hover:border-teal-500/60 disabled:opacity-30 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors ml-auto"
+        className="flex items-center gap-1.5 text-xs text-[#1A1A1A] bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 hover:border-blue-500/60 disabled:opacity-30 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors ml-auto"
       >
         {canGoForward ? stageLabel[stageOrder[currentIndex + 1]] : 'Done'}
         <ChevronRight size={13} />

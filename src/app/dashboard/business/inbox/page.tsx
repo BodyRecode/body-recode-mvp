@@ -41,16 +41,16 @@ export default async function InboxPage() {
       <div className="max-w-2xl">
         <div className="mb-8">
           <h1 className="text-2xl font-semibold mb-1">Inbox</h1>
-          <p className="text-stone-400 text-sm">One thread per contact - email history and outreach in one place</p>
+          <p className="text-stone-600 text-sm">One thread per contact - email history and outreach in one place</p>
         </div>
-        <div className="bg-stone-900 border border-dashed border-stone-800 rounded-xl p-12 text-center">
+        <div className="bg-stone-100 border border-dashed border-stone-200 rounded-xl p-12 text-center">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-stone-800 rounded-xl">
+            <div className="p-3 bg-stone-200 rounded-xl">
               <Mail size={24} className="text-stone-500" strokeWidth={1.5} />
             </div>
           </div>
-          <p className="text-stone-400 text-sm font-medium mb-1">No contacts yet</p>
-          <p className="text-stone-600 text-xs">Leads appear here as they come through your booking page or funnels</p>
+          <p className="text-stone-600 text-sm font-medium mb-1">No contacts yet</p>
+          <p className="text-stone-400 text-xs">Leads appear here as they come through your booking page or funnels</p>
         </div>
       </div>
     )
@@ -60,7 +60,7 @@ export default async function InboxPage() {
     <div className="max-w-3xl">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold mb-1">Inbox</h1>
-        <p className="text-stone-400 text-sm">{sorted.length} contacts</p>
+        <p className="text-stone-600 text-sm">{sorted.length} contacts</p>
       </div>
 
       <div className="space-y-px">
@@ -73,26 +73,26 @@ export default async function InboxPage() {
             <Link
               key={lead.id}
               href={`/dashboard/business/inbox/${lead.id}`}
-              className="flex items-center gap-4 bg-stone-900 border border-stone-800 first:rounded-t-xl last:rounded-b-xl -mb-px px-4 py-3.5 hover:bg-stone-800/50 transition-colors group"
+              className="flex items-center gap-4 bg-stone-100 border border-stone-200 first:rounded-t-xl last:rounded-b-xl -mb-px px-4 py-3.5 hover:bg-stone-200/50 transition-colors group"
             >
-              <div className="w-8 h-8 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center shrink-0 text-xs font-medium text-stone-400 group-hover:border-teal-500/30 transition-colors">
+              <div className="w-8 h-8 rounded-full bg-stone-200 border border-stone-300 flex items-center justify-center shrink-0 text-xs font-medium text-stone-600 group-hover:border-blue-500/30 transition-colors">
                 {lead.name?.charAt(0)?.toUpperCase() ?? '?'}
               </div>
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <p className="text-sm font-medium text-white truncate">{lead.name}</p>
-                  <p className="text-xs text-stone-600 truncate">{lead.email}</p>
+                  <p className="text-sm font-medium text-[#1A1A1A] truncate">{lead.name}</p>
+                  <p className="text-xs text-stone-400 truncate">{lead.email}</p>
                 </div>
                 <p className="text-xs text-stone-500 truncate">{preview}</p>
               </div>
 
               <div className="shrink-0 text-right">
                 {timeAgo && (
-                  <p className="text-xs text-stone-600">{timeAgo}</p>
+                  <p className="text-xs text-stone-400">{timeAgo}</p>
                 )}
                 {lead.eventCount > 0 && (
-                  <p className="text-xs text-stone-700 mt-0.5">{lead.eventCount} events</p>
+                  <p className="text-xs text-stone-300 mt-0.5">{lead.eventCount} events</p>
                 )}
               </div>
             </Link>

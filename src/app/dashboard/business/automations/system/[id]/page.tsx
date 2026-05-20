@@ -605,28 +605,28 @@ export default async function SystemAutomationDetailPage({
     <div style={{ maxWidth: '680px', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
 
       {/* Breadcrumb */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#57534e', marginBottom: '32px' }}>
-        <Link href="/dashboard/business/automations" style={{ color: '#57534e', textDecoration: 'none' }} className="hover:text-white transition-colors">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#999999', marginBottom: '32px' }}>
+        <Link href="/dashboard/business/automations" style={{ color: '#999999', textDecoration: 'none' }} className="hover:text-[#1A1A1A] transition-colors">
           Automations
         </Link>
         <span>/</span>
-        <span style={{ color: '#d4cfc9' }}>{automation.name}</span>
+        <span style={{ color: '#3A3A3A' }}>{automation.name}</span>
       </div>
 
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
-        <div style={{ width: '28px', height: '3px', background: '#14b8a6', borderRadius: '2px', marginBottom: '20px' }} />
+        <div style={{ width: '28px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '20px' }} />
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '16px' }}>
           <div>
-            <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '6px' }}>
+            <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '6px' }}>
               {automation.name}
             </h1>
-            <p style={{ fontSize: '14px', color: '#a8a29e', lineHeight: 1.6 }}>{automation.description}</p>
+            <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.6 }}>{automation.description}</p>
           </div>
           <span style={{
             flexShrink: 0, display: 'flex', alignItems: 'center', gap: '6px',
             fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em',
-            color: '#14b8a6', background: 'rgba(20,184,166,0.08)',
+            color: '#1B6DFC', background: 'rgba(20,184,166,0.08)',
             border: '1px solid rgba(20,184,166,0.25)',
             padding: '5px 12px', borderRadius: '999px',
           }}>
@@ -637,19 +637,19 @@ export default async function SystemAutomationDetailPage({
       </div>
 
       {/* Trigger */}
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', padding: '20px 24px', marginBottom: '32px' }}>
-        <p style={{ fontSize: '10px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>Trigger</p>
-        <p style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', marginBottom: '4px' }}>{automation.trigger}</p>
-        <p style={{ fontSize: '13px', color: '#78716c', lineHeight: 1.6 }}>{automation.triggerDetail}</p>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '20px 24px', marginBottom: '32px' }}>
+        <p style={{ fontSize: '10px', fontWeight: 700, color: '#999999', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>Trigger</p>
+        <p style={{ fontSize: '15px', fontWeight: 600, color: '#1A1A1A', marginBottom: '4px' }}>{automation.trigger}</p>
+        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6 }}>{automation.triggerDetail}</p>
       </div>
 
       {/* Steps */}
-      <p style={{ fontSize: '10px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+      <p style={{ fontSize: '10px', fontWeight: 700, color: '#999999', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
         Email Sequence - {automation.steps.length} emails
       </p>
 
       <div style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', left: '19px', top: '40px', bottom: '40px', width: '1px', background: '#1c1917' }} />
+        <div style={{ position: 'absolute', left: '19px', top: '40px', bottom: '40px', width: '1px', background: '#E5E5E5' }} />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {automation.steps.map((step, i) => (
@@ -657,44 +657,44 @@ export default async function SystemAutomationDetailPage({
               {/* Step number */}
               <div style={{
                 width: '40px', height: '40px', borderRadius: '50%', flexShrink: 0,
-                background: '#111110', border: '1px solid #1c1917',
+                background: '#FFFFFF', border: '1px solid #E5E5E5',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 position: 'relative', zIndex: 1,
               }}>
-                <span style={{ fontSize: '12px', fontWeight: 700, color: '#57534e' }}>{i + 1}</span>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#999999' }}>{i + 1}</span>
               </div>
 
               {/* Card */}
-              <div style={{ flex: 1, background: '#111110', border: '1px solid #1c1917', borderRadius: '12px', overflow: 'hidden', marginBottom: '4px' }}>
+              <div style={{ flex: 1, background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', overflow: 'hidden', marginBottom: '4px' }}>
 
                 {/* Step header */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 18px', borderBottom: '1px solid #1c1917', background: '#0f0e0d' }}>
-                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#14b8a6' }}>{step.day}</span>
-                  <span style={{ fontSize: '11px', color: '#57534e', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Email</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 18px', borderBottom: '1px solid #E5E5E5', background: '#0f0e0d' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#1B6DFC' }}>{step.day}</span>
+                  <span style={{ fontSize: '11px', color: '#999999', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Email</span>
                 </div>
 
                 {/* Subject */}
-                <div style={{ padding: '16px 18px 14px', borderBottom: '1px solid #1c1917' }}>
-                  <p style={{ fontSize: '10px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>Subject</p>
-                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#ffffff' }}>{step.subject}</p>
+                <div style={{ padding: '16px 18px 14px', borderBottom: '1px solid #E5E5E5' }}>
+                  <p style={{ fontSize: '10px', fontWeight: 700, color: '#999999', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>Subject</p>
+                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#1A1A1A' }}>{step.subject}</p>
                 </div>
 
                 {/* Body */}
-                <div style={{ padding: '16px 18px 14px', borderBottom: '1px solid #1c1917' }}>
-                  <p style={{ fontSize: '10px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>Body</p>
+                <div style={{ padding: '16px 18px 14px', borderBottom: '1px solid #E5E5E5' }}>
+                  <p style={{ fontSize: '10px', fontWeight: 700, color: '#999999', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>Body</p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {step.paragraphs.map((para, j) => (
-                      <p key={j} style={{ fontSize: '13px', color: '#a8a29e', lineHeight: 1.75 }}>{para}</p>
+                      <p key={j} style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.75 }}>{para}</p>
                     ))}
                   </div>
                 </div>
 
                 {/* CTA */}
                 <div style={{ padding: '14px 18px' }}>
-                  <p style={{ fontSize: '10px', fontWeight: 700, color: '#57534e', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>CTA</p>
+                  <p style={{ fontSize: '10px', fontWeight: 700, color: '#999999', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>CTA</p>
                   <span style={{
                     display: 'inline-block', padding: '8px 16px',
-                    background: '#14b8a6', color: '#0c0a09',
+                    background: '#1B6DFC', color: '#1A1A1A',
                     fontSize: '12px', fontWeight: 700, borderRadius: '8px',
                   }}>
                     {step.cta}

@@ -17,7 +17,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     return (
       <a
         href={`/dashboard/clients/${clientId}`}
-        className="inline-block text-sm font-medium text-teal-400 hover:underline"
+        className="inline-block text-sm font-medium text-blue-500 hover:underline"
       >
         View client profile →
       </a>
@@ -65,12 +65,12 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
   if (intakeLink) {
     return (
       <div className="space-y-3">
-        <p className="text-sm text-teal-400 font-medium">Client created. Send this intake link:</p>
-        <div className="bg-[#1c1917] rounded-lg px-4 py-3 flex items-center gap-3">
-          <p className="text-[#a8a29e] text-xs font-mono flex-1 truncate">{intakeLink}</p>
+        <p className="text-sm text-blue-500 font-medium">Client created. Send this intake link:</p>
+        <div className="bg-[#E5E5E5] rounded-lg px-4 py-3 flex items-center gap-3">
+          <p className="text-[#6B6B6B] text-xs font-mono flex-1 truncate">{intakeLink}</p>
           <button
             onClick={copy}
-            className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#292524] text-[#d4cfc9] hover:border-[#3c3835] hover:text-white transition-colors"
+            className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#D4D4D4] text-[#3A3A3A] hover:border-[#4A4A4A] hover:text-[#1A1A1A] transition-colors"
           >
             {copied ? 'Copied!' : 'Copy'}
           </button>
@@ -83,7 +83,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     <button
       onClick={convert}
       disabled={loading}
-      className="bg-teal-500 text-black text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-teal-400 transition-colors disabled:opacity-50"
+      className="bg-blue-500 text-black text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-blue-500 transition-colors disabled:opacity-50"
     >
       {loading ? 'Converting...' : 'Convert to Client'}
     </button>

@@ -290,9 +290,9 @@ export default async function TodayWidget() {
       {/* Header strip */}
       <div className="flex items-center justify-between mb-4 px-1 flex-wrap gap-3">
         <div className="flex items-center gap-2.5">
-          <span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" />
+          <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
           <h2
-            className="text-[11px] font-bold text-white uppercase"
+            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
             Today&apos;s Focus
@@ -339,7 +339,7 @@ export default async function TodayWidget() {
       {sorted.length === 0 ? (
         <EmptyStateBlock />
       ) : (
-        <div className="divide-y divide-[#1c1917]">
+        <div className="divide-y divide-[#E5E5E5]">
           {sorted.map((action) => (
             <ActionRow key={action.clientId} action={action} />
           ))}
@@ -387,7 +387,7 @@ function ActionRow({ action }: { action: ClientNextAction }) {
   return (
     <Link
       href={action.href}
-      className="flex items-center gap-3.5 px-1 py-3.5 group hover:bg-[#1c1917]/40 -mx-1 px-2 rounded-lg transition-colors"
+      className="flex items-center gap-3.5 px-1 py-3.5 group hover:bg-[#E5E5E5]/40 -mx-1 px-2 rounded-lg transition-colors"
     >
       <div
         className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border"
@@ -397,12 +397,12 @@ function ActionRow({ action }: { action: ClientNextAction }) {
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <p className="text-[13px] font-bold text-white group-hover:text-[#14b8a6] transition-colors truncate">
+          <p className="text-[13px] font-bold text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors truncate">
             {action.clientName}
           </p>
           {action.badge && (
             <span
-              className="inline-flex items-center text-[9px] px-1.5 py-0.5 rounded-full border border-[#0d2d29] bg-[rgba(20,184,166,0.10)] text-[#14b8a6] uppercase"
+              className="inline-flex items-center text-[9px] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(20,184,166,0.10)] text-[#1B6DFC] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               {action.badge}
@@ -417,7 +417,7 @@ function ActionRow({ action }: { action: ClientNextAction }) {
         </p>
         {action.sublabel && (
           <p
-            className="text-[10px] text-[#57534e] uppercase mt-0.5 truncate"
+            className="text-[10px] text-[#999999] uppercase mt-0.5 truncate"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.1em' }}
           >
             {action.sublabel}
@@ -426,7 +426,7 @@ function ActionRow({ action }: { action: ClientNextAction }) {
       </div>
       <ArrowUpRight
         size={16}
-        className="text-[#57534e] group-hover:text-[#14b8a6] transition-colors shrink-0"
+        className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors shrink-0"
       />
     </Link>
   )
@@ -453,8 +453,8 @@ function iconFor(action: ClientNextAction) {
 function EmptyStateBlock() {
   return (
     <div className="py-8 text-center">
-      <p className="text-[14px] text-[#a8a29e] mb-1">No active clients yet</p>
-      <p className="text-[12px] text-[#57534e]">
+      <p className="text-[14px] text-[#6B6B6B] mb-1">No active clients yet</p>
+      <p className="text-[12px] text-[#999999]">
         Per-client focus board will populate as clients onboard.
       </p>
     </div>

@@ -14,7 +14,7 @@ const TABS: { id: Tab; label: string }[] = [
 
 function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`bg-[#111110] border border-stone-800 rounded-xl p-5 ${className}`}>
+    <div className={`bg-[#FFFFFF] border border-stone-200 rounded-xl p-5 ${className}`}>
       {children}
     </div>
   )
@@ -30,11 +30,11 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 'teal' | 'violet' | 'amber' | 'orange' | 'stone' | 'blue' }) {
   const styles: Record<string, string> = {
-    teal:   'bg-teal-500/10 text-teal-400 border-teal-500/20',
+    teal:   'bg-blue-500/10 text-blue-500 border-blue-500/20',
     violet: 'bg-violet-500/10 text-violet-400 border-violet-500/20',
     amber:  'bg-amber-500/10 text-amber-400 border-amber-500/20',
     orange: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
-    stone:  'bg-stone-500/10 text-stone-400 border-stone-500/20',
+    stone:  'bg-stone-500/10 text-stone-600 border-stone-500/20',
     blue:   'bg-blue-500/10 text-blue-400 border-blue-500/20',
   }
   return (
@@ -49,7 +49,7 @@ function PositioningTab() {
     <div className="space-y-5">
       <Card>
         <SectionLabel>What It Is</SectionLabel>
-        <p className="text-stone-300 text-sm leading-relaxed">
+        <p className="text-stone-700 text-sm leading-relaxed">
           A structured framework for founders and business leaders who want to use AI strategically - not randomly.
         </p>
         <div className="mt-4 space-y-2">
@@ -57,12 +57,12 @@ function PositioningTab() {
             { no: 'Not a prompt guide' },
             { no: 'Not a tool tutorial' },
           ].map(s => (
-            <div key={s.no} className="flex items-center gap-2 text-sm text-stone-400">
+            <div key={s.no} className="flex items-center gap-2 text-sm text-stone-600">
               <span className="text-red-400">-</span> {s.no}
             </div>
           ))}
-          <div className="flex items-start gap-2 text-sm text-stone-200 mt-3">
-            <span className="text-teal-400 mt-0.5">+</span>
+          <div className="flex items-start gap-2 text-sm text-stone-800 mt-3">
+            <span className="text-blue-500 mt-0.5">+</span>
             <span>A system for integrating AI as a thinking partner across the entire business.</span>
           </div>
         </div>
@@ -75,37 +75,37 @@ function PositioningTab() {
             { name: 'Ebook',              price: '$37 AUD',  type: 'One-time', delivery: 'Instant digital via Stripe' },
             { name: 'Ebook + Bundle',     price: '$47 AUD',  type: 'One-time', delivery: 'Templates + prompt vault included' },
           ].map(p => (
-            <div key={p.name} className="flex items-center justify-between py-3 border-b border-stone-800 last:border-0">
+            <div key={p.name} className="flex items-center justify-between py-3 border-b border-stone-200 last:border-0">
               <div>
-                <p className="text-sm font-medium text-white">{p.name}</p>
+                <p className="text-sm font-medium text-[#1A1A1A]">{p.name}</p>
                 <p className="text-xs text-stone-500 mt-0.5">{p.delivery}</p>
               </div>
               <div className="text-right">
-                <p className="text-sm font-semibold text-teal-400">{p.price}</p>
+                <p className="text-sm font-semibold text-blue-500">{p.price}</p>
                 <p className="text-xs text-stone-500">{p.type}</p>
               </div>
             </div>
           ))}
         </div>
-        <div className="mt-3 pt-3 border-t border-stone-800">
+        <div className="mt-3 pt-3 border-t border-stone-200">
           <div className="flex items-center justify-between">
             <p className="text-xs text-stone-500">Website</p>
-            <code className="text-xs text-teal-400 bg-teal-500/10 px-2 py-1 rounded">aicofoundermethod.com</code>
+            <code className="text-xs text-blue-500 bg-blue-500/10 px-2 py-1 rounded">aicofoundermethod.com</code>
           </div>
         </div>
       </Card>
 
       <Card>
         <SectionLabel>Target Audience</SectionLabel>
-        <p className="text-sm text-stone-300 mb-4">Founders, solopreneurs, and business leaders who know AI is important but are using it reactively.</p>
+        <p className="text-sm text-stone-700 mb-4">Founders, solopreneurs, and business leaders who know AI is important but are using it reactively.</p>
         <div className="space-y-2">
           {[
             'Broader than Body Recode - crosses industries',
             'Entry point: anyone building something who wants structured leverage',
             'Uses AI as a tool today, wants to use it as a co-founder',
           ].map(t => (
-            <div key={t} className="flex items-start gap-2 text-sm text-stone-400">
-              <span className="text-stone-600 mt-1 shrink-0">-</span>
+            <div key={t} className="flex items-start gap-2 text-sm text-stone-600">
+              <span className="text-stone-400 mt-1 shrink-0">-</span>
               {t}
             </div>
           ))}
@@ -114,7 +114,7 @@ function PositioningTab() {
 
       <Card>
         <SectionLabel>Platform</SectionLabel>
-        <p className="text-sm text-stone-400 mb-3">
+        <p className="text-sm text-stone-600 mb-3">
           Shared with personal brand initially. @kade_dunstone_ feeds into this product. No separate social account needed at this stage.
         </p>
         <div className="flex gap-2">
@@ -144,15 +144,15 @@ function FunnelTab() {
             <div key={s.step} className="flex items-start gap-4">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                 s.color === 'violet' ? 'bg-violet-500/20 text-violet-400' :
-                s.color === 'teal'   ? 'bg-teal-500/20 text-teal-400' :
+                s.color === 'teal'   ? 'bg-blue-500/20 text-blue-500' :
                 'bg-amber-500/20 text-amber-400'
               }`}>{s.step}</div>
               <div className="flex-1 pt-1">
-                <p className="text-sm font-medium text-white">{s.label}</p>
-                <p className="text-xs text-stone-400 mt-0.5">{s.desc}</p>
+                <p className="text-sm font-medium text-[#1A1A1A]">{s.label}</p>
+                <p className="text-xs text-stone-600 mt-0.5">{s.desc}</p>
               </div>
               {i < steps.length - 1 && (
-                <div className="absolute ml-4 mt-10 w-px h-4 bg-stone-700" />
+                <div className="absolute ml-4 mt-10 w-px h-4 bg-stone-300" />
               )}
             </div>
           ))}
@@ -166,9 +166,9 @@ function FunnelTab() {
             { label: 'Body Recode',          value: 'Ad or content → scorecard → consultation → client ($195-295/week)' },
             { label: 'AI Co-Founder Method', value: 'Content → landing page → direct purchase ($37-47)' },
           ].map(r => (
-            <div key={r.label} className="py-2 border-b border-stone-800 last:border-0">
+            <div key={r.label} className="py-2 border-b border-stone-200 last:border-0">
               <p className="text-xs text-stone-500 mb-1">{r.label}</p>
-              <p className="text-sm text-stone-300">{r.value}</p>
+              <p className="text-sm text-stone-700">{r.value}</p>
             </div>
           ))}
         </div>
@@ -183,11 +183,11 @@ function FunnelTab() {
             { rule: 'Personal brand references both naturally as work Kade is building', allow: true },
             { rule: 'HeyGen videos can serve all three channels with different scripts', allow: true },
           ].map(r => (
-            <div key={r.rule} className="flex items-start gap-2 py-1.5 border-b border-stone-800/60 last:border-0">
-              <span className={`text-sm mt-0.5 shrink-0 ${r.allow ? 'text-teal-400' : 'text-red-400'}`}>
+            <div key={r.rule} className="flex items-start gap-2 py-1.5 border-b border-stone-200/60 last:border-0">
+              <span className={`text-sm mt-0.5 shrink-0 ${r.allow ? 'text-blue-500' : 'text-red-400'}`}>
                 {r.allow ? '+' : '-'}
               </span>
-              <p className="text-sm text-stone-300">{r.rule}</p>
+              <p className="text-sm text-stone-700">{r.rule}</p>
             </div>
           ))}
         </div>
@@ -249,12 +249,12 @@ function ContentTab() {
         <p className="text-xs text-stone-500 mb-4">Post these through @kade_dunstone_ (Pillar 3 - AI and Leverage). Each angle is a standalone post or thread.</p>
         <div className="space-y-3">
           {angles.map((a, i) => (
-            <div key={i} className="border border-stone-800 rounded-lg px-4 py-3">
+            <div key={i} className="border border-stone-200 rounded-lg px-4 py-3">
               <div className="flex items-center gap-2 mb-2">
                 <Tag color={a.color}>{a.type}</Tag>
-                <span className="text-xs text-stone-600">{a.pillar}</span>
+                <span className="text-xs text-stone-400">{a.pillar}</span>
               </div>
-              <p className="text-sm text-stone-200 font-medium">{a.hook}</p>
+              <p className="text-sm text-stone-800 font-medium">{a.hook}</p>
             </div>
           ))}
         </div>
@@ -262,7 +262,7 @@ function ContentTab() {
 
       <Card>
         <SectionLabel>The Core Idea Behind All Content</SectionLabel>
-        <blockquote className="border-l-2 border-teal-500/40 pl-4 text-stone-300 text-sm leading-relaxed">
+        <blockquote className="border-l-2 border-blue-500/40 pl-4 text-stone-700 text-sm leading-relaxed">
           AI does not create value. It distributes structured value. If your thinking isn't structured, AI amplifies noise.
         </blockquote>
         <p className="mt-4 text-xs text-stone-500">
@@ -288,9 +288,9 @@ function AdsTab() {
             { label: 'Goal',           value: 'Direct purchase' },
             { label: 'Why it works',   value: 'Price point ($37-47) allows direct purchase without a funnel or call' },
           ].map(r => (
-            <div key={r.label} className="flex items-start gap-3 py-2 border-b border-stone-800/60 last:border-0">
+            <div key={r.label} className="flex items-start gap-3 py-2 border-b border-stone-200/60 last:border-0">
               <p className="text-xs text-stone-500 w-32 shrink-0 pt-0.5">{r.label}</p>
-              <p className="text-sm text-stone-300">{r.value}</p>
+              <p className="text-sm text-stone-700">{r.value}</p>
             </div>
           ))}
         </div>
@@ -305,9 +305,9 @@ function AdsTab() {
             'At least 10 organic sales to validate the offer',
             'Meta Pixel installed on aicofoundermethod.com',
           ].map((t, i) => (
-            <div key={i} className="flex items-center gap-3 py-2 border-b border-stone-800/60 last:border-0">
-              <div className="w-4 h-4 rounded border border-stone-700 shrink-0" />
-              <p className="text-sm text-stone-300">{t}</p>
+            <div key={i} className="flex items-center gap-3 py-2 border-b border-stone-200/60 last:border-0">
+              <div className="w-4 h-4 rounded border border-stone-300 shrink-0" />
+              <p className="text-sm text-stone-700">{t}</p>
             </div>
           ))}
         </div>
@@ -323,10 +323,10 @@ function TrackingTab() {
         <SectionLabel>Revenue Snapshot</SectionLabel>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-stone-800">
-              <th className="text-left text-[10px] uppercase tracking-widest text-stone-600 py-2 font-medium">Product</th>
-              <th className="text-right text-[10px] uppercase tracking-widest text-stone-600 py-2 font-medium">Price</th>
-              <th className="text-right text-[10px] uppercase tracking-widest text-stone-600 py-2 font-medium">Type</th>
+            <tr className="border-b border-stone-200">
+              <th className="text-left text-[10px] uppercase tracking-widest text-stone-400 py-2 font-medium">Product</th>
+              <th className="text-right text-[10px] uppercase tracking-widest text-stone-400 py-2 font-medium">Price</th>
+              <th className="text-right text-[10px] uppercase tracking-widest text-stone-400 py-2 font-medium">Type</th>
             </tr>
           </thead>
           <tbody>
@@ -338,9 +338,9 @@ function TrackingTab() {
               { product: 'Body Recode Coaching (in-person 2x)', price: '$299/wk', type: 'Recurring' },
               { product: 'Body Recode Coaching (in-person 3x)', price: '$409/wk', type: 'Recurring' },
             ].map(r => (
-              <tr key={r.product} className="border-b border-stone-800/60 last:border-0">
-                <td className="py-3 text-stone-300">{r.product}</td>
-                <td className="py-3 text-right text-teal-400 font-medium">{r.price}</td>
+              <tr key={r.product} className="border-b border-stone-200/60 last:border-0">
+                <td className="py-3 text-stone-700">{r.product}</td>
+                <td className="py-3 text-right text-blue-500 font-medium">{r.price}</td>
                 <td className="py-3 text-right text-stone-500 text-xs">{r.type}</td>
               </tr>
             ))}
@@ -350,10 +350,10 @@ function TrackingTab() {
 
       <Card>
         <SectionLabel>Sales Log</SectionLabel>
-        <p className="text-xs text-stone-600 mt-1">No sales recorded yet. Sales will be logged here once the product is live.</p>
-        <div className="mt-4 p-8 border border-dashed border-stone-800 rounded-lg text-center">
-          <p className="text-sm text-stone-600">No sales yet</p>
-          <p className="text-xs text-stone-700 mt-1">Launch aicofoundermethod.com to start tracking</p>
+        <p className="text-xs text-stone-400 mt-1">No sales recorded yet. Sales will be logged here once the product is live.</p>
+        <div className="mt-4 p-8 border border-dashed border-stone-200 rounded-lg text-center">
+          <p className="text-sm text-stone-400">No sales yet</p>
+          <p className="text-xs text-stone-300 mt-1">Launch aicofoundermethod.com to start tracking</p>
         </div>
       </Card>
     </div>
@@ -374,10 +374,10 @@ export default function AiCoFounderPage() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-6 pt-6 pb-0 border-b border-stone-800">
+      <div className="px-6 pt-6 pb-0 border-b border-stone-200">
         <div className="flex items-center gap-3 mb-1">
-          <h1 className="text-xl font-semibold text-white">AI Co-Founder Method</h1>
-          <span className="text-xs text-stone-500 bg-stone-800 px-2 py-0.5 rounded font-mono">aicofoundermethod.com</span>
+          <h1 className="text-xl font-semibold text-[#1A1A1A]">AI Co-Founder Method</h1>
+          <span className="text-xs text-stone-500 bg-stone-200 px-2 py-0.5 rounded font-mono">aicofoundermethod.com</span>
         </div>
         <p className="text-sm text-stone-500 mb-4">Founder AI framework - ebook $37-47 AUD</p>
 
@@ -388,8 +388,8 @@ export default function AiCoFounderPage() {
               onClick={() => setTab(t.id)}
               className={`px-3.5 py-2 text-sm font-medium rounded-t-lg whitespace-nowrap transition-colors ${
                 tab === t.id
-                  ? 'bg-[#111110] text-white border-t border-l border-r border-stone-800'
-                  : 'text-stone-500 hover:text-stone-300'
+                  ? 'bg-[#FFFFFF] text-[#1A1A1A] border-t border-l border-r border-stone-200'
+                  : 'text-stone-500 hover:text-stone-700'
               }`}
             >
               {t.label}

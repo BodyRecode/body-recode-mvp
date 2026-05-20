@@ -461,28 +461,28 @@ const CLASSES = [
 
 function ExerciseCard({ exercise }: { exercise: Exercise }) {
   return (
-    <div className="bg-[#0c0a09] border border-[#1c1917] rounded-xl px-3 py-3">
-      <p className="text-[14px] font-semibold text-white mb-2">{exercise.name}</p>
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-3">
+      <p className="text-[14px] font-semibold text-[#1A1A1A] mb-2">{exercise.name}</p>
       <div className="space-y-1 mb-2">
         {exercise.cues.map((cue, i) => (
-          <p key={i} className="text-[12px] text-[#a8a29e]">
-            <span className="text-[#14b8a6] mr-1">→</span>{cue}
+          <p key={i} className="text-[12px] text-[#6B6B6B]">
+            <span className="text-[#1B6DFC] mr-1">→</span>{cue}
           </p>
         ))}
       </div>
-      <p className="text-[12px] text-[#57534e] italic">{exercise.why}</p>
+      <p className="text-[12px] text-[#999999] italic">{exercise.why}</p>
     </div>
   )
 }
 
 function ScriptCard({ label, meta, children }: { label: string; meta?: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden mb-4">
-      <div className="flex items-center justify-between px-5 py-3 border-b border-[#1c1917]">
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-4">
+      <div className="flex items-center justify-between px-5 py-3 border-b border-[#E5E5E5]">
         <div className="flex items-center gap-2.5 min-w-0">
-          <span className="w-7 h-[3px] rounded-full bg-[#14b8a6] shrink-0" />
+          <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC] shrink-0" />
           <p
-            className="text-[10px] font-bold text-white uppercase truncate"
+            className="text-[10px] font-bold text-[#1A1A1A] uppercase truncate"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
             {label}
@@ -490,14 +490,14 @@ function ScriptCard({ label, meta, children }: { label: string; meta?: string; c
         </div>
         {meta && (
           <span
-            className="text-[10px] text-[#57534e] shrink-0"
+            className="text-[10px] text-[#999999] shrink-0"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em' }}
           >
             {meta}
           </span>
         )}
       </div>
-      <div className="divide-y divide-[#1c1917]">{children}</div>
+      <div className="divide-y divide-[#E5E5E5]">{children}</div>
     </div>
   )
 }
@@ -505,7 +505,7 @@ function ScriptCard({ label, meta, children }: { label: string; meta?: string; c
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
     <p
-      className="text-[10px] font-bold text-[#57534e] uppercase mb-2"
+      className="text-[10px] font-bold text-[#999999] uppercase mb-2"
       style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
     >
       {children}
@@ -519,7 +519,7 @@ function TagList({ items }: { items: string[] }) {
       {items.map((t, i) => (
         <span
           key={i}
-          className="text-[11px] px-2.5 py-1 rounded-full bg-[#0c0a09] text-[#a8a29e] border border-[#1c1917]"
+          className="text-[11px] px-2.5 py-1 rounded-full bg-[#FFFFFF] text-[#6B6B6B] border border-[#E5E5E5]"
         >
           {t}
         </span>
@@ -552,8 +552,8 @@ export default function GroupClassesPage() {
               onClick={() => setActiveClass(c.id)}
               className={`flex-1 min-w-[120px] py-3 px-4 rounded-xl border text-[13px] font-semibold transition-colors ${
                 active
-                  ? 'border-[#0d2d29] text-[#14b8a6] bg-[rgba(20,184,166,0.08)]'
-                  : 'border-[#1c1917] bg-[#111110] text-[#a8a29e] hover:text-white hover:border-[#292524]'
+                  ? 'border-[#B5CFFC] text-[#1B6DFC] bg-[rgba(20,184,166,0.08)]'
+                  : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4]'
               }`}
             >
               {c.label}
@@ -572,8 +572,8 @@ export default function GroupClassesPage() {
               onClick={() => setActiveDay(day)}
               className={`flex-1 py-2 px-3 rounded-lg border text-[11px] font-semibold transition-colors ${
                 active
-                  ? 'border-[#292524] text-white bg-[#1c1917]'
-                  : 'border-[#1c1917] bg-[#111110] text-[#a8a29e] hover:text-white hover:border-[#292524]'
+                  ? 'border-[#D4D4D4] text-[#1A1A1A] bg-[#E5E5E5]'
+                  : 'border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4]'
               }`}
             >
               Day {day.toUpperCase()}
@@ -587,11 +587,11 @@ export default function GroupClassesPage() {
         <div className="px-5 py-4 space-y-4">
           <div>
             <FieldLabel>Objective</FieldLabel>
-            <p className="text-[14px] text-[#d4cfc9] leading-relaxed">{cls.objective}</p>
+            <p className="text-[14px] text-[#3A3A3A] leading-relaxed">{cls.objective}</p>
           </div>
           <div>
             <FieldLabel>Primary Goal</FieldLabel>
-            <p className="text-[14px] text-[#d4cfc9] leading-relaxed">{cls.goal}</p>
+            <p className="text-[14px] text-[#3A3A3A] leading-relaxed">{cls.goal}</p>
           </div>
           <div>
             <FieldLabel>Target Member</FieldLabel>
@@ -605,18 +605,18 @@ export default function GroupClassesPage() {
         {cls.sections.map((section, i) => (
           <div key={i} className="px-5 py-4">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-[14px] font-bold text-white">{section.title}</p>
+              <p className="text-[14px] font-bold text-[#1A1A1A]">{section.title}</p>
               <span
-                className="text-[11px] text-[#57534e]"
+                className="text-[11px] text-[#999999]"
                 style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
               >
                 {section.time}
               </span>
             </div>
-            <p className="text-[12px] text-[#57534e] mb-3">{section.objective}</p>
+            <p className="text-[12px] text-[#999999] mb-3">{section.objective}</p>
 
             {'format' in section && section.format && (
-              <p className="text-[12px] text-[#14b8a6] mb-3">{section.format}</p>
+              <p className="text-[12px] text-[#1B6DFC] mb-3">{section.format}</p>
             )}
 
             <div className="space-y-2 mb-3">
@@ -640,8 +640,8 @@ export default function GroupClassesPage() {
         <div className="px-5 py-4 space-y-2">
           {cls.principles.map((p, i) => (
             <div key={i} className="flex items-start gap-2">
-              <div className="w-1 h-1 rounded-full bg-[#57534e] mt-2 shrink-0" />
-              <p className="text-[14px] text-[#d4cfc9]">{p}</p>
+              <div className="w-1 h-1 rounded-full bg-[#999999] mt-2 shrink-0" />
+              <p className="text-[14px] text-[#3A3A3A]">{p}</p>
             </div>
           ))}
         </div>
@@ -651,12 +651,12 @@ export default function GroupClassesPage() {
       <ScriptCard label="Primary Cues">
         <div className="px-5 py-4 space-y-2">
           {cls.cues.map((c, i) => (
-            <p key={i} className="text-[14px] text-[#d4cfc9] italic">{c}</p>
+            <p key={i} className="text-[14px] text-[#3A3A3A] italic">{c}</p>
           ))}
         </div>
         <div className="px-5 py-4">
           <FieldLabel>Member Experience Goal</FieldLabel>
-          <p className="text-[14px] text-[#14b8a6] font-medium italic">{cls.memberExperience}</p>
+          <p className="text-[14px] text-[#1B6DFC] font-medium italic">{cls.memberExperience}</p>
         </div>
       </ScriptCard>
     </div>

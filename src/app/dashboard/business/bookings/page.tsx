@@ -12,7 +12,7 @@ const typeLabel: Record<string, string> = {
 
 const statusConfig: Record<string, { label: string; icon: typeof Clock; colour: string }> = {
   scheduled: { label: 'Scheduled', icon: Clock, colour: 'text-amber-400' },
-  completed: { label: 'Completed', icon: CheckCircle2, colour: 'text-teal-400' },
+  completed: { label: 'Completed', icon: CheckCircle2, colour: 'text-blue-500' },
   cancelled: { label: 'Cancelled', icon: XCircle, colour: 'text-stone-500' },
   no_show: { label: 'No Show', icon: AlertCircle, colour: 'text-red-400' },
 }
@@ -42,7 +42,7 @@ export default async function BookingsPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-semibold mb-1">Bookings</h1>
-          <p className="text-stone-400 text-sm">
+          <p className="text-stone-600 text-sm">
             {upcoming?.length || 0} upcoming · {past?.length || 0} past
           </p>
         </div>
@@ -65,10 +65,10 @@ export default async function BookingsPage() {
               return (
                 <div
                   key={booking.id}
-                  className="bg-stone-900 border border-stone-800 rounded-xl p-4 flex items-center gap-4"
+                  className="bg-stone-100 border border-stone-200 rounded-xl p-4 flex items-center gap-4"
                 >
                   <div className="shrink-0 w-14 text-center">
-                    <p className="text-lg font-bold text-white leading-none">
+                    <p className="text-lg font-bold text-[#1A1A1A] leading-none">
                       {new Date(booking.scheduled_at).toLocaleDateString('en-AU', { day: 'numeric' })}
                     </p>
                     <p className="text-xs text-stone-500 uppercase">
@@ -76,15 +76,15 @@ export default async function BookingsPage() {
                     </p>
                   </div>
 
-                  <div className="w-px h-10 bg-stone-800 shrink-0" />
+                  <div className="w-px h-10 bg-stone-200 shrink-0" />
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-xs font-semibold text-teal-400 uppercase tracking-wider">
+                      <span className="text-xs font-semibold text-blue-500 uppercase tracking-wider">
                         {typeLabel[booking.type]}
                       </span>
-                      <span className="text-stone-700">·</span>
-                      <span className="text-xs text-stone-400">
+                      <span className="text-stone-300">·</span>
+                      <span className="text-xs text-stone-600">
                         {new Date(booking.scheduled_at).toLocaleTimeString('en-AU', {
                           hour: 'numeric',
                           minute: '2-digit',
@@ -94,14 +94,14 @@ export default async function BookingsPage() {
                       </span>
                       {booking.duration_minutes && (
                         <>
-                          <span className="text-stone-700">·</span>
+                          <span className="text-stone-300">·</span>
                           <span className="text-xs text-stone-500">{booking.duration_minutes}min</span>
                         </>
                       )}
                     </div>
                     <Link
                       href={contactHref}
-                      className="text-sm font-medium text-white hover:text-teal-400 transition-colors truncate block"
+                      className="text-sm font-medium text-[#1A1A1A] hover:text-blue-500 transition-colors truncate block"
                     >
                       {Array.isArray(contact) ? contact[0]?.name : (contact as { name: string } | null)?.name ?? 'Unknown'}
                     </Link>
@@ -109,7 +109,7 @@ export default async function BookingsPage() {
                       <a
                         href={booking.meeting_link}
                         target="_blank"
-                        className="text-xs text-stone-500 hover:text-stone-300 transition-colors truncate block mt-0.5"
+                        className="text-xs text-stone-500 hover:text-stone-700 transition-colors truncate block mt-0.5"
                       >
                         {booking.meeting_link}
                       </a>
@@ -122,8 +122,8 @@ export default async function BookingsPage() {
             })}
           </div>
         ) : (
-          <div className="bg-stone-900 border border-dashed border-stone-800 rounded-xl p-8 text-center">
-            <Calendar size={20} className="text-stone-600 mx-auto mb-2" />
+          <div className="bg-stone-100 border border-dashed border-stone-200 rounded-xl p-8 text-center">
+            <Calendar size={20} className="text-stone-400 mx-auto mb-2" />
             <p className="text-stone-500 text-sm">No upcoming bookings</p>
           </div>
         )}
@@ -144,18 +144,18 @@ export default async function BookingsPage() {
               return (
                 <div
                   key={booking.id}
-                  className="bg-stone-900/60 border border-stone-800 rounded-xl p-4 flex items-center gap-4 opacity-70"
+                  className="bg-stone-100/60 border border-stone-200 rounded-xl p-4 flex items-center gap-4 opacity-70"
                 >
                   <div className="shrink-0 w-14 text-center">
-                    <p className="text-base font-bold text-stone-400 leading-none">
+                    <p className="text-base font-bold text-stone-600 leading-none">
                       {new Date(booking.scheduled_at).toLocaleDateString('en-AU', { day: 'numeric' })}
                     </p>
-                    <p className="text-xs text-stone-600 uppercase">
+                    <p className="text-xs text-stone-400 uppercase">
                       {new Date(booking.scheduled_at).toLocaleDateString('en-AU', { month: 'short' })}
                     </p>
                   </div>
 
-                  <div className="w-px h-10 bg-stone-800 shrink-0" />
+                  <div className="w-px h-10 bg-stone-200 shrink-0" />
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
@@ -165,7 +165,7 @@ export default async function BookingsPage() {
                     </div>
                     <Link
                       href={contactHref}
-                      className="text-sm font-medium text-stone-400 hover:text-teal-400 transition-colors truncate block"
+                      className="text-sm font-medium text-stone-600 hover:text-blue-500 transition-colors truncate block"
                     >
                       {Array.isArray(contact) ? contact[0]?.name : (contact as { name: string } | null)?.name ?? 'Unknown'}
                     </Link>

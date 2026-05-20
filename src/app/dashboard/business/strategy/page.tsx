@@ -65,14 +65,14 @@ function isAicmPost(p: { title?: string; notes?: string }): boolean {
 const AICM_BADGE_CLASS = 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30'
 
 const BRAND_STYLES: Record<Brand, { label: string; handle: string; dot: string; filter: string }> = {
-  body_recode:    { label: 'Body Recode',    handle: 'body_recode_',       dot: 'bg-teal-400',   filter: 'bg-teal-500/10 text-teal-400 border-teal-500/30' },
+  body_recode:    { label: 'Body Recode',    handle: 'body_recode_',       dot: 'bg-blue-500',   filter: 'bg-blue-500/10 text-blue-500 border-blue-500/30' },
   personal_brand: { label: 'Personal Brand', handle: 'kade_dunstone_',     dot: 'bg-violet-400', filter: 'bg-violet-500/10 text-violet-400 border-violet-500/30' },
   ai_cofounder:   { label: 'AI Co-Founder',  handle: 'aicofoundermethod.com', dot: 'bg-amber-400',  filter: 'bg-amber-500/10 text-amber-400 border-amber-500/30' },
   studio_of_ten:  { label: 'Studio of Ten',  handle: 'studiooften.com',    dot: 'bg-blue-400',   filter: 'bg-blue-500/10 text-blue-400 border-blue-500/30' },
 }
 
 const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: string; border: string }> = {
-  authority:   { label: 'Authority',    color: '#14b8a6', bg: 'rgba(20,184,166,0.12)',  border: 'rgba(20,184,166,0.3)' },
+  authority:   { label: 'Authority',    color: '#1B6DFC', bg: 'rgba(20,184,166,0.12)',  border: 'rgba(20,184,166,0.3)' },
   pattern:     { label: 'Pattern',      color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.3)' },
   contrarian:  { label: 'Contrarian',   color: '#fb923c', bg: 'rgba(251,146,60,0.12)',  border: 'rgba(251,146,60,0.3)' },
   coach:       { label: 'Coach',        color: '#a78bfa', bg: 'rgba(167,139,250,0.12)', border: 'rgba(167,139,250,0.3)' },
@@ -84,10 +84,10 @@ const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: str
 }
 
 const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
-  prelaunch: { label: 'Pre-Launch',    color: 'text-stone-400' },
+  prelaunch: { label: 'Pre-Launch',    color: 'text-stone-600' },
   ads:       { label: 'Ads Launch',    color: 'text-blue-400' },
   optimise:  { label: 'Optimise',      color: 'text-amber-400' },
-  scale:     { label: 'Scale',         color: 'text-teal-400' },
+  scale:     { label: 'Scale',         color: 'text-blue-500' },
 }
 
 // Phase date ranges for calendar highlighting
@@ -95,7 +95,7 @@ const PHASE_RANGES: { phase: CampaignPhase; start: string; end: string; topBorde
   { phase: 'prelaunch', start: '2026-04-08', end: '2026-04-21', topBorder: 'border-t-2 border-t-stone-500/60' },
   { phase: 'ads',       start: '2026-04-22', end: '2026-05-06', topBorder: 'border-t-2 border-t-blue-500/60' },
   { phase: 'optimise',  start: '2026-05-07', end: '2026-05-23', topBorder: 'border-t-2 border-t-amber-500/60' },
-  { phase: 'scale',     start: '2026-05-24', end: '2026-12-31', topBorder: 'border-t-2 border-t-teal-500/60' },
+  { phase: 'scale',     start: '2026-05-24', end: '2026-12-31', topBorder: 'border-t-2 border-t-blue-500/60' },
 ]
 
 function getPhaseForDate(ds: string): string {
@@ -226,13 +226,13 @@ function ContentCalendar() {
       <div className="flex items-center gap-2 flex-wrap">
         <button
           onClick={() => setBrandFilter('all')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === 'all' ? 'bg-stone-700 text-white border-stone-600' : 'text-stone-500 border-stone-800 hover:text-stone-300'}`}
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === 'all' ? 'bg-stone-300 text-[#1A1A1A] border-stone-400' : 'text-stone-500 border-stone-200 hover:text-stone-700'}`}
         >All brands</button>
         {(Object.entries(BRAND_STYLES) as [Brand, typeof BRAND_STYLES[Brand]][]).map(([k, s]) => (
           <button
             key={k}
             onClick={() => setBrandFilter(k)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === k ? s.filter : 'text-stone-500 border-stone-800 hover:text-stone-300'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === k ? s.filter : 'text-stone-500 border-stone-200 hover:text-stone-700'}`}
           >
             <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${s.dot}`} />
             {s.label}
@@ -244,13 +244,13 @@ function ContentCalendar() {
       <div className="flex items-center gap-2 flex-wrap">
         <button
           onClick={() => setPlatformFilter('all')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === 'all' ? 'bg-stone-700 text-white border-stone-600' : 'text-stone-500 border-stone-800 hover:text-stone-300'}`}
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === 'all' ? 'bg-stone-300 text-[#1A1A1A] border-stone-400' : 'text-stone-500 border-stone-200 hover:text-stone-700'}`}
         >All platforms</button>
         {(Object.entries(platformChipStyles) as [Platform, typeof platformChipStyles[Platform]][]).map(([k, s]) => (
           <button
             key={k}
             onClick={() => setPlatformFilter(k)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === k ? s.filter : 'text-stone-500 border-stone-800 hover:text-stone-300'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === k ? s.filter : 'text-stone-500 border-stone-200 hover:text-stone-700'}`}
           >
             <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${s.dot}`} />
             {s.label}
@@ -276,22 +276,22 @@ function ContentCalendar() {
       {/* Calendar */}
       <Card>
         <div className="flex items-center justify-between mb-4">
-          <button onClick={prevMonth} className="p-1.5 text-stone-500 hover:text-stone-300 transition-colors text-lg">‹</button>
-          <p className="text-sm font-semibold text-white">{monthName}</p>
-          <button onClick={nextMonth} className="p-1.5 text-stone-500 hover:text-stone-300 transition-colors text-lg">›</button>
+          <button onClick={prevMonth} className="p-1.5 text-stone-500 hover:text-stone-700 transition-colors text-lg">‹</button>
+          <p className="text-sm font-semibold text-[#1A1A1A]">{monthName}</p>
+          <button onClick={nextMonth} className="p-1.5 text-stone-500 hover:text-stone-700 transition-colors text-lg">›</button>
         </div>
 
         {/* Phase legend strip */}
-        <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 pb-3 border-b border-stone-800">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 pb-3 border-b border-stone-200">
           {PHASE_RANGES.map(r => {
             const style = PHASE_STYLES[r.phase]
             const start = new Date(r.start + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
             const end = r.phase === 'scale' ? 'onwards' : new Date(r.end + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
             return (
               <div key={r.phase} className="flex items-center gap-1.5">
-                <div className={`w-2.5 h-2.5 rounded-sm border-t-2 ${r.topBorder.replace('border-t-2 ', '')} bg-stone-800`} />
+                <div className={`w-2.5 h-2.5 rounded-sm border-t-2 ${r.topBorder.replace('border-t-2 ', '')} bg-stone-200`} />
                 <span className={`text-xs ${style.color}`}>{style.label}</span>
-                <span className="text-xs text-stone-700">{start}{r.phase !== 'scale' ? ` – ${end}` : '+'}</span>
+                <span className="text-xs text-stone-300">{start}{r.phase !== 'scale' ? ` – ${end}` : '+'}</span>
               </div>
             )
           })}
@@ -300,15 +300,15 @@ function ContentCalendar() {
         {/* Day headers */}
         <div className="grid grid-cols-7 mb-1">
           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
-            <div key={d} className="text-center text-[10px] font-semibold text-stone-600 uppercase tracking-wider py-1">{d}</div>
+            <div key={d} className="text-center text-[10px] font-semibold text-stone-400 uppercase tracking-wider py-1">{d}</div>
           ))}
         </div>
 
         {/* Days grid */}
-        <div className="grid grid-cols-7 gap-px bg-stone-800">
+        <div className="grid grid-cols-7 gap-px bg-stone-200">
           {/* Empty cells for first day - Monday-first: Sun(0)→6, Mon(1)→0, Tue(2)→1... */}
           {Array.from({ length: (firstDay + 6) % 7 }).map((_, i) => (
-            <div key={`empty-${i}`} className="bg-stone-950 min-h-[80px]" />
+            <div key={`empty-${i}`} className="bg-stone-50 min-h-[80px]" />
           ))}
           {Array.from({ length: daysInMonth }).map((_, i) => {
             const day = i + 1
@@ -320,9 +320,9 @@ function ContentCalendar() {
               <div
                 key={day}
                 onClick={() => { const newDs = isSelected ? null : ds; setSelected(newDs); const firstPost = newDs ? posts.filter(p => p.date === newDs)[0] ?? null : null; setActivePost(firstPost) }}
-                className={`bg-stone-950 min-h-[80px] p-1.5 cursor-pointer transition-colors hover:bg-stone-900 ${getPhaseForDate(ds)} ${isSelected ? 'ring-1 ring-teal-500 ring-inset' : ''}`}
+                className={`bg-stone-50 min-h-[80px] p-1.5 cursor-pointer transition-colors hover:bg-stone-100 ${getPhaseForDate(ds)} ${isSelected ? 'ring-1 ring-blue-500 ring-inset' : ''}`}
               >
-                <div className={`text-xs font-semibold mb-1 w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'bg-teal-500 text-stone-950' : 'text-stone-500'}`}>
+                <div className={`text-xs font-semibold mb-1 w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'bg-blue-500 text-stone-50' : 'text-stone-500'}`}>
                   {day}
                 </div>
                 <div className="space-y-0.5">
@@ -334,14 +334,14 @@ function ContentCalendar() {
                       <div key={p.id} className={`text-[10px] font-medium px-1 py-0.5 rounded truncate flex items-center gap-1 ${p.scheduled ? 'opacity-50 line-through decoration-1' : ''}`} style={{ color: s.color, background: s.bg }}>
                         <span className={`inline-block w-1 h-1 rounded-full shrink-0 ${bd.dot}`} />
                         {isAicmPost(p) && <span className="inline-block w-1 h-1 rounded-full shrink-0 bg-indigo-400" />}
-                        {p.scheduled && <span className="text-teal-400 shrink-0">✓</span>}
+                        {p.scheduled && <span className="text-blue-500 shrink-0">✓</span>}
                         <span className="opacity-70 mr-0.5">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type as PostType] ?? '07:00'}</span>
                         <span className="truncate">{p.title}</span>
                         <span className={`shrink-0 text-[9px] px-1 rounded border ${pl.badge}`}>{pl.label}</span>
                       </div>
                     )
                   })}
-                  {dayPosts.length > 3 && <div className="text-[10px] text-stone-600">+{dayPosts.length - 3} more</div>}
+                  {dayPosts.length > 3 && <div className="text-[10px] text-stone-400">+{dayPosts.length - 3} more</div>}
                 </div>
               </div>
             )
@@ -353,18 +353,18 @@ function ContentCalendar() {
       {selected && (
         <Card>
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold text-white">
+            <p className="text-sm font-semibold text-[#1A1A1A]">
               {new Date(selected + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
             <button
               onClick={() => { setForm({ type: 'authority', phase: 'prelaunch', brand: brandFilter !== 'all' ? brandFilter : 'body_recode', platform: 'instagram', date: selected, time: POST_TYPE_DEFAULT_TIMES['authority'] }); setEditId(null); setShowForm(true) }}
-              className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium"
+              className="text-xs text-blue-500 hover:text-blue-300 transition-colors font-medium"
             >
               + Add post
             </button>
           </div>
           {filteredSelectedPosts.length === 0 ? (
-            <p className="text-sm text-stone-600">Nothing scheduled. Click &ldquo;+ Add post&rdquo; to schedule something.</p>
+            <p className="text-sm text-stone-400">Nothing scheduled. Click &ldquo;+ Add post&rdquo; to schedule something.</p>
           ) : (
             <div className="space-y-2">
               {filteredSelectedPosts.map(p => {
@@ -381,16 +381,16 @@ function ContentCalendar() {
                         {(() => { const pl = PLATFORM_STYLES[(p.platform ?? 'instagram') as Platform]; return <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${pl.badge}`}>{pl.label}</span> })()}
                       </div>
                       <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium text-white">{p.title}</p>
-                        <span className="text-xs font-semibold text-teal-400 bg-teal-500/10 border border-teal-500/20 px-2 py-0.5 rounded-full shrink-0">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type]}</span>
+                        <p className="text-sm font-medium text-[#1A1A1A]">{p.title}</p>
+                        <span className="text-xs font-semibold text-blue-500 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full shrink-0">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type]}</span>
                       </div>
-                      {p.caption && <p className="text-xs text-stone-400 mt-1 line-clamp-2">{p.caption}</p>}
+                      {p.caption && <p className="text-xs text-stone-600 mt-1 line-clamp-2">{p.caption}</p>}
                     </div>
                     <div className="flex items-center gap-1 shrink-0" onClick={e => e.stopPropagation()}>
-                      <button onClick={() => toggleScheduled(p)} className={`text-xs transition-colors px-2 py-1 rounded border font-medium ${p.scheduled ? 'bg-teal-500/15 text-teal-400 border-teal-500/40' : 'text-stone-500 border-stone-700 hover:text-teal-400 hover:border-teal-500/30'}`} title={p.scheduled ? 'Mark as unscheduled' : 'Mark as scheduled'}>
+                      <button onClick={() => toggleScheduled(p)} className={`text-xs transition-colors px-2 py-1 rounded border font-medium ${p.scheduled ? 'bg-blue-500/15 text-blue-500 border-blue-500/40' : 'text-stone-500 border-stone-300 hover:text-blue-500 hover:border-blue-500/30'}`} title={p.scheduled ? 'Mark as unscheduled' : 'Mark as scheduled'}>
                         {p.scheduled ? '✓ Scheduled' : 'Schedule'}
                       </button>
-                      <button onClick={() => startEdit(p)} className="text-xs text-stone-500 hover:text-stone-300 transition-colors px-2 py-1">Edit</button>
+                      <button onClick={() => startEdit(p)} className="text-xs text-stone-500 hover:text-stone-700 transition-colors px-2 py-1">Edit</button>
                       <button onClick={() => deletePost(p.id)} className="text-xs text-stone-500 hover:text-red-400 transition-colors px-2 py-1">Delete</button>
                     </div>
                   </div>
@@ -420,14 +420,14 @@ function ContentCalendar() {
                   <span className="text-xs font-bold px-2 py-0.5 rounded border" style={{ color: s.color, background: s.bg, borderColor: s.border }}>{s.label}</span>
                   <span className={`text-xs font-medium ${ph.color}`}>{ph.label}</span>
                   {(() => { const pl = PLATFORM_STYLES[(activePost.platform ?? 'instagram') as Platform]; return <span className={`text-xs px-2 py-0.5 rounded border font-medium ${pl.badge}`}>{pl.label}</span> })()}
-                  <span className="text-xs text-stone-600">{dateLabel}</span>
-                  <span className="text-xs font-semibold text-teal-400 bg-teal-500/10 border border-teal-500/20 px-2 py-0.5 rounded-full">{activePost.time ?? POST_TYPE_DEFAULT_TIMES[activePost.type]}</span>
+                  <span className="text-xs text-stone-400">{dateLabel}</span>
+                  <span className="text-xs font-semibold text-blue-500 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full">{activePost.time ?? POST_TYPE_DEFAULT_TIMES[activePost.type]}</span>
                 </div>
-                <p className="text-base font-semibold text-white">{activePost.title}</p>
+                <p className="text-base font-semibold text-[#1A1A1A]">{activePost.title}</p>
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={() => { setActivePost(null); startEdit(activePost) }} className="text-xs text-stone-500 hover:text-stone-300 transition-colors">Edit</button>
-                <button onClick={() => setActivePost(null)} className="text-stone-500 hover:text-white transition-colors text-xl leading-none">×</button>
+                <button onClick={() => { setActivePost(null); startEdit(activePost) }} className="text-xs text-stone-500 hover:text-stone-700 transition-colors">Edit</button>
+                <button onClick={() => setActivePost(null)} className="text-stone-500 hover:text-[#1A1A1A] transition-colors text-xl leading-none">×</button>
               </div>
             </div>
 
@@ -445,11 +445,11 @@ function ContentCalendar() {
                       <a
                         href={url}
                         download={`${activePost.title.replace(/\s+/g, '-').toLowerCase()}-slide-${i + 1}.png`}
-                        className="flex items-center justify-center gap-1.5 w-full mb-1.5 px-3 py-2 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-lg text-xs font-medium text-stone-300 transition-colors"
+                        className="flex items-center justify-center gap-1.5 w-full mb-1.5 px-3 py-2 bg-stone-200 hover:bg-stone-300 border border-stone-300 rounded-lg text-xs font-medium text-stone-700 transition-colors"
                       >
                         ↓ {CAROUSEL_LABELS[i] ?? `Slide ${i + 1}`}
                       </a>
-                      <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '180px' }}>
+                      <div className="rounded-xl overflow-hidden bg-stone-50 border border-stone-200" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '180px' }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={url} alt={`Slide ${i + 1}`} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
@@ -462,12 +462,12 @@ function ContentCalendar() {
                   <a
                     href={graphicUrls[0]}
                     download={`${activePost.title.replace(/\s+/g, '-').toLowerCase()}.png`}
-                    className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-lg text-xs font-medium text-stone-300 transition-colors"
+                    className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-stone-200 hover:bg-stone-300 border border-stone-300 rounded-lg text-xs font-medium text-stone-700 transition-colors"
                   >
                     ↓ Download graphic
                   </a>
                 )}
-                <div className="rounded-xl overflow-hidden bg-stone-950 border border-stone-800" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '280px' }}>
+                <div className="rounded-xl overflow-hidden bg-stone-50 border border-stone-200" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '280px' }}>
                   {isSingleGraphic ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={graphicUrls[0]} alt={activePost.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -476,10 +476,10 @@ function ContentCalendar() {
                       {activePost.graphic ? (
                         <>
                           <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">Graphic Brief</p>
-                          <p className="text-sm text-stone-400 leading-relaxed">{activePost.graphic}</p>
+                          <p className="text-sm text-stone-600 leading-relaxed">{activePost.graphic}</p>
                         </>
                       ) : (
-                        <p className="text-sm text-stone-700">No graphic set</p>
+                        <p className="text-sm text-stone-300">No graphic set</p>
                       )}
                     </div>
                   )}
@@ -499,9 +499,9 @@ function ContentCalendar() {
                         <span className="text-xs font-bold">@</span>
                       </div>
                       <div>
-                        <p className="text-xs font-semibold text-white">{bd.handle}</p>
+                        <p className="text-xs font-semibold text-[#1A1A1A]">{bd.handle}</p>
                         <div className="flex items-center gap-1.5">
-                          <p className="text-xs text-stone-600">{bd.label}</p>
+                          <p className="text-xs text-stone-400">{bd.label}</p>
                           {isAicmPost(activePost) && <span className={`text-[9px] px-1.5 py-0.5 rounded border font-medium ${AICM_BADGE_CLASS}`}>AICM</span>}
                         </div>
                       </div>
@@ -510,28 +510,28 @@ function ContentCalendar() {
                 })()}
 
                 {activePost.caption ? (
-                  <div className="bg-stone-950 border border-stone-800 rounded-xl p-4">
+                  <div className="bg-stone-50 border border-stone-200 rounded-xl p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-xs font-bold text-stone-600 uppercase tracking-widest">Caption</p>
+                      <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Caption</p>
                       <button
                         onClick={() => {
                           const full = [activePost.caption, activePost.notes].filter(Boolean).join('\n\n')
                           navigator.clipboard.writeText(full)
                         }}
-                        className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium"
+                        className="text-xs text-blue-500 hover:text-blue-300 transition-colors font-medium"
                       >Copy all</button>
                     </div>
-                    <p className="text-sm text-stone-200 leading-relaxed whitespace-pre-line">{activePost.caption}</p>
+                    <p className="text-sm text-stone-800 leading-relaxed whitespace-pre-line">{activePost.caption}</p>
                     {activePost.notes && (
-                      <p className="text-xs text-stone-500 mt-3 pt-3 border-t border-stone-800 leading-relaxed">{activePost.notes}</p>
+                      <p className="text-xs text-stone-500 mt-3 pt-3 border-t border-stone-200 leading-relaxed">{activePost.notes}</p>
                     )}
                   </div>
                 ) : (
-                  <div className="bg-stone-950 border border-stone-700/40 border-dashed rounded-xl p-5 text-center">
-                    <p className="text-sm text-stone-600 mb-1">No caption written yet.</p>
+                  <div className="bg-stone-50 border border-stone-300/40 border-dashed rounded-xl p-5 text-center">
+                    <p className="text-sm text-stone-400 mb-1">No caption written yet.</p>
                     <button
                       onClick={() => { setActivePost(null); startEdit(activePost) }}
-                      className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
+                      className="text-xs text-blue-500 hover:text-blue-300 transition-colors"
                     >Add caption →</button>
                   </div>
                 )}
@@ -544,13 +544,13 @@ function ContentCalendar() {
       {/* Add/Edit form */}
       {showForm && (
         <Card>
-          <p className="text-sm font-semibold text-white mb-4">{editId ? 'Edit Post' : 'Schedule Post'}</p>
+          <p className="text-sm font-semibold text-[#1A1A1A] mb-4">{editId ? 'Edit Post' : 'Schedule Post'}</p>
           <div className="space-y-3">
             <div className="grid grid-cols-5 gap-3">
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Brand</label>
                 <select value={form.brand ?? 'body_recode'} onChange={e => setForm(f => ({ ...f, brand: e.target.value as Brand }))}
-                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500">
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500">
                   {(Object.entries(BRAND_STYLES) as [Brand, typeof BRAND_STYLES[Brand]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
                   ))}
@@ -559,7 +559,7 @@ function ContentCalendar() {
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Platform</label>
                 <select value={form.platform ?? 'instagram'} onChange={e => setForm(f => ({ ...f, platform: e.target.value as Platform }))}
-                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500">
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500">
                   {(Object.entries(PLATFORM_STYLES) as [Platform, typeof PLATFORM_STYLES[Platform]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
                   ))}
@@ -568,12 +568,12 @@ function ContentCalendar() {
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Date</label>
                 <input type="date" value={form.date ?? ''} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500" />
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500" />
               </div>
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Post Time</label>
                 <input type="time" value={form.time ?? '07:00'} onChange={e => setForm(f => ({ ...f, time: e.target.value }))}
-                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500" />
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500" />
               </div>
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Content Type</label>
@@ -581,7 +581,7 @@ function ContentCalendar() {
                   const t = e.target.value as PostType
                   setForm(f => ({ ...f, type: t, time: f.time && f.time !== POST_TYPE_DEFAULT_TIMES[f.type as PostType] ? f.time : POST_TYPE_DEFAULT_TIMES[t] }))
                 }}
-                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500">
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500">
                   {(Object.entries(POST_TYPE_STYLES) as [PostType, typeof POST_TYPE_STYLES[PostType]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
                   ))}
@@ -592,7 +592,7 @@ function ContentCalendar() {
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Campaign Phase</label>
                 <select value={form.phase ?? 'prelaunch'} onChange={e => setForm(f => ({ ...f, phase: e.target.value as CampaignPhase }))}
-                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500">
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500">
                   {(Object.entries(PHASE_STYLES) as [CampaignPhase, typeof PHASE_STYLES[CampaignPhase]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
                   ))}
@@ -602,34 +602,34 @@ function ContentCalendar() {
                 <label className="block text-xs text-stone-500 mb-1">Post Title</label>
                 <input type="text" value={form.title ?? ''} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
                   placeholder="e.g. Three body states carousel"
-                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500" />
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500" />
               </div>
             </div>
             <div>
               <label className="block text-xs text-stone-500 mb-1">Graphic Brief</label>
               <input type="text" value={form.graphic ?? ''} onChange={e => setForm(f => ({ ...f, graphic: e.target.value }))}
                 placeholder="e.g. Insight card. Label: The Real Problem. Text: Your body isn't broken."
-                className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500" />
+                className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500" />
             </div>
             <div>
               <label className="block text-xs text-stone-500 mb-1">Caption</label>
               <textarea rows={6} value={form.caption ?? ''} onChange={e => setForm(f => ({ ...f, caption: e.target.value }))}
                 placeholder="Write the full post caption here..."
-                className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500 resize-none" />
+                className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none" />
             </div>
             <div>
               <label className="block text-xs text-stone-500 mb-1">Hashtags (optional)</label>
               <input type="text" value={form.notes ?? ''} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
                 placeholder="#bodyrecode #bodystate ..."
-                className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500" />
+                className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500" />
             </div>
             <div className="flex items-center gap-2">
               <button onClick={savePost} disabled={!form.date || !form.title || saving}
-                className="bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
+                className="bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
                 {saving ? 'Saving...' : editId ? 'Save Changes' : 'Schedule Post'}
               </button>
               <button onClick={() => { setShowForm(false); setEditId(null); setForm({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', platform: 'instagram', time: POST_TYPE_DEFAULT_TIMES['authority'] }) }}
-                className="text-xs text-stone-500 hover:text-stone-300 transition-colors">
+                className="text-xs text-stone-500 hover:text-stone-700 transition-colors">
                 Cancel
               </button>
             </div>
@@ -642,7 +642,7 @@ function ContentCalendar() {
 
 function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`bg-stone-900 border border-stone-800 rounded-xl p-5 ${className}`}>
+    <div className={`bg-stone-100 border border-stone-200 rounded-xl p-5 ${className}`}>
       {children}
     </div>
   )
@@ -655,20 +655,20 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 function Heading({ children }: { children: React.ReactNode }) {
-  return <p className="text-sm font-semibold text-white mb-1">{children}</p>
+  return <p className="text-sm font-semibold text-[#1A1A1A] mb-1">{children}</p>
 }
 
 function Body({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <p className={`text-sm text-stone-400 leading-relaxed${className ? ` ${className}` : ''}`}>{children}</p>
+  return <p className={`text-sm text-stone-600 leading-relaxed${className ? ` ${className}` : ''}`}>{children}</p>
 }
 
 function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 'teal' | 'amber' | 'red' | 'violet' | 'stone' }) {
   const colors = {
-    teal: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
+    teal: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
     amber: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
     red: 'bg-red-500/10 text-red-400 border-red-500/20',
     violet: 'bg-violet-500/10 text-violet-400 border-violet-500/20',
-    stone: 'bg-stone-800 text-stone-400 border-stone-700',
+    stone: 'bg-stone-200 text-stone-600 border-stone-300',
   }
   return (
     <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${colors[color]}`}>{children}</span>
@@ -679,8 +679,8 @@ function BulletList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-1.5">
       {items.map((item, i) => (
-        <li key={i} className="flex items-start gap-2 text-sm text-stone-400">
-          <span className="text-teal-500 mt-0.5 shrink-0">-</span>
+        <li key={i} className="flex items-start gap-2 text-sm text-stone-600">
+          <span className="text-blue-500 mt-0.5 shrink-0">-</span>
           <span>{item}</span>
         </li>
       ))}
@@ -694,21 +694,21 @@ function ScriptBlock({ number, angle, hook, script, duration }: { number: number
     <Card>
       <div className="flex items-start justify-between gap-4 mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-full bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-xs font-bold text-teal-400 shrink-0">{number}</div>
+          <div className="w-7 h-7 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-500 shrink-0">{number}</div>
           <div>
-            <p className="text-sm font-semibold text-white">{angle}</p>
+            <p className="text-sm font-semibold text-[#1A1A1A]">{angle}</p>
             <p className="text-xs text-stone-500 mt-0.5 italic">&ldquo;{hook}&rdquo;</p>
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <Tag color="stone">{duration}</Tag>
-          <button onClick={() => setExpanded(e => !e)} className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium">
+          <button onClick={() => setExpanded(e => !e)} className="text-xs text-blue-500 hover:text-blue-300 transition-colors font-medium">
             {expanded ? 'Hide' : 'View script'}
           </button>
         </div>
       </div>
       {expanded && (
-        <div className="bg-stone-950 border border-stone-800 rounded-lg p-4 text-sm text-stone-300 leading-relaxed italic">
+        <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 text-sm text-stone-700 leading-relaxed italic">
           &ldquo;{script}&rdquo;
         </div>
       )}
@@ -724,32 +724,32 @@ function PostBlock({ number, title, day, format, graphic, caption, hashtags }: {
     <Card>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
-          <div className="w-7 h-7 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-xs font-bold text-stone-400 shrink-0">{number}</div>
+          <div className="w-7 h-7 rounded-full bg-stone-200 border border-stone-300 flex items-center justify-center text-xs font-bold text-stone-600 shrink-0">{number}</div>
           <div>
-            <p className="text-sm font-semibold text-white">{title}</p>
+            <p className="text-sm font-semibold text-[#1A1A1A]">{title}</p>
             <div className="flex items-center gap-2 mt-1">
               <Tag color="stone">{day}</Tag>
               <Tag color="stone">{format}</Tag>
             </div>
           </div>
         </div>
-        <button onClick={() => setExpanded(e => !e)} className="text-xs text-teal-400 hover:text-teal-300 transition-colors font-medium shrink-0">
+        <button onClick={() => setExpanded(e => !e)} className="text-xs text-blue-500 hover:text-blue-300 transition-colors font-medium shrink-0">
           {expanded ? 'Hide' : 'View copy'}
         </button>
       </div>
       {expanded && (
         <div className="mt-4 space-y-3">
-          <div className="bg-stone-950 border border-stone-800 rounded-lg p-3">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-stone-600 mb-1">Graphic</p>
-            <p className="text-xs text-stone-400">{graphic}</p>
+          <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-stone-400 mb-1">Graphic</p>
+            <p className="text-xs text-stone-600">{graphic}</p>
           </div>
-          <div className="bg-stone-950 border border-stone-800 rounded-lg p-3">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-stone-600 mb-2">Caption</p>
-            <p className="text-sm text-stone-300 leading-relaxed whitespace-pre-line">{caption}</p>
+          <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-stone-400 mb-2">Caption</p>
+            <p className="text-sm text-stone-700 leading-relaxed whitespace-pre-line">{caption}</p>
           </div>
           {hashtags && (
-            <div className="bg-stone-950 border border-stone-800 rounded-lg p-3">
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-stone-600 mb-1">Hashtags</p>
+            <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-stone-400 mb-1">Hashtags</p>
               <p className="text-xs text-stone-500">{hashtags}</p>
             </div>
           )}
@@ -764,10 +764,10 @@ type PostStatus = 'not_started' | 'drafted' | 'scheduled' | 'published'
 const POST_STATUS_CYCLE: PostStatus[] = ['not_started', 'drafted', 'scheduled', 'published']
 
 const POST_STATUS_CONFIG: Record<PostStatus, { label: string; color: string; bg: string; border: string }> = {
-  not_started: { label: 'Not Started', color: 'text-stone-500',  bg: 'bg-stone-800/50',    border: 'border-stone-700' },
+  not_started: { label: 'Not Started', color: 'text-stone-500',  bg: 'bg-stone-200/50',    border: 'border-stone-300' },
   drafted:     { label: 'Drafted',     color: 'text-amber-400',  bg: 'bg-amber-400/10',    border: 'border-amber-400/30' },
   scheduled:   { label: 'Scheduled',   color: 'text-blue-400',   bg: 'bg-blue-400/10',     border: 'border-blue-400/30' },
-  published:   { label: 'Published',   color: 'text-teal-400',   bg: 'bg-teal-400/10',     border: 'border-teal-400/30' },
+  published:   { label: 'Published',   color: 'text-blue-500',   bg: 'bg-blue-500/10',     border: 'border-blue-500/30' },
 }
 
 const PRELAUNCH_POSTS = [
@@ -818,19 +818,19 @@ export default function StrategyPage() {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-semibold mb-1">Marketing Strategy</h1>
-        <p className="text-stone-400 text-sm">The complete acquisition system for Body Recode Performance Coaching.</p>
+        <p className="text-stone-600 text-sm">The complete acquisition system for Body Recode Performance Coaching.</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 mb-6 border-b border-stone-800 pb-0 overflow-x-auto">
+      <div className="flex items-center gap-1 mb-6 border-b border-stone-200 pb-0 overflow-x-auto">
         {TABS.map(t => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
             className={`px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors -mb-px ${
               tab === t.id
-                ? 'border-teal-400 text-teal-400'
-                : 'border-transparent text-stone-500 hover:text-stone-300'
+                ? 'border-blue-500 text-blue-500'
+                : 'border-transparent text-stone-500 hover:text-stone-700'
             }`}
           >
             {t.label}
@@ -843,7 +843,7 @@ export default function StrategyPage() {
         <div className="space-y-4">
           <Card>
             <SectionLabel>Mission</SectionLabel>
-            <p className="text-lg font-semibold text-white leading-snug mb-2">Interpretation before prescription.</p>
+            <p className="text-lg font-semibold text-[#1A1A1A] leading-snug mb-2">Interpretation before prescription.</p>
             <Body>Social media is not the funnel - it feeds the funnel. Every piece of content drives curiosity. The scorecard converts that curiosity into qualified leads.</Body>
           </Card>
 
@@ -853,8 +853,8 @@ export default function StrategyPage() {
             <div className="flex items-center gap-2 flex-wrap">
               {['Content / Ad', 'Curiosity', 'Scorecard', 'Zoom 1 Booking', 'Zoom 1 → Zoom 2', 'Client'].map((step, i, arr) => (
                 <div key={step} className="flex items-center gap-2">
-                  <div className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-xs font-medium text-stone-300">{step}</div>
-                  {i < arr.length - 1 && <span className="text-stone-600 text-xs">→</span>}
+                  <div className="bg-stone-200 border border-stone-300 rounded-lg px-3 py-1.5 text-xs font-medium text-stone-700">{step}</div>
+                  {i < arr.length - 1 && <span className="text-stone-400 text-xs">→</span>}
                 </div>
               ))}
             </div>
@@ -863,17 +863,17 @@ export default function StrategyPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Card>
               <SectionLabel>Primary Channels</SectionLabel>
-              <p className="text-white font-semibold">Instagram + LinkedIn</p>
+              <p className="text-[#1A1A1A] font-semibold">Instagram + LinkedIn</p>
               <p className="text-xs text-stone-500 mt-1">IG 5×/wk (scorecard funnel, Meta ads). LinkedIn 1-2×/wk (executive reframe, no ads).</p>
             </Card>
             <Card>
               <SectionLabel>Posting Frequency</SectionLabel>
-              <p className="text-white font-semibold">5× IG + 1-2× LI</p>
+              <p className="text-[#1A1A1A] font-semibold">5× IG + 1-2× LI</p>
               <p className="text-xs text-stone-500 mt-1">IG: 3 graphics/carousels + 2 reels. LinkedIn: short essays Tue/Thu morning.</p>
             </Card>
             <Card>
               <SectionLabel>Ad Budget</SectionLabel>
-              <p className="text-white font-semibold">$20–30/day AUD</p>
+              <p className="text-[#1A1A1A] font-semibold">$20–30/day AUD</p>
               <p className="text-xs text-stone-500 mt-1">Meta only. LinkedIn stays organic.</p>
             </Card>
           </div>
@@ -883,33 +883,33 @@ export default function StrategyPage() {
             <div className="space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
                 {[
-                  { label: 'Attraction', value: 'Scorecard', note: 'Free', color: 'text-stone-300' },
+                  { label: 'Attraction', value: 'Scorecard', note: 'Free', color: 'text-stone-700' },
                   { label: 'Upsell', value: '$37 Report', note: 'Immediate', color: 'text-amber-400' },
-                  { label: 'Commencement', value: '$240 Fee', note: 'On conversion', color: 'text-teal-400' },
-                  { label: 'Continuity', value: '$299–$409/wk', note: 'Recurring', color: 'text-teal-400' },
+                  { label: 'Commencement', value: '$240 Fee', note: 'On conversion', color: 'text-blue-500' },
+                  { label: 'Continuity', value: '$299–$409/wk', note: 'Recurring', color: 'text-blue-500' },
                   { label: 'Downsell', value: '$97 Program', note: 'Zoom 1 decline', color: 'text-violet-400' },
                 ].map(item => (
-                  <div key={item.label} className="bg-stone-800/50 border border-stone-700 rounded-lg px-3 py-2.5 text-center">
+                  <div key={item.label} className="bg-stone-200/50 border border-stone-300 rounded-lg px-3 py-2.5 text-center">
                     <p className="text-xs text-stone-500 mb-1">{item.label}</p>
                     <p className={`text-sm font-semibold ${item.color}`}>{item.value}</p>
-                    <p className="text-xs text-stone-600 mt-0.5">{item.note}</p>
+                    <p className="text-xs text-stone-400 mt-0.5">{item.note}</p>
                   </div>
                 ))}
               </div>
-              <div className="bg-stone-800/30 border border-stone-700/50 rounded-lg px-4 py-3">
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">LTV Optimisation - 2x to 3x Upgrade</p>
+              <div className="bg-stone-200/30 border border-stone-300/50 rounded-lg px-4 py-3">
+                <p className="text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">LTV Optimisation - 2x to 3x Upgrade</p>
                 <div className="grid sm:grid-cols-3 gap-3 text-sm">
                   <div>
-                    <p className="text-stone-400 text-xs font-semibold mb-1">When</p>
-                    <p className="text-stone-300 text-xs">Week 8+ on 2x package. Client recovering well, consistently completing sessions, body state progressing.</p>
+                    <p className="text-stone-600 text-xs font-semibold mb-1">When</p>
+                    <p className="text-stone-700 text-xs">Week 8+ on 2x package. Client recovering well, consistently completing sessions, body state progressing.</p>
                   </div>
                   <div>
-                    <p className="text-stone-400 text-xs font-semibold mb-1">The offer</p>
-                    <p className="text-stone-300 text-xs">Move from 2 to 3 sessions per week. $299 → $409/week. Same check-ins, same interpretation. More training contact, faster compounding.</p>
+                    <p className="text-stone-600 text-xs font-semibold mb-1">The offer</p>
+                    <p className="text-stone-700 text-xs">Move from 2 to 3 sessions per week. $299 → $409/week. Same check-ins, same interpretation. More training contact, faster compounding.</p>
                   </div>
                   <div>
-                    <p className="text-stone-400 text-xs font-semibold mb-1">How</p>
-                    <p className="text-stone-300 text-xs">Use the Upgrade Companion (linked from client profile). Raise it in a regular session. Data-led, not sales-led.</p>
+                    <p className="text-stone-600 text-xs font-semibold mb-1">How</p>
+                    <p className="text-stone-700 text-xs">Use the Upgrade Companion (linked from client profile). Raise it in a regular session. Data-led, not sales-led.</p>
                   </div>
                 </div>
               </div>
@@ -927,10 +927,10 @@ export default function StrategyPage() {
             <SectionLabel>What to Ignore Right Now</SectionLabel>
             <div className="flex flex-wrap gap-2">
               {['TikTok', 'YouTube', 'Twitter / X', 'Podcasts', 'Email newsletters'].map(p => (
-                <span key={p} className="text-xs text-stone-600 bg-stone-800/50 border border-stone-800 px-2.5 py-1 rounded-full line-through">{p}</span>
+                <span key={p} className="text-xs text-stone-400 bg-stone-200/50 border border-stone-200 px-2.5 py-1 rounded-full line-through">{p}</span>
               ))}
             </div>
-            <p className="text-xs text-stone-600 mt-3">Two channels done well outperform five done badly. Lock Instagram + LinkedIn + Meta ads first.</p>
+            <p className="text-xs text-stone-400 mt-3">Two channels done well outperform five done badly. Lock Instagram + LinkedIn + Meta ads first.</p>
           </Card>
         </div>
       )}
@@ -966,7 +966,7 @@ export default function StrategyPage() {
 
           <Card>
             <SectionLabel>The Core Problem You Solve</SectionLabel>
-            <p className="text-base font-semibold text-white mb-2">People are being prescribed to before they have been interpreted.</p>
+            <p className="text-base font-semibold text-[#1A1A1A] mb-2">People are being prescribed to before they have been interpreted.</p>
             <Body>Every trainer, program, and app tells them what to do before reading what their body is actually doing. The problem is not effort. Nobody has read the body first. Body Recode fixes that.</Body>
           </Card>
 
@@ -982,9 +982,9 @@ export default function StrategyPage() {
                 { a: 'Forward-thinking', b: 'not abstract' },
               ].map(({ a, b }) => (
                 <div key={a} className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-white">{a}</span>
-                  <span className="text-stone-600 text-sm">-</span>
-                  <span className="text-sm text-stone-400">{b}</span>
+                  <span className="text-sm font-semibold text-[#1A1A1A]">{a}</span>
+                  <span className="text-stone-400 text-sm">-</span>
+                  <span className="text-sm text-stone-600">{b}</span>
                 </div>
               ))}
             </div>
@@ -1001,18 +1001,18 @@ export default function StrategyPage() {
                 { n: '4', label: 'Prescription Without Interpretation', desc: 'The fundamental flaw in mainstream fitness. Being told what to do before anyone has read what the body is actually doing.' },
                 { n: '5', label: 'The Intelligent Approach', desc: 'What reading the body first actually looks like. The Body Recode system as the solution - interpretation before prescription.' },
               ].map(({ n, label, desc }) => (
-                <div key={n} className="flex items-start gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <span className="text-sm font-bold text-teal-500 w-5 shrink-0 mt-0.5">{n}</span>
+                <div key={n} className="flex items-start gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200">
+                  <span className="text-sm font-bold text-blue-500 w-5 shrink-0 mt-0.5">{n}</span>
                   <div>
-                    <p className="text-sm font-semibold text-white mb-1">{label}</p>
-                    <p className="text-xs text-stone-400 leading-relaxed">{desc}</p>
+                    <p className="text-sm font-semibold text-[#1A1A1A] mb-1">{label}</p>
+                    <p className="text-xs text-stone-600 leading-relaxed">{desc}</p>
                   </div>
                 </div>
               ))}
             </div>
             <div className="mt-4 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
               <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">LinkedIn channel</p>
-              <p className="text-xs text-stone-300 leading-relaxed">The same intellectual territory drives LinkedIn content through 4 reframed pillars: <strong className="text-white">State over Discipline</strong>, <strong className="text-white">The Effort Trap</strong>, <strong className="text-white">Physiology and Decision-Making</strong>, <strong className="text-white">Interpretation over Prescription</strong>. Same physiology, executive vocabulary. See the <strong className="text-blue-400">LinkedIn tab</strong> for the full breakdown.</p>
+              <p className="text-xs text-stone-700 leading-relaxed">The same intellectual territory drives LinkedIn content through 4 reframed pillars: <strong className="text-[#1A1A1A]">State over Discipline</strong>, <strong className="text-[#1A1A1A]">The Effort Trap</strong>, <strong className="text-[#1A1A1A]">Physiology and Decision-Making</strong>, <strong className="text-[#1A1A1A]">Interpretation over Prescription</strong>. Same physiology, executive vocabulary. See the <strong className="text-blue-400">LinkedIn tab</strong> for the full breakdown.</p>
             </div>
           </Card>
 
@@ -1025,9 +1025,9 @@ export default function StrategyPage() {
                 { label: 'CTA rule — Instagram', value: 'One CTA per post. Take the scorecard. One job per post.' },
                 { label: 'CTA rule — LinkedIn', value: 'CTA every 4-5 posts only. Most posts build credibility without selling.' },
               ].map(({ label, value }) => (
-                <div key={label} className="flex items-start gap-3 py-2 border-b border-stone-800 last:border-0">
+                <div key={label} className="flex items-start gap-3 py-2 border-b border-stone-200 last:border-0">
                   <span className="text-xs text-stone-500 w-44 shrink-0 mt-0.5">{label}</span>
-                  <span className="text-sm text-white">{value}</span>
+                  <span className="text-sm text-[#1A1A1A]">{value}</span>
                 </div>
               ))}
             </div>
@@ -1056,10 +1056,10 @@ export default function StrategyPage() {
                 { n: '5', label: 'Momentum', desc: 'End with clarity or direction' },
               ].map(({ n, label, desc }) => (
                 <div key={n} className="flex items-start gap-3">
-                  <span className="text-xs font-bold text-teal-500 w-4 shrink-0 mt-0.5">{n}</span>
+                  <span className="text-xs font-bold text-blue-500 w-4 shrink-0 mt-0.5">{n}</span>
                   <div>
-                    <span className="text-sm font-semibold text-white">{label} </span>
-                    <span className="text-sm text-stone-400">- {desc}</span>
+                    <span className="text-sm font-semibold text-[#1A1A1A]">{label} </span>
+                    <span className="text-sm text-stone-600">- {desc}</span>
                   </div>
                 </div>
               ))}
@@ -1069,20 +1069,20 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>The 3 Body States (Public-Facing Language)</SectionLabel>
             <div className="space-y-3">
-              <div className="flex items-start gap-3 p-3 bg-stone-950 rounded-lg border border-red-500/20">
+              <div className="flex items-start gap-3 p-3 bg-stone-50 rounded-lg border border-red-500/20">
                 <Tag color="red">Depleted</Tag>
                 <Body>Body in protection mode. Cortisol elevated, metabolism suppressed. Adding more training makes this worse. Score: 5–8.</Body>
               </div>
-              <div className="flex items-start gap-3 p-3 bg-stone-950 rounded-lg border border-amber-500/20">
+              <div className="flex items-start gap-3 p-3 bg-stone-50 rounded-lg border border-amber-500/20">
                 <Tag color="amber">Transitioning</Tag>
                 <Body>Mixed signals. Has capacity but not consistent. Something is blocking the response. Score: 9–11.</Body>
               </div>
-              <div className="flex items-start gap-3 p-3 bg-stone-950 rounded-lg border border-teal-500/20">
+              <div className="flex items-start gap-3 p-3 bg-stone-50 rounded-lg border border-blue-500/20">
                 <Tag color="teal">Ready</Tag>
                 <Body>Biology in a position to respond. If results aren&apos;t happening at this score, the issue is in the prescription. Score: 12–15.</Body>
               </div>
             </div>
-            <p className="text-xs text-stone-600 mt-3">Note: Remediation / Optimisation / Post-Optimisation are CFFS-only terms. Use Depleted / Transitioning / Ready in all public-facing content.</p>
+            <p className="text-xs text-stone-400 mt-3">Note: Remediation / Optimisation / Post-Optimisation are CFFS-only terms. Use Depleted / Transitioning / Ready in all public-facing content.</p>
           </Card>
         </div>
       )}
@@ -1092,7 +1092,7 @@ export default function StrategyPage() {
         <div className="space-y-4">
           <Card className="border-pink-500/30 bg-pink-500/5">
             <SectionLabel>Instagram Content System</SectionLabel>
-            <p className="text-sm text-stone-300 leading-relaxed">Everything in this tab is the <strong className="text-white">Instagram</strong> content system - temperature ladder, weekly cadence, post types, production tools. LinkedIn runs a different cadence (1-2/wk vs 5/wk), different format (short essays, no carousels), and different tone (executive reframe, no fat-loss language). See the <strong className="text-blue-400">LinkedIn tab</strong> for that system.</p>
+            <p className="text-sm text-stone-700 leading-relaxed">Everything in this tab is the <strong className="text-[#1A1A1A]">Instagram</strong> content system - temperature ladder, weekly cadence, post types, production tools. LinkedIn runs a different cadence (1-2/wk vs 5/wk), different format (short essays, no carousels), and different tone (executive reframe, no fat-loss language). See the <strong className="text-blue-400">LinkedIn tab</strong> for that system.</p>
           </Card>
 
           <Card>
@@ -1109,13 +1109,13 @@ export default function StrategyPage() {
                     <span className={`text-xs font-bold uppercase tracking-wider ${row.colour}`}>{row.temp}</span>
                     <span className="text-xs text-stone-500">{row.ratio}</span>
                   </div>
-                  <p className="text-sm text-stone-300 leading-relaxed mb-1">{row.desc}</p>
+                  <p className="text-sm text-stone-700 leading-relaxed mb-1">{row.desc}</p>
                   <p className="text-xs text-stone-500">Post types: {row.types}</p>
                 </div>
               ))}
             </div>
-            <div className="mt-3 p-3 bg-teal-500/5 border border-teal-500/20 rounded-lg">
-              <p className="text-xs text-teal-400 font-medium">Primary lead getter: organic Instagram → scorecard. Go deep here before ads. Ads are the multiplier on a system that already converts.</p>
+            <div className="mt-3 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
+              <p className="text-xs text-blue-500 font-medium">Primary lead getter: organic Instagram → scorecard. Go deep here before ads. Ads are the multiplier on a system that already converts.</p>
               <p className="text-xs text-stone-500 mt-1.5">Secondary: LinkedIn (executive reframe, organic only, slow-burn). Same scorecard, separate attribution.</p>
             </div>
           </Card>
@@ -1130,12 +1130,12 @@ export default function StrategyPage() {
                 { day: 'Friday', type: 'Coach Perspective', temp: 'Warm', goal: 'Build trust, introduce the system', format: 'Talking video or photo card', cta: 'Soft' },
                 { day: 'Sunday', type: 'Diagnostic / Funnel', temp: 'Hot', goal: 'Drive to the scorecard', format: 'Graphic card or reel', cta: 'Hard - scorecard link' },
               ].map(row => (
-                <div key={row.day} className="grid grid-cols-5 gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800 text-xs">
-                  <div><p className="text-stone-600 mb-0.5">Day</p><p className="font-semibold text-white">{row.day}</p></div>
-                  <div><p className="text-stone-600 mb-0.5">Type</p><p className="font-medium text-teal-400">{row.type}</p></div>
-                  <div><p className="text-stone-600 mb-0.5">Temp</p><p className={row.temp === 'Hot' ? 'text-red-400' : row.temp === 'Warm' ? 'text-amber-400' : 'text-blue-400'}>{row.temp}</p></div>
-                  <div><p className="text-stone-600 mb-0.5">Format</p><p className="text-stone-400">{row.format}</p></div>
-                  <div><p className="text-stone-600 mb-0.5">CTA</p><p className="text-stone-400">{row.cta}</p></div>
+                <div key={row.day} className="grid grid-cols-5 gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200 text-xs">
+                  <div><p className="text-stone-400 mb-0.5">Day</p><p className="font-semibold text-[#1A1A1A]">{row.day}</p></div>
+                  <div><p className="text-stone-400 mb-0.5">Type</p><p className="font-medium text-blue-500">{row.type}</p></div>
+                  <div><p className="text-stone-400 mb-0.5">Temp</p><p className={row.temp === 'Hot' ? 'text-red-400' : row.temp === 'Warm' ? 'text-amber-400' : 'text-blue-400'}>{row.temp}</p></div>
+                  <div><p className="text-stone-400 mb-0.5">Format</p><p className="text-stone-600">{row.format}</p></div>
+                  <div><p className="text-stone-400 mb-0.5">CTA</p><p className="text-stone-600">{row.cta}</p></div>
                 </div>
               ))}
             </div>
@@ -1240,7 +1240,7 @@ export default function StrategyPage() {
             <Card key={ct.type}>
               <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <Tag color={ct.color}>{ct.type}</Tag>
-                <span className="text-xs text-stone-600">{ct.day}</span>
+                <span className="text-xs text-stone-400">{ct.day}</span>
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${ct.tempColor}`}>{ct.temp} - {ct.tempDesc}</span>
               </div>
               <Body>{ct.goal}</Body>
@@ -1248,9 +1248,9 @@ export default function StrategyPage() {
                 <p className="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-2">Post Ideas</p>
                 <BulletList items={ct.topics} />
               </div>
-              <div className="mt-4 p-3 bg-stone-950 rounded-lg border border-stone-800">
+              <div className="mt-4 p-3 bg-stone-50 rounded-lg border border-stone-200">
                 <p className="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1">Format</p>
-                <p className="text-xs text-stone-400">{ct.format}</p>
+                <p className="text-xs text-stone-600">{ct.format}</p>
               </div>
             </Card>
           ))}
@@ -1266,8 +1266,8 @@ export default function StrategyPage() {
                 { type: 'Ad reel (talking head)', effort: 'Medium', tool: 'iPhone + tripod in gym. 15–30 sec.' },
                 { type: 'AI avatar reel (variation)', effort: 'Low', tool: 'ElevenLabs + HeyGen via Content Engine' },
               ].map(row => (
-                <div key={row.type} className="flex items-center justify-between gap-4 py-2 border-b border-stone-800 last:border-0 text-sm">
-                  <span className="text-stone-300">{row.type}</span>
+                <div key={row.type} className="flex items-center justify-between gap-4 py-2 border-b border-stone-200 last:border-0 text-sm">
+                  <span className="text-stone-700">{row.type}</span>
                   <div className="flex items-center gap-3 shrink-0">
                     <Tag color={row.effort === 'Low' ? 'teal' : 'amber'}>{row.effort} effort</Tag>
                     <span className="text-xs text-stone-500 hidden sm:block">{row.tool}</span>
@@ -1283,9 +1283,9 @@ export default function StrategyPage() {
       {tab === 'prelaunch' && (
         <div className="space-y-4">
 
-          <Card className="border-stone-700 bg-stone-900/60">
+          <Card className="border-stone-300 bg-stone-100/60">
             <SectionLabel>Historical Reference</SectionLabel>
-            <p className="text-sm text-stone-400 leading-relaxed">The 5-post pre-launch sequence ran <strong className="text-stone-300">8-15 April 2026</strong> and is complete. Kept here as the brand-arrival template for future channels (LinkedIn launch, future products, white-label rollouts). The Founding Client Program references that originally followed Post 5 have been removed - that program is no longer running.</p>
+            <p className="text-sm text-stone-600 leading-relaxed">The 5-post pre-launch sequence ran <strong className="text-stone-700">8-15 April 2026</strong> and is complete. Kept here as the brand-arrival template for future channels (LinkedIn launch, future products, white-label rollouts). The Founding Client Program references that originally followed Post 5 have been removed - that program is no longer running.</p>
           </Card>
 
           {/* Tracker */}
@@ -1297,9 +1297,9 @@ export default function StrategyPage() {
                 <div className="flex items-center justify-between mb-4">
                   <SectionLabel>Pre-Launch Tracker</SectionLabel>
                   <div className="flex items-center gap-2">
-                    <div className="w-32 h-1.5 bg-stone-800 rounded-full overflow-hidden">
+                    <div className="w-32 h-1.5 bg-stone-200 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-teal-500 rounded-full transition-all duration-300"
+                        className="h-full bg-blue-500 rounded-full transition-all duration-300"
                         style={{ width: `${(publishedCount / PRELAUNCH_POSTS.length) * 100}%` }}
                       />
                     </div>
@@ -1311,13 +1311,13 @@ export default function StrategyPage() {
                     const status = postStatuses[p.id] ?? 'not_started'
                     const cfg = POST_STATUS_CONFIG[status]
                     return (
-                      <div key={p.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-stone-950 border border-stone-800">
+                      <div key={p.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-stone-50 border border-stone-200">
                         <div className="shrink-0 w-24">
-                          <p className="text-stone-300 text-xs font-medium">{p.date}</p>
-                          <p className="text-stone-600 text-xs">{p.day}</p>
+                          <p className="text-stone-700 text-xs font-medium">{p.date}</p>
+                          <p className="text-stone-400 text-xs">{p.day}</p>
                         </div>
                         <span className={`text-xs font-bold px-1.5 py-0.5 rounded border shrink-0 ${p.temp === 'Hot' ? 'text-red-400 bg-red-400/10 border-red-400/20' : 'text-blue-400 bg-blue-400/10 border-blue-400/20'}`}>{p.temp}</span>
-                        <span className="text-stone-300 text-sm flex-1">{p.title}</span>
+                        <span className="text-stone-700 text-sm flex-1">{p.title}</span>
                         <button
                           onClick={() => cycleStatus(p.id)}
                           className={`text-xs font-semibold px-2.5 py-1 rounded-full border transition-colors cursor-pointer ${cfg.bg} ${cfg.color} ${cfg.border}`}
@@ -1329,8 +1329,8 @@ export default function StrategyPage() {
                   })}
                 </div>
                 {allDone && (
-                  <div className="mt-3 p-3 bg-teal-500/10 border border-teal-500/30 rounded-lg">
-                    <p className="text-xs text-teal-400 font-semibold">All 5 posts published. Move to ongoing 5×/week cadence and launch Meta ads.</p>
+                  <div className="mt-3 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                    <p className="text-xs text-blue-500 font-semibold">All 5 posts published. Move to ongoing 5×/week cadence and launch Meta ads.</p>
                   </div>
                 )}
               </Card>
@@ -1348,15 +1348,15 @@ export default function StrategyPage() {
                 { post: 'Post 4', temp: 'Cold', desc: 'The three states - educate. Still no CTA.' },
                 { post: 'Post 5', temp: 'Hot', desc: 'Scorecard CTA - first time asking for action. Profile is now established.' },
               ].map(r => (
-                <div key={r.post} className="flex items-center gap-3 text-xs p-2 rounded-lg bg-stone-950 border border-stone-800">
+                <div key={r.post} className="flex items-center gap-3 text-xs p-2 rounded-lg bg-stone-50 border border-stone-200">
                   <span className="text-stone-500 w-10 shrink-0">{r.post}</span>
                   <span className={`font-bold px-1.5 py-0.5 rounded border shrink-0 ${r.temp === 'Hot' ? 'text-red-400 bg-red-400/10 border-red-400/20' : 'text-blue-400 bg-blue-400/10 border-blue-400/20'}`}>{r.temp}</span>
-                  <span className="text-stone-400">{r.desc}</span>
+                  <span className="text-stone-600">{r.desc}</span>
                 </div>
               ))}
             </div>
-            <div className="mt-3 p-3 bg-teal-500/5 border border-teal-500/20 rounded-lg">
-              <p className="text-xs text-teal-400 font-medium">After Post 5 - move to the ongoing 5×/week cadence and launch Meta ads.</p>
+            <div className="mt-3 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
+              <p className="text-xs text-blue-500 font-medium">After Post 5 - move to the ongoing 5×/week cadence and launch Meta ads.</p>
             </div>
           </Card>
 
@@ -1414,14 +1414,14 @@ export default function StrategyPage() {
 
           <Card className="border-pink-500/30 bg-pink-500/5">
             <SectionLabel>Instagram Organic System</SectionLabel>
-            <p className="text-sm text-stone-300 leading-relaxed">This tab is the <strong className="text-white">Instagram</strong> organic-to-ads pathway. LinkedIn runs a separate organic channel (1-2 BR posts/week, executive reframe) with no ad spend tied to it - it&apos;s a slow-burn parallel feed into the same scorecard. See the <strong className="text-blue-400">LinkedIn tab</strong> for that system.</p>
+            <p className="text-sm text-stone-700 leading-relaxed">This tab is the <strong className="text-[#1A1A1A]">Instagram</strong> organic-to-ads pathway. LinkedIn runs a separate organic channel (1-2 BR posts/week, executive reframe) with no ad spend tied to it - it&apos;s a slow-burn parallel feed into the same scorecard. See the <strong className="text-blue-400">LinkedIn tab</strong> for that system.</p>
           </Card>
 
           {/* Goal */}
-          <Card className="border-teal-500/20 bg-teal-500/5">
+          <Card className="border-blue-500/20 bg-blue-500/5">
             <SectionLabel>The Goal</SectionLabel>
-            <p className="text-teal-300 font-semibold text-sm">3 scorecard submissions per week from organic Instagram, for 2 consecutive weeks. That&apos;s the signal that the funnel converts. Then Meta ads go on.</p>
-            <p className="text-stone-400 text-sm mt-2">Ads placed on a funnel that doesn&apos;t convert waste money. Ads placed on a funnel that already converts multiply what&apos;s working. Organic proves the model first.</p>
+            <p className="text-blue-300 font-semibold text-sm">3 scorecard submissions per week from organic Instagram, for 2 consecutive weeks. That&apos;s the signal that the funnel converts. Then Meta ads go on.</p>
+            <p className="text-stone-600 text-sm mt-2">Ads placed on a funnel that doesn&apos;t convert waste money. Ads placed on a funnel that already converts multiply what&apos;s working. Organic proves the model first.</p>
           </Card>
 
           {/* Three levers */}
@@ -1458,9 +1458,9 @@ export default function StrategyPage() {
                 {
                   num: '3',
                   title: 'Warm Outreach',
-                  color: 'text-teal-400',
-                  border: 'border-teal-400/20',
-                  bg: 'bg-teal-400/5',
+                  color: 'text-blue-500',
+                  border: 'border-blue-500/20',
+                  bg: 'bg-blue-500/5',
                   items: [
                     'Reply to every comment within 1 hour of posting',
                     'DM every new follower - short welcome, no pitch',
@@ -1471,13 +1471,13 @@ export default function StrategyPage() {
               ].map(l => (
                 <div key={l.num} className={`border ${l.border} ${l.bg} rounded-xl p-4`}>
                   <div className="flex items-center gap-2 mb-3">
-                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${l.color} bg-stone-800`}>{l.num}</span>
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${l.color} bg-stone-200`}>{l.num}</span>
                     <p className={`text-sm font-semibold ${l.color}`}>{l.title}</p>
                   </div>
                   <ul className="space-y-1.5">
                     {l.items.map((item, i) => (
-                      <li key={i} className="text-xs text-stone-400 leading-relaxed flex gap-2">
-                        <span className="text-stone-700 shrink-0">·</span>
+                      <li key={i} className="text-xs text-stone-600 leading-relaxed flex gap-2">
+                        <span className="text-stone-300 shrink-0">·</span>
                         {item}
                       </li>
                     ))}
@@ -1501,13 +1501,13 @@ export default function StrategyPage() {
                 { day: 'Sat', post: false, action: 'No post. Review the week: profile visits, scorecard submissions, follower growth. Note in weekly log.' },
                 { day: 'Sun', post: true,  action: 'Post (Diagnostic/Funnel - Hot → Scorecard CTA). Actively DM anyone who comments asking how to do it.' },
               ].map(r => (
-                <div key={r.day} className="flex items-start gap-3 p-2.5 rounded-lg bg-stone-950 border border-stone-800">
+                <div key={r.day} className="flex items-start gap-3 p-2.5 rounded-lg bg-stone-50 border border-stone-200">
                   <span className="text-xs font-bold text-stone-500 w-7 shrink-0 pt-0.5">{r.day}</span>
                   {r.post
-                    ? <span className="text-xs font-semibold text-teal-500 shrink-0 pt-0.5">Post</span>
-                    : <span className="text-xs font-semibold text-stone-700 shrink-0 pt-0.5">Rest</span>
+                    ? <span className="text-xs font-semibold text-blue-500 shrink-0 pt-0.5">Post</span>
+                    : <span className="text-xs font-semibold text-stone-300 shrink-0 pt-0.5">Rest</span>
                   }
-                  <p className="text-xs text-stone-400 leading-relaxed">{r.action}</p>
+                  <p className="text-xs text-stone-600 leading-relaxed">{r.action}</p>
                 </div>
               ))}
             </div>
@@ -1519,9 +1519,9 @@ export default function StrategyPage() {
             <p className="text-stone-500 text-xs mb-3">What the numbers should look like over 6 weeks. Track scorecard submissions per week in the CRM.</p>
             <div className="space-y-2">
               {[
-                { weeks: 'Week 1–2', subs: '0–1/week', label: 'Normal', color: 'text-stone-400', bg: 'bg-stone-800/50', border: 'border-stone-700', note: 'Profile is new. No audience yet. Keep posting and doing outreach.' },
+                { weeks: 'Week 1–2', subs: '0–1/week', label: 'Normal', color: 'text-stone-600', bg: 'bg-stone-200/50', border: 'border-stone-300', note: 'Profile is new. No audience yet. Keep posting and doing outreach.' },
                 { weeks: 'Week 3–4', subs: '1–2/week', label: 'Traction', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20', note: 'Content is landing. Warm outreach is working. Dial in hook quality.' },
-                { weeks: 'Week 5–6', subs: '3+/week', label: 'Converting', color: 'text-teal-400', bg: 'bg-teal-400/10', border: 'border-teal-400/20', note: 'Funnel is proven. Hold for 2 consecutive weeks at this level, then launch ads.' },
+                { weeks: 'Week 5–6', subs: '3+/week', label: 'Converting', color: 'text-blue-500', bg: 'bg-blue-500/10', border: 'border-blue-500/20', note: 'Funnel is proven. Hold for 2 consecutive weeks at this level, then launch ads.' },
               ].map(m => (
                 <div key={m.weeks} className={`border ${m.border} ${m.bg} rounded-xl p-4`}>
                   <div className="flex items-center justify-between mb-1.5">
@@ -1543,31 +1543,31 @@ export default function StrategyPage() {
             <p className="text-stone-500 text-xs mb-4">Do this every day, separate from posting. The algorithm reads engagement signal - an account that only posts but never interacts gets suppressed. This is how you grow without ads.</p>
             <div className="space-y-3">
 
-              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                <p className="text-xs font-semibold text-white mb-2">Step 1 - Comment on hashtag posts (10 min)</p>
+              <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                <p className="text-xs font-semibold text-[#1A1A1A] mb-2">Step 1 - Comment on hashtag posts (10 min)</p>
                 <p className="text-xs text-stone-500 mb-2">Browse these hashtags and leave 5–8 genuine comments on recent posts. Comments that add value get profile clicks.</p>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <p className="text-[10px] font-semibold text-stone-600 uppercase tracking-widest mb-1.5">Primary</p>
+                    <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1.5">Primary</p>
                     <div className="flex flex-wrap gap-1">
                       {['#performancecoaching','#fatlosscoaching','#strengthcoaching','#bodyrecode','#brisbanefitness','#brisbanept','#brisbanecoach'].map(h => (
-                        <span key={h} className="text-[10px] text-teal-400 bg-teal-500/10 border border-teal-500/20 px-1.5 py-0.5 rounded">{h}</span>
+                        <span key={h} className="text-[10px] text-blue-500 bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded">{h}</span>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <p className="text-[10px] font-semibold text-stone-600 uppercase tracking-widest mb-1.5">Secondary</p>
+                    <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1.5">Secondary</p>
                     <div className="flex flex-wrap gap-1">
                       {['#fatlosstips','#trainingplateau','#metabolichealth','#compositioncoach','#hormonehealth','#womenshealth35','#cortisol'].map(h => (
-                        <span key={h} className="text-[10px] text-stone-400 bg-stone-800 border border-stone-700 px-1.5 py-0.5 rounded">{h}</span>
+                        <span key={h} className="text-[10px] text-stone-600 bg-stone-200 border border-stone-300 px-1.5 py-0.5 rounded">{h}</span>
                       ))}
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                <p className="text-xs font-semibold text-white mb-2">Step 2 - Engage with target accounts (5 min)</p>
+              <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                <p className="text-xs font-semibold text-[#1A1A1A] mb-2">Step 2 - Engage with target accounts (5 min)</p>
                 <p className="text-xs text-stone-500 mb-2">Follow and comment on accounts your target client already follows. Your comment appears in their feed - that&apos;s a free impression on a warm audience.</p>
                 <div className="space-y-1.5">
                   {[
@@ -1578,18 +1578,18 @@ export default function StrategyPage() {
                     { type: 'Corporate wellness and productivity accounts', why: 'High-functioning professionals in your target income bracket' },
                   ].map(r => (
                     <div key={r.type} className="flex items-start gap-2 text-xs">
-                      <span className="text-teal-500 shrink-0 mt-0.5">-</span>
+                      <span className="text-blue-500 shrink-0 mt-0.5">-</span>
                       <div>
-                        <span className="text-stone-300 font-medium">{r.type}</span>
-                        <span className="text-stone-600"> - {r.why}</span>
+                        <span className="text-stone-700 font-medium">{r.type}</span>
+                        <span className="text-stone-400"> - {r.why}</span>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                <p className="text-xs font-semibold text-white mb-2">Step 3 - React to stories (5 min)</p>
+              <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                <p className="text-xs font-semibold text-[#1A1A1A] mb-2">Step 3 - React to stories (5 min)</p>
                 <p className="text-xs text-stone-500">React to stories from people in your target audience. A reaction opens a DM thread - low friction, high visibility. Don&apos;t force a conversation. Just a reaction is enough to put your name in front of them.</p>
               </div>
 
@@ -1604,7 +1604,7 @@ export default function StrategyPage() {
                     <div key={i} className="flex items-start gap-2 text-xs py-1 border-b border-red-500/10 last:border-0">
                       <span className="text-red-400 shrink-0 mt-0.5">-</span>
                       <div>
-                        <span className="text-stone-400 font-medium">{r.bad}: </span>
+                        <span className="text-stone-600 font-medium">{r.bad}: </span>
                         <span className="text-stone-500">{r.good}</span>
                       </div>
                     </div>
@@ -1627,9 +1627,9 @@ export default function StrategyPage() {
                 { signal: 'Comments', how: 'Posts that ask a direct question at the end get more comments. More comments = more reach. End every Pattern Recognition post with one question.' },
                 { signal: 'Story polls', how: 'Use Instagram Stories polls 2–3x per week. Simple yes/no questions about symptoms ("Do you train consistently but feel like nothing is changing?"). Each response is a warm signal - that person is your audience.' },
               ].map(r => (
-                <div key={r.signal} className="flex items-start gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <span className="text-xs font-bold text-teal-400 w-14 shrink-0 pt-0.5">{r.signal}</span>
-                  <p className="text-xs text-stone-400 leading-relaxed">{r.how}</p>
+                <div key={r.signal} className="flex items-start gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200">
+                  <span className="text-xs font-bold text-blue-500 w-14 shrink-0 pt-0.5">{r.signal}</span>
+                  <p className="text-xs text-stone-600 leading-relaxed">{r.how}</p>
                 </div>
               ))}
             </div>
@@ -1650,7 +1650,7 @@ export default function StrategyPage() {
           {/* If not converting */}
           <Card>
             <SectionLabel>If You&apos;re Not Converting by Week 6</SectionLabel>
-            <p className="text-stone-400 text-sm mb-3">Don&apos;t launch ads. Diagnose first.</p>
+            <p className="text-stone-600 text-sm mb-3">Don&apos;t launch ads. Diagnose first.</p>
             <div className="space-y-2">
               {[
                 { check: 'Hook quality', fix: 'Read back your last 10 first lines. If they don\'t stop your own scroll, they won\'t stop anyone else\'s. Rewrite the weakest 3.' },
@@ -1659,8 +1659,8 @@ export default function StrategyPage() {
                 { check: 'CTA clarity', fix: 'Every Sunday post must have one clear action: take the scorecard. Not "follow", not "save" - one action. Check the last 4 Sunday posts.' },
                 { check: 'Content temperature mix', fix: 'If every post is Cold (educational), there\'s nothing pulling people toward an action. Hot posts (Sunday Diagnostic) must run every week without exception.' },
               ].map(r => (
-                <div key={r.check} className="p-3 rounded-lg bg-stone-950 border border-stone-800">
-                  <p className="text-xs font-semibold text-white mb-1">{r.check}</p>
+                <div key={r.check} className="p-3 rounded-lg bg-stone-50 border border-stone-200">
+                  <p className="text-xs font-semibold text-[#1A1A1A] mb-1">{r.check}</p>
                   <p className="text-xs text-stone-500 leading-relaxed">{r.fix}</p>
                 </div>
               ))}
@@ -1668,9 +1668,9 @@ export default function StrategyPage() {
           </Card>
 
           {/* The trigger */}
-          <Card className="border-teal-500/20 bg-teal-500/5">
+          <Card className="border-blue-500/20 bg-blue-500/5">
             <SectionLabel>The Ads Trigger</SectionLabel>
-            <p className="text-teal-300 font-semibold text-sm mb-2">3 scorecard submissions/week for 2 consecutive weeks. Then go to the Paid Ads tab and launch.</p>
+            <p className="text-blue-300 font-semibold text-sm mb-2">3 scorecard submissions/week for 2 consecutive weeks. Then go to the Paid Ads tab and launch.</p>
             <p className="text-stone-500 text-xs">At that point you have proof that cold traffic can find you, the profile converts them, and the scorecard holds attention. Ads buy more of that. Without those two weeks of data, you&apos;re paying to test whether the funnel works instead of to scale what already does.</p>
           </Card>
 
@@ -1682,7 +1682,7 @@ export default function StrategyPage() {
         <div className="space-y-4">
           <Card className="border-pink-500/30 bg-pink-500/5">
             <SectionLabel>Meta Ads Only</SectionLabel>
-            <p className="text-sm text-stone-300 leading-relaxed">All paid spend goes to Meta (Instagram feed + Reels + Facebook). LinkedIn stays organic-only - the executive-reframe channel is a slow-burn brand-build, not a paid acquisition channel. No LinkedIn ads, no LinkedIn boost budget.</p>
+            <p className="text-sm text-stone-700 leading-relaxed">All paid spend goes to Meta (Instagram feed + Reels + Facebook). LinkedIn stays organic-only - the executive-reframe channel is a slow-burn brand-build, not a paid acquisition channel. No LinkedIn ads, no LinkedIn boost budget.</p>
           </Card>
 
           <Card className="border-amber-500/20 bg-amber-500/5">
@@ -1693,17 +1693,17 @@ export default function StrategyPage() {
           <div className="grid sm:grid-cols-3 gap-3">
             <Card>
               <SectionLabel>Daily Budget</SectionLabel>
-              <p className="text-xl font-semibold text-white">$20–30</p>
+              <p className="text-xl font-semibold text-[#1A1A1A]">$20–30</p>
               <p className="text-xs text-stone-500 mt-1">AUD per day to start</p>
             </Card>
             <Card>
               <SectionLabel>Minimum Test Period</SectionLabel>
-              <p className="text-xl font-semibold text-white">2 weeks</p>
+              <p className="text-xl font-semibold text-[#1A1A1A]">2 weeks</p>
               <p className="text-xs text-stone-500 mt-1">Before judging any results</p>
             </Card>
             <Card>
               <SectionLabel>Initial Spend</SectionLabel>
-              <p className="text-xl font-semibold text-white">~$400</p>
+              <p className="text-xl font-semibold text-[#1A1A1A]">~$400</p>
               <p className="text-xs text-stone-500 mt-1">First real data read</p>
             </Card>
           </div>
@@ -1762,17 +1762,17 @@ export default function StrategyPage() {
 
               {/* Graphic 1 - Statement card */}
               <div>
-                <p className="text-xs font-semibold text-white mb-1">Ad 1 - Statement</p>
+                <p className="text-xs font-semibold text-[#1A1A1A] mb-1">Ad 1 - Statement</p>
                 <p className="text-xs text-stone-500 mb-3">Angle: Silent Frustration. Clean text card, no photo.</p>
                 <div className="grid sm:grid-cols-2 gap-3 items-start">
-                  <div className="rounded-xl overflow-hidden border border-stone-800 bg-stone-950" style={{ aspectRatio: '1/1' }}>
+                  <div className="rounded-xl overflow-hidden border border-stone-200 bg-stone-50" style={{ aspectRatio: '1/1' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/api/content/graphic?style=insight&label=Body+State+Problem&text=Your+body+stopped+responding.+Here%27s+why.&sub=Training+consistently.+Eating+well.+Nothing+moving.+That%27s+not+a+discipline+problem.+Take+the+free+Body+State+Scorecard.+Link+in+bio." alt="Ad 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                   <div className="space-y-2">
-                    <a href="/api/content/graphic?style=insight&label=Body+State+Problem&text=Your+body+stopped+responding.+Here%27s+why.&sub=Training+consistently.+Eating+well.+Nothing+moving.+That%27s+not+a+discipline+problem.+Take+the+free+Body+State+Scorecard.+Link+in+bio." download="ad-statement.png" className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-xs font-semibold rounded-lg transition-colors">↓ Download 1080×1080</a>
-                    <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-xs text-stone-400 leading-relaxed">
-                      <p className="text-stone-600 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
+                    <a href="/api/content/graphic?style=insight&label=Body+State+Problem&text=Your+body+stopped+responding.+Here%27s+why.&sub=Training+consistently.+Eating+well.+Nothing+moving.+That%27s+not+a+discipline+problem.+Take+the+free+Body+State+Scorecard.+Link+in+bio." download="ad-statement.png" className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-xs font-semibold rounded-lg transition-colors">↓ Download 1080×1080</a>
+                    <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 text-xs text-stone-600 leading-relaxed">
+                      <p className="text-stone-400 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
                       Your body stopped responding. Here&apos;s why.<br /><br />Training consistently. Eating well. Nothing moving. That&apos;s not a discipline problem. That&apos;s a body state problem.<br /><br />Take the free Body State Scorecard. Link in bio. Two minutes.
                     </div>
                   </div>
@@ -1781,17 +1781,17 @@ export default function StrategyPage() {
 
               {/* Graphic 2 - Photo card */}
               <div>
-                <p className="text-xs font-semibold text-white mb-1">Ad 2 - Photo</p>
+                <p className="text-xs font-semibold text-[#1A1A1A] mb-1">Ad 2 - Photo</p>
                 <p className="text-xs text-stone-500 mb-3">Angle: Contrarian. Face + statement. Higher trust signal.</p>
                 <div className="grid sm:grid-cols-2 gap-3 items-start">
-                  <div className="rounded-xl overflow-hidden border border-stone-800 bg-stone-950" style={{ aspectRatio: '1/1' }}>
+                  <div className="rounded-xl overflow-hidden border border-stone-200 bg-stone-50" style={{ aspectRatio: '1/1' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/api/content/graphic?style=photo-split&text=More+training+and+less+food+is+making+it+worse.&sub=Take+the+free+Body+State+Scorecard.+Link+in+bio." alt="Ad 2" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                   <div className="space-y-2">
-                    <a href="/api/content/graphic?style=photo-split&text=More+training+and+less+food+is+making+it+worse.&sub=Take+the+free+Body+State+Scorecard.+Link+in+bio." download="ad-photo.png" className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-xs font-semibold rounded-lg transition-colors">↓ Download 1080×1080</a>
-                    <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-xs text-stone-400 leading-relaxed">
-                      <p className="text-stone-600 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
+                    <a href="/api/content/graphic?style=photo-split&text=More+training+and+less+food+is+making+it+worse.&sub=Take+the+free+Body+State+Scorecard.+Link+in+bio." download="ad-photo.png" className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-xs font-semibold rounded-lg transition-colors">↓ Download 1080×1080</a>
+                    <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 text-xs text-stone-600 leading-relaxed">
+                      <p className="text-stone-400 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
                       More training and less food is making it worse.<br /><br />The standard advice when fat loss stalls drives cortisol up and locks your body into a state where it actively resists change.<br /><br />Take the free Body State Scorecard. Link in bio. Two minutes.
                     </div>
                   </div>
@@ -1800,7 +1800,7 @@ export default function StrategyPage() {
 
               {/* Graphic 3 - Body states carousel */}
               <div>
-                <p className="text-xs font-semibold text-white mb-1">Ad 3 - Body States (3 slides)</p>
+                <p className="text-xs font-semibold text-[#1A1A1A] mb-1">Ad 3 - Body States (3 slides)</p>
                 <p className="text-xs text-stone-500 mb-3">Angle: Diagnosis. Carousel ad - swipe to find your state.</p>
                 <div className="grid grid-cols-3 gap-2 mb-3">
                   {[
@@ -1809,16 +1809,16 @@ export default function StrategyPage() {
                     { accent: 'teal', label: 'Ready State | Score 12–15', text: 'Your biology is in a position to respond.', sub: 'If fat loss or performance isn\'t happening at this score, the issue is in the prescription.' },
                   ].map((s, i) => (
                     <div key={i} className="space-y-1">
-                      <div className="rounded-xl overflow-hidden border border-stone-800" style={{ aspectRatio: '1/1' }}>
+                      <div className="rounded-xl overflow-hidden border border-stone-200" style={{ aspectRatio: '1/1' }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={`/api/content/graphic?style=body-state&accent=${s.accent}&label=${encodeURIComponent(s.label)}&text=${encodeURIComponent(s.text)}&sub=${encodeURIComponent(s.sub)}`} alt={`Slide ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
-                      <a href={`/api/content/graphic?style=body-state&accent=${s.accent}&label=${encodeURIComponent(s.label)}&text=${encodeURIComponent(s.text)}&sub=${encodeURIComponent(s.sub)}`} download={`ad-body-state-slide-${i + 1}.png`} className="flex items-center justify-center w-full px-2 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 text-[10px] font-semibold rounded-lg transition-colors">↓ Slide {i + 1}</a>
+                      <a href={`/api/content/graphic?style=body-state&accent=${s.accent}&label=${encodeURIComponent(s.label)}&text=${encodeURIComponent(s.text)}&sub=${encodeURIComponent(s.sub)}`} download={`ad-body-state-slide-${i + 1}.png`} className="flex items-center justify-center w-full px-2 py-1.5 bg-stone-200 hover:bg-stone-300 text-stone-700 text-[10px] font-semibold rounded-lg transition-colors">↓ Slide {i + 1}</a>
                     </div>
                   ))}
                 </div>
-                <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-xs text-stone-400 leading-relaxed">
-                  <p className="text-stone-600 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
+                <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 text-xs text-stone-600 leading-relaxed">
+                  <p className="text-stone-400 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
                   Your body is operating in one of three states right now. Swipe to find out which one and what it means for your training and fat loss.<br /><br />Take the free Body State Scorecard. Link in bio. Two minutes. No cost.
                 </div>
               </div>
@@ -1853,8 +1853,8 @@ export default function StrategyPage() {
                 '6. Cut the 2 underperforming angles. Scale the winner.',
               ].map((step, i) => (
                 <div key={i} className="flex items-start gap-3 text-sm">
-                  <span className="text-teal-500 font-bold shrink-0 text-xs mt-0.5">{i + 1}</span>
-                  <span className="text-stone-400">{step.replace(/^\d+\. /, '')}</span>
+                  <span className="text-blue-500 font-bold shrink-0 text-xs mt-0.5">{i + 1}</span>
+                  <span className="text-stone-600">{step.replace(/^\d+\. /, '')}</span>
                 </div>
               ))}
             </div>
@@ -1871,14 +1871,14 @@ export default function StrategyPage() {
             <SectionLabel>LinkedIn — Body Recode Channel</SectionLabel>
             <Body>Opened as a parallel funnel into the same scorecard, reaching the same demographic (high-functioning adults, executives, founders, professionals) through a different channel with different language. Instagram strategy stays locked. LinkedIn is additive, not a replacement.</Body>
             <div className="mt-4 grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-lg bg-stone-950 border border-stone-800">
+              <div className="p-3 rounded-lg bg-stone-50 border border-stone-200">
                 <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Posted from</p>
-                <p className="text-xs text-white font-medium">Kade Dunstone personal profile</p>
+                <p className="text-xs text-[#1A1A1A] font-medium">Kade Dunstone personal profile</p>
                 <p className="text-[11px] text-stone-500 mt-1">No separate Body Recode LinkedIn page. Audience follows the person.</p>
               </div>
-              <div className="p-3 rounded-lg bg-stone-950 border border-stone-800">
+              <div className="p-3 rounded-lg bg-stone-50 border border-stone-200">
                 <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Source tracking</p>
-                <p className="text-xs text-teal-400 font-mono">?source=linkedin</p>
+                <p className="text-xs text-blue-500 font-mono">?source=linkedin</p>
                 <p className="text-[11px] text-stone-500 mt-1">Leads tagged separately from Instagram in CRM.</p>
               </div>
             </div>
@@ -1894,14 +1894,14 @@ export default function StrategyPage() {
                 { channel: 'Body Recode (NEW)', freq: '1-2 posts/week', note: 'Executive/performance reframe' },
                 { channel: 'TOTAL FEED',        freq: '4-6 posts/week', note: 'Sustainable for one person' },
               ].map(r => (
-                <div key={r.channel} className={`flex items-center gap-3 text-xs py-2 px-3 rounded-lg ${r.channel === 'TOTAL FEED' ? 'bg-teal-500/5 border border-teal-500/20' : 'border border-stone-800'}`}>
-                  <span className={`w-44 shrink-0 font-medium ${r.channel === 'TOTAL FEED' ? 'text-teal-400' : 'text-white'}`}>{r.channel}</span>
-                  <span className={`w-32 shrink-0 ${r.channel === 'TOTAL FEED' ? 'text-teal-300' : 'text-stone-300'}`}>{r.freq}</span>
+                <div key={r.channel} className={`flex items-center gap-3 text-xs py-2 px-3 rounded-lg ${r.channel === 'TOTAL FEED' ? 'bg-blue-500/5 border border-blue-500/20' : 'border border-stone-200'}`}>
+                  <span className={`w-44 shrink-0 font-medium ${r.channel === 'TOTAL FEED' ? 'text-blue-500' : 'text-[#1A1A1A]'}`}>{r.channel}</span>
+                  <span className={`w-32 shrink-0 ${r.channel === 'TOTAL FEED' ? 'text-blue-300' : 'text-stone-700'}`}>{r.freq}</span>
                   <span className="text-stone-500 flex-1">{r.note}</span>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-stone-600 mt-3">BR slot rotates Tue or Thu morning (~7am Brisbane) — when executives scroll before work.</p>
+            <p className="text-xs text-stone-400 mt-3">BR slot rotates Tue or Thu morning (~7am Brisbane) — when executives scroll before work.</p>
           </Card>
 
           {/* Four pillars */}
@@ -1939,7 +1939,7 @@ export default function StrategyPage() {
                 },
               ].map(p => {
                 const colorMap = {
-                  teal:   { border: 'border-teal-500/30',   bg: 'bg-teal-500/5',   accent: 'text-teal-400' },
+                  teal:   { border: 'border-blue-500/30',   bg: 'bg-blue-500/5',   accent: 'text-blue-500' },
                   violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-400' },
                   amber:  { border: 'border-amber-500/30',  bg: 'bg-amber-500/5',  accent: 'text-amber-400' },
                   orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-400' },
@@ -1950,15 +1950,15 @@ export default function StrategyPage() {
                       <span className={`text-lg font-bold font-mono ${colorMap.accent} opacity-60`}>{p.num}</span>
                       <div className="flex-1">
                         <p className={`text-sm font-semibold ${colorMap.accent} mb-1`}>{p.title}</p>
-                        <p className="text-xs text-stone-400 mb-2 leading-relaxed">{p.desc}</p>
-                        <p className="text-xs text-stone-300 italic leading-relaxed">{p.hook}</p>
+                        <p className="text-xs text-stone-600 mb-2 leading-relaxed">{p.desc}</p>
+                        <p className="text-xs text-stone-700 italic leading-relaxed">{p.hook}</p>
                       </div>
                     </div>
                   </div>
                 )
               })}
             </div>
-            <p className="text-xs text-stone-600 mt-3">Each pillar has 8-12 angles in the bank. We don't burn them all in month one.</p>
+            <p className="text-xs text-stone-400 mt-3">Each pillar has 8-12 angles in the bank. We don't burn them all in month one.</p>
           </Card>
 
           {/* Tone */}
@@ -1966,7 +1966,7 @@ export default function StrategyPage() {
             <SectionLabel>Tone Rules</SectionLabel>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-[10px] uppercase tracking-widest text-teal-500/60 mb-2 font-bold">Always</p>
+                <p className="text-[10px] uppercase tracking-widest text-blue-500/60 mb-2 font-bold">Always</p>
                 <div className="space-y-1.5">
                   {[
                     'Performance, recovery, decision-making language',
@@ -1975,8 +1975,8 @@ export default function StrategyPage() {
                     'CTA every 4-5 posts only',
                     'First-person, structured, no fluff',
                   ].map(t => (
-                    <div key={t} className="flex items-start gap-2 text-xs text-stone-300">
-                      <span className="text-teal-500/60 mt-0.5">+</span> {t}
+                    <div key={t} className="flex items-start gap-2 text-xs text-stone-700">
+                      <span className="text-blue-500/60 mt-0.5">+</span> {t}
                     </div>
                   ))}
                 </div>
@@ -2004,16 +2004,16 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Pipeline & Source Tracking</SectionLabel>
             <div className="space-y-3">
-              <div className="p-3 rounded-lg bg-stone-950 border border-stone-800">
+              <div className="p-3 rounded-lg bg-stone-50 border border-stone-200">
                 <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">12-week pipeline</p>
-                <p className="text-xs text-stone-300 mb-1.5">24 posts written, rotated across the 4 pillars. Tue + Thu cadence. CTAs every ~5 posts.</p>
+                <p className="text-xs text-stone-700 mb-1.5">24 posts written, rotated across the 4 pillars. Tue + Thu cadence. CTAs every ~5 posts.</p>
                 <p className="text-[11px] text-stone-500 font-mono leading-relaxed">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/LINKEDIN-BODY-RECODE-12-WEEK-PIPELINE.md</p>
               </div>
-              <div className="p-3 rounded-lg bg-teal-500/5 border border-teal-500/20">
-                <p className="text-[10px] font-bold text-teal-400 uppercase tracking-widest mb-1.5">First post</p>
-                <p className="text-xs text-white font-medium">Tue 19 May 2026 · 7am Brisbane · Post 1 of 24 (State over Discipline)</p>
+              <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
+                <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-1.5">First post</p>
+                <p className="text-xs text-[#1A1A1A] font-medium">Tue 19 May 2026 · 7am Brisbane · Post 1 of 24 (State over Discipline)</p>
               </div>
-              <div className="p-3 rounded-lg bg-stone-950 border border-stone-800">
+              <div className="p-3 rounded-lg bg-stone-50 border border-stone-200">
                 <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">Source URL variants</p>
                 <div className="space-y-1.5">
                   {[
@@ -2022,12 +2022,12 @@ export default function StrategyPage() {
                     { where: 'First comment / DM',  url: 'bodyrecode.au/scorecard?source=linkedin_comment' },
                   ].map(r => (
                     <div key={r.where} className="flex items-center gap-3 text-[11px]">
-                      <span className="text-stone-400 w-32 shrink-0">{r.where}</span>
-                      <code className="text-teal-400 font-mono text-[10px]">{r.url}</code>
+                      <span className="text-stone-600 w-32 shrink-0">{r.where}</span>
+                      <code className="text-blue-500 font-mono text-[10px]">{r.url}</code>
                     </div>
                   ))}
                 </div>
-                <p className="text-[11px] text-stone-600 mt-2">All variants collapse to <code className="text-teal-400 font-mono">source=linkedin</code> on the lead, with the variant preserved as <code className="text-teal-400 font-mono">source_detail</code> for granular attribution.</p>
+                <p className="text-[11px] text-stone-400 mt-2">All variants collapse to <code className="text-blue-500 font-mono">source=linkedin</code> on the lead, with the variant preserved as <code className="text-blue-500 font-mono">source_detail</code> for granular attribution.</p>
               </div>
             </div>
           </Card>
@@ -2039,16 +2039,16 @@ export default function StrategyPage() {
             <div className="mt-4 grid grid-cols-2 gap-3">
               <div className="p-3 rounded-lg bg-pink-500/5 border border-pink-500/20">
                 <p className="text-[10px] font-bold text-pink-400 uppercase tracking-widest mb-2">Instagram</p>
-                <p className="text-xs text-stone-300 mb-2 font-medium">Body state, fat loss, depleted/transitioning/ready</p>
+                <p className="text-xs text-stone-700 mb-2 font-medium">Body state, fat loss, depleted/transitioning/ready</p>
                 <p className="text-[11px] text-stone-500 leading-relaxed">5×/week, scorecard funnel, Meta ads running, consumer voice</p>
               </div>
               <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
                 <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2">LinkedIn</p>
-                <p className="text-xs text-stone-300 mb-2 font-medium">Performance, recovery, decision-making, executive function</p>
+                <p className="text-xs text-stone-700 mb-2 font-medium">Performance, recovery, decision-making, executive function</p>
                 <p className="text-[11px] text-stone-500 leading-relaxed">1-2×/week, organic only, no ads, executive voice</p>
               </div>
             </div>
-            <p className="text-xs text-stone-600 mt-3">Same physiology underneath. Different surface. The IG audience and LinkedIn audience are largely distinct, so no copy-paste between channels.</p>
+            <p className="text-xs text-stone-400 mt-3">Same physiology underneath. Different surface. The IG audience and LinkedIn audience are largely distinct, so no copy-paste between channels.</p>
           </Card>
 
           {/* Honest constraint */}
@@ -2131,14 +2131,14 @@ export default function StrategyPage() {
             <Card>
               <SectionLabel>60-Day Launch Plan</SectionLabel>
               <Body>Consistent for 60-90 days while the funnel launches. After that, ads and retargeting carry acquisition. Organic content maintains authority and warm audience.</Body>
-              <p className="text-xs text-stone-600 mt-3">Anchor date: <strong className="text-stone-400">8 April 2026</strong> (Pre-Launch Post 1 = Day 1).</p>
+              <p className="text-xs text-stone-400 mt-3">Anchor date: <strong className="text-stone-600">8 April 2026</strong> (Pre-Launch Post 1 = Day 1).</p>
             </Card>
 
-            <Card className="border-teal-500/30 bg-teal-500/5">
+            <Card className="border-blue-500/30 bg-blue-500/5">
               <SectionLabel>You Are Here</SectionLabel>
               <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-bold text-teal-400">Day {dayNumber}</span>
-                <span className="text-sm text-stone-400">{currentPhase.phase}</span>
+                <span className="text-3xl font-bold text-blue-500">Day {dayNumber}</span>
+                <span className="text-sm text-stone-600">{currentPhase.phase}</span>
               </div>
               <p className="text-xs text-stone-500 mt-2">{currentPhase.dateRange}</p>
             </Card>
@@ -2147,12 +2147,12 @@ export default function StrategyPage() {
               const isCurrent = dayNumber >= phase.startDay && dayNumber <= phase.endDay
               const isPast = dayNumber > phase.endDay
               return (
-                <Card key={phase.phase} className={isCurrent ? 'border-teal-500/30 bg-teal-500/5' : isPast ? 'opacity-60' : ''}>
+                <Card key={phase.phase} className={isCurrent ? 'border-blue-500/30 bg-blue-500/5' : isPast ? 'opacity-60' : ''}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-semibold text-white">{phase.phase}</p>
-                      {isCurrent && <span className="text-[10px] font-bold text-teal-400 bg-teal-500/10 border border-teal-500/30 px-2 py-0.5 rounded-full uppercase tracking-widest">Current</span>}
-                      {isPast && <span className="text-[10px] font-bold text-stone-500 bg-stone-800 border border-stone-700 px-2 py-0.5 rounded-full uppercase tracking-widest">Complete</span>}
+                      <p className="text-sm font-semibold text-[#1A1A1A]">{phase.phase}</p>
+                      {isCurrent && <span className="text-[10px] font-bold text-blue-500 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded-full uppercase tracking-widest">Current</span>}
+                      {isPast && <span className="text-[10px] font-bold text-stone-500 bg-stone-200 border border-stone-300 px-2 py-0.5 rounded-full uppercase tracking-widest">Complete</span>}
                     </div>
                     <Tag color={phase.color}>{phase.days}</Tag>
                   </div>
@@ -2162,9 +2162,9 @@ export default function StrategyPage() {
               )
             })}
 
-            <Card className="border-teal-500/20 bg-teal-500/5">
+            <Card className="border-blue-500/20 bg-blue-500/5">
               <SectionLabel>The Rule</SectionLabel>
-              <p className="text-sm text-teal-300 font-medium">You don&apos;t need to be consistent forever. You need to be consistent for 60-90 days while the funnel launches. After that, the ads carry acquisition and content maintains trust.</p>
+              <p className="text-sm text-blue-300 font-medium">You don&apos;t need to be consistent forever. You need to be consistent for 60-90 days while the funnel launches. After that, the ads carry acquisition and content maintains trust.</p>
             </Card>
           </div>
         )
@@ -2204,23 +2204,23 @@ export default function StrategyPage() {
                   statusColor: 'amber' as const,
                 },
               ].map(row => (
-                <div key={row.platform} className="grid grid-cols-4 gap-3 p-3 bg-stone-950 rounded-lg border border-stone-800 text-xs">
+                <div key={row.platform} className="grid grid-cols-4 gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200 text-xs">
                   <div>
-                    <p className="text-stone-600 mb-0.5">Platform</p>
-                    <p className="font-semibold text-white">{row.platform}</p>
+                    <p className="text-stone-400 mb-0.5">Platform</p>
+                    <p className="font-semibold text-[#1A1A1A]">{row.platform}</p>
                     <p className="text-stone-500 mt-0.5">{row.handle}</p>
                   </div>
                   <div>
-                    <p className="text-stone-600 mb-0.5">Status</p>
+                    <p className="text-stone-400 mb-0.5">Status</p>
                     <Tag color={row.statusColor}>{row.status}</Tag>
                   </div>
                   <div>
-                    <p className="text-stone-600 mb-0.5">Bio</p>
-                    <p className={row.bioUpdated ? 'text-teal-400 font-medium' : 'text-red-400 font-medium'}>{row.bioUpdated ? 'Updated' : 'Needs update'}</p>
+                    <p className="text-stone-400 mb-0.5">Bio</p>
+                    <p className={row.bioUpdated ? 'text-blue-500 font-medium' : 'text-red-400 font-medium'}>{row.bioUpdated ? 'Updated' : 'Needs update'}</p>
                   </div>
                   <div>
-                    <p className="text-stone-600 mb-0.5">Link</p>
-                    <p className="text-stone-400 break-all">{row.linkSet}</p>
+                    <p className="text-stone-400 mb-0.5">Link</p>
+                    <p className="text-stone-600 break-all">{row.linkSet}</p>
                   </div>
                 </div>
               ))}
@@ -2233,26 +2233,26 @@ export default function StrategyPage() {
             <div className="space-y-4">
               <div>
                 <Heading>Current Bio</Heading>
-                <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-sm text-stone-300 leading-relaxed whitespace-pre-line font-mono">
+                <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 text-sm text-stone-700 leading-relaxed whitespace-pre-line font-mono">
                   {`Performance coaching for people whose bodies stopped responding.\nBody state interpretation. Training. Nutrition.\n↓ Find out which state you're in (2 min)`}
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 text-xs">
-                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <p className="text-stone-600 mb-1">Username</p>
-                  <p className="text-white font-medium">@body_recode_</p>
+                <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                  <p className="text-stone-400 mb-1">Username</p>
+                  <p className="text-[#1A1A1A] font-medium">@body_recode_</p>
                 </div>
-                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <p className="text-stone-600 mb-1">Bio link</p>
-                  <p className="text-teal-400">bodyrecode.au/scorecard?source=instagram</p>
+                <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                  <p className="text-stone-400 mb-1">Bio link</p>
+                  <p className="text-blue-500">bodyrecode.au/scorecard?source=instagram</p>
                 </div>
-                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <p className="text-stone-600 mb-1">Account type</p>
-                  <p className="text-white">Creator or Business</p>
+                <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                  <p className="text-stone-400 mb-1">Account type</p>
+                  <p className="text-[#1A1A1A]">Creator or Business</p>
                 </div>
-                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <p className="text-stone-600 mb-1">Link tool</p>
-                  <p className="text-white">None - one link, one destination</p>
+                <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                  <p className="text-stone-400 mb-1">Link tool</p>
+                  <p className="text-[#1A1A1A]">None - one link, one destination</p>
                 </div>
               </div>
               <div>
@@ -2265,13 +2265,13 @@ export default function StrategyPage() {
                     { name: 'Scorecard', purpose: 'How it works, CTA to take it' },
                     { name: 'Program', purpose: 'What coaching looks like' },
                   ].map(h => (
-                    <div key={h.name} className="flex items-center gap-3 text-xs p-2 bg-stone-950 rounded-lg border border-stone-800">
-                      <span className="text-teal-400 font-semibold w-20 shrink-0">{h.name}</span>
-                      <span className="text-stone-400">{h.purpose}</span>
+                    <div key={h.name} className="flex items-center gap-3 text-xs p-2 bg-stone-50 rounded-lg border border-stone-200">
+                      <span className="text-blue-500 font-semibold w-20 shrink-0">{h.name}</span>
+                      <span className="text-stone-600">{h.purpose}</span>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-stone-600 mt-2">Set up covers even if empty at launch. Dark background, teal icon or text.</p>
+                <p className="text-xs text-stone-400 mt-2">Set up covers even if empty at launch. Dark background, teal icon or text.</p>
               </div>
             </div>
           </Card>
@@ -2282,26 +2282,26 @@ export default function StrategyPage() {
             <div className="space-y-4">
               <div>
                 <Heading>Current Bio (About field)</Heading>
-                <div className="bg-stone-950 border border-stone-800 rounded-lg p-3 text-sm text-stone-300 leading-relaxed">
+                <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 text-sm text-stone-700 leading-relaxed">
                   Performance coaching for people whose bodies stopped responding. Body state interpretation. Training. Nutrition. Find out which state you&apos;re in - 2-min scorecard linked below.
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 text-xs">
-                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <p className="text-stone-600 mb-1">Page name</p>
-                  <p className="text-white font-medium">Body Recode</p>
+                <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                  <p className="text-stone-400 mb-1">Page name</p>
+                  <p className="text-[#1A1A1A] font-medium">Body Recode</p>
                 </div>
-                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <p className="text-stone-600 mb-1">Website field</p>
-                  <p className="text-teal-400">performance.bodyrecode.au</p>
+                <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                  <p className="text-stone-400 mb-1">Website field</p>
+                  <p className="text-blue-500">performance.bodyrecode.au</p>
                 </div>
-                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <p className="text-stone-600 mb-1">CTA / scorecard link</p>
-                  <p className="text-teal-400">bodyrecode.au/scorecard?source=facebook</p>
+                <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                  <p className="text-stone-400 mb-1">CTA / scorecard link</p>
+                  <p className="text-blue-500">bodyrecode.au/scorecard?source=facebook</p>
                 </div>
-                <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                  <p className="text-stone-600 mb-1">Bio updated</p>
-                  <p className="text-white">9 Apr 2026</p>
+                <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                  <p className="text-stone-400 mb-1">Bio updated</p>
+                  <p className="text-[#1A1A1A]">9 Apr 2026</p>
                 </div>
               </div>
             </div>
@@ -2310,27 +2310,27 @@ export default function StrategyPage() {
           {/* LinkedIn */}
           <Card className="border-blue-500/20 bg-blue-500/5">
             <SectionLabel>LinkedIn Profile</SectionLabel>
-            <p className="text-xs text-stone-400 mb-4 leading-relaxed">Posted from Kade&apos;s personal LinkedIn profile. No separate Body Recode LinkedIn page. The profile carries Studio of Ten + Personal Brand + Body Recode (executive reframe) content - 4 to 6 posts/week total. See <strong className="text-blue-400">LinkedIn tab</strong> for the BR pillars and pipeline.</p>
+            <p className="text-xs text-stone-600 mb-4 leading-relaxed">Posted from Kade&apos;s personal LinkedIn profile. No separate Body Recode LinkedIn page. The profile carries Studio of Ten + Personal Brand + Body Recode (executive reframe) content - 4 to 6 posts/week total. See <strong className="text-blue-400">LinkedIn tab</strong> for the BR pillars and pipeline.</p>
             <div className="grid sm:grid-cols-2 gap-3 text-xs">
-              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                <p className="text-stone-600 mb-1">Profile</p>
-                <p className="text-white font-medium">Kade Dunstone</p>
+              <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                <p className="text-stone-400 mb-1">Profile</p>
+                <p className="text-[#1A1A1A] font-medium">Kade Dunstone</p>
               </div>
-              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                <p className="text-stone-600 mb-1">Profile bio link</p>
-                <p className="text-teal-400 break-all">bodyrecode.au/scorecard?source=linkedin_profile</p>
+              <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                <p className="text-stone-400 mb-1">Profile bio link</p>
+                <p className="text-blue-500 break-all">bodyrecode.au/scorecard?source=linkedin_profile</p>
               </div>
-              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                <p className="text-stone-600 mb-1">In-post CTA link</p>
-                <p className="text-teal-400 break-all">bodyrecode.au/scorecard?source=linkedin_post</p>
-                <p className="text-stone-600 mt-1">Put in first comment, not post body (kills reach)</p>
+              <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                <p className="text-stone-400 mb-1">In-post CTA link</p>
+                <p className="text-blue-500 break-all">bodyrecode.au/scorecard?source=linkedin_post</p>
+                <p className="text-stone-400 mt-1">Put in first comment, not post body (kills reach)</p>
               </div>
-              <div className="p-3 bg-stone-950 rounded-lg border border-stone-800">
-                <p className="text-stone-600 mb-1">Comment / DM follow-up link</p>
-                <p className="text-teal-400 break-all">bodyrecode.au/scorecard?source=linkedin_comment</p>
+              <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                <p className="text-stone-400 mb-1">Comment / DM follow-up link</p>
+                <p className="text-blue-500 break-all">bodyrecode.au/scorecard?source=linkedin_comment</p>
               </div>
             </div>
-            <p className="text-xs text-stone-600 mt-3">All variants collapse to <code className="text-teal-400 font-mono">source=linkedin</code> in the CRM with the variant preserved as <code className="text-teal-400 font-mono">source_detail</code> for granular attribution.</p>
+            <p className="text-xs text-stone-400 mt-3">All variants collapse to <code className="text-blue-500 font-mono">source=linkedin</code> in the CRM with the variant preserved as <code className="text-blue-500 font-mono">source_detail</code> for granular attribution.</p>
           </Card>
 
           {/* Terminology rule */}
@@ -2347,7 +2347,7 @@ export default function StrategyPage() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-stone-600 mt-3">Never use CFFS classification terms in public content. The scorecard gives a signal - the CFFS gives the real classification. That gap protects the value of the paid system.</p>
+            <p className="text-xs text-stone-400 mt-3">Never use CFFS classification terms in public content. The scorecard gives a signal - the CFFS gives the real classification. That gap protects the value of the paid system.</p>
           </Card>
 
           {/* Profile setup checklist */}
@@ -2379,13 +2379,13 @@ export default function StrategyPage() {
                   <button
                     key={key}
                     onClick={() => toggleProfileItem(key, defaultDone)}
-                    className="flex items-center gap-2.5 text-xs py-1.5 border-b border-stone-800 last:border-0 w-full text-left hover:bg-stone-900/40 -mx-2 px-2 rounded transition-colors"
+                    className="flex items-center gap-2.5 text-xs py-1.5 border-b border-stone-200 last:border-0 w-full text-left hover:bg-stone-100/40 -mx-2 px-2 rounded transition-colors"
                   >
-                    <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${done ? 'bg-teal-500/20 border-teal-500/40' : 'bg-stone-900 border-stone-700'}`}>
-                      {done && <span className="text-teal-400 text-[10px] font-bold">✓</span>}
+                    <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${done ? 'bg-blue-500/20 border-blue-500/40' : 'bg-stone-100 border-stone-300'}`}>
+                      {done && <span className="text-blue-500 text-[10px] font-bold">✓</span>}
                     </div>
                     <span className={`text-[10px] font-bold uppercase tracking-widest w-16 shrink-0 ${groupColor}`}>{group}</span>
-                    <span className={done ? 'text-stone-400 line-through' : 'text-stone-300'}>{item}</span>
+                    <span className={done ? 'text-stone-600 line-through' : 'text-stone-700'}>{item}</span>
                   </button>
                 )
               })}

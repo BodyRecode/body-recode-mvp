@@ -101,11 +101,11 @@ export default function BusinessSidebar() {
   }
 
   return (
-    <aside className="w-52 shrink-0 border-r border-stone-800 bg-stone-950 overflow-y-auto">
+    <aside className="w-52 shrink-0 border-r border-stone-200 bg-stone-50 overflow-y-auto">
       <div className="px-3 py-5 space-y-6">
         {sections.map((section) => (
           <div key={section.label}>
-            <p className="px-3 mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-stone-600">
+            <p className="px-3 mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-stone-400">
               {section.label}
             </p>
             <div className="space-y-0.5">
@@ -118,8 +118,8 @@ export default function BusinessSidebar() {
                     href={item.href}
                     className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
                       active
-                        ? 'bg-teal-500/10 text-teal-400 font-medium'
-                        : 'text-stone-400 hover:text-white hover:bg-stone-800'
+                        ? 'bg-blue-500/10 text-blue-500 font-medium'
+                        : 'text-stone-600 hover:text-[#1A1A1A] hover:bg-stone-200'
                     }`}
                   >
                     <Icon size={15} strokeWidth={active ? 2.5 : 1.8} />

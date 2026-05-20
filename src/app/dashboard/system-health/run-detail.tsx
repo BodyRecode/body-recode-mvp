@@ -44,7 +44,7 @@ export default function RunDetail({ run }: { run: Run }) {
   })
 
   const overallColor = run.status === 'ok'
-    ? 'text-teal-400 border-teal-400/30 bg-teal-400/5'
+    ? 'text-blue-500 border-blue-500/30 bg-blue-500/5'
     : run.status === 'fixed'
     ? 'text-amber-400 border-amber-400/30 bg-amber-400/5'
     : 'text-red-400 border-red-400/30 bg-red-400/5'
@@ -69,35 +69,35 @@ export default function RunDetail({ run }: { run: Run }) {
   }
 
   const statusIcon = (s: CheckStatus) => {
-    if (s === 'ok') return <span className="text-teal-400 font-bold">&#10003;</span>
+    if (s === 'ok') return <span className="text-blue-500 font-bold">&#10003;</span>
     if (s === 'fixed') return <span className="text-amber-400 font-bold">&#9889;</span>
     if (s === 'failed') return <span className="text-red-400 font-bold">&#10007;</span>
-    return <span className="text-stone-600">&#8212;</span>
+    return <span className="text-stone-400">&#8212;</span>
   }
 
   const statusTextColor = (s: CheckStatus) => {
-    if (s === 'ok') return 'text-white'
+    if (s === 'ok') return 'text-[#1A1A1A]'
     if (s === 'fixed') return 'text-amber-400'
     if (s === 'failed') return 'text-red-400'
-    return 'text-stone-400'
+    return 'text-stone-600'
   }
 
   return (
     <div>
       {/* Header */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+      <div className="bg-stone-100 border border-stone-200 rounded-xl p-5 mb-4">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-xs text-stone-500 mb-1">{dateStr}</p>
             <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full border ${overallColor}`}>
               {overallLabel}
             </span>
-            <p className="text-xs text-stone-600 mt-2">{checks.length} checks run</p>
+            <p className="text-xs text-stone-400 mt-2">{checks.length} checks run</p>
           </div>
           <button
             onClick={download}
             disabled={downloading}
-            className="flex-shrink-0 text-xs font-semibold px-4 py-2 border border-stone-700 text-stone-300 rounded-lg hover:border-stone-500 hover:text-white transition-colors disabled:opacity-50"
+            className="flex-shrink-0 text-xs font-semibold px-4 py-2 border border-stone-300 text-stone-700 rounded-lg hover:border-stone-500 hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
           >
             {downloading ? 'Downloading...' : 'Download .md'}
           </button>
@@ -105,12 +105,12 @@ export default function RunDetail({ run }: { run: Run }) {
 
         {/* Summary callouts */}
         {failures.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-stone-800">
+          <div className="mt-4 pt-4 border-t border-stone-200">
             <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">Needs manual attention</p>
             <div className="space-y-1.5">
               {failures.map((f, i) => (
                 <div key={i}>
-                  <p className="text-xs text-stone-300 font-medium">{f.name}</p>
+                  <p className="text-xs text-stone-700 font-medium">{f.name}</p>
                   {f.manualFix && <p className="text-xs text-stone-500 mt-0.5">{f.manualFix}</p>}
                 </div>
               ))}
@@ -119,11 +119,11 @@ export default function RunDetail({ run }: { run: Run }) {
         )}
 
         {fixes.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-stone-800">
+          <div className="mt-4 pt-4 border-t border-stone-200">
             <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Auto-fixed</p>
             <div className="space-y-1">
               {fixes.map((f, i) => (
-                <p key={i} className="text-xs text-stone-400">{f.name} - {f.action}</p>
+                <p key={i} className="text-xs text-stone-600">{f.name} - {f.action}</p>
               ))}
             </div>
           </div>
@@ -136,11 +136,11 @@ export default function RunDetail({ run }: { run: Run }) {
           const sectionChecks = checks.slice(section.range[0], section.range[1])
           if (sectionChecks.length === 0) return null
           return (
-            <div key={section.label} className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+            <div key={section.label} className="bg-stone-100 border border-stone-200 rounded-xl p-5">
               <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">{section.label}</p>
               <div className="space-y-3">
                 {sectionChecks.map((c, i) => (
-                  <div key={i} className={`pb-3 ${i < sectionChecks.length - 1 ? 'border-b border-stone-800' : ''}`}>
+                  <div key={i} className={`pb-3 ${i < sectionChecks.length - 1 ? 'border-b border-stone-200' : ''}`}>
                     <div className="flex items-center gap-2 mb-1">
                       {statusIcon(c.status)}
                       <span className={`text-sm font-semibold ${statusTextColor(c.status)}`}>{c.name}</span>

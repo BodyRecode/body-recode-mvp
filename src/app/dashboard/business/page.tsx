@@ -76,18 +76,18 @@ export default function BusinessHubPage() {
             <Link
               key={mod.href}
               href={mod.href}
-              className="group bg-[#111110] border border-[#1c1917] rounded-2xl p-5 hover:border-[#292524] transition-colors"
+              className="group bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 hover:border-[#D4D4D4] transition-colors"
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="w-9 h-9 rounded-xl bg-[#0c0a09] border border-[#1c1917] flex items-center justify-center">
-                  <Icon size={15} className="text-[#14b8a6]" strokeWidth={1.8} />
+                <div className="w-9 h-9 rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] flex items-center justify-center">
+                  <Icon size={15} className="text-[#1B6DFC]" strokeWidth={1.8} />
                 </div>
-                <ArrowUpRight size={14} className="text-[#57534e] group-hover:text-[#14b8a6] transition-colors" />
+                <ArrowUpRight size={14} className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors" />
               </div>
-              <p className="text-[14px] font-semibold text-white group-hover:text-[#14b8a6] transition-colors mb-1">
+              <p className="text-[14px] font-semibold text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors mb-1">
                 {mod.label}
               </p>
-              <p className="text-[12px] text-[#57534e] leading-relaxed">{mod.description}</p>
+              <p className="text-[12px] text-[#999999] leading-relaxed">{mod.description}</p>
             </Link>
           )
         })}
@@ -96,16 +96,16 @@ export default function BusinessHubPage() {
       {/* Public links */}
       <Card className="mb-4" padding="md">
         <SectionLabel>Public Links</SectionLabel>
-        <div className="divide-y divide-[#1c1917]">
+        <div className="divide-y divide-[#E5E5E5]">
           {publicLinks.map(link => (
             <div key={link.url} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
               <div className="min-w-0">
-                <p className="text-[14px] text-white font-medium">{link.label}</p>
-                <p className="text-[12px] text-[#57534e] mt-0.5">{link.desc}</p>
+                <p className="text-[14px] text-[#1A1A1A] font-medium">{link.label}</p>
+                <p className="text-[12px] text-[#999999] mt-0.5">{link.desc}</p>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <span
-                  className="text-[11px] text-[#57534e] hidden sm:inline"
+                  className="text-[11px] text-[#999999] hidden sm:inline"
                   style={{ fontFamily: MONO_FONT }}
                 >
                   bodyrecode.au{link.url}
@@ -114,7 +114,7 @@ export default function BusinessHubPage() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 text-[#57534e] hover:text-[#14b8a6] transition-colors"
+                  className="p-1.5 text-[#999999] hover:text-[#1B6DFC] transition-colors"
                   aria-label={`Open ${link.label}`}
                 >
                   <ExternalLink size={14} />
@@ -129,14 +129,14 @@ export default function BusinessHubPage() {
       <Card padding="md">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="min-w-0">
-            <p className="text-[14px] font-semibold text-white mb-1">Scorecard Follow-up Automation</p>
-            <p className="text-[12px] text-[#a8a29e] leading-relaxed max-w-xl">
+            <p className="text-[14px] font-semibold text-[#1A1A1A] mb-1">Scorecard Follow-up Automation</p>
+            <p className="text-[12px] text-[#6B6B6B] leading-relaxed max-w-xl">
               A 4-email sequence that fires when someone completes the Body State Scorecard. Directs leads to book a free call or get the $37 Body Decode Report.
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {automationSeeded && (
-              <span className="inline-flex items-center gap-1.5 text-[#14b8a6] text-[11px] font-semibold">
+              <span className="inline-flex items-center gap-1.5 text-[#1B6DFC] text-[11px] font-semibold">
                 <Check size={12} /> Synced
               </span>
             )}

@@ -2,12 +2,12 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import PrintTrigger from '../cffs-report/print-trigger'
 
-const TEAL = '#14b8a6'
-const TEAL_HOVER = '#5eead4'
+const TEAL = '#1B6DFC'
+const TEAL_HOVER = '#5390FF'
 const INK = '#0f0f0f'
 const WHITE = '#ffffff'
 const PAGE_BG = '#fafaf7'
-const CARD_BORDER = '#e7e5e0'
+const CARD_BORDER = '#E5E5E5'
 const SOFT = '#f5f3ee'
 const SCREEN_FONT = "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif"
 

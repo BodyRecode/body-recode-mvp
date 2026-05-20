@@ -8,8 +8,8 @@ const PATTERN_COLOURS: Record<string, string> = {
   'stress-stored': '#ef4444',
   'metabolic-drift': '#f59e0b',
   'hormonal-shift': '#8b5cf6',
-  'system-overload': '#14b8a6',
-  'pending': '#57534e',
+  'system-overload': '#1B6DFC',
+  'pending': '#999999',
 }
 
 const PATTERN_LABELS: Record<string, string> = {
@@ -46,7 +46,7 @@ function formatDate(dateStr: string) {
 }
 
 function AvgBadge({ avg }: { avg: number }) {
-  const colour = avg >= 4 ? '#14b8a6' : avg >= 3 ? '#f59e0b' : '#ef4444'
+  const colour = avg >= 4 ? '#1B6DFC' : avg >= 3 ? '#f59e0b' : '#ef4444'
   return (
     <span
       className="inline-flex items-center text-[11px] font-bold px-2 py-0.5 rounded-full border"
@@ -58,7 +58,7 @@ function AvgBadge({ avg }: { avg: number }) {
 }
 
 function PatternBadge({ pattern }: { pattern: string }) {
-  const colour = PATTERN_COLOURS[pattern] ?? '#57534e'
+  const colour = PATTERN_COLOURS[pattern] ?? '#999999'
   const label = PATTERN_LABELS[pattern] ?? pattern
   return (
     <span
@@ -86,11 +86,11 @@ function Table({ headers, children }: { headers: string[]; children: React.React
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-[13px]">
         <thead>
-          <tr className="border-b border-[#1c1917] bg-[#0c0a09]">
+          <tr className="border-b border-[#E5E5E5] bg-[#FFFFFF]">
             {headers.map(h => (
               <th
                 key={h}
-                className="text-left px-3 py-3 text-[10px] font-bold text-[#57534e] uppercase whitespace-nowrap"
+                className="text-left px-3 py-3 text-[10px] font-bold text-[#999999] uppercase whitespace-nowrap"
                 style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
               >
                 {h}
@@ -107,7 +107,7 @@ function Table({ headers, children }: { headers: string[]; children: React.React
 function TR({ children, highlight }: { children: React.ReactNode; highlight?: boolean }) {
   return (
     <tr
-      className="border-b border-[#1c1917] last:border-b-0 transition-colors hover:bg-[#1c1917]/40"
+      className="border-b border-[#E5E5E5] last:border-b-0 transition-colors hover:bg-[#E5E5E5]/40"
       style={highlight ? { background: 'rgba(239,68,68,0.04)' } : undefined}
     >
       {children}
@@ -116,14 +116,14 @@ function TR({ children, highlight }: { children: React.ReactNode; highlight?: bo
 }
 
 function TD({ children }: { children: React.ReactNode }) {
-  return <td className="px-3 py-3 text-[#a8a29e] align-middle">{children}</td>
+  return <td className="px-3 py-3 text-[#6B6B6B] align-middle">{children}</td>
 }
 
 function TDName({ name, email }: { name: string; email: string }) {
   return (
     <td className="px-3 py-3 align-middle">
-      <div className="text-[13px] font-semibold text-white">{name}</div>
-      <div className="text-[11px] text-[#57534e]">{email}</div>
+      <div className="text-[13px] font-semibold text-[#1A1A1A]">{name}</div>
+      <div className="text-[11px] text-[#999999]">{email}</div>
     </td>
   )
 }
@@ -157,7 +157,7 @@ export default function FunnelClient({
   const amber = accentColour('amber')
 
   const summary = [
-    { label: 'Challenge', count: challengeEnrollments.length, sub: `${challengeEnrollments.filter(e => e.quizCompleted).length} completed quiz`, accent: '#14b8a6' },
+    { label: 'Challenge', count: challengeEnrollments.length, sub: `${challengeEnrollments.filter(e => e.quizCompleted).length} completed quiz`, accent: '#1B6DFC' },
     { label: 'Blueprint', count: blueprintEnrollments.length, sub: `${blueprintEnrollments.filter(e => e.hasMembership).length} ascended to membership`, accent: '#8b5cf6' },
     { label: 'Membership', count: membershipEnrollments.length, sub: `${membershipEnrollments.filter(e => !e.cancelledAt).length} active`, accent: '#f59e0b' },
   ]
@@ -173,24 +173,24 @@ export default function FunnelClient({
       {/* Summary stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
         {summary.map(s => (
-          <div key={s.label} className="relative bg-[#111110] border border-[#1c1917] rounded-2xl p-5 overflow-hidden">
+          <div key={s.label} className="relative bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 overflow-hidden">
             <div
               className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
               style={{ background: s.accent }}
             />
             <p
-              className="text-[10px] text-[#78716c] uppercase mt-4 mb-3"
+              className="text-[10px] text-[#6B6B6B] uppercase mt-4 mb-3"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
             >
               {s.label}
             </p>
             <p
-              className="text-[34px] font-extrabold text-white tracking-tight leading-none mb-2.5"
+              className="text-[34px] font-extrabold text-[#1A1A1A] tracking-tight leading-none mb-2.5"
               style={{ fontVariantNumeric: 'tabular-nums' }}
             >
               {s.count}
             </p>
-            <p className="text-[11px] text-[#57534e] truncate">{s.sub}</p>
+            <p className="text-[11px] text-[#999999] truncate">{s.sub}</p>
           </div>
         ))}
       </div>
@@ -198,7 +198,7 @@ export default function FunnelClient({
       {/* Attention flags */}
       {(blueprintAtRisk > 0 || membershipNoCheckin > 0) && (
         <div
-          className="mb-5 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-4 flex-wrap"
+          className="mb-5 bg-[#FFFFFF] border rounded-xl px-4 py-3 flex items-center gap-4 flex-wrap"
           style={{ borderColor: amber.ring }}
         >
           <div className="inline-flex items-center gap-2 shrink-0">
@@ -211,13 +211,13 @@ export default function FunnelClient({
             </span>
           </div>
           {blueprintAtRisk > 0 && (
-            <div className="text-[13px] text-[#a8a29e]">
-              <span className="font-semibold text-white">{blueprintAtRisk}</span> Blueprint buyer{blueprintAtRisk > 1 ? 's' : ''} at Week 6 - not yet in membership
+            <div className="text-[13px] text-[#6B6B6B]">
+              <span className="font-semibold text-[#1A1A1A]">{blueprintAtRisk}</span> Blueprint buyer{blueprintAtRisk > 1 ? 's' : ''} at Week 6 - not yet in membership
             </div>
           )}
           {membershipNoCheckin > 0 && (
-            <div className="text-[13px] text-[#a8a29e]">
-              <span className="font-semibold text-white">{membershipNoCheckin}</span> active member{membershipNoCheckin > 1 ? 's' : ''} with no check-in submitted
+            <div className="text-[13px] text-[#6B6B6B]">
+              <span className="font-semibold text-[#1A1A1A]">{membershipNoCheckin}</span> active member{membershipNoCheckin > 1 ? 's' : ''} with no check-in submitted
             </div>
           )}
         </div>
@@ -225,7 +225,7 @@ export default function FunnelClient({
 
       {/* Search + tabs */}
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
-        <div className="inline-flex items-center bg-[#111110] border border-[#1c1917] rounded-lg p-0.5">
+        <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-0.5">
           {([
             { id: 'challenge', label: `Challenge (${challengeEnrollments.length})` },
             { id: 'blueprint', label: `Blueprint (${blueprintEnrollments.length})` },
@@ -235,7 +235,7 @@ export default function FunnelClient({
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors whitespace-nowrap ${
-                tab === t.id ? 'bg-[#14b8a6] text-[#0c0a09]' : 'text-[#a8a29e] hover:text-white'
+                tab === t.id ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
               }`}
             >
               {t.label}
@@ -243,12 +243,12 @@ export default function FunnelClient({
           ))}
         </div>
         <div className="relative">
-          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#57534e] pointer-events-none" />
+          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999] pointer-events-none" />
           <input
             placeholder="Search name or email..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="text-[13px] bg-[#111110] border border-[#1c1917] rounded-lg pl-8 pr-3 py-2 text-white placeholder:text-[#57534e] outline-none focus:border-[#14b8a6] w-[220px] transition-colors"
+            className="text-[13px] bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg pl-8 pr-3 py-2 text-[#1A1A1A] placeholder:text-[#999999] outline-none focus:border-[#1B6DFC] w-[220px] transition-colors"
           />
         </div>
       </div>
@@ -259,7 +259,7 @@ export default function FunnelClient({
         {tab === 'challenge' && (
           <Table headers={['Name', 'Day', 'Pattern', 'Quiz', 'Blueprint', 'Enrolled']}>
             {filteredChallenge.length === 0 && (
-              <TR><TD><span className="text-[#57534e]">No enrollments yet.</span></TD></TR>
+              <TR><TD><span className="text-[#999999]">No enrollments yet.</span></TD></TR>
             )}
             {filteredChallenge.map(e => {
               const atRisk = e.currentDay >= 14 && !e.hasBlueprintPurchase
@@ -267,23 +267,23 @@ export default function FunnelClient({
                 <TR key={e.id} highlight={atRisk}>
                   <TDName name={e.name} email={e.email} />
                   <TD>
-                    <span className="font-bold text-white" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, 14)}</span>
-                    <span className="text-[11px] text-[#57534e]" style={{ fontFamily: MONO_FONT }}> / 14</span>
+                    <span className="font-bold text-[#1A1A1A]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, 14)}</span>
+                    <span className="text-[11px] text-[#999999]" style={{ fontFamily: MONO_FONT }}> / 14</span>
                   </TD>
                   <TD>
-                    {e.quizResult ? <PatternBadge pattern={e.quizResult} /> : <span className="text-[#57534e] text-[12px]">No quiz</span>}
+                    {e.quizResult ? <PatternBadge pattern={e.quizResult} /> : <span className="text-[#999999] text-[12px]">No quiz</span>}
                   </TD>
                   <TD>
                     {e.quizCompleted
-                      ? <StatusBadge label="Completed" colour="#14b8a6" />
-                      : <StatusBadge label="Pending" colour="#57534e" />}
+                      ? <StatusBadge label="Completed" colour="#1B6DFC" />
+                      : <StatusBadge label="Pending" colour="#999999" />}
                   </TD>
                   <TD>
                     {e.hasBlueprintPurchase
                       ? <StatusBadge label="Purchased" colour="#8b5cf6" />
                       : e.currentDay >= 14
                         ? <StatusBadge label="Not yet" colour="#ef4444" />
-                        : <StatusBadge label="In progress" colour="#57534e" />}
+                        : <StatusBadge label="In progress" colour="#999999" />}
                   </TD>
                   <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.enrolledAt)}</span></TD>
                 </TR>
@@ -295,7 +295,7 @@ export default function FunnelClient({
         {tab === 'blueprint' && (
           <Table headers={['Name', 'Pattern', 'Week', 'Last Check-In', 'Avg Score', 'Membership', 'Purchased']}>
             {filteredBlueprint.length === 0 && (
-              <TR><TD><span className="text-[#57534e]">No Blueprint buyers yet.</span></TD></TR>
+              <TR><TD><span className="text-[#999999]">No Blueprint buyers yet.</span></TD></TR>
             )}
             {filteredBlueprint.map(e => {
               const atRisk = e.currentWeek === 6 && !e.hasMembership
@@ -305,21 +305,21 @@ export default function FunnelClient({
                   <TDName name={e.name} email={e.email} />
                   <TD><PatternBadge pattern={e.pattern} /></TD>
                   <TD>
-                    <span className="font-bold text-white" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Week {e.currentWeek}</span>
-                    <span className="text-[11px] text-[#57534e]" style={{ fontFamily: MONO_FONT }}> / 6</span>
+                    <span className="font-bold text-[#1A1A1A]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Week {e.currentWeek}</span>
+                    <span className="text-[11px] text-[#999999]" style={{ fontFamily: MONO_FONT }}> / 6</span>
                   </TD>
                   <TD>
                     {e.lastCheckin
-                      ? <span className="text-[12px] text-[#a8a29e]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
+                      ? <span className="text-[12px] text-[#6B6B6B]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
                       : <span className="text-[12px] text-[#ef4444]">None submitted</span>}
                   </TD>
-                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#57534e] text-[12px]">-</span>}</TD>
+                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#999999] text-[12px]">-</span>}</TD>
                   <TD>
                     {e.hasMembership
-                      ? <StatusBadge label="Active" colour="#14b8a6" />
+                      ? <StatusBadge label="Active" colour="#1B6DFC" />
                       : e.currentWeek === 6
                         ? <StatusBadge label="Not joined" colour="#ef4444" />
-                        : <StatusBadge label="Not yet" colour="#57534e" />}
+                        : <StatusBadge label="Not yet" colour="#999999" />}
                   </TD>
                   <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.purchaseDate)}</span></TD>
                 </TR>
@@ -331,7 +331,7 @@ export default function FunnelClient({
         {tab === 'membership' && (
           <Table headers={['Name', 'Pattern', 'Block / Week', 'Last Check-In', 'Avg Score', 'Status', 'Joined']}>
             {filteredMembership.length === 0 && (
-              <TR><TD><span className="text-[#57534e]">No members yet.</span></TD></TR>
+              <TR><TD><span className="text-[#999999]">No members yet.</span></TD></TR>
             )}
             {filteredMembership.map(e => {
               const noCheckin = !e.cancelledAt && !e.lastCheckin
@@ -340,20 +340,20 @@ export default function FunnelClient({
                   <TDName name={e.name} email={e.email} />
                   <TD><PatternBadge pattern={e.pattern} /></TD>
                   <TD>
-                    <span className="font-bold text-white" style={{ fontFamily: MONO_FONT }}>Block {e.currentBlock}</span>
-                    <span className="text-[#57534e]"> · </span>
-                    <span className="font-bold text-white" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Week {e.currentWeek}</span>
+                    <span className="font-bold text-[#1A1A1A]" style={{ fontFamily: MONO_FONT }}>Block {e.currentBlock}</span>
+                    <span className="text-[#999999]"> · </span>
+                    <span className="font-bold text-[#1A1A1A]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Week {e.currentWeek}</span>
                   </TD>
                   <TD>
                     {e.lastCheckin
-                      ? <span className="text-[12px] text-[#a8a29e]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
+                      ? <span className="text-[12px] text-[#6B6B6B]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
                       : <span className="text-[12px] text-[#ef4444]">None submitted</span>}
                   </TD>
-                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#57534e] text-[12px]">-</span>}</TD>
+                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#999999] text-[12px]">-</span>}</TD>
                   <TD>
                     {e.cancelledAt
                       ? <StatusBadge label="Cancelled" colour="#ef4444" />
-                      : <StatusBadge label="Active" colour="#14b8a6" />}
+                      : <StatusBadge label="Active" colour="#1B6DFC" />}
                   </TD>
                   <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.joinedAt)}</span></TD>
                 </TR>

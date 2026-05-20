@@ -70,21 +70,21 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
   return (
     <div className="space-y-4">
       {rows.length === 0 ? (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
-          <p className="text-sm text-stone-600">No blocked times.</p>
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+          <p className="text-sm text-stone-400">No blocked times.</p>
         </div>
       ) : (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl divide-y divide-stone-800">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl divide-y divide-stone-200">
           {rows.map(row => (
             <div key={row.id} className="flex items-center justify-between px-5 py-4">
               <div>
-                <span className="text-sm text-white">{formatRange(row.start_at, row.end_at)}</span>
+                <span className="text-sm text-[#1A1A1A]">{formatRange(row.start_at, row.end_at)}</span>
                 {row.reason && <span className="text-xs text-stone-500 ml-2">· {row.reason}</span>}
               </div>
               <button
                 onClick={() => handleRemove(row.id)}
                 disabled={removing === row.id}
-                className="text-stone-600 hover:text-red-400 transition-colors text-xs ml-4"
+                className="text-stone-400 hover:text-red-400 transition-colors text-xs ml-4"
               >
                 {removing === row.id ? '...' : '✕'}
               </button>
@@ -96,12 +96,12 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
       {!adding ? (
         <button
           onClick={() => setAdding(true)}
-          className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
+          className="text-xs text-blue-500 hover:text-blue-300 transition-colors"
         >
           + Block out time
         </button>
       ) : (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 space-y-4">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-6 space-y-4">
           <p className="text-xs uppercase tracking-wider text-stone-500">Block Out Time</p>
 
           <div>
@@ -111,7 +111,7 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
               value={date}
               min={todayBrisbane()}
               onChange={e => setDate(e.target.value)}
-              className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-teal-500"
+              className="bg-stone-200 border border-stone-300 rounded-lg px-3 py-2.5 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
             />
           </div>
 
@@ -122,7 +122,7 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
                 type="time"
                 value={startTime}
                 onChange={e => setStartTime(e.target.value)}
-                className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-teal-500"
+                className="bg-stone-200 border border-stone-300 rounded-lg px-3 py-2.5 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
               />
             </div>
             <div>
@@ -131,7 +131,7 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
                 type="time"
                 value={endTime}
                 onChange={e => setEndTime(e.target.value)}
-                className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-teal-500"
+                className="bg-stone-200 border border-stone-300 rounded-lg px-3 py-2.5 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
               />
             </div>
           </div>
@@ -143,7 +143,7 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
               value={reason}
               onChange={e => setReason(e.target.value)}
               placeholder="e.g. Doctor appointment"
-              className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500"
+              className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2.5 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500"
             />
           </div>
 
@@ -153,13 +153,13 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
             <button
               onClick={handleAdd}
               disabled={saving}
-              className="px-4 py-2 bg-teal-500 text-black text-xs font-bold rounded-lg disabled:opacity-40 hover:bg-teal-400 transition-colors"
+              className="px-4 py-2 bg-blue-500 text-black text-xs font-bold rounded-lg disabled:opacity-40 hover:bg-blue-500 transition-colors"
             >
               {saving ? 'Saving...' : 'Block time'}
             </button>
             <button
               onClick={() => { setAdding(false); setError('') }}
-              className="px-4 py-2 text-xs text-stone-500 hover:text-stone-300 transition-colors"
+              className="px-4 py-2 text-xs text-stone-500 hover:text-stone-700 transition-colors"
             >
               Cancel
             </button>

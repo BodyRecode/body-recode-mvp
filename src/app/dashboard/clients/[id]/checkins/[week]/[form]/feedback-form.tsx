@@ -177,11 +177,11 @@ export default function CheckinFeedbackForm({
   // write feedback retroactively, they unskip first then the form appears.
   if (skippedAt && !existing) {
     return (
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-        <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between gap-3 flex-wrap">
+      <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+        <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
-            <p className="text-xs font-bold uppercase tracking-widest text-stone-400">Coach response</p>
-            <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-[#1c1917] border border-[#292524] text-stone-400">
+            <p className="text-xs font-bold uppercase tracking-widest text-stone-600">Coach response</p>
+            <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-[#E5E5E5] border border-[#D4D4D4] text-stone-600">
               Skipped {new Date(skippedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
             </span>
           </div>
@@ -189,25 +189,25 @@ export default function CheckinFeedbackForm({
             type="button"
             onClick={unskip}
             disabled={skipping}
-            className="text-xs font-bold text-teal-300 hover:text-teal-200 transition-colors disabled:opacity-50"
+            className="text-xs font-bold text-blue-300 hover:text-blue-200 transition-colors disabled:opacity-50"
           >
             {skipping ? 'Working…' : 'Unskip and write response →'}
           </button>
         </div>
         <div className="px-5 py-5">
-          <p className="text-sm text-stone-300 leading-relaxed">
+          <p className="text-sm text-stone-700 leading-relaxed">
             You marked this check-in as not needing a coach response.
             {clientFirstName} sees no Coach response card on their portal for this check-in.
           </p>
           {skipReason && (
-            <div className="mt-3 rounded-lg bg-[#0c0a09] border border-stone-800 p-3">
+            <div className="mt-3 rounded-lg bg-[#FFFFFF] border border-stone-200 p-3">
               <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1">Your note</p>
-              <p className="text-xs text-stone-300 whitespace-pre-wrap leading-relaxed">{skipReason}</p>
+              <p className="text-xs text-stone-700 whitespace-pre-wrap leading-relaxed">{skipReason}</p>
             </div>
           )}
         </div>
         {error && <p className="px-5 pb-4 text-xs text-red-400">{error}</p>}
-        {status && <p className="px-5 pb-4 text-xs text-teal-400">{status}</p>}
+        {status && <p className="px-5 pb-4 text-xs text-blue-500">{status}</p>}
       </div>
     )
   }
@@ -216,14 +216,14 @@ export default function CheckinFeedbackForm({
   if (mode === 'view' && existing) {
     const sent = !!existing.email_sent_at
     return (
-      <div className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
-        <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between gap-3 flex-wrap">
+      <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+        <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
-            <p className="text-xs font-bold uppercase tracking-widest text-teal-400">Coach response</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-blue-500">Coach response</p>
             <span
               className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${
                 sent
-                  ? 'bg-teal-500/10 border border-teal-500/30 text-teal-300'
+                  ? 'bg-blue-500/10 border border-blue-500/30 text-blue-300'
                   : 'bg-amber-500/10 border border-amber-500/30 text-amber-300'
               }`}
             >
@@ -236,7 +236,7 @@ export default function CheckinFeedbackForm({
           <button
             type="button"
             onClick={() => { setMode('edit'); setStatus(null); setError(null) }}
-            className="text-xs font-bold text-teal-300 hover:text-teal-200 transition-colors"
+            className="text-xs font-bold text-blue-300 hover:text-blue-200 transition-colors"
           >
             Edit response →
           </button>
@@ -246,7 +246,7 @@ export default function CheckinFeedbackForm({
           {existing.reframe && <SavedSection title="Reframe" body={existing.reframe} />}
           <SavedSection title="This week, hold this" body={existing.next_focus} accent />
         </div>
-        {status && <p className="px-5 pb-4 text-xs text-teal-400">{status}</p>}
+        {status && <p className="px-5 pb-4 text-xs text-blue-500">{status}</p>}
       </div>
     )
   }
@@ -255,9 +255,9 @@ export default function CheckinFeedbackForm({
   const previouslyEmailed = !!existing?.email_sent_at
 
   return (
-    <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+    <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
-        <p className="text-xs font-bold uppercase tracking-widest text-teal-400">
+        <p className="text-xs font-bold uppercase tracking-widest text-blue-500">
           {existing ? 'Edit coach response' : 'Coach response'}
         </p>
         <div className="flex items-center gap-3">
@@ -270,7 +270,7 @@ export default function CheckinFeedbackForm({
             <button
               type="button"
               onClick={() => { setMode('view'); setStatus(null); setError(null) }}
-              className="text-xs text-stone-400 hover:text-stone-200 transition-colors"
+              className="text-xs text-stone-600 hover:text-stone-800 transition-colors"
             >
               Cancel
             </button>
@@ -282,16 +282,16 @@ export default function CheckinFeedbackForm({
         Three fields go to {clientFirstName} as a dark-template email and appear under this check-in in their portal. Reframe is optional, use it when {clientFirstName} is misreading their own signal.
       </p>
 
-      <div className="mb-5 flex items-center justify-between gap-3 rounded-lg border border-stone-800 bg-[#0c0a09] px-4 py-3">
+      <div className="mb-5 flex items-center justify-between gap-3 rounded-lg border border-stone-200 bg-[#FFFFFF] px-4 py-3">
         <div className="min-w-0">
-          <p className="text-xs font-bold uppercase tracking-widest text-teal-400">Draft with AI</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-blue-500">Draft with AI</p>
           <p className="text-xs text-stone-500 mt-1 leading-relaxed">Pulls this check-in, the synthesis, prior check-ins, and active program. You review and approve before anything sends.</p>
         </div>
         <button
           type="button"
           onClick={generateDraft}
           disabled={generating || pending}
-          className="shrink-0 px-3 py-2 bg-teal-500/10 border border-teal-500/40 hover:bg-teal-500/20 text-teal-300 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
+          className="shrink-0 px-3 py-2 bg-blue-500/10 border border-blue-500/40 hover:bg-blue-500/20 text-blue-300 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
         >
           {generating ? 'Generating…' : 'Generate response'}
         </button>
@@ -330,7 +330,7 @@ export default function CheckinFeedbackForm({
         <p className="mt-4 text-xs text-red-400">{error}</p>
       )}
       {status && (
-        <p className="mt-4 text-xs text-teal-400">{status}</p>
+        <p className="mt-4 text-xs text-blue-500">{status}</p>
       )}
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -338,7 +338,7 @@ export default function CheckinFeedbackForm({
           type="button"
           disabled={pending}
           onClick={() => submit(true)}
-          className="px-4 py-2.5 bg-teal-500 hover:bg-teal-400 text-black text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
+          className="px-4 py-2.5 bg-blue-500 hover:bg-blue-500 text-black text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
         >
           {pending ? 'Working…' : previouslyEmailed ? 'Save and re-send email' : 'Save and email client'}
         </button>
@@ -346,7 +346,7 @@ export default function CheckinFeedbackForm({
           type="button"
           disabled={pending}
           onClick={() => submit(false)}
-          className="px-4 py-2.5 border border-stone-700 hover:border-stone-500 text-stone-300 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
+          className="px-4 py-2.5 border border-stone-300 hover:border-stone-500 text-stone-700 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
         >
           Save without sending
         </button>
@@ -355,7 +355,7 @@ export default function CheckinFeedbackForm({
             type="button"
             disabled={skipping}
             onClick={skip}
-            className="ml-auto text-xs font-medium text-stone-500 hover:text-stone-300 transition-colors disabled:opacity-50"
+            className="ml-auto text-xs font-medium text-stone-500 hover:text-stone-700 transition-colors disabled:opacity-50"
           >
             {skipping ? 'Working…' : 'Skip without responding'}
           </button>
@@ -384,14 +384,14 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1">{label}</label>
+      <label className="block text-xs font-bold uppercase tracking-widest text-stone-600 mb-1">{label}</label>
       <p className="text-xs text-stone-500 mb-2 leading-relaxed">{hint}</p>
       <textarea
         value={value}
         onChange={e => onChange(e.target.value)}
         rows={rows}
         placeholder={placeholder}
-        className="w-full bg-[#0c0a09] border border-stone-800 rounded-lg p-3 text-sm text-stone-100 placeholder:text-stone-700 focus:outline-none focus:border-teal-500/60 resize-y"
+        className="w-full bg-[#FFFFFF] border border-stone-200 rounded-lg p-3 text-sm text-stone-900 placeholder:text-stone-300 focus:outline-none focus:border-blue-500/60 resize-y"
       />
     </div>
   )
@@ -400,8 +400,8 @@ function Field({
 function SavedSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
     <div>
-      <p className={`text-[11px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-teal-400' : 'text-stone-500'}`}>{title}</p>
-      <div className="text-sm text-stone-200 leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
+      <p className={`text-[11px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-blue-500' : 'text-stone-500'}`}>{title}</p>
+      <div className="text-sm text-stone-800 leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

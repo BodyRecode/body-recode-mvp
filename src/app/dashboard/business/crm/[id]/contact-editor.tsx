@@ -35,7 +35,7 @@ export default function ContactEditor({ leadId, initialName, initialEmail, initi
     return (
       <button
         onClick={() => setEditing(true)}
-        className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-300 transition-colors mt-1"
+        className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors mt-1"
       >
         <Pencil size={11} />
         Edit contact details
@@ -51,7 +51,7 @@ export default function ContactEditor({ leadId, initialName, initialEmail, initi
           type="text"
           value={name}
           onChange={e => setName(e.target.value)}
-          className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500"
+          className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
         />
       </div>
       <div>
@@ -60,7 +60,7 @@ export default function ContactEditor({ leadId, initialName, initialEmail, initi
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500"
+          className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
         />
       </div>
       <div>
@@ -70,21 +70,21 @@ export default function ContactEditor({ leadId, initialName, initialEmail, initi
           value={phone}
           onChange={e => setPhone(e.target.value)}
           placeholder="0412 345 678"
-          className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-500"
+          className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500"
         />
       </div>
       <div className="flex items-center gap-2">
         <button
           onClick={save}
           disabled={saving}
-          className="flex items-center gap-1.5 bg-teal-500 hover:bg-teal-400 disabled:opacity-50 text-stone-950 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Check size={12} />
           {saving ? 'Saving...' : 'Save'}
         </button>
         <button
           onClick={() => setEditing(false)}
-          className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-300 transition-colors"
+          className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors"
         >
           <X size={12} />
           Cancel

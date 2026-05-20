@@ -44,11 +44,11 @@ export default async function CRMPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-semibold mb-1">CRM</h1>
-          <p className="text-stone-400 text-sm">{total} active lead{total !== 1 ? 's' : ''} in pipeline</p>
+          <p className="text-stone-600 text-sm">{total} active lead{total !== 1 ? 's' : ''} in pipeline</p>
         </div>
         <Link
           href="/dashboard/leads/new"
-          className="flex items-center gap-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Plus size={14} strokeWidth={2.5} />
           New Lead
@@ -63,10 +63,10 @@ export default async function CRMPage() {
             <div key={stage} className="shrink-0 w-52">
               {/* Stage header */}
               <div className="flex items-center justify-between mb-2 px-1">
-                <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider">
+                <p className="text-xs font-semibold text-stone-600 uppercase tracking-wider">
                   {stageLabel[stage]}
                 </p>
-                <span className="text-xs text-stone-600 bg-stone-800 px-1.5 py-0.5 rounded-full">
+                <span className="text-xs text-stone-400 bg-stone-200 px-1.5 py-0.5 rounded-full">
                   {cards.length}
                 </span>
               </div>
@@ -77,19 +77,19 @@ export default async function CRMPage() {
                   <Link
                     key={lead.id}
                     href={`/dashboard/business/crm/${lead.id}`}
-                    className="block bg-stone-900 border border-stone-800 rounded-lg p-3 hover:border-stone-700 transition-colors group"
+                    className="block bg-stone-100 border border-stone-200 rounded-lg p-3 hover:border-stone-300 transition-colors group"
                   >
-                    <p className="text-sm font-medium text-white group-hover:text-teal-400 transition-colors truncate">
+                    <p className="text-sm font-medium text-[#1A1A1A] group-hover:text-blue-500 transition-colors truncate">
                       {lead.name}
                     </p>
                     {lead.email && (
                       <p className="text-xs text-stone-500 truncate mt-0.5">{lead.email}</p>
                     )}
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-[10px] text-stone-600 uppercase tracking-wider">
+                      <span className="text-[10px] text-stone-400 uppercase tracking-wider">
                         {lead.source || 'direct'}
                       </span>
-                      <span className="text-[10px] text-stone-600">
+                      <span className="text-[10px] text-stone-400">
                         {new Date(lead.created_at).toLocaleDateString('en-AU', {
                           day: 'numeric',
                           month: 'short',
@@ -100,8 +100,8 @@ export default async function CRMPage() {
                 ))}
 
                 {cards.length === 0 && (
-                  <div className="bg-stone-900/50 border border-dashed border-stone-800 rounded-lg p-3">
-                    <p className="text-xs text-stone-700 text-center">Empty</p>
+                  <div className="bg-stone-100/50 border border-dashed border-stone-200 rounded-lg p-3">
+                    <p className="text-xs text-stone-300 text-center">Empty</p>
                   </div>
                 )}
               </div>
@@ -111,10 +111,10 @@ export default async function CRMPage() {
       </div>
 
       {/* Closed leads link */}
-      <div className="mt-6 pt-6 border-t border-stone-800">
+      <div className="mt-6 pt-6 border-t border-stone-200">
         <Link
           href="/dashboard/leads"
-          className="text-xs text-stone-500 hover:text-stone-300 transition-colors flex items-center gap-1"
+          className="text-xs text-stone-500 hover:text-stone-700 transition-colors flex items-center gap-1"
         >
           <Users size={12} />
           View all leads including closed →

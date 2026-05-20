@@ -66,7 +66,7 @@ export default async function SystemHealthPage({
           {/* Run list */}
           <div className="md:w-56 md:flex-shrink-0">
             <p
-              className="text-[10px] font-bold text-[#57534e] uppercase mb-3"
+              className="text-[10px] font-bold text-[#999999] uppercase mb-3"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
             >
               Run history
@@ -90,8 +90,8 @@ export default async function SystemHealthPage({
                     href={`/dashboard/system-health?run=${run.id}`}
                     className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg border transition-colors ${
                       isSelected
-                        ? 'bg-[#1c1917] border-[#292524]'
-                        : 'border-transparent hover:bg-[#111110]'
+                        ? 'bg-[#E5E5E5] border-[#D4D4D4]'
+                        : 'border-transparent hover:bg-[#FFFFFF]'
                     }`}
                   >
                     <div
@@ -99,8 +99,8 @@ export default async function SystemHealthPage({
                       style={{ background: tone.bar }}
                     />
                     <div className="min-w-0">
-                      <p className={`text-[12px] font-semibold ${isSelected ? 'text-white' : 'text-[#d4cfc9]'}`}>{label}</p>
-                      <p className="text-[10px] text-[#57534e]" style={{ fontFamily: MONO_FONT }}>{time}</p>
+                      <p className={`text-[12px] font-semibold ${isSelected ? 'text-[#1A1A1A]' : 'text-[#3A3A3A]'}`}>{label}</p>
+                      <p className="text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT }}>{time}</p>
                       {run.status !== 'ok' && (
                         <p className="text-[10px] font-medium mt-0.5" style={{ color: tone.text }}>
                           {run.status === 'fixed'
@@ -121,7 +121,7 @@ export default async function SystemHealthPage({
               <RunDetail run={selectedRun} />
             ) : (
               <Card>
-                <p className="text-[#57534e] text-[13px] text-center py-6">Select a run to view details.</p>
+                <p className="text-[#999999] text-[13px] text-center py-6">Select a run to view details.</p>
               </Card>
             )}
           </div>

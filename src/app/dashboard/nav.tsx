@@ -34,13 +34,13 @@ export default function DashboardNav() {
             href={item.href}
             className={`relative text-[13px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
               active
-                ? 'text-white bg-[#1c1917]'
-                : 'text-[#a8a29e] hover:text-white hover:bg-[#1c1917]/60'
+                ? 'text-[#1A1A1A] bg-[#F0F0F0]'
+                : 'text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F4F4F4]'
             }`}
           >
             {item.label}
             {active && (
-              <span className="absolute left-1/2 -translate-x-1/2 -bottom-[17px] w-6 h-[2px] rounded-full bg-[#14b8a6]" />
+              <span className="absolute left-1/2 -translate-x-1/2 -bottom-[17px] w-6 h-[2px] rounded-full bg-[#1B6DFC]" />
             )}
           </Link>
         )

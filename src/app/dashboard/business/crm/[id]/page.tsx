@@ -45,16 +45,16 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
     <div className="max-w-3xl">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-stone-500 text-sm mb-6">
-        <Link href="/dashboard/business/crm" className="hover:text-stone-300 transition-colors">CRM</Link>
+        <Link href="/dashboard/business/crm" className="hover:text-stone-700 transition-colors">CRM</Link>
         <span>/</span>
-        <span className="text-stone-300">{lead.name}</span>
+        <span className="text-stone-700">{lead.name}</span>
       </div>
 
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-2xl font-semibold mb-1">{lead.name}</h1>
-          <p className="text-stone-400 text-sm">
+          <p className="text-stone-600 text-sm">
             {getLeadSourceLabel(lead.source)}
             {lead.source_detail ? ` - ${lead.source_detail}` : ''}
             {' · Added '}
@@ -63,7 +63,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
         </div>
         <Link
           href={`/dashboard/leads/${lead.id}`}
-          className="flex items-center gap-1.5 text-xs text-stone-400 hover:text-white border border-stone-700 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 text-xs text-stone-600 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors"
         >
           Coaching Tools
           <ArrowUpRight size={12} />
@@ -71,13 +71,13 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* Contact info */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+      <div className="bg-stone-100 border border-stone-200 rounded-xl p-5 mb-4">
         <h2 className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-4">Contact</h2>
         <div className="space-y-3">
           {lead.email && (
             <div className="flex items-center gap-3">
               <Mail size={14} className="text-stone-500 shrink-0" />
-              <a href={`mailto:${lead.email}`} className="text-sm text-white hover:text-teal-400 transition-colors">
+              <a href={`mailto:${lead.email}`} className="text-sm text-[#1A1A1A] hover:text-blue-500 transition-colors">
                 {lead.email}
               </a>
             </div>
@@ -85,7 +85,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
           {lead.phone && (
             <div className="flex items-center gap-3">
               <Phone size={14} className="text-stone-500 shrink-0" />
-              <a href={`tel:${lead.phone}`} className="text-sm text-white hover:text-teal-400 transition-colors">
+              <a href={`tel:${lead.phone}`} className="text-sm text-[#1A1A1A] hover:text-blue-500 transition-colors">
                 {lead.phone}
               </a>
             </div>
@@ -103,7 +103,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* Pipeline stage */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+      <div className="bg-stone-100 border border-stone-200 rounded-xl p-5 mb-4">
         <h2 className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-4">Pipeline Stage</h2>
 
         {/* Progress bar */}
@@ -112,14 +112,14 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
             <div
               key={stage}
               className={`h-1.5 flex-1 rounded-full transition-colors ${
-                i <= currentStageIndex ? 'bg-teal-500' : 'bg-stone-800'
+                i <= currentStageIndex ? 'bg-blue-500' : 'bg-stone-200'
               }`}
             />
           ))}
         </div>
 
         <div className="flex items-center justify-between mb-4">
-          <span className="text-sm font-semibold text-white">
+          <span className="text-sm font-semibold text-[#1A1A1A]">
             {stageLabel[lead.status] ?? lead.status}
           </span>
           <span className="text-xs text-stone-500">
@@ -137,27 +137,27 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
 
       {/* Quick links */}
       {lead.check_in_answers && Object.keys(lead.check_in_answers as object).length > 0 && (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5 mb-4">
           <h2 className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-4">Quick Links</h2>
           <div className="flex flex-wrap gap-2">
             <Link
               href={`/dashboard/leads/${lead.id}/report`}
               target="_blank"
-              className="flex items-center gap-1.5 text-xs text-stone-300 hover:text-white border border-stone-700 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 text-xs text-stone-700 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors"
             >
               <FileText size={12} />
               Performance Report
             </Link>
             <Link
               href={`/dashboard/leads/${lead.id}/zoom-1`}
-              className="flex items-center gap-1.5 text-xs text-stone-300 hover:text-white border border-stone-700 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 text-xs text-stone-700 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors"
             >
               <Calendar size={12} />
               Zoom 1 Companion
             </Link>
             <Link
               href={`/dashboard/leads/${lead.id}/zoom-2`}
-              className="flex items-center gap-1.5 text-xs text-stone-300 hover:text-white border border-stone-700 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 text-xs text-stone-700 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors"
             >
               <Calendar size={12} />
               Zoom 2 Companion
@@ -165,7 +165,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
             {lead.converted_to_client_id && (
               <Link
                 href={`/dashboard/clients/${lead.converted_to_client_id}`}
-                className="flex items-center gap-1.5 text-xs text-teal-400 hover:text-teal-300 border border-teal-500/30 hover:border-teal-500/60 px-3 py-1.5 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 text-xs text-blue-500 hover:text-blue-300 border border-blue-500/30 hover:border-blue-500/60 px-3 py-1.5 rounded-lg transition-colors"
               >
                 <ArrowUpRight size={12} />
                 View Client Profile
@@ -176,7 +176,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
       )}
 
       {/* Notes */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+      <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
         <h2 className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-4">Notes</h2>
         <NotesEditor leadId={lead.id} initialNotes={lead.notes || ''} />
       </div>

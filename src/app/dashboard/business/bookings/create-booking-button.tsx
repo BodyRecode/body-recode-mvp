@@ -80,7 +80,7 @@ export default function CreateBookingButton() {
     <>
       <button
         onClick={openModal}
-        className="flex items-center gap-2 bg-teal-500 hover:bg-teal-400 text-stone-950 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+        className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
       >
         <Plus size={14} strokeWidth={2.5} />
         New Booking
@@ -89,10 +89,10 @@ export default function CreateBookingButton() {
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60" onClick={close} />
-          <div className="relative bg-stone-900 border border-stone-700 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+          <div className="relative bg-stone-100 border border-stone-300 rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold">New Booking</h2>
-              <button onClick={close} className="text-stone-500 hover:text-white transition-colors">
+              <button onClick={close} className="text-stone-500 hover:text-[#1A1A1A] transition-colors">
                 <X size={18} />
               </button>
             </div>
@@ -100,7 +100,7 @@ export default function CreateBookingButton() {
             <div className="space-y-4">
               {/* Contact */}
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Contact</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Contact</label>
                 {loadingContacts ? (
                   <div className="flex items-center gap-2 text-stone-500 text-sm py-2">
                     <Loader2 size={14} className="animate-spin" />
@@ -113,7 +113,7 @@ export default function CreateBookingButton() {
                       const contact = contacts.find(c => c.id === e.target.value)
                       setForm(f => ({ ...f, contactId: e.target.value, contactType: contact?.type ?? 'lead' }))
                     }}
-                    className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-stone-500"
+                    className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-stone-500"
                   >
                     <option value="">Select a contact...</option>
                     {contacts.filter(c => c.type === 'lead').length > 0 && (
@@ -136,7 +136,7 @@ export default function CreateBookingButton() {
 
               {/* Type */}
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Type</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Type</label>
                 <div className="flex gap-2">
                   {[{ value: 'zoom1', label: 'Zoom' }, { value: 'other', label: 'Other' }].map(opt => (
                     <button
@@ -144,8 +144,8 @@ export default function CreateBookingButton() {
                       onClick={() => setForm(f => ({ ...f, type: opt.value }))}
                       className={`flex-1 text-xs font-medium py-2 rounded-lg border transition-colors ${
                         form.type === opt.value
-                          ? 'bg-teal-500/10 border-teal-500/40 text-teal-400'
-                          : 'border-stone-700 text-stone-400 hover:border-stone-600 hover:text-white'
+                          ? 'bg-blue-500/10 border-blue-500/40 text-blue-500'
+                          : 'border-stone-300 text-stone-600 hover:border-stone-400 hover:text-[#1A1A1A]'
                       }`}
                     >
                       {opt.label}
@@ -157,32 +157,32 @@ export default function CreateBookingButton() {
               {/* Date + Time */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-stone-400 mb-1.5">Date</label>
+                  <label className="block text-xs font-medium text-stone-600 mb-1.5">Date</label>
                   <input
                     type="date"
                     value={form.date}
                     onChange={(e) => setForm(f => ({ ...f, date: e.target.value }))}
-                    className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-stone-500"
+                    className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-stone-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-stone-400 mb-1.5">Time (Brisbane)</label>
+                  <label className="block text-xs font-medium text-stone-600 mb-1.5">Time (Brisbane)</label>
                   <input
                     type="time"
                     value={form.time}
                     onChange={(e) => setForm(f => ({ ...f, time: e.target.value }))}
-                    className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-stone-500"
+                    className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-stone-500"
                   />
                 </div>
               </div>
 
               {/* Duration */}
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Duration</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Duration</label>
                 <select
                   value={form.duration}
                   onChange={(e) => setForm(f => ({ ...f, duration: e.target.value }))}
-                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-stone-500"
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-stone-500"
                 >
                   <option value="30">30 min</option>
                   <option value="45">45 min</option>
@@ -193,13 +193,13 @@ export default function CreateBookingButton() {
 
               {/* Meeting link */}
               <div>
-                <label className="block text-xs font-medium text-stone-400 mb-1.5">Zoom Link (optional)</label>
+                <label className="block text-xs font-medium text-stone-600 mb-1.5">Zoom Link (optional)</label>
                 <input
                   type="url"
                   value={form.meetingLink}
                   onChange={(e) => setForm(f => ({ ...f, meetingLink: e.target.value }))}
                   placeholder="https://zoom.us/j/..."
-                  className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-stone-500"
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-stone-500"
                 />
               </div>
             </div>
@@ -207,14 +207,14 @@ export default function CreateBookingButton() {
             <div className="flex gap-3 mt-6">
               <button
                 onClick={close}
-                className="flex-1 text-sm text-stone-400 hover:text-white border border-stone-700 hover:border-stone-500 py-2.5 rounded-lg transition-colors"
+                className="flex-1 text-sm text-stone-600 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 py-2.5 rounded-lg transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={submit}
                 disabled={!form.contactId || !form.date || !form.time || isPending}
-                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-teal-500 hover:bg-teal-400 text-stone-950 disabled:opacity-40 disabled:cursor-not-allowed py-2.5 rounded-lg transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-blue-500 hover:bg-blue-500 text-stone-50 disabled:opacity-40 disabled:cursor-not-allowed py-2.5 rounded-lg transition-colors"
               >
                 {isPending && <Loader2 size={13} className="animate-spin" />}
                 Book

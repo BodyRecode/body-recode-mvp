@@ -51,16 +51,16 @@ export default function LeadActions({ lead }: { lead: Lead }) {
   }
 
   return (
-    <div className="bg-[#111110] border border-[#1c1917] rounded-xl p-6 mb-4 space-y-5">
-      <h2 className="text-sm font-semibold text-[#d4cfc9] uppercase tracking-wider">Actions</h2>
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-6 mb-4 space-y-5">
+      <h2 className="text-sm font-semibold text-[#3A3A3A] uppercase tracking-wider">Actions</h2>
 
       {/* Status */}
       <div>
-        <label className="block text-xs text-[#57534e] mb-1.5">Status</label>
+        <label className="block text-xs text-[#999999] mb-1.5">Status</label>
         <select
           value={status}
           onChange={e => setStatus(e.target.value as Lead['status'])}
-          className="w-full bg-[#1c1917] border border-[#1c1917] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#14b8a6]"
+          className="w-full bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg px-3 py-2 text-[#1A1A1A] text-sm focus:outline-none focus:border-[#1B6DFC]"
         >
           {STATUSES.map(s => (
             <option key={s} value={s}>{getLeadStatusLabel(s)}</option>
@@ -70,11 +70,11 @@ export default function LeadActions({ lead }: { lead: Lead }) {
 
       {/* Source */}
       <div>
-        <label className="block text-xs text-[#57534e] mb-1.5">Lead source</label>
+        <label className="block text-xs text-[#999999] mb-1.5">Lead source</label>
         <select
           value={source}
           onChange={e => setSource(e.target.value)}
-          className="w-full bg-[#1c1917] border border-[#1c1917] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#14b8a6]"
+          className="w-full bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg px-3 py-2 text-[#1A1A1A] text-sm focus:outline-none focus:border-[#1B6DFC]"
         >
           <option value="">Unknown</option>
           {LEAD_SOURCES.map(s => (
@@ -85,35 +85,35 @@ export default function LeadActions({ lead }: { lead: Lead }) {
 
       {/* Zoom meeting URL */}
       <div>
-        <label className="block text-xs text-[#57534e] mb-1.5">Zoom meeting URL</label>
+        <label className="block text-xs text-[#999999] mb-1.5">Zoom meeting URL</label>
         <input
           type="url"
           value={zoomUrl}
           onChange={e => setZoomUrl(e.target.value)}
           placeholder="https://zoom.us/j/..."
-          className="w-full bg-[#1c1917] border border-[#1c1917] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#14b8a6]"
+          className="w-full bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg px-3 py-2 text-[#1A1A1A] text-sm focus:outline-none focus:border-[#1B6DFC]"
         />
       </div>
 
       {/* Zoom date */}
       <div>
-        <label className="block text-xs text-[#57534e] mb-1.5">Zoom date (Brisbane time)</label>
+        <label className="block text-xs text-[#999999] mb-1.5">Zoom date (Brisbane time)</label>
         <input
           type="datetime-local"
           value={zoomDate}
           onChange={e => setZoomDate(e.target.value)}
-          className="w-full bg-[#1c1917] border border-[#1c1917] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#14b8a6]"
+          className="w-full bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg px-3 py-2 text-[#1A1A1A] text-sm focus:outline-none focus:border-[#1B6DFC]"
         />
       </div>
 
       {/* Notes */}
       <div>
-        <label className="block text-xs text-[#57534e] mb-1.5">Notes</label>
+        <label className="block text-xs text-[#999999] mb-1.5">Notes</label>
         <textarea
           value={notes}
           onChange={e => setNotes(e.target.value)}
           rows={5}
-          className="w-full bg-[#1c1917] border border-[#1c1917] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#14b8a6] resize-none"
+          className="w-full bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg px-3 py-2 text-[#1A1A1A] text-sm focus:outline-none focus:border-[#1B6DFC] resize-none"
           placeholder="Add notes about this lead..."
         />
       </div>
@@ -121,7 +121,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
       <button
         onClick={save}
         disabled={saving}
-        className="bg-[#14b8a6] text-[#0c0a09] text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-[#5eead4] transition-colors disabled:opacity-50"
+        className="bg-[#1B6DFC] text-[#FFFFFF] text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
       >
         {saving ? 'Saving...' : saved ? 'Saved ✓' : 'Save changes'}
       </button>

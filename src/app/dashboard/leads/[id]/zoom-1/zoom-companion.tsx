@@ -56,8 +56,8 @@ const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string; openi
     pattern: 'Transitioning State: Has capacity but not consistency. Something is limiting the response - usually one or two sections dragging the overall picture. The work is identifying the specific drivers and addressing them in order.',
   },
   'Ready State': {
-    colour: 'text-teal-400 border-teal-400/30 bg-teal-400/10',
-    badge: 'bg-teal-400',
+    colour: 'text-blue-500 border-blue-500/30 bg-blue-500/10',
+    badge: 'bg-blue-500',
     opening: 'Their scorecard came back as Ready State. Biology is in a position to respond well. If fat loss or performance isn\'t happening at this score, the issue is in the prescription - the what and how of training and nutrition, not the biological foundation. This call is about identifying where the prescription gap is.',
     interpretation: 'A Ready State score means the biology is in a good position - energy, sleep, stress, and recovery are not the limiting factors. When someone in this state isn\'t getting results, it\'s typically a prescription problem. The training or nutrition approach isn\'t matched to what the body needs right now. That\'s actually good news - because it\'s a much more solvable problem than trying to fix depleted biology.',
     pattern: 'Ready State: Biology is responding well. If results aren\'t happening, the issue is in the prescription - not the foundation. Focus the conversation on the training and nutrition approach.',
@@ -268,10 +268,10 @@ export default function ZoomCompanion({
   const sectionColour = (score: number) =>
     score === 1 ? 'text-red-400 border-red-400/30 bg-red-400/10'
     : score === 2 ? 'text-amber-400 border-amber-400/30 bg-amber-400/10'
-    : 'text-teal-400 border-teal-400/30 bg-teal-400/10'
+    : 'text-blue-500 border-blue-500/30 bg-blue-500/10'
 
   const sectionDot = (score: number) =>
-    score === 1 ? 'bg-red-400' : score === 2 ? 'bg-amber-400' : 'bg-teal-400'
+    score === 1 ? 'bg-red-400' : score === 2 ? 'bg-amber-400' : 'bg-blue-500'
 
   const generateSummary = async () => {
     if (!transcript.trim()) return
@@ -332,35 +332,35 @@ export default function ZoomCompanion({
     if (p.type === 'category') {
       return (
         <div key={i} className="flex items-center gap-3 pt-2">
-          <div className="h-px flex-1 bg-stone-800" />
+          <div className="h-px flex-1 bg-stone-200" />
           <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{p.text}</span>
-          <div className="h-px flex-1 bg-stone-800" />
+          <div className="h-px flex-1 bg-stone-200" />
         </div>
       )
     }
     if (p.type === 'sub') {
       return (
-        <div key={i} className="bg-stone-900/50 border border-stone-800/50 rounded-lg px-4 py-2.5 ml-4">
-          <p className="text-stone-400 text-sm leading-relaxed">{p.text}</p>
+        <div key={i} className="bg-stone-100/50 border border-stone-200/50 rounded-lg px-4 py-2.5 ml-4">
+          <p className="text-stone-600 text-sm leading-relaxed">{p.text}</p>
         </div>
       )
     }
     return (
-      <div key={i} className="bg-stone-900 border border-stone-800 rounded-xl p-4">
-        <p className="text-white text-sm leading-relaxed">&ldquo;{p.text}&rdquo;</p>
+      <div key={i} className="bg-stone-100 border border-stone-200 rounded-xl p-4">
+        <p className="text-[#1A1A1A] text-sm leading-relaxed">&ldquo;{p.text}&rdquo;</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col">
+    <div className="min-h-screen bg-[#0a0a0a] text-[#1A1A1A] flex flex-col">
 
       {/* Top bar */}
       <div className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div>
             <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold mb-0.5">Zoom 1 - Companion</p>
-            <p className="text-lg font-bold text-white">{leadName}</p>
+            <p className="text-lg font-bold text-[#1A1A1A]">{leadName}</p>
           </div>
           {/* Body state + score */}
           <div className="flex items-center gap-3">
@@ -369,7 +369,7 @@ export default function ZoomCompanion({
               {bodyState}
             </div>
             {totalScore && (
-              <div className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border border-stone-700 text-stone-400">
+              <div className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border border-stone-300 text-stone-600">
                 {totalScore} / 15
               </div>
             )}
@@ -378,16 +378,16 @@ export default function ZoomCompanion({
 
         <div className="flex items-center gap-4">
           {/* View toggle */}
-          <div className="flex items-center bg-stone-900 border border-stone-800 rounded-lg p-0.5">
+          <div className="flex items-center bg-stone-100 border border-stone-200 rounded-lg p-0.5">
             <button
               onClick={() => setView('live')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#10E1C2] text-black' : 'text-stone-400 hover:text-white'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#10E1C2] text-black' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
             >
               Live
             </button>
             <button
               onClick={() => setView('postcall')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#10E1C2] text-black' : 'text-stone-400 hover:text-white'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#10E1C2] text-black' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
             >
               Post-Call
             </button>
@@ -395,15 +395,15 @@ export default function ZoomCompanion({
 
           {/* Timer */}
           <div className="flex items-center gap-3">
-            <span className="text-2xl font-mono font-bold text-white tabular-nums">{formatTime(seconds)}</span>
+            <span className="text-2xl font-mono font-bold text-[#1A1A1A] tabular-nums">{formatTime(seconds)}</span>
             <button
               onClick={() => setRunning(r => !r)}
-              className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-700 hover:bg-stone-600 text-white' : 'bg-[#10E1C2] text-black hover:bg-[#0ecfb2]'}`}
+              className={`text-xs font-bold px-4 py-2 rounded-lg transition-colors ${running ? 'bg-stone-300 hover:bg-stone-400 text-[#1A1A1A]' : 'bg-[#10E1C2] text-black hover:bg-[#0ecfb2]'}`}
             >
               {running ? 'Pause' : seconds === 0 ? 'Start' : 'Resume'}
             </button>
             {seconds > 0 && (
-              <button onClick={() => { setSeconds(0); setRunning(false) }} className="text-xs text-stone-500 hover:text-stone-300 transition-colors">
+              <button onClick={() => { setSeconds(0); setRunning(false) }} className="text-xs text-stone-500 hover:text-stone-700 transition-colors">
                 Reset
               </button>
             )}
@@ -414,7 +414,7 @@ export default function ZoomCompanion({
       {view === 'postcall' && (
         <div className="flex-1 overflow-y-auto p-8">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-xl font-bold text-white mb-2">Post-Call Summary</h2>
+            <h2 className="text-xl font-bold text-[#1A1A1A] mb-2">Post-Call Summary</h2>
             <p className="text-stone-500 text-sm mb-8">Paste the Zoom transcript below and generate an AI summary based on the Zoom 1 framework.</p>
 
             {!summary ? (
@@ -423,7 +423,7 @@ export default function ZoomCompanion({
                   value={transcript}
                   onChange={e => setTranscript(e.target.value)}
                   placeholder="Paste your Zoom transcript here..."
-                  className="w-full h-72 bg-stone-900 border border-stone-800 rounded-xl p-4 text-stone-300 text-sm leading-relaxed resize-none focus:outline-none focus:border-stone-600 placeholder-stone-700"
+                  className="w-full h-72 bg-stone-100 border border-stone-200 rounded-xl p-4 text-stone-700 text-sm leading-relaxed resize-none focus:outline-none focus:border-stone-400 placeholder-stone-300"
                 />
                 <button
                   onClick={generateSummary}
@@ -435,13 +435,13 @@ export default function ZoomCompanion({
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="bg-stone-900 border border-stone-800 rounded-xl p-6">
+                <div className="bg-stone-100 border border-stone-200 rounded-xl p-6">
                   <div className="prose prose-invert prose-sm max-w-none">
                     {summary.split('\n').map((line, i) => {
-                      if (line.startsWith('## ')) return <h3 key={i} className="text-white font-bold text-base mt-6 mb-2 first:mt-0">{line.replace('## ', '')}</h3>
-                      if (line.startsWith('**') && line.endsWith('**')) return <p key={i} className="text-white font-semibold text-sm">{line.replace(/\*\*/g, '')}</p>
+                      if (line.startsWith('## ')) return <h3 key={i} className="text-[#1A1A1A] font-bold text-base mt-6 mb-2 first:mt-0">{line.replace('## ', '')}</h3>
+                      if (line.startsWith('**') && line.endsWith('**')) return <p key={i} className="text-[#1A1A1A] font-semibold text-sm">{line.replace(/\*\*/g, '')}</p>
                       if (line.trim() === '') return <div key={i} className="h-2" />
-                      return <p key={i} className="text-stone-400 text-sm leading-relaxed">{line}</p>
+                      return <p key={i} className="text-stone-600 text-sm leading-relaxed">{line}</p>
                     })}
                   </div>
                 </div>
@@ -455,7 +455,7 @@ export default function ZoomCompanion({
                   </button>
                   <button
                     onClick={() => { setSummary(''); setTranscript('') }}
-                    className="text-xs text-stone-500 hover:text-white border border-stone-800 hover:border-stone-600 px-4 py-2 rounded-lg transition-colors"
+                    className="text-xs text-stone-500 hover:text-[#1A1A1A] border border-stone-200 hover:border-stone-400 px-4 py-2 rounded-lg transition-colors"
                   >
                     Re-generate
                   </button>
@@ -471,7 +471,7 @@ export default function ZoomCompanion({
 
         {/* Stage nav - left sidebar */}
         <div className="w-52 border-r border-white/10 p-4 flex flex-col gap-1">
-          <p className="text-xs text-stone-600 uppercase tracking-widest font-semibold mb-3">Stages</p>
+          <p className="text-xs text-stone-400 uppercase tracking-widest font-semibold mb-3">Stages</p>
           {STAGES.map((s, i) => (
             <button
               key={s.id}
@@ -480,8 +480,8 @@ export default function ZoomCompanion({
                 i === currentStage
                   ? 'bg-[#10E1C2]/10 border border-[#10E1C2]/30 text-[#10E1C2]'
                   : i < currentStage
-                  ? 'text-stone-500 hover:text-stone-300'
-                  : 'text-stone-400 hover:text-stone-200'
+                  ? 'text-stone-500 hover:text-stone-700'
+                  : 'text-stone-600 hover:text-stone-800'
               }`}
             >
               <p className="text-xs font-bold">{s.id}. {s.name}</p>
@@ -492,7 +492,7 @@ export default function ZoomCompanion({
           <div className="mt-auto pt-4 border-t border-white/10">
             <div className="flex gap-2">
               {currentStage > 0 && (
-                <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-white py-1.5 rounded-lg border border-white/10 hover:border-white/20 transition-colors">
+                <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-[#1A1A1A] py-1.5 rounded-lg border border-white/10 hover:border-white/20 transition-colors">
                   Back
                 </button>
               )}
@@ -513,10 +513,10 @@ export default function ZoomCompanion({
             <div className="max-w-xl">
               <div className="flex items-center gap-3 mb-1">
                 <span className="text-xs text-stone-500 font-semibold uppercase tracking-widest">Stage {stage.id}</span>
-                <span className="text-xs text-stone-600">{stage.duration}</span>
+                <span className="text-xs text-stone-400">{stage.duration}</span>
               </div>
-              <h2 className="text-xl font-bold text-white mb-3">{stage.name}</h2>
-              <p className="text-stone-400 text-sm leading-relaxed mb-6">{stage.goal}</p>
+              <h2 className="text-xl font-bold text-[#1A1A1A] mb-3">{stage.name}</h2>
+              <p className="text-stone-600 text-sm leading-relaxed mb-6">{stage.goal}</p>
 
               {/* Tabs */}
               <div className="flex gap-1 mb-5 border-b border-white/10">
@@ -525,7 +525,7 @@ export default function ZoomCompanion({
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`text-xs font-semibold px-3 py-2 capitalize border-b-2 -mb-px transition-colors ${
-                      activeTab === tab ? 'border-[#10E1C2] text-[#10E1C2]' : 'border-transparent text-stone-500 hover:text-stone-300'
+                      activeTab === tab ? 'border-[#10E1C2] text-[#10E1C2]' : 'border-transparent text-stone-500 hover:text-stone-700'
                     }`}
                   >
                     {tab === 'prompts' ? 'Prompts' : tab === 'scorecard' ? 'Scorecard Breakdown' : 'Interpretation Language'}
@@ -538,20 +538,20 @@ export default function ZoomCompanion({
                   {stage.script && (
                     <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/30 rounded-xl p-5 mb-4">
                       <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-3">Script</p>
-                      <p className="text-stone-200 text-sm leading-relaxed whitespace-pre-line">{stage.script}</p>
+                      <p className="text-stone-800 text-sm leading-relaxed whitespace-pre-line">{stage.script}</p>
                     </div>
                   )}
                   {(stage.prompts as Prompt[]).map((p, i) => renderPrompt(p, i))}
                   {stage.tips && (
                     <div className="bg-[#10E1C2]/5 border border-[#10E1C2]/20 rounded-xl p-4 mt-4">
                       <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-1">Coach note</p>
-                      <p className="text-stone-400 text-sm leading-relaxed">{stage.tips}</p>
+                      <p className="text-stone-600 text-sm leading-relaxed">{stage.tips}</p>
                     </div>
                   )}
                   {stage.boundary && (
                     <div className="bg-red-400/5 border border-red-400/20 rounded-xl p-4">
                       <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Boundary</p>
-                      <p className="text-stone-400 text-sm leading-relaxed">{stage.boundary}</p>
+                      <p className="text-stone-600 text-sm leading-relaxed">{stage.boundary}</p>
                     </div>
                   )}
                 </div>
@@ -593,18 +593,18 @@ export default function ZoomCompanion({
                     <p className="text-xs font-bold uppercase tracking-wider mb-3">{bodyState} - Pattern</p>
                     <p className="text-sm leading-relaxed opacity-90 mb-3">{stateInfo.pattern}</p>
                   </div>
-                  <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+                  <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
                     <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">Interpretation Script</p>
-                    <p className="text-stone-300 text-sm leading-relaxed italic">&ldquo;{stateInfo.interpretation}&rdquo;</p>
+                    <p className="text-stone-700 text-sm leading-relaxed italic">&ldquo;{stateInfo.interpretation}&rdquo;</p>
                   </div>
                   {sectionEntries && sectionEntries.filter(([, s]) => s === 1).length > 0 && (
-                    <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+                    <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
                       <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">Low Section Language</p>
                       <div className="space-y-3">
                         {sectionEntries.filter(([, s]) => s === 1).map(([key]) => (
                           <div key={key}>
                             <p className="text-xs font-semibold text-red-400 mb-1">{SECTION_LABELS[key]}</p>
-                            <p className="text-stone-400 text-sm leading-relaxed italic">&ldquo;{SECTION_INTERPRETATIONS[key]?.[1]}&rdquo;</p>
+                            <p className="text-stone-600 text-sm leading-relaxed italic">&ldquo;{SECTION_INTERPRETATIONS[key]?.[1]}&rdquo;</p>
                           </div>
                         ))}
                       </div>
@@ -621,7 +621,7 @@ export default function ZoomCompanion({
               <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold">Live Notes</p>
               <button
                 onClick={saveNotes}
-                className="text-xs text-[#10E1C2] hover:text-white transition-colors font-semibold"
+                className="text-xs text-[#10E1C2] hover:text-[#1A1A1A] transition-colors font-semibold"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -630,25 +630,25 @@ export default function ZoomCompanion({
               value={notes}
               onChange={e => setNotes(e.target.value)}
               placeholder="Type observations as the call unfolds..."
-              className="flex-1 bg-transparent text-stone-300 text-sm p-4 resize-none focus:outline-none placeholder-stone-700 leading-relaxed"
+              className="flex-1 bg-transparent text-stone-700 text-sm p-4 resize-none focus:outline-none placeholder-stone-300 leading-relaxed"
             />
             <div className="p-4 border-t border-white/10 space-y-3">
 
               {/* Readiness Check */}
-              <div className="bg-stone-900 border border-stone-800 rounded-lg p-3">
-                <p className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-2.5">Readiness</p>
+              <div className="bg-stone-100 border border-stone-200 rounded-lg p-3">
+                <p className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-2.5">Readiness</p>
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[10px] font-bold text-emerald-400">A</span>
-                    <span className="text-xs text-stone-400">Ready, wants to proceed</span>
+                    <span className="w-5 h-5 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-[10px] font-bold text-blue-500">A</span>
+                    <span className="text-xs text-stone-600">Ready, wants to proceed</span>
                   </div>
                   <div className="flex items-center gap-2.5">
                     <span className="w-5 h-5 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-[10px] font-bold text-amber-400">B</span>
-                    <span className="text-xs text-stone-400">Interested but hesitant</span>
+                    <span className="text-xs text-stone-600">Interested but hesitant</span>
                   </div>
                   <div className="flex items-center gap-2.5">
                     <span className="w-5 h-5 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-[10px] font-bold text-red-400">C</span>
-                    <span className="text-xs text-stone-400">Not ready / not right fit</span>
+                    <span className="text-xs text-stone-600">Not ready / not right fit</span>
                   </div>
                 </div>
               </div>
@@ -657,7 +657,7 @@ export default function ZoomCompanion({
               <button
                 onClick={markZoom1Complete}
                 disabled={statusUpdated}
-                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${statusUpdated ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-stone-800 border border-stone-700 text-stone-300 hover:border-stone-500 hover:text-white'}`}
+                className={`w-full text-xs font-bold px-3 py-2 rounded-lg transition-colors ${statusUpdated ? 'bg-blue-500/10 border border-blue-500/20 text-blue-500' : 'bg-stone-200 border border-stone-300 text-stone-700 hover:border-stone-500 hover:text-[#1A1A1A]'}`}
               >
                 {statusUpdated ? 'Zoom 1 Marked Complete' : 'Mark Zoom 1 Complete'}
               </button>

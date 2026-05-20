@@ -19,7 +19,7 @@ export default function RemoveClearanceButton({ clientId }: { clientId: string }
     <button
       onClick={handleClick}
       disabled={loading}
-      className="text-xs bg-stone-800 text-stone-400 font-semibold px-3 py-1.5 rounded-lg hover:bg-red-900/40 hover:text-red-400 border border-stone-700 hover:border-red-800/50 transition-colors disabled:opacity-50 whitespace-nowrap"
+      className="text-xs bg-stone-200 text-stone-600 font-semibold px-3 py-1.5 rounded-lg hover:bg-red-900/40 hover:text-red-400 border border-stone-300 hover:border-red-800/50 transition-colors disabled:opacity-50 whitespace-nowrap"
     >
       {loading ? 'Removing…' : 'Remove requirement'}
     </button>

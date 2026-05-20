@@ -6,16 +6,16 @@ function Row({ label, value }: { label: string; value: string | number | boolean
   if (value === null || value === undefined || value === '') return null
   const display = typeof value === 'boolean' ? (value ? 'Yes' : 'No') : String(value)
   return (
-    <div className="flex items-start justify-between gap-4 py-2.5 border-b border-stone-800 last:border-0">
+    <div className="flex items-start justify-between gap-4 py-2.5 border-b border-stone-200 last:border-0">
       <p className="text-xs text-stone-500 flex-shrink-0 w-44">{label}</p>
-      <p className="text-sm text-stone-200 text-right">{display}</p>
+      <p className="text-sm text-stone-800 text-right">{display}</p>
     </div>
   )
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-stone-900 border border-stone-800 rounded-xl p-5 mb-4">
+    <div className="bg-stone-100 border border-stone-200 rounded-xl p-5 mb-4">
       <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-3">{title}</p>
       {children}
     </div>
@@ -37,9 +37,9 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
     return (
       <div className="max-w-2xl">
         <div className="flex items-center gap-3 mb-8">
-          <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-white text-sm transition-colors">← Back</Link>
-          <span className="text-stone-700">/</span>
-          <p className="text-sm text-stone-400">Health Declaration - {client.name}</p>
+          <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-[#1A1A1A] text-sm transition-colors">← Back</Link>
+          <span className="text-stone-300">/</span>
+          <p className="text-sm text-stone-600">Health Declaration - {client.name}</p>
         </div>
         <p className="text-stone-500 text-sm">Health declaration not yet submitted.</p>
       </div>
@@ -55,14 +55,14 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
   return (
     <div className="max-w-2xl">
       <div className="flex items-center gap-3 mb-8">
-        <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-white text-sm transition-colors">← Back</Link>
-        <span className="text-stone-700">/</span>
-        <p className="text-sm text-stone-400">Health Declaration - {client.name}</p>
+        <Link href={`/dashboard/clients/${id}`} className="text-stone-500 hover:text-[#1A1A1A] text-sm transition-colors">← Back</Link>
+        <span className="text-stone-300">/</span>
+        <p className="text-sm text-stone-600">Health Declaration - {client.name}</p>
       </div>
 
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-semibold text-white">{client.name}</h1>
+          <h1 className="text-xl font-semibold text-[#1A1A1A]">{client.name}</h1>
           <p className="text-xs text-stone-500 mt-1">Submitted {submittedDate}</p>
         </div>
         <div className="flex items-center gap-2">
@@ -74,7 +74,7 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
           <Link
             href={`/dashboard/clients/${id}/health-declaration/print`}
             target="_blank"
-            className="text-sm font-medium px-4 py-2.5 rounded-lg border border-stone-700 text-stone-400 hover:border-stone-500 hover:text-stone-200 transition-colors"
+            className="text-sm font-medium px-4 py-2.5 rounded-lg border border-stone-300 text-stone-600 hover:border-stone-500 hover:text-stone-800 transition-colors"
           >
             Download PDF
           </Link>
@@ -82,7 +82,7 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
       </div>
 
       {!d ? (
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <p className="text-stone-500 text-sm">Form was submitted but detailed answers were not saved (submitted before this feature was added).</p>
         </div>
       ) : (
@@ -118,13 +118,13 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
             {d.cardiovascularScreening?.symptoms?.length > 0 ? (
               <div className="space-y-1.5">
                 {d.cardiovascularScreening.symptoms.map((s: string) => (
-                  <div key={s} className={`text-sm px-3 py-2 rounded-lg ${s === 'None of the above' ? 'text-teal-400 bg-teal-400/10' : 'text-amber-400 bg-amber-400/10'}`}>
+                  <div key={s} className={`text-sm px-3 py-2 rounded-lg ${s === 'None of the above' ? 'text-blue-500 bg-blue-500/10' : 'text-amber-400 bg-amber-400/10'}`}>
                     {s}
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-stone-400">No symptoms reported</p>
+              <p className="text-sm text-stone-600">No symptoms reported</p>
             )}
           </Section>
 
@@ -162,7 +162,7 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
                 <p className="text-xs text-stone-500 mb-2">Barriers</p>
                 <div className="flex flex-wrap gap-2">
                   {d.barriersAndGoals.barriers.map((b: string) => (
-                    <span key={b} className="text-xs bg-stone-800 text-stone-300 px-2.5 py-1 rounded-lg border border-stone-700">{b}</span>
+                    <span key={b} className="text-xs bg-stone-200 text-stone-700 px-2.5 py-1 rounded-lg border border-stone-300">{b}</span>
                   ))}
                 </div>
               </div>

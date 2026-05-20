@@ -287,22 +287,22 @@ function AutomationRow({ a, href }: { a: typeof AUTOMATIC_AUTOMATIONS[0]; href: 
   return (
     <Link
       href={href}
-      className="flex items-center gap-4 bg-stone-900 border border-stone-800 rounded-xl p-4 hover:border-stone-700 transition-colors group"
+      className="flex items-center gap-4 bg-stone-100 border border-stone-200 rounded-xl p-4 hover:border-stone-300 transition-colors group"
     >
-      <div className="p-2 bg-teal-500/10 rounded-lg shrink-0">
-        <Zap size={14} className="text-teal-400" strokeWidth={1.8} />
+      <div className="p-2 bg-blue-500/10 rounded-lg shrink-0">
+        <Zap size={14} className="text-blue-500" strokeWidth={1.8} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-white">{a.name}</p>
+        <p className="text-sm font-medium text-[#1A1A1A]">{a.name}</p>
         <p className="text-xs text-stone-500 mt-0.5">{a.description}</p>
-        <p className="text-xs text-stone-600 mt-1">{a.trigger} · {a.steps} emails</p>
+        <p className="text-xs text-stone-400 mt-1">{a.trigger} · {a.steps} emails</p>
       </div>
       <div className="flex items-center gap-3 shrink-0">
-        <span className="flex items-center gap-1 text-xs font-medium text-teal-400">
+        <span className="flex items-center gap-1 text-xs font-medium text-blue-500">
           <Zap size={10} />
           Active
         </span>
-        <ChevronRight size={14} className="text-stone-600 group-hover:text-stone-400 transition-colors" />
+        <ChevronRight size={14} className="text-stone-400 group-hover:text-stone-600 transition-colors" />
       </div>
     </Link>
   )
@@ -312,22 +312,22 @@ function ManualRow({ a, href }: { a: typeof MANUAL_AUTOMATIONS[0]; href: string 
   return (
     <Link
       href={href}
-      className="flex items-center gap-4 bg-stone-900 border border-stone-800 rounded-xl p-4 hover:border-stone-700 transition-colors group"
+      className="flex items-center gap-4 bg-stone-100 border border-stone-200 rounded-xl p-4 hover:border-stone-300 transition-colors group"
     >
       <div className="p-2 bg-amber-500/10 rounded-lg shrink-0">
         <Hand size={14} className="text-amber-400" strokeWidth={1.8} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-white">{a.name}</p>
+        <p className="text-sm font-medium text-[#1A1A1A]">{a.name}</p>
         <p className="text-xs text-stone-500 mt-0.5">{a.description}</p>
-        <p className="text-xs text-stone-600 mt-1">{a.trigger} · {a.steps} emails</p>
+        <p className="text-xs text-stone-400 mt-1">{a.trigger} · {a.steps} emails</p>
       </div>
       <div className="flex items-center gap-3 shrink-0">
         <span className="flex items-center gap-1 text-xs font-medium text-amber-400">
           <Hand size={10} />
           Manual
         </span>
-        <ChevronRight size={14} className="text-stone-600 group-hover:text-stone-400 transition-colors" />
+        <ChevronRight size={14} className="text-stone-400 group-hover:text-stone-600 transition-colors" />
       </div>
     </Link>
   )
@@ -347,7 +347,7 @@ export default function SystemAutomationsPanel() {
 
       <div>
         <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">Manual Triggers</p>
-        <p className="text-xs text-stone-600 mb-3">These fire when you explicitly trigger them from the lead page. Use them when a judgement call is needed.</p>
+        <p className="text-xs text-stone-400 mb-3">These fire when you explicitly trigger them from the lead page. Use them when a judgement call is needed.</p>
         <div className="space-y-2">
           {MANUAL_AUTOMATIONS.map((a) => (
             <ManualRow key={a.id} a={a} href={`/dashboard/business/automations/system/${a.id}`} />

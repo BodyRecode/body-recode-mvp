@@ -19,13 +19,13 @@ export default async function MacroPlanSuggestPage({ params }: { params: Promise
     <div className="max-w-5xl mx-auto">
       <div className="mb-8">
         <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-          <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-300 transition-colors">{client.name}</Link>
+          <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
           <span>/</span>
-          <Link href={`/dashboard/clients/${id}/plan`} className="hover:text-stone-300 transition-colors">Macro Plan</Link>
+          <Link href={`/dashboard/clients/${id}/plan`} className="hover:text-stone-700 transition-colors">Macro Plan</Link>
           <span>/</span>
-          <span className="text-stone-300">Suggest Arc</span>
+          <span className="text-stone-700">Suggest Arc</span>
         </div>
-        <h1 className="text-2xl font-semibold text-white">Suggest Macro Arc</h1>
+        <h1 className="text-2xl font-semibold text-[#1A1A1A]">Suggest Macro Arc</h1>
         <p className="text-stone-500 text-sm mt-1">Review and edit, then save as a draft. You&apos;ll approve it on the plan page to activate.</p>
       </div>
 

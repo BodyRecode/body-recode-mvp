@@ -76,8 +76,8 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
           onClick={() => setter(opt)}
           className={`px-3 py-1.5 rounded-lg border text-xs capitalize transition-colors ${
             val === opt
-              ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-              : 'border-stone-700 text-stone-400 hover:border-stone-500'
+              ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+              : 'border-stone-300 text-stone-600 hover:border-stone-500'
           }`}
         >
           {opt}
@@ -91,19 +91,19 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
       {/* Plan Name */}
       <div>
-        <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Plan Name</label>
+        <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Plan Name</label>
         <input
           value={planName}
           onChange={e => setPlanName(e.target.value)}
           placeholder="e.g. Foundation Nutrition - Training Support"
-          className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-600"
+          className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-700"
           required
         />
       </div>
 
       {/* Entry State */}
       <div>
-        <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Entry State</label>
+        <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-3">Entry State</label>
         <div className="grid grid-cols-2 gap-2">
           {ENTRY_STATE_OPTIONS.map(opt => (
             <button
@@ -112,11 +112,11 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setEntryState(opt.value)}
               className={`text-left px-4 py-3 rounded-xl border transition-colors ${
                 entryState === opt.value
-                  ? 'border-teal-500 bg-teal-500/10'
-                  : 'border-stone-800 bg-stone-900 hover:border-stone-600'
+                  ? 'border-blue-500 bg-blue-500/10'
+                  : 'border-stone-200 bg-stone-100 hover:border-stone-400'
               }`}
             >
-              <p className={`text-sm font-semibold ${entryState === opt.value ? 'text-teal-300' : 'text-stone-300'}`}>{opt.label}</p>
+              <p className={`text-sm font-semibold ${entryState === opt.value ? 'text-blue-300' : 'text-stone-700'}`}>{opt.label}</p>
               <p className="text-xs text-stone-500 mt-1 leading-snug">{opt.desc}</p>
             </button>
           ))}
@@ -125,7 +125,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
       {/* Body State */}
       <div>
-        <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Body State</label>
+        <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Body State</label>
         <div className="flex gap-2">
           {BODY_STATE_OPTIONS.map(opt => (
             <button
@@ -134,8 +134,8 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setBodyState(opt.value)}
               className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
                 bodyState === opt.value
-                  ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                  : 'border-stone-700 text-stone-400 hover:border-stone-500'
+                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
               {opt.label}
@@ -146,24 +146,24 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
       {/* PTS Phase */}
       <div>
-        <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">PTS Phase (Training Context)</label>
+        <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">PTS Phase (Training Context)</label>
         <input
           value={ptsPhase}
           onChange={e => setPtsPhase(e.target.value)}
           placeholder="e.g. Accumulation - Hypertrophy, or No active program"
-          className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-600"
+          className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-700"
         />
       </div>
 
       {/* Protein Anchor */}
       <div>
-        <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Protein Anchor (g/day)</label>
+        <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Protein Anchor (g/day)</label>
         <div className="flex items-center gap-3">
           <input
             type="number"
             value={proteinAnchorG}
             onChange={e => setProteinAnchorG(Number(e.target.value))}
-            className="w-28 bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-teal-600"
+            className="w-28 bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-700"
             min={80}
             max={300}
             step={5}
@@ -174,14 +174,14 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
       {/* Carb Demand */}
       <div>
-        <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Carbohydrate Demand Level</label>
+        <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Carbohydrate Demand Level</label>
         {toggle3(carbDemandLevel, ['low', 'moderate', 'high'], setCarbDemandLevel)}
-        <p className="text-xs text-stone-600 mt-2">Must respect entry state ceiling: Stabilisation/Recovery Reset → Low only. Training Support → Moderate. High Output → High.</p>
+        <p className="text-xs text-stone-400 mt-2">Must respect entry state ceiling: Stabilisation/Recovery Reset → Low only. Training Support → Moderate. High Output → High.</p>
       </div>
 
       {/* Meal Frequency */}
       <div>
-        <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Meal Frequency</label>
+        <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Meal Frequency</label>
         <div className="flex gap-2">
           {[3, 4, 5].map(n => (
             <button
@@ -190,8 +190,8 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setMealFrequency(n)}
               className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
                 mealFrequency === n
-                  ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                  : 'border-stone-700 text-stone-400 hover:border-stone-500'
+                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
               {n} meals
@@ -202,7 +202,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
       {/* Training Days */}
       <div>
-        <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Training Days Per Week</label>
+        <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Training Days Per Week</label>
         <div className="flex gap-2">
           {[2, 3, 4, 5, 6].map(n => (
             <button
@@ -211,8 +211,8 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setTrainingDaysPerWeek(n)}
               className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
                 trainingDaysPerWeek === n
-                  ? 'border-teal-500 bg-teal-500/10 text-teal-300'
-                  : 'border-stone-700 text-stone-400 hover:border-stone-500'
+                  ? 'border-blue-500 bg-blue-500/10 text-blue-300'
+                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
               }`}
             >
               {n}x
@@ -224,27 +224,27 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
       {/* Context fields */}
       <div className="grid grid-cols-3 gap-4">
         <div>
-          <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Constraint Level</label>
+          <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Constraint Level</label>
           {toggle3(constraintLevel, ['low', 'moderate', 'high'], setConstraintLevel)}
         </div>
         <div>
-          <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Recovery Status</label>
+          <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Recovery Status</label>
           {toggle3(recoveryStatus, ['stable', 'impaired', 'strong'], setRecoveryStatus)}
         </div>
         <div>
-          <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Uncertainty Level</label>
+          <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Uncertainty Level</label>
           {toggle3(uncertaintyLevel, ['low', 'moderate', 'high'], setUncertaintyLevel)}
         </div>
       </div>
 
       {/* Food Exclusions */}
       <div>
-        <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Food Exclusions</label>
+        <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Food Exclusions</label>
         <input
           value={foodExclusions}
           onChange={e => setFoodExclusions(e.target.value)}
           placeholder="e.g. dairy, shellfish, eggs (comma separated)"
-          className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-teal-600"
+          className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-700"
         />
       </div>
 
@@ -257,14 +257,14 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
       <div className="flex items-center justify-between pt-2">
         <a
           href={`/dashboard/clients/${clientId}/nutrition/suggest`}
-          className="text-xs text-stone-600 hover:text-stone-400 transition-colors"
+          className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
         >
           ← Use prescription suggestion instead
         </a>
         <button
           type="submit"
           disabled={loading}
-          className="px-5 py-2.5 bg-teal-500 hover:bg-teal-400 disabled:bg-stone-700 disabled:text-stone-500 text-black font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-black font-semibold text-sm rounded-lg transition-colors"
         >
           {loading ? 'Generating plan...' : 'Generate Plan'}
         </button>

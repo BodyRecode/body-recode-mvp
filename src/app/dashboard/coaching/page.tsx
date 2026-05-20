@@ -161,7 +161,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
       {/* Filters */}
       <div className="flex items-center gap-3 mb-7 flex-wrap">
-        <div className="inline-flex items-center bg-[#111110] border border-[#1c1917] rounded-lg p-0.5">
+        <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-0.5">
           {[
             { label: 'All', value: 'all' },
             { label: 'Face-to-Face', value: 'face_to_face' },
@@ -171,7 +171,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               key={opt.value}
               href={buildHref({ type: opt.value === 'all' ? null : opt.value })}
               className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                typeFilter === opt.value ? 'bg-[#14b8a6] text-[#0c0a09]' : 'text-[#a8a29e] hover:text-white'
+                typeFilter === opt.value ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
               }`}
             >
               {opt.label}
@@ -179,9 +179,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           ))}
         </div>
 
-        <div className="h-4 w-px bg-[#1c1917]" />
+        <div className="h-4 w-px bg-[#E5E5E5]" />
 
-        <div className="inline-flex items-center bg-[#111110] border border-[#1c1917] rounded-lg p-0.5">
+        <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-0.5">
           {[
             { label: 'Active', inactive: false },
             { label: 'Inactive', inactive: true },
@@ -190,7 +190,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               key={opt.label}
               href={buildHref({ view: opt.inactive ? 'inactive' : null })}
               className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                showInactive === opt.inactive ? 'bg-[#1c1917] text-white' : 'text-[#a8a29e] hover:text-white'
+                showInactive === opt.inactive ? 'bg-[#E5E5E5] text-[#1A1A1A]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
               }`}
             >
               {opt.label}
@@ -202,7 +202,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       {/* Action queue - clients needing attention */}
       {clientsProcessed.some(c => c.rebuildTraining || c.rebuildNutrition) && (
         <div
-          className="mb-5 bg-[#111110] border rounded-2xl overflow-hidden"
+          className="mb-5 bg-[#FFFFFF] border rounded-2xl overflow-hidden"
           style={{ borderColor: red.ring }}
         >
           <div
@@ -217,14 +217,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               Needs attention
             </p>
           </div>
-          <div className="divide-y divide-[#1c1917]">
+          <div className="divide-y divide-[#E5E5E5]">
             {clientsProcessed.filter(c => c.rebuildTraining || c.rebuildNutrition).map(client => (
               <div key={client.id} className="px-4 py-3 flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-[14px] font-semibold text-white truncate">{client.name}</p>
+                  <p className="text-[14px] font-semibold text-[#1A1A1A] truncate">{client.name}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     {client.rebuildTraining && <span className="text-[12px]" style={{ color: red.text }}>Training: Rebuild</span>}
-                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#1c1917] text-xs">·</span>}
+                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#E5E5E5] text-xs">·</span>}
                     {client.rebuildNutrition && <span className="text-[12px]" style={{ color: red.text }}>Nutrition: Rebuild</span>}
                   </div>
                 </div>
@@ -232,7 +232,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   {client.rebuildTraining && (
                     <Link
                       href={`/dashboard/clients/${client.id}/program`}
-                      className="text-[11px] font-semibold border px-2.5 py-1 rounded-lg transition-colors hover:bg-[#0c0a09]"
+                      className="text-[11px] font-semibold border px-2.5 py-1 rounded-lg transition-colors hover:bg-[#FFFFFF]"
                       style={{ color: red.text, borderColor: red.ring }}
                     >
                       Training →
@@ -241,7 +241,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   {client.rebuildNutrition && (
                     <Link
                       href={`/dashboard/clients/${client.id}/nutrition`}
-                      className="text-[11px] font-semibold border px-2.5 py-1 rounded-lg transition-colors hover:bg-[#0c0a09]"
+                      className="text-[11px] font-semibold border px-2.5 py-1 rounded-lg transition-colors hover:bg-[#FFFFFF]"
                       style={{ color: red.text, borderColor: red.ring }}
                     >
                       Nutrition →
@@ -257,7 +257,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       {/* Doctrine: Signal Monitoring v1.0 - active regression banner (highest priority) */}
       {regressionCount > 0 && (
         <div
-          className="mb-3 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-3 bg-[#FFFFFF] border rounded-xl px-4 py-3 flex items-center gap-3"
           style={{ borderColor: red.ring }}
         >
           <Activity size={14} style={{ color: red.text }} />
@@ -270,7 +270,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       {/* Doctrine: Signal Monitoring v1.0 - reassessment recommended banner */}
       {reassessmentCount > 0 && (
         <div
-          className="mb-3 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-3 bg-[#FFFFFF] border rounded-xl px-4 py-3 flex items-center gap-3"
           style={{ borderColor: amber.ring }}
         >
           <RefreshCw size={14} style={{ color: amber.text }} />
@@ -283,18 +283,18 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       {/* Drift advisory banner - lowest priority */}
       {driftAdvisoryCount > 0 && (
         <div
-          className="mb-3 bg-[#111110] border border-[#1c1917] rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-3 bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-4 py-3 flex items-center gap-3"
         >
-          <ArrowUpRight size={14} className="text-[#a8a29e]" />
-          <p className="text-[13px] text-[#a8a29e]">
-            <span className="font-semibold text-white">{driftAdvisoryCount} client{driftAdvisoryCount > 1 ? 's' : ''}</span> with drift advisories this week.
+          <ArrowUpRight size={14} className="text-[#6B6B6B]" />
+          <p className="text-[13px] text-[#6B6B6B]">
+            <span className="font-semibold text-[#1A1A1A]">{driftAdvisoryCount} client{driftAdvisoryCount > 1 ? 's' : ''}</span> with drift advisories this week.
           </p>
         </div>
       )}
 
       {flaggedCount > 0 && (
         <div
-          className="mb-5 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-5 bg-[#FFFFFF] border rounded-xl px-4 py-3 flex items-center gap-3"
           style={{ borderColor: amber.ring }}
         >
           <AlertTriangle size={14} style={{ color: amber.text }} />
@@ -306,7 +306,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
       {upgradeCandidateCount > 0 && (
         <div
-          className="mb-5 bg-[#111110] border rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-5 bg-[#FFFFFF] border rounded-xl px-4 py-3 flex items-center gap-3"
           style={{ borderColor: teal.ring }}
         >
           <ArrowUpRight size={14} style={{ color: teal.text }} />
@@ -317,7 +317,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       )}
 
       {clientsProcessed.length === 0 ? (
-        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl">
           <EmptyState icon={Users} title="No clients yet" hint="Add your first client to get started" />
         </div>
       ) : (
@@ -326,37 +326,37 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <Link
               key={client.id}
               href={`/dashboard/clients/${client.id}`}
-              className="bg-[#111110] border border-[#1c1917] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#292524] transition-colors group"
+              className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#D4D4D4] transition-colors group"
             >
               <div className="flex items-center gap-4 min-w-0">
                 <div
-                  className="w-9 h-9 rounded-full bg-[#1c1917] border border-[#292524] flex items-center justify-center text-[13px] font-medium text-[#d4cfc9] shrink-0"
+                  className="w-9 h-9 rounded-full bg-[#E5E5E5] border border-[#D4D4D4] flex items-center justify-center text-[13px] font-medium text-[#3A3A3A] shrink-0"
                   style={{ fontFamily: MONO_FONT }}
                 >
                   {client.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] font-medium text-white group-hover:text-[#14b8a6] transition-colors truncate">{client.name}</span>
+                    <span className="text-[14px] font-medium text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors truncate">{client.name}</span>
                     {client.latestCffs?.reassessment_flagged && (
                       <AlertTriangle size={13} style={{ color: amber.text }} />
                     )}
                   </div>
                   <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                    <p className="text-[11px] text-[#57534e]">
+                    <p className="text-[11px] text-[#999999]">
                       Added {formatDate(client.created_at)}
                     </p>
                     {client.weekNumber !== null && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
                       <>
-                        <span className="text-[#1c1917] text-xs">·</span>
-                        <span className="text-[11px] text-[#a8a29e] font-medium">Week {client.weekNumber}</span>
-                        <span className="text-[#1c1917] text-xs">·</span>
+                        <span className="text-[#E5E5E5] text-xs">·</span>
+                        <span className="text-[11px] text-[#6B6B6B] font-medium">Week {client.weekNumber}</span>
+                        <span className="text-[#E5E5E5] text-xs">·</span>
                         <span
-                          className={`text-[11px] font-semibold ${client.hasFormA ? 'text-[#14b8a6]' : 'text-[#57534e]'}`}
+                          className={`text-[11px] font-semibold ${client.hasFormA ? 'text-[#1B6DFC]' : 'text-[#999999]'}`}
                           style={{ fontFamily: MONO_FONT }}
                         >A</span>
                         <span
-                          className={`text-[11px] font-semibold ${client.hasFormB ? 'text-[#14b8a6]' : 'text-[#57534e]'}`}
+                          className={`text-[11px] font-semibold ${client.hasFormB ? 'text-[#1B6DFC]' : 'text-[#999999]'}`}
                           style={{ fontFamily: MONO_FONT }}
                         >B</span>
                       </>
@@ -387,7 +387,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 {client.readiness?.status === 'advisory' && (
                   <span
                     className="text-[10px] font-semibold px-2 py-0.5 rounded-full border uppercase"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', color: '#a8a29e', borderColor: '#1c1917', background: '#0c0a09' }}
+                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', color: '#6B6B6B', borderColor: '#E5E5E5', background: '#FFFFFF' }}
                     title={client.readiness.drift.map((d: { message: string }) => d.message).join(' · ')}
                   >
                     Drift
@@ -434,11 +434,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                     {client.latestCffs.body_state_classification}
                   </span>
                 ) : (
-                  <span className="text-[11px] text-[#57534e] px-2.5 py-1 rounded-full border border-[#1c1917]">
+                  <span className="text-[11px] text-[#999999] px-2.5 py-1 rounded-full border border-[#E5E5E5]">
                     No CFFS
                   </span>
                 )}
-                <ChevronRight size={16} className="text-[#57534e] group-hover:text-[#14b8a6] transition-colors" />
+                <ChevronRight size={16} className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors" />
               </div>
             </Link>
           ))}

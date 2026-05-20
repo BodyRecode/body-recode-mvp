@@ -13,7 +13,7 @@ export default function CopyButton({ url }: { url: string }) {
   return (
     <button
       onClick={copy}
-      className="shrink-0 text-[11px] font-medium px-3 py-2 bg-[#111110] border border-[#1c1917] text-[#d4cfc9] rounded-lg hover:border-[#292524] hover:text-white transition-colors"
+      className="shrink-0 text-[11px] font-medium px-3 py-2 bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors"
     >
       {copied ? 'Copied ✓' : 'Copy'}
     </button>

@@ -17,9 +17,9 @@ function StatCard({ label, value, sub, highlight }: {
   highlight?: boolean
 }) {
   return (
-    <div className={`bg-[#111110] border rounded-xl p-5 ${highlight ? 'border-teal-500/40' : 'border-stone-800'}`}>
+    <div className={`bg-[#FFFFFF] border rounded-xl p-5 ${highlight ? 'border-blue-500/40' : 'border-stone-200'}`}>
       <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</p>
-      <p className={`text-3xl font-black ${highlight ? 'text-teal-400' : 'text-white'}`}>{value}</p>
+      <p className={`text-3xl font-black ${highlight ? 'text-blue-500' : 'text-[#1A1A1A]'}`}>{value}</p>
       {sub && <p className="text-xs mt-1 font-medium text-stone-500">{sub}</p>}
     </div>
   )
@@ -27,9 +27,9 @@ function StatCard({ label, value, sub, highlight }: {
 
 function Insight({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
+    <div className="bg-[#FFFFFF] border border-stone-200 rounded-xl p-5">
       <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">{title}</p>
-      <div className="space-y-2 text-sm text-stone-400 leading-relaxed">
+      <div className="space-y-2 text-sm text-stone-600 leading-relaxed">
         {children}
       </div>
     </div>
@@ -37,15 +37,15 @@ function Insight({ title, children }: { title: string; children: React.ReactNode
 }
 
 function DailyChart({ data }: { data: DayData[] }) {
-  if (!data || data.length === 0) return <div className="bg-[#111110] border border-stone-800 rounded-xl p-5"><p className="text-sm text-stone-600">No data yet.</p></div>
+  if (!data || data.length === 0) return <div className="bg-[#FFFFFF] border border-stone-200 rounded-xl p-5"><p className="text-sm text-stone-400">No data yet.</p></div>
   const max = data.reduce((m, d) => Math.max(m, d.views), 1)
   const hasData = data.some(d => d.views > 0)
 
   return (
-    <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
+    <div className="bg-[#FFFFFF] border border-stone-200 rounded-xl p-5">
       <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-5">Daily Page Views</p>
       {!hasData ? (
-        <p className="text-sm text-stone-600 py-4">No data yet for this period.</p>
+        <p className="text-sm text-stone-400 py-4">No data yet for this period.</p>
       ) : (
         <div className="flex items-end gap-1 h-32">
           {data.map((d) => {
@@ -56,16 +56,16 @@ function DailyChart({ data }: { data: DayData[] }) {
             return (
               <div key={d.date} className="flex-1 flex flex-col items-center gap-1 group relative">
                 {d.views > 0 && (
-                  <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-stone-800 border border-stone-700 rounded px-1.5 py-0.5 text-[10px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                  <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-stone-200 border border-stone-300 rounded px-1.5 py-0.5 text-[10px] text-[#1A1A1A] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                     {d.views} views · {d.visitors} visitors
                   </div>
                 )}
                 <div
-                  className={`w-full rounded-sm transition-all ${isToday ? 'bg-teal-500' : d.views > 0 ? 'bg-stone-500 group-hover:bg-stone-400' : 'bg-stone-900'}`}
+                  className={`w-full rounded-sm transition-all ${isToday ? 'bg-blue-500' : d.views > 0 ? 'bg-stone-500 group-hover:bg-stone-600' : 'bg-stone-100'}`}
                   style={{ height: `${height}%`, minHeight: d.views > 0 ? '4px' : '2px' }}
                 />
                 {data.length <= 14 && (
-                  <span className="text-[9px] text-stone-600 rotate-0 truncate w-full text-center">{label}</span>
+                  <span className="text-[9px] text-stone-400 rotate-0 truncate w-full text-center">{label}</span>
                 )}
               </div>
             )
@@ -74,8 +74,8 @@ function DailyChart({ data }: { data: DayData[] }) {
       )}
       {data.length > 14 && (
         <div className="flex justify-between mt-2">
-          <span className="text-[10px] text-stone-600">{data[0]?.date}</span>
-          <span className="text-[10px] text-stone-600">{data[data.length - 1]?.date}</span>
+          <span className="text-[10px] text-stone-400">{data[0]?.date}</span>
+          <span className="text-[10px] text-stone-400">{data[data.length - 1]?.date}</span>
         </div>
       )}
     </div>
@@ -130,7 +130,7 @@ export default function WebsitePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white">Website</h1>
+          <h1 className="text-xl font-bold text-[#1A1A1A]">Website</h1>
           <p className="text-sm text-stone-500 mt-0.5">performance.bodyrecode.au</p>
         </div>
         <div className="flex items-center gap-2">
@@ -138,7 +138,7 @@ export default function WebsitePage() {
             <button
               key={d}
               onClick={() => setDays(d)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${days === d ? 'bg-teal-500/20 text-teal-400 border border-teal-500/30' : 'bg-stone-800 text-stone-400 border border-stone-700 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${days === d ? 'bg-blue-500/20 text-blue-500 border border-blue-500/30' : 'bg-stone-200 text-stone-600 border border-stone-300 hover:text-[#1A1A1A]'}`}
             >
               {d}d
             </button>
@@ -147,7 +147,7 @@ export default function WebsitePage() {
             href="https://performance.bodyrecode.au"
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-800 border border-stone-700 text-stone-400 hover:text-white transition-colors"
+            className="ml-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-200 border border-stone-300 text-stone-600 hover:text-[#1A1A1A] transition-colors"
           >
             View site ↗
           </a>
@@ -159,7 +159,7 @@ export default function WebsitePage() {
       {error && (
         <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-5">
           <p className="text-sm font-semibold text-red-400 mb-1">Analytics unavailable</p>
-          <p className="text-xs text-stone-400">{error}</p>
+          <p className="text-xs text-stone-600">{error}</p>
         </div>
       )}
 
@@ -190,21 +190,21 @@ export default function WebsitePage() {
           {/* Stats insight */}
           <Insight title="What these numbers mean">
             <p>
-              <span className="text-white font-medium">Visitors</span> is the number that matters most right now. Every visitor is someone who found the site - from a post, a DM, a Google search, or a direct link. At this stage, growing this number is the primary job. The site exists to convert visitors into scorecard submissions, but you can&apos;t convert visitors you don&apos;t have.
+              <span className="text-[#1A1A1A] font-medium">Visitors</span> is the number that matters most right now. Every visitor is someone who found the site - from a post, a DM, a Google search, or a direct link. At this stage, growing this number is the primary job. The site exists to convert visitors into scorecard submissions, but you can&apos;t convert visitors you don&apos;t have.
             </p>
             <p>
-              <span className="text-white font-medium">Scorecard submissions</span> is the conversion event - the moment a visitor becomes a lead in the system. The conversion rate is submissions divided by visitors. A healthy benchmark for a warm audience (Instagram followers landing from a post) is 10-20%. Cold traffic converts lower. Right now, the goal is to get the scorecard in front of people who already have context on who you are.
+              <span className="text-[#1A1A1A] font-medium">Scorecard submissions</span> is the conversion event - the moment a visitor becomes a lead in the system. The conversion rate is submissions divided by visitors. A healthy benchmark for a warm audience (Instagram followers landing from a post) is 10-20%. Cold traffic converts lower. Right now, the goal is to get the scorecard in front of people who already have context on who you are.
             </p>
             {pagesPerVisit && (
               <p>
-                <span className="text-white font-medium">Pages per visit: {pagesPerVisit}.</span>{' '}
+                <span className="text-[#1A1A1A] font-medium">Pages per visit: {pagesPerVisit}.</span>{' '}
                 {parseFloat(pagesPerVisit) >= 2
                   ? 'Visitors are exploring beyond the first page - the site is holding attention.'
                   : 'Most visitors are only viewing one page. This is normal at early traffic volumes and from direct scorecard links, but worth watching as traffic grows.'}
               </p>
             )}
             <p>
-              <span className="text-white font-medium">Bounce rate</span> measures sessions where the visitor left without going to a second page. A high bounce rate on a scorecard-focused site isn&apos;t necessarily bad - if someone lands directly on /scorecard and completes it, that counts as a bounce even though it was a conversion. Context matters more than the raw number.
+              <span className="text-[#1A1A1A] font-medium">Bounce rate</span> measures sessions where the visitor left without going to a second page. A high bounce rate on a scorecard-focused site isn&apos;t necessarily bad - if someone lands directly on /scorecard and completes it, that counts as a bounce even though it was a conversion. Context matters more than the raw number.
             </p>
           </Insight>
 
@@ -217,10 +217,10 @@ export default function WebsitePage() {
               Each bar is one day of page views. Today is highlighted in teal. Hover any bar to see exact views and unique visitors for that day.
             </p>
             <p>
-              <span className="text-white font-medium">What to look for:</span> spikes that line up with posts or DMs you sent that day. If a post goes out on Monday and traffic jumps Tuesday, that&apos;s the post working. If traffic is flat across the week with no spikes, content is either not reaching people or not compelling them to click through.
+              <span className="text-[#1A1A1A] font-medium">What to look for:</span> spikes that line up with posts or DMs you sent that day. If a post goes out on Monday and traffic jumps Tuesday, that&apos;s the post working. If traffic is flat across the week with no spikes, content is either not reaching people or not compelling them to click through.
             </p>
             <p>
-              <span className="text-white font-medium">What needs to keep happening:</span> daily Instagram activity - posts, stories, and direct outreach - is what drives consistent traffic. The chart should start showing a rhythm that maps to your posting schedule. Weeks without posts will show up as flatlines.
+              <span className="text-[#1A1A1A] font-medium">What needs to keep happening:</span> daily Instagram activity - posts, stories, and direct outreach - is what drives consistent traffic. The chart should start showing a rhythm that maps to your posting schedule. Weeks without posts will show up as flatlines.
             </p>
             {isSparse && (
               <p className="text-amber-400/70">The chart currently only has a few days of data. It will fill out over the coming weeks and become much more useful as a pattern-recognition tool once there are 14+ days of activity to compare.</p>
@@ -230,7 +230,7 @@ export default function WebsitePage() {
       )}
 
       {/* Pages */}
-      <div className="bg-[#111110] border border-stone-800 rounded-xl p-5">
+      <div className="bg-[#FFFFFF] border border-stone-200 rounded-xl p-5">
         <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Live Pages</p>
         <p className="text-sm text-stone-500 mb-4">All six pages are live. The scorecard is the primary conversion point - every other page should funnel toward it. The Founder Program page is the current active offer.</p>
         <div className="grid sm:grid-cols-2 gap-2">
@@ -247,13 +247,13 @@ export default function WebsitePage() {
               href={`https://performance.bodyrecode.au${p.path}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-start justify-between px-3 py-3 bg-stone-900 hover:bg-stone-800 border border-stone-800 rounded-lg transition-colors group"
+              className="flex items-start justify-between px-3 py-3 bg-stone-100 hover:bg-stone-200 border border-stone-200 rounded-lg transition-colors group"
             >
               <div>
-                <span className="text-sm text-stone-300 group-hover:text-white transition-colors block">{p.label}</span>
-                <span className="text-xs text-stone-600 mt-0.5 block">{p.note}</span>
+                <span className="text-sm text-stone-700 group-hover:text-[#1A1A1A] transition-colors block">{p.label}</span>
+                <span className="text-xs text-stone-400 mt-0.5 block">{p.note}</span>
               </div>
-              <span className="text-xs text-stone-600 group-hover:text-stone-400 transition-colors shrink-0 ml-3 mt-0.5">{p.path} ↗</span>
+              <span className="text-xs text-stone-400 group-hover:text-stone-600 transition-colors shrink-0 ml-3 mt-0.5">{p.path} ↗</span>
             </a>
           ))}
         </div>
@@ -262,16 +262,16 @@ export default function WebsitePage() {
       {/* What needs to happen */}
       <Insight title="What needs to keep happening">
         <p>
-          <span className="text-white font-medium">Content drives traffic.</span> The website does not rank organically yet and there are no paid ads running. Every visitor right now is coming from Instagram - either from posts, stories, or direct links you send in DMs. The number one lever is posting consistently and directing people to the scorecard.
+          <span className="text-[#1A1A1A] font-medium">Content drives traffic.</span> The website does not rank organically yet and there are no paid ads running. Every visitor right now is coming from Instagram - either from posts, stories, or direct links you send in DMs. The number one lever is posting consistently and directing people to the scorecard.
         </p>
         <p>
-          <span className="text-white font-medium">The scorecard is the only metric that matters right now.</span> Visitors are a means to an end. A visitor who doesn&apos;t submit the scorecard doesn&apos;t enter the system. Focus content and outreach on getting people to /scorecard - that is where traffic becomes pipeline.
+          <span className="text-[#1A1A1A] font-medium">The scorecard is the only metric that matters right now.</span> Visitors are a means to an end. A visitor who doesn&apos;t submit the scorecard doesn&apos;t enter the system. Focus content and outreach on getting people to /scorecard - that is where traffic becomes pipeline.
         </p>
         <p>
-          <span className="text-white font-medium">As traffic grows, watch the chart for content-traffic correlation.</span> Once there are 30+ days of data, patterns will become clear. Posts that spike traffic are your highest-performing content - double down on those formats and topics. Posts with no visible traffic effect need to be reconsidered.
+          <span className="text-[#1A1A1A] font-medium">As traffic grows, watch the chart for content-traffic correlation.</span> Once there are 30+ days of data, patterns will become clear. Posts that spike traffic are your highest-performing content - double down on those formats and topics. Posts with no visible traffic effect need to be reconsidered.
         </p>
         <p>
-          <span className="text-white font-medium">SEO is a longer-term play.</span> The site copy is strong and structured well. Over 3-6 months, search visibility for relevant terms (online fitness coaching Brisbane, body composition coaching, etc.) will build. This will layer organic traffic on top of the social-driven traffic you are building now.
+          <span className="text-[#1A1A1A] font-medium">SEO is a longer-term play.</span> The site copy is strong and structured well. Over 3-6 months, search visibility for relevant terms (online fitness coaching Brisbane, body composition coaching, etc.) will build. This will layer organic traffic on top of the social-driven traffic you are building now.
         </p>
       </Insight>
 

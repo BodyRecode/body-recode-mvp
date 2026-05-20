@@ -49,7 +49,7 @@ export default function ReseedScorecardButton({ stepCount }: { stepCount: number
         <button
           onClick={resync}
           disabled={loading}
-          className="bg-stone-800 hover:bg-stone-700 disabled:opacity-50 text-stone-300 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors shrink-0"
+          className="bg-stone-200 hover:bg-stone-300 disabled:opacity-50 text-stone-700 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors shrink-0"
         >
           {loading ? 'Syncing...' : synced ? 'Synced ✓' : 'Re-sync'}
         </button>

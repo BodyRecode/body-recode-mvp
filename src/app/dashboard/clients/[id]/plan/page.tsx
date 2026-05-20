@@ -43,7 +43,7 @@ const phaseColour: Record<string, string> = {
 const goalColour: Record<string, string> = {
   strength: 'text-violet-400 bg-violet-400/10 border-violet-400/30',
   hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-teal-400 bg-teal-400/10 border-teal-400/30',
+  capacity: 'text-blue-500 bg-blue-500/10 border-blue-500/30',
 }
 
 function DraftPlanPreview({ plan }: { plan: Plan }) {
@@ -52,12 +52,12 @@ function DraftPlanPreview({ plan }: { plan: Plan }) {
   return (
     <div className="space-y-3">
       {/* Plan identity */}
-      <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
-        <h2 className="text-base font-semibold text-white">{plan.plan_name}</h2>
+      <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+        <h2 className="text-base font-semibold text-[#1A1A1A]">{plan.plan_name}</h2>
         {plan.macro_objective && (
-          <p className="text-sm text-stone-400 mt-1">{plan.macro_objective}</p>
+          <p className="text-sm text-stone-600 mt-1">{plan.macro_objective}</p>
         )}
-        <p className="text-xs text-stone-600 mt-2">{plan.plan_blocks.length} blocks · {totalWeeks} weeks total</p>
+        <p className="text-xs text-stone-400 mt-2">{plan.plan_blocks.length} blocks · {totalWeeks} weeks total</p>
       </div>
 
       {/* Block timeline */}
@@ -66,20 +66,20 @@ function DraftPlanPreview({ plan }: { plan: Plan }) {
           <div key={block.id}>
             {i > 0 && (
               <div className="flex justify-center py-1">
-                <div className="w-px h-4 bg-stone-700" />
+                <div className="w-px h-4 bg-stone-300" />
               </div>
             )}
-            <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+            <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-stone-600 w-5">{block.position}</span>
-                  <p className="text-sm font-semibold text-stone-100">{block.block_name}</p>
+                  <span className="text-xs font-bold text-stone-400 w-5">{block.position}</span>
+                  <p className="text-sm font-semibold text-stone-900">{block.block_name}</p>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${phaseColour[block.progression_phase] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${phaseColour[block.progression_phase] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
                     {block.progression_phase}
                   </span>
-                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${goalColour[block.training_goal] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${goalColour[block.training_goal] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
                     {block.training_goal}
                   </span>
                 </div>
@@ -90,7 +90,7 @@ function DraftPlanPreview({ plan }: { plan: Plan }) {
                 {block.phase_category && <span>{block.phase_category}</span>}
               </div>
               {block.notes && (
-                <p className="text-xs text-stone-600 italic pl-7 mt-1">{block.notes}</p>
+                <p className="text-xs text-stone-400 italic pl-7 mt-1">{block.notes}</p>
               )}
             </div>
           </div>
@@ -134,16 +134,16 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
       <div className="mb-8 flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-            <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-300 transition-colors">{client.name}</Link>
+            <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
             <span>/</span>
-            <span className="text-stone-300">Macro Plan</span>
+            <span className="text-stone-700">Macro Plan</span>
           </div>
-          <h1 className="text-2xl font-semibold text-white">Macro Training Arc</h1>
+          <h1 className="text-2xl font-semibold text-[#1A1A1A]">Macro Training Arc</h1>
           <p className="text-sm text-stone-500 mt-1">Plan the full sequence of meso blocks. Each block links to a generated program.</p>
         </div>
         <Link
           href={`/dashboard/clients/${id}/plan/suggest`}
-          className="text-xs font-medium px-3 py-1.5 border border-stone-700 text-stone-400 rounded-lg hover:border-stone-500 hover:text-stone-200 transition-colors shrink-0"
+          className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors shrink-0"
         >
           {activePlan || draftPlan ? 'Suggest New Arc' : 'Suggest Arc'}
         </Link>
@@ -176,9 +176,9 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
         <div>
           {draftPlan && (
             <div className="flex items-center gap-3 mb-6 mt-2">
-              <div className="flex-1 h-px bg-stone-800" />
-              <p className="text-xs text-stone-600 uppercase tracking-widest">Current Active Arc</p>
-              <div className="flex-1 h-px bg-stone-800" />
+              <div className="flex-1 h-px bg-stone-200" />
+              <p className="text-xs text-stone-400 uppercase tracking-widest">Current Active Arc</p>
+              <div className="flex-1 h-px bg-stone-200" />
             </div>
           )}
           <MacroPlanEditor clientId={id} clientName={client.name} initialPlan={activePlan} />
@@ -189,9 +189,9 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
       {!activePlan && !draftPlan && (
         <div>
           <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-px bg-stone-800" />
-            <p className="text-xs text-stone-600 uppercase tracking-widest">Manual Entry</p>
-            <div className="flex-1 h-px bg-stone-800" />
+            <div className="flex-1 h-px bg-stone-200" />
+            <p className="text-xs text-stone-400 uppercase tracking-widest">Manual Entry</p>
+            <div className="flex-1 h-px bg-stone-200" />
           </div>
           <MacroPlanEditor clientId={id} clientName={client.name} initialPlan={null} />
         </div>

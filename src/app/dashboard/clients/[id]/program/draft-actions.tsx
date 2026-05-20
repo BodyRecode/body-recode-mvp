@@ -55,14 +55,14 @@ export default function DraftActions({
         <button
           onClick={handleDiscard}
           disabled={discarding || promoting}
-          className="text-xs px-3 py-1.5 border border-stone-700 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-400 transition-colors disabled:opacity-40"
+          className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-800 hover:text-red-400 transition-colors disabled:opacity-40"
         >
           {discarding ? 'Discarding…' : 'Discard Draft'}
         </button>
         <button
           onClick={handleApprove}
           disabled={promoting || discarding}
-          className="text-xs px-4 py-1.5 bg-[#10E1C2] text-stone-900 font-semibold rounded-lg hover:bg-[#0dcfb2] transition-colors disabled:opacity-40"
+          className="text-xs px-4 py-1.5 bg-[#10E1C2] text-stone-100 font-semibold rounded-lg hover:bg-[#0dcfb2] transition-colors disabled:opacity-40"
         >
           {promoting ? 'Approving…' : 'Approve Program'}
         </button>

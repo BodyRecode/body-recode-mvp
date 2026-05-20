@@ -52,46 +52,46 @@ export default function NewLeadPage() {
     <div className="max-w-xl">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold">Add Lead</h1>
-        <p className="text-stone-400 text-sm mt-1">Manually add a lead from any source</p>
+        <p className="text-stone-600 text-sm mt-1">Manually add a lead from any source</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-stone-300 mb-1.5">Name <span className="text-red-400">*</span></label>
+          <label className="block text-sm font-medium text-stone-700 mb-1.5">Name <span className="text-red-400">*</span></label>
           <input
             name="name"
             required
-            className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-stone-500"
+            className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-[#1A1A1A] text-sm focus:outline-none focus:border-stone-500"
             placeholder="Full name"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-stone-300 mb-1.5">Email</label>
+          <label className="block text-sm font-medium text-stone-700 mb-1.5">Email</label>
           <input
             name="email"
             type="email"
-            className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-stone-500"
+            className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-[#1A1A1A] text-sm focus:outline-none focus:border-stone-500"
             placeholder="email@example.com"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-stone-300 mb-1.5">Phone</label>
+          <label className="block text-sm font-medium text-stone-700 mb-1.5">Phone</label>
           <input
             name="phone"
             type="tel"
-            className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-stone-500"
+            className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-[#1A1A1A] text-sm focus:outline-none focus:border-stone-500"
             placeholder="04xx xxx xxx"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-stone-300 mb-1.5">Source <span className="text-red-400">*</span></label>
+          <label className="block text-sm font-medium text-stone-700 mb-1.5">Source <span className="text-red-400">*</span></label>
           <select
             name="source"
             required
-            className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-stone-500"
+            className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-[#1A1A1A] text-sm focus:outline-none focus:border-stone-500"
           >
             {SOURCES.map(s => (
               <option key={s.value} value={s.value}>{s.label}</option>
@@ -100,20 +100,20 @@ export default function NewLeadPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-stone-300 mb-1.5">Source detail <span className="text-stone-500 font-normal">(optional)</span></label>
+          <label className="block text-sm font-medium text-stone-700 mb-1.5">Source detail <span className="text-stone-500 font-normal">(optional)</span></label>
           <input
             name="source_detail"
-            className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-stone-500"
+            className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-[#1A1A1A] text-sm focus:outline-none focus:border-stone-500"
             placeholder="e.g. Referred by John Smith"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-stone-300 mb-1.5">Notes <span className="text-stone-500 font-normal">(optional)</span></label>
+          <label className="block text-sm font-medium text-stone-700 mb-1.5">Notes <span className="text-stone-500 font-normal">(optional)</span></label>
           <textarea
             name="notes"
             rows={4}
-            className="w-full bg-stone-900 border border-stone-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-stone-500 resize-none"
+            className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-[#1A1A1A] text-sm focus:outline-none focus:border-stone-500 resize-none"
             placeholder="Any initial context about this lead..."
           />
         </div>
@@ -124,14 +124,14 @@ export default function NewLeadPage() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-white text-stone-950 text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-stone-100 transition-colors disabled:opacity-50"
+            className="bg-white text-stone-50 text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-stone-900 transition-colors disabled:opacity-50"
           >
             {loading ? 'Adding...' : 'Add Lead'}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
-            className="text-stone-400 text-sm px-5 py-2.5 rounded-lg hover:text-white transition-colors"
+            className="text-stone-600 text-sm px-5 py-2.5 rounded-lg hover:text-[#1A1A1A] transition-colors"
           >
             Cancel
           </button>

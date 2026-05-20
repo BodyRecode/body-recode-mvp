@@ -42,7 +42,7 @@ const phaseColour: Record<string, string> = {
 const goalColour: Record<string, string> = {
   strength: 'text-violet-400 bg-violet-400/10 border-violet-400/30',
   hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-teal-400 bg-teal-400/10 border-teal-400/30',
+  capacity: 'text-blue-500 bg-blue-500/10 border-blue-500/30',
 }
 
 const PHASES = ['accumulation', 'intensification', 'realization', 'restoration']
@@ -178,14 +178,14 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
   if (loading) {
     return (
       <div className="space-y-3">
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" />
-            <p className="text-sm text-stone-400">Reading client context and designing macro arc...</p>
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+            <p className="text-sm text-stone-600">Reading client context and designing macro arc...</p>
           </div>
           <div className="space-y-2">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-4 bg-stone-800 rounded animate-pulse" style={{ width: `${50 + (i % 3) * 20}%` }} />
+              <div key={i} className="h-4 bg-stone-200 rounded animate-pulse" style={{ width: `${50 + (i % 3) * 20}%` }} />
             ))}
           </div>
         </div>
@@ -197,7 +197,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
     return (
       <div className="bg-red-950/30 border border-red-800 rounded-xl p-5">
         <p className="text-red-400 text-sm">{error}</p>
-        <a href={`/dashboard/clients/${clientId}/plan`} className="text-xs text-stone-500 hover:text-stone-300 mt-3 inline-block">
+        <a href={`/dashboard/clients/${clientId}/plan`} className="text-xs text-stone-500 hover:text-stone-700 mt-3 inline-block">
           Back to plan →
         </a>
       </div>
@@ -214,23 +214,23 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       <div className="flex-1 min-w-0 space-y-4">
 
       {/* Overall rationale */}
-      <div id="rationale" className="scroll-mt-8 bg-teal-950/30 border border-teal-800/40 rounded-xl px-5 py-4">
-        <p className="text-[10px] font-bold text-teal-400 uppercase tracking-widest mb-2">Arc Rationale</p>
-        <p className="text-sm text-stone-300 leading-relaxed">{suggestion.overall_rationale}</p>
+      <div id="rationale" className="scroll-mt-8 bg-blue-950/30 border border-blue-900/40 rounded-xl px-5 py-4">
+        <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2">Arc Rationale</p>
+        <p className="text-sm text-stone-700 leading-relaxed">{suggestion.overall_rationale}</p>
       </div>
 
       {/* Plan name + objective */}
-      <div id="plan-details" className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-5 space-y-4">
+      <div id="plan-details" className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5 space-y-4">
         <div>
           <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">Plan Name</label>
           <input
             value={planName}
             onChange={e => setPlanName(e.target.value)}
-            className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-600"
+            className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-700"
           />
           <div className="flex items-start gap-2 mt-2">
-            <span className="text-teal-400 text-xs mt-0.5 shrink-0">→</span>
-            <p className="text-xs text-stone-300 leading-relaxed">{suggestion.plan_name_reason}</p>
+            <span className="text-blue-500 text-xs mt-0.5 shrink-0">→</span>
+            <p className="text-xs text-stone-700 leading-relaxed">{suggestion.plan_name_reason}</p>
           </div>
         </div>
         <div>
@@ -238,14 +238,14 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
           <input
             value={macroObjective}
             onChange={e => setMacroObjective(e.target.value)}
-            className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-600"
+            className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-700"
           />
           <div className="flex items-start gap-2 mt-2">
-            <span className="text-teal-400 text-xs mt-0.5 shrink-0">→</span>
-            <p className="text-xs text-stone-300 leading-relaxed">{suggestion.macro_objective_reason}</p>
+            <span className="text-blue-500 text-xs mt-0.5 shrink-0">→</span>
+            <p className="text-xs text-stone-700 leading-relaxed">{suggestion.macro_objective_reason}</p>
           </div>
         </div>
-        <p className="text-[10px] text-stone-400">{blocks.length} blocks · {totalWeeks} weeks total</p>
+        <p className="text-[10px] text-stone-600">{blocks.length} blocks · {totalWeeks} weeks total</p>
       </div>
 
       {/* Meso blocks */}
@@ -253,30 +253,30 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
         <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3 px-1">Meso Blocks</p>
         <div className="space-y-3">
           {blocks.map((block, i) => (
-            <div key={i} className="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden">
+            <div key={i} className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
               {/* Block header */}
-              <div className="px-5 py-3 border-b border-stone-800 flex items-center justify-between">
+              <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black text-stone-600">{String(i + 1).padStart(2, '0')}</span>
-                  <p className="text-sm font-semibold text-stone-200">{block.block_name}</p>
+                  <span className="text-[10px] font-black text-stone-400">{String(i + 1).padStart(2, '0')}</span>
+                  <p className="text-sm font-semibold text-stone-800">{block.block_name}</p>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize ${phaseColour[block.progression_phase] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize ${phaseColour[block.progression_phase] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
                     {block.progression_phase}
                   </span>
-                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize ${goalColour[block.training_goal] || 'text-stone-400 bg-stone-800 border-stone-700'}`}>
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize ${goalColour[block.training_goal] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
                     {block.training_goal}
                   </span>
-                  <span className="text-[10px] text-stone-400">{block.week_duration}w</span>
+                  <span className="text-[10px] text-stone-600">{block.week_duration}w</span>
                   <button
                     onClick={() => setEditingBlock(editingBlock === i ? null : i)}
-                    className="text-[10px] text-stone-600 hover:text-stone-400 px-2 py-0.5 transition-colors"
+                    className="text-[10px] text-stone-400 hover:text-stone-600 px-2 py-0.5 transition-colors"
                   >
                     {editingBlock === i ? 'Done' : 'Edit'}
                   </button>
                   <button
                     onClick={() => removeBlock(i)}
-                    className="text-[10px] text-stone-700 hover:text-red-400 px-1 transition-colors"
+                    className="text-[10px] text-stone-300 hover:text-red-400 px-1 transition-colors"
                   >
                     ✕
                   </button>
@@ -286,18 +286,18 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
               {/* Block summary */}
               {editingBlock !== i && (
                 <div className="px-5 py-3 space-y-2">
-                  <div className="flex gap-4 text-xs text-stone-400">
+                  <div className="flex gap-4 text-xs text-stone-600">
                     <span>{block.implied_frequency}x/week</span>
                     <span className="capitalize">{block.execution_arc} arc</span>
                     {block.phase_category && <span>{block.phase_category}</span>}
                     {block.phase_objective && <span>{block.phase_objective}</span>}
                   </div>
                   {block.nutrition_context && (
-                    <p className="text-[10px] text-stone-400 leading-relaxed">Nutrition: {block.nutrition_context}</p>
+                    <p className="text-[10px] text-stone-600 leading-relaxed">Nutrition: {block.nutrition_context}</p>
                   )}
                   <div className="flex items-start gap-2 mt-1">
-                    <span className="text-teal-400 text-[10px] mt-0.5 shrink-0">→</span>
-                    <p className="text-xs text-stone-300 leading-relaxed">{block.block_rationale}</p>
+                    <span className="text-blue-500 text-[10px] mt-0.5 shrink-0">→</span>
+                    <p className="text-xs text-stone-700 leading-relaxed">{block.block_rationale}</p>
                   </div>
                 </div>
               )}
@@ -310,25 +310,25 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
                     <input
                       value={block.block_name}
                       onChange={e => updateBlock(i, { block_name: e.target.value })}
-                      className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-600"
+                      className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-700"
                     />
                   </div>
                   <div className="grid grid-cols-3 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Phase</label>
-                      <select value={block.progression_phase} onChange={e => updateBlock(i, { progression_phase: e.target.value })} className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                      <select value={block.progression_phase} onChange={e => updateBlock(i, { progression_phase: e.target.value })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
                         {PHASES.map(p => <option key={p} value={p} className="capitalize">{p}</option>)}
                       </select>
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Goal</label>
-                      <select value={block.training_goal} onChange={e => updateBlock(i, { training_goal: e.target.value })} className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                      <select value={block.training_goal} onChange={e => updateBlock(i, { training_goal: e.target.value })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
                         {GOALS.map(g => <option key={g} value={g} className="capitalize">{g}</option>)}
                       </select>
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Weeks</label>
-                      <select value={block.week_duration} onChange={e => updateBlock(i, { week_duration: Number(e.target.value) })} className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                      <select value={block.week_duration} onChange={e => updateBlock(i, { week_duration: Number(e.target.value) })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
                         {DURATIONS.map(d => <option key={d} value={d}>{d} weeks</option>)}
                       </select>
                     </div>
@@ -336,19 +336,19 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
                   <div className="grid grid-cols-3 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Arc</label>
-                      <select value={block.execution_arc} onChange={e => updateBlock(i, { execution_arc: e.target.value })} className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                      <select value={block.execution_arc} onChange={e => updateBlock(i, { execution_arc: e.target.value })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
                         {ARCS.map(a => <option key={a} value={a} className="capitalize">{a}</option>)}
                       </select>
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Frequency</label>
-                      <select value={block.implied_frequency} onChange={e => updateBlock(i, { implied_frequency: Number(e.target.value) })} className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                      <select value={block.implied_frequency} onChange={e => updateBlock(i, { implied_frequency: Number(e.target.value) })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
                         {[2,3,4,5,6].map(n => <option key={n} value={n}>{n}x/week</option>)}
                       </select>
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Phase Category</label>
-                      <select value={block.phase_category} onChange={e => updateBlock(i, { phase_category: e.target.value })} className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                      <select value={block.phase_category} onChange={e => updateBlock(i, { phase_category: e.target.value })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
                         <option value="">None</option>
                         {PHASE_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                       </select>
@@ -356,7 +356,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Phase Objective</label>
-                    <select value={block.phase_objective} onChange={e => updateBlock(i, { phase_objective: e.target.value })} className="w-full bg-stone-800 border border-stone-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                    <select value={block.phase_objective} onChange={e => updateBlock(i, { phase_objective: e.target.value })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
                       <option value="">None</option>
                       {PHASE_OBJECTIVES.map(o => <option key={o} value={o}>{o}</option>)}
                     </select>
@@ -369,7 +369,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
 
         <button
           onClick={addBlock}
-          className="w-full mt-3 py-3 border-2 border-dashed border-stone-800 text-stone-600 rounded-xl text-sm hover:border-stone-700 hover:text-stone-400 transition-colors"
+          className="w-full mt-3 py-3 border-2 border-dashed border-stone-200 text-stone-400 rounded-xl text-sm hover:border-stone-300 hover:text-stone-600 transition-colors"
         >
           + Add Block
         </button>
@@ -384,14 +384,14 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       <div className="flex items-center justify-between pt-2">
         <a
           href={`/dashboard/clients/${clientId}/plan`}
-          className="text-xs text-stone-600 hover:text-stone-400 transition-colors"
+          className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
         >
           Back to plan
         </a>
         <button
           onClick={handleApprove}
           disabled={saving}
-          className="px-5 py-2.5 bg-teal-500 hover:bg-teal-400 disabled:bg-stone-700 disabled:text-stone-500 text-black font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-black font-semibold text-sm rounded-lg transition-colors"
         >
           {saving ? 'Saving arc...' : 'Save as Draft'}
         </button>

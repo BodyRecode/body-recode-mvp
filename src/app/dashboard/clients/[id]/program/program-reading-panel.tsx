@@ -114,13 +114,13 @@ export default function ProgramReadingPanel({
     <div className="mb-6">
       <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
         <div className="flex items-center gap-2.5">
-          <span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" />
+          <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
           <h2
-            className="text-[11px] font-bold text-white uppercase"
+            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
             Program Reading{' '}
-            <span className="text-[#3c3835] font-normal">- Client Facing</span>
+            <span className="text-[#4A4A4A] font-normal">- Client Facing</span>
           </h2>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -130,21 +130,21 @@ export default function ProgramReadingPanel({
               style={{
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.06em',
-                color: published ? '#14b8a6' : '#a8a29e',
-                background: published ? 'rgba(20,184,166,0.10)' : '#0c0a09',
-                borderColor: published ? '#0d2d29' : '#1c1917',
+                color: published ? '#1B6DFC' : '#6B6B6B',
+                background: published ? 'rgba(20,184,166,0.10)' : '#FFFFFF',
+                borderColor: published ? '#B5CFFC' : '#E5E5E5',
               }}
             >
               <span
                 className="w-1 h-1 rounded-full"
-                style={{ background: published ? '#14b8a6' : '#57534e' }}
+                style={{ background: published ? '#1B6DFC' : '#999999' }}
               />
               {published ? 'Live in portal' : 'Unpublished'}
             </span>
           )}
           {emailSent && (
             <span
-              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#1c1917] bg-[#0c0a09] text-[#a8a29e] uppercase"
+              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
               title={`Notification sent ${new Date(program.program_reading_email_sent_at!).toLocaleString('en-AU')}`}
             >
@@ -156,8 +156,8 @@ export default function ProgramReadingPanel({
             disabled={generating || isPending}
             className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
               generated
-                ? 'border border-[#1c1917] bg-[#0c0a09] text-[#d4cfc9] hover:border-[#292524] hover:text-white'
-                : 'bg-[#14b8a6] text-[#0c0a09] hover:bg-[#5eead4] border border-[#14b8a6]'
+                ? 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A]'
+                : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
             }`}
           >
             {generating ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
@@ -167,7 +167,7 @@ export default function ProgramReadingPanel({
             <button
               onClick={togglePublish}
               disabled={publishing || isPending}
-              className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#1c1917] bg-[#0c0a09] text-[#d4cfc9] hover:border-[#292524] hover:text-white transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
             >
               {publishing ? <Loader2 size={13} className="animate-spin" /> : (published ? <EyeOff size={13} /> : <Eye size={13} />)}
               {publishing ? 'Updating...' : (published ? 'Unpublish' : 'Republish')}
@@ -182,7 +182,7 @@ export default function ProgramReadingPanel({
         </div>
       )}
       {emailNotice && (
-        <div className="bg-[rgba(20,184,166,0.08)] border border-[#0d2d29] rounded-lg px-3 py-2 text-[12px] text-[#14b8a6] mb-3">
+        <div className="bg-[rgba(20,184,166,0.08)] border border-[#B5CFFC] rounded-lg px-3 py-2 text-[12px] text-[#1B6DFC] mb-3">
           {emailNotice}
         </div>
       )}
@@ -192,20 +192,20 @@ export default function ProgramReadingPanel({
       )}
 
       {!generated ? (
-        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-8 text-center">
-          <p className="text-[#a8a29e] text-[14px] mb-2">No Program Reading yet</p>
-          <p className="text-[#57534e] text-[12px]">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-8 text-center">
+          <p className="text-[#6B6B6B] text-[14px] mb-2">No Program Reading yet</p>
+          <p className="text-[#999999] text-[12px]">
             Click Generate &amp; Publish. The reading appears at the top of the client&apos;s program page and an email is sent to let them know the new block is ready.
           </p>
-          <p className="text-[#3c3835] text-[11px] mt-3">
+          <p className="text-[#4A4A4A] text-[11px] mt-3">
             Requires a published Foundational Reading. The Program Reading builds from it.
           </p>
         </div>
       ) : (
-        <div className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden mb-3">
-          <div className="flex items-center justify-between px-5 py-3 border-b border-[#1c1917] flex-wrap gap-2">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-3">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-[#E5E5E5] flex-wrap gap-2">
             <p
-              className="text-[11px] text-[#57534e]"
+              className="text-[11px] text-[#999999]"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               Last updated {new Date(program.program_reading_generated_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -215,7 +215,7 @@ export default function ProgramReadingPanel({
                 <Link
                   href={`/portal/${clientToken}/program`}
                   target="_blank"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#0d2d29] bg-[rgba(20,184,166,0.10)] text-[#14b8a6] hover:bg-[rgba(20,184,166,0.18)] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#B5CFFC] bg-[rgba(20,184,166,0.10)] text-[#1B6DFC] hover:bg-[rgba(20,184,166,0.18)] transition-colors"
                 >
                   <ExternalLink size={11} /> Client view
                 </Link>
@@ -224,14 +224,14 @@ export default function ProgramReadingPanel({
                 <Link
                   href={`/portal/${clientToken}/program/reading`}
                   target="_blank"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#1c1917] bg-[#0c0a09] text-[#d4cfc9] hover:border-[#292524] hover:text-white transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors"
                 >
                   <ExternalLink size={11} /> Document
                 </Link>
               )}
             </div>
           </div>
-          <div className="divide-y divide-[#1c1917]">
+          <div className="divide-y divide-[#E5E5E5]">
             {SECTION_LABELS.map(({ field, label }, i) => (
               <EditableSection
                 key={field}
@@ -292,35 +292,35 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
   }
 
   return (
-    <div className="bg-[#111110] border border-[#1c1917] rounded-2xl overflow-hidden mb-3">
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#1c1917]/40 transition-colors text-left"
+        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#E5E5E5]/40 transition-colors text-left"
       >
         <div className="flex items-center gap-2.5">
-          <MessageSquare size={13} className="text-[#14b8a6]" />
+          <MessageSquare size={13} className="text-[#1B6DFC]" />
           <p
-            className="text-[11px] font-bold text-white uppercase"
+            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
             Coach Guidance
           </p>
           {savedValue && (
             <span
-              className="text-[10px] text-[#14b8a6] px-1.5 py-0.5 rounded-full border border-[#0d2d29] bg-[rgba(20,184,166,0.10)]"
+              className="text-[10px] text-[#1B6DFC] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(20,184,166,0.10)]"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               SET
             </span>
           )}
         </div>
-        <span className="text-[11px] text-[#57534e]">{open ? 'Hide' : 'Edit'}</span>
+        <span className="text-[11px] text-[#999999]">{open ? 'Hide' : 'Edit'}</span>
       </button>
       {open && (
-        <div className="px-5 pb-4 border-t border-[#1c1917]">
+        <div className="px-5 pb-4 border-t border-[#E5E5E5]">
           <div className="flex items-start gap-2 pt-3 mb-3">
-            <Info size={12} className="text-[#57534e] mt-0.5 shrink-0" />
-            <p className="text-[11px] text-[#57534e] leading-relaxed">
+            <Info size={12} className="text-[#999999] mt-0.5 shrink-0" />
+            <p className="text-[11px] text-[#999999] leading-relaxed">
               Standing notes for the AI. Applied on every Generate and Regenerate of this block&apos;s reading. Use this to steer framing for THIS block. Each new program (new block) starts fresh.
             </p>
           </div>
@@ -329,13 +329,13 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. This block follows a stressful 8 weeks at work. Frame the deload framing strongly. Avoid any language that implies they should be pushing harder."
             rows={4}
-            className="w-full bg-[#0c0a09] border border-[#1c1917] rounded-lg px-3 py-2.5 text-[13px] text-[#e7e5e4] placeholder:text-[#3c3835] focus:outline-none focus:border-[#292524] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[13px] text-[#e7e5e4] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#fbbf24]">{error}</div>
           )}
           <div className="flex items-center justify-between mt-3">
-            <p className="text-[10px] text-[#57534e]">
+            <p className="text-[10px] text-[#999999]">
               {savedAt ? 'Saved.' : (savedValue ? 'Last applied to next regeneration.' : 'No guidance set yet.')}
             </p>
             <button
@@ -343,8 +343,8 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
               disabled={!dirty || saving || isPending}
               className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
-                  ? 'bg-[#14b8a6] text-[#0c0a09] hover:bg-[#5eead4] border border-[#14b8a6]'
-                  : 'border border-[#1c1917] bg-[#0c0a09] text-[#a8a29e]'
+                  ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
+                  : 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B]'
               }`}
             >
               {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
@@ -421,13 +421,13 @@ function EditableSection({
       <div className="flex items-center justify-between gap-3 mb-2">
         <div className="flex items-center gap-3 min-w-0">
           <span
-            className="text-[11px] font-black text-[#14b8a6] shrink-0"
+            className="text-[11px] font-black text-[#1B6DFC] shrink-0"
             style={{ fontFamily: MONO_FONT }}
           >
             {String(index + 1).padStart(2, '0')}
           </span>
           <p
-            className="text-[10px] font-bold text-[#a8a29e] uppercase truncate"
+            className="text-[10px] font-bold text-[#6B6B6B] uppercase truncate"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
             {label}
@@ -436,7 +436,7 @@ function EditableSection({
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="inline-flex items-center gap-1 text-[10px] text-[#57534e] hover:text-[#14b8a6] transition-colors"
+            className="inline-flex items-center gap-1 text-[10px] text-[#999999] hover:text-[#1B6DFC] transition-colors"
             aria-label="Edit section"
           >
             <Pencil size={11} /> Edit
@@ -451,21 +451,21 @@ function EditableSection({
             value={draft}
             onChange={e => setDraft(e.target.value)}
             rows={Math.max(4, draft.split('\n').length + 1)}
-            className="w-full bg-[#0c0a09] border border-[#1c1917] rounded-lg px-3 py-2.5 text-[14px] text-[#e7e5e4] focus:outline-none focus:border-[#292524] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[14px] text-[#e7e5e4] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
           />
           {error && <p className="mt-2 text-[11px] text-[#fbbf24]">{error}</p>}
           <div className="flex items-center justify-end gap-2 mt-2">
             <button
               onClick={cancel}
               disabled={saving}
-              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#1c1917] text-[#a8a29e] hover:text-white hover:border-[#292524] transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4] transition-colors disabled:opacity-50"
             >
               <X size={11} /> Cancel
             </button>
             <button
               onClick={save}
               disabled={saving || isPending || draft === (value ?? '')}
-              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#14b8a6] text-[#0c0a09] hover:bg-[#5eead4] border border-[#14b8a6] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {saving ? <Loader2 size={11} className="animate-spin" /> : <Check size={11} />}
               {saving ? 'Saving' : 'Save'}

@@ -6,11 +6,11 @@ export const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, mono
 type Accent = 'teal' | 'amber' | 'red' | 'neutral' | 'blue'
 
 const ACCENT: Record<Accent, { bar: string; text: string; bg: string; ring: string }> = {
-  teal:    { bar: '#14b8a6', text: '#14b8a6', bg: 'rgba(20,184,166,0.12)',  ring: '#0d2d29' },
-  amber:   { bar: '#f59e0b', text: '#f59e0b', bg: 'rgba(245,158,11,0.10)',  ring: '#3a2410' },
-  red:     { bar: '#ef4444', text: '#ef4444', bg: 'rgba(239,68,68,0.10)',   ring: '#3a1414' },
-  blue:    { bar: '#60a5fa', text: '#60a5fa', bg: 'rgba(96,165,250,0.10)',  ring: '#16243a' },
-  neutral: { bar: '#57534e', text: '#a8a29e', bg: 'rgba(168,162,158,0.06)', ring: '#1c1917' },
+  teal:    { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
+  amber:   { bar: '#B7791F', text: '#B7791F', bg: 'rgba(183,121,31,0.08)',  ring: '#F0DCB4' },
+  red:     { bar: '#DC2626', text: '#DC2626', bg: 'rgba(220,38,38,0.08)',   ring: '#F5C6C6' },
+  blue:    { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
+  neutral: { bar: '#999999', text: '#6B6B6B', bg: 'rgba(153,153,153,0.06)', ring: '#E5E5E5' },
 }
 
 export function accentColour(a: Accent = 'teal') {
@@ -19,7 +19,6 @@ export function accentColour(a: Accent = 'teal') {
 
 /* ===========================================================
  * Page header - eyebrow + title + subtitle, optional CTA
- * Includes the dotted-grid + soft glow used on the home page.
  * =========================================================== */
 export function PageHeader({
   eyebrow,
@@ -43,7 +42,7 @@ export function PageHeader({
         aria-hidden
         className="absolute inset-0 -mx-6 -mt-10 pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #1c1917 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 1px 1px, #E5E5E5 1px, transparent 0)',
           backgroundSize: '22px 22px',
           maskImage: 'radial-gradient(ellipse 60% 80% at 20% 0%, black 0%, transparent 70%)',
           WebkitMaskImage: 'radial-gradient(ellipse 60% 80% at 20% 0%, black 0%, transparent 70%)',
@@ -63,18 +62,18 @@ export function PageHeader({
         <div className="min-w-0">
           {eyebrow && (
             <div
-              className="inline-flex items-center gap-2 text-[10px] text-[#a8a29e] uppercase mb-5 px-2.5 py-1 rounded-full border border-[#1c1917] bg-[#111110]"
+              className="inline-flex items-center gap-2 text-[10px] text-[#6B6B6B] uppercase mb-5 px-2.5 py-1 rounded-full border border-[#E5E5E5] bg-[#F8F8F8]"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}
             >
               <span className="w-1 h-1 rounded-full" style={{ background: a.bar }} />
               {eyebrow}
             </div>
           )}
-          <h1 className="text-[34px] font-extrabold text-white tracking-tight leading-[1.1] mb-2">
+          <h1 className="text-[34px] font-extrabold text-[#1A1A1A] tracking-tight leading-[1.1] mb-2">
             {title}
           </h1>
           {subtitle && (
-            <div className="text-[15px] text-[#a8a29e] max-w-xl">{subtitle}</div>
+            <div className="text-[15px] text-[#6B6B6B] max-w-xl">{subtitle}</div>
           )}
         </div>
         {cta && <div className="shrink-0">{cta}</div>}
@@ -103,8 +102,8 @@ export function Card({
     padding === 'md' ? 'p-5' : 'p-6'
   return (
     <div
-      className={`bg-[#111110] border border-[#1c1917] rounded-2xl ${pad} ${
-        hover ? 'transition-colors hover:border-[#292524]' : ''
+      className={`bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl ${pad} ${
+        hover ? 'transition-colors hover:border-[#D4D4D4]' : ''
       } ${className}`}
     >
       {children}
@@ -132,14 +131,14 @@ export function SectionLabel({
       <div className="flex items-center gap-2.5 min-w-0">
         <span className="w-7 h-[3px] rounded-full shrink-0" style={{ background: a.bar }} />
         <h2
-          className="text-[11px] font-bold text-white uppercase truncate"
+          className="text-[11px] font-bold text-[#1A1A1A] uppercase truncate"
           style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
         >
           {children}
         </h2>
         {meta && (
           <span
-            className="text-[10px] text-[#57534e] ml-2"
+            className="text-[10px] text-[#999999] ml-2"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.1em' }}
           >
             {meta}
@@ -166,7 +165,7 @@ export function Pill({
   const a = ACCENT[accent]
   const styles =
     variant === 'outline'
-      ? { background: '#0c0a09', color: a.text, borderColor: a.ring }
+      ? { background: '#FFFFFF', color: a.text, borderColor: a.ring }
       : { background: a.bg, color: a.text, borderColor: a.ring }
   return (
     <span
@@ -198,7 +197,7 @@ export function StatCard({
 }) {
   const a = ACCENT[accent]
   const Inner = (
-    <div className="relative bg-[#111110] border border-[#1c1917] rounded-2xl p-5 overflow-hidden h-full transition-colors hover:border-[#292524]">
+    <div className="relative bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 overflow-hidden h-full transition-colors hover:border-[#D4D4D4]">
       <div
         className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
         style={{ background: a.bar }}
@@ -206,22 +205,22 @@ export function StatCard({
       {Icon && (
         <Icon
           size={16}
-          className="absolute top-5 right-5 text-[#57534e]"
+          className="absolute top-5 right-5 text-[#999999]"
         />
       )}
       <p
-        className="text-[10px] text-[#78716c] uppercase mt-4 mb-3"
+        className="text-[10px] text-[#6B6B6B] uppercase mt-4 mb-3"
         style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
       >
         {label}
       </p>
       <p
-        className="text-[40px] font-extrabold text-white tracking-tight leading-none mb-2.5"
+        className="text-[40px] font-extrabold text-[#1A1A1A] tracking-tight leading-none mb-2.5"
         style={{ fontVariantNumeric: 'tabular-nums' }}
       >
         {value}
       </p>
-      {sub && <p className="text-[11px] text-[#57534e] truncate">{sub}</p>}
+      {sub && <p className="text-[11px] text-[#999999] truncate">{sub}</p>}
     </div>
   )
   return href ? (
@@ -246,13 +245,13 @@ export function DataRow({
   trailing?: ReactNode
 }) {
   const inner = (
-    <div className="flex items-center justify-between gap-3 py-2.5 px-2 -mx-2 rounded-lg hover:bg-[#1c1917]/60 transition-colors group">
+    <div className="flex items-center justify-between gap-3 py-2.5 px-2 -mx-2 rounded-lg hover:bg-[#F4F4F4] transition-colors group">
       <div className="min-w-0">
-        <p className="text-[14px] font-medium text-white group-hover:text-[#14b8a6] transition-colors truncate">
+        <p className="text-[14px] font-medium text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors truncate">
           {primary}
         </p>
         {secondary && (
-          <p className="text-[12px] text-[#57534e] truncate">{secondary}</p>
+          <p className="text-[12px] text-[#999999] truncate">{secondary}</p>
         )}
       </div>
       {trailing && <div className="shrink-0">{trailing}</div>}
@@ -276,12 +275,12 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center text-center py-8 px-4">
       {Icon && (
-        <div className="w-10 h-10 rounded-full border border-[#1c1917] bg-[#0c0a09] flex items-center justify-center mb-3">
-          <Icon size={16} className="text-[#57534e]" />
+        <div className="w-10 h-10 rounded-full border border-[#E5E5E5] bg-[#F8F8F8] flex items-center justify-center mb-3">
+          <Icon size={16} className="text-[#999999]" />
         </div>
       )}
-      <p className="text-[13px] text-[#a8a29e]">{title}</p>
-      {hint && <p className="text-[12px] text-[#57534e] mt-1">{hint}</p>}
+      <p className="text-[13px] text-[#6B6B6B]">{title}</p>
+      {hint && <p className="text-[12px] text-[#999999] mt-1">{hint}</p>}
     </div>
   )
 }
@@ -311,12 +310,12 @@ export function Btn({
   const sizing = size === 'sm' ? 'text-[12px] px-3 py-1.5' : 'text-[13px] px-4 py-2'
   const palette =
     variant === 'primary'
-      ? 'bg-[#14b8a6] text-[#0c0a09] hover:bg-[#5eead4] border border-transparent font-semibold'
+      ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1056D6] border border-transparent font-semibold'
       : variant === 'caution'
-      ? 'bg-[#1a1108] text-[#f59e0b] border border-[#3a2410] hover:border-[#5a3818] hover:text-[#fbbf24]'
+      ? 'bg-[#FEF6E7] text-[#B7791F] border border-[#F0DCB4] hover:border-[#D9B976] hover:text-[#8A5A14]'
       : variant === 'ghost'
-      ? 'bg-transparent text-[#a8a29e] hover:text-white hover:bg-[#1c1917] border border-transparent'
-      : 'bg-[#0c0a09] text-[#d4cfc9] border border-[#1c1917] hover:border-[#292524] hover:text-white'
+      ? 'bg-transparent text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F4F4F4] border border-transparent'
+      : 'bg-[#FFFFFF] text-[#1A1A1A] border border-[#E5E5E5] hover:border-[#D4D4D4] hover:text-[#1B6DFC]'
   const base = `inline-flex items-center gap-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap ${sizing} ${palette}`
   const content = (
     <>

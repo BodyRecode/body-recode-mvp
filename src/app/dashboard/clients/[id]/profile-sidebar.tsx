@@ -52,8 +52,8 @@ export default function ProfileSidebar({ clientId }: { clientId: string }) {
         onClick={() => scrollTo(id)}
         className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
           active === id
-            ? 'bg-teal-500/10 text-teal-400'
-            : 'text-[#57534e] hover:text-[#d4cfc9] hover:bg-[#1c1917]/50'
+            ? 'bg-blue-500/10 text-blue-500'
+            : 'text-[#999999] hover:text-[#3A3A3A] hover:bg-[#E5E5E5]/50'
         }`}
       >
         {title}
@@ -62,7 +62,7 @@ export default function ProfileSidebar({ clientId }: { clientId: string }) {
       <Link
         key={id}
         href={`/dashboard/clients/${clientId}#${id}`}
-        className="block w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-[#57534e] hover:text-[#d4cfc9] hover:bg-[#1c1917]/50 transition-colors"
+        className="block w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-[#999999] hover:text-[#3A3A3A] hover:bg-[#E5E5E5]/50 transition-colors"
       >
         {title}
       </Link>
@@ -81,14 +81,14 @@ export default function ProfileSidebar({ clientId }: { clientId: string }) {
           href={`/dashboard/clients/${clientId}/direction`}
           className={`block w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
             isDirectionPage
-              ? 'bg-teal-500/10 text-teal-400'
-              : 'text-[#57534e] hover:text-[#d4cfc9] hover:bg-[#1c1917]/50'
+              ? 'bg-blue-500/10 text-blue-500'
+              : 'text-[#999999] hover:text-[#3A3A3A] hover:bg-[#E5E5E5]/50'
           }`}
         >
           Direction
         </Link>
 
-        <div className="border-t border-[#1c1917] my-1" />
+        <div className="border-t border-[#E5E5E5] my-1" />
 
         {SECTIONS_AFTER_DIRECTION.map(id => {
           const section = SCROLL_SECTIONS.find(s => s.id === id)!

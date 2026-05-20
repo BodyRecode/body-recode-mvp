@@ -26,8 +26,8 @@ export default function LeadDangerActions({ leadId, isActive }: { leadId: string
   }
 
   return (
-    <div className="bg-[#111110] border border-[#1c1917] rounded-xl p-6 mb-4">
-      <h2 className="text-sm font-semibold text-[#d4cfc9] uppercase tracking-wider mb-4">Lead Management</h2>
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-6 mb-4">
+      <h2 className="text-sm font-semibold text-[#3A3A3A] uppercase tracking-wider mb-4">Lead Management</h2>
       {!isActive && (
         <p className="text-xs text-amber-500 mb-3">This lead is inactive and hidden from the main leads list.</p>
       )}
@@ -35,7 +35,7 @@ export default function LeadDangerActions({ leadId, isActive }: { leadId: string
         <button
           onClick={toggleActive}
           disabled={!!loading}
-          className="text-sm font-medium px-4 py-2 rounded-lg border border-[#1c1917] text-[#d4cfc9] hover:border-[#292524] hover:text-white transition-colors disabled:opacity-50"
+          className="text-sm font-medium px-4 py-2 rounded-lg border border-[#E5E5E5] text-[#3A3A3A] hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
         >
           {loading === 'toggle' ? 'Saving...' : isActive ? 'Deactivate lead' : 'Reactivate lead'}
         </button>

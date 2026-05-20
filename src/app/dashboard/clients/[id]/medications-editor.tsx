@@ -80,12 +80,12 @@ export default function MedicationsEditor({
   }
 
   return (
-    <div className="bg-[#111110] border border-[#1c1917] rounded-2xl p-6 mb-4">
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
-          <span className="w-7 h-[3px] rounded-full bg-[#14b8a6]" />
+          <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
           <h2
-            className="text-[11px] font-bold text-white uppercase"
+            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
             Medications
@@ -94,13 +94,13 @@ export default function MedicationsEditor({
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="text-xs font-medium px-3 py-1.5 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-[#292524] hover:text-[#e7e5e4] transition-colors"
+            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#e7e5e4] transition-colors"
           >
             {value ? 'Edit' : 'Add'}
           </button>
         )}
       </div>
-      <p className="text-[#57534e] text-xs mb-3">
+      <p className="text-[#999999] text-xs mb-3">
         All prescribed medications and chronic over-the-counter use. Include hormonal support (TRT, GLP-1, peptides, anabolics), cardiovascular meds (beta-blockers, statins), CNS-active meds (SSRIs/SNRIs, stimulants, anxiolytics), anti-inflammatories (chronic NSAIDs, corticosteroids), anticoagulants, contraceptives/HRT, and similar. Free text, describe each with dose and duration if known. Drives prescription modulation and signal interpretation across program + nutrition.
       </p>
       {showStaleBanner && (
@@ -108,7 +108,7 @@ export default function MedicationsEditor({
           <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">
             Prescription is older than current medications
           </p>
-          <p className="text-xs text-[#d4cfc9] leading-relaxed">
+          <p className="text-xs text-[#3A3A3A] leading-relaxed">
             Medications {daysSinceUpdate !== null ? `were updated ${daysSinceUpdate}d ago` : 'have been updated'}. The active{' '}
             {programStale && nutritionStale ? 'training program and nutrition plan' : programStale ? 'training program' : 'nutrition plan'}{' '}
             {programStale && nutritionStale ? 'were' : 'was'} generated before that change. Recovery capacity, RPE ceilings, exercise selection, and protein synthesis assumptions may no longer match. Consider regenerating from the macro plan / nutrition page.
@@ -121,30 +121,30 @@ export default function MedicationsEditor({
             value={value}
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. TRT 150mg test cypionate / week, year 2. Metoprolol 25mg / day for BP, year 1. No NSAIDs. No other meds."
-            className="w-full bg-[#0c0a09] border border-[#1c1917] rounded-lg p-3 text-[#e7e5e4] text-sm leading-relaxed focus:outline-none focus:border-[#292524] placeholder-[#3c3835] min-h-[120px]"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-3 text-[#e7e5e4] text-sm leading-relaxed focus:outline-none focus:border-[#D4D4D4] placeholder-[#4A4A4A] min-h-[120px]"
           />
           {error && <p className="text-xs text-red-400">{error}</p>}
           <div className="flex items-center gap-2">
             <button
               onClick={save}
               disabled={saving || !dirty}
-              className="text-sm font-bold px-4 py-2 bg-[#14b8a6] text-black rounded-lg hover:bg-[#5eead4] transition-colors disabled:opacity-40"
+              className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-black rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
             >
               {saving ? 'Saving…' : 'Save'}
             </button>
             <button
               onClick={cancel}
               disabled={saving}
-              className="text-sm font-bold px-4 py-2 border border-[#1c1917] text-[#a8a29e] rounded-lg hover:border-[#292524] hover:text-white transition-colors"
+              className="text-sm font-bold px-4 py-2 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors"
             >
               Cancel
             </button>
           </div>
         </div>
       ) : value ? (
-        <p className="text-sm text-[#d4cfc9] leading-relaxed whitespace-pre-line">{value}</p>
+        <p className="text-sm text-[#3A3A3A] leading-relaxed whitespace-pre-line">{value}</p>
       ) : (
-        <p className="text-sm text-[#3c3835] italic">None reported.</p>
+        <p className="text-sm text-[#4A4A4A] italic">None reported.</p>
       )}
     </div>
   )

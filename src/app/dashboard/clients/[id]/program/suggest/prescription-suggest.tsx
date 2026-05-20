@@ -75,10 +75,10 @@ const phaseColour: Record<string, string> = {
 const goalColour: Record<string, string> = {
   strength: 'text-violet-400 border-violet-400/40 bg-violet-400/10',
   hypertrophy: 'text-pink-400 border-pink-400/40 bg-pink-400/10',
-  capacity: 'text-teal-400 border-teal-400/40 bg-teal-400/10',
+  capacity: 'text-blue-500 border-blue-500/40 bg-blue-500/10',
 }
 
-const inputCls = 'bg-stone-800 border border-stone-700 text-stone-100 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#10E1C2] focus:border-transparent'
+const inputCls = 'bg-stone-200 border border-stone-300 text-stone-900 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#10E1C2] focus:border-transparent'
 
 function parseReason(text: string): { intro: string | null; points: string[] } {
   if (/\(\d+\)/.test(text)) {
@@ -97,12 +97,12 @@ function ReasonText({ text }: { text: string }) {
   const { intro, points } = parseReason(text)
   return (
     <div className="space-y-1.5 mt-2">
-      {intro && <p className="text-xs text-stone-300 leading-relaxed">{intro}</p>}
+      {intro && <p className="text-xs text-stone-700 leading-relaxed">{intro}</p>}
       {points.map((point, i) => (
         <div key={i} className={`flex items-start gap-2 ${points.length > 1 ? '' : ''}`}>
           {points.length > 1 && <span className="text-[#10E1C2] shrink-0 mt-0.5 text-[10px]">•</span>}
           {points.length === 1 && <span className="text-[#10E1C2] text-xs mt-0.5 shrink-0">→</span>}
-          <p className="text-xs text-stone-400 leading-relaxed">{point}</p>
+          <p className="text-xs text-stone-600 leading-relaxed">{point}</p>
         </div>
       ))}
     </div>
@@ -124,12 +124,12 @@ function ReasonCard({
 }) {
   const [editing, setEditing] = useState(false)
   return (
-    <div className="bg-stone-900 border border-stone-800 rounded-xl p-4">
+    <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
       <div className="flex items-start justify-between mb-2">
         <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{label}</p>
         <button
           onClick={() => setEditing(e => !e)}
-          className="text-[10px] text-stone-600 hover:text-[#10E1C2] transition-colors"
+          className="text-[10px] text-stone-400 hover:text-[#10E1C2] transition-colors"
         >
           {editing ? 'Done' : 'Edit'}
         </button>
@@ -137,7 +137,7 @@ function ReasonCard({
       {editing ? (
         <div className="mb-2">{children}</div>
       ) : (
-        <p className={`text-sm font-semibold mb-2 px-2.5 py-1 rounded-full border inline-block capitalize ${colour || 'text-stone-200 border-stone-700 bg-stone-800'}`}>
+        <p className={`text-sm font-semibold mb-2 px-2.5 py-1 rounded-full border inline-block capitalize ${colour || 'text-stone-800 border-stone-300 bg-stone-200'}`}>
           {value}
         </p>
       )}
@@ -284,14 +284,14 @@ export default function PrescriptionSuggest({
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 text-stone-500 text-sm mb-3">
-          <Link href={`/dashboard/clients/${clientId}`} className="hover:text-stone-300 transition-colors">{clientName}</Link>
+          <Link href={`/dashboard/clients/${clientId}`} className="hover:text-stone-700 transition-colors">{clientName}</Link>
           <span>/</span>
-          <Link href={`/dashboard/clients/${clientId}/program`} className="hover:text-stone-300 transition-colors">Program</Link>
+          <Link href={`/dashboard/clients/${clientId}/program`} className="hover:text-stone-700 transition-colors">Program</Link>
           <span>/</span>
-          <span className="text-stone-300">Prescription Suggestion</span>
+          <span className="text-stone-700">Prescription Suggestion</span>
         </div>
-        <h1 className="text-2xl font-bold text-white">Prescription Suggestion</h1>
-        <p className="text-sm text-stone-400 mt-1">
+        <h1 className="text-2xl font-bold text-[#1A1A1A]">Prescription Suggestion</h1>
+        <p className="text-sm text-stone-600 mt-1">
           Generated from CFFS, intake, and training history. Review the reasoning, edit if needed, then approve to generate the program.
         </p>
       </div>
@@ -302,10 +302,10 @@ export default function PrescriptionSuggest({
           <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-amber-400 font-semibold mb-2">
             ⚠ Active recovery state · {recoveryNotice.playbookSource} · Tier {recoveryNotice.tier} · {recoveryNotice.enforcementMode === 'hard' ? 'HARD GATE' : 'SOFT GATE'}
           </div>
-          <h2 className="text-base font-bold text-white mb-1">{recoveryNotice.playbookName}</h2>
-          <p className="text-xs text-stone-300 mb-3">{recoveryNotice.purpose}</p>
-          <p className="text-xs text-stone-400 mb-3">Day {recoveryNotice.daysActive} of state. Constraints that will be auto-applied to this generation:</p>
-          <ul className="text-xs text-stone-300 space-y-1 mb-4 list-disc list-inside">
+          <h2 className="text-base font-bold text-[#1A1A1A] mb-1">{recoveryNotice.playbookName}</h2>
+          <p className="text-xs text-stone-700 mb-3">{recoveryNotice.purpose}</p>
+          <p className="text-xs text-stone-600 mb-3">Day {recoveryNotice.daysActive} of state. Constraints that will be auto-applied to this generation:</p>
+          <ul className="text-xs text-stone-700 space-y-1 mb-4 list-disc list-inside">
             {recoveryNotice.constraintsSummary.loadReductionPct && (
               <li>Load reduction <strong>{recoveryNotice.constraintsSummary.loadReductionPct[0]}–{recoveryNotice.constraintsSummary.loadReductionPct[1]}%</strong> (RPE drops 1–2 points across exercises)</li>
             )}
@@ -321,20 +321,20 @@ export default function PrescriptionSuggest({
           </ul>
 
           <div className="flex flex-col gap-2">
-            <label className="flex items-start gap-2 text-xs text-stone-300 cursor-pointer">
+            <label className="flex items-start gap-2 text-xs text-stone-700 cursor-pointer">
               <input
                 type="radio"
                 name="recovery_mode"
                 checked={overrideMode === 'apply'}
                 onChange={() => { setOverrideMode('apply'); setOverrideReason('') }}
-                className="mt-0.5 accent-teal-400"
+                className="mt-0.5 accent-blue-500"
               />
               <span>
-                <strong className="text-teal-400">Apply constraints (recommended)</strong>
-                <span className="block text-stone-400 mt-0.5">Generate the program with the recovery clamp applied. Doctrinally correct path.</span>
+                <strong className="text-blue-500">Apply constraints (recommended)</strong>
+                <span className="block text-stone-600 mt-0.5">Generate the program with the recovery clamp applied. Doctrinally correct path.</span>
               </span>
             </label>
-            <label className="flex items-start gap-2 text-xs text-stone-300 cursor-pointer">
+            <label className="flex items-start gap-2 text-xs text-stone-700 cursor-pointer">
               <input
                 type="radio"
                 name="recovery_mode"
@@ -344,7 +344,7 @@ export default function PrescriptionSuggest({
               />
               <span>
                 <strong className="text-amber-400">Override constraints (documented)</strong>
-                <span className="block text-stone-400 mt-0.5">Skip the recovery clamp. Requires a written reason. Logged to recovery_adjustments audit trail.</span>
+                <span className="block text-stone-600 mt-0.5">Skip the recovery clamp. Requires a written reason. Logged to recovery_adjustments audit trail.</span>
               </span>
             </label>
             {overrideMode === 'override' && (
@@ -353,7 +353,7 @@ export default function PrescriptionSuggest({
                 onChange={e => setOverrideReason(e.target.value)}
                 placeholder="Why is the recovery clamp being skipped? (audit trail will record this)"
                 rows={3}
-                className="mt-1 w-full rounded-lg bg-stone-900 border border-stone-700 text-stone-200 text-xs px-3 py-2 focus:outline-none focus:border-amber-500"
+                className="mt-1 w-full rounded-lg bg-stone-100 border border-stone-300 text-stone-800 text-xs px-3 py-2 focus:outline-none focus:border-amber-500"
               />
             )}
           </div>
@@ -364,7 +364,7 @@ export default function PrescriptionSuggest({
       {planBlock && (
         <div className="mb-6 bg-[#10E1C2]/5 border border-[#10E1C2]/20 rounded-xl p-4">
           <p className="text-xs font-bold text-[#10E1C2] uppercase tracking-wider mb-1">From Macro Plan</p>
-          <p className="text-sm text-stone-200">{planBlock.training_plans?.plan_name}</p>
+          <p className="text-sm text-stone-800">{planBlock.training_plans?.plan_name}</p>
           {planBlock.training_plans?.macro_objective && (
             <p className="text-xs text-stone-500 mt-0.5">{planBlock.training_plans.macro_objective}</p>
           )}
@@ -374,14 +374,14 @@ export default function PrescriptionSuggest({
       {loading && (
         <div className="space-y-3">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-stone-900 border border-stone-800 rounded-xl p-4 animate-pulse">
-              <div className="h-3 bg-stone-800 rounded w-24 mb-3" />
-              <div className="h-5 bg-stone-800 rounded w-40 mb-3" />
-              <div className="h-3 bg-stone-800 rounded w-full" />
-              <div className="h-3 bg-stone-800 rounded w-3/4 mt-1" />
+            <div key={i} className="bg-stone-100 border border-stone-200 rounded-xl p-4 animate-pulse">
+              <div className="h-3 bg-stone-200 rounded w-24 mb-3" />
+              <div className="h-5 bg-stone-200 rounded w-40 mb-3" />
+              <div className="h-3 bg-stone-200 rounded w-full" />
+              <div className="h-3 bg-stone-200 rounded w-3/4 mt-1" />
             </div>
           ))}
-          <p className="text-xs text-stone-600 text-center pt-2">Analysing client context and generating prescription…</p>
+          <p className="text-xs text-stone-400 text-center pt-2">Analysing client context and generating prescription…</p>
         </div>
       )}
 
@@ -390,7 +390,7 @@ export default function PrescriptionSuggest({
           <p className="text-sm text-red-400">{error}</p>
           <Link
             href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`}
-            className="text-xs text-stone-400 hover:text-stone-200 mt-2 block"
+            className="text-xs text-stone-600 hover:text-stone-800 mt-2 block"
           >
             Fill in manually instead →
           </Link>
@@ -403,23 +403,23 @@ export default function PrescriptionSuggest({
 
           <div className="flex-1 min-w-0 space-y-4">
             {/* Overall rationale */}
-            <div id="rationale" className="scroll-mt-8 bg-stone-900 border border-[#10E1C2]/20 rounded-xl p-5">
+            <div id="rationale" className="scroll-mt-8 bg-stone-100 border border-[#10E1C2]/20 rounded-xl p-5">
               <p className="text-[10px] font-bold text-[#10E1C2] uppercase tracking-widest mb-3">Prescription Rationale</p>
               {(() => {
                 const { intro, points } = parseReason(suggestion.overall_rationale)
                 return (
                   <div className="space-y-2">
-                    {intro && <p className="text-sm text-stone-200 leading-relaxed">{intro}</p>}
+                    {intro && <p className="text-sm text-stone-800 leading-relaxed">{intro}</p>}
                     {points.length > 1 ? (
                       <div className="space-y-2 mt-1">
                         {points.map((point, i) => (
                           <div key={i} className="flex items-start gap-2.5 border-l-2 border-[#10E1C2]/20 pl-3">
-                            <p className="text-sm text-stone-300 leading-relaxed">{point}</p>
+                            <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-stone-200 leading-relaxed">{points[0]}</p>
+                      <p className="text-sm text-stone-800 leading-relaxed">{points[0]}</p>
                     )}
                   </div>
                 )
@@ -442,7 +442,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-2 gap-1.5">
                   {(['accumulation', 'intensification', 'realization', 'restoration'] as const).map(p => (
                     <button key={p} type="button" onClick={() => setForm(prev => ({ ...prev, progression_phase: p }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.progression_phase === p ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.progression_phase === p ? 'bg-[#10E1C2] text-stone-100 border-[#10E1C2]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
                       {p}
                     </button>
                   ))}
@@ -456,7 +456,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {(['strength', 'hypertrophy', 'capacity'] as const).map(g => (
                     <button key={g} type="button" onClick={() => setForm(prev => ({ ...prev, training_goal: g }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_goal === g ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_goal === g ? 'bg-[#10E1C2] text-stone-100 border-[#10E1C2]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
                       {g}
                     </button>
                   ))}
@@ -470,7 +470,7 @@ export default function PrescriptionSuggest({
                 <input type="range" min={2} max={6} value={form.training_frequency}
                   onChange={e => setForm(p => ({ ...p, training_frequency: parseInt(e.target.value) }))}
                   className="w-full accent-[#10E1C2]" />
-                <div className="flex justify-between text-xs text-stone-600 mt-1">
+                <div className="flex justify-between text-xs text-stone-400 mt-1">
                   <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
                 </div>
               </ReasonCard>
@@ -482,7 +482,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {(['beginner', 'intermediate', 'advanced'] as const).map(a => (
                     <button key={a} type="button" onClick={() => setForm(prev => ({ ...prev, training_age: a }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_age === a ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_age === a ? 'bg-[#10E1C2] text-stone-100 border-[#10E1C2]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
                       {a}
                     </button>
                   ))}
@@ -496,7 +496,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {(['limited', 'developing', 'proficient'] as const).map(c => (
                     <button key={c} type="button" onClick={() => setForm(prev => ({ ...prev, movement_competency: c }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.movement_competency === c ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.movement_competency === c ? 'bg-[#10E1C2] text-stone-100 border-[#10E1C2]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
                       {c}
                     </button>
                   ))}
@@ -510,7 +510,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {([4, 6, 8] as const).map(w => (
                     <button key={w} type="button" onClick={() => setForm(prev => ({ ...prev, week_duration: w }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors ${form.week_duration === w ? 'bg-[#10E1C2] text-stone-900 border-[#10E1C2]' : 'bg-stone-800 text-stone-300 border-stone-700'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors ${form.week_duration === w ? 'bg-[#10E1C2] text-stone-100 border-[#10E1C2]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
                       {w} weeks
                     </button>
                   ))}
@@ -519,14 +519,14 @@ export default function PrescriptionSuggest({
             </div>
 
             {/* Equipment Access */}
-            <div id="equipment" className="scroll-mt-8 bg-stone-900 border border-stone-800 rounded-xl p-4">
+            <div id="equipment" className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-4">
               <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">Equipment Access</p>
               <div className="grid grid-cols-2 gap-2">
                 {EQUIPMENT_OPTIONS.map(opt => (
                   <label key={opt.value} className="flex items-center gap-2.5 cursor-pointer">
                     <input type="checkbox" checked={form.equipment_access.includes(opt.value)} onChange={() => toggleEquipment(opt.value)}
-                      className="rounded border-stone-600 bg-stone-800 accent-[#10E1C2]" />
-                    <span className={`text-sm transition-colors ${form.equipment_access.includes(opt.value) ? 'text-stone-200' : 'text-stone-500'}`}>
+                      className="rounded border-stone-400 bg-stone-200 accent-[#10E1C2]" />
+                    <span className={`text-sm transition-colors ${form.equipment_access.includes(opt.value) ? 'text-stone-800' : 'text-stone-500'}`}>
                       {opt.label}
                     </span>
                   </label>
@@ -541,14 +541,14 @@ export default function PrescriptionSuggest({
             <button
               onClick={handleGenerate}
               disabled={generating}
-              className="w-full py-3 px-4 bg-[#10E1C2] text-stone-900 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="w-full py-3 px-4 bg-[#10E1C2] text-stone-100 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {generating ? 'Generating program… this may take 30–60s' : 'Approve & Generate Program'}
             </button>
 
-            <p className="text-xs text-stone-600 text-center">
+            <p className="text-xs text-stone-400 text-center">
               Or{' '}
-              <Link href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`} className="hover:text-stone-400 underline">
+              <Link href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`} className="hover:text-stone-600 underline">
                 fill in manually
               </Link>
             </p>

@@ -7,7 +7,7 @@ import PaymentsNav from './payments-nav'
 import Link from 'next/link'
 
 const statusConfig: Record<string, { label: string; icon: typeof Clock; colour: string }> = {
-  paid: { label: 'Paid', icon: CheckCircle2, colour: 'text-teal-400' },
+  paid: { label: 'Paid', icon: CheckCircle2, colour: 'text-blue-500' },
   pending: { label: 'Pending', icon: Clock, colour: 'text-amber-400' },
   failed: { label: 'Failed', icon: XCircle, colour: 'text-red-400' },
   refunded: { label: 'Refunded', icon: XCircle, colour: 'text-stone-500' },
@@ -42,7 +42,7 @@ export default async function PaymentsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-semibold mb-1">Payments</h1>
-          <p className="text-stone-400 text-sm">Products, invoices, and payment history</p>
+          <p className="text-stone-600 text-sm">Products, invoices, and payment history</p>
         </div>
         <div className="flex items-center gap-2">
           <RecordPaymentButton products={products || []} />
@@ -54,11 +54,11 @@ export default async function PaymentsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 mb-8">
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Total Revenue</p>
-          <p className="text-3xl font-bold text-white">${totalRevenue.toLocaleString('en-AU')}</p>
+          <p className="text-3xl font-bold text-[#1A1A1A]">${totalRevenue.toLocaleString('en-AU')}</p>
         </div>
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-5">
+        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
           <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Pending</p>
           <p className="text-3xl font-bold text-amber-400">${pendingRevenue.toLocaleString('en-AU')}</p>
         </div>
@@ -74,14 +74,14 @@ export default async function PaymentsPage() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="bg-stone-900 border border-stone-800 rounded-xl p-4 flex items-center justify-between"
+                className="bg-stone-100 border border-stone-200 rounded-xl p-4 flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-stone-800 rounded-lg">
-                    <Package size={14} className="text-stone-400" />
+                  <div className="p-2 bg-stone-200 rounded-lg">
+                    <Package size={14} className="text-stone-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">{product.name}</p>
+                    <p className="text-sm font-medium text-[#1A1A1A]">{product.name}</p>
                     <p className="text-xs text-stone-500">
                       {product.type === 'subscription'
                         ? `${product.billing_interval} subscription`
@@ -91,7 +91,7 @@ export default async function PaymentsPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <p className="text-sm font-semibold text-white">${product.price.toLocaleString('en-AU')}</p>
+                    <p className="text-sm font-semibold text-[#1A1A1A]">${product.price.toLocaleString('en-AU')}</p>
                     {product.type === 'subscription' && (
                       <p className="text-xs text-stone-500">/ {product.billing_interval?.replace('ly', '')}</p>
                     )}
@@ -105,10 +105,10 @@ export default async function PaymentsPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-stone-900 border border-dashed border-stone-800 rounded-xl p-8 text-center">
-            <Package size={20} className="text-stone-600 mx-auto mb-2" />
+          <div className="bg-stone-100 border border-dashed border-stone-200 rounded-xl p-8 text-center">
+            <Package size={20} className="text-stone-400 mx-auto mb-2" />
             <p className="text-stone-500 text-sm">No products yet</p>
-            <p className="text-stone-600 text-xs mt-1">Add your coaching products above</p>
+            <p className="text-stone-400 text-xs mt-1">Add your coaching products above</p>
           </div>
         )}
       </div>
@@ -137,27 +137,27 @@ export default async function PaymentsPage() {
               return (
                 <div
                   key={payment.id}
-                  className="bg-stone-900 border border-stone-800 rounded-xl p-4 flex items-center gap-4"
+                  className="bg-stone-100 border border-stone-200 rounded-xl p-4 flex items-center gap-4"
                 >
                   <div className="flex-1 min-w-0">
                     {contactHref ? (
                       <Link
                         href={contactHref}
-                        className="text-sm font-medium text-white hover:text-teal-400 transition-colors truncate block"
+                        className="text-sm font-medium text-[#1A1A1A] hover:text-blue-500 transition-colors truncate block"
                       >
                         {contactName}
                       </Link>
                     ) : (
-                      <p className="text-sm font-medium text-white truncate">{contactName}</p>
+                      <p className="text-sm font-medium text-[#1A1A1A] truncate">{contactName}</p>
                     )}
                     <p className="text-xs text-stone-500 mt-0.5">{productName}</p>
                   </div>
 
                   <div className="text-right shrink-0">
-                    <p className="text-sm font-semibold text-white">
+                    <p className="text-sm font-semibold text-[#1A1A1A]">
                       ${payment.amount.toLocaleString('en-AU')}
                     </p>
-                    <p className="text-xs text-stone-600">
+                    <p className="text-xs text-stone-400">
                       {new Date(payment.created_at).toLocaleDateString('en-AU', {
                         day: 'numeric',
                         month: 'short',
@@ -175,8 +175,8 @@ export default async function PaymentsPage() {
             })}
           </div>
         ) : (
-          <div className="bg-stone-900 border border-dashed border-stone-800 rounded-xl p-8 text-center">
-            <CreditCard size={20} className="text-stone-600 mx-auto mb-2" />
+          <div className="bg-stone-100 border border-dashed border-stone-200 rounded-xl p-8 text-center">
+            <CreditCard size={20} className="text-stone-400 mx-auto mb-2" />
             <p className="text-stone-500 text-sm">No payments recorded yet</p>
           </div>
         )}
