@@ -359,12 +359,9 @@ export default function MembershipPage() {
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
           What this is
         </p>
-        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '10px', color: '#1A1A1A' }}>
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '14px', color: '#1A1A1A' }}>
           Not a restart. A continuation.
         </h2>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>
-          Most people finish a programme and watch their fat loss stall again. A different app, a different trainer, a different plan that ignores everything their body just taught them. Whatever momentum was built gets reset to zero.
-        </p>
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '24px' }}>
           The Membership picks up exactly where the Blueprint ended. Your pattern is already identified. Your portal is already open. Block A loads automatically and the progression continues without a gap.
         </p>
