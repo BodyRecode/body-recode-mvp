@@ -31,7 +31,7 @@ const PATTERN_CONFIG: Record<string, { label: string; colour: string; descriptio
   },
   'system-overload': {
     label: 'Androgen-Decline',
-    colour: '#14b8a6',
+    colour: '#1B6DFC',
     description: 'Testosterone signalling is the target. Block A protects muscle, controls load, and rebuilds the inputs that support androgen function. Check-in data determines when demand increases, not the calendar.',
   },
 }
@@ -1099,7 +1099,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
   const thisWeekCheckin = checkins.find(c => c.week_number === currentWeek)
 
   const card = (children: React.ReactNode, style?: React.CSSProperties) => (
-    <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 22px', marginBottom: 16, ...style }}>
+    <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 22px', marginBottom: 16, ...style }}>
       {children}
     </div>
   )
@@ -1111,21 +1111,21 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
   )
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0c0a09', color: '#fff', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
 
       {/* Header */}
-      <div style={{ background: '#111110', borderBottom: '1px solid #1c1917', padding: '16px 24px' }}>
+      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', padding: '16px 24px' }}>
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <img src="https://bodyrecode.au/logo-teal.png" width={140} alt="Body Recode" />
+          <img src="https://bodyrecode.au/logo-black.png" width={140} alt="Body Recode" />
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>{enrollment.first_name}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{enrollment.first_name}</div>
             <div style={{ fontSize: 12, color: config.colour, fontWeight: 600 }}>Membership - Block {block}</div>
           </div>
         </div>
       </div>
 
       {/* Nav */}
-      <div style={{ background: '#111110', borderBottom: '1px solid #1c1917', overflowX: 'auto' }}>
+      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', overflowX: 'auto' }}>
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', padding: '0 24px' }}>
           {NAV_ITEMS.map(item => (
             <button
@@ -1133,7 +1133,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
               onClick={() => setActiveTab(item.id)}
               style={{
                 padding: '14px 16px', fontSize: 13, fontWeight: 600,
-                color: activeTab === item.id ? config.colour : '#57534e',
+                color: activeTab === item.id ? config.colour : '#4A4A4A',
                 background: 'transparent', border: 'none', cursor: 'pointer',
                 borderBottom: `2px solid ${activeTab === item.id ? config.colour : 'transparent'}`,
                 whiteSpace: 'nowrap',
@@ -1151,27 +1151,27 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
         {activeTab === 'home' && (
           <div>
             {/* Pattern banner */}
-            <div style={{ background: '#111110', border: `1px solid ${config.colour}30`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
+            <div style={{ background: '#FFFFFF', border: `1px solid ${config.colour}30`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
               {label('Your Pattern')}
-              <div style={{ fontSize: 22, fontWeight: 700, color: '#fff', marginBottom: 8 }}>{config.label}</div>
-              <p style={{ fontSize: 14, color: '#a8a29e', margin: 0, lineHeight: 1.7 }}>{config.description}</p>
+              <div style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', marginBottom: 8 }}>{config.label}</div>
+              <p style={{ fontSize: 14, color: '#999999', margin: 0, lineHeight: 1.7 }}>{config.description}</p>
             </div>
 
             {/* Block and week status */}
             {card(<>
               {label('Current Position')}
               <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
-                <div style={{ flex: 1, background: '#0c0a09', borderRadius: 8, padding: '12px 16px', textAlign: 'center' }}>
+                <div style={{ flex: 1, background: '#FFFFFF', borderRadius: 8, padding: '12px 16px', textAlign: 'center' }}>
                   <div style={{ fontSize: 24, fontWeight: 800, color: config.colour }}>Block {block}</div>
-                  <div style={{ fontSize: 11, color: '#57534e', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Consolidate</div>
+                  <div style={{ fontSize: 11, color: '#4A4A4A', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Consolidate</div>
                 </div>
-                <div style={{ flex: 1, background: '#0c0a09', borderRadius: 8, padding: '12px 16px', textAlign: 'center' }}>
-                  <div style={{ fontSize: 24, fontWeight: 800, color: '#fff' }}>Week {currentWeek}</div>
-                  <div style={{ fontSize: 11, color: '#57534e', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>of 6</div>
+                <div style={{ flex: 1, background: '#FFFFFF', borderRadius: 8, padding: '12px 16px', textAlign: 'center' }}>
+                  <div style={{ fontSize: 24, fontWeight: 800, color: '#1A1A1A' }}>Week {currentWeek}</div>
+                  <div style={{ fontSize: 11, color: '#4A4A4A', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>of 6</div>
                 </div>
-                <div style={{ flex: 1, background: '#0c0a09', borderRadius: 8, padding: '12px 16px', textAlign: 'center' }}>
-                  <div style={{ fontSize: 24, fontWeight: 800, color: '#fff' }}>{currentPhase.name}</div>
-                  <div style={{ fontSize: 11, color: '#57534e', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Phase</div>
+                <div style={{ flex: 1, background: '#FFFFFF', borderRadius: 8, padding: '12px 16px', textAlign: 'center' }}>
+                  <div style={{ fontSize: 24, fontWeight: 800, color: '#1A1A1A' }}>{currentPhase.name}</div>
+                  <div style={{ fontSize: 11, color: '#4A4A4A', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Phase</div>
                 </div>
               </div>
             </>)}
@@ -1190,15 +1190,15 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                   const isActive = currentPhase.number === phase.number
                   return (
                     <div key={phase.name} style={{
-                      background: '#0c0a09', borderRadius: 8, padding: '12px 14px',
-                      border: `1px solid ${isActive ? config.colour + '50' : '#292524'}`,
+                      background: '#FFFFFF', borderRadius: 8, padding: '12px 14px',
+                      border: `1px solid ${isActive ? config.colour + '50' : '#E5E5E5'}`,
                       opacity: phase.number > currentPhase.number ? 0.4 : 1,
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                        <span style={{ fontSize: 14, fontWeight: 700, color: isActive ? config.colour : '#a8a29e' }}>{phase.name}</span>
-                        <span style={{ fontSize: 12, color: '#57534e' }}>Weeks {phase.weeks}</span>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: isActive ? config.colour : '#999999' }}>{phase.name}</span>
+                        <span style={{ fontSize: 12, color: '#4A4A4A' }}>Weeks {phase.weeks}</span>
                       </div>
-                      <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.6 }}>{phase.description}</p>
+                      <p style={{ fontSize: 13, color: '#6B6B6B', margin: 0, lineHeight: 1.6 }}>{phase.description}</p>
                     </div>
                   )
                 })}
@@ -1211,11 +1211,11 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
         {activeTab === 'training' && (
           <div>
             {/* Equipment toggle */}
-            <div style={{ display: 'flex', background: '#111110', borderRadius: 8, padding: 3, gap: 2, marginBottom: 20, width: 'fit-content' }}>
+            <div style={{ display: 'flex', background: '#FFFFFF', borderRadius: 8, padding: 3, gap: 2, marginBottom: 20, width: 'fit-content' }}>
               {([{ id: 'gym', label: 'Gym' }, { id: 'home', label: 'Home DBs' }, { id: 'bodyweight', label: 'No Equipment' }] as const).map(t => (
                 <button key={t.id} onClick={() => setEquipment(t.id)} style={{
                   padding: '8px 16px', fontSize: 13, fontWeight: 600,
-                  color: equipment === t.id ? '#0c0a09' : '#57534e',
+                  color: equipment === t.id ? '#FFFFFF' : '#4A4A4A',
                   background: equipment === t.id ? config.colour : 'transparent',
                   border: 'none', borderRadius: 6, cursor: 'pointer',
                 }}>
@@ -1229,13 +1229,13 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
               {label('Block A Progression')}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {trainingData.progression.map((p, i) => (
-                  <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', paddingBottom: 8, borderBottom: i < trainingData.progression.length - 1 ? '1px solid #1c1917' : 'none' }}>
+                  <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', paddingBottom: 8, borderBottom: i < trainingData.progression.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
                     <div style={{ minWidth: 80 }}>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>{p.phase}</div>
-                      <div style={{ fontSize: 11, color: '#57534e' }}>Weeks {p.weeks}</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: '#1A1A1A' }}>{p.phase}</div>
+                      <div style={{ fontSize: 11, color: '#4A4A4A' }}>Weeks {p.weeks}</div>
                     </div>
                     <div style={{ minWidth: 60, fontSize: 13, fontWeight: 700, color: config.colour }}>{p.rir}</div>
-                    <div style={{ fontSize: 13, color: '#78716c', lineHeight: 1.5 }}>{p.notes}</div>
+                    <div style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.5 }}>{p.notes}</div>
                   </div>
                 ))}
               </div>
@@ -1248,7 +1248,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                 {trainingData.rules.map((rule, i) => (
                   <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                     <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-                    <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{rule}</span>
+                    <span style={{ fontSize: 13, color: '#999999', lineHeight: 1.65 }}>{rule}</span>
                   </div>
                 ))}
               </div>
@@ -1260,26 +1260,26 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                 <button
                   onClick={() => setExpandedSession(expandedSession === session.id ? null : session.id)}
                   style={{
-                    width: '100%', background: '#111110', border: `1px solid ${expandedSession === session.id ? config.colour + '40' : '#1c1917'}`,
+                    width: '100%', background: '#FFFFFF', border: `1px solid ${expandedSession === session.id ? config.colour + '40' : '#E5E5E5'}`,
                     borderRadius: 12, padding: '16px 20px', cursor: 'pointer',
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                   }}
                 >
                   <div style={{ textAlign: 'left' }}>
-                    <div style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>{session.name}</div>
-                    <div style={{ fontSize: 12, color: '#57534e', marginTop: 2 }}>{session.subtitle}</div>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: '#1A1A1A' }}>{session.name}</div>
+                    <div style={{ fontSize: 12, color: '#4A4A4A', marginTop: 2 }}>{session.subtitle}</div>
                   </div>
                   <div style={{ fontSize: 18, color: config.colour }}>{expandedSession === session.id ? '−' : '+'}</div>
                 </button>
                 {expandedSession === session.id && (
-                  <div style={{ background: '#111110', border: '1px solid #1c1917', borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '0 20px 16px' }}>
+                  <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '0 20px 16px' }}>
                     {session[equipment].map((ex, i) => (
-                      <div key={i} style={{ padding: '14px 0', borderBottom: i < session[equipment].length - 1 ? '1px solid #1c1917' : 'none' }}>
+                      <div key={i} style={{ padding: '14px 0', borderBottom: i < session[equipment].length - 1 ? '1px solid #E5E5E5' : 'none' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
-                          <span style={{ fontSize: 14, fontWeight: 600, color: '#fff' }}>{ex.name}</span>
+                          <span style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A' }}>{ex.name}</span>
                           <span style={{ fontSize: 13, color: config.colour, fontWeight: 700, whiteSpace: 'nowrap', marginLeft: 12 }}>{ex.sets} x {ex.reps}</span>
                         </div>
-                        <p style={{ fontSize: 12, color: '#78716c', margin: 0, lineHeight: 1.6 }}>{ex.notes}</p>
+                        <p style={{ fontSize: 12, color: '#6B6B6B', margin: 0, lineHeight: 1.6 }}>{ex.notes}</p>
                       </div>
                     ))}
                   </div>
@@ -1297,19 +1297,19 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
               <p style={{ fontSize: 14, color: '#d4d0cc', lineHeight: 1.8, margin: 0 }}>{nutritionData.headline}</p>
             </>)}
 
-            <div style={{ background: '#111110', border: '1px solid #292524', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#57534e', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>Foundation</div>
-              <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.7 }}>The HABNS foundation from your Blueprint is unchanged. Protein, fat, fruit, post-training starchy carbs. Remove list still applies. Block A adds precision on top - it does not replace the foundation.</p>
+            <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>Foundation</div>
+              <p style={{ fontSize: 13, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>The HABNS foundation from your Blueprint is unchanged. Protein, fat, fruit, post-training starchy carbs. Remove list still applies. Block A adds precision on top - it does not replace the foundation.</p>
             </div>
 
             {nutritionData.newStrategy.map((s, i) => (
-              <div key={i} style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
+              <div key={i} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
                 {label(`New in Block A: ${s.title}`)}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {s.points.map((point, j) => (
                     <div key={j} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                       <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-                      <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{point}</span>
+                      <span style={{ fontSize: 13, color: '#999999', lineHeight: 1.65 }}>{point}</span>
                     </div>
                   ))}
                 </div>
@@ -1320,12 +1320,12 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
               {label('Phase Notes')}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {nutritionData.phaseNotes.map((note, i) => (
-                  <div key={i} style={{ background: '#0c0a09', borderRadius: 8, padding: '12px 14px' }}>
+                  <div key={i} style={{ background: '#FFFFFF', borderRadius: 8, padding: '12px 14px' }}>
                     <div style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>{note.phase}</span>
-                      <span style={{ fontSize: 12, color: '#57534e' }}>Weeks {note.weeks}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{note.phase}</span>
+                      <span style={{ fontSize: 12, color: '#4A4A4A' }}>Weeks {note.weeks}</span>
                     </div>
-                    <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.6 }}>{note.note}</p>
+                    <p style={{ fontSize: 13, color: '#6B6B6B', margin: 0, lineHeight: 1.6 }}>{note.note}</p>
                   </div>
                 ))}
               </div>
@@ -1338,7 +1338,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
           <div>
             {card(<>
               {label('Pattern Resource Library')}
-              <p style={{ fontSize: 14, color: '#a8a29e', margin: 0, lineHeight: 1.7 }}>Deep-dive guides for the {config.label} pattern. These go beyond the programme - they explain the biology, the protocols, and how to apply them.</p>
+              <p style={{ fontSize: 14, color: '#999999', margin: 0, lineHeight: 1.7 }}>Deep-dive guides for the {config.label} pattern. These go beyond the programme - they explain the biology, the protocols, and how to apply them.</p>
             </>)}
 
             {resources.map((resource, i) => (
@@ -1346,19 +1346,19 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                 <button
                   onClick={() => setExpandedResource(expandedResource === resource.title ? null : resource.title)}
                   style={{
-                    width: '100%', background: '#111110',
-                    border: `1px solid ${expandedResource === resource.title ? config.colour + '40' : '#1c1917'}`,
+                    width: '100%', background: '#FFFFFF',
+                    border: `1px solid ${expandedResource === resource.title ? config.colour + '40' : '#E5E5E5'}`,
                     borderRadius: expandedResource === resource.title ? '12px 12px 0 0' : 12,
                     padding: '16px 20px', cursor: 'pointer',
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                   }}
                 >
-                  <span style={{ fontSize: 14, fontWeight: 700, color: '#fff', textAlign: 'left' }}>{resource.title}</span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: '#1A1A1A', textAlign: 'left' }}>{resource.title}</span>
                   <span style={{ fontSize: 18, color: config.colour, flexShrink: 0, marginLeft: 12 }}>{expandedResource === resource.title ? '−' : '+'}</span>
                 </button>
                 {expandedResource === resource.title && (
-                  <div style={{ background: '#111110', border: '1px solid #1c1917', borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '16px 20px' }}>
-                    <p style={{ fontSize: 14, color: '#a8a29e', margin: 0, lineHeight: 1.8 }}>{resource.content}</p>
+                  <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '16px 20px' }}>
+                    <p style={{ fontSize: 14, color: '#999999', margin: 0, lineHeight: 1.8 }}>{resource.content}</p>
                   </div>
                 )}
               </div>
@@ -1371,30 +1371,30 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
           <div>
             {card(<>
               {label('Weekly Check-In')}
-              <p style={{ fontSize: 14, color: '#a8a29e', margin: '0 0 4px', lineHeight: 1.7 }}>Week {currentWeek} of Block {block}. Rate each marker from 1 (poor) to 5 (excellent).</p>
+              <p style={{ fontSize: 14, color: '#999999', margin: '0 0 4px', lineHeight: 1.7 }}>Week {currentWeek} of Block {block}. Rate each marker from 1 (poor) to 5 (excellent).</p>
             </>)}
 
             {thisWeekCheckin ? (
-              <div style={{ background: '#111110', border: `1px solid ${config.colour}40`, borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
+              <div style={{ background: '#FFFFFF', border: `1px solid ${config.colour}40`, borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
                 {label('Week ' + currentWeek + ' submitted')}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                   {CHECKIN_MARKERS.map(m => (
-                    <div key={m.key} style={{ background: '#0c0a09', borderRadius: 8, padding: '10px 12px' }}>
-                      <div style={{ fontSize: 11, color: '#57534e', marginBottom: 4 }}>{m.label}</div>
+                    <div key={m.key} style={{ background: '#FFFFFF', borderRadius: 8, padding: '10px 12px' }}>
+                      <div style={{ fontSize: 11, color: '#4A4A4A', marginBottom: 4 }}>{m.label}</div>
                       <div style={{ fontSize: 20, fontWeight: 700, color: config.colour }}>{(thisWeekCheckin as any)[m.key]}/5</div>
                     </div>
                   ))}
                 </div>
                 {thisWeekCheckin.notes && (
-                  <p style={{ fontSize: 13, color: '#78716c', margin: '12px 0 0', lineHeight: 1.7 }}>{thisWeekCheckin.notes}</p>
+                  <p style={{ fontSize: 13, color: '#6B6B6B', margin: '12px 0 0', lineHeight: 1.7 }}>{thisWeekCheckin.notes}</p>
                 )}
               </div>
             ) : (
               <form onSubmit={submitCheckin}>
                 {CHECKIN_MARKERS.map(marker => (
-                  <div key={marker.key} style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '16px 20px', marginBottom: 12 }}>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: '#fff', marginBottom: 4 }}>{marker.label}</div>
-                    <div style={{ fontSize: 12, color: '#57534e', marginBottom: 12 }}>{marker.description}</div>
+                  <div key={marker.key} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '16px 20px', marginBottom: 12 }}>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A', marginBottom: 4 }}>{marker.label}</div>
+                    <div style={{ fontSize: 12, color: '#4A4A4A', marginBottom: 12 }}>{marker.description}</div>
                     <div style={{ display: 'flex', gap: 8 }}>
                       {[1, 2, 3, 4, 5].map(val => (
                         <button
@@ -1403,8 +1403,8 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                           onClick={() => setCheckinForm(f => ({ ...f, [marker.key]: val }))}
                           style={{
                             flex: 1, padding: '10px', borderRadius: 8, border: 'none',
-                            background: checkinForm[marker.key] === val ? config.colour : '#1c1917',
-                            color: checkinForm[marker.key] === val ? '#0c0a09' : '#57534e',
+                            background: checkinForm[marker.key] === val ? config.colour : '#E5E5E5',
+                            color: checkinForm[marker.key] === val ? '#FFFFFF' : '#4A4A4A',
                             fontWeight: 700, fontSize: 16, cursor: 'pointer',
                           }}
                         >
@@ -1414,22 +1414,22 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                     </div>
                   </div>
                 ))}
-                <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: '#fff', marginBottom: 8 }}>Notes (optional)</div>
+                <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A', marginBottom: 8 }}>Notes (optional)</div>
                   <textarea
                     value={checkinNotes}
                     onChange={e => setCheckinNotes(e.target.value)}
                     placeholder="Any observations this week..."
-                    style={{ width: '100%', background: '#0c0a09', border: '1px solid #292524', borderRadius: 8, padding: '12px', color: '#fff', fontSize: 14, lineHeight: 1.6, resize: 'vertical', minHeight: 80, boxSizing: 'border-box' }}
+                    style={{ width: '100%', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 8, padding: '12px', color: '#1A1A1A', fontSize: 14, lineHeight: 1.6, resize: 'vertical', minHeight: 80, boxSizing: 'border-box' }}
                   />
                 </div>
                 {checkinError && <p style={{ fontSize: 13, color: '#ef4444', marginBottom: 12 }}>{checkinError}</p>}
-                {checkinSuccess && <p style={{ fontSize: 13, color: '#14b8a6', marginBottom: 12 }}>Check-in saved.</p>}
+                {checkinSuccess && <p style={{ fontSize: 13, color: '#1B6DFC', marginBottom: 12 }}>Check-in saved.</p>}
                 <button
                   type="submit"
                   disabled={checkinSubmitting || CHECKIN_MARKERS.some(m => !checkinForm[m.key])}
                   style={{
-                    width: '100%', padding: '15px', background: config.colour, color: '#0c0a09',
+                    width: '100%', padding: '15px', background: config.colour, color: '#FFFFFF',
                     fontWeight: 700, fontSize: 15, borderRadius: 8, border: 'none',
                     cursor: checkinSubmitting || CHECKIN_MARKERS.some(m => !checkinForm[m.key]) ? 'not-allowed' : 'pointer',
                     opacity: CHECKIN_MARKERS.some(m => !checkinForm[m.key]) ? 0.5 : 1,
@@ -1444,11 +1444,11 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
               <div style={{ marginTop: 24 }}>
                 {label('Previous Check-Ins')}
                 {[...checkins].sort((a, b) => b.week_number - a.week_number).slice(0, 5).map(c => (
-                  <div key={c.id} style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 10, padding: '14px 16px', marginBottom: 10 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#a8a29e', marginBottom: 8 }}>Block {block} - Week {c.week_number}</div>
+                  <div key={c.id} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 10, padding: '14px 16px', marginBottom: 10 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#999999', marginBottom: 8 }}>Block {block} - Week {c.week_number}</div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                       {CHECKIN_MARKERS.map(m => (
-                        <div key={m.key} style={{ fontSize: 12, color: '#57534e' }}>
+                        <div key={m.key} style={{ fontSize: 12, color: '#4A4A4A' }}>
                           {m.label}: <span style={{ color: config.colour, fontWeight: 700 }}>{(c as any)[m.key]}</span>
                         </div>
                       ))}
@@ -1465,12 +1465,12 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
           <div>
             {card(<>
               {label('Check-In Trend Dashboard')}
-              <p style={{ fontSize: 14, color: '#a8a29e', margin: 0, lineHeight: 1.7 }}>Your 8 biological markers visualised over time. Data from weekly check-ins.</p>
+              <p style={{ fontSize: 14, color: '#999999', margin: 0, lineHeight: 1.7 }}>Your 8 biological markers visualised over time. Data from weekly check-ins.</p>
             </>)}
 
             {checkins.length === 0 ? (
-              <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '40px 20px', textAlign: 'center' }}>
-                <p style={{ fontSize: 14, color: '#57534e', margin: 0 }}>No check-in data yet. Complete your first weekly check-in to start tracking.</p>
+              <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '40px 20px', textAlign: 'center' }}>
+                <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0 }}>No check-in data yet. Complete your first weekly check-in to start tracking.</p>
               </div>
             ) : (
               <>
@@ -1482,15 +1482,15 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                       const avg = checkins.length > 0
                         ? Math.round((checkins.reduce((sum, c) => sum + ((c as any)[m.key] ?? 0), 0) / checkins.length) * 10) / 10
                         : 0
-                      const colour = avg >= 4 ? '#14b8a6' : avg >= 3 ? '#f59e0b' : '#ef4444'
+                      const colour = avg >= 4 ? '#1B6DFC' : avg >= 3 ? '#f59e0b' : '#ef4444'
                       return (
-                        <div key={m.key} style={{ background: '#0c0a09', borderRadius: 8, padding: '12px 14px' }}>
-                          <div style={{ fontSize: 11, color: '#57534e', marginBottom: 4 }}>{m.label}</div>
+                        <div key={m.key} style={{ background: '#FFFFFF', borderRadius: 8, padding: '12px 14px' }}>
+                          <div style={{ fontSize: 11, color: '#4A4A4A', marginBottom: 4 }}>{m.label}</div>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             <span style={{ fontSize: 22, fontWeight: 800, color: colour }}>{avg}</span>
-                            <span style={{ fontSize: 11, color: '#57534e' }}>/ 5</span>
+                            <span style={{ fontSize: 11, color: '#4A4A4A' }}>/ 5</span>
                           </div>
-                          <div style={{ marginTop: 6, height: 4, background: '#1c1917', borderRadius: 2 }}>
+                          <div style={{ marginTop: 6, height: 4, background: '#E5E5E5', borderRadius: 2 }}>
                             <div style={{ height: 4, background: colour, borderRadius: 2, width: `${(avg / 5) * 100}%` }} />
                           </div>
                         </div>
@@ -1506,15 +1506,15 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                     const sorted = [...checkins].sort((a, b) => a.week_number - b.week_number)
                     return (
                       <div key={m.key} style={{ marginBottom: 16 }}>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: '#a8a29e', marginBottom: 6 }}>{m.label}</div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: '#999999', marginBottom: 6 }}>{m.label}</div>
                         <div style={{ display: 'flex', gap: 4, alignItems: 'flex-end', height: 40 }}>
                           {sorted.map(c => {
                             const val = (c as any)[m.key] ?? 0
-                            const colour = val >= 4 ? '#14b8a6' : val >= 3 ? '#f59e0b' : '#ef4444'
+                            const colour = val >= 4 ? '#1B6DFC' : val >= 3 ? '#f59e0b' : '#ef4444'
                             return (
                               <div key={c.week_number} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                                 <div style={{ width: '100%', height: `${(val / 5) * 36}px`, background: colour, borderRadius: 3, minHeight: 4 }} />
-                                <div style={{ fontSize: 9, color: '#57534e' }}>W{c.week_number}</div>
+                                <div style={{ fontSize: 9, color: '#4A4A4A' }}>W{c.week_number}</div>
                               </div>
                             )
                           })}

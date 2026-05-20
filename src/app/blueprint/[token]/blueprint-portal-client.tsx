@@ -31,7 +31,7 @@ const PATTERN_CONFIG: Record<string, { label: string; colour: string; descriptio
   },
   'system-overload': {
     label: 'Androgen-Decline',
-    colour: '#14b8a6',
+    colour: '#1B6DFC',
     description: 'Your programme is built around protecting muscle, controlling load, and rebuilding the conditions that support testosterone signalling. Recovery is the lever. Drive and capacity return as the system comes back online.',
   },
 }
@@ -235,37 +235,37 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0c0a09', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>
       <div style={{ maxWidth: 560, width: '100%' }}>
-        <img src="https://bodyrecode.au/logo-teal.png" width={110} alt="Body Recode" style={{ display: 'block', marginBottom: 40 }} />
-        <h1 style={{ fontSize: 24, fontWeight: 700, color: '#fff', margin: '0 0 12px', fontFamily: 'system-ui, sans-serif' }}>
+        <img src="https://bodyrecode.au/logo-black.png" width={110} alt="Body Recode" style={{ display: 'block', marginBottom: 40 }} />
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: '#1A1A1A', margin: '0 0 12px', fontFamily: 'system-ui, sans-serif' }}>
           One last step before your portal opens
         </h1>
-        <p style={{ fontSize: 15, color: '#78716c', lineHeight: 1.75, margin: '0 0 36px', fontFamily: 'system-ui, sans-serif' }}>
+        <p style={{ fontSize: 15, color: '#6B6B6B', lineHeight: 1.75, margin: '0 0 36px', fontFamily: 'system-ui, sans-serif' }}>
           Two questions to identify your biological pattern. This determines how your programme is built.
         </p>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           <div>
-            <p style={{ fontSize: 14, fontWeight: 600, color: '#a8a29e', margin: '0 0 16px', fontFamily: 'system-ui, sans-serif' }}>
+            <p style={{ fontSize: 14, fontWeight: 600, color: '#999999', margin: '0 0 16px', fontFamily: 'system-ui, sans-serif' }}>
               Where do you most notice excess puffiness or softness in your body?
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {q1Options.map(opt => (
-                <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: q1 === opt.value ? '#1c1917' : '#111110', border: `1px solid ${q1 === opt.value ? '#14b8a6' : '#292524'}`, borderRadius: 8 }}>
-                  <input type="radio" name="q1" value={opt.value} checked={q1 === opt.value} onChange={() => setQ1(opt.value)} style={{ marginTop: 2, accentColor: '#14b8a6' }} />
+                <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: q1 === opt.value ? '#E5E5E5' : '#FFFFFF', border: `1px solid ${q1 === opt.value ? '#1B6DFC' : '#292524'}`, borderRadius: 8 }}>
+                  <input type="radio" name="q1" value={opt.value} checked={q1 === opt.value} onChange={() => setQ1(opt.value)} style={{ marginTop: 2, accentColor: '#1B6DFC' }} />
                   <span style={{ fontSize: 14, color: '#d4d0cc', lineHeight: 1.6, fontFamily: 'system-ui, sans-serif' }}>{opt.label}</span>
                 </label>
               ))}
             </div>
           </div>
           <div>
-            <p style={{ fontSize: 14, fontWeight: 600, color: '#a8a29e', margin: '0 0 16px', fontFamily: 'system-ui, sans-serif' }}>
+            <p style={{ fontSize: 14, fontWeight: 600, color: '#999999', margin: '0 0 16px', fontFamily: 'system-ui, sans-serif' }}>
               Which of these fits most closely right now?
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {q2Options.map(opt => (
-                <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: q2 === opt.value ? '#1c1917' : '#111110', border: `1px solid ${q2 === opt.value ? '#14b8a6' : '#292524'}`, borderRadius: 8 }}>
-                  <input type="radio" name="q2" value={opt.value} checked={q2 === opt.value} onChange={() => setQ2(opt.value)} style={{ marginTop: 2, accentColor: '#14b8a6' }} />
+                <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: q2 === opt.value ? '#E5E5E5' : '#FFFFFF', border: `1px solid ${q2 === opt.value ? '#1B6DFC' : '#292524'}`, borderRadius: 8 }}>
+                  <input type="radio" name="q2" value={opt.value} checked={q2 === opt.value} onChange={() => setQ2(opt.value)} style={{ marginTop: 2, accentColor: '#1B6DFC' }} />
                   <span style={{ fontSize: 14, color: '#d4d0cc', lineHeight: 1.6, fontFamily: 'system-ui, sans-serif' }}>{opt.label}</span>
                 </label>
               ))}
@@ -274,7 +274,7 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
           <button
             type="submit"
             disabled={!q1 || !q2 || submitting}
-            style={{ padding: '15px', background: '#14b8a6', color: '#0c0a09', fontWeight: 700, fontSize: 15, borderRadius: 8, border: 'none', cursor: (!q1 || !q2 || submitting) ? 'not-allowed' : 'pointer', opacity: (!q1 || !q2 || submitting) ? 0.5 : 1, fontFamily: 'system-ui, sans-serif' }}
+            style={{ padding: '15px', background: '#1B6DFC', color: '#FFFFFF', fontWeight: 700, fontSize: 15, borderRadius: 8, border: 'none', cursor: (!q1 || !q2 || submitting) ? 'not-allowed' : 'pointer', opacity: (!q1 || !q2 || submitting) ? 0.5 : 1, fontFamily: 'system-ui, sans-serif' }}
           >
             {submitting ? 'Opening your portal...' : 'Open my Blueprint'}
           </button>
@@ -476,17 +476,17 @@ function MorningToggle({ preTrainingNote }: { preTrainingNote: string }) {
 
   return (
     <div>
-      <div style={{ display: 'flex', background: '#1c1917', borderRadius: 8, padding: 3, gap: 2, marginBottom: 16, width: 'fit-content' }}>
+      <div style={{ display: 'flex', background: '#E5E5E5', borderRadius: 8, padding: 3, gap: 2, marginBottom: 16, width: 'fit-content' }}>
         {([{ id: 'later', label: 'Train Later in Day' }, { id: 'morning', label: 'Train First Thing' }] as const).map(t => (
-          <button key={t.id} onClick={() => setTiming(t.id)} style={{ padding: '7px 14px', fontSize: 12, fontWeight: 600, color: timing === t.id ? '#0c0a09' : '#57534e', background: timing === t.id ? '#14b8a6' : 'transparent', border: 'none', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+          <button key={t.id} onClick={() => setTiming(t.id)} style={{ padding: '7px 14px', fontSize: 12, fontWeight: 600, color: timing === t.id ? '#FFFFFF' : '#4A4A4A', background: timing === t.id ? '#1B6DFC' : 'transparent', border: 'none', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}>
             {t.label}
           </button>
         ))}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
         {rhythms[timing].map((row, i) => (
-          <div key={i} style={{ display: 'grid', gridTemplateColumns: '110px 1fr', gap: 16, padding: '11px 0', borderBottom: i < rhythms[timing].length - 1 ? '1px solid #1c1917' : 'none' }}>
-            <span style={{ fontSize: 12, color: '#57534e', paddingTop: 1 }}>{row.time}</span>
+          <div key={i} style={{ display: 'grid', gridTemplateColumns: '110px 1fr', gap: 16, padding: '11px 0', borderBottom: i < rhythms[timing].length - 1 ? '1px solid #E5E5E5' : 'none' }}>
+            <span style={{ fontSize: 12, color: '#4A4A4A', paddingTop: 1 }}>{row.time}</span>
             <div>
               <div style={{ fontSize: 13, fontWeight: 600, color: '#d4d0cc', marginBottom: 2 }}>{row.food}</div>
               <div style={{ fontSize: 12, color: '#3d3935' }}>{row.note}</div>
@@ -506,8 +506,8 @@ function NutritionTab({ pattern }: { pattern: string }) {
   return (
     <div>
       <div style={{ marginBottom: 28 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>Nutrition Framework</h2>
-        <p style={{ fontSize: 14, color: '#78716c', margin: 0, lineHeight: 1.7 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', margin: '0 0 6px' }}>Nutrition Framework</h2>
+        <p style={{ fontSize: 14, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>
           Built on the HABNS foundation with {config.label} pattern emphasis applied across all 6 weeks.
         </p>
       </div>
@@ -523,7 +523,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           <button
             key={s.id}
             onClick={() => setSection(s.id)}
-            style={{ padding: '9px 16px', fontSize: 13, fontWeight: 600, color: section === s.id ? '#0c0a09' : '#57534e', background: section === s.id ? '#14b8a6' : '#111110', border: `1px solid ${section === s.id ? '#14b8a6' : '#292524'}`, borderRadius: 8, cursor: 'pointer' }}
+            style={{ padding: '9px 16px', fontSize: 13, fontWeight: 600, color: section === s.id ? '#FFFFFF' : '#4A4A4A', background: section === s.id ? '#1B6DFC' : '#FFFFFF', border: `1px solid ${section === s.id ? '#1B6DFC' : '#292524'}`, borderRadius: 8, cursor: 'pointer' }}
           >
             {s.label}
           </button>
@@ -533,15 +533,15 @@ function NutritionTab({ pattern }: { pattern: string }) {
       {section === 'overview' && (
         <div>
           {/* Pattern headline */}
-          <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: `1px solid #E5E5E5`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
               {config.label} - Nutrition Strategy
             </div>
-            <p style={{ fontSize: 14, color: '#a8a29e', margin: 0, lineHeight: 1.75 }}>{nutritionData.headline}</p>
+            <p style={{ fontSize: 14, color: '#999999', margin: 0, lineHeight: 1.75 }}>{nutritionData.headline}</p>
           </div>
 
           {/* Pattern rules */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Rules for Your Pattern
             </div>
@@ -549,42 +549,42 @@ function NutritionTab({ pattern }: { pattern: string }) {
               {nutritionData.rules.map((rule, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                   <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{rule}</span>
+                  <span style={{ fontSize: 13, color: '#999999', lineHeight: 1.65 }}>{rule}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Avoid */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Avoid for 6 Weeks
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {nutritionData.avoid.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                  <div style={{ width: 14, height: 14, borderRadius: 3, background: '#1c1917', border: '1px solid #292524', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 3, background: '#E5E5E5', border: '1px solid #292524', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span style={{ fontSize: 10, color: '#ef4444' }}>✕</span>
                   </div>
-                  <span style={{ fontSize: 13, color: '#78716c', lineHeight: 1.6 }}>{item}</span>
+                  <span style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>{item}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Phase notes */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Phase Adjustments
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
               {nutritionData.phaseNotes.map((row, i) => (
-                <div key={i} style={{ paddingBottom: i < 2 ? 16 : 0, marginBottom: i < 2 ? 16 : 0, borderBottom: i < 2 ? '1px solid #1c1917' : 'none' }}>
+                <div key={i} style={{ paddingBottom: i < 2 ? 16 : 0, marginBottom: i < 2 ? 16 : 0, borderBottom: i < 2 ? '1px solid #E5E5E5' : 'none' }}>
                   <div style={{ display: 'flex', gap: 10, alignItems: 'baseline', marginBottom: 6 }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>{row.phase}</span>
-                    <span style={{ fontSize: 12, color: '#57534e' }}>Weeks {row.weeks}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{row.phase}</span>
+                    <span style={{ fontSize: 12, color: '#4A4A4A' }}>Weeks {row.weeks}</span>
                   </div>
-                  <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.65 }}>{row.note}</p>
+                  <p style={{ fontSize: 13, color: '#6B6B6B', margin: 0, lineHeight: 1.65 }}>{row.note}</p>
                 </div>
               ))}
             </div>
@@ -595,50 +595,50 @@ function NutritionTab({ pattern }: { pattern: string }) {
       {section === 'portions' && (
         <div>
           {/* How to measure */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
               How to Measure
             </div>
-            <p style={{ fontSize: 13, color: '#78716c', margin: '0 0 16px', lineHeight: 1.7 }}>
+            <p style={{ fontSize: 13, color: '#6B6B6B', margin: '0 0 16px', lineHeight: 1.7 }}>
               Use your hand as your measuring tool. It scales to your body size automatically - no scales or tracking required.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '100px 110px 1fr', gap: 12, padding: '8px 0', borderBottom: '1px solid #1c1917', marginBottom: 4 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '100px 110px 1fr', gap: 12, padding: '8px 0', borderBottom: '1px solid #E5E5E5', marginBottom: 4 }}>
                 <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Food</span>
                 <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Measure</span>
                 <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>What That Means</span>
               </div>
               {PORTION_GUIDE.map((row, i) => (
-                <div key={i} style={{ display: 'grid', gridTemplateColumns: '100px 110px 1fr', gap: 12, padding: '12px 0', borderBottom: i < PORTION_GUIDE.length - 1 ? '1px solid #1c1917' : 'none' }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: '#fff' }}>{row.food}</span>
-                  <span style={{ fontSize: 13, color: '#14b8a6', fontWeight: 600 }}>{row.measure}</span>
-                  <span style={{ fontSize: 13, color: '#78716c', lineHeight: 1.5 }}>{row.detail}</span>
+                <div key={i} style={{ display: 'grid', gridTemplateColumns: '100px 110px 1fr', gap: 12, padding: '12px 0', borderBottom: i < PORTION_GUIDE.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#1A1A1A' }}>{row.food}</span>
+                  <span style={{ fontSize: 13, color: '#1B6DFC', fontWeight: 600 }}>{row.measure}</span>
+                  <span style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.5 }}>{row.detail}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Pattern-specific portion note */}
-          <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: `1px solid #E5E5E5`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
               {config.label} - Portion Notes
             </div>
-            <p style={{ fontSize: 13, color: '#a8a29e', margin: '0 0 16px', lineHeight: 1.75 }}>
+            <p style={{ fontSize: 13, color: '#999999', margin: '0 0 16px', lineHeight: 1.75 }}>
               {PATTERN_PORTIONS[pattern]?.note}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {PATTERN_PORTIONS[pattern]?.adjustments.map((adj, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                   <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{adj}</span>
+                  <span style={{ fontSize: 13, color: '#999999', lineHeight: 1.65 }}>{adj}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* General rule */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '18px 20px' }}>
-            <p style={{ fontSize: 13, color: '#57534e', margin: 0, lineHeight: 1.7 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '18px 20px' }}>
+            <p style={{ fontSize: 13, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>
               These are starting portions. If you are losing weight too fast, add more protein and fat. If you are not progressing, review the avoid list and tighten carb timing before adjusting portions.
             </p>
           </div>
@@ -648,40 +648,40 @@ function NutritionTab({ pattern }: { pattern: string }) {
       {section === 'foundation' && (
         <div>
           {/* Foundation foods */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Foundation Foods
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
               {FOUNDATION_FOODS.map((food, i) => (
-                <div key={i} style={{ paddingBottom: i < FOUNDATION_FOODS.length - 1 ? 16 : 0, marginBottom: i < FOUNDATION_FOODS.length - 1 ? 16 : 0, borderBottom: i < FOUNDATION_FOODS.length - 1 ? '1px solid #1c1917' : 'none' }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 4 }}>{food.category}</div>
-                  <div style={{ fontSize: 13, color: '#a8a29e', marginBottom: 4, lineHeight: 1.6 }}>{food.examples}</div>
-                  <div style={{ fontSize: 12, color: '#57534e' }}>{food.note}</div>
+                <div key={i} style={{ paddingBottom: i < FOUNDATION_FOODS.length - 1 ? 16 : 0, marginBottom: i < FOUNDATION_FOODS.length - 1 ? 16 : 0, borderBottom: i < FOUNDATION_FOODS.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A', marginBottom: 4 }}>{food.category}</div>
+                  <div style={{ fontSize: 13, color: '#999999', marginBottom: 4, lineHeight: 1.6 }}>{food.examples}</div>
+                  <div style={{ fontSize: 12, color: '#4A4A4A' }}>{food.note}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Remove list */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Remove for 6 Weeks (All Patterns)
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {REMOVE_FOODS.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                  <div style={{ width: 14, height: 14, borderRadius: 3, background: '#1c1917', border: '1px solid #292524', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 3, background: '#E5E5E5', border: '1px solid #292524', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span style={{ fontSize: 10, color: '#ef4444' }}>✕</span>
                   </div>
-                  <span style={{ fontSize: 13, color: '#78716c', lineHeight: 1.6 }}>{item}</span>
+                  <span style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>{item}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Hydration */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Hydration
             </div>
@@ -694,8 +694,8 @@ function NutritionTab({ pattern }: { pattern: string }) {
                 'No flavoured drinks, juice, or soft drinks',
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#14b8a6', marginTop: 6, flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.6 }}>{item}</span>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#1B6DFC', marginTop: 6, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, color: '#999999', lineHeight: 1.6 }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -715,12 +715,12 @@ function NutritionTab({ pattern }: { pattern: string }) {
             }
             const mc = mealsConfig[pattern] ?? mealsConfig['stress-stored']
             return (
-              <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+              <div style={{ background: '#FFFFFF', border: `1px solid #E5E5E5`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                   Meals Per Day
                 </div>
-                <div style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 8 }}>{mc.count}</div>
-                <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.7 }}>{mc.note}</p>
+                <div style={{ fontSize: 20, fontWeight: 700, color: '#1A1A1A', marginBottom: 8 }}>{mc.count}</div>
+                <p style={{ fontSize: 13, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>{mc.note}</p>
               </div>
             )
           })()}
@@ -736,7 +736,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
               ? 'Small snack required - banana, honey, or yoghurt. Never fully fasted.'
               : 'Small snack - banana or yoghurt. Keep it light.'
             return (
-              <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+              <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
                   Daily Rhythm - Training Day
                 </div>
@@ -747,34 +747,34 @@ function NutritionTab({ pattern }: { pattern: string }) {
           })()}
 
           {/* Meal builder */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Meal Builder
             </div>
-            <p style={{ fontSize: 13, color: '#78716c', margin: '0 0 16px', lineHeight: 1.7 }}>Every meal follows the same structure. Build each meal in this order.</p>
+            <p style={{ fontSize: 13, color: '#6B6B6B', margin: '0 0 16px', lineHeight: 1.7 }}>Every meal follows the same structure. Build each meal in this order.</p>
             {[
               { step: '1', label: 'Protein', detail: 'Always first. Beef, chicken, eggs, pork, lamb, seafood, yoghurt.' },
               { step: '2', label: 'Fat', detail: 'Every meal. Butter, ghee, avocado, cheese, egg yolks, coconut oil.' },
               { step: '3', label: 'Fruit', detail: 'Daily carbohydrate base. Any fruit you enjoy. Eat freely.' },
               { step: '4', label: 'Starchy Carbs', detail: 'Post-training window only. Rice, potato, sweet potato, honey.' },
             ].map((item, i) => (
-              <div key={i} style={{ display: 'flex', gap: 16, paddingBottom: i < 3 ? 16 : 0, marginBottom: i < 3 ? 16 : 0, borderBottom: i < 3 ? '1px solid #1c1917' : 'none' }}>
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#14b8a6', border: '2px solid #14b8a6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#0c0a09' }}>{item.step}</span>
+              <div key={i} style={{ display: 'flex', gap: 16, paddingBottom: i < 3 ? 16 : 0, marginBottom: i < 3 ? 16 : 0, borderBottom: i < 3 ? '1px solid #E5E5E5' : 'none' }}>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#1B6DFC', border: '2px solid #1B6DFC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#FFFFFF' }}>{item.step}</span>
                 </div>
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: '#fff', marginBottom: 3 }}>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A', marginBottom: 3 }}>
                     {item.label}
-                    {i === 3 && <span style={{ fontSize: 11, color: '#57534e', marginLeft: 8, fontWeight: 400 }}>post-training only</span>}
+                    {i === 3 && <span style={{ fontSize: 11, color: '#4A4A4A', marginLeft: 8, fontWeight: 400 }}>post-training only</span>}
                   </div>
-                  <div style={{ fontSize: 13, color: '#78716c', lineHeight: 1.6 }}>{item.detail}</div>
+                  <div style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>{item.detail}</div>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Example meals */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Example Meals
             </div>
@@ -783,12 +783,12 @@ function NutritionTab({ pattern }: { pattern: string }) {
               { label: 'Lunch or Dinner - Rest Day', items: ['Beef mince + avocado + salt + side of fruit', 'Chicken thighs cooked in butter + side of fruit', 'Salmon fillet + cucumber + avocado'] },
               { label: 'Post-Training Meal', items: ['Beef mince + white rice', 'Chicken thighs + potato + butter', 'Ground turkey + sweet potato', 'Whey protein + banana immediately post-session'] },
             ].map((group, i) => (
-              <div key={i} style={{ paddingBottom: i < 2 ? 16 : 0, marginBottom: i < 2 ? 16 : 0, borderBottom: i < 2 ? '1px solid #1c1917' : 'none' }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#57534e', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 8 }}>{group.label}</div>
+              <div key={i} style={{ paddingBottom: i < 2 ? 16 : 0, marginBottom: i < 2 ? 16 : 0, borderBottom: i < 2 ? '1px solid #E5E5E5' : 'none' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 8 }}>{group.label}</div>
                 {group.items.map((item, j) => (
                   <div key={j} style={{ display: 'flex', gap: 10, marginBottom: j < group.items.length - 1 ? 6 : 0 }}>
                     <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#3d3935', marginTop: 7, flexShrink: 0 }} />
-                    <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.6 }}>{item}</span>
+                    <span style={{ fontSize: 13, color: '#999999', lineHeight: 1.6 }}>{item}</span>
                   </div>
                 ))}
               </div>
@@ -796,7 +796,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           </div>
 
           {/* Shopping list */}
-          <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Shopping List
             </div>
@@ -808,9 +808,9 @@ function NutritionTab({ pattern }: { pattern: string }) {
               { label: 'Hydration', items: 'Quality sea salt or Himalayan salt, electrolyte powder (no sugar)' },
               { label: 'Kitchen', items: 'Bone broth, herbs, spices, garlic, lemon' },
             ].map((row, i) => (
-              <div key={i} style={{ display: 'flex', gap: 12, paddingBottom: i < 5 ? 12 : 0, marginBottom: i < 5 ? 12 : 0, borderBottom: i < 5 ? '1px solid #1c1917' : 'none' }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#57534e', minWidth: 120, paddingTop: 1 }}>{row.label}</div>
-                <div style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.6 }}>{row.items}</div>
+              <div key={i} style={{ display: 'flex', gap: 12, paddingBottom: i < 5 ? 12 : 0, marginBottom: i < 5 ? 12 : 0, borderBottom: i < 5 ? '1px solid #E5E5E5' : 'none' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#4A4A4A', minWidth: 120, paddingTop: 1 }}>{row.label}</div>
+                <div style={{ fontSize: 13, color: '#999999', lineHeight: 1.6 }}>{row.items}</div>
               </div>
             ))}
           </div>
@@ -920,8 +920,8 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
   return (
     <div>
       <div style={{ marginBottom: 28 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>Education Hub</h2>
-        <p style={{ fontSize: 14, color: '#78716c', margin: 0, lineHeight: 1.7 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', margin: '0 0 6px' }}>Education Hub</h2>
+        <p style={{ fontSize: 14, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>
           One lesson unlocks each week. Each covers the biology behind your pattern and what the programme is doing about it.
         </p>
       </div>
@@ -933,23 +933,23 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
           const callout = lesson.patternCallouts[pattern as keyof typeof lesson.patternCallouts]
 
           return (
-            <div key={lesson.week} style={{ background: '#111110', border: `1px solid ${isOpen ? '#292524' : '#1c1917'}`, borderRadius: 12, overflow: 'hidden', opacity: unlocked ? 1 : 0.45 }}>
+            <div key={lesson.week} style={{ background: '#FFFFFF', border: `1px solid ${isOpen ? '#292524' : '#E5E5E5'}`, borderRadius: 12, overflow: 'hidden', opacity: unlocked ? 1 : 0.45 }}>
               {/* Header row */}
               <button
                 onClick={() => unlocked && setOpenLesson(isOpen ? null : lesson.week)}
                 style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 20px', background: 'none', border: 'none', cursor: unlocked ? 'pointer' : 'default', textAlign: 'left' }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: unlocked ? config.colour : '#1c1917', border: `2px solid ${unlocked ? config.colour : '#292524'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: unlocked ? '#0c0a09' : '#57534e' }}>{lesson.week}</span>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: unlocked ? config.colour : '#E5E5E5', border: `2px solid ${unlocked ? config.colour : '#292524'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: unlocked ? '#FFFFFF' : '#4A4A4A' }}>{lesson.week}</span>
                   </div>
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: unlocked ? '#fff' : '#57534e' }}>{lesson.title}</div>
-                    <div style={{ fontSize: 12, color: '#57534e', marginTop: 2 }}>{unlocked ? `Week ${lesson.week}` : `Unlocks Week ${lesson.week}`}</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: unlocked ? '#fff' : '#4A4A4A' }}>{lesson.title}</div>
+                    <div style={{ fontSize: 12, color: '#4A4A4A', marginTop: 2 }}>{unlocked ? `Week ${lesson.week}` : `Unlocks Week ${lesson.week}`}</div>
                   </div>
                 </div>
                 {unlocked && (
-                  <div style={{ fontSize: 18, color: '#57534e', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0 }}>
+                  <div style={{ fontSize: 18, color: '#4A4A4A', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0 }}>
                     ↓
                   </div>
                 )}
@@ -957,7 +957,7 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
 
               {/* Expanded content */}
               {isOpen && (
-                <div style={{ borderTop: '1px solid #1c1917' }}>
+                <div style={{ borderTop: '1px solid #E5E5E5' }}>
                   {/* Video */}
                   <div style={{ padding: '20px 20px 0' }}>
                     {lesson.loomUrl ? (
@@ -969,8 +969,8 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
                         />
                       </div>
                     ) : (
-                      <div style={{ background: '#1c1917', border: '1px dashed #292524', borderRadius: 10, padding: '40px 20px', textAlign: 'center', marginBottom: 20 }}>
-                        <div style={{ fontSize: 13, color: '#57534e', marginBottom: 6 }}>Video coming soon</div>
+                      <div style={{ background: '#E5E5E5', border: '1px dashed #292524', borderRadius: 10, padding: '40px 20px', textAlign: 'center', marginBottom: 20 }}>
+                        <div style={{ fontSize: 13, color: '#4A4A4A', marginBottom: 6 }}>Video coming soon</div>
                         <div style={{ fontSize: 12, color: '#3d3935' }}>Paste Loom embed URL into LESSONS[{lesson.week - 1}].loomUrl</div>
                       </div>
                     )}
@@ -984,17 +984,17 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
                           <div style={{ fontSize: 12, fontWeight: 700, color: config.colour, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>
                             {section.heading}
                           </div>
-                          <p style={{ fontSize: 14, color: '#a8a29e', lineHeight: 1.8, margin: 0 }}>{section.body}</p>
+                          <p style={{ fontSize: 14, color: '#999999', lineHeight: 1.8, margin: 0 }}>{section.body}</p>
                         </div>
                       ))}
                     </div>
 
                     {/* Pattern callout */}
-                    <div style={{ background: '#0c0a09', border: `1px solid ${config.colour}30`, borderLeft: `3px solid ${config.colour}`, borderRadius: 8, padding: '14px 16px' }}>
+                    <div style={{ background: '#FFFFFF', border: `1px solid ${config.colour}30`, borderLeft: `3px solid ${config.colour}`, borderRadius: 8, padding: '14px 16px' }}>
                       <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                         Your Pattern - {config.label}
                       </div>
-                      <p style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.7, margin: 0 }}>{callout}</p>
+                      <p style={{ fontSize: 13, color: '#999999', lineHeight: 1.7, margin: 0 }}>{callout}</p>
                     </div>
                   </div>
                 </div>
@@ -1019,14 +1019,14 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
   return (
     <div>
       <div style={{ marginBottom: 28 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>Training Programme</h2>
-        <p style={{ fontSize: 14, color: '#78716c', margin: 0, lineHeight: 1.7 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', margin: '0 0 6px' }}>Training Programme</h2>
+        <p style={{ fontSize: 14, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>
           3 days per week. Full body hybrid split. Sessions A, B, and C rotate each week.
         </p>
       </div>
 
       {/* Suggested training days */}
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
           Suggested Schedule
         </div>
@@ -1036,9 +1036,9 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
             { day: 'Wednesday', session: 'B', subtitle: 'Conditioning' },
             { day: 'Friday', session: 'C', subtitle: 'Balance' },
           ].map(item => (
-            <div key={item.day} style={{ background: '#1c1917', borderRadius: 8, padding: '14px 16px', textAlign: 'center' }}>
-              <div style={{ fontSize: 12, color: '#57534e', marginBottom: 6 }}>{item.day}</div>
-              <div style={{ fontSize: 18, fontWeight: 700, color: '#14b8a6', marginBottom: 4 }}>Session {item.session}</div>
+            <div key={item.day} style={{ background: '#E5E5E5', borderRadius: 8, padding: '14px 16px', textAlign: 'center' }}>
+              <div style={{ fontSize: 12, color: '#4A4A4A', marginBottom: 6 }}>{item.day}</div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: '#1B6DFC', marginBottom: 4 }}>Session {item.session}</div>
               <div style={{ fontSize: 11, color: '#3d3935' }}>{item.subtitle}</div>
             </div>
           ))}
@@ -1049,18 +1049,18 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
       </div>
 
       {/* Current week target */}
-      <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+      <div style={{ background: '#FFFFFF', border: `1px solid #E5E5E5`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
           Week {currentWeek} Target - {currentPhaseRow.phase}
         </div>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
-          <span style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>{currentPhaseRow.rir}</span>
+          <span style={{ fontSize: 20, fontWeight: 700, color: '#1A1A1A' }}>{currentPhaseRow.rir}</span>
         </div>
-        <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.6 }}>{currentPhaseRow.notes}</p>
+        <p style={{ fontSize: 13, color: '#6B6B6B', margin: 0, lineHeight: 1.6 }}>{currentPhaseRow.notes}</p>
       </div>
 
       {/* Pattern rules */}
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
           {config.label} - Training Rules
         </div>
@@ -1068,19 +1068,19 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
           {trainingData.rules.map((rule, i) => (
             <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-              <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{rule}</span>
+              <span style={{ fontSize: 13, color: '#999999', lineHeight: 1.65 }}>{rule}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Full progression table */}
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
           Phase Progression
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 60px 80px', gap: 12, padding: '8px 0', borderBottom: '1px solid #1c1917', marginBottom: 4 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 60px 80px', gap: 12, padding: '8px 0', borderBottom: '1px solid #E5E5E5', marginBottom: 4 }}>
             <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Phase</span>
             <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Weeks</span>
             <span style={{ fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>RIR</span>
@@ -1088,10 +1088,10 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
           {trainingData.progression.map((row, i) => {
             const isActive = row === currentPhaseRow
             return (
-              <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 60px 80px', gap: 12, padding: '12px 0', borderBottom: i < 3 ? '1px solid #1c1917' : 'none', background: isActive ? 'rgba(20,184,166,0.04)' : 'transparent', borderRadius: isActive ? 6 : 0 }}>
-                <span style={{ fontSize: 13, color: isActive ? '#fff' : '#78716c', fontWeight: isActive ? 600 : 400 }}>{row.phase}</span>
-                <span style={{ fontSize: 13, color: isActive ? '#a8a29e' : '#57534e' }}>{row.weeks}</span>
-                <span style={{ fontSize: 13, color: isActive ? config.colour : '#57534e', fontWeight: isActive ? 600 : 400 }}>{row.rir}</span>
+              <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 60px 80px', gap: 12, padding: '12px 0', borderBottom: i < 3 ? '1px solid #E5E5E5' : 'none', background: isActive ? 'rgba(27, 109, 252,0.04)' : 'transparent', borderRadius: isActive ? 6 : 0 }}>
+                <span style={{ fontSize: 13, color: isActive ? '#fff' : '#6B6B6B', fontWeight: isActive ? 600 : 400 }}>{row.phase}</span>
+                <span style={{ fontSize: 13, color: isActive ? '#999999' : '#4A4A4A' }}>{row.weeks}</span>
+                <span style={{ fontSize: 13, color: isActive ? config.colour : '#4A4A4A', fontWeight: isActive ? 600 : 400 }}>{row.rir}</span>
               </div>
             )
           })}
@@ -1105,7 +1105,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
             Session Templates
           </div>
           {/* Gym / Home / Bodyweight toggle */}
-          <div style={{ display: 'flex', background: '#1c1917', borderRadius: 8, padding: 3, gap: 2 }}>
+          <div style={{ display: 'flex', background: '#E5E5E5', borderRadius: 8, padding: 3, gap: 2 }}>
             {([
               { id: 'gym', label: 'Gym' },
               { id: 'home', label: 'Home (DBs)' },
@@ -1114,7 +1114,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
               <button
                 key={m.id}
                 onClick={() => setMode(m.id)}
-                style={{ padding: '6px 12px', fontSize: 12, fontWeight: 600, color: mode === m.id ? '#0c0a09' : '#57534e', background: mode === m.id ? '#14b8a6' : 'transparent', border: 'none', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                style={{ padding: '6px 12px', fontSize: 12, fontWeight: 600, color: mode === m.id ? '#FFFFFF' : '#4A4A4A', background: mode === m.id ? '#1B6DFC' : 'transparent', border: 'none', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}
               >
                 {m.label}
               </button>
@@ -1126,21 +1126,21 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
             <button
               key={s.id}
               onClick={() => setActiveSession(s.id)}
-              style={{ padding: '10px 18px', fontSize: 13, fontWeight: 600, color: activeSession === s.id ? '#0c0a09' : '#57534e', background: activeSession === s.id ? '#14b8a6' : '#111110', border: `1px solid ${activeSession === s.id ? '#14b8a6' : '#292524'}`, borderRadius: 8, cursor: 'pointer' }}
+              style={{ padding: '10px 18px', fontSize: 13, fontWeight: 600, color: activeSession === s.id ? '#FFFFFF' : '#4A4A4A', background: activeSession === s.id ? '#1B6DFC' : '#FFFFFF', border: `1px solid ${activeSession === s.id ? '#1B6DFC' : '#292524'}`, borderRadius: 8, cursor: 'pointer' }}
             >
               Session {s.id}
             </button>
           ))}
         </div>
 
-        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, overflow: 'hidden' }}>
-          <div style={{ padding: '18px 20px', borderBottom: '1px solid #1c1917', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, overflow: 'hidden' }}>
+          <div style={{ padding: '18px 20px', borderBottom: '1px solid #E5E5E5', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <div style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>{activeSessionData.name}</div>
-              <div style={{ fontSize: 12, color: '#57534e', marginTop: 2 }}>{activeSessionData.subtitle}</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: '#1A1A1A' }}>{activeSessionData.name}</div>
+              <div style={{ fontSize: 12, color: '#4A4A4A', marginTop: 2 }}>{activeSessionData.subtitle}</div>
             </div>
             {mode !== 'gym' && (
-              <div style={{ fontSize: 11, color: '#57534e', background: '#1c1917', padding: '4px 10px', borderRadius: 6, whiteSpace: 'nowrap' }}>
+              <div style={{ fontSize: 11, color: '#4A4A4A', background: '#E5E5E5', padding: '4px 10px', borderRadius: 6, whiteSpace: 'nowrap' }}>
                 {mode === 'home' ? 'DBs + bodyweight' : 'No equipment needed'}
               </div>
             )}
@@ -1148,7 +1148,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid #1c1917' }}>
+                <tr style={{ borderBottom: '1px solid #E5E5E5' }}>
                   <th style={{ padding: '10px 20px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Exercise</th>
                   <th style={{ padding: '10px 12px', textAlign: 'center', fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Sets</th>
                   <th style={{ padding: '10px 12px', textAlign: 'center', fontSize: 11, fontWeight: 700, color: '#3d3935', letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Reps</th>
@@ -1160,14 +1160,14 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
                   const isFinisher = ex.name.startsWith('Finisher')
                   const finisherSkipped = isFinisher && (pattern === 'stress-stored' || pattern === 'system-overload')
                   return (
-                    <tr key={i} style={{ borderBottom: i < exercises.length - 1 ? '1px solid #1c1917' : 'none', opacity: finisherSkipped ? 0.4 : 1 }}>
-                      <td style={{ padding: '14px 20px', fontSize: 14, color: finisherSkipped ? '#57534e' : '#d4d0cc', fontWeight: isFinisher ? 600 : 400 }}>
+                    <tr key={i} style={{ borderBottom: i < exercises.length - 1 ? '1px solid #E5E5E5' : 'none', opacity: finisherSkipped ? 0.4 : 1 }}>
+                      <td style={{ padding: '14px 20px', fontSize: 14, color: finisherSkipped ? '#4A4A4A' : '#d4d0cc', fontWeight: isFinisher ? 600 : 400 }}>
                         {ex.name}
-                        {finisherSkipped && <span style={{ fontSize: 11, color: '#57534e', marginLeft: 8 }}>(skipped)</span>}
+                        {finisherSkipped && <span style={{ fontSize: 11, color: '#4A4A4A', marginLeft: 8 }}>(skipped)</span>}
                       </td>
-                      <td style={{ padding: '14px 12px', fontSize: 14, color: '#78716c', textAlign: 'center' }}>{ex.sets}</td>
-                      <td style={{ padding: '14px 12px', fontSize: 13, color: '#78716c', textAlign: 'center', whiteSpace: 'nowrap' }}>{ex.reps}</td>
-                      <td style={{ padding: '14px 20px', fontSize: 13, color: '#57534e', lineHeight: 1.5 }}>{ex.notes}</td>
+                      <td style={{ padding: '14px 12px', fontSize: 14, color: '#6B6B6B', textAlign: 'center' }}>{ex.sets}</td>
+                      <td style={{ padding: '14px 12px', fontSize: 13, color: '#6B6B6B', textAlign: 'center', whiteSpace: 'nowrap' }}>{ex.reps}</td>
+                      <td style={{ padding: '14px 20px', fontSize: 13, color: '#4A4A4A', lineHeight: 1.5 }}>{ex.notes}</td>
                     </tr>
                   )
                 })}
@@ -1178,11 +1178,11 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
       </div>
 
       {/* RIR explainer */}
-      <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '18px 20px' }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: '#57534e', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '18px 20px' }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
           What is RIR?
         </div>
-        <p style={{ fontSize: 13, color: '#78716c', margin: 0, lineHeight: 1.7 }}>
+        <p style={{ fontSize: 13, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>
           RIR stands for Reps in Reserve. It is how many more reps you could have done before reaching failure.
           3 RIR means you stop when you have 3 reps left. 1 RIR means you stop when you have 1 rep left.
           This is how the programme manages intensity across each phase without requiring a 1-rep max test.
@@ -1308,33 +1308,33 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
   return (
     <div>
       <div style={{ marginBottom: 28 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>Weekly Check-In</h2>
-        <p style={{ fontSize: 14, color: '#78716c', margin: 0, lineHeight: 1.7 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', margin: '0 0 6px' }}>Weekly Check-In</h2>
+        <p style={{ fontSize: 14, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>
           8 biological markers. Rated 1-5. Takes about 2 minutes. Submit once per week.
         </p>
       </div>
 
       {/* This week's form */}
       {loading ? (
-        <div style={{ padding: '40px', textAlign: 'center', color: '#57534e', fontSize: 13 }}>Loading...</div>
+        <div style={{ padding: '40px', textAlign: 'center', color: '#4A4A4A', fontSize: 13 }}>Loading...</div>
       ) : alreadySubmittedThisWeek || submitted ? (
-        <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
+        <div style={{ background: '#FFFFFF', border: `1px solid #E5E5E5`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Week {currentWeek} - Submitted</div>
-          <p style={{ fontSize: 14, color: '#78716c', margin: 0, lineHeight: 1.7 }}>Check-in for this week is complete. The next one will be available at Week {Math.min(currentWeek + 1, 6)}.</p>
+          <p style={{ fontSize: 14, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>Check-in for this week is complete. The next one will be available at Week {Math.min(currentWeek + 1, 6)}.</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
-          <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: `1px solid #E5E5E5`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
               Week {currentWeek} Check-In
             </div>
-            <p style={{ fontSize: 13, color: '#57534e', margin: '0 0 24px', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 13, color: '#4A4A4A', margin: '0 0 24px', lineHeight: 1.6 }}>
               Rate each marker for how this week has felt overall. 1 = poor, 5 = excellent.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
               {CHECKIN_MARKERS.map((marker, i) => (
-                <div key={marker.key} style={{ paddingBottom: i < CHECKIN_MARKERS.length - 1 ? 24 : 0, borderBottom: i < CHECKIN_MARKERS.length - 1 ? '1px solid #1c1917' : 'none' }}>
+                <div key={marker.key} style={{ paddingBottom: i < CHECKIN_MARKERS.length - 1 ? 24 : 0, borderBottom: i < CHECKIN_MARKERS.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
                   <div style={{ fontSize: 13, fontWeight: 600, color: '#d4d0cc', marginBottom: 12 }}>{marker.label}</div>
                   <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
                     {[1, 2, 3, 4, 5].map(val => (
@@ -1347,8 +1347,8 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
                           padding: '10px 0',
                           fontSize: 14,
                           fontWeight: 700,
-                          color: markers[marker.key] === val ? '#0c0a09' : '#57534e',
-                          background: markers[marker.key] === val ? config.colour : '#1c1917',
+                          color: markers[marker.key] === val ? '#FFFFFF' : '#4A4A4A',
+                          background: markers[marker.key] === val ? config.colour : '#E5E5E5',
                           border: `1px solid ${markers[marker.key] === val ? config.colour : '#292524'}`,
                           borderRadius: 8,
                           cursor: 'pointer',
@@ -1367,13 +1367,13 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
             </div>
 
             <div style={{ marginTop: 24 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: '#d4d0cc', marginBottom: 8 }}>Anything else to flag this week? <span style={{ fontWeight: 400, color: '#57534e' }}>(optional)</span></div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#d4d0cc', marginBottom: 8 }}>Anything else to flag this week? <span style={{ fontWeight: 400, color: '#4A4A4A' }}>(optional)</span></div>
               <textarea
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
                 placeholder="Symptoms, energy patterns, anything unexpected..."
                 rows={3}
-                style={{ width: '100%', background: '#0c0a09', border: '1px solid #292524', borderRadius: 8, padding: '12px 14px', fontSize: 13, color: '#a8a29e', resize: 'vertical', fontFamily: 'system-ui, sans-serif', boxSizing: 'border-box' }}
+                style={{ width: '100%', background: '#FFFFFF', border: '1px solid #292524', borderRadius: 8, padding: '12px 14px', fontSize: 13, color: '#999999', resize: 'vertical', fontFamily: 'system-ui, sans-serif', boxSizing: 'border-box' }}
               />
             </div>
 
@@ -1382,7 +1382,7 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
             <button
               type="submit"
               disabled={submitting}
-              style={{ marginTop: 20, width: '100%', padding: '14px', background: config.colour, color: '#0c0a09', fontWeight: 700, fontSize: 14, borderRadius: 8, border: 'none', cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.7 : 1 }}
+              style={{ marginTop: 20, width: '100%', padding: '14px', background: config.colour, color: '#FFFFFF', fontWeight: 700, fontSize: 14, borderRadius: 8, border: 'none', cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.7 : 1 }}
             >
               {submitting ? 'Saving...' : `Submit Week ${currentWeek} Check-In`}
             </button>
@@ -1392,29 +1392,29 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
 
       {/* History */}
       {checkins.length > 0 && (
-        <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '20px 24px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px' }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
             Check-In History
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {[...checkins].sort((a, b) => b.week_number - a.week_number).map((c, i) => (
-              <div key={c.id} style={{ paddingBottom: i < checkins.length - 1 ? 16 : 0, marginBottom: i < checkins.length - 1 ? 16 : 0, borderBottom: i < checkins.length - 1 ? '1px solid #1c1917' : 'none' }}>
+              <div key={c.id} style={{ paddingBottom: i < checkins.length - 1 ? 16 : 0, marginBottom: i < checkins.length - 1 ? 16 : 0, borderBottom: i < checkins.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>Week {c.week_number}</span>
-                  <span style={{ fontSize: 12, color: '#57534e' }}>Avg {scoreAvg(c)} / 5</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>Week {c.week_number}</span>
+                  <span style={{ fontSize: 12, color: '#4A4A4A' }}>Avg {scoreAvg(c)} / 5</span>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6 }}>
                   {CHECKIN_MARKERS.map(m => (
-                    <div key={m.key} style={{ background: '#0c0a09', borderRadius: 6, padding: '8px 10px' }}>
+                    <div key={m.key} style={{ background: '#FFFFFF', borderRadius: 6, padding: '8px 10px' }}>
                       <div style={{ fontSize: 10, color: '#3d3935', marginBottom: 3, lineHeight: 1.3 }}>{m.label.split(' ').slice(0, 3).join(' ')}</div>
-                      <div style={{ fontSize: 16, fontWeight: 700, color: (c[m.key as keyof CheckIn] as number) >= 4 ? config.colour : (c[m.key as keyof CheckIn] as number) <= 2 ? '#ef4444' : '#a8a29e' }}>
+                      <div style={{ fontSize: 16, fontWeight: 700, color: (c[m.key as keyof CheckIn] as number) >= 4 ? config.colour : (c[m.key as keyof CheckIn] as number) <= 2 ? '#ef4444' : '#999999' }}>
                         {c[m.key as keyof CheckIn]}
                       </div>
                     </div>
                   ))}
                 </div>
                 {c.notes && (
-                  <p style={{ fontSize: 13, color: '#78716c', margin: '10px 0 0', lineHeight: 1.6, fontStyle: 'italic' }}>{c.notes}</p>
+                  <p style={{ fontSize: 13, color: '#6B6B6B', margin: '10px 0 0', lineHeight: 1.6, fontStyle: 'italic' }}>{c.notes}</p>
                 )}
               </div>
             ))}
@@ -1443,24 +1443,24 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
   const currentPhase = currentWeek <= 2 ? PHASES[0] : currentWeek <= 4 ? PHASES[1] : PHASES[2]
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0c0a09', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
 
       {/* Top bar */}
-      <div style={{ borderBottom: '1px solid #1c1917', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <img src="https://bodyrecode.au/logo-teal.png" width={140} alt="Body Recode" />
+      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <img src="https://bodyrecode.au/logo-black.png" width={140} alt="Body Recode" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: config.colour }} />
-          <span style={{ fontSize: 13, color: '#78716c', fontWeight: 600 }}>{config.label}</span>
+          <span style={{ fontSize: 13, color: '#6B6B6B', fontWeight: 600 }}>{config.label}</span>
         </div>
       </div>
 
       {/* Nav */}
-      <div style={{ borderBottom: '1px solid #1c1917', padding: '0 24px', display: 'flex', gap: 4, overflowX: 'auto' }}>
+      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '0 24px', display: 'flex', gap: 4, overflowX: 'auto' }}>
         {NAV_ITEMS.map(item => (
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600, color: activeTab === item.id ? '#14b8a6' : '#57534e', background: 'none', border: 'none', borderBottom: `2px solid ${activeTab === item.id ? '#14b8a6' : 'transparent'}`, cursor: 'pointer', whiteSpace: 'nowrap' }}
+            style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600, color: activeTab === item.id ? '#1B6DFC' : '#4A4A4A', background: 'none', border: 'none', borderBottom: `2px solid ${activeTab === item.id ? '#1B6DFC' : 'transparent'}`, cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
             {item.label}
           </button>
@@ -1472,29 +1472,29 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
         {activeTab === 'home' && (
           <div>
             <div style={{ marginBottom: 32 }}>
-              <h1 style={{ fontSize: 26, fontWeight: 700, color: '#fff', margin: '0 0 8px' }}>
+              <h1 style={{ fontSize: 26, fontWeight: 700, color: '#1A1A1A', margin: '0 0 8px' }}>
                 Welcome, {enrollment.first_name}
               </h1>
-              <p style={{ fontSize: 15, color: '#78716c', margin: 0, lineHeight: 1.75 }}>
+              <p style={{ fontSize: 15, color: '#6B6B6B', margin: 0, lineHeight: 1.75 }}>
                 6-Week Body Rewire Blueprint
               </p>
             </div>
 
-            <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
+            <div style={{ background: '#FFFFFF', border: `1px solid #E5E5E5`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                 Your Pattern
               </div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 12 }}>{config.label}</div>
-              <p style={{ fontSize: 14, color: '#78716c', lineHeight: 1.75, margin: 0 }}>{config.description}</p>
+              <div style={{ fontSize: 20, fontWeight: 700, color: '#1A1A1A', marginBottom: 12 }}>{config.label}</div>
+              <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.75, margin: 0 }}>{config.description}</p>
             </div>
 
             {COACHING_NOTES[pattern]?.[currentWeek] && (
-              <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '24px', marginBottom: 24 }}>
+              <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '24px', marginBottom: 24 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
                   Week {currentWeek} - Coaching Note
                 </div>
                 {COACHING_NOTES[pattern][currentWeek].split('\n\n').map((para, i) => (
-                  <p key={i} style={{ fontSize: 14, color: '#a8a29e', lineHeight: 1.8, margin: i === 0 ? '0 0 14px' : '0' }}>{para}</p>
+                  <p key={i} style={{ fontSize: 14, color: '#999999', lineHeight: 1.8, margin: i === 0 ? '0 0 14px' : '0' }}>{para}</p>
                 ))}
               </div>
             )}
@@ -1529,22 +1529,22 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
               }
               const questions = reflections[pattern] ?? reflections['stress-stored']
               return (
-                <div style={{ background: '#111110', border: `1px solid #1c1917`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
+                <div style={{ background: '#FFFFFF', border: `1px solid #E5E5E5`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
                     Midpoint Reflection
                   </div>
-                  <p style={{ fontSize: 14, color: '#a8a29e', margin: '0 0 16px', lineHeight: 1.75 }}>
+                  <p style={{ fontSize: 14, color: '#999999', margin: '0 0 16px', lineHeight: 1.75 }}>
                     You are halfway through. The Adapt phase starts this week. Before you move into higher intensity, take a moment to notice what has already shifted since Week 1.
                   </p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
                     {questions.map((q, i) => (
                       <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                         <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-                        <span style={{ fontSize: 13, color: '#78716c', lineHeight: 1.65 }}>{q}</span>
+                        <span style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.65 }}>{q}</span>
                       </div>
                     ))}
                   </div>
-                  <p style={{ fontSize: 13, color: '#57534e', margin: 0, lineHeight: 1.7 }}>
+                  <p style={{ fontSize: 13, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>
                     These are the markers your pattern moves first. Physical changes come later. If any of these are shifting, the programme is working exactly as it should.
                   </p>
                 </div>
@@ -1553,15 +1553,15 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
 
             {/* Week 6 ascension CTA */}
             {currentWeek === 6 && (
-              <div style={{ background: '#111110', border: '1px solid #14b8a6', borderRadius: 12, padding: '24px', marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #14b8a6, #8b5cf6)' }} />
-                <div style={{ fontSize: 11, fontWeight: 700, color: '#14b8a6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+              <div style={{ background: '#FFFFFF', border: '1px solid #1B6DFC', borderRadius: 12, padding: '24px', marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #1B6DFC, #8b5cf6)' }} />
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                   What comes next
                 </div>
-                <div style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 12 }}>
+                <div style={{ fontSize: 20, fontWeight: 700, color: '#1A1A1A', marginBottom: 12 }}>
                   You built the foundation. Now keep going.
                 </div>
-                <p style={{ fontSize: 14, color: '#a8a29e', margin: '0 0 20px', lineHeight: 1.8 }}>
+                <p style={{ fontSize: 14, color: '#999999', margin: '0 0 20px', lineHeight: 1.8 }}>
                   Six weeks established the rhythm. The Body Recode Membership is where that work compounds. Same portal, same pattern - new blocks every six weeks with a coach watching your numbers.
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
@@ -1573,27 +1573,27 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
                     '$49 per week - cancel anytime',
                   ].map((item, i) => (
                     <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#14b8a6', marginTop: 6, flexShrink: 0 }} />
-                      <span style={{ fontSize: 13, color: '#a8a29e', lineHeight: 1.65 }}>{item}</span>
+                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#1B6DFC', marginTop: 6, flexShrink: 0 }} />
+                      <span style={{ fontSize: 13, color: '#999999', lineHeight: 1.65 }}>{item}</span>
                     </div>
                   ))}
                 </div>
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                   <a
                     href="/membership"
-                    style={{ display: 'inline-block', padding: '13px 24px', background: '#14b8a6', color: '#0c0a09', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none' }}
+                    style={{ display: 'inline-block', padding: '13px 24px', background: '#1B6DFC', color: '#FFFFFF', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none' }}
                   >
                     Join the Membership - $49/week
                   </a>
                   <a
                     href="/extension"
-                    style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#14b8a6', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #14b8a6' }}
+                    style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#1B6DFC', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #1B6DFC' }}
                   >
                     90-Day Extension - $197
                   </a>
                   <a
                     href="mailto:kade@bodyrecode.au?subject=Blueprint complete - question about next step"
-                    style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#57534e', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #292524' }}
+                    style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#4A4A4A', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #292524' }}
                   >
                     Ask a question first
                   </a>
@@ -1601,19 +1601,19 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
               </div>
             )}
 
-            <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '24px', marginBottom: 24 }}>
+            <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '24px', marginBottom: 24 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                 Current Phase
               </div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
-                <span style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>Phase {currentPhase.number} - {currentPhase.name}</span>
-                <span style={{ fontSize: 13, color: '#57534e' }}>Weeks {currentPhase.weeks}</span>
+                <span style={{ fontSize: 20, fontWeight: 700, color: '#1A1A1A' }}>Phase {currentPhase.number} - {currentPhase.name}</span>
+                <span style={{ fontSize: 13, color: '#4A4A4A' }}>Weeks {currentPhase.weeks}</span>
               </div>
-              <p style={{ fontSize: 14, color: '#78716c', margin: '0 0 16px', lineHeight: 1.7 }}>{currentPhase.description}</p>
-              <div style={{ fontSize: 13, color: '#57534e' }}>Week {currentWeek} of 6</div>
+              <p style={{ fontSize: 14, color: '#6B6B6B', margin: '0 0 16px', lineHeight: 1.7 }}>{currentPhase.description}</p>
+              <div style={{ fontSize: 13, color: '#4A4A4A' }}>Week {currentWeek} of 6</div>
             </div>
 
-            <div style={{ background: '#111110', border: '1px solid #1c1917', borderRadius: 12, padding: '24px' }}>
+            <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '24px' }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
                 Programme Phases
               </div>
@@ -1624,16 +1624,16 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
                   return (
                     <div key={phase.number} style={{ display: 'flex', gap: 16, paddingBottom: i < 2 ? 20 : 0 }}>
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <div style={{ width: 28, height: 28, borderRadius: '50%', background: isActive ? '#14b8a6' : isPast ? '#292524' : '#1c1917', border: `2px solid ${isActive ? '#14b8a6' : '#292524'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                          <span style={{ fontSize: 11, fontWeight: 700, color: isActive ? '#0c0a09' : '#57534e' }}>{phase.number}</span>
+                        <div style={{ width: 28, height: 28, borderRadius: '50%', background: isActive ? '#1B6DFC' : isPast ? '#292524' : '#E5E5E5', border: `2px solid ${isActive ? '#1B6DFC' : '#292524'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <span style={{ fontSize: 11, fontWeight: 700, color: isActive ? '#FFFFFF' : '#4A4A4A' }}>{phase.number}</span>
                         </div>
-                        {i < 2 && <div style={{ width: 2, flex: 1, background: '#1c1917', marginTop: 4 }} />}
+                        {i < 2 && <div style={{ width: 2, flex: 1, background: '#E5E5E5', marginTop: 4 }} />}
                       </div>
                       <div style={{ paddingTop: 4, paddingBottom: i < 2 ? 8 : 0 }}>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: isActive ? '#fff' : '#57534e', marginBottom: 2 }}>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: isActive ? '#fff' : '#4A4A4A', marginBottom: 2 }}>
                           {phase.name} <span style={{ fontWeight: 400, color: '#3d3935' }}>- Weeks {phase.weeks}</span>
                         </div>
-                        <div style={{ fontSize: 13, color: isActive ? '#78716c' : '#3d3935', lineHeight: 1.6 }}>{phase.description}</div>
+                        <div style={{ fontSize: 13, color: isActive ? '#6B6B6B' : '#3d3935', lineHeight: 1.6 }}>{phase.description}</div>
                       </div>
                     </div>
                   )
