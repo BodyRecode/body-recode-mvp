@@ -66,7 +66,7 @@ export default function ProgramReadingInline({
         </div>
         <Link
           href={documentHref}
-          className="inline-flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-white hover:border-[#D4D4D4] transition-colors shrink-0"
+          className="inline-flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1A1A1A] hover:border-[#D4D4D4] transition-colors shrink-0"
         >
           <FileText size={10} /> View as document
         </Link>
@@ -107,7 +107,7 @@ export default function ProgramReadingInline({
           )}
           <button
             onClick={() => setExpanded(v => !v)}
-            className="w-full flex items-center justify-center gap-1.5 px-5 py-3 text-[12px] font-semibold text-[#6B6B6B] hover:text-white hover:bg-[#E5E5E5]/40 transition-colors border-t border-[#E5E5E5]"
+            className="w-full flex items-center justify-center gap-1.5 px-5 py-3 text-[12px] font-semibold text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#E5E5E5]/40 transition-colors border-t border-[#E5E5E5]"
           >
             {expanded ? (
               <>

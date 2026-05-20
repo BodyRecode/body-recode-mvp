@@ -20,7 +20,7 @@ export default function PersonalTrainerBrisbanePage() {
           <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] leading-tight tracking-tight mb-12">
             Personal Trainer Brisbane
           </h1>
-          <p className="text-xl text-stone-400 leading-relaxed max-w-2xl mb-12">
+          <p className="text-xl text-stone-600 leading-relaxed max-w-2xl mb-12">
             Body Recode™ is not standard personal training. It is a structured, biology-first coaching system that builds around how your body actually works, not a program written for the average person.
           </p>
           <Link
@@ -33,27 +33,27 @@ export default function PersonalTrainerBrisbanePage() {
       </section>
 
       {/* What's different */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">What makes this different from standard personal training</h2>
-          <p className="text-stone-400 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             A standard personal trainer in Brisbane designs a workout program, coaches you through sessions, and adjusts based on how the sessions feel. That is a useful service, but it is missing something critical.
           </p>
-          <p className="text-stone-400 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             It is missing the biological context. What body state are you in? How is your nervous system coping with total load from training, work, sleep, and stress combined? Is your body currently in a condition where the prescribed training can actually produce adaptation?
           </p>
-          <p className="text-stone-400 text-lg leading-relaxed">
+          <p className="text-stone-600 text-lg leading-relaxed">
             Without this context, even a well-designed program can produce poor results or make things worse. Body Recode™ builds this context first, then designs the program around it.
           </p>
         </div>
       </section>
 
       {/* Comparison */}
-      <section className="bg-black py-32 px-5 border-t border-stone-800">
+      <section className="bg-black py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Standard PT vs Body Recode™</h2>
           <div className="grid md:grid-cols-2 gap-10">
-            <div className="border border-stone-800 rounded-xl p-6">
+            <div className="border border-stone-200 rounded-xl p-6">
               <p className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-4">Standard Personal Training</p>
               <ul className="space-y-3">
                 {[
@@ -65,7 +65,7 @@ export default function PersonalTrainerBrisbanePage() {
                   'One program for many different body types',
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-base text-stone-500 leading-relaxed">
-                    <span className="mt-1 w-1 h-1 rounded-full bg-stone-800 shrink-0" />
+                    <span className="mt-1 w-1 h-1 rounded-full bg-stone-200 shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -82,7 +82,7 @@ export default function PersonalTrainerBrisbanePage() {
                   'Recovery is a primary training variable, tracked continuously',
                   'Individual program built for your biology specifically',
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-base text-stone-400 leading-relaxed">
+                  <li key={i} className="flex items-start gap-2 text-base text-stone-600 leading-relaxed">
                     <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#1B6DFC] shrink-0" />
                     {item}
                   </li>
@@ -94,10 +94,10 @@ export default function PersonalTrainerBrisbanePage() {
       </section>
 
       {/* Who it's for */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Who Body Recode™ is for</h2>
-          <p className="text-stone-400 text-lg leading-relaxed mb-12">
+          <p className="text-stone-600 text-lg leading-relaxed mb-12">
             Body Recode™ is for people who are serious about understanding what is happening in their body and building results that actually last. If you are looking for a casual gym session with general guidance, this is not the right fit. If you want a precision coaching system built around your individual biology, it is.
           </p>
           <div className="grid md:grid-cols-2 gap-10">
@@ -113,7 +113,7 @@ export default function PersonalTrainerBrisbanePage() {
                 <div className="w-5 h-5 rounded-full bg-[#1B6DFC]/20 flex items-center justify-center shrink-0 mt-0.5">
                   <div className="w-2 h-2 rounded-full bg-[#1B6DFC]" />
                 </div>
-                <p className="text-stone-400 text-base leading-relaxed">{item}</p>
+                <p className="text-stone-600 text-base leading-relaxed">{item}</p>
               </div>
             ))}
           </div>
@@ -121,13 +121,13 @@ export default function PersonalTrainerBrisbanePage() {
       </section>
 
       {/* Location */}
-      <section className="bg-black py-32 px-5 border-t border-stone-800">
+      <section className="bg-black py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Based in Newstead, Brisbane</h2>
-          <p className="text-stone-400 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             Body Recode™ operates exclusively at <a href="https://www.anytimefitness.com/en-au/locations/newstead-queensland-au-1937" target="_blank" rel="noopener noreferrer" className="text-[#1B6DFC] hover:underline">Anytime Fitness Newstead</a>, Brisbane. All coaching is face-to-face and one-on-one. This is not a group fitness model or a high-volume gym environment. Availability is limited by design, because the system requires a level of attention that cannot be delivered at scale.
           </p>
-          <p className="text-stone-400 text-lg leading-relaxed mb-12">
+          <p className="text-stone-600 text-lg leading-relaxed mb-12">
             To find out if there is current availability and whether Body Recode™ is the right fit for you, start with the free Performance Check-In.
           </p>
           <div className="flex flex-wrap gap-6">
@@ -140,7 +140,7 @@ export default function PersonalTrainerBrisbanePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-6">
@@ -151,7 +151,7 @@ export default function PersonalTrainerBrisbanePage() {
               { q: 'Do you offer online coaching?', a: 'Yes. Body Recode™ is available as fully online 1:1 coaching for clients anywhere in the world. The same system, the same intake process, the same program quality, delivered remotely through your dedicated client portal. Face-to-face coaching is also available at Anytime Fitness Newstead, Brisbane.' },
               { q: 'How do I start?', a: 'The free Performance Check-In is the entry point. It takes a few minutes, gives you a clear picture of where your body is right now, and determines whether Body Recode™ is the right approach for you.' },
             ].map((item, i) => (
-              <div key={i} className="border-b border-stone-800 pb-6">
+              <div key={i} className="border-b border-stone-200 pb-6">
                 <h3 className="text-base font-bold text-[#1A1A1A] mb-2">{item.q}</h3>
                 <p className="text-stone-500 text-base leading-relaxed">{item.a}</p>
               </div>
@@ -161,7 +161,7 @@ export default function PersonalTrainerBrisbanePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-black py-32 px-5 border-t border-stone-800">
+      <section className="bg-black py-32 px-5 border-t border-stone-200">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-4">
             Ready to train differently?

@@ -40,7 +40,7 @@ export default function StickyScrollNav({ sections }: { sections: Section[] }) {
             onClick={() => scrollTo(id)}
             className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
               active === id
-                ? 'bg-teal-500/10 text-teal-400'
+                ? 'bg-blue-50 text-blue-500'
                 : 'text-[#999999] hover:text-[#3A3A3A] hover:bg-[#E5E5E5]/50'
             }`}
           >

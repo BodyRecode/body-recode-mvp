@@ -43,7 +43,7 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
           href={`https://wa.me/${WHATSAPP_NUMBER}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs text-[#999999] hover:text-teal-400 transition-colors"
+          className="text-xs text-[#999999] hover:text-blue-500 transition-colors"
         >
           Questions? Message Kade on WhatsApp →
         </a>

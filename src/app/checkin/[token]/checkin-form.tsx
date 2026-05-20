@@ -36,7 +36,7 @@ function QuestionInput({
           onChange={e => onChange(e.target.value)}
           rows={4}
           placeholder="Your response..."
-          className={`w-full bg-stone-100 rounded-xl px-4 py-3 text-[15px] text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-stone-400 resize-none transition-colors border ${hasError ? 'border-red-400' : 'border-stone-200'}`}
+          className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-[15px] text-[#1A1A1A] placeholder-stone-600 focus:outline-none focus:border-stone-600 resize-none transition-colors border ${hasError ? 'border-red-400' : 'border-stone-800'}`}
         />
       </div>
     )
@@ -56,8 +56,8 @@ function QuestionInput({
                 value === opt
                   ? 'bg-blue-500/10 border-blue-500 text-blue-300'
                   : hasError
-                  ? 'bg-stone-100 border-red-400 text-stone-700'
-                  : 'bg-stone-100 border-stone-200 text-stone-700 hover:border-stone-400'
+                  ? 'bg-stone-900 border-red-400 text-stone-300'
+                  : 'bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-600'
               }`}
             >
               {opt}
@@ -219,7 +219,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
     <div className="min-h-screen bg-[#FFFFFF]">
 
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 right-0 h-[2px] bg-stone-100 z-20">
+      <div className="fixed top-0 left-0 right-0 h-[2px] bg-stone-900 z-20">
         <div
           className="h-full bg-blue-500 transition-all duration-500 ease-out"
           style={{ width: `${progressPct}%` }}
@@ -227,16 +227,16 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
       </div>
 
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-100 px-5 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-900 px-5 py-3 flex items-center justify-between">
         <img src="https://bodyrecode.au/logo-black.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
-        <p className="text-[11px] font-medium text-stone-400">{sectionIndex + 1} / {sections.length}</p>
+        <p className="text-[11px] font-medium text-stone-600">{sectionIndex + 1} / {sections.length}</p>
       </div>
 
       <div className="max-w-lg mx-auto px-5 pt-8 pb-32">
 
         {/* Section header */}
         <div className="mb-8">
-          <p className="text-[10px] font-bold tracking-[0.15em] text-stone-400 uppercase mb-3">
+          <p className="text-[10px] font-bold tracking-[0.15em] text-stone-600 uppercase mb-3">
             Week {weekNumber} · Form {formType} · {progressPct}% complete
           </p>
           <h1 className="text-[22px] font-bold text-[#1A1A1A] tracking-tight">{section.title}</h1>
@@ -251,7 +251,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
         )}
 
         {/* Divider */}
-        <div className="h-px bg-stone-100 mb-8" />
+        <div className="h-px bg-stone-900 mb-8" />
 
         {/* Questions */}
         <div className="space-y-8">
@@ -285,12 +285,12 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
       </div>
 
       {/* Fixed bottom navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-100 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-900 px-5 py-4 z-10">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
           <button
             type="button"
             onClick={() => goToSection(sectionIndex - 1)}
-            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-700 ${
+            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-300 ${
               sectionIndex === 0 ? 'invisible' : ''
             }`}
           >
@@ -310,7 +310,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
             <button
               type="button"
               onClick={handleContinue}
-              className="flex-1 bg-white text-black text-[15px] font-bold py-4 rounded-xl hover:bg-stone-900 transition-colors tracking-tight"
+              className="flex-1 bg-white text-black text-[15px] font-bold py-4 rounded-xl hover:bg-stone-100 transition-colors tracking-tight"
             >
               Continue
             </button>

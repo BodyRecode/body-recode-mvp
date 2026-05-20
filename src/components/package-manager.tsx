@@ -130,7 +130,7 @@ export default function PackageManager({
                 disabled={saving}
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
-                    ? 'bg-teal-500/10 border-teal-500/30 text-teal-400'
+                    ? 'bg-blue-50 border-blue-200 text-blue-500'
                     : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-[#D4D4D4] hover:text-[#e7e5e4]'
                 }`}
               >
@@ -168,8 +168,8 @@ export default function PackageManager({
                 disabled={saving}
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
-                    ? 'bg-stone-500/15 border-stone-500/40 text-stone-200'
-                    : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-stone-500/40 hover:text-stone-200'
+                    ? 'bg-stone-500/15 border-stone-500/40 text-stone-800'
+                    : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-stone-500/40 hover:text-stone-800'
                 }`}
               >
                 {p.label}
@@ -181,10 +181,10 @@ export default function PackageManager({
           </p>
         </div>
       </div>
-      {saved && <p className="text-xs text-teal-400">Package updated</p>}
+      {saved && <p className="text-xs text-blue-500">Package updated</p>}
 
       {currentInfo && isNonBilling && (
-        <div className="text-xs text-stone-400 bg-stone-900/40 border border-stone-800 rounded-lg px-3 py-2">
+        <div className="text-xs text-stone-600 bg-stone-100/40 border border-stone-200 rounded-lg px-3 py-2">
           Non-billing arrangement — no subscription link to send.
         </div>
       )}
@@ -220,13 +220,13 @@ export default function PackageManager({
             <button
               onClick={sendLink}
               disabled={sending || sent}
-              className="text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+              className="text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-[#1A1A1A] rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
             >
               {sending ? 'Sending...' : sent ? 'Sent!' : 'Send to Client'}
             </button>
             <button
               onClick={copyLink}
-              className="text-xs font-bold px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#D4D4D4] hover:text-white transition-colors"
+              className="text-xs font-bold px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors"
             >
               {copied ? 'Copied!' : 'Copy Link'}
             </button>

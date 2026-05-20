@@ -30,9 +30,9 @@ export default function EditClientPhone({ clientId, currentPhone }: { clientId: 
           onKeyDown={e => { if (e.key === 'Enter') save(); if (e.key === 'Escape') setEditing(false) }}
           placeholder="+61 400 000 000"
           autoFocus
-          className="bg-[#E5E5E5] border border-[#D4D4D4] text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#1B6DFC] w-48"
+          className="bg-[#E5E5E5] border border-[#D4D4D4] text-[#1A1A1A] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#1B6DFC] w-48"
         />
-        <button onClick={save} disabled={loading} className="text-xs text-teal-400 hover:text-teal-300 font-medium">
+        <button onClick={save} disabled={loading} className="text-xs text-blue-500 hover:text-blue-700 font-medium">
           {loading ? 'Saving…' : 'Save'}
         </button>
         <button onClick={() => { setValue(saved); setEditing(false) }} className="text-xs text-[#999999] hover:text-[#3A3A3A]">

@@ -58,7 +58,7 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
         </p>
         <button
           onClick={copy}
-          className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#D4D4D4] text-[#3A3A3A] hover:border-[#999999] hover:text-white transition-colors"
+          className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#D4D4D4] text-[#3A3A3A] hover:border-[#999999] hover:text-[#1A1A1A] transition-colors"
         >
           {copied ? 'Copied!' : 'Copy'}
         </button>

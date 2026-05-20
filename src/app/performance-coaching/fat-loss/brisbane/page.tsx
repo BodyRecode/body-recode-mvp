@@ -20,7 +20,7 @@ export default function FatLossCoachBrisbanePage() {
           <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] leading-tight tracking-tight mb-12">
             Fat Loss Coach Brisbane
           </h1>
-          <p className="text-xl text-stone-400 leading-relaxed max-w-2xl mb-12">
+          <p className="text-xl text-stone-600 leading-relaxed max-w-2xl mb-12">
             Fat loss isn&apos;t a willpower problem. It&apos;s a biological one. Body Recode™ addresses the system driving your body composition, not just the calories in and out.
           </p>
           <Link
@@ -33,26 +33,26 @@ export default function FatLossCoachBrisbanePage() {
       </section>
 
       {/* Why fat loss is harder than it should be */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Why fat loss is harder than it should be</h2>
-          <p className="text-stone-400 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             Most fat loss programs are built on two assumptions: eat less, move more. This works up to a point. The problem is that the body is not a simple calculator. When stress is high, sleep is poor, or the regulatory system is under load, the body actively resists fat loss regardless of caloric deficit.
           </p>
-          <p className="text-stone-400 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             Cortisol elevates. Insulin sensitivity drops. Muscle is broken down for energy while fat storage is preserved. This is not a failure of effort. It is a predictable biological response to a system under strain.
           </p>
-          <p className="text-stone-400 text-lg leading-relaxed">
+          <p className="text-stone-600 text-lg leading-relaxed">
             Body Recode™ starts by identifying whether your system is in a state where fat loss is biologically viable, and if not, what needs to change first.
           </p>
         </div>
       </section>
 
       {/* The biology of fat loss */}
-      <section className="bg-black py-32 px-5 border-t border-stone-800">
+      <section className="bg-black py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">What actually drives fat loss</h2>
-          <p className="text-stone-400 text-lg leading-relaxed mb-12">
+          <p className="text-stone-600 text-lg leading-relaxed mb-12">
             Sustainable fat loss depends on the interplay of several biological systems. Understanding which of these is limiting your progress is the starting point for everything.
           </p>
           <div className="grid md:grid-cols-2 gap-10 mb-12">
@@ -64,7 +64,7 @@ export default function FatLossCoachBrisbanePage() {
               { title: 'Hormonal environment', desc: 'Testosterone, oestrogen, thyroid function, and insulin sensitivity all influence how and where your body stores and releases fat. These can\'t be ignored.' },
               { title: 'Body pattern recognition', desc: 'Where your body distributes fat tells a story about your underlying biology. Body Recode™ uses this as a diagnostic signal, not just an aesthetic concern.' },
             ].map((item, i) => (
-              <div key={i} className="border border-stone-800 rounded-xl p-5">
+              <div key={i} className="border border-stone-200 rounded-xl p-5">
                 <p className="text-base font-bold text-[#1A1A1A] mb-1">{item.title}</p>
                 <p className="text-base text-stone-500 leading-relaxed">{item.desc}</p>
               </div>
@@ -74,16 +74,16 @@ export default function FatLossCoachBrisbanePage() {
       </section>
 
       {/* The Body Recode approach */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">The Body Recode™ approach to fat loss</h2>
-          <p className="text-stone-400 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             Before any fat loss prescription is made, Body Recode™ builds a complete picture of your biological state using a structured eight-domain intake. This tells us whether fat loss is viable right now, what is currently working against it, and what needs to change first.
           </p>
-          <p className="text-stone-400 text-lg leading-relaxed mb-4">
+          <p className="text-stone-600 text-lg leading-relaxed mb-4">
             For clients whose regulatory system is under stress (the stress-stored pattern is one of the most common), attempting aggressive fat loss is counterproductive. The body fights back. The first phase is stabilisation, not restriction.
           </p>
-          <p className="text-stone-400 text-lg leading-relaxed mb-12">
+          <p className="text-stone-600 text-lg leading-relaxed mb-12">
             Once the system is stable, fat loss becomes realistic and sustainable. Training load, nutrition structure, and lifestyle adjustments are all calibrated to the individual, not applied from a template.
           </p>
           <div className="flex flex-wrap gap-6">
@@ -94,7 +94,7 @@ export default function FatLossCoachBrisbanePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-black py-32 px-5 border-t border-stone-800">
+      <section className="bg-black py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-6">
@@ -106,7 +106,7 @@ export default function FatLossCoachBrisbanePage() {
               { q: 'Where are sessions held?', a: 'Face-to-face coaching is conducted at Anytime Fitness Newstead, Brisbane. Body Recode™ is also available as fully online 1:1 coaching for clients anywhere in the world, everything is delivered through your dedicated client portal.' },
               { q: 'How do I get started?', a: 'The starting point is the free Performance Check-In. It takes a few minutes and gives you a clear picture of where your body is right now and what approach makes sense for you.' },
             ].map((item, i) => (
-              <div key={i} className="border-b border-stone-800 pb-6">
+              <div key={i} className="border-b border-stone-200 pb-6">
                 <h3 className="text-base font-bold text-[#1A1A1A] mb-2">{item.q}</h3>
                 <p className="text-stone-500 text-base leading-relaxed">{item.a}</p>
               </div>
@@ -116,7 +116,7 @@ export default function FatLossCoachBrisbanePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-800">
+      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-4">
             Find out what&apos;s actually holding your progress back

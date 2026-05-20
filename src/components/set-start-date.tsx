@@ -29,12 +29,12 @@ export default function SetStartDate({ clientId, currentDate }: { clientId: stri
         type="date"
         value={date}
         onChange={e => setDate(e.target.value)}
-        className="bg-[#E5E5E5] border border-[#E5E5E5] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-teal-500 transition-colors"
+        className="bg-[#E5E5E5] border border-[#E5E5E5] text-[#1A1A1A] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-blue-600 transition-colors"
       />
       <button
         onClick={save}
         disabled={saving || !date}
-        className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+        className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-[#1A1A1A] rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
       >
         {saving ? 'Saving...' : saved ? 'Saved!' : 'Set Date'}
       </button>

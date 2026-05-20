@@ -57,7 +57,7 @@ export default function CommencementFeeButton({ leadId }: { leadId: string }) {
         <button
           onClick={copyLink}
           disabled={copying || copied}
-          className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#D4D4D4] hover:text-white transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#D4D4D4] hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
         >
           {copying ? 'Generating...' : copied ? 'Copied!' : 'Copy Link'}
         </button>

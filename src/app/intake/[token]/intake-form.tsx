@@ -54,8 +54,8 @@ function ScaleInput({
               value === n
                 ? 'bg-[#1B6DFC] text-[#1A1A1A] shadow-sm'
                 : hasError
-                ? 'bg-stone-200 text-stone-600 border border-red-400'
-                : 'bg-stone-200 text-stone-600 hover:bg-stone-300'
+                ? 'bg-stone-800 text-stone-400 border border-red-400'
+                : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
             }`}
           >
             {n}
@@ -85,7 +85,7 @@ function QuestionInput({
   onToggle: (opt: string) => void
   hasError: boolean
 }) {
-  const errorBorder = hasError ? 'border-red-400' : 'border-stone-300'
+  const errorBorder = hasError ? 'border-red-400' : 'border-stone-700'
   const errorText = hasError ? 'text-red-700' : 'text-[#1A1A1A]'
 
   if (question.type === 'scale') {
@@ -108,7 +108,7 @@ function QuestionInput({
           onChange={e => onChange(e.target.value)}
           rows={3}
           placeholder="Your answer..."
-          className={`w-full bg-stone-200 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${errorBorder}`}
+          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] placeholder-stone-600 focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${errorBorder}`}
         />
       </div>
     )
@@ -122,7 +122,7 @@ function QuestionInput({
           type="date"
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
-          className={`w-full bg-stone-200 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all border ${errorBorder}`}
+          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all border ${errorBorder}`}
         />
       </div>
     )
@@ -135,7 +135,7 @@ function QuestionInput({
         <select
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
-          className={`w-full bg-stone-200 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all appearance-none border ${errorBorder}`}
+          className={`w-full bg-stone-800 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all appearance-none border ${errorBorder}`}
         >
           <option value="">Select an option</option>
           {question.options?.map(opt => (
@@ -161,8 +161,8 @@ function QuestionInput({
                 selected.includes(opt)
                   ? 'bg-[#1B6DFC] text-[#1A1A1A]'
                   : hasError
-                  ? 'bg-stone-200 text-stone-600 border border-red-400'
-                  : 'bg-stone-200 text-stone-600 hover:bg-stone-300'
+                  ? 'bg-stone-800 text-stone-400 border border-red-400'
+                  : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
               }`}
             >
               {opt}
@@ -186,8 +186,8 @@ function QuestionInput({
             checked
               ? 'bg-[#1B6DFC]'
               : hasError
-              ? 'bg-stone-200 border border-red-400'
-              : 'bg-stone-200 border border-stone-400'
+              ? 'bg-stone-800 border border-red-400'
+              : 'bg-stone-800 border border-stone-600'
           }`}
         >
           {checked && (
@@ -196,7 +196,7 @@ function QuestionInput({
             </svg>
           )}
         </span>
-        <span className={`text-[14px] leading-relaxed ${hasError ? 'text-red-700' : 'text-stone-700'}`}>{question.text}</span>
+        <span className={`text-[14px] leading-relaxed ${hasError ? 'text-red-700' : 'text-stone-300'}`}>{question.text}</span>
       </button>
     )
   }
@@ -359,7 +359,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
           </div>
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Submitted</p>
           <h1 className="text-2xl font-bold text-[#1A1A1A] mb-3 tracking-tight">You&apos;re all done.</h1>
-          <p className="text-stone-600 text-[15px] leading-relaxed mb-8">
+          <p className="text-stone-400 text-[15px] leading-relaxed mb-8">
             Your intake has been submitted. Your coach will review everything and be in touch shortly.
           </p>
           {portalToken && (
@@ -379,7 +379,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
     <div className="min-h-screen bg-[#FFFFFF]">
 
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-200 z-20">
+      <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-800 z-20">
         <div
           className="h-full bg-[#1B6DFC] transition-all duration-500 ease-out"
           style={{ width: `${progressPct}%` }}
@@ -387,7 +387,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
       </div>
 
       {/* Sticky header */}
-      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-800 px-5 py-3 flex items-center justify-between">
         <img src="https://bodyrecode.au/logo-black.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
         <p className="text-[11px] font-medium text-stone-500">{sectionIndex + 1} / {INTAKE_SECTIONS.length}</p>
       </div>
@@ -397,13 +397,13 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
         {/* Section header */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-3">
-            <div className="h-px flex-1 bg-stone-200" />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-stone-400 uppercase">{progressPct}% complete</p>
-            <div className="h-px flex-1 bg-stone-200" />
+            <div className="h-px flex-1 bg-stone-800" />
+            <p className="text-[10px] font-bold tracking-[0.15em] text-stone-600 uppercase">{progressPct}% complete</p>
+            <div className="h-px flex-1 bg-stone-800" />
           </div>
           <h1 className="text-[22px] font-bold text-[#1A1A1A] tracking-tight mb-3">{section.title}</h1>
           {section.description && (
-            <p className="text-[13px] text-stone-600 whitespace-pre-line leading-relaxed">
+            <p className="text-[13px] text-stone-400 whitespace-pre-line leading-relaxed">
               {section.description}
             </p>
           )}
@@ -418,7 +418,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
         )}
 
         {/* Divider */}
-        <div className="h-px bg-stone-200 mb-8" />
+        <div className="h-px bg-stone-800 mb-8" />
 
         {/* Questions */}
         <div className="space-y-8">
@@ -453,12 +453,12 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
       </div>
 
       {/* Fixed bottom navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-200 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-800 px-5 py-4 z-10">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
           <button
             type="button"
             onClick={() => goToSection(sectionIndex - 1)}
-            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-700 ${
+            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-300 ${
               sectionIndex === 0 ? 'invisible' : ''
             }`}
           >
@@ -486,7 +486,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
         </div>
 
         {sectionIndex === 0 && clientName && (
-          <p className="text-center text-[11px] text-stone-400 mt-2">Prepared for {clientName}</p>
+          <p className="text-center text-[11px] text-stone-600 mt-2">Prepared for {clientName}</p>
         )}
       </div>
 

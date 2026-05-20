@@ -86,7 +86,7 @@ export default function ClientCommencementFeeButton({
 
   if (initialPaid) {
     return (
-      <p className="text-xs text-teal-400">Commencement fee paid — no further action.</p>
+      <p className="text-xs text-blue-500">Commencement fee paid — no further action.</p>
     )
   }
 
@@ -114,14 +114,14 @@ export default function ClientCommencementFeeButton({
         <button
           onClick={send}
           disabled={sending || sent}
-          className="inline-flex items-center gap-2 text-xs font-bold px-3 py-1.5 bg-teal-500/10 border border-teal-500/30 text-teal-300 rounded-lg hover:bg-teal-500/20 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-xs font-bold px-3 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50"
         >
           {sending ? 'Sending...' : sent ? 'Email sent' : 'Send commencement fee link'}
         </button>
         <button
           onClick={copyLink}
           disabled={copying || copied}
-          className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 border border-stone-800 text-stone-300 rounded-lg hover:border-stone-700 hover:text-white transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 border border-stone-200 text-stone-700 rounded-lg hover:border-stone-300 hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
         >
           {copying ? 'Generating...' : copied ? 'Copied!' : 'Copy link'}
         </button>
