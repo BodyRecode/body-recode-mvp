@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
         heading: `${clientName} confirmed their session`,
         body: `${clientName} has confirmed attendance for the upcoming face-to-face session.`,
         details: [
-          `<strong style="color:#ffffff;">${displayDate}</strong>`,
+          `<strong style="color:#1A1A1A;">${displayDate}</strong>`,
           `${displayTime} · ${session.duration_minutes} min · AF Newstead`,
         ],
         ctaLabel: 'Open client profile',
@@ -93,14 +93,14 @@ function confirmPage(message: string, success: boolean): string {
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Session ${success ? 'Confirmed' : 'Not Found'} · Body Recode</title>
 </head>
-<body style="margin:0;padding:0;background:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;">
+<body style="margin:0;padding:0;background:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;">
   <div style="max-width:440px;margin:0 auto;padding:48px 24px;text-align:center;">
-    <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin:0 auto 40px;"/>
+    <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin:0 auto 40px;"/>
     <div style="width:56px;height:56px;border-radius:50%;background:${success ? '#0d2d29' : '#1c1010'};display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
       <span style="font-size:24px;">${success ? '✓' : '✗'}</span>
     </div>
-    <p style="font-size:18px;font-weight:700;color:#ffffff;margin:0 0 12px;">${success ? 'You\'re confirmed' : 'Something went wrong'}</p>
-    <p style="font-size:14px;color:#a8a29e;line-height:1.7;margin:0 0 32px;">${message}</p>
+    <p style="font-size:18px;font-weight:700;color:#1A1A1A;margin:0 0 12px;">${success ? 'You\'re confirmed' : 'Something went wrong'}</p>
+    <p style="font-size:14px;color:#6B6B6B;line-height:1.7;margin:0 0 32px;">${message}</p>
     <a href="https://bodyrecode.au" style="font-size:13px;color:#2dd4bf;text-decoration:none;">bodyrecode.au</a>
   </div>
 </body>

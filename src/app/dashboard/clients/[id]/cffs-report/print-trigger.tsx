@@ -76,7 +76,7 @@ export default function PrintTrigger({
         )}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {error && (
-            <span style={{ fontSize: 11, color: '#ef4444', fontFamily: SCREEN_FONT }}>{error}</span>
+            <span style={{ fontSize: 11, color: '#DC2626', fontFamily: SCREEN_FONT }}>{error}</span>
           )}
           <button
             onClick={downloadPdf}

@@ -59,21 +59,21 @@ const EVENT_LABELS: Record<string, string> = {
 
 const BODY_STATE_STYLES: Record<string, { color: string; bg: string; border: string; desc: string }> = {
   'Depleted State': {
-    color: '#ef4444',
+    color: '#DC2626',
     bg: 'rgba(239,68,68,0.06)',
     border: 'rgba(239,68,68,0.2)',
     desc: 'Body is in protection mode. Cortisol is elevated, metabolism is suppressed, and biology is actively resisting fat loss and performance gains. Pushing harder will make this worse.',
   },
   'Transitioning State': {
-    color: '#f59e0b',
+    color: '#B7791F',
     bg: 'rgba(245,158,11,0.06)',
     border: 'rgba(245,158,11,0.2)',
     desc: 'Mixed signals. Has capacity but not consistent. Something is limiting response: sleep, stress, recovery, or a mismatch between training load and current biological state.',
   },
   'Ready State': {
     color: '#1B6DFC',
-    bg: 'rgba(20,184,166,0.06)',
-    border: 'rgba(20,184,166,0.2)',
+    bg: 'rgba(27,109,252,0.06)',
+    border: 'rgba(27,109,252,0.2)',
     desc: 'Biology is in a position to respond. If fat loss or performance isn\'t happening at this score, the issue is in the prescription. Has the foundation - now it needs to be optimised.',
   },
 }
@@ -292,9 +292,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               <div className="grid grid-cols-5 gap-2">
                 {Object.entries(SCORECARD_SECTIONS).map(([key, title]) => {
                   const s = scorecardSections[key]
-                  const color = s === 1 ? '#ef4444' : s === 2 ? '#f59e0b' : s === 3 ? '#1B6DFC' : '#999999'
-                  const bg = s === 1 ? 'rgba(239,68,68,0.08)' : s === 2 ? 'rgba(245,158,11,0.08)' : s === 3 ? 'rgba(20,184,166,0.08)' : 'rgba(87,83,78,0.08)'
-                  const border = s === 1 ? 'rgba(239,68,68,0.25)' : s === 2 ? 'rgba(245,158,11,0.25)' : s === 3 ? 'rgba(20,184,166,0.25)' : 'rgba(87,83,78,0.25)'
+                  const color = s === 1 ? '#DC2626' : s === 2 ? '#B7791F' : s === 3 ? '#1B6DFC' : '#999999'
+                  const bg = s === 1 ? 'rgba(239,68,68,0.08)' : s === 2 ? 'rgba(245,158,11,0.08)' : s === 3 ? 'rgba(27,109,252,0.08)' : 'rgba(87,83,78,0.08)'
+                  const border = s === 1 ? 'rgba(239,68,68,0.25)' : s === 2 ? 'rgba(245,158,11,0.25)' : s === 3 ? 'rgba(27,109,252,0.25)' : 'rgba(87,83,78,0.25)'
                   return (
                     <div key={key} className="rounded-lg p-2 text-center" style={{ background: bg, border: `1px solid ${border}` }}>
                       <div className="text-lg font-black" style={{ color }}>{s ?? '-'}</div>
@@ -312,9 +312,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 <div
                   className="text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0"
                   style={{
-                    color: lead.lead_quality === 'red' ? '#ef4444' : lead.lead_quality === 'yellow' ? '#f59e0b' : '#1B6DFC',
-                    background: lead.lead_quality === 'red' ? 'rgba(239,68,68,0.08)' : lead.lead_quality === 'yellow' ? 'rgba(245,158,11,0.08)' : 'rgba(20,184,166,0.08)',
-                    border: `1px solid ${lead.lead_quality === 'red' ? 'rgba(239,68,68,0.25)' : lead.lead_quality === 'yellow' ? 'rgba(245,158,11,0.25)' : 'rgba(20,184,166,0.25)'}`,
+                    color: lead.lead_quality === 'red' ? '#DC2626' : lead.lead_quality === 'yellow' ? '#B7791F' : '#1B6DFC',
+                    background: lead.lead_quality === 'red' ? 'rgba(239,68,68,0.08)' : lead.lead_quality === 'yellow' ? 'rgba(245,158,11,0.08)' : 'rgba(27,109,252,0.08)',
+                    border: `1px solid ${lead.lead_quality === 'red' ? 'rgba(239,68,68,0.25)' : lead.lead_quality === 'yellow' ? 'rgba(245,158,11,0.25)' : 'rgba(27,109,252,0.25)'}`,
                   }}
                 >
                   {lead.lead_quality}{lead.red_flag ? ' · red flag' : ''}
@@ -354,9 +354,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <div className="space-y-2 mb-5">
               {Object.entries(SCORECARD_SECTIONS).map(([key, title]) => {
                 const s = scorecardSections[key] as number | undefined
-                const color = s === 1 ? '#ef4444' : s === 2 ? '#f59e0b' : s === 3 ? '#1B6DFC' : '#999999'
-                const bg = s === 1 ? 'rgba(239,68,68,0.05)' : s === 2 ? 'rgba(245,158,11,0.05)' : s === 3 ? 'rgba(20,184,166,0.05)' : 'rgba(87,83,78,0.05)'
-                const border = s === 1 ? 'rgba(239,68,68,0.2)' : s === 2 ? 'rgba(245,158,11,0.2)' : s === 3 ? 'rgba(20,184,166,0.2)' : 'rgba(87,83,78,0.2)'
+                const color = s === 1 ? '#DC2626' : s === 2 ? '#B7791F' : s === 3 ? '#1B6DFC' : '#999999'
+                const bg = s === 1 ? 'rgba(239,68,68,0.05)' : s === 2 ? 'rgba(245,158,11,0.05)' : s === 3 ? 'rgba(27,109,252,0.05)' : 'rgba(87,83,78,0.05)'
+                const border = s === 1 ? 'rgba(239,68,68,0.2)' : s === 2 ? 'rgba(245,158,11,0.2)' : s === 3 ? 'rgba(27,109,252,0.2)' : 'rgba(87,83,78,0.2)'
                 const label = s === 1 ? 'Needs attention' : s === 2 ? 'Developing' : s === 3 ? 'Functioning well' : null
                 const interpretation = s != null ? SECTION_INTERPRETATIONS[title]?.[s] : null
                 return (

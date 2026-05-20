@@ -128,11 +128,11 @@ export async function POST(request: NextRequest) {
                   from: 'Body Recode <kade@bodyrecode.au>',
                   to: 'kade@bodyrecode.au',
                   subject: `Second commencement installment received — ${lead.name}`,
-                  html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+                  html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${lead.name} paid the second $120.</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Commencement fee fully paid ($240 total). The split subscription will auto-cancel within the next 24 hours.</p>
-  <a href="${appUrl()}/dashboard/clients/${lead.converted_to_client_id}#payments" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client</a>
+  <a href="${appUrl()}/dashboard/clients/${lead.converted_to_client_id}#payments" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client</a>
 </div>`,
                 })
               }
@@ -204,11 +204,11 @@ export async function POST(request: NextRequest) {
             from: 'Body Recode <kade@bodyrecode.au>',
             to: 'kade@bodyrecode.au',
             subject: `Payment failed — ${client.name}`,
-            html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+            html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">Payment failed — ${client.name}</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">A subscription payment for ${client.name} (${client.email}) has failed. Check Stripe for details.</p>
-  <a href="${appUrl()}/dashboard/business/payments" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Payments</a>
+  <a href="${appUrl()}/dashboard/business/payments" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Payments</a>
 </div>`,
           })
         }
@@ -289,25 +289,25 @@ export async function POST(request: NextRequest) {
         to: email,
         subject: `Your ${stateLabel} State Program`,
         html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Your 12-week ${stateLabel} State Program is ready. Everything is in there: the full training protocol, nutrition targets, priority foods, and what to expect each phase.</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Bookmark the page so you can come back to it any time.</p>
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Hi ${firstName},</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Your 12-week ${stateLabel} State Program is ready. Everything is in there: the full training protocol, nutrition targets, priority foods, and what to expect each phase.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Bookmark the page so you can come back to it any time.</p>
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${programUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">View My Program</a></td></tr>
+                <tr><td><a href="${programUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">View My Program</a></td></tr>
               </table>
-              <p style="margin:0 0 18px;font-size:13px;color:#555555;line-height:1.75;">Or copy this link: ${programUrl}</p>
+              <p style="margin:0 0 18px;font-size:13px;color:#999999;line-height:1.75;">Or copy this link: ${programUrl}</p>
               ${darkEmailSignature()}
             </td>
           </tr>
@@ -323,11 +323,11 @@ export async function POST(request: NextRequest) {
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
         subject: `Self-Guided Program sold - ${name}`,
-        html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+        html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${name} purchased the ${stateLabel} State Program</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">$97. Program delivered to ${email}. They are in the downsell funnel.</p>
-  <a href="${appUrl()}/dashboard/leads/${lead_id}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Lead</a>
+  <a href="${appUrl()}/dashboard/leads/${lead_id}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Lead</a>
 </div>`,
       })
 
@@ -405,24 +405,24 @@ export async function POST(request: NextRequest) {
         to: email,
         subject: `Your Body Decode Report is ready`,
         html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Your Body Decode Report is ready. It breaks down what your scorecard results mean, what your body state tells us, what is working against you right now, and what to focus on first.</p>
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Hi ${firstName},</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Your Body Decode Report is ready. It breaks down what your scorecard results mean, what your body state tells us, what is working against you right now, and what to focus on first.</p>
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${reportUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">View My Report</a></td></tr>
+                <tr><td><a href="${reportUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">View My Report</a></td></tr>
               </table>
-              <p style="margin:0 0 18px;font-size:13px;color:#555555;line-height:1.75;">Or copy this link: ${reportUrl}</p>
+              <p style="margin:0 0 18px;font-size:13px;color:#999999;line-height:1.75;">Or copy this link: ${reportUrl}</p>
               ${darkEmailSignature()}
             </td>
           </tr>
@@ -536,27 +536,27 @@ export async function POST(request: NextRequest) {
         to: email,
         subject: `Your 6-Week Body Rewire Blueprint is ready`,
         html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
           </td>
         </tr>
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-            <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${firstName},</p>
-            <p style="margin:0 0 18px;font-size:15px;color:#888888;">Your 6-Week Body Rewire Blueprint is ready. ${patternDisplay ? `Your programme has been built around your <strong style="color:#fff;">${patternDisplay}</strong> pattern.` : `Your first step is a short pattern assessment so the programme can be built around your biology.`}</p>
-            <p style="margin:0 0 18px;font-size:15px;color:#888888;">The programme runs across three phases:</p>
-            <ul style="padding-left:20px;color:#888888;margin:0 0 24px;">
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+            <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${firstName},</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#999999;">Your 6-Week Body Rewire Blueprint is ready. ${patternDisplay ? `Your programme has been built around your <strong style="color:#fff;">${patternDisplay}</strong> pattern.` : `Your first step is a short pattern assessment so the programme can be built around your biology.`}</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#999999;">The programme runs across three phases:</p>
+            <ul style="padding-left:20px;color:#999999;margin:0 0 24px;">
               <li style="margin-bottom:8px;"><strong style="color:#fff;">Phase 1 - Regulate</strong> (Weeks 1-2) - Re-establish structure and biological rhythm</li>
               <li style="margin-bottom:8px;"><strong style="color:#fff;">Phase 2 - Adapt</strong> (Weeks 3-4) - Drive adaptation through progressive load</li>
               <li style="margin-bottom:8px;"><strong style="color:#fff;">Phase 3 - Embed</strong> (Weeks 5-6) - Lock in the new baseline before Stage 3</li>
             </ul>
             <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-              <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my Blueprint</a></td></tr>
+              <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my Blueprint</a></td></tr>
             </table>
             <p style="margin:0 0 18px;font-size:13px;color:#555;">Bookmark this link. It is your personal portal for the full 6 weeks.<br/><a href="${portalUrl}" style="color:#555;">${portalUrl}</a></p>
             ${darkEmailSignature()}
@@ -579,8 +579,8 @@ export async function POST(request: NextRequest) {
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
         subject: `Blueprint purchased - ${name}`,
-        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${name} purchased the Blueprint</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Email: ${email}</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Pattern: ${patternDisplay ?? 'Pending assessment'}</p>
@@ -623,22 +623,22 @@ export async function POST(request: NextRequest) {
         to: email,
         subject: `Welcome to the Body Recode Membership`,
         html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
           </td>
         </tr>
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-            <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${first_name},</p>
-            <p style="margin:0 0 18px;font-size:15px;color:#888888;">You are in. Your Body Recode Membership is active and <strong style="color:#fff;">Block A is loaded into your portal</strong>.</p>
-            <p style="margin:0 0 18px;font-size:15px;color:#888888;">Block A - Consolidate picks up directly from where the Blueprint ended. Your pattern rules carry forward. The training and nutrition have been built on top of the foundation you have already established.</p>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+            <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${first_name},</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#999999;">You are in. Your Body Recode Membership is active and <strong style="color:#fff;">Block A is loaded into your portal</strong>.</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#999999;">Block A - Consolidate picks up directly from where the Blueprint ended. Your pattern rules carry forward. The training and nutrition have been built on top of the foundation you have already established.</p>
             <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-              <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my portal</a></td></tr>
+              <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my portal</a></td></tr>
             </table>
             <p style="margin:0 0 18px;font-size:13px;color:#555;">Your first monthly coach Loom will be sent at the end of Week 4. Monthly group Q&A call details to follow.</p>
             ${darkEmailSignature()}
@@ -654,8 +654,8 @@ export async function POST(request: NextRequest) {
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
         subject: `Membership purchased - ${first_name}`,
-        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${first_name} joined the membership</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Email: ${email}</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Pattern: ${pattern_from_blueprint || 'Pending assessment'}</p>
@@ -700,19 +700,19 @@ export async function POST(request: NextRequest) {
         to: email,
         subject: `Your 90-Day Body Rewire Extension is ready`,
         html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
         </td></tr>
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${first_name},</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Your 90-Day Body Rewire Extension is active. Your portal is ready - 12 weeks of progressive programming that picks up exactly where the Blueprint ended.</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Weeks 1-6 run Block A (Consolidate). Weeks 7-12 run Block B (Advance). Same pattern, same portal structure you already know.</p>
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${first_name},</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Your 90-Day Body Rewire Extension is active. Your portal is ready - 12 weeks of progressive programming that picks up exactly where the Blueprint ended.</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Weeks 1-6 run Block A (Consolidate). Weeks 7-12 run Block B (Advance). Same pattern, same portal structure you already know.</p>
           <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my Extension Portal</a></td></tr>
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my Extension Portal</a></td></tr>
           </table>
           ${darkEmailSignature()}
         </td></tr>
@@ -726,7 +726,7 @@ export async function POST(request: NextRequest) {
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
         subject: `Extension purchased - ${first_name}`,
-        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
+        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${first_name} purchased the 90-Day Extension</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Email: ${email}</p>
   <p style="font-size:15px;color:#aaa;margin:0;">Pattern: ${pattern_from_blueprint || 'Pending assessment'}</p>
@@ -845,11 +845,11 @@ export async function POST(request: NextRequest) {
         to: 'kade@bodyrecode.au',
         subject: `Commencement fee received — ${client.name}`,
         html: `
-<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${client.name} paid the commencement fee.</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">$240 confirmed. The Payments tracker now shows commencement as paid on their profile.</p>
-  <a href="${appUrl()}/dashboard/clients/${client.id}#payments" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client</a>
+  <a href="${appUrl()}/dashboard/clients/${client.id}#payments" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client</a>
 </div>`,
       })
     }
@@ -969,11 +969,11 @@ export async function POST(request: NextRequest) {
       to: 'kade@bodyrecode.au',
       subject: `Payment received — ${lead.name}`,
       html: `
-<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
+  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
   <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${lead.name} just paid.</p>
   <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Commencement fee confirmed. Welcome email and intake link have been sent to ${lead.email}.</p>
-  <a href="${appUrl()}/dashboard/leads/${lead.id}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View lead</a>
+  <a href="${appUrl()}/dashboard/leads/${lead.id}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View lead</a>
 </div>`,
     })
   }
@@ -992,15 +992,15 @@ export async function POST(request: NextRequest) {
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
-<body style="margin:0;padding:0;background:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+<body style="margin:0;padding:0;background:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
   <div style="max-width:600px;margin:0 auto;padding:48px 32px;">
     <div style="margin-bottom:40px;">
-      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+      <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
     </div>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Hi ${firstName},</p>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Your commencement fee has been received. You're officially in.</p>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Your client portal is ready. Open the link below and sign in with this email address (${lead.email}). You'll get a 6-digit code by email - no password to set or remember.</p>
-    <a href="${portalUrl}" style="display:inline-block;margin:0 0 28px;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">Open my portal</a>
+    <a href="${portalUrl}" style="display:inline-block;margin:0 0 28px;padding:14px 28px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">Open my portal</a>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Inside the portal you'll work through your onboarding in this order:</p>
     <ol style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 24px;padding-left:20px;">
       <li style="margin-bottom:6px;">Coaching Agreement</li>
@@ -1009,7 +1009,7 @@ export async function POST(request: NextRequest) {
       <li>Baseline Documentation (photos and measurements)</li>
     </ol>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Take your time with the intake - it's the foundation of everything I do with you. Answer based on your typical experience, not your best or worst days.</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">While you're getting set up, read through your <a href="https://app.bodyrecode.au/coaching-guide" style="color:#10E1C2;font-weight:600;text-decoration:none;">Active Coaching Client Guide</a> (also linked inside your portal). It covers how the coaching process works, what to expect each week, and how we build progress together.</p>
+    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">While you're getting set up, read through your <a href="https://app.bodyrecode.au/coaching-guide" style="color:#1B6DFC;font-weight:600;text-decoration:none;">Active Coaching Client Guide</a> (also linked inside your portal). It covers how the coaching process works, what to expect each week, and how we build progress together.</p>
     <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Looking forward to getting started.</p>
     ${darkEmailSignature()}
     <p style="margin:20px 0 0;font-size:13px;color:#444;line-height:1.5;">Or copy this link: ${portalUrl}</p>

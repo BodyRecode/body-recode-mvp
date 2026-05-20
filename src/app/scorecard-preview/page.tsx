@@ -53,13 +53,13 @@ export default function ScorecardPreview() {
     {
       range: '5 – 8',
       label: 'Depleted State',
-      color: '#ef4444',
+      color: '#DC2626',
       desc: 'Your body is in protection mode. Cortisol is elevated, metabolism is suppressed, and your biology is actively resisting fat loss and performance gains. Pushing harder with more training and less food will make this worse. Your body needs to be brought out of this state first. Prescription without interpretation is the reason you\'re stuck.',
     },
     {
       range: '9 – 11',
       label: 'Transitioning State',
-      color: '#f59e0b',
+      color: '#B7791F',
       desc: 'Mixed signals. Your body has capacity but it\'s not consistent. Something is limiting your response: sleep, stress, recovery, or a mismatch between your training load and your current biological state. You\'re close, but you need to identify the specific bottleneck before adding more input.',
     },
     {
@@ -125,11 +125,11 @@ export default function ScorecardPreview() {
                     {/* Score circle */}
                     <div style={{
                       width: '28px', height: '28px', borderRadius: '50%', flexShrink: 0,
-                      background: row.score === 1 ? 'rgba(239,68,68,0.12)' : row.score === 2 ? 'rgba(245,158,11,0.12)' : 'rgba(20,184,166,0.12)',
-                      border: `1.5px solid ${row.score === 1 ? 'rgba(239,68,68,0.3)' : row.score === 2 ? 'rgba(245,158,11,0.3)' : 'rgba(20,184,166,0.3)'}`,
+                      background: row.score === 1 ? 'rgba(239,68,68,0.12)' : row.score === 2 ? 'rgba(245,158,11,0.12)' : 'rgba(27,109,252,0.12)',
+                      border: `1.5px solid ${row.score === 1 ? 'rgba(239,68,68,0.3)' : row.score === 2 ? 'rgba(245,158,11,0.3)' : 'rgba(27,109,252,0.3)'}`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '12px', fontWeight: 700,
-                      color: row.score === 1 ? '#ef4444' : row.score === 2 ? '#f59e0b' : '#14b8a6',
+                      color: row.score === 1 ? '#DC2626' : row.score === 2 ? '#B7791F' : '#14b8a6',
                       marginTop: '1px',
                     }}>
                       {row.score}

@@ -72,11 +72,11 @@ const BRAND_STYLES: Record<Brand, { label: string; handle: string; dot: string; 
 }
 
 const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: string; border: string }> = {
-  authority:   { label: 'Authority',    color: '#1B6DFC', bg: 'rgba(20,184,166,0.12)',  border: 'rgba(20,184,166,0.3)' },
-  pattern:     { label: 'Pattern',      color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.3)' },
+  authority:   { label: 'Authority',    color: '#1B6DFC', bg: 'rgba(27,109,252,0.12)',  border: 'rgba(27,109,252,0.3)' },
+  pattern:     { label: 'Pattern',      color: '#B7791F', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.3)' },
   contrarian:  { label: 'Contrarian',   color: '#fb923c', bg: 'rgba(251,146,60,0.12)',  border: 'rgba(251,146,60,0.3)' },
   coach:       { label: 'Coach',        color: '#a78bfa', bg: 'rgba(167,139,250,0.12)', border: 'rgba(167,139,250,0.3)' },
-  diagnostic:  { label: 'Diagnostic',   color: '#f87171', bg: 'rgba(248,113,113,0.12)', border: 'rgba(248,113,113,0.3)' },
+  diagnostic:  { label: 'Diagnostic',   color: '#DC2626', bg: 'rgba(248,113,113,0.12)', border: 'rgba(248,113,113,0.3)' },
   ad:          { label: 'Paid Ad',      color: '#60a5fa', bg: 'rgba(96,165,250,0.12)',  border: 'rgba(96,165,250,0.3)' },
   prelaunch:   { label: 'Pre-Launch',   color: '#6b7280', bg: 'rgba(107,114,128,0.12)', border: 'rgba(107,114,128,0.3)' },
   thread:      { label: 'Thread',       color: '#e879f9', bg: 'rgba(232,121,249,0.12)', border: 'rgba(232,121,249,0.3)' },

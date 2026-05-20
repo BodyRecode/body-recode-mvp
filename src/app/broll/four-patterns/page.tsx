@@ -23,8 +23,8 @@ import { Dumbbell, Salad, FileText, BookOpen } from 'lucide-react'
  */
 
 const PATTERN_COLOURS = {
-  'Stress-Stored':    '#ef4444',
-  'Insulin-Drift':    '#f59e0b',
+  'Stress-Stored':    '#DC2626',
+  'Insulin-Drift':    '#B7791F',
   'Estrogen-Shift':   '#8b5cf6',
   'Androgen-Decline': '#1B6DFC',
 } as const

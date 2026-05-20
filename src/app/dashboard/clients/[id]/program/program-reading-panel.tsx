@@ -131,7 +131,7 @@ export default function ProgramReadingPanel({
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.06em',
                 color: published ? '#1B6DFC' : '#6B6B6B',
-                background: published ? 'rgba(20,184,166,0.10)' : '#FFFFFF',
+                background: published ? 'rgba(27,109,252,0.10)' : '#FFFFFF',
                 borderColor: published ? '#B5CFFC' : '#E5E5E5',
               }}
             >
@@ -177,12 +177,12 @@ export default function ProgramReadingPanel({
       </div>
 
       {error && (
-        <div className="bg-[#1a1108] border border-[#3a2410] rounded-lg px-3 py-2 text-[12px] text-[#fbbf24] mb-3">
+        <div className="bg-[#FEF6E7] border border-[#F0DCB4] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14] mb-3">
           {error}
         </div>
       )}
       {emailNotice && (
-        <div className="bg-[rgba(20,184,166,0.08)] border border-[#B5CFFC] rounded-lg px-3 py-2 text-[12px] text-[#1B6DFC] mb-3">
+        <div className="bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] rounded-lg px-3 py-2 text-[12px] text-[#1B6DFC] mb-3">
           {emailNotice}
         </div>
       )}
@@ -215,7 +215,7 @@ export default function ProgramReadingPanel({
                 <Link
                   href={`/portal/${clientToken}/program`}
                   target="_blank"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#B5CFFC] bg-[rgba(20,184,166,0.10)] text-[#1B6DFC] hover:bg-[rgba(20,184,166,0.18)] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)] text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.18)] transition-colors"
                 >
                   <ExternalLink size={11} /> Client view
                 </Link>
@@ -307,7 +307,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
           </p>
           {savedValue && (
             <span
-              className="text-[10px] text-[#1B6DFC] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(20,184,166,0.10)]"
+              className="text-[10px] text-[#1B6DFC] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)]"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               SET
@@ -332,7 +332,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
             className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[13px] text-[#e7e5e4] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
           />
           {error && (
-            <div className="mt-2 text-[11px] text-[#fbbf24]">{error}</div>
+            <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>
           )}
           <div className="flex items-center justify-between mt-3">
             <p className="text-[10px] text-[#999999]">
@@ -453,7 +453,7 @@ function EditableSection({
             rows={Math.max(4, draft.split('\n').length + 1)}
             className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[14px] text-[#e7e5e4] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
           />
-          {error && <p className="mt-2 text-[11px] text-[#fbbf24]">{error}</p>}
+          {error && <p className="mt-2 text-[11px] text-[#8A5A14]">{error}</p>}
           <div className="flex items-center justify-end gap-2 mt-2">
             <button
               onClick={cancel}

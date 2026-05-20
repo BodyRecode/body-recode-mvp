@@ -83,7 +83,7 @@ export default function GetReportPage() {
               }}
             />
             {error && (
-              <p style={{ fontSize: '13px', color: '#ef4444', margin: 0 }}>{error}</p>
+              <p style={{ fontSize: '13px', color: '#DC2626', margin: 0 }}>{error}</p>
             )}
             <button
               type="submit"

@@ -144,7 +144,7 @@ export default function HelpPage() {
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         aria-label="Back to top"
-        className={`fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 pl-3.5 pr-4 h-11 rounded-full bg-[#1B6DFC] text-[#FFFFFF] text-[13px] font-semibold border border-[#1B6DFC] hover:bg-[#5390FF] transition-all shadow-[0_12px_32px_-8px_rgba(20,184,166,0.45),0_4px_12px_-4px_rgba(0,0,0,0.6)] ${
+        className={`fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 pl-3.5 pr-4 h-11 rounded-full bg-[#1B6DFC] text-[#FFFFFF] text-[13px] font-semibold border border-[#1B6DFC] hover:bg-[#5390FF] transition-all shadow-[0_12px_32px_-8px_rgba(27,109,252,0.45),0_4px_12px_-4px_rgba(0,0,0,0.6)] ${
           showTop ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-3 pointer-events-none'
         }`}
       >
@@ -2601,8 +2601,8 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">The four biological patterns</p>
             <StatusList items={[
-              { label: 'Stress-Stored (a)', desc: 'Cortisol and adrenaline driving storage around the midsection. Maps to Fat Map MZ1. Colour: red #ef4444.' },
-              { label: 'Insulin-Drift (b)', desc: 'DB slug: metabolic-drift. Insulin staying elevated too long, blood sugar instability, full-body softening, carb cravings, post-meal fatigue. Male-dominant per doctrine. Maps to Fat Map MZ2. Colour: amber #f59e0b.' },
+              { label: 'Stress-Stored (a)', desc: 'Cortisol and adrenaline driving storage around the midsection. Maps to Fat Map MZ1. Colour: red #DC2626.' },
+              { label: 'Insulin-Drift (b)', desc: 'DB slug: metabolic-drift. Insulin staying elevated too long, blood sugar instability, full-body softening, carb cravings, post-meal fatigue. Male-dominant per doctrine. Maps to Fat Map MZ2. Colour: amber #B7791F.' },
               { label: 'Estrogen-Shift (c)', desc: 'DB slug: hormonal-shift. Oestrogen-driven conservation state, hip and thigh storage, water retention, cycle irregularity, mood variability. Female-only per doctrine. Maps to Fat Map MZ3. Colour: purple #8b5cf6.' },
               { label: 'Androgen-Decline (d)', desc: 'DB slug: system-overload. Testosterone signalling decline, reduced muscle tone, reduced drive, capacity slipping despite consistent effort. Male-only per doctrine. Maps to Fat Map MZ4. Colour: teal #1B6DFC.' },
             ]} />
@@ -3051,7 +3051,7 @@ export default function HelpPage() {
 }
 
 function Section({ id, title, colour, children }: { id: string; title: string; colour: 'teal' | 'amber' | 'violet'; children: React.ReactNode }) {
-  const accent = colour === 'amber' ? '#f59e0b' : colour === 'violet' ? '#a78bfa' : '#1B6DFC'
+  const accent = colour === 'amber' ? '#B7791F' : colour === 'violet' ? '#a78bfa' : '#1B6DFC'
   return (
     <div id={id} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden scroll-mt-8">
       <div className="flex items-center gap-2.5 px-6 py-4 border-b border-[#E5E5E5]">

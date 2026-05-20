@@ -172,7 +172,7 @@ export default async function RecoveryRegulationPage() {
         <div className="mt-6 grid gap-4">
           {PLAYBOOK_PRIORITY_ORDER.map(pid => {
             const p = getPlaybook(pid)
-            const tierAccent = p.tier === 1 ? '#ef4444' : p.tier === 2 ? '#f59e0b' : p.tier <= 4 ? '#60a5fa' : '#999999'
+            const tierAccent = p.tier === 1 ? '#DC2626' : p.tier === 2 ? '#B7791F' : p.tier <= 4 ? '#60a5fa' : '#999999'
             return (
               <Card key={pid} className="relative overflow-hidden">
                 <span className="absolute left-0 top-0 bottom-0 w-[3px]" style={{ background: tierAccent }} />
@@ -302,7 +302,7 @@ export default async function RecoveryRegulationPage() {
           {msaRrs.length > 0 && Array.from(groupBySection(msaRrs).entries()).map(([section, files]) => (
             <details key={`msa-${section}`} className="border border-[#E5E5E5] rounded-md">
               <summary className="px-4 py-3 cursor-pointer text-[14px] text-[#1A1A1A] hover:bg-[#0e0e0c]">
-                <span className="text-[12px] text-[#f59e0b] mr-2" style={{ fontFamily: MONO_FONT }}>MSA</span>
+                <span className="text-[12px] text-[#B7791F] mr-2" style={{ fontFamily: MONO_FONT }}>MSA</span>
                 {section.replace(/^\d+[A-Z]?_/, '').replace(/_/g, ' ')}
                 <span className="text-[12px] text-[#999999] ml-2">({files.length} {files.length === 1 ? 'file' : 'files'})</span>
               </summary>
@@ -352,7 +352,7 @@ function ConstraintRow({ label, value, highlight }: { label: string; value: stri
   return (
     <div className="flex justify-between gap-3">
       <dt className="text-[#6B6B6B]">{label}</dt>
-      <dd className={highlight ? 'text-[#f59e0b] font-semibold' : 'text-[#d6d3d1]'}>{value}</dd>
+      <dd className={highlight ? 'text-[#B7791F] font-semibold' : 'text-[#d6d3d1]'}>{value}</dd>
     </div>
   )
 }

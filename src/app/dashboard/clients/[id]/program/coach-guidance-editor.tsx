@@ -140,7 +140,7 @@ export default function CoachGuidanceEditor({
           </p>
           {savedValue && (
             <span
-              className="text-[10px] text-[#1B6DFC] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(20,184,166,0.10)]"
+              className="text-[10px] text-[#1B6DFC] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)]"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               SET
@@ -193,7 +193,7 @@ export default function CoachGuidanceEditor({
                           onClick={() => setIntent(opt.value)}
                           className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                             active
-                              ? 'bg-[rgba(20,184,166,0.12)] border-[#B5CFFC] text-[#1B6DFC]'
+                              ? 'bg-[rgba(27,109,252,0.12)] border-[#B5CFFC] text-[#1B6DFC]'
                               : 'bg-[#FFFFFF] border-[#E5E5E5] text-[#6B6B6B] hover:border-[#D4D4D4]'
                           }`}
                         >
@@ -220,7 +220,7 @@ export default function CoachGuidanceEditor({
                           onClick={() => toggleLever(opt.value)}
                           className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                             active
-                              ? 'bg-[rgba(20,184,166,0.12)] border-[#B5CFFC] text-[#1B6DFC]'
+                              ? 'bg-[rgba(27,109,252,0.12)] border-[#B5CFFC] text-[#1B6DFC]'
                               : 'bg-[#FFFFFF] border-[#E5E5E5] text-[#6B6B6B] hover:border-[#D4D4D4]'
                           }`}
                         >
@@ -248,7 +248,7 @@ export default function CoachGuidanceEditor({
                 </div>
 
                 {assistError && (
-                  <div className="mb-2 text-[11px] text-[#fbbf24]">{assistError}</div>
+                  <div className="mb-2 text-[11px] text-[#8A5A14]">{assistError}</div>
                 )}
 
                 <div className="flex items-center justify-between">
@@ -258,7 +258,7 @@ export default function CoachGuidanceEditor({
                   <button
                     onClick={suggest}
                     disabled={suggesting}
-                    className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed border border-[#1B6DFC] bg-[rgba(20,184,166,0.10)] text-[#1B6DFC] hover:bg-[rgba(20,184,166,0.18)]"
+                    className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed border border-[#1B6DFC] bg-[rgba(27,109,252,0.10)] text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.18)]"
                   >
                     {suggesting ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
                     {suggesting ? 'Drafting...' : 'Draft guidance'}
@@ -276,7 +276,7 @@ export default function CoachGuidanceEditor({
             className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[13px] text-[#e7e5e4] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
           />
           {error && (
-            <div className="mt-2 text-[11px] text-[#fbbf24]">{error}</div>
+            <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>
           )}
           <div className="flex items-center justify-between mt-3">
             <p className="text-[10px] text-[#999999]">

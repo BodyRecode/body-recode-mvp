@@ -103,7 +103,7 @@ function ContactCard({ clientId, email, phone }: { clientId: string; email: stri
             className="w-full bg-[#0c0a09] border border-[#1c1917] rounded-xl px-3 py-2.5 text-[14px] text-[#e7e5e4] placeholder:text-[#3c3835] focus:outline-none focus:border-[#292524]"
           />
         </div>
-        {error && <p className="text-[12px] text-[#fbbf24]">{error}</p>}
+        {error && <p className="text-[12px] text-[#8A5A14]">{error}</p>}
         <button
           onClick={save}
           disabled={!dirty || saving}
@@ -149,7 +149,7 @@ function PauseCard({ clientId, clientName, packageLabel }: { clientId: string; c
   if (requested) {
     return (
       <Section icon={Pause} title="Pause coaching" description="Request received. Your coach will be in touch.">
-        <div className="bg-[rgba(20,184,166,0.08)] border border-[#0d2d29] rounded-xl px-4 py-3">
+        <div className="bg-[rgba(27,109,252,0.08)] border border-[#0d2d29] rounded-xl px-4 py-3">
           <p className="text-[13px] text-[#14b8a6]">Your coach has been notified and will reply to confirm.</p>
         </div>
       </Section>
@@ -170,7 +170,7 @@ function PauseCard({ clientId, clientName, packageLabel }: { clientId: string; c
           rows={3}
           className="w-full bg-[#0c0a09] border border-[#1c1917] rounded-xl px-3 py-2.5 text-[13px] text-[#e7e5e4] placeholder:text-[#3c3835] focus:outline-none focus:border-[#292524] leading-relaxed resize-y"
         />
-        {error && <p className="text-[12px] text-[#fbbf24]">{error}</p>}
+        {error && <p className="text-[12px] text-[#8A5A14]">{error}</p>}
         <button
           onClick={submit}
           disabled={submitting}
@@ -250,7 +250,7 @@ function ReferCard({ clientId, clientName }: { clientId: string; clientName: str
             className="w-full bg-[#0c0a09] border border-[#1c1917] rounded-xl px-3 py-2.5 text-[13px] text-[#e7e5e4] placeholder:text-[#3c3835] focus:outline-none focus:border-[#292524] leading-relaxed resize-y"
           />
         </div>
-        {error && <p className="text-[12px] text-[#fbbf24]">{error}</p>}
+        {error && <p className="text-[12px] text-[#8A5A14]">{error}</p>}
         {sent && <p className="text-[12px] text-[#14b8a6]">Thanks. Your coach will reach out to {name || 'them'} this week.</p>}
         <button
           onClick={submit}

@@ -17,7 +17,7 @@ const STATE_CONTENT: Record<string, {
   startDoing: string[]
 }> = {
   'Depleted State': {
-    color: '#ef4444',
+    color: '#DC2626',
     bg: 'rgba(239,68,68,0.06)',
     border: 'rgba(239,68,68,0.2)',
     headline: 'Your body is in protection mode.',
@@ -38,7 +38,7 @@ const STATE_CONTENT: Record<string, {
     ],
   },
   'Transitioning State': {
-    color: '#f59e0b',
+    color: '#B7791F',
     bg: 'rgba(245,158,11,0.06)',
     border: 'rgba(245,158,11,0.2)',
     headline: 'Your body has capacity but something is limiting it.',
@@ -106,8 +106,8 @@ const SECTION_INTERPRETATIONS: Record<string, Record<number, string>> = {
 }
 
 function getScoreColor(score: number) {
-  if (score === 1) return '#ef4444'
-  if (score === 2) return '#f59e0b'
+  if (score === 1) return '#DC2626'
+  if (score === 2) return '#B7791F'
   return '#1B6DFC'
 }
 
@@ -249,13 +249,13 @@ export default function ReportClient({ report }: { report: {
 
         {/* Stop doing */}
         <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
-          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#ef4444', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
+          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#DC2626', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
             Stop doing
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {state.stopDoing.map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ef4444', marginTop: '7px', flexShrink: 0 }} />
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#DC2626', marginTop: '7px', flexShrink: 0 }} />
                 <p style={{ fontSize: '14px', color: '#999999', lineHeight: 1.65, margin: 0 }}>{item}</p>
               </div>
             ))}

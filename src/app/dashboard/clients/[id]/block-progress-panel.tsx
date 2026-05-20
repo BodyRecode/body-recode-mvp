@@ -62,8 +62,8 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
               style={{
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.08em',
-                color: '#f59e0b',
-                borderColor: '#3a2410',
+                color: '#B7791F',
+                borderColor: '#F0DCB4',
                 background: 'rgba(245,158,11,0.10)',
               }}
             >
@@ -76,8 +76,8 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
               style={{
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.08em',
-                color: '#f59e0b',
-                borderColor: '#3a2410',
+                color: '#B7791F',
+                borderColor: '#F0DCB4',
                 background: 'rgba(245,158,11,0.10)',
               }}
             >

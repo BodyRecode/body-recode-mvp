@@ -41,18 +41,18 @@ export function getLeadStatusLabel(status: string) {
 
 export function getLeadStatusColour(status: string) {
   switch (status) {
-    case 'new_check_in': return 'bg-blue-950 text-blue-300 border-blue-800'
-    case 'report_sent': return 'bg-violet-950 text-violet-300 border-violet-800'
-    case 'cold_no_booking': return 'bg-stone-800 text-stone-400 border-stone-700'
-    case 'zoom_booked': return 'bg-amber-950 text-amber-300 border-amber-800'
-    case 'zoom_1_booked': return 'bg-amber-950 text-amber-300 border-amber-800'
-    case 'zoom_completed': return 'bg-amber-950 text-amber-200 border-amber-700'
-    case 'closed_no_show': return 'bg-stone-800 text-stone-500 border-stone-700'
-    case 'closed_declined': return 'bg-stone-800 text-stone-500 border-stone-700'
-    case 'commencement_fee_paid': return 'bg-emerald-950 text-emerald-300 border-emerald-800'
-    case 'active_deliberate_start': return 'bg-emerald-950 text-emerald-200 border-emerald-700'
-    case 'active_coaching': return 'bg-teal-950 text-teal-300 border-teal-700'
-    default: return 'bg-stone-800 text-stone-400 border-stone-700'
+    case 'new_check_in': return 'bg-blue-50 text-blue-700 border-blue-200'
+    case 'report_sent': return 'bg-violet-50 text-violet-700 border-violet-200'
+    case 'cold_no_booking': return 'bg-stone-50 text-stone-600 border-stone-200'
+    case 'zoom_booked': return 'bg-amber-50 text-amber-700 border-amber-200'
+    case 'zoom_1_booked': return 'bg-amber-50 text-amber-700 border-amber-200'
+    case 'zoom_completed': return 'bg-amber-50 text-amber-800 border-amber-300'
+    case 'closed_no_show': return 'bg-stone-50 text-stone-500 border-stone-200'
+    case 'closed_declined': return 'bg-stone-50 text-stone-500 border-stone-200'
+    case 'commencement_fee_paid': return 'bg-emerald-50 text-emerald-700 border-emerald-200'
+    case 'active_deliberate_start': return 'bg-emerald-50 text-emerald-800 border-emerald-300'
+    case 'active_coaching': return 'bg-blue-50 text-blue-700 border-blue-200'
+    default: return 'bg-stone-50 text-stone-600 border-stone-200'
   }
 }
 

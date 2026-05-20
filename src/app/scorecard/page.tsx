@@ -55,7 +55,7 @@ const RESULTS = [
   {
     range: '5 to 8',
     label: 'Depleted State',
-    color: '#ef4444',
+    color: '#DC2626',
     bg: 'rgba(239,68,68,0.06)',
     border: 'rgba(239,68,68,0.2)',
     desc: 'Your body is in protection mode. Cortisol is elevated, metabolism is suppressed, and your biology is actively resisting fat loss and performance gains. Pushing harder with more training and less food will make this worse. Your body needs to be brought out of this state first. Prescription without interpretation is the reason you\'re stuck.',
@@ -63,7 +63,7 @@ const RESULTS = [
   {
     range: '9 to 11',
     label: 'Transitioning State',
-    color: '#f59e0b',
+    color: '#B7791F',
     bg: 'rgba(245,158,11,0.06)',
     border: 'rgba(245,158,11,0.2)',
     desc: 'Mixed signals. Your body has capacity but it\'s not consistent. Something is limiting your response: sleep, stress, recovery, or a mismatch between your training load and your current biological state. You\'re close, but you need to identify the specific bottleneck before adding more input.',
@@ -72,8 +72,8 @@ const RESULTS = [
     range: '12 to 15',
     label: 'Ready State',
     color: '#14b8a6',
-    bg: 'rgba(20,184,166,0.06)',
-    border: 'rgba(20,184,166,0.2)',
+    bg: 'rgba(27,109,252,0.06)',
+    border: 'rgba(27,109,252,0.2)',
     desc: 'Your biology is in a position to respond. If fat loss or performance isn\'t happening at this score, the issue is in the prescription. Training, nutrition, or both need to be adjusted. You have the foundation. Now it needs to be optimised.',
   },
 ]
@@ -134,7 +134,7 @@ function ReportUpsell({ firstName, email, score, bodyState, scores }: {
   }
 
   return (
-    <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.3)', borderRadius: '14px', padding: '28px 28px 24px' }}>
+    <div style={{ background: '#0d2d29', border: '1px solid rgba(27,109,252,0.3)', borderRadius: '14px', padding: '28px 28px 24px' }}>
       <p style={{ fontSize: '13px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>
         Body Decode Report · $37
       </p>
@@ -144,7 +144,7 @@ function ReportUpsell({ firstName, email, score, bodyState, scores }: {
       <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
         A written report covering your exact body state, what is specifically working against you right now, and what to stop and start doing. Delivered to your inbox instantly.
       </p>
-      {error && <p style={{ fontSize: '13px', color: '#ef4444', marginBottom: '12px' }}>{error}</p>}
+      {error && <p style={{ fontSize: '13px', color: '#DC2626', marginBottom: '12px' }}>{error}</p>}
       <button
         onClick={handlePurchase}
         disabled={loading}
@@ -271,7 +271,7 @@ function ScorecardInner() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {section.rows.map(row => {
                       const selected = scores[section.number] === row.score
-                      const scoreColor = row.score === 1 ? '#ef4444' : row.score === 2 ? '#f59e0b' : '#14b8a6'
+                      const scoreColor = row.score === 1 ? '#DC2626' : row.score === 2 ? '#B7791F' : '#14b8a6'
                       return (
                         <button
                           key={row.score}
@@ -386,7 +386,7 @@ function ScorecardInner() {
                       onClick={() => setApproach(opt.value)}
                       style={{
                         display: 'flex', alignItems: 'flex-start', gap: '14px',
-                        background: selected ? 'rgba(20,184,166,0.08)' : '#111110',
+                        background: selected ? 'rgba(27,109,252,0.08)' : '#111110',
                         border: `1.5px solid ${selected ? '#14b8a6' : '#1c1917'}`,
                         borderRadius: '12px', padding: '14px 16px',
                         cursor: 'pointer', textAlign: 'left', width: '100%',
@@ -395,7 +395,7 @@ function ScorecardInner() {
                     >
                       <div style={{
                         width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
-                        background: selected ? 'rgba(20,184,166,0.15)' : '#1c1917',
+                        background: selected ? 'rgba(27,109,252,0.15)' : '#1c1917',
                         border: `1.5px solid ${selected ? '#14b8a6' : '#2c2826'}`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: '11px', fontWeight: 700, color: selected ? '#14b8a6' : '#57534e',
@@ -425,7 +425,7 @@ function ScorecardInner() {
                       onClick={() => setInvestment(opt.value)}
                       style={{
                         display: 'flex', alignItems: 'flex-start', gap: '14px',
-                        background: selected ? 'rgba(20,184,166,0.08)' : '#111110',
+                        background: selected ? 'rgba(27,109,252,0.08)' : '#111110',
                         border: `1.5px solid ${selected ? '#14b8a6' : '#1c1917'}`,
                         borderRadius: '12px', padding: '14px 16px',
                         cursor: 'pointer', textAlign: 'left', width: '100%',
@@ -434,7 +434,7 @@ function ScorecardInner() {
                     >
                       <div style={{
                         width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
-                        background: selected ? 'rgba(20,184,166,0.15)' : '#1c1917',
+                        background: selected ? 'rgba(27,109,252,0.15)' : '#1c1917',
                         border: `1.5px solid ${selected ? '#14b8a6' : '#2c2826'}`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: '11px', fontWeight: 700, color: selected ? '#14b8a6' : '#57534e',
@@ -450,7 +450,7 @@ function ScorecardInner() {
               </div>
             </div>
 
-            {error && <p style={{ fontSize: '13px', color: '#ef4444', marginBottom: '16px' }}>{error}</p>}
+            {error && <p style={{ fontSize: '13px', color: '#DC2626', marginBottom: '16px' }}>{error}</p>}
 
             <button
               onClick={submitEmail}
@@ -509,7 +509,7 @@ function ScorecardInner() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {SECTIONS.map(section => {
                   const s = scores[section.number]
-                  const c = s === 1 ? '#ef4444' : s === 2 ? '#f59e0b' : '#14b8a6'
+                  const c = s === 1 ? '#DC2626' : s === 2 ? '#B7791F' : '#14b8a6'
                   return (
                     <div key={section.number} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <span style={{ fontSize: '14px', color: '#a8a29e' }}>{section.title}</span>
@@ -544,7 +544,7 @@ function ScorecardInner() {
               />
 
               {/* Secondary: Book a call */}
-              <div style={{ background: '#0d2d29', border: '1px solid rgba(20,184,166,0.15)', borderRadius: '14px', padding: '24px 28px' }}>
+              <div style={{ background: '#0d2d29', border: '1px solid rgba(27,109,252,0.15)', borderRadius: '14px', padding: '24px 28px' }}>
                 <p style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.3 }}>
                   Want to talk through your result?
                 </p>
@@ -557,7 +557,7 @@ function ScorecardInner() {
                     display: 'block', width: '100%', padding: '14px', borderRadius: '10px',
                     background: 'transparent', color: '#14b8a6',
                     fontSize: '14px', fontWeight: 700, textAlign: 'center',
-                    textDecoration: 'none', border: '1.5px solid rgba(20,184,166,0.4)',
+                    textDecoration: 'none', border: '1.5px solid rgba(27,109,252,0.4)',
                   }}
                 >
                   Book a free call

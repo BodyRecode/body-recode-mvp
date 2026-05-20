@@ -47,12 +47,12 @@ export async function GET(request: NextRequest) {
       subject,
       html: darkEmailShell(`
       <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;" />
       </div>
-      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Just a reminder that your coaching begins tomorrow.</p>
-      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">I'll be in touch with your session details shortly. If you have any questions before we begin, reply to this email.</p>
-      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Looking forward to it.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Just a reminder that your coaching begins tomorrow.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">I'll be in touch with your session details shortly. If you have any questions before we begin, reply to this email.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Looking forward to it.</p>
       ${emailUrlFallback(portalUrl, 'Your portal')}
       ${darkEmailSignature()}
 `, { previewText: `${firstName}, coaching begins tomorrow.` }),

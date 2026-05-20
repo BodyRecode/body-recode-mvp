@@ -73,8 +73,8 @@ export async function POST(request: NextRequest) {
       return `
         <tr>
           <td style="padding:10px 0;border-bottom:1px solid #f5f5f4;vertical-align:top;">
-            <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#1c1917;">${label}</p>
-            <p style="margin:0;font-size:13px;color:#57534e;">${optionText}</p>
+            <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#E5E5E5;">${label}</p>
+            <p style="margin:0;font-size:13px;color:#999999;">${optionText}</p>
           </td>
         </tr>
       `
@@ -103,22 +103,22 @@ export async function POST(request: NextRequest) {
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" /><meta name="color-scheme" content="dark" /></head>
-<body style="margin:0;padding:0;background:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#0c0a09">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#FFFFFF">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:560px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:560px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
 
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px 24px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="120" alt="Body Recode" style="display:block;margin-bottom:20px;" />
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px 24px;border-bottom:1px solid #E5E5E5;">
+              <img src="https://bodyrecode.au/logo-black.png" width="120" alt="Body Recode" style="display:block;margin-bottom:20px;" />
               <p style="margin:0 0 6px;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#555;">New Check-In</p>
-              <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;">${name}</h1>
+              <h1 style="margin:0;font-size:22px;font-weight:700;color:#1A1A1A;">${name}</h1>
             </td>
           </tr>
 
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;">
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;">
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding:0 0 20px;">
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
                       ${Object.entries(QUESTIONS).map(([id, label]) => {
                         const val = answers[id] as number
                         const optionText = OPTIONS[id]?.[val] ?? `Option ${val}`
-                        return `<tr><td style="padding:8px 0;border-bottom:1px solid #1c1917;"><p style="margin:0 0 3px;font-size:12px;font-weight:600;color:#888;">${label}</p><p style="margin:0;font-size:13px;color:#ccc;">${optionText}</p></td></tr>`
+                        return `<tr><td style="padding:8px 0;border-bottom:1px solid #E5E5E5;"><p style="margin:0 0 3px;font-size:12px;font-weight:600;color:#888;">${label}</p><p style="margin:0;font-size:13px;color:#ccc;">${optionText}</p></td></tr>`
                       }).join('')}
                     </table>
                   </td>
@@ -144,8 +144,8 @@ export async function POST(request: NextRequest) {
           </tr>
 
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:20px 40px 28px;border-top:1px solid #1c1917;">
-              <a href="${appUrl()}/dashboard/leads" style="display:inline-block;padding:11px 22px;background:#10E1C2;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">View in dashboard</a>
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:20px 40px 28px;border-top:1px solid #E5E5E5;">
+              <a href="${appUrl()}/dashboard/leads" style="display:inline-block;padding:11px 22px;background:#1B6DFC;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">View in dashboard</a>
             </td>
           </tr>
 
@@ -174,30 +174,30 @@ export async function POST(request: NextRequest) {
   <meta name="color-scheme" content="dark" />
   <meta name="supported-color-schemes" content="dark" />
 </head>
-<body style="margin:0;padding:0;background-color:#0c0a09;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#0c0a09">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" bgcolor="#FFFFFF">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
 
           <!-- Header -->
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:32px 40px 28px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px 28px;border-bottom:1px solid #E5E5E5;">
+              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
 
           <!-- Body -->
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;">
-              <p style="margin:0 0 24px;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;">Check-In received,<br/>${firstName}.</p>
-              <p style="margin:0 0 16px;font-size:15px;color:#888888;line-height:1.7;">
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;">
+              <p style="margin:0 0 24px;font-size:22px;font-weight:700;color:#1A1A1A;line-height:1.3;">Check-In received,<br/>${firstName}.</p>
+              <p style="margin:0 0 16px;font-size:15px;color:#999999;line-height:1.7;">
                 Your responses have been received and are being reviewed.
               </p>
-              <p style="margin:0 0 16px;font-size:15px;color:#888888;line-height:1.7;">
+              <p style="margin:0 0 16px;font-size:15px;color:#999999;line-height:1.7;">
                 From this submission, a short interpretive report will be prepared, reflecting the patterns currently showing up across your training, recovery, and overall consistency.
               </p>
-              <p style="margin:0 0 36px;font-size:15px;color:#888888;line-height:1.7;">
+              <p style="margin:0 0 36px;font-size:15px;color:#999999;line-height:1.7;">
                 You can expect this report within one business day. No further action is required from you at this stage.
               </p>
 

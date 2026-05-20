@@ -21,7 +21,7 @@ import { FileText, Dumbbell, BookOpen, Salad, Compass, CheckCircle2, ArrowRight 
  * URL: /broll/blueprint-six-weeks (noindex - see /broll/layout.tsx)
  */
 
-const STRESS_STORED_COLOUR = '#ef4444'
+const STRESS_STORED_COLOUR = '#DC2626'
 
 const MIDPOINT_QUESTIONS = [
   'Is your afternoon energy crash less severe than Week 1?',

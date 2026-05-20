@@ -45,8 +45,8 @@ export async function POST(req: NextRequest) {
           heading: `${client.name} has referred ${escape(friendName)}`,
           body: [
             `<strong style="color:#fff;">${escape(friendName)}</strong>`,
-            `<a href="mailto:${escape(friendEmail)}" style="color:#14b8a6;">${escape(friendEmail)}</a>`,
-            ...(escapedNote ? [`<div style="background:#0c0a09;border:1px solid #1c1917;border-radius:12px;padding:16px;margin:16px 0;color:#e7e5e4;font-size:14px;line-height:1.7;"><strong style="color:#fff;">Note from ${escape(client.name)}:</strong><br/>${escapedNote}</div>`] : []),
+            `<a href="mailto:${escape(friendEmail)}" style="color:#1B6DFC;">${escape(friendEmail)}</a>`,
+            ...(escapedNote ? [`<div style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:12px;padding:16px;margin:16px 0;color:#E5E5E5;font-size:14px;line-height:1.7;"><strong style="color:#fff;">Note from ${escape(client.name)}:</strong><br/>${escapedNote}</div>`] : []),
           ],
           ctaLabel: 'Open client profile',
           ctaUrl: `${baseUrl}/dashboard/clients/${clientId}`,

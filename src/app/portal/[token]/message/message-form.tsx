@@ -49,13 +49,13 @@ export default function MessageForm({ clientId, clientName, portalToken }: { cli
       <p className="text-[11px] text-[#3c3835] mt-2">{body.length}/5000 characters</p>
 
       {error && (
-        <div className="mt-3 bg-[#1a1108] border border-[#3a2410] rounded-lg px-3 py-2 text-[12px] text-[#fbbf24]">
+        <div className="mt-3 bg-[#FEF6E7] border border-[#F0DCB4] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14]">
           {error}
         </div>
       )}
 
       {sent && (
-        <div className="mt-3 bg-[rgba(20,184,166,0.08)] border border-[#0d2d29] rounded-lg px-3 py-2 text-[12px] text-[#14b8a6]">
+        <div className="mt-3 bg-[rgba(27,109,252,0.08)] border border-[#0d2d29] rounded-lg px-3 py-2 text-[12px] text-[#14b8a6]">
           Your message has been sent. Your coach will reply by email.
         </div>
       )}

@@ -186,29 +186,29 @@ export async function POST(request: NextRequest) {
       subject: `Your Zoom call is confirmed — ${dateStr}`,
       attachments: [{ filename: 'booking.ics', content: Buffer.from(ics).toString('base64') }],
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;"/>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your Zoom call with Kade is confirmed.</p>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+            <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Hi ${firstName},</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#999999;line-height:1.75;">Your Zoom call with Kade is confirmed.</p>
             <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
               <tr>
                 <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
-                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#ffffff;">${dateStr}</p>
-                  <p style="margin:0 0 16px;font-size:14px;color:#888888;">${timeStr} Brisbane · 30 min</p>
-                  ${meetingLink ? `<a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>` : ''}
+                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#1A1A1A;">${dateStr}</p>
+                  <p style="margin:0 0 16px;font-size:14px;color:#999999;">${timeStr} Brisbane · 30 min</p>
+                  ${meetingLink ? `<a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>` : ''}
                 </td>
               </tr>
             </table>
-            <p style="margin:0 0 24px;font-size:13px;color:#a8a29e;">Open the attached file to add this to your calendar.</p>
+            <p style="margin:0 0 24px;font-size:13px;color:#6B6B6B;">Open the attached file to add this to your calendar.</p>
             ${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
             ${darkEmailSignature()}
           </td>
@@ -225,25 +225,25 @@ export async function POST(request: NextRequest) {
     const now = Date.now()
 
     const reminderHtml = (minutesBefore: number) => `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;"/>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your Zoom call with Kade is in ${minutesBefore === 120 ? '2 hours' : '30 minutes'}.</p>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+            <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Hi ${firstName},</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#999999;line-height:1.75;">Your Zoom call with Kade is in ${minutesBefore === 120 ? '2 hours' : '30 minutes'}.</p>
             <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
               <tr>
                 <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
-                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#ffffff;">${dateStr}</p>
-                  <p style="margin:0 0 16px;font-size:14px;color:#888888;">${timeStr} Brisbane · 30 min</p>
-                  ${meetingLink ? `<a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>` : ''}
+                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#1A1A1A;">${dateStr}</p>
+                  <p style="margin:0 0 16px;font-size:14px;color:#999999;">${timeStr} Brisbane · 30 min</p>
+                  ${meetingLink ? `<a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>` : ''}
                 </td>
               </tr>
             </table>
@@ -282,30 +282,30 @@ export async function POST(request: NextRequest) {
       to: 'kade@bodyrecode.au',
       subject: `Zoom booked — ${lead.name}`,
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:480px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:480px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;"/>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+            <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#ffffff;">Zoom booked — ${lead.name}</p>
-            <p style="margin:0 0 20px;font-size:14px;color:#a8a29e;">${lead.email}</p>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+            <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#1A1A1A;">Zoom booked — ${lead.name}</p>
+            <p style="margin:0 0 20px;font-size:14px;color:#6B6B6B;">${lead.email}</p>
             <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;width:100%;">
               <tr>
                 <td style="padding:14px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;">
-                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#57534e;letter-spacing:0.08em;text-transform:uppercase;">Date &amp; Time</p>
-                  <p style="margin:0;font-size:15px;font-weight:600;color:#ffffff;">${dateStr} · ${timeStr} Brisbane</p>
+                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">Date &amp; Time</p>
+                  <p style="margin:0;font-size:15px;font-weight:600;color:#1A1A1A;">${dateStr} · ${timeStr} Brisbane</p>
                 </td>
               </tr>
             </table>
             <table cellpadding="0" cellspacing="0"><tr>
-              ${meetingLink ? `<td style="padding-right:12px;"><a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a></td>` : ''}
-              <td><a href="${appUrl()}/dashboard/leads/${lead.id}" style="display:inline-block;padding:12px 20px;border:1px solid #333;color:#a8a29e;font-size:13px;text-decoration:none;border-radius:8px;">View Lead →</a></td>
+              ${meetingLink ? `<td style="padding-right:12px;"><a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a></td>` : ''}
+              <td><a href="${appUrl()}/dashboard/leads/${lead.id}" style="display:inline-block;padding:12px 20px;border:1px solid #333;color:#6B6B6B;font-size:13px;text-decoration:none;border-radius:8px;">View Lead →</a></td>
             </tr></table>
           </td>
         </tr>

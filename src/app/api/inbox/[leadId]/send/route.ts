@@ -46,11 +46,11 @@ export async function POST(
     to: lead.email,
     subject,
     html: darkEmailShell(`
-      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;border:0;"/>
-      <div style="font-size:15px;color:#cfcfcf;line-height:1.9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+      <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;border:0;"/>
+      <div style="font-size:15px;color:#4A4A4A;line-height:1.9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
         ${message.replace(/\n/g, '<br/>')}
       </div>
-      <p style="font-size:15px;color:#cfcfcf;margin-top:32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Kade</p>
+      <p style="font-size:15px;color:#4A4A4A;margin-top:32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Kade</p>
 `, { previewText: subject }),
   })
 

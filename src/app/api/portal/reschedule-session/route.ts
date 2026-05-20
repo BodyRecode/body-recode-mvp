@@ -79,17 +79,17 @@ export async function POST(req: NextRequest) {
       to: client.email,
       subject: `Session booked: ${displayDate} at ${displayTime}`,
       html: `
-        <div style="background:#0c0a09;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-          <div style="max-width:480px;margin:0 auto;background:#111110;border-radius:16px;padding:36px;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="110" style="display:block;margin-bottom:28px;" alt="Body Recode" />
-            <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#ffffff;">Session confirmed</p>
-            <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;line-height:1.6;">Hey ${firstName}, your session has been booked.</p>
+        <div style="background:#FFFFFF;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+          <div style="max-width:480px;margin:0 auto;background:#FFFFFF;border-radius:16px;padding:36px;">
+            <img src="https://bodyrecode.au/logo-black.png" width="110" style="display:block;margin-bottom:28px;" alt="Body Recode" />
+            <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#1A1A1A;">Session confirmed</p>
+            <p style="margin:0 0 24px;font-size:14px;color:#6B6B6B;line-height:1.6;">Hey ${firstName}, your session has been booked.</p>
             <div style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:24px;">
               <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#2dd4bf;text-transform:uppercase;letter-spacing:0.08em;">Face-to-Face Session</p>
-              <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#ffffff;">${displayDate}</p>
-              <p style="margin:0;font-size:14px;color:#a8a29e;">${displayTime} · ${durationMinutes} min · AF Newstead</p>
+              <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#1A1A1A;">${displayDate}</p>
+              <p style="margin:0;font-size:14px;color:#6B6B6B;">${displayTime} · ${durationMinutes} min · AF Newstead</p>
             </div>
-            <p style="margin:0 0 24px;font-size:14px;color:#a8a29e;line-height:1.6;">
+            <p style="margin:0 0 24px;font-size:14px;color:#6B6B6B;line-height:1.6;">
               If you need to make any changes, log in to your client portal and visit the Sessions page.
             </p>
             ${darkEmailSignature()}
@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
         heading: `${client.name} booked a face-to-face session`,
         body: `${client.name} has booked a session via the client portal.`,
         details: [
-          `<strong style="color:#ffffff;">${displayDate}</strong>`,
+          `<strong style="color:#1A1A1A;">${displayDate}</strong>`,
           `${displayTime} · ${durationMinutes} min · AF Newstead`,
         ],
         ctaLabel: 'Open client profile',

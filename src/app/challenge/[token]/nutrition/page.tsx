@@ -57,7 +57,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
           <p style={label}>The System</p>
           <p style={sectionTitle}>Hybrid Animal-Based Nutrition System</p>
           <div style={{
-            background: 'rgba(20,184,166,0.07)', border: '1px solid rgba(20,184,166,0.2)',
+            background: 'rgba(27,109,252,0.07)', border: '1px solid rgba(27,109,252,0.2)',
             borderRadius: '12px', padding: '22px', marginTop: '16px', marginBottom: '16px',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
@@ -145,7 +145,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
               'Fast food and takeaway',
             ].map(item => (
               <div key={item} style={{ ...card, padding: '12px 14px', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                <svg style={{ flexShrink: 0, marginTop: '2px' }} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg style={{ flexShrink: 0, marginTop: '2px' }} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
                 <p style={{ fontSize: '13px', color: '#78716c', margin: 0, lineHeight: 1.5 }}>{item}</p>
@@ -168,7 +168,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
               { window: 'Post-training', rule: 'Protein + clean starchy carbs within 1 hour.' },
             ].map(w => (
               <div key={w.window} style={{ ...card, display: 'flex', gap: '0', alignItems: 'stretch', padding: 0, overflow: 'hidden' }}>
-                <div style={{ background: 'rgba(20,184,166,0.08)', borderRight: '1px solid #1c1917', padding: '14px 16px', minWidth: '120px', display: 'flex', alignItems: 'center' }}>
+                <div style={{ background: 'rgba(27,109,252,0.08)', borderRight: '1px solid #1c1917', padding: '14px 16px', minWidth: '120px', display: 'flex', alignItems: 'center' }}>
                   <p style={{ fontSize: '12px', fontWeight: 700, color: '#14b8a6', margin: 0, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>{w.window}</p>
                 </div>
                 <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center' }}>
@@ -185,7 +185,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
               ))}
             </div>
           </div>
-          <div style={{ ...card, background: 'rgba(20,184,166,0.07)', border: '1px solid rgba(20,184,166,0.18)' }}>
+          <div style={{ ...card, background: 'rgba(27,109,252,0.07)', border: '1px solid rgba(27,109,252,0.18)' }}>
             <p style={{ fontSize: '13px', color: '#99d6d0', lineHeight: 1.65, margin: 0 }}>
               This approach resets insulin sensitivity, reduces inflammation, and teaches your body to use stored fat for energy. After the challenge, carbohydrate flexibility increases inside the 6-Week Blueprint.
             </p>
@@ -377,7 +377,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                     <p style={{ fontSize: '14px', fontWeight: 600, color: '#ffffff', margin: '0 0 3px' }}>{s.name}</p>
                     <p style={{ fontSize: '12px', color: '#a8a29e', margin: 0, lineHeight: 1.4 }}>{s.note}</p>
                   </div>
-                  <span style={{ fontSize: '11px', color: '#14b8a6', background: 'rgba(20,184,166,0.08)', border: '1px solid rgba(20,184,166,0.2)', padding: '3px 10px', borderRadius: '99px', marginLeft: '16px', whiteSpace: 'nowrap' as const }}>{s.timing}</span>
+                  <span style={{ fontSize: '11px', color: '#14b8a6', background: 'rgba(27,109,252,0.08)', border: '1px solid rgba(27,109,252,0.2)', padding: '3px 10px', borderRadius: '99px', marginLeft: '16px', whiteSpace: 'nowrap' as const }}>{s.timing}</span>
                 </div>
               ))}
             </div>

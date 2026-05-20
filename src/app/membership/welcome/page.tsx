@@ -10,7 +10,7 @@ export default function MembershipWelcomePage() {
 
         <div style={{
           width: 64, height: 64, borderRadius: '50%',
-          background: 'rgba(20,184,166,0.15)', border: '1px solid rgba(20,184,166,0.3)',
+          background: 'rgba(27,109,252,0.15)', border: '1px solid rgba(27,109,252,0.3)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           margin: '0 auto 28px',
         }}>
@@ -47,7 +47,7 @@ export default function MembershipWelcomePage() {
             <div key={item} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 10 }}>
               <div style={{
                 width: 18, height: 18, borderRadius: '50%',
-                background: 'rgba(20,184,166,0.15)', border: '1px solid rgba(20,184,166,0.3)',
+                background: 'rgba(27,109,252,0.15)', border: '1px solid rgba(27,109,252,0.3)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1,
               }}>
                 <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">

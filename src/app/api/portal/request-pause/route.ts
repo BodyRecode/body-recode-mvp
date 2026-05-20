@@ -45,9 +45,9 @@ export async function POST(req: NextRequest) {
           eyebrow: 'Pause Request',
           heading: `${client.name} has requested a pause`,
           body: [
-            `<em style="color:#57534e;">Reply directly to this email to coordinate. The pause has not been auto-applied.</em>`,
+            `<em style="color:#999999;">Reply directly to this email to coordinate. The pause has not been auto-applied.</em>`,
             ...(escapedReason
-              ? [`<div style="background:#0c0a09;border:1px solid #1c1917;border-radius:12px;padding:16px;margin:16px 0;color:#e7e5e4;font-size:14px;line-height:1.7;"><strong style="color:#fff;">Reason:</strong><br/>${escapedReason}</div>`]
+              ? [`<div style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:12px;padding:16px;margin:16px 0;color:#E5E5E5;font-size:14px;line-height:1.7;"><strong style="color:#fff;">Reason:</strong><br/>${escapedReason}</div>`]
               : ['<em>No reason provided.</em>']),
           ],
           ctaLabel: 'Open client profile',

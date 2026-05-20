@@ -21,17 +21,17 @@ function modeLabel(mode: RouterMode): { label: string; colour: string; bg: strin
     case 'disabled':
       return { label: 'Router disabled', colour: '#6B6B6B', bg: 'rgba(168,162,158,0.06)' }
     case 'observe_only':
-      return { label: 'Observe-only (Phase 2 — shadow log)', colour: '#f59e0b', bg: 'rgba(245,158,11,0.10)' }
+      return { label: 'Observe-only (Phase 2 — shadow log)', colour: '#B7791F', bg: 'rgba(245,158,11,0.10)' }
     case 'live_soft_gate':
       return { label: 'Live — soft gate', colour: '#60a5fa', bg: 'rgba(96,165,250,0.10)' }
     case 'live_hard_gate':
-      return { label: 'Live — hard gate', colour: '#1B6DFC', bg: 'rgba(20,184,166,0.12)' }
+      return { label: 'Live — hard gate', colour: '#1B6DFC', bg: 'rgba(27,109,252,0.12)' }
   }
 }
 
 function tierColour(tier: number): string {
-  if (tier === 1) return '#ef4444'
-  if (tier === 2) return '#f59e0b'
+  if (tier === 1) return '#DC2626'
+  if (tier === 2) return '#B7791F'
   if (tier <= 4) return '#60a5fa'
   return '#6B6B6B'
 }
@@ -59,18 +59,18 @@ function rsibPill(value: string | undefined, kind: 'recovery' | 'sessions' | 'sl
   if (kind === 'recovery') {
     const n = Number(value)
     if (!Number.isFinite(n)) return { label: '—', colour: '#6B6B6B' }
-    if (n <= 2) return { label: `Recovery ${n}`, colour: '#ef4444' }
-    if (n === 3) return { label: `Recovery 3`, colour: '#f59e0b' }
+    if (n <= 2) return { label: `Recovery ${n}`, colour: '#DC2626' }
+    if (n === 3) return { label: `Recovery 3`, colour: '#B7791F' }
     return { label: `Recovery ${n}`, colour: '#1B6DFC' }
   }
   if (kind === 'sessions') {
-    if (value === 'harder') return { label: 'Sessions harder', colour: '#ef4444' }
+    if (value === 'harder') return { label: 'Sessions harder', colour: '#DC2626' }
     if (value === 'easier') return { label: 'Sessions easier', colour: '#1B6DFC' }
     return { label: 'Sessions same', colour: '#60a5fa' }
   }
   // sleep
-  if (value === 'severely_inconsistent') return { label: 'Sleep severely inconsistent', colour: '#ef4444' }
-  if (value === 'inconsistent') return { label: 'Sleep inconsistent', colour: '#f59e0b' }
+  if (value === 'severely_inconsistent') return { label: 'Sleep severely inconsistent', colour: '#DC2626' }
+  if (value === 'inconsistent') return { label: 'Sleep inconsistent', colour: '#B7791F' }
   return { label: 'Sleep consistent', colour: '#1B6DFC' }
 }
 
@@ -168,7 +168,7 @@ export function RecoveryRouterPanel({
       {snapshot.activeState && (
         <div className="px-5 py-4 border-b border-[#E5E5E5] bg-[#0e0e0c]">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[10px] uppercase tracking-widest text-[#ef4444]" style={{ fontFamily: MONO_FONT }}>
+            <span className="text-[10px] uppercase tracking-widest text-[#DC2626]" style={{ fontFamily: MONO_FONT }}>
               Active state
             </span>
           </div>

@@ -5,8 +5,8 @@ import { AlertTriangle, Search } from 'lucide-react'
 import { PageHeader, Card, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 
 const PATTERN_COLOURS: Record<string, string> = {
-  'stress-stored': '#ef4444',
-  'metabolic-drift': '#f59e0b',
+  'stress-stored': '#DC2626',
+  'metabolic-drift': '#B7791F',
   'hormonal-shift': '#8b5cf6',
   'system-overload': '#1B6DFC',
   'pending': '#999999',
@@ -46,7 +46,7 @@ function formatDate(dateStr: string) {
 }
 
 function AvgBadge({ avg }: { avg: number }) {
-  const colour = avg >= 4 ? '#1B6DFC' : avg >= 3 ? '#f59e0b' : '#ef4444'
+  const colour = avg >= 4 ? '#1B6DFC' : avg >= 3 ? '#B7791F' : '#DC2626'
   return (
     <span
       className="inline-flex items-center text-[11px] font-bold px-2 py-0.5 rounded-full border"
@@ -159,7 +159,7 @@ export default function FunnelClient({
   const summary = [
     { label: 'Challenge', count: challengeEnrollments.length, sub: `${challengeEnrollments.filter(e => e.quizCompleted).length} completed quiz`, accent: '#1B6DFC' },
     { label: 'Blueprint', count: blueprintEnrollments.length, sub: `${blueprintEnrollments.filter(e => e.hasMembership).length} ascended to membership`, accent: '#8b5cf6' },
-    { label: 'Membership', count: membershipEnrollments.length, sub: `${membershipEnrollments.filter(e => !e.cancelledAt).length} active`, accent: '#f59e0b' },
+    { label: 'Membership', count: membershipEnrollments.length, sub: `${membershipEnrollments.filter(e => !e.cancelledAt).length} active`, accent: '#B7791F' },
   ]
 
   return (
@@ -282,7 +282,7 @@ export default function FunnelClient({
                     {e.hasBlueprintPurchase
                       ? <StatusBadge label="Purchased" colour="#8b5cf6" />
                       : e.currentDay >= 14
-                        ? <StatusBadge label="Not yet" colour="#ef4444" />
+                        ? <StatusBadge label="Not yet" colour="#DC2626" />
                         : <StatusBadge label="In progress" colour="#999999" />}
                   </TD>
                   <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.enrolledAt)}</span></TD>
@@ -311,14 +311,14 @@ export default function FunnelClient({
                   <TD>
                     {e.lastCheckin
                       ? <span className="text-[12px] text-[#6B6B6B]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
-                      : <span className="text-[12px] text-[#ef4444]">None submitted</span>}
+                      : <span className="text-[12px] text-[#DC2626]">None submitted</span>}
                   </TD>
                   <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#999999] text-[12px]">-</span>}</TD>
                   <TD>
                     {e.hasMembership
                       ? <StatusBadge label="Active" colour="#1B6DFC" />
                       : e.currentWeek === 6
-                        ? <StatusBadge label="Not joined" colour="#ef4444" />
+                        ? <StatusBadge label="Not joined" colour="#DC2626" />
                         : <StatusBadge label="Not yet" colour="#999999" />}
                   </TD>
                   <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.purchaseDate)}</span></TD>
@@ -347,12 +347,12 @@ export default function FunnelClient({
                   <TD>
                     {e.lastCheckin
                       ? <span className="text-[12px] text-[#6B6B6B]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
-                      : <span className="text-[12px] text-[#ef4444]">None submitted</span>}
+                      : <span className="text-[12px] text-[#DC2626]">None submitted</span>}
                   </TD>
                   <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#999999] text-[12px]">-</span>}</TD>
                   <TD>
                     {e.cancelledAt
-                      ? <StatusBadge label="Cancelled" colour="#ef4444" />
+                      ? <StatusBadge label="Cancelled" colour="#DC2626" />
                       : <StatusBadge label="Active" colour="#1B6DFC" />}
                   </TD>
                   <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.joinedAt)}</span></TD>

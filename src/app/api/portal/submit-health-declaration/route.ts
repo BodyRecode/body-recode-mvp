@@ -75,19 +75,19 @@ export async function POST(req: NextRequest) {
     if (requiresClearance) {
       switch (clientEmailStatus) {
         case 'sent':
-          statusLine = '<span style="color:#14b8a6;">✓ Client was also auto-emailed</span> with the portal link and three-step instructions. No manual nudge needed.'
+          statusLine = '<span style="color:#1B6DFC;">✓ Client was also auto-emailed</span> with the portal link and three-step instructions. No manual nudge needed.'
           break
         case 'skipped_no_email':
-          statusLine = '<strong style="color:#ef4444;">⚠ Client email NOT sent: no email address on record.</strong> Reach out manually or add an email and re-run scripts/send-clearance-required-email.ts.'
+          statusLine = '<strong style="color:#DC2626;">⚠ Client email NOT sent: no email address on record.</strong> Reach out manually or add an email and re-run scripts/send-clearance-required-email.ts.'
           break
         case 'skipped_no_token':
-          statusLine = '<strong style="color:#ef4444;">⚠ Client email NOT sent: no onboarding_token on record.</strong> Reach out manually.'
+          statusLine = '<strong style="color:#DC2626;">⚠ Client email NOT sent: no onboarding_token on record.</strong> Reach out manually.'
           break
         case 'skipped_no_resend_key':
-          statusLine = '<strong style="color:#ef4444;">⚠ Client email NOT sent: RESEND_API_KEY not configured.</strong> Reach out manually.'
+          statusLine = '<strong style="color:#DC2626;">⚠ Client email NOT sent: RESEND_API_KEY not configured.</strong> Reach out manually.'
           break
         case 'failed':
-          statusLine = `<strong style="color:#ef4444;">⚠ Client email FAILED to send.</strong> ${clientEmailError ?? 'Reason unknown'}. Reach out manually or re-run scripts/send-clearance-required-email.ts.`
+          statusLine = `<strong style="color:#DC2626;">⚠ Client email FAILED to send.</strong> ${clientEmailError ?? 'Reason unknown'}. Reach out manually or re-run scripts/send-clearance-required-email.ts.`
           break
       }
     }
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
     const body = requiresClearance
       ? [
           `${name} has completed their health declaration.`,
-          '<strong style="color:#f59e0b;">Medical clearance required.</strong> Their intake is gated until you approve a completed clearance form. They will be prompted to upload it inside the portal.',
+          '<strong style="color:#B7791F;">Medical clearance required.</strong> Their intake is gated until you approve a completed clearance form. They will be prompted to upload it inside the portal.',
           ...(statusLine ? [statusLine] : []),
         ]
       : `${name} has completed their health declaration. No medical clearance flagged. Their Foundational Intake task is now unlocked.`

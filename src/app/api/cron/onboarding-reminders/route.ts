@@ -32,17 +32,17 @@ const APP_URL = appUrl()
 
 function dayCard(html: string) {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;"/>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
             ${html}
           </td>
         </tr>
@@ -61,10 +61,10 @@ function reminderEmail(firstName: string, taskTitle: string, threshold: Threshol
       : `It's been two weeks since your ${taskTitle} became available. If you've changed your mind that's okay — just let me know. Otherwise, this is the last automated reminder.`
 
   const body = `
-    <p style="margin:0 0 18px;font-size:15px;color:#cfcfcf;line-height:1.75;">Hi ${firstName},</p>
-    <p style="margin:0 0 24px;font-size:15px;color:#cfcfcf;line-height:1.75;">${intro}</p>
-    <a href="${portalUrl}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open your portal</a>
-    <p style="margin:24px 0 0;font-size:13px;color:#a8a29e;line-height:1.7;">If anything's blocking you or unclear, reply to this email.</p>
+    <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">Hi ${firstName},</p>
+    <p style="margin:0 0 24px;font-size:15px;color:#4A4A4A;line-height:1.75;">${intro}</p>
+    <a href="${portalUrl}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open your portal</a>
+    <p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;line-height:1.7;">If anything's blocking you or unclear, reply to this email.</p>
     ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
     ${darkEmailSignature()}`
 

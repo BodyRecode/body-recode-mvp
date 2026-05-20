@@ -32,7 +32,7 @@ function ActionButton({
   const base = 'text-[12px] font-semibold px-3.5 py-2 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap'
   const palette =
     tone === 'caution'
-      ? 'border border-[#3a2410] text-[#f59e0b] bg-[#1a1108] hover:border-[#5a3818] hover:text-[#fbbf24]'
+      ? 'border border-[#F0DCB4] text-[#B7791F] bg-[#FEF6E7] hover:border-[#D9B976] hover:text-[#8A5A14]'
       : 'border border-[#E5E5E5] text-[#3A3A3A] bg-[#FFFFFF] hover:border-[#D4D4D4] hover:text-[#1A1A1A]'
 
   return (

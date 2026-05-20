@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
   const n = parseInt(searchParams.get('n') ?? '1', 10) // slide number for carousel-slide
   const taken = parseInt(searchParams.get('taken') ?? '0', 10) // founder: positions taken
 
-  const accentColor = accent === 'red' ? '#ef4444' : accent === 'amber' ? '#f59e0b' : '#14b8a6'
+  const accentColor = accent === 'red' ? '#DC2626' : accent === 'amber' ? '#B7791F' : '#14b8a6'
 
   const isPhotoStyle = style === 'photo-split' || style === 'photo-quote' || style === 'photo-right' || style === 'photo-top'
   const photoSrc = isPhotoStyle ? await getPhotoData(request) : ''
@@ -261,9 +261,9 @@ export async function GET(request: NextRequest) {
             {/* Three states stacked */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '36px' }}>
               {[
-                { color: '#ef4444', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.25)', label: 'Depleted', desc: 'Protection mode. Adding more makes it worse.' },
-                { color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)', label: 'Transitioning', desc: 'Mixed signals. Something is blocking your response.' },
-                { color: '#14b8a6', bg: 'rgba(20,184,166,0.08)', border: 'rgba(20,184,166,0.25)', label: 'Ready', desc: 'Your biology is in a position to respond.' },
+                { color: '#DC2626', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.25)', label: 'Depleted', desc: 'Protection mode. Adding more makes it worse.' },
+                { color: '#B7791F', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)', label: 'Transitioning', desc: 'Mixed signals. Something is blocking your response.' },
+                { color: '#14b8a6', bg: 'rgba(27,109,252,0.08)', border: 'rgba(27,109,252,0.25)', label: 'Ready', desc: 'Your biology is in a position to respond.' },
               ].map(s => (
                 <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: '20px', background: s.bg, border: `1px solid ${s.border}`, borderRadius: '10px', padding: '16px 24px' }}>
                   <div style={{ width: '4px', height: '36px', background: s.color, borderRadius: '2px', flexShrink: 0 }} />
@@ -277,7 +277,7 @@ export async function GET(request: NextRequest) {
 
             {/* CTA pill */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.4)', borderRadius: '100px', padding: '16px 36px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ background: 'rgba(27,109,252,0.12)', border: '1px solid rgba(27,109,252,0.4)', borderRadius: '100px', padding: '16px 36px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <div style={{ fontSize: '32px', fontWeight: 700, color: '#14b8a6' }}>Find out which state you're in</div>
                 <div style={{ fontSize: '32px', color: '#14b8a6' }}>→</div>
               </div>
@@ -319,13 +319,13 @@ export async function GET(request: NextRequest) {
             </div>
 
             {/* Label under number */}
-            <div style={{ fontSize: '48px', fontWeight: 600, color: taken > 0 ? '#f87171' : '#a8a29e', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '56px' }}>
+            <div style={{ fontSize: '48px', fontWeight: 600, color: taken > 0 ? '#DC2626' : '#a8a29e', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '56px' }}>
               {taken > 0 ? 'positions taken' : 'positions available'}
             </div>
 
             {/* Progress bar */}
             <div style={{ width: '880px', height: '8px', background: 'rgba(255,255,255,0.08)', borderRadius: '4px', marginBottom: '56px', display: 'flex' }}>
-              <div style={{ width: taken > 0 ? `${takenPct}px` : '0px', height: '8px', background: '#f87171', borderRadius: '4px' }} />
+              <div style={{ width: taken > 0 ? `${takenPct}px` : '0px', height: '8px', background: '#DC2626', borderRadius: '4px' }} />
             </div>
 
             {/* Single line of copy */}
@@ -435,7 +435,7 @@ export async function GET(request: NextRequest) {
           )}
 
           {/* CTA pill */}
-          <div style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.4)', borderRadius: '100px', padding: '22px 52px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ background: 'rgba(27,109,252,0.12)', border: '1px solid rgba(27,109,252,0.4)', borderRadius: '100px', padding: '22px 52px', display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ fontSize: '36px', fontWeight: 700, color: '#14b8a6', letterSpacing: '0.01em' }}>
               {label || 'Take the Body State Scorecard'}
             </div>

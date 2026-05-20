@@ -63,8 +63,8 @@ export async function POST(req: NextRequest) {
           eyebrow: 'Client Message',
           heading: `${client.name} sent you a message`,
           body: [
-            `<em style="color:#57534e;">Sent via the client portal. Reply directly to this email and the client will receive your response.</em>`,
-            `<div style="background:#0c0a09;border:1px solid #1c1917;border-radius:12px;padding:16px;margin:16px 0;color:#e7e5e4;font-size:14px;line-height:1.7;">${escapedBody}</div>`,
+            `<em style="color:#999999;">Sent via the client portal. Reply directly to this email and the client will receive your response.</em>`,
+            `<div style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:12px;padding:16px;margin:16px 0;color:#E5E5E5;font-size:14px;line-height:1.7;">${escapedBody}</div>`,
           ],
           ctaLabel: 'Open client profile',
           ctaUrl: `${baseUrl}/dashboard/clients/${clientId}`,

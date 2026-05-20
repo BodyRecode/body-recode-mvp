@@ -32,13 +32,13 @@ export default async function PreviewDownsellEmail({
             </td>
           </tr>
           <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Your scorecard came back as ${stateLabel} State. That tells me specifically how your body is handling stress and recovery right now, and what it can actually respond to.</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">I have built a 12-week program specifically for ${stateLabel} State. Not a generic plan. Every decision in it, the training volume, intensity, rest periods, and nutrition, is designed around where you are right now.</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">It is $97. One-time. Yours to keep.</p>
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#4A4A4A;">
+              <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">Hi ${firstName},</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">Your scorecard came back as ${stateLabel} State. That tells me specifically how your body is handling stress and recovery right now, and what it can actually respond to.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">I have built a 12-week program specifically for ${stateLabel} State. Not a generic plan. Every decision in it, the training volume, intensity, rest periods, and nutrition, is designed around where you are right now.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">It is $97. One-time. Yours to keep.</p>
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${checkoutUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Get the Program - $97</a></td></tr>
+                <tr><td><a href="${checkoutUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Get the Program - $97</a></td></tr>
               </table>
               ${darkEmailSignature()}
             </td>
@@ -61,12 +61,12 @@ export default async function PreviewDownsellEmail({
             </td>
           </tr>
           <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Your 12-week ${stateLabel} State Program is ready. Everything is in there: the full training protocol, nutrition targets, priority foods, and what to expect each phase.</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Bookmark the page so you can come back to it any time.</p>
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#4A4A4A;">
+              <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">Hi ${firstName},</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">Your 12-week ${stateLabel} State Program is ready. Everything is in there: the full training protocol, nutrition targets, priority foods, and what to expect each phase.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">Bookmark the page so you can come back to it any time.</p>
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${programUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">View My Program</a></td></tr>
+                <tr><td><a href="${programUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">View My Program</a></td></tr>
               </table>
               ${darkEmailSignature()}
             </td>

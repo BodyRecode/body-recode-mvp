@@ -125,7 +125,7 @@ function ExerciseCard({ ex, index }: { ex: { name: string; sets: string; rir: st
       </div>
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' as const, paddingLeft: '32px' }}>
         <span style={{ fontSize: '13px', color: '#78716c', background: '#1c1917', borderRadius: '6px', padding: '4px 10px' }}>{ex.sets}</span>
-        <span style={{ fontSize: '13px', color: '#14b8a6', background: 'rgba(20,184,166,0.08)', border: '1px solid rgba(20,184,166,0.15)', borderRadius: '6px', padding: '4px 10px' }}>{ex.rir}</span>
+        <span style={{ fontSize: '13px', color: '#14b8a6', background: 'rgba(27,109,252,0.08)', border: '1px solid rgba(27,109,252,0.15)', borderRadius: '6px', padding: '4px 10px' }}>{ex.rir}</span>
       </div>
       <div style={{ paddingLeft: '32px', borderTop: '1px solid #1c1917', paddingTop: '10px' }}>
         <p style={{ fontSize: '13px', color: '#78716c', margin: 0, lineHeight: 1.65 }}>{ex.cue}</p>
@@ -260,7 +260,7 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
               </div>
             ))}
           </div>
-          <div style={{ ...card, marginTop: '12px', background: 'rgba(20,184,166,0.07)', border: '1px solid rgba(20,184,166,0.2)' }}>
+          <div style={{ ...card, marginTop: '12px', background: 'rgba(27,109,252,0.07)', border: '1px solid rgba(27,109,252,0.2)' }}>
             <p style={{ fontSize: '14px', color: '#99d6d0', margin: 0, lineHeight: 1.65 }}>
               <span style={{ color: '#14b8a6', fontWeight: 700 }}>All other days:</span> Walk 30 to 60 minutes. Light, low intensity. This is active recovery, not optional rest.
             </p>
@@ -324,7 +324,7 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
               <div key={r.rir} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                 <span style={{
                   fontSize: '11px', fontWeight: 700, color: '#14b8a6',
-                  background: 'rgba(20,184,166,0.1)', padding: '2px 8px', borderRadius: '4px',
+                  background: 'rgba(27,109,252,0.1)', padding: '2px 8px', borderRadius: '4px',
                   whiteSpace: 'nowrap' as const, flexShrink: 0, marginTop: '1px',
                 }}>{r.rir}</span>
                 <p style={{ fontSize: '13px', color: '#78716c', margin: 0, lineHeight: 1.55 }}>{r.desc}</p>

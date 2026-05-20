@@ -159,14 +159,14 @@ const BLOCKS = [
 const PATTERNS = [
   {
     name: 'Stress-Stored',
-    colour: '#ef4444',
+    colour: '#DC2626',
     driver: 'Cortisol driver',
     signal: 'Abdominal fat, morning puffiness, afternoon crashes. Wired and tired.',
     blockA: 'Cortisol anchor evening meal introduced. Caffeine cutoff tightened to 10am. Post-training carb window widens as training demand increases. Zone 2 only.',
   },
   {
     name: 'Insulin-Drift',
-    colour: '#f59e0b',
+    colour: '#B7791F',
     driver: 'Insulin driver',
     signal: 'Full-body softening, carb cravings, post-meal fatigue, energy variability through the day.',
     blockA: 'Formal carb cycling introduced. Training days get more carbs, rest days fruit only. Protein target increases to 2.5 to 3 palms per day. Post-meal walk is non-negotiable.',

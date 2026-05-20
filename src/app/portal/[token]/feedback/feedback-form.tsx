@@ -121,7 +121,7 @@ export default function FeedbackForm({
                 onClick={() => setCategory(opt.value)}
                 className={`w-full text-left p-4 rounded-xl border transition-colors ${
                   selected
-                    ? 'border-[#14b8a6] bg-[rgba(20,184,166,0.08)]'
+                    ? 'border-[#14b8a6] bg-[rgba(27,109,252,0.08)]'
                     : 'border-[#1c1917] bg-[#111110] hover:border-[#292524]'
                 }`}
               >
@@ -169,7 +169,7 @@ export default function FeedbackForm({
       </div>
 
       {error && (
-        <div className="bg-[#1a1108] border border-[#3a2410] rounded-lg px-3 py-2.5 text-[12px] text-[#fbbf24]">
+        <div className="bg-[#FEF6E7] border border-[#F0DCB4] rounded-lg px-3 py-2.5 text-[12px] text-[#8A5A14]">
           {error}
         </div>
       )}

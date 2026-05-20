@@ -92,18 +92,18 @@ const SMS_TRANSITION: Record<15 | 16 | 17, string> = {
 
 function challengeEmailShell(body: string): string {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
               ${body}
               ${darkEmailSignature()}
             </td>
@@ -143,14 +143,14 @@ export const challengeSequenceFunction = inngest.createFunction(
         to: email,
         subject: `You're in, ${firstName}. Day 1 starts now.`,
         html: challengeEmailShell(`
-          <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
+          <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
             Welcome to the 14-Day Body Decode Challenge.
           </p>
           <p>Hi ${firstName},</p>
           <p>You are in. Day 1 starts today.</p>
           <p>Over the next 14 days you will follow a simple structure designed to calm your system, rebuild your baseline, and help you understand what is actually driving the way your body looks and feels.</p>
           <p>Your challenge portal has everything you need:</p>
-          <ul style="padding-left:20px;color:#888888;">
+          <ul style="padding-left:20px;color:#999999;">
             <li style="margin-bottom:6px;">Your daily coaching note - opens each morning</li>
             <li style="margin-bottom:6px;">Your 14-day training plan</li>
             <li style="margin-bottom:6px;">Your HABNS nutrition guide</li>
@@ -159,13 +159,13 @@ export const challengeSequenceFunction = inngest.createFunction(
           </ul>
           <p>Start simple. Follow the structure. Do not try to be perfect on Day 1.</p>
           <p>
-            <a href="${portalUrl}" style="display:inline-block;padding:13px 24px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
+            <a href="${portalUrl}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
               Open your challenge portal
             </a>
           </p>
-          <p style="font-size:13px;color:#57534e;">
+          <p style="font-size:13px;color:#999999;">
             Bookmark this link. It is your personal portal for the full 14 days.<br/>
-            <a href="${portalUrl}" style="color:#57534e;">${portalUrl}</a>
+            <a href="${portalUrl}" style="color:#999999;">${portalUrl}</a>
           </p>
         `),
       })
@@ -179,14 +179,14 @@ export const challengeSequenceFunction = inngest.createFunction(
         to: 'kade@bodyrecode.au',
         subject: `New enrollment - ${firstName}`,
         html: challengeEmailShell(`
-          <p style="color:#ffffff;font-size:18px;font-weight:800;letter-spacing:-0.01em;margin:0 0 20px;">New Challenge Enrollment</p>
+          <p style="color:#1A1A1A;font-size:18px;font-weight:800;letter-spacing:-0.01em;margin:0 0 20px;">New Challenge Enrollment</p>
           <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-            <tr><td style="padding:10px 0;border-bottom:1px solid #1c1917;width:110px;font-size:13px;color:#57534e;">Name</td><td style="padding:10px 0;border-bottom:1px solid #1c1917;font-size:13px;color:#ffffff;font-weight:600;">${firstName}</td></tr>
-            <tr><td style="padding:10px 0;border-bottom:1px solid #1c1917;font-size:13px;color:#57534e;">Email</td><td style="padding:10px 0;border-bottom:1px solid #1c1917;font-size:13px;color:#ffffff;">${email}</td></tr>
-            <tr><td style="padding:10px 0;border-bottom:1px solid #1c1917;font-size:13px;color:#57534e;">Phone</td><td style="padding:10px 0;border-bottom:1px solid #1c1917;font-size:13px;color:#ffffff;">${phone ?? 'Not provided'}</td></tr>
-            <tr><td style="padding:10px 0;font-size:13px;color:#57534e;">Enrolled</td><td style="padding:10px 0;font-size:13px;color:#ffffff;">${enrolledAt} (AEST)</td></tr>
+            <tr><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;width:110px;font-size:13px;color:#999999;">Name</td><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;font-size:13px;color:#1A1A1A;font-weight:600;">${firstName}</td></tr>
+            <tr><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;font-size:13px;color:#999999;">Email</td><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;font-size:13px;color:#1A1A1A;">${email}</td></tr>
+            <tr><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;font-size:13px;color:#999999;">Phone</td><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;font-size:13px;color:#1A1A1A;">${phone ?? 'Not provided'}</td></tr>
+            <tr><td style="padding:10px 0;font-size:13px;color:#999999;">Enrolled</td><td style="padding:10px 0;font-size:13px;color:#1A1A1A;">${enrolledAt} (AEST)</td></tr>
           </table>
-          <a href="${portalUrl}" style="display:inline-block;padding:11px 20px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:13px;border-radius:8px;text-decoration:none;">
+          <a href="${portalUrl}" style="display:inline-block;padding:11px 20px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:13px;border-radius:8px;text-decoration:none;">
             View their portal
           </a>
         `),
@@ -212,14 +212,14 @@ export const challengeSequenceFunction = inngest.createFunction(
         to: email,
         subject: `Day 5 - Your Week One Progress Session is ready`,
         html: challengeEmailShell(`
-          <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
+          <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
             Week One Progress Session
           </p>
           <p>Hi ${firstName},</p>
           <p>You have made it to Day 5. That puts you ahead of most people who started.</p>
           <p>Your Week One Progress Session is now available to watch. It is a 30-minute session I recorded specifically for this point in the challenge.</p>
-          <p style="color:#ffffff;font-weight:600;">In this session:</p>
-          <ul style="padding-left:20px;color:#888888;">
+          <p style="color:#1A1A1A;font-weight:600;">In this session:</p>
+          <ul style="padding-left:20px;color:#999999;">
             <li style="margin-bottom:6px;">What your body has actually been doing this week</li>
             <li style="margin-bottom:6px;">How to decode the signals you have been feeling - energy, digestion, puffiness, mood</li>
             <li style="margin-bottom:6px;">Why rhythm matters more than restriction</li>
@@ -227,15 +227,15 @@ export const challengeSequenceFunction = inngest.createFunction(
             <li style="margin-bottom:6px;">The next step after the challenge for those who want to go deeper</li>
           </ul>
           <p>I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset - it will make Week 2 feel much clearer.</p>
-          <div style="background:#0d2d29;border:1px solid rgba(20,184,166,0.2);border-radius:10px;padding:20px;margin:20px 0;">
-            <p style="color:#14b8a6;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Now Available</p>
-            <p style="color:#ffffff;font-weight:700;font-size:16px;margin:0 0 4px;">Week One Progress Session</p>
-            <p style="color:#a8a29e;font-size:13px;margin:0 0 16px;">30 minutes</p>
-            <a href="${sessionVideoUrl}" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
+          <div style="background:#0d2d29;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
+            <p style="color:#1B6DFC;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Now Available</p>
+            <p style="color:#1A1A1A;font-weight:700;font-size:16px;margin:0 0 4px;">Week One Progress Session</p>
+            <p style="color:#6B6B6B;font-size:13px;margin:0 0 16px;">30 minutes</p>
+            <a href="${sessionVideoUrl}" style="display:inline-block;padding:12px 22px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
               Watch the session
             </a>
           </div>
-          <p style="font-size:13px;color:#57534e;">You can also find this in your portal under the Live Session section.</p>
+          <p style="font-size:13px;color:#999999;">You can also find this in your portal under the Live Session section.</p>
         `),
       })
     })
@@ -257,14 +257,14 @@ export const challengeSequenceFunction = inngest.createFunction(
         to: email,
         subject: `${firstName}, you finished the 14 days.`,
         html: challengeEmailShell(`
-          <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
+          <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
             14 days done.
           </p>
           <p>Hi ${firstName},</p>
           <p>You finished the challenge. That is not nothing.</p>
           <p>Most people who start something like this quit before Day 5. You made it to Day 14. That means your body has had 14 consecutive days of structured rhythm - consistent training, real food, better sleep, predictable timing.</p>
-          <p style="color:#ffffff;font-weight:600;">What that should have done:</p>
-          <ul style="padding-left:20px;color:#888888;">
+          <p style="color:#1A1A1A;font-weight:600;">What that should have done:</p>
+          <ul style="padding-left:20px;color:#999999;">
             <li style="margin-bottom:6px;">Reduced the daily puffiness and inflammation</li>
             <li style="margin-bottom:6px;">Stabilised your energy across the day</li>
             <li style="margin-bottom:6px;">Calmed the afternoon cravings</li>
@@ -273,15 +273,15 @@ export const challengeSequenceFunction = inngest.createFunction(
           </ul>
           <p>This is your baseline now. The question is: what do you build on top of it?</p>
           <p>The 6-Week Body Recode Blueprint takes everything you have started and adds structure, progressive training, signal-guided nutrition, and real accountability. It is where the results become visible.</p>
-          <div style="background:#0d2d29;border:1px solid rgba(20,184,166,0.2);border-radius:10px;padding:20px;margin:20px 0;">
-            <p style="color:#14b8a6;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Next Step</p>
-            <p style="color:#ffffff;font-weight:700;font-size:16px;margin:0 0 4px;">6-Week Body Recode Blueprint</p>
-            <p style="color:#a8a29e;font-size:13px;margin:0 0 16px;">Where rhythm becomes results.</p>
-            <a href="https://bodyrecode.au/scorecard" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
+          <div style="background:#0d2d29;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
+            <p style="color:#1B6DFC;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Next Step</p>
+            <p style="color:#1A1A1A;font-weight:700;font-size:16px;margin:0 0 4px;">6-Week Body Recode Blueprint</p>
+            <p style="color:#6B6B6B;font-size:13px;margin:0 0 16px;">Where rhythm becomes results.</p>
+            <a href="https://bodyrecode.au/scorecard" style="display:inline-block;padding:12px 22px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
               Take the full Body State Scorecard
             </a>
           </div>
-          <p style="font-size:13px;color:#57534e;">Or just reply to this email and I will personally help you figure out the right next step.</p>
+          <p style="font-size:13px;color:#999999;">Or just reply to this email and I will personally help you figure out the right next step.</p>
         `),
       })
 
@@ -445,18 +445,18 @@ async function executeAction(
         to: contact.email,
         subject: interpolatedSubject,
         html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
               ${bodyHtml}
               ${darkEmailSignature()}
             </td>
@@ -490,8 +490,8 @@ async function executeAction(
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
         subject: `Automation: ${interpolate(config.message ?? 'Action triggered', templateVars)}`,
-        html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0c0a09;color:#aaa;">
-          <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+        html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
+          <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
           <p style="font-size:16px;color:#fff;font-weight:600;">${interpolate(config.message ?? '', templateVars)}</p>
           ${contact ? `<p style="color:#aaa;">Contact: ${contact.name} (${contact.email ?? 'no email'})</p>` : ''}
         </div>`,
@@ -570,10 +570,10 @@ async function executeAction(
 // ─── Blueprint Email Sequence ─────────────────────────────────────────────────
 
 const BLUEPRINT_PATTERN_CONFIG: Record<string, { label: string; colour: string }> = {
-  'stress-stored':   { label: 'Stress-Stored',    colour: '#ef4444' },
-  'metabolic-drift': { label: 'Insulin-Drift',    colour: '#f59e0b' },
+  'stress-stored':   { label: 'Stress-Stored',    colour: '#DC2626' },
+  'metabolic-drift': { label: 'Insulin-Drift',    colour: '#B7791F' },
   'hormonal-shift':  { label: 'Estrogen-Shift',   colour: '#8b5cf6' },
-  'system-overload': { label: 'Androgen-Decline', colour: '#14b8a6' },
+  'system-overload': { label: 'Androgen-Decline', colour: '#1B6DFC' },
 }
 
 const BLUEPRINT_WEEK_EMAILS: Record<number, {
@@ -584,12 +584,12 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   1: {
     subject: (n) => `Week 1 starts today, ${n}`,
     body: (n, url) => `
-      <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 1 - Regulate</p>
+      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 1 - Regulate</p>
       <p>Hi ${n},</p>
       <p>Your six-week programme starts today. The first two weeks are called the Regulate phase - and the goal is simple: re-establish biological rhythm.</p>
       <p>This week is not about pushing hard. It is about removing the inputs that have been keeping your system in a stressed state and replacing them with a structure your body can actually respond to. Consistent meals, controlled training intensity, prioritised sleep.</p>
       <p>Your first education lesson - Cortisol and the Stress Response - is now unlocked in your portal. It explains the biology behind why this phase is designed the way it is. Worth reading before your first session.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Open your portal</a></p>`,
+      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Open your portal</a></p>`,
     patternBlock: {
       'stress-stored':   'Your cortisol curve is the target this week. Eat breakfast within an hour of waking, never train fasted, and keep caffeine before noon. Every one of these rules is directly lowering the cortisol load your body is carrying.',
       'metabolic-drift': 'Start the post-meal walk habit this week - 15 minutes after every meal. And protein first at every meal without exception. These two things are the foundation everything else builds on.',
@@ -600,12 +600,12 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   2: {
     subject: (n) => `Week 2 - your insulin lesson is unlocked`,
     body: (n, url) => `
-      <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 2 - Insulin and Blood Sugar</p>
+      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 2 - Insulin and Blood Sugar</p>
       <p>Hi ${n},</p>
       <p>You are into your second week. Your education lesson for this week - Insulin and Blood Sugar Control - is now unlocked in the portal.</p>
       <p>This lesson explains why the timing of your carbohydrates matters more than the quantity, why snacking keeps fat metabolism switched off even if you are eating healthy food, and why afternoon cravings are not a willpower problem.</p>
       <p>If your energy has been more even this week than last week, or the afternoon crash has softened, that is your cortisol curve starting to normalise. The insulin work this week builds on that foundation.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Read the lesson</a></p>`,
+      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Read the lesson</a></p>`,
     patternBlock: {
       'stress-stored':   'Cortisol raises blood sugar directly even without eating - through a process called gluconeogenesis. As your cortisol load comes down this week, your insulin sensitivity improves as a downstream effect. The two are linked.',
       'metabolic-drift': 'Insulin sensitivity is your primary target. The fasting gaps between your meals, the post-training carb window, and the post-meal walks are all working on this directly. Stay strict with the rest day protocol this week.',
@@ -616,12 +616,12 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   3: {
     subject: (n) => `${n} - you are at the midpoint`,
     body: (n, url) => `
-      <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 3 - Adapt Phase Begins</p>
+      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 3 - Adapt Phase Begins</p>
       <p>Hi ${n},</p>
       <p>Three weeks in. You have moved through the full Regulate phase and the Adapt phase starts this week. Progressive load begins - your training intensity target increases and the sessions will ask more of you.</p>
       <p>Your Week 3 education lesson - Testosterone and Muscle Signal - is now unlocked. It covers why training harder and eating less are two of the most reliable ways to suppress the hormone responsible for body composition change, and what actually drives it instead.</p>
       <p>This is also a good week to submit your check-in if you have not already. Eight markers, two minutes. It gives you a clear picture of what has shifted since Week 1.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Submit your check-in</a></p>`,
+      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Submit your check-in</a></p>`,
     patternBlock: {
       'stress-stored':   'Cortisol and testosterone have a direct inverse relationship. As your cortisol curve normalises through the Adapt phase, testosterone signal recovers as a downstream effect. The controlled training intensity is protecting this recovery.',
       'metabolic-drift': 'Improving insulin sensitivity reduces aromatase activity, which increases testosterone availability. The Session B finisher is now your most important metabolic tool. Do not skip it.',
@@ -632,12 +632,12 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   4: {
     subject: (n) => `Week 4 - thyroid and metabolic rate`,
     body: (n, url) => `
-      <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 4 - Thyroid and Metabolic Rate</p>
+      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 4 - Thyroid and Metabolic Rate</p>
       <p>Hi ${n},</p>
       <p>Four weeks in. Your Week 4 education lesson - Thyroid and Metabolic Rate - is now unlocked.</p>
       <p>This lesson covers the mechanism behind why cutting calories makes the body burn less, not more. And why each restriction cycle leaves metabolic rate a little lower than before. If you have dieted multiple times in the past and felt like it gets harder each time, this lesson explains exactly why - and what the programme has been doing to reverse it.</p>
       <p>Body composition changes are often most visible around now for people who have been consistent through the first three weeks. If things are shifting, it is because the hormonal environment has changed enough to allow it.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Read the lesson</a></p>`,
+      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Read the lesson</a></p>`,
     patternBlock: {
       'stress-stored':   'Cortisol impairs the conversion of inactive T4 to active T3. Reducing your cortisol load through the programme directly supports thyroid function. You do not need to target the thyroid separately - it improves as cortisol normalises.',
       'metabolic-drift': 'Thyroid function improves as insulin sensitivity is restored and systemic inflammation reduces. Both are direct targets of your programme. Metabolic rate recovery is a downstream effect of the primary work you have been doing.',
@@ -648,12 +648,12 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   5: {
     subject: (n) => `Week 5 - the final lesson`,
     body: (n, url) => `
-      <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 5 - Sleep Hormones and Recovery</p>
+      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 5 - Sleep Hormones and Recovery</p>
       <p>Hi ${n},</p>
       <p>Five weeks in. Your final education lesson - Sleep Hormones and Recovery - is now unlocked.</p>
       <p>This lesson ties all five hormones together. It covers what actually happens during sleep, why alcohol reduces recovery even when it helps you fall asleep, and why one night of poor sleep undoes more progress than most people realise. Every hormone in this series resets during sleep. It is the upstream variable that determines how much everything else is working.</p>
       <p>This is also a peak effort week for most patterns. Your sessions should feel different to Week 1 - more output from the same perceived effort. That is the system responding. Keep sleep as the priority this week to convert the training stimulus into actual adaptation.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Read the lesson</a></p>`,
+      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Read the lesson</a></p>`,
     patternBlock: {
       'stress-stored':   'Sleep is treated as a training variable in your programme because it is one. Poor sleep is the fastest way to spike cortisol and undo a week of work. If sleep quality is not where you need it, reduce session intensity before anything else.',
       'metabolic-drift': 'One night of poor sleep reduces insulin sensitivity by 20 to 30 percent the following day. Given that insulin sensitivity is your primary target, sleep quality is not optional this week. It is part of the protocol.',
@@ -664,12 +664,12 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   6: {
     subject: (n) => `Final week, ${n}. What comes next.`,
     body: (n, url) => `
-      <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 6 - Embed and Deload</p>
+      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 6 - Embed and Deload</p>
       <p>Hi ${n},</p>
       <p>Final week. This is a deload week - training volume drops by 30 percent, intensity stays controlled, and nutrition stays exactly the same. The body makes its biggest adaptations when load drops and recovery takes over.</p>
       <p>Take some time this week to compare where you are now with where you started. Energy through the day. Sleep quality. Afternoon crashes. Hunger between meals. Training recovery. These are the markers that the programme targets first, and after six weeks of consistent work they should look different to Week 1.</p>
       <p>The 6-Week Blueprint was Stage 2. What you have built here is the hormonal foundation that makes Stage 3 possible. Your portal will show you what comes next.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">See what comes next</a></p>`,
+      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">See what comes next</a></p>`,
     patternBlock: {
       'stress-stored':   'Six weeks of lowered cortisol load has changed your biological baseline. The visceral fat that cortisol was protecting should be more accessible now. The next phase builds progressive intensity on a system that can actually handle it.',
       'metabolic-drift': 'Your insulin sensitivity is significantly different to Week 1. The afternoon crashes, the urgent between-meal hunger, the inability to use fat as fuel - these patterns shift when the hormonal environment changes. You have changed the environment.',
@@ -681,27 +681,27 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
 
 function blueprintEmailShell(body: string, patternLabel: string, patternColour: string, patternCallout: string): string {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
           </td>
         </tr>
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
             ${body}
           </td>
         </tr>
         <tr>
-          <td bgcolor="#0c0a09" style="background-color:#0c0a09;padding:0 40px 36px;">
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:0 40px 36px;">
             <table width="100%" cellpadding="0" cellspacing="0" style="border-left:3px solid ${patternColour};padding-left:16px;margin:0;">
               <tr>
                 <td style="padding-left:16px;">
                   <p style="font-size:11px;font-weight:700;color:${patternColour};letter-spacing:0.1em;text-transform:uppercase;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${patternLabel}</p>
-                  <p style="font-size:13px;color:#888888;line-height:1.7;margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${patternCallout}</p>
+                  <p style="font-size:13px;color:#999999;line-height:1.7;margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${patternCallout}</p>
                 </td>
               </tr>
             </table>
@@ -788,12 +788,12 @@ export const blueprintEmailSequenceFunction = inngest.createFunction(
         subject: `${firstName}, you finished the Blueprint.`,
         html: blueprintEmailShell(
           `
-          <p style="color:#ffffff;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Six weeks done.</p>
+          <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Six weeks done.</p>
           <p>Hi ${firstName},</p>
           <p>You finished the 6-Week Body Rewire Blueprint. That is not a small thing.</p>
           <p>Most people who start a structured programme abandon it before Week 3. You went all six weeks. That means your hormonal environment, your training capacity, your metabolic baseline - all of them are in a different place to where they were when you started.</p>
           <p>Stage 3 is where this becomes a long-term result. Progressive challenge applied to a system that can now absorb it. If you want to talk through what the right next step looks like for your pattern, reply to this email and I will come back to you personally.</p>
-          <p><a href="${portalUrl}" style="display:inline-block;padding:13px 24px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Open your portal</a></p>`,
+          <p><a href="${portalUrl}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Open your portal</a></p>`,
           pc.label,
           pc.colour,
           `You completed the ${pc.label} pattern programme. The work you have done over six weeks has addressed the specific biological mechanism driving your pattern. Reply to this email if you want to discuss Stage 3.`,
@@ -843,19 +843,19 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
             to: email,
             subject: `Week ${completedWeek} check-in is due`,
             html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
         </td></tr>
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${firstName},</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Week ${completedWeek} is complete. Week ${week} is now live in your portal.</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Before you move into the new week, take 2 minutes to submit your Week ${completedWeek} check-in. It tracks the 8 biological markers that show whether the programme is working - energy, sleep, recovery, cravings, and more.</p>
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${firstName},</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Week ${completedWeek} is complete. Week ${week} is now live in your portal.</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Before you move into the new week, take 2 minutes to submit your Week ${completedWeek} check-in. It tracks the 8 biological markers that show whether the programme is working - energy, sleep, recovery, cravings, and more.</p>
           <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
           </table>
           ${darkEmailSignature()}
         </td></tr>
@@ -898,18 +898,18 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
             to: email,
             subject: `Reminder: Week ${completedWeek} check-in not yet submitted`,
             html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
         </td></tr>
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${firstName},</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Your Week ${completedWeek} check-in is still outstanding. It takes 2 minutes and gives you a clear read on what the programme is doing to your biology.</p>
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${firstName},</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Your Week ${completedWeek} check-in is still outstanding. It takes 2 minutes and gives you a clear read on what the programme is doing to your biology.</p>
           <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Check-In Now</a></td></tr>
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Check-In Now</a></td></tr>
           </table>
           ${darkEmailSignature()}
         </td></tr>
@@ -1007,19 +1007,19 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
               to: email,
               subject: `Block ${block} Week ${completedWeek} check-in is due`,
               html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
         </td></tr>
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${first_name},</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Block ${block} Week ${completedWeek} is complete. Week ${week} is now live in your portal.</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Submit your Week ${completedWeek} check-in before moving on. This is the data that feeds your monthly Loom review - the more consistent the data, the more useful the feedback.</p>
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${first_name},</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Block ${block} Week ${completedWeek} is complete. Week ${week} is now live in your portal.</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Submit your Week ${completedWeek} check-in before moving on. This is the data that feeds your monthly Loom review - the more consistent the data, the more useful the feedback.</p>
           <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
           </table>
           ${darkEmailSignature()}
         </td></tr>
@@ -1064,18 +1064,18 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
               to: email,
               subject: `Reminder: Block ${block} Week ${completedWeek} check-in not yet submitted`,
               html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
         </td></tr>
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${first_name},</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Your Block ${block} Week ${completedWeek} check-in is still outstanding. This data is what your monthly Loom review is built from - without it, I am working blind.</p>
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${first_name},</p>
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Your Block ${block} Week ${completedWeek} check-in is still outstanding. This data is what your monthly Loom review is built from - without it, I am working blind.</p>
           <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Check-In Now</a></td></tr>
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Check-In Now</a></td></tr>
           </table>
           ${darkEmailSignature()}
         </td></tr>
@@ -1151,18 +1151,18 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
             to: email,
             subject: `Extension Week ${completedWeek} check-in is due`,
             html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
         </td></tr>
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-          <p style="margin:0 0 18px;color:#888888;">Hi ${firstName},</p>
-          <p style="margin:0 0 18px;color:#888888;">Extension Week ${completedWeek} is complete. Week ${week} is now live. Submit your check-in before moving on.</p>
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+          <p style="margin:0 0 18px;color:#999999;">Hi ${firstName},</p>
+          <p style="margin:0 0 18px;color:#999999;">Extension Week ${completedWeek} is complete. Week ${week} is now live. Submit your check-in before moving on.</p>
           <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#14b8a6;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
+            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
           </table>
           ${darkEmailSignature()}
         </td></tr>
@@ -1219,15 +1219,15 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
 
 function reengagementEmailShell(content: string, firstName: string) {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-          <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
         </td></tr>
-        <tr><td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-          <p style="margin:0 0 18px;font-size:15px;color:#888888;">Hi ${firstName},</p>
+        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${firstName},</p>
           ${content}
           ${darkEmailSignature()}
         </td></tr>
@@ -1276,7 +1276,7 @@ export const reengagementSequenceFunction = inngest.createFunction(
           <p>${sourceContext} I wanted to check in and see how things are going.</p>
           <p>The work you put in doesn't disappear the moment a programme ends.${patternNote}</p>
           <p>If the timing wasn't right, or life got in the way, that's fine. There's no pressure here. But if you've been thinking about what's next, I want to make sure you know the door is still open.</p>
-          <p style="color:#888888;">Reply to this email if you want to talk through where you're at. I read every reply.</p>
+          <p style="color:#999999;">Reply to this email if you want to talk through where you're at. I read every reply.</p>
         `, firstName),
       })
     })
@@ -1298,7 +1298,7 @@ export const reengagementSequenceFunction = inngest.createFunction(
           <p>I want to give you a clear picture of what the next stage of the Body Recode system looks like - not a pitch, just information.</p>
           <p>${nextStageContext}</p>
           <p>The biology doesn't care about the gap between stages. Whether you pick this up tomorrow or in three months, the pattern is still there and the system still works. You just need to decide when you're ready.</p>
-          <p style="color:#888888;">Reply if you have questions or want to know which pathway fits where you're at right now.</p>
+          <p style="color:#999999;">Reply if you have questions or want to know which pathway fits where you're at right now.</p>
         `, firstName),
       })
     })
@@ -1315,13 +1315,13 @@ export const reengagementSequenceFunction = inngest.createFunction(
         subject: `A lower-commitment way back in`,
         html: reengagementEmailShell(`
           <p>If the weekly membership commitment felt like too much right now, there's another option.</p>
-          <div style="background:#0d2d29;border:1px solid rgba(20,184,166,0.2);border-radius:10px;padding:20px;margin:20px 0;">
-            <p style="color:#14b8a6;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">90-Day Body Rewire Extension</p>
-            <p style="color:#ffffff;font-weight:700;font-size:16px;margin:0 0 4px;">$197 one-time</p>
-            <p style="color:#a8a29e;font-size:13px;margin:0 0 16px;">12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.</p>
-            <a href="${extensionUrl}" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">See the Extension</a>
+          <div style="background:#0d2d29;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
+            <p style="color:#1B6DFC;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">90-Day Body Rewire Extension</p>
+            <p style="color:#1A1A1A;font-weight:700;font-size:16px;margin:0 0 4px;">$197 one-time</p>
+            <p style="color:#6B6B6B;font-size:13px;margin:0 0 16px;">12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.</p>
+            <a href="${extensionUrl}" style="display:inline-block;padding:12px 22px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">See the Extension</a>
           </div>
-          <p style="font-size:13px;color:#57534e;">Not ready yet? That's fine. I'll check back in.</p>
+          <p style="font-size:13px;color:#999999;">Not ready yet? That's fine. I'll check back in.</p>
         `, firstName),
       })
     })
@@ -1339,8 +1339,8 @@ export const reengagementSequenceFunction = inngest.createFunction(
         html: reengagementEmailShell(`
           <p>Just a short one.</p>
           <p>The 90-Day Extension is still available at $197 if the timing is better now. It gives you 12 weeks of the next stage of programming - picked up exactly where you left off.</p>
-          <a href="${extensionUrl}" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;margin:16px 0;">See the 90-Day Extension</a>
-          <p style="font-size:13px;color:#57534e;">Reply any time if you want to talk through it.</p>
+          <a href="${extensionUrl}" style="display:inline-block;padding:12px 22px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;margin:16px 0;">See the 90-Day Extension</a>
+          <p style="font-size:13px;color:#999999;">Reply any time if you want to talk through it.</p>
         `, firstName),
       })
     })
@@ -1357,15 +1357,15 @@ export const reengagementSequenceFunction = inngest.createFunction(
         subject: `The membership is still open`,
         html: reengagementEmailShell(`
           <p>If you've been thinking about the full membership, here's the short version of what it is:</p>
-          <ul style="padding-left:20px;color:#888888;margin:0 0 16px;">
+          <ul style="padding-left:20px;color:#999999;margin:0 0 16px;">
             <li style="margin-bottom:8px;">Progressive 6-week training blocks built around your pattern - Block A, B, and C</li>
             <li style="margin-bottom:8px;">Nutrition precision layer updated each block</li>
             <li style="margin-bottom:8px;">Monthly coach Loom - I review your check-in data and send a personal response</li>
             <li style="margin-bottom:8px;">Monthly group Q&amp;A call</li>
             <li style="margin-bottom:8px;">Cancel anytime. No lock-in.</li>
           </ul>
-          <p style="color:#888888;">$49 per week.</p>
-          <a href="${membershipUrl}" style="display:inline-block;padding:12px 22px;background:#14b8a6;color:#0c0a09;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;margin:16px 0;">See the Membership</a>
+          <p style="color:#999999;">$49 per week.</p>
+          <a href="${membershipUrl}" style="display:inline-block;padding:12px 22px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;margin:16px 0;">See the Membership</a>
         `, firstName),
       })
     })
@@ -1383,8 +1383,8 @@ export const reengagementSequenceFunction = inngest.createFunction(
         html: reengagementEmailShell(`
           <p>This is the last email in this sequence. I don't want to keep showing up in your inbox if the timing isn't right.</p>
           <p>If you ever want to come back, the door is open. The system works whenever you're ready for it.</p>
-          <p>One other thing - if you know someone who would benefit from any of the Body Recode programmes, send them to <a href="https://app.bodyrecode.au" style="color:#14b8a6;">app.bodyrecode.au</a>. The challenge is free and a good starting point for anyone.</p>
-          <p style="font-size:13px;color:#57534e;">Take care of yourself.</p>
+          <p>One other thing - if you know someone who would benefit from any of the Body Recode programmes, send them to <a href="https://app.bodyrecode.au" style="color:#1B6DFC;">app.bodyrecode.au</a>. The challenge is free and a good starting point for anyone.</p>
+          <p style="font-size:13px;color:#999999;">Take care of yourself.</p>
         `, firstName),
       })
     })

@@ -144,7 +144,7 @@ const SIGNAL_QUESTIONS = [
 const CHECKIN_PATTERNS: Record<string, { label: string; color: string; desc: string; actions: string[] }> = {
   'stress-stored': {
     label: 'Stress-Stored Pattern',
-    color: '#ef4444',
+    color: '#DC2626',
     desc: 'Your body is storing and retaining in response to a chronic stress load. Cortisol and adrenaline are keeping your system in a state of low-grade alert, which signals your body to hold fat around the midsection as an energy reserve. The reset you have done this week is directly targeting this. The full picture requires understanding exactly how your stress hormones are behaving across the day.',
     actions: [
       'Sleep is your highest leverage point. Cortisol resets overnight. Prioritise sleep quality above everything else this week.',
@@ -154,7 +154,7 @@ const CHECKIN_PATTERNS: Record<string, { label: string; color: string; desc: str
   },
   'metabolic-drift': {
     label: 'Insulin-Drift Pattern',
-    color: '#f59e0b',
+    color: '#B7791F',
     desc: 'Your body\'s ability to manage blood sugar has drifted. Insulin is staying elevated longer than it should, which drives energy crashes, persistent cravings, and the heaviness you feel after meals. Common in former athletes whose training response has changed but whose fuelling strategy has not adjusted. The nutrition structure you have been following this week is designed specifically for this. Restricting starchy carbohydrates to the post-training window forces your body to rebuild insulin sensitivity over time.',
     actions: [
       'Never skip breakfast. Blood sugar stability starts with your first meal. Skipping it creates a deficit that drives cravings throughout the rest of the day.',
@@ -594,7 +594,7 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
                     ? val === 'no' ? 'rgba(27, 109, 252,0.12)' : 'rgba(239,68,68,0.12)'
                     : '#E5E5E5',
                   color: answers[q.id] === val
-                    ? val === 'no' ? '#1B6DFC' : '#ef4444'
+                    ? val === 'no' ? '#1B6DFC' : '#DC2626'
                     : '#4A4A4A',
                   fontSize: '14px', fontWeight: 700, cursor: 'pointer',
                   outline: answers[q.id] === val
@@ -616,7 +616,7 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
           background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)',
           borderRadius: '12px', padding: '20px',
         }}>
-          <p style={{ fontSize: '14px', color: '#ef4444', fontWeight: 700, marginBottom: '8px' }}>
+          <p style={{ fontSize: '14px', color: '#DC2626', fontWeight: 700, marginBottom: '8px' }}>
             Medical clearance required
           </p>
           <p style={{ fontSize: '13px', color: '#999999', lineHeight: 1.7, margin: 0 }}>
@@ -626,7 +626,7 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
       )}
 
       {error && (
-        <p style={{ fontSize: '13px', color: '#ef4444', margin: 0 }}>{error}</p>
+        <p style={{ fontSize: '13px', color: '#DC2626', margin: 0 }}>{error}</p>
       )}
 
       <button
@@ -726,7 +726,7 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
       ))}
 
       {error && (
-        <p style={{ fontSize: '13px', color: '#ef4444', margin: 0 }}>{error}</p>
+        <p style={{ fontSize: '13px', color: '#DC2626', margin: 0 }}>{error}</p>
       )}
 
       <button
@@ -836,7 +836,7 @@ export default function ChallengePortalClient({
             }}>
               <span style={{ fontSize: '18px', flexShrink: 0 }}>⚠️</span>
               <div>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: '#fbbf24', marginBottom: '4px' }}>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: '#8A5A14', marginBottom: '4px' }}>
                   Required before training
                 </p>
                 <p style={{ fontSize: '13px', color: '#999999', lineHeight: 1.6, margin: 0 }}>

@@ -626,8 +626,8 @@ export default async function SystemAutomationDetailPage({
           <span style={{
             flexShrink: 0, display: 'flex', alignItems: 'center', gap: '6px',
             fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em',
-            color: '#1B6DFC', background: 'rgba(20,184,166,0.08)',
-            border: '1px solid rgba(20,184,166,0.25)',
+            color: '#1B6DFC', background: 'rgba(27,109,252,0.08)',
+            border: '1px solid rgba(27,109,252,0.25)',
             padding: '5px 12px', borderRadius: '999px',
           }}>
             <Zap size={10} />

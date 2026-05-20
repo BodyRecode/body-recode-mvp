@@ -80,19 +80,19 @@ export async function POST(request: NextRequest) {
     subject,
     html: darkEmailShell(`
       <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;" />
       </div>
-      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Since you completed your original intake I've added five short follow-up questions covering medications and dietary context. They feed straight into your Foundational Reading and program, so the next iteration is built on the most accurate picture of where you actually are.</p>
-      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">It's about three minutes. The form picks up where you left off if you have to step away mid-way.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Since you completed your original intake I've added five short follow-up questions covering medications and dietary context. They feed straight into your Foundational Reading and program, so the next iteration is built on the most accurate picture of where you actually are.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">It's about three minutes. The form picks up where you left off if you have to step away mid-way.</p>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
         <tr>
-          <td bgcolor="#10E1C2" style="background-color:#10E1C2;border-radius:8px;">
-            <a href="${supplementUrl}" style="display:inline-block;padding:14px 28px;color:#000000;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Complete the 5 questions</a>
+          <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
+            <a href="${supplementUrl}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Complete the 5 questions</a>
           </td>
         </tr>
       </table>
-      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Anything come up while you're filling it in, reply to this email.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Anything come up while you're filling it in, reply to this email.</p>
       ${emailUrlFallback(supplementUrl, 'Or paste this link into your browser')}
       ${darkEmailSignature()}
 `, { previewText: `${firstName}, five quick follow-up questions for your intake.` }),

@@ -729,7 +729,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <span
                     className={`inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border uppercase ${
                       activeCffs.photos_used > 0
-                        ? 'text-[#1B6DFC] bg-[rgba(20,184,166,0.10)] border-[#B5CFFC]'
+                        ? 'text-[#1B6DFC] bg-[rgba(27,109,252,0.10)] border-[#B5CFFC]'
                         : 'text-[#999999] bg-[#FFFFFF] border-[#E5E5E5]'
                     }`}
                     style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
@@ -767,17 +767,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <div
               className="bg-[#FFFFFF] border rounded-2xl overflow-hidden mb-4"
               style={{
-                borderColor: readinessReport.status === 'regression' ? '#3a1414'
-                  : readinessReport.status === 'reassessment' ? '#3a2410'
+                borderColor: readinessReport.status === 'regression' ? '#FEE7E7'
+                  : readinessReport.status === 'reassessment' ? '#F0DCB4'
                   : '#E5E5E5',
               }}
             >
               <div className="flex items-center justify-between px-5 py-3 border-b border-[#E5E5E5]">
                 <div className="flex items-center gap-2.5">
                   {readinessReport.status === 'regression' ? (
-                    <Activity size={13} className="text-[#ef4444]" />
+                    <Activity size={13} className="text-[#DC2626]" />
                   ) : readinessReport.status === 'reassessment' ? (
-                    <RefreshCw size={13} className="text-[#f59e0b]" />
+                    <RefreshCw size={13} className="text-[#B7791F]" />
                   ) : (
                     <AlertTriangleIcon size={13} className="text-[#6B6B6B]" />
                   )}
@@ -786,8 +786,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     style={{
                       fontFamily: MONO_FONT,
                       letterSpacing: '0.14em',
-                      color: readinessReport.status === 'regression' ? '#ef4444'
-                        : readinessReport.status === 'reassessment' ? '#f59e0b'
+                      color: readinessReport.status === 'regression' ? '#DC2626'
+                        : readinessReport.status === 'reassessment' ? '#B7791F'
                         : '#3A3A3A',
                     }}
                   >
@@ -813,7 +813,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       <li key={i} className="flex items-start gap-2 text-[13px]">
                         <span
                           className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
-                          style={{ background: d.severity === 'high' ? '#ef4444' : '#6B6B6B' }}
+                          style={{ background: d.severity === 'high' ? '#DC2626' : '#6B6B6B' }}
                         />
                         <span className={d.severity === 'high' ? 'text-[#e7e5e4]' : 'text-[#6B6B6B]'}>{d.message}</span>
                       </li>
@@ -845,10 +845,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                             <span className="text-[#999999]">RPE</span>{' '}
                             <span className="text-[#999999]">{f.prescribedRpe}</span>
                             <span className="text-[#999999]"> → </span>
-                            <span className={f.severe ? 'text-[#ef4444]' : 'text-[#f59e0b]'}>{f.avgLoggedRpe}</span>
-                            <span className={f.severe ? 'text-[#ef4444]' : 'text-[#f59e0b]'}> (+{f.delta})</span>
+                            <span className={f.severe ? 'text-[#DC2626]' : 'text-[#B7791F]'}>{f.avgLoggedRpe}</span>
+                            <span className={f.severe ? 'text-[#DC2626]' : 'text-[#B7791F]'}> (+{f.delta})</span>
                             {f.maxLoggedRpe >= 9.5 && (
-                              <span className="text-[#ef4444]"> · max {f.maxLoggedRpe}</span>
+                              <span className="text-[#DC2626]"> · max {f.maxLoggedRpe}</span>
                             )}
                             <span className="text-[#999999]"> · {f.setCount} set{f.setCount === 1 ? '' : 's'}</span>
                           </span>
@@ -902,7 +902,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       className="text-[11px] font-medium"
                       style={{
                         fontFamily: MONO_FONT,
-                        color: readinessReport.block.isAtBlockEnd ? '#f59e0b' : '#999999',
+                        color: readinessReport.block.isAtBlockEnd ? '#B7791F' : '#999999',
                       }}
                     >
                       {readinessReport.block.isAtBlockEnd
@@ -940,7 +940,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               at a glance. */}
           {activeCffs.visual_signal_summary && (
             <div className="mb-3 bg-[#FFFFFF] border border-[#B5CFFC] rounded-xl overflow-hidden">
-              <div className="flex items-center gap-3 px-5 py-3 border-b border-[#B5CFFC] bg-[rgba(20,184,166,0.06)]">
+              <div className="flex items-center gap-3 px-5 py-3 border-b border-[#B5CFFC] bg-[rgba(27,109,252,0.06)]">
                 <Eye size={13} className="text-[#1B6DFC]" />
                 <p
                   className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest"

@@ -10,9 +10,9 @@ const STATE_LABELS: Record<string, string> = {
 }
 
 const STATE_COLOURS: Record<string, { color: string; bg: string; border: string; ctaBg: string; ctaBorder: string; ctaText: string }> = {
-  depleted: { color: '#ef4444', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.25)', ctaBg: '#2d0d0d', ctaBorder: 'rgba(239,68,68,0.3)', ctaText: '#fca5a5' },
-  transitioning: { color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)', ctaBg: '#2d1f0d', ctaBorder: 'rgba(245,158,11,0.3)', ctaText: '#fcd34d' },
-  ready: { color: '#1B6DFC', bg: 'rgba(20,184,166,0.08)', border: 'rgba(20,184,166,0.25)', ctaBg: '#B5CFFC', ctaBorder: 'rgba(20,184,166,0.3)', ctaText: '#B5CFFC' },
+  depleted: { color: '#DC2626', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.25)', ctaBg: '#2d0d0d', ctaBorder: 'rgba(239,68,68,0.3)', ctaText: '#fca5a5' },
+  transitioning: { color: '#B7791F', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)', ctaBg: '#2d1f0d', ctaBorder: 'rgba(245,158,11,0.3)', ctaText: '#fcd34d' },
+  ready: { color: '#1B6DFC', bg: 'rgba(27,109,252,0.08)', border: 'rgba(27,109,252,0.25)', ctaBg: '#B5CFFC', ctaBorder: 'rgba(27,109,252,0.3)', ctaText: '#B5CFFC' },
 }
 
 export default async function PreviewProgramPage({

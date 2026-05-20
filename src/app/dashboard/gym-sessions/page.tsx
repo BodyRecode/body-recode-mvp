@@ -17,7 +17,7 @@ const STATES = [
     id: 'depleted',
     label: 'Depleted',
     score: '5 - 8',
-    color: '#ef4444',
+    color: '#DC2626',
     bg: 'rgba(239,68,68,0.08)',
     border: 'rgba(239,68,68,0.25)',
     tagBg: 'rgba(239,68,68,0.12)',
@@ -67,7 +67,7 @@ const STATES = [
     id: 'transitioning',
     label: 'Transitioning',
     score: '9 - 11',
-    color: '#f59e0b',
+    color: '#B7791F',
     bg: 'rgba(245,158,11,0.08)',
     border: 'rgba(245,158,11,0.25)',
     tagBg: 'rgba(245,158,11,0.12)',
@@ -130,9 +130,9 @@ const STATES = [
     label: 'Ready',
     score: '12 - 15',
     color: '#1B6DFC',
-    bg: 'rgba(20,184,166,0.08)',
-    border: 'rgba(20,184,166,0.25)',
-    tagBg: 'rgba(20,184,166,0.12)',
+    bg: 'rgba(27,109,252,0.08)',
+    border: 'rgba(27,109,252,0.25)',
+    tagBg: 'rgba(27,109,252,0.12)',
     summary: 'Biology is primed. If fat loss or performance is not happening, the issue is in the prescription.',
     warmup: [
       'Rower - 2 min building to 75%',
@@ -304,7 +304,7 @@ export default function GymSessionsPage() {
         <div className="px-5 py-4 border-b border-[#E5E5E5]">
           <div className="flex items-center gap-2 mb-2">
             <span
-              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[rgba(20,184,166,0.12)] text-[#1B6DFC] border border-[#B5CFFC] uppercase"
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[rgba(27,109,252,0.12)] text-[#1B6DFC] border border-[#B5CFFC] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               Path C
@@ -324,7 +324,7 @@ export default function GymSessionsPage() {
         <div className="px-5 py-4 border-b border-[#E5E5E5]">
           <div className="flex items-center gap-2 mb-2">
             <span
-              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[rgba(245,158,11,0.12)] text-[#f59e0b] border border-[#3a2e10] uppercase"
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[rgba(245,158,11,0.12)] text-[#B7791F] border border-[#3a2e10] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               Path B

@@ -146,14 +146,14 @@ const WHAT_YOU_GET = [
 const PATTERNS = [
   {
     name: 'Stress-Stored',
-    colour: '#ef4444',
+    colour: '#DC2626',
     driver: 'Cortisol driver',
     signal: 'Abdominal fat, morning puffiness, afternoon crashes. Wired and tired.',
     correction: 'The Blueprint pulls stress load first. Sleep outranks training. The system comes out of compensation, and fat starts releasing.',
   },
   {
     name: 'Insulin-Drift',
-    colour: '#f59e0b',
+    colour: '#B7791F',
     driver: 'Insulin driver',
     signal: 'Full-body softening, carb cravings, post-meal fatigue, energy variability through the day.',
     correction: 'The Blueprint times carbs to a narrow post-session window. Blood sugar stabilises and insulin signalling rebuilds. The softening reverses.',
@@ -613,7 +613,7 @@ export default function BlueprintPage() {
               <div style={{
                 background: 'rgba(239, 68, 68, 0.06)',
                 border: '1px solid rgba(239, 68, 68, 0.2)',
-                borderLeft: '4px solid #ef4444',
+                borderLeft: '4px solid #DC2626',
                 borderRadius: '10px',
                 padding: '14px 18px',
                 marginBottom: '22px',

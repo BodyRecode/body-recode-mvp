@@ -609,14 +609,14 @@ export default function HomePage() {
             <BodyStateCard
               label="Remediation"
               public="Depleted"
-              colour="#ef4444"
+              colour="#DC2626"
               bg="#2d0d0d"
               text="The body is under load it cannot resolve. Stress architecture is dominant. Recovery is compromised. Pushing performance-level intervention here is counterproductive. Most who present believing they are in Optimisation are actually here."
             />
             <BodyStateCard
               label="Optimisation"
               public="Transitioning"
-              colour="#f59e0b"
+              colour="#B7791F"
               bg="#2d1f0a"
               text="The body has stabilised. Capacity exists to pursue body composition and performance goals. This is where most coaching begins, but very few clients are actually here when they arrive."
             />

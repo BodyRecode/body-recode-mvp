@@ -882,23 +882,23 @@ export async function GET(request: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY)
 
     const overallBadge = allGood && fixes.length === 0
-      ? `<span style="display:inline-block;padding:4px 14px;background:rgba(20,184,166,0.15);border:1px solid rgba(20,184,166,0.4);border-radius:99px;font-size:12px;font-weight:700;color:#14b8a6;">All systems operational</span>`
+      ? `<span style="display:inline-block;padding:4px 14px;background:rgba(27,109,252,0.15);border:1px solid rgba(27,109,252,0.4);border-radius:99px;font-size:12px;font-weight:700;color:#1B6DFC;">All systems operational</span>`
       : fixes.length > 0 && failures.length === 0
-        ? `<span style="display:inline-block;padding:4px 14px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:99px;font-size:12px;font-weight:700;color:#f59e0b;">${fixes.length} issue${fixes.length === 1 ? '' : 's'} auto-fixed</span>`
-        : `<span style="display:inline-block;padding:4px 14px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);border-radius:99px;font-size:12px;font-weight:700;color:#ef4444;">${failures.length} issue${failures.length === 1 ? '' : 's'} need your attention</span>`
+        ? `<span style="display:inline-block;padding:4px 14px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:99px;font-size:12px;font-weight:700;color:#B7791F;">${fixes.length} issue${fixes.length === 1 ? '' : 's'} auto-fixed</span>`
+        : `<span style="display:inline-block;padding:4px 14px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);border-radius:99px;font-size:12px;font-weight:700;color:#DC2626;">${failures.length} issue${failures.length === 1 ? '' : 's'} need your attention</span>`
 
     const iconFor = (s: CheckStatus) => {
-      if (s === 'ok') return `<span style="color:#14b8a6;">&#10003;</span>`
-      if (s === 'fixed') return `<span style="color:#f59e0b;">&#9889;</span>`
-      if (s === 'failed') return `<span style="color:#ef4444;">&#10007;</span>`
-      return `<span style="color:#57534e;">&#8212;</span>`
+      if (s === 'ok') return `<span style="color:#1B6DFC;">&#10003;</span>`
+      if (s === 'fixed') return `<span style="color:#B7791F;">&#9889;</span>`
+      if (s === 'failed') return `<span style="color:#DC2626;">&#10007;</span>`
+      return `<span style="color:#999999;">&#8212;</span>`
     }
 
     const colorFor = (s: CheckStatus) => {
       if (s === 'ok') return '#ffffff'
-      if (s === 'fixed') return '#f59e0b'
-      if (s === 'failed') return '#ef4444'
-      return '#a8a29e'
+      if (s === 'fixed') return '#B7791F'
+      if (s === 'failed') return '#DC2626'
+      return '#6B6B6B'
     }
 
     const sectionHeader = (label: string) =>
@@ -906,14 +906,14 @@ export async function GET(request: NextRequest) {
 
     const checkRow = (c: CheckResult) => `
       <tr>
-        <td style="padding:12px 0;border-bottom:1px solid #1c1917;">
+        <td style="padding:12px 0;border-bottom:1px solid #E5E5E5;">
           <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
             ${iconFor(c.status)}
             <span style="font-size:13px;font-weight:600;color:${colorFor(c.status)};">${c.name}</span>
           </div>
-          <p style="margin:0 0 ${c.action || c.manualFix ? '6px' : '0'};font-size:12px;color:#57534e;padding-left:18px;">${c.detail}</p>
-          ${c.action ? `<p style="margin:0;font-size:12px;color:#f59e0b;padding-left:18px;">&#9889; ${c.action}</p>` : ''}
-          ${c.manualFix ? `<p style="margin:0;font-size:12px;color:#ef4444;padding-left:18px;">Action needed: ${c.manualFix}</p>` : ''}
+          <p style="margin:0 0 ${c.action || c.manualFix ? '6px' : '0'};font-size:12px;color:#999999;padding-left:18px;">${c.detail}</p>
+          ${c.action ? `<p style="margin:0;font-size:12px;color:#B7791F;padding-left:18px;">&#9889; ${c.action}</p>` : ''}
+          ${c.manualFix ? `<p style="margin:0;font-size:12px;color:#DC2626;padding-left:18px;">Action needed: ${c.manualFix}</p>` : ''}
         </td>
       </tr>`
 
@@ -939,32 +939,32 @@ export async function GET(request: NextRequest) {
       to: 'kade@bodyrecode.au',
       subject,
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-            <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;"/>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
         <tr>
-          <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 4px;font-size:18px;font-weight:700;color:#ffffff;">Daily System Health Check</p>
-            <p style="margin:0 0 24px;font-size:12px;color:#57534e;">Run at ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane</p>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+            <p style="margin:0 0 4px;font-size:18px;font-weight:700;color:#1A1A1A;">Daily System Health Check</p>
+            <p style="margin:0 0 24px;font-size:12px;color:#999999;">Run at ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane</p>
             <div style="margin-bottom:28px;">${overallBadge}</div>
-            <table style="width:100%;border-top:1px solid #1c1917;" cellpadding="0" cellspacing="0">
+            <table style="width:100%;border-top:1px solid #E5E5E5;" cellpadding="0" cellspacing="0">
               ${checkRows}
             </table>
             ${failures.length > 0 ? `
             <div style="margin-top:24px;padding:16px 20px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:10px;">
-              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#ef4444;">Manual action required</p>
-              <p style="margin:0;font-size:12px;color:#a8a29e;line-height:1.6;">The issues marked above could not be fixed automatically. Follow the steps listed under each failed check.</p>
+              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#DC2626;">Manual action required</p>
+              <p style="margin:0;font-size:12px;color:#6B6B6B;line-height:1.6;">The issues marked above could not be fixed automatically. Follow the steps listed under each failed check.</p>
             </div>` : ''}
             ${fixes.length > 0 && failures.length === 0 ? `
             <div style="margin-top:24px;padding:16px 20px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:10px;">
-              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#f59e0b;">Auto-fixed</p>
-              <p style="margin:0;font-size:12px;color:#a8a29e;line-height:1.6;">Issues were detected and resolved automatically. No action needed from you.</p>
+              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#B7791F;">Auto-fixed</p>
+              <p style="margin:0;font-size:12px;color:#6B6B6B;line-height:1.6;">Issues were detected and resolved automatically. No action needed from you.</p>
             </div>` : ''}
             <div style="margin-top:32px;">${darkEmailSignature()}</div>
           </td>

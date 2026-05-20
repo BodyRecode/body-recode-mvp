@@ -136,8 +136,8 @@ export default async function LeadsPage({
                     <span
                       title={`Lead quality: ${lead.lead_quality}${lead.red_flag ? ' (red flag)' : ''}`}
                       className={`absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#FFFFFF] ${
-                        lead.lead_quality === 'red' ? 'bg-[#ef4444]' :
-                        lead.lead_quality === 'yellow' ? 'bg-[#f59e0b]' :
+                        lead.lead_quality === 'red' ? 'bg-[#DC2626]' :
+                        lead.lead_quality === 'yellow' ? 'bg-[#B7791F]' :
                         'bg-[#1B6DFC]'
                       }`}
                     />
@@ -158,7 +158,7 @@ export default async function LeadsPage({
               <div className="flex items-center gap-3 shrink-0 ml-4">
                 {lead.red_flag && (
                   <span
-                    className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#3a1414] border border-[#5a2020] text-[#ef4444] uppercase"
+                    className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#FEE7E7] border border-[#F5C6C6] text-[#DC2626] uppercase"
                     style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em' }}
                     title="Red flag - half show rate, half close rate historically"
                   >

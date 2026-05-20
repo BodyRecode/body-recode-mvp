@@ -28,7 +28,7 @@ export default function ScorecardPopup() {
     >
       <div
         className="relative w-full max-w-md rounded-2xl border border-stone-700 bg-[#0c0a09] p-8"
-        style={{ boxShadow: '0 0 60px rgba(20,184,166,0.12)' }}
+        style={{ boxShadow: '0 0 60px rgba(27,109,252,0.12)' }}
         onClick={e => e.stopPropagation()}
       >
         {/* Close */}

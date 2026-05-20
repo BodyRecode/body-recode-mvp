@@ -142,11 +142,11 @@ export async function GET(request: NextRequest) {
   if (sendEmail && process.env.RESEND_API_KEY) {
     const minSample = Math.min(allTime.green.total, allTime.yellow.total, allTime.red.total)
     const sampleWarning = minSample < 10
-      ? `<p style="margin:0 0 16px;font-size:13px;color:#f59e0b;">Sample size warning: smallest tier has only ${minSample} leads. Conversion rates are unreliable until ~30+ per tier.</p>`
+      ? `<p style="margin:0 0 16px;font-size:13px;color:#B7791F;">Sample size warning: smallest tier has only ${minSample} leads. Conversion rates are unreliable until ~30+ per tier.</p>`
       : ''
 
     let verdict = 'Insufficient data — wait for more leads through the Zoom funnel.'
-    let verdictColor = '#a8a29e'
+    let verdictColor = '#6B6B6B'
     if (cleanLeads.show_rate != null && redFlagged.show_rate != null && cleanLeads.zoom_booked >= 10 && redFlagged.zoom_booked >= 5) {
       const showRatio = redFlagged.show_rate / cleanLeads.show_rate
       const closeRatio = (cleanLeads.close_rate && redFlagged.close_rate != null)
@@ -154,83 +154,83 @@ export async function GET(request: NextRequest) {
         : null
       if (showRatio <= 0.7 && (closeRatio === null || closeRatio <= 0.7)) {
         verdict = `Hypothesis holding: red-flagged leads show at ${(showRatio * 100).toFixed(0)}% of clean rate.`
-        verdictColor = '#14b8a6'
+        verdictColor = '#1B6DFC'
       } else {
         verdict = `Hypothesis NOT holding so far: red-flagged leads show at ${(showRatio * 100).toFixed(0)}% of clean rate.`
-        verdictColor = '#ef4444'
+        verdictColor = '#DC2626'
       }
     }
 
     const tierRow = (tier: Tier) => {
       const s = allTime[tier]
-      const c = tier === 'red' ? '#ef4444' : tier === 'yellow' ? '#f59e0b' : '#14b8a6'
+      const c = tier === 'red' ? '#DC2626' : tier === 'yellow' ? '#B7791F' : '#1B6DFC'
       return `<tr>
-        <td style="padding:10px 14px;border-bottom:1px solid #1c1917;font-size:13px;color:${c};font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">${tier}</td>
-        <td style="padding:10px 14px;border-bottom:1px solid #1c1917;font-size:13px;color:#d4cfc9;text-align:right;">${s.total}</td>
-        <td style="padding:10px 14px;border-bottom:1px solid #1c1917;font-size:13px;color:#d4cfc9;text-align:right;">${s.show_rate ?? '—'}${s.show_rate != null ? '%' : ''}</td>
-        <td style="padding:10px 14px;border-bottom:1px solid #1c1917;font-size:13px;color:#d4cfc9;text-align:right;">${s.close_rate ?? '—'}${s.close_rate != null ? '%' : ''}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid #E5E5E5;font-size:13px;color:${c};font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">${tier}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid #E5E5E5;font-size:13px;color:#3A3A3A;text-align:right;">${s.total}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid #E5E5E5;font-size:13px;color:#3A3A3A;text-align:right;">${s.show_rate ?? '—'}${s.show_rate != null ? '%' : ''}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid #E5E5E5;font-size:13px;color:#3A3A3A;text-align:right;">${s.close_rate ?? '—'}${s.close_rate != null ? '%' : ''}</td>
       </tr>`
     }
 
     const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:560px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:560px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
           <tr>
-            <td style="padding:28px 32px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="110" alt="Body Recode" style="display:block;" />
+            <td style="padding:28px 32px;border-bottom:1px solid #E5E5E5;">
+              <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
             <td style="padding:32px;">
-              <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#14b8a6;letter-spacing:0.12em;text-transform:uppercase;">Weekly Lead Quality Report</p>
-              <p style="margin:0 0 24px;font-size:20px;font-weight:800;color:#ffffff;">${windowDays}-day window — ${new Date().toLocaleDateString('en-AU', { timeZone: 'Australia/Brisbane', day: 'numeric', month: 'short', year: 'numeric' })}</p>
+              <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#1B6DFC;letter-spacing:0.12em;text-transform:uppercase;">Weekly Lead Quality Report</p>
+              <p style="margin:0 0 24px;font-size:20px;font-weight:800;color:#1A1A1A;">${windowDays}-day window — ${new Date().toLocaleDateString('en-AU', { timeZone: 'Australia/Brisbane', day: 'numeric', month: 'short', year: 'numeric' })}</p>
 
               ${sampleWarning}
 
-              <p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#57534e;letter-spacing:0.08em;text-transform:uppercase;">New leads this week</p>
-              <p style="margin:0 0 24px;font-size:14px;color:#d4cfc9;">
-                <strong style="color:#ffffff;">${(windowLeads ?? []).length} total</strong> ·
-                <span style="color:#14b8a6;">${windowCounts.green} green</span> ·
-                <span style="color:#f59e0b;">${windowCounts.yellow} yellow</span> ·
-                <span style="color:#ef4444;">${windowCounts.red} red</span>
+              <p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">New leads this week</p>
+              <p style="margin:0 0 24px;font-size:14px;color:#3A3A3A;">
+                <strong style="color:#1A1A1A;">${(windowLeads ?? []).length} total</strong> ·
+                <span style="color:#1B6DFC;">${windowCounts.green} green</span> ·
+                <span style="color:#B7791F;">${windowCounts.yellow} yellow</span> ·
+                <span style="color:#DC2626;">${windowCounts.red} red</span>
               </p>
 
-              <p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#57534e;letter-spacing:0.08em;text-transform:uppercase;">All-time conversion by tier</p>
-              <table cellpadding="0" cellspacing="0" style="width:100%;background:#1a1a1a;border-radius:10px;border:1px solid #222;margin-bottom:24px;border-collapse:separate;">
+              <p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">All-time conversion by tier</p>
+              <table cellpadding="0" cellspacing="0" style="width:100%;background:#1A1A1A;border-radius:10px;border:1px solid #222;margin-bottom:24px;border-collapse:separate;">
                 <tr>
-                  <th style="padding:10px 14px;font-size:10px;font-weight:700;color:#57534e;text-transform:uppercase;letter-spacing:0.08em;text-align:left;border-bottom:1px solid #1c1917;">Tier</th>
-                  <th style="padding:10px 14px;font-size:10px;font-weight:700;color:#57534e;text-transform:uppercase;letter-spacing:0.08em;text-align:right;border-bottom:1px solid #1c1917;">Leads</th>
-                  <th style="padding:10px 14px;font-size:10px;font-weight:700;color:#57534e;text-transform:uppercase;letter-spacing:0.08em;text-align:right;border-bottom:1px solid #1c1917;">Show</th>
-                  <th style="padding:10px 14px;font-size:10px;font-weight:700;color:#57534e;text-transform:uppercase;letter-spacing:0.08em;text-align:right;border-bottom:1px solid #1c1917;">Close</th>
+                  <th style="padding:10px 14px;font-size:10px;font-weight:700;color:#999999;text-transform:uppercase;letter-spacing:0.08em;text-align:left;border-bottom:1px solid #E5E5E5;">Tier</th>
+                  <th style="padding:10px 14px;font-size:10px;font-weight:700;color:#999999;text-transform:uppercase;letter-spacing:0.08em;text-align:right;border-bottom:1px solid #E5E5E5;">Leads</th>
+                  <th style="padding:10px 14px;font-size:10px;font-weight:700;color:#999999;text-transform:uppercase;letter-spacing:0.08em;text-align:right;border-bottom:1px solid #E5E5E5;">Show</th>
+                  <th style="padding:10px 14px;font-size:10px;font-weight:700;color:#999999;text-transform:uppercase;letter-spacing:0.08em;text-align:right;border-bottom:1px solid #E5E5E5;">Close</th>
                 </tr>
                 ${tierRow('green')}
                 ${tierRow('yellow')}
                 ${tierRow('red')}
               </table>
 
-              <p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#57534e;letter-spacing:0.08em;text-transform:uppercase;">Red-flagged vs clean</p>
+              <p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">Red-flagged vs clean</p>
               <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
                 <tr>
-                  <td style="padding:14px;background:rgba(20,184,166,0.06);border:1px solid rgba(20,184,166,0.2);border-radius:10px;width:48%;">
-                    <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#14b8a6;text-transform:uppercase;letter-spacing:0.08em;">Clean</p>
-                    <p style="margin:0;font-size:13px;color:#d4cfc9;">Show: <strong style="color:#fff;">${cleanLeads.show_rate ?? '—'}${cleanLeads.show_rate != null ? '%' : ''}</strong></p>
-                    <p style="margin:0;font-size:13px;color:#d4cfc9;">Close: <strong style="color:#fff;">${cleanLeads.close_rate ?? '—'}${cleanLeads.close_rate != null ? '%' : ''}</strong></p>
+                  <td style="padding:14px;background:rgba(27,109,252,0.06);border:1px solid rgba(27,109,252,0.2);border-radius:10px;width:48%;">
+                    <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#1B6DFC;text-transform:uppercase;letter-spacing:0.08em;">Clean</p>
+                    <p style="margin:0;font-size:13px;color:#3A3A3A;">Show: <strong style="color:#fff;">${cleanLeads.show_rate ?? '—'}${cleanLeads.show_rate != null ? '%' : ''}</strong></p>
+                    <p style="margin:0;font-size:13px;color:#3A3A3A;">Close: <strong style="color:#fff;">${cleanLeads.close_rate ?? '—'}${cleanLeads.close_rate != null ? '%' : ''}</strong></p>
                   </td>
                   <td style="width:4%;"></td>
                   <td style="padding:14px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:10px;width:48%;">
-                    <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:0.08em;">Red-flagged</p>
-                    <p style="margin:0;font-size:13px;color:#d4cfc9;">Show: <strong style="color:#fff;">${redFlagged.show_rate ?? '—'}${redFlagged.show_rate != null ? '%' : ''}</strong></p>
-                    <p style="margin:0;font-size:13px;color:#d4cfc9;">Close: <strong style="color:#fff;">${redFlagged.close_rate ?? '—'}${redFlagged.close_rate != null ? '%' : ''}</strong></p>
+                    <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#DC2626;text-transform:uppercase;letter-spacing:0.08em;">Red-flagged</p>
+                    <p style="margin:0;font-size:13px;color:#3A3A3A;">Show: <strong style="color:#fff;">${redFlagged.show_rate ?? '—'}${redFlagged.show_rate != null ? '%' : ''}</strong></p>
+                    <p style="margin:0;font-size:13px;color:#3A3A3A;">Close: <strong style="color:#fff;">${redFlagged.close_rate ?? '—'}${redFlagged.close_rate != null ? '%' : ''}</strong></p>
                   </td>
                 </tr>
               </table>
 
-              <div style="padding:14px 18px;background:rgba(${verdictColor === '#14b8a6' ? '20,184,166' : verdictColor === '#ef4444' ? '239,68,68' : '168,162,158'},0.08);border-left:3px solid ${verdictColor};border-radius:6px;">
+              <div style="padding:14px 18px;background:rgba(${verdictColor === '#1B6DFC' ? '20,184,166' : verdictColor === '#DC2626' ? '239,68,68' : '168,162,158'},0.08);border-left:3px solid ${verdictColor};border-radius:6px;">
                 <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:${verdictColor};text-transform:uppercase;letter-spacing:0.08em;">Verdict</p>
-                <p style="margin:0;font-size:14px;color:#d4cfc9;line-height:1.6;">${verdict}</p>
+                <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.6;">${verdict}</p>
               </div>
             </td>
           </tr>

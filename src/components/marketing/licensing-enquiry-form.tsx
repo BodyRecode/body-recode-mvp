@@ -127,7 +127,7 @@ export default function LicensingEnquiryForm() {
             fontSize: 13,
             color: '#fca5a5',
             background: '#2d0d0d',
-            border: '1px solid #ef444433',
+            border: '1px solid #DC262633',
             padding: '10px 14px',
             borderRadius: 10,
           }}

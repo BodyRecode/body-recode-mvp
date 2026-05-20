@@ -16,12 +16,12 @@ type MemberEnrollment = {
 const PATTERN_CONFIG: Record<string, { label: string; colour: string; description: string }> = {
   'stress-stored': {
     label: 'Stress-Stored',
-    colour: '#ef4444',
+    colour: '#DC2626',
     description: 'Cortisol is the driver. Block A introduces the cortisol anchor evening meal and tightens caffeine protocol. Training load increases with strict RIR controls.',
   },
   'metabolic-drift': {
     label: 'Insulin-Drift',
-    colour: '#f59e0b',
+    colour: '#B7791F',
     description: 'Insulin sensitivity is the target. Block A introduces formal carb cycling and increases protein volume. The post-meal walk is now non-negotiable.',
   },
   'hormonal-shift': {
@@ -1423,7 +1423,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                     style={{ width: '100%', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 8, padding: '12px', color: '#1A1A1A', fontSize: 14, lineHeight: 1.6, resize: 'vertical', minHeight: 80, boxSizing: 'border-box' }}
                   />
                 </div>
-                {checkinError && <p style={{ fontSize: 13, color: '#ef4444', marginBottom: 12 }}>{checkinError}</p>}
+                {checkinError && <p style={{ fontSize: 13, color: '#DC2626', marginBottom: 12 }}>{checkinError}</p>}
                 {checkinSuccess && <p style={{ fontSize: 13, color: '#1B6DFC', marginBottom: 12 }}>Check-in saved.</p>}
                 <button
                   type="submit"
@@ -1482,7 +1482,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                       const avg = checkins.length > 0
                         ? Math.round((checkins.reduce((sum, c) => sum + ((c as any)[m.key] ?? 0), 0) / checkins.length) * 10) / 10
                         : 0
-                      const colour = avg >= 4 ? '#1B6DFC' : avg >= 3 ? '#f59e0b' : '#ef4444'
+                      const colour = avg >= 4 ? '#1B6DFC' : avg >= 3 ? '#B7791F' : '#DC2626'
                       return (
                         <div key={m.key} style={{ background: '#FFFFFF', borderRadius: 8, padding: '12px 14px' }}>
                           <div style={{ fontSize: 11, color: '#4A4A4A', marginBottom: 4 }}>{m.label}</div>
@@ -1510,7 +1510,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                         <div style={{ display: 'flex', gap: 4, alignItems: 'flex-end', height: 40 }}>
                           {sorted.map(c => {
                             const val = (c as any)[m.key] ?? 0
-                            const colour = val >= 4 ? '#1B6DFC' : val >= 3 ? '#f59e0b' : '#ef4444'
+                            const colour = val >= 4 ? '#1B6DFC' : val >= 3 ? '#B7791F' : '#DC2626'
                             return (
                               <div key={c.week_number} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                                 <div style={{ width: '100%', height: `${(val / 5) * 36}px`, background: colour, borderRadius: 3, minHeight: 4 }} />

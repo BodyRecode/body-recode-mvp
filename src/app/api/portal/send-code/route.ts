@@ -57,27 +57,27 @@ export async function POST(request: NextRequest) {
     subject,
     html: darkEmailShell(`
       <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;border:0;"/>
+        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;"/>
       </div>
-      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 24px;">Sign in to your Body Recode coaching portal. Enter the code below on the sign-in page.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 24px;">Sign in to your Body Recode coaching portal. Enter the code below on the sign-in page.</p>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#1a1a1a" style="background-color:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;margin:0 0 24px;">
         <tr>
           <td bgcolor="#1a1a1a" align="center" style="background-color:#1a1a1a;padding:32px;border-radius:12px;">
-            <p style="margin:0 0 12px;font-size:11px;font-weight:700;color:#a8a29e;letter-spacing:0.08em;text-transform:uppercase;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your sign-in code</p>
-            <p style="margin:0;font-size:36px;font-weight:700;color:#10E1C2;letter-spacing:0.4em;font-family:'Courier New',Consolas,monospace;">${code}</p>
+            <p style="margin:0 0 12px;font-size:11px;font-weight:700;color:#6B6B6B;letter-spacing:0.08em;text-transform:uppercase;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your sign-in code</p>
+            <p style="margin:0;font-size:36px;font-weight:700;color:#1B6DFC;letter-spacing:0.4em;font-family:'Courier New',Consolas,monospace;">${code}</p>
           </td>
         </tr>
       </table>
-      <p style="margin:0 0 8px;font-size:13px;color:#a8a29e;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">This code expires in ${CODE_TTL_MINUTES} minutes. If you didn't request this, you can safely ignore it.</p>
+      <p style="margin:0 0 8px;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">This code expires in ${CODE_TTL_MINUTES} minutes. If you didn't request this, you can safely ignore it.</p>
       ${emailUrlFallback('https://app.bodyrecode.au/portal/login', 'Sign-in page')}
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;margin-top:32px;border-top:1px solid #1e1e1e;width:100%;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;margin-top:32px;border-top:1px solid #1e1e1e;width:100%;">
         <tr>
-          <td bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:24px 16px 0 0;vertical-align:middle;width:64px;">
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:24px 16px 0 0;vertical-align:middle;width:64px;">
             <img src="https://bodyrecode.au/kade.jpg" width="48" height="48" style="border-radius:50%;display:block;object-fit:cover;object-position:top;border:0;" alt="Kade Dunstone"/>
           </td>
-          <td bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding-top:24px;vertical-align:middle;">
-            <p style="margin:0;font-size:14px;font-weight:600;color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Kade Dunstone</p>
-            <p style="margin:2px 0 0;font-size:13px;color:#a8a29e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Performance Coach · Body Recode</p>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding-top:24px;vertical-align:middle;">
+            <p style="margin:0;font-size:14px;font-weight:600;color:#1A1A1A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Kade Dunstone</p>
+            <p style="margin:2px 0 0;font-size:13px;color:#6B6B6B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Performance Coach · Body Recode</p>
           </td>
         </tr>
       </table>

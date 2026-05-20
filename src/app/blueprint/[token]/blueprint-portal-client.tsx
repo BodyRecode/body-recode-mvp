@@ -16,12 +16,12 @@ type Enrollment = {
 const PATTERN_CONFIG: Record<string, { label: string; colour: string; description: string }> = {
   'stress-stored': {
     label: 'Stress-Stored',
-    colour: '#ef4444',
+    colour: '#DC2626',
     description: 'Your programme is built around lowering cortisol load, supporting your stress hormone curve, and creating the biological conditions for your body to release stored fat.',
   },
   'metabolic-drift': {
     label: 'Insulin-Drift',
-    colour: '#f59e0b',
+    colour: '#B7791F',
     description: 'Your programme is built around restoring insulin sensitivity, stabilising blood sugar across the day, and timing your nutrition to work with your metabolic rhythm. The full-body softening reverses as insulin signalling rebuilds.',
   },
   'hormonal-shift': {
@@ -564,7 +564,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
               {nutritionData.avoid.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                   <div style={{ width: 14, height: 14, borderRadius: 3, background: '#E5E5E5', border: '1px solid #292524', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: 10, color: '#ef4444' }}>✕</span>
+                    <span style={{ fontSize: 10, color: '#DC2626' }}>✕</span>
                   </div>
                   <span style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>{item}</span>
                 </div>
@@ -672,7 +672,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
               {REMOVE_FOODS.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                   <div style={{ width: 14, height: 14, borderRadius: 3, background: '#E5E5E5', border: '1px solid #292524', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: 10, color: '#ef4444' }}>✕</span>
+                    <span style={{ fontSize: 10, color: '#DC2626' }}>✕</span>
                   </div>
                   <span style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>{item}</span>
                 </div>
@@ -1377,7 +1377,7 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
               />
             </div>
 
-            {error && <p style={{ fontSize: 13, color: '#ef4444', margin: '12px 0 0' }}>{error}</p>}
+            {error && <p style={{ fontSize: 13, color: '#DC2626', margin: '12px 0 0' }}>{error}</p>}
 
             <button
               type="submit"
@@ -1407,7 +1407,7 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
                   {CHECKIN_MARKERS.map(m => (
                     <div key={m.key} style={{ background: '#FFFFFF', borderRadius: 6, padding: '8px 10px' }}>
                       <div style={{ fontSize: 10, color: '#3d3935', marginBottom: 3, lineHeight: 1.3 }}>{m.label.split(' ').slice(0, 3).join(' ')}</div>
-                      <div style={{ fontSize: 16, fontWeight: 700, color: (c[m.key as keyof CheckIn] as number) >= 4 ? config.colour : (c[m.key as keyof CheckIn] as number) <= 2 ? '#ef4444' : '#999999' }}>
+                      <div style={{ fontSize: 16, fontWeight: 700, color: (c[m.key as keyof CheckIn] as number) >= 4 ? config.colour : (c[m.key as keyof CheckIn] as number) <= 2 ? '#DC2626' : '#999999' }}>
                         {c[m.key as keyof CheckIn]}
                       </div>
                     </div>

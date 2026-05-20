@@ -104,8 +104,8 @@ export async function POST(
           to: recipient.email,
           subject: campaign.subject ?? campaign.name,
           html: darkEmailShell(`
-      <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;border:0;"/>
-      <div style="font-size:15px;color:#cfcfcf;line-height:1.9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+      <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;border:0;"/>
+      <div style="font-size:15px;color:#4A4A4A;line-height:1.9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
         ${personalised.replace(/\n/g, '<br/>')}
       </div>
 `, { previewText: campaign.subject ?? campaign.name }),

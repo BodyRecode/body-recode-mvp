@@ -19,14 +19,14 @@ const bookingLinkHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta
         </tr>
         <tr>
           <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Use the link below to pick a time for your Zoom call. It takes 30 seconds and you will get a confirmation straight away.</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">Hi ${firstName},</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#4A4A4A;line-height:1.75;">Use the link below to pick a time for your Zoom call. It takes 30 seconds and you will get a confirmation straight away.</p>
             <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
               <tr>
-                <td><a href="${BOOKING_LINK}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Book your Zoom call</a></td>
+                <td><a href="${BOOKING_LINK}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Book your Zoom call</a></td>
               </tr>
             </table>
-            <p style="margin:0 0 24px;font-size:13px;color:#555555;">Or copy this link: ${BOOKING_LINK}</p>
+            <p style="margin:0 0 24px;font-size:13px;color:#999999;">Or copy this link: ${BOOKING_LINK}</p>
             ${darkEmailSignature()}
           </td>
         </tr>
@@ -47,18 +47,18 @@ const confirmationHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><met
         </tr>
         <tr>
           <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#888888;line-height:1.75;">Your Zoom call with Kade is confirmed.</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">Hi ${firstName},</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#4A4A4A;line-height:1.75;">Your Zoom call with Kade is confirmed.</p>
             <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
               <tr>
-                <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
-                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#ffffff;">${dateStr}</p>
-                  <p style="margin:0 0 16px;font-size:14px;color:#888888;">${timeStr} Brisbane · 30 min</p>
-                  <a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#10E1C2;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>
+                <td style="padding:20px 24px;background:#F8F8F8;border-radius:12px;border:1px solid #E5E5E5;">
+                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#1A1A1A;">${dateStr}</p>
+                  <p style="margin:0 0 16px;font-size:14px;color:#4A4A4A;">${timeStr} Brisbane · 30 min</p>
+                  <a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>
                 </td>
               </tr>
             </table>
-            <p style="margin:0 0 24px;font-size:13px;color:#555555;">Open the attached file to add this to your calendar.</p>
+            <p style="margin:0 0 24px;font-size:13px;color:#999999;">Open the attached file to add this to your calendar.</p>
             ${darkEmailSignature()}
           </td>
         </tr>

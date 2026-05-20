@@ -402,7 +402,7 @@ function ActionRow({ action }: { action: ClientNextAction }) {
           </p>
           {action.badge && (
             <span
-              className="inline-flex items-center text-[9px] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(20,184,166,0.10)] text-[#1B6DFC] uppercase"
+              className="inline-flex items-center text-[9px] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC] uppercase"
               style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               {action.badge}

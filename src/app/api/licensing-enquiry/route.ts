@@ -26,8 +26,8 @@ function row(label: string, value: string | undefined): string {
   if (!value) return ''
   return `
     <tr>
-      <td style="padding:6px 14px 6px 0;color:#78716c;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;vertical-align:top;white-space:nowrap;">${label}</td>
-      <td style="padding:6px 0;color:#d4cfc9;font-size:14px;line-height:1.7;">${escapeHtml(value)}</td>
+      <td style="padding:6px 14px 6px 0;color:#6B6B6B;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;vertical-align:top;white-space:nowrap;">${label}</td>
+      <td style="padding:6px 0;color:#3A3A3A;font-size:14px;line-height:1.7;">${escapeHtml(value)}</td>
     </tr>`
 }
 
@@ -79,12 +79,12 @@ export async function POST(request: Request) {
   }`
 
   const html = `
-  <div style="background:#0c0a09;padding:32px 16px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;">
-    <div style="max-width:600px;margin:0 auto;background:#111110;border:1px solid #1c1917;border-radius:16px;overflow:hidden;">
+  <div style="background:#FFFFFF;padding:32px 16px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;">
+    <div style="max-width:600px;margin:0 auto;background:#FFFFFF;border:1px solid #E5E5E5;border-radius:16px;overflow:hidden;">
       <div style="padding:28px 28px 0;">
-        <div style="width:32px;height:3px;background:#10E1C2;border-radius:2px;margin-bottom:14px;"></div>
-        <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.18em;color:#10E1C2;text-transform:uppercase;">Licensing Enquiry</p>
-        <h1 style="margin:10px 0 24px;font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;">${escapeHtml(name)}${organisation ? ` · ${escapeHtml(organisation)}` : ''}</h1>
+        <div style="width:32px;height:3px;background:#1B6DFC;border-radius:2px;margin-bottom:14px;"></div>
+        <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.18em;color:#1B6DFC;text-transform:uppercase;">Licensing Enquiry</p>
+        <h1 style="margin:10px 0 24px;font-size:22px;font-weight:800;color:#1A1A1A;letter-spacing:-0.02em;">${escapeHtml(name)}${organisation ? ` · ${escapeHtml(organisation)}` : ''}</h1>
       </div>
       <table style="width:100%;border-collapse:collapse;padding:0 28px;">
         <tbody>
@@ -96,12 +96,12 @@ export async function POST(request: Request) {
           ${row('Intent', intent)}
         </tbody>
       </table>
-      <div style="padding:24px 28px 0;border-top:1px solid #1c1917;margin-top:18px;">
-        <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:0.12em;color:#78716c;text-transform:uppercase;">Message</p>
-        <p style="margin:0;color:#d4cfc9;font-size:14px;line-height:1.8;white-space:pre-wrap;">${escapeHtml(message)}</p>
+      <div style="padding:24px 28px 0;border-top:1px solid #E5E5E5;margin-top:18px;">
+        <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:0.12em;color:#6B6B6B;text-transform:uppercase;">Message</p>
+        <p style="margin:0;color:#3A3A3A;font-size:14px;line-height:1.8;white-space:pre-wrap;">${escapeHtml(message)}</p>
       </div>
       <div style="padding:24px 28px 28px;">
-        <a href="mailto:${escapeHtml(email)}" style="display:inline-block;background:#10E1C2;color:#0c0a09;font-weight:700;font-size:14px;padding:12px 20px;border-radius:10px;text-decoration:none;">Reply to ${escapeHtml(name.split(' ')[0] || name)}</a>
+        <a href="mailto:${escapeHtml(email)}" style="display:inline-block;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;padding:12px 20px;border-radius:10px;text-decoration:none;">Reply to ${escapeHtml(name.split(' ')[0] || name)}</a>
       </div>
     </div>
     <p style="text-align:center;font-size:11px;color:#3f3936;margin-top:18px;">bodyrecode.au · /api/licensing-enquiry</p>

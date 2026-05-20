@@ -85,26 +85,26 @@ export async function sendDownsellOffer(
     to: lead.email,
     subject: `${firstName}, the self-guided ${stateLabel} program - $97`,
     html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Coaching is not the right fit right now. Understood. Most people in ${stateLabel} State still need to act on the read though, and that is what this is for.</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">12 weeks of training and nutrition built specifically for ${stateLabel} State. Volume, intensity, rest, and food sequenced around where your body actually is. Not a generic plan you guess your way through.</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">$97. One-time. Yours to keep. Self-paced.</p>
+            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
+              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Hi ${firstName},</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Coaching is not the right fit right now. Understood. Most people in ${stateLabel} State still need to act on the read though, and that is what this is for.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">12 weeks of training and nutrition built specifically for ${stateLabel} State. Volume, intensity, rest, and food sequenced around where your body actually is. Not a generic plan you guess your way through.</p>
+              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">$97. One-time. Yours to keep. Self-paced.</p>
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${checkoutUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Get the program - $97</a></td></tr>
+                <tr><td><a href="${checkoutUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Get the program - $97</a></td></tr>
               </table>
-              <p style="margin:0 0 18px;font-size:13px;color:#555555;line-height:1.75;">Or copy this link: ${checkoutUrl}</p>
+              <p style="margin:0 0 18px;font-size:13px;color:#999999;line-height:1.75;">Or copy this link: ${checkoutUrl}</p>
               ${darkEmailSignature()}
             </td>
           </tr>

@@ -34,8 +34,8 @@ const PROGRAMME_CYCLE = [
 ]
 
 const ARC_STAGES = [
-  { state: 'Depleted', months: 'Month 0', desc: 'Body in protection mode. Pattern identified. Compensation pulled by Blueprint Week 6.', colour: '#ef4444' },
-  { state: 'Transitioning', months: 'Months 2-4', desc: 'Pattern corrected. Body has capacity but is not yet converting consistently. The Membership Blocks calibrate the work as the system comes online.', colour: '#f59e0b' },
+  { state: 'Depleted', months: 'Month 0', desc: 'Body in protection mode. Pattern identified. Compensation pulled by Blueprint Week 6.', colour: '#DC2626' },
+  { state: 'Transitioning', months: 'Months 2-4', desc: 'Pattern corrected. Body has capacity but is not yet converting consistently. The Membership Blocks calibrate the work as the system comes online.', colour: '#B7791F' },
   { state: 'Ready', months: 'Months 5-8+', desc: 'Biology in flow. Block C runs at peak intensity. Pattern reassessment. The work compounds.', colour: '#1B6DFC' },
 ]
 
