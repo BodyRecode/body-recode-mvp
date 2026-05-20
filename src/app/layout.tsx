@@ -20,11 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" style={{ background: '#0c0a09' }}>
+    <html lang="en" style={{ background: '#FFFFFF' }}>
       <head>
-        <style dangerouslySetInnerHTML={{ __html: 'html,body{background:#0c0a09}' }} />
+        <style dangerouslySetInnerHTML={{ __html: 'html,body{background:#FFFFFF}' }} />
       </head>
-      <body className={geist.className} style={{ background: '#0c0a09' }}>
+      <body className={geist.className} style={{ background: '#FFFFFF' }}>
         {children}
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
