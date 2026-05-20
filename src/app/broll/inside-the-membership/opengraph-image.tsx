@@ -1,0 +1,99 @@
+import { ImageResponse } from 'next/og'
+
+export const runtime = 'edge'
+export const alt = 'B-Roll Canvas: Inside the Membership. Production utility page for the Body Recode Membership explainer video.'
+export const size = { width: 1200, height: 630 }
+export const contentType = 'image/png'
+
+export default async function Image() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: '1200px',
+          height: '630px',
+          background: '#FFFFFF',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '64px',
+          position: 'relative',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: '-200px',
+            right: '-200px',
+            width: '600px',
+            height: '600px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(27, 109, 252, 0.1) 0%, transparent 65%)',
+          }}
+        />
+
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
+          <img src="https://bodyrecode.au/logo-black.png" width={200} alt="Body Recode" style={{ display: 'block' }} />
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '10px',
+            padding: '10px 20px', borderRadius: '99px', background: '#1A1A1A',
+          }}>
+            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#1B6DFC' }} />
+            <div style={{
+              fontSize: '15px', fontWeight: 700, color: '#FFFFFF',
+              letterSpacing: '0.12em', textTransform: 'uppercase',
+            }}>
+              B-Roll Canvas
+            </div>
+          </div>
+        </div>
+
+        <div style={{
+          flex: 1, display: 'flex', flexDirection: 'column',
+          justifyContent: 'center', position: 'relative',
+        }}>
+          <div style={{
+            fontSize: '15px', fontWeight: 700, color: '#1B6DFC',
+            letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '20px',
+          }}>
+            Membership Explainer Video
+          </div>
+          <div style={{
+            fontSize: '74px', fontWeight: 900, color: '#1A1A1A',
+            lineHeight: 1.02, letterSpacing: '-0.035em', marginBottom: '24px',
+            display: 'flex', flexDirection: 'column',
+          }}>
+            <div>Inside the Membership</div>
+          </div>
+          <div style={{
+            width: '72px', height: '4px', background: '#1B6DFC',
+            borderRadius: '2px', marginBottom: '24px',
+          }} />
+          <div style={{
+            fontSize: '26px', fontWeight: 500, color: '#4A4A4A',
+            lineHeight: 1.4, maxWidth: '1000px',
+          }}>
+            Three production zones: block progression · portal home (Block A) · coach-in-the-loop (Loom + Q&A + trend dashboard).
+          </div>
+        </div>
+
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          position: 'relative', paddingTop: '24px', borderTop: '1px solid #E5E5E5',
+        }}>
+          <div style={{
+            fontSize: '16px', fontWeight: 600, color: '#6B6B6B', fontStyle: 'italic',
+          }}>
+            Internal production page · noindex
+          </div>
+          <div style={{
+            fontSize: '18px', fontWeight: 700, color: '#1B6DFC',
+          }}>
+            bodyrecode.au/broll/inside-the-membership
+          </div>
+        </div>
+      </div>
+    ),
+    { ...size }
+  )
+}
