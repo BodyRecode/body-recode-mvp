@@ -14,7 +14,7 @@ export default function PerformanceCheckInPage() {
       <MarketingNav />
 
       {/* Hero */}
-      <section className="bg-black pt-44 pb-28 px-5">
+      <section className="bg-white pt-44 pb-28 px-5">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4"><a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase">Body Recode™</a> Performance Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] leading-tight tracking-tight mb-12">
@@ -75,7 +75,7 @@ export default function PerformanceCheckInPage() {
       </section>
 
       {/* What happens after */}
-      <section className="bg-black py-28 px-5 border-t border-stone-200">
+      <section className="bg-white py-28 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">What happens after</h2>
           <div className="grid md:grid-cols-3 gap-10">
@@ -111,7 +111,7 @@ export default function PerformanceCheckInPage() {
       </section>
 
       {/* Why it exists */}
-      <section className="bg-black py-28 px-5 border-t border-stone-200">
+      <section className="bg-white py-28 px-5 border-t border-stone-200">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Why it exists</h2>
           <p className="text-stone-600 text-lg leading-relaxed mb-4">

@@ -36,7 +36,7 @@ function QuestionInput({
           onChange={e => onChange(e.target.value)}
           rows={4}
           placeholder="Your response..."
-          className={`w-full bg-stone-900 rounded-xl px-4 py-3 text-[15px] text-[#1A1A1A] placeholder-stone-600 focus:outline-none focus:border-stone-600 resize-none transition-colors border ${hasError ? 'border-red-400' : 'border-stone-800'}`}
+          className={`w-full bg-stone-50 rounded-xl px-4 py-3 text-[15px] text-[#1A1A1A] placeholder-stone-600 focus:outline-none focus:border-stone-600 resize-none transition-colors border ${hasError ? 'border-red-400' : 'border-stone-200'}`}
         />
       </div>
     )
@@ -56,8 +56,8 @@ function QuestionInput({
                 value === opt
                   ? 'bg-blue-500/10 border-blue-500 text-blue-300'
                   : hasError
-                  ? 'bg-stone-900 border-red-400 text-stone-300'
-                  : 'bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-600'
+                  ? 'bg-stone-50 border-red-400 text-stone-700'
+                  : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-600'
               }`}
             >
               {opt}
@@ -219,7 +219,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
     <div className="min-h-screen bg-[#FFFFFF]">
 
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 right-0 h-[2px] bg-stone-900 z-20">
+      <div className="fixed top-0 left-0 right-0 h-[2px] bg-stone-50 z-20">
         <div
           className="h-full bg-blue-500 transition-all duration-500 ease-out"
           style={{ width: `${progressPct}%` }}
@@ -251,7 +251,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
         )}
 
         {/* Divider */}
-        <div className="h-px bg-stone-900 mb-8" />
+        <div className="h-px bg-stone-50 mb-8" />
 
         {/* Questions */}
         <div className="space-y-8">
@@ -290,7 +290,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
           <button
             type="button"
             onClick={() => goToSection(sectionIndex - 1)}
-            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-300 ${
+            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-700 ${
               sectionIndex === 0 ? 'invisible' : ''
             }`}
           >

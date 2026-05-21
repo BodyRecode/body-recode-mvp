@@ -14,7 +14,7 @@ export default function StrengthCoachBrisbanePage() {
       <MarketingNav />
 
       {/* Hero */}
-      <section className="bg-black pt-44 pb-28 px-5">
+      <section className="bg-white pt-44 pb-28 px-5">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Brisbane · Strength Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] leading-tight tracking-tight mb-12">
@@ -49,7 +49,7 @@ export default function StrengthCoachBrisbanePage() {
       </section>
 
       {/* How strength coaching works */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">How strength coaching works at Body Recode™</h2>
           <p className="text-stone-600 text-lg leading-relaxed mb-12">
@@ -99,7 +99,7 @@ export default function StrengthCoachBrisbanePage() {
       </section>
 
       {/* Location */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Strength coaching in Brisbane, Newstead</h2>
           <p className="text-stone-600 text-lg leading-relaxed mb-4">
@@ -141,7 +141,7 @@ export default function StrengthCoachBrisbanePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-4">
             Find out where your strength actually is

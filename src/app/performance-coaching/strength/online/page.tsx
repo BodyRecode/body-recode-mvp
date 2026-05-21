@@ -14,7 +14,7 @@ export default function OnlineStrengthCoachingPage() {
       <MarketingNav />
 
       {/* Hero */}
-      <section className="bg-black pt-44 pb-28 px-5">
+      <section className="bg-white pt-44 pb-28 px-5">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Online · 1:1 Strength Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] leading-tight tracking-tight mb-12">
@@ -49,7 +49,7 @@ export default function OnlineStrengthCoachingPage() {
       </section>
 
       {/* How it works */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">How online strength coaching works</h2>
           <p className="text-stone-600 text-lg leading-relaxed mb-12">
@@ -101,7 +101,7 @@ export default function OnlineStrengthCoachingPage() {
       </section>
 
       {/* Who this is for */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Who online strength coaching is for</h2>
           <div className="grid md:grid-cols-2 gap-10 mb-12">
@@ -150,7 +150,7 @@ export default function OnlineStrengthCoachingPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-4">
             Find out where your strength actually is

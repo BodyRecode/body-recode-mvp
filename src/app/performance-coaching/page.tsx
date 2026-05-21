@@ -15,7 +15,7 @@ export default function PerformanceCoachingPage() {
       <MarketingNav variant="consumer" />
 
       {/* Hero */}
-      <section className="bg-black pt-44 pb-32 px-5 overflow-hidden relative">
+      <section className="bg-white pt-44 pb-32 px-5 overflow-hidden relative">
         <DnaHelix className="absolute right-0 top-0 h-full w-auto max-w-xs pointer-events-none select-none" opacity={0.06} />
         <div className="max-w-4xl mx-auto relative z-10">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">
@@ -52,7 +52,7 @@ export default function PerformanceCoachingPage() {
       </section>
 
       {/* Client population */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Client Population</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-8">
@@ -108,7 +108,7 @@ export default function PerformanceCoachingPage() {
       </section>
 
       {/* Closing */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Environment 01: Live</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-6">
@@ -119,7 +119,7 @@ export default function PerformanceCoachingPage() {
           </p>
           <a
             href="https://performance.bodyrecode.au"
-            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#0ecfb3] transition-colors mb-4"
+            className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors mb-4"
           >
             Visit Performance Coaching
           </a>

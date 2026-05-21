@@ -139,7 +139,7 @@ export default function CheckInQuiz() {
 
   if (stage === 'done') {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center px-5">
+      <div className="min-h-screen bg-white flex items-center justify-center px-5">
         <div className="max-w-md text-center">
           <div className="w-14 h-14 rounded-full bg-[#1B6DFC]/20 flex items-center justify-center mx-auto mb-6">
             <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,12 +165,12 @@ export default function CheckInQuiz() {
   if (stage === 'contact') {
     const canSubmit = name.trim().length > 0 && email.trim().length > 0
     return (
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen bg-white">
         <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-100 z-20">
           <div className="h-full bg-[#1B6DFC] w-full" />
         </div>
 
-        <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
+        <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
           <a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.15em] text-[#1A1A1A] uppercase hover:text-stone-600 transition-colors">Body Recode™</a>
           <p className="text-[11px] font-medium text-stone-500">Last step</p>
         </div>
@@ -230,7 +230,7 @@ export default function CheckInQuiz() {
           )}
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-stone-200 px-5 py-4 z-10">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-stone-200 px-5 py-4 z-10">
           <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
             <button
               type="button"
@@ -254,7 +254,7 @@ export default function CheckInQuiz() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-white">
       <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-100 z-20">
         <div
           className="h-full bg-[#1B6DFC] transition-all duration-500 ease-out"
@@ -262,7 +262,7 @@ export default function CheckInQuiz() {
         />
       </div>
 
-      <div className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
         <p className="text-[11px] font-bold tracking-[0.15em] text-[#1A1A1A] uppercase">Body Recode™</p>
         <p className="text-[11px] font-medium text-stone-500">{current + 1} / {QUESTIONS.length}</p>
       </div>
@@ -306,7 +306,7 @@ export default function CheckInQuiz() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-stone-200 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-stone-200 px-5 py-4 z-10">
         <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
           <button
             type="button"

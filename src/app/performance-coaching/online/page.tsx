@@ -14,7 +14,7 @@ export default function OnlinePerformanceCoachingPage() {
       <MarketingNav />
 
       {/* Hero */}
-      <section className="bg-black pt-44 pb-32 px-5">
+      <section className="bg-white pt-44 pb-32 px-5">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">Online · 1:1 Performance Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] leading-tight tracking-tight mb-8">
@@ -65,7 +65,7 @@ export default function OnlinePerformanceCoachingPage() {
       </section>
 
       {/* The approach */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">The Approach</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-8">
@@ -133,7 +133,7 @@ export default function OnlinePerformanceCoachingPage() {
       </section>
 
       {/* The system */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">The System</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-16">Decode. Rewire. Rebuild.</h2>
@@ -227,7 +227,7 @@ export default function OnlinePerformanceCoachingPage() {
       </section>
 
       {/* Four biological patterns */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase text-center mb-6">Who This Is For</p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] text-center tracking-tight mb-6">
@@ -320,7 +320,7 @@ export default function OnlinePerformanceCoachingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-black py-32 px-5 border-t border-stone-200">
+      <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-14">Frequently asked questions</h2>
           <div className="space-y-8">

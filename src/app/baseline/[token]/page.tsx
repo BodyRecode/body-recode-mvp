@@ -15,7 +15,7 @@ export default async function BaselinePage({ params }: { params: Promise<{ token
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <h1 className="text-xl font-semibold text-white mb-2">Link not found</h1>
+          <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Link not found</h1>
           <p className="text-stone-500 text-sm">This baseline link is invalid or has expired. Please contact your coach.</p>
         </div>
       </div>
@@ -39,7 +39,7 @@ export default async function BaselinePage({ params }: { params: Promise<{ token
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-xl font-semibold text-white mb-2">Baseline submitted</h1>
+          <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Baseline submitted</h1>
           <p className="text-[#999999] text-sm mb-7">Your baseline documentation has been received. Your coach will be in touch shortly.</p>
           {client.onboarding_token && (
             <a
