@@ -18,12 +18,15 @@ interface ClientRow {
   agreement_accepted_at: string | null
   health_declaration_submitted_at: string | null
   medical_clearance_required: boolean | null
+  medical_clearance_submitted_at: string | null
   medical_clearance_received_at: string | null
   onboarding_reminders_sent: Record<string, string> | null
 }
 
+type TaskId = 'agreement' | 'health' | 'clearance' | 'intake' | 'baseline'
+
 interface TaskState {
-  id: 'agreement' | 'health' | 'intake' | 'baseline'
+  id: TaskId
   title: string
   applicable: boolean
   done: boolean
@@ -54,13 +57,21 @@ function dayCard(html: string) {
 </body></html>`
 }
 
-function reminderEmail(firstName: string, taskTitle: string, threshold: Threshold, portalUrl: string) {
-  const intro =
-    threshold === 3
-      ? `Just a nudge — your ${taskTitle} is waiting. Pick up where you left off whenever you have a few minutes.`
-      : threshold === 7
-      ? `Your ${taskTitle} is still outstanding. We need this to keep your coaching on track.`
-      : `It's been two weeks since your ${taskTitle} became available. If you've changed your mind that's okay — just let me know. Otherwise, this is the last automated reminder.`
+function reminderEmail(firstName: string, taskId: TaskId, taskTitle: string, threshold: Threshold, portalUrl: string) {
+  // Clearance is the only task that requires an external action (GP visit),
+  // so the default "pick up where you left off" framing doesn't fit. Give it
+  // its own copy.
+  const intro = taskId === 'clearance'
+    ? (threshold === 3
+        ? `Just a heads up. Your Medical Clearance form is still waiting to be returned. Take it to your GP whenever you can, then upload the signed form through your portal.`
+        : threshold === 7
+        ? `Your Medical Clearance is still outstanding. We need this before the rest of your onboarding can open up.`
+        : `It's been two weeks since your Medical Clearance became available. If you've changed your mind that's okay, just let me know. Otherwise, this is the last automated reminder.`)
+    : (threshold === 3
+        ? `Just a nudge. Your ${taskTitle} is waiting. Pick up where you left off whenever you have a few minutes.`
+        : threshold === 7
+        ? `Your ${taskTitle} is still outstanding. We need this to keep your coaching on track.`
+        : `It's been two weeks since your ${taskTitle} became available. If you've changed your mind that's okay, just let me know. Otherwise, this is the last automated reminder.`)
 
   const body = `
     <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">Hi ${firstName},</p>
@@ -95,7 +106,7 @@ export async function GET(request: NextRequest) {
 
   const { data: clients } = await admin
     .from('clients')
-    .select('id, name, email, active, created_at, onboarding_token, agreement_accepted_at, health_declaration_submitted_at, medical_clearance_required, medical_clearance_received_at, onboarding_reminders_sent, intake_invitations(status, completed_at), baselines(id)')
+    .select('id, name, email, active, created_at, onboarding_token, agreement_accepted_at, health_declaration_submitted_at, medical_clearance_required, medical_clearance_submitted_at, medical_clearance_received_at, onboarding_reminders_sent, intake_invitations(status, completed_at), baselines(id)')
     .eq('active', true)
 
   if (!clients || clients.length === 0) {
@@ -139,6 +150,16 @@ export async function GET(request: NextRequest) {
         availableAt: client.agreement_accepted_at,
       },
       {
+        id: 'clearance',
+        title: 'Medical Clearance',
+        applicable: !!client.medical_clearance_required,
+        // Once the form is uploaded, the client has done their part; the
+        // remaining wait is for coach approval. Stop nudging at that point
+        // rather than at received_at.
+        done: !!client.medical_clearance_submitted_at || !!client.medical_clearance_received_at,
+        availableAt: client.health_declaration_submitted_at,
+      },
+      {
         id: 'intake',
         title: 'Foundational Intake',
         applicable: true,
@@ -179,7 +200,7 @@ export async function GET(request: NextRequest) {
           from: 'Kade at Body Recode <kade@bodyrecode.au>',
           to: client.email,
           subject,
-          html: reminderEmail(firstName, task.title, threshold, portalUrl),
+          html: reminderEmail(firstName, task.id, task.title, threshold, portalUrl),
         })
         const sentAt = new Date().toISOString()
         sentMap[key] = sentAt

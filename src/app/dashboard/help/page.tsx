@@ -1363,6 +1363,7 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li>Coaching Agreement</li>
               <li>Health Declaration</li>
+              <li>Medical Clearance <em>(only when the health declaration flagged clearance as required, and only until the client uploads the signed form)</em></li>
               <li>Foundational Intake</li>
               <li>Baseline Documentation</li>
             </ul>
@@ -1374,6 +1375,14 @@ export default function HelpPage() {
               <li><strong>Day 14</strong> - final: &quot;last automated reminder - let me know if you&apos;ve changed your mind&quot;</li>
             </ul>
             <p className="mt-2">&quot;Days since&quot; is counted from when the task became <em>available</em> (i.e., when the previous step was completed), not from when the client was created. So a client who finishes their agreement quickly but stalls on intake gets reminded based on time since the agreement was signed.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-3">Medical Clearance gating</p>
+            <p>When a client&apos;s health declaration flags Medical Clearance as required, the cron behaves as follows:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>Foundational Intake reminders are paused</strong> while clearance is outstanding. The portal blocks intake behind clearance, so nudging the client to finish intake would just frustrate them. Once you approve clearance, the 3/7/14 day intake countdown starts fresh from the approval timestamp.</li>
+              <li><strong>Medical Clearance reminders fire instead.</strong> Same 3/7/14 cadence, counted from when the health declaration was submitted. The copy is tailored to clearance (it acknowledges they need a GP visit, not a few-minute portal task).</li>
+              <li><strong>Clearance reminders stop the moment the client uploads the signed form.</strong> At that point the ball is in your court for approval, so further nudges to the client would be wrong.</li>
+            </ul>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">What you see vs what gets tracked</p>
             <p>Every reminder sent is recorded in <code>clients.onboarding_reminders_sent</code> as a JSON map of <code>task_threshold → timestamp</code>. To check if a client has been reminded, look at the client record in Supabase. The cron skips any client where the relevant reminder has already been logged.</p>

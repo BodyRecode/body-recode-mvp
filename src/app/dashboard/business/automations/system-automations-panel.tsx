@@ -167,7 +167,7 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'onboarding-reminders',
     name: 'Onboarding Reminders (3/7/14 day)',
-    description: 'Daily cron. Fires for each stalled onboarding task (agreement, health declaration, intake, baseline) at 3, 7, and 14 days. The 14-day mark is the last automated reminder.',
+    description: 'Daily cron. Fires for each stalled onboarding task (agreement, health declaration, medical clearance, intake, baseline) at 3, 7, and 14 days. The 14-day mark is the last automated reminder. Intake reminders pause while medical clearance is outstanding; clearance reminders fire instead and stop once the client uploads the signed form.',
     trigger: 'Vercel cron daily',
     steps: 1,
   },
