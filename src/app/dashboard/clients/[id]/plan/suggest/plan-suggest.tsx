@@ -276,7 +276,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
                   </button>
                   <button
                     onClick={() => removeBlock(i)}
-                    className="text-[10px] text-stone-300 hover:text-red-700 px-1 transition-colors"
+                    className="text-[10px] text-stone-700 hover:text-red-700 px-1 transition-colors"
                   >
                     ✕
                   </button>

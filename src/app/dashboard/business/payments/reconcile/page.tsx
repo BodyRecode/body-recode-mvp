@@ -152,7 +152,7 @@ export default async function ReconcilePage() {
                       {p.type === 'subscription' && p.billing_interval && (
                         <span className="text-stone-400"> / {p.billing_interval.replace('ly', '')}</span>
                       )}
-                      {!p.is_active && <span className="text-stone-300 ml-2">(inactive)</span>}
+                      {!p.is_active && <span className="text-stone-700 ml-2">(inactive)</span>}
                     </p>
                   </div>
                 </div>

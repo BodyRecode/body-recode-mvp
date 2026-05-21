@@ -83,7 +83,7 @@ export default async function BookingsPage() {
                       <span className="text-xs font-semibold text-blue-500 uppercase tracking-wider">
                         {typeLabel[booking.type]}
                       </span>
-                      <span className="text-stone-300">·</span>
+                      <span className="text-stone-700">·</span>
                       <span className="text-xs text-stone-600">
                         {new Date(booking.scheduled_at).toLocaleTimeString('en-AU', {
                           hour: 'numeric',
@@ -94,7 +94,7 @@ export default async function BookingsPage() {
                       </span>
                       {booking.duration_minutes && (
                         <>
-                          <span className="text-stone-300">·</span>
+                          <span className="text-stone-700">·</span>
                           <span className="text-xs text-stone-500">{booking.duration_minutes}min</span>
                         </>
                       )}

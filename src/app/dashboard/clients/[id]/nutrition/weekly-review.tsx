@@ -112,7 +112,7 @@ export default async function NutritionWeeklyReview({
       ) : (
         <div className="px-5 py-6 text-center">
           <p className="text-sm text-stone-400">No reviews submitted yet.</p>
-          <p className="text-xs text-stone-300 mt-1">Client submits their weekly nutrition check-in via the portal.</p>
+          <p className="text-xs text-stone-700 mt-1">Client submits their weekly nutrition check-in via the portal.</p>
         </div>
       )}
     </div>

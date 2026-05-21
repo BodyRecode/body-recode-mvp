@@ -101,7 +101,7 @@ export default async function CRMPage() {
 
                 {cards.length === 0 && (
                   <div className="bg-stone-100/50 border border-dashed border-stone-200 rounded-lg p-3">
-                    <p className="text-xs text-stone-300 text-center">Empty</p>
+                    <p className="text-xs text-stone-700 text-center">Empty</p>
                   </div>
                 )}
               </div>

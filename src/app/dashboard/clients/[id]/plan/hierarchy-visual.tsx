@@ -126,7 +126,7 @@ export default function HierarchyVisual({
                           <span className="opacity-60">{block.week_duration}w</span>
                         </div>
                         {i < plan.plan_blocks.length - 1 && (
-                          <span className="text-stone-300 text-[9px]">›</span>
+                          <span className="text-stone-700 text-[9px]">›</span>
                         )}
                       </div>
                     ))}
@@ -141,7 +141,7 @@ export default function HierarchyVisual({
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
             <div className="w-px h-3 bg-stone-300 ml-0.5" />
-            <span className="text-[9px] text-stone-300">current block</span>
+            <span className="text-[9px] text-stone-700">current block</span>
           </div>
 
           {/* Layer 2: Meso Block */}
@@ -164,7 +164,7 @@ export default function HierarchyVisual({
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
             <div className="w-px h-3 bg-stone-300 ml-0.5" />
-            <span className="text-[9px] text-stone-300">generates program</span>
+            <span className="text-[9px] text-stone-700">generates program</span>
           </div>
 
           {/* Layer 3: Micro Program */}
@@ -189,7 +189,7 @@ export default function HierarchyVisual({
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
             <div className="w-px h-3 bg-stone-300 ml-0.5" />
-            <span className="text-[9px] text-stone-300">supported by</span>
+            <span className="text-[9px] text-stone-700">supported by</span>
           </div>
 
           {/* Layer 4: Nutrition */}

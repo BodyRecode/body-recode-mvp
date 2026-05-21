@@ -379,7 +379,7 @@ export default function PeerReviewPage() {
 
                   <button
                     onClick={() => deleteReviewer(reviewer.id)}
-                    className="text-stone-300 hover:text-red-500 transition-colors shrink-0"
+                    className="text-stone-700 hover:text-red-500 transition-colors shrink-0"
                   >
                     <Trash2 size={14} />
                   </button>

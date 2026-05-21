@@ -291,7 +291,7 @@ function ContentCalendar() {
               <div key={r.phase} className="flex items-center gap-1.5">
                 <div className={`w-2.5 h-2.5 rounded-sm border-t-2 ${r.topBorder.replace('border-t-2 ', '')} bg-stone-200`} />
                 <span className={`text-xs ${style.color}`}>{style.label}</span>
-                <span className="text-xs text-stone-300">{start}{r.phase !== 'scale' ? ` – ${end}` : '+'}</span>
+                <span className="text-xs text-stone-700">{start}{r.phase !== 'scale' ? ` – ${end}` : '+'}</span>
               </div>
             )
           })}
@@ -479,7 +479,7 @@ function ContentCalendar() {
                           <p className="text-sm text-stone-600 leading-relaxed">{activePost.graphic}</p>
                         </>
                       ) : (
-                        <p className="text-sm text-stone-300">No graphic set</p>
+                        <p className="text-sm text-stone-700">No graphic set</p>
                       )}
                     </div>
                   )}
@@ -1477,7 +1477,7 @@ export default function StrategyPage() {
                   <ul className="space-y-1.5">
                     {l.items.map((item, i) => (
                       <li key={i} className="text-xs text-stone-600 leading-relaxed flex gap-2">
-                        <span className="text-stone-300 shrink-0">·</span>
+                        <span className="text-stone-700 shrink-0">·</span>
                         {item}
                       </li>
                     ))}
@@ -1505,7 +1505,7 @@ export default function StrategyPage() {
                   <span className="text-xs font-bold text-stone-500 w-7 shrink-0 pt-0.5">{r.day}</span>
                   {r.post
                     ? <span className="text-xs font-semibold text-blue-500 shrink-0 pt-0.5">Post</span>
-                    : <span className="text-xs font-semibold text-stone-300 shrink-0 pt-0.5">Rest</span>
+                    : <span className="text-xs font-semibold text-stone-700 shrink-0 pt-0.5">Rest</span>
                   }
                   <p className="text-xs text-stone-600 leading-relaxed">{r.action}</p>
                 </div>

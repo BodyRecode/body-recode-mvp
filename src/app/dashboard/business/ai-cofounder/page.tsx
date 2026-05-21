@@ -353,7 +353,7 @@ function TrackingTab() {
         <p className="text-xs text-stone-400 mt-1">No sales recorded yet. Sales will be logged here once the product is live.</p>
         <div className="mt-4 p-8 border border-dashed border-stone-200 rounded-lg text-center">
           <p className="text-sm text-stone-400">No sales yet</p>
-          <p className="text-xs text-stone-300 mt-1">Launch aicofoundermethod.com to start tracking</p>
+          <p className="text-xs text-stone-700 mt-1">Launch aicofoundermethod.com to start tracking</p>
         </div>
       </Card>
     </div>

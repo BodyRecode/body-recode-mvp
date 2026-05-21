@@ -391,7 +391,7 @@ function Field({
         onChange={e => onChange(e.target.value)}
         rows={rows}
         placeholder={placeholder}
-        className="w-full bg-[#FFFFFF] border border-stone-200 rounded-lg p-3 text-sm text-stone-900 placeholder:text-stone-300 focus:outline-none focus:border-blue-500/60 resize-y"
+        className="w-full bg-[#FFFFFF] border border-stone-200 rounded-lg p-3 text-sm text-stone-900 placeholder:text-stone-700 focus:outline-none focus:border-blue-500/60 resize-y"
       />
     </div>
   )

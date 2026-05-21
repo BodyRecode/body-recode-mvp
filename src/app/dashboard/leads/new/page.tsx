@@ -124,7 +124,7 @@ export default function NewLeadPage() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-white text-stone-50 text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-stone-900 transition-colors disabled:opacity-50"
+            className="bg-white text-stone-50 text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-stone-50 transition-colors disabled:opacity-50"
           >
             {loading ? 'Adding...' : 'Add Lead'}
           </button>

@@ -92,7 +92,7 @@ export default async function InboxPage() {
                   <p className="text-xs text-stone-400">{timeAgo}</p>
                 )}
                 {lead.eventCount > 0 && (
-                  <p className="text-xs text-stone-300 mt-0.5">{lead.eventCount} events</p>
+                  <p className="text-xs text-stone-700 mt-0.5">{lead.eventCount} events</p>
                 )}
               </div>
             </Link>

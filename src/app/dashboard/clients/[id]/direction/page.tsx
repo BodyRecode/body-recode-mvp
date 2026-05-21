@@ -33,7 +33,7 @@ const blockStatusStyle: Record<string, string> = {
   planned: 'border-stone-300 bg-stone-100 text-stone-500',
   in_progress: 'border-amber-700 bg-amber-50 text-amber-700',
   complete: 'border-green-700 bg-green-400/10 text-green-400',
-  skipped: 'border-stone-200 bg-stone-100/50 text-stone-300',
+  skipped: 'border-stone-200 bg-stone-100/50 text-stone-700',
 }
 
 export default async function ClientDirectionPage({ params }: { params: Promise<{ id: string }> }) {
@@ -166,7 +166,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <span className="text-[10px] font-black text-stone-400">{String(block.position).padStart(2, '0')}</span>
-                          <p className={`text-sm font-medium ${block.status === 'skipped' ? 'line-through text-stone-300' : 'text-stone-800'}`}>
+                          <p className={`text-sm font-medium ${block.status === 'skipped' ? 'line-through text-stone-700' : 'text-stone-800'}`}>
                             {block.block_name}
                           </p>
                           {block.status === 'in_progress' && (

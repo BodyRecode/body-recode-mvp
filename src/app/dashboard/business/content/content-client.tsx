@@ -1094,7 +1094,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                     >
                       <Image size={12} /> Create Graphic
                     </button>
-                    <span className="text-stone-300 text-xs">·</span>
+                    <span className="text-stone-700 text-xs">·</span>
                     <button
                       onClick={() => generateCarousel(output.id, output.content_text)}
                       disabled={generatingCarousel === output.id}

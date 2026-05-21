@@ -127,7 +127,7 @@ export default function NewClientPage() {
           </Link>
           <Link
             href={`/dashboard/clients/${clientId}`}
-            className="flex-1 text-center text-sm px-4 py-2.5 bg-white text-stone-50 font-medium rounded-lg hover:bg-stone-900 transition-colors"
+            className="flex-1 text-center text-sm px-4 py-2.5 bg-white text-stone-50 font-medium rounded-lg hover:bg-stone-50 transition-colors"
           >
             View client
           </Link>
@@ -207,7 +207,7 @@ export default function NewClientPage() {
         <button
           onClick={handleCreate}
           disabled={loading}
-          className="flex-1 px-5 py-2.5 rounded-lg text-sm bg-white text-stone-50 font-medium hover:bg-stone-900 transition-colors disabled:opacity-50"
+          className="flex-1 px-5 py-2.5 rounded-lg text-sm bg-white text-stone-50 font-medium hover:bg-stone-50 transition-colors disabled:opacity-50"
         >
           {loading ? 'Creating…' : 'Create client & generate link'}
         </button>
