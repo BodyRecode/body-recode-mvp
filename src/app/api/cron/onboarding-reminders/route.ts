@@ -17,6 +17,8 @@ interface ClientRow {
   onboarding_token: string | null
   agreement_accepted_at: string | null
   health_declaration_submitted_at: string | null
+  medical_clearance_required: boolean | null
+  medical_clearance_received_at: string | null
   onboarding_reminders_sent: Record<string, string> | null
 }
 
@@ -93,7 +95,7 @@ export async function GET(request: NextRequest) {
 
   const { data: clients } = await admin
     .from('clients')
-    .select('id, name, email, active, created_at, onboarding_token, agreement_accepted_at, health_declaration_submitted_at, onboarding_reminders_sent, intake_invitations(status, completed_at), baselines(id)')
+    .select('id, name, email, active, created_at, onboarding_token, agreement_accepted_at, health_declaration_submitted_at, medical_clearance_required, medical_clearance_received_at, onboarding_reminders_sent, intake_invitations(status, completed_at), baselines(id)')
     .eq('active', true)
 
   if (!clients || clients.length === 0) {
@@ -113,6 +115,13 @@ export async function GET(request: NextRequest) {
 
     const intakeCompleted = (client.intake_invitations || []).find(i => i.status === 'complete')
     const baselineDone = (client.baselines || []).length > 0
+    const clearanceBlocking = !!client.medical_clearance_required && !client.medical_clearance_received_at
+    // Intake unlocks on whichever happened later: health declaration or
+    // clearance approval. While clearance is blocking, intake is not yet
+    // available and no reminder should fire for it. Mirrors the portal page.
+    const intakeAvailableAt = clearanceBlocking
+      ? null
+      : client.medical_clearance_received_at ?? client.health_declaration_submitted_at
 
     const tasks: TaskState[] = [
       {
@@ -134,7 +143,7 @@ export async function GET(request: NextRequest) {
         title: 'Foundational Intake',
         applicable: true,
         done: !!intakeCompleted,
-        availableAt: client.health_declaration_submitted_at,
+        availableAt: intakeAvailableAt,
       },
       {
         id: 'baseline',
