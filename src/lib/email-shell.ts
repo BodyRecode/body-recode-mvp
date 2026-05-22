@@ -107,9 +107,9 @@ export function emailHeading(text: string, opts?: { size?: number; color?: strin
   return `<h1 style="font-size:${size}px;font-weight:800;letter-spacing:-0.025em;line-height:1.2;color:${color};margin:0 0 16px;font-family:${EMAIL_FF};">${text}</h1>`
 }
 
-/** 48×3px Signal Blue divider that sits under the heading. */
-export function emailDivider(): string {
-  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;"><tr><td bgcolor="${EMAIL_BLUE}" height="3" style="background-color:${EMAIL_BLUE};width:48px;line-height:3px;font-size:0;">&nbsp;</td></tr></table>`
+/** 48×3px Signal Blue divider that sits under the heading. Pass a colour for non-default accents (e.g. amber for medical-clearance alerts). */
+export function emailDivider(color: string = EMAIL_BLUE): string {
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;"><tr><td bgcolor="${color}" height="3" style="background-color:${color};width:48px;line-height:3px;font-size:0;">&nbsp;</td></tr></table>`
 }
 
 /** Standard body paragraph. */
@@ -149,9 +149,10 @@ export function emailStatusCard(opts: { eyebrow: string; headline: string; body:
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="${EMAIL_GREY_BG}" style="background-color:${EMAIL_GREY_BG};margin:0 0 28px;"><tr><td bgcolor="${EMAIL_GREY_BG}" style="background-color:${EMAIL_GREY_BG};padding:18px 22px;border:1px solid ${EMAIL_HAIRLINE};border-radius:12px;"><p style="margin:0 0 6px;font-size:10px;font-weight:700;color:${EMAIL_MUTED};letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">${opts.eyebrow}</p><p style="margin:0 0 6px;font-size:15px;color:${EMAIL_GRAPHITE};font-weight:700;line-height:1.5;font-family:${EMAIL_FF};">${opts.headline}</p><p style="margin:0;font-size:14px;color:${EMAIL_BODY};line-height:1.6;font-family:${EMAIL_FF};">${opts.body}</p></td></tr></table>`
 }
 
-/** Signal Blue solid CTA button. Pair with `emailUrlFallback(href)` underneath for Microsoft 365 Safe-Links environments. */
-export function emailCta(opts: { href: string; label: string }): string {
-  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;"><tr><td bgcolor="${EMAIL_BLUE}" style="background-color:${EMAIL_BLUE};border-radius:10px;"><a href="${opts.href}" style="display:inline-block;padding:15px 28px;color:#FFFFFF;font-size:15px;font-weight:800;text-decoration:none;letter-spacing:0.01em;font-family:${EMAIL_FF};">${opts.label}</a></td></tr></table>`
+/** Signal Blue solid CTA button. Pair with `emailUrlFallback(href)` underneath for Microsoft 365 Safe-Links environments. Pass `bg` for non-default accents (e.g. amber #B7791F for clearance alerts, red #DC2626 for urgent). */
+export function emailCta(opts: { href: string; label: string; bg?: string }): string {
+  const bg = opts.bg ?? EMAIL_BLUE
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;"><tr><td bgcolor="${bg}" style="background-color:${bg};border-radius:10px;"><a href="${opts.href}" style="display:inline-block;padding:15px 28px;color:#FFFFFF;font-size:15px;font-weight:800;text-decoration:none;letter-spacing:0.01em;font-family:${EMAIL_FF};">${opts.label}</a></td></tr></table>`
 }
 
 export function darkEmailShell(inner: string, opts?: { previewText?: string }): string {

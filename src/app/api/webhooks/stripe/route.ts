@@ -582,41 +582,33 @@ ${darkEmailSignature()}
       }
       const patternDisplay = pattern ? patternLabel[pattern] ?? pattern : null
 
+      const phaseLines = [
+        '<strong style="color:#1A1A1A;">Phase 1 — Regulate</strong> (Weeks 1-2). Re-establish structure and biological rhythm.',
+        '<strong style="color:#1A1A1A;">Phase 2 — Adapt</strong> (Weeks 3-4). Drive adaptation through progressive load.',
+        '<strong style="color:#1A1A1A;">Phase 3 — Embed</strong> (Weeks 5-6). Lock in the new baseline before Stage 3.',
+      ]
+      const patternLine = patternDisplay
+        ? `Your programme has been built around your <strong style="color:#1A1A1A;">${patternDisplay}</strong> pattern.`
+        : 'Your first step is a short pattern assessment so the programme can be built around your biology.'
+
+      const blueprintInner = `
+${emailLogo()}
+${emailEyebrow('Body Rewire Blueprint')}
+${emailHeading('Your 6-week programme is ready.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody(patternLine)}
+${emailBody('The programme runs across three phases:')}
+${emailFeaturedCard(emailNumberedList(phaseLines), { eyebrow: 'How the six weeks unfold' })}
+${emailCta({ href: portalUrl, label: 'Open my Blueprint' })}
+${emailUrlFallback(portalUrl, 'Bookmark this link — your portal for the full 6 weeks')}
+${darkEmailSignature()}
+`
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
         subject: `Your 6-Week Body Rewire Blueprint is ready`,
-        html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-            <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${firstName},</p>
-            <p style="margin:0 0 18px;font-size:15px;color:#999999;">Your 6-Week Body Rewire Blueprint is ready. ${patternDisplay ? `Your programme has been built around your <strong style="color:#fff;">${patternDisplay}</strong> pattern.` : `Your first step is a short pattern assessment so the programme can be built around your biology.`}</p>
-            <p style="margin:0 0 18px;font-size:15px;color:#999999;">The programme runs across three phases:</p>
-            <ul style="padding-left:20px;color:#999999;margin:0 0 24px;">
-              <li style="margin-bottom:8px;"><strong style="color:#fff;">Phase 1 - Regulate</strong> (Weeks 1-2) - Re-establish structure and biological rhythm</li>
-              <li style="margin-bottom:8px;"><strong style="color:#fff;">Phase 2 - Adapt</strong> (Weeks 3-4) - Drive adaptation through progressive load</li>
-              <li style="margin-bottom:8px;"><strong style="color:#fff;">Phase 3 - Embed</strong> (Weeks 5-6) - Lock in the new baseline before Stage 3</li>
-            </ul>
-            <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-              <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my Blueprint</a></td></tr>
-            </table>
-            <p style="margin:0 0 18px;font-size:13px;color:#555;">Bookmark this link. It is your personal portal for the full 6 weeks.<br/><a href="${portalUrl}" style="color:#555;">${portalUrl}</a></p>
-            ${darkEmailSignature()}
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+        html: darkEmailShell(blueprintInner, { previewText: `${firstName}, your Blueprint is ready.` }),
       })
 
       // Fire week-advance sequence
@@ -626,16 +618,23 @@ ${darkEmailSignature()}
       })
 
       // Coach notification
+      const blueprintCoachInner = `
+${emailLogo()}
+${emailEyebrow('Blueprint Purchased')}
+${emailHeading(`${name} bought the Blueprint.`)}
+${emailDivider()}
+${emailStatusCard({
+  eyebrow: 'New enrollment',
+  headline: `Email: ${email}`,
+  body: `Pattern: ${patternDisplay ?? 'Pending assessment'}. Week-advance sequence has been fired via Inngest.`,
+})}
+${darkEmailSignature()}
+`
       await resend.emails.send({
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
         subject: `Blueprint purchased - ${name}`,
-        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
-  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${name} purchased the Blueprint</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Email: ${email}</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Pattern: ${patternDisplay ?? 'Pending assessment'}</p>
-</div>`,
+        html: darkEmailShell(blueprintCoachInner, { previewText: `${name} bought the Blueprint.` }),
       })
     }
 
@@ -669,49 +668,47 @@ ${darkEmailSignature()}
         ? `${appUrl()}/blueprint/${blueprint_token}`
         : `${appUrl()}/membership/${membership.token}`
 
+      const membershipInner = `
+${emailLogo()}
+${emailEyebrow('Body Recode Membership')}
+${emailHeading(`Welcome to the Membership, ${first_name}.`)}
+${emailDivider()}
+${emailBody(`Hi ${first_name},`)}
+${emailBody('You are in. Your Body Recode Membership is active and <strong style="color:#1A1A1A;">Block A is loaded into your portal</strong>.')}
+${emailBody('Block A — Consolidate picks up directly from where the Blueprint ended. Your pattern rules carry forward. The training and nutrition have been built on top of the foundation you have already established.', { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Open my portal' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${emailStatusCard({
+  eyebrow: 'What is next',
+  headline: 'Week 4 coach Loom · monthly group Q&A',
+  body: 'Your first monthly coach Loom will be sent at the end of Week 4. Monthly group Q&A call details to follow.',
+})}
+${darkEmailSignature()}
+`
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
         subject: `Welcome to the Body Recode Membership`,
-        html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-            <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${first_name},</p>
-            <p style="margin:0 0 18px;font-size:15px;color:#999999;">You are in. Your Body Recode Membership is active and <strong style="color:#fff;">Block A is loaded into your portal</strong>.</p>
-            <p style="margin:0 0 18px;font-size:15px;color:#999999;">Block A - Consolidate picks up directly from where the Blueprint ended. Your pattern rules carry forward. The training and nutrition have been built on top of the foundation you have already established.</p>
-            <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-              <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my portal</a></td></tr>
-            </table>
-            <p style="margin:0 0 18px;font-size:13px;color:#555;">Your first monthly coach Loom will be sent at the end of Week 4. Monthly group Q&A call details to follow.</p>
-            ${darkEmailSignature()}
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+        html: darkEmailShell(membershipInner, { previewText: `Welcome ${first_name}, your Membership is active.` }),
       })
 
+      const membershipCoachInner = `
+${emailLogo()}
+${emailEyebrow('Membership Purchased')}
+${emailHeading(`${first_name} joined the Membership.`)}
+${emailDivider()}
+${emailStatusCard({
+  eyebrow: 'New enrollment',
+  headline: `Email: ${email}`,
+  body: `Pattern: ${pattern_from_blueprint || 'Pending assessment'}. Blueprint token: ${blueprint_token || 'None — direct join'}. Week-advance sequence fired via Inngest.`,
+})}
+${darkEmailSignature()}
+`
       await resend.emails.send({
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
         subject: `Membership purchased - ${first_name}`,
-        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
-  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${first_name} joined the membership</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Email: ${email}</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Pattern: ${pattern_from_blueprint || 'Pending assessment'}</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Blueprint token: ${blueprint_token || 'None - direct join'}</p>
-</div>`,
+        html: darkEmailShell(membershipCoachInner, { previewText: `${first_name} joined the Membership.` }),
       })
 
       await inngest.send({
@@ -746,42 +743,42 @@ ${darkEmailSignature()}
       const resend = new Resend(process.env.RESEND_API_KEY)
       const portalUrl = `${appUrl()}/extension/${enrollment.token}`
 
+      const extensionInner = `
+${emailLogo()}
+${emailEyebrow('Body Rewire Extension')}
+${emailHeading('Your 90-day extension is ready.')}
+${emailDivider()}
+${emailBody(`Hi ${first_name},`)}
+${emailBody('Your 90-Day Body Rewire Extension is active. Your portal is ready — 12 weeks of progressive programming that picks up exactly where the Blueprint ended.')}
+${emailBody('Weeks 1-6 run <strong style="color:#1A1A1A;">Block A (Consolidate)</strong>. Weeks 7-12 run <strong style="color:#1A1A1A;">Block B (Advance)</strong>. Same pattern, same portal structure you already know.', { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Open my Extension portal' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${darkEmailSignature()}
+`
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
         subject: `Your 90-Day Body Rewire Extension is ready`,
-        html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-        </td></tr>
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${first_name},</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Your 90-Day Body Rewire Extension is active. Your portal is ready - 12 weeks of progressive programming that picks up exactly where the Blueprint ended.</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Weeks 1-6 run Block A (Consolidate). Weeks 7-12 run Block B (Advance). Same pattern, same portal structure you already know.</p>
-          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open my Extension Portal</a></td></tr>
-          </table>
-          ${darkEmailSignature()}
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+        html: darkEmailShell(extensionInner, { previewText: `${first_name}, your 90-Day Extension is ready.` }),
       })
 
+      const extensionCoachInner = `
+${emailLogo()}
+${emailEyebrow('Extension Purchased')}
+${emailHeading(`${first_name} bought the 90-Day Extension.`)}
+${emailDivider()}
+${emailStatusCard({
+  eyebrow: 'New enrollment',
+  headline: `Email: ${email}`,
+  body: `Pattern: ${pattern_from_blueprint || 'Pending assessment'}. Week-advance sequence fired via Inngest.`,
+})}
+${darkEmailSignature()}
+`
       await resend.emails.send({
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
         subject: `Extension purchased - ${first_name}`,
-        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
-  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${first_name} purchased the 90-Day Extension</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 8px;">Email: ${email}</p>
-  <p style="font-size:15px;color:#aaa;margin:0;">Pattern: ${pattern_from_blueprint || 'Pending assessment'}</p>
-</div>`,
+        html: darkEmailShell(extensionCoachInner, { previewText: `${first_name} bought the 90-Day Extension.` }),
       })
 
       await inngest.send({

@@ -1,12 +1,24 @@
 /**
- * Shared dark-template builder for coach-facing notification emails sent
- * when a client completes a portal task (baseline, intake, agreement,
- * health declaration, medical clearance, weekly check-in, session
- * confirmations and reschedules).
+ * Shared builder for coach-facing notification emails sent when a client
+ * completes a portal task (baseline, intake, agreement, health declaration,
+ * medical clearance, weekly check-in, session confirmations and reschedules,
+ * portal messages, feedback / refer / pause requests).
  *
- * Uses the same DNA as the client-facing welcome / commencement / foundational
- * reading templates so the entire email surface reads as one product.
+ * Composes from the design helpers in `src/lib/email-shell.ts` so every
+ * coach notification renders in the same visual language as client-facing
+ * mail — Pure White canvas, Graphite Black headings, Signal Blue accents
+ * (or amber / red for non-default accent contexts).
+ *
+ * Migrated 2026-05-22 (Phase 2 of the email design migration) from the
+ * hand-rolled dark-card-on-white version. Same callsite contract; only
+ * the rendered output changes.
  */
+
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  emailCta, EMAIL_BLUE, EMAIL_MUTED, EMAIL_BODY_SOFT, EMAIL_FF,
+} from '@/lib/email-shell'
 
 export interface CoachNotificationParams {
   /** Small uppercase label above the heading (e.g. "BASELINE", "INTAKE") */
@@ -22,14 +34,21 @@ export interface CoachNotificationParams {
   ctaUrl: string
   /** Optional secondary muted note shown below the CTA */
   footnote?: string
-  /** Accent colour for the eyebrow + CTA. Defaults to locked teal. */
+  /** Accent colour for the eyebrow + divider + CTA. Defaults to Signal Blue. */
   accent?: 'teal' | 'amber' | 'red'
 }
 
-const ACCENTS = {
-  teal:  { bar: '#1B6DFC', hover: '#5390FF' },
-  amber: { bar: '#B7791F', hover: '#8A5A14' },
-  red:   { bar: '#DC2626', hover: '#DC2626' },
+const ACCENT_COLORS: Record<NonNullable<CoachNotificationParams['accent']>, string> = {
+  teal:  EMAIL_BLUE,   // historical name — actually Signal Blue since the palette overhaul
+  amber: '#B7791F',
+  red:   '#DC2626',
+}
+
+function renderDetails(items: string[]): string {
+  const lis = items
+    .map(d => `<li style="margin-bottom:6px;color:${EMAIL_BODY_SOFT};">${d}</li>`)
+    .join('')
+  return `<ul style="padding-left:20px;margin:0 0 22px;font-size:14px;line-height:1.7;color:${EMAIL_BODY_SOFT};font-family:${EMAIL_FF};">${lis}</ul>`
 }
 
 export function buildCoachNotificationEmail({
@@ -42,55 +61,25 @@ export function buildCoachNotificationEmail({
   footnote,
   accent = 'teal',
 }: CoachNotificationParams): string {
-  const a = ACCENTS[accent]
+  const accentColor = ACCENT_COLORS[accent]
   const paragraphs = Array.isArray(body) ? body : [body]
+  const lastIdx = paragraphs.length - 1
 
-  return `<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:560px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="140" alt="Body Recode" style="display:block;" />
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#6B6B6B;">
-              <p style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:${a.bar};text-transform:uppercase;margin:0 0 14px;">${escapeHtml(eyebrow)}</p>
-              <p style="color:#1A1A1A;font-size:22px;font-weight:800;letter-spacing:-0.02em;line-height:1.25;margin:0 0 18px;">${escapeHtml(heading)}</p>
-              ${paragraphs.map(p => `<p style="margin:0 0 14px;">${p}</p>`).join('')}
-              ${details && details.length > 0 ? `
-              <ul style="padding-left:18px;color:#6B6B6B;margin:8px 0 18px;">
-                ${details.map(d => `<li style="margin-bottom:6px;">${d}</li>`).join('')}
-              </ul>
-              ` : ''}
-              <table cellpadding="0" cellspacing="0" style="margin:24px 0 8px;">
-                <tr>
-                  <td bgcolor="${a.bar}" style="background-color:${a.bar};border-radius:10px;">
-                    <a href="${ctaUrl}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;">${escapeHtml(ctaLabel)}</a>
-                  </td>
-                </tr>
-              </table>
-              ${footnote ? `<p style="font-size:12px;color:#999999;margin:12px 0 0;">${footnote}</p>` : ''}
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>`
-}
+  const bodyBlocks = paragraphs
+    .map((p, i) => emailBody(p, { bottom: i === lastIdx ? 24 : 14 }))
+    .join('')
 
-function escapeHtml(input: string): string {
-  return input
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
+  const inner = `
+${emailLogo()}
+${emailEyebrow(eyebrow, accentColor)}
+${emailHeading(heading)}
+${emailDivider(accentColor)}
+${bodyBlocks}
+${details && details.length > 0 ? renderDetails(details) : ''}
+${emailCta({ href: ctaUrl, label: ctaLabel, bg: accentColor })}
+${emailUrlFallback(ctaUrl)}
+${footnote ? emailBody(footnote, { size: 12, color: EMAIL_MUTED, bottom: 0 }) : ''}
+`
+
+  return darkEmailShell(inner, { previewText: heading })
 }
