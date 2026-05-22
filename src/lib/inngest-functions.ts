@@ -568,12 +568,16 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   1: {
     subject: (n) => `Week 1 starts today, ${n}`,
     body: (n, url) => `
-      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 1 - Regulate</p>
-      <p>Hi ${n},</p>
-      <p>Your six-week programme starts today. The first two weeks are called the Regulate phase - and the goal is simple: re-establish biological rhythm.</p>
-      <p>This week is not about pushing hard. It is about removing the inputs that have been keeping your system in a stressed state and replacing them with a structure your body can actually respond to. Consistent meals, controlled training intensity, prioritised sleep.</p>
-      <p>Your first education lesson - Cortisol and the Stress Response - is now unlocked in your portal. It explains the biology behind why this phase is designed the way it is. Worth reading before your first session.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Open your portal</a></p>`,
+${emailEyebrow('Week 1 · Regulate')}
+${emailHeading('Re-establish biological rhythm.')}
+${emailDivider()}
+${emailBody(`Hi ${n},`)}
+${emailBody('Your six-week programme starts today. The first two weeks are called the Regulate phase — and the goal is simple: re-establish biological rhythm.')}
+${emailBody('This week is not about pushing hard. It is about removing the inputs that have been keeping your system in a stressed state and replacing them with a structure your body can actually respond to. Consistent meals, controlled training intensity, prioritised sleep.')}
+${emailBody('Your first education lesson — Cortisol and the Stress Response — is now unlocked in your portal. It explains the biology behind why this phase is designed the way it is. Worth reading before your first session.', { bottom: 28 })}
+${emailCta({ href: url, label: 'Open your portal' })}
+${emailUrlFallback(url, 'Or paste this link into your browser')}
+`,
     patternBlock: {
       'stress-stored':   'Your cortisol curve is the target this week. Eat breakfast within an hour of waking, never train fasted, and keep caffeine before noon. Every one of these rules is directly lowering the cortisol load your body is carrying.',
       'metabolic-drift': 'Start the post-meal walk habit this week - 15 minutes after every meal. And protein first at every meal without exception. These two things are the foundation everything else builds on.',
@@ -584,12 +588,16 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   2: {
     subject: (n) => `Week 2 - your insulin lesson is unlocked`,
     body: (n, url) => `
-      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 2 - Insulin and Blood Sugar</p>
-      <p>Hi ${n},</p>
-      <p>You are into your second week. Your education lesson for this week - Insulin and Blood Sugar Control - is now unlocked in the portal.</p>
-      <p>This lesson explains why the timing of your carbohydrates matters more than the quantity, why snacking keeps fat metabolism switched off even if you are eating healthy food, and why afternoon cravings are not a willpower problem.</p>
-      <p>If your energy has been more even this week than last week, or the afternoon crash has softened, that is your cortisol curve starting to normalise. The insulin work this week builds on that foundation.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Read the lesson</a></p>`,
+${emailEyebrow('Week 2 · Insulin and Blood Sugar')}
+${emailHeading('Why timing beats quantity.')}
+${emailDivider()}
+${emailBody(`Hi ${n},`)}
+${emailBody('You are into your second week. Your education lesson for this week — Insulin and Blood Sugar Control — is now unlocked in the portal.')}
+${emailBody('This lesson explains why the timing of your carbohydrates matters more than the quantity, why snacking keeps fat metabolism switched off even if you are eating healthy food, and why afternoon cravings are not a willpower problem.')}
+${emailBody('If your energy has been more even this week than last week, or the afternoon crash has softened, that is your cortisol curve starting to normalise. The insulin work this week builds on that foundation.', { bottom: 28 })}
+${emailCta({ href: url, label: 'Read the lesson' })}
+${emailUrlFallback(url, 'Or paste this link into your browser')}
+`,
     patternBlock: {
       'stress-stored':   'Cortisol raises blood sugar directly even without eating - through a process called gluconeogenesis. As your cortisol load comes down this week, your insulin sensitivity improves as a downstream effect. The two are linked.',
       'metabolic-drift': 'Insulin sensitivity is your primary target. The fasting gaps between your meals, the post-training carb window, and the post-meal walks are all working on this directly. Stay strict with the rest day protocol this week.',
@@ -600,12 +608,16 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   3: {
     subject: (n) => `${n} - you are at the midpoint`,
     body: (n, url) => `
-      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 3 - Adapt Phase Begins</p>
-      <p>Hi ${n},</p>
-      <p>Three weeks in. You have moved through the full Regulate phase and the Adapt phase starts this week. Progressive load begins - your training intensity target increases and the sessions will ask more of you.</p>
-      <p>Your Week 3 education lesson - Testosterone and Muscle Signal - is now unlocked. It covers why training harder and eating less are two of the most reliable ways to suppress the hormone responsible for body composition change, and what actually drives it instead.</p>
-      <p>This is also a good week to submit your check-in if you have not already. Eight markers, two minutes. It gives you a clear picture of what has shifted since Week 1.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Submit your check-in</a></p>`,
+${emailEyebrow('Week 3 · Adapt Phase Begins')}
+${emailHeading('Progressive load starts now.')}
+${emailDivider()}
+${emailBody(`Hi ${n},`)}
+${emailBody('Three weeks in. You have moved through the full Regulate phase and the Adapt phase starts this week. Progressive load begins — your training intensity target increases and the sessions will ask more of you.')}
+${emailBody('Your Week 3 education lesson — Testosterone and Muscle Signal — is now unlocked. It covers why training harder and eating less are two of the most reliable ways to suppress the hormone responsible for body composition change, and what actually drives it instead.')}
+${emailBody('This is also a good week to submit your check-in if you have not already. Eight markers, two minutes. It gives you a clear picture of what has shifted since Week 1.', { bottom: 28 })}
+${emailCta({ href: url, label: 'Submit your check-in' })}
+${emailUrlFallback(url, 'Or paste this link into your browser')}
+`,
     patternBlock: {
       'stress-stored':   'Cortisol and testosterone have a direct inverse relationship. As your cortisol curve normalises through the Adapt phase, testosterone signal recovers as a downstream effect. The controlled training intensity is protecting this recovery.',
       'metabolic-drift': 'Improving insulin sensitivity reduces aromatase activity, which increases testosterone availability. The Session B finisher is now your most important metabolic tool. Do not skip it.',
@@ -616,12 +628,16 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   4: {
     subject: (n) => `Week 4 - thyroid and metabolic rate`,
     body: (n, url) => `
-      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 4 - Thyroid and Metabolic Rate</p>
-      <p>Hi ${n},</p>
-      <p>Four weeks in. Your Week 4 education lesson - Thyroid and Metabolic Rate - is now unlocked.</p>
-      <p>This lesson covers the mechanism behind why cutting calories makes the body burn less, not more. And why each restriction cycle leaves metabolic rate a little lower than before. If you have dieted multiple times in the past and felt like it gets harder each time, this lesson explains exactly why - and what the programme has been doing to reverse it.</p>
-      <p>Body composition changes are often most visible around now for people who have been consistent through the first three weeks. If things are shifting, it is because the hormonal environment has changed enough to allow it.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Read the lesson</a></p>`,
+${emailEyebrow('Week 4 · Thyroid and Metabolic Rate')}
+${emailHeading('Why cutting calories backfires.')}
+${emailDivider()}
+${emailBody(`Hi ${n},`)}
+${emailBody('Four weeks in. Your Week 4 education lesson — Thyroid and Metabolic Rate — is now unlocked.')}
+${emailBody('This lesson covers the mechanism behind why cutting calories makes the body burn less, not more. And why each restriction cycle leaves metabolic rate a little lower than before. If you have dieted multiple times in the past and felt like it gets harder each time, this lesson explains exactly why — and what the programme has been doing to reverse it.')}
+${emailBody('Body composition changes are often most visible around now for people who have been consistent through the first three weeks. If things are shifting, it is because the hormonal environment has changed enough to allow it.', { bottom: 28 })}
+${emailCta({ href: url, label: 'Read the lesson' })}
+${emailUrlFallback(url, 'Or paste this link into your browser')}
+`,
     patternBlock: {
       'stress-stored':   'Cortisol impairs the conversion of inactive T4 to active T3. Reducing your cortisol load through the programme directly supports thyroid function. You do not need to target the thyroid separately - it improves as cortisol normalises.',
       'metabolic-drift': 'Thyroid function improves as insulin sensitivity is restored and systemic inflammation reduces. Both are direct targets of your programme. Metabolic rate recovery is a downstream effect of the primary work you have been doing.',
@@ -632,12 +648,16 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   5: {
     subject: (n) => `Week 5 - the final lesson`,
     body: (n, url) => `
-      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 5 - Sleep Hormones and Recovery</p>
-      <p>Hi ${n},</p>
-      <p>Five weeks in. Your final education lesson - Sleep Hormones and Recovery - is now unlocked.</p>
-      <p>This lesson ties all five hormones together. It covers what actually happens during sleep, why alcohol reduces recovery even when it helps you fall asleep, and why one night of poor sleep undoes more progress than most people realise. Every hormone in this series resets during sleep. It is the upstream variable that determines how much everything else is working.</p>
-      <p>This is also a peak effort week for most patterns. Your sessions should feel different to Week 1 - more output from the same perceived effort. That is the system responding. Keep sleep as the priority this week to convert the training stimulus into actual adaptation.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Read the lesson</a></p>`,
+${emailEyebrow('Week 5 · Sleep Hormones and Recovery')}
+${emailHeading('The upstream variable.')}
+${emailDivider()}
+${emailBody(`Hi ${n},`)}
+${emailBody('Five weeks in. Your final education lesson — Sleep Hormones and Recovery — is now unlocked.')}
+${emailBody('This lesson ties all five hormones together. It covers what actually happens during sleep, why alcohol reduces recovery even when it helps you fall asleep, and why one night of poor sleep undoes more progress than most people realise. Every hormone in this series resets during sleep. It is the upstream variable that determines how much everything else is working.')}
+${emailBody('This is also a peak effort week for most patterns. Your sessions should feel different to Week 1 — more output from the same perceived effort. That is the system responding. Keep sleep as the priority this week to convert the training stimulus into actual adaptation.', { bottom: 28 })}
+${emailCta({ href: url, label: 'Read the lesson' })}
+${emailUrlFallback(url, 'Or paste this link into your browser')}
+`,
     patternBlock: {
       'stress-stored':   'Sleep is treated as a training variable in your programme because it is one. Poor sleep is the fastest way to spike cortisol and undo a week of work. If sleep quality is not where you need it, reduce session intensity before anything else.',
       'metabolic-drift': 'One night of poor sleep reduces insulin sensitivity by 20 to 30 percent the following day. Given that insulin sensitivity is your primary target, sleep quality is not optional this week. It is part of the protocol.',
@@ -648,12 +668,16 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   6: {
     subject: (n) => `Final week, ${n}. What comes next.`,
     body: (n, url) => `
-      <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Week 6 - Embed and Deload</p>
-      <p>Hi ${n},</p>
-      <p>Final week. This is a deload week - training volume drops by 30 percent, intensity stays controlled, and nutrition stays exactly the same. The body makes its biggest adaptations when load drops and recovery takes over.</p>
-      <p>Take some time this week to compare where you are now with where you started. Energy through the day. Sleep quality. Afternoon crashes. Hunger between meals. Training recovery. These are the markers that the programme targets first, and after six weeks of consistent work they should look different to Week 1.</p>
-      <p>The 6-Week Blueprint was Stage 2. What you have built here is the hormonal foundation that makes Stage 3 possible. Your portal will show you what comes next.</p>
-      <p><a href="${url}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">See what comes next</a></p>`,
+${emailEyebrow('Week 6 · Embed and Deload')}
+${emailHeading('Final week — adaptations land here.')}
+${emailDivider()}
+${emailBody(`Hi ${n},`)}
+${emailBody('Final week. This is a deload week — training volume drops by 30 percent, intensity stays controlled, and nutrition stays exactly the same. The body makes its biggest adaptations when load drops and recovery takes over.')}
+${emailBody('Take some time this week to compare where you are now with where you started. Energy through the day. Sleep quality. Afternoon crashes. Hunger between meals. Training recovery. These are the markers that the programme targets first, and after six weeks of consistent work they should look different to Week 1.')}
+${emailBody('The 6-Week Blueprint was Stage 2. What you have built here is the hormonal foundation that makes Stage 3 possible. Your portal will show you what comes next.', { bottom: 28 })}
+${emailCta({ href: url, label: 'See what comes next' })}
+${emailUrlFallback(url, 'Or paste this link into your browser')}
+`,
     patternBlock: {
       'stress-stored':   'Six weeks of lowered cortisol load has changed your biological baseline. The visceral fat that cortisol was protecting should be more accessible now. The next phase builds progressive intensity on a system that can actually handle it.',
       'metabolic-drift': 'Your insulin sensitivity is significantly different to Week 1. The afternoon crashes, the urgent between-meal hunger, the inability to use fat as fuel - these patterns shift when the hormonal environment changes. You have changed the environment.',
@@ -758,12 +782,16 @@ export const blueprintEmailSequenceFunction = inngest.createFunction(
         subject: `${firstName}, you finished the Blueprint.`,
         html: blueprintEmailShell(
           `
-          <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">Six weeks done.</p>
-          <p>Hi ${firstName},</p>
-          <p>You finished the 6-Week Body Rewire Blueprint. That is not a small thing.</p>
-          <p>Most people who start a structured programme abandon it before Week 3. You went all six weeks. That means your hormonal environment, your training capacity, your metabolic baseline - all of them are in a different place to where they were when you started.</p>
-          <p>Stage 3 is where this becomes a long-term result. Progressive challenge applied to a system that can now absorb it. If you want to talk through what the right next step looks like for your pattern, reply to this email and I will come back to you personally.</p>
-          <p><a href="${portalUrl}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">Open your portal</a></p>`,
+${emailEyebrow('Blueprint Complete')}
+${emailHeading(`Six weeks done, ${firstName}.`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('You finished the 6-Week Body Rewire Blueprint. That is not a small thing.')}
+${emailBody('Most people who start a structured programme abandon it before Week 3. You went all six weeks. That means your hormonal environment, your training capacity, your metabolic baseline — all of them are in a different place to where they were when you started.')}
+${emailBody('Stage 3 is where this becomes a long-term result. Progressive challenge applied to a system that can now absorb it. If you want to talk through what the right next step looks like for your pattern, reply to this email and I will come back to you personally.', { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Open your portal' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+`,
           pc.label,
           pc.colour,
           `You completed the ${pc.label} pattern programme. The work you have done over six weeks has addressed the specific biological mechanism driving your pattern. Reply to this email if you want to discuss Stage 3.`,
@@ -1187,12 +1215,14 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
 // ─── Re-Engagement Sequence Function ─────────────────────────────────────────
 // Triggered by: challenge/completed-no-ascension, blueprint/completed-no-ascension, membership/cancelled
 
-// Phase 3a migration — outer wrapper now goes through darkEmailShell.
-// Body content kept as-is; per-step refactor queued as Phase 3b.
-function reengagementEmailShell(content: string, firstName: string) {
+// Phase 3c migration — bodies now composed from helpers. The wrapper
+// prepends the logo and appends the signature; each step's content is
+// fully composed (eyebrow + heading + divider + body / featured cards /
+// status cards / CTAs). Removed the auto-prepended greeting because each
+// step composes its own with emailBody for consistent styling.
+function reengagementEmailShell(content: string) {
   return darkEmailShell(`
 ${emailLogo()}
-<p style="margin:0 0 18px;font-size:16px;color:#4A4A4A;line-height:1.7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
 ${content}
 ${darkEmailSignature()}
 `)
@@ -1234,11 +1264,15 @@ export const reengagementSequenceFunction = inngest.createFunction(
         to: email,
         subject: `Checking in, ${firstName}`,
         html: reengagementEmailShell(`
-          <p>${sourceContext} I wanted to check in and see how things are going.</p>
-          <p>The work you put in doesn't disappear the moment a programme ends.${patternNote}</p>
-          <p>If the timing wasn't right, or life got in the way, that's fine. There's no pressure here. But if you've been thinking about what's next, I want to make sure you know the door is still open.</p>
-          <p style="color:#999999;">Reply to this email if you want to talk through where you're at. I read every reply.</p>
-        `, firstName),
+${emailEyebrow('Checking In')}
+${emailHeading(`How is it going, ${firstName}?`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody(`${sourceContext} I wanted to check in and see how things are going.`)}
+${emailBody(`The work you put in doesn't disappear the moment a programme ends.${patternNote}`)}
+${emailBody(`If the timing wasn't right, or life got in the way, that's fine. There's no pressure here. But if you've been thinking about what's next, I want to make sure you know the door is still open.`)}
+${emailBody("Reply to this email if you want to talk through where you're at. I read every reply.", { size: 14 })}
+`),
       })
     })
 
@@ -1249,18 +1283,22 @@ export const reengagementSequenceFunction = inngest.createFunction(
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
       const nextStageContext = source === 'challenge'
-        ? `The 6-Week Blueprint is where the work you started gets structure and direction. It's built around your biological pattern - not a generic plan.`
-        : `The 90-Day Extension is designed for exactly where you are - you've done the foundation work, and you need time to consolidate it before committing to the full membership.`
+        ? `The 6-Week Blueprint is where the work you started gets structure and direction. It's built around your biological pattern — not a generic plan.`
+        : `The 90-Day Extension is designed for exactly where you are — you've done the foundation work, and you need time to consolidate it before committing to the full membership.`
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
         subject: `What the next step looks like for you`,
         html: reengagementEmailShell(`
-          <p>I want to give you a clear picture of what the next stage of the Body Recode system looks like - not a pitch, just information.</p>
-          <p>${nextStageContext}</p>
-          <p>The biology doesn't care about the gap between stages. Whether you pick this up tomorrow or in three months, the pattern is still there and the system still works. You just need to decide when you're ready.</p>
-          <p style="color:#999999;">Reply if you have questions or want to know which pathway fits where you're at right now.</p>
-        `, firstName),
+${emailEyebrow('The Next Stage')}
+${emailHeading('What comes next, in plain terms.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('I want to give you a clear picture of what the next stage of the Body Recode system looks like — not a pitch, just information.')}
+${emailBody(nextStageContext)}
+${emailBody("The biology doesn't care about the gap between stages. Whether you pick this up tomorrow or in three months, the pattern is still there and the system still works. You just need to decide when you're ready.")}
+${emailBody("Reply if you have questions or want to know which pathway fits where you're at right now.", { size: 14 })}
+`),
       })
     })
 
@@ -1275,15 +1313,20 @@ export const reengagementSequenceFunction = inngest.createFunction(
         to: email,
         subject: `A lower-commitment way back in`,
         html: reengagementEmailShell(`
-          <p>If the weekly membership commitment felt like too much right now, there's another option.</p>
-          <div style="background:#B5CFFC;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
-            <p style="color:#1B6DFC;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">90-Day Body Rewire Extension</p>
-            <p style="color:#1A1A1A;font-weight:700;font-size:16px;margin:0 0 4px;">$197 one-time</p>
-            <p style="color:#6B6B6B;font-size:13px;margin:0 0 16px;">12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.</p>
-            <a href="${extensionUrl}" style="display:inline-block;padding:12px 22px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">See the Extension</a>
-          </div>
-          <p style="font-size:13px;color:#999999;">Not ready yet? That's fine. I'll check back in.</p>
-        `, firstName),
+${emailEyebrow('90-Day Extension')}
+${emailHeading('A lower-commitment way back in.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody("If the weekly membership commitment felt like too much right now, there's another option.", { bottom: 24 })}
+${emailStatusCard({
+  eyebrow: '90-Day Body Rewire Extension',
+  headline: '$197 one-time',
+  body: "12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.",
+})}
+${emailCta({ href: extensionUrl, label: 'See the Extension' })}
+${emailUrlFallback(extensionUrl, 'Or paste this link into your browser')}
+${emailBody("Not ready yet? That's fine. I'll check back in.", { size: 14 })}
+`),
       })
     })
 
@@ -1298,11 +1341,16 @@ export const reengagementSequenceFunction = inngest.createFunction(
         to: email,
         subject: `Still here if you want it`,
         html: reengagementEmailShell(`
-          <p>Just a short one.</p>
-          <p>The 90-Day Extension is still available at $197 if the timing is better now. It gives you 12 weeks of the next stage of programming - picked up exactly where you left off.</p>
-          <a href="${extensionUrl}" style="display:inline-block;padding:12px 22px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;margin:16px 0;">See the 90-Day Extension</a>
-          <p style="font-size:13px;color:#999999;">Reply any time if you want to talk through it.</p>
-        `, firstName),
+${emailEyebrow('Short Nudge')}
+${emailHeading('Still here if you want it.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('Just a short one.')}
+${emailBody('The 90-Day Extension is still available at $197 if the timing is better now. It gives you 12 weeks of the next stage of programming — picked up exactly where you left off.', { bottom: 24 })}
+${emailCta({ href: extensionUrl, label: 'See the 90-Day Extension' })}
+${emailUrlFallback(extensionUrl, 'Or paste this link into your browser')}
+${emailBody('Reply any time if you want to talk through it.', { size: 14 })}
+`),
       })
     })
 
@@ -1317,17 +1365,24 @@ export const reengagementSequenceFunction = inngest.createFunction(
         to: email,
         subject: `The membership is still open`,
         html: reengagementEmailShell(`
-          <p>If you've been thinking about the full membership, here's the short version of what it is:</p>
-          <ul style="padding-left:20px;color:#999999;margin:0 0 16px;">
-            <li style="margin-bottom:8px;">Progressive 6-week training blocks built around your pattern - Block A, B, and C</li>
-            <li style="margin-bottom:8px;">Nutrition precision layer updated each block</li>
-            <li style="margin-bottom:8px;">Monthly coach Loom - I review your check-in data and send a personal response</li>
-            <li style="margin-bottom:8px;">Monthly group Q&amp;A call</li>
-            <li style="margin-bottom:8px;">Cancel anytime. No lock-in.</li>
-          </ul>
-          <p style="color:#999999;">$49 per week.</p>
-          <a href="${membershipUrl}" style="display:inline-block;padding:12px 22px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;margin:16px 0;">See the Membership</a>
-        `, firstName),
+${emailEyebrow('Body Recode Membership')}
+${emailHeading('The membership is still open.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody("If you've been thinking about the full membership, here's the short version of what it is:")}
+${emailFeaturedCard(
+  emailNumberedList([
+    'Progressive 6-week training blocks built around your pattern — Block A, B, and C',
+    'Nutrition precision layer updated each block',
+    'Monthly coach Loom — I review your check-in data and send a personal response',
+    'Monthly group Q&amp;A call',
+    'Cancel anytime. No lock-in.',
+  ]),
+  { eyebrow: '$49 per week' },
+)}
+${emailCta({ href: membershipUrl, label: 'See the Membership' })}
+${emailUrlFallback(membershipUrl, 'Or paste this link into your browser')}
+`),
       })
     })
 
@@ -1342,11 +1397,15 @@ export const reengagementSequenceFunction = inngest.createFunction(
         to: email,
         subject: `Last one from me`,
         html: reengagementEmailShell(`
-          <p>This is the last email in this sequence. I don't want to keep showing up in your inbox if the timing isn't right.</p>
-          <p>If you ever want to come back, the door is open. The system works whenever you're ready for it.</p>
-          <p>One other thing - if you know someone who would benefit from any of the Body Recode programmes, send them to <a href="https://app.bodyrecode.au" style="color:#1B6DFC;">app.bodyrecode.au</a>. The challenge is free and a good starting point for anyone.</p>
-          <p style="font-size:13px;color:#999999;">Take care of yourself.</p>
-        `, firstName),
+${emailEyebrow('Final Touchpoint')}
+${emailHeading('Last one from me.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody("This is the last email in this sequence. I don't want to keep showing up in your inbox if the timing isn't right.")}
+${emailBody("If you ever want to come back, the door is open. The system works whenever you're ready for it.")}
+${emailBody('One other thing — if you know someone who would benefit from any of the Body Recode programmes, send them to <a href="https://app.bodyrecode.au" style="color:#1B6DFC;font-weight:600;text-decoration:none;">app.bodyrecode.au</a>. The challenge is free and a good starting point for anyone.')}
+${emailBody('Take care of yourself.', { size: 14 })}
+`),
       })
     })
   }
