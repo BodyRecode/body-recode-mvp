@@ -7,6 +7,10 @@ import { buildProgramBuyerEmails, buildReportFollowUpEmails, daysAfter9amBrisban
 import { inngest } from '@/lib/inngest'
 import { syncSubscriptionFromStripe, markCommencementPaid } from '@/lib/stripe-sync'
 import { appUrl } from '@/lib/app-url'
+import {
+  darkEmailShell, emailLogo, emailEyebrow, emailHeading, emailDivider,
+  emailBody, emailStatusCard,
+} from '@/lib/email-shell'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -223,22 +227,83 @@ export async function POST(request: NextRequest) {
 
   const session = event.data.object as Stripe.Checkout.Session
 
-  // Handle weekly subscription payment
+  // Handle weekly subscription payment.
+  //
+  // Duplicate-subscription guard (added 2026-05-22 after Samantha was billed
+  // three times for three separate subscriptions in 14 days — the static
+  // Stripe Payment Link is reusable and there was no client-level idempotency).
+  // The guard distinguishes three cases:
+  //   1. Same subscription, webhook retry → already-recorded payment exists →
+  //      ack and exit, do NOT insert another row.
+  //   2. Different subscription, client already has subscription_active=true →
+  //      auto-cancel the new sub immediately, alert Kade, do NOT mark/record.
+  //   3. Fresh subscription, client is inactive → standard path.
   if (session.mode === 'subscription' && session.client_reference_id) {
     const admin = createAdminClient()
+    const incomingSubId = session.subscription as string | null
+
+    if (incomingSubId) {
+      const { data: existingPayment } = await admin
+        .from('be_payments')
+        .select('id')
+        .eq('stripe_subscription_id', incomingSubId)
+        .maybeSingle()
+      if (existingPayment) {
+        return NextResponse.json({ received: true, note: 'webhook retry for already-recorded subscription' })
+      }
+    }
+
+    const { data: existingClient } = await admin
+      .from('clients')
+      .select('subscription_active, name, email')
+      .eq('id', session.client_reference_id)
+      .maybeSingle()
+
+    if (existingClient?.subscription_active && incomingSubId) {
+      try {
+        await stripe.subscriptions.cancel(incomingSubId, { prorate: false, invoice_now: false })
+      } catch (e) {
+        console.error('duplicate-sub guard: failed to auto-cancel', incomingSubId, e)
+      }
+
+      if (process.env.RESEND_API_KEY) {
+        const resend = new Resend(process.env.RESEND_API_KEY)
+        const inner = `
+${emailLogo()}
+${emailEyebrow('Duplicate Subscription Caught')}
+${emailHeading(`${existingClient.name ?? 'A client'} just completed a 2nd subscription.`)}
+${emailDivider()}
+${emailBody(`The Stripe webhook saw a checkout.session.completed for this client, but their <strong>subscription_active</strong> flag was already true. The new subscription has been auto-cancelled before any charge could land beyond the first invoice that Stripe already captured. Issue a refund for that first invoice in the Stripe dashboard if the client did not intend to subscribe twice.`)}
+${emailStatusCard({
+  eyebrow: 'Details',
+  headline: `${existingClient.name ?? '(unknown)'} · sub ${incomingSubId} auto-cancelled`,
+  body: `Client email: ${existingClient.email ?? '(unknown)'}. If this 2nd subscription was intentional (e.g. an upgrade or replacement), reactivate it in Stripe and adjust the client's payment plan manually. Otherwise issue a refund for the captured first invoice.`,
+})}
+${darkEmailSignature()}
+`
+        await resend.emails.send({
+          from: 'Body Recode System <kade@bodyrecode.au>',
+          to: 'kade@bodyrecode.au',
+          subject: `Duplicate subscription auto-cancelled - ${existingClient.name ?? 'client'}`,
+          html: darkEmailShell(inner, { previewText: `Duplicate sub auto-cancelled for ${existingClient.name ?? 'a client'}` }),
+        })
+      }
+
+      return NextResponse.json({ received: true, note: 'duplicate subscription auto-cancelled', cancelled: incomingSubId })
+    }
+
     await admin
       .from('clients')
       .update({ subscription_active: true })
       .eq('id', session.client_reference_id)
 
-    // Record subscription commencement payment
     if (session.amount_total && session.amount_total > 0) {
       await admin.from('be_payments').insert({
         client_id: session.client_reference_id,
         amount: session.amount_total / 100,
         status: 'paid',
         stripe_payment_id: session.payment_intent as string ?? null,
-        stripe_subscription_id: session.subscription as string ?? null,
+        stripe_subscription_id: incomingSubId ?? null,
         paid_at: new Date().toISOString(),
       })
     }

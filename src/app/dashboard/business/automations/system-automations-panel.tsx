@@ -192,6 +192,13 @@ const AUTOMATIC_AUTOMATIONS = [
     trigger: 'Vercel cron daily',
     steps: 1,
   },
+  {
+    id: 'duplicate-subscription-guard',
+    name: 'Duplicate Subscription Guard',
+    description: 'Webhook safety net. If a client completes the subscription Payment Link a second time while already having an active subscription, auto-cancels the new Stripe sub before further charges land and emails Kade. Added 2026-05-22 after the Samantha triple-charge incident.',
+    trigger: 'Stripe checkout.session.completed for an already-active client',
+    steps: 1,
+  },
 ]
 
 const MANUAL_AUTOMATIONS = [
