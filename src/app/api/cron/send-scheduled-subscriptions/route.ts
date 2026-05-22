@@ -5,6 +5,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { darkEmailShell } from '@/lib/email-shell'
 import { getCoachingPackage } from '@/lib/coaching-packages'
 import { logClientCommunication } from '@/lib/client-communications'
+import { createSubscriptionCheckoutForClient } from '@/lib/subscription-checkout'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -18,7 +19,7 @@ export async function GET(request: NextRequest) {
   // Find clients with a scheduled send date that has passed and hasn't been sent yet
   const { data: clients } = await admin
     .from('clients')
-    .select('id, name, email, package')
+    .select('id, name, email, package, onboarding_token')
     .lte('subscription_link_send_at', new Date().toISOString())
     .is('subscription_link_sent_at', null)
     .not('subscription_link_send_at', 'is', null)
@@ -38,7 +39,21 @@ export async function GET(request: NextRequest) {
     if (!pkg.stripe) continue
 
     const firstName = client.name.split(' ')[0]
-    const subscriptionUrl = `${pkg.stripe}?client_reference_id=${client.id}`
+
+    let subscriptionUrl: string
+    let sessionId: string
+    try {
+      const session = await createSubscriptionCheckoutForClient({
+        client: { id: client.id, email: client.email, onboarding_token: client.onboarding_token },
+        pkg,
+      })
+      subscriptionUrl = session.url
+      sessionId = session.sessionId
+    } catch (err) {
+      console.error('Failed to create subscription checkout session for client:', client.id, err)
+      continue
+    }
+
     const subject = `${firstName}, your Body Recode subscription link`
 
     try {
@@ -79,7 +94,7 @@ export async function GET(request: NextRequest) {
         subject,
         toAddress: client.email,
         sentAt,
-        meta: { package: client.package, package_label: pkg.label, price: pkg.price, url: subscriptionUrl, trigger: 'scheduled' },
+        meta: { package: client.package, package_label: pkg.label, price: pkg.price, url: subscriptionUrl, trigger: 'scheduled', stripe_session_id: sessionId },
       })
 
       sent++

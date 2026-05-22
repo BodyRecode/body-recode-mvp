@@ -188,7 +188,7 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'send-scheduled-subscriptions',
     name: 'Send Scheduled Subscriptions',
-    description: 'Cron auto-send of a previously scheduled subscription link. Coach can pre-schedule a send date on the client profile; this cron picks them up when the date passes.',
+    description: 'Cron auto-send of a previously scheduled subscription link. Coach can pre-schedule a send date on the client profile; this cron picks them up when the date passes. Each link is a single-use Stripe Checkout Session, expires within 24 hours, cannot be re-completed.',
     trigger: 'Vercel cron daily',
     steps: 1,
   },

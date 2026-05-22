@@ -6,6 +6,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { darkEmailShell } from '@/lib/email-shell'
 import { getCoachingPackage } from '@/lib/coaching-packages'
 import { logClientCommunication } from '@/lib/client-communications'
+import { createSubscriptionCheckoutForClient } from '@/lib/subscription-checkout'
 
 export async function POST(
   _request: NextRequest,
@@ -20,7 +21,7 @@ export async function POST(
   const admin = createAdminClient()
   const { data: client, error: clientError } = await admin
     .from('clients')
-    .select('id, name, email, package')
+    .select('id, name, email, package, onboarding_token')
     .eq('id', id)
     .maybeSingle()
 
@@ -39,7 +40,20 @@ export async function POST(
   }
 
   const firstName = client.name.split(' ')[0]
-  const subscriptionUrl = `${pkg.stripe}?client_reference_id=${id}`
+
+  let subscriptionUrl: string
+  let sessionId: string
+  try {
+    const session = await createSubscriptionCheckoutForClient({
+      client: { id: client.id, email: client.email, onboarding_token: client.onboarding_token },
+      pkg,
+    })
+    subscriptionUrl = session.url
+    sessionId = session.sessionId
+  } catch (e) {
+    console.error('Failed to create subscription checkout session:', e)
+    return NextResponse.json({ error: (e as Error).message }, { status: 500 })
+  }
 
   const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -85,7 +99,7 @@ export async function POST(
     toAddress: client.email,
     sentAt,
     sentBy: user.id,
-    meta: { package: client.package, package_label: pkg.label, price: pkg.price, url: subscriptionUrl, trigger: 'manual' },
+    meta: { package: client.package, package_label: pkg.label, price: pkg.price, url: subscriptionUrl, trigger: 'manual', stripe_session_id: sessionId },
   })
 
   console.log('Subscription email sent to:', client.email, 'package:', client.package)
