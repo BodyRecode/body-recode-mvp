@@ -8,8 +8,9 @@ import { inngest } from '@/lib/inngest'
 import { syncSubscriptionFromStripe, markCommencementPaid } from '@/lib/stripe-sync'
 import { appUrl } from '@/lib/app-url'
 import {
-  darkEmailShell, emailLogo, emailEyebrow, emailHeading, emailDivider,
-  emailBody, emailStatusCard,
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider,
+  emailBody, emailStatusCard, emailCta, emailNumberedList, emailFeaturedCard,
 } from '@/lib/email-shell'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
@@ -465,37 +466,22 @@ ${darkEmailSignature()}
       const BOOKING_LINK = process.env.BOOKING_LINK ?? `${appUrl()}/book`
 
       // Deliver the report
+      const reportInner = `
+${emailLogo()}
+${emailEyebrow('Body Decode Report')}
+${emailHeading('Your report is ready.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('Your Body Decode Report is ready. It breaks down what your scorecard results mean, what your body state tells us, what is actively working against you right now, and what to focus on first.', { bottom: 28 })}
+${emailCta({ href: reportUrl, label: 'View my report' })}
+${emailUrlFallback(reportUrl, 'Or paste this link into your browser')}
+${darkEmailSignature()}
+`
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
         subject: `Your Body Decode Report is ready`,
-        html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Hi ${firstName},</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Your Body Decode Report is ready. It breaks down what your scorecard results mean, what your body state tells us, what is working against you right now, and what to focus on first.</p>
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${reportUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">View My Report</a></td></tr>
-              </table>
-              <p style="margin:0 0 18px;font-size:13px;color:#999999;line-height:1.75;">Or copy this link: ${reportUrl}</p>
-              ${darkEmailSignature()}
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body></html>`,
+        html: darkEmailShell(reportInner, { previewText: `${firstName}, your Body Decode Report is ready.` }),
       })
 
       // Schedule 3-email report follow-up sequence
@@ -1026,61 +1012,68 @@ ${darkEmailSignature()}
     console.error('commencement webhook: markCommencementPaid failed:', e)
   }
 
-  // Notify coach
+  // Notify coach (Payment Received)
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
+    const coachInner = `
+${emailLogo()}
+${emailEyebrow('Payment Received')}
+${emailHeading(`${lead.name} just paid.`)}
+${emailDivider()}
+${emailBody(`Commencement fee confirmed. The welcome email and intake link have been sent to ${lead.email}.`)}
+${emailStatusCard({
+  eyebrow: 'Next step',
+  headline: 'Wait for intake completion',
+  body: `${lead.name} now has portal access and will start the onboarding flow: agreement → health declaration → 208-question intake → baseline. You will be notified as each step lands.`,
+})}
+${emailCta({ href: `${appUrl()}/dashboard/leads/${lead.id}`, label: 'View lead' })}
+${darkEmailSignature()}
+`
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
-      subject: `Payment received — ${lead.name}`,
-      html: `
-<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
-  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${lead.name} just paid.</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">Commencement fee confirmed. Welcome email and intake link have been sent to ${lead.email}.</p>
-  <a href="${appUrl()}/dashboard/leads/${lead.id}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View lead</a>
-</div>`,
+      subject: `Payment received - ${lead.name}`,
+      html: darkEmailShell(coachInner, { previewText: `${lead.name} paid the commencement fee.` }),
     })
   }
 
-  // Send portal access email
+  // Send portal access email (Welcome)
   if (lead.email && process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const firstName = lead.name.split(' ')[0]
     const portalUrl = `${appUrl()}/portal/${client.onboarding_token}`
+    const guideUrl = 'https://app.bodyrecode.au/coaching-guide'
+
+    const welcomeInner = `
+${emailLogo()}
+${emailEyebrow('Welcome to Body Recode')}
+${emailHeading(`You're officially in, ${firstName}.`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('Your commencement fee has been received. Your client portal is ready.')}
+${emailBody(`Open the link below and sign in with this email address (${lead.email}). You'll get a 6-digit code by email — no password to set or remember.`, { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Open my portal' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${emailFeaturedCard(
+  emailNumberedList([
+    'Coaching Agreement',
+    'Health Declaration',
+    'Foundational Intake (208 questions across 8 areas, 15-20 min)',
+    'Baseline Documentation (photos and measurements)',
+  ]),
+  { eyebrow: 'Inside the portal, work through' },
+)}
+${emailBody('Take your time with the intake — it is the foundation of everything I do with you. Answer based on your typical experience, not your best or worst days.')}
+${emailBody(`While you're getting set up, read through your <a href="${guideUrl}" style="color:#1B6DFC;font-weight:600;text-decoration:none;">Active Coaching Client Guide</a> (also linked inside your portal). It covers how the coaching process works, what to expect each week, and how we build progress together.`)}
+${emailBody('Looking forward to getting started.')}
+${darkEmailSignature()}
+`
 
     await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: lead.email,
       subject: `Welcome to Body Recode, ${firstName}`,
-      html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
-<body style="margin:0;padding:0;background:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:48px 32px;">
-    <div style="margin-bottom:40px;">
-      <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-    </div>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Hi ${firstName},</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Your commencement fee has been received. You're officially in.</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Your client portal is ready. Open the link below and sign in with this email address (${lead.email}). You'll get a 6-digit code by email - no password to set or remember.</p>
-    <a href="${portalUrl}" style="display:inline-block;margin:0 0 28px;padding:14px 28px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.02em;">Open my portal</a>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Inside the portal you'll work through your onboarding in this order:</p>
-    <ol style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 24px;padding-left:20px;">
-      <li style="margin-bottom:6px;">Coaching Agreement</li>
-      <li style="margin-bottom:6px;">Health Declaration</li>
-      <li style="margin-bottom:6px;">Foundational Intake (208 questions across 8 areas - 15-20 min)</li>
-      <li>Baseline Documentation (photos and measurements)</li>
-    </ol>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Take your time with the intake - it's the foundation of everything I do with you. Answer based on your typical experience, not your best or worst days.</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">While you're getting set up, read through your <a href="https://app.bodyrecode.au/coaching-guide" style="color:#1B6DFC;font-weight:600;text-decoration:none;">Active Coaching Client Guide</a> (also linked inside your portal). It covers how the coaching process works, what to expect each week, and how we build progress together.</p>
-    <p style="font-size:15px;color:#aaa;line-height:1.9;margin:0 0 20px;">Looking forward to getting started.</p>
-    ${darkEmailSignature()}
-    <p style="margin:20px 0 0;font-size:13px;color:#444;line-height:1.5;">Or copy this link: ${portalUrl}</p>
-  </div>
-</body>
-</html>`,
+      html: darkEmailShell(welcomeInner, { previewText: `Welcome ${firstName} — your portal is ready.` }),
     })
   }
 

@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logClientCommunication } from '@/lib/client-communications'
-import { darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  EMAIL_BLUE, EMAIL_BLUE_BG, EMAIL_BLUE_BORDER, EMAIL_BLUE_DARK,
+  EMAIL_GRAPHITE, EMAIL_MUTED, EMAIL_FF, EMAIL_MONO,
+} from '@/lib/email-shell'
+import { darkEmailSignature } from '@/lib/email-signature'
 
 const CODE_TTL_MINUTES = 10
 
@@ -51,37 +57,40 @@ export async function POST(request: NextRequest) {
 
   const subject = 'Your Body Recode sign-in code'
 
+  // Custom OTP code display — the code itself needs 36px / monospace /
+  // letter-spaced / Signal Blue for instant readability, which is more
+  // prominence than the generic emailCallout helper provides.
+  const codeBlock = `
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="${EMAIL_BLUE_BG}" style="background-color:${EMAIL_BLUE_BG};margin:0 0 24px;">
+        <tr>
+          <td bgcolor="${EMAIL_BLUE_BG}" align="center" style="background-color:${EMAIL_BLUE_BG};padding:28px 24px;border:1px solid ${EMAIL_BLUE_BORDER};border-radius:12px;">
+            <p style="margin:0 0 10px;font-size:10px;font-weight:700;color:${EMAIL_BLUE_DARK};letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Your sign-in code</p>
+            <p style="margin:0;font-size:36px;font-weight:800;color:${EMAIL_GRAPHITE};letter-spacing:0.4em;font-family:${EMAIL_MONO};">${code}</p>
+          </td>
+        </tr>
+      </table>`
+
+  const inner = `
+${emailLogo()}
+${emailEyebrow('Portal Sign-in')}
+${emailHeading('Enter this code to sign in.')}
+${emailDivider()}
+${emailBody('Enter the code below on the sign-in page to access your Body Recode coaching portal.')}
+${codeBlock}
+${emailBody(`This code expires in ${CODE_TTL_MINUTES} minutes. If you didn't request this, you can safely ignore it.`, { color: EMAIL_MUTED, size: 13, bottom: 16 })}
+${emailUrlFallback('https://app.bodyrecode.au/portal/login', 'Sign-in page')}
+${darkEmailSignature()}
+`
+
+  // Reference unused helper imports to keep the IDE quiet without polluting
+  // the runtime — keeps the import line stable for future template edits.
+  void EMAIL_BLUE
+
   await resend.emails.send({
     from: 'Body Recode <kade@bodyrecode.au>',
     to: cleanEmail,
     subject,
-    html: darkEmailShell(`
-      <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;"/>
-      </div>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 24px;">Sign in to your Body Recode coaching portal. Enter the code below on the sign-in page.</p>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#1a1a1a" style="background-color:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;margin:0 0 24px;">
-        <tr>
-          <td bgcolor="#1a1a1a" align="center" style="background-color:#1a1a1a;padding:32px;border-radius:12px;">
-            <p style="margin:0 0 12px;font-size:11px;font-weight:700;color:#6B6B6B;letter-spacing:0.08em;text-transform:uppercase;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your sign-in code</p>
-            <p style="margin:0;font-size:36px;font-weight:700;color:#1B6DFC;letter-spacing:0.4em;font-family:'Courier New',Consolas,monospace;">${code}</p>
-          </td>
-        </tr>
-      </table>
-      <p style="margin:0 0 8px;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">This code expires in ${CODE_TTL_MINUTES} minutes. If you didn't request this, you can safely ignore it.</p>
-      ${emailUrlFallback('https://app.bodyrecode.au/portal/login', 'Sign-in page')}
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;margin-top:32px;border-top:1px solid #1e1e1e;width:100%;">
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:24px 16px 0 0;vertical-align:middle;width:64px;">
-            <img src="https://bodyrecode.au/kade.jpg" width="48" height="48" style="border-radius:50%;display:block;object-fit:cover;object-position:top;border:0;" alt="Kade Dunstone"/>
-          </td>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding-top:24px;vertical-align:middle;">
-            <p style="margin:0;font-size:14px;font-weight:600;color:#1A1A1A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Kade Dunstone</p>
-            <p style="margin:2px 0 0;font-size:13px;color:#6B6B6B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Performance Coach · Body Recode</p>
-          </td>
-        </tr>
-      </table>
-`, { previewText: `Your Body Recode sign-in code: ${code}` }),
+    html: darkEmailShell(inner, { previewText: `Your Body Recode sign-in code: ${code}` }),
   })
 
   // Best-effort: link this code email to the matching client (if any).

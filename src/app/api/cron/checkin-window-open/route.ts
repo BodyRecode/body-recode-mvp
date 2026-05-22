@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell } from '@/lib/email-shell'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody, emailCta,
+  emailStatusCard,
+} from '@/lib/email-shell'
 import { sendSms, formatPhone } from '@/lib/twilio'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
@@ -69,20 +73,20 @@ export async function GET(request: NextRequest) {
         to: client.email,
         subject,
         html: darkEmailShell(`
-      <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;" />
-      </div>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your weekly check-in window is now open. Complete it before Sunday 6pm Brisbane time.</p>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
-        <tr>
-          <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
-            <a href="${portalUrl}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Open my portal →</a>
-          </td>
-        </tr>
-      </table>
-      <p style="margin:0;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${portalUrl}</p>
-      ${darkEmailSignature()}
+${emailLogo()}
+${emailEyebrow('Weekly Check-In')}
+${emailHeading('Your weekly check-in is open.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('Your weekly check-in window is now open in your portal. Complete it before Sunday 6pm Brisbane time so I can review your data and update your program for the week ahead.', { bottom: 24 })}
+${emailStatusCard({
+  eyebrow: 'Window closes',
+  headline: 'Sunday 6pm Brisbane',
+  body: 'Submissions after this point roll forward to next week. Aim for Friday or Saturday if your schedule allows.',
+})}
+${emailCta({ href: portalUrl, label: 'Open my portal' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${darkEmailSignature()}
 `, { previewText: `${firstName}, your weekly check-in is open until Sunday 6pm.` }),
       })
       await logClientCommunication(admin, {
