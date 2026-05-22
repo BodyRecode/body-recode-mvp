@@ -3,6 +3,13 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
+import {
+  darkEmailShell,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  emailFeaturedCard, emailCallout, emailStatusCard,
+  EMAIL_BLUE, EMAIL_BLUE_DARK, EMAIL_BODY, EMAIL_BODY_SOFT, EMAIL_MUTED,
+  EMAIL_HAIRLINE, EMAIL_FF,
+} from '@/lib/email-shell'
 
 type CheckStatus = 'ok' | 'fixed' | 'failed' | 'info'
 
@@ -881,52 +888,11 @@ export async function GET(request: NextRequest) {
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    const overallBadge = allGood && fixes.length === 0
-      ? `<span style="display:inline-block;padding:4px 14px;background:rgba(27,109,252,0.15);border:1px solid rgba(27,109,252,0.4);border-radius:99px;font-size:12px;font-weight:700;color:#1B6DFC;">All systems operational</span>`
+    const headline = allGood && fixes.length === 0
+      ? 'All systems operational.'
       : fixes.length > 0 && failures.length === 0
-        ? `<span style="display:inline-block;padding:4px 14px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:99px;font-size:12px;font-weight:700;color:#B7791F;">${fixes.length} issue${fixes.length === 1 ? '' : 's'} auto-fixed</span>`
-        : `<span style="display:inline-block;padding:4px 14px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);border-radius:99px;font-size:12px;font-weight:700;color:#DC2626;">${failures.length} issue${failures.length === 1 ? '' : 's'} need your attention</span>`
-
-    const iconFor = (s: CheckStatus) => {
-      if (s === 'ok') return `<span style="color:#1B6DFC;">&#10003;</span>`
-      if (s === 'fixed') return `<span style="color:#B7791F;">&#9889;</span>`
-      if (s === 'failed') return `<span style="color:#DC2626;">&#10007;</span>`
-      return `<span style="color:#999999;">&#8212;</span>`
-    }
-
-    const colorFor = (s: CheckStatus) => {
-      if (s === 'ok') return '#ffffff'
-      if (s === 'fixed') return '#B7791F'
-      if (s === 'failed') return '#DC2626'
-      return '#6B6B6B'
-    }
-
-    const sectionHeader = (label: string) =>
-      `<tr><td style="padding:18px 0 6px;"><p style="margin:0;font-size:10px;font-weight:700;color:#999999;letter-spacing:0.1em;text-transform:uppercase;">${label}</p></td></tr>`
-
-    const checkRow = (c: CheckResult) => `
-      <tr>
-        <td style="padding:12px 0;border-bottom:1px solid #E5E5E5;">
-          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
-            ${iconFor(c.status)}
-            <span style="font-size:13px;font-weight:600;color:${colorFor(c.status)};">${c.name}</span>
-          </div>
-          <p style="margin:0 0 ${c.action || c.manualFix ? '6px' : '0'};font-size:12px;color:#999999;padding-left:18px;">${c.detail}</p>
-          ${c.action ? `<p style="margin:0;font-size:12px;color:#B7791F;padding-left:18px;">&#9889; ${c.action}</p>` : ''}
-          ${c.manualFix ? `<p style="margin:0;font-size:12px;color:#DC2626;padding-left:18px;">Action needed: ${c.manualFix}</p>` : ''}
-        </td>
-      </tr>`
-
-    const checkRows = `
-      ${sectionHeader('Infrastructure')}
-      ${[db, slots, zoom, email].map(checkRow).join('')}
-      ${sectionHeader('Write Smoke Tests')}
-      ${[bookingWrite, leadWrite, intakeWrite, baselineWrite, checkinWrite].map(checkRow).join('')}
-      ${sectionHeader('Data Integrity')}
-      ${[clientsIntake, activePrograms, activeNutrition, stuckLeads, pendingIntakes, missedCheckins].map(checkRow).join('')}
-      ${sectionHeader('Automation + Pipeline')}
-      ${[automation, funnel].map(checkRow).join('')}
-    `
+        ? `${fixes.length} issue${fixes.length === 1 ? '' : 's'} auto-fixed.`
+        : `${failures.length} issue${failures.length === 1 ? '' : 's'} need your attention.`
 
     const subject = allGood && fixes.length === 0
       ? 'Body Recode - Daily Check: All good'
@@ -934,46 +900,80 @@ export async function GET(request: NextRequest) {
         ? `Body Recode - Daily Check: ${fixes.length} issue${fixes.length === 1 ? '' : 's'} auto-fixed`
         : `Body Recode - Daily Check: ${failures.length} issue${failures.length === 1 ? '' : 's'} need your attention`
 
+    const runAt = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit', hour12: true })
+
+    const statusPalette = (s: CheckStatus) => {
+      if (s === 'ok')     return { tag: 'OK',     color: EMAIL_BLUE_DARK,  bg: 'rgba(27,109,252,0.10)' }
+      if (s === 'fixed')  return { tag: 'FIXED',  color: '#B7791F',        bg: 'rgba(245,158,11,0.12)' }
+      if (s === 'failed') return { tag: 'FAILED', color: '#DC2626',        bg: 'rgba(239,68,68,0.10)' }
+      return                    { tag: 'INFO',   color: EMAIL_MUTED,      bg: 'rgba(107,107,107,0.08)' }
+    }
+
+    const renderRow = (c: CheckResult, isLast: boolean): string => {
+      const p = statusPalette(c.status)
+      const borderBottom = isLast ? 'none' : `1px solid ${EMAIL_HAIRLINE}`
+      return `
+            <tr>
+              <td style="padding:14px 0;border-bottom:${borderBottom};font-family:${EMAIL_FF};">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                  <tr>
+                    <td valign="top" width="76" style="padding:0 12px 0 0;">
+                      <span style="display:inline-block;padding:3px 9px;background-color:${p.bg};color:${p.color};font-size:10px;font-weight:800;letter-spacing:0.08em;border-radius:99px;font-family:${EMAIL_FF};">${p.tag}</span>
+                    </td>
+                    <td valign="top">
+                      <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#1A1A1A;line-height:1.4;font-family:${EMAIL_FF};">${c.name}</p>
+                      <p style="margin:0;font-size:13px;color:${EMAIL_BODY_SOFT};line-height:1.55;font-family:${EMAIL_FF};">${c.detail}</p>
+                      ${c.action ? `<p style="margin:6px 0 0;font-size:12px;color:#B7791F;line-height:1.55;font-family:${EMAIL_FF};">&#9889; ${c.action}</p>` : ''}
+                      ${c.manualFix ? `<p style="margin:6px 0 0;font-size:12px;color:#DC2626;line-height:1.55;font-family:${EMAIL_FF};">Action needed: ${c.manualFix}</p>` : ''}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>`
+    }
+
+    const renderSection = (label: string, items: CheckResult[]): string => {
+      const rows = items.map((c, i) => renderRow(c, i === items.length - 1)).join('')
+      const inner = `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">${rows}</table>`
+      return emailFeaturedCard(inner, { eyebrow: label })
+    }
+
+    const calloutBlock = failures.length > 0
+      ? emailCallout({ eyebrow: 'Needs manual attention', value: `${failures.length}`, unit: `issue${failures.length === 1 ? '' : 's'} failing` })
+      : fixes.length > 0
+        ? emailCallout({ eyebrow: 'Auto-fixed', value: `${fixes.length}`, unit: `issue${fixes.length === 1 ? '' : 's'} resolved` })
+        : ''
+
+    const tailStatusCard = failures.length > 0
+      ? emailStatusCard({ eyebrow: 'Manual action required', headline: 'Follow the steps under each failed check above.', body: 'These issues could not be fixed automatically. Each row lists the exact action you need to take.' })
+      : fixes.length > 0
+        ? emailStatusCard({ eyebrow: 'Auto-fixed', headline: 'No action needed from you.', body: 'Issues were detected and resolved automatically before they affected any client.' })
+        : emailStatusCard({ eyebrow: 'All clear', headline: 'No issues found.', body: `${checks.length} checks ran, all passed. Next run tomorrow morning Brisbane time.` })
+
+    const inner = `
+${emailLogo()}
+${emailEyebrow('Daily System Check')}
+${emailHeading(headline)}
+${emailDivider()}
+${emailBody(`Run at ${runAt} Brisbane.`, { size: 14, color: EMAIL_MUTED, bottom: calloutBlock ? 22 : 18 })}
+${calloutBlock}
+${renderSection('Infrastructure', [db, slots, zoom, email])}
+${renderSection('Write smoke tests', [bookingWrite, leadWrite, intakeWrite, baselineWrite, checkinWrite])}
+${renderSection('Data integrity', [clientsIntake, activePrograms, activeNutrition, stuckLeads, pendingIntakes, missedCheckins])}
+${renderSection('Automation + pipeline', [automation, funnel])}
+${tailStatusCard}
+${darkEmailSignature()}
+`
+
     await resend.emails.send({
       from: 'Body Recode System <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
       subject,
-      html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;"/>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 4px;font-size:18px;font-weight:700;color:#1A1A1A;">Daily System Health Check</p>
-            <p style="margin:0 0 24px;font-size:12px;color:#999999;">Run at ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} Brisbane</p>
-            <div style="margin-bottom:28px;">${overallBadge}</div>
-            <table style="width:100%;border-top:1px solid #E5E5E5;" cellpadding="0" cellspacing="0">
-              ${checkRows}
-            </table>
-            ${failures.length > 0 ? `
-            <div style="margin-top:24px;padding:16px 20px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:10px;">
-              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#DC2626;">Manual action required</p>
-              <p style="margin:0;font-size:12px;color:#6B6B6B;line-height:1.6;">The issues marked above could not be fixed automatically. Follow the steps listed under each failed check.</p>
-            </div>` : ''}
-            ${fixes.length > 0 && failures.length === 0 ? `
-            <div style="margin-top:24px;padding:16px 20px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:10px;">
-              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#B7791F;">Auto-fixed</p>
-              <p style="margin:0;font-size:12px;color:#6B6B6B;line-height:1.6;">Issues were detected and resolved automatically. No action needed from you.</p>
-            </div>` : ''}
-            <div style="margin-top:32px;">${darkEmailSignature()}</div>
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+      html: darkEmailShell(inner, { previewText: headline }),
     })
+    // Suppress unused-import warning for EMAIL_BLUE / EMAIL_BODY — kept available
+    // for future row tweaks without re-editing the import line.
+    void EMAIL_BLUE; void EMAIL_BODY;
   }
 
   return NextResponse.json({ ok: allGood, checks, fixes: fixes.map(f => f.name), failures: failures.map(f => f.name) })
