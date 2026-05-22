@@ -1,7 +1,11 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell } from '@/lib/email-shell'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  emailCta, emailFeaturedCard, emailNumberedList,
+} from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
 interface MedicalClearanceRequiredClient {
@@ -49,27 +53,26 @@ export async function sendMedicalClearanceRequiredEmail({
     to: client.email,
     subject,
     html: darkEmailShell(`
-      <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;" />
-      </div>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your health declaration is in. Thanks for the detail.</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">One of your answers means we need a GP sign-off before coaching starts. This is a routine duty-of-care step, not a flag against you.</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your portal now has a <strong style="color:#1A1A1A;">Medical Clearance</strong> card. Three steps:</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">1.</strong> Download the form (one page, pre-filled with your name)</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">2.</strong> See your GP and have them sign it</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">3.</strong> Upload the signed form back to your portal</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">The moment it lands I'll review and approve. Once approved, your Foundational Intake unlocks and we keep moving.</p>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
-        <tr>
-          <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
-            <a href="${portalUrl}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Open my portal</a>
-          </td>
-        </tr>
-      </table>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Any questions, reply to this email.</p>
-      ${darkEmailSignature()}
-      <p style="margin:20px 0 0;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${portalUrl}</p>
+${emailLogo()}
+${emailEyebrow('Medical Clearance', '#B7791F')}
+${emailHeading('One step before we start coaching.')}
+${emailDivider('#B7791F')}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('Your health declaration is in. Thanks for the detail.')}
+${emailBody('One of your answers means we need a GP sign-off before coaching starts. This is a routine duty-of-care step, not a flag against you.', { bottom: 20 })}
+${emailFeaturedCard(
+  emailNumberedList([
+    'Download the form (one page, pre-filled with your name)',
+    'See your GP and have them sign it',
+    'Upload the signed form back to your portal',
+  ]),
+  { eyebrow: 'Three steps on your Medical Clearance card' },
+)}
+${emailBody("The moment it lands I'll review and approve. Once approved, your Foundational Intake unlocks and we keep moving.", { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Open my portal', bg: '#B7791F' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${emailBody('Any questions, reply to this email.', { size: 14, bottom: 0 })}
+${darkEmailSignature()}
 `, { previewText: `${firstName}, one duty-of-care step before we start coaching.` }),
   })
 

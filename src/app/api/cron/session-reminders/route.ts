@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { emailUrlFallback } from '@/lib/email-shell'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  emailCta, emailStatusCard,
+} from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 
@@ -57,43 +61,23 @@ export async function GET(request: NextRequest) {
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: client.email as string,
         subject,
-        html: `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
-<body style="margin:0;padding:0;background:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background:#FFFFFF;border-radius:16px;border:1px solid #222;overflow:hidden;">
-        <tr>
-          <td style="padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;"/>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:36px 40px 40px;">
-            <p style="margin:0 0 16px;font-size:15px;color:#6B6B6B;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#6B6B6B;line-height:1.75;">Just a reminder that you have a session tomorrow.</p>
-            <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:28px;">
-              <tr>
-                <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
-                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#3F85FD;text-transform:uppercase;letter-spacing:0.08em;">Face-to-Face Session</p>
-                  <p style="margin:0 0 2px;font-size:16px;font-weight:700;color:#1A1A1A;">${displayDate}</p>
-                  <p style="margin:0 0 20px;font-size:14px;color:#6B6B6B;">${displayTime} · ${session.duration_minutes} min · AF Newstead</p>
-                  <a href="${confirmUrl}" style="display:inline-block;padding:12px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Confirm attendance →</a>
-                </td>
-              </tr>
-            </table>
-            <p style="margin:0 0 24px;font-size:13px;color:#6B6B6B;line-height:1.6;">If you can't make it, log in to your portal and reschedule — or reply to this email.</p>
-            ${emailUrlFallback(confirmUrl, 'Or paste this confirm link into your browser')}
-            ${darkEmailSignature()}
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`,
+        html: darkEmailShell(`
+${emailLogo()}
+${emailEyebrow('Session Reminder')}
+${emailHeading(`See you ${displayDate.split(',')[0]}, ${firstName}.`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('Just a reminder that you have a session tomorrow.', { bottom: 24 })}
+${emailStatusCard({
+  eyebrow: 'Face-to-face session',
+  headline: `${displayDate} · ${displayTime}`,
+  body: `${session.duration_minutes} minutes · AF Newstead. Tap below to confirm so I know to expect you.`,
+})}
+${emailCta({ href: confirmUrl, label: 'Confirm attendance' })}
+${emailUrlFallback(confirmUrl, 'Or paste this confirm link into your browser')}
+${emailBody("If you can't make it, log in to your portal and reschedule — or reply to this email.", { size: 13, bottom: 0 })}
+${darkEmailSignature()}
+`, { previewText: `Session tomorrow at ${displayTime}, ${firstName}.` }),
       })
 
       const sentAt = new Date().toISOString()

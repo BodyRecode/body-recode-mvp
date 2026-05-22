@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { emailUrlFallback } from '@/lib/email-shell'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody, emailCta,
+} from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 
@@ -35,28 +38,6 @@ interface TaskState {
 
 const APP_URL = appUrl()
 
-function dayCard(html: string) {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;"/>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            ${html}
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`
-}
-
 function reminderEmail(firstName: string, taskId: TaskId, taskTitle: string, threshold: Threshold, portalUrl: string) {
   // Clearance is the only task that requires an external action (GP visit),
   // so the default "pick up where you left off" framing doesn't fit. Give it
@@ -73,15 +54,25 @@ function reminderEmail(firstName: string, taskId: TaskId, taskTitle: string, thr
         ? `Your ${taskTitle} is still outstanding. We need this to keep your coaching on track.`
         : `It's been two weeks since your ${taskTitle} became available. If you've changed your mind that's okay, just let me know. Otherwise, this is the last automated reminder.`)
 
-  const body = `
-    <p style="margin:0 0 18px;font-size:15px;color:#4A4A4A;line-height:1.75;">Hi ${firstName},</p>
-    <p style="margin:0 0 24px;font-size:15px;color:#4A4A4A;line-height:1.75;">${intro}</p>
-    <a href="${portalUrl}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Open your portal</a>
-    <p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;line-height:1.7;">If anything's blocking you or unclear, reply to this email.</p>
-    ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
-    ${darkEmailSignature()}`
+  const eyebrow = threshold === 14 ? 'Final Reminder' : 'Onboarding Reminder'
+  const heading = threshold === 14
+    ? `Last nudge on your ${taskTitle}, ${firstName}.`
+    : `${firstName}, your ${taskTitle} is waiting.`
 
-  return dayCard(body)
+  const inner = `
+${emailLogo()}
+${emailEyebrow(eyebrow)}
+${emailHeading(heading)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody(intro, { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Open my portal' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${emailBody("If anything's blocking you or unclear, reply to this email.", { size: 13, bottom: 0 })}
+${darkEmailSignature()}
+`
+
+  return darkEmailShell(inner, { previewText: heading })
 }
 
 function daysSince(iso: string): number {

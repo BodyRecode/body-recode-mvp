@@ -3,6 +3,7 @@ import { createAdminClient } from './supabase/admin'
 import { Resend } from 'resend'
 import { sendSms, formatPhone } from './twilio'
 import { darkEmailSignature } from './email-signature'
+import { darkEmailShell, emailLogo } from './email-shell'
 import type { TriggerContext } from './automation-engine'
 import { appUrl } from '@/lib/app-url'
 import { logLeadEvent } from './log-lead-event'
@@ -90,29 +91,18 @@ const SMS_TRANSITION: Record<15 | 16 | 17, string> = {
 
 // ─── Challenge Email Helpers ────────────────────────────────────────────────
 
+// Phase 3a migration (2026-05-22): outer canvas now routed through
+// darkEmailShell so the Outlook-safe wrapper + light palette match the
+// rest of the system. Body content kept as-is — per-step body composition
+// refactor onto the helpers is queued as Phase 3b (would multiply scope
+// by 15+ drip steps; the legacy gray-on-white prose remains readable on
+// the new canvas).
 function challengeEmailShell(body: string): string {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-              ${body}
-              ${darkEmailSignature()}
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body></html>`
+  return darkEmailShell(`
+${emailLogo()}
+${body}
+${darkEmailSignature()}
+`)
 }
 
 // ─── Challenge Sequence Function ─────────────────────────────────────────────
@@ -679,39 +669,25 @@ const BLUEPRINT_WEEK_EMAILS: Record<number, {
   },
 }
 
+// Phase 3a migration — outer wrapper now goes through darkEmailShell.
+// Pattern callout block preserved (it's specific to the Blueprint flow
+// and intentionally on-brand); body content kept as-is for Phase 3b.
 function blueprintEmailShell(body: string, patternLabel: string, patternColour: string, patternCallout: string): string {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
+  const patternBlock = `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-left:3px solid ${patternColour};margin:24px 0 0;">
         <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
+          <td style="padding-left:16px;">
+            <p style="font-size:11px;font-weight:700;color:${patternColour};letter-spacing:0.12em;text-transform:uppercase;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${patternLabel}</p>
+            <p style="font-size:13px;color:#4A4A4A;line-height:1.7;margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${patternCallout}</p>
           </td>
         </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-            ${body}
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:0 40px 36px;">
-            <table width="100%" cellpadding="0" cellspacing="0" style="border-left:3px solid ${patternColour};padding-left:16px;margin:0;">
-              <tr>
-                <td style="padding-left:16px;">
-                  <p style="font-size:11px;font-weight:700;color:${patternColour};letter-spacing:0.1em;text-transform:uppercase;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${patternLabel}</p>
-                  <p style="font-size:13px;color:#999999;line-height:1.7;margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${patternCallout}</p>
-                </td>
-              </tr>
-            </table>
-            ${darkEmailSignature()}
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`
+      </table>`
+  return darkEmailShell(`
+${emailLogo()}
+${body}
+${patternBlock}
+${darkEmailSignature()}
+`)
 }
 
 export const blueprintEmailSequenceFunction = inngest.createFunction(
@@ -1217,24 +1193,15 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
 // ─── Re-Engagement Sequence Function ─────────────────────────────────────────
 // Triggered by: challenge/completed-no-ascension, blueprint/completed-no-ascension, membership/cancelled
 
+// Phase 3a migration — outer wrapper now goes through darkEmailShell.
+// Body content kept as-is; per-step refactor queued as Phase 3b.
 function reengagementEmailShell(content: string, firstName: string) {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-        </td></tr>
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${firstName},</p>
-          ${content}
-          ${darkEmailSignature()}
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`
+  return darkEmailShell(`
+${emailLogo()}
+<p style="margin:0 0 18px;font-size:16px;color:#4A4A4A;line-height:1.7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
+${content}
+${darkEmailSignature()}
+`)
 }
 
 export const reengagementSequenceFunction = inngest.createFunction(

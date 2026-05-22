@@ -19,7 +19,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { darkEmailSignature } from '@/lib/email-signature'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { daysUntilBlockEnd } from '@/lib/workout-logging'
 import { appUrl } from '@/lib/app-url'
@@ -118,7 +117,7 @@ export async function GET(request: NextRequest) {
           body,
           ctaLabel,
           ctaUrl: clientUrl,
-        }) + darkEmailSignature(),
+        }),
       })
     } catch (err) {
       console.error('[block-end-notifications] resend send failed:', err)

@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody, emailCta,
+} from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
 export async function GET(request: NextRequest) {
@@ -46,15 +49,17 @@ export async function GET(request: NextRequest) {
       to: client.email,
       subject,
       html: darkEmailShell(`
-      <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;" />
-      </div>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Just a reminder that your coaching begins tomorrow.</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">I'll be in touch with your session details shortly. If you have any questions before we begin, reply to this email.</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Looking forward to it.</p>
-      ${emailUrlFallback(portalUrl, 'Your portal')}
-      ${darkEmailSignature()}
+${emailLogo()}
+${emailEyebrow('Coaching Starts Tomorrow')}
+${emailHeading(`See you tomorrow, ${firstName}.`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('Just a reminder that your coaching begins tomorrow.')}
+${emailBody("I'll be in touch with your session details shortly. If you have any questions before we begin, reply to this email.")}
+${emailBody('Looking forward to it.', { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Open my portal' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${darkEmailSignature()}
 `, { previewText: `${firstName}, coaching begins tomorrow.` }),
     })
     await logClientCommunication(admin, {

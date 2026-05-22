@@ -19,6 +19,7 @@ import {
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
   emailCta, EMAIL_BLUE, EMAIL_MUTED, EMAIL_BODY_SOFT, EMAIL_FF,
 } from '@/lib/email-shell'
+import { darkEmailSignature } from '@/lib/email-signature'
 
 export interface CoachNotificationParams {
   /** Small uppercase label above the heading (e.g. "BASELINE", "INTAKE") */
@@ -79,6 +80,7 @@ ${details && details.length > 0 ? renderDetails(details) : ''}
 ${emailCta({ href: ctaUrl, label: ctaLabel, bg: accentColor })}
 ${emailUrlFallback(ctaUrl)}
 ${footnote ? emailBody(footnote, { size: 12, color: EMAIL_MUTED, bottom: 0 }) : ''}
+${darkEmailSignature()}
 `
 
   return darkEmailShell(inner, { previewText: heading })

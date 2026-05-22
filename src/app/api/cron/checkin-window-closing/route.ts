@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell } from '@/lib/email-shell'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  emailCta, emailCallout,
+} from '@/lib/email-shell'
 import { sendSms, formatPhone } from '@/lib/twilio'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { logClientCommunication } from '@/lib/client-communications'
@@ -93,20 +97,16 @@ export async function GET(request: NextRequest) {
         to: client.email,
         subject,
         html: darkEmailShell(`
-      <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;" />
-      </div>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your weekly check-in window closes at 6:30pm today. You haven't submitted yet — takes less than 5 minutes.</p>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
-        <tr>
-          <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
-            <a href="${portalUrl}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Complete check-in →</a>
-          </td>
-        </tr>
-      </table>
-      <p style="margin:0;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${portalUrl}</p>
-      ${darkEmailSignature()}
+${emailLogo()}
+${emailEyebrow('Check-In Closing Soon')}
+${emailHeading('One hour to lock in this week.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody("Your weekly check-in window closes at 6:30pm today. You haven't submitted yet — takes less than 5 minutes.", { bottom: 20 })}
+${emailCallout({ eyebrow: 'Closes', value: '6:30pm', unit: 'Brisbane' })}
+${emailCta({ href: portalUrl, label: 'Complete check-in' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${darkEmailSignature()}
 `, { previewText: `${firstName}, last hour to lock in this week's check-in.` }),
       })
       await logClientCommunication(admin, {
