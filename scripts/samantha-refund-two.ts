@@ -33,19 +33,19 @@ async function main() {
     let chargeId: string | null = null
 
     if (typeof invAny.payment_intent === 'string') paymentIntentId = invAny.payment_intent
-    else if (invAny.payment_intent && 'id' in invAny.payment_intent) paymentIntentId = invAny.payment_intent.id
+    else if (invAny.payment_intent && typeof invAny.payment_intent !== 'string') paymentIntentId = invAny.payment_intent.id
 
     if (typeof invAny.charge === 'string') chargeId = invAny.charge
-    else if (invAny.charge && 'id' in invAny.charge) chargeId = invAny.charge.id
+    else if (invAny.charge && typeof invAny.charge !== 'string') chargeId = invAny.charge.id
 
     if (!paymentIntentId && invAny.payments?.data?.length) {
       for (const p of invAny.payments.data) {
         const pi = p.payment?.payment_intent
         if (typeof pi === 'string') { paymentIntentId = pi; break }
-        if (pi && 'id' in pi) { paymentIntentId = pi.id; break }
+        if (pi && typeof pi !== 'string') { paymentIntentId = pi.id; break }
         const ch = p.payment?.charge
         if (!chargeId && typeof ch === 'string') chargeId = ch
-        else if (!chargeId && ch && 'id' in ch) chargeId = ch.id
+        else if (!chargeId && ch && typeof ch !== 'string') chargeId = ch.id
       }
     }
 

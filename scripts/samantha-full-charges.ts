@@ -41,7 +41,8 @@ async function main() {
     console.log(`\n  Invoices (${invoices.data.length}):`)
     let subTotal = 0
     for (const inv of invoices.data) {
-      const chargeId = typeof inv.charge === 'string' ? inv.charge : inv.charge?.id ?? null
+      const invWithCharge = inv as Stripe.Invoice & { charge?: string | Stripe.Charge | null }
+      const chargeId = typeof invWithCharge.charge === 'string' ? invWithCharge.charge : invWithCharge.charge?.id ?? null
       const paidAmount = inv.amount_paid / 100
       subTotal += paidAmount
       console.log(`    - ${inv.id}`)

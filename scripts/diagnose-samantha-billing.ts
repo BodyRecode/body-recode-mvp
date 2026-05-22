@@ -113,7 +113,11 @@ async function main() {
     const invoices = await stripe.invoices.list({ customer: cust.id, limit: 50 })
     console.log(`\n=== Invoices for ${cust.id} (${invoices.data.length}) ===`)
     for (const inv of invoices.data) {
-      const invWithSub = inv as Stripe.Invoice & { subscription?: string | Stripe.Subscription | null; payment_intent?: string | Stripe.PaymentIntent | null }
+      const invWithSub = inv as Stripe.Invoice & {
+        subscription?: string | Stripe.Subscription | null
+        payment_intent?: string | Stripe.PaymentIntent | null
+        charge?: string | Stripe.Charge | null
+      }
       console.log(JSON.stringify({
         id: inv.id,
         status: inv.status,
@@ -123,7 +127,7 @@ async function main() {
         billing_reason: inv.billing_reason,
         subscription: typeof invWithSub.subscription === 'string' ? invWithSub.subscription : invWithSub.subscription?.id ?? null,
         payment_intent: typeof invWithSub.payment_intent === 'string' ? invWithSub.payment_intent : invWithSub.payment_intent?.id ?? null,
-        charge_id: typeof inv.charge === 'string' ? inv.charge : inv.charge?.id ?? null,
+        charge_id: typeof invWithSub.charge === 'string' ? invWithSub.charge : invWithSub.charge?.id ?? null,
       }, null, 2))
     }
 
