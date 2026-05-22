@@ -3,7 +3,11 @@ import { createAdminClient } from './supabase/admin'
 import { Resend } from 'resend'
 import { sendSms, formatPhone } from './twilio'
 import { darkEmailSignature } from './email-signature'
-import { darkEmailShell, emailLogo } from './email-shell'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  emailCta, emailFeaturedCard, emailNumberedList, emailStatusCard,
+} from './email-shell'
 import type { TriggerContext } from './automation-engine'
 import { appUrl } from '@/lib/app-url'
 import { logLeadEvent } from './log-lead-event'
@@ -133,31 +137,26 @@ export const challengeSequenceFunction = inngest.createFunction(
         to: email,
         subject: `You're in, ${firstName}. Day 1 starts now.`,
         html: challengeEmailShell(`
-          <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
-            Welcome to the 14-Day Body Decode Challenge.
-          </p>
-          <p>Hi ${firstName},</p>
-          <p>You are in. Day 1 starts today.</p>
-          <p>Over the next 14 days you will follow a simple structure designed to calm your system, rebuild your baseline, and help you understand what is actually driving the way your body looks and feels.</p>
-          <p>Your challenge portal has everything you need:</p>
-          <ul style="padding-left:20px;color:#999999;">
-            <li style="margin-bottom:6px;">Your daily coaching note - opens each morning</li>
-            <li style="margin-bottom:6px;">Your 14-day training plan</li>
-            <li style="margin-bottom:6px;">Your HABNS nutrition guide</li>
-            <li style="margin-bottom:6px;">Your morning and evening reset sequences</li>
-            <li style="margin-bottom:6px;">The Body Decode Check-In - unlocks on Day 7</li>
-          </ul>
-          <p>Start simple. Follow the structure. Do not try to be perfect on Day 1.</p>
-          <p>
-            <a href="${portalUrl}" style="display:inline-block;padding:13px 24px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
-              Open your challenge portal
-            </a>
-          </p>
-          <p style="font-size:13px;color:#999999;">
-            Bookmark this link. It is your personal portal for the full 14 days.<br/>
-            <a href="${portalUrl}" style="color:#999999;">${portalUrl}</a>
-          </p>
-        `),
+${emailEyebrow('14-Day Body Decode Challenge')}
+${emailHeading(`Welcome in, ${firstName}.`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('You are in. Day 1 starts today.')}
+${emailBody('Over the next 14 days you will follow a simple structure designed to calm your system, rebuild your baseline, and help you understand what is actually driving the way your body looks and feels.')}
+${emailFeaturedCard(
+  emailNumberedList([
+    'Your daily coaching note — opens each morning',
+    'Your 14-day training plan',
+    'Your HABNS nutrition guide',
+    'Your morning and evening reset sequences',
+    'The Body Decode Check-In — unlocks on Day 7',
+  ]),
+  { eyebrow: 'Inside your challenge portal' },
+)}
+${emailBody('Start simple. Follow the structure. Do not try to be perfect on Day 1.', { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Open my challenge portal' })}
+${emailUrlFallback(portalUrl, 'Bookmark this link — your portal for the full 14 days')}
+`),
       })
     })
 
@@ -169,17 +168,16 @@ export const challengeSequenceFunction = inngest.createFunction(
         to: 'kade@bodyrecode.au',
         subject: `New enrollment - ${firstName}`,
         html: challengeEmailShell(`
-          <p style="color:#1A1A1A;font-size:18px;font-weight:800;letter-spacing:-0.01em;margin:0 0 20px;">New Challenge Enrollment</p>
-          <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-            <tr><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;width:110px;font-size:13px;color:#999999;">Name</td><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;font-size:13px;color:#1A1A1A;font-weight:600;">${firstName}</td></tr>
-            <tr><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;font-size:13px;color:#999999;">Email</td><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;font-size:13px;color:#1A1A1A;">${email}</td></tr>
-            <tr><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;font-size:13px;color:#999999;">Phone</td><td style="padding:10px 0;border-bottom:1px solid #E5E5E5;font-size:13px;color:#1A1A1A;">${phone ?? 'Not provided'}</td></tr>
-            <tr><td style="padding:10px 0;font-size:13px;color:#999999;">Enrolled</td><td style="padding:10px 0;font-size:13px;color:#1A1A1A;">${enrolledAt} (AEST)</td></tr>
-          </table>
-          <a href="${portalUrl}" style="display:inline-block;padding:11px 20px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:13px;border-radius:8px;text-decoration:none;">
-            View their portal
-          </a>
-        `),
+${emailEyebrow('New Challenge Enrollment')}
+${emailHeading(`${firstName} just enrolled.`)}
+${emailDivider()}
+${emailStatusCard({
+  eyebrow: 'Enrollment details',
+  headline: `${firstName} · ${email}`,
+  body: `Phone: ${phone ?? 'Not provided'}. Enrolled: ${enrolledAt} (AEST). 14-day automated drip + SMS sequence is now firing.`,
+})}
+${emailCta({ href: portalUrl, label: 'View their portal' })}
+`),
       })
     })
 
@@ -202,31 +200,26 @@ export const challengeSequenceFunction = inngest.createFunction(
         to: email,
         subject: `Day 5 - Your Week One Progress Session is ready`,
         html: challengeEmailShell(`
-          <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
-            Week One Progress Session
-          </p>
-          <p>Hi ${firstName},</p>
-          <p>You have made it to Day 5. That puts you ahead of most people who started.</p>
-          <p>Your Week One Progress Session is now available to watch. It is a 30-minute session I recorded specifically for this point in the challenge.</p>
-          <p style="color:#1A1A1A;font-weight:600;">In this session:</p>
-          <ul style="padding-left:20px;color:#999999;">
-            <li style="margin-bottom:6px;">What your body has actually been doing this week</li>
-            <li style="margin-bottom:6px;">How to decode the signals you have been feeling - energy, digestion, puffiness, mood</li>
-            <li style="margin-bottom:6px;">Why rhythm matters more than restriction</li>
-            <li style="margin-bottom:6px;">What Week 2 is building toward</li>
-            <li style="margin-bottom:6px;">The next step after the challenge for those who want to go deeper</li>
-          </ul>
-          <p>I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset - it will make Week 2 feel much clearer.</p>
-          <div style="background:#B5CFFC;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
-            <p style="color:#1B6DFC;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Now Available</p>
-            <p style="color:#1A1A1A;font-weight:700;font-size:16px;margin:0 0 4px;">Week One Progress Session</p>
-            <p style="color:#6B6B6B;font-size:13px;margin:0 0 16px;">30 minutes</p>
-            <a href="${sessionVideoUrl}" style="display:inline-block;padding:12px 22px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
-              Watch the session
-            </a>
-          </div>
-          <p style="font-size:13px;color:#999999;">You can also find this in your portal under the Live Session section.</p>
-        `),
+${emailEyebrow('Day 5 · Week One Progress')}
+${emailHeading('Your Week One session is ready.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('You have made it to Day 5. That puts you ahead of most people who started.')}
+${emailBody('Your Week One Progress Session is now available to watch. It is a 30-minute session I recorded specifically for this point in the challenge.')}
+${emailFeaturedCard(
+  emailNumberedList([
+    'What your body has actually been doing this week',
+    'How to decode the signals you have been feeling — energy, digestion, puffiness, mood',
+    'Why rhythm matters more than restriction',
+    'What Week 2 is building toward',
+    'The next step after the challenge for those who want to go deeper',
+  ]),
+  { eyebrow: 'In this session' },
+)}
+${emailBody('I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset — it will make Week 2 feel much clearer.', { bottom: 28 })}
+${emailCta({ href: sessionVideoUrl, label: 'Watch the session (30 min)' })}
+${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live Session section')}
+`),
       })
     })
 
@@ -247,32 +240,33 @@ export const challengeSequenceFunction = inngest.createFunction(
         to: email,
         subject: `${firstName}, you finished the 14 days.`,
         html: challengeEmailShell(`
-          <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
-            14 days done.
-          </p>
-          <p>Hi ${firstName},</p>
-          <p>You finished the challenge. That is not nothing.</p>
-          <p>Most people who start something like this quit before Day 5. You made it to Day 14. That means your body has had 14 consecutive days of structured rhythm - consistent training, real food, better sleep, predictable timing.</p>
-          <p style="color:#1A1A1A;font-weight:600;">What that should have done:</p>
-          <ul style="padding-left:20px;color:#999999;">
-            <li style="margin-bottom:6px;">Reduced the daily puffiness and inflammation</li>
-            <li style="margin-bottom:6px;">Stabilised your energy across the day</li>
-            <li style="margin-bottom:6px;">Calmed the afternoon cravings</li>
-            <li style="margin-bottom:6px;">Improved your sleep quality</li>
-            <li style="margin-bottom:6px;">Given your digestion a cleaner baseline</li>
-          </ul>
-          <p>This is your baseline now. The question is: what do you build on top of it?</p>
-          <p>The 6-Week Body Recode Blueprint takes everything you have started and adds structure, progressive training, signal-guided nutrition, and real accountability. It is where the results become visible.</p>
-          <div style="background:#B5CFFC;border:1px solid rgba(27,109,252,0.2);border-radius:10px;padding:20px;margin:20px 0;">
-            <p style="color:#1B6DFC;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 6px;">Next Step</p>
-            <p style="color:#1A1A1A;font-weight:700;font-size:16px;margin:0 0 4px;">6-Week Body Recode Blueprint</p>
-            <p style="color:#6B6B6B;font-size:13px;margin:0 0 16px;">Where rhythm becomes results.</p>
-            <a href="https://bodyrecode.au/scorecard" style="display:inline-block;padding:12px 22px;background:#1B6DFC;color:#FFFFFF;font-weight:700;font-size:14px;border-radius:8px;text-decoration:none;">
-              Take the full Body State Scorecard
-            </a>
-          </div>
-          <p style="font-size:13px;color:#999999;">Or just reply to this email and I will personally help you figure out the right next step.</p>
-        `),
+${emailEyebrow('Day 14 · Challenge Complete')}
+${emailHeading(`14 days done, ${firstName}.`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('You finished the challenge. That is not nothing.')}
+${emailBody('Most people who start something like this quit before Day 5. You made it to Day 14. That means your body has had 14 consecutive days of structured rhythm — consistent training, real food, better sleep, predictable timing.')}
+${emailFeaturedCard(
+  emailNumberedList([
+    'Reduced the daily puffiness and inflammation',
+    'Stabilised your energy across the day',
+    'Calmed the afternoon cravings',
+    'Improved your sleep quality',
+    'Given your digestion a cleaner baseline',
+  ]),
+  { eyebrow: 'What that should have done' },
+)}
+${emailBody('This is your baseline now. The question is: what do you build on top of it?')}
+${emailBody('The 6-Week Body Recode Blueprint takes everything you have started and adds structure, progressive training, signal-guided nutrition, and real accountability. It is where the results become visible.', { bottom: 24 })}
+${emailStatusCard({
+  eyebrow: 'Next step',
+  headline: '6-Week Body Recode Blueprint',
+  body: 'Where rhythm becomes results. Start with the full Body State Scorecard so I can match the Blueprint to your specific pattern.',
+})}
+${emailCta({ href: 'https://bodyrecode.au/scorecard', label: 'Take the full Body State Scorecard' })}
+${emailUrlFallback('https://bodyrecode.au/scorecard', 'Or paste this link into your browser')}
+${emailBody('Or just reply to this email and I will personally help you figure out the right next step.', { size: 14, bottom: 0 })}
+`),
       })
 
       // Log completion
