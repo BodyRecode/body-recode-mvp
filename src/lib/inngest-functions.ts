@@ -1004,27 +1004,18 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
               from: 'Kade at Body Recode <kade@bodyrecode.au>',
               to: email,
               subject: `Block ${block} Week ${completedWeek} check-in is due`,
-              html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-        </td></tr>
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${first_name},</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Block ${block} Week ${completedWeek} is complete. Week ${week} is now live in your portal.</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Submit your Week ${completedWeek} check-in before moving on. This is the data that feeds your monthly Loom review - the more consistent the data, the more useful the feedback.</p>
-          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
-          </table>
-          ${darkEmailSignature()}
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+              html: darkEmailShell(`
+${emailLogo()}
+${emailEyebrow(`Membership · Block ${block} Week ${completedWeek}`)}
+${emailHeading(`Block ${block} Week ${completedWeek} check-in is due.`)}
+${emailDivider()}
+${emailBody(`Hi ${first_name},`)}
+${emailBody(`Block ${block} Week ${completedWeek} is complete. Week ${week} is now live in your portal.`)}
+${emailBody(`Submit your Week ${completedWeek} check-in before moving on. This is the data that feeds your monthly Loom review — the more consistent the data, the more useful the feedback.`, { bottom: 28 })}
+${emailCta({ href: portalUrl, label: `Submit Week ${completedWeek} check-in` })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${darkEmailSignature()}
+`, { previewText: `${first_name}, submit your Block ${block} Week ${completedWeek} check-in.` }),
             })
           }
         })
@@ -1061,26 +1052,17 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
               from: 'Kade at Body Recode <kade@bodyrecode.au>',
               to: email,
               subject: `Reminder: Block ${block} Week ${completedWeek} check-in not yet submitted`,
-              html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-        </td></tr>
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${first_name},</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Your Block ${block} Week ${completedWeek} check-in is still outstanding. This data is what your monthly Loom review is built from - without it, I am working blind.</p>
-          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Check-In Now</a></td></tr>
-          </table>
-          ${darkEmailSignature()}
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+              html: darkEmailShell(`
+${emailLogo()}
+${emailEyebrow(`Membership · Block ${block} Week ${completedWeek}`)}
+${emailHeading('Your check-in is still outstanding.')}
+${emailDivider()}
+${emailBody(`Hi ${first_name},`)}
+${emailBody(`Your Block ${block} Week ${completedWeek} check-in is still outstanding. This data is what your monthly Loom review is built from — without it, I am working blind.`, { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Submit check-in now' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${darkEmailSignature()}
+`, { previewText: `${first_name}, your Block ${block} Week ${completedWeek} check-in is overdue.` }),
             })
           }
         })
@@ -1148,26 +1130,17 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
             from: 'Kade at Body Recode <kade@bodyrecode.au>',
             to: email,
             subject: `Extension Week ${completedWeek} check-in is due`,
-            html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-        </td></tr>
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-          <p style="margin:0 0 18px;color:#999999;">Hi ${firstName},</p>
-          <p style="margin:0 0 18px;color:#999999;">Extension Week ${completedWeek} is complete. Week ${week} is now live. Submit your check-in before moving on.</p>
-          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
-          </table>
-          ${darkEmailSignature()}
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+            html: darkEmailShell(`
+${emailLogo()}
+${emailEyebrow(`90-Day Extension · Week ${completedWeek}`)}
+${emailHeading(`Week ${completedWeek} check-in is due.`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody(`Extension Week ${completedWeek} is complete. Week ${week} is now live. Submit your check-in before moving on.`, { bottom: 28 })}
+${emailCta({ href: portalUrl, label: `Submit Week ${completedWeek} check-in` })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${darkEmailSignature()}
+`, { previewText: `${firstName}, submit your Extension Week ${completedWeek} check-in.` }),
           })
         }
       })

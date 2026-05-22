@@ -19,6 +19,10 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createClient } from '@supabase/supabase-js'
 import { darkEmailSignature } from '../src/lib/email-signature'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody, emailCta,
+} from '../src/lib/email-shell'
 
 const STATE_MAP: Record<string, string> = {
   'Depleted State': 'depleted',
@@ -124,35 +128,19 @@ async function main() {
 
   const subject = `Re: ${firstName}, the self-guided ${stateLabel} program - $97`
 
-  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#0c0a09;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0c0a09" style="background-color:#0c0a09;padding:48px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#111110" style="max-width:520px;background-color:#111110;border-radius:16px;border:1px solid #1c1917;overflow:hidden;">
-          <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:28px 40px;border-bottom:1px solid #1c1917;">
-              <img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;" />
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor="#111110" style="background-color:#111110;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#888888;">
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Hi ${firstName},</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">No hassle at all. Here is a fresh link, valid for the next 24 hours.</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">Same program, same price. 12 weeks built for ${stateLabel} State. Yours to keep, self-paced.</p>
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr><td><a href="${checkoutUrl}" style="display:inline-block;padding:14px 28px;background:#10E1C2;color:#0c0a09;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Get the program - $97</a></td></tr>
-              </table>
-              <p style="margin:0 0 18px;font-size:13px;color:#555555;line-height:1.75;">Or copy this link: ${checkoutUrl}</p>
-              <p style="margin:0 0 18px;font-size:15px;color:#888888;line-height:1.75;">If it expires again before you get to it, just reply and I will send another.</p>
-              ${darkEmailSignature()}
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body></html>`
+  const html = darkEmailShell(`
+${emailLogo()}
+${emailEyebrow(`Self-Guided ${stateLabel} Program`)}
+${emailHeading('Here is a fresh link.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('No hassle at all. Here is a fresh link, valid for the next 24 hours.')}
+${emailBody(`Same program, same price. 12 weeks built for ${stateLabel} State. Yours to keep, self-paced.`, { bottom: 28 })}
+${emailCta({ href: checkoutUrl, label: `Get the program — $97` })}
+${emailUrlFallback(checkoutUrl, 'Or paste this link into your browser')}
+${emailBody('If it expires again before you get to it, just reply and I will send another.', { size: 14 })}
+${darkEmailSignature()}
+`, { previewText: `${firstName}, fresh ${stateLabel} program link inside.` })
 
   const sendResult = await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',

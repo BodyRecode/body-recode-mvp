@@ -72,7 +72,7 @@ WHAT_THIS_INCLUDES: [bullet 1]|[bullet 2]|[bullet 3]|[bullet 4]|[bullet 5]`
 function nl2p(text: string): string {
   return text
     .split('\n\n')
-    .map(p => `<p style="margin:0 0 16px;font-size:15px;color:#c4c0bb;line-height:1.75;">${p.trim()}</p>`)
+    .map(p => `<p style="margin:0 0 16px;font-size:15px;color:${EMAIL_BODY};line-height:1.75;">${p.trim()}</p>`)
     .join('')
 }
 
@@ -129,10 +129,10 @@ export async function buildReportEmail(
 
   const bookingSection = bookingLink
     ? `<tr><td style="padding:0 0 40px;">
-        <p style="margin:0 0 8px;font-size:17px;font-weight:700;color:#ffffff;line-height:1.4;">Your pattern has a reason.</p>
-        <p style="margin:0 0 24px;font-size:14px;color:#999999;line-height:1.7;">The report shows what's showing up. A 30-minute conversation is where we work out why, and what it means for how you should actually be training and eating right now.</p>
-        <a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Explore this with Kade →</a>
-        <p style="margin:12px 0 0;font-size:13px;color:#999999;">No obligation. Just clarity on what your body is actually doing.</p>
+        <p style="margin:0 0 8px;font-size:17px;font-weight:800;letter-spacing:-0.015em;color:#1A1A1A;line-height:1.4;">Your pattern has a reason.</p>
+        <p style="margin:0 0 24px;font-size:14px;color:${EMAIL_BODY};line-height:1.7;">The report shows what's showing up. A 30-minute conversation is where we work out why, and what it means for how you should actually be training and eating right now.</p>
+        <a href="${bookingLink}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;letter-spacing:0.03em;">Explore this with Kade</a>
+        <p style="margin:12px 0 0;font-size:13px;color:#6B6B6B;">No obligation. Just clarity on what your body is actually doing.</p>
       </td></tr>`
     : ''
 
@@ -152,9 +152,9 @@ export async function buildReportEmail(
           <!-- Header -->
           <tr>
             <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px 28px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;">Initial Performance Check-In Report</p>
-              <p style="margin:6px 0 0;font-size:13px;color:#999999;">Prepared for ${firstName}</p>
+              <img src="https://bodyrecode.au/logo-black.png" width="150" alt="Body Recode" style="display:block;margin-bottom:20px;" />
+              <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1B6DFC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Performance Check-In Report</p>
+              <p style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.025em;color:#1A1A1A;line-height:1.2;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Prepared for ${firstName}.</p>
             </td>
           </tr>
 
@@ -177,7 +177,7 @@ export async function buildReportEmail(
                 <tr>
                   <td style="padding:0 0 32px;">
                     <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1B6DFC;">Pattern Snapshot</p>
-                    <p style="margin:0 0 16px;font-size:18px;font-weight:700;color:#ffffff;">${narrative.bandTitle}</p>
+                    <p style="margin:0 0 16px;font-size:18px;font-weight:800;letter-spacing:-0.02em;color:#1A1A1A;">${narrative.bandTitle}</p>
                     ${nl2p(narrative.patternSnapshot)}
                   </td>
                 </tr>
@@ -237,11 +237,11 @@ export async function buildReportEmail(
 
           <!-- Footer -->
           <tr>
-            <td bgcolor="#0d0d0d" style="background-color:#0d0d0d;padding:20px 40px;border-top:1px solid #E5E5E5;">
-              <p style="margin:0 0 8px;font-size:12px;color:#999999;line-height:1.6;">
-                To make sure you receive future emails from Body Recode™, add <strong style="color:#999999;">kade@bodyrecode.au</strong> to your contacts.
+            <td bgcolor="#F7F7F7" style="background-color:#F7F7F7;padding:24px 40px;border-top:1px solid #E5E5E5;">
+              <p style="margin:0 0 8px;font-size:12px;color:#6B6B6B;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+                To make sure you receive future emails from Body Recode™, add <strong style="color:#1A1A1A;">kade@bodyrecode.au</strong> to your contacts.
               </p>
-              <p style="margin:0;font-size:12px;color:#444444;line-height:1.6;">
+              <p style="margin:0;font-size:12px;color:#6B6B6B;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
                 Body Recode™ · Anytime Fitness Newstead, Brisbane<br/>
                 <a href="mailto:info@bodyrecode.au" style="color:#1B6DFC;text-decoration:none;">info@bodyrecode.au</a>
               </p>
