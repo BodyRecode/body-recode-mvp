@@ -462,22 +462,26 @@ function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult:
               {q.question}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {q.options.map(opt => (
-                <button
-                  key={opt.value}
-                  onClick={() => setSignals(s => ({ ...s, [q.id]: opt.value }))}
-                  style={{
-                    width: '100%', padding: '13px 16px', borderRadius: '10px',
-                    border: signals[q.id] === opt.value ? '1px solid rgba(27, 109, 252,0.4)' : '1px solid #E5E5E5',
-                    background: signals[q.id] === opt.value ? 'rgba(27, 109, 252,0.07)' : '#FFFFFF',
-                    color: signals[q.id] === opt.value ? '#ffffff' : '#6B6B6B',
-                    fontSize: '14px', textAlign: 'left', cursor: 'pointer',
-                    transition: 'all 0.15s ease', lineHeight: 1.5,
-                  }}
-                >
-                  {opt.label}
-                </button>
-              ))}
+              {q.options.map(opt => {
+                const selected = signals[q.id] === opt.value
+                return (
+                  <button
+                    key={opt.value}
+                    onClick={() => setSignals(s => ({ ...s, [q.id]: opt.value }))}
+                    style={{
+                      width: '100%', padding: '13px 16px', borderRadius: '10px',
+                      border: selected ? '1px solid rgba(27, 109, 252,0.45)' : '1px solid #E5E5E5',
+                      background: selected ? 'rgba(27, 109, 252,0.10)' : '#FFFFFF',
+                      color: selected ? '#1056D6' : '#3A3A3A',
+                      fontSize: '14px', fontWeight: selected ? 600 : 500,
+                      textAlign: 'left', cursor: 'pointer',
+                      transition: 'all 0.15s ease', lineHeight: 1.5,
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                )
+              })}
             </div>
           </div>
         ))}
