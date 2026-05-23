@@ -181,13 +181,20 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
             <p style={{ fontSize: '13px', fontWeight: 700, color: '#6B6B6B', textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginBottom: '10px' }}>Post-training carb options</p>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' as const }}>
               {['White rice', 'Potatoes', 'Sweet potato', 'Banana', 'Honey', 'Berries', 'Pineapple'].map(c => (
-                <span key={c} style={{ fontSize: '13px', color: '#999999', background: '#f0efed', borderRadius: '6px', padding: '5px 12px' }}>{c}</span>
+                <span key={c} style={{
+                  fontSize: '13px', fontWeight: 600, color: '#1A1A1A',
+                  background: '#F5F5F5', border: '1px solid #E5E5E5',
+                  borderRadius: '6px', padding: '5px 12px',
+                }}>{c}</span>
               ))}
             </div>
           </div>
-          <div style={{ ...card, background: 'rgba(27,109,252,0.07)', border: '1px solid rgba(27,109,252,0.18)' }}>
-            <p style={{ fontSize: '13px', color: '#99d6d0', lineHeight: 1.65, margin: 0 }}>
-              This approach resets insulin sensitivity, reduces inflammation, and teaches your body to use stored fat for energy. After the challenge, carbohydrate flexibility increases inside the 6-Week Blueprint.
+          <div style={{ ...card, background: 'rgba(27,109,252,0.07)', border: '1px solid rgba(27,109,252,0.25)', borderLeft: '3px solid #1B6DFC' }}>
+            <p style={{ fontSize: '10px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 8px' }}>
+              Why this works
+            </p>
+            <p style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: 1.7, margin: 0 }}>
+              This approach resets insulin sensitivity, reduces inflammation, and teaches your body to use stored fat for energy. After the challenge, carbohydrate flexibility increases inside the <strong style={{ fontWeight: 700 }}>6-Week Blueprint</strong>.
             </p>
           </div>
         </div>
