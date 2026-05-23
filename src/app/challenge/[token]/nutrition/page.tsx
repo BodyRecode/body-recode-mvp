@@ -220,40 +220,181 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
           </div>
         </div>
 
-        {/* Daily Rhythm */}
+        {/* Daily Rhythm — peri-workout protocol moves with your training time */}
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>Daily Rhythm</p>
           <p style={sectionTitle}>How a full day looks</p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '20px', lineHeight: 1.6 }}>
-            Follow this rhythm on training days. On rest days, skip the training window and keep it to protein, fat, and fruit.
+          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '24px', lineHeight: 1.6 }}>
+            The peri-workout protocol travels with your training time. The rest of your day is anchor meals — protein and fat at the times that fit your life.
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-            {[
-              { time: 'On waking', content: '500ml water + pinch of salt', note: 'Before anything else. Rehydrate first.' },
-              { time: 'Breakfast', content: 'Protein + fat', note: 'Eggs in butter + avocado, or yoghurt + berries' },
-              { time: 'Pre-training', content: 'Salt + water', note: 'Add fruit or honey if you need a boost' },
-              { time: 'During training', content: 'Water + electrolytes', note: null },
-              { time: 'Post-training', content: 'Whey + fruit', note: 'Within 30 minutes. Start recovery.' },
-              { time: 'Post-training meal', content: 'Protein + clean carbs', note: 'Beef + rice, chicken + potato' },
-              { time: 'Evening meal', content: 'Protein + fat', note: 'Salmon + avocado, eggs + ghee, steak + butter' },
-            ].map((m, i) => (
-              <div key={m.time} style={{ display: 'flex', gap: '0' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '14px' }}>
-                  <div style={{
-                    width: '10px', height: '10px', borderRadius: '50%',
-                    background: '#1B6DFC', border: '2px solid #FFFFFF',
-                    flexShrink: 0, marginTop: '18px',
-                  }} />
-                  {i < 6 && <div style={{ width: '2px', flex: 1, background: '#E5E5E5', minHeight: '16px' }} />}
+
+          {/* Block 1: The Peri-Workout Protocol */}
+          <div style={{ marginBottom: '36px' }}>
+            <p style={{ fontSize: '10px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 14px' }}>
+              The peri-workout protocol
+            </p>
+            <p style={{ fontSize: '14px', color: '#4A4A4A', marginBottom: '14px', lineHeight: 1.6 }}>
+              Four steps that always wrap around training — whenever training happens.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {[
+                { num: '01', when: 'Pre', timing: '30-60 min before training', what: 'Salt + water. Add fruit or honey if you need a boost.' },
+                { num: '02', when: 'During', timing: 'Throughout the session', what: 'Water + electrolytes.' },
+                { num: '03', when: 'Post', timing: 'Within 30 minutes', what: 'Whey + fruit. Start the recovery window.' },
+                { num: '04', when: 'Post-training meal', timing: '1-2 hours after training', what: 'Protein + clean carbs. Beef + rice, chicken + potato, ground turkey + sweet potato.' },
+              ].map(p => (
+                <div key={p.num} style={{
+                  background: '#FFFFFF', border: '1px solid #E5E5E5', borderLeft: '3px solid #1B6DFC',
+                  borderRadius: '12px', padding: '16px 20px', display: 'flex', gap: '14px', alignItems: 'flex-start',
+                  boxShadow: '0 1px 3px rgba(27, 109, 252, 0.05)',
+                }}>
+                  <span style={{
+                    fontSize: '12px', fontWeight: 800, color: '#1B6DFC',
+                    background: 'rgba(27,109,252,0.08)', padding: '4px 10px', borderRadius: '6px',
+                    fontFamily: '"Courier New",Consolas,monospace', letterSpacing: '0.04em',
+                    minWidth: '34px', textAlign: 'center' as const, flexShrink: 0, marginTop: '2px',
+                  }}>{p.num}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', flexWrap: 'wrap' as const, marginBottom: '4px' }}>
+                      <p style={{ fontSize: '16px', fontWeight: 800, color: '#1A1A1A', margin: 0, letterSpacing: '-0.01em' }}>{p.when}</p>
+                      <span style={{ fontSize: '12px', color: '#6B6B6B', fontWeight: 600 }}>{p.timing}</span>
+                    </div>
+                    <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>{p.what}</p>
+                  </div>
                 </div>
-                <div style={{ ...card, marginBottom: '6px', flex: 1 }}>
-                  <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginBottom: '4px' }}>{m.time}</p>
-                  <p style={{ fontSize: '14px', color: '#1A1A1A', margin: '0 0 2px', fontWeight: 600 }}>{m.content}</p>
-                  {m.note && <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.5 }}>{m.note}</p>}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+
+          {/* Block 2: Daily Anchors */}
+          <div style={{ marginBottom: '36px' }}>
+            <p style={{ fontSize: '10px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 14px' }}>
+              Your daily anchors
+            </p>
+            <p style={{ fontSize: '14px', color: '#4A4A4A', marginBottom: '14px', lineHeight: 1.6 }}>
+              The rest of the day. Protein and fat at the times that fit your schedule. Wherever your training sits, the protocol slots in around these.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {[
+                { time: 'On waking', what: '500ml water + pinch of salt', note: 'Before anything else. Rehydrate first.' },
+                { time: 'Breakfast', what: 'Protein + fat', note: 'Eggs in butter + avocado, or yoghurt + berries.' },
+                { time: 'Lunch', what: 'Protein + fat', note: 'Beef mince + avocado, salmon + cucumber, chicken thighs + butter.' },
+                { time: 'Dinner', what: 'Protein + fat', note: 'Salmon + avocado, eggs + ghee, steak + butter.' },
+              ].map(m => (
+                <div key={m.time} style={{ ...card, padding: '14px 18px' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', flexWrap: 'wrap' as const, marginBottom: '3px' }}>
+                    <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', margin: 0 }}>{m.time}</p>
+                    <span style={{ fontSize: '13px', color: '#1056D6', fontWeight: 600 }}>{m.what}</span>
+                  </div>
+                  <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.55 }}>{m.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Block 3: Three Example Days */}
+          <div>
+            <p style={{ fontSize: '10px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 14px' }}>
+              How it slots in
+            </p>
+            <p style={{ fontSize: '14px', color: '#4A4A4A', marginBottom: '20px', lineHeight: 1.6 }}>
+              Three example days. The same four-step protocol moves to wrap your training. Find the one that fits your schedule.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {[
+                {
+                  label: 'Morning trainer',
+                  sub: 'Training ~6am, pre-breakfast',
+                  timeline: [
+                    { time: '5:30am', text: 'Water + salt', kind: 'anchor' as const },
+                    { time: '5:45am', text: 'Pre — salt + water (+ fruit if needed)', kind: 'peri' as const },
+                    { time: '6-7am', text: 'During — water + electrolytes', kind: 'peri' as const },
+                    { time: '7am', text: 'Post — whey + fruit', kind: 'peri' as const },
+                    { time: '8:30am', text: 'Breakfast / post-training meal — protein + clean carbs (beef + rice)', kind: 'peri-meal' as const },
+                    { time: '1pm', text: 'Lunch — protein + fat', kind: 'anchor' as const },
+                    { time: '7pm', text: 'Dinner — protein + fat', kind: 'anchor' as const },
+                  ],
+                },
+                {
+                  label: 'Midday trainer',
+                  sub: 'Training ~12pm, between meals',
+                  timeline: [
+                    { time: '7am', text: 'Water + salt', kind: 'anchor' as const },
+                    { time: '8am', text: 'Breakfast — protein + fat', kind: 'anchor' as const },
+                    { time: '11:30am', text: 'Pre — salt + water (+ fruit if needed)', kind: 'peri' as const },
+                    { time: '12-1pm', text: 'During — water + electrolytes', kind: 'peri' as const },
+                    { time: '1pm', text: 'Post — whey + fruit', kind: 'peri' as const },
+                    { time: '2pm', text: 'Lunch / post-training meal — protein + clean carbs (chicken + potato)', kind: 'peri-meal' as const },
+                    { time: '7pm', text: 'Dinner — protein + fat', kind: 'anchor' as const },
+                  ],
+                },
+                {
+                  label: 'Evening trainer',
+                  sub: 'Training ~5pm, after work',
+                  timeline: [
+                    { time: '7am', text: 'Water + salt', kind: 'anchor' as const },
+                    { time: '8am', text: 'Breakfast — protein + fat', kind: 'anchor' as const },
+                    { time: '12pm', text: 'Lunch — protein + fat', kind: 'anchor' as const },
+                    { time: '4:30pm', text: 'Pre — salt + water (+ fruit if needed)', kind: 'peri' as const },
+                    { time: '5-6pm', text: 'During — water + electrolytes', kind: 'peri' as const },
+                    { time: '6pm', text: 'Post — whey + fruit', kind: 'peri' as const },
+                    { time: '7:30pm', text: 'Dinner / post-training meal — protein + clean carbs (turkey + sweet potato)', kind: 'peri-meal' as const },
+                  ],
+                },
+              ].map(day => (
+                <div key={day.label} style={{
+                  background: '#FFFFFF', border: '1px solid #E5E5E5',
+                  borderRadius: '14px', padding: '20px 22px',
+                }}>
+                  <div style={{ marginBottom: '14px' }}>
+                    <p style={{ fontSize: '15px', fontWeight: 800, color: '#1A1A1A', margin: '0 0 2px', letterSpacing: '-0.01em' }}>{day.label}</p>
+                    <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0 }}>{day.sub}</p>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {day.timeline.map((row) => {
+                      const isPeri = row.kind === 'peri' || row.kind === 'peri-meal'
+                      return (
+                        <div key={row.time + row.text} style={{
+                          display: 'flex', gap: '12px', alignItems: 'flex-start',
+                          padding: '10px 12px', borderRadius: '8px',
+                          background: isPeri ? 'rgba(27,109,252,0.06)' : '#F7F7F7',
+                          border: isPeri ? '1px solid rgba(27,109,252,0.18)' : '1px solid #E5E5E5',
+                        }}>
+                          <span style={{
+                            fontSize: '11px', fontWeight: 700,
+                            color: isPeri ? '#1056D6' : '#6B6B6B',
+                            minWidth: '64px', flexShrink: 0,
+                            fontFamily: '"Courier New",Consolas,monospace',
+                            paddingTop: '1px',
+                          }}>{row.time}</span>
+                          <p style={{
+                            fontSize: '13px',
+                            color: isPeri ? '#1A1A1A' : '#3A3A3A',
+                            fontWeight: isPeri ? 600 : 500,
+                            margin: 0, lineHeight: 1.5, flex: 1,
+                          }}>{row.text}</p>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Rest day reminder */}
+            <div style={{
+              ...card, marginTop: '16px',
+              background: '#F7F7F7', borderLeft: '3px solid #6B6B6B',
+            }}>
+              <p style={{ fontSize: '10px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 8px' }}>
+                Rest days
+              </p>
+              <p style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: 1.7, margin: 0 }}>
+                Drop the peri-workout protocol entirely. Anchor meals only — protein, fat, and fruit. No starchy carbs.
+              </p>
+            </div>
+          </div>
+
         </div>
 
         {/* Meal Builder */}
