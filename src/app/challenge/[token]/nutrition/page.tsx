@@ -12,7 +12,7 @@ const label: React.CSSProperties = {
 }
 
 const sectionTitle: React.CSSProperties = {
-  fontSize: '20px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em', margin: '4px 0 0',
+  fontSize: '26px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.025em', margin: '6px 0 0', lineHeight: 1.2,
 }
 
 export default async function NutritionPage({ params }: { params: Promise<{ token: string }> }) {
@@ -41,16 +41,37 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         </div>
       </div>
 
-      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '40px 24px 80px' }}>
+      {/* Hero with Signal Blue radial glow — matches /challenge + training page */}
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', top: '-140px', right: '-140px',
+          width: '480px', height: '480px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.12) 0%, transparent 65%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: '0', left: '-100px',
+          width: '320px', height: '320px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.06) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
 
-        {/* Title */}
-        <div style={{ marginBottom: '48px' }}>
+        <div style={{ maxWidth: '640px', margin: '0 auto', padding: '56px 24px 32px', position: 'relative' }}>
           <p style={label}>14-Day Body Decode Challenge</p>
-          <h1 style={{ fontSize: '28px', fontWeight: 900, letterSpacing: '-0.02em', margin: '6px 0 12px', color: '#1A1A1A' }}>Nutrition Guide</h1>
-          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.75, margin: 0 }}>
+          <h1 style={{
+            fontSize: 'clamp(34px, 6vw, 44px)', fontWeight: 900,
+            letterSpacing: '-0.03em', margin: '8px 0 18px', color: '#1A1A1A', lineHeight: 1.05,
+          }}>
+            Nutrition Guide
+          </h1>
+          <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
+          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
             This is not a diet. It is a metabolic reset. The goal of the next 14 days is to calm inflammation, stabilise blood sugar, and restore your body&apos;s ability to use fat for fuel. Simple food, eaten at the right times.
           </p>
         </div>
+      </div>
+
+      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '24px 24px 80px' }}>
 
         {/* HABNS System */}
         <div style={{ marginBottom: '48px' }}>
