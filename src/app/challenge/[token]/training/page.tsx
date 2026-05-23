@@ -111,24 +111,63 @@ const label: React.CSSProperties = {
 }
 
 const sectionTitle: React.CSSProperties = {
-  fontSize: '20px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em', margin: '4px 0 0',
+  fontSize: '26px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.025em', margin: '6px 0 0', lineHeight: 1.2,
 }
 
 function ExerciseCard({ ex, index }: { ex: { name: string; sets: string; rir: string; cue: string }; index: number }) {
   return (
-    <div style={{ ...card, display: 'flex', flexDirection: 'column', gap: '10px' }}>
-      <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-        <span style={{ fontSize: '11px', fontWeight: 800, color: '#1B6DFC', minWidth: '20px', paddingTop: '3px' }}>
+    <div style={{
+      background: '#FFFFFF',
+      border: '1px solid #E5E5E5',
+      borderLeft: '3px solid #1B6DFC',
+      borderRadius: '12px',
+      padding: '20px 22px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '14px',
+      boxShadow: '0 1px 3px rgba(27, 109, 252, 0.06)',
+    }}>
+      <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+        <span style={{
+          fontSize: '12px',
+          fontWeight: 800,
+          color: '#1B6DFC',
+          background: 'rgba(27,109,252,0.08)',
+          padding: '4px 10px',
+          borderRadius: '6px',
+          fontFamily: '"Courier New",Consolas,monospace',
+          letterSpacing: '0.04em',
+          minWidth: '34px',
+          textAlign: 'center' as const,
+          flexShrink: 0,
+          marginTop: '2px',
+        }}>
           {String(index + 1).padStart(2, '0')}
         </span>
-        <p style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', margin: 0, lineHeight: 1.3 }}>{ex.name}</p>
+        <p style={{
+          fontSize: '19px',
+          fontWeight: 800,
+          color: '#1A1A1A',
+          margin: 0,
+          lineHeight: 1.25,
+          letterSpacing: '-0.015em',
+          flex: 1,
+        }}>{ex.name}</p>
       </div>
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' as const, paddingLeft: '32px' }}>
-        <span style={{ fontSize: '13px', color: '#6B6B6B', background: '#E5E5E5', borderRadius: '6px', padding: '4px 10px' }}>{ex.sets}</span>
-        <span style={{ fontSize: '13px', color: '#1B6DFC', background: 'rgba(27,109,252,0.08)', border: '1px solid rgba(27,109,252,0.15)', borderRadius: '6px', padding: '4px 10px' }}>{ex.rir}</span>
+      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' as const, paddingLeft: '48px' }}>
+        <span style={{
+          fontSize: '12px', fontWeight: 700, color: '#3A3A3A',
+          background: '#F5F5F5', border: '1px solid #E5E5E5',
+          borderRadius: '6px', padding: '5px 11px', letterSpacing: '0.01em',
+        }}>{ex.sets}</span>
+        <span style={{
+          fontSize: '12px', fontWeight: 700, color: '#1056D6',
+          background: 'rgba(27,109,252,0.10)', border: '1px solid rgba(27,109,252,0.25)',
+          borderRadius: '6px', padding: '5px 11px', letterSpacing: '0.01em',
+        }}>{ex.rir}</span>
       </div>
-      <div style={{ paddingLeft: '32px', borderTop: '1px solid #E5E5E5', paddingTop: '10px' }}>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.65 }}>{ex.cue}</p>
+      <div style={{ paddingLeft: '48px', borderTop: '1px solid #E5E5E5', paddingTop: '12px' }}>
+        <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>{ex.cue}</p>
       </div>
     </div>
   )
@@ -147,7 +186,7 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#FFFFFF', color: '#ffffff',
+      minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
       {/* Header */}
@@ -160,16 +199,37 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
         </div>
       </div>
 
-      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '40px 24px 80px' }}>
+      {/* Hero with Signal Blue radial glow — pulls in line with /challenge */}
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', top: '-140px', right: '-140px',
+          width: '480px', height: '480px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.12) 0%, transparent 65%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: '0', left: '-100px',
+          width: '320px', height: '320px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.06) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
 
-        {/* Title */}
-        <div style={{ marginBottom: '48px' }}>
+        <div style={{ maxWidth: '640px', margin: '0 auto', padding: '56px 24px 32px', position: 'relative' }}>
           <p style={label}>14-Day Body Decode Challenge</p>
-          <h1 style={{ fontSize: '28px', fontWeight: 900, letterSpacing: '-0.02em', margin: '6px 0 12px', color: '#ffffff' }}>Training Plan</h1>
-          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.75, margin: 0 }}>
+          <h1 style={{
+            fontSize: 'clamp(34px, 6vw, 44px)', fontWeight: 900,
+            letterSpacing: '-0.03em', margin: '8px 0 18px', color: '#1A1A1A', lineHeight: 1.05,
+          }}>
+            Training Plan
+          </h1>
+          <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
+          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
             This plan is not about intensity. It is about rhythm. Your goal is to give your nervous system consistent, structured stimulus so your body starts adapting and rebuilding its baseline. Three to four sessions across two weeks.
           </p>
         </div>
+      </div>
+
+      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '24px 24px 80px' }}>
 
         {/* Core principles */}
         <div style={{ marginBottom: '48px' }}>
@@ -183,8 +243,8 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
               { heading: 'Walk on rest days', body: '30 to 60 minutes of low-intensity walking on every non-training day. This is not optional. Walking is active recovery and directly supports cortisol regulation.' },
             ].map(p => (
               <div key={p.heading} style={{ ...card }}>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: '#ffffff', margin: '0 0 5px' }}>{p.heading}</p>
-                <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 5px' }}>{p.heading}</p>
+                <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
               </div>
             ))}
           </div>
@@ -216,43 +276,43 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
           </div>
         </div>
 
-        {/* Weekly Overview */}
+        {/* 14-Day Overview — evergreen, day-of-week agnostic */}
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>The Schedule</p>
-          <p style={sectionTitle}>Weekly overview</p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
-            The challenge starts on Sunday. Day 1 is an orientation day - no training. First session is Monday. 4 sessions in week one, 3 in week two.
+          <p style={sectionTitle}>14-day overview</p>
+          <p style={{ fontSize: '14px', color: '#4A4A4A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
+            Day 1 is your orientation day — no training. Your first session is Day 2. Week one has 4 sessions, week two has 3. Start any day of the week — the structure works around your life.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {[
               {
-                week: 'Week 1',
+                week: 'Week 1 · Days 1-7',
                 days: [
-                  { day: 'Day 1 - Sun', session: 'Orientation', type: 'No training - read your guides and set up' },
-                  { day: 'Day 2 - Mon', session: 'Session A', type: 'Foundation Strength' },
-                  { day: 'Day 4 - Wed', session: 'Session B', type: 'Conditioning Focus' },
-                  { day: 'Day 6 - Fri', session: 'Session A', type: 'Foundation Strength' },
-                  { day: 'Day 7 - Sat', session: 'Session C', type: 'Volume and Density' },
+                  { day: 'Day 1', session: 'Orientation', type: 'No training — read your guides and set up' },
+                  { day: 'Day 2', session: 'Session A', type: 'Foundation Strength' },
+                  { day: 'Day 4', session: 'Session B', type: 'Conditioning Focus' },
+                  { day: 'Day 6', session: 'Session A', type: 'Foundation Strength' },
+                  { day: 'Day 7', session: 'Session C', type: 'Volume and Density' },
                 ],
               },
               {
-                week: 'Week 2',
+                week: 'Week 2 · Days 8-14',
                 days: [
-                  { day: 'Day 9 - Mon', session: 'Session B', type: 'Conditioning Focus' },
-                  { day: 'Day 11 - Wed', session: 'Session A', type: 'Foundation Strength' },
-                  { day: 'Day 13 - Fri', session: 'Session C', type: 'Volume and Density' },
+                  { day: 'Day 9', session: 'Session B', type: 'Conditioning Focus' },
+                  { day: 'Day 11', session: 'Session A', type: 'Foundation Strength' },
+                  { day: 'Day 13', session: 'Session C', type: 'Volume and Density' },
                 ],
               },
             ].map(w => (
               <div key={w.week}>
-                <p style={{ fontSize: '13px', fontWeight: 700, color: '#ffffff', marginBottom: '10px' }}>{w.week}</p>
+                <p style={{ fontSize: '13px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>{w.week}</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {w.days.map(d => (
                     <div key={d.day} style={{ ...card, display: 'flex', alignItems: 'center', padding: '12px 16px', gap: '0' }}>
-                      <span style={{ fontSize: '12px', color: '#999999', fontWeight: 600, minWidth: '120px' }}>{d.day}</span>
-                      <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '12px', color: '#6B6B6B', fontWeight: 700, minWidth: '64px' }}>{d.day}</span>
+                      <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' as const }}>
                         <span style={{ fontSize: '13px', color: '#1B6DFC', fontWeight: 700 }}>{d.session}</span>
-                        <span style={{ fontSize: '12px', color: '#999999' }}>{d.type}</span>
+                        <span style={{ fontSize: '12px', color: '#6B6B6B' }}>{d.type}</span>
                       </div>
                     </div>
                   ))}
@@ -261,7 +321,7 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
             ))}
           </div>
           <div style={{ ...card, marginTop: '12px', background: 'rgba(27,109,252,0.07)', border: '1px solid rgba(27,109,252,0.2)' }}>
-            <p style={{ fontSize: '14px', color: '#99d6d0', margin: 0, lineHeight: 1.65 }}>
+            <p style={{ fontSize: '14px', color: '#1A1A1A', margin: 0, lineHeight: 1.65 }}>
               <span style={{ color: '#1B6DFC', fontWeight: 700 }}>All other days:</span> Walk 30 to 60 minutes. Light, low intensity. This is active recovery, not optional rest.
             </p>
           </div>
