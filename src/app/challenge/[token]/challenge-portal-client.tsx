@@ -403,28 +403,26 @@ function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult:
                 <p style={{ fontSize: '12px', color: '#4A4A4A', margin: 0 }}>{marker.sub}</p>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
-                {progressOptions.map(opt => (
-                  <button
-                    key={opt.value}
-                    onClick={() => setProgress(p => ({ ...p, [marker.id]: opt.value }))}
-                    style={{
-                      flex: 1, padding: '8px 6px', borderRadius: '8px', border: 'none',
-                      background: progress[marker.id] === opt.value
-                        ? opt.value === 'better' ? 'rgba(27, 109, 252,0.12)' : '#222220'
-                        : '#E5E5E5',
-                      color: progress[marker.id] === opt.value
-                        ? opt.value === 'better' ? '#1B6DFC' : '#ffffff'
-                        : '#4A4A4A',
-                      fontSize: '12px', fontWeight: 600, cursor: 'pointer',
-                      outline: progress[marker.id] === opt.value
-                        ? opt.value === 'better' ? '1px solid rgba(27, 109, 252,0.3)' : '1px solid #D4D4D4'
-                        : 'none',
-                      transition: 'all 0.12s ease', lineHeight: 1.3, textAlign: 'center',
-                    }}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
+                {progressOptions.map(opt => {
+                  const selected = progress[marker.id] === opt.value
+                  return (
+                    <button
+                      key={opt.value}
+                      onClick={() => setProgress(p => ({ ...p, [marker.id]: opt.value }))}
+                      style={{
+                        flex: 1, padding: '9px 6px', borderRadius: '8px',
+                        border: selected ? '1px solid rgba(27, 109, 252,0.45)' : '1px solid #E5E5E5',
+                        background: selected ? 'rgba(27, 109, 252,0.10)' : '#F7F7F7',
+                        color: selected ? '#1056D6' : '#3A3A3A',
+                        fontSize: '12px', fontWeight: selected ? 700 : 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.12s ease', lineHeight: 1.3, textAlign: 'center',
+                      }}
+                    >
+                      {opt.label}
+                    </button>
+                  )
+                })}
               </div>
             </div>
           ))}
