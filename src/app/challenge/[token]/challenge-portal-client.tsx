@@ -938,42 +938,58 @@ export default function ChallengePortalClient({
           </div>
         </div>
 
-        {/* Day 5 Live Session */}
+        {/* Day 5 Week One Progress Session — pre-recorded video, unlocks Day 5+ */}
         {currentDay >= 5 && (
           <div style={{ marginBottom: '48px' }}>
             <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              Live Session
+              Week One Progress
             </p>
             <div style={{
-              background: 'linear-gradient(135deg, #B5CFFC 0%, #0a2320 100%)',
-              border: '1px solid rgba(27, 109, 252,0.25)',
-              borderRadius: '16px', padding: '24px',
+              background: '#FFFFFF',
+              border: '1px solid #E5E5E5',
+              borderLeft: '3px solid #1B6DFC',
+              borderRadius: '14px',
+              padding: '24px 26px',
+              boxShadow: '0 1px 4px rgba(27, 109, 252, 0.06)',
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-                <div style={{
-                  width: '8px', height: '8px', borderRadius: '50%',
-                  background: '#1B6DFC', boxShadow: '0 0 0 3px rgba(27, 109, 252,0.25)',
-                }} />
-                <span style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px', flexWrap: 'wrap' as const }}>
+                <span style={{
+                  fontSize: '11px', fontWeight: 700, color: '#1056D6',
+                  textTransform: 'uppercase' as const, letterSpacing: '0.12em',
+                }}>
                   Week One Progress Session
                 </span>
+                <span style={{
+                  fontSize: '10px', fontWeight: 700, color: '#6B6B6B',
+                  background: '#F5F5F5', border: '1px solid #E5E5E5',
+                  borderRadius: '99px', padding: '3px 9px',
+                  letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+                }}>
+                  30 min · on demand
+                </span>
               </div>
-              <p style={{ fontSize: '19px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em', margin: '0 0 10px', lineHeight: 1.3 }}>
+              <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
                 Decode what your body has been doing this week.
               </p>
-              <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, margin: '0 0 20px' }}>
-                Your Week One Progress Session is now available. Watch this 30-minute session to understand exactly what has been happening in your biology, what the signals mean, and what Week 2 is building toward.
+              <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
+                A 30-minute session walking you through exactly what has been happening in your biology, what the signals mean, and what Week 2 is building toward. Pre-recorded — watch any time.
               </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px' }}>
                 {[
                   'What your body has been doing this week',
                   'How to decode your biological signals',
                   'Why rhythm beats restriction every time',
                   'The shift from reset to results',
-                ].map(item => (
-                  <div key={item} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                    <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#1B6DFC', flexShrink: 0, marginTop: '7px' }} />
-                    <p style={{ fontSize: '13px', color: '#99d6d0', margin: 0, lineHeight: 1.55 }}>{item}</p>
+                ].map((item, i) => (
+                  <div key={item} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                    <span style={{
+                      fontSize: '11px', fontWeight: 800, color: '#1B6DFC',
+                      fontFamily: '"Courier New",Consolas,monospace',
+                      minWidth: '22px', paddingTop: '2px',
+                    }}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <p style={{ fontSize: '14px', color: '#3A3A3A', margin: 0, lineHeight: 1.6 }}>{item}</p>
                   </div>
                 ))}
               </div>
@@ -982,12 +998,17 @@ export default function ChallengePortalClient({
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  display: 'inline-block', padding: '13px 24px', borderRadius: '10px',
+                  display: 'inline-flex', alignItems: 'center', gap: '8px',
+                  padding: '14px 26px', borderRadius: '10px',
                   background: '#1B6DFC', color: '#FFFFFF',
                   fontSize: '14px', fontWeight: 800, textDecoration: 'none',
+                  letterSpacing: '0.01em',
                 }}
               >
-                Watch the session
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF" stroke="none" style={{ flexShrink: 0 }}>
+                  <polygon points="6,4 22,12 6,20" />
+                </svg>
+                Watch the recording
               </a>
             </div>
           </div>
