@@ -291,12 +291,14 @@ function ScorecardInner() {
                   </div>
                 </div>
 
-                {/* Headline with Signal Blue accent */}
+                {/* Headline — three distinct lines like the /challenge landing page */}
                 <h1 style={{
                   fontSize: 'clamp(38px, 7vw, 56px)', fontWeight: 900,
                   letterSpacing: '-0.035em', lineHeight: 1.05, margin: '0 0 22px', color: '#1A1A1A',
                 }}>
-                  You&apos;re training. You&apos;re eating clean.
+                  You&apos;re training.
+                  <br />
+                  You&apos;re eating clean.
                   <br />
                   <span style={{ color: '#1B6DFC' }}>The fat won&apos;t move.</span>
                 </h1>
