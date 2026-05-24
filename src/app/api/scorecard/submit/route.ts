@@ -209,18 +209,22 @@ export async function POST(request: NextRequest) {
     body_state === 'Transitioning State' ? '#B7791F' :
     '#1B6DFC' // Ready State
 
-  // Lead quality color
+  // Lead quality color — traffic-light convention so the colour
+  // actually matches the word (green = green, not Signal Blue).
   const qualityColor =
     leadQuality === 'red' ? '#DC2626' :
-    leadQuality === 'yellow' ? '#B7791F' :
-    leadQuality === 'green' ? '#1B6DFC' :
+    leadQuality === 'yellow' ? '#D97706' :
+    leadQuality === 'green' ? '#16A34A' :
     '#999999'
 
   // Notify coach
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    // Score + Body State stat cards (two-column, matching the /challenge stats-grid pattern)
+    // Score + Body State stat cards (two-column, matching the /challenge stats-grid pattern).
+    // Score number colour mirrors the Body State semantic colour
+    // (Depleted = red, Transitioning = amber, Ready = Signal Blue)
+    // so the two cards read as a pair, not two unrelated stats.
     const statsBlock = `
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 16px;">
         <tr>
@@ -229,7 +233,7 @@ export async function POST(request: NextRequest) {
               <tr>
                 <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:14px 18px;border:1px solid #E5E5E5;border-radius:12px;font-family:${EMAIL_FF};">
                   <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#6B6B6B;letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Score</p>
-                  <p style="margin:0;font-size:28px;font-weight:900;color:#1B6DFC;letter-spacing:-0.02em;font-family:${EMAIL_FF};">${score}<span style="font-size:14px;color:#6B6B6B;font-weight:600;letter-spacing:0;"> / 15</span></p>
+                  <p style="margin:0;font-size:28px;font-weight:900;color:${stateColor};letter-spacing:-0.02em;font-family:${EMAIL_FF};">${score}<span style="font-size:14px;color:#6B6B6B;font-weight:600;letter-spacing:0;"> / 15</span></p>
                 </td>
               </tr>
             </table>
@@ -249,9 +253,9 @@ export async function POST(request: NextRequest) {
 
     // Lead quality card (colored by quality, only shown if qualifiers were answered)
     const leadQualityRgba =
-      leadQuality === 'red' ? '239,68,68' :
-      leadQuality === 'yellow' ? '245,158,11' :
-      leadQuality === 'green' ? '27,109,252' :
+      leadQuality === 'red' ? '220,38,38' :
+      leadQuality === 'yellow' ? '217,119,6' :
+      leadQuality === 'green' ? '22,163,74' :
       '107,107,107'
     const leadQualityBlock = leadQuality
       ? `
@@ -259,7 +263,7 @@ export async function POST(request: NextRequest) {
         <tr>
           <td style="padding:16px 20px;border:1px solid rgba(${leadQualityRgba},0.25);border-left:3px solid ${qualityColor};border-radius:12px;font-family:${EMAIL_FF};">
             <p style="margin:0 0 6px;font-size:10px;font-weight:700;color:${qualityColor};letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Lead Quality</p>
-            <p style="margin:0 0 8px;font-size:18px;font-weight:800;color:#1A1A1A;font-family:${EMAIL_FF};letter-spacing:-0.01em;">${leadQuality.toUpperCase()}${redFlag ? ' · Red Flag' : ''}</p>
+            <p style="margin:0 0 8px;font-size:18px;font-weight:800;color:${qualityColor};font-family:${EMAIL_FF};letter-spacing:-0.01em;">${leadQuality.toUpperCase()}${redFlag ? ' · Red Flag' : ''}</p>
             <p style="margin:0;font-size:13px;color:#4A4A4A;line-height:1.6;font-family:${EMAIL_FF};">Approach: <strong style="color:#1A1A1A;">${approach_response}</strong> · Investment: <strong style="color:#1A1A1A;">${investment_readiness}</strong></p>
           </td>
         </tr>
