@@ -134,14 +134,21 @@ function ReportUpsell({ firstName, email, score, bodyState, scores }: {
   }
 
   return (
-    <div style={{ background: '#B5CFFC', border: '1px solid rgba(27,109,252,0.3)', borderRadius: '14px', padding: '28px 28px 24px' }}>
-      <p style={{ fontSize: '13px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>
+    <div style={{
+      background: '#FFFFFF',
+      border: '1px solid #E5E5E5',
+      borderLeft: '3px solid #1B6DFC',
+      borderRadius: '14px',
+      padding: '28px 28px 24px',
+      boxShadow: '0 1px 4px rgba(27, 109, 252, 0.06)',
+    }}>
+      <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.12em', textTransform: 'uppercase' as const, marginBottom: '10px' }}>
         Body Decode Report · $37
       </p>
-      <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>
+      <p style={{ fontSize: '20px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.25 }}>
         Get the full breakdown of what this means for you.
       </p>
-      <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '24px' }}>
+      <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '24px' }}>
         A written report covering your exact body state, what is specifically working against you right now, and what to stop and start doing. Delivered to your inbox instantly.
       </p>
       {error && <p style={{ fontSize: '13px', color: '#DC2626', marginBottom: '12px' }}>{error}</p>}
@@ -151,9 +158,10 @@ function ReportUpsell({ firstName, email, score, bodyState, scores }: {
         style={{
           display: 'block', width: '100%', padding: '16px', borderRadius: '10px',
           background: '#1B6DFC', color: '#FFFFFF',
-          fontSize: '15px', fontWeight: 700, textAlign: 'center',
+          fontSize: '15px', fontWeight: 800, textAlign: 'center',
           border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
           opacity: loading ? 0.6 : 1,
+          fontFamily: 'inherit',
         }}
       >
         {loading ? 'Loading...' : 'Get my Body Decode Report — $37'}
@@ -222,26 +230,47 @@ function ScorecardInner() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: 'white', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <img src="/logo-black.png" alt="Body Recode" style={{ height: '64px' }} />
+      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <img src="/logo-black.png" alt="Body Recode" style={{ height: '40px', width: 'auto', display: 'block' }} />
       </div>
 
-      <div style={{ maxWidth: '560px', margin: '0 auto', padding: '40px 24px 80px' }}>
+      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '0 24px 80px', position: 'relative' }}>
 
         {/* ─── SCORING STEP ─── */}
         {step === 'scoring' && (
           <>
-            <div style={{ marginBottom: '40px' }}>
-              <div style={{ width: '32px', height: '3px', background: '#1B6DFC', marginBottom: '20px' }} />
-              <h1 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '12px' }}>
-                The Body State Scorecard
-              </h1>
-              <p style={{ fontSize: '15px', color: '#6B6B6B', lineHeight: 1.6 }}>
-                You're putting in the effort. Something is working against you. This tells you what.
-              </p>
+            {/* Hero with Signal Blue radial glows — matches /challenge */}
+            <div style={{ position: 'relative', overflow: 'hidden', margin: '0 -24px 24px', padding: '0 24px' }}>
+              <div style={{
+                position: 'absolute', top: '-140px', right: '-140px',
+                width: '480px', height: '480px', borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(27, 109, 252, 0.12) 0%, transparent 65%)',
+                pointerEvents: 'none',
+              }} />
+              <div style={{
+                position: 'absolute', bottom: '0', left: '-100px',
+                width: '320px', height: '320px', borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(27, 109, 252, 0.06) 0%, transparent 70%)',
+                pointerEvents: 'none',
+              }} />
+              <div style={{ position: 'relative', padding: '56px 0 32px' }}>
+                <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
+                  Body State Scorecard
+                </p>
+                <h1 style={{
+                  fontSize: 'clamp(34px, 6vw, 44px)', fontWeight: 900,
+                  letterSpacing: '-0.03em', lineHeight: 1.05, margin: '0 0 18px', color: '#1A1A1A',
+                }}>
+                  Which state is your body in?
+                </h1>
+                <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
+                <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+                  You&apos;re putting in the effort. Something is working against you. This tells you what.
+                </p>
+              </div>
             </div>
 
             {/* Progress */}
@@ -261,40 +290,48 @@ function ScorecardInner() {
                 <div key={section.number}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px' }}>
                     <span style={{ fontSize: '10px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{section.number}</span>
-                    <h2 style={{ fontSize: '16px', fontWeight: 700, color: scores[section.number] ? '#ffffff' : '#3A3A3A' }}>{section.title}</h2>
+                    <h2 style={{ fontSize: '18px', fontWeight: 800, letterSpacing: '-0.01em', color: '#1A1A1A', margin: 0 }}>{section.title}</h2>
                     {scores[section.number] && (
-                      <span style={{ marginLeft: 'auto', fontSize: '11px', fontWeight: 700, color: '#1B6DFC' }}>
-                        {scores[section.number] === 1 ? '1' : scores[section.number] === 2 ? '2' : '3'} / 3
+                      <span style={{ marginLeft: 'auto', fontSize: '11px', fontWeight: 700, color: '#1056D6' }}>
+                        {scores[section.number]} / 3
                       </span>
                     )}
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {section.rows.map(row => {
                       const selected = scores[section.number] === row.score
-                      const scoreColor = row.score === 1 ? '#DC2626' : row.score === 2 ? '#B7791F' : '#1B6DFC'
+                      // Score 1 = red (Depleted-ish), 2 = amber (Transitioning), 3 = Signal Blue (Ready)
+                      const scoreColor = row.score === 1 ? '#DC2626' : row.score === 2 ? '#B7791F' : '#1056D6'
+                      const accentRgba = row.score === 1 ? '239,68,68' : row.score === 2 ? '245,158,11' : '27,109,252'
                       return (
                         <button
                           key={row.score}
                           onClick={() => selectScore(section.number, row.score)}
                           style={{
                             display: 'flex', alignItems: 'flex-start', gap: '14px',
-                            background: selected ? `rgba(${row.score === 1 ? '239,68,68' : row.score === 2 ? '245,158,11' : '20,184,166'},0.08)` : '#FFFFFF',
+                            background: selected ? `rgba(${accentRgba},0.10)` : '#FFFFFF',
                             border: `1.5px solid ${selected ? scoreColor : '#E5E5E5'}`,
                             borderRadius: '12px', padding: '14px 16px',
                             cursor: 'pointer', textAlign: 'left', width: '100%',
                             transition: 'all 0.15s ease',
+                            fontFamily: 'inherit',
                           }}
                         >
                           <div style={{
-                            width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
-                            background: selected ? `rgba(${row.score === 1 ? '239,68,68' : row.score === 2 ? '245,158,11' : '20,184,166'},0.15)` : '#E5E5E5',
-                            border: `1.5px solid ${selected ? scoreColor : '#2c2826'}`,
+                            width: '28px', height: '28px', borderRadius: '50%', flexShrink: 0,
+                            background: selected ? `rgba(${accentRgba},0.18)` : '#F5F5F5',
+                            border: `1.5px solid ${selected ? scoreColor : '#D4D4D4'}`,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '11px', fontWeight: 700, color: selected ? scoreColor : '#999999',
+                            fontSize: '12px', fontWeight: 800, color: selected ? scoreColor : '#6B6B6B',
                           }}>
                             {row.score}
                           </div>
-                          <p style={{ fontSize: '14px', color: selected ? '#ffffff' : '#6B6B6B', lineHeight: 1.55, flex: 1 }}>
+                          <p style={{
+                            fontSize: '14px',
+                            color: selected ? scoreColor : '#3A3A3A',
+                            fontWeight: selected ? 600 : 500,
+                            lineHeight: 1.6, flex: 1, margin: 0,
+                          }}>
                             {row.desc}
                           </p>
                         </button>
@@ -325,19 +362,22 @@ function ScorecardInner() {
         {/* ─── EMAIL STEP ─── */}
         {step === 'email' && (
           <>
-            <div style={{ marginBottom: '32px' }}>
-              <div style={{ width: '32px', height: '3px', background: '#1B6DFC', marginBottom: '20px' }} />
-              <h2 style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '12px' }}>
+            <div style={{ marginBottom: '32px', padding: '40px 0 0' }}>
+              <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
+                Almost there
+              </p>
+              <h2 style={{ fontSize: 'clamp(28px, 5vw, 34px)', fontWeight: 900, letterSpacing: '-0.025em', lineHeight: 1.1, color: '#1A1A1A', margin: '0 0 16px' }}>
                 Where should we send your result?
               </h2>
-              <p style={{ fontSize: '15px', color: '#6B6B6B', lineHeight: 1.6 }}>
+              <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '20px' }} />
+              <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
                 Your body state and what it means for your training and fat loss.
               </p>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', color: '#6B6B6B', fontWeight: 500, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                <label style={{ display: 'block', fontSize: '12px', color: '#4A4A4A', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   First name
                 </label>
                 <input
@@ -347,14 +387,14 @@ function ScorecardInner() {
                   placeholder="Kade"
                   style={{
                     width: '100%', padding: '14px 16px', background: '#FFFFFF',
-                    border: '1.5px solid #E5E5E5', borderRadius: '10px',
-                    color: 'white', fontSize: '15px', outline: 'none',
+                    border: '1.5px solid #D4D4D4', borderRadius: '10px',
+                    color: '#1A1A1A', fontSize: '15px', outline: 'none',
                     fontFamily: 'inherit',
                   }}
                 />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', color: '#6B6B6B', fontWeight: 500, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                <label style={{ display: 'block', fontSize: '12px', color: '#4A4A4A', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   Email
                 </label>
                 <input
@@ -364,8 +404,8 @@ function ScorecardInner() {
                   placeholder="you@email.com"
                   style={{
                     width: '100%', padding: '14px 16px', background: '#FFFFFF',
-                    border: '1.5px solid #E5E5E5', borderRadius: '10px',
-                    color: 'white', fontSize: '15px', outline: 'none',
+                    border: '1.5px solid #D4D4D4', borderRadius: '10px',
+                    color: '#1A1A1A', fontSize: '15px', outline: 'none',
                     fontFamily: 'inherit',
                   }}
                 />
@@ -374,7 +414,7 @@ function ScorecardInner() {
 
             <div style={{ marginBottom: '28px' }}>
               <p style={{ fontSize: '10px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '10px' }}>06</p>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', marginBottom: '14px', lineHeight: 1.4 }}>
+              <h3 style={{ fontSize: '17px', fontWeight: 800, letterSpacing: '-0.01em', color: '#1A1A1A', marginBottom: '14px', lineHeight: 1.35 }}>
                 When your training or nutrition stops producing results, what is your honest first response?
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -386,23 +426,29 @@ function ScorecardInner() {
                       onClick={() => setApproach(opt.value)}
                       style={{
                         display: 'flex', alignItems: 'flex-start', gap: '14px',
-                        background: selected ? 'rgba(27,109,252,0.08)' : '#FFFFFF',
+                        background: selected ? 'rgba(27,109,252,0.10)' : '#FFFFFF',
                         border: `1.5px solid ${selected ? '#1B6DFC' : '#E5E5E5'}`,
                         borderRadius: '12px', padding: '14px 16px',
                         cursor: 'pointer', textAlign: 'left', width: '100%',
                         transition: 'all 0.15s ease',
+                        fontFamily: 'inherit',
                       }}
                     >
                       <div style={{
-                        width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
-                        background: selected ? 'rgba(27,109,252,0.15)' : '#E5E5E5',
-                        border: `1.5px solid ${selected ? '#1B6DFC' : '#2c2826'}`,
+                        width: '28px', height: '28px', borderRadius: '50%', flexShrink: 0,
+                        background: selected ? 'rgba(27,109,252,0.18)' : '#F5F5F5',
+                        border: `1.5px solid ${selected ? '#1B6DFC' : '#D4D4D4'}`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '11px', fontWeight: 700, color: selected ? '#1B6DFC' : '#999999',
+                        fontSize: '12px', fontWeight: 800, color: selected ? '#1056D6' : '#6B6B6B',
                       }}>
                         {opt.value}
                       </div>
-                      <p style={{ fontSize: '14px', color: selected ? '#ffffff' : '#6B6B6B', lineHeight: 1.55, flex: 1 }}>
+                      <p style={{
+                        fontSize: '14px',
+                        color: selected ? '#1056D6' : '#3A3A3A',
+                        fontWeight: selected ? 600 : 500,
+                        lineHeight: 1.55, flex: 1, margin: 0,
+                      }}>
                         {opt.label}
                       </p>
                     </button>
@@ -413,7 +459,7 @@ function ScorecardInner() {
 
             <div style={{ marginBottom: '32px' }}>
               <p style={{ fontSize: '10px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '10px' }}>07</p>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', marginBottom: '14px', lineHeight: 1.4 }}>
+              <h3 style={{ fontSize: '17px', fontWeight: 800, letterSpacing: '-0.01em', color: '#1A1A1A', marginBottom: '14px', lineHeight: 1.35 }}>
                 If the scorecard identifies what is blocking your progress, are you in a position to invest in addressing it?
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -425,23 +471,29 @@ function ScorecardInner() {
                       onClick={() => setInvestment(opt.value)}
                       style={{
                         display: 'flex', alignItems: 'flex-start', gap: '14px',
-                        background: selected ? 'rgba(27,109,252,0.08)' : '#FFFFFF',
+                        background: selected ? 'rgba(27,109,252,0.10)' : '#FFFFFF',
                         border: `1.5px solid ${selected ? '#1B6DFC' : '#E5E5E5'}`,
                         borderRadius: '12px', padding: '14px 16px',
                         cursor: 'pointer', textAlign: 'left', width: '100%',
                         transition: 'all 0.15s ease',
+                        fontFamily: 'inherit',
                       }}
                     >
                       <div style={{
-                        width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
-                        background: selected ? 'rgba(27,109,252,0.15)' : '#E5E5E5',
-                        border: `1.5px solid ${selected ? '#1B6DFC' : '#2c2826'}`,
+                        width: '28px', height: '28px', borderRadius: '50%', flexShrink: 0,
+                        background: selected ? 'rgba(27,109,252,0.18)' : '#F5F5F5',
+                        border: `1.5px solid ${selected ? '#1B6DFC' : '#D4D4D4'}`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '11px', fontWeight: 700, color: selected ? '#1B6DFC' : '#999999',
+                        fontSize: '12px', fontWeight: 800, color: selected ? '#1056D6' : '#6B6B6B',
                       }}>
                         {opt.value}
                       </div>
-                      <p style={{ fontSize: '14px', color: selected ? '#ffffff' : '#6B6B6B', lineHeight: 1.55, flex: 1 }}>
+                      <p style={{
+                        fontSize: '14px',
+                        color: selected ? '#1056D6' : '#3A3A3A',
+                        fontWeight: selected ? 600 : 500,
+                        lineHeight: 1.55, flex: 1, margin: 0,
+                      }}>
                         {opt.label}
                       </p>
                     </button>
@@ -484,14 +536,14 @@ function ScorecardInner() {
         {/* ─── RESULT STEP ─── */}
         {step === 'result' && (
           <>
-            <div style={{ marginBottom: '32px' }}>
-              <div style={{ width: '32px', height: '3px', background: result.color, marginBottom: '20px' }} />
+            <div style={{ marginBottom: '32px', padding: '40px 0 0' }}>
+              <div style={{ width: '48px', height: '3px', background: result.color, borderRadius: '2px', marginBottom: '20px' }} />
               <p style={{ fontSize: '13px', color: '#6B6B6B', marginBottom: '8px' }}>
                 {firstName}, your score is
               </p>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '20px' }}>
                 <span style={{ fontSize: '64px', fontWeight: 900, color: result.color, letterSpacing: '-0.04em', lineHeight: 1 }}>{total}</span>
-                <span style={{ fontSize: '20px', color: '#999999', fontWeight: 600 }}>/ 15</span>
+                <span style={{ fontSize: '20px', color: '#6B6B6B', fontWeight: 600 }}>/ 15</span>
               </div>
               <div style={{
                 display: 'inline-block', padding: '6px 16px', borderRadius: '99px',
@@ -500,27 +552,28 @@ function ScorecardInner() {
               }}>
                 {result.label}
               </div>
-              <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.7 }}>{result.desc}</p>
+              <p style={{ fontSize: '16px', color: '#3A3A3A', lineHeight: 1.7 }}>{result.desc}</p>
             </div>
 
             {/* Score breakdown */}
             <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '20px 24px', marginBottom: '32px' }}>
-              <p style={{ fontSize: '11px', fontWeight: 700, color: '#999999', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>Your scores</p>
+              <p style={{ fontSize: '11px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.12em', textTransform: 'uppercase' as const, marginBottom: '16px' }}>Your scores</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {SECTIONS.map(section => {
                   const s = scores[section.number]
-                  const c = s === 1 ? '#DC2626' : s === 2 ? '#B7791F' : '#1B6DFC'
+                  const c = s === 1 ? '#DC2626' : s === 2 ? '#B7791F' : '#1056D6'
+                  const accentRgba = s === 1 ? '239,68,68' : s === 2 ? '245,158,11' : '27,109,252'
                   return (
                     <div key={section.number} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '14px', color: '#6B6B6B' }}>{section.title}</span>
+                      <span style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: 600 }}>{section.title}</span>
                       <div style={{ display: 'flex', gap: '6px' }}>
                         {[1, 2, 3].map(n => (
                           <div key={n} style={{
-                            width: '24px', height: '24px', borderRadius: '50%',
-                            background: n === s ? `rgba(${s === 1 ? '239,68,68' : s === 2 ? '245,158,11' : '20,184,166'},0.15)` : '#E5E5E5',
-                            border: `1.5px solid ${n === s ? c : '#2c2826'}`,
+                            width: '26px', height: '26px', borderRadius: '50%',
+                            background: n === s ? `rgba(${accentRgba},0.18)` : '#F5F5F5',
+                            border: `1.5px solid ${n === s ? c : '#D4D4D4'}`,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '10px', fontWeight: 700, color: n === s ? c : '#999999',
+                            fontSize: '11px', fontWeight: 800, color: n === s ? c : '#6B6B6B',
                           }}>
                             {n}
                           </div>
@@ -544,19 +597,27 @@ function ScorecardInner() {
               />
 
               {/* Secondary: Book a call */}
-              <div style={{ background: '#B5CFFC', border: '1px solid rgba(27,109,252,0.15)', borderRadius: '14px', padding: '24px 28px' }}>
-                <p style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.3 }}>
+              <div style={{
+                background: '#F7F7F7',
+                border: '1px solid #E5E5E5',
+                borderRadius: '14px',
+                padding: '24px 28px',
+              }}>
+                <p style={{ fontSize: '11px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 8px' }}>
+                  Or talk it through
+                </p>
+                <p style={{ fontSize: '17px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.25 }}>
                   Want to talk through your result?
                 </p>
-                <p style={{ fontSize: '13px', color: '#99d6d0', lineHeight: 1.6, marginBottom: '20px' }}>
+                <p style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.65, marginBottom: '20px' }}>
                   Free 30-minute call. We go through exactly what is driving your situation and map out what needs to change first. No pitch.
                 </p>
                 <a
                   href="https://bodyrecode.au/book"
                   style={{
                     display: 'block', width: '100%', padding: '14px', borderRadius: '10px',
-                    background: 'transparent', color: '#1B6DFC',
-                    fontSize: '14px', fontWeight: 700, textAlign: 'center',
+                    background: '#FFFFFF', color: '#1056D6',
+                    fontSize: '14px', fontWeight: 800, textAlign: 'center',
                     textDecoration: 'none', border: '1.5px solid rgba(27,109,252,0.4)',
                   }}
                 >
