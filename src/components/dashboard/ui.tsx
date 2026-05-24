@@ -61,19 +61,29 @@ export function PageHeader({
       <div className="relative flex items-start justify-between gap-6 flex-wrap">
         <div className="min-w-0">
           {eyebrow && (
-            <div
-              className="inline-flex items-center gap-2 text-[10px] text-[#6B6B6B] uppercase mb-5 px-2.5 py-1 rounded-full border border-[#E5E5E5] bg-[#F8F8F8]"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}
+            <p
+              className="text-[11px] font-bold uppercase mb-5"
+              style={{
+                fontFamily: MONO_FONT,
+                letterSpacing: '0.12em',
+                color: a.text,
+              }}
             >
-              <span className="w-1 h-1 rounded-full" style={{ background: a.bar }} />
               {eyebrow}
-            </div>
+            </p>
           )}
-          <h1 className="text-[34px] font-extrabold text-[#1A1A1A] tracking-tight leading-[1.1] mb-2">
+          <h1
+            className="text-[40px] font-extrabold text-[#1A1A1A] leading-[1.15] mb-5"
+            style={{ letterSpacing: '-0.025em' }}
+          >
             {title}
           </h1>
+          <div
+            className="w-12 h-[3px] rounded-full mb-5"
+            style={{ background: a.bar }}
+          />
           {subtitle && (
-            <div className="text-[15px] text-[#6B6B6B] max-w-xl">{subtitle}</div>
+            <div className="text-[15px] text-[#4A4A4A] max-w-xl leading-relaxed">{subtitle}</div>
           )}
         </div>
         {cta && <div className="shrink-0">{cta}</div>}
@@ -90,19 +100,30 @@ export function Card({
   className = '',
   padding = 'lg',
   hover = false,
+  accent,
+  tint = false,
 }: {
   children: ReactNode
   className?: string
   padding?: 'none' | 'sm' | 'md' | 'lg'
   hover?: boolean
+  /** Adds a 3px Signal Blue (or accent-coloured) left stripe to flag a priority card. Mirrors emailFeaturedCard from the email design system. */
+  accent?: Accent
+  /** Soft blue-tinted background (#F3F7FF) for inset hierarchy surfaces. */
+  tint?: boolean
 }) {
   const pad =
     padding === 'none' ? '' :
     padding === 'sm' ? 'p-4' :
     padding === 'md' ? 'p-5' : 'p-6'
+  const a = accent ? ACCENT[accent] : null
+  const bg = tint ? '#F3F7FF' : '#FFFFFF'
+  const style: React.CSSProperties = { background: bg }
+  if (a) style.borderLeft = `3px solid ${a.bar}`
   return (
     <div
-      className={`bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl ${pad} ${
+      style={style}
+      className={`border border-[#E5E5E5] rounded-2xl ${pad} ${
         hover ? 'transition-colors hover:border-[#D4D4D4]' : ''
       } ${className}`}
     >
@@ -197,7 +218,7 @@ export function StatCard({
 }) {
   const a = ACCENT[accent]
   const Inner = (
-    <div className="relative bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 overflow-hidden h-full transition-colors hover:border-[#D4D4D4]">
+    <div className="relative bg-[#FAFBFD] border border-[#E5E5E5] rounded-2xl p-5 overflow-hidden h-full transition-colors hover:border-[#D4D4D4] hover:bg-[#F3F7FF]">
       <div
         className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
         style={{ background: a.bar }}
@@ -251,7 +272,7 @@ export function DataRow({
           {primary}
         </p>
         {secondary && (
-          <p className="text-[12px] text-[#999999] truncate">{secondary}</p>
+          <p className="text-[12px] text-[#6B6B6B] truncate">{secondary}</p>
         )}
       </div>
       {trailing && <div className="shrink-0">{trailing}</div>}

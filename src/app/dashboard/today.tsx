@@ -286,7 +286,7 @@ export default async function TodayWidget() {
   ).length
 
   return (
-    <Card padding="md" className="mb-6">
+    <Card padding="md" className="mb-6" accent="blue">
       {/* Header strip */}
       <div className="flex items-center justify-between mb-4 px-1 flex-wrap gap-3">
         <div className="flex items-center gap-2.5">

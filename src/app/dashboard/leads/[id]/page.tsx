@@ -336,7 +336,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Body Decode Report */}
       {scorecardScore && scorecardState && (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-6 mb-4">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2.5"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Body Decode Report</h2></div>
             {scorecardReport?.token && (
@@ -387,30 +387,40 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           )}
 
           {STATE_GUIDANCE[scorecardState] && (
-            <div className="space-y-3">
-              <p className="text-sm text-[#6B6B6B] leading-relaxed border-t border-[#E5E5E5] pt-4">{STATE_GUIDANCE[scorecardState].primaryFocus}</p>
+            <div className="space-y-4">
+              <p className="text-sm text-[#4A4A4A] leading-relaxed border-t border-[#E5E5E5] pt-4">{STATE_GUIDANCE[scorecardState].primaryFocus}</p>
               <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg p-3 bg-red-50 border border-red-200">
-                  <p className="text-xs font-bold text-red-700 uppercase tracking-wider mb-2">Stop doing</p>
-                  <ul className="space-y-1.5">
+                <div className="rounded-lg p-4 bg-red-50 border border-red-200">
+                  <p className="text-[11px] font-bold text-red-700 uppercase tracking-[0.12em] mb-3">Stop doing</p>
+                  <ol className="space-y-2.5">
                     {STATE_GUIDANCE[scorecardState].stopDoing.map((item, i) => (
-                      <li key={i} className="flex gap-2 items-start">
-                        <span className="text-red-700 mt-0.5 shrink-0">·</span>
+                      <li key={i} className="flex gap-3 items-start">
+                        <span
+                          className="text-[11px] font-bold text-red-700 tabular-nums shrink-0 pt-px"
+                          style={{ fontFamily: MONO_FONT, letterSpacing: '0.02em' }}
+                        >
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
                         <span className="text-xs text-[#3A3A3A] leading-relaxed">{item}</span>
                       </li>
                     ))}
-                  </ul>
+                  </ol>
                 </div>
-                <div className="rounded-lg p-3 bg-blue-50 border border-blue-200">
-                  <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">Start doing</p>
-                  <ul className="space-y-1.5">
+                <div className="rounded-lg p-4 bg-blue-50 border border-blue-200">
+                  <p className="text-[11px] font-bold text-blue-700 uppercase tracking-[0.12em] mb-3">Start doing</p>
+                  <ol className="space-y-2.5">
                     {STATE_GUIDANCE[scorecardState].startDoing.map((item, i) => (
-                      <li key={i} className="flex gap-2 items-start">
-                        <span className="text-blue-700 mt-0.5 shrink-0">·</span>
+                      <li key={i} className="flex gap-3 items-start">
+                        <span
+                          className="text-[11px] font-bold text-blue-700 tabular-nums shrink-0 pt-px"
+                          style={{ fontFamily: MONO_FONT, letterSpacing: '0.02em' }}
+                        >
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
                         <span className="text-xs text-[#3A3A3A] leading-relaxed">{item}</span>
                       </li>
                     ))}
-                  </ul>
+                  </ol>
                 </div>
               </div>
             </div>
