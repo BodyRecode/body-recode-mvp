@@ -48,8 +48,9 @@ export async function POST(request: NextRequest) {
     console.error('[scorecard/submit] Failed to parse JSON body:', e)
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400, headers: CORS })
   }
-  const { first_name, email, score, body_state, source, section_scores, approach_response, investment_readiness } = body as {
+  const { first_name, last_name, email, score, body_state, source, section_scores, approach_response, investment_readiness } = body as {
     first_name: string
+    last_name?: string
     email: string
     score: number
     body_state: string
@@ -58,7 +59,14 @@ export async function POST(request: NextRequest) {
     approach_response?: 'A' | 'B' | 'C' | 'D'
     investment_readiness?: 'A' | 'B' | 'C' | 'D'
   }
-  console.log('[scorecard/submit] Received:', { first_name, email, score, body_state, source, approach_response, investment_readiness })
+  console.log('[scorecard/submit] Received:', { first_name, last_name, email, score, body_state, source, approach_response, investment_readiness })
+
+  // Compose full name for leads.name. Surname optional on legacy callers
+  // (existing scorecard variants and any external clients still posting
+  // just first_name keep working — they get name = first_name only).
+  const fullName = last_name?.trim()
+    ? `${first_name.trim()} ${last_name.trim()}`
+    : first_name.trim()
 
   // Compute lead quality from qualifier answers.
   // Behaviour red flag: approach C/D (push harder / get frustrated).
@@ -116,7 +124,7 @@ export async function POST(request: NextRequest) {
     const { data: newLead, error: leadError } = await supabase
       .from('leads')
       .insert({
-        name: first_name.trim(),
+        name: fullName,
         email: email.toLowerCase().trim(),
         source: dbSource,
         source_detail: dbSourceDetail,

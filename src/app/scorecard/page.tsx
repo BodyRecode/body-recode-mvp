@@ -177,6 +177,7 @@ function ScorecardInner() {
   const [scores, setScores] = useState<Record<string, number>>({})
   const [step, setStep] = useState<Step>('scoring')
   const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [approach, setApproach] = useState<QualifierAnswer | null>(null)
   const [investment, setInvestment] = useState<QualifierAnswer | null>(null)
@@ -196,7 +197,7 @@ function ScorecardInner() {
     setScores(s => ({ ...s, [sectionNumber]: score }))
   }
 
-  const canSubmit = !!firstName.trim() && !!email.trim() && !!approach && !!investment
+  const canSubmit = !!firstName.trim() && !!lastName.trim() && !!email.trim() && !!approach && !!investment
 
   async function submitEmail() {
     if (!canSubmit) return
@@ -208,6 +209,7 @@ function ScorecardInner() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           first_name: firstName,
+          last_name: lastName,
           email,
           score: total,
           body_state: result.label,
@@ -438,22 +440,41 @@ function ScorecardInner() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', color: '#4A4A4A', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  First name
-                </label>
-                <input
-                  type="text"
-                  value={firstName}
-                  onChange={e => setFirstName(e.target.value)}
-                  placeholder="Kade"
-                  style={{
-                    width: '100%', padding: '14px 16px', background: '#FFFFFF',
-                    border: '1.5px solid #D4D4D4', borderRadius: '10px',
-                    color: '#1A1A1A', fontSize: '15px', outline: 'none',
-                    fontFamily: 'inherit',
-                  }}
-                />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#4A4A4A', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    First name
+                  </label>
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={e => setFirstName(e.target.value)}
+                    placeholder="Kade"
+                    style={{
+                      width: '100%', padding: '14px 16px', background: '#FFFFFF',
+                      border: '1.5px solid #D4D4D4', borderRadius: '10px',
+                      color: '#1A1A1A', fontSize: '15px', outline: 'none',
+                      fontFamily: 'inherit', boxSizing: 'border-box',
+                    }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#4A4A4A', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    Last name
+                  </label>
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={e => setLastName(e.target.value)}
+                    placeholder="Dunstone"
+                    style={{
+                      width: '100%', padding: '14px 16px', background: '#FFFFFF',
+                      border: '1.5px solid #D4D4D4', borderRadius: '10px',
+                      color: '#1A1A1A', fontSize: '15px', outline: 'none',
+                      fontFamily: 'inherit', boxSizing: 'border-box',
+                    }}
+                  />
+                </div>
               </div>
               <div>
                 <label style={{ display: 'block', fontSize: '12px', color: '#4A4A4A', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
@@ -468,7 +489,7 @@ function ScorecardInner() {
                     width: '100%', padding: '14px 16px', background: '#FFFFFF',
                     border: '1.5px solid #D4D4D4', borderRadius: '10px',
                     color: '#1A1A1A', fontSize: '15px', outline: 'none',
-                    fontFamily: 'inherit',
+                    fontFamily: 'inherit', boxSizing: 'border-box',
                   }}
                 />
               </div>
