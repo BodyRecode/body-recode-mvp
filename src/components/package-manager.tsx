@@ -247,7 +247,7 @@ export default function PackageManager({
                 value={scheduleDate || todayStr}
                 min={todayStr}
                 onChange={e => setScheduleDate(e.target.value)}
-                className="text-xs bg-[#E5E5E5] border border-[#E5E5E5] text-[#e7e5e4] rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-500/50"
+                className="text-xs bg-[#E5E5E5] border border-[#E5E5E5] text-[#1A1A1A] rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-500/50"
               />
               <button
                 onClick={scheduleLink}

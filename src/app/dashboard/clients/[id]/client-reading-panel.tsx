@@ -332,7 +332,7 @@ function CoachGuidance({ cffsId, initial }: { cffsId: string; initial: string | 
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Sam mentioned in our intake call that she is sensitive about historic restrictive eating. Frame nutrition section as supportive, never targeted."
             rows={4}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[13px] text-[#e7e5e4] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[13px] text-[#1A1A1A] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>
@@ -454,7 +454,7 @@ function EditableSection({
             value={draft}
             onChange={e => setDraft(e.target.value)}
             rows={Math.max(4, draft.split('\n').length + 1)}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[14px] text-[#e7e5e4] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[14px] text-[#1A1A1A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
           />
           {error && <p className="mt-2 text-[11px] text-[#8A5A14]">{error}</p>}
           <div className="flex items-center justify-end gap-2 mt-2">
@@ -476,7 +476,7 @@ function EditableSection({
           </div>
         </>
       ) : (
-        <p className="text-[14px] text-[#e7e5e4] leading-relaxed whitespace-pre-line">
+        <p className="text-[14px] text-[#1A1A1A] leading-relaxed whitespace-pre-line">
           {value || '(empty)'}
         </p>
       )}

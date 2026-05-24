@@ -696,7 +696,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 <p className="text-lg font-bold text-[#1A1A1A] leading-tight mb-2">{activeCffs.body_state_classification}</p>
                 <div className="flex items-center gap-2">
                   <div className="w-1 h-3.5 bg-[#1B6DFC]" />
-                  <p className="text-xs text-[#6B6B6B]">Resolution: <span className="text-[#e7e5e4] font-semibold">{activeCffs.resolution_state}</span></p>
+                  <p className="text-xs text-[#6B6B6B]">Resolution: <span className="text-[#1A1A1A] font-semibold">{activeCffs.resolution_state}</span></p>
                 </div>
               </div>
               <div>
@@ -815,7 +815,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                           className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
                           style={{ background: d.severity === 'high' ? '#DC2626' : '#6B6B6B' }}
                         />
-                        <span className={d.severity === 'high' ? 'text-[#e7e5e4]' : 'text-[#6B6B6B]'}>{d.message}</span>
+                        <span className={d.severity === 'high' ? 'text-[#1A1A1A]' : 'text-[#6B6B6B]'}>{d.message}</span>
                       </li>
                     ))}
                   </ul>
@@ -840,7 +840,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     <ul className="space-y-1">
                       {creep.findings.slice(0, 6).map((f, i) => (
                         <li key={i} className="flex items-center justify-between gap-3 text-[12px]">
-                          <span className={f.severe ? 'text-[#e7e5e4]' : 'text-[#6B6B6B]'}>{f.exerciseName}</span>
+                          <span className={f.severe ? 'text-[#1A1A1A]' : 'text-[#6B6B6B]'}>{f.exerciseName}</span>
                           <span className="shrink-0 tabular-nums" style={{ fontFamily: MONO_FONT }}>
                             <span className="text-[#999999]">RPE</span>{' '}
                             <span className="text-[#999999]">{f.prescribedRpe}</span>
@@ -873,7 +873,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <ul className="space-y-2">
                     {readinessReport.reassessmentReasons.map((r, i) => (
                       <li key={i} className="text-[13px]">
-                        <p className="text-[#e7e5e4]">{r.message}</p>
+                        <p className="text-[#1A1A1A]">{r.message}</p>
                         <p className="text-[11px] text-[#999999] mt-0.5" style={{ fontFamily: MONO_FONT }}>
                           Recommended depth: <span className="text-[#6B6B6B]">{r.recommendedDepth}</span>
                         </p>
@@ -926,7 +926,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {/* What is a CFFS */}
           <div className="border-l-2 border-[#1B6DFC] bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-2xl p-5 mb-4">
             <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">About This Report</p>
-            <p className="text-sm font-semibold text-[#e7e5e4] leading-relaxed mb-3">
+            <p className="text-sm font-semibold text-[#1A1A1A] leading-relaxed mb-3">
               This is not a summary. It is a structured interpretation of how this client&apos;s system is currently organising itself.
             </p>
             <p className="text-sm text-[#999999] leading-relaxed">
@@ -956,7 +956,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 </span>
               </div>
               <div className="px-5 py-4">
-                <p className="text-sm text-[#e7e5e4] leading-relaxed">{activeCffs.visual_signal_summary}</p>
+                <p className="text-sm text-[#1A1A1A] leading-relaxed">{activeCffs.visual_signal_summary}</p>
               </div>
             </div>
           )}
@@ -970,7 +970,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">{section.label}</p>
                 </div>
                 <div className="px-5 py-4">
-                  <p className="text-sm text-[#e7e5e4] leading-relaxed">{section.content}</p>
+                  <p className="text-sm text-[#1A1A1A] leading-relaxed">{section.content}</p>
                 </div>
               </div>
             ))}
@@ -1141,7 +1141,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             {/* About block */}
             <div className="border-l-2 border-[#1B6DFC] bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-2xl p-5 mb-4">
               <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">About This Report</p>
-              <p className="text-sm font-semibold text-[#e7e5e4] leading-relaxed mb-3">
+              <p className="text-sm font-semibold text-[#1A1A1A] leading-relaxed mb-3">
                 This is not a summary. It is a structured interpretation of how this client&apos;s system is behaving this week.
               </p>
               <p className="text-sm text-[#999999] leading-relaxed">
@@ -1166,7 +1166,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">{section.label}</p>
                   </div>
                   <div className="px-5 py-4">
-                    <p className="text-sm text-[#e7e5e4] leading-relaxed">{section.content}</p>
+                    <p className="text-sm text-[#1A1A1A] leading-relaxed">{section.content}</p>
                   </div>
                 </div>
               ))}
@@ -1266,7 +1266,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               className="block bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 hover:border-[#D4D4D4] transition-colors"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#e7e5e4]">{draftProgram.block_name}</p>
+                <p className="text-sm font-semibold text-[#1A1A1A]">{draftProgram.block_name}</p>
                 <div className="flex gap-1.5">
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">Draft</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{draftProgram.progression_phase}</span>
@@ -1287,7 +1287,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               className="block bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 hover:border-[#D4D4D4] transition-colors"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#e7e5e4]">{activeProgram.block_name}</p>
+                <p className="text-sm font-semibold text-[#1A1A1A]">{activeProgram.block_name}</p>
                 <div className="flex gap-1.5">
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">
                     {activeProgram.progression_phase}
@@ -1335,7 +1335,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               className="block bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 hover:border-[#D4D4D4] transition-colors"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#e7e5e4]">{draftNutritionPlan.plan_name}</p>
+                <p className="text-sm font-semibold text-[#1A1A1A]">{draftNutritionPlan.plan_name}</p>
                 <div className="flex gap-1.5">
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">Draft</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{draftNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
@@ -1354,7 +1354,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               className="block bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 hover:border-[#D4D4D4] transition-colors"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#e7e5e4]">{activeNutritionPlan.plan_name}</p>
+                <p className="text-sm font-semibold text-[#1A1A1A]">{activeNutritionPlan.plan_name}</p>
                 <div className="flex gap-1.5">
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{activeNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{activeNutritionPlan.carb_demand_level} carbs</span>

@@ -89,7 +89,7 @@ function ContactCard({ clientId, email, phone }: { clientId: string; email: stri
             type="email"
             value={emailValue}
             onChange={e => setEmailValue(e.target.value)}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#e7e5e4] focus:outline-none focus:border-[#D4D4D4]"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#1A1A1A] focus:outline-none focus:border-[#D4D4D4]"
           />
           <p className="text-[11px] text-[#999999] mt-1">Changing this also changes the email you sign in with.</p>
         </div>
@@ -100,7 +100,7 @@ function ContactCard({ clientId, email, phone }: { clientId: string; email: stri
             value={phoneValue}
             onChange={e => setPhoneValue(e.target.value)}
             placeholder="+61 ..."
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#e7e5e4] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4]"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4]"
           />
         </div>
         {error && <p className="text-[12px] text-[#8A5A14]">{error}</p>}
@@ -168,7 +168,7 @@ function PauseCard({ clientId, clientName, packageLabel }: { clientId: string; c
           onChange={e => setReason(e.target.value)}
           placeholder="Optional. What is prompting the pause?"
           rows={3}
-          className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[13px] text-[#e7e5e4] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+          className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[13px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
         />
         {error && <p className="text-[12px] text-[#8A5A14]">{error}</p>}
         <button
@@ -228,7 +228,7 @@ function ReferCard({ clientId, clientName }: { clientId: string; clientName: str
           <input
             value={name}
             onChange={e => setName(e.target.value)}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#e7e5e4] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4]"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4]"
           />
         </div>
         <div>
@@ -237,7 +237,7 @@ function ReferCard({ clientId, clientName }: { clientId: string; clientName: str
             type="email"
             value={contactEmail}
             onChange={e => setContactEmail(e.target.value)}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#e7e5e4] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4]"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4]"
           />
         </div>
         <div>
@@ -247,7 +247,7 @@ function ReferCard({ clientId, clientName }: { clientId: string; clientName: str
             onChange={e => setNote(e.target.value)}
             placeholder="Why are they a good fit?"
             rows={3}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[13px] text-[#e7e5e4] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[13px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
           />
         </div>
         {error && <p className="text-[12px] text-[#8A5A14]">{error}</p>}

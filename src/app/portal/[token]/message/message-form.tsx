@@ -44,7 +44,7 @@ export default function MessageForm({ clientId, clientName, portalToken }: { cli
         onChange={e => setBody(e.target.value)}
         placeholder="Write your message..."
         rows={6}
-        className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-3 text-[14px] text-[#e7e5e4] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+        className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-3 text-[14px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
       />
       <p className="text-[11px] text-[#999999] mt-2">{body.length}/5000 characters</p>
 

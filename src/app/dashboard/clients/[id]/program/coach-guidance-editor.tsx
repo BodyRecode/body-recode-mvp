@@ -243,7 +243,7 @@ export default function CoachGuidanceEditor({
                     onChange={e => setCoachNote(e.target.value)}
                     placeholder="One line of context the engine cannot read from CFFS / intake. e.g. 'Came off two weeks of high work stress, now back to normal sleep.'"
                     rows={2}
-                    className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-2.5 py-2 text-[12px] text-[#e7e5e4] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+                    className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-2.5 py-2 text-[12px] text-[#1A1A1A] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
                   />
                 </div>
 
@@ -273,7 +273,7 @@ export default function CoachGuidanceEditor({
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Training-age advanced (10+ years). Target RPE 8 on primaries from week 1. No machine variations where a barbell or dumbbell version exists. Supersets allowed. Bias volume to the top of the range. He can handle and wants intensity."
             rows={6}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[13px] text-[#e7e5e4] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[13px] text-[#1A1A1A] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>

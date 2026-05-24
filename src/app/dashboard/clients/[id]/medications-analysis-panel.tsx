@@ -183,7 +183,7 @@ export default function MedicationsAnalysisPanel({
               analysis.medications.map((med, i) => (
                 <div key={i} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-4 space-y-3">
                   <div>
-                    <p className="text-sm font-semibold text-[#e7e5e4]">{med.name}</p>
+                    <p className="text-sm font-semibold text-[#1A1A1A]">{med.name}</p>
                     <p className="text-xs text-[#6B6B6B] mt-1 leading-relaxed">{med.purpose}</p>
                   </div>
                   <InfluenceRow label="Client influence" body={med.client_influence} />

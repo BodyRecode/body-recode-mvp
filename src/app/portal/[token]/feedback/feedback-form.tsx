@@ -82,7 +82,7 @@ export default function FeedbackForm({
           <Check size={16} className="text-[#1B6DFC]" />
           <p className="text-[14px] font-bold text-[#1B6DFC] uppercase tracking-widest">Thanks</p>
         </div>
-        <p className="text-[14px] text-[#e7e5e4] leading-relaxed mb-4">
+        <p className="text-[14px] text-[#1A1A1A] leading-relaxed mb-4">
           Got it. Kade reads every one of these and uses them to shape what we build next. If your
           note needs a reply you will hear back directly.
         </p>
@@ -131,7 +131,7 @@ export default function FeedbackForm({
                       selected ? 'border-[#1B6DFC] bg-[#1B6DFC]' : 'border-[#999999]'
                     }`}
                   />
-                  <p className={`text-[14px] font-semibold ${selected ? 'text-[#1A1A1A]' : 'text-[#e7e5e4]'}`}>
+                  <p className={`text-[14px] font-semibold ${selected ? 'text-[#1A1A1A]' : 'text-[#1A1A1A]'}`}>
                     {opt.label}
                   </p>
                 </div>
@@ -155,7 +155,7 @@ export default function FeedbackForm({
           placeholder="The more specific the better. What did you do, what did you expect, what actually happened, or what would make this better for you."
           rows={8}
           maxLength={MAX_LEN + 200}
-          className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-4 py-3 text-[14px] text-[#e7e5e4] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+          className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-4 py-3 text-[14px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
         />
         <div className="flex items-center justify-between mt-2">
           <p className="text-[11px] text-[#999999]">

@@ -53,7 +53,7 @@ export default function ProfileSidebar({ clientId }: { clientId: string }) {
         className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
           active === id
             ? 'bg-blue-50 text-blue-500'
-            : 'text-[#999999] hover:text-[#3A3A3A] hover:bg-[#E5E5E5]/50'
+            : 'text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#E5E5E5]/50'
         }`}
       >
         {title}
@@ -62,7 +62,7 @@ export default function ProfileSidebar({ clientId }: { clientId: string }) {
       <Link
         key={id}
         href={`/dashboard/clients/${clientId}#${id}`}
-        className="block w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-[#999999] hover:text-[#3A3A3A] hover:bg-[#E5E5E5]/50 transition-colors"
+        className="block w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#E5E5E5]/50 transition-colors"
       >
         {title}
       </Link>
@@ -82,7 +82,7 @@ export default function ProfileSidebar({ clientId }: { clientId: string }) {
           className={`block w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
             isDirectionPage
               ? 'bg-blue-50 text-blue-500'
-              : 'text-[#999999] hover:text-[#3A3A3A] hover:bg-[#E5E5E5]/50'
+              : 'text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#E5E5E5]/50'
           }`}
         >
           Direction

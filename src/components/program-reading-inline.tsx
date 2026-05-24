@@ -80,7 +80,7 @@ export default function ProgramReadingInline({
         >
           01 · Why this block
         </p>
-        <p className="text-[14px] text-[#e7e5e4] leading-relaxed whitespace-pre-line">
+        <p className="text-[14px] text-[#1A1A1A] leading-relaxed whitespace-pre-line">
           {whyContent}
         </p>
       </div>
@@ -98,7 +98,7 @@ export default function ProgramReadingInline({
                   >
                     {String(i + 2).padStart(2, '0')} · {s.label}
                   </p>
-                  <p className="text-[14px] text-[#e7e5e4] leading-relaxed whitespace-pre-line">
+                  <p className="text-[14px] text-[#1A1A1A] leading-relaxed whitespace-pre-line">
                     {s.content}
                   </p>
                 </div>

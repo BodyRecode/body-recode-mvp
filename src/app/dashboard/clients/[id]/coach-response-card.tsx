@@ -37,7 +37,7 @@ export default function CoachResponseCard({ clientId, feedback, meta }: CoachRes
     <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg overflow-hidden">
       <div className="px-4 py-2.5 border-b border-[#E5E5E5] flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2.5 flex-wrap">
-          <p className="text-xs font-semibold text-[#e7e5e4]">Week {week} · Form {form}</p>
+          <p className="text-xs font-semibold text-[#1A1A1A]">Week {week} · Form {form}</p>
           <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
             {sentLabel}
           </span>

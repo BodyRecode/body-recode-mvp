@@ -59,8 +59,8 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
   return (
     <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 mb-4">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs uppercase tracking-wider text-[#999999]">Communications</p>
-        <span className="text-[10px] text-[#4A4A4A]">{rows.length === 0 ? 'Nothing sent yet' : `Last ${rows.length}`}</span>
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC]">Communications</p>
+        <span className="text-[10px] text-[#6B6B6B]">{rows.length === 0 ? 'Nothing sent yet' : `Last ${rows.length}`}</span>
       </div>
 
       {rows.length === 0 ? (
@@ -83,25 +83,25 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-semibold text-[#e7e5e4]">{kindLabel(row.kind)}</span>
-                    <span className="text-[10px] uppercase tracking-wider text-[#4A4A4A]">
+                    <span className="text-xs font-semibold text-[#1A1A1A]">{kindLabel(row.kind)}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-[#6B6B6B]">
                       {isEmail ? 'Email' : 'SMS'}
                     </span>
                   </div>
                   {row.subject && (
-                    <p className="text-xs text-[#6B6B6B] truncate mt-0.5">{row.subject}</p>
+                    <p className="text-xs text-[#4A4A4A] truncate mt-0.5">{row.subject}</p>
                   )}
-                  <div className="flex items-center gap-2 flex-wrap mt-1 text-[11px] text-[#999999]">
+                  <div className="flex items-center gap-2 flex-wrap mt-1 text-[11px] text-[#6B6B6B]">
                     <span title={fullTimestamp(row.sent_at)}>{formatSentAt(row.sent_at)}</span>
                     {row.to_address && (
                       <>
-                        <span className="text-[#E5E5E5]">·</span>
+                        <span className="text-[#D4D4D4]">·</span>
                         <span className="truncate">to {row.to_address}</span>
                       </>
                     )}
                     {url && (
                       <>
-                        <span className="text-[#E5E5E5]">·</span>
+                        <span className="text-[#D4D4D4]">·</span>
                         <a
                           href={url}
                           target="_blank"
