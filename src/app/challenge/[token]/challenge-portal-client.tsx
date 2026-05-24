@@ -1060,7 +1060,7 @@ export default function ChallengePortalClient({
         {/* Day 14 ascension CTA */}
         {currentDay >= 14 && (
           <div style={{
-            background: 'linear-gradient(135deg, #B5CFFC 0%, #0a2320 100%)',
+            background: 'linear-gradient(135deg, #B5CFFC 0%, #1B6DFC 100%)',
             border: '1px solid rgba(27, 109, 252,0.25)',
             borderRadius: '16px', padding: '28px 24px', marginBottom: '48px',
           }}>

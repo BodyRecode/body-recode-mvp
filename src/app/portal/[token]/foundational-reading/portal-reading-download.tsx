@@ -78,7 +78,7 @@ export default function PortalReadingDownload({
             disabled={downloading}
             className="inline-flex items-center gap-2 transition-colors"
             style={{
-              background: downloading ? '#0d9488' : '#1B6DFC',
+              background: downloading ? '#1056D6' : '#1B6DFC',
               color: '#FFFFFF',
               border: 'none',
               padding: '8px 16px',

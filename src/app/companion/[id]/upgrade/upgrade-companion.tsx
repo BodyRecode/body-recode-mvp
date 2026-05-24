@@ -118,7 +118,7 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
           <Link href={`/dashboard/clients/${clientId}`} className="text-stone-500 hover:text-[#1A1A1A] text-sm transition-colors">
             ← {clientName}
           </Link>
-          <span className="text-stone-300">·</span>
+          <span className="text-stone-700">·</span>
           <span className="text-stone-600 text-sm font-medium">Upgrade Conversation</span>
         </div>
         <div className="flex items-center gap-3">

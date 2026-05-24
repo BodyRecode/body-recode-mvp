@@ -25,7 +25,7 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
         </div>
         <button
           onClick={() => window.print()}
-          className="text-sm bg-black text-[#1A1A1A] px-4 py-2 rounded-lg hover:bg-[#E5E5E5] transition-colors print:hidden"
+          className="text-sm bg-[#1B6DFC] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#5390FF] transition-colors print:hidden"
         >
           Print / Save as PDF
         </button>

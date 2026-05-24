@@ -279,7 +279,7 @@ export default async function RecoveryRegulationPage() {
         <div className="mt-6 space-y-2">
           {Array.from(groupBySection(folder12).entries()).map(([section, files]) => (
             <details key={section} className="border border-[#E5E5E5] rounded-md">
-              <summary className="px-4 py-3 cursor-pointer text-[14px] text-[#1A1A1A] hover:bg-[#0e0e0c]">
+              <summary className="px-4 py-3 cursor-pointer text-[14px] text-[#1A1A1A] hover:bg-[#FFFFFF]">
                 <span className="text-[12px] text-[#1B6DFC] mr-2" style={{ fontFamily: MONO_FONT }}>PCF</span>
                 {section.replace(/^\d+[A-Z]?_/, '').replace(/_/g, ' ')}
                 <span className="text-[12px] text-[#999999] ml-2">({files.length} {files.length === 1 ? 'file' : 'files'})</span>
@@ -301,7 +301,7 @@ export default async function RecoveryRegulationPage() {
 
           {msaRrs.length > 0 && Array.from(groupBySection(msaRrs).entries()).map(([section, files]) => (
             <details key={`msa-${section}`} className="border border-[#E5E5E5] rounded-md">
-              <summary className="px-4 py-3 cursor-pointer text-[14px] text-[#1A1A1A] hover:bg-[#0e0e0c]">
+              <summary className="px-4 py-3 cursor-pointer text-[14px] text-[#1A1A1A] hover:bg-[#FFFFFF]">
                 <span className="text-[12px] text-[#B7791F] mr-2" style={{ fontFamily: MONO_FONT }}>MSA</span>
                 {section.replace(/^\d+[A-Z]?_/, '').replace(/_/g, ' ')}
                 <span className="text-[12px] text-[#999999] ml-2">({files.length} {files.length === 1 ? 'file' : 'files'})</span>

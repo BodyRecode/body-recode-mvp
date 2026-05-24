@@ -83,7 +83,7 @@ export default function PrintTrigger({
             disabled={!pdfHref || downloading}
             className="inline-flex items-center gap-2 transition-colors"
             style={{
-              background: downloading ? '#0d9488' : '#1B6DFC',
+              background: downloading ? '#1056D6' : '#1B6DFC',
               color: '#1A1A1A',
               border: 'none',
               padding: '8px 16px',

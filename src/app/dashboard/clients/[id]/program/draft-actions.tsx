@@ -62,7 +62,7 @@ export default function DraftActions({
         <button
           onClick={handleApprove}
           disabled={promoting || discarding}
-          className="text-xs px-4 py-1.5 bg-[#1B6DFC] text-stone-100 font-semibold rounded-lg hover:bg-[#0dcfb2] transition-colors disabled:opacity-40"
+          className="text-xs px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
         >
           {promoting ? 'Approving…' : 'Approve Program'}
         </button>

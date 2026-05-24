@@ -668,7 +668,7 @@ export default async function SystemAutomationDetailPage({
               <div style={{ flex: 1, background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', overflow: 'hidden', marginBottom: '4px' }}>
 
                 {/* Step header */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 18px', borderBottom: '1px solid #E5E5E5', background: '#0f0e0d' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 18px', borderBottom: '1px solid #E5E5E5', background: '#F8F8F8' }}>
                   <span style={{ fontSize: '12px', fontWeight: 700, color: '#1B6DFC' }}>{step.day}</span>
                   <span style={{ fontSize: '11px', color: '#999999', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Email</span>
                 </div>

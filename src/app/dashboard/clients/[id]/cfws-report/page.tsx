@@ -42,7 +42,7 @@ export default async function CFWSReportPage({ params }: { params: Promise<{ id:
   ]
 
   const readinessColour: Record<string, string> = {
-    Green: '#0d9488',
+    Green: '#1056D6',
     Amber: '#d97706',
     Red: '#dc2626',
     Unknown: '#9ca3af',
@@ -80,7 +80,7 @@ export default async function CFWSReportPage({ params }: { params: Promise<{ id:
 
       <div className="cfws-report">
 
-        <div style={{ background: '#000000', padding: '44px 52px 0' }}>
+        <div style={{ background: '#FFFFFF', padding: '44px 52px 0' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-black.png" alt="Body Recode" style={{ height: 64, width: 'auto', display: 'block', marginBottom: 44 }} />
 

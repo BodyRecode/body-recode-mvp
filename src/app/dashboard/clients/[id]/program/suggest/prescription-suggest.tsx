@@ -442,7 +442,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-2 gap-1.5">
                   {(['accumulation', 'intensification', 'realization', 'restoration'] as const).map(p => (
                     <button key={p} type="button" onClick={() => setForm(prev => ({ ...prev, progression_phase: p }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.progression_phase === p ? 'bg-[#1B6DFC] text-stone-100 border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.progression_phase === p ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
                       {p}
                     </button>
                   ))}
@@ -456,7 +456,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {(['strength', 'hypertrophy', 'capacity'] as const).map(g => (
                     <button key={g} type="button" onClick={() => setForm(prev => ({ ...prev, training_goal: g }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_goal === g ? 'bg-[#1B6DFC] text-stone-100 border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_goal === g ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
                       {g}
                     </button>
                   ))}
@@ -482,7 +482,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {(['beginner', 'intermediate', 'advanced'] as const).map(a => (
                     <button key={a} type="button" onClick={() => setForm(prev => ({ ...prev, training_age: a }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_age === a ? 'bg-[#1B6DFC] text-stone-100 border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_age === a ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
                       {a}
                     </button>
                   ))}
@@ -496,7 +496,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {(['limited', 'developing', 'proficient'] as const).map(c => (
                     <button key={c} type="button" onClick={() => setForm(prev => ({ ...prev, movement_competency: c }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.movement_competency === c ? 'bg-[#1B6DFC] text-stone-100 border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.movement_competency === c ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
                       {c}
                     </button>
                   ))}
@@ -510,7 +510,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {([4, 6, 8] as const).map(w => (
                     <button key={w} type="button" onClick={() => setForm(prev => ({ ...prev, week_duration: w }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors ${form.week_duration === w ? 'bg-[#1B6DFC] text-stone-100 border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors ${form.week_duration === w ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
                       {w} weeks
                     </button>
                   ))}
@@ -541,7 +541,7 @@ export default function PrescriptionSuggest({
             <button
               onClick={handleGenerate}
               disabled={generating}
-              className="w-full py-3 px-4 bg-[#1B6DFC] text-stone-100 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="w-full py-3 px-4 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#5390FF] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {generating ? 'Generating program… this may take 30–60s' : 'Approve & Generate Program'}
             </button>

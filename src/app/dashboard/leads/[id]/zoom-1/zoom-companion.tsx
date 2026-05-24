@@ -381,13 +381,13 @@ export default function ZoomCompanion({
           <div className="flex items-center bg-stone-100 border border-stone-200 rounded-lg p-0.5">
             <button
               onClick={() => setView('live')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#1B6DFC] text-white' : 'text-stone-600 hover:text-white'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'live' ? 'bg-[#1B6DFC] text-white' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
             >
               Live
             </button>
             <button
               onClick={() => setView('postcall')}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#1B6DFC] text-white' : 'text-stone-600 hover:text-white'}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${view === 'postcall' ? 'bg-[#1B6DFC] text-white' : 'text-stone-600 hover:text-[#1A1A1A]'}`}
             >
               Post-Call
             </button>

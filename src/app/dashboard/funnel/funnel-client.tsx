@@ -235,7 +235,7 @@ export default function FunnelClient({
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors whitespace-nowrap ${
-                tab === t.id ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#6B6B6B] hover:text-white'
+                tab === t.id ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
               }`}
             >
               {t.label}

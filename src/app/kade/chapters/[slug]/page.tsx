@@ -37,11 +37,11 @@ export default async function ChapterPage({ params }: Props) {
       <div className="max-w-2xl mx-auto px-5 py-16">
 
         {/* Back link */}
-        <Link href="/kade/chapters" className="text-xs text-stone-500 hover:text-stone-300 transition-colors mb-10 inline-block">← All chapters</Link>
+        <Link href="/kade/chapters" className="text-xs text-stone-500 hover:text-stone-700 transition-colors mb-10 inline-block">← All chapters</Link>
 
         {/* Chapter header */}
         <div className="mb-12 mt-6">
-          <p className="text-[10px] font-bold tracking-[0.2em] text-teal-400 uppercase mb-4">Chapter {chapter.number} · {chapter.partLabel}</p>
+          <p className="text-[10px] font-bold tracking-[0.2em] text-blue-500 uppercase mb-4">Chapter {chapter.number} · {chapter.partLabel}</p>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-3">{chapter.title}</h1>
           {chapter.publishedAt && (
             <p className="text-xs text-stone-600">{new Date(chapter.publishedAt + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
@@ -49,7 +49,7 @@ export default async function ChapterPage({ params }: Props) {
         </div>
 
         {/* Content */}
-        <article className="prose-content space-y-5 text-stone-300 leading-relaxed text-[17px]">
+        <article className="prose-content space-y-5 text-stone-700 leading-relaxed text-[17px]">
           {chapter.content.split('\n\n').map((para, i) => (
             <p key={i}>{para}</p>
           ))}
@@ -60,13 +60,13 @@ export default async function ChapterPage({ params }: Props) {
           {prev ? (
             <Link href={`/kade/chapters/${prev.slug}`} className="flex-1 group">
               <p className="text-[10px] uppercase tracking-widest text-stone-600 mb-1">Previous</p>
-              <p className="text-sm font-semibold text-stone-300 group-hover:text-teal-400 transition-colors">{prev.title}</p>
+              <p className="text-sm font-semibold text-stone-700 group-hover:text-blue-500 transition-colors">{prev.title}</p>
             </Link>
           ) : <div className="flex-1" />}
           {next ? (
             <Link href={`/kade/chapters/${next.slug}`} className="flex-1 text-right group">
               <p className="text-[10px] uppercase tracking-widest text-stone-600 mb-1">Next</p>
-              <p className="text-sm font-semibold text-stone-300 group-hover:text-teal-400 transition-colors">{next.title}</p>
+              <p className="text-sm font-semibold text-stone-700 group-hover:text-blue-500 transition-colors">{next.title}</p>
             </Link>
           ) : <div className="flex-1" />}
         </div>

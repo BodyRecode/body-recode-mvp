@@ -166,7 +166,7 @@ export function RecoveryRouterPanel({
 
       {/* Active state (Phase 3+ — shows in observe-only mode if data accidentally present) */}
       {snapshot.activeState && (
-        <div className="px-5 py-4 border-b border-[#E5E5E5] bg-[#0e0e0c]">
+        <div className="px-5 py-4 border-b border-[#E5E5E5] bg-[#FFFFFF]">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-[10px] uppercase tracking-widest text-[#DC2626]" style={{ fontFamily: MONO_FONT }}>
               Active state

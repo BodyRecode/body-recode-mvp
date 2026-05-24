@@ -167,7 +167,7 @@ export default function OrientationPage() {
 
           </div>
 
-          <p className="text-[10px] text-stone-300 uppercase tracking-[0.25em] mt-20">Body Recode&trade;</p>
+          <p className="text-[10px] text-stone-700 uppercase tracking-[0.25em] mt-20">Body Recode&trade;</p>
 
         </main>
       </div>

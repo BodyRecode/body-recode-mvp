@@ -61,7 +61,7 @@ export default function ChaptersIndexPage() {
                         <p className="text-base font-semibold text-stone-600">{c.title}</p>
                         <p className="text-sm text-stone-400 mt-0.5">{c.summary}</p>
                       </div>
-                      <span className="text-xs text-stone-300 shrink-0">Coming</span>
+                      <span className="text-xs text-stone-700 shrink-0">Coming</span>
                     </div>
                   )
                 })}

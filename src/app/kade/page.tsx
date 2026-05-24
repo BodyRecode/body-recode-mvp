@@ -14,8 +14,8 @@ export default function KadePage() {
         {/* Identity */}
         <div className="text-center mb-12">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/kade.jpg" alt="Kade Dunstone" className="w-20 h-20 rounded-full object-cover object-top mx-auto mb-5 border border-stone-700" style={{ objectPosition: '50% 20%' }} />
-          <h1 className="text-xl font-bold text-white mb-1">Kade Dunstone</h1>
+          <img src="/kade.jpg" alt="Kade Dunstone" className="w-20 h-20 rounded-full object-cover object-top mx-auto mb-5 border border-stone-200" style={{ objectPosition: '50% 20%' }} />
+          <h1 className="text-xl font-bold text-[#1A1A1A] mb-1">Kade Dunstone</h1>
           <p className="text-sm text-stone-400">Performance coach. Builder. Father.</p>
           <p className="text-xs text-stone-600 mt-1">Three rebuilds. Still building.</p>
         </div>
@@ -26,10 +26,10 @@ export default function KadePage() {
           {/* Studio of Ten - new venture */}
           <a
             href="https://studiooften.com"
-            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-sky-500/40 hover:bg-sky-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-200 hover:border-sky-500/40 hover:bg-sky-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-sky-400 transition-colors">
+              <p className="text-sm font-semibold text-[#1A1A1A] group-hover:text-sky-400 transition-colors">
                 Studio of Ten <span className="text-sky-400 font-bold">- LAUNCHING SOON</span>
               </p>
               <p className="text-xs text-stone-500 mt-0.5">Capped 10-client build studio for solo business operators.</p>
@@ -40,34 +40,34 @@ export default function KadePage() {
           {/* Performance Coaching */}
           <a
             href="https://performance.bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-teal-500/40 hover:bg-teal-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-200 hover:border-blue-500/40 hover:bg-blue-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-teal-400 transition-colors">Performance Coaching</p>
+              <p className="text-sm font-semibold text-[#1A1A1A] group-hover:text-blue-500 transition-colors">Performance Coaching</p>
               <p className="text-xs text-stone-500 mt-0.5">1:1 coaching, online and Brisbane</p>
             </div>
-            <span className="text-stone-600 group-hover:text-teal-400 transition-colors text-lg">→</span>
+            <span className="text-stone-600 group-hover:text-blue-500 transition-colors text-lg">→</span>
           </a>
 
           {/* Body Recode Platform */}
           <a
             href="https://bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-teal-500/40 hover:bg-teal-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-200 hover:border-blue-500/40 hover:bg-blue-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-teal-400 transition-colors">Body Recode™</p>
+              <p className="text-sm font-semibold text-[#1A1A1A] group-hover:text-blue-500 transition-colors">Body Recode™</p>
               <p className="text-xs text-stone-500 mt-0.5">Biological interpretation platform</p>
             </div>
-            <span className="text-stone-600 group-hover:text-teal-400 transition-colors text-lg">→</span>
+            <span className="text-stone-600 group-hover:text-blue-500 transition-colors text-lg">→</span>
           </a>
 
           {/* AI Co-Founder Method */}
           <a
             href="https://aicofoundermethod.com"
-            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-violet-500/40 hover:bg-violet-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-200 hover:border-violet-500/40 hover:bg-violet-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-violet-700 transition-colors">AI Co-Founder Method</p>
+              <p className="text-sm font-semibold text-[#1A1A1A] group-hover:text-violet-700 transition-colors">AI Co-Founder Method</p>
               <p className="text-xs text-stone-500 mt-0.5">Build with AI as your co-founder</p>
             </div>
             <span className="text-stone-600 group-hover:text-violet-700 transition-colors text-lg">→</span>
@@ -76,22 +76,22 @@ export default function KadePage() {
           {/* Chapters - Tracing Myself */}
           <Link
             href="/kade/chapters"
-            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-stone-500/50 hover:bg-stone-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-200 hover:border-stone-500/50 hover:bg-stone-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-stone-200 transition-colors">Tracing Myself</p>
+              <p className="text-sm font-semibold text-[#1A1A1A] group-hover:text-stone-700 transition-colors">Tracing Myself</p>
               <p className="text-xs text-stone-500 mt-0.5">A memoir, published as I write it</p>
             </div>
-            <span className="text-stone-600 group-hover:text-stone-300 transition-colors text-lg">→</span>
+            <span className="text-stone-600 group-hover:text-stone-700 transition-colors text-lg">→</span>
           </Link>
 
           {/* Contact */}
           <a
             href="mailto:kade@bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-800 hover:border-blue-300 hover:bg-blue-500/5 rounded-xl px-5 py-4 transition-all"
+            className="group flex items-center justify-between w-full bg-[#FFFFFF] border border-stone-200 hover:border-blue-300 hover:bg-blue-500/5 rounded-xl px-5 py-4 transition-all"
           >
             <div>
-              <p className="text-sm font-semibold text-white group-hover:text-blue-700 transition-colors">Get in touch</p>
+              <p className="text-sm font-semibold text-[#1A1A1A] group-hover:text-blue-700 transition-colors">Get in touch</p>
               <p className="text-xs text-stone-500 mt-0.5">kade@bodyrecode.au</p>
             </div>
             <span className="text-stone-600 group-hover:text-blue-700 transition-colors text-lg">→</span>

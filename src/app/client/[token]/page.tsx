@@ -41,15 +41,15 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
         </div>
 
         {/* Check-in status */}
-        <div className="bg-stone-900 border border-stone-800 rounded-xl p-6 mb-4">
+        <div className="bg-stone-50 border border-stone-200 rounded-xl p-6 mb-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-stone-300 uppercase tracking-wider">Weekly Check-In</h2>
+            <h2 className="text-sm font-semibold text-stone-700 uppercase tracking-wider">Weekly Check-In</h2>
             {window.isOpen ? (
               <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-500/30 text-blue-500 bg-blue-500/10">
                 Window Open
               </span>
             ) : (
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-stone-700 text-stone-500">
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-stone-200 text-stone-500">
                 Window Closed
               </span>
             )}
@@ -61,7 +61,7 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
                 The check-in window is open until Sunday 6pm Brisbane time.
               </p>
 
-              <div className={`flex items-center justify-between rounded-lg p-4 border ${hasSubmitted ? 'bg-blue-500/5 border-blue-500/20' : 'bg-stone-800 border-stone-700'}`}>
+              <div className={`flex items-center justify-between rounded-lg p-4 border ${hasSubmitted ? 'bg-blue-500/5 border-blue-500/20' : 'bg-stone-100 border-stone-200'}`}>
                 <div>
                   <p className={`text-sm font-semibold ${hasSubmitted ? 'text-blue-500' : 'text-[#1A1A1A]'}`}>
                     {hasSubmitted ? `Form ${activeForm} - Submitted` : `Form ${activeForm} - Required`}
@@ -102,7 +102,7 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
                 })} Brisbane time.
               </p>
               {hasSubmitted && (
-                <div className="mt-4 pt-4 border-t border-stone-800">
+                <div className="mt-4 pt-4 border-t border-stone-200">
                   <p className="text-xs text-stone-500 mb-2">This week&apos;s submission:</p>
                   <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-500/30 text-blue-500">
                     Form {activeForm} ✓

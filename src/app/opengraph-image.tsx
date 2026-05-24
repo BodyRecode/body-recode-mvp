@@ -12,7 +12,7 @@ export default async function Image() {
         style={{
           width: '1200px',
           height: '630px',
-          background: '#000000',
+          background: '#FFFFFF',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-start',
@@ -30,11 +30,11 @@ export default async function Image() {
             top: '0',
             height: '100%',
             width: 'auto',
-            opacity: 0.12,
+            opacity: 0.08,
           }}
         />
 
-        {/* Teal glow top right */}
+        {/* Signal Blue glow top right */}
         <div
           style={{
             position: 'absolute',
@@ -43,7 +43,7 @@ export default async function Image() {
             width: '500px',
             height: '500px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(16,225,194,0.15) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(27,109,252,0.12) 0%, transparent 70%)',
           }}
         />
 
@@ -75,7 +75,7 @@ export default async function Image() {
             style={{
               fontSize: '24px',
               fontWeight: 400,
-              color: 'rgba(255,255,255,0.5)',
+              color: '#4A4A4A',
               maxWidth: '580px',
               lineHeight: 1.5,
             }}
@@ -87,7 +87,7 @@ export default async function Image() {
               marginTop: '8px',
               fontSize: '16px',
               fontWeight: 600,
-              color: 'rgba(255,255,255,0.25)',
+              color: '#999999',
               letterSpacing: '0.05em',
             }}
           >
@@ -95,7 +95,7 @@ export default async function Image() {
           </div>
         </div>
 
-        {/* Bottom teal line */}
+        {/* Bottom Signal Blue line */}
         <div
           style={{
             position: 'absolute',
@@ -104,7 +104,6 @@ export default async function Image() {
             right: '0',
             height: '3px',
             background: '#1B6DFC',
-            opacity: 0.4,
           }}
         />
       </div>

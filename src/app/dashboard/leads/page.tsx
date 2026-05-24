@@ -53,7 +53,7 @@ export default async function LeadsPage({
               <Link
                 href="/dashboard/leads"
                 className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                  !showInactive ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#6B6B6B] hover:text-white'
+                  !showInactive ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
                 }`}
               >
                 Active

@@ -221,7 +221,7 @@ export default function GenerateProgramForm({
                 onClick={() => setForm(prev => ({ ...prev, training_goal: goal }))}
                 className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.training_goal === goal
-                    ? 'bg-[#1B6DFC] text-stone-100 border-[#1B6DFC]'
+                    ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]'
                     : 'bg-stone-200 text-stone-700 border-stone-300 hover:border-stone-500'
                 }`}
               >
@@ -279,7 +279,7 @@ export default function GenerateProgramForm({
                 onClick={() => toggleDay(day)}
                 className={`py-2 rounded-md text-xs font-medium border transition-colors ${
                   trainingDays.includes(day)
-                    ? 'bg-[#1B6DFC] text-stone-100 border-[#1B6DFC]'
+                    ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]'
                     : 'bg-stone-200 text-stone-600 border-stone-300 hover:border-stone-500'
                 }`}
               >
@@ -313,7 +313,7 @@ export default function GenerateProgramForm({
                 onClick={() => setForm(prev => ({ ...prev, training_age: age }))}
                 className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.training_age === age
-                    ? 'bg-[#1B6DFC] text-stone-100 border-[#1B6DFC]'
+                    ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]'
                     : 'bg-stone-200 text-stone-700 border-stone-300 hover:border-stone-500'
                 }`}
               >
@@ -339,7 +339,7 @@ export default function GenerateProgramForm({
                 onClick={() => setForm(prev => ({ ...prev, movement_competency: level }))}
                 className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.movement_competency === level
-                    ? 'bg-[#1B6DFC] text-stone-100 border-[#1B6DFC]'
+                    ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]'
                     : 'bg-stone-200 text-stone-700 border-stone-300 hover:border-stone-500'
                 }`}
               >
@@ -365,7 +365,7 @@ export default function GenerateProgramForm({
                 onClick={() => setForm(prev => ({ ...prev, week_duration: weeks }))}
                 className={`py-2.5 rounded-md text-sm font-medium border transition-colors ${
                   form.week_duration === weeks
-                    ? 'bg-[#1B6DFC] text-stone-100 border-[#1B6DFC]'
+                    ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]'
                     : 'bg-stone-200 text-stone-700 border-stone-300 hover:border-stone-500'
                 }`}
               >
@@ -404,7 +404,7 @@ export default function GenerateProgramForm({
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-4 bg-[#1B6DFC] text-stone-100 font-semibold rounded-md hover:bg-[#0dcfb2] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 px-4 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#5390FF] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? 'Generating program… this may take 30–60s' : 'Generate Program'}
         </button>
