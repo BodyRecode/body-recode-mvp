@@ -163,7 +163,7 @@ export async function GET(request: NextRequest) {
 
     const tierRow = (tier: Tier) => {
       const s = allTime[tier]
-      const c = tier === 'red' ? '#DC2626' : tier === 'yellow' ? '#B7791F' : '#1B6DFC'
+      const c = tier === 'red' ? '#DC2626' : tier === 'yellow' ? '#D97706' : '#16A34A'
       return `<tr>
         <td style="padding:10px 14px;border-bottom:1px solid #E5E5E5;font-size:13px;color:${c};font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">${tier}</td>
         <td style="padding:10px 14px;border-bottom:1px solid #E5E5E5;font-size:13px;color:#3A3A3A;text-align:right;">${s.total}</td>
@@ -193,8 +193,8 @@ export async function GET(request: NextRequest) {
               <p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">New leads this week</p>
               <p style="margin:0 0 24px;font-size:14px;color:#3A3A3A;">
                 <strong style="color:#1A1A1A;">${(windowLeads ?? []).length} total</strong> ·
-                <span style="color:#1B6DFC;">${windowCounts.green} green</span> ·
-                <span style="color:#B7791F;">${windowCounts.yellow} yellow</span> ·
+                <span style="color:#16A34A;">${windowCounts.green} green</span> ·
+                <span style="color:#D97706;">${windowCounts.yellow} yellow</span> ·
                 <span style="color:#DC2626;">${windowCounts.red} red</span>
               </p>
 

@@ -137,8 +137,8 @@ export default async function LeadsPage({
                       title={`Lead quality: ${lead.lead_quality}${lead.red_flag ? ' (red flag)' : ''}`}
                       className={`absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#FFFFFF] ${
                         lead.lead_quality === 'red' ? 'bg-[#DC2626]' :
-                        lead.lead_quality === 'yellow' ? 'bg-[#B7791F]' :
-                        'bg-[#1B6DFC]'
+                        lead.lead_quality === 'yellow' ? 'bg-[#D97706]' :
+                        'bg-[#16A34A]'
                       }`}
                     />
                   )}

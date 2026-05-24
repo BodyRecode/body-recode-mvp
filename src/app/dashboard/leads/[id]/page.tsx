@@ -312,9 +312,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 <div
                   className="text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0"
                   style={{
-                    color: lead.lead_quality === 'red' ? '#DC2626' : lead.lead_quality === 'yellow' ? '#B7791F' : '#1B6DFC',
-                    background: lead.lead_quality === 'red' ? 'rgba(239,68,68,0.08)' : lead.lead_quality === 'yellow' ? 'rgba(245,158,11,0.08)' : 'rgba(27,109,252,0.08)',
-                    border: `1px solid ${lead.lead_quality === 'red' ? 'rgba(239,68,68,0.25)' : lead.lead_quality === 'yellow' ? 'rgba(245,158,11,0.25)' : 'rgba(27,109,252,0.25)'}`,
+                    color: lead.lead_quality === 'red' ? '#DC2626' : lead.lead_quality === 'yellow' ? '#D97706' : '#16A34A',
+                    background: lead.lead_quality === 'red' ? 'rgba(220,38,38,0.08)' : lead.lead_quality === 'yellow' ? 'rgba(217,119,6,0.08)' : 'rgba(22,163,74,0.08)',
+                    border: `1px solid ${lead.lead_quality === 'red' ? 'rgba(220,38,38,0.25)' : lead.lead_quality === 'yellow' ? 'rgba(217,119,6,0.25)' : 'rgba(22,163,74,0.25)'}`,
                   }}
                 >
                   {lead.lead_quality}{lead.red_flag ? ' · red flag' : ''}
