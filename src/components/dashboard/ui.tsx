@@ -152,8 +152,8 @@ export function SectionLabel({
       <div className="flex items-center gap-2.5 min-w-0">
         <span className="w-7 h-[3px] rounded-full shrink-0" style={{ background: a.bar }} />
         <h2
-          className="text-[11px] font-bold text-[#1A1A1A] uppercase truncate"
-          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+          className="text-[11px] font-bold uppercase truncate"
+          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em', color: a.text }}
         >
           {children}
         </h2>

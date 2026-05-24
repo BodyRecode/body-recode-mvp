@@ -567,7 +567,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div id="updates" className="flex items-center justify-between mb-3 mt-2 scroll-mt-8">
           <div className="flex items-center gap-2.5">
             <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-            <h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>
+            <h2 className="text-[11px] font-bold text-[#1B6DFC] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>
               Updates <span className="text-[#4A4A4A] font-normal">- post-onboarding follow-ups</span>
             </h2>
           </div>

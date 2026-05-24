@@ -429,7 +429,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       )}
 
       {/* Zoom companion */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-6 mb-4">
         <div className="flex items-center justify-between mb-4">
           <div>
             <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Zoom</h2></div>
@@ -480,7 +480,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <PreCallRead leadId={lead.id} initialBrief={lead.pre_call_brief ?? null} />
 
       {/* Convert to client */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-6 mb-4">
         <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Coaching Entry</h2></div>
         <p className="text-[#999999] text-sm mb-4">
           Generate a unique commencement fee link to send to the client. Once paid, their client profile and intake link are created automatically.
@@ -554,7 +554,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Self-Guided Program (Downsell) */}
       {scorecardEvent && (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-6 mb-4">
           <div className="flex items-start justify-between mb-3">
             <div>
               <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Self-Guided Program</h2></div>
@@ -580,7 +580,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* No-show re-engagement */}
       {lead.status === 'closed_no_show' && (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4 flex items-center justify-between">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-6 mb-4 flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Re-engagement Sequence</h2></div>
             <p className="text-[#999999] text-sm">3 emails over 10 days. Day 1, Day 4, Day 10. Calm re-invitation to rebook.</p>
@@ -591,7 +591,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Zoom 1 declined follow-up */}
       {lead.status === 'closed_declined' && (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4 flex items-center justify-between">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-6 mb-4 flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2.5 mb-1"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Declined Follow-up Sequence</h2></div>
             <p className="text-[#999999] text-sm">3 emails over 12 days. Keeps the door open without pressure.</p>

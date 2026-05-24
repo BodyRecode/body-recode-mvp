@@ -204,11 +204,14 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-6 mb-4">
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-sm font-semibold text-[#3A3A3A] uppercase tracking-wider mb-1">Pre-Call Read</h2>
-          <p className="text-[#999999] text-sm">
+          <div className="flex items-center gap-2.5 mb-1">
+            <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
+            <h2 className="text-[11px] font-bold text-[#1B6DFC] uppercase" style={{ letterSpacing: '0.14em' }}>Pre-Call Read</h2>
+          </div>
+          <p className="text-[#6B6B6B] text-sm">
             Lead-specific brief for this call. Their pattern, what to listen for, lines to have ready.
           </p>
         </div>
