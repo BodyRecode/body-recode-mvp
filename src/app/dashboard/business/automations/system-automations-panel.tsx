@@ -199,6 +199,13 @@ const AUTOMATIC_AUTOMATIONS = [
     trigger: 'Stripe checkout.session.completed for an already-active client',
     steps: 1,
   },
+  {
+    id: 'lead-quality-weekly-report',
+    name: 'Lead Quality Weekly Report',
+    description: 'Scheduled remote Claude agent (runs on Anthropic infra, not Vercel cron) curls /api/admin/lead-quality-stats?email=true every Monday 9am Brisbane. Endpoint computes new leads by tier (green/yellow/red), all-time show + close rate per tier, and red-flagged vs clean comparison. Emails Kade a branded report with a verdict on whether the Hormozi red flag hypothesis is holding. Routine: trig_01UmzsNPJguEMZ3zTufciRZJ. Added 2026-04-29 when the qualifier questions launched on the scorecard.',
+    trigger: 'Remote agent cron — Mondays 9am Brisbane (0 23 * * 0 UTC)',
+    steps: 1,
+  },
 ]
 
 const MANUAL_AUTOMATIONS = [
