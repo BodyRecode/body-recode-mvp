@@ -5,6 +5,13 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { generatePreCallBrief } from '@/lib/pre-call-brief'
 import { appUrl } from '@/lib/app-url'
+import {
+  darkEmailShell,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  emailCta, emailStatusCard,
+  EMAIL_FF,
+} from '@/lib/email-shell'
+import { darkEmailSignature } from '@/lib/email-signature'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -212,53 +219,75 @@ export async function POST(request: NextRequest) {
   // Notify coach
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
+
+    // Score + Body State stat cards (two-column, matching the /challenge stats-grid pattern)
+    const statsBlock = `
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 16px;">
+        <tr>
+          <td width="50%" style="padding-right:6px;vertical-align:top;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FFFFFF" style="background-color:#FFFFFF;">
+              <tr>
+                <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:14px 18px;border:1px solid #E5E5E5;border-radius:12px;font-family:${EMAIL_FF};">
+                  <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#6B6B6B;letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Score</p>
+                  <p style="margin:0;font-size:28px;font-weight:900;color:#1B6DFC;letter-spacing:-0.02em;font-family:${EMAIL_FF};">${score}<span style="font-size:14px;color:#6B6B6B;font-weight:600;letter-spacing:0;"> / 15</span></p>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td width="50%" style="padding-left:6px;vertical-align:top;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FFFFFF" style="background-color:#FFFFFF;">
+              <tr>
+                <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:14px 18px;border:1px solid #E5E5E5;border-radius:12px;font-family:${EMAIL_FF};">
+                  <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#6B6B6B;letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Body State</p>
+                  <p style="margin:0;font-size:16px;font-weight:800;color:${stateColor};letter-spacing:-0.01em;font-family:${EMAIL_FF};">${body_state}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>`
+
+    // Lead quality card (colored by quality, only shown if qualifiers were answered)
+    const leadQualityRgba =
+      leadQuality === 'red' ? '239,68,68' :
+      leadQuality === 'yellow' ? '245,158,11' :
+      leadQuality === 'green' ? '27,109,252' :
+      '107,107,107'
+    const leadQualityBlock = leadQuality
+      ? `
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="rgba(${leadQualityRgba},0.08)" style="background-color:rgba(${leadQualityRgba},0.08);margin:0 0 16px;">
+        <tr>
+          <td style="padding:16px 20px;border:1px solid rgba(${leadQualityRgba},0.25);border-left:3px solid ${qualityColor};border-radius:12px;font-family:${EMAIL_FF};">
+            <p style="margin:0 0 6px;font-size:10px;font-weight:700;color:${qualityColor};letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Lead Quality</p>
+            <p style="margin:0 0 8px;font-size:18px;font-weight:800;color:#1A1A1A;font-family:${EMAIL_FF};letter-spacing:-0.01em;">${leadQuality.toUpperCase()}${redFlag ? ' · Red Flag' : ''}</p>
+            <p style="margin:0;font-size:13px;color:#4A4A4A;line-height:1.6;font-family:${EMAIL_FF};">Approach: <strong style="color:#1A1A1A;">${approach_response}</strong> · Investment: <strong style="color:#1A1A1A;">${investment_readiness}</strong></p>
+          </td>
+        </tr>
+      </table>`
+      : ''
+
+    const coachInner = `
+${emailLogo()}
+${emailEyebrow('New Scorecard')}
+${emailHeading(`${first_name} just completed the scorecard.`)}
+${emailDivider()}
+${emailBody(email, { color: '#6B6B6B', size: 14, bottom: 22 })}
+${statsBlock}
+${leadQualityBlock}
+${emailStatusCard({
+  eyebrow: 'Next step',
+  headline: 'Review the lead in the dashboard',
+  body: 'Full scorecard breakdown, qualifier answers, pre-call brief and all lead context available in one place.',
+})}
+${emailCta({ href: `${appUrl()}/dashboard/leads`, label: 'Open dashboard' })}
+${darkEmailSignature()}
+`
+
     await resend.emails.send({
       from: 'Body Recode <kade@bodyrecode.au>',
       to: 'kade@bodyrecode.au',
       subject: `New Scorecard — ${first_name} (${body_state}, ${score}/15)`,
-      html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:480px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;" />
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-              <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#1A1A1A;">${first_name} just completed the scorecard.</p>
-              <p style="margin:0 0 24px;font-size:14px;color:#6B6B6B;">${email}</p>
-              <table cellpadding="0" cellspacing="0" style="margin-bottom:16px;width:100%;">
-                <tr>
-                  <td style="padding:14px 20px;background:#1A1A1A;border-radius:10px;border:1px solid #222;">
-                    <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">Score</p>
-                    <p style="margin:0;font-size:24px;font-weight:900;color:#1A1A1A;">${score}<span style="font-size:14px;color:#999999;font-weight:500;"> / 15</span></p>
-                  </td>
-                  <td style="width:12px;"></td>
-                  <td style="padding:14px 20px;background:#1A1A1A;border-radius:10px;border:1px solid #222;">
-                    <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">Body State</p>
-                    <p style="margin:0;font-size:16px;font-weight:700;color:${stateColor};">${body_state}</p>
-                  </td>
-                </tr>
-              </table>
-              ${leadQuality ? `
-              <div style="padding:14px 20px;background:${leadQuality === 'red' ? 'rgba(239,68,68,0.08)' : leadQuality === 'yellow' ? 'rgba(245,158,11,0.08)' : 'rgba(27,109,252,0.08)'};border-radius:10px;border:1px solid ${qualityColor}33;margin-bottom:24px;">
-                <p style="margin:0 0 6px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">Lead Quality</p>
-                <p style="margin:0 0 10px;font-size:16px;font-weight:800;color:${qualityColor};text-transform:uppercase;letter-spacing:0.04em;">${leadQuality}${redFlag ? ' — Red Flag' : ''}</p>
-                <p style="margin:0;font-size:13px;color:#6B6B6B;line-height:1.6;">Approach: ${approach_response} · Investment: ${investment_readiness}</p>
-              </div>
-              ` : ''}
-              <a href="${appUrl()}/dashboard/leads" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px;">View in dashboard</a>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body></html>`,
+      html: darkEmailShell(coachInner, { previewText: `${first_name} just completed the scorecard — ${body_state}, ${score}/15.` }),
     })
   }
 
