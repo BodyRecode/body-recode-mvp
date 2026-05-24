@@ -298,19 +298,19 @@ export default function DraftEditor({
       </div>
 
       {error && (
-        <p className="text-sm text-red-700 bg-red-950/50 border border-red-200 rounded-md px-3 py-2 mb-4">
+        <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2 mb-4">
           {error}
         </p>
       )}
 
       {dirty && (
-        <div className="mb-4 text-xs text-amber-700 bg-amber-950/30 border border-amber-800/50 rounded-lg px-3 py-2">
+        <div className="mb-4 text-xs text-amber-700 bg-amber-50 border border-amber-200/50 rounded-lg px-3 py-2">
           You have unsaved changes. Save before promoting or your edits will be lost.
         </div>
       )}
 
       {/* Program identity */}
-      <div className="bg-stone-100 border border-amber-800/40 rounded-xl p-5 mb-4">
+      <div className="bg-stone-100 border border-amber-200/40 rounded-xl p-5 mb-4">
         <div className="flex items-start justify-between mb-2">
           <div>
             <p className="text-xs text-stone-500 mb-1 capitalize">

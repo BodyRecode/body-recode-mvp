@@ -444,7 +444,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
               </Link>
             ) : missedCheckin ? (
               <div className="space-y-3">
-                <div className="rounded-2xl border border-red-800/50 bg-red-950/20 p-5">
+                <div className="rounded-2xl border border-red-200/50 bg-red-50 p-5">
                   <p className="text-sm font-semibold text-red-700 mb-1">You missed last week&apos;s check-in</p>
                   <p className="text-xs text-red-700/70">The window closed without a submission. Your coach won&apos;t have data for this week.</p>
                 </div>

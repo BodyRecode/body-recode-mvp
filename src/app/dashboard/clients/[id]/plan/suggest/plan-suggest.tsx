@@ -195,7 +195,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
 
   if (error && !suggestion) {
     return (
-      <div className="bg-red-950/30 border border-red-800 rounded-xl p-5">
+      <div className="bg-red-50 border border-red-200 rounded-xl p-5">
         <p className="text-red-700 text-sm">{error}</p>
         <a href={`/dashboard/clients/${clientId}/plan`} className="text-xs text-stone-500 hover:text-stone-700 mt-3 inline-block">
           Back to plan →
@@ -214,7 +214,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       <div className="flex-1 min-w-0 space-y-4">
 
       {/* Overall rationale */}
-      <div id="rationale" className="scroll-mt-8 bg-blue-950/30 border border-blue-900/40 rounded-xl px-5 py-4">
+      <div id="rationale" className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
         <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2">Arc Rationale</p>
         <p className="text-sm text-stone-700 leading-relaxed">{suggestion.overall_rationale}</p>
       </div>
@@ -376,7 +376,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       </div>
 
       {error && (
-        <div className="bg-red-950/30 border border-red-800 rounded-lg px-4 py-3">
+        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
           <p className="text-red-700 text-sm">{error}</p>
         </div>
       )}

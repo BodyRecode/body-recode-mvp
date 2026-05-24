@@ -224,7 +224,7 @@ export default function CheckInQuiz() {
           </div>
 
           {error && (
-            <div className="mt-6 bg-red-950/40 border border-red-800/40 rounded-2xl px-4 py-3">
+            <div className="mt-6 bg-red-50 border border-red-200/40 rounded-2xl px-4 py-3">
               <p className="text-red-700 text-sm">{error}</p>
             </div>
           )}

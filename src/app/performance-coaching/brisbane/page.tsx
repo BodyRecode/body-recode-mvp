@@ -200,7 +200,7 @@ export default function PerformanceCoachBrisbanePage() {
             {[
               {
                 state: 'Remediation',
-                colour: 'border-red-800/40',
+                colour: 'border-red-200/40',
                 label: 'text-red-700',
                 desc: 'The regulatory system is under stress. Before any training escalation, the system needs stabilising. Pushing harder here does not produce better results; it produces setbacks. Remediation is not a failure state. It is a biological reality that must be respected before progress is possible.',
               },

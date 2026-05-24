@@ -56,7 +56,7 @@ export default async function ChapterPage({ params }: Props) {
         </article>
 
         {/* Prev / Next */}
-        <div className="flex items-center justify-between border-t border-stone-900 mt-16 pt-8 gap-4">
+        <div className="flex items-center justify-between border-t border-stone-200 mt-16 pt-8 gap-4">
           {prev ? (
             <Link href={`/kade/chapters/${prev.slug}`} className="flex-1 group">
               <p className="text-[10px] uppercase tracking-widest text-stone-600 mb-1">Previous</p>
@@ -72,7 +72,7 @@ export default async function ChapterPage({ params }: Props) {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-stone-900 pt-8 mt-12">
+        <div className="border-t border-stone-200 pt-8 mt-12">
           <p className="text-xs text-stone-600">Kade Dunstone · Performance coach. Builder. Father.</p>
         </div>
       </div>

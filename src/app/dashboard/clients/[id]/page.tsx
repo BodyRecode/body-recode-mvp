@@ -238,9 +238,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     : []
 
   const statusColour = {
-    pending: 'text-[#6B6B6B] bg-[#E5E5E5] border-[#E5E5E5]',
-    started: 'text-amber-700 bg-amber-950/50 border-amber-800',
-    complete: 'text-green-300 bg-green-950/50 border-green-800',
+    pending: 'text-[#6B6B6B] bg-stone-100 border-stone-200',
+    started: 'text-amber-700 bg-amber-50 border-amber-200',
+    complete: 'text-green-700 bg-green-50 border-green-200',
   }
 
   // ── Per-section defaultOpen flags ──────────────────────────────────────
@@ -438,7 +438,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <p className="text-xs text-blue-500">Eligible for 2x to 3x upgrade (Week {weekNumber})</p>
               <Link
                 href={`/companion/${id}/upgrade`}
-                className="text-xs font-semibold text-blue-500 hover:text-blue-700 border border-blue-900/50 px-3 py-1.5 rounded-lg transition-colors"
+                className="text-xs font-semibold text-blue-500 hover:text-blue-700 border border-blue-200/50 px-3 py-1.5 rounded-lg transition-colors"
               >
                 Upgrade Companion →
               </Link>
@@ -704,9 +704,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 <div className="grid grid-cols-2 gap-2">
                   {readinessItems.map(item => (
                     <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
-                      item.value === 'Green' ? 'bg-green-950/40 border-green-500' :
-                      item.value === 'Amber' ? 'bg-amber-950/40 border-amber-500' :
-                      item.value === 'Red' ? 'bg-red-950/40 border-red-500' :
+                      item.value === 'Green' ? 'bg-green-50 border-green-500' :
+                      item.value === 'Amber' ? 'bg-amber-50 border-amber-500' :
+                      item.value === 'Red' ? 'bg-red-50 border-red-500' :
                       'bg-[#E5E5E5] border-[#D4D4D4]'
                     }`}>
                       <p className={`text-xs font-bold mb-0.5 ${
@@ -1107,9 +1107,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     { label: 'Behaviour', value: latestCfws.exposure_readiness_behaviour },
                   ].map(item => (
                     <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
-                      item.value === 'Green' ? 'bg-green-950/40 border-green-500' :
-                      item.value === 'Amber' ? 'bg-amber-950/40 border-amber-500' :
-                      item.value === 'Red' ? 'bg-red-950/40 border-red-500' :
+                      item.value === 'Green' ? 'bg-green-50 border-green-500' :
+                      item.value === 'Amber' ? 'bg-amber-50 border-amber-500' :
+                      item.value === 'Red' ? 'bg-red-50 border-red-500' :
                       'bg-[#E5E5E5] border-[#D4D4D4]'
                     }`}>
                       <p className={`text-xs font-bold mb-0.5 ${

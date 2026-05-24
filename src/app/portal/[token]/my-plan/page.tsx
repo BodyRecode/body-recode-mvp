@@ -313,7 +313,7 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
 
             {/* What not to change */}
             {Array.isArray(plan.what_not_to_change) && plan.what_not_to_change.length > 0 && (
-              <div className="bg-amber-950/20 border border-amber-800/30 rounded-2xl p-5">
+              <div className="bg-amber-50 border border-amber-200/30 rounded-2xl p-5">
                 <p className="text-xs font-bold text-amber-500 uppercase tracking-widest mb-3">Do not change these</p>
                 <ul className="space-y-2">
                   {(plan.what_not_to_change as string[]).map((item, i) => (

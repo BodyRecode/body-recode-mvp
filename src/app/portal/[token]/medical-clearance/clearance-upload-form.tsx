@@ -81,7 +81,7 @@ export default function ClearanceUploadForm({ clientId, portalToken: _portalToke
     <div>
       <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-3">Upload completed form</p>
       {missingFile && (
-        <div className="mb-4 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+        <div className="mb-4 border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
           <p className="text-red-700 text-sm font-medium">Please upload your completed clearance form before submitting.</p>
         </div>
       )}
@@ -91,7 +91,7 @@ export default function ClearanceUploadForm({ clientId, portalToken: _portalToke
             file
               ? 'border-[#1B6DFC]/40 bg-blue-50'
               : missingFile
-              ? 'border-red-400 bg-red-950/10'
+              ? 'border-red-400 bg-red-50'
               : 'border-[#E5E5E5] bg-[#FFFFFF] hover:border-[#D4D4D4]'
           }`}
         >

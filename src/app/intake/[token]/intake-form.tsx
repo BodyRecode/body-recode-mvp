@@ -411,7 +411,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
 
         {/* Validation message */}
         {validationMessage && (
-          <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+          <div className="mb-6 border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
             <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
             <p className="text-red-700/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
           </div>
@@ -446,7 +446,7 @@ export default function IntakeForm({ token, clientName, portalToken }: Props) {
         </div>
 
         {error && (
-          <div className="mt-6 bg-red-950/50 border border-red-800 rounded-2xl px-4 py-3">
+          <div className="mt-6 bg-red-50 border border-red-200 rounded-2xl px-4 py-3">
             <p className="text-red-700 text-sm">{error}</p>
           </div>
         )}

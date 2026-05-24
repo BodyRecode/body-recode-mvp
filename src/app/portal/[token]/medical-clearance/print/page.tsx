@@ -139,7 +139,7 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
           </div>
         </section>
 
-        <div className="border-t border-stone-800 pt-6 text-xs text-[#6B6B6B]">
+        <div className="border-t border-stone-200 pt-6 text-xs text-[#6B6B6B]">
           <p>Body Recode™ | Kade Dunstone | ABN 90 535 525 708 | Anytime Fitness Newstead, Brisbane</p>
         </div>
       </div>

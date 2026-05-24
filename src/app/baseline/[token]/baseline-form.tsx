@@ -249,7 +249,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
             </div>
 
             {validationMessage && (
-              <div className="border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+              <div className="border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
                 <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
                 <p className="text-red-700/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
               </div>
@@ -303,7 +303,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
             </div>
 
             {validationMessage && (
-              <div className="border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+              <div className="border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
                 <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
                 <p className="text-red-700/70 text-xs mt-1">Missing photos are highlighted in red below.</p>
               </div>

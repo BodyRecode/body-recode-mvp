@@ -90,7 +90,7 @@ export default function AgreementForm({
         </div>
 
         {validationMessage && (
-          <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+          <div className="mb-6 border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
             <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
             <p className="text-red-700/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
           </div>
@@ -120,7 +120,7 @@ export default function AgreementForm({
 
               <label
                 id="f-accepted"
-                className={`flex items-start gap-3 cursor-pointer scroll-mt-24 p-3 rounded-xl border ${missing.has('accepted') ? 'border-red-400 bg-red-950/20' : 'border-transparent'}`}
+                className={`flex items-start gap-3 cursor-pointer scroll-mt-24 p-3 rounded-xl border ${missing.has('accepted') ? 'border-red-400 bg-red-50' : 'border-transparent'}`}
               >
                 <input
                   type="checkbox"

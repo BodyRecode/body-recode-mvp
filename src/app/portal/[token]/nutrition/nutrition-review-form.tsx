@@ -204,7 +204,7 @@ export default function NutritionReviewForm({
       </div>
 
       {error && (
-        <div className="bg-red-950/30 border border-red-800 rounded-xl px-4 py-3">
+        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
           <p className="text-sm text-red-700">{error}</p>
         </div>
       )}

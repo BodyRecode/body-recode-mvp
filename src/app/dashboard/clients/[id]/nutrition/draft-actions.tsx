@@ -34,7 +34,7 @@ export default function NutritionDraftActions({ planId, clientId }: { planId: st
       <button
         onClick={handleApprove}
         disabled={loading !== null}
-        className="text-xs px-3 py-1.5 border border-blue-800 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors disabled:opacity-50"
+        className="text-xs px-3 py-1.5 border border-blue-200 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors disabled:opacity-50"
       >
         {loading === 'approve' ? 'Approving...' : 'Approve Plan'}
       </button>

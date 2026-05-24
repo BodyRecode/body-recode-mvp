@@ -595,7 +595,7 @@ export default function ZoomCompanion({
     <div className="h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col overflow-hidden">
 
       {/* Top bar */}
-      <div className="border-b border-stone-800 px-6 py-4 flex items-center justify-between">
+      <div className="border-b border-stone-200 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div>
             <a href={`/dashboard/leads/${leadId}`} className="text-xs text-stone-400 hover:text-stone-600 transition-colors mb-0.5 block">
@@ -652,7 +652,7 @@ export default function ZoomCompanion({
       <div className="flex flex-1 overflow-hidden">
 
         {/* Stage nav */}
-        <div className="w-52 border-r border-stone-800 p-4 flex flex-col gap-1 overflow-y-auto">
+        <div className="w-52 border-r border-stone-200 p-4 flex flex-col gap-1 overflow-y-auto">
           <p className="text-xs text-stone-400 uppercase tracking-widest font-semibold mb-2">Listen</p>
           {STAGES.filter(s => s.half === 1).map(s => {
             const idx = STAGES.indexOf(s)
@@ -695,9 +695,9 @@ export default function ZoomCompanion({
             )
           })}
 
-          <div className="mt-auto pt-4 border-t border-stone-800 flex gap-2">
+          <div className="mt-auto pt-4 border-t border-stone-200 flex gap-2">
             {currentStage > 0 && (
-              <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-[#1A1A1A] py-1.5 rounded-lg border border-stone-800 hover:border-stone-700 transition-colors">
+              <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-[#1A1A1A] py-1.5 rounded-lg border border-stone-200 hover:border-stone-700 transition-colors">
                 Back
               </button>
             )}
@@ -974,8 +974,8 @@ export default function ZoomCompanion({
           </div>
 
           {/* Notes + Decision panel */}
-          <div className="w-72 border-l border-stone-800 flex flex-col overflow-y-auto">
-            <div className="p-4 border-b border-stone-800 flex items-center justify-between">
+          <div className="w-72 border-l border-stone-200 flex flex-col overflow-y-auto">
+            <div className="p-4 border-b border-stone-200 flex items-center justify-between">
               <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold">Live Notes</p>
               <button onClick={saveNotes} className="text-xs text-[#1B6DFC] hover:text-[#1A1A1A] transition-colors font-semibold">
                 {saving ? 'Saving...' : 'Save'}
@@ -989,7 +989,7 @@ export default function ZoomCompanion({
               style={{ minHeight: '200px' }}
             />
 
-            <div className="p-4 border-t border-stone-800 space-y-3">
+            <div className="p-4 border-t border-stone-200 space-y-3">
 
               {/* Decision panel — only on Stage 4 */}
               {isDecisionStage && (
@@ -1077,8 +1077,8 @@ export default function ZoomCompanion({
       {/* Coach Drawer (overlay) */}
       {drawerOpen && (
         <div className="fixed inset-0 z-40 flex">
-          <div className="flex-1 bg-stone-900/30" onClick={() => setDrawerOpen(false)} />
-          <div className="w-[420px] bg-[#FFFFFF] border-l border-stone-800 overflow-y-auto p-5 space-y-4">
+          <div className="flex-1 bg-stone-50" onClick={() => setDrawerOpen(false)} />
+          <div className="w-[420px] bg-[#FFFFFF] border-l border-stone-200 overflow-y-auto p-5 space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-xs font-bold text-stone-500 uppercase tracking-widest">Coach Drawer</p>
               <button onClick={() => setDrawerOpen(false)} className="text-stone-500 hover:text-[#1A1A1A] text-sm">×</button>

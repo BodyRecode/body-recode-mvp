@@ -24,9 +24,9 @@ const entryStateColour: Record<string, string> = {
 }
 
 const readinessColour: Record<string, string> = {
-  Green: 'bg-green-950/40 border-green-500 text-green-400',
-  Amber: 'bg-amber-950/40 border-amber-500 text-amber-700',
-  Red: 'bg-red-950/40 border-red-500 text-red-700',
+  Green: 'bg-green-50 border-green-500 text-green-400',
+  Amber: 'bg-amber-50 border-amber-500 text-amber-700',
+  Red: 'bg-red-50 border-red-500 text-red-700',
 }
 
 const blockStatusStyle: Record<string, string> = {

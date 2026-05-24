@@ -241,7 +241,7 @@ export default function HealthDeclarationForm({
         </div>
 
         {validationMessage && (
-          <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+          <div className="mb-6 border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
             <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
             <p className="text-red-700/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
           </div>
@@ -616,7 +616,7 @@ export default function HealthDeclarationForm({
                       state
                         ? 'border-blue-200 bg-blue-50'
                         : hasError
-                        ? 'border-red-400 bg-red-950/20'
+                        ? 'border-red-400 bg-red-50'
                         : 'border-[#E5E5E5] bg-[#FFFFFF] hover:border-[#E5E5E5]'
                     }`}
                   >

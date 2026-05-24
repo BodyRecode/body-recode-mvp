@@ -132,8 +132,8 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
           )}
           <span className={`text-xs px-2.5 py-1 rounded-full border font-semibold ${
             isThreeSession
-              ? 'bg-blue-950/30 text-blue-500 border-blue-900/50'
-              : 'bg-amber-900/30 text-amber-700 border-amber-800/50'
+              ? 'bg-blue-50 text-blue-500 border-blue-200/50'
+              : 'bg-amber-50 text-amber-700 border-amber-200/50'
           }`}>
             {isThreeSession ? '3x - Already upgraded' : '2x - Upgrade candidate'}
           </span>
@@ -142,7 +142,7 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
 
       {/* Not yet ready warning */}
       {!isUpgradeCandidate && !isThreeSession && (
-        <div className="mx-6 mt-6 bg-amber-950/40 border border-amber-800/50 rounded-xl px-5 py-4">
+        <div className="mx-6 mt-6 bg-amber-50 border border-amber-200/50 rounded-xl px-5 py-4">
           <p className="text-amber-700 text-sm font-medium">Early stage client</p>
           <p className="text-amber-700/70 text-xs mt-1">
             {clientName} is at Week {weekNumber ?? 0}. The upgrade conversation works best at Week 8+ when consistent patterns are visible in the data.
@@ -151,7 +151,7 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
       )}
 
       {isThreeSession && (
-        <div className="mx-6 mt-6 bg-blue-950/40 border border-blue-900/50 rounded-xl px-5 py-4">
+        <div className="mx-6 mt-6 bg-blue-50 border border-blue-200/50 rounded-xl px-5 py-4">
           <p className="text-blue-300 text-sm font-medium">Already on 3x</p>
           <p className="text-blue-500/70 text-xs mt-1">
             {clientName} is already on the 3-session package. This companion is for the 2x to 3x upgrade conversation.
@@ -234,7 +234,7 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
 
           {/* Boundary */}
           {stage.boundary && (
-            <div className="bg-red-950/30 border border-red-800/40 rounded-xl p-4">
+            <div className="bg-red-50 border border-red-200/40 rounded-xl p-4">
               <p className="text-xs font-bold text-red-700 uppercase tracking-widest mb-1">Boundary</p>
               <p className="text-red-700/80 text-sm leading-relaxed">{stage.boundary}</p>
             </div>

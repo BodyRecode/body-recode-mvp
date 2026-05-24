@@ -249,7 +249,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
       </div>
 
       {error && (
-        <div className="bg-red-950/30 border border-red-800 rounded-lg px-4 py-3">
+        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
           <p className="text-red-700 text-sm">{error}</p>
         </div>
       )}

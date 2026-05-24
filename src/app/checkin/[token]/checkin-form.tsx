@@ -227,7 +227,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
       </div>
 
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-900 px-5 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
         <img src="https://bodyrecode.au/logo-black.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
         <p className="text-[11px] font-medium text-stone-600">{sectionIndex + 1} / {sections.length}</p>
       </div>
@@ -244,7 +244,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
 
         {/* Validation message */}
         {validationMessage && (
-          <div className="mb-6 border-l-2 border-red-500 bg-red-950/30 rounded-r-2xl px-4 py-3">
+          <div className="mb-6 border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
             <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
             <p className="text-red-700/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
           </div>
@@ -278,14 +278,14 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
         </div>
 
         {error && (
-          <div className="mt-6 bg-red-950/50 border border-red-900 rounded-xl px-4 py-3">
+          <div className="mt-6 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
             <p className="text-red-700 text-sm">{error}</p>
           </div>
         )}
       </div>
 
       {/* Fixed bottom navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-900 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-200 px-5 py-4 z-10">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
           <button
             type="button"

@@ -358,7 +358,7 @@ export default function ZoomCompanion({
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col">
 
       {/* Top bar */}
-      <div className="border-b border-stone-800 px-6 py-4 flex items-center justify-between">
+      <div className="border-b border-stone-200 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div>
             <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold mb-0.5">Zoom 1 - Companion</p>
@@ -472,7 +472,7 @@ export default function ZoomCompanion({
       <div className="flex flex-1 overflow-hidden">
 
         {/* Stage nav - left sidebar */}
-        <div className="w-52 border-r border-stone-800 p-4 flex flex-col gap-1">
+        <div className="w-52 border-r border-stone-200 p-4 flex flex-col gap-1">
           <p className="text-xs text-stone-400 uppercase tracking-widest font-semibold mb-3">Stages</p>
           {STAGES.map((s, i) => (
             <button
@@ -491,10 +491,10 @@ export default function ZoomCompanion({
             </button>
           ))}
 
-          <div className="mt-auto pt-4 border-t border-stone-800">
+          <div className="mt-auto pt-4 border-t border-stone-200">
             <div className="flex gap-2">
               {currentStage > 0 && (
-                <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-[#1A1A1A] py-1.5 rounded-lg border border-stone-800 hover:border-stone-700 transition-colors">
+                <button onClick={() => setCurrentStage(s => s - 1)} className="flex-1 text-xs text-stone-500 hover:text-[#1A1A1A] py-1.5 rounded-lg border border-stone-200 hover:border-stone-700 transition-colors">
                   Back
                 </button>
               )}
@@ -521,7 +521,7 @@ export default function ZoomCompanion({
               <p className="text-stone-600 text-sm leading-relaxed mb-6">{stage.goal}</p>
 
               {/* Tabs */}
-              <div className="flex gap-1 mb-5 border-b border-stone-800">
+              <div className="flex gap-1 mb-5 border-b border-stone-200">
                 {(['prompts', 'scorecard', 'language'] as const).map(tab => (
                   <button
                     key={tab}
@@ -618,8 +618,8 @@ export default function ZoomCompanion({
           </div>
 
           {/* Notes panel - right */}
-          <div className="w-72 border-l border-stone-800 flex flex-col">
-            <div className="p-4 border-b border-stone-800 flex items-center justify-between">
+          <div className="w-72 border-l border-stone-200 flex flex-col">
+            <div className="p-4 border-b border-stone-200 flex items-center justify-between">
               <p className="text-xs text-stone-500 uppercase tracking-widest font-semibold">Live Notes</p>
               <button
                 onClick={saveNotes}
@@ -634,7 +634,7 @@ export default function ZoomCompanion({
               placeholder="Type observations as the call unfolds..."
               className="flex-1 bg-transparent text-stone-700 text-sm p-4 resize-none focus:outline-none placeholder-stone-300 leading-relaxed"
             />
-            <div className="p-4 border-t border-stone-800 space-y-3">
+            <div className="p-4 border-t border-stone-200 space-y-3">
 
               {/* Readiness Check */}
               <div className="bg-stone-100 border border-stone-200 rounded-lg p-3">

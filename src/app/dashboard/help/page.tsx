@@ -3101,7 +3101,7 @@ function ChecklistItem({ text }: { text: string }) {
 
 function Training({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-violet-950/30 border border-violet-400/20 rounded-lg px-4 py-3 space-y-1">
+    <div className="bg-violet-50 border border-violet-400/20 rounded-lg px-4 py-3 space-y-1">
       <p className="text-xs font-bold text-violet-300 uppercase tracking-wider mb-2">{title}</p>
       <div className="text-xs text-[#3A3A3A] leading-relaxed space-y-1">
         {children}

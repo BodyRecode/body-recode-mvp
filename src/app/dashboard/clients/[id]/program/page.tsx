@@ -140,14 +140,14 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
       {program.prescription_rationale && (() => {
         const { intro, points } = parseText(clean(program.prescription_rationale))
         return (
-          <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-blue-950/30 border border-blue-900/40 rounded-xl px-5 py-4">
+          <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
             <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-3">Prescription Rationale</p>
             <div className="space-y-2">
               {intro && <p className="text-sm text-stone-800 leading-relaxed">{intro}</p>}
               {points.length > 1 ? (
                 <div className="space-y-2">
                   {points.map((point, i) => (
-                    <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-800/30 pl-3">
+                    <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-200/30 pl-3">
                       <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
                     </div>
                   ))}
@@ -363,7 +363,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
 
       {/* Rebuild alert */}
       {activeProgram?.current_direction === 'rebuild' && (
-        <div className="mb-4 flex items-start gap-3 bg-red-950/40 border border-red-800/60 rounded-xl px-4 py-3">
+        <div className="mb-4 flex items-start gap-3 bg-red-50 border border-red-200/60 rounded-xl px-4 py-3">
           <svg className="w-4 h-4 text-red-700 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
           </svg>

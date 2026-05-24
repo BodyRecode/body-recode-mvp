@@ -92,7 +92,7 @@ export default function RecordPaymentButton({ products }: Props) {
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-stone-900/40" onClick={close} />
+          <div className="absolute inset-0 bg-stone-50" onClick={close} />
           <div className="relative bg-stone-100 border border-stone-300 rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold">Record Payment</h2>
