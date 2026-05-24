@@ -154,8 +154,8 @@ export default function ReportClient({ report }: { report: {
       `}</style>
 
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <img src="/logo-black.png" alt="Body Recode" style={{ height: '80px' }} />
+      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <img src="/logo-black.png" alt="Body Recode" style={{ height: '64px' }} />
         <button
           className="no-print"
           onClick={handleDownload}
@@ -169,18 +169,75 @@ export default function ReportClient({ report }: { report: {
         </button>
       </div>
 
-      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '48px 24px 80px' }}>
+      {/* Hero with Signal Blue radial glows — matches /challenge landing page */}
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', top: '-140px', right: '-140px',
+          width: '500px', height: '500px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.12) 0%, transparent 65%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: '0', left: '-100px',
+          width: '340px', height: '340px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.07) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
 
-        {/* Title */}
-        <div style={{ marginBottom: '48px' }}>
-          <p style={{ fontSize: '12px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>Body Decode Report</p>
-          <h1 style={{ fontSize: '32px', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '12px' }}>
+        <div style={{ maxWidth: '680px', margin: '0 auto', padding: '56px 24px 32px', position: 'relative' }}>
+
+          {/* Badge pill */}
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            background: 'rgba(27, 109, 252,0.1)', border: '1px solid rgba(27, 109, 252,0.25)',
+            borderRadius: '99px', padding: '7px 16px', marginBottom: '20px',
+          }}>
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#1B6DFC' }} />
+            <span style={{ fontSize: '12px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Body Decode Report
+            </span>
+          </div>
+
+          {/* Founder byline */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
+            <img
+              src="https://bodyrecode.au/kade.jpg"
+              alt="Kade Dunstone"
+              style={{
+                width: '40px', height: '40px', borderRadius: '50%',
+                objectFit: 'cover', objectPosition: 'top center',
+                border: '1px solid #E5E5E5', flexShrink: 0,
+              }}
+            />
+            <div>
+              <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
+                Prepared by Kade Dunstone
+              </p>
+              <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.3 }}>
+                Human Movement Scientist · Business Entrepreneur · Body Recode Founder
+              </p>
+            </div>
+          </div>
+
+          {/* Headline */}
+          <h1 style={{
+            fontSize: 'clamp(38px, 7vw, 56px)', fontWeight: 900,
+            letterSpacing: '-0.035em', lineHeight: 1.05, margin: '0 0 22px', color: '#1A1A1A',
+          }}>
             {firstName}, here is what your body is telling you.
           </h1>
-          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.6 }}>
-            Based on your Body State Scorecard results. Score: {report.score}/15.
+
+          {/* 48×3 Signal Blue divider */}
+          <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
+
+          {/* Lead */}
+          <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
+            Based on your Body State Scorecard results. Score: <strong style={{ color: '#1A1A1A' }}>{report.score}/15</strong>.
           </p>
         </div>
+      </div>
+
+      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '0 24px 80px' }}>
 
         {/* Body State */}
         <div style={{ background: state.bg, border: `1px solid ${state.border}`, borderRadius: '16px', padding: '32px', marginBottom: '40px' }}>
