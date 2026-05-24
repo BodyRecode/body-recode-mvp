@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import LogoutButton from '@/components/LogoutButton'
+import DnaHelix from '@/components/dna-helix'
 import DashboardNav from './nav'
 import CommandPalette from './command-palette'
 import CommandKHint from './command-k-hint'
@@ -17,7 +18,11 @@ export default async function DashboardLayout({
   if (!user) redirect('/login')
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] relative overflow-x-hidden">
+      <DnaHelix
+        className="hidden lg:block absolute right-0 top-0 h-screen w-auto max-w-md pointer-events-none select-none"
+        opacity={0.04}
+      />
       <header
         className="sticky top-0 z-50 border-b border-[#E5E5E5] backdrop-blur-xl print:hidden"
         style={{ background: 'rgba(255, 255, 255, 0.85)' }}

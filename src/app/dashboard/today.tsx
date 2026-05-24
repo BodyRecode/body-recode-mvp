@@ -340,8 +340,8 @@ export default async function TodayWidget() {
         <EmptyStateBlock />
       ) : (
         <div className="divide-y divide-[#E5E5E5]">
-          {sorted.map((action) => (
-            <ActionRow key={action.clientId} action={action} />
+          {sorted.map((action, i) => (
+            <ActionRow key={action.clientId} action={action} index={i} />
           ))}
         </div>
       )}
@@ -381,7 +381,7 @@ function SummaryPill({
   )
 }
 
-function ActionRow({ action }: { action: ClientNextAction }) {
+function ActionRow({ action, index }: { action: ClientNextAction; index: number }) {
   const a = accentColour(action.accent)
   const Icon = iconFor(action)
   return (
@@ -389,6 +389,12 @@ function ActionRow({ action }: { action: ClientNextAction }) {
       href={action.href}
       className="flex items-center gap-3.5 px-1 py-3.5 group hover:bg-[#E5E5E5]/40 -mx-1 px-2 rounded-lg transition-colors"
     >
+      <span
+        className="text-[11px] font-bold tabular-nums text-[#999999] group-hover:text-[#1B6DFC] transition-colors shrink-0 w-6 text-right"
+        style={{ fontFamily: MONO_FONT, letterSpacing: '0.04em' }}
+      >
+        {String(index + 1).padStart(2, '0')}
+      </span>
       <div
         className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border"
         style={{ background: a.bg, borderColor: a.ring }}

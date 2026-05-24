@@ -293,8 +293,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 {Object.entries(SCORECARD_SECTIONS).map(([key, title]) => {
                   const s = scorecardSections[key]
                   const color = s === 1 ? '#DC2626' : s === 2 ? '#B7791F' : s === 3 ? '#1B6DFC' : '#999999'
-                  const bg = s === 1 ? 'rgba(239,68,68,0.08)' : s === 2 ? 'rgba(245,158,11,0.08)' : s === 3 ? 'rgba(27,109,252,0.08)' : 'rgba(87,83,78,0.08)'
-                  const border = s === 1 ? 'rgba(239,68,68,0.25)' : s === 2 ? 'rgba(245,158,11,0.25)' : s === 3 ? 'rgba(27,109,252,0.25)' : 'rgba(87,83,78,0.25)'
+                  const bg = s === 1 ? '#FEE7E7' : s === 2 ? '#FEF6E7' : s === 3 ? '#F3F7FF' : '#F4F4F4'
+                  const border = s === 1 ? '#F5C6C6' : s === 2 ? '#F0DCB4' : s === 3 ? '#B5CFFC' : '#E5E5E5'
                   return (
                     <div key={key} className="rounded-lg p-2 text-center" style={{ background: bg, border: `1px solid ${border}` }}>
                       <div className="text-lg font-black" style={{ color }}>{s ?? '-'}</div>
@@ -355,8 +355,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               {Object.entries(SCORECARD_SECTIONS).map(([key, title]) => {
                 const s = scorecardSections[key] as number | undefined
                 const color = s === 1 ? '#DC2626' : s === 2 ? '#B7791F' : s === 3 ? '#1B6DFC' : '#999999'
-                const bg = s === 1 ? 'rgba(239,68,68,0.05)' : s === 2 ? 'rgba(245,158,11,0.05)' : s === 3 ? 'rgba(27,109,252,0.05)' : 'rgba(87,83,78,0.05)'
-                const border = s === 1 ? 'rgba(239,68,68,0.2)' : s === 2 ? 'rgba(245,158,11,0.2)' : s === 3 ? 'rgba(27,109,252,0.2)' : 'rgba(87,83,78,0.2)'
+                const bg = s === 1 ? '#FEE7E7' : s === 2 ? '#FEF6E7' : s === 3 ? '#F3F7FF' : '#F4F4F4'
+                const border = s === 1 ? '#F5C6C6' : s === 2 ? '#F0DCB4' : s === 3 ? '#B5CFFC' : '#E5E5E5'
                 const label = s === 1 ? 'Needs attention' : s === 2 ? 'Developing' : s === 3 ? 'Functioning well' : null
                 const interpretation = s != null ? SECTION_INTERPRETATIONS[title]?.[s] : null
                 return (
