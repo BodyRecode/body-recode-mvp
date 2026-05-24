@@ -177,7 +177,7 @@ export default function ReportClient({ report }: { report: {
           <h1 style={{ fontSize: '32px', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '12px' }}>
             {firstName}, here is what your body is telling you.
           </h1>
-          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.6 }}>
             Based on your Body State Scorecard results. Score: {report.score}/15.
           </p>
         </div>
@@ -191,7 +191,7 @@ export default function ReportClient({ report }: { report: {
           <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '16px', lineHeight: 1.3 }}>
             {state.headline}
           </h2>
-          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.75, margin: 0 }}>
+          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
             {state.biology}
           </p>
         </div>
@@ -239,11 +239,11 @@ export default function ReportClient({ report }: { report: {
           <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
             What is working against you right now
           </h3>
-          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.75, marginBottom: '16px' }}>
+          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '16px' }}>
             {state.whatIsHappening}
           </p>
           <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, marginBottom: '0' }}>
-            Your lowest-scoring areas (<strong style={{ color: '#999999' }}>{lowestSections[0]?.name}</strong>{lowestSections[1] ? <> and <strong style={{ color: '#999999' }}>{lowestSections[1].name}</strong></> : null}) are the most likely bottlenecks. Address these before adding more intensity elsewhere.
+            Your lowest-scoring areas (<strong style={{ color: '#1A1A1A' }}>{lowestSections[0]?.name}</strong>{lowestSections[1] ? <> and <strong style={{ color: '#1A1A1A' }}>{lowestSections[1].name}</strong></> : null}) are the most likely bottlenecks. Address these before adding more intensity elsewhere.
           </p>
         </div>
 
@@ -256,7 +256,7 @@ export default function ReportClient({ report }: { report: {
             {state.stopDoing.map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                 <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#DC2626', marginTop: '7px', flexShrink: 0 }} />
-                <p style={{ fontSize: '14px', color: '#999999', lineHeight: 1.65, margin: 0 }}>{item}</p>
+                <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{item}</p>
               </div>
             ))}
           </div>
@@ -267,25 +267,35 @@ export default function ReportClient({ report }: { report: {
           <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
             What to focus on first
           </h3>
-          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.75, marginBottom: '20px' }}>
+          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '20px' }}>
             {state.primaryFocus}
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {state.startDoing.map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                 <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#1B6DFC', marginTop: '7px', flexShrink: 0 }} />
-                <p style={{ fontSize: '14px', color: '#999999', lineHeight: 1.65, margin: 0 }}>{item}</p>
+                <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{item}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* CTA */}
-        <div style={{ background: '#1A1A1A', border: '1px solid rgba(27, 109, 252,0.3)', borderRadius: '16px', padding: '32px' }}>
-          <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
+        {/* CTA — light featured card matching the design system */}
+        <div style={{
+          background: '#FFFFFF',
+          border: '1px solid #E5E5E5',
+          borderLeft: '3px solid #1B6DFC',
+          borderRadius: '16px',
+          padding: '32px',
+          boxShadow: '0 1px 4px rgba(27, 109, 252, 0.06)',
+        }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 10px' }}>
+            Next Step
+          </p>
+          <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.25 }}>
             The report tells you the state. A call tells you the fix.
           </h3>
-          <p style={{ fontSize: '14px', color: '#B5CFFC', lineHeight: 1.7, marginBottom: '24px' }}>
+          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '24px' }}>
             We go through your results together, identify the specific driver behind what is not working, and map out exactly what needs to change first. Free. 30 minutes. No pitch.
           </p>
           <a
@@ -293,7 +303,8 @@ export default function ReportClient({ report }: { report: {
             style={{
               display: 'inline-block', padding: '14px 28px', borderRadius: '10px',
               background: '#1B6DFC', color: '#FFFFFF',
-              fontSize: '14px', fontWeight: 700, textDecoration: 'none',
+              fontSize: '15px', fontWeight: 800, textDecoration: 'none',
+              letterSpacing: '0.01em',
             }}
           >
             Book a free call
