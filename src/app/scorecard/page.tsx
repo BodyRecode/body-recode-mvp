@@ -242,34 +242,94 @@ function ScorecardInner() {
         {/* ─── SCORING STEP ─── */}
         {step === 'scoring' && (
           <>
-            {/* Hero with Signal Blue radial glows — matches /challenge */}
+            {/* Hero — full /challenge landing-page DNA: glows + badge + founder byline + accent headline + stats */}
             <div style={{ position: 'relative', overflow: 'hidden', margin: '0 -24px 24px', padding: '0 24px' }}>
               <div style={{
                 position: 'absolute', top: '-140px', right: '-140px',
-                width: '480px', height: '480px', borderRadius: '50%',
+                width: '500px', height: '500px', borderRadius: '50%',
                 background: 'radial-gradient(circle, rgba(27, 109, 252, 0.12) 0%, transparent 65%)',
                 pointerEvents: 'none',
               }} />
               <div style={{
                 position: 'absolute', bottom: '0', left: '-100px',
-                width: '320px', height: '320px', borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(27, 109, 252, 0.06) 0%, transparent 70%)',
+                width: '340px', height: '340px', borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(27, 109, 252, 0.07) 0%, transparent 70%)',
                 pointerEvents: 'none',
               }} />
-              <div style={{ position: 'relative', padding: '56px 0 32px' }}>
-                <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
-                  Body State Scorecard
-                </p>
-                <h1 style={{
-                  fontSize: 'clamp(34px, 6vw, 44px)', fontWeight: 900,
-                  letterSpacing: '-0.03em', lineHeight: 1.05, margin: '0 0 18px', color: '#1A1A1A',
+              <div style={{ position: 'relative', padding: '48px 0 24px' }}>
+
+                {/* Badge pill */}
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '8px',
+                  background: 'rgba(27, 109, 252,0.1)', border: '1px solid rgba(27, 109, 252,0.25)',
+                  borderRadius: '99px', padding: '7px 16px', marginBottom: '20px',
                 }}>
-                  Which state is your body in?
+                  <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#1B6DFC' }} />
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                    Body State Scorecard
+                  </span>
+                </div>
+
+                {/* Founder byline */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
+                  <img
+                    src="https://bodyrecode.au/kade.jpg"
+                    alt="Kade Dunstone"
+                    style={{
+                      width: '40px', height: '40px', borderRadius: '50%',
+                      objectFit: 'cover', objectPosition: 'top center',
+                      border: '1px solid #E5E5E5', flexShrink: 0,
+                    }}
+                  />
+                  <div>
+                    <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
+                      Built by Kade Dunstone
+                    </p>
+                    <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.3 }}>
+                      Human Movement Scientist · Business Entrepreneur · Body Recode Founder
+                    </p>
+                  </div>
+                </div>
+
+                {/* Headline with Signal Blue accent */}
+                <h1 style={{
+                  fontSize: 'clamp(38px, 7vw, 56px)', fontWeight: 900,
+                  letterSpacing: '-0.035em', lineHeight: 1.05, margin: '0 0 22px', color: '#1A1A1A',
+                }}>
+                  You&apos;re training. You&apos;re eating clean.
+                  <br />
+                  <span style={{ color: '#1B6DFC' }}>The fat won&apos;t move.</span>
                 </h1>
-                <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
-                <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
-                  You&apos;re putting in the effort. Something is working against you. This tells you what.
+
+                {/* Divider line */}
+                <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '28px' }} />
+
+                {/* Lead paragraphs */}
+                <p style={{ fontSize: '18px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '12px' }}>
+                  Most people assess fat loss by effort. But effort can stay high while your body shifts into protection mode and resists fat loss by design.
                 </p>
+                <p style={{ fontSize: '18px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '32px' }}>
+                  This scorecard reads your body first. In 2 minutes you know which state you&apos;re in, and what specifically is working against you.
+                </p>
+
+                {/* Stats grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '12px' }}>
+                  {[
+                    { value: '5', label: 'Sections' },
+                    { value: '2 min', label: 'To complete' },
+                    { value: 'Free', label: 'Instant result' },
+                  ].map(stat => (
+                    <div key={stat.label} style={{
+                      background: '#FFFFFF', border: '1px solid #E5E5E5',
+                      borderRadius: '12px', padding: '16px',
+                      textAlign: 'center',
+                    }}>
+                      <p style={{ fontSize: '22px', fontWeight: 900, color: '#1B6DFC', margin: '0 0 4px', letterSpacing: '-0.02em' }}>{stat.value}</p>
+                      <p style={{ fontSize: '11px', color: '#6B6B6B', margin: 0, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+
               </div>
             </div>
 
