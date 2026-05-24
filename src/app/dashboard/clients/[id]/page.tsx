@@ -328,10 +328,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Deliberate Start Window */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-wider text-[#999999] mb-1">Coaching Start Date</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC] mb-1">Coaching Start Date</p>
             {client.coaching_started_at ? (
               <p className="text-sm text-[#3A3A3A]">
                 {(() => {
@@ -354,9 +354,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Fixed Session Slot */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-xs uppercase tracking-wider text-[#999999]">Face-to-Face Session</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC]">Face-to-Face Session</p>
           <Link
             href={`/dashboard/clients/${id}/fixed-session`}
             className="text-xs text-blue-500 hover:text-blue-700 transition-colors"
@@ -407,9 +407,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Package */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-xs uppercase tracking-wider text-[#999999]">Coaching Package</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC]">Coaching Package</p>
           {client.subscription_active ? (
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-200 text-blue-500 bg-blue-50">
               Subscription Active
@@ -451,9 +451,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <ClientCommunicationsPanel rows={communications} />
 
       {/* Onboarding status */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-xs uppercase tracking-wider text-[#999999]">Onboarding</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC]">Onboarding</p>
           <div className="flex items-center gap-2 flex-wrap">
             <SendPortalEmailButton clientId={client.id} />
             <SendPortalOrientationButton clientId={client.id} />
@@ -518,10 +518,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
       {/* Foundational intake status */}
       {latestFoundationalInvitation && (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 mb-4">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs uppercase tracking-wider text-[#999999] mb-1">Intake</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC] mb-1">Intake</p>
               <div className="flex items-center gap-2">
                 <span
                   className={`text-xs font-medium px-2.5 py-1 rounded-full border capitalize ${
@@ -580,10 +580,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           portal), pending (sitting in their portal — coach can email or
           copy the link), complete (with completion timestamp).  */}
       {latestFoundationalInvitation?.status === 'complete' && (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 mb-4">
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs uppercase tracking-wider text-[#999999] mb-1">Supplementary intake</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC] mb-1">Supplementary intake</p>
               {latestSupplementaryInvitation ? (
                 <div className="flex items-center gap-2">
                   <span
@@ -1188,7 +1188,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         {/* Check-in submission log */}
         {recentCheckins && recentCheckins.length > 0 && (
           <div className="bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-xl p-4">
-            <p className="text-xs uppercase tracking-wider text-[#999999] mb-3">Recent Submissions</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC] mb-3">Recent Submissions</p>
             <div className="space-y-2">
               {recentCheckins.slice(0, 8).map((ci, i) => {
                 const fb = ci.id ? feedbackByCheckinId.get(ci.id) : undefined
@@ -1225,7 +1225,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         {feedbackHistory && feedbackHistory.length > 0 && (
           <div className="bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-xl p-4">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-xs uppercase tracking-wider text-[#999999]">Coach Response History</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC]">Coach Response History</p>
               <p className="text-[10px] text-[#4A4A4A] uppercase tracking-widest">{feedbackHistory.length} total</p>
             </div>
             <div className="space-y-3">

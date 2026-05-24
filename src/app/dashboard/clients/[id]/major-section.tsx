@@ -48,11 +48,11 @@ export default function MajorSection({
         >
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
           <h2
-            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
+            className="text-[11px] font-bold text-[#1B6DFC] uppercase"
             style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', letterSpacing: '0.14em' }}
           >
             {title}
-            {subtitle && <span className="text-[#4A4A4A] font-normal"> {subtitle}</span>}
+            {subtitle && <span className="text-[#6B6B6B] font-normal"> {subtitle}</span>}
           </h2>
           {attentionLabel && !open && (
             <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-700">
