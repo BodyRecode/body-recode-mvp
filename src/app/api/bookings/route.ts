@@ -4,6 +4,11 @@ import { createZoomMeeting } from '@/lib/zoom'
 import { Resend } from 'resend'
 import { fireTrigger } from '@/lib/automation-engine'
 import { darkEmailSignature } from '@/lib/email-signature'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  emailCta, emailStatusCard,
+} from '@/lib/email-shell'
 
 const typeLabel: Record<string, string> = {
   zoom: 'Zoom',
@@ -168,15 +173,20 @@ export async function POST(request: NextRequest) {
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
         subject: `Booking confirmed — ${contactName} — ${typeLabel[body.type] ?? 'Session'}`,
-        html: `
-<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
-  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${typeLabel[body.type] ?? 'Session'} booked — ${contactName}</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 6px;">${dateStr}</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">${timeStr} Brisbane · ${body.duration_minutes ?? 60} min</p>
-  ${meetingLink ? `<a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;margin-bottom:24px;">Join Zoom ↗</a>` : ''}
-  <p style="font-size:13px;color:#555;margin:24px 0 0;">Open the attached .ics file to add this to Apple Calendar.</p>
-</div>`,
+        html: darkEmailShell(`
+${emailLogo()}
+${emailEyebrow(`${typeLabel[body.type] ?? 'Session'} Booked`)}
+${emailHeading(`${contactName} just booked.`)}
+${emailDivider()}
+${emailStatusCard({
+  eyebrow: 'Date & Time',
+  headline: `${dateStr} · ${timeStr} Brisbane`,
+  body: `${body.duration_minutes ?? 60} minutes. Calendar (.ics) file attached.`,
+})}
+${meetingLink ? emailCta({ href: meetingLink, label: 'Join Zoom' }) : ''}
+${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
+${darkEmailSignature()}
+`, { previewText: `${contactName} booked ${typeLabel[body.type] ?? 'a session'} for ${dateStr}.` }),
         attachments: [
           {
             filename: 'booking.ics',
@@ -200,37 +210,23 @@ export async function POST(request: NextRequest) {
               content: Buffer.from(icsContent).toString('base64'),
             },
           ],
-          html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;"/>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#999999;line-height:1.75;">Your Zoom call with Kade is confirmed.</p>
-            <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
-              <tr>
-                <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
-                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#1A1A1A;">${dateStr}</p>
-                  <p style="margin:0 0 16px;font-size:14px;color:#999999;">${timeStr} Brisbane · ${durationMinutes} min</p>
-                  ${meetingLink ? `<a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>` : ''}
-                </td>
-              </tr>
-            </table>
-            <p style="margin:0 0 24px;font-size:13px;color:#999999;">Open the attached file to add this to your calendar.</p>
-            ${darkEmailSignature()}
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+          html: darkEmailShell(`
+${emailLogo()}
+${emailEyebrow('Zoom Call · Confirmed')}
+${emailHeading(`See you ${dateStr.split(',')[0]}, ${firstName}.`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('Your Zoom call with Kade is confirmed.', { bottom: 24 })}
+${emailStatusCard({
+  eyebrow: 'When',
+  headline: `${dateStr} · ${timeStr} Brisbane`,
+  body: `${durationMinutes} minutes on Zoom. Tap the button below at the time to join.`,
+})}
+${meetingLink ? emailCta({ href: meetingLink, label: 'Join Zoom' }) : ''}
+${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
+${emailBody('Open the attached calendar file (.ics) to add this to your calendar.', { size: 13, bottom: 0 })}
+${darkEmailSignature()}
+`, { previewText: `${firstName}, your Zoom call is confirmed for ${dateStr}.` }),
         })
 
         // Scheduled reminders: 2 hours and 30 minutes before
@@ -238,36 +234,25 @@ export async function POST(request: NextRequest) {
         const reminder30mTime = new Date(scheduledAt.getTime() - 30 * 60 * 1000)
         const now = Date.now()
 
-        const reminderHtml = (minutesBefore: number) => `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;"/>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#999999;line-height:1.75;">Your Zoom call with Kade is in ${minutesBefore === 120 ? '2 hours' : '30 minutes'}.</p>
-            <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
-              <tr>
-                <td style="padding:20px 24px;background:#1a1a1a;border-radius:12px;border:1px solid #2a2a2a;">
-                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#1A1A1A;">${dateStr}</p>
-                  <p style="margin:0 0 16px;font-size:14px;color:#999999;">${timeStr} Brisbane · ${durationMinutes} min</p>
-                  ${meetingLink ? `<a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>` : ''}
-                </td>
-              </tr>
-            </table>
-            ${darkEmailSignature()}
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`
+        const reminderHtml = (minutesBefore: number) => {
+          const label = minutesBefore === 120 ? '2 hours' : '30 minutes'
+          return darkEmailShell(`
+${emailLogo()}
+${emailEyebrow('Zoom Call Reminder')}
+${emailHeading(`Starting in ${label}, ${firstName}.`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody(`Your Zoom call with Kade is in ${label}.`, { bottom: 24 })}
+${emailStatusCard({
+  eyebrow: 'When',
+  headline: `${dateStr} · ${timeStr} Brisbane`,
+  body: `${durationMinutes} minutes on Zoom. Tap below at the time to join.`,
+})}
+${meetingLink ? emailCta({ href: meetingLink, label: 'Join Zoom' }) : ''}
+${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
+${darkEmailSignature()}
+`, { previewText: `${firstName}, your Zoom call starts in ${label}.` })
+        }
 
         if (reminder2hTime.getTime() > now + 60_000) {
           await resend.emails.send({
