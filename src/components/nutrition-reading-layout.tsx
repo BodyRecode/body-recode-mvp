@@ -6,7 +6,7 @@
  *
  * Editorial longform style on the locked Pure White / Graphite Black /
  * Signal Blue palette. Mirrors the Program Reading layout DNA so the two
- * read as a series. Narrow column, Source Serif body, hairline section
+ * read as a series. Narrow column, sans throughout, hairline section
  * breaks instead of cards.
  */
 
@@ -19,7 +19,6 @@ const HAIRLINE = '#E5E5E5'
 const PAPER = '#FFFFFF'
 const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 const SANS_FONT = "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif"
-const SERIF_FONT = "var(--font-serif), 'Iowan Old Style', 'Source Serif Pro', Charter, 'Apple Garamond', Baskerville, 'Times New Roman', serif"
 
 export interface NutritionReadingData {
   nr_why_this_plan: string | null
@@ -80,7 +79,6 @@ export default function NutritionReadingLayout({
         .nutrition-reading { font-family: ${SANS_FONT}; background: ${PAPER}; color: ${INK}; min-height: 100vh; }
         .nutrition-reading * { box-sizing: border-box; }
         .nutrition-reading p, .nutrition-reading h1, .nutrition-reading h2 { margin: 0; padding: 0; }
-        .nr-prose { font-family: ${SERIF_FONT}; font-feature-settings: 'liga' 1, 'kern' 1; }
         @media print {
           @page { margin: 0; size: A4; }
           html, body { background: ${PAPER} !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -103,10 +101,10 @@ export default function NutritionReadingLayout({
             <p style={{ fontSize: 10, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.24em', marginBottom: 24 }}>
               Nutrition Reading
             </p>
-            <h1 className="nr-prose" style={{ fontSize: 46, fontWeight: 600, color: INK, letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: 20 }}>
+            <h1 style={{ fontSize: 46, fontWeight: 600, color: INK, letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: 20 }}>
               {reading.plan_name}
             </h1>
-            <p className="nr-prose" style={{ fontSize: 19, fontWeight: 400, color: MUTED, lineHeight: 1.5, fontStyle: 'italic' }}>
+            <p style={{ fontSize: 19, fontWeight: 400, color: MUTED, lineHeight: 1.5, fontStyle: 'italic' }}>
               What this plan is for, and how we will read it as it unfolds.
             </p>
             <div style={{ height: 1, background: HAIRLINE, margin: '40px 0 24px' }} />
@@ -117,10 +115,10 @@ export default function NutritionReadingLayout({
 
           {/* About this reading */}
           <div style={{ marginBottom: 96, paddingLeft: 24, borderLeft: `2px solid ${TEAL}` }}>
-            <p className="nr-prose" style={{ fontSize: 21, fontWeight: 400, color: INK, lineHeight: 1.55, fontStyle: 'italic', marginBottom: 20, letterSpacing: '-0.005em' }}>
+            <p style={{ fontSize: 21, fontWeight: 400, color: INK, lineHeight: 1.55, fontStyle: 'italic', marginBottom: 20, letterSpacing: '-0.005em' }}>
               This is the bridge from your Foundational Reading to the meals in this plan. It is the why before the what.
             </p>
-            <p className="nr-prose" style={{ fontSize: 15, fontWeight: 400, color: MUTED, lineHeight: 1.75 }}>
+            <p style={{ fontSize: 15, fontWeight: 400, color: MUTED, lineHeight: 1.75 }}>
               Every plan is built from where your body currently is, not from a generic template. This reading explains what we are trying to support with food right now, what the plan will ask of your body, and what we are deliberately not chasing yet. Read it once before your first meal of the week. It frames everything that follows.
             </p>
           </div>
@@ -139,11 +137,11 @@ export default function NutritionReadingLayout({
                   <span style={{ fontSize: 11, fontWeight: 700, color: TEAL, fontFamily: MONO_FONT, letterSpacing: '0.04em' }}>
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <h2 className="nr-prose" style={{ fontSize: 26, fontWeight: 600, color: INK, letterSpacing: '-0.015em', lineHeight: 1.25 }}>
+                  <h2 style={{ fontSize: 26, fontWeight: 600, color: INK, letterSpacing: '-0.015em', lineHeight: 1.25 }}>
                     {section.label}
                   </h2>
                 </div>
-                <p className="nr-prose" style={{ fontSize: 17, fontWeight: 400, color: BODY, lineHeight: 1.75, whiteSpace: 'pre-line', letterSpacing: '-0.003em' }}>
+                <p style={{ fontSize: 17, fontWeight: 400, color: BODY, lineHeight: 1.75, whiteSpace: 'pre-line', letterSpacing: '-0.003em' }}>
                   {content}
                 </p>
               </div>

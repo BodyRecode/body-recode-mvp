@@ -8,9 +8,9 @@
  *
  * Editorial longform style on the locked Pure White / Graphite Black /
  * Signal Blue palette. Reads as a letter from coach to client: narrow
- * column, generous whitespace, Source Serif body, hairline section
- * breaks instead of cards. Same DNA as the Program and Nutrition
- * readings so they read as a series.
+ * column, generous whitespace, sans throughout, hairline section breaks
+ * instead of cards. Same DNA as the Program and Nutrition readings so
+ * they read as a series.
  */
 
 const TEAL = '#1B6DFC'
@@ -22,7 +22,6 @@ const HAIRLINE = '#E5E5E5'
 const PAPER = '#FFFFFF'
 const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 const SANS_FONT = "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif"
-const SERIF_FONT = "var(--font-serif), 'Iowan Old Style', 'Source Serif Pro', Charter, 'Apple Garamond', Baskerville, 'Times New Roman', serif"
 
 export interface ReadingData {
   cr_where_you_are: string | null
@@ -72,7 +71,6 @@ export default function ReadingLayout({
         .foundational-reading { font-family: ${SANS_FONT}; background: ${PAPER}; color: ${INK}; min-height: 100vh; }
         .foundational-reading * { box-sizing: border-box; }
         .foundational-reading p, .foundational-reading h1, .foundational-reading h2 { margin: 0; padding: 0; }
-        .fr-prose { font-family: ${SERIF_FONT}; font-feature-settings: 'liga' 1, 'kern' 1; }
         @media print {
           @page { margin: 0; size: A4; }
           html, body { background: ${PAPER} !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -95,10 +93,10 @@ export default function ReadingLayout({
             <p style={{ fontSize: 10, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.24em', marginBottom: 24 }}>
               Foundational Reading
             </p>
-            <h1 className="fr-prose" style={{ fontSize: 46, fontWeight: 600, color: INK, letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: 20 }}>
+            <h1 style={{ fontSize: 46, fontWeight: 600, color: INK, letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: 20 }}>
               Your Starting Position
             </h1>
-            <p className="fr-prose" style={{ fontSize: 19, fontWeight: 400, color: MUTED, lineHeight: 1.5, fontStyle: 'italic' }}>
+            <p style={{ fontSize: 19, fontWeight: 400, color: MUTED, lineHeight: 1.5, fontStyle: 'italic' }}>
               A read of how your body is currently organising itself.
             </p>
             <div style={{ height: 1, background: HAIRLINE, margin: '40px 0 24px' }} />
@@ -109,10 +107,10 @@ export default function ReadingLayout({
 
           {/* About this reading — italic blockquote, not a card */}
           <div style={{ marginBottom: 96, paddingLeft: 24, borderLeft: `2px solid ${TEAL}` }}>
-            <p className="fr-prose" style={{ fontSize: 21, fontWeight: 400, color: INK, lineHeight: 1.55, fontStyle: 'italic', marginBottom: 20, letterSpacing: '-0.005em' }}>
+            <p style={{ fontSize: 21, fontWeight: 400, color: INK, lineHeight: 1.55, fontStyle: 'italic', marginBottom: 20, letterSpacing: '-0.005em' }}>
               This is not a verdict. It is a read of what your body is currently doing and why we will move the way we are about to.
             </p>
-            <p className="fr-prose" style={{ fontSize: 15, fontWeight: 400, color: MUTED, lineHeight: 1.75 }}>
+            <p style={{ fontSize: 15, fontWeight: 400, color: MUTED, lineHeight: 1.75 }}>
               The intake you completed gave us a picture of how your system is currently organising itself, across energy, recovery, sleep, stress, and training response. What follows is what stood out to us: where you are, what your body is signalling, and what we are deliberately doing and not doing in response. Nothing here diagnoses or prescribes. It is the foundation we will build from together.
             </p>
           </div>
@@ -131,11 +129,11 @@ export default function ReadingLayout({
                   <span style={{ fontSize: 11, fontWeight: 700, color: TEAL, fontFamily: MONO_FONT, letterSpacing: '0.04em' }}>
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <h2 className="fr-prose" style={{ fontSize: 26, fontWeight: 600, color: INK, letterSpacing: '-0.015em', lineHeight: 1.25 }}>
+                  <h2 style={{ fontSize: 26, fontWeight: 600, color: INK, letterSpacing: '-0.015em', lineHeight: 1.25 }}>
                     {section.label}
                   </h2>
                 </div>
-                <p className="fr-prose" style={{ fontSize: 17, fontWeight: 400, color: BODY, lineHeight: 1.75, whiteSpace: 'pre-line', letterSpacing: '-0.003em' }}>
+                <p style={{ fontSize: 17, fontWeight: 400, color: BODY, lineHeight: 1.75, whiteSpace: 'pre-line', letterSpacing: '-0.003em' }}>
                   {content}
                 </p>
               </div>
