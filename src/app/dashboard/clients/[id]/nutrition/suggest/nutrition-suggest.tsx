@@ -233,7 +233,17 @@ export default function NutritionPrescriptionSuggest({
     const data = await res.json()
     setGenerating(false)
 
-    if (data.error) { setError(data.error); return }
+    if (data.error) {
+      // 422 validation failures include an `issues` array — surface every
+      // issue message so the coach can see exactly what the validator rejected
+      // instead of just the top-line "failed validation" string.
+      const issues = Array.isArray(data.issues) ? data.issues as Array<{ code: string; message: string }> : []
+      const detail = issues.length > 0
+        ? `${data.error}\n\n${issues.map(i => `• [${i.code}] ${i.message}`).join('\n')}`
+        : data.error
+      setError(detail)
+      return
+    }
     router.push(`/dashboard/clients/${clientId}/nutrition`)
   }
 
@@ -553,7 +563,7 @@ export default function NutritionPrescriptionSuggest({
 
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-          <p className="text-red-700 text-sm">{error}</p>
+          <p className="text-red-700 text-sm whitespace-pre-wrap">{error}</p>
         </div>
       )}
       </div>

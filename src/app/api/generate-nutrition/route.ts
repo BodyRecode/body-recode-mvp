@@ -253,9 +253,20 @@ export async function POST(request: NextRequest) {
     validation = runValidate(plan)
     if (!validation.ok) {
       console.warn('[generate-nutrition] First-pass validation failed:', validation.issues.map(i => i.code))
+      console.warn('[generate-nutrition] First-pass issue detail:\n' + validation.issues.map(i => `  - [${i.code}] ${i.message}`).join('\n'))
       const correctionNote = validation.issues.map(i => `- ${i.message}`).join('\n')
       plan = await callModel(correctionNote)
       validation = runValidate(plan)
+      if (!validation.ok) {
+        console.warn('[generate-nutrition] Second-pass validation ALSO failed:', validation.issues.map(i => i.code))
+        console.warn('[generate-nutrition] Second-pass issue detail:\n' + validation.issues.map(i => `  - [${i.code}] ${i.message}`).join('\n'))
+        console.warn('[generate-nutrition] Second-pass plan meal summary:', JSON.stringify(
+          (plan.meals as MealLike[] | undefined)?.map(m => ({
+            name: m.meal_name,
+            P: m.protein_g, C: m.carb_g, F: m.fat_g,
+            food_count: Array.isArray(m.foods) ? m.foods.length : 0,
+          })) ?? [], null, 2))
+      }
     }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
