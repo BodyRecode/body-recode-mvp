@@ -6,18 +6,22 @@
  *   - /portal/[token]/foundational-reading                  (client view)
  *   - /api/.../foundational-reading/pdf                     (puppeteer captures preview)
  *
- * Cream-on-black premium deliverable, same DNA as the CFFS report so it reads
- * as a series. Self-contained: scopes its own font + body styles via a
- * wrapper class so it never leaks into the dashboard chrome.
+ * Light premium deliverable on the locked Pure White / Graphite Black /
+ * Signal Blue palette (see feedback_design_language). Same DNA as the
+ * Program and Nutrition readings so they read as a series. Self-contained:
+ * scopes its own font + body styles via a wrapper class so it never leaks
+ * into the dashboard chrome.
  */
 
 const TEAL = '#1B6DFC'
 const TEAL_HOVER = '#5390FF'
-const INK = '#0f0f0f'
-const WHITE = '#ffffff'
-const PAGE_BG = '#fafaf7'
-const CARD_BORDER = '#e7e5e0'
-const SOFT = '#f5f3ee'
+const INK = '#1A1A1A'
+const WHITE = '#FFFFFF'
+const PAGE_BG = '#FFFFFF'
+const CARD_BORDER = '#E5E5E5'
+const SOFT = '#FAFAFA'
+const MUTED = '#6B6B6B'
+const SUBTLE = '#999999'
 const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 const SCREEN_FONT = "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif"
 
@@ -74,25 +78,25 @@ export default function ReadingLayout({
       <div className="foundational-reading">
 
         {/* Header bar */}
-        <div style={{ background: '#000000', padding: '44px 52px 0' }}>
+        <div style={{ background: WHITE, padding: '44px 52px 0', borderBottom: `1px solid ${CARD_BORDER}` }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo-black.png"
             alt="Body Recode"
-            style={{ height: 64, width: 'auto', display: 'block', marginBottom: 44 }}
+            style={{ height: 56, width: 'auto', display: 'block', marginBottom: 44 }}
           />
 
           <p style={{ fontSize: 10, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>
             Foundational Reading
           </p>
-          <h1 style={{ fontSize: 36, fontWeight: 800, color: WHITE, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 6 }}>
+          <h1 style={{ fontSize: 36, fontWeight: 800, color: INK, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 6 }}>
             Your Starting Position
           </h1>
-          <p style={{ fontSize: 12, fontWeight: 400, color: '#666666', marginBottom: 44, letterSpacing: '0.02em' }}>
+          <p style={{ fontSize: 13, fontWeight: 400, color: MUTED, marginBottom: 40, letterSpacing: '0.02em' }}>
             A read of how your body is currently organising itself
           </p>
 
-          <div style={{ display: 'flex', gap: 0, borderTop: '1px solid #1a1a1a' }}>
+          <div style={{ display: 'flex', gap: 0, borderTop: `1px solid ${CARD_BORDER}` }}>
             {[
               { label: 'For',       value: client.name,                           highlight: true },
               { label: 'State',     value: reading.body_state_classification ?? '-', highlight: false },
@@ -103,13 +107,13 @@ export default function ReadingLayout({
                 style={{
                   padding: i < arr.length - 1 ? '20px 40px 20px 0' : '20px 0',
                   marginRight: i < arr.length - 1 ? 40 : 0,
-                  borderRight: i < arr.length - 1 ? '1px solid #1a1a1a' : 'none',
+                  borderRight: i < arr.length - 1 ? `1px solid ${CARD_BORDER}` : 'none',
                 }}
               >
-                <p style={{ fontSize: 9, fontWeight: 700, color: '#444444', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>
+                <p style={{ fontSize: 9, fontWeight: 700, color: SUBTLE, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>
                   {item.label}
                 </p>
-                <p style={{ fontSize: 15, fontWeight: item.highlight ? 700 : 400, color: item.highlight ? WHITE : '#aaaaaa' }}>
+                <p style={{ fontSize: 15, fontWeight: item.highlight ? 700 : 500, color: item.highlight ? INK : MUTED }}>
                   {item.value}
                 </p>
               </div>
@@ -122,22 +126,22 @@ export default function ReadingLayout({
         <div style={{ background: PAGE_BG, padding: '48px 52px 64px' }}>
 
           {/* About this document - in the client's voice */}
-          <div style={{ background: INK, padding: '36px 40px', marginBottom: 40, borderRadius: 6 }}>
+          <div style={{ background: WHITE, border: `1px solid ${CARD_BORDER}`, padding: '36px 40px', marginBottom: 40, borderRadius: 6 }}>
             <p style={{ fontSize: 9, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>
               About This Reading
             </p>
-            <p style={{ fontSize: 17, fontWeight: 600, color: WHITE, lineHeight: 1.55, marginBottom: 20, letterSpacing: '-0.01em' }}>
+            <p style={{ fontSize: 17, fontWeight: 600, color: INK, lineHeight: 1.55, marginBottom: 20, letterSpacing: '-0.01em' }}>
               This is not a verdict. It is a read of what your body is currently doing and why we will move the way we are about to.
             </p>
-            <div style={{ height: 1, background: '#222222', marginBottom: 20 }} />
-            <p style={{ fontSize: 13, fontWeight: 400, color: '#a3a3a3', lineHeight: 1.85 }}>
+            <div style={{ height: 1, background: CARD_BORDER, marginBottom: 20 }} />
+            <p style={{ fontSize: 13, fontWeight: 400, color: MUTED, lineHeight: 1.85 }}>
               The intake you completed gave us a picture of how your system is currently organising itself, across energy, recovery, sleep, stress, and training response. What follows is what stood out to us: where you are, what your body is signalling, and what we are deliberately doing and not doing in response. Nothing here diagnoses or prescribes. It is the foundation we will build from together.
             </p>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, margin: '0 0 32px' }}>
             <div style={{ width: 28, height: 3, background: TEAL, borderRadius: 2 }} />
-            <p style={{ fontSize: 9, fontWeight: 700, color: '#aaaaaa', textTransform: 'uppercase', letterSpacing: '0.2em' }}>
+            <p style={{ fontSize: 9, fontWeight: 700, color: SUBTLE, textTransform: 'uppercase', letterSpacing: '0.2em' }}>
               The Reading
             </p>
             <div style={{ flex: 1, height: 1, background: CARD_BORDER }} />
@@ -167,7 +171,7 @@ export default function ReadingLayout({
                   </p>
                 </div>
                 <div style={{ padding: '24px 32px' }}>
-                  <p style={{ fontSize: 13.5, fontWeight: 400, color: '#2a2a2a', lineHeight: 1.9, whiteSpace: 'pre-line' }}>
+                  <p style={{ fontSize: 13.5, fontWeight: 400, color: INK, lineHeight: 1.9, whiteSpace: 'pre-line' }}>
                     {content}
                   </p>
                 </div>
@@ -175,11 +179,11 @@ export default function ReadingLayout({
             )
           })}
 
-          <div style={{ marginTop: 48, paddingTop: 24, borderTop: `2px solid ${INK}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <p style={{ fontSize: 10, fontWeight: 600, color: '#999999', letterSpacing: '0.05em' }}>
+          <div style={{ marginTop: 48, paddingTop: 24, borderTop: `1px solid ${CARD_BORDER}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ fontSize: 10, fontWeight: 600, color: SUBTLE, letterSpacing: '0.05em' }}>
               © Body Recode · www.bodyrecode.au
             </p>
-            <p style={{ fontSize: 10, fontWeight: 600, color: '#aaaaaa', letterSpacing: '0.05em' }}>
+            <p style={{ fontSize: 10, fontWeight: 600, color: SUBTLE, letterSpacing: '0.05em' }}>
               Issued for {client.name}
             </p>
           </div>
