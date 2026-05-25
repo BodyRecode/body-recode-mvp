@@ -27,7 +27,6 @@ export async function PATCH(
     .maybeSingle()
 
   if (!program) return NextResponse.json({ error: 'Program not found' }, { status: 404 })
-  if (program.status !== 'draft') return NextResponse.json({ error: 'Only draft programs can be edited' }, { status: 400 })
 
   const { error } = await admin
     .from('programs')

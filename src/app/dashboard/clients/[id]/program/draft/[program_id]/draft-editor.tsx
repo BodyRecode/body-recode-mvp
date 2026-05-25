@@ -39,6 +39,7 @@ interface LibraryExercise {
 interface Program {
   id: string
   client_id: string
+  status: string
   block_name: string
   progression_phase: string
   training_goal: string
@@ -253,6 +254,8 @@ export default function DraftEditor({
     return l.name.toLowerCase().includes(search)
   }).slice(0, 20)
 
+  const isActive = program.status === 'active'
+
   return (
     <div className="max-w-3xl mx-auto">
       {/* Header */}
@@ -262,37 +265,51 @@ export default function DraftEditor({
           <span>/</span>
           <Link href={`/dashboard/clients/${clientId}/program`} className="hover:text-stone-700 transition-colors">Training Program</Link>
           <span>/</span>
-          <span className="text-stone-700">Draft Review</span>
+          <span className="text-stone-700">{isActive ? 'Edit Exercises' : 'Draft Review'}</span>
         </div>
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-[#1A1A1A]">{program.block_name}</h1>
-            <p className="text-sm text-amber-700 mt-1">Draft - pending coach review</p>
+            <p className={`text-sm mt-1 ${isActive ? 'text-stone-500' : 'text-amber-700'}`}>
+              {isActive ? 'Editing active program - changes save in place' : 'Draft - pending coach review'}
+            </p>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              onClick={handleDiscard}
-              disabled={discarding || promoting}
-              className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
-            >
-              {discarding ? 'Discarding…' : 'Discard Draft'}
-            </button>
+            {!isActive && (
+              <button
+                onClick={handleDiscard}
+                disabled={discarding || promoting}
+                className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
+              >
+                {discarding ? 'Discarding…' : 'Discard Draft'}
+              </button>
+            )}
             {dirty && (
               <button
                 onClick={handleSave}
                 disabled={saving || promoting}
-                className="text-xs px-3 py-1.5 border border-stone-400 text-stone-700 rounded-lg hover:border-stone-600 transition-colors disabled:opacity-40"
+                className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-stone-400 text-stone-700 hover:border-stone-600'}`}
               >
-                {saving ? 'Saving…' : 'Save Changes'}
+                {saving ? 'Saving…' : isActive ? 'Save' : 'Save Changes'}
               </button>
             )}
-            <button
-              onClick={handlePromote}
-              disabled={promoting || saving || discarding}
-              className="text-xs px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
-            >
-              {promoting ? 'Promoting…' : 'Promote to Active'}
-            </button>
+            {!isActive && (
+              <button
+                onClick={handlePromote}
+                disabled={promoting || saving || discarding}
+                className="text-xs px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
+              >
+                {promoting ? 'Promoting…' : 'Promote to Active'}
+              </button>
+            )}
+            {isActive && (
+              <Link
+                href={`/dashboard/clients/${clientId}/program`}
+                className="text-xs px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors"
+              >
+                Done
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -536,30 +553,41 @@ export default function DraftEditor({
 
       {/* Bottom actions */}
       <div className="mt-6 flex items-center justify-between">
-        <button
-          onClick={handleDiscard}
-          disabled={discarding || promoting}
-          className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
-        >
-          {discarding ? 'Discarding…' : 'Discard Draft'}
-        </button>
+        {!isActive ? (
+          <button
+            onClick={handleDiscard}
+            disabled={discarding || promoting}
+            className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
+          >
+            {discarding ? 'Discarding…' : 'Discard Draft'}
+          </button>
+        ) : (
+          <Link
+            href={`/dashboard/clients/${clientId}/program`}
+            className="text-xs px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors"
+          >
+            Done
+          </Link>
+        )}
         <div className="flex items-center gap-2">
           {dirty && (
             <button
               onClick={handleSave}
               disabled={saving || promoting}
-              className="text-xs px-3 py-1.5 border border-stone-400 text-stone-700 rounded-lg hover:border-stone-600 transition-colors disabled:opacity-40"
+              className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-stone-400 text-stone-700 hover:border-stone-600'}`}
             >
-              {saving ? 'Saving…' : 'Save Changes'}
+              {saving ? 'Saving…' : isActive ? 'Save' : 'Save Changes'}
             </button>
           )}
-          <button
-            onClick={handlePromote}
-            disabled={promoting || saving || discarding}
-            className="text-xs px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
-          >
-            {promoting ? 'Promoting…' : 'Promote to Active'}
-          </button>
+          {!isActive && (
+            <button
+              onClick={handlePromote}
+              disabled={promoting || saving || discarding}
+              className="text-xs px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
+            >
+              {promoting ? 'Promoting…' : 'Promote to Active'}
+            </button>
+          )}
         </div>
       </div>
     </div>

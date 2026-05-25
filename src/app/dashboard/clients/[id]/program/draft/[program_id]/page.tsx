@@ -23,7 +23,6 @@ export default async function DraftReviewPage({
     .select('*')
     .eq('id', program_id)
     .eq('client_id', id)
-    .eq('status', 'draft')
     .maybeSingle()
 
   if (!program) notFound()

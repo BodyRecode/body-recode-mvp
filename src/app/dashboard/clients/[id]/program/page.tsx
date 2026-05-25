@@ -392,6 +392,16 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             clientToken={client.onboarding_token ?? null}
           />
 
+          <div className="mb-3 flex items-center justify-between">
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Sessions</p>
+            <Link
+              href={`/dashboard/clients/${id}/program/draft/${activeProgram.id}`}
+              className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+            >
+              Edit exercises →
+            </Link>
+          </div>
+
           <div className="flex gap-8">
             <StickyScrollNav sections={programNavSections(activeProgram)} />
             <div className="flex-1 min-w-0">
