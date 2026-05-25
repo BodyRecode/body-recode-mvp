@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { renderDashboardPdf } from '@/lib/pdf'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -24,7 +25,8 @@ export async function GET(
     .single()
 
   if (!client) return new Response('Not found', { status: 404 })
-  if ((user.email ?? '').toLowerCase() !== (client.email ?? '').toLowerCase()) {
+  const userEmail = (user.email ?? '').toLowerCase()
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     return new Response('Forbidden', { status: 403 })
   }
 

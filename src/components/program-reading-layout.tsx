@@ -4,22 +4,22 @@
  * Used by:
  *   - /portal/[token]/program/reading        (full-screen client view)
  *
- * Mirrors the Foundational Reading layout DNA so the two read as a series.
- * Light premium document on the locked Pure White / Graphite Black /
- * Signal Blue palette. Self-contained styles via wrapper class.
+ * Editorial longform style on the locked Pure White / Graphite Black /
+ * Signal Blue palette. Mirrors the Foundational Reading layout DNA so the
+ * two read as a series. Narrow column, Source Serif body, hairline section
+ * breaks instead of cards.
  */
 
 const TEAL = '#1B6DFC'
-const TEAL_HOVER = '#5390FF'
 const INK = '#1A1A1A'
-const WHITE = '#FFFFFF'
-const PAGE_BG = '#FFFFFF'
-const CARD_BORDER = '#E5E5E5'
-const SOFT = '#FAFAFA'
+const BODY = '#2B2B2B'
 const MUTED = '#6B6B6B'
 const SUBTLE = '#999999'
+const HAIRLINE = '#E5E5E5'
+const PAPER = '#FFFFFF'
 const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
-const SCREEN_FONT = "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif"
+const SANS_FONT = "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif"
+const SERIF_FONT = "var(--font-serif), 'Iowan Old Style', 'Source Serif Pro', Charter, 'Apple Garamond', Baskerville, 'Times New Roman', serif"
 
 export interface ProgramReadingData {
   pr_why_this_block: string | null
@@ -63,92 +63,64 @@ export default function ProgramReadingLayout({
     .filter(Boolean)
     .join(' · ')
 
+  const meta = [
+    `For ${client.name}`,
+    phaseGoal || null,
+    generatedDate,
+  ].filter(Boolean).join(' · ')
+
   return (
     <>
       <style>{`
-        .program-reading { font-family: ${SCREEN_FONT}; background: ${PAGE_BG}; color: ${INK}; min-height: 100vh; }
+        .program-reading { font-family: ${SANS_FONT}; background: ${PAPER}; color: ${INK}; min-height: 100vh; }
         .program-reading * { box-sizing: border-box; }
         .program-reading p, .program-reading h1, .program-reading h2 { margin: 0; padding: 0; }
+        .pr-prose { font-family: ${SERIF_FONT}; font-feature-settings: 'liga' 1, 'kern' 1; }
         @media print {
           @page { margin: 0; size: A4; }
-          html, body { background: ${PAGE_BG} !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          html, body { background: ${PAPER} !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .no-print { display: none !important; }
           .reading-section { break-inside: avoid; }
         }
       `}</style>
 
       <div className="program-reading">
+        <div style={{ maxWidth: 680, margin: '0 auto', padding: '96px 32px 120px' }}>
 
-        {/* Header bar */}
-        <div style={{ background: WHITE, padding: '44px 52px 0', borderBottom: `1px solid ${CARD_BORDER}` }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo-black.png"
-            alt="Body Recode"
-            style={{ height: 56, width: 'auto', display: 'block', marginBottom: 44 }}
-          />
-
-          <p style={{ fontSize: 10, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>
-            Program Reading
-          </p>
-          <h1 style={{ fontSize: 36, fontWeight: 800, color: INK, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 6 }}>
-            {reading.block_name}
-          </h1>
-          <p style={{ fontSize: 13, fontWeight: 400, color: MUTED, marginBottom: 40, letterSpacing: '0.02em' }}>
-            What this block is for, and how we will read it as it unfolds
-          </p>
-
-          <div style={{ display: 'flex', gap: 0, borderTop: `1px solid ${CARD_BORDER}` }}>
-            {[
-              { label: 'For',    value: client.name,         highlight: true },
-              { label: 'Block',  value: phaseGoal || '-',    highlight: false },
-              { label: 'Issued', value: generatedDate,       highlight: false },
-            ].map((item, i, arr) => (
-              <div
-                key={i}
-                style={{
-                  padding: i < arr.length - 1 ? '20px 40px 20px 0' : '20px 0',
-                  marginRight: i < arr.length - 1 ? 40 : 0,
-                  borderRight: i < arr.length - 1 ? `1px solid ${CARD_BORDER}` : 'none',
-                }}
-              >
-                <p style={{ fontSize: 9, fontWeight: 700, color: SUBTLE, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>
-                  {item.label}
-                </p>
-                <p style={{ fontSize: 15, fontWeight: item.highlight ? 700 : 500, color: item.highlight ? INK : MUTED, textTransform: item.label === 'Block' ? 'capitalize' : 'none' }}>
-                  {item.value}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={{ height: 4, background: `linear-gradient(90deg, ${TEAL} 0%, ${TEAL_HOVER} 50%, transparent 100%)` }} />
-
-        <div style={{ background: PAGE_BG, padding: '48px 52px 64px' }}>
-
-          {/* About this document */}
-          <div style={{ background: WHITE, border: `1px solid ${CARD_BORDER}`, padding: '36px 40px', marginBottom: 40, borderRadius: 6 }}>
-            <p style={{ fontSize: 9, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>
-              About This Reading
+          {/* Masthead */}
+          <div style={{ marginBottom: 88 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo-black.png"
+              alt="Body Recode"
+              style={{ height: 28, width: 'auto', display: 'block', marginBottom: 56 }}
+            />
+            <p style={{ fontSize: 10, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.24em', marginBottom: 24 }}>
+              Program Reading
             </p>
-            <p style={{ fontSize: 17, fontWeight: 600, color: INK, lineHeight: 1.55, marginBottom: 20, letterSpacing: '-0.01em' }}>
+            <h1 className="pr-prose" style={{ fontSize: 46, fontWeight: 600, color: INK, letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: 20, textTransform: 'capitalize' }}>
+              {reading.block_name}
+            </h1>
+            <p className="pr-prose" style={{ fontSize: 19, fontWeight: 400, color: MUTED, lineHeight: 1.5, fontStyle: 'italic' }}>
+              What this block is for, and how we will read it as it unfolds.
+            </p>
+            <div style={{ height: 1, background: HAIRLINE, margin: '40px 0 24px' }} />
+            <p style={{ fontSize: 11, fontWeight: 600, color: SUBTLE, textTransform: 'uppercase', letterSpacing: '0.16em' }}>
+              {meta}
+            </p>
+          </div>
+
+          {/* About this reading */}
+          <div style={{ marginBottom: 96, paddingLeft: 24, borderLeft: `2px solid ${TEAL}` }}>
+            <p className="pr-prose" style={{ fontSize: 21, fontWeight: 400, color: INK, lineHeight: 1.55, fontStyle: 'italic', marginBottom: 20, letterSpacing: '-0.005em' }}>
               This is the bridge from your Foundational Reading to the sessions in this block. It is the why before the what.
             </p>
-            <div style={{ height: 1, background: CARD_BORDER, marginBottom: 20 }} />
-            <p style={{ fontSize: 13, fontWeight: 400, color: MUTED, lineHeight: 1.85 }}>
+            <p className="pr-prose" style={{ fontSize: 15, fontWeight: 400, color: MUTED, lineHeight: 1.75 }}>
               Every block is built from where your body currently is, not from a generic template. This reading explains what we are trying to shift this time, what the work will ask of you, and what we are deliberately not chasing yet. Read it once before your first session. It frames everything that follows.
             </p>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, margin: '0 0 32px' }}>
-            <div style={{ width: 28, height: 3, background: TEAL, borderRadius: 2 }} />
-            <p style={{ fontSize: 9, fontWeight: 700, color: SUBTLE, textTransform: 'uppercase', letterSpacing: '0.2em' }}>
-              The Reading
-            </p>
-            <div style={{ flex: 1, height: 1, background: CARD_BORDER }} />
-          </div>
-
+          {/* The Reading */}
           {SECTIONS.map((section, i) => {
             const content = reading[section.key] as string | null
             if (!content) return null
@@ -156,36 +128,29 @@ export default function ProgramReadingLayout({
               <div
                 key={section.key}
                 className="reading-section"
-                style={{
-                  background: WHITE,
-                  border: `1px solid ${CARD_BORDER}`,
-                  marginBottom: 12,
-                  overflow: 'hidden',
-                  borderRadius: 6,
-                }}
+                style={{ marginBottom: 72 }}
               >
-                <div style={{ background: SOFT, borderBottom: `1px solid ${CARD_BORDER}`, padding: '16px 32px', display: 'flex', alignItems: 'center', gap: 16 }}>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: TEAL, minWidth: 22, fontFamily: MONO_FONT }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 18, marginBottom: 28 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: TEAL, fontFamily: MONO_FONT, letterSpacing: '0.04em' }}>
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <p style={{ fontSize: 11, fontWeight: 700, color: INK, textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+                  <h2 className="pr-prose" style={{ fontSize: 26, fontWeight: 600, color: INK, letterSpacing: '-0.015em', lineHeight: 1.25 }}>
                     {section.label}
-                  </p>
+                  </h2>
                 </div>
-                <div style={{ padding: '24px 32px' }}>
-                  <p style={{ fontSize: 13.5, fontWeight: 400, color: INK, lineHeight: 1.9, whiteSpace: 'pre-line' }}>
-                    {content}
-                  </p>
-                </div>
+                <p className="pr-prose" style={{ fontSize: 17, fontWeight: 400, color: BODY, lineHeight: 1.75, whiteSpace: 'pre-line', letterSpacing: '-0.003em' }}>
+                  {content}
+                </p>
               </div>
             )
           })}
 
-          <div style={{ marginTop: 48, paddingTop: 24, borderTop: `1px solid ${CARD_BORDER}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <p style={{ fontSize: 10, fontWeight: 600, color: SUBTLE, letterSpacing: '0.05em' }}>
+          {/* Colophon */}
+          <div style={{ marginTop: 32, paddingTop: 32, borderTop: `1px solid ${HAIRLINE}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: SUBTLE, letterSpacing: '0.06em' }}>
               © Body Recode · www.bodyrecode.au
             </p>
-            <p style={{ fontSize: 10, fontWeight: 600, color: SUBTLE, letterSpacing: '0.05em' }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: SUBTLE, letterSpacing: '0.06em' }}>
               Issued for {client.name}
             </p>
           </div>

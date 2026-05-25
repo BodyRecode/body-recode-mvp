@@ -68,7 +68,7 @@ export default async function PortalProgramReadingPage({
 
   return (
     <>
-      {/* Lightweight back affordance - the cream-on-black layout owns the rest */}
+      {/* Lightweight back affordance - the editorial reading layout owns the rest */}
       <div className="no-print" style={{ position: 'fixed', top: 16, left: 16, zIndex: 50 }}>
         <Link
           href={`/portal/${token}/program`}

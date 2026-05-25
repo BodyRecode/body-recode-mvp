@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 export const runtime = 'nodejs'
 
@@ -21,7 +22,8 @@ export async function GET(
     .maybeSingle()
 
   if (!client) return new Response('Not found', { status: 404 })
-  if ((user.email ?? '').toLowerCase() !== (client.email ?? '').toLowerCase()) {
+  const userEmail = (user.email ?? '').toLowerCase()
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     return new Response('Forbidden', { status: 403 })
   }
 
