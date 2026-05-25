@@ -11,6 +11,37 @@ export const maxDuration = 300
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
+// Extract the first top-level JSON object from text the model emits. The
+// greedy /\{[\s\S]*\}/ used previously matched first-{ to last-} — if the model
+// added trailing commentary that contained curly braces (e.g., "the {window}
+// stays steady"), the regex over-captured and JSON.parse crashed with
+// "Unexpected non-whitespace character after JSON at position N". This walker
+// counts braces, respects string literals + escapes, and stops at the matching
+// close of the first {.
+function extractFirstJsonObject(text: string): string | null {
+  const start = text.indexOf('{')
+  if (start === -1) return null
+  let depth = 0
+  let inString = false
+  let escaped = false
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i]
+    if (escaped) { escaped = false; continue }
+    if (inString) {
+      if (ch === '\\') escaped = true
+      else if (ch === '"') inString = false
+      continue
+    }
+    if (ch === '"') inString = true
+    else if (ch === '{') depth++
+    else if (ch === '}') {
+      depth--
+      if (depth === 0) return text.slice(start, i + 1)
+    }
+  }
+  return null
+}
+
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -193,9 +224,9 @@ export async function POST(request: NextRequest) {
     })
     const content = message.content[0]
     if (content.type !== 'text') throw new Error('Unexpected AI response')
-    const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) throw new Error('Could not parse nutrition plan output')
-    return JSON.parse(jsonMatch[0])
+    const jsonText = extractFirstJsonObject(content.text)
+    if (!jsonText) throw new Error('Could not parse nutrition plan output')
+    return JSON.parse(jsonText)
   }
 
   // Generation + validation loop. The model writes structured foods; we
