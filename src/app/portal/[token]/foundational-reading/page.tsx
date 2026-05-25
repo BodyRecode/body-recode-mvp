@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ChevronLeft, Download } from 'lucide-react'
 import ReadingLayout from '@/components/foundational-reading-layout'
 import PortalReadingDownload from './portal-reading-download'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 export default async function PortalFoundationalReadingPage({
   params,
@@ -28,7 +29,7 @@ export default async function PortalFoundationalReadingPage({
   if (!client) notFound()
 
   const userEmail = (user.email ?? '').toLowerCase()
-  if (userEmail !== (client.email ?? '').toLowerCase()) {
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     redirect(`/portal/${token}`)
   }
 

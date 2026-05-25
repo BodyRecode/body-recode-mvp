@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { getCheckInWindowStatus, getWeekNumber, isCheckinTestMode } from '@/lib/weekly-checkin-questions'
 import ClientHeader from '@/components/client-header'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 export default async function PortalPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -24,7 +25,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const userEmail = (user.email ?? '').toLowerCase()
   const clientEmail = (client.email ?? '').toLowerCase()
-  if (userEmail !== clientEmail) {
+  if (userEmail !== clientEmail && !isCoachEmail(userEmail)) {
     return (
       <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-8">

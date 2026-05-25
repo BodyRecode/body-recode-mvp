@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import ClientHeader from '@/components/client-header'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 const TERMS: Array<{ term: string; def: string }> = [
   {
@@ -93,7 +94,8 @@ export default async function GlossaryPage({ params }: { params: Promise<{ token
     .maybeSingle()
 
   if (!client) return notFound()
-  if ((user.email ?? '').toLowerCase() !== (client.email ?? '').toLowerCase()) {
+  const userEmail = (user.email ?? '').toLowerCase()
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     redirect(`/portal/${token}`)
   }
 

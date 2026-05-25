@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import ClientHeader from '@/components/client-header'
 import AccountClient from './account-client'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 export default async function AccountPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -19,7 +20,8 @@ export default async function AccountPage({ params }: { params: Promise<{ token:
     .maybeSingle()
 
   if (!client) return notFound()
-  if ((user.email ?? '').toLowerCase() !== (client.email ?? '').toLowerCase()) {
+  const userEmail = (user.email ?? '').toLowerCase()
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     redirect(`/portal/${token}`)
   }
 

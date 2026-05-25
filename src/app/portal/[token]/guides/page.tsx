@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import ClientHeader from '@/components/client-header'
 import { Moon, Wind, Footprints, Snowflake, Calendar, ArrowUpRight } from 'lucide-react'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 const GUIDES = [
   { slug: 'sleep',            title: 'Sleep hygiene',       desc: 'The single biggest lever on recovery. Practical patterns to make sleep restorative.', icon: Moon },
@@ -27,7 +28,8 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
     .maybeSingle()
 
   if (!client) return notFound()
-  if ((user.email ?? '').toLowerCase() !== (client.email ?? '').toLowerCase()) {
+  const userEmail = (user.email ?? '').toLowerCase()
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     redirect(`/portal/${token}`)
   }
 

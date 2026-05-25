@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import ClientHeader from '@/components/client-header'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 /**
  * Client-facing per-check-in page. Shows the coach's response (interpretation
@@ -38,7 +39,8 @@ export default async function PortalCheckinDetail({
   if (!client) return notFound()
 
   // Wrong-account guard — mirrors the portal landing.
-  if ((user.email ?? '').toLowerCase() !== (client.email ?? '').toLowerCase()) {
+  const userEmail = (user.email ?? '').toLowerCase()
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     redirect(`/portal/${token}`)
   }
 

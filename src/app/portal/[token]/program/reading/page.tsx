@@ -4,6 +4,7 @@ import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import ProgramReadingLayout from '@/components/program-reading-layout'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 /**
  * Standalone client view of the Program Reading.
@@ -34,7 +35,7 @@ export default async function PortalProgramReadingPage({
   if (!client) notFound()
 
   const userEmail = (user.email ?? '').toLowerCase()
-  if (userEmail !== (client.email ?? '').toLowerCase()) {
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     redirect(`/portal/${token}`)
   }
 

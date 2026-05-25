@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import ClientHeader from '@/components/client-header'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 /**
  * Client-facing Medications Reading. Renders the four sections (mr_*)
@@ -28,7 +29,8 @@ export default async function MedicationsReadingPage({
     .maybeSingle()
 
   if (!client) return notFound()
-  if ((user.email ?? '').toLowerCase() !== (client.email ?? '').toLowerCase()) redirect(`/portal/${token}`)
+  const userEmail = (user.email ?? '').toLowerCase()
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) redirect(`/portal/${token}`)
   if (!client.medications_reading_published_at || !client.medications_reading) {
     // Not published yet — bounce back to portal landing.
     redirect(`/portal/${token}`)

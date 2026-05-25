@@ -6,6 +6,7 @@ import ClientHeader from '@/components/client-header'
 import {
   TrendingUp, FileText, BookOpen, Compass, MessageSquare, Settings, ArrowUpRight,
 } from 'lucide-react'
+import { isCoachEmail } from '@/lib/coach-auth'
 
 const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
@@ -30,7 +31,8 @@ export default async function ResourcesHubPage({ params }: { params: Promise<{ t
     .maybeSingle()
 
   if (!client) return notFound()
-  if ((user.email ?? '').toLowerCase() !== (client.email ?? '').toLowerCase()) {
+  const userEmail = (user.email ?? '').toLowerCase()
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     redirect(`/portal/${token}`)
   }
 
