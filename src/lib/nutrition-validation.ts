@@ -128,6 +128,29 @@ export interface NutritionValidationInput {
   protein_anchor_g: number
   bodyweight_kg: number | null
   entry_state: string
+  medications: string | null
+}
+
+// Detects medication classes that materially suppress appetite. When any of
+// these are present, the validator enforces per-meal protein caps and a
+// minimum meal frequency so plans don't ship as 3 enormous meals the client
+// physically cannot finish.
+export interface AppetiteSuppressionContext {
+  has_stimulant: boolean   // Vyvanse, Adderall, Ritalin, Concerta, methylphenidate
+  has_glp1: boolean        // Ozempic, Wegovy, Mounjaro, Zepbound, semaglutide, tirzepatide
+  has_serotonergic: boolean // SSRIs/SNRIs known to blunt appetite — Brintillex, Lexapro, Zoloft, Prozac, Effexor, Cymbalta, vortioxetine
+  any: boolean
+}
+
+export function detectAppetiteSuppression(medications: string | null | undefined): AppetiteSuppressionContext {
+  if (!medications) {
+    return { has_stimulant: false, has_glp1: false, has_serotonergic: false, any: false }
+  }
+  const m = medications.toLowerCase()
+  const has_stimulant = /\b(vyvanse|lisdexamfetamine|adderall|amphetamine|ritalin|concerta|methylphenidate|dexamfetamine|dexedrine)\b/.test(m)
+  const has_glp1 = /\b(glp-?1|ozempic|wegovy|mounjaro|zepbound|semaglutide|tirzepatide|liraglutide|saxenda|rybelsus)\b/.test(m)
+  const has_serotonergic = /\b(brintellix|brintillex|vortioxetine|lexapro|escitalopram|zoloft|sertraline|prozac|fluoxetine|effexor|venlafaxine|cymbalta|duloxetine|paxil|paroxetine|celexa|citalopram|trintellix)\b/.test(m)
+  return { has_stimulant, has_glp1, has_serotonergic, any: has_stimulant || has_glp1 || has_serotonergic }
 }
 
 export interface NutritionValidationResult {
@@ -241,6 +264,51 @@ export function validateNutritionPlan(
         code: 'PROTEIN_ANCHOR_MISMATCH',
         message: `Daily protein totals ${totals.protein_g}g but protein_anchor_g is ${input.protein_anchor_g}g (±15g allowed).`,
       })
+    }
+  }
+
+  // Appetite-suppression enforcement. If the client is on any stimulant /
+  // GLP-1 / serotonergic appetite-affecting medication, the plan MUST be
+  // physically executable at the client's reduced appetite capacity. Three
+  // operational rules apply:
+  //   1. ≥4 meals so per-meal portion size stays achievable
+  //   2. No single meal exceeds 40g protein (an upper bound for a single
+  //      sitting under appetite suppression)
+  //   3. For stimulants specifically (Vyvanse / Adderall etc.) the first
+  //      meal of the day caps at 30g protein — peak suppression window is
+  //      morning hours, dosing too much then guarantees skipping.
+  const suppression = detectAppetiteSuppression(input.medications)
+  if (suppression.any) {
+    if (input.meals.length < 4) {
+      issues.push({
+        code: 'APPETITE_SUPPRESSED_MEAL_COUNT_TOO_LOW',
+        message: `Plan has ${input.meals.length} meals but client is on appetite-suppressing medication (${[
+          suppression.has_stimulant && 'stimulant',
+          suppression.has_glp1 && 'GLP-1',
+          suppression.has_serotonergic && 'SSRI/SNRI',
+        ].filter(Boolean).join(', ')}). Doctrine requires ≥4 smaller meals so per-meal portions are achievable.`,
+      })
+    }
+    for (const m of input.meals) {
+      const mp = Number(m.protein_g) || 0
+      const name = m.meal_name ?? 'meal'
+      if (mp > 40) {
+        issues.push({
+          code: 'APPETITE_SUPPRESSED_PER_MEAL_PROTEIN_TOO_HIGH',
+          message: `${name}: ${mp}g protein exceeds the 40g per-meal ceiling for appetite-suppressed clients. Redistribute across more meals.`,
+        })
+      }
+    }
+    if (suppression.has_stimulant && input.meals.length > 0) {
+      const first = input.meals[0]
+      const firstP = Number(first.protein_g) || 0
+      const firstName = first.meal_name ?? 'first meal'
+      if (firstP > 30) {
+        issues.push({
+          code: 'STIMULANT_FIRST_MEAL_PROTEIN_TOO_HIGH',
+          message: `${firstName}: ${firstP}g protein is too high for the morning stimulant-suppression window. Cap at 30g and shift protein to later meals.`,
+        })
+      }
     }
   }
 

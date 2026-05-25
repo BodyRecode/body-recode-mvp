@@ -211,6 +211,7 @@ export async function POST(request: NextRequest) {
       protein_anchor_g: Number(p.protein_anchor_g) || resolvedProtein,
       bodyweight_kg: bodyweightKg,
       entry_state: String(p.entry_state || entry_state),
+      medications: client?.medications ?? null,
     })
   }
 
