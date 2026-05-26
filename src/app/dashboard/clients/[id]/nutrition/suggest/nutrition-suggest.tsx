@@ -161,8 +161,16 @@ export default function NutritionPrescriptionSuggest({
   // pulled from medications + baseline + recent check-ins) so a coach who
   // doesn't write clinical justifications daily can ship a defensible plan.
   const [bridgeSuggesting, setBridgeSuggesting] = useState(false)
-  const [bridgeSuggestionMeta, setBridgeSuggestionMeta] = useState<{ standard_floor_kcal: number | null; evidence_summary: string } | null>(null)
+  const [bridgeSuggestionMeta, setBridgeSuggestionMeta] = useState<{
+    standard_floor_kcal: number | null
+    standard_protein_anchor_g: number | null
+    suggested_protein_anchor_g: number | null
+    evidence_summary: string
+  } | null>(null)
   const [bridgePrefillDone, setBridgePrefillDone] = useState(false)
+  // Remember the standard (non-bridge) protein anchor so we can restore it if
+  // the coach toggles bridge mode OFF after it auto-scaled the anchor down.
+  const [proteinAnchorBeforeBridge, setProteinAnchorBeforeBridge] = useState<number | null>(null)
   const [editingField, setEditingField] = useState<string | null>(null)
   const [generationElapsed, setGenerationElapsed] = useState(0)
 
@@ -196,8 +204,19 @@ export default function NutritionPrescriptionSuggest({
       if (data?.suggested_justification && (force || !bridgePrefillDone)) {
         setOverrideJustification(data.suggested_justification)
       }
+      // Also scale the protein anchor down when bridge mode is on. Without
+      // this the engine balloons the plan above the bridge target (165g
+      // protein × 4 = 660 kcal alone forces total > 2,000+). The suggested
+      // anchor is clamped to ≥1.2 g/kg bodyweight for muscle preservation.
+      if (data?.suggested_protein_anchor_g && (force || !bridgePrefillDone)) {
+        // Remember the pre-bridge anchor so toggling OFF can restore it.
+        if (proteinAnchorBeforeBridge === null) setProteinAnchorBeforeBridge(proteinAnchorG)
+        setProteinAnchorG(data.suggested_protein_anchor_g)
+      }
       setBridgeSuggestionMeta({
         standard_floor_kcal: data?.standard_floor_kcal ?? null,
+        standard_protein_anchor_g: data?.standard_protein_anchor_g ?? null,
+        suggested_protein_anchor_g: data?.suggested_protein_anchor_g ?? null,
         evidence_summary: data?.evidence_summary ?? '',
       })
       setBridgePrefillDone(true)
@@ -210,9 +229,14 @@ export default function NutritionPrescriptionSuggest({
 
   // Auto-fetch the bridge suggestion the first time the coach toggles
   // bridge mode ON. Doesn't refetch on subsequent toggles (state persists).
+  // When toggling OFF, restore the pre-bridge protein anchor so the standard
+  // prescription resumes.
   useEffect(() => {
     if (overrideActive && !bridgePrefillDone && !bridgeSuggesting) {
       fetchBridgeSuggestion(false)
+    } else if (!overrideActive && proteinAnchorBeforeBridge !== null) {
+      setProteinAnchorG(proteinAnchorBeforeBridge)
+      setProteinAnchorBeforeBridge(null)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [overrideActive])

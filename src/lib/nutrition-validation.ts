@@ -153,6 +153,8 @@ export function humaniseValidationIssue(issue: ValidationIssue): string {
       return `The engine returned a plan with no meals. This is a generation bug — try again.`
     case 'TRANSITIONAL_FLOOR_NOT_MET':
       return `${issue.message} The transitional override means you replaced the bodyweight floors with an explicit kcal floor — the plan still needs to hit that.`
+    case 'TRANSITIONAL_CEILING_EXCEEDED':
+      return `${issue.message} The protein anchor is probably driving kcal up — lower the protein anchor on the suggest page (try ~1.2-1.4 g/kg) so the plan can land near your bridge floor.`
     default:
       return issue.message
   }
@@ -435,15 +437,27 @@ export function validateNutritionPlan(
   }
 
   // Transitional override: skip the bodyweight-derived nutrient floors and
-  // enforce the coach-prescribed kcal floor instead. Used for chronic
+  // enforce the coach-prescribed kcal BAND instead. Floor stops dangerous
+  // under-fueling; ceiling stops the engine ballooning the plan upward
+  // away from the bridge target (the original v1 of this rule was floor-
+  // only, which let plans land at 2,400 kcal when the coach asked for 1,600
+  // — the protein anchor alone was driving kcal up). Used for chronic
   // under-eaters who cannot physically execute the standard floors —
   // documented justification stored on the plan, auto-expires after 4 weeks.
   const override = input.transitional_override
   if (override?.active && override.floor_kcal > 0) {
+    const CEILING_BUFFER = 200  // allow ±200 kcal around the bridge target
+    const ceilingKcal = override.floor_kcal + CEILING_BUFFER
     if (totals.kcal < override.floor_kcal) {
       issues.push({
         code: 'TRANSITIONAL_FLOOR_NOT_MET',
         message: `Daily kcal ${totals.kcal} is below the transitional floor of ${override.floor_kcal} kcal you set on this plan.`,
+      })
+    }
+    if (totals.kcal > ceilingKcal) {
+      issues.push({
+        code: 'TRANSITIONAL_CEILING_EXCEEDED',
+        message: `Daily kcal ${totals.kcal} exceeds the transitional ceiling of ${ceilingKcal} kcal (bridge floor ${override.floor_kcal} + ${CEILING_BUFFER} buffer). Bridge mode targets the floor, not above it — lower the protein anchor or reduce portions.`,
       })
     }
     // Skip the standard carb/fat floors when the override is active —

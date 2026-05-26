@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
   // stabilisation client. Used as the upper anchor — "this is what the
   // standard floor would be."
   const standardFloorKcal = bw ? Math.round((bw * 1.7 * 4) + (bw * 1.5 * 4) + (bw * 0.7 * 9)) : null
+  const standardProteinAnchor = bw ? Math.round(bw * 1.7) : null
 
   // Default suggested floor: 1500 kcal floor when we have appetite suppression
   // signals but no explicit intake data — clinically defensible bridge above
@@ -70,6 +71,22 @@ export async function POST(request: NextRequest) {
     suggestedFloor = Math.max(1200, Math.min(standardFloorKcal - 200, Math.round((1400 + standardFloorKcal) / 2)))
     // Round to nearest 50 for clean numbers.
     suggestedFloor = Math.round(suggestedFloor / 50) * 50
+  }
+
+  // Scaled protein anchor for the bridge plan. Without this, the engine
+  // produces plans that satisfy the bridge floor but balloon way above it
+  // (e.g. 1,600 floor → 2,400 actual plan, because 165g protein × 4 +
+  // sensible carb/fat already exceeds the floor). Scale the anchor down
+  // proportionally to the bridge:standard ratio, with a 1.2 g/kg floor
+  // below which we don't go (muscle preservation in deficit).
+  let suggestedProteinAnchor: number | null = null
+  if (bw && standardFloorKcal && standardProteinAnchor) {
+    const ratio = suggestedFloor / standardFloorKcal
+    const scaled = Math.round(standardProteinAnchor * ratio)
+    const muscleFloor = Math.round(bw * 1.2)
+    suggestedProteinAnchor = Math.max(muscleFloor, scaled)
+    // Round to nearest 5g.
+    suggestedProteinAnchor = Math.round(suggestedProteinAnchor / 5) * 5
   }
 
   // Build context block for the LLM justification drafter.
@@ -148,7 +165,9 @@ Output JSON only:
   return NextResponse.json({
     suggested_floor_kcal: suggestedFloor,
     suggested_justification: suggestedJustification,
+    suggested_protein_anchor_g: suggestedProteinAnchor,
     standard_floor_kcal: standardFloorKcal,
+    standard_protein_anchor_g: standardProteinAnchor,
     evidence_summary: evidenceSummary,
     suppression,
   })
