@@ -138,9 +138,17 @@ function ReasonCard({
 export default function NutritionPrescriptionSuggest({
   clientId,
   clientName,
+  activeBridge,
 }: {
   clientId: string
   clientName: string
+  /**
+   * When the active nutrition plan has bridge mode active, surface its
+   * current floor + justification so the coach can offer a one-click
+   * "step up by +200 kcal" preset instead of removing the override entirely.
+   * Null when this is a fresh prescription or the active plan isn't a bridge.
+   */
+  activeBridge: { floorKcal: number; justification: string } | null
 }) {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
@@ -707,6 +715,59 @@ export default function NutritionPrescriptionSuggest({
         />
         <ReasonDisplay text={suggestion.food_exclusions_reason} />
       </div>
+
+      {/* When the active plan is a bridge, show step-up presets up top so the
+          coach can ramp incrementally without losing the override entirely. */}
+      {activeBridge && (
+        <div className="scroll-mt-8 bg-teal-50 border border-teal-300 rounded-xl p-5">
+          <div className="flex items-start gap-3 mb-3">
+            <svg className="w-5 h-5 text-teal-700 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+            </svg>
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] font-black text-teal-700 uppercase tracking-widest mb-1">Existing bridge plan — step up</p>
+              <p className="text-sm text-stone-800 leading-relaxed">
+                Active plan is at <span className="font-semibold tabular-nums">{activeBridge.floorKcal} kcal</span> bridge floor. Pick a step-up preset (keeps bridge mode on but increases the floor), or remove the override entirely.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 pl-8 mt-3">
+            <button
+              type="button"
+              onClick={() => {
+                setOverrideActive(true)
+                setOverrideFloorKcal(activeBridge.floorKcal + 200)
+                if (!overrideJustification.trim() && activeBridge.justification) {
+                  setOverrideJustification(`${activeBridge.justification}\n\n[Step-up from ${activeBridge.floorKcal} to ${activeBridge.floorKcal + 200} kcal — eating consistency markers in recent check-ins support increase.]`)
+                }
+              }}
+              className="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold rounded-lg transition-colors"
+            >
+              Step up +200 kcal → {activeBridge.floorKcal + 200}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setOverrideActive(true)
+                setOverrideFloorKcal(activeBridge.floorKcal + 300)
+                if (!overrideJustification.trim() && activeBridge.justification) {
+                  setOverrideJustification(`${activeBridge.justification}\n\n[Step-up from ${activeBridge.floorKcal} to ${activeBridge.floorKcal + 300} kcal — eating consistency markers in recent check-ins support increase.]`)
+                }
+              }}
+              className="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold rounded-lg transition-colors"
+            >
+              Step up +300 kcal → {activeBridge.floorKcal + 300}
+            </button>
+            <button
+              type="button"
+              onClick={() => setOverrideActive(false)}
+              className="px-3 py-1.5 border border-stone-400 hover:border-stone-600 text-stone-700 text-xs font-semibold rounded-lg transition-colors"
+            >
+              Remove override (apply standard floors)
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Transitional override (bridge mode). For chronic under-eaters whose
           actual intake is far below their bodyweight-derived floor — coach

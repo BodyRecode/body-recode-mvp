@@ -182,11 +182,29 @@ export interface ClientNextAction {
 export function computeClientNextAction(input: ClientNextActionInput): ClientNextAction {
   const profileHref = `/dashboard/clients/${input.clientId}`
 
-  // Feedback badge overlay (independent of stage)
+  // Persistent metadata badges (independent of stage). When bridge mode is
+  // active, the expiry countdown is always shown so coaches can see at a
+  // glance which clients are on transitional plans and when they need
+  // attention — even if the bridge isn't yet the most urgent action.
+  let bridgeBadge: string | null = null
+  if (input.activeNutritionPlan?.transitionalOverrideActive && input.activeNutritionPlan.transitionalOverrideExpiresAt) {
+    const expiry = new Date(input.activeNutritionPlan.transitionalOverrideExpiresAt)
+    const now = new Date()
+    const days = Math.ceil((expiry.getTime() - now.getTime()) / 86400000)
+    if (days < 0) bridgeBadge = `Bridge expired ${-days}d`
+    else if (days === 0) bridgeBadge = 'Bridge expires today'
+    else bridgeBadge = `Bridge ${days}d`
+  }
   const feedbackBadge =
     input.unacknowledgedFeedbackCount > 0
       ? `${input.unacknowledgedFeedbackCount} feedback`
       : null
+  // Compose: bridge badge first when present (always-visible signal), then
+  // feedback badge if any. Both show separately in the UI via the badge
+  // field convention — joined by middle-dot for the single-badge slot.
+  const composedBadge =
+    bridgeBadge && feedbackBadge ? `${bridgeBadge} · ${feedbackBadge}` :
+    bridgeBadge ?? feedbackBadge
 
   // ── Pre-start: client signed up but coaching_started_at in future ──────
   // We still surface their onboarding-stage progress, but flag it as pre-start
@@ -207,7 +225,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: profileHref,
       accent: 'neutral',
       priority: 50,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -222,7 +240,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: profileHref,
       accent: 'neutral',
       priority: 50,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -237,7 +255,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}#cffs`,
       accent: 'teal',
       priority: 20,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -252,7 +270,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}#cffs`,
       accent: 'teal',
       priority: 20,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -267,7 +285,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}/program`,
       accent: 'teal',
       priority: 20,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -282,7 +300,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}/program`,
       accent: 'teal',
       priority: 20,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -299,7 +317,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}/program`,
       accent: 'teal',
       priority: 20,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -314,7 +332,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}/nutrition`,
       accent: 'teal',
       priority: 20,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -331,7 +349,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}/nutrition`,
       accent: 'teal',
       priority: 20,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -350,7 +368,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}#payments`,
       accent: 'red',
       priority: 10,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -364,7 +382,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}#payments`,
       accent: 'red',
       priority: 10,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -378,7 +396,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}#payments`,
       accent: 'red',
       priority: 10,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -392,7 +410,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}#payments`,
       accent: 'amber',
       priority: 20,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -410,7 +428,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}#readiness`,
       accent: 'red',
       priority: 10,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -425,7 +443,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}#readiness`,
       accent: 'amber',
       priority: 10,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -459,7 +477,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: profileHref,
       accent: 'red',
       priority: 10,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -481,7 +499,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}/checkins/${u.weekNumber}/${u.formType.toLowerCase()}`,
       accent: u.daysSince >= 3 ? 'amber' : 'teal',
       priority: 20,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -506,7 +524,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
         href: `${profileHref}/nutrition/suggest`,
         accent: 'red',
         priority: 20,
-        badge: feedbackBadge,
+        badge: composedBadge,
       }
     }
 
@@ -524,7 +542,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
         href: `${profileHref}/nutrition/suggest`,
         accent: 'teal',
         priority: 20,
-        badge: feedbackBadge,
+        badge: composedBadge,
       }
     }
 
@@ -538,7 +556,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
         href: `${profileHref}/nutrition`,
         accent: 'amber',
         priority: 30,
-        badge: feedbackBadge,
+        badge: composedBadge,
       }
     }
   }
@@ -554,7 +572,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: `${profileHref}#readiness`,
       accent: 'amber',
       priority: 30,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 
@@ -571,7 +589,7 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       href: profileHref,
       accent: 'neutral',
       priority: 50,
-      badge: feedbackBadge,
+      badge: composedBadge,
     }
   }
 

@@ -15,6 +15,17 @@ export default async function NutritionSuggestPage({ params }: { params: Promise
 
   if (!client) notFound()
 
+  // Pull the active nutrition plan's bridge-mode metadata so the suggest UI
+  // can offer a one-click "step up bridge floor by +200 kcal" preset when
+  // regenerating an existing bridge plan. Lets the coach incrementally ramp
+  // toward the standard floor rather than removing the override entirely.
+  const { data: activePlan } = await admin
+    .from('nutrition_plans')
+    .select('id, transitional_override_active, transitional_override_floor_kcal, transitional_override_justification')
+    .eq('client_id', id)
+    .eq('is_active', true)
+    .maybeSingle()
+
   return (
     <div className="max-w-5xl mx-auto">
       <div className="mb-8">
@@ -29,7 +40,14 @@ export default async function NutritionSuggestPage({ params }: { params: Promise
         <p className="text-stone-500 text-sm mt-1">Review the suggested prescription before generating the plan.</p>
       </div>
 
-      <NutritionPrescriptionSuggest clientId={id} clientName={client.name} />
+      <NutritionPrescriptionSuggest
+        clientId={id}
+        clientName={client.name}
+        activeBridge={activePlan?.transitional_override_active ? {
+          floorKcal: activePlan.transitional_override_floor_kcal ?? 0,
+          justification: activePlan.transitional_override_justification ?? '',
+        } : null}
+      />
     </div>
   )
 }
