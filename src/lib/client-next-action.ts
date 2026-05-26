@@ -678,7 +678,11 @@ export function detectBridgeReadiness(
     /eating.*(more\s*)?consistent(ly)?/i,
     /(getting|got)\s*meals\s*in/i,
     /protein\s*(goals?\s*)?(hit|on track)/i,
-    /no longer.*(caught|skipping|struggling)/i,
+    // Audit #12: was /no longer.*(caught|skipping|struggling)/i which matches
+    // "I'm no longer caught up on work, still struggling" — coincidence-safe
+    // because the negative marker wins, but tighten anyway. Restrict to "no
+    // longer" within 4 words of the marker word.
+    /\bno longer(\s+\S+){0,4}\s+(caught|skipping|struggling)/i,
   ]
 
   const negativeMarkers = [

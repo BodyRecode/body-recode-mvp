@@ -132,29 +132,29 @@ export interface ValidationIssue {
 export function humaniseValidationIssue(issue: ValidationIssue): string {
   switch (issue.code) {
     case 'MEAL_NO_FOODS':
-      return `${issue.message} The engine sometimes drops the foods list on the first attempt — retrying usually fixes it.`
+      return `${issue.message} The engine sometimes drops the foods list on the first attempt; retrying usually fixes it.`
     case 'FOODS_NOT_STRUCTURED':
-      return `The engine emitted foods as plain text strings instead of structured items with macros. This is a generation bug — try again.`
+      return `The engine emitted foods as plain text strings instead of structured items with macros. This is a generation bug; try again.`
     case 'MEAL_NO_PROTEIN':
-      return `${issue.message} Every meal needs at least some protein; the engine sometimes skips it on a snack — retrying redistributes.`
+      return `${issue.message} Every meal needs at least some protein; the engine sometimes skips it on a snack, and retrying redistributes.`
     case 'PROTEIN_ANCHOR_MISMATCH':
-      return `${issue.message} The plan's daily protein doesn't match what was prescribed — the engine concentrated or thinned the load. Retrying with the validator feedback usually lands it.`
+      return `${issue.message} The plan's daily protein doesn't match what was prescribed: the engine concentrated or thinned the load. Retrying with the validator feedback usually lands it.`
     case 'APPETITE_SUPPRESSED_MEAL_COUNT_TOO_LOW':
       return `${issue.message} The doctrine requires more meal touchpoints when appetite is pharmacologically suppressed, so each portion stays achievable.`
     case 'APPETITE_SUPPRESSED_PER_MEAL_PROTEIN_TOO_HIGH':
-      return `${issue.message} A meal loaded too heavily with protein won't be finished by a suppressed client — the engine needs to spread it.`
+      return `${issue.message} A meal loaded too heavily with protein won't be finished by a suppressed client. The engine needs to spread it.`
     case 'STIMULANT_FIRST_MEAL_PROTEIN_TOO_HIGH':
-      return `${issue.message} Stimulant suppression peaks in the morning — heavy breakfast protein guarantees the meal gets skipped.`
+      return `${issue.message} Stimulant suppression peaks in the morning; heavy breakfast protein guarantees the meal gets skipped.`
     case 'CARB_FLOOR_NOT_MET':
-      return `${issue.message} This is a safety floor based on bodyweight — going below means the plan is dangerously under-fueled for her size.`
+      return `${issue.message} This is a safety floor based on bodyweight. Going below means the plan is dangerously under-fueled for her size.`
     case 'FAT_FLOOR_NOT_MET':
-      return `${issue.message} Fat-soluble nutrient floor based on bodyweight — going below risks hormone / micronutrient deficits.`
+      return `${issue.message} Fat-soluble nutrient floor based on bodyweight. Going below risks hormone / micronutrient deficits.`
     case 'NO_MEALS':
-      return `The engine returned a plan with no meals. This is a generation bug — try again.`
+      return `The engine returned a plan with no meals. This is a generation bug; try again.`
     case 'TRANSITIONAL_FLOOR_NOT_MET':
-      return `${issue.message} The transitional override means you replaced the bodyweight floors with an explicit kcal floor — the plan still needs to hit that.`
+      return `${issue.message} The transitional override means you replaced the bodyweight floors with an explicit kcal floor, and the plan still needs to hit that.`
     case 'TRANSITIONAL_CEILING_EXCEEDED':
-      return `${issue.message} The protein anchor is probably driving kcal up — lower the protein anchor on the suggest page (try ~1.2-1.4 g/kg) so the plan can land near your bridge floor.`
+      return `${issue.message} The protein anchor is probably driving kcal up. Lower the protein anchor on the suggest page (try ~1.2-1.4 g/kg) so the plan can land near your bridge floor.`
     default:
       return issue.message
   }
@@ -230,7 +230,7 @@ export function checkPrescriptionFeasibility(input: PrescriptionFeasibilityInput
 
   // Minimum meal count
   if (meals < MIN_MEAL_COUNT_WHEN_SUPPRESSED) {
-    reasons.push(`Client is on appetite-suppressing medication, so the doctrine requires at least ${MIN_MEAL_COUNT_WHEN_SUPPRESSED} meals (currently ${meals}). Three large meals is rejected — a suppressed client can't reliably finish 50g+ protein in a single sitting.`)
+    reasons.push(`Client is on appetite-suppressing medication, so the doctrine requires at least ${MIN_MEAL_COUNT_WHEN_SUPPRESSED} meals (currently ${meals}). Three large meals is rejected because a suppressed client can't reliably finish 50g+ protein in a single sitting.`)
     suggestions.push({ label: `Bump meals to ${MIN_MEAL_COUNT_WHEN_SUPPRESSED}`, patch: { meal_frequency: MIN_MEAL_COUNT_WHEN_SUPPRESSED } })
   }
 
@@ -242,7 +242,7 @@ export function checkPrescriptionFeasibility(input: PrescriptionFeasibilityInput
 
   if (anchor > maxAchievable) {
     const gap = anchor - maxAchievable
-    reasons.push(`Protein anchor (${anchor}g) cannot be hit with ${effectiveMeals} meals — the hard rules cap protein at ${suppression.has_stimulant ? `${STIMULANT_FIRST_MEAL_PROTEIN_CAP}g first meal + ${PER_MEAL_PROTEIN_CAP}g each subsequent` : `${PER_MEAL_PROTEIN_CAP}g per meal`}, so the max achievable is ${maxAchievable}g (gap of ${gap}g).`)
+    reasons.push(`Protein anchor (${anchor}g) cannot be hit with ${effectiveMeals} meals. The hard rules cap protein at ${suppression.has_stimulant ? `${STIMULANT_FIRST_MEAL_PROTEIN_CAP}g first meal + ${PER_MEAL_PROTEIN_CAP}g each subsequent` : `${PER_MEAL_PROTEIN_CAP}g per meal`}, so the max achievable is ${maxAchievable}g (gap of ${gap}g).`)
 
     // Minimum meals to fit the anchor
     const minMealsForAnchor = suppression.has_stimulant
