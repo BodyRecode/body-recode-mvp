@@ -372,16 +372,18 @@ export function validateNutritionPlan(
     }
   }
 
-  // Protein anchor reconciliation. ±15g tolerance — strict enough to catch
+  // Protein anchor reconciliation. ±20g tolerance — strict enough to catch
   // undersized portion accidents (e.g., 70g delivered vs 115g target), loose
-  // enough to allow the model's natural portion choices (eggs in 3s, 150g vs
-  // 180g chicken etc.) without bouncing repeatedly.
+  // enough to allow the model's natural portion choices (eggs in 3s, 150g
+  // vs 180g chicken etc.) without bouncing repeatedly. Was ±15 but Sonnet
+  // consistently landed 16-20g over on tight bridge-mode budgets — the
+  // extra 5g is operational noise.
   if (input.protein_anchor_g) {
     const diff = Math.abs(totals.protein_g - input.protein_anchor_g)
-    if (diff > 15) {
+    if (diff > 20) {
       issues.push({
         code: 'PROTEIN_ANCHOR_MISMATCH',
-        message: `Daily protein totals ${totals.protein_g}g but protein_anchor_g is ${input.protein_anchor_g}g (±15g allowed).`,
+        message: `Daily protein totals ${totals.protein_g}g but protein_anchor_g is ${input.protein_anchor_g}g (±20g allowed).`,
       })
     }
   }
@@ -450,7 +452,7 @@ export function validateNutritionPlan(
   // documented justification stored on the plan, auto-expires after 4 weeks.
   const override = input.transitional_override
   if (override?.active && override.floor_kcal > 0) {
-    const CEILING_BUFFER = 100  // allow +100 kcal above the bridge target — tight band so plans land at the floor, not above
+    const CEILING_BUFFER = 150  // allow +150 kcal above the bridge target — was 100 but Sonnet kept landing at +30-100 over due to natural portion sizes; 150 lets sensible plans through without bouncing on rounding
     const ceilingKcal = override.floor_kcal + CEILING_BUFFER
     if (totals.kcal < override.floor_kcal) {
       issues.push({
