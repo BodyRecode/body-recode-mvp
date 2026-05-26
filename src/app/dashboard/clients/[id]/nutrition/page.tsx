@@ -74,6 +74,9 @@ interface NutritionPlan {
   transitional_override_floor_kcal?: number | null
   transitional_override_justification?: string | null
   transitional_override_expires_at?: string | null
+  // Phase 4 commit 2: doctrine version stamp. Null for plans inserted before
+  // the doctrine-versioning migration ran (grandfathered).
+  doctrine_version?: string | null
 }
 
 function parseText(text: string): { intro: string | null; points: string[] } {

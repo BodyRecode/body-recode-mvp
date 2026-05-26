@@ -5,7 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescriptionInputs } from '@/lib/nutrition-prompt'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clamp'
-import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike, BRIDGE_CEILING_BUFFER } from '@/lib/nutrition-validation'
+import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike, BRIDGE_CEILING_BUFFER, NUTRITION_DOCTRINE_VERSION } from '@/lib/nutrition-validation'
 
 export const maxDuration = 300
 
@@ -450,6 +450,11 @@ export async function POST(request: NextRequest) {
     deescalation_triggered: plan.deescalation_triggered || false,
     status: 'draft',
     is_active: false,
+    // Phase 4 commit 2: stamp the doctrine version. Coach view diffs this
+    // against the current constant to flag stale plans. Wrapped by the same
+    // graceful-degradation retry below as the bridge-mode columns so the
+    // route doesn't blow up if the migration hasn't been run yet.
+    doctrine_version: NUTRITION_DOCTRINE_VERSION,
   }
   if (overrideActive) {
     insertRow.transitional_override_active = true
@@ -466,15 +471,17 @@ export async function POST(request: NextRequest) {
     .select('id')
     .single()
 
-  // Graceful degradation: if the override columns don't exist yet (migration
-  // hasn't been run), retry without them so the plan still ships. Coach loses
-  // the audit trail until migration runs, but generation isn't blocked.
-  if (saveError && /column .* does not exist|transitional_override/i.test(saveError.message)) {
-    console.warn('[generate-nutrition] transitional override columns missing — retrying insert without them. Run sql/2026-05-25_nutrition_transitional_override.sql to enable persistence.')
+  // Graceful degradation: if any of the additive Phase 3 (override) or
+  // Phase 4 (doctrine_version) columns don't exist yet (migration not run),
+  // retry without them so the plan still ships. Coach loses the audit trail
+  // / version tag until migration runs, but generation isn't blocked.
+  if (saveError && /column .* does not exist|transitional_override|doctrine_version/i.test(saveError.message)) {
+    console.warn('[generate-nutrition] additive columns missing — retrying insert without them. Run sql/2026-05-25_nutrition_transitional_override.sql and sql/2026-05-26_nutrition_doctrine_version.sql to enable persistence.')
     delete insertRow.transitional_override_active
     delete insertRow.transitional_override_floor_kcal
     delete insertRow.transitional_override_justification
     delete insertRow.transitional_override_expires_at
+    delete insertRow.doctrine_version
     const retry = await admin.from('nutrition_plans').insert(insertRow).select('id').single()
     savedPlan = retry.data
     saveError = retry.error
