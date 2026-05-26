@@ -16,11 +16,15 @@ export default async function PortalNutritionReviewPage({ params }: { params: Pr
 
   if (!client) return notFound()
 
+  // is_active=true is the single source of truth for the current plan —
+  // promote endpoint only flips is_active on demote, leaves status='active'
+  // on previous plans. Filtering on status broke .maybeSingle() with multiple
+  // matches and made Amanda's plan disappear on 2026-05-26.
   const { data: plan } = await admin
     .from('nutrition_plans')
     .select('id, plan_name, current_direction, last_review_at')
     .eq('client_id', client.id)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .maybeSingle()
 
   const firstName = client.name?.split(' ')[0] ?? 'there'

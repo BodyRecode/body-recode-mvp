@@ -54,11 +54,16 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
 
   if (!client) return notFound()
 
+  // Portal currency = is_active=true. The promote endpoint flips is_active on
+  // the previous active but leaves status='active' on it, so multiple rows
+  // can share status='active' while only one has is_active=true. Filtering on
+  // status here returned multiple rows and broke .maybeSingle() — Amanda lost
+  // her plan today after 3 regens. Fixed 2026-05-26.
   const { data: plan } = await admin
     .from('nutrition_plans')
     .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at')
     .eq('client_id', client.id)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .maybeSingle()
 
   const nutritionReadingPublished = !!plan?.nutrition_reading_published_at

@@ -54,11 +54,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     )
   }
 
+  // is_active=true is the single source of truth for the current plan.
+  // status='active' can match multiple rows (promote demotes via is_active
+  // only) and break .maybeSingle(). See fix in /portal/[token]/my-plan/page.tsx.
   const { data: activeNutritionPlan } = await admin
     .from('nutrition_plans')
     .select('id, plan_name, last_review_at')
     .eq('client_id', client?.id ?? '')
-    .eq('status', 'active')
+    .eq('is_active', true)
     .maybeSingle()
 
   const { data: activeProgram } = await admin
@@ -210,11 +213,19 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     ? !!client.weekly_checkins.find((c: { week_number: number; form_type: string }) => c.week_number === weekNumber && c.form_type === 'B')
     : false
 
-  // In test mode, both forms need to be submitted before showing "done"
-  // In normal mode, only the current window's form matters
+  // In test mode, both forms need to be submitted before showing "done".
+  // In normal mode, the per-client week contains exactly ONE check-in window
+  // (Fri 6pm → Sun 6:30pm), and whichever form was rotated to that window is
+  // what the client submitted. Checking against the CURRENT rotation
+  // (checkinWindow.formType) is wrong when the system has moved on to the
+  // next form before the per-client week ends — Amanda submitted Form A on
+  // Sun 5/24 in her per-client week 3, then the system rotated to Form B on
+  // Mon 5/25, and the portal started telling her she "missed" because she
+  // had no Form B for her week 3. Fix: a per-client week is complete if
+  // ANY check-in row exists for that week_number.
   const checkinDoneThisWeek = testMode
     ? (thisWeekFormADone && thisWeekFormBDone)
-    : (checkinWindow.formType === 'A' ? thisWeekFormADone : thisWeekFormBDone)
+    : (thisWeekFormADone || thisWeekFormBDone)
 
   // Determine which form to show next in test mode
   const activeFormType: 'A' | 'B' = testMode && checkinWindow.formType === 'A' && thisWeekFormADone && !thisWeekFormBDone
