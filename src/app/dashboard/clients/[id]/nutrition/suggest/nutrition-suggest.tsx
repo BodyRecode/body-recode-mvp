@@ -375,12 +375,12 @@ export default function NutritionPrescriptionSuggest({
   // affordance and stops the wait from feeling broken.
   const generationStages: Array<{ start: number; label: string }> = [
     { start: 0, label: 'Reading client context (CFFS, intake, baseline, medications)' },
-    { start: 5, label: 'Drafting meal structure and food selections' },
-    { start: 25, label: 'Computing per-food macros from the reference table' },
-    { start: 45, label: 'Reconciling daily totals against bodyweight floors' },
-    { start: 60, label: 'Validating per-meal protein caps and anchor distribution' },
-    { start: 75, label: 'Polishing and almost done' },
-    { start: 100, label: 'Taking longer than usual — Sonnet is working it through' },
+    { start: 3, label: 'Drafting meal structure and food selections (fast model)' },
+    { start: 15, label: 'Validating per-meal protein caps and anchor distribution' },
+    { start: 25, label: 'Retrying with corrections if needed' },
+    { start: 45, label: 'Escalating to higher-accuracy model (tight constraints detected)' },
+    { start: 90, label: 'Polishing the higher-accuracy plan and almost done' },
+    { start: 130, label: 'Taking longer than usual — give it another moment' },
   ]
   const currentStage = [...generationStages].reverse().find(s => generationElapsed >= s.start) ?? generationStages[0]
 

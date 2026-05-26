@@ -222,31 +222,33 @@ export async function POST(request: NextRequest) {
   const systemPrompt = buildNutritionSystemPrompt() + recoveryPromptSection
   const userPrompt = buildNutritionUserPrompt(inputs, cffsText, intakeText, previousPlans, client.medications)
 
-  // One-shot retry on validation failure. The validator catches:
-  //   - per-meal macro / food-sum mismatches
-  //   - daily protein anchor mismatch
-  //   - calorie band not derived from meal totals
-  //   - carb / fat floors vs bodyweight
-  // If the first generation fails any rule, we feed the issues back to the
-  // model as a correction note and try once more. A second failure 422s with
-  // the issues surfaced so the coach can see what went wrong.
-  async function callModel(correctionNote: string): Promise<Record<string, unknown>> {
+  // Tiered model strategy:
+  //   Tier 1: Haiku 4.5 — fast (~15s), passes for typical clients without
+  //           tight constraint envelopes. Most plans never need escalation.
+  //   Tier 2: Sonnet 4.6 — slow (~60-90s), handles tight constraint
+  //           envelopes (stimulant + GLP-1 + SSRI clients near per-meal
+  //           protein caps) that Haiku consistently overshoots.
+  //
+  // Sequence:
+  //   1. Haiku no-correction attempt (~15s)
+  //   2. If invalid → Haiku with correction note (~15s)
+  //   3. If still invalid → Sonnet with cumulative corrections (~80s)
+  //
+  // Typical case (no tight constraints): done at step 1 in ~15s.
+  // Hard case (Amanda-class): done by step 3 in ~110s.
+  // Worst case (Sonnet also fails): 422 to coach with all issues.
+  //
+  // Prompt caching on the system prompt (huge, identical across all calls
+  // within a request and across requests in the cache TTL window) cuts
+  // input cost ~90% and time-to-first-token on retries.
+  async function callModel(modelId: string, correctionNote: string): Promise<Record<string, unknown>> {
     const finalUserPrompt = correctionNote
       ? `${userPrompt}\n\n═══════════════════════════════════════\nVALIDATION CORRECTION REQUIRED\n═══════════════════════════════════════\nYour previous output was rejected by automatic validation. Issues:\n${correctionNote}\n\nRegenerate the plan correcting every issue above. Recompute every food's macros from the reference table; recompute each meal's protein_g/carb_g/fat_g as the sum of its foods; derive estimated_calorie_band from the meal totals last. Increase portion sizes if necessary to meet the daily floors.`
       : userPrompt
     const message = await anthropic.messages.create({
-      // Sonnet 4.6 (not Haiku) because nutrition generation is a tight
-      // multi-constraint problem: per-meal protein cap + daily anchor +
-      // first-meal cap + carb/fat floors + structured-foods schema. Haiku
-      // 4.5 consistently overshoots the per-meal protein cap on stimulant
-      // clients with anchor > 150g — three full attempts on Amanda's plan
-      // (Vyvanse + Brintellix, anchor 165g, 5 meals) all failed with the
-      // same overshoot pattern (e.g. 198g daily / 48g + 46g + 51g per meal).
-      // Sonnet handles constraint satisfaction dramatically better. Cost
-      // delta is ~10x per call but generation is per-plan, not per-request.
-      model: 'claude-sonnet-4-6',
+      model: modelId,
       max_tokens: 16000,
-      system: systemPrompt,
+      system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
       messages: [{ role: 'user', content: finalUserPrompt }],
     })
     const content = message.content[0]
@@ -274,44 +276,65 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  // Generation loop with up to MAX_RETRIES corrective passes. Haiku oscillates
-  // on tight constraint envelopes (e.g. stimulant clients with per-meal protein
-  // caps + a daily anchor that mathematically requires near-even distribution)
-  // — one retry often pushes overshoot → undershoot or vice versa without
-  // landing in the sweet spot. Two retries gives the third attempt a fresh
-  // start when the second-pass correction also failed.
-  const MAX_RETRIES = 2
+  // Generation loop with tiered model escalation.
+  // Tier 1 (Haiku): two attempts max — fast (~15s each). Most clients pass.
+  // Tier 2 (Sonnet): one attempt — slow (~80s). Only fires when Haiku
+  //                  exhausted its retries (typical for tight-envelope
+  //                  clients like Amanda: stimulant + GLP-1 + SSRI).
+  // Total worst-case time: ~110s. Typical: ~15s.
+  const HAIKU_MODEL = 'claude-haiku-4-5-20251001'
+  const SONNET_MODEL = 'claude-sonnet-4-6'
+  const HAIKU_MAX_ATTEMPTS = 2
+
   let plan: Record<string, unknown> = {}
   let validation
+  let lastCorrectionNote = ''
+
+  function summariseIssues(label: string, val: { issues: Array<{ code: string; message: string }> }) {
+    console.warn(`[generate-nutrition] ${label} failed:`, val.issues.map(i => i.code))
+    console.warn(`[generate-nutrition] ${label} detail:\n` + val.issues.map(i => `  - [${i.code}] ${i.message}`).join('\n'))
+  }
+
   try {
-    plan = await callModel('')
-    validation = runValidate(plan)
-    for (let attempt = 1; attempt <= MAX_RETRIES && !validation.ok; attempt++) {
-      console.warn(`[generate-nutrition] Pass ${attempt} validation failed:`, validation.issues.map(i => i.code))
-      console.warn(`[generate-nutrition] Pass ${attempt} issue detail:\n` + validation.issues.map(i => `  - [${i.code}] ${i.message}`).join('\n'))
-      const correctionNote = validation.issues.map(i => `- ${i.message}`).join('\n')
-      plan = await callModel(correctionNote)
+    // Tier 1: Haiku attempts
+    for (let attempt = 1; attempt <= HAIKU_MAX_ATTEMPTS; attempt++) {
+      const startMs = Date.now()
+      plan = await callModel(HAIKU_MODEL, attempt === 1 ? '' : lastCorrectionNote)
       validation = runValidate(plan)
+      console.warn(`[generate-nutrition] Haiku attempt ${attempt} took ${Date.now() - startMs}ms, ok=${validation.ok}`)
+      if (validation.ok) break
+      summariseIssues(`Haiku attempt ${attempt}`, validation)
+      lastCorrectionNote = validation.issues.map(i => `- ${i.message}`).join('\n')
     }
-    if (!validation.ok) {
-      console.warn('[generate-nutrition] All retries exhausted. Final meal summary:', JSON.stringify(
-        (plan.meals as MealLike[] | undefined)?.map(m => ({
-          name: m.meal_name,
-          P: m.protein_g, C: m.carb_g, F: m.fat_g,
-          food_count: Array.isArray(m.foods) ? m.foods.length : 0,
-        })) ?? [], null, 2))
+
+    // Tier 2: Sonnet escalation if Haiku exhausted retries
+    if (!validation!.ok) {
+      console.warn('[generate-nutrition] Escalating to Sonnet after Haiku exhausted retries')
+      const startMs = Date.now()
+      plan = await callModel(SONNET_MODEL, lastCorrectionNote)
+      validation = runValidate(plan)
+      console.warn(`[generate-nutrition] Sonnet attempt took ${Date.now() - startMs}ms, ok=${validation.ok}`)
+      if (!validation.ok) {
+        summariseIssues('Sonnet (final)', validation)
+        console.warn('[generate-nutrition] All tiers exhausted. Final meal summary:', JSON.stringify(
+          (plan.meals as MealLike[] | undefined)?.map(m => ({
+            name: m.meal_name,
+            P: m.protein_g, C: m.carb_g, F: m.fat_g,
+            food_count: Array.isArray(m.foods) ? m.foods.length : 0,
+          })) ?? [], null, 2))
+      }
     }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
     return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
   }
 
-  if (!validation.ok) {
+  if (!validation!.ok) {
     return NextResponse.json({
-      error: `Generated plan failed validation after ${MAX_RETRIES} retries`,
-      issues: validation.issues,
-      totals: validation.totals,
-      band: validation.band,
+      error: 'Generated plan failed validation across Haiku + Sonnet attempts',
+      issues: validation!.issues,
+      totals: validation!.totals,
+      band: validation!.band,
     }, { status: 422 })
   }
 
