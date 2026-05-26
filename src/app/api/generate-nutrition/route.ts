@@ -62,10 +62,28 @@ export async function POST(request: NextRequest) {
     meal_frequency,
     training_days_per_week,
     food_exclusions,
+    transitional_override_active,
+    transitional_override_floor_kcal,
+    transitional_override_justification,
   } = body
 
   if (!client_id || !entry_state || !protein_anchor_g || !carb_demand_level) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+  }
+
+  // Transitional override validation: if the coach has enabled it, both a
+  // floor_kcal and a justification are required (audit trail + auto-expiry
+  // gating). Otherwise reject before any LLM cost.
+  const overrideActive = Boolean(transitional_override_active)
+  const overrideFloor = Number(transitional_override_floor_kcal) || 0
+  const overrideJustification = String(transitional_override_justification || '').trim()
+  if (overrideActive) {
+    if (overrideFloor < 800 || overrideFloor > 4000) {
+      return NextResponse.json({ error: 'Transitional override floor must be between 800 and 4,000 kcal.' }, { status: 400 })
+    }
+    if (overrideJustification.length < 20) {
+      return NextResponse.json({ error: 'Transitional override requires a justification (≥20 characters) explaining the clinical reason for prescribing below the bodyweight floors.' }, { status: 400 })
+    }
   }
 
   const admin = createAdminClient()
@@ -252,6 +270,7 @@ export async function POST(request: NextRequest) {
       bodyweight_kg: bodyweightKg,
       entry_state: String(p.entry_state || entry_state),
       medications: client?.medications ?? null,
+      transitional_override: overrideActive ? { active: true, floor_kcal: overrideFloor } : null,
     })
   }
 
@@ -296,45 +315,73 @@ export async function POST(request: NextRequest) {
     }, { status: 422 })
   }
 
-  // Save as draft
-  const { data: savedPlan, error: saveError } = await admin
+  // Save as draft. Transitional override (Phase 3A) is appended only when
+  // active so older deployments without the migration don't blow up on
+  // unknown columns — the insert silently omits the override fields.
+  // When the migration has been run, the override + auto-computed expiry
+  // (4 weeks from now) are persisted alongside the plan.
+  const insertRow: Record<string, unknown> = {
+    client_id,
+    plan_name: (plan.plan_name as string) || inputs.plan_name,
+    entry_state: plan.entry_state || entry_state,
+    body_state: inputs.body_state,
+    pts_phase: inputs.pts_phase,
+    constraint_level: inputs.constraint_level,
+    recovery_status: inputs.recovery_status,
+    uncertainty_level: inputs.uncertainty_level,
+    protein_anchor_g: plan.protein_anchor_g || inputs.protein_anchor_g,
+    carb_demand_level: plan.carb_demand_level || inputs.carb_demand_level,
+    estimated_calorie_band: plan.estimated_calorie_band || null,
+    meal_frequency: plan.meal_frequency || inputs.meal_frequency,
+    modulation_level: plan.modulation_level,
+    active_strategies: plan.active_strategies || [],
+    nutrient_timing_permission: plan.nutrient_timing_permission || 'prohibited',
+    peri_workout_config: plan.peri_workout_config || null,
+    meals: plan.meals || [],
+    training_day_adjustments: plan.training_day_adjustments || null,
+    rest_day_adjustments: plan.rest_day_structure || null,
+    food_selection_guidelines: plan.food_selection_guidelines || [],
+    substitution_options: plan.substitution_options || null,
+    execution_rules: plan.execution_rules || [],
+    what_not_to_change: plan.what_not_to_change || [],
+    entry_state_summary: plan.entry_state_summary || null,
+    key_priorities: plan.key_priorities || [],
+    weekly_structure_notes: plan.weekly_structure_notes || null,
+    progression_notes: plan.progression_notes || null,
+    confidence_level: plan.confidence_level || 'moderate',
+    simplification_required: plan.simplification_required || false,
+    deescalation_triggered: plan.deescalation_triggered || false,
+    status: 'draft',
+    is_active: false,
+  }
+  if (overrideActive) {
+    insertRow.transitional_override_active = true
+    insertRow.transitional_override_floor_kcal = overrideFloor
+    insertRow.transitional_override_justification = overrideJustification
+    // Default expiry: 4 weeks from now. Coach can extend manually later.
+    const expiry = new Date()
+    expiry.setDate(expiry.getDate() + 28)
+    insertRow.transitional_override_expires_at = expiry.toISOString()
+  }
+  let { data: savedPlan, error: saveError } = await admin
     .from('nutrition_plans')
-    .insert({
-      client_id,
-      plan_name: (plan.plan_name as string) || inputs.plan_name,
-      entry_state: plan.entry_state || entry_state,
-      body_state: inputs.body_state,
-      pts_phase: inputs.pts_phase,
-      constraint_level: inputs.constraint_level,
-      recovery_status: inputs.recovery_status,
-      uncertainty_level: inputs.uncertainty_level,
-      protein_anchor_g: plan.protein_anchor_g || inputs.protein_anchor_g,
-      carb_demand_level: plan.carb_demand_level || inputs.carb_demand_level,
-      estimated_calorie_band: plan.estimated_calorie_band || null,
-      meal_frequency: plan.meal_frequency || inputs.meal_frequency,
-      modulation_level: plan.modulation_level,
-      active_strategies: plan.active_strategies || [],
-      nutrient_timing_permission: plan.nutrient_timing_permission || 'prohibited',
-      peri_workout_config: plan.peri_workout_config || null,
-      meals: plan.meals || [],
-      training_day_adjustments: plan.training_day_adjustments || null,
-      rest_day_adjustments: plan.rest_day_structure || null,
-      food_selection_guidelines: plan.food_selection_guidelines || [],
-      substitution_options: plan.substitution_options || null,
-      execution_rules: plan.execution_rules || [],
-      what_not_to_change: plan.what_not_to_change || [],
-      entry_state_summary: plan.entry_state_summary || null,
-      key_priorities: plan.key_priorities || [],
-      weekly_structure_notes: plan.weekly_structure_notes || null,
-      progression_notes: plan.progression_notes || null,
-      confidence_level: plan.confidence_level || 'moderate',
-      simplification_required: plan.simplification_required || false,
-      deescalation_triggered: plan.deescalation_triggered || false,
-      status: 'draft',
-      is_active: false,
-    })
+    .insert(insertRow)
     .select('id')
     .single()
+
+  // Graceful degradation: if the override columns don't exist yet (migration
+  // hasn't been run), retry without them so the plan still ships. Coach loses
+  // the audit trail until migration runs, but generation isn't blocked.
+  if (saveError && /column .* does not exist|transitional_override/i.test(saveError.message)) {
+    console.warn('[generate-nutrition] transitional override columns missing — retrying insert without them. Run sql/2026-05-25_nutrition_transitional_override.sql to enable persistence.')
+    delete insertRow.transitional_override_active
+    delete insertRow.transitional_override_floor_kcal
+    delete insertRow.transitional_override_justification
+    delete insertRow.transitional_override_expires_at
+    const retry = await admin.from('nutrition_plans').insert(insertRow).select('id').single()
+    savedPlan = retry.data
+    saveError = retry.error
+  }
 
   if (saveError) {
     console.error('Save error:', saveError)
@@ -357,5 +404,8 @@ export async function POST(request: NextRequest) {
     })
   }
 
+  if (!savedPlan) {
+    return NextResponse.json({ error: 'Failed to save nutrition plan' }, { status: 500 })
+  }
   return NextResponse.json({ plan_id: savedPlan.id, client_id })
 }

@@ -151,6 +151,8 @@ export function humaniseValidationIssue(issue: ValidationIssue): string {
       return `${issue.message} Fat-soluble nutrient floor based on bodyweight — going below risks hormone / micronutrient deficits.`
     case 'NO_MEALS':
       return `The engine returned a plan with no meals. This is a generation bug — try again.`
+    case 'TRANSITIONAL_FLOOR_NOT_MET':
+      return `${issue.message} The transitional override means you replaced the bodyweight floors with an explicit kcal floor — the plan still needs to hit that.`
     default:
       return issue.message
   }
@@ -163,6 +165,15 @@ export interface NutritionValidationInput {
   bodyweight_kg: number | null
   entry_state: string
   medications: string | null
+  // Optional transitional override — when present, the bodyweight-derived
+  // carb / fat g/kg floors are SKIPPED and replaced by the explicit kcal
+  // floor. Used when a client cannot physically execute the standard floors
+  // (chronic under-eating, post-illness recovery, etc.). Override must come
+  // with a justification (enforced at the API layer, not the validator).
+  transitional_override?: {
+    active: boolean
+    floor_kcal: number
+  } | null
 }
 
 /**
@@ -421,6 +432,23 @@ export function validateNutritionPlan(
         })
       }
     }
+  }
+
+  // Transitional override: skip the bodyweight-derived nutrient floors and
+  // enforce the coach-prescribed kcal floor instead. Used for chronic
+  // under-eaters who cannot physically execute the standard floors —
+  // documented justification stored on the plan, auto-expires after 4 weeks.
+  const override = input.transitional_override
+  if (override?.active && override.floor_kcal > 0) {
+    if (totals.kcal < override.floor_kcal) {
+      issues.push({
+        code: 'TRANSITIONAL_FLOOR_NOT_MET',
+        message: `Daily kcal ${totals.kcal} is below the transitional floor of ${override.floor_kcal} kcal you set on this plan.`,
+      })
+    }
+    // Skip the standard carb/fat floors when the override is active —
+    // that's the point of the override.
+    return { ok: issues.length === 0, issues, totals, band }
   }
 
   // Daily safety floors. These are not target macros — they're minimums that

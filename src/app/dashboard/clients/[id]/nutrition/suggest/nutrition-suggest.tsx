@@ -148,6 +148,14 @@ export default function NutritionPrescriptionSuggest({
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
   const [medications, setMedications] = useState<string | null>(null)
   const [generating, setGenerating] = useState(false)
+  // Transitional override (Phase 3A bridge mode). When enabled, replaces the
+  // bodyweight-derived carb / fat floors with an explicit kcal floor. Required
+  // for chronic under-eaters whose actual intake is far below their bodyweight
+  // floor (e.g. Vyvanse + GLP-1 stack producing ~1,400 kcal/day intake despite
+  // a 1,900 kcal floor). Auto-expires 4 weeks after generation.
+  const [overrideActive, setOverrideActive] = useState(false)
+  const [overrideFloorKcal, setOverrideFloorKcal] = useState<number>(1600)
+  const [overrideJustification, setOverrideJustification] = useState('')
   const [editingField, setEditingField] = useState<string | null>(null)
   const [generationElapsed, setGenerationElapsed] = useState(0)
 
@@ -244,6 +252,9 @@ export default function NutritionPrescriptionSuggest({
         meal_frequency: mealFrequency,
         training_days_per_week: trainingDaysPerWeek,
         food_exclusions: exclusions,
+        transitional_override_active: overrideActive,
+        transitional_override_floor_kcal: overrideActive ? overrideFloorKcal : null,
+        transitional_override_justification: overrideActive ? overrideJustification : null,
       }),
     })
 
@@ -628,6 +639,64 @@ export default function NutritionPrescriptionSuggest({
         <ReasonDisplay text={suggestion.food_exclusions_reason} />
       </div>
 
+      {/* Transitional override (bridge mode). For chronic under-eaters whose
+          actual intake is far below their bodyweight-derived floor — coach
+          explicitly prescribes a sub-floor calorie target with documented
+          justification. Validator skips the standard carb/fat g/kg floors
+          when this is on. Auto-expires after 4 weeks. */}
+      <div id="bridge-mode" className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5">
+        <label className="flex items-start gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={overrideActive}
+            onChange={e => setOverrideActive(e.target.checked)}
+            className="mt-0.5 w-4 h-4 accent-blue-600"
+          />
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-bold uppercase tracking-widest text-stone-500 mb-1">Transitional plan (bridge mode)</p>
+            <p className="text-xs text-stone-600 leading-relaxed">
+              Enable when the client cannot physically execute the bodyweight-derived calorie floor (chronic under-eating, severe appetite suppression, post-illness recovery). Replaces the standard carb / fat g/kg floors with an explicit kcal floor you set. Auto-expires after 4 weeks — regenerate then.
+            </p>
+          </div>
+        </label>
+        {overrideActive && (
+          <div className="mt-4 pl-7 space-y-3">
+            <div>
+              <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">
+                Minimum daily kcal floor
+              </label>
+              <input
+                type="number"
+                min={800}
+                max={4000}
+                step={50}
+                value={overrideFloorKcal}
+                onChange={e => setOverrideFloorKcal(parseInt(e.target.value) || 0)}
+                className="w-32 bg-white border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A]"
+              />
+              <p className="text-[11px] text-stone-500 mt-1">
+                Between 800 and 4,000. Validator enforces this in place of the bodyweight carb/fat floors.
+              </p>
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">
+                Justification (required, ≥20 characters)
+              </label>
+              <textarea
+                value={overrideJustification}
+                onChange={e => setOverrideJustification(e.target.value)}
+                rows={3}
+                placeholder="e.g. Client is on Vyvanse + GLP-1 + Brintellix stack with documented actual intake ~1,400 kcal/day for 6+ weeks. Bridging from current capacity to bodyweight floor over 4 weeks; reassess at Week 4 check-in."
+                className="w-full bg-white border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 leading-relaxed"
+              />
+              <p className="text-[11px] text-stone-500 mt-1">
+                {overrideJustification.length}/20 characters minimum. Documented for audit and licensee review.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Pre-flight feasibility banner — blocks Generate when the prescription
           is mathematically infeasible under the appetite-suppression hard
           rules, with one-click fixes for the smallest viable adjustment. */}
@@ -673,8 +742,17 @@ export default function NutritionPrescriptionSuggest({
         </a>
         <button
           onClick={handleGenerate}
-          disabled={generating || !feasibility.ok}
-          title={!feasibility.ok ? 'Prescription is mathematically infeasible — see the amber banner above' : undefined}
+          disabled={
+            generating ||
+            !feasibility.ok ||
+            (overrideActive && (overrideJustification.trim().length < 20 || overrideFloorKcal < 800 || overrideFloorKcal > 4000))
+          }
+          title={
+            !feasibility.ok ? 'Prescription is mathematically infeasible — see the amber banner above' :
+            (overrideActive && overrideJustification.trim().length < 20) ? 'Bridge mode requires a justification of at least 20 characters' :
+            (overrideActive && (overrideFloorKcal < 800 || overrideFloorKcal > 4000)) ? 'Bridge mode floor must be between 800 and 4,000 kcal' :
+            undefined
+          }
           className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {generating ? 'Generating plan...' : 'Approve & Generate Plan'}
