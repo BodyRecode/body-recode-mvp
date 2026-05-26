@@ -276,6 +276,21 @@ export default function NutritionPrescriptionSuggest({
     router.push(`/dashboard/clients/${clientId}/nutrition`)
   }
 
+  // Pre-flight feasibility — recomputes whenever the protein anchor or meal
+  // frequency changes. Returns the same shape as the server validator's
+  // appetite-suppression rules. We use this to BLOCK the Generate button
+  // and surface a banner with one-click fixes when the prescription is
+  // mathematically infeasible (e.g. anchor 165g + 4 meals + stimulant).
+  // MUST live above the early returns below — Rules of Hooks.
+  const feasibility = useMemo(
+    () => checkPrescriptionFeasibility({
+      protein_anchor_g: proteinAnchorG,
+      meal_frequency: mealFrequency,
+      medications,
+    }),
+    [proteinAnchorG, mealFrequency, medications]
+  )
+
   if (loading) {
     return (
       <div className="space-y-3">
@@ -323,20 +338,6 @@ export default function NutritionPrescriptionSuggest({
     { start: 100, label: 'Taking longer than usual — Sonnet is working it through' },
   ]
   const currentStage = [...generationStages].reverse().find(s => generationElapsed >= s.start) ?? generationStages[0]
-
-  // Pre-flight feasibility — recomputes whenever the protein anchor or meal
-  // frequency changes. Returns the same shape as the server validator's
-  // appetite-suppression rules. We use this to BLOCK the Generate button
-  // and surface a banner with one-click fixes when the prescription is
-  // mathematically infeasible (e.g. anchor 165g + 4 meals + stimulant).
-  const feasibility = useMemo(
-    () => checkPrescriptionFeasibility({
-      protein_anchor_g: proteinAnchorG,
-      meal_frequency: mealFrequency,
-      medications,
-    }),
-    [proteinAnchorG, mealFrequency, medications]
-  )
 
   function applyFeasibilityPatch(patch: Partial<{ protein_anchor_g: number; meal_frequency: number }>) {
     if (typeof patch.protein_anchor_g === 'number') setProteinAnchorG(patch.protein_anchor_g)
