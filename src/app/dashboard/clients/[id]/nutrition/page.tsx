@@ -327,8 +327,13 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
                             <span className="text-stone-400 mt-0.5 shrink-0">•</span>
                             <p className="text-sm text-stone-700">{clean(f.name)}</p>
                           </div>
-                          {f.kcal !== null && (
-                            <span className="text-xs text-stone-500 tabular-nums shrink-0 pt-0.5">{f.kcal} kcal</span>
+                          {f.protein_g !== null && (
+                            <div className="flex items-baseline gap-3 shrink-0 tabular-nums text-xs pt-0.5">
+                              <span className="text-stone-500"><span className="text-[10px] text-stone-400">P</span> {f.protein_g}g</span>
+                              <span className="text-stone-500"><span className="text-[10px] text-stone-400">C</span> {f.carb_g}g</span>
+                              <span className="text-stone-500"><span className="text-[10px] text-stone-400">F</span> {f.fat_g}g</span>
+                              <span className="text-stone-600 font-medium w-[60px] text-right">{f.kcal} kcal</span>
+                            </div>
                           )}
                         </div>
                       )
