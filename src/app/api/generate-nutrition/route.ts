@@ -246,27 +246,32 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  let plan: Record<string, unknown>
+  // Generation loop with up to MAX_RETRIES corrective passes. Haiku oscillates
+  // on tight constraint envelopes (e.g. stimulant clients with per-meal protein
+  // caps + a daily anchor that mathematically requires near-even distribution)
+  // — one retry often pushes overshoot → undershoot or vice versa without
+  // landing in the sweet spot. Two retries gives the third attempt a fresh
+  // start when the second-pass correction also failed.
+  const MAX_RETRIES = 2
+  let plan: Record<string, unknown> = {}
   let validation
   try {
     plan = await callModel('')
     validation = runValidate(plan)
-    if (!validation.ok) {
-      console.warn('[generate-nutrition] First-pass validation failed:', validation.issues.map(i => i.code))
-      console.warn('[generate-nutrition] First-pass issue detail:\n' + validation.issues.map(i => `  - [${i.code}] ${i.message}`).join('\n'))
+    for (let attempt = 1; attempt <= MAX_RETRIES && !validation.ok; attempt++) {
+      console.warn(`[generate-nutrition] Pass ${attempt} validation failed:`, validation.issues.map(i => i.code))
+      console.warn(`[generate-nutrition] Pass ${attempt} issue detail:\n` + validation.issues.map(i => `  - [${i.code}] ${i.message}`).join('\n'))
       const correctionNote = validation.issues.map(i => `- ${i.message}`).join('\n')
       plan = await callModel(correctionNote)
       validation = runValidate(plan)
-      if (!validation.ok) {
-        console.warn('[generate-nutrition] Second-pass validation ALSO failed:', validation.issues.map(i => i.code))
-        console.warn('[generate-nutrition] Second-pass issue detail:\n' + validation.issues.map(i => `  - [${i.code}] ${i.message}`).join('\n'))
-        console.warn('[generate-nutrition] Second-pass plan meal summary:', JSON.stringify(
-          (plan.meals as MealLike[] | undefined)?.map(m => ({
-            name: m.meal_name,
-            P: m.protein_g, C: m.carb_g, F: m.fat_g,
-            food_count: Array.isArray(m.foods) ? m.foods.length : 0,
-          })) ?? [], null, 2))
-      }
+    }
+    if (!validation.ok) {
+      console.warn('[generate-nutrition] All retries exhausted. Final meal summary:', JSON.stringify(
+        (plan.meals as MealLike[] | undefined)?.map(m => ({
+          name: m.meal_name,
+          P: m.protein_g, C: m.carb_g, F: m.fat_g,
+          food_count: Array.isArray(m.foods) ? m.foods.length : 0,
+        })) ?? [], null, 2))
     }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
@@ -275,7 +280,7 @@ export async function POST(request: NextRequest) {
 
   if (!validation.ok) {
     return NextResponse.json({
-      error: 'Generated plan failed validation after one retry',
+      error: `Generated plan failed validation after ${MAX_RETRIES} retries`,
       issues: validation.issues,
       totals: validation.totals,
       band: validation.band,
