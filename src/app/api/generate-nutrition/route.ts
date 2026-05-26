@@ -276,19 +276,23 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  // Generation loop with tiered model escalation.
-  // Tier 1 (Haiku): two attempts max — fast (~15s each). Most clients pass.
-  // Tier 2 (Sonnet): one attempt — slow (~80s). Only fires when Haiku
-  //                  exhausted its retries (typical for tight-envelope
-  //                  clients like Amanda: stimulant + GLP-1 + SSRI).
-  // Total worst-case time: ~110s. Typical: ~15s.
+  // Generation strategy: parallel Haiku attempts → Sonnet fallback.
+  // Each Haiku call takes ~40s (output is the limiting factor — full
+  // nutrition plan with structured foods is ~3-5k output tokens). Three
+  // parallel Haiku attempts also take ~40s wall-clock — we just pick the
+  // first one that validates. If all three fail, escalate to Sonnet.
+  // Plain prompt cache means parallel calls share input cost.
+  //
+  // Wall-clock timing:
+  //   Typical (Haiku passes):     ~40s
+  //   Hard case (Sonnet fallback): ~40s + ~80s = ~120s
+  //   Pre-tiering was ~180s+.
   const HAIKU_MODEL = 'claude-haiku-4-5-20251001'
   const SONNET_MODEL = 'claude-sonnet-4-6'
-  const HAIKU_MAX_ATTEMPTS = 2
+  const HAIKU_PARALLEL_ATTEMPTS = 3
 
   let plan: Record<string, unknown> = {}
-  let validation
-  let lastCorrectionNote = ''
+  let validation: ReturnType<typeof runValidate> | undefined
 
   function summariseIssues(label: string, val: { issues: Array<{ code: string; message: string }> }) {
     console.warn(`[generate-nutrition] ${label} failed:`, val.issues.map(i => i.code))
@@ -296,24 +300,47 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // Tier 1: Haiku attempts
-    for (let attempt = 1; attempt <= HAIKU_MAX_ATTEMPTS; attempt++) {
-      const startMs = Date.now()
-      plan = await callModel(HAIKU_MODEL, attempt === 1 ? '' : lastCorrectionNote)
-      validation = runValidate(plan)
-      console.warn(`[generate-nutrition] Haiku attempt ${attempt} took ${Date.now() - startMs}ms, ok=${validation.ok}`)
-      if (validation.ok) break
-      summariseIssues(`Haiku attempt ${attempt}`, validation)
-      lastCorrectionNote = validation.issues.map(i => `- ${i.message}`).join('\n')
+    // Tier 1: N parallel Haiku attempts (same prompt, model non-determinism
+    // produces diverse outputs). Take the first one that passes validation;
+    // if none pass, keep the one with the FEWEST issues to feed as the
+    // correction note for Sonnet escalation.
+    const startMs = Date.now()
+    const haikuResults = await Promise.all(
+      Array.from({ length: HAIKU_PARALLEL_ATTEMPTS }, async (_, i) => {
+        try {
+          const p = await callModel(HAIKU_MODEL, '')
+          const v = runValidate(p)
+          return { i, p, v, error: null as string | null }
+        } catch (e) {
+          return { i, p: {} as Record<string, unknown>, v: null as ReturnType<typeof runValidate> | null, error: e instanceof Error ? e.message : String(e) }
+        }
+      })
+    )
+    console.warn(`[generate-nutrition] Parallel Haiku (${HAIKU_PARALLEL_ATTEMPTS}) took ${Date.now() - startMs}ms`)
+    for (const r of haikuResults) {
+      if (r.error) console.warn(`[generate-nutrition] Haiku attempt ${r.i + 1} threw:`, r.error)
+      else console.warn(`[generate-nutrition] Haiku attempt ${r.i + 1} ok=${r.v?.ok}, issues=${r.v?.issues.length ?? '?'}`)
     }
+    const passed = haikuResults.find(r => r.v?.ok)
+    if (passed && passed.v) {
+      plan = passed.p
+      validation = passed.v
+    } else {
+      // None passed. Pick the "least bad" attempt to use as the correction
+      // note for Sonnet escalation.
+      const bestHaiku = haikuResults
+        .filter(r => r.v)
+        .sort((a, b) => (a.v!.issues.length - b.v!.issues.length))[0]
+      const correctionNote = bestHaiku?.v
+        ? bestHaiku.v.issues.map(i => `- ${i.message}`).join('\n')
+        : ''
 
-    // Tier 2: Sonnet escalation if Haiku exhausted retries
-    if (!validation!.ok) {
-      console.warn('[generate-nutrition] Escalating to Sonnet after Haiku exhausted retries')
-      const startMs = Date.now()
-      plan = await callModel(SONNET_MODEL, lastCorrectionNote)
+      // Tier 2: Sonnet escalation
+      console.warn('[generate-nutrition] All Haiku attempts failed validation — escalating to Sonnet')
+      const sonnetStart = Date.now()
+      plan = await callModel(SONNET_MODEL, correctionNote)
       validation = runValidate(plan)
-      console.warn(`[generate-nutrition] Sonnet attempt took ${Date.now() - startMs}ms, ok=${validation.ok}`)
+      console.warn(`[generate-nutrition] Sonnet attempt took ${Date.now() - sonnetStart}ms, ok=${validation.ok}`)
       if (!validation.ok) {
         summariseIssues('Sonnet (final)', validation)
         console.warn('[generate-nutrition] All tiers exhausted. Final meal summary:', JSON.stringify(
@@ -329,12 +356,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
   }
 
-  if (!validation!.ok) {
+  if (!validation || !validation.ok) {
     return NextResponse.json({
-      error: 'Generated plan failed validation across Haiku + Sonnet attempts',
-      issues: validation!.issues,
-      totals: validation!.totals,
-      band: validation!.band,
+      error: 'Generated plan failed validation across all Haiku attempts + Sonnet escalation',
+      issues: validation?.issues ?? [],
+      totals: validation?.totals ?? null,
+      band: validation?.band ?? null,
     }, { status: 422 })
   }
 
