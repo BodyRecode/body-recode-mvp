@@ -156,6 +156,13 @@ export default function NutritionPrescriptionSuggest({
   const [overrideActive, setOverrideActive] = useState(false)
   const [overrideFloorKcal, setOverrideFloorKcal] = useState<number>(1600)
   const [overrideJustification, setOverrideJustification] = useState('')
+  // Bridge-mode AI prefill state. When the coach toggles bridge mode on, we
+  // fetch a context-aware suggestion (floor kcal + drafted justification
+  // pulled from medications + baseline + recent check-ins) so a coach who
+  // doesn't write clinical justifications daily can ship a defensible plan.
+  const [bridgeSuggesting, setBridgeSuggesting] = useState(false)
+  const [bridgeSuggestionMeta, setBridgeSuggestionMeta] = useState<{ standard_floor_kcal: number | null; evidence_summary: string } | null>(null)
+  const [bridgePrefillDone, setBridgePrefillDone] = useState(false)
   const [editingField, setEditingField] = useState<string | null>(null)
   const [generationElapsed, setGenerationElapsed] = useState(0)
 
@@ -171,6 +178,44 @@ export default function NutritionPrescriptionSuggest({
     const t = setInterval(() => setGenerationElapsed(s => s + 1), 1000)
     return () => clearInterval(t)
   }, [generating])
+
+  async function fetchBridgeSuggestion(force: boolean = false) {
+    if (bridgeSuggesting) return
+    setBridgeSuggesting(true)
+    try {
+      const res = await fetch('/api/suggest-bridge-mode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ client_id: clientId }),
+      })
+      const data = await res.json()
+      if (data?.suggested_floor_kcal) setOverrideFloorKcal(data.suggested_floor_kcal)
+      // Only overwrite the justification on first fetch (toggle-on) or when
+      // the coach explicitly clicks "Regenerate suggestion". Don't clobber
+      // edits the coach has typed.
+      if (data?.suggested_justification && (force || !bridgePrefillDone)) {
+        setOverrideJustification(data.suggested_justification)
+      }
+      setBridgeSuggestionMeta({
+        standard_floor_kcal: data?.standard_floor_kcal ?? null,
+        evidence_summary: data?.evidence_summary ?? '',
+      })
+      setBridgePrefillDone(true)
+    } catch (err) {
+      console.warn('Bridge suggestion fetch failed:', err)
+    } finally {
+      setBridgeSuggesting(false)
+    }
+  }
+
+  // Auto-fetch the bridge suggestion the first time the coach toggles
+  // bridge mode ON. Doesn't refetch on subsequent toggles (state persists).
+  useEffect(() => {
+    if (overrideActive && !bridgePrefillDone && !bridgeSuggesting) {
+      fetchBridgeSuggestion(false)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [overrideActive])
 
   // Editable values
   const [planName, setPlanName] = useState('')
@@ -662,6 +707,35 @@ export default function NutritionPrescriptionSuggest({
         </label>
         {overrideActive && (
           <div className="mt-4 pl-7 space-y-3">
+            {bridgeSuggesting && (
+              <div className="flex items-center gap-2 text-xs text-blue-600 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                Reading client medications, baseline and recent check-ins to suggest a floor and draft a justification…
+              </div>
+            )}
+            {bridgeSuggestionMeta && !bridgeSuggesting && (
+              <div className="text-xs text-stone-600 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 leading-relaxed">
+                <div className="flex items-start justify-between gap-3 mb-1">
+                  <p className="font-semibold text-stone-700">AI prefill (you can edit)</p>
+                  <button
+                    type="button"
+                    onClick={() => fetchBridgeSuggestion(true)}
+                    disabled={bridgeSuggesting}
+                    className="text-[11px] text-blue-600 hover:text-blue-700 font-semibold disabled:opacity-50"
+                  >
+                    Regenerate suggestion ↻
+                  </button>
+                </div>
+                {bridgeSuggestionMeta.standard_floor_kcal && (
+                  <p className="text-stone-500">
+                    Standard bodyweight-derived floor (would apply without override): <span className="font-mono text-stone-700">{bridgeSuggestionMeta.standard_floor_kcal} kcal</span>. Bridge mode replaces this.
+                  </p>
+                )}
+                {bridgeSuggestionMeta.evidence_summary && (
+                  <p className="text-stone-500 mt-1 italic">{bridgeSuggestionMeta.evidence_summary}</p>
+                )}
+              </div>
+            )}
             <div>
               <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">
                 Minimum daily kcal floor
@@ -686,7 +760,7 @@ export default function NutritionPrescriptionSuggest({
               <textarea
                 value={overrideJustification}
                 onChange={e => setOverrideJustification(e.target.value)}
-                rows={3}
+                rows={5}
                 placeholder="e.g. Client is on Vyvanse + GLP-1 + Brintellix stack with documented actual intake ~1,400 kcal/day for 6+ weeks. Bridging from current capacity to bodyweight floor over 4 weeks; reassess at Week 4 check-in."
                 className="w-full bg-white border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 leading-relaxed"
               />
