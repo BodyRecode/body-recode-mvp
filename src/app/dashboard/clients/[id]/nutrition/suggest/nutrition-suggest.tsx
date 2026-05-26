@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 import { checkPrescriptionFeasibility, humaniseValidationIssue } from '@/lib/nutrition-validation'
@@ -195,16 +195,30 @@ export default function NutritionPrescriptionSuggest({
     return () => clearInterval(t)
   }, [generating])
 
+  // Module-level ref so we can abort an in-flight fetch when the coach toggles
+  // bridge mode OFF mid-fetch. Without this, the fetch resolves and stomps
+  // freshly-cleared UI state. Audit finding #8 on 2026-05-25.
+  const bridgeFetchAbortRef = useRef<AbortController | null>(null)
+
   async function fetchBridgeSuggestion(force: boolean = false) {
     if (bridgeSuggesting) return
+    // Abort any prior fetch still in flight
+    bridgeFetchAbortRef.current?.abort()
+    const controller = new AbortController()
+    bridgeFetchAbortRef.current = controller
     setBridgeSuggesting(true)
     try {
       const res = await fetch('/api/suggest-bridge-mode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ client_id: clientId }),
+        signal: controller.signal,
       })
       const data = await res.json()
+      // Defence: if the coach toggled OFF while we were in flight, do nothing
+      // with the response. AbortController catches most cases but this is the
+      // belt-and-braces backstop.
+      if (!overrideActive) return
       if (data?.suggested_floor_kcal) setOverrideFloorKcal(data.suggested_floor_kcal)
       // Only overwrite the justification on first fetch (toggle-on) or when
       // the coach explicitly clicks "Regenerate suggestion". Don't clobber
@@ -229,9 +243,12 @@ export default function NutritionPrescriptionSuggest({
       })
       setBridgePrefillDone(true)
     } catch (err) {
+      // Silent on abort — expected when the coach toggles off mid-fetch.
+      if ((err as { name?: string })?.name === 'AbortError') return
       console.warn('Bridge suggestion fetch failed:', err)
     } finally {
       setBridgeSuggesting(false)
+      if (bridgeFetchAbortRef.current === controller) bridgeFetchAbortRef.current = null
     }
   }
 
@@ -242,9 +259,14 @@ export default function NutritionPrescriptionSuggest({
   useEffect(() => {
     if (overrideActive && !bridgePrefillDone && !bridgeSuggesting) {
       fetchBridgeSuggestion(false)
-    } else if (!overrideActive && proteinAnchorBeforeBridge !== null) {
-      setProteinAnchorG(proteinAnchorBeforeBridge)
-      setProteinAnchorBeforeBridge(null)
+    } else if (!overrideActive) {
+      // Abort any in-flight prefill fetch so it can't stomp the cleared UI
+      // state. Restore the pre-bridge anchor if we have one stored.
+      bridgeFetchAbortRef.current?.abort()
+      if (proteinAnchorBeforeBridge !== null) {
+        setProteinAnchorG(proteinAnchorBeforeBridge)
+        setProteinAnchorBeforeBridge(null)
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [overrideActive])

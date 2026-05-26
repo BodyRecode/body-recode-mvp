@@ -18,8 +18,18 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRet
 // "Unexpected non-whitespace character after JSON at position N". This walker
 // counts braces, respects string literals + escapes, and stops at the matching
 // close of the first {.
+//
+// Also handles the model wrapping output in a ```json fence (audit finding #10
+// on 2026-05-25): if a fence is present, start the scan inside the fence to
+// avoid picking up a stray { from any pre-fence prose.
 function extractFirstJsonObject(text: string): string | null {
-  const start = text.indexOf('{')
+  // Prefer scanning inside a ```json (or bare ```) fence if one exists — the
+  // fence is an unambiguous "JSON starts here" marker.
+  const fenceMatch = text.match(/```(?:json)?\s*\n/)
+  const scanStart = fenceMatch && typeof fenceMatch.index === 'number'
+    ? fenceMatch.index + fenceMatch[0].length
+    : 0
+  const start = text.indexOf('{', scanStart)
   if (start === -1) return null
   let depth = 0
   let inString = false
@@ -338,8 +348,12 @@ export async function POST(request: NextRequest) {
       plan = passed.p
       validation = passed.v
     } else {
-      // None passed. Pick the "least bad" attempt to use as the correction
-      // note for Sonnet escalation.
+      // None passed. Pick the "least bad" attempt — used both as the
+      // correction note for Sonnet AND as the surfaced result if Sonnet
+      // itself throws (audit finding #11: previously a Sonnet exception
+      // discarded all Haiku candidates and returned a 500 with just the
+      // error string, losing the coach's chance to see what the engine
+      // got close to).
       const bestHaiku = haikuResults
         .filter(r => r.v)
         .sort((a, b) => (a.v!.issues.length - b.v!.issues.length))[0]
@@ -347,20 +361,41 @@ export async function POST(request: NextRequest) {
         ? bestHaiku.v.issues.map(i => `- ${i.message}`).join('\n')
         : ''
 
-      // Tier 2: Sonnet escalation
+      // Tier 2: Sonnet escalation. Wrap in its own try/catch so that an
+      // exception (model unavailable, rate limit, network) falls back to
+      // the best Haiku candidate instead of throwing away the whole
+      // generation.
       console.warn('[generate-nutrition] All Haiku attempts failed validation — escalating to Sonnet')
       const sonnetStart = Date.now()
-      plan = await callModel(SONNET_MODEL, correctionNote)
-      validation = runValidate(plan)
-      console.warn(`[generate-nutrition] Sonnet attempt took ${Date.now() - sonnetStart}ms, ok=${validation.ok}`)
-      if (!validation.ok) {
-        summariseIssues('Sonnet (final)', validation)
-        console.warn('[generate-nutrition] All tiers exhausted. Final meal summary:', JSON.stringify(
-          (plan.meals as MealLike[] | undefined)?.map(m => ({
-            name: m.meal_name,
-            P: m.protein_g, C: m.carb_g, F: m.fat_g,
-            food_count: Array.isArray(m.foods) ? m.foods.length : 0,
-          })) ?? [], null, 2))
+      try {
+        plan = await callModel(SONNET_MODEL, correctionNote)
+        validation = runValidate(plan)
+        console.warn(`[generate-nutrition] Sonnet attempt took ${Date.now() - sonnetStart}ms, ok=${validation.ok}`)
+        if (!validation.ok) {
+          summariseIssues('Sonnet (final)', validation)
+          console.warn('[generate-nutrition] All tiers exhausted. Final meal summary:', JSON.stringify(
+            (plan.meals as MealLike[] | undefined)?.map(m => ({
+              name: m.meal_name,
+              P: m.protein_g, C: m.carb_g, F: m.fat_g,
+              food_count: Array.isArray(m.foods) ? m.foods.length : 0,
+            })) ?? [], null, 2))
+        }
+      } catch (sonnetErr) {
+        const msg = sonnetErr instanceof Error ? sonnetErr.message : String(sonnetErr)
+        console.warn(`[generate-nutrition] Sonnet threw (${msg}) — falling back to best Haiku candidate`)
+        if (bestHaiku?.v && bestHaiku.p) {
+          plan = bestHaiku.p
+          validation = bestHaiku.v
+          // Note the Sonnet failure into the issue list so the 422 message
+          // explains why the plan came back invalid (without Sonnet save).
+          validation.issues.push({
+            code: 'SONNET_ESCALATION_FAILED',
+            message: `Sonnet model call threw: ${msg}. Returning best Haiku candidate (${bestHaiku.v.issues.length} validator issues) so you can see what the engine produced.`,
+          })
+        } else {
+          // No usable Haiku candidates either — re-throw to outer catch.
+          throw sonnetErr
+        }
       }
     }
   } catch (err) {

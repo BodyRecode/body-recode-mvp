@@ -508,6 +508,23 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
   // bridge state before drift / steady so the coach is prompted to step
   // up (or extend) the bridge before it silently lapses.
   const anp = input.activeNutritionPlan
+  // Audit finding #7: active without expiry → still surface so the bridge
+  // isn't invisible. Treat as expiring-now and amber priority. Happens if
+  // a coach manually toggles the active flag in the DB, or after a partial
+  // schema migration where some columns are present and others aren't.
+  if (anp?.transitionalOverrideActive && !anp.transitionalOverrideExpiresAt) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'active_bridge_expiring',
+      headline: 'Bridge plan: no expiry set',
+      sublabel: `Floor ${anp.transitionalOverrideFloorKcal ?? '?'} kcal. Regenerate to set a fresh expiry, or remove the override.`,
+      href: `${profileHref}/nutrition/suggest`,
+      accent: 'amber',
+      priority: 30,
+      badge: composedBadge,
+    }
+  }
   if (anp?.transitionalOverrideActive && anp.transitionalOverrideExpiresAt) {
     const expiry = new Date(anp.transitionalOverrideExpiresAt)
     const now = new Date()
