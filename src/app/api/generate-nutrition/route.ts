@@ -5,7 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescriptionInputs } from '@/lib/nutrition-prompt'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clamp'
-import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike } from '@/lib/nutrition-validation'
+import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike, BRIDGE_CEILING_BUFFER } from '@/lib/nutrition-validation'
 
 export const maxDuration = 300
 
@@ -213,8 +213,11 @@ export async function POST(request: NextRequest) {
     // floors (which are skipped under bridge mode) and produces drastically
     // undersized plans because every other doctrine signal pushes
     // conservative.
+    // Ceiling sent to the LLM matches the validator's enforced buffer exactly.
+    // Drift was the #3 audit finding on 2026-05-25 (prompt said +100, validator
+    // allowed +150 — model targeted tighter band than needed, more retries).
     transitional_target_band: overrideActive
-      ? { floor_kcal: overrideFloor, ceiling_kcal: overrideFloor + 100 }
+      ? { floor_kcal: overrideFloor, ceiling_kcal: overrideFloor + BRIDGE_CEILING_BUFFER }
       : undefined,
   }
 

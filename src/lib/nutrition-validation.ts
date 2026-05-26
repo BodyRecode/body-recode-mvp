@@ -204,9 +204,18 @@ export interface PrescriptionFeasibilityResult {
   suggestions: Array<{ label: string; patch: Partial<PrescriptionFeasibilityInput> }>  // one-click fixes
 }
 
-const PER_MEAL_PROTEIN_CAP = 43
-const STIMULANT_FIRST_MEAL_PROTEIN_CAP = 32
-const MIN_MEAL_COUNT_WHEN_SUPPRESSED = 4
+// Single source of truth for the per-meal protein caps + minimum meal count
+// under appetite suppression. Exported so the pre-flight feasibility check,
+// the suggest engine's auto-bump math, and the validator all agree.
+// Drift between these was the #2 audit finding on 2026-05-25.
+export const PER_MEAL_PROTEIN_CAP = 43
+export const STIMULANT_FIRST_MEAL_PROTEIN_CAP = 35
+export const MIN_MEAL_COUNT_WHEN_SUPPRESSED = 4
+
+// Bridge mode allowed kcal headroom above the coach-set floor. Used by both
+// the validator (TRANSITIONAL_CEILING_EXCEEDED) and the prompt builder (so
+// the LLM is given the same ceiling the validator will enforce).
+export const BRIDGE_CEILING_BUFFER = 150
 
 export function checkPrescriptionFeasibility(input: PrescriptionFeasibilityInput): PrescriptionFeasibilityResult {
   const reasons: string[] = []
@@ -452,8 +461,7 @@ export function validateNutritionPlan(
   // documented justification stored on the plan, auto-expires after 4 weeks.
   const override = input.transitional_override
   if (override?.active && override.floor_kcal > 0) {
-    const CEILING_BUFFER = 150  // allow +150 kcal above the bridge target — was 100 but Sonnet kept landing at +30-100 over due to natural portion sizes; 150 lets sensible plans through without bouncing on rounding
-    const ceilingKcal = override.floor_kcal + CEILING_BUFFER
+    const ceilingKcal = override.floor_kcal + BRIDGE_CEILING_BUFFER
     if (totals.kcal < override.floor_kcal) {
       issues.push({
         code: 'TRANSITIONAL_FLOOR_NOT_MET',
@@ -463,7 +471,7 @@ export function validateNutritionPlan(
     if (totals.kcal > ceilingKcal) {
       issues.push({
         code: 'TRANSITIONAL_CEILING_EXCEEDED',
-        message: `Daily kcal ${totals.kcal} exceeds the transitional ceiling of ${ceilingKcal} kcal (bridge floor ${override.floor_kcal} + ${CEILING_BUFFER} buffer). Bridge mode targets the floor, not above it — lower the protein anchor or reduce portions.`,
+        message: `Daily kcal ${totals.kcal} exceeds the transitional ceiling of ${ceilingKcal} kcal (bridge floor ${override.floor_kcal} + ${BRIDGE_CEILING_BUFFER} buffer). Bridge mode targets the floor, not above it — lower the protein anchor or reduce portions.`,
       })
     }
     // Skip the standard carb/fat floors when the override is active —

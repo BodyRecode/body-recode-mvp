@@ -184,19 +184,12 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4 mt-4 pl-8">
-            <div>
-              <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1">Current bridge floor</p>
-              <p className="text-lg font-semibold text-stone-900 tabular-nums">{plan.transitional_override_floor_kcal} kcal</p>
-              <p className="text-[11px] text-stone-600 mt-0.5">starting point — this plan</p>
-            </div>
-            <div>
-              <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1">Bridging toward</p>
-              <p className="text-lg font-semibold text-stone-900 tabular-nums">
-                ~{Math.round((plan.transitional_override_floor_kcal || 0) / 0.85 / 50) * 50} kcal
-              </p>
-              <p className="text-[11px] text-stone-600 mt-0.5">standard bodyweight-derived floor</p>
-            </div>
+          <div className="mt-4 pl-8">
+            <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1">Current bridge floor</p>
+            <p className="text-lg font-semibold text-stone-900 tabular-nums">
+              {plan.transitional_override_floor_kcal ? `${plan.transitional_override_floor_kcal} kcal` : '— kcal (not set)'}
+            </p>
+            <p className="text-[11px] text-stone-600 mt-0.5">starting point. At expiry, regenerate without override to land on the standard bodyweight-derived floor.</p>
           </div>
           {plan.transitional_override_justification && (
             <div className="mt-4 pl-8">

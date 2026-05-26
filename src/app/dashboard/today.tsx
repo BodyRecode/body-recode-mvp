@@ -263,12 +263,21 @@ export default async function TodayWidget() {
             transitionalOverrideExpiresAt: activeNutrition.transitional_override_expires_at ?? null,
           }
         : null,
+      // detectBridgeReadiness needs the MOST RECENT 2 check-ins. The fetch
+      // at line 82 doesn't .order() so clientCheckins is in arbitrary DB
+      // order — slicing without a sort can hand the function ancient
+      // check-ins from the early bridge phase (when the client was
+      // struggling), making readiness never fire. Sort desc before slice.
+      // Audit finding #6 on 2026-05-25.
       recentCheckinResponsesForBridge: !!activeNutrition?.transitional_override_active
-        ? clientCheckins.slice(0, 2).map(c => ({
-            week_number: c.week_number,
-            submitted_at: c.submitted_at,
-            responses: c.responses as Record<string, unknown> ?? {},
-          }))
+        ? [...clientCheckins]
+            .sort((a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())
+            .slice(0, 2)
+            .map(c => ({
+              week_number: c.week_number,
+              submitted_at: c.submitted_at,
+              responses: c.responses as Record<string, unknown> ?? {},
+            }))
         : undefined,
       readiness,
       unacknowledgedFeedbackCount: feedbackByClient.get(client.id) ?? 0,
