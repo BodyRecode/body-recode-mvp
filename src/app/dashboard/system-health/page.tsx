@@ -52,6 +52,16 @@ export default async function SystemHealthPage({
         subtitle="Daily automated checks across all platform processes."
       />
 
+      {/* Sub-page links — engine-specific dashboards live under here. */}
+      <div className="mb-6 flex flex-wrap gap-2">
+        <Link
+          href="/dashboard/system-health/nutrition-engine"
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold border border-stone-300 text-stone-700 rounded-lg hover:border-stone-500 hover:text-stone-900 transition-colors"
+        >
+          Nutrition engine telemetry →
+        </Link>
+      </div>
+
       {!runs || runs.length === 0 ? (
         <Card>
           <EmptyState
