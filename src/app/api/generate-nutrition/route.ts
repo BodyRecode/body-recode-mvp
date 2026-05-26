@@ -5,7 +5,9 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescriptionInputs } from '@/lib/nutrition-prompt'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clamp'
-import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike, BRIDGE_CEILING_BUFFER, NUTRITION_DOCTRINE_VERSION } from '@/lib/nutrition-validation'
+import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike, BRIDGE_CEILING_BUFFER, NUTRITION_DOCTRINE_VERSION, detectAppetiteSuppression } from '@/lib/nutrition-validation'
+import { emitValidatorEvent, type ValidatorEventTier, type ValidatorEventFinalOutcome } from '@/lib/nutrition-telemetry'
+import { randomUUID } from 'crypto'
 
 export const maxDuration = 300
 
@@ -298,6 +300,37 @@ export async function POST(request: NextRequest) {
     })
   }
 
+  // Phase 4 commit 4: telemetry. One request_id ties all validation attempts
+  // for a single coach generation request together. Helper below emits a row
+  // per validator call. Fire-and-forget — failures never block the route.
+  const requestId = randomUUID()
+  const suppressionFlags = detectAppetiteSuppression(client?.medications ?? null)
+  function emitEvent(
+    val: ReturnType<typeof runValidate>,
+    tier: ValidatorEventTier,
+    index: number | null,
+    finalOutcome?: ValidatorEventFinalOutcome,
+  ) {
+    void emitValidatorEvent(admin, {
+      client_id,
+      doctrine_version: NUTRITION_DOCTRINE_VERSION,
+      attempt_tier: tier,
+      attempt_index: index,
+      ok: val.ok,
+      issue_codes: val.issues.map(i => i.code),
+      entry_state,
+      protein_anchor_g: resolvedProtein,
+      meal_frequency: Number(meal_frequency) || 4,
+      carb_demand_level: carb_demand_level ?? null,
+      has_stimulant: suppressionFlags.has_stimulant,
+      has_glp1: suppressionFlags.has_glp1,
+      has_serotonergic: suppressionFlags.has_serotonergic,
+      transitional_override_active: overrideActive,
+      request_id: requestId,
+      final_outcome: finalOutcome ?? null,
+    })
+  }
+
   // Generation strategy: parallel Haiku attempts → Sonnet fallback.
   // Each Haiku call takes ~40s (output is the limiting factor — full
   // nutrition plan with structured foods is ~3-5k output tokens). Three
@@ -347,6 +380,12 @@ export async function POST(request: NextRequest) {
     if (passed && passed.v) {
       plan = passed.p
       validation = passed.v
+      // Telemetry: emit one event per haiku attempt. The passing attempt
+      // carries the final_outcome; others are tagged null so the dashboard
+      // can compute per-attempt rates AND per-request outcomes.
+      for (const r of haikuResults) {
+        if (r.v) emitEvent(r.v, 'haiku', r.i, r === passed ? 'passed_first_haiku' : undefined)
+      }
     } else {
       // None passed. Pick the "least bad" attempt — used both as the
       // correction note for Sonnet AND as the surfaced result if Sonnet
@@ -366,6 +405,11 @@ export async function POST(request: NextRequest) {
       // the best Haiku candidate instead of throwing away the whole
       // generation.
       console.warn('[generate-nutrition] All Haiku attempts failed validation — escalating to Sonnet')
+      // Telemetry: emit one event per failed Haiku attempt before the Sonnet
+      // call. Final outcome tag goes on the Sonnet event below.
+      for (const r of haikuResults) {
+        if (r.v) emitEvent(r.v, 'haiku', r.i)
+      }
       const sonnetStart = Date.now()
       try {
         plan = await callModel(SONNET_MODEL, correctionNote)
@@ -380,6 +424,7 @@ export async function POST(request: NextRequest) {
               food_count: Array.isArray(m.foods) ? m.foods.length : 0,
             })) ?? [], null, 2))
         }
+        emitEvent(validation, 'sonnet', null, validation.ok ? 'sonnet_escalation_succeeded' : 'returned_422_to_coach')
       } catch (sonnetErr) {
         const msg = sonnetErr instanceof Error ? sonnetErr.message : String(sonnetErr)
         console.warn(`[generate-nutrition] Sonnet threw (${msg}) — falling back to best Haiku candidate`)
@@ -392,6 +437,7 @@ export async function POST(request: NextRequest) {
             code: 'SONNET_ESCALATION_FAILED',
             message: `Sonnet model call threw: ${msg}. Returning best Haiku candidate (${bestHaiku.v.issues.length} validator issues) so you can see what the engine produced.`,
           })
+          emitEvent(validation, 'sonnet', null, 'sonnet_escalation_failed')
         } else {
           // No usable Haiku candidates either — re-throw to outer catch.
           throw sonnetErr

@@ -29,6 +29,7 @@ import {
   type MealLike,
   type StructuredFood,
 } from '../src/lib/nutrition-validation'
+import { emitValidatorEvent } from '../src/lib/nutrition-telemetry'
 
 /* ──────────────────────────────────────────────────────────────────────────
  * Client profiles
@@ -397,6 +398,8 @@ function runFeasibilityCase(c: FeasibilityCase): { pass: boolean; detail: string
 let passCount = 0
 let failCount = 0
 
+async function main() {
+
 console.log('\n═══════════════════════════════════════════════════════════════════')
 console.log(' DOCTRINE INVARIANTS')
 console.log('═══════════════════════════════════════════════════════════════════\n')
@@ -409,6 +412,48 @@ const doctrineVersionFormat = /^\d{4}-\d{2}-\d{2}(\.\d+)?$/
   console.log(`    current value: "${NUTRITION_DOCTRINE_VERSION}"`)
   if (ok) passCount++
   else { failCount++; console.log(`    expected format like '2026-05-25' or '2026-05-25.1'`) }
+}
+
+// Telemetry helper must NEVER throw, even when the table doesn't exist.
+// Phase 4 commit 4: this is the single most important invariant of the
+// telemetry layer — a missing table or any other DB error must not block
+// plan generation.
+{
+  const stubAdmin = {
+    from: () => ({
+      insert: async () => ({
+        data: null,
+        error: { message: 'relation "nutrition_validator_events" does not exist', code: '42P01' },
+      }),
+    }),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } as any
+  let threw = false
+  try {
+    await emitValidatorEvent(stubAdmin, {
+      client_id: null,
+      doctrine_version: NUTRITION_DOCTRINE_VERSION,
+      attempt_tier: 'haiku',
+      attempt_index: 0,
+      ok: true,
+      issue_codes: [],
+      entry_state: 'stabilisation',
+      protein_anchor_g: 150,
+      meal_frequency: 4,
+      carb_demand_level: 'moderate',
+      has_stimulant: false,
+      has_glp1: false,
+      has_serotonergic: false,
+      transitional_override_active: false,
+      request_id: '00000000-0000-0000-0000-000000000000',
+    })
+  } catch {
+    threw = true
+  }
+  const icon = !threw ? '\x1b[32m✓\x1b[0m' : '\x1b[31m✗\x1b[0m'
+  console.log(`${icon} emitValidatorEvent resolves silently when telemetry table is missing`)
+  if (!threw) passCount++
+  else { failCount++; console.log(`    helper threw — generation would block if this fired in production`) }
 }
 
 console.log('\n═══════════════════════════════════════════════════════════════════')
@@ -446,4 +491,6 @@ console.log('\n═════════════════════�
 console.log(` RESULT: ${passCount} pass, ${failCount} fail (${passCount + failCount} total)`)
 console.log('═══════════════════════════════════════════════════════════════════\n')
 
-process.exit(failCount > 0 ? 1 : 0)
+}
+
+main().then(() => process.exit(failCount > 0 ? 1 : 0)).catch(err => { console.error(err); process.exit(1) })
