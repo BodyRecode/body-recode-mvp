@@ -131,6 +131,74 @@ export interface NutritionValidationInput {
   medications: string | null
 }
 
+/**
+ * Pre-flight feasibility check for the prescription inputs alone — runs
+ * BEFORE any LLM call. Catches mathematically-impossible combinations the
+ * generator would otherwise burn 60-90s only to fail the validator on.
+ *
+ * Example: stimulant client, anchor 165g, 4 meals → max achievable protein
+ * is 32 + 43 + 43 + 43 = 161g, so the anchor cannot be hit. Pre-flight
+ * surfaces this immediately with the smallest viable fix (bump to 5 meals
+ * or lower anchor).
+ */
+export interface PrescriptionFeasibilityInput {
+  protein_anchor_g: number
+  meal_frequency: number
+  medications: string | null
+}
+
+export interface PrescriptionFeasibilityResult {
+  ok: boolean
+  reasons: string[]                                 // human-language explanations
+  suggestions: Array<{ label: string; patch: Partial<PrescriptionFeasibilityInput> }>  // one-click fixes
+}
+
+const PER_MEAL_PROTEIN_CAP = 43
+const STIMULANT_FIRST_MEAL_PROTEIN_CAP = 32
+const MIN_MEAL_COUNT_WHEN_SUPPRESSED = 4
+
+export function checkPrescriptionFeasibility(input: PrescriptionFeasibilityInput): PrescriptionFeasibilityResult {
+  const reasons: string[] = []
+  const suggestions: PrescriptionFeasibilityResult['suggestions'] = []
+  const suppression = detectAppetiteSuppression(input.medications)
+  const anchor = Math.max(0, Math.round(input.protein_anchor_g || 0))
+  const meals = Math.max(1, Math.round(input.meal_frequency || 0))
+
+  if (!suppression.any) {
+    return { ok: true, reasons: [], suggestions: [] }
+  }
+
+  // Minimum meal count
+  if (meals < MIN_MEAL_COUNT_WHEN_SUPPRESSED) {
+    reasons.push(`Client is on appetite-suppressing medication, so the doctrine requires at least ${MIN_MEAL_COUNT_WHEN_SUPPRESSED} meals (currently ${meals}). Three large meals is rejected — a suppressed client can't reliably finish 50g+ protein in a single sitting.`)
+    suggestions.push({ label: `Bump meals to ${MIN_MEAL_COUNT_WHEN_SUPPRESSED}`, patch: { meal_frequency: MIN_MEAL_COUNT_WHEN_SUPPRESSED } })
+  }
+
+  // Maximum achievable protein with current meal count and caps
+  const effectiveMeals = Math.max(meals, MIN_MEAL_COUNT_WHEN_SUPPRESSED)
+  const maxAchievable = suppression.has_stimulant
+    ? STIMULANT_FIRST_MEAL_PROTEIN_CAP + (effectiveMeals - 1) * PER_MEAL_PROTEIN_CAP
+    : effectiveMeals * PER_MEAL_PROTEIN_CAP
+
+  if (anchor > maxAchievable) {
+    const gap = anchor - maxAchievable
+    reasons.push(`Protein anchor (${anchor}g) cannot be hit with ${effectiveMeals} meals — the hard rules cap protein at ${suppression.has_stimulant ? `${STIMULANT_FIRST_MEAL_PROTEIN_CAP}g first meal + ${PER_MEAL_PROTEIN_CAP}g each subsequent` : `${PER_MEAL_PROTEIN_CAP}g per meal`}, so the max achievable is ${maxAchievable}g (gap of ${gap}g).`)
+
+    // Minimum meals to fit the anchor
+    const minMealsForAnchor = suppression.has_stimulant
+      ? Math.max(MIN_MEAL_COUNT_WHEN_SUPPRESSED, Math.ceil((anchor - STIMULANT_FIRST_MEAL_PROTEIN_CAP) / PER_MEAL_PROTEIN_CAP) + 1)
+      : Math.max(MIN_MEAL_COUNT_WHEN_SUPPRESSED, Math.ceil(anchor / PER_MEAL_PROTEIN_CAP))
+    if (minMealsForAnchor !== effectiveMeals) {
+      suggestions.push({ label: `Bump meals to ${minMealsForAnchor}`, patch: { meal_frequency: minMealsForAnchor } })
+    }
+    if (maxAchievable >= 100) {
+      suggestions.push({ label: `Lower anchor to ${maxAchievable}g`, patch: { protein_anchor_g: maxAchievable } })
+    }
+  }
+
+  return { ok: reasons.length === 0, reasons, suggestions }
+}
+
 // Detects medication classes that materially suppress appetite. When any of
 // these are present, the validator enforces per-meal protein caps and a
 // minimum meal frequency so plans don't ship as 3 enormous meals the client

@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
+import { checkPrescriptionFeasibility } from '@/lib/nutrition-validation'
 
 function parseReason(text: string): { intro: string | null; points: string[] } {
   if (/\(\d+\)/.test(text)) {
@@ -145,6 +146,7 @@ export default function NutritionPrescriptionSuggest({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
+  const [medications, setMedications] = useState<string | null>(null)
   const [generating, setGenerating] = useState(false)
   const [editingField, setEditingField] = useState<string | null>(null)
   const [generationElapsed, setGenerationElapsed] = useState(0)
@@ -193,6 +195,7 @@ export default function NutritionPrescriptionSuggest({
         if (data.error) { setError(data.error); setLoading(false); return }
         const s: Suggestion = data.suggestion
         setSuggestion(s)
+        setMedications(typeof data.medications === 'string' ? data.medications : null)
         setPlanName(s.plan_name)
         setEntryState(s.entry_state)
         setBodyState(s.body_state)
@@ -308,6 +311,25 @@ export default function NutritionPrescriptionSuggest({
     { start: 100, label: 'Taking longer than usual — Sonnet is working it through' },
   ]
   const currentStage = [...generationStages].reverse().find(s => generationElapsed >= s.start) ?? generationStages[0]
+
+  // Pre-flight feasibility — recomputes whenever the protein anchor or meal
+  // frequency changes. Returns the same shape as the server validator's
+  // appetite-suppression rules. We use this to BLOCK the Generate button
+  // and surface a banner with one-click fixes when the prescription is
+  // mathematically infeasible (e.g. anchor 165g + 4 meals + stimulant).
+  const feasibility = useMemo(
+    () => checkPrescriptionFeasibility({
+      protein_anchor_g: proteinAnchorG,
+      meal_frequency: mealFrequency,
+      medications,
+    }),
+    [proteinAnchorG, mealFrequency, medications]
+  )
+
+  function applyFeasibilityPatch(patch: Partial<{ protein_anchor_g: number; meal_frequency: number }>) {
+    if (typeof patch.protein_anchor_g === 'number') setProteinAnchorG(patch.protein_anchor_g)
+    if (typeof patch.meal_frequency === 'number') setMealFrequency(patch.meal_frequency)
+  }
 
   return (
     <div className="flex gap-8 max-w-5xl relative">
@@ -605,6 +627,41 @@ export default function NutritionPrescriptionSuggest({
         <ReasonDisplay text={suggestion.food_exclusions_reason} />
       </div>
 
+      {/* Pre-flight feasibility banner — blocks Generate when the prescription
+          is mathematically infeasible under the appetite-suppression hard
+          rules, with one-click fixes for the smallest viable adjustment. */}
+      {!feasibility.ok && (
+        <div className="bg-amber-50 border border-amber-300 rounded-xl px-5 py-4">
+          <div className="flex items-start gap-3 mb-3">
+            <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+            </svg>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold uppercase tracking-widest text-amber-700 mb-1">Prescription can&apos;t be generated as-is</p>
+              <p className="text-xs text-amber-900 leading-relaxed">
+                This combination violates the appetite-suppression hard rules. The engine would burn a generation attempt only to fail validation. Adjust before clicking Generate.
+              </p>
+            </div>
+          </div>
+          <ul className="text-xs text-amber-900 leading-relaxed space-y-1 mb-3 ml-8 list-disc">
+            {feasibility.reasons.map((r, i) => <li key={i}>{r}</li>)}
+          </ul>
+          {feasibility.suggestions.length > 0 && (
+            <div className="ml-8 flex flex-wrap gap-2">
+              {feasibility.suggestions.map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => applyFeasibilityPatch(s.patch)}
+                  className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg transition-colors"
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Actions */}
       <div className="flex items-center justify-between pt-2">
         <a
@@ -615,8 +672,9 @@ export default function NutritionPrescriptionSuggest({
         </a>
         <button
           onClick={handleGenerate}
-          disabled={generating}
-          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-white font-semibold text-sm rounded-lg transition-colors"
+          disabled={generating || !feasibility.ok}
+          title={!feasibility.ok ? 'Prescription is mathematically infeasible — see the amber banner above' : undefined}
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {generating ? 'Generating plan...' : 'Approve & Generate Plan'}
         </button>

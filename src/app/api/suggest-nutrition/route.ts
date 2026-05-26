@@ -332,5 +332,5 @@ Output valid JSON only — no markdown, no commentary:
     }
   }
 
-  return NextResponse.json({ suggestion })
+  return NextResponse.json({ suggestion, medications: client.medications ?? null })
 }
