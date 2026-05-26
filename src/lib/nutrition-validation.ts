@@ -122,6 +122,40 @@ export interface ValidationIssue {
   message: string
 }
 
+/**
+ * Map validator codes to coach-friendly explanations. The raw codes are
+ * useful for telemetry and debugging but should never reach a licensee
+ * coach. `message` from the issue is the precise machine-readable failure
+ * (numbers, meal names); `humaniseValidationIssue` returns a one-sentence
+ * explanation of WHY the rule exists and WHAT the engine will try.
+ */
+export function humaniseValidationIssue(issue: ValidationIssue): string {
+  switch (issue.code) {
+    case 'MEAL_NO_FOODS':
+      return `${issue.message} The engine sometimes drops the foods list on the first attempt — retrying usually fixes it.`
+    case 'FOODS_NOT_STRUCTURED':
+      return `The engine emitted foods as plain text strings instead of structured items with macros. This is a generation bug — try again.`
+    case 'MEAL_NO_PROTEIN':
+      return `${issue.message} Every meal needs at least some protein; the engine sometimes skips it on a snack — retrying redistributes.`
+    case 'PROTEIN_ANCHOR_MISMATCH':
+      return `${issue.message} The plan's daily protein doesn't match what was prescribed — the engine concentrated or thinned the load. Retrying with the validator feedback usually lands it.`
+    case 'APPETITE_SUPPRESSED_MEAL_COUNT_TOO_LOW':
+      return `${issue.message} The doctrine requires more meal touchpoints when appetite is pharmacologically suppressed, so each portion stays achievable.`
+    case 'APPETITE_SUPPRESSED_PER_MEAL_PROTEIN_TOO_HIGH':
+      return `${issue.message} A meal loaded too heavily with protein won't be finished by a suppressed client — the engine needs to spread it.`
+    case 'STIMULANT_FIRST_MEAL_PROTEIN_TOO_HIGH':
+      return `${issue.message} Stimulant suppression peaks in the morning — heavy breakfast protein guarantees the meal gets skipped.`
+    case 'CARB_FLOOR_NOT_MET':
+      return `${issue.message} This is a safety floor based on bodyweight — going below means the plan is dangerously under-fueled for her size.`
+    case 'FAT_FLOOR_NOT_MET':
+      return `${issue.message} Fat-soluble nutrient floor based on bodyweight — going below risks hormone / micronutrient deficits.`
+    case 'NO_MEALS':
+      return `The engine returned a plan with no meals. This is a generation bug — try again.`
+    default:
+      return issue.message
+  }
+}
+
 export interface NutritionValidationInput {
   meals: MealLike[]
   estimated_calorie_band: string | null

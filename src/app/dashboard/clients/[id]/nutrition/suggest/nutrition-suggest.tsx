@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
-import { checkPrescriptionFeasibility } from '@/lib/nutrition-validation'
+import { checkPrescriptionFeasibility, humaniseValidationIssue } from '@/lib/nutrition-validation'
 
 function parseReason(text: string): { intro: string | null; points: string[] } {
   if (/\(\d+\)/.test(text)) {
@@ -252,11 +252,12 @@ export default function NutritionPrescriptionSuggest({
 
     if (data.error) {
       // 422 validation failures include an `issues` array — surface every
-      // issue message so the coach can see exactly what the validator rejected
-      // instead of just the top-line "failed validation" string.
+      // issue in coach-friendly language (humaniseValidationIssue explains
+      // WHY each rule exists, not just the raw code). Raw codes are kept
+      // in a small grey footer for our debugging.
       const issues = Array.isArray(data.issues) ? data.issues as Array<{ code: string; message: string }> : []
       const detail = issues.length > 0
-        ? `${data.error}\n\n${issues.map(i => `• [${i.code}] ${i.message}`).join('\n')}`
+        ? `${data.error}\n\n${issues.map(i => `• ${humaniseValidationIssue(i)}`).join('\n')}`
         : data.error
       setError(detail)
       return
