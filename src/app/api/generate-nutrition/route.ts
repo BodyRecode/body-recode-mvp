@@ -217,7 +217,16 @@ export async function POST(request: NextRequest) {
       ? `${userPrompt}\n\n═══════════════════════════════════════\nVALIDATION CORRECTION REQUIRED\n═══════════════════════════════════════\nYour previous output was rejected by automatic validation. Issues:\n${correctionNote}\n\nRegenerate the plan correcting every issue above. Recompute every food's macros from the reference table; recompute each meal's protein_g/carb_g/fat_g as the sum of its foods; derive estimated_calorie_band from the meal totals last. Increase portion sizes if necessary to meet the daily floors.`
       : userPrompt
     const message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      // Sonnet 4.6 (not Haiku) because nutrition generation is a tight
+      // multi-constraint problem: per-meal protein cap + daily anchor +
+      // first-meal cap + carb/fat floors + structured-foods schema. Haiku
+      // 4.5 consistently overshoots the per-meal protein cap on stimulant
+      // clients with anchor > 150g — three full attempts on Amanda's plan
+      // (Vyvanse + Brintellix, anchor 165g, 5 meals) all failed with the
+      // same overshoot pattern (e.g. 198g daily / 48g + 46g + 51g per meal).
+      // Sonnet handles constraint satisfaction dramatically better. Cost
+      // delta is ~10x per call but generation is per-plan, not per-request.
+      model: 'claude-sonnet-4-6',
       max_tokens: 16000,
       system: systemPrompt,
       messages: [{ role: 'user', content: finalUserPrompt }],
