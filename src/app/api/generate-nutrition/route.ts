@@ -218,7 +218,7 @@ export async function POST(request: NextRequest) {
       : userPrompt
     const message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 8000,
+      max_tokens: 16000,
       system: systemPrompt,
       messages: [{ role: 'user', content: finalUserPrompt }],
     })
