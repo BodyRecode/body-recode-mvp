@@ -11,6 +11,14 @@ export interface NutritionPrescriptionInputs {
   meal_frequency: number
   food_exclusions: string[]
   training_days_per_week: number
+  // Bridge mode (transitional override). When present, the LLM is told to
+  // target a specific kcal band instead of the bodyweight-derived floors.
+  // Validator enforces the same band — passing it to the prompt as well
+  // gives the model a concrete target so it doesn't drift far below the floor.
+  transitional_target_band?: {
+    floor_kcal: number
+    ceiling_kcal: number
+  }
 }
 
 export function buildNutritionSystemPrompt(): string {
@@ -527,6 +535,24 @@ export function buildNutritionUserPrompt(
   lines.push(`Meal Frequency: ${inputs.meal_frequency} meals/day`)
   lines.push(`Training Days/Week: ${inputs.training_days_per_week}`)
   lines.push(`Food Exclusions: ${inputs.food_exclusions.length > 0 ? inputs.food_exclusions.join(', ') : 'None'}`)
+
+  if (inputs.transitional_target_band) {
+    const b = inputs.transitional_target_band
+    lines.push('')
+    lines.push('═══════════════════════════════════════')
+    lines.push('TRANSITIONAL PLAN — TARGET CALORIE BAND (CRITICAL — OVERRIDES BODYWEIGHT-DERIVED FLOORS)')
+    lines.push('═══════════════════════════════════════')
+    lines.push(`The coach has enabled bridge mode for this plan. The standard bodyweight-derived carb / fat floors DO NOT APPLY. Instead:`)
+    lines.push('')
+    lines.push(`  Daily calorie target band: ${b.floor_kcal}–${b.ceiling_kcal} kcal (MUST land in this band)`)
+    lines.push('')
+    lines.push(`  - The plan MUST hit at least ${b.floor_kcal} kcal — anything below is a plan failure (the validator will reject it).`)
+    lines.push(`  - The plan MUST NOT exceed ${b.ceiling_kcal} kcal — bridge mode targets the floor, not above it (the validator will reject overshoots).`)
+    lines.push(`  - All other doctrine still applies: hit the protein anchor exactly (${inputs.protein_anchor_g}g ±5g), emit exactly ${inputs.meal_frequency} meals, respect per-meal protein caps, respect carb_demand_level=${inputs.carb_demand_level}.`)
+    lines.push(`  - Carb demand "low" combined with the target band means: distribute remaining kcal (after protein) toward fat-dominant meals. Example: ${inputs.protein_anchor_g}g protein × 4 = ${inputs.protein_anchor_g * 4} kcal, leaving ${b.floor_kcal - inputs.protein_anchor_g * 4}–${b.ceiling_kcal - inputs.protein_anchor_g * 4} kcal for carbs (low tier) + fat.`)
+    lines.push('')
+    lines.push('Do not minimise the plan. Do not "be conservative" by undershooting the floor. Do not consolidate meals. The bridge target is precise: hit it.')
+  }
 
   if (cffsText) {
     lines.push('')

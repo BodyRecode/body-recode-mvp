@@ -208,6 +208,14 @@ export async function POST(request: NextRequest) {
     meal_frequency: Number(meal_frequency) || 4,
     training_days_per_week: Number(training_days_per_week) || 3,
     food_exclusions: food_exclusions || [],
+    // Pass the bridge mode band to the prompt so the LLM has an explicit
+    // target. Without this the model only knows the bodyweight-derived
+    // floors (which are skipped under bridge mode) and produces drastically
+    // undersized plans because every other doctrine signal pushes
+    // conservative.
+    transitional_target_band: overrideActive
+      ? { floor_kcal: overrideFloor, ceiling_kcal: overrideFloor + 100 }
+      : undefined,
   }
 
   // Recovery and Regulation — Phase 3.
