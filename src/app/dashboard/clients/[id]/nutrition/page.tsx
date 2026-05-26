@@ -12,6 +12,7 @@ import {
   normalizeFood,
   parseCalorieBand,
   kcalFromMacros,
+  NUTRITION_DOCTRINE_VERSION,
   type FoodInput,
 } from '@/lib/nutrition-validation'
 
@@ -167,8 +168,38 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
         )}
         <p className="text-xs text-stone-400 mt-3">
           Generated {new Date(plan.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
+          {plan.doctrine_version && (
+            <span className="text-stone-400"> · Doctrine v{plan.doctrine_version}</span>
+          )}
         </p>
       </div>
+
+      {/* Stale-doctrine hint. Only surfaces when the plan was stamped with a
+          version (post Phase 4 commit 2) AND that version differs from the
+          current constant. Soft hint, not blocking — the existing plan stays
+          valid until the coach regenerates. Plans with null doctrine_version
+          are grandfathered and show no hint. */}
+      {plan.doctrine_version && plan.doctrine_version !== NUTRITION_DOCTRINE_VERSION && (
+        <div className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5">
+          <div className="flex items-start gap-3">
+            <svg className="w-5 h-5 text-stone-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-stone-500 mb-1">Doctrine update available</p>
+              <p className="text-sm text-stone-700 leading-relaxed">
+                This plan was generated under <span className="font-mono text-stone-800">v{plan.doctrine_version}</span>. Current doctrine is <span className="font-mono text-stone-800">v{NUTRITION_DOCTRINE_VERSION}</span>. Regenerating will apply the latest validator rules (e.g. tightened appetite-suppression caps, bridge-mode behaviour, carb-demand mapping). Existing plan stays valid until you regenerate.
+              </p>
+              <Link
+                href={`/dashboard/clients/${plan.client_id}/nutrition/suggest`}
+                className="inline-block mt-2 text-xs font-semibold text-blue-600 hover:text-blue-700"
+              >
+                Regenerate with current doctrine →
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Bridge mode banner — surfaces the override metadata so the coach
           can see at a glance that this plan deliberately sits below the
