@@ -52,7 +52,25 @@ export interface ClientNextActionInput {
     id: string
     planName: string
     nutritionReadingPublishedAt: string | null
+    // Bridge mode metadata. When transitionalOverrideActive is true and the
+    // plan is still in its bridge window, the state machine surfaces an
+    // action card before / on / after expiry.
+    transitionalOverrideActive: boolean
+    transitionalOverrideFloorKcal: number | null
+    transitionalOverrideExpiresAt: string | null
   } | null
+
+  /**
+   * Latest 2 weekly check-ins, used to detect readiness-to-step-up signals
+   * during bridge mode. State machine scans the response blobs for
+   * eating-consistency markers (appetite improving, hitting protein,
+   * meal-prep on track). Caller fetches.
+   */
+  recentCheckinResponsesForBridge?: Array<{
+    week_number: number
+    submitted_at: string
+    responses: Record<string, unknown>
+  }>;
 
   /** Optional readiness report from evaluateReadiness(). Overlays the stage. */
   readiness?: ReadinessReport | null
@@ -123,6 +141,9 @@ export type NextActionStage =
   | 'active_checkin_overdue'
   | 'active_checkin_feedback_pending'
   | 'active_drift'
+  | 'active_bridge_expiring'         // bridge mode plan within 7 days of expiry
+  | 'active_bridge_expired'          // bridge mode plan past its expiry date
+  | 'active_bridge_ready_step_up'    // bridge mode + check-in signals suggest readiness to ramp
   | 'active_steady'
   | 'pre_start'
 
@@ -464,6 +485,64 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
     }
   }
 
+  // ── Bridge mode lifecycle ──────────────────────────────────────────────
+  // When a nutrition plan has transitional_override active, surface the
+  // bridge state before drift / steady so the coach is prompted to step
+  // up (or extend) the bridge before it silently lapses.
+  const anp = input.activeNutritionPlan
+  if (anp?.transitionalOverrideActive && anp.transitionalOverrideExpiresAt) {
+    const expiry = new Date(anp.transitionalOverrideExpiresAt)
+    const now = new Date()
+    const daysUntilExpiry = Math.ceil((expiry.getTime() - now.getTime()) / 86400000)
+
+    if (daysUntilExpiry < 0) {
+      // Past expiry — bridge has lapsed but no regen happened. Critical.
+      return {
+        clientId: input.clientId,
+        clientName: input.clientName,
+        stage: 'active_bridge_expired',
+        headline: `Bridge plan expired ${-daysUntilExpiry} day${daysUntilExpiry === -1 ? '' : 's'} ago`,
+        sublabel: `Regenerate nutrition to step up from ${anp.transitionalOverrideFloorKcal} kcal floor`,
+        href: `${profileHref}/nutrition/suggest`,
+        accent: 'red',
+        priority: 20,
+        badge: feedbackBadge,
+      }
+    }
+
+    // Scan recent check-in responses for eating-consistency markers. If
+    // both of the latest 2 check-ins suggest readiness, surface a
+    // step-up prompt regardless of the expiry timer.
+    const readinessSignal = detectBridgeReadiness(input.recentCheckinResponsesForBridge ?? [])
+    if (readinessSignal.ready) {
+      return {
+        clientId: input.clientId,
+        clientName: input.clientName,
+        stage: 'active_bridge_ready_step_up',
+        headline: 'Bridge plan: ready to step up',
+        sublabel: readinessSignal.reason,
+        href: `${profileHref}/nutrition/suggest`,
+        accent: 'teal',
+        priority: 20,
+        badge: feedbackBadge,
+      }
+    }
+
+    if (daysUntilExpiry <= 7) {
+      return {
+        clientId: input.clientId,
+        clientName: input.clientName,
+        stage: 'active_bridge_expiring',
+        headline: `Bridge plan expires in ${daysUntilExpiry} day${daysUntilExpiry === 1 ? '' : 's'}`,
+        sublabel: `Floor ${anp.transitionalOverrideFloorKcal} kcal. Review check-ins and regenerate to step up.`,
+        href: `${profileHref}/nutrition`,
+        accent: 'amber',
+        priority: 30,
+        badge: feedbackBadge,
+      }
+    }
+  }
+
   // Drift advisory (grey)
   if (input.readiness?.status === 'advisory') {
     return {
@@ -520,6 +599,101 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
     priority: 40,
     badge: feedbackBadge,
   }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Bridge mode readiness detection
+ * ──────────────────────────────────────────────────────────────────────────
+ *
+ * Scans recent weekly check-in response blobs for eating-consistency
+ * markers that suggest the client is ready to step up their bridge floor
+ * toward the full bodyweight-derived target. Conservative — requires at
+ * least 2 check-ins and explicit positive language from the client.
+ *
+ * Markers (positive — suggest readiness):
+ *   - meal timing / prep on track
+ *   - appetite stabilising or returning
+ *   - hitting protein goals
+ *   - eating consistently
+ *   - no longer "caught on the hop"
+ *
+ * Anti-markers (negative — suggest NOT ready, keep bridge):
+ *   - still struggling with appetite
+ *   - skipping meals
+ *   - difficulty hitting protein
+ *   - inconsistent eating
+ *
+ * If anti-markers fire, readiness is false regardless of positives.
+ */
+export function detectBridgeReadiness(
+  recentCheckins: Array<{
+    week_number: number
+    submitted_at: string
+    responses: Record<string, unknown>
+  }>
+): { ready: boolean; reason: string } {
+  if (recentCheckins.length < 1) {
+    return { ready: false, reason: 'No recent check-ins to assess' }
+  }
+
+  const positiveMarkers = [
+    /meal\s*prep.*(on track|consistent|good|hitting|done|sorted)/i,
+    /hitting\s*(my\s*)?protein/i,
+    /(appetite|hunger).*(back|returning|improving|better|stable|stabili[sz]ing)/i,
+    /eating.*(more\s*)?consistent(ly)?/i,
+    /(getting|got)\s*meals\s*in/i,
+    /protein\s*(goals?\s*)?(hit|on track)/i,
+    /no longer.*(caught|skipping|struggling)/i,
+  ]
+
+  const negativeMarkers = [
+    /still\s*(finding|struggling|hard|difficult)/i,
+    /skipping\s*meals/i,
+    /caught\s*on\s*the\s*hop/i,
+    /(can('|no)t|cannot)\s*(eat|finish)/i,
+    /appetite\s*(suppressed|low|gone|down|terrible)/i,
+    /hard\s*to\s*hit\s*protein/i,
+    /(not|haven'?t)\s*been\s*eating/i,
+  ]
+
+  let positiveHits = 0
+  let negativeHits = 0
+  const reasons: string[] = []
+
+  for (const checkin of recentCheckins.slice(0, 2)) {
+    for (const [, value] of Object.entries(checkin.responses ?? {})) {
+      if (typeof value !== 'string' || value.trim().length === 0) continue
+      const text = value
+      for (const m of negativeMarkers) {
+        if (m.test(text)) {
+          negativeHits++
+          break // one negative per response is enough
+        }
+      }
+      for (const m of positiveMarkers) {
+        if (m.test(text)) {
+          positiveHits++
+          if (reasons.length < 2 && text.length < 200) reasons.push(`Week ${checkin.week_number}: "${text}"`)
+          break
+        }
+      }
+    }
+  }
+
+  // Conservative: any negative marker keeps the bridge active.
+  if (negativeHits > 0) {
+    return { ready: false, reason: `Client still reports eating struggles in recent check-ins (${negativeHits} signals) — keep bridge active.` }
+  }
+  // Need at least 2 positive hits across the recent check-ins to be confident.
+  if (positiveHits >= 2) {
+    return {
+      ready: true,
+      reason: reasons.length > 0
+        ? `Check-in signals: ${reasons[0].slice(0, 120)}${reasons[0].length > 120 ? '...' : ''}`
+        : `${positiveHits} positive eating-consistency markers in recent check-ins`,
+    }
+  }
+  return { ready: false, reason: 'Not enough positive readiness signals in recent check-ins yet' }
 }
 
 /* ──────────────────────────────────────────────────────────────────────────

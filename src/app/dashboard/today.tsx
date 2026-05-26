@@ -74,12 +74,12 @@ export default async function TodayWidget() {
       .eq('is_active', true),
     admin
       .from('nutrition_plans')
-      .select('id, client_id, plan_name, is_active, nutrition_reading_published_at')
+      .select('id, client_id, plan_name, is_active, nutrition_reading_published_at, transitional_override_active, transitional_override_floor_kcal, transitional_override_expires_at')
       .eq('is_active', true),
     admin
       .from('cfws')
       .select('client_id, week_number, generated_at, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, reassessment_language_triggered, is_archived'),
-    admin.from('weekly_checkins').select('id, client_id, week_number, form_type, submitted_at, coach_skipped_at'),
+    admin.from('weekly_checkins').select('id, client_id, week_number, form_type, submitted_at, coach_skipped_at, responses'),
     admin
       .from('client_feedback')
       .select('client_id')
@@ -258,8 +258,18 @@ export default async function TodayWidget() {
             id: activeNutrition.id,
             planName: activeNutrition.plan_name,
             nutritionReadingPublishedAt: activeNutrition.nutrition_reading_published_at ?? null,
+            transitionalOverrideActive: !!activeNutrition.transitional_override_active,
+            transitionalOverrideFloorKcal: activeNutrition.transitional_override_floor_kcal ?? null,
+            transitionalOverrideExpiresAt: activeNutrition.transitional_override_expires_at ?? null,
           }
         : null,
+      recentCheckinResponsesForBridge: !!activeNutrition?.transitional_override_active
+        ? clientCheckins.slice(0, 2).map(c => ({
+            week_number: c.week_number,
+            submitted_at: c.submitted_at,
+            responses: c.responses as Record<string, unknown> ?? {},
+          }))
+        : undefined,
       readiness,
       unacknowledgedFeedbackCount: feedbackByClient.get(client.id) ?? 0,
       thisWeeksCheckinSubmitted,
@@ -442,10 +452,14 @@ function iconFor(action: ClientNextAction) {
   switch (action.stage) {
     case 'active_regression':
     case 'active_checkin_overdue':
+    case 'active_bridge_expired':
       return CircleAlert
     case 'active_reassessment':
     case 'active_drift':
+    case 'active_bridge_expiring':
       return AlertTriangle
+    case 'active_bridge_ready_step_up':
+      return Sparkles
     case 'payment_past_due':
     case 'payment_unpaid':
     case 'payment_canceled':
