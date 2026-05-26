@@ -502,7 +502,7 @@ export function buildNutritionUserPrompt(
     lines.push('If the MEDICATIONS field contains ANY of: stimulants (Vyvanse, Adderall, Ritalin, Concerta, methylphenidate, dexamfetamine), GLP-1 agonists (Ozempic, Wegovy, Mounjaro, Zepbound, semaglutide, tirzepatide, liraglutide), or appetite-affecting serotonergics (Brintellix/vortioxetine, Lexapro, Zoloft, Prozac, Effexor, Cymbalta, Paxil) — ALL of the following are mandatory:')
     lines.push('  (a) meal_frequency MUST be ≥ 4. Three large meals is rejected — a suppressed client cannot finish 50g+ protein in a single sitting.')
     lines.push('  (b) No single meal may exceed 43g protein (hard validator cap). TARGET 35-38g per non-breakfast meal to leave a buffer below the cap; the validator does not accept "44g chicken breast natural serve" rounding-up. Round portions DOWN if needed to stay inside the cap.')
-    lines.push('  (c) For STIMULANT users specifically (Vyvanse, Adderall, etc.): the FIRST meal of the day (lowest meal_number, typically breakfast or morning) must cap at 32g protein (hard validator cap). TARGET 25-28g for breakfast to leave a buffer. Stimulant suppression peaks in the morning; loading protein there guarantees the meal is skipped. Shift the protein load to lunch / dinner / evening meals when the suppression window has passed.')
+    lines.push('  (c) For STIMULANT users specifically (Vyvanse, Adderall, etc.): the FIRST meal of the day (lowest meal_number, typically breakfast or morning) must cap at 35g protein (hard validator cap). TARGET 28-32g for breakfast to leave a buffer. Stimulant suppression peaks in the morning; loading protein there guarantees the meal is skipped. Shift the protein load to lunch / dinner / evening meals when the suppression window has passed.')
     lines.push('  (d) Bias food selection toward energy-dense, palatable, easy-to-finish foods (Greek yoghurt, eggs, mince + rice, nut butters, avocado) over volume-heavy low-energy-density foods (large salads, lean chicken breast at breakfast, dry steamed vegetables).')
     lines.push('  (e) Always include an afternoon protein snack between lunch and dinner — the 3-5pm window often coincides with stimulant rebound and is the most reliable additional eating opportunity. Treat this as a RELIABLE EATING OPPORTUNITY, not a heavy-load opportunity — the per-meal protein cap (b) still applies.')
     lines.push('  (f) PROTEIN DISTRIBUTION (do the arithmetic explicitly):')
@@ -538,6 +538,25 @@ export function buildNutritionUserPrompt(
 
   if (inputs.transitional_target_band) {
     const b = inputs.transitional_target_band
+    // Compute exact macro budget for the band so the model has explicit
+    // numbers instead of a fuzzy "low-ish carbs, sensible fat" interpretation.
+    // Budget walks:
+    //   protein_kcal = anchor × 4
+    //   remaining = ceiling - protein_kcal
+    //   carb tier "low": 1.0-1.5 g/kg → for the prompt we hand the lower mid
+    //     of the band's allowed kcal to keep fat in range
+    //   fat = ceiling - protein_kcal - carb_kcal (must stay above ~50g for
+    //     essential-nutrient floor, below ~85g to fit ceiling)
+    const proteinKcal = inputs.protein_anchor_g * 4
+    const remainingFloor = b.floor_kcal - proteinKcal
+    const remainingCeiling = b.ceiling_kcal - proteinKcal
+    // Suggested carb grams: 1.0-1.5 g/kg is the "low" tier; we present a
+    // mid-range to anchor the model and let it adjust within ±20g.
+    const suggestedCarbsLow = Math.max(80, Math.round(remainingFloor * 0.4 / 4))     // ~40% of remaining as carbs
+    const suggestedCarbsHigh = Math.max(100, Math.round(remainingCeiling * 0.5 / 4)) // ~50% of remaining as carbs
+    const suggestedFatLow = Math.round((remainingFloor - suggestedCarbsHigh * 4) / 9)
+    const suggestedFatHigh = Math.round((remainingCeiling - suggestedCarbsLow * 4) / 9)
+
     lines.push('')
     lines.push('═══════════════════════════════════════')
     lines.push('TRANSITIONAL PLAN — TARGET CALORIE BAND (CRITICAL — OVERRIDES BODYWEIGHT-DERIVED FLOORS)')
@@ -546,12 +565,18 @@ export function buildNutritionUserPrompt(
     lines.push('')
     lines.push(`  Daily calorie target band: ${b.floor_kcal}–${b.ceiling_kcal} kcal (MUST land in this band)`)
     lines.push('')
+    lines.push(`  EXPLICIT MACRO BUDGET (use these as your distribution targets):`)
+    lines.push(`    Protein: ${inputs.protein_anchor_g}g (= ${proteinKcal} kcal) ±5g`)
+    lines.push(`    Carbs:   ${suggestedCarbsLow}–${suggestedCarbsHigh}g (= ${suggestedCarbsLow * 4}–${suggestedCarbsHigh * 4} kcal) — fits carb_demand_level=low`)
+    lines.push(`    Fat:     ${suggestedFatLow}–${suggestedFatHigh}g (= ${suggestedFatLow * 9}–${suggestedFatHigh * 9} kcal)`)
+    lines.push(`    Total:   ${b.floor_kcal}–${b.ceiling_kcal} kcal`)
+    lines.push('')
     lines.push(`  - The plan MUST hit at least ${b.floor_kcal} kcal — anything below is a plan failure (the validator will reject it).`)
     lines.push(`  - The plan MUST NOT exceed ${b.ceiling_kcal} kcal — bridge mode targets the floor, not above it (the validator will reject overshoots).`)
-    lines.push(`  - All other doctrine still applies: hit the protein anchor exactly (${inputs.protein_anchor_g}g ±5g), emit exactly ${inputs.meal_frequency} meals, respect per-meal protein caps, respect carb_demand_level=${inputs.carb_demand_level}.`)
-    lines.push(`  - Carb demand "low" combined with the target band means: distribute remaining kcal (after protein) toward fat-dominant meals. Example: ${inputs.protein_anchor_g}g protein × 4 = ${inputs.protein_anchor_g * 4} kcal, leaving ${b.floor_kcal - inputs.protein_anchor_g * 4}–${b.ceiling_kcal - inputs.protein_anchor_g * 4} kcal for carbs (low tier) + fat.`)
+    lines.push(`  - All other doctrine still applies: hit the protein anchor exactly (${inputs.protein_anchor_g}g ±5g), emit exactly ${inputs.meal_frequency} meals, respect per-meal protein caps.`)
+    lines.push(`  - Fat must NOT exceed ${suggestedFatHigh}g — bridge mode means tight fat too, not just tight carbs. Avocado / nuts / oils pile up fast; portion them carefully.`)
     lines.push('')
-    lines.push('Do not minimise the plan. Do not "be conservative" by undershooting the floor. Do not consolidate meals. The bridge target is precise: hit it.')
+    lines.push('Do not minimise the plan. Do not "be conservative" by undershooting the floor. Do not consolidate meals. Do not overshoot the ceiling by piling on fat. The bridge target is precise: hit it.')
   }
 
   if (cffsText) {

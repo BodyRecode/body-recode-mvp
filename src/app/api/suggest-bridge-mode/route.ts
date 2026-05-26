@@ -74,17 +74,24 @@ export async function POST(request: NextRequest) {
   }
 
   // Scaled protein anchor for the bridge plan. Without this, the engine
-  // produces plans that satisfy the bridge floor but balloon way above it
-  // (e.g. 1,600 floor → 2,400 actual plan, because 165g protein × 4 +
-  // sensible carb/fat already exceeds the floor). Scale the anchor down
-  // proportionally to the bridge:standard ratio, with a 1.2 g/kg floor
-  // below which we don't go (muscle preservation in deficit).
+  // produces plans where protein alone consumes most of the bridge kcal
+  // budget, forcing the model to overshoot the ceiling. Two-clamp logic:
+  //
+  //   bridgeCeiling = 1.3 g/kg  (above 1.2 g/kg muscle-preservation
+  //                              minimum but below 1.5 g/kg standard;
+  //                              lets carbs+fat fit the bridge band)
+  //   bridgeFloor   = 1.2 g/kg  (don't go below this — muscle loss risk)
+  //
+  // Suggested anchor = min(bridgeCeiling, kcal-ratio-scaled) clamped to
+  // ≥ bridgeFloor. This keeps the anchor inside the kcal budget without
+  // dropping below the safe minimum.
   let suggestedProteinAnchor: number | null = null
   if (bw && standardFloorKcal && standardProteinAnchor) {
     const ratio = suggestedFloor / standardFloorKcal
     const scaled = Math.round(standardProteinAnchor * ratio)
     const muscleFloor = Math.round(bw * 1.2)
-    suggestedProteinAnchor = Math.max(muscleFloor, scaled)
+    const bridgeCeiling = Math.round(bw * 1.3)
+    suggestedProteinAnchor = Math.max(muscleFloor, Math.min(bridgeCeiling, scaled))
     // Round to nearest 5g.
     suggestedProteinAnchor = Math.round(suggestedProteinAnchor / 5) * 5
   }

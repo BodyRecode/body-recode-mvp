@@ -431,10 +431,10 @@ export function validateNutritionPlan(
       const first = input.meals[0]
       const firstP = Number(first.protein_g) || 0
       const firstName = first.meal_name ?? 'first meal'
-      if (firstP > 32) {
+      if (firstP > 35) {
         issues.push({
           code: 'STIMULANT_FIRST_MEAL_PROTEIN_TOO_HIGH',
-          message: `${firstName}: ${firstP}g protein is too high for the morning stimulant-suppression window. Cap at 32g and shift protein to later meals.`,
+          message: `${firstName}: ${firstP}g protein is too high for the morning stimulant-suppression window. Cap at 35g and shift protein to later meals.`,
         })
       }
     }
