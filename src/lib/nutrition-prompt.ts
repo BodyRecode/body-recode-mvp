@@ -309,13 +309,14 @@ PROHIBITED:
 - Continuous carb reliance for baseline energy
 - Restrictive or compliance-driven framings
 
-WEIGHTS ARE ALWAYS RAW (CRITICAL)
-- Macro figures must match raw weights so they align with USDA / NUTTAB databases. Cooking loses water and shifts apparent grams.
-- Always append "(raw)" to protein quantities: "120g beef mince (raw)", "180g chicken breast (raw)", "150g salmon (raw)".
-- Carbs as dry/raw weight where relevant: "60g oats (dry)", "80g rice (dry)". Fruit by literal weight as eaten ("1 banana ~120g", "150g berries").
-- Eggs by count, not weight: "3 whole eggs".
-- Fats by literal serving as consumed: "20g almonds", "15g olive oil", "10g butter".
-- Never output a protein source without the (raw) marker. The coach reads these as cooking instructions to the client.
+WEIGHT CONVENTIONS (CRITICAL — clients weigh what's most convenient to them)
+- MEAT / FISH / EGGS: RAW weight. Reason: weighing post-cook adds variance (water loss, fat rendering). Always append "(raw)" to protein quantities: "120g beef mince (raw)", "180g chicken breast (raw)", "150g salmon (raw)".
+- RICE / POTATO: COOKED weight. Reason: clients almost never weigh these dry — they cook a batch and portion. Cooked is what's on the plate. Use "(cooked)": "250g white rice (cooked)", "300g white potato (cooked, boiled)". The macro table below has been adjusted to cooked values for these foods.
+- OATS: DRY weight. Reason: oats are weighed dry into a bowl, then water/milk added. "(dry)": "60g oats (dry)".
+- FRUIT: literal weight as eaten — "1 banana ~120g", "150g berries", "1 apple ~150g".
+- EGGS: by count, not weight — "3 whole eggs".
+- FATS: by literal serving as consumed — "20g almonds", "15g olive oil", "10g butter".
+- Never output a protein source without the (raw) marker. Never output rice / potato without the (cooked) marker. The coach reads these as cooking instructions to the client.
 
 ═══════════════════════════════════════
 REFERENCE MACROS PER 100g RAW (USE THESE — DO NOT HALLUCINATE)
@@ -333,11 +334,12 @@ PROTEINS (per 100g raw):
 - Greek yoghurt (full-fat):   P 9g,  C 4g,  F 5g    → 200g ≈ 18g P
 - Cottage cheese:             P 11g, C 3g,  F 4g    → 150g ≈ 17g P
 
-CARBS (per 100g, dry where applicable):
-- White rice (dry):           P 7g,  C 78g, F 1g    → 80g dry ≈ 62g C
-- Oats (dry):                 P 13g, C 60g, F 7g    → 60g dry ≈ 36g C
-- Sweet potato (raw):         P 2g,  C 20g, F 0g    → 200g raw ≈ 40g C
-- White potato (raw):         P 2g,  C 17g, F 0g    → 250g raw ≈ 43g C
+CARBS (per 100g — note rice / potato are COOKED weight; oats are DRY):
+- White rice (COOKED):        P 2g,  C 28g, F 0g    → 250g cooked ≈ 70g C   (use "(cooked)" in the name)
+- Brown rice (COOKED):        P 3g,  C 25g, F 1g    → 250g cooked ≈ 62g C   (use "(cooked)" in the name)
+- Oats (DRY):                 P 13g, C 60g, F 7g    → 60g dry ≈ 36g C       (use "(dry)" in the name)
+- Sweet potato (COOKED, boiled/baked): P 2g, C 18g, F 0g → 250g cooked ≈ 45g C  (use "(cooked)" in the name)
+- White potato (COOKED, boiled/baked):  P 2g, C 16g, F 0g → 250g cooked ≈ 40g C  (use "(cooked)" in the name)
 - Banana:                     P 1g,  C 23g, F 0g    → 1 medium (120g) ≈ 27g C
 - Berries (mixed):            P 1g,  C 14g, F 0g    → 150g ≈ 21g C
 - Honey:                      P 0g,  C 82g, F 0g    → 20g ≈ 16g C
@@ -370,10 +372,18 @@ Do NOT pick an aspirational band first and then write meals — write the meals 
 
 DAILY MACRO TARGETS (design the meals to hit these):
 - Protein: sum of meal protein_g must equal protein_anchor_g ±5g
-- Carbs: sum of meal carb_g must align with carb_demand_level for the client's bodyweight (Stabilisation/Recovery Reset: 2.5–3.5 g/kg, Training Support: 4–5 g/kg, High Output Support: 5–6+ g/kg). For a 70kg client at Stabilisation that is 175–245g daily.
+- Carbs: sum of meal carb_g must align with the CARB_DEMAND_LEVEL prescription, not just the entry state. The grams/kg mapping is:
+    low:       1.0–1.8 g/kg bodyweight  (e.g. 100kg × 1.4 ≈ 140g daily)
+    moderate:  2.0–3.5 g/kg bodyweight  (e.g. 100kg × 2.7 ≈ 270g daily)
+    high:      3.5–5.0 g/kg bodyweight  (e.g. 100kg × 4.2 ≈ 420g daily)
+  When the coach has prescribed "low" carbs, do NOT default to the stabilisation
+  doctrine's 2.5–3.5 g/kg ceiling — the coach has explicitly chosen the lower
+  carb tier and the plan must respect that choice. Entry state determines the
+  CEILING (Stabilisation/Recovery Reset cannot prescribe "high"); demand level
+  determines the actual target within the allowed range.
 - Fat: sum of meal fat_g must provide at least 0.9 g/kg bodyweight (essential fat-soluble nutrient floor) — for a 70kg client that is at least 63g daily.
 
-If your meal totals do not hit these targets, INCREASE PORTION SIZES until they do. A 70kg client at Stabilisation eating 1,000 kcal/day is a plan failure, not a conservative prescription.
+If your meal totals do not hit these targets, INCREASE PORTION SIZES until they do (or reduce, if carb_demand_level=low and your draft overshoots). A 70kg client at Stabilisation eating 1,000 kcal/day is a plan failure, not a conservative prescription — but a 100kg client prescribed "low carbs" with 250g of carbs is also a plan failure, in the opposite direction.
 
 ═══════════════════════════════════════
 OUTPUT FORMAT — REQUIRED JSON STRUCTURE

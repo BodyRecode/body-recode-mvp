@@ -272,6 +272,7 @@ export async function POST(request: NextRequest) {
       bodyweight_kg: bodyweightKg,
       entry_state: String(p.entry_state || entry_state),
       medications: client?.medications ?? null,
+      carb_demand_level: (String(p.carb_demand_level || carb_demand_level || '').toLowerCase() as 'low' | 'moderate' | 'high' | '') || null,
       transitional_override: overrideActive ? { active: true, floor_kcal: overrideFloor } : null,
     })
   }

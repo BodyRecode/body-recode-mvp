@@ -167,6 +167,10 @@ export interface NutritionValidationInput {
   bodyweight_kg: number | null
   entry_state: string
   medications: string | null
+  // Carb demand level the coach prescribed — affects the daily carb safety
+  // floor. "low" lowers the floor to 0.8 g/kg so a coach who explicitly
+  // wants ~140g for a 100kg client isn't bounced by a 150g hard floor.
+  carb_demand_level?: 'low' | 'moderate' | 'high' | null
   // Optional transitional override — when present, the bodyweight-derived
   // carb / fat g/kg floors are SKIPPED and replaced by the explicit kcal
   // floor. Used when a client cannot physically execute the standard floors
@@ -472,12 +476,20 @@ export function validateNutritionPlan(
   // 1.5 g/kg to prevent zero-carb accidents while respecting the doctrine.
   if (input.bodyweight_kg) {
     const bw = input.bodyweight_kg
-    const carbFloor = Math.round(bw * 1.5)
+    // Carb floor scales with demand level. "low" drops the floor to 0.8 g/kg
+    // so a coach who explicitly prescribes low-carb (e.g. ~140g for a 100kg
+    // client) isn't bounced by a 150g hard floor that was designed to
+    // prevent zero-carb accidents, not enforce a specific tier.
+    const carbFloorMultiplier =
+      input.carb_demand_level === 'low' ? 0.8 :
+      input.carb_demand_level === 'high' ? 2.5 :
+      1.5  // moderate or unspecified
+    const carbFloor = Math.round(bw * carbFloorMultiplier)
     const fatFloor = Math.round(bw * 0.7)
     if (totals.carb_g < carbFloor) {
       issues.push({
         code: 'CARB_FLOOR_NOT_MET',
-        message: `Daily carbs ${totals.carb_g}g is below the ${carbFloor}g safety floor (bodyweight ${bw}kg × 1.5 g/kg).`,
+        message: `Daily carbs ${totals.carb_g}g is below the ${carbFloor}g safety floor (bodyweight ${bw}kg × ${carbFloorMultiplier} g/kg for carb_demand_level=${input.carb_demand_level ?? 'moderate'}).`,
       })
     }
     if (totals.fat_g < fatFloor) {
