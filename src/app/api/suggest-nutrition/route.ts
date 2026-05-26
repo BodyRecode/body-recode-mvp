@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { detectAppetiteSuppression } from '@/lib/nutrition-validation'
 
 export const maxDuration = 300
 
@@ -298,6 +299,36 @@ Output valid JSON only — no markdown, no commentary:
     if (!aiValue || aiValue < floor) {
       suggestion.protein_anchor_g = computed
       suggestion.protein_anchor_g_reason = `Computed from bodyweight ${bodyweightKg}kg × ${multiplier} (entry state: ${suggestion.entry_state}). Original AI suggestion (${aiValue || 'missing'}) overridden — fell below the bodyweight × 1.4 floor.`
+    }
+  }
+
+  // Pre-flight: bump meal_frequency to the minimum that's mathematically
+  // feasible under the appetite-suppression hard rules. Without this, the
+  // suggest engine defaults to 4 meals — fine for most clients, but for a
+  // stimulant client with anchor > 150g (e.g. Amanda at 165g) the validator
+  // rejects 4 meals because max achievable is 30 + 40 + 40 + 40 = 150g.
+  // Computed from the rules:
+  //   stimulant: meals_needed = ceil((anchor − 30) / 40) + 1  (breakfast + N meals at 40g)
+  //   non-stimulant suppressant: meals_needed = ceil(anchor / 40)
+  //   no suppression: leave the AI's suggestion alone
+  const suppression = detectAppetiteSuppression(client.medications)
+  if (suppression.any) {
+    const anchor = Number(suggestion.protein_anchor_g) || 0
+    const aiMeals = Number(suggestion.meal_frequency) || 4
+    let minMeals: number
+    if (suppression.has_stimulant) {
+      minMeals = Math.max(4, Math.ceil((anchor - 30) / 40) + 1)
+    } else {
+      minMeals = Math.max(4, Math.ceil(anchor / 40))
+    }
+    if (aiMeals < minMeals) {
+      const classes = [
+        suppression.has_stimulant && 'stimulant',
+        suppression.has_glp1 && 'GLP-1',
+        suppression.has_serotonergic && 'SSRI/SNRI',
+      ].filter(Boolean).join(' + ')
+      suggestion.meal_frequency = minMeals
+      suggestion.meal_frequency_reason = `Set to ${minMeals} (was ${aiMeals}) because client is on ${classes} medication. The appetite-suppression hard rules cap protein per meal at 40g (30g for the first meal if stimulant), so the anchor of ${anchor}g requires at least ${minMeals} meals to distribute without violating the per-meal cap. ${suggestion.meal_frequency_reason || ''}`.trim()
     }
   }
 
