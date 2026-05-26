@@ -173,6 +173,10 @@ export default function NutritionPrescriptionSuggest({
     standard_floor_kcal: number | null
     standard_protein_anchor_g: number | null
     suggested_protein_anchor_g: number | null
+    // When prefill scales the anchor down, capture the from→to so the UI
+    // can warn the coach that bridge mode adjusted the anchor (audit
+    // finding #9). Null means no scaling happened.
+    anchor_scaled_from: number | null
     evidence_summary: string
   } | null>(null)
   const [bridgePrefillDone, setBridgePrefillDone] = useState(false)
@@ -230,15 +234,20 @@ export default function NutritionPrescriptionSuggest({
       // this the engine balloons the plan above the bridge target (165g
       // protein × 4 = 660 kcal alone forces total > 2,000+). The suggested
       // anchor is clamped to ≥1.2 g/kg bodyweight for muscle preservation.
-      if (data?.suggested_protein_anchor_g && (force || !bridgePrefillDone)) {
-        // Remember the pre-bridge anchor so toggling OFF can restore it.
+      // Capture the from→to so the UI can warn if the coach had hand-edited
+      // the anchor before enabling bridge mode (audit #9).
+      let anchorScaledFrom: number | null = null
+      const suggestedAnchor = data?.suggested_protein_anchor_g
+      if (suggestedAnchor && (force || !bridgePrefillDone) && suggestedAnchor !== proteinAnchorG) {
         if (proteinAnchorBeforeBridge === null) setProteinAnchorBeforeBridge(proteinAnchorG)
-        setProteinAnchorG(data.suggested_protein_anchor_g)
+        anchorScaledFrom = proteinAnchorG
+        setProteinAnchorG(suggestedAnchor)
       }
       setBridgeSuggestionMeta({
         standard_floor_kcal: data?.standard_floor_kcal ?? null,
         standard_protein_anchor_g: data?.standard_protein_anchor_g ?? null,
         suggested_protein_anchor_g: data?.suggested_protein_anchor_g ?? null,
+        anchor_scaled_from: anchorScaledFrom,
         evidence_summary: data?.evidence_summary ?? '',
       })
       setBridgePrefillDone(true)
@@ -835,6 +844,13 @@ export default function NutritionPrescriptionSuggest({
                 {bridgeSuggestionMeta.standard_floor_kcal && (
                   <p className="text-stone-500">
                     Standard bodyweight-derived floor (would apply without override): <span className="font-mono text-stone-700">{bridgeSuggestionMeta.standard_floor_kcal} kcal</span>. Bridge mode replaces this.
+                  </p>
+                )}
+                {bridgeSuggestionMeta.anchor_scaled_from !== null && bridgeSuggestionMeta.suggested_protein_anchor_g && (
+                  <p className="text-amber-700 mt-1">
+                    <span className="font-semibold">Protein anchor adjusted:</span>{' '}
+                    <span className="font-mono">{bridgeSuggestionMeta.anchor_scaled_from}g</span> → <span className="font-mono">{bridgeSuggestionMeta.suggested_protein_anchor_g}g</span>
+                    {' '}(scaled to fit the bridge kcal budget). Edit the anchor field below if you want to keep your original value — bridge mode won&apos;t override it again.
                   </p>
                 )}
                 {bridgeSuggestionMeta.evidence_summary && (
