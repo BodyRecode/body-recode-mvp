@@ -450,7 +450,7 @@ export function validateNutritionPlan(
   // documented justification stored on the plan, auto-expires after 4 weeks.
   const override = input.transitional_override
   if (override?.active && override.floor_kcal > 0) {
-    const CEILING_BUFFER = 200  // allow ±200 kcal around the bridge target
+    const CEILING_BUFFER = 100  // allow +100 kcal above the bridge target — tight band so plans land at the floor, not above
     const ceilingKcal = override.floor_kcal + CEILING_BUFFER
     if (totals.kcal < override.floor_kcal) {
       issues.push({
