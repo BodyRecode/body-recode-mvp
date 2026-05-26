@@ -24,6 +24,7 @@ import {
   validateNutritionPlan,
   normalizeMealAndDayTotals,
   checkPrescriptionFeasibility,
+  NUTRITION_DOCTRINE_VERSION,
   type NutritionValidationInput,
   type MealLike,
   type StructuredFood,
@@ -395,6 +396,20 @@ function runFeasibilityCase(c: FeasibilityCase): { pass: boolean; detail: string
 
 let passCount = 0
 let failCount = 0
+
+console.log('\n═══════════════════════════════════════════════════════════════════')
+console.log(' DOCTRINE INVARIANTS')
+console.log('═══════════════════════════════════════════════════════════════════\n')
+
+const doctrineVersionFormat = /^\d{4}-\d{2}-\d{2}(\.\d+)?$/
+{
+  const ok = doctrineVersionFormat.test(NUTRITION_DOCTRINE_VERSION)
+  const icon = ok ? '\x1b[32m✓\x1b[0m' : '\x1b[31m✗\x1b[0m'
+  console.log(`${icon} NUTRITION_DOCTRINE_VERSION matches YYYY-MM-DD[.N] format`)
+  console.log(`    current value: "${NUTRITION_DOCTRINE_VERSION}"`)
+  if (ok) passCount++
+  else { failCount++; console.log(`    expected format like '2026-05-25' or '2026-05-25.1'`) }
+}
 
 console.log('\n═══════════════════════════════════════════════════════════════════')
 console.log(' NUTRITION VALIDATOR REGRESSION CORPUS')

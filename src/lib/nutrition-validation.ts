@@ -11,6 +11,25 @@
  * render the readouts.
  */
 
+/**
+ * Doctrine version stamped onto every nutrition_plans row at generation time.
+ * Bump when ANY of the following changes materially:
+ *   - A validator rule is added, removed, or its threshold/scope changes
+ *   - A constant in this file changes (PER_MEAL_PROTEIN_CAP, BRIDGE_CEILING_BUFFER, etc.)
+ *   - A pre-flight feasibility check is added or modified
+ *   - The system or user prompt in nutrition-prompt.ts changes materially
+ *     (formatting tweaks don't count; rule additions / threshold edits do)
+ *
+ * Format: YYYY-MM-DD, suffix .1/.2 for same-day patches. Sorts as string.
+ * Older plans on stale versions are flagged on the coach view (soft hint)
+ * and surfaced in the validator-events dashboard.
+ *
+ * Do NOT skip this bump — it is the only signal that lets the coach UI
+ * tell stale plans from current ones, and the only key that lets the
+ * telemetry dashboard slice fire-rates by doctrine version.
+ */
+export const NUTRITION_DOCTRINE_VERSION = '2026-05-25'
+
 export interface StructuredFood {
   name: string
   protein_g: number
