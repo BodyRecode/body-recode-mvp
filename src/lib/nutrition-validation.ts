@@ -289,24 +289,33 @@ export function validateNutritionPlan(
         ].filter(Boolean).join(', ')}). Doctrine requires ≥4 smaller meals so per-meal portions are achievable.`,
       })
     }
+    // Per-meal protein cap. 43g is the operational ceiling for "what a
+    // suppressed client can finish in 20-30 min" — calibrated empirically:
+    // 40g forced too-clean portion math (Sonnet rounded up to 44g chicken
+    // breast natural serves and bounced repeatedly), 45g+ starts to feel
+    // unfinishable. 43g lands inside the natural portion sizes the model
+    // tends to output without compromising executability.
     for (const m of input.meals) {
       const mp = Number(m.protein_g) || 0
       const name = m.meal_name ?? 'meal'
-      if (mp > 40) {
+      if (mp > 43) {
         issues.push({
           code: 'APPETITE_SUPPRESSED_PER_MEAL_PROTEIN_TOO_HIGH',
-          message: `${name}: ${mp}g protein exceeds the 40g per-meal ceiling for appetite-suppressed clients. Redistribute across more meals.`,
+          message: `${name}: ${mp}g protein exceeds the 43g per-meal ceiling for appetite-suppressed clients. Redistribute across more meals.`,
         })
       }
     }
+    // Stimulant first-meal cap. 32g for the same calibration reason — gives
+    // model room to land on 2 whole eggs (~12g) + small protein side without
+    // bouncing on 30g exactness.
     if (suppression.has_stimulant && input.meals.length > 0) {
       const first = input.meals[0]
       const firstP = Number(first.protein_g) || 0
       const firstName = first.meal_name ?? 'first meal'
-      if (firstP > 30) {
+      if (firstP > 32) {
         issues.push({
           code: 'STIMULANT_FIRST_MEAL_PROTEIN_TOO_HIGH',
-          message: `${firstName}: ${firstP}g protein is too high for the morning stimulant-suppression window. Cap at 30g and shift protein to later meals.`,
+          message: `${firstName}: ${firstP}g protein is too high for the morning stimulant-suppression window. Cap at 32g and shift protein to later meals.`,
         })
       }
     }

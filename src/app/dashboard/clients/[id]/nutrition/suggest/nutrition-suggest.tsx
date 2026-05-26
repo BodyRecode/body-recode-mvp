@@ -147,6 +147,20 @@ export default function NutritionPrescriptionSuggest({
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
   const [generating, setGenerating] = useState(false)
   const [editingField, setEditingField] = useState<string | null>(null)
+  const [generationElapsed, setGenerationElapsed] = useState(0)
+
+  // Tick a 1Hz timer while generating so the overlay can show elapsed seconds
+  // and progress through synthetic stages. Sonnet 4.6 takes ~60-90s for a
+  // full structured-foods plan with validation + retries — silent waits feel
+  // broken, so the overlay shows what stage the engine is in.
+  useEffect(() => {
+    if (!generating) {
+      setGenerationElapsed(0)
+      return
+    }
+    const t = setInterval(() => setGenerationElapsed(s => s + 1), 1000)
+    return () => clearInterval(t)
+  }, [generating])
 
   // Editable values
   const [planName, setPlanName] = useState('')
@@ -280,8 +294,55 @@ export default function NutritionPrescriptionSuggest({
 
   const toggle = (field: string) => setEditingField(editingField === field ? null : field)
 
+  // Synthetic progress stages for the generation overlay. Sonnet 4.6 emits the
+  // plan in one shot (no streaming), so we can't show real progress — but a
+  // staged timeline based on elapsed seconds gives the same psychological
+  // affordance and stops the wait from feeling broken.
+  const generationStages: Array<{ start: number; label: string }> = [
+    { start: 0, label: 'Reading client context (CFFS, intake, baseline, medications)' },
+    { start: 5, label: 'Drafting meal structure and food selections' },
+    { start: 25, label: 'Computing per-food macros from the reference table' },
+    { start: 45, label: 'Reconciling daily totals against bodyweight floors' },
+    { start: 60, label: 'Validating per-meal protein caps and anchor distribution' },
+    { start: 75, label: 'Polishing and almost done' },
+    { start: 100, label: 'Taking longer than usual — Sonnet is working it through' },
+  ]
+  const currentStage = [...generationStages].reverse().find(s => generationElapsed >= s.start) ?? generationStages[0]
+
   return (
-    <div className="flex gap-8 max-w-5xl">
+    <div className="flex gap-8 max-w-5xl relative">
+      {generating && (
+        <div className="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center px-6">
+          <div className="bg-white border border-stone-200 rounded-2xl shadow-2xl max-w-md w-full p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="relative w-3 h-3">
+                <div className="absolute inset-0 bg-blue-500 rounded-full animate-ping opacity-75" />
+                <div className="relative w-3 h-3 bg-blue-500 rounded-full" />
+              </div>
+              <p className="text-xs font-bold uppercase tracking-widest text-blue-600">Generating Plan</p>
+              <span className="ml-auto text-xs font-mono text-stone-500 tabular-nums">{generationElapsed}s</span>
+            </div>
+            <p className="text-sm text-stone-700 leading-relaxed mb-4 min-h-[2.5rem]">
+              {currentStage.label}…
+            </p>
+            <div className="space-y-1.5">
+              {generationStages.filter(s => s.start < 100).map((s, i) => {
+                const done = generationElapsed >= (generationStages[i + 1]?.start ?? Infinity)
+                const active = currentStage.start === s.start
+                return (
+                  <div key={s.start} className="flex items-center gap-2">
+                    <div className={`w-1.5 h-1.5 rounded-full ${done ? 'bg-blue-500' : active ? 'bg-blue-300 animate-pulse' : 'bg-stone-300'}`} />
+                    <span className={`text-xs ${done ? 'text-stone-500 line-through' : active ? 'text-stone-800' : 'text-stone-400'}`}>{s.label}</span>
+                  </div>
+                )
+              })}
+            </div>
+            <p className="text-[11px] text-stone-400 mt-4 leading-relaxed">
+              Nutrition generation uses Claude Sonnet 4.6 for high-accuracy constraint satisfaction. Typical generation: 60-90 seconds. The page is not frozen — please don&apos;t refresh.
+            </p>
+          </div>
+        </div>
+      )}
       <StickyScrollNav sections={NAV_SECTIONS} />
       <div className="flex-1 min-w-0 space-y-4">
 
