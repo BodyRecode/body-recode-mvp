@@ -6,7 +6,8 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:nutrition": "npx tsx scripts/test-nutrition-corpus.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.79.0",
