@@ -68,6 +68,12 @@ interface NutritionPlan {
   generated_at: string
   current_direction: string | null
   last_review_at: string | null
+  // Bridge mode metadata (added 2026-05-25). Nullable for plans generated
+  // before the migration ran.
+  transitional_override_active?: boolean | null
+  transitional_override_floor_kcal?: number | null
+  transitional_override_justification?: string | null
+  transitional_override_expires_at?: string | null
 }
 
 function parseText(text: string): { intro: string | null; points: string[] } {
@@ -160,6 +166,55 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
           Generated {new Date(plan.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
         </p>
       </div>
+
+      {/* Bridge mode banner — surfaces the override metadata so the coach
+          can see at a glance that this plan deliberately sits below the
+          standard bodyweight floor, with the eventual target it's
+          bridging toward and the expiry date. */}
+      {plan.transitional_override_active && (
+        <div id={`${idPrefix}bridge-mode`} className="scroll-mt-8 bg-amber-50 border border-amber-300 rounded-xl p-5">
+          <div className="flex items-start gap-3 mb-3">
+            <svg className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] font-black text-amber-700 uppercase tracking-widest mb-1">Bridge Mode (Transitional Plan)</p>
+              <p className="text-sm text-stone-800 leading-relaxed">
+                This plan is intentionally below the standard bodyweight-derived calorie floor. It&apos;s a stepping stone to the full prescription, not the destination.
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 mt-4 pl-8">
+            <div>
+              <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1">Current bridge floor</p>
+              <p className="text-lg font-semibold text-stone-900 tabular-nums">{plan.transitional_override_floor_kcal} kcal</p>
+              <p className="text-[11px] text-stone-600 mt-0.5">starting point — this plan</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1">Bridging toward</p>
+              <p className="text-lg font-semibold text-stone-900 tabular-nums">
+                ~{Math.round((plan.transitional_override_floor_kcal || 0) / 0.85 / 50) * 50} kcal
+              </p>
+              <p className="text-[11px] text-stone-600 mt-0.5">standard bodyweight-derived floor</p>
+            </div>
+          </div>
+          {plan.transitional_override_justification && (
+            <div className="mt-4 pl-8">
+              <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1">Coach justification</p>
+              <p className="text-xs text-stone-700 leading-relaxed italic">{plan.transitional_override_justification}</p>
+            </div>
+          )}
+          {plan.transitional_override_expires_at && (
+            <div className="mt-4 pl-8 pt-3 border-t border-amber-200">
+              <p className="text-xs text-stone-600">
+                <span className="font-semibold text-amber-700">Auto-expires:</span>{' '}
+                {new Date(plan.transitional_override_expires_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                {' — '}regenerate then to remove the override and apply the standard prescription.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Entry State Summary */}
       {plan.entry_state_summary && (
