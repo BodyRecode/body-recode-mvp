@@ -506,9 +506,13 @@ export async function POST(request: NextRequest) {
     insertRow.transitional_override_active = true
     insertRow.transitional_override_floor_kcal = overrideFloor
     insertRow.transitional_override_justification = overrideJustification
-    // Default expiry: 4 weeks from now. Coach can extend manually later.
+    // Default expiry: 2 weeks. Bridge progression should happen in stages
+    // of ~100 kcal/week — reverse-dieting / appetite-rebuilding doctrine
+    // says faster than that risks GI distress and adherence failure. Two-week
+    // cadence means each bridge plan is ONE STAGE; coach reviews check-ins,
+    // decides whether to step up (+200) or hold the current floor.
     const expiry = new Date()
-    expiry.setDate(expiry.getDate() + 28)
+    expiry.setDate(expiry.getDate() + 14)
     insertRow.transitional_override_expires_at = expiry.toISOString()
   }
   let { data: savedPlan, error: saveError } = await admin

@@ -75,6 +75,8 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
   // target is correctly lower than a moderate-carb client's.
   let bridgeTargetKcal: number | null = null
   let bridgeWeeksRemaining: number | null = null
+  let bridgeStagesRemaining: number | null = null
+  let bridgeNextStageKcal: number | null = null
   if (plan?.transitional_override_active) {
     const { data: baseline } = await admin
       .from('baselines')
@@ -100,6 +102,14 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
       const days = Math.ceil((expiry.getTime() - Date.now()) / 86400000)
       bridgeWeeksRemaining = Math.max(0, Math.ceil(days / 7))
     }
+    // Staged ramp math for the portal banner. Same logic as the coach view:
+    // 200 kcal per 2-week stage = 100 kcal/week reverse-dieting pace.
+    const startKcal = plan.transitional_override_floor_kcal ?? 0
+    if (bridgeTargetKcal && bridgeTargetKcal > startKcal) {
+      const gap = bridgeTargetKcal - startKcal
+      bridgeStagesRemaining = Math.ceil(gap / 200)
+      bridgeNextStageKcal = Math.min(startKcal + 200, bridgeTargetKcal)
+    }
   }
 
   return (
@@ -119,19 +129,22 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
         ) : (
           <div className="space-y-5">
             {/* Bridge mode framing — friendly version of the coach-side bridge
-                banner. Sits ABOVE the nutrition reading so the client knows
-                the framing before reading the per-meal detail: this is a
-                starting point, not the destination. */}
+                banner. Staged framing: client sees the current stage, the
+                next stage, and the eventual target, all in plain language.
+                Sits ABOVE the nutrition reading so the client knows the
+                framing before reading the per-meal detail. */}
             {plan.transitional_override_active && (
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
-                <p className="text-[11px] font-bold uppercase tracking-widest text-amber-700 mb-2">Your starting plan</p>
+                <p className="text-[11px] font-bold uppercase tracking-widest text-amber-700 mb-2">Your plan right now</p>
                 <p className="text-sm text-[#1A1A1A] leading-relaxed">
-                  This is your <span className="font-semibold">starting point</span> at <span className="font-semibold tabular-nums">{plan.transitional_override_floor_kcal} kcal</span>{bridgeTargetKcal && (
-                    <>. We&apos;ll build this up to <span className="font-semibold tabular-nums">~{bridgeTargetKcal} kcal</span> over {bridgeWeeksRemaining !== null && bridgeWeeksRemaining > 0 ? `the next ${bridgeWeeksRemaining} ${bridgeWeeksRemaining === 1 ? 'week' : 'weeks'}` : 'the coming weeks'} as your appetite stabilises and the meal rhythm becomes consistent</>
-                  )}.
+                  You&apos;re at <span className="font-semibold tabular-nums">{plan.transitional_override_floor_kcal} kcal/day</span> for the next 2 weeks.{bridgeTargetKcal && bridgeStagesRemaining && bridgeStagesRemaining > 0 && (
+                    <> From there we&apos;ll step you up gradually{bridgeNextStageKcal && bridgeNextStageKcal < bridgeTargetKcal ? <> (next stage: <span className="font-semibold tabular-nums">{bridgeNextStageKcal} kcal</span>)</> : ''} until you reach your full target of <span className="font-semibold tabular-nums">~{bridgeTargetKcal} kcal</span>{bridgeStagesRemaining > 1 ? <> in about {bridgeStagesRemaining * 2} weeks</> : ''}.</>
+                  )}{bridgeTargetKcal && (!bridgeStagesRemaining || bridgeStagesRemaining === 0) && (
+                    <> You&apos;re at the full target now.</>
+                  )}
                 </p>
                 <p className="text-xs text-[#6B6B6B] mt-2 leading-relaxed">
-                  Eat all the portions listed. On hard appetite days, prioritise hitting your protein and skip the snack rather than cutting from main meals. We&apos;ll review together at each weekly check-in.
+                  We build up your fuel in 2-week stages so your appetite has time to catch up. Eat all the portions listed. On hard appetite days, prioritise hitting your protein and skip the snack rather than cutting from main meals. We&apos;ll review together at each weekly check-in.
                 </p>
               </div>
             )}

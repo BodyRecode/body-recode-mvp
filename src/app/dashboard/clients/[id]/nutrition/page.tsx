@@ -251,6 +251,19 @@ function NutritionPlanBody({
           ? Math.min(100, Math.max(0, Math.round((daysIntoBridge / totalBridgeDays) * 100)))
           : 0
         const gapKcal = targetKcal ? targetKcal - startKcal : null
+
+        // Staged ramp math. Standard step size is 200 kcal per 2-week stage
+        // (= 100 kcal/week, the reverse-dieting safe pace). Total stages =
+        // ceil(gap / 200), total weeks-to-target = stages × 2. "Current stage"
+        // is computed from how far we've come if we assume the client started
+        // at some "true zero" — we use the plan's current floor as the
+        // current-stage floor and count stages remaining to target.
+        const STAGE_KCAL = 200
+        const stagesRemaining = gapKcal && gapKcal > 0 ? Math.ceil(gapKcal / STAGE_KCAL) : 0
+        const totalRampWeeks = stagesRemaining * 2
+        const nextStageKcal = gapKcal && gapKcal > 0
+          ? Math.min(startKcal + STAGE_KCAL, targetKcal ?? startKcal)
+          : startKcal
         return (
           <div id={`${idPrefix}bridge-mode`} className="scroll-mt-8 bg-amber-50 border border-amber-300 rounded-xl p-5">
             <div className="flex items-start gap-3 mb-4">
@@ -258,28 +271,36 @@ function NutritionPlanBody({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <div className="min-w-0 flex-1">
-                <p className="text-[11px] font-black text-amber-700 uppercase tracking-widest mb-1">Bridge Mode (Transitional Plan)</p>
+                <p className="text-[11px] font-black text-amber-700 uppercase tracking-widest mb-1">Bridge Mode (Staged Ramp)</p>
                 <p className="text-sm text-stone-800 leading-relaxed">
-                  Currently feeding at <span className="font-semibold tabular-nums">{startKcal} kcal</span>{targetKcal && (
-                    <>, building toward <span className="font-semibold tabular-nums">~{targetKcal} kcal</span> over {weeksToTarget ?? '—'} {weeksToTarget === 1 ? 'week' : 'weeks'}.</>
+                  Currently feeding at <span className="font-semibold tabular-nums">{startKcal} kcal</span>{targetKcal && stagesRemaining > 0 && (
+                    <>, ramping to <span className="font-semibold tabular-nums">~{targetKcal} kcal</span> over <span className="font-semibold">{stagesRemaining} more stage{stagesRemaining === 1 ? '' : 's'}</span> (~{totalRampWeeks} weeks at +{STAGE_KCAL} kcal per 2-week stage).</>
+                  )}{targetKcal && stagesRemaining === 0 && (
+                    <>. Already at the target floor — remove the override on next regenerate.</>
                   )}{!targetKcal && <>. Target unknown (baseline bodyweight missing).</>}
-                  {' '}Step up when check-ins say she&apos;s eating consistently.
+                </p>
+                <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                  Reverse-dieting pace: ~100 kcal/week. Each stage = 2 weeks at the current floor; step up if check-ins show eating consistency, hold if not.
                 </p>
               </div>
             </div>
 
-            {/* Start → target progress bar */}
+            {/* Start → target progress bar with stage markers */}
             {targetKcal && (
               <div className="pl-8 mb-4">
                 <div className="flex items-baseline justify-between text-xs mb-1.5">
-                  <span className="text-stone-600"><span className="font-mono tabular-nums">{startKcal}</span> start</span>
-                  <span className="text-stone-400 text-[10px] uppercase tracking-widest">{gapKcal && gapKcal > 0 ? `${gapKcal} kcal to bridge` : 'at target'}</span>
+                  <span className="text-stone-600"><span className="font-mono tabular-nums">{startKcal}</span> current stage</span>
+                  <span className="text-stone-400 text-[10px] uppercase tracking-widest">
+                    {gapKcal && gapKcal > 0 ? <>next: <span className="font-mono">{nextStageKcal}</span> · target: <span className="font-mono">{targetKcal}</span></> : 'at target'}
+                  </span>
                   <span className="text-stone-600"><span className="font-mono tabular-nums">{targetKcal}</span> target</span>
                 </div>
                 <div className="h-2 bg-stone-200 rounded-full overflow-hidden">
                   <div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
                 </div>
-                <p className="text-[11px] text-stone-500 mt-1">{progressPct}% through the bridge window ({daysIntoBridge}/{totalBridgeDays} days)</p>
+                <p className="text-[11px] text-stone-500 mt-1">
+                  Stage progress: {daysIntoBridge}/{totalBridgeDays} days through this 2-week stage{stagesRemaining > 0 && <> · {stagesRemaining} stage{stagesRemaining === 1 ? '' : 's'} remaining</>}
+                </p>
               </div>
             )}
 
