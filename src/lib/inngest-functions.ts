@@ -245,7 +245,7 @@ ${emailHeading(`14 days done, ${firstName}.`)}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody('You finished the challenge. That is not nothing.')}
-${emailBody('Most people who start something like this quit before Day 5. You made it to Day 14. That means your body has had 14 consecutive days of structured rhythm — consistent training, real food, better sleep, predictable timing.')}
+${emailBody('Most people who start something like this quit before Day 5. You made it to Day 14. That means your body has had 14 consecutive days of structured rhythm. Consistent training, real food, better sleep, predictable timing.')}
 ${emailFeaturedCard(
   emailNumberedList([
     'Reduced the daily puffiness and inflammation',
@@ -257,14 +257,14 @@ ${emailFeaturedCard(
   { eyebrow: 'What that should have done' },
 )}
 ${emailBody('This is your baseline now. The question is: what do you build on top of it?')}
-${emailBody('The 6-Week Body Recode Blueprint takes everything you have started and adds structure, progressive training, signal-guided nutrition, and real accountability. It is where the results become visible.', { bottom: 24 })}
+${emailBody('Your pattern was read on Day 7. The next dose is correction. The 6-Week Body Rewire Blueprint takes everything you have started and runs six weeks of focused, pattern-specific corrective work. Training calibrated. Nutrition timed. Weekly coaching written for your pattern.', { bottom: 24 })}
 ${emailStatusCard({
   eyebrow: 'Next step',
-  headline: '6-Week Body Recode Blueprint',
-  body: 'Where rhythm becomes results. Start with the full Body State Scorecard so I can match the Blueprint to your specific pattern.',
+  headline: '6-Week Body Rewire Blueprint',
+  body: 'Six weeks of pattern-specific corrective work. $97 one-time. Your pattern carries through from the Challenge into Week 1.',
 })}
-${emailCta({ href: 'https://bodyrecode.au/scorecard', label: 'Take the full Body State Scorecard' })}
-${emailUrlFallback('https://bodyrecode.au/scorecard', 'Or paste this link into your browser')}
+${emailCta({ href: 'https://bodyrecode.au/blueprint?source=challenge_day14_ascension', label: 'Start the 6-Week Blueprint · $97' })}
+${emailUrlFallback('https://bodyrecode.au/blueprint?source=challenge_day14_ascension', 'Or paste this link into your browser')}
 ${emailBody('Or just reply to this email and I will personally help you figure out the right next step.', { size: 14, bottom: 0 })}
 `),
       })

@@ -179,11 +179,11 @@ export async function POST(request: NextRequest) {
           </table>
 
           <div style="background:#B5CFFC;border:1px solid rgba(27,109,252,0.2);border-radius:12px;padding:20px 24px;margin:24px 0;">
-            <p style="font-size:14px;color:#99d6d0;line-height:1.7;margin:0 0 16px;">
-              This is the beginning. The full picture, your complete biological map, your specific hormone drivers, and what is structurally driving your pattern, comes through the Body State Scorecard.
+            <p style="font-size:14px;color:#1A1A1A;line-height:1.7;margin:0 0 16px;">
+              You have read your pattern. The next dose is correction. The 6-Week Body Rewire Blueprint takes the pattern you have just identified and runs six weeks of focused, pattern-specific corrective work. Training calibrated. Nutrition timed. Weekly coaching written for your pattern.
             </p>
-            <a href="https://bodyrecode.au/scorecard" style="display:inline-block;padding:12px 22px;border-radius:8px;background:#1B6DFC;color:#FFFFFF;font-size:13px;font-weight:700;text-decoration:none;">
-              Take the Full Body State Scorecard
+            <a href="https://bodyrecode.au/blueprint?source=challenge_day7_result" style="display:inline-block;padding:12px 22px;border-radius:8px;background:#1B6DFC;color:#FFFFFF;font-size:13px;font-weight:700;text-decoration:none;">
+              Start the 6-Week Blueprint · $97
             </a>
           </div>
 
