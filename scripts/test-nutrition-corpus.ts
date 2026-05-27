@@ -299,6 +299,40 @@ const cases: TestCase[] = [
       ],
     },
   },
+
+  // ── Ghost-food protection: negative-macro entries get rejected ────────
+  // Doctrine 2026-05-26: the model discovered it could subtract from meal
+  // totals by adding "removed - accounting correction" entries with
+  // negative grams. Real foods can't have negative macros. Validator now
+  // catches this. Triggered by Amanda's plan on 2026-05-26 where the
+  // LLM added 6 ghost entries to fit the bridge ceiling.
+  {
+    name: 'Ghost-food protection: negative macro entry rejected',
+    profile: profiles.amanda,
+    plan: [
+      {
+        meal_name: 'Breakfast',
+        protein_g: 28,
+        carb_g: 18,
+        fat_g: 18,
+        foods: [
+          { name: '3 whole eggs', protein_g: 18, carb_g: 0, fat_g: 15 },
+          { name: '10g butter (cooking fat)', protein_g: 0, carb_g: 0, fat_g: 8 },
+          { name: '100g Greek yoghurt (full-fat)', protein_g: 9, carb_g: 4, fat_g: 5 },
+          { name: '100g berries (mixed)', protein_g: 1, carb_g: 14, fat_g: 0 },
+          { name: '10g butter (removed - accounting correction)', protein_g: 0, carb_g: 0, fat_g: -10 },
+        ],
+      },
+      { meal_name: 'Lunch',  protein_g: 30, carb_g: 30, fat_g: 15, foods: [{ name: '120g chicken', protein_g: 30, carb_g: 0, fat_g: 4 }, { name: '70g rice (dry)', protein_g: 5, carb_g: 50, fat_g: 1 }, { name: '10g oil', protein_g: 0, carb_g: 0, fat_g: 10 }] },
+      { meal_name: 'Snack',  protein_g: 30, carb_g: 5,  fat_g: 10, foods: [{ name: 'Greek yog', protein_g: 25, carb_g: 5, fat_g: 8 }, { name: 'almonds 5g', protein_g: 1, carb_g: 1, fat_g: 3 }] },
+      { meal_name: 'Dinner', protein_g: 35, carb_g: 30, fat_g: 15, foods: [{ name: '150g mince', protein_g: 30, carb_g: 0, fat_g: 12 }, { name: '150g potato', protein_g: 3, carb_g: 25, fat_g: 0 }, { name: '5g oil', protein_g: 0, carb_g: 0, fat_g: 5 }] },
+      { meal_name: 'Late',   protein_g: 32, carb_g: 10, fat_g: 8,  foods: [{ name: '200g cottage cheese', protein_g: 22, carb_g: 6, fat_g: 5 }, { name: '20g nut butter', protein_g: 5, carb_g: 4, fat_g: 10 }] },
+    ],
+    expected: {
+      ok: false,
+      must_contain: ['NEGATIVE_FOOD_MACRO'],
+    },
+  },
 ]
 
 /* ──────────────────────────────────────────────────────────────────────────

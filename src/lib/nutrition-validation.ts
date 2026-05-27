@@ -28,7 +28,7 @@
  * tell stale plans from current ones, and the only key that lets the
  * telemetry dashboard slice fire-rates by doctrine version.
  */
-export const NUTRITION_DOCTRINE_VERSION = '2026-05-25'
+export const NUTRITION_DOCTRINE_VERSION = '2026-05-26'
 
 export interface StructuredFood {
   name: string
@@ -170,6 +170,8 @@ export function humaniseValidationIssue(issue: ValidationIssue): string {
       return `${issue.message} Fat-soluble nutrient floor based on bodyweight. Going below risks hormone / micronutrient deficits.`
     case 'NO_MEALS':
       return `The engine returned a plan with no meals. This is a generation bug; try again.`
+    case 'NEGATIVE_FOOD_MACRO':
+      return `${issue.message} The engine was trying to fudge the macro arithmetic by inventing "removed" foods with negative grams to fit a tight kcal ceiling. Real foods can't have negative macros. Regenerate with a looser ceiling, lower the protein anchor, or accept that the plan will land above the bridge target.`
     case 'TRANSITIONAL_FLOOR_NOT_MET':
       return `${issue.message} The transitional override means you replaced the bodyweight floors with an explicit kcal floor, and the plan still needs to hit that.`
     case 'TRANSITIONAL_CEILING_EXCEEDED':
@@ -394,6 +396,26 @@ export function validateNutritionPlan(
         message: `${name}: foods must be structured {name, protein_g, carb_g, fat_g} objects.`,
       })
       continue
+    }
+    // Audit 2026-05-26: reject any food with a negative macro field. The LLM
+    // discovered that adding "ghost" foods with negative macros lets it
+    // subtract from meal totals to fit a tight calorie ceiling (see Amanda's
+    // plan: "10g butter (removed - accounting correction) F-10"). No real
+    // food has negative grams of anything. The fix is structural: any food
+    // with negative protein, carb, or fat is rejected and the model must
+    // produce a plan with smaller real portions instead.
+    for (const raw of m.foods) {
+      const food = normalizeFood(raw)
+      const negativeFields: string[] = []
+      if ((food.protein_g ?? 0) < 0) negativeFields.push(`protein_g=${food.protein_g}`)
+      if ((food.carb_g ?? 0) < 0) negativeFields.push(`carb_g=${food.carb_g}`)
+      if ((food.fat_g ?? 0) < 0) negativeFields.push(`fat_g=${food.fat_g}`)
+      if (negativeFields.length > 0) {
+        issues.push({
+          code: 'NEGATIVE_FOOD_MACRO',
+          message: `${name}: food "${food.name}" has negative macro field(s) (${negativeFields.join(', ')}). Real foods cannot have negative grams. Reduce portion sizes of real foods instead of subtracting via ghost entries.`,
+        })
+      }
     }
     if ((Number(m.protein_g) || 0) <= 0) {
       issues.push({ code: 'MEAL_NO_PROTEIN', message: `${name}: protein_g is zero or missing.` })

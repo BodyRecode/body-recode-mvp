@@ -370,6 +370,12 @@ Foods are emitted as STRUCTURED OBJECTS, not free-text strings. Every food in ev
 
 Each food's protein_g / carb_g / fat_g must be COMPUTED FROM THE REFERENCE TABLE ABOVE using the quantity in the name. Do not invent macros.
 
+ALL MACRO VALUES MUST BE NON-NEGATIVE (CRITICAL — auto-validated, rejects on violation).
+- Every food's protein_g, carb_g, and fat_g must be >= 0. No food has negative grams of anything.
+- Do NOT add "ghost" foods like "10g butter (removed - accounting correction)" with negative macro fields to fudge meal totals into a kcal band. The validator rejects ANY food with a negative macro and the coach sees the rejection.
+- If your sensible-portion plan exceeds a transitional / bridge calorie ceiling, the correct response is to REDUCE PORTIONS of real foods (e.g. 100g chicken instead of 150g, 80g rice instead of 100g, 5g olive oil instead of 15g). Never use subtraction-entry tricks.
+- If you cannot reduce portions enough without violating the per-meal protein cap or the protein anchor, the prescription is genuinely infeasible — emit a single explanatory food in one meal noting the conflict (e.g. {"name": "PRESCRIPTION_INFEASIBLE: anchor 165g + 1700 kcal floor cannot be reconciled with low-carb tier; recommend coach loosen ceiling or accept higher anchor", "protein_g": 0, "carb_g": 0, "fat_g": 0}) — never use negative-macro entries as a workaround.
+
 Then every meal's top-level protein_g / carb_g / fat_g MUST EXACTLY EQUAL the sum of its foods' macros (±1g allowed for rounding).
 
 Then the day's calorie band MUST be derived from the meals themselves:
