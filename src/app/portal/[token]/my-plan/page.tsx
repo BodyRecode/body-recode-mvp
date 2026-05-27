@@ -61,18 +61,18 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
   // her plan today after 3 regens. Fixed 2026-05-26.
   const { data: plan } = await admin
     .from('nutrition_plans')
-    .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at, transitional_override_active, transitional_override_floor_kcal, transitional_override_expires_at')
+    .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at, transitional_override_active, transitional_override_floor_kcal, transitional_override_expires_at, carb_demand_level')
     .eq('client_id', client.id)
     .eq('is_active', true)
     .maybeSingle()
 
   const nutritionReadingPublished = !!plan?.nutrition_reading_published_at
 
-  // Bridge mode framing for the portal. If the plan is a bridge, fetch the
-  // client's bodyweight from baseline so we can show the target kcal the
-  // bridge is building toward. The whole point of the portal banner is
-  // "this is your starting point; we're building you up to X." Without the
-  // target the framing falls flat.
+  // Bridge mode framing for the portal. Computes the kcal target the plan
+  // is bridging toward, using the doctrine TARGET multipliers (not the
+  // safety floor — safety floor is "below this is dangerous", not "this is
+  // the prescription"). Respects carb_demand_level so a low-carb client's
+  // target is correctly lower than a moderate-carb client's.
   let bridgeTargetKcal: number | null = null
   let bridgeWeeksRemaining: number | null = null
   if (plan?.transitional_override_active) {
@@ -85,9 +85,15 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
       .maybeSingle()
     const bw = baseline?.bodyweight_kg
     if (bw) {
-      // Same standard-floor formula used everywhere (matches the validator's
-      // bodyweight-derived safety floors at protein 1.7 / carb 1.5 / fat 0.7).
-      bridgeTargetKcal = Math.round(((bw * 1.7 * 4) + (bw * 1.5 * 4) + (bw * 0.7 * 9)) / 50) * 50
+      const carbMultiplier =
+        plan.carb_demand_level === 'high' ? 4.2 :
+        plan.carb_demand_level === 'moderate' ? 2.7 :
+        1.4  // low or unspecified
+      bridgeTargetKcal = Math.round((
+        (bw * 1.7 * 4) +
+        (bw * carbMultiplier * 4) +
+        (bw * 1.0 * 9)
+      ) / 50) * 50
     }
     if (plan.transitional_override_expires_at) {
       const expiry = new Date(plan.transitional_override_expires_at)

@@ -221,8 +221,25 @@ function NutritionPlanBody({
           opening Today's Focus or scrolling check-ins. */}
       {plan.transitional_override_active && (() => {
         const startKcal = plan.transitional_override_floor_kcal ?? 0
+        // Target = the kcal the standard (non-bridge) plan would land at for
+        // this client at their PRESCRIBED carb demand level. Uses doctrine
+        // TARGET multipliers, not the validator's safety FLOOR multipliers
+        // (safety floor was wrong here — it's "below this is dangerous", not
+        // "this is the prescription"). Per-demand g/kg:
+        //   protein: 1.7 (anchor)
+        //   carbs:   1.4 (low) / 2.7 (moderate) / 4.2 (high)  — midpoints of
+        //            doctrine ranges from nutrition-prompt.ts
+        //   fat:     1.0 (target — above the 0.7 safety floor)
+        const carbMultiplier =
+          plan.carb_demand_level === 'high' ? 4.2 :
+          plan.carb_demand_level === 'moderate' ? 2.7 :
+          1.4  // low or unspecified
         const targetKcal = bridgeBodyweightKg
-          ? Math.round(((bridgeBodyweightKg * 1.7 * 4) + (bridgeBodyweightKg * 1.5 * 4) + (bridgeBodyweightKg * 0.7 * 9)) / 50) * 50
+          ? Math.round((
+              (bridgeBodyweightKg * 1.7 * 4) +
+              (bridgeBodyweightKg * carbMultiplier * 4) +
+              (bridgeBodyweightKg * 1.0 * 9)
+            ) / 50) * 50
           : null
         const expiry = plan.transitional_override_expires_at ? new Date(plan.transitional_override_expires_at) : null
         const daysToExpiry = expiry ? Math.ceil((expiry.getTime() - Date.now()) / 86400000) : null
