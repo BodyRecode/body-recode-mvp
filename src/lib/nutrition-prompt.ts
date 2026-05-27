@@ -317,11 +317,16 @@ VARIETY ACROSS MEALS (CRITICAL — eats monotony cause adherence failure):
 - "Performance carbs" (rice, potato, sweet potato) sit on training-adjacent meals where appropriate; "general fueling carbs" (banana, berries, honey) work for any meal. Both are Tier 1; use the rotation to express both.
 - This rule does NOT override the intake's dietary_preferences or restrictions (those are hard) — but within the allowed set, vary.
 
-PROHIBITED:
-- Ultra-processed foods, seed oils, refined grain products
+PROHIBITED (do not include in any plan, even as substitutions):
+- Ultra-processed foods (anything in a packet with >5 ingredients, including most protein bars, snack bars, ready meals)
+- Seed oils (canola, sunflower, soybean, vegetable oil, peanut oil)
+- Refined grain products — specifically: bread, toast, sourdough, wraps, tortillas, sandwiches, pasta, noodles, couscous, crackers, breakfast cereals, croissants, bagels. These appear in client typical-day responses often (e.g. "sandwich for lunch") but the plan replaces them with Tier 1 alternatives — never include them as plan items. Even ONE slice of toast in a breakfast is a doctrine violation.
+- Plant-based "milks" as default fluid (oat milk, soy milk, almond milk) unless the client has a dairy intolerance
 - "Cook in olive oil" / "fry in olive oil" instructions
 - Continuous carb reliance for baseline energy
 - Restrictive or compliance-driven framings
+
+The TIER 1 carb pool is the COMPLETE set of carb sources allowed in standard plans: white rice (cooked), white potato (cooked), sweet potato (cooked), banana, mixed berries, honey. Oats (dry) are a Tier 3 CONDITIONAL — only include when the client explicitly tolerates them well and no Tier 1 option fits the meal context. Outside this list, no carb source goes into a plan.
 
 WEIGHT CONVENTIONS (CRITICAL — clients weigh what's most convenient to them)
 - MEAT / FISH / EGGS: RAW weight. Reason: weighing post-cook adds variance (water loss, fat rendering). Always append "(raw)" to protein quantities: "120g beef mince (raw)", "180g chicken breast (raw)", "150g salmon (raw)".
