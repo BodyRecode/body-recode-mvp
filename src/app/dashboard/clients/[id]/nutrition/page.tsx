@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { detectBridgeReadiness } from '@/lib/client-next-action'
 import NutritionDraftActions from './draft-actions'
 import DeleteNutritionPlanButton from './delete-button'
 import NutritionWeeklyReview from './weekly-review'
@@ -136,7 +137,19 @@ function clean(s: string): string {
   return s.replace(/ - /g, ' ').replace(/-/g, ' ')
 }
 
-function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPrefix?: string }) {
+function NutritionPlanBody({
+  plan,
+  idPrefix = '',
+  bridgeBodyweightKg = null,
+  bridgeReadinessSignal = null,
+}: {
+  plan: NutritionPlan
+  idPrefix?: string
+  // Optional bridge-mode context computed at page level. Only set on the
+  // active plan when transitional_override_active is true.
+  bridgeBodyweightKg?: number | null
+  bridgeReadinessSignal?: { ready: boolean; reason: string } | null
+}) {
   return (
     <div className="space-y-4">
 
@@ -201,47 +214,113 @@ function NutritionPlanBody({ plan, idPrefix = '' }: { plan: NutritionPlan; idPre
         </div>
       )}
 
-      {/* Bridge mode banner — surfaces the override metadata so the coach
-          can see at a glance that this plan deliberately sits below the
-          standard bodyweight floor, with the eventual target it's
-          bridging toward and the expiry date. */}
-      {plan.transitional_override_active && (
-        <div id={`${idPrefix}bridge-mode`} className="scroll-mt-8 bg-amber-50 border border-amber-300 rounded-xl p-5">
-          <div className="flex items-start gap-3 mb-3">
-            <svg className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            <div className="min-w-0 flex-1">
-              <p className="text-[11px] font-black text-amber-700 uppercase tracking-widest mb-1">Bridge Mode (Transitional Plan)</p>
-              <p className="text-sm text-stone-800 leading-relaxed">
-                This plan is intentionally below the standard bodyweight-derived calorie floor. It&apos;s a stepping stone to the full prescription, not the destination.
-              </p>
+      {/* Bridge mode banner. The whole bridging arc at a glance:
+            START (current bridge floor) → TARGET (bodyweight-derived) → WEEKS
+          plus the check-in readiness signal that says whether the client is
+          ready to step up. Coach makes the step-up decision right here without
+          opening Today's Focus or scrolling check-ins. */}
+      {plan.transitional_override_active && (() => {
+        const startKcal = plan.transitional_override_floor_kcal ?? 0
+        const targetKcal = bridgeBodyweightKg
+          ? Math.round(((bridgeBodyweightKg * 1.7 * 4) + (bridgeBodyweightKg * 1.5 * 4) + (bridgeBodyweightKg * 0.7 * 9)) / 50) * 50
+          : null
+        const expiry = plan.transitional_override_expires_at ? new Date(plan.transitional_override_expires_at) : null
+        const daysToExpiry = expiry ? Math.ceil((expiry.getTime() - Date.now()) / 86400000) : null
+        const weeksToTarget = daysToExpiry !== null ? Math.max(0, Math.ceil(daysToExpiry / 7)) : null
+        const generatedDate = new Date(plan.generated_at)
+        const daysIntoBridge = Math.floor((Date.now() - generatedDate.getTime()) / 86400000)
+        const totalBridgeDays = expiry ? Math.ceil((expiry.getTime() - generatedDate.getTime()) / 86400000) : null
+        const progressPct = totalBridgeDays && totalBridgeDays > 0
+          ? Math.min(100, Math.max(0, Math.round((daysIntoBridge / totalBridgeDays) * 100)))
+          : 0
+        const gapKcal = targetKcal ? targetKcal - startKcal : null
+        return (
+          <div id={`${idPrefix}bridge-mode`} className="scroll-mt-8 bg-amber-50 border border-amber-300 rounded-xl p-5">
+            <div className="flex items-start gap-3 mb-4">
+              <svg className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <div className="min-w-0 flex-1">
+                <p className="text-[11px] font-black text-amber-700 uppercase tracking-widest mb-1">Bridge Mode (Transitional Plan)</p>
+                <p className="text-sm text-stone-800 leading-relaxed">
+                  Currently feeding at <span className="font-semibold tabular-nums">{startKcal} kcal</span>{targetKcal && (
+                    <>, building toward <span className="font-semibold tabular-nums">~{targetKcal} kcal</span> over {weeksToTarget ?? '—'} {weeksToTarget === 1 ? 'week' : 'weeks'}.</>
+                  )}{!targetKcal && <>. Target unknown (baseline bodyweight missing).</>}
+                  {' '}Step up when check-ins say she&apos;s eating consistently.
+                </p>
+              </div>
             </div>
+
+            {/* Start → target progress bar */}
+            {targetKcal && (
+              <div className="pl-8 mb-4">
+                <div className="flex items-baseline justify-between text-xs mb-1.5">
+                  <span className="text-stone-600"><span className="font-mono tabular-nums">{startKcal}</span> start</span>
+                  <span className="text-stone-400 text-[10px] uppercase tracking-widest">{gapKcal && gapKcal > 0 ? `${gapKcal} kcal to bridge` : 'at target'}</span>
+                  <span className="text-stone-600"><span className="font-mono tabular-nums">{targetKcal}</span> target</span>
+                </div>
+                <div className="h-2 bg-stone-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
+                </div>
+                <p className="text-[11px] text-stone-500 mt-1">{progressPct}% through the bridge window ({daysIntoBridge}/{totalBridgeDays} days)</p>
+              </div>
+            )}
+
+            {/* Check-in readiness signal */}
+            {bridgeReadinessSignal && (
+              <div className="pl-8 mb-4">
+                <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1.5">Step-up readiness (from recent check-ins)</p>
+                {bridgeReadinessSignal.ready ? (
+                  <div className="bg-emerald-50 border border-emerald-300 rounded-lg px-3 py-2.5">
+                    <div className="flex items-start gap-2">
+                      <span className="text-emerald-700 mt-0.5">✓</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-semibold text-emerald-800">Ready to step up</p>
+                        <p className="text-xs text-emerald-700 mt-1 leading-relaxed">{bridgeReadinessSignal.reason}</p>
+                        <Link
+                          href={`/dashboard/clients/${plan.client_id}/nutrition/suggest`}
+                          className="inline-block mt-2 text-xs font-semibold text-emerald-800 hover:text-emerald-900 underline"
+                        >
+                          Regenerate with a higher bridge floor →
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-stone-50 border border-stone-300 rounded-lg px-3 py-2.5">
+                    <div className="flex items-start gap-2">
+                      <span className="text-stone-500 mt-0.5">·</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-semibold text-stone-700">Hold the current bridge</p>
+                        <p className="text-xs text-stone-600 mt-1 leading-relaxed">{bridgeReadinessSignal.reason}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {plan.transitional_override_justification && (
+              <div className="pl-8 mb-4">
+                <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1">Coach justification</p>
+                <p className="text-xs text-stone-700 leading-relaxed italic">{plan.transitional_override_justification}</p>
+              </div>
+            )}
+
+            {expiry && (
+              <div className="pl-8 pt-3 border-t border-amber-200">
+                <p className="text-xs text-stone-600">
+                  <span className="font-semibold text-amber-700">Bridge window expires:</span>{' '}
+                  {expiry.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  {daysToExpiry !== null && daysToExpiry >= 0 && <> (in {daysToExpiry} day{daysToExpiry === 1 ? '' : 's'})</>}
+                  {daysToExpiry !== null && daysToExpiry < 0 && <> ({-daysToExpiry} day{daysToExpiry === -1 ? '' : 's'} overdue)</>}
+                  {' — '}regenerate then to remove the override and apply the standard {targetKcal && <>~{targetKcal} kcal </>}prescription.
+                </p>
+              </div>
+            )}
           </div>
-          <div className="mt-4 pl-8">
-            <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1">Current bridge floor</p>
-            <p className="text-lg font-semibold text-stone-900 tabular-nums">
-              {plan.transitional_override_floor_kcal ? `${plan.transitional_override_floor_kcal} kcal` : '— kcal (not set)'}
-            </p>
-            <p className="text-[11px] text-stone-600 mt-0.5">starting point. At expiry, regenerate without override to land on the standard bodyweight-derived floor.</p>
-          </div>
-          {plan.transitional_override_justification && (
-            <div className="mt-4 pl-8">
-              <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1">Coach justification</p>
-              <p className="text-xs text-stone-700 leading-relaxed italic">{plan.transitional_override_justification}</p>
-            </div>
-          )}
-          {plan.transitional_override_expires_at && (
-            <div className="mt-4 pl-8 pt-3 border-t border-amber-200">
-              <p className="text-xs text-stone-600">
-                <span className="font-semibold text-amber-700">Auto-expires:</span>{' '}
-                {new Date(plan.transitional_override_expires_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
-                {' — '}regenerate then to remove the override and apply the standard prescription.
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+        )
+      })()}
 
       {/* Entry State Summary */}
       {plan.entry_state_summary && (
@@ -555,6 +634,38 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
   const activePlan = plans?.find(p => p.is_active) as NutritionPlan | undefined
   const archivedPlans = plans?.filter(p => !p.is_active && p.status !== 'draft') as NutritionPlan[]
 
+  // Bridge-mode context: compute target kcal from baseline bodyweight and pull
+  // recent check-in responses for the readiness-to-step-up signal. Only
+  // fetched when there's an active bridge plan, to avoid the wasted query
+  // for the 90% of clients who aren't on a bridge.
+  let bridgeBodyweightKg: number | null = null
+  let bridgeReadinessSignal: { ready: boolean; reason: string } | null = null
+  if (activePlan?.transitional_override_active) {
+    const [{ data: baseline }, { data: bridgeCheckins }] = await Promise.all([
+      admin
+        .from('baselines')
+        .select('bodyweight_kg')
+        .eq('client_id', id)
+        .order('captured_at', { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+      admin
+        .from('weekly_checkins')
+        .select('week_number, submitted_at, responses')
+        .eq('client_id', id)
+        .order('submitted_at', { ascending: false })
+        .limit(2),
+    ])
+    bridgeBodyweightKg = baseline?.bodyweight_kg ?? null
+    bridgeReadinessSignal = detectBridgeReadiness(
+      (bridgeCheckins ?? []).map(c => ({
+        week_number: c.week_number,
+        submitted_at: c.submitted_at,
+        responses: c.responses as Record<string, unknown> ?? {},
+      }))
+    )
+  }
+
   return (
     <div className="max-w-5xl mx-auto">
       {/* Header */}
@@ -634,7 +745,11 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
           <div className="flex gap-8">
             <StickyScrollNav sections={nutritionNavSections(activePlan)} />
             <div className="flex-1 min-w-0">
-              <NutritionPlanBody plan={activePlan} />
+              <NutritionPlanBody
+                plan={activePlan}
+                bridgeBodyweightKg={bridgeBodyweightKg}
+                bridgeReadinessSignal={bridgeReadinessSignal}
+              />
             </div>
           </div>
 

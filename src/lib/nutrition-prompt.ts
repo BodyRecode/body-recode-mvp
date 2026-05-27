@@ -582,7 +582,21 @@ export function buildNutritionUserPrompt(
     lines.push(`  - All other doctrine still applies: hit the protein anchor exactly (${inputs.protein_anchor_g}g ±5g), emit exactly ${inputs.meal_frequency} meals, respect per-meal protein caps.`)
     lines.push(`  - Fat must NOT exceed ${suggestedFatHigh}g — bridge mode means tight fat too, not just tight carbs. Avocado / nuts / oils pile up fast; portion them carefully.`)
     lines.push('')
-    lines.push('Do not minimise the plan. Do not "be conservative" by undershooting the floor. Do not consolidate meals. Do not overshoot the ceiling by piling on fat. The bridge target is precise: hit it.')
+    lines.push('USE SMALLER PORTIONS — THIS IS A BRIDGE PLAN (CRITICAL)')
+    lines.push('A bridge plan IS NOT a normal plan with the calories trimmed. It is a SMALLER plan from the start, written with smaller portions of normal foods. Examples for hitting a 1,700 kcal target with the anchor + budget above:')
+    lines.push('  - Protein: 80g chicken breast (raw), not 150g. 100g beef mince (raw, 5% fat), not 200g. 100g salmon (raw), not 200g. 150g Greek yoghurt, not 250g.')
+    lines.push('  - Carbs:   40g rice (dry), not 80g. 120g potato (raw), not 250g. 1/2 banana (~60g), not full. 80g berries, not 200g.')
+    lines.push('  - Fats:    5g olive oil (drizzle), not 15g. 10g almonds, not 30g. 5g butter, not 10g.')
+    lines.push('Write SMALL portions, sum the macros, see what you get. If you are over the ceiling, reduce a portion further. If you are under the floor, add 20-50g to a protein or carb portion. ITERATE INTERNALLY before emitting the final plan.')
+    lines.push('')
+    lines.push('BANNED PATTERNS — do not emit ANY of these:')
+    lines.push('  - "(removed)" or "removed - accounting correction" food entries')
+    lines.push('  - Foods with negative protein_g, carb_g, or fat_g values')
+    lines.push('  - Multiple entries for the same food where one cancels the other')
+    lines.push('  - Any commentary inside food.name fields beyond the quantity + food + (raw)/(cooked) marker')
+    lines.push('The validator rejects ANY food with a negative macro. Subtracting from totals via ghost entries is a generation bug, not a workaround.')
+    lines.push('')
+    lines.push('Do not minimise the plan. Do not "be conservative" by undershooting the floor. Do not consolidate meals. Do not overshoot the ceiling by piling on fat. Do not use ghost foods. The bridge target is precise: hit it with small real portions.')
   }
 
   if (cffsText) {

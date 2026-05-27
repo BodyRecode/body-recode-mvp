@@ -61,12 +61,40 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
   // her plan today after 3 regens. Fixed 2026-05-26.
   const { data: plan } = await admin
     .from('nutrition_plans')
-    .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at')
+    .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at, transitional_override_active, transitional_override_floor_kcal, transitional_override_expires_at')
     .eq('client_id', client.id)
     .eq('is_active', true)
     .maybeSingle()
 
   const nutritionReadingPublished = !!plan?.nutrition_reading_published_at
+
+  // Bridge mode framing for the portal. If the plan is a bridge, fetch the
+  // client's bodyweight from baseline so we can show the target kcal the
+  // bridge is building toward. The whole point of the portal banner is
+  // "this is your starting point; we're building you up to X." Without the
+  // target the framing falls flat.
+  let bridgeTargetKcal: number | null = null
+  let bridgeWeeksRemaining: number | null = null
+  if (plan?.transitional_override_active) {
+    const { data: baseline } = await admin
+      .from('baselines')
+      .select('bodyweight_kg')
+      .eq('client_id', client.id)
+      .order('captured_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    const bw = baseline?.bodyweight_kg
+    if (bw) {
+      // Same standard-floor formula used everywhere (matches the validator's
+      // bodyweight-derived safety floors at protein 1.7 / carb 1.5 / fat 0.7).
+      bridgeTargetKcal = Math.round(((bw * 1.7 * 4) + (bw * 1.5 * 4) + (bw * 0.7 * 9)) / 50) * 50
+    }
+    if (plan.transitional_override_expires_at) {
+      const expiry = new Date(plan.transitional_override_expires_at)
+      const days = Math.ceil((expiry.getTime() - Date.now()) / 86400000)
+      bridgeWeeksRemaining = Math.max(0, Math.ceil(days / 7))
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
@@ -84,6 +112,24 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
           </div>
         ) : (
           <div className="space-y-5">
+            {/* Bridge mode framing — friendly version of the coach-side bridge
+                banner. Sits ABOVE the nutrition reading so the client knows
+                the framing before reading the per-meal detail: this is a
+                starting point, not the destination. */}
+            {plan.transitional_override_active && (
+              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-amber-700 mb-2">Your starting plan</p>
+                <p className="text-sm text-[#1A1A1A] leading-relaxed">
+                  This is your <span className="font-semibold">starting point</span> at <span className="font-semibold tabular-nums">{plan.transitional_override_floor_kcal} kcal</span>{bridgeTargetKcal && (
+                    <>. We&apos;ll build this up to <span className="font-semibold tabular-nums">~{bridgeTargetKcal} kcal</span> over {bridgeWeeksRemaining !== null && bridgeWeeksRemaining > 0 ? `the next ${bridgeWeeksRemaining} ${bridgeWeeksRemaining === 1 ? 'week' : 'weeks'}` : 'the coming weeks'} as your appetite stabilises and the meal rhythm becomes consistent</>
+                  )}.
+                </p>
+                <p className="text-xs text-[#6B6B6B] mt-2 leading-relaxed">
+                  Eat all the portions listed. On hard appetite days, prioritise hitting your protein and skip the snack rather than cutting from main meals. We&apos;ll review together at each weekly check-in.
+                </p>
+              </div>
+            )}
+
             {/* Nutrition Reading - the why frames every meal view below */}
             {nutritionReadingPublished && (
               <NutritionReadingInline
