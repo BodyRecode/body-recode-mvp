@@ -214,19 +214,17 @@ export default function NutritionReadingPanel({
               {published && clientToken && (
                 <Link
                   href={`/portal/${clientToken}/my-plan`}
-                  target="_blank"
                   className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)] text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.18)] transition-colors"
                 >
-                  <ExternalLink size={11} /> Client view
+                  Client view
                 </Link>
               )}
               {published && clientToken && (
                 <Link
                   href={`/portal/${clientToken}/my-plan/reading`}
-                  target="_blank"
                   className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
                 >
-                  <ExternalLink size={11} /> Document
+                  Document
                 </Link>
               )}
             </div>
