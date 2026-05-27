@@ -311,6 +311,12 @@ SUBSTITUTION RULES:
 - No cross-category substitution.
 - Food intolerance flags from CFFS / intake are hard exclusions, not preferences.
 
+VARIETY ACROSS MEALS (CRITICAL — eats monotony cause adherence failure):
+- ROTATE primary carb sources across the day. No single carb source (e.g. white potato) should appear in more than 2 of N meals. Rotate among the Tier 1 carb pool: white rice (cooked), white potato (cooked), sweet potato (cooked), banana, mixed berries, honey. A 5-meal plan with potato in 4 meals is a generation failure — re-emit with rotation.
+- ROTATE primary protein sources where reasonable. No more than 2 meals with the same primary protein (e.g. chicken at lunch AND dinner is fine; chicken at lunch + chicken snack + chicken dinner is not). Rotate among beef, poultry, fish, eggs, dairy (Greek yoghurt / cottage cheese), tinned fish.
+- "Performance carbs" (rice, potato, sweet potato) sit on training-adjacent meals where appropriate; "general fueling carbs" (banana, berries, honey) work for any meal. Both are Tier 1; use the rotation to express both.
+- This rule does NOT override the intake's dietary_preferences or restrictions (those are hard) — but within the allowed set, vary.
+
 PROHIBITED:
 - Ultra-processed foods, seed oils, refined grain products
 - "Cook in olive oil" / "fry in olive oil" instructions

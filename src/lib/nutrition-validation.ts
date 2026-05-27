@@ -28,7 +28,7 @@
  * tell stale plans from current ones, and the only key that lets the
  * telemetry dashboard slice fire-rates by doctrine version.
  */
-export const NUTRITION_DOCTRINE_VERSION = '2026-05-26.2'
+export const NUTRITION_DOCTRINE_VERSION = '2026-05-26.3'
 
 export interface StructuredFood {
   name: string
