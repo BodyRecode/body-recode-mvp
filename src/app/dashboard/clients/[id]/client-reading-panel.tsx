@@ -3,6 +3,7 @@
 import { useState, useTransition, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import ClientViewModal from '@/components/dashboard/client-view-modal'
 import {
   Sparkles, EyeOff, Eye, ExternalLink, Loader2, Download, Mail,
   Pencil, Check, X, Save, MessageSquare, Info,
@@ -223,12 +224,11 @@ export default function ClientReadingPanel({
                 <Download size={11} /> PDF
               </Link>
               {published && clientToken && (
-                <Link
-                  href={`/portal/${clientToken}/foundational-reading`}
-                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)] text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.18)] transition-colors"
-                >
-                  Client view
-                </Link>
+                <ClientViewModal
+                  portalUrl={`/portal/${clientToken}/foundational-reading`}
+                  title="Foundational Reading — Client View"
+                  triggerLabel="Client view"
+                />
               )}
             </div>
           </div>

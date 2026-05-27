@@ -3,6 +3,7 @@
 import { useState, useTransition, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import ClientViewModal from '@/components/dashboard/client-view-modal'
 import {
   Sparkles, EyeOff, Eye, ExternalLink, Loader2, Mail,
   Pencil, Check, X, Save, MessageSquare, Info,
@@ -212,20 +213,19 @@ export default function NutritionReadingPanel({
             </p>
             <div className="flex items-center gap-2">
               {published && clientToken && (
-                <Link
-                  href={`/portal/${clientToken}/my-plan`}
-                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)] text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.18)] transition-colors"
-                >
-                  Client view
-                </Link>
+                <ClientViewModal
+                  portalUrl={`/portal/${clientToken}/my-plan`}
+                  title="Nutrition Plan — Client View"
+                  triggerLabel="Client view"
+                />
               )}
               {published && clientToken && (
-                <Link
-                  href={`/portal/${clientToken}/my-plan/reading`}
-                  className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
-                >
-                  Document
-                </Link>
+                <ClientViewModal
+                  portalUrl={`/portal/${clientToken}/my-plan/reading`}
+                  title="Nutrition Reading — Document"
+                  triggerLabel="Document"
+                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                />
               )}
             </div>
           </div>
