@@ -1627,8 +1627,43 @@ export default function HelpPage() {
             <p>If the dietary context block is missing on a regenerate (e.g. for an older client whose intake predated this capture), the engine notes the absence in the rationale and recommends the coach capture it before next regenerate. <strong>Edit on the client profile</strong> is not yet wired — the only way to update dietary context today is by retaking the intake. If a client&apos;s restrictions change mid-coaching, capture it on the Coach Note field on the nutrition plan and regenerate.</p>
 
 
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Step 1b - Pre-flight Feasibility (added 2026-05-25)</p>
+            <p>Before any LLM call, the suggest page runs a client-side feasibility check against the prescription form. If the combination is mathematically infeasible under the hard rules (e.g. stimulant client with anchor 165g + 4 meals — max achievable is 32 + 43 + 43 + 43 = 161g, so the anchor can&apos;t be hit), an amber banner appears with one-click fix buttons (<code>[Bump to 5 meals]</code> / <code>[Lower anchor to 161g]</code>). The Generate button is disabled until feasible. This eliminates the &quot;wasted 90s on a guaranteed-to-fail generation&quot; failure class.</p>
+
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Step 2 - Plan Generation</p>
-            <p>Click <strong>Approve &amp; Generate Plan</strong> to send the prescription to Claude (Haiku 4.5). The engine applies all six sequential build layers from doctrine: structure → protein anchor → carb demand → distribution → day variation → food selection. The result is saved as a draft. If you prefer to fill in the prescription manually, use the <strong>Fill in manually instead</strong> link at the bottom of the suggestion page.</p>
+            <p>Click <strong>Approve &amp; Generate Plan</strong>. Generation runs three Haiku attempts in parallel; the first one that passes validation wins. If all three fail, the engine escalates to Sonnet 4.6 with the least-bad Haiku output as a correction note. Wall-clock: typical client ~40s (Haiku passes), tight-constraint client ~110s (Sonnet escalation). The page shows a full-screen progress overlay with staged labels so the wait doesn&apos;t feel frozen. If you prefer to fill in the prescription manually, use the <strong>Fill in manually instead</strong> link at the bottom of the suggestion page.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Validator Hard Rules (added 2026-05-25, last updated 2026-05-26)</p>
+            <p>The validator enforces a set of structural rules. Plans that violate any rule are auto-rejected and the engine retries once with the issue list as a correction note. If two retries fail, the coach sees a 422 with humanised issue messages. The rules:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>Structured foods only</strong> — every food must be <code>{`{name, protein_g, carb_g, fat_g}`}</code>, never free-text strings. Macros recomputed server-side from foods; meal-level totals are server-derived.</li>
+              <li><strong>Non-negative macros</strong> — no food can have a negative <code>protein_g</code>, <code>carb_g</code>, or <code>fat_g</code>. Caught the &quot;ghost food&quot; failure mode (Amanda&apos;s 2026-05-26 plan) where the LLM invented entries like &quot;10g butter (removed - accounting correction)&quot; with <code>F-10</code> to fudge totals down to a tight ceiling.</li>
+              <li><strong>Protein anchor reconciliation</strong> — daily protein totals must match <code>protein_anchor_g</code> ±15-20g. Sum of meal protein.</li>
+              <li><strong>Daily safety floors</strong> — carb floor scales with <code>carb_demand_level</code> (low: 0.8 g/kg, moderate: 1.5, high: 2.5). Fat floor 0.7 g/kg. Below these is &quot;dangerously under-fueled&quot;, not &quot;the prescription&quot;.</li>
+              <li><strong>Calorie band derived from meals</strong> — <code>estimated_calorie_band</code> is computed from the sum of meal macros, not chosen aspirationally. The band is a REPORT of what the plan delivers.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Appetite-Suppression Hard Rules (added 2026-05-25)</p>
+            <p>When <code>clients.medications</code> contains stimulants (Vyvanse, Adderall, Ritalin), GLP-1 agonists (Ozempic, Wegovy, Mounjaro, semaglutide, tirzepatide), or appetite-affecting serotonergics (Brintellix, Lexapro, Zoloft, Effexor, Cymbalta), the validator enforces three additional rules so the plan is physically executable:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>≥4 meals required</strong> — 3 large meals is rejected. A suppressed client cannot reliably finish 50g+ protein in one sitting.</li>
+              <li><strong>≤43g protein per meal</strong> — empirically calibrated for natural portion sizes. Forces protein to spread across more meals.</li>
+              <li><strong>≤35g protein in first meal (stimulant only)</strong> — peak Vyvanse / Adderall suppression is morning hours. Loading protein there guarantees the meal gets skipped.</li>
+            </ul>
+            <p>The suggest engine auto-bumps <code>meal_frequency</code> to the minimum that fits the math (e.g. 5 meals for a stimulant client with anchor 165g) so the coach doesn&apos;t have to remember.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Food Selection Doctrine (HABNS variety + Body Recode tier ban)</p>
+            <p>Animal-based foods form the structural foundation. The Tier 1 carb pool is the COMPLETE set allowed: <strong>white rice (cooked), white potato (cooked), sweet potato (cooked), banana, mixed berries, honey</strong>. The variety directive (added 2026-05-26) prevents monotony — no single carb source appears in more than 2 of N meals; same for proteins. The PROHIBITED list (tightened 2026-05-26) explicitly bans <strong>bread, toast, sourdough, wraps, tortillas, sandwiches, pasta, noodles, couscous, crackers, breakfast cereals, croissants, bagels, plant-based milks</strong> — even when the client&apos;s typical-day intake mentions them. Seed oils are banned across all entry states.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Weight Conventions</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>Meat / fish / eggs:</strong> RAW weight (e.g. &quot;120g beef mince (raw)&quot;)</li>
+              <li><strong>Rice / potato:</strong> COOKED weight (e.g. &quot;250g white rice (cooked)&quot;) — clients weigh what&apos;s on the plate, not dry</li>
+              <li><strong>Oats:</strong> DRY weight (Tier 3 conditional only)</li>
+              <li><strong>Fruit:</strong> literal weight as eaten</li>
+              <li><strong>Eggs:</strong> by count</li>
+              <li><strong>Fats:</strong> by literal serving (15g olive oil etc.)</li>
+            </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Protein Anchor — Deterministic, Not LLM Math</p>
             <p>Protein anchor is computed in code from the client&apos;s baseline bodyweight, not by Claude. If Claude returns a value below <code>bodyweight × 1.4</code> (the floor), the route overrides with <code>bodyweight × multiplier</code>:</p>
@@ -1659,8 +1694,30 @@ export default function HelpPage() {
               <li><strong>Combined contraceptives / HRT in females:</strong> bodyweight cycling may be exogenous-driven; the engine does not chase apparent fluctuations.</li>
             </ul>
 
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Bridge Mode — Staged Ramp for Chronic Under-Eaters (added 2026-05-25)</p>
+            <p>When a client cannot physically execute the bodyweight-derived calorie floor (chronic under-eating, severe appetite suppression, post-illness recovery), tick <strong>Transitional plan (bridge mode)</strong> on the suggest page. A justification (≥20 chars) is required and stored for audit. The bridge floor + ceiling are auto-suggested from the client&apos;s context (medications, baseline bodyweight, recent check-in language) — Claude drafts a clinical justification using actual check-in quotes; you edit if needed.</p>
+            <p className="mt-2"><strong>The ramp</strong> — bridge plans default to a 2-week expiry, one stage per plan, +200 kcal per stage (= 100 kcal/week, the reverse-dieting safe pace). Step-up presets on regenerate: <code>[+200 kcal]</code>, <code>[+300 kcal]</code>, <code>[Remove override]</code>. The coach nutrition page shows the full ramp as a progress bar with current stage → next stage → target.</p>
+            <p className="mt-2"><strong>Readiness signal</strong> — the bridge banner reads the latest 2 weekly check-ins for eating-consistency markers via <code>detectBridgeReadiness</code>. When positive markers fire (&quot;hitting protein&quot;, &quot;meal prep on track&quot;, &quot;appetite returning&quot;) AND no negatives (&quot;still struggling&quot;, &quot;skipping meals&quot;), the banner shows a green &quot;Ready to step up&quot; card with a regenerate link. Conservative — any negative marker keeps the bridge active.</p>
+            <p className="mt-2"><strong>When the bridge expires</strong> — Today&apos;s Focus surfaces <code>active_bridge_expiring</code> within 7 days of expiry (amber), <code>active_bridge_expired</code> past expiry (red), <code>active_bridge_ready_step_up</code> when readiness fires regardless of timer. An always-visible &quot;Bridge Nd&quot; badge sits next to the client name in Today&apos;s Focus while a bridge is active.</p>
+            <p className="mt-2"><strong>What the client sees</strong> — the portal /my-plan page shows a friendly framing card above the nutrition reading: &quot;You&apos;re at 1,700 kcal/day for the next 2 weeks. From there we&apos;ll step you up gradually (next stage: 1,900 kcal) until you reach your full target of ~2,200 kcal in about 6 weeks.&quot;</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Doctrine Versioning + Stale Hint (added 2026-05-26)</p>
+            <p>Every plan is stamped with <code>NUTRITION_DOCTRINE_VERSION</code> at generation time (format <code>YYYY-MM-DD[.N]</code>). The coach plan view diffs this against the current constant — when they differ AND the plan has a non-null version, a soft stone-100 &quot;Doctrine update available&quot; card appears below the identity card with a regenerate CTA. Plans with null version (generated before the migration) are grandfathered and show nothing. Bump the constant in <code>src/lib/nutrition-validation.ts</code> when you ship a meaningful validator rule / threshold / prompt change.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Validator Telemetry Dashboard (added 2026-05-26)</p>
+            <p>Every validation attempt (the 3 parallel Haiku + the Sonnet escalation if it fires) writes a row to <code>nutrition_validator_events</code>. The dashboard at <strong>/dashboard/system-health/nutrition-engine</strong> aggregates these:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li>Headline numbers: % first-pass Haiku, % retry / Sonnet, % 422 to coach</li>
+              <li>Per-rule fire-rate table — sortable, doctrine-version filterable</li>
+              <li>Rules firing in &gt;25% of requests get a red row tint (calibrated &quot;needs tuning&quot; threshold)</li>
+            </ul>
+            <p>Use this to spot doctrine regressions (&quot;rule X started firing 60% the day after I shipped v.X&quot;) and to decide when to relax a rule that&apos;s too tight for real-world plans.</p>
+
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Step 3 - Draft Review</p>
-            <p>The generated plan appears on the client&apos;s Nutrition Plan page under a <strong>Draft - Pending Approval</strong> banner. Review the full output: entry state summary, meal structure (per-meal macros and foods), training day adjustments, execution rules, what not to change, and progression notes. Use <strong>Discard Draft</strong> to delete it or <strong>Approve Plan</strong> to promote it to active.</p>
+            <p>The generated plan appears on the client&apos;s Nutrition Plan page under a <strong>Draft - Pending Approval</strong> banner. Review the full output: entry state summary, meal structure (per-meal macros and foods, including per-ingredient P/C/F/kcal breakdown), training day adjustments, execution rules, what not to change, and progression notes. Use <strong>Discard Draft</strong> to delete it or <strong>Approve Plan</strong> to promote it to active.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Client View Preview (added 2026-05-28)</p>
+            <p>The <strong>Client view</strong> and <strong>Document</strong> buttons on the nutrition reading panel open a modal overlay rendering the client&apos;s portal page inside an iframe. You see exactly what the client sees, pixel-perfect, without leaving the coach dashboard. Close via Esc, backdrop click, or the X button. Coach scroll position and draft state are preserved across the round trip. Same pattern applies to the Foundational Reading and Program Reading panels.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Step 4 - Weekly Review (Client Portal)</p>
             <p>The weekly nutrition review is submitted by the client through their portal. The client reports adherence, what they noticed (one or more signals), the overall direction, and optional notes. You see the answers as a question/answer feed on the Nutrition Plan page.</p>
