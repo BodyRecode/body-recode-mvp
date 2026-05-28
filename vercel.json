@@ -39,6 +39,10 @@
     {
       "path": "/api/cron/block-end-notifications",
       "schedule": "30 21 * * *"
+    },
+    {
+      "path": "/api/keepalive",
+      "schedule": "0 9 * * 1,5"
     }
   ]
 }
