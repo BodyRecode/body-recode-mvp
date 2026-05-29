@@ -4,14 +4,14 @@ import { useState, useRef } from 'react'
 import { Dumbbell, Salad, Sunrise, Moon, FileText, Video, Activity, LineChart, ChevronRight, Zap } from 'lucide-react'
 
 function SignupForm({ position, teal, darkBg }: { position: string; teal?: boolean; darkBg?: boolean }) {
-  const [form, setForm] = useState({ first_name: '', email: '', phone: '', gender: '' })
+  const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', gender: '' })
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
-    if (!form.first_name.trim() || !form.email.trim() || !form.phone.trim() || !form.gender) return
+    if (!form.first_name.trim() || !form.last_name.trim() || !form.email.trim() || !form.phone.trim() || !form.gender) return
     setSubmitting(true)
     setError(null)
     try {
@@ -81,14 +81,22 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
           style={inputStyle}
         />
         <input
-          type="email"
-          placeholder="Email address"
-          value={form.email}
-          onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+          type="text"
+          placeholder="Last name"
+          value={form.last_name}
+          onChange={e => setForm(f => ({ ...f, last_name: e.target.value }))}
           required
           style={inputStyle}
         />
       </div>
+      <input
+        type="email"
+        placeholder="Email address"
+        value={form.email}
+        onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+        required
+        style={inputStyle}
+      />
       <input
         type="tel"
         placeholder="Mobile number (for daily coaching messages)"
@@ -122,7 +130,7 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
       )}
       <button
         type="submit"
-        disabled={submitting || !form.first_name.trim() || !form.email.trim() || !form.phone.trim() || !form.gender}
+        disabled={submitting || !form.first_name.trim() || !form.last_name.trim() || !form.email.trim() || !form.phone.trim() || !form.gender}
         style={{
           width: '100%', padding: '17px', borderRadius: '10px', border: 'none',
           background: submitting ? 'rgba(27, 109, 252,0.6)' : '#1B6DFC',

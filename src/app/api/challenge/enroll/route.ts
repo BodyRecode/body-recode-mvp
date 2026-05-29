@@ -13,16 +13,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 })
   }
 
-  const { first_name, email, phone, gender } = body as {
+  const { first_name, last_name, email, phone, gender } = body as {
     first_name: string
+    last_name?: string
     email: string
     phone: string
     gender?: string
   }
 
-  if (!first_name?.trim() || !email?.trim() || !phone?.trim()) {
-    return NextResponse.json({ error: 'Name, email and mobile number are required.' }, { status: 400 })
+  if (!first_name?.trim() || !last_name?.trim() || !email?.trim() || !phone?.trim()) {
+    return NextResponse.json({ error: 'First name, last name, email and mobile number are required.' }, { status: 400 })
   }
+
+  const fullName = `${first_name.trim()} ${last_name.trim()}`.replace(/\s+/g, ' ').trim()
 
   const validGender = gender && ['male', 'female', 'prefer_not_to_say'].includes(gender)
     ? gender
@@ -44,13 +47,13 @@ export async function POST(request: NextRequest) {
 
   if (existingRows && existingRows.length > 0) {
     leadId = existingRows[0].id
-    // Update phone + gender (overwrite if previously unset or different)
-    await admin.from('leads').update({ phone: phone.trim(), gender: validGender }).eq('id', leadId)
+    // Update name + phone + gender (overwrite if previously unset or different)
+    await admin.from('leads').update({ name: fullName, phone: phone.trim(), gender: validGender }).eq('id', leadId)
   } else {
     const { data: newLead, error: leadError } = await admin
       .from('leads')
       .insert({
-        name: first_name.trim(),
+        name: fullName,
         email: email.toLowerCase().trim(),
         phone: phone.trim(),
         gender: validGender,
@@ -126,7 +129,7 @@ export async function POST(request: NextRequest) {
           leadId,
           token,
           email: email.toLowerCase().trim(),
-          firstName: first_name.trim().split(' ')[0],
+          firstName: first_name.trim(),
           phone: phone.trim(),
         },
       })
@@ -135,7 +138,7 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const firstName = first_name.trim().split(' ')[0]
+  const firstName = first_name.trim()
   const trimmedEmail = email.toLowerCase().trim()
   const trimmedPhone = phone.trim()
   const portalUrl = `https://bodyrecode.au/challenge/${token}`
