@@ -940,15 +940,15 @@ export default function StrategyPage() {
         <div className="space-y-4">
           <Card className="border-amber-500/30 bg-amber-500/5">
             <SectionLabel>Audience Reality</SectionLabel>
-            <p className="text-sm text-stone-100 leading-relaxed mb-3"><strong className="text-amber-300">100% of paying clients (as of May 2026) classify as Remediation / Depleted by CFFS.</strong> Validated via the full client list (Razia, Kim, Michael, Luke, Amanda, Ruby-Cate, Samantha, Brett, Greg, +). Strategy is calibrated to that reality: 4 validated archetypes, all Depleted-leaning, in observed prevalence order.</p>
-            <p className="text-sm text-stone-200 leading-relaxed">Full persona doc: <code className="text-stone-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/AUDIENCE-ARCHETYPES-V1.md</code></p>
+            <p className="text-sm text-stone-800 leading-relaxed mb-3"><strong className="text-amber-700">100% of paying clients (as of May 2026) classify as Remediation / Depleted by CFFS.</strong> Validated via the full client list (Razia, Kim, Michael, Luke, Amanda, Ruby-Cate, Samantha, Brett, Greg, +). Strategy is calibrated to that reality: 4 validated archetypes, all Depleted-leaning, in observed prevalence order.</p>
+            <p className="text-sm text-stone-700 leading-relaxed">Full persona doc: <code className="text-stone-700 text-xs bg-stone-200 px-1 rounded">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/AUDIENCE-ARCHETYPES-V1.md</code></p>
           </Card>
 
           <Card className="border-red-500/30 bg-red-500/5">
             <SectionLabel>The Scorecard Underestimates Depletion</SectionLabel>
-            <p className="text-sm text-stone-100 leading-relaxed mb-2"><strong className="text-red-400">High performers self-report better than they actually are.</strong> The 5-question scorecard is a coarse signal. The 200-question intake (post-purchase) is the real read.</p>
-            <p className="text-sm text-stone-200 leading-relaxed mb-3"><strong className="text-white">Example:</strong> Michael scored 12 (Ready State) on the scorecard, then classified as Remediation / Depleted by CFFS once he became a client. Same pattern across the client base — discipline hides depletion in self-reporting.</p>
-            <p className="text-sm text-stone-200 leading-relaxed"><strong className="text-white">Implication for marketing:</strong> hooks must be sharp enough to catch high performers who would score themselves Ready on a 5-question quiz but are clinically Depleted. Don\'t soft-pedal the language because the audience self-image is "I\'m doing fine, just stuck."</p>
+            <p className="text-sm text-stone-800 leading-relaxed mb-2"><strong className="text-red-700">High performers self-report better than they actually are.</strong> The 5-question scorecard is a coarse signal. The 200-question intake (post-purchase) is the real read.</p>
+            <p className="text-sm text-stone-800 leading-relaxed mb-3"><strong className="text-stone-900">Example:</strong> Michael scored 12 (Ready State) on the scorecard, then classified as Remediation / Depleted by CFFS once he became a client. Same pattern across the client base — discipline hides depletion in self-reporting.</p>
+            <p className="text-sm text-stone-800 leading-relaxed"><strong className="text-stone-900">Implication for marketing:</strong> hooks must be sharp enough to catch high performers who would score themselves Ready on a 5-question quiz but are clinically Depleted. Don\'t soft-pedal the language because the audience self-image is "I\'m doing fine, just stuck."</p>
           </Card>
 
           <Card>
@@ -1001,31 +1001,31 @@ export default function StrategyPage() {
                 },
               ].map(a => {
                 const colorMap = {
-                  teal:   { border: 'border-teal-500/30',   bg: 'bg-teal-500/5',   accent: 'text-teal-400',   badgeBg: 'bg-teal-500/10 border-teal-500/30' },
-                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-400', badgeBg: 'bg-violet-500/10 border-violet-500/30' },
-                  amber:  { border: 'border-amber-500/30',  bg: 'bg-amber-500/5',  accent: 'text-amber-400',  badgeBg: 'bg-amber-500/10 border-amber-500/30' },
-                  orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-400', badgeBg: 'bg-orange-500/10 border-orange-500/30' },
+                  teal:   { border: 'border-teal-500/30',   bg: 'bg-teal-500/5',   accent: 'text-teal-700',   badgeBg: 'bg-teal-500/15 border-teal-500/40' },
+                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-700', badgeBg: 'bg-violet-500/15 border-violet-500/40' },
+                  amber:  { border: 'border-amber-500/30',  bg: 'bg-amber-500/5',  accent: 'text-amber-700',  badgeBg: 'bg-amber-500/15 border-amber-500/40' },
+                  orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-700', badgeBg: 'bg-orange-500/15 border-orange-500/40' },
                 }[a.color]
                 return (
                   <div key={a.num} className={`p-4 rounded-lg border ${colorMap.border} ${colorMap.bg}`}>
                     <div className="flex items-center gap-3 mb-2 flex-wrap">
-                      <span className={`text-lg font-bold font-mono ${colorMap.accent} opacity-60`}>{a.num}</span>
+                      <span className={`text-lg font-bold font-mono ${colorMap.accent} opacity-70`}>{a.num}</span>
                       <p className={`text-sm font-semibold ${colorMap.accent}`}>{a.title}</p>
                       <span className={`text-[10px] font-bold uppercase tracking-widest border px-2 py-0.5 rounded-full ${colorMap.accent} ${colorMap.badgeBg}`}>{a.badge}</span>
-                      <span className="text-[11px] text-stone-500 italic">{a.pattern}</span>
+                      <span className="text-[11px] text-stone-600 italic">{a.pattern}</span>
                     </div>
-                    <div className="space-y-1.5 text-xs">
-                      <p><span className="text-stone-500 font-semibold uppercase tracking-widest text-[10px]">Who: </span><span className="text-stone-300">{a.who}</span></p>
-                      <p><span className="text-stone-500 font-semibold uppercase tracking-widest text-[10px]">Presenting: </span><span className="text-stone-300">{a.presenting}</span></p>
-                      <p><span className="text-stone-500 font-semibold uppercase tracking-widest text-[10px]">Self-story: </span><span className="text-stone-400 italic">{a.selfStory}</span></p>
-                      <p><span className="text-stone-500 font-semibold uppercase tracking-widest text-[10px]">Channel: </span><span className="text-stone-400">{a.channel}</span></p>
+                    <div className="space-y-1.5 text-[13px]">
+                      <p><span className="text-stone-600 font-semibold uppercase tracking-widest text-[11px]">Who: </span><span className="text-stone-800">{a.who}</span></p>
+                      <p><span className="text-stone-600 font-semibold uppercase tracking-widest text-[11px]">Presenting: </span><span className="text-stone-800">{a.presenting}</span></p>
+                      <p><span className="text-stone-600 font-semibold uppercase tracking-widest text-[11px]">Self-story: </span><span className="text-stone-700">{a.selfStory}</span></p>
+                      <p><span className="text-stone-600 font-semibold uppercase tracking-widest text-[11px]">Channel: </span><span className="text-stone-700">{a.channel}</span></p>
                     </div>
                   </div>
                 )
               })}
             </div>
-            <div className="mt-4 p-3 bg-stone-900 rounded-lg border border-stone-800">
-              <p className="text-xs text-stone-500"><strong className="text-stone-400">On the watch list:</strong> The Ex-Athlete Founder (Insulin-Drift, male). Not yet seen in gym. May appear as the LinkedIn/founder audience grows. Don\'t target in primary content/ads until volume justifies it.</p>
+            <div className="mt-4 p-3 bg-stone-200 rounded-lg border border-stone-300">
+              <p className="text-xs text-stone-700"><strong className="text-stone-900">On the watch list:</strong> The Ex-Athlete Founder (Insulin-Drift, male). Not yet seen in gym. May appear as the LinkedIn/founder audience grows. Don\'t target in primary content/ads until volume justifies it.</p>
             </div>
           </Card>
 
@@ -1367,18 +1367,18 @@ export default function StrategyPage() {
                 },
               ].map(a => {
                 const colorMap = {
-                  teal:   { border: 'border-teal-500/30',   bg: 'bg-teal-500/5',   accent: 'text-teal-400' },
-                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-400' },
-                  amber:  { border: 'border-amber-500/30',  bg: 'bg-amber-500/5',  accent: 'text-amber-400' },
-                  orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-400' },
+                  teal:   { border: 'border-teal-500/30',   bg: 'bg-teal-500/5',   accent: 'text-teal-700' },
+                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-700' },
+                  amber:  { border: 'border-amber-500/30',  bg: 'bg-amber-500/5',  accent: 'text-amber-700' },
+                  orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-700' },
                 }[a.color]
                 return (
                   <div key={a.arch} className={`p-4 rounded-lg border ${colorMap.border} ${colorMap.bg}`}>
                     <p className={`text-sm font-semibold mb-2 ${colorMap.accent}`}>{a.arch}</p>
                     <ul className="space-y-1.5">
                       {a.hooks.map((h, i) => (
-                        <li key={i} className="text-xs text-stone-300 italic leading-relaxed flex gap-2">
-                          <span className="text-stone-700 shrink-0">·</span>
+                        <li key={i} className="text-[13px] text-stone-800 leading-relaxed flex gap-2">
+                          <span className="text-stone-500 shrink-0">·</span>
                           {h}
                         </li>
                       ))}
@@ -1387,7 +1387,7 @@ export default function StrategyPage() {
                 )
               })}
             </div>
-            <p className="text-xs text-stone-600 mt-3">Weekly rotation: archetype 1 → 2 → 3 → 4, then back to 1. Stressed Executive Woman gets the additional Sunday Diagnostic slot since she\'s the dominant audience.</p>
+            <p className="text-xs text-stone-700 mt-3">Weekly rotation: archetype 1 → 2 → 3 → 4, then back to 1. Stressed Executive Woman gets the additional Sunday Diagnostic slot since she\'s the dominant audience.</p>
           </Card>
 
           <Card>
@@ -1878,21 +1878,21 @@ export default function StrategyPage() {
                     },
                   ].map(a => {
                     const colorMap = {
-                      teal:   'border-teal-500/20 bg-teal-500/5 text-teal-400',
-                      violet: 'border-violet-500/20 bg-violet-500/5 text-violet-400',
-                      amber:  'border-amber-500/20 bg-amber-500/5 text-amber-400',
-                      orange: 'border-orange-500/20 bg-orange-500/5 text-orange-400',
+                      teal:   'border-teal-500/30 bg-teal-500/5 text-teal-700',
+                      violet: 'border-violet-500/30 bg-violet-500/5 text-violet-700',
+                      amber:  'border-amber-500/30 bg-amber-500/5 text-amber-700',
+                      orange: 'border-orange-500/30 bg-orange-500/5 text-orange-700',
                     }[a.color]
                     return (
                       <div key={a.arch} className={`p-3 rounded-lg border ${colorMap.split(' ').slice(0, 2).join(' ')}`}>
                         <p className={`text-xs font-bold mb-1.5 ${colorMap.split(' ').slice(2).join(' ')}`}>{a.arch}</p>
-                        <p className="text-[11px] text-stone-400 mb-1.5"><span className="text-stone-600 uppercase tracking-widest text-[10px] font-semibold">Demo: </span>{a.demo}</p>
-                        <p className="text-[11px] text-stone-300"><span className="text-stone-600 uppercase tracking-widest text-[10px] font-semibold">Interests: </span>{a.interests}</p>
+                        <p className="text-[12px] text-stone-700 mb-1.5"><span className="text-stone-600 uppercase tracking-widest text-[10px] font-semibold">Demo: </span>{a.demo}</p>
+                        <p className="text-[12px] text-stone-800"><span className="text-stone-600 uppercase tracking-widest text-[10px] font-semibold">Interests: </span>{a.interests}</p>
                       </div>
                     )
                   })}
                 </div>
-                <p className="text-xs text-stone-600 mt-3">Start with the Stressed Executive Woman set (dominant audience). Add the others once that one is producing leads at a sustainable CPL.</p>
+                <p className="text-xs text-stone-700 mt-3">Start with the Stressed Executive Woman set (dominant audience). Add the others once that one is producing leads at a sustainable CPL.</p>
               </div>
               <div><Heading>Placement</Heading><Body>Instagram feed + Reels + Facebook feed. Start broad within each ad set, let Meta optimise within the constraints.</Body></div>
               <div><Heading>Traffic type</Heading><Body>Cold only for now. Retargeting layer added at Day 30+ once pixel has enough data.</Body></div>
@@ -2225,27 +2225,27 @@ export default function StrategyPage() {
                 { num: '04', name: 'Slipping High Performer',   strength: 'Primary on LinkedIn',     color: 'orange' as const, note: 'Male executive. LinkedIn is his natural channel. Hooks should target this archetype on roughly 1 in 4 BR LinkedIn posts.' },
               ].map(a => {
                 const colorMap = {
-                  teal:   { dot: 'bg-teal-400',   accent: 'text-teal-400' },
-                  violet: { dot: 'bg-violet-400', accent: 'text-violet-400' },
-                  amber:  { dot: 'bg-amber-400',  accent: 'text-amber-400' },
-                  orange: { dot: 'bg-orange-400', accent: 'text-orange-400' },
+                  teal:   { dot: 'bg-teal-600',   accent: 'text-teal-700' },
+                  violet: { dot: 'bg-violet-600', accent: 'text-violet-700' },
+                  amber:  { dot: 'bg-amber-600',  accent: 'text-amber-700' },
+                  orange: { dot: 'bg-orange-600', accent: 'text-orange-700' },
                 }[a.color]
                 return (
-                  <div key={a.num} className="flex items-start gap-3 p-3 rounded-lg bg-stone-950 border border-stone-800">
+                  <div key={a.num} className="flex items-start gap-3 p-3 rounded-lg bg-stone-50 border border-stone-200">
                     <span className={`inline-block w-2 h-2 rounded-full mt-2 ${colorMap.dot}`} />
                     <div className="flex-1">
                       <div className="flex items-baseline gap-2 mb-1 flex-wrap">
-                        <span className="text-stone-500 font-mono text-xs">{a.num}</span>
+                        <span className="text-stone-600 font-mono text-xs">{a.num}</span>
                         <p className={`text-sm font-medium ${colorMap.accent}`}>{a.name}</p>
-                        <span className="text-[11px] text-stone-500 italic">— {a.strength}</span>
+                        <span className="text-[11px] text-stone-600 italic">— {a.strength}</span>
                       </div>
-                      <p className="text-xs text-stone-400 leading-relaxed">{a.note}</p>
+                      <p className="text-[13px] text-stone-800 leading-relaxed">{a.note}</p>
                     </div>
                   </div>
                 )
               })}
             </div>
-            <p className="text-xs text-stone-600 mt-3"><strong className="text-stone-400">Implication:</strong> the BR LinkedIn 12-week pipeline (24 posts) is rightly biased toward archetypes 1 and 4. Archetypes 2 and 3 get their primary reach via Instagram, not LinkedIn.</p>
+            <p className="text-xs text-stone-700 mt-3"><strong className="text-stone-900">Implication:</strong> the BR LinkedIn 12-week pipeline (24 posts) is rightly biased toward archetypes 1 and 4. Archetypes 2 and 3 get their primary reach via Instagram, not LinkedIn.</p>
           </Card>
 
           {/* How IG and LinkedIn coexist */}
