@@ -13,6 +13,7 @@ export type LeadEventType =
   | 'scorecard_completed'
   | 'challenge_enrolled'
   | 'challenge_welcome_sent'
+  | 'challenge_coach_notified'
   | 'custom_time_requested'
 
 export async function logLeadEvent(params: {

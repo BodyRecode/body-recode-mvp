@@ -130,32 +130,11 @@ export const challengeSequenceFunction = inngest.createFunction(
     const portalUrl = `https://bodyrecode.au/challenge/${token}`
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    // Welcome email is sent synchronously by /api/challenge/enroll/route.ts so the user
-    // gets confirmation at signup time without depending on Inngest pickup. This function
-    // owns the time-shifted steps below.
+    // Welcome email AND coach notification are sent synchronously by
+    // /api/challenge/enroll/route.ts so confirmation never depends on Inngest pickup.
+    // This function owns only the time-shifted steps below.
 
-    // ── Step 1: Notify coach ───────────────────────────────────────────────
-    await step.run('notify-coach-enrollment', async () => {
-      const enrolledAt = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', dateStyle: 'medium', timeStyle: 'short' })
-      await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
-        to: 'kade@bodyrecode.au',
-        subject: `New enrollment - ${firstName}`,
-        html: challengeEmailShell(`
-${emailEyebrow('New Challenge Enrollment')}
-${emailHeading(`${firstName} just enrolled.`)}
-${emailDivider()}
-${emailStatusCard({
-  eyebrow: 'Enrollment details',
-  headline: `${firstName} · ${email}`,
-  body: `Phone: ${phone ?? 'Not provided'}. Enrolled: ${enrolledAt} (AEST). 14-day automated drip + SMS sequence is now firing.`,
-})}
-${emailCta({ href: portalUrl, label: 'View their portal' })}
-`),
-      })
-    })
-
-    // ── Step 2: Wait 4 days → Day 5 Zoom invite ───────────────────────────
+    // ── Step 1: Wait 4 days → Day 5 Zoom invite ───────────────────────────
     await step.sleep('wait-for-day-5', '4d')
 
     await step.run('send-day5-zoom-invite', async () => {
@@ -197,7 +176,7 @@ ${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live 
       })
     })
 
-    // ── Step 3: Wait 9 more days → Day 14 ascension ───────────────────────
+    // ── Step 2: Wait 9 more days → Day 14 ascension ───────────────────────
     await step.sleep('wait-for-day-14', '9d')
 
     await step.run('send-day14-ascension', async () => {

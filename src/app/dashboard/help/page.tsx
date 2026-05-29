@@ -2582,7 +2582,7 @@ export default function HelpPage() {
               <ChecklistItem text="(New only) Log a challenge_enrolled event in lead_events." />
               <ChecklistItem text="(New only) Fire the form_submitted automation trigger with form: challenge_signup." />
               <ChecklistItem text="(New only) Send the challenge/enrolled Inngest event, which triggers the Day 5 / Day 14 emails and SMS drip in parallel." />
-              <ChecklistItem text="(Both new and returning) Send the welcome email synchronously via sendChallengeWelcomeEmail and log a challenge_welcome_sent lead event with the Resend id." />
+              <ChecklistItem text="(Both new and returning) Send the welcome email AND the coach enrollment notification synchronously in parallel via sendChallengeWelcomeEmail + sendCoachEnrollmentNotification. Each logs a lead event (challenge_welcome_sent / challenge_coach_notified) with the Resend id." />
             </div>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Duplicate enrollment handling</p>
@@ -2689,18 +2689,19 @@ export default function HelpPage() {
           </Section>
 
           <Section id="ch-automation" title="Automation Sequence" colour="teal">
-            <p>The welcome email is sent <strong>synchronously by the enroll route</strong> (<strong>src/app/api/challenge/enroll/route.ts</strong> → <strong>src/lib/challenge-welcome-email.ts</strong>) so signup confirmation never depends on Inngest pickup. Everything else is two Inngest functions that listen to the <strong>challenge/enrolled</strong> event and run in parallel - registered in <strong>src/app/api/inngest/route.ts</strong>.</p>
+            <p>The welcome email AND the coach enrollment notification are sent <strong>synchronously by the enroll route</strong> (<strong>src/app/api/challenge/enroll/route.ts</strong> → <strong>src/lib/challenge-welcome-email.ts</strong>) so signup confirmation never depends on Inngest pickup. Everything else is two Inngest functions that listen to the <strong>challenge/enrolled</strong> event and run in parallel - registered in <strong>src/app/api/inngest/route.ts</strong>.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Inline (synchronous on signup)</p>
             <div className="space-y-2 mt-1">
               <ChecklistItem text="Welcome email to participant - confirms enrollment, lists what is in the portal, includes their personal portal link. Subject (new): You're in, [name]. Day 1 starts now. Subject (returning sign-up with existing active enrollment): Here is your challenge portal link, [name]." />
+              <ChecklistItem text="Coach notification email to kade@bodyrecode.au - participant name, email, phone, enrollment time (AEST), and a View their portal button. Subject (new): New enrollment - [name]. Subject (returning): Re-signup - [name] (existing enrollment)." />
             </div>
+            <p className="text-xs italic text-[#6B6B6B] mt-2">Both run in parallel via Promise.all and each logs a lead_events row (challenge_welcome_sent / challenge_coach_notified) with the Resend message id, so the lead timeline shows whether each email actually left the platform.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">challengeSequenceFunction - email sequence (Inngest)</p>
             <div className="space-y-2 mt-1">
-              <ChecklistItem text="Step 1 (immediate): Coach notification email to kade@bodyrecode.au - participant name, email, phone, enrollment time (AEST), and a View their portal button." />
-              <ChecklistItem text="Step 2 (Day 5, 4-day sleep): Week One Progress Session email - announces the session is ready, links to CHALLENGE_SESSION_VIDEO_URL env var. Checks enrollment is still active before sending." />
-              <ChecklistItem text="Step 3 (Day 14, 9-day sleep after Day 5): Ascension email - acknowledges completion, lists what should have shifted, pitches the 6-Week Blueprint. Marks enrollment status as completed in Supabase." />
+              <ChecklistItem text="Step 1 (Day 5, 4-day sleep): Week One Progress Session email - announces the session is ready, links to CHALLENGE_SESSION_VIDEO_URL env var. Checks enrollment is still active before sending." />
+              <ChecklistItem text="Step 2 (Day 14, 9-day sleep after Day 5): Ascension email - acknowledges completion, lists what should have shifted, pitches the 6-Week Blueprint. Marks enrollment status as completed in Supabase." />
             </div>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Environment variables required</p>

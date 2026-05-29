@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { inngest } from '@/lib/inngest'
-import { sendChallengeWelcomeEmail } from '@/lib/challenge-welcome-email'
+import { sendChallengeWelcomeEmail, sendCoachEnrollmentNotification } from '@/lib/challenge-welcome-email'
 
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
@@ -136,13 +136,26 @@ export async function POST(request: NextRequest) {
   }
 
   const firstName = first_name.trim().split(' ')[0]
+  const trimmedEmail = email.toLowerCase().trim()
+  const trimmedPhone = phone.trim()
   const portalUrl = `https://bodyrecode.au/challenge/${token}`
-  const welcome = await sendChallengeWelcomeEmail({
-    to: email.toLowerCase().trim(),
-    firstName,
-    portalUrl,
-    returning: isReturning,
-  })
+
+  const [welcome, coachNotify] = await Promise.all([
+    sendChallengeWelcomeEmail({
+      to: trimmedEmail,
+      firstName,
+      portalUrl,
+      returning: isReturning,
+    }),
+    sendCoachEnrollmentNotification({
+      firstName,
+      email: trimmedEmail,
+      phone: trimmedPhone,
+      portalUrl,
+      returning: isReturning,
+    }),
+  ])
+
   if (!welcome.ok) {
     console.error('[challenge/enroll] welcome email failed:', welcome.error)
   } else {
@@ -154,5 +167,16 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  return NextResponse.json({ success: true, token, emailSent: welcome.ok })
+  if (!coachNotify.ok) {
+    console.error('[challenge/enroll] coach notification failed:', coachNotify.error)
+  } else {
+    await logLeadEvent({
+      leadId,
+      type: 'challenge_coach_notified',
+      subject: isReturning ? 'Coach notified of re-signup' : 'Coach notified of new enrollment',
+      notes: `Resend id: ${coachNotify.id ?? 'unknown'}. Returning: ${isReturning}.`,
+    })
+  }
+
+  return NextResponse.json({ success: true, token, emailSent: welcome.ok, coachNotified: coachNotify.ok })
 }

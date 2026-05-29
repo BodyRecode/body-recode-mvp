@@ -2,7 +2,7 @@ import { Resend } from 'resend'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
-  emailCta, emailFeaturedCard, emailNumberedList,
+  emailCta, emailFeaturedCard, emailNumberedList, emailStatusCard,
 } from './email-shell'
 import { darkEmailSignature } from './email-signature'
 
@@ -86,6 +86,73 @@ ${emailUrlFallback(portalUrl, 'Bookmark this link — your portal for the full 1
     const { data, error } = await resend.emails.send({
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to,
+      subject,
+      html,
+    })
+    if (error) {
+      return { ok: false, error: error.message ?? JSON.stringify(error) }
+    }
+    return { ok: true, id: data?.id }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) }
+  }
+}
+
+export interface CoachEnrollmentNotifyParams {
+  firstName: string
+  email: string
+  phone?: string
+  portalUrl: string
+  returning?: boolean
+}
+
+export async function sendCoachEnrollmentNotification({
+  firstName,
+  email,
+  phone,
+  portalUrl,
+  returning = false,
+}: CoachEnrollmentNotifyParams): Promise<ChallengeWelcomeResult> {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    return { ok: false, error: 'RESEND_API_KEY missing' }
+  }
+
+  const resend = new Resend(apiKey)
+  const enrolledAt = new Date().toLocaleString('en-AU', {
+    timeZone: 'Australia/Brisbane',
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
+
+  const subject = returning
+    ? `Re-signup - ${firstName} (existing enrollment)`
+    : `New enrollment - ${firstName}`
+
+  const headline = returning
+    ? `${firstName} re-submitted the signup form.`
+    : `${firstName} just enrolled.`
+
+  const cardBody = returning
+    ? `Phone: ${phone ?? 'Not provided'}. Re-submitted: ${enrolledAt} (AEST). They already had an active enrollment - existing token returned, portal link re-sent. No new drip scheduled.`
+    : `Phone: ${phone ?? 'Not provided'}. Enrolled: ${enrolledAt} (AEST). 14-day automated drip + SMS sequence is now firing.`
+
+  const html = challengeEmailShell(`
+${emailEyebrow(returning ? 'Challenge Re-Signup' : 'New Challenge Enrollment')}
+${emailHeading(headline)}
+${emailDivider()}
+${emailStatusCard({
+  eyebrow: 'Enrollment details',
+  headline: `${firstName} · ${email}`,
+  body: cardBody,
+})}
+${emailCta({ href: portalUrl, label: 'View their portal' })}
+`)
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'Body Recode <kade@bodyrecode.au>',
+      to: 'kade@bodyrecode.au',
       subject,
       html,
     })
