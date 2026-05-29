@@ -1015,10 +1015,10 @@ export default function StrategyPage() {
                       <span className="text-[11px] text-stone-600 italic">{a.pattern}</span>
                     </div>
                     <div className="space-y-1.5 text-[13px]">
-                      <p><span className="text-stone-600 font-semibold uppercase tracking-widest text-[11px]">Who: </span><span className="text-stone-800">{a.who}</span></p>
-                      <p><span className="text-stone-600 font-semibold uppercase tracking-widest text-[11px]">Presenting: </span><span className="text-stone-800">{a.presenting}</span></p>
-                      <p><span className="text-stone-600 font-semibold uppercase tracking-widest text-[11px]">Self-story: </span><span className="text-stone-700">{a.selfStory}</span></p>
-                      <p><span className="text-stone-600 font-semibold uppercase tracking-widest text-[11px]">Channel: </span><span className="text-stone-700">{a.channel}</span></p>
+                      <p><span className="text-stone-900 font-bold uppercase tracking-widest text-[11px]">Who: </span><span className="text-stone-800">{a.who}</span></p>
+                      <p><span className="text-stone-900 font-bold uppercase tracking-widest text-[11px]">Presenting: </span><span className="text-stone-800">{a.presenting}</span></p>
+                      <p><span className="text-stone-900 font-bold uppercase tracking-widest text-[11px]">Self-story: </span><span className="text-stone-700">{a.selfStory}</span></p>
+                      <p><span className="text-stone-900 font-bold uppercase tracking-widest text-[11px]">Channel: </span><span className="text-stone-700">{a.channel}</span></p>
                     </div>
                   </div>
                 )
