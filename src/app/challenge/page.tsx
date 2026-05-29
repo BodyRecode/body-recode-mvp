@@ -317,8 +317,13 @@ export default function ChallengePage() {
             <video
               src="/challenge-explainer.mp4"
               controls
+              autoPlay
+              muted
               playsInline
-              preload="metadata"
+              preload="auto"
+              controlsList="nodownload noplaybackrate"
+              disablePictureInPicture
+              onContextMenu={(e) => e.preventDefault()}
               style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
             />
           </div>
