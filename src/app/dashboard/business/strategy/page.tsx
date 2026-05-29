@@ -940,15 +940,15 @@ export default function StrategyPage() {
         <div className="space-y-4">
           <Card className="border-amber-500/30 bg-amber-500/5">
             <SectionLabel>Audience Reality</SectionLabel>
-            <p className="text-sm text-stone-300 leading-relaxed mb-3"><strong className="text-amber-300">100% of paying clients (as of May 2026) classify as Remediation / Depleted by CFFS.</strong> Validated via the full client list (Razia, Kim, Michael, Luke, Amanda, Ruby-Cate, Samantha, Brett, Greg, +). Strategy is calibrated to that reality: 4 validated archetypes, all Depleted-leaning, in observed prevalence order.</p>
-            <p className="text-sm text-stone-400 leading-relaxed">Full persona doc: <code className="text-stone-500 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/AUDIENCE-ARCHETYPES-V1.md</code></p>
+            <p className="text-sm text-stone-100 leading-relaxed mb-3"><strong className="text-amber-300">100% of paying clients (as of May 2026) classify as Remediation / Depleted by CFFS.</strong> Validated via the full client list (Razia, Kim, Michael, Luke, Amanda, Ruby-Cate, Samantha, Brett, Greg, +). Strategy is calibrated to that reality: 4 validated archetypes, all Depleted-leaning, in observed prevalence order.</p>
+            <p className="text-sm text-stone-200 leading-relaxed">Full persona doc: <code className="text-stone-300 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/AUDIENCE-ARCHETYPES-V1.md</code></p>
           </Card>
 
           <Card className="border-red-500/30 bg-red-500/5">
             <SectionLabel>The Scorecard Underestimates Depletion</SectionLabel>
-            <p className="text-sm text-stone-300 leading-relaxed mb-2"><strong className="text-red-400">High performers self-report better than they actually are.</strong> The 5-question scorecard is a coarse signal. The 200-question intake (post-purchase) is the real read.</p>
-            <p className="text-sm text-stone-400 leading-relaxed mb-3"><strong className="text-white">Example:</strong> Michael scored 12 (Ready State) on the scorecard, then classified as Remediation / Depleted by CFFS once he became a client. Same pattern across the client base — discipline hides depletion in self-reporting.</p>
-            <p className="text-sm text-stone-400 leading-relaxed"><strong className="text-white">Implication for marketing:</strong> hooks must be sharp enough to catch high performers who would score themselves Ready on a 5-question quiz but are clinically Depleted. Don\'t soft-pedal the language because the audience self-image is "I\'m doing fine, just stuck."</p>
+            <p className="text-sm text-stone-100 leading-relaxed mb-2"><strong className="text-red-400">High performers self-report better than they actually are.</strong> The 5-question scorecard is a coarse signal. The 200-question intake (post-purchase) is the real read.</p>
+            <p className="text-sm text-stone-200 leading-relaxed mb-3"><strong className="text-white">Example:</strong> Michael scored 12 (Ready State) on the scorecard, then classified as Remediation / Depleted by CFFS once he became a client. Same pattern across the client base — discipline hides depletion in self-reporting.</p>
+            <p className="text-sm text-stone-200 leading-relaxed"><strong className="text-white">Implication for marketing:</strong> hooks must be sharp enough to catch high performers who would score themselves Ready on a 5-question quiz but are clinically Depleted. Don\'t soft-pedal the language because the audience self-image is "I\'m doing fine, just stuck."</p>
           </Card>
 
           <Card>
