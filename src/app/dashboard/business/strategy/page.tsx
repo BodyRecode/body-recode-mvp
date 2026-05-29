@@ -938,29 +938,94 @@ export default function StrategyPage() {
       {/* ── POSITIONING ── */}
       {tab === 'positioning' && (
         <div className="space-y-4">
+          <Card className="border-amber-500/30 bg-amber-500/5">
+            <SectionLabel>Audience Reality</SectionLabel>
+            <p className="text-sm text-stone-300 leading-relaxed mb-3"><strong className="text-amber-300">100% of paying clients (as of May 2026) classify as Remediation / Depleted by CFFS.</strong> Validated via the full client list (Razia, Kim, Michael, Luke, Amanda, Ruby-Cate, Samantha, Brett, Greg, +). Strategy is calibrated to that reality: 4 validated archetypes, all Depleted-leaning, in observed prevalence order.</p>
+            <p className="text-sm text-stone-400 leading-relaxed">Full persona doc: <code className="text-stone-500 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/AUDIENCE-ARCHETYPES-V1.md</code></p>
+          </Card>
+
+          <Card className="border-red-500/30 bg-red-500/5">
+            <SectionLabel>The Scorecard Underestimates Depletion</SectionLabel>
+            <p className="text-sm text-stone-300 leading-relaxed mb-2"><strong className="text-red-400">High performers self-report better than they actually are.</strong> The 5-question scorecard is a coarse signal. The 200-question intake (post-purchase) is the real read.</p>
+            <p className="text-sm text-stone-400 leading-relaxed mb-3"><strong className="text-white">Example:</strong> Michael scored 12 (Ready State) on the scorecard, then classified as Remediation / Depleted by CFFS once he became a client. Same pattern across the client base — discipline hides depletion in self-reporting.</p>
+            <p className="text-sm text-stone-400 leading-relaxed"><strong className="text-white">Implication for marketing:</strong> hooks must be sharp enough to catch high performers who would score themselves Ready on a 5-question quiz but are clinically Depleted. Don\'t soft-pedal the language because the audience self-image is "I\'m doing fine, just stuck."</p>
+          </Card>
+
           <Card>
-            <SectionLabel>Target Audience</SectionLabel>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <Heading>Primary - Women 35–50</Heading>
-                <BulletList items={[
-                  'High-functioning, disciplined, consistent',
-                  'Training and eating well - getting nothing back',
-                  'Corporate, finance, law, medical, consulting',
-                  '$100K–$180K+ AUD income',
-                  'Frustrated, not lazy',
-                ]} />
-              </div>
-              <div>
-                <Heading>Secondary - Men 35–55</Heading>
-                <BulletList items={[
-                  'Ex-athletes, corporate professionals',
-                  'Body stopped responding - no explanation',
-                  'Seek logic and structure, not hype',
-                  'Have tried harder and got worse results',
-                  'Need the system explained before they commit',
-                ]} />
-              </div>
+            <SectionLabel>The 4 Validated Archetypes</SectionLabel>
+            <div className="space-y-3 mt-2">
+              {[
+                {
+                  num: '01',
+                  badge: 'DOMINANT',
+                  title: 'The Stressed Executive Woman',
+                  pattern: 'Stress-Stored (universal)',
+                  color: 'teal' as const,
+                  who: '35-48. Corporate / finance / law / consulting / healthcare / govt. Brisbane CBD or inner suburbs. Often kids. $100K-$180K+.',
+                  presenting: 'Abdominal fat won\'t budge. Wired-and-tired. 3pm crash. Falls asleep hard, wakes at 3am. Morning puffiness.',
+                  selfStory: '"I just need to be more disciplined." "I used to be able to do this."',
+                  channel: 'IG (lunch) + LinkedIn (morning)',
+                },
+                {
+                  num: '02',
+                  badge: 'STRONG',
+                  title: 'The Perimenopausal Performer',
+                  pattern: 'Estrogen-Shift (female)',
+                  color: 'violet' as const,
+                  who: '40-50. Was lean in her 30s. Career professional, mother of teens. Brisbane suburban professional.',
+                  presenting: '5-10kg gained over 2-3 years. Storage shifted to hips/thighs + bra-line. Cycle irregular. Used to respond to training, no longer does.',
+                  selfStory: '"It\'s just menopause." "My GP said my bloods are fine." "Maybe HRT?"',
+                  channel: 'IG (evening) primary',
+                },
+                {
+                  num: '03',
+                  badge: 'PRESENT',
+                  title: 'The Postnatal Athlete',
+                  pattern: 'Stress-Stored / Estrogen-Shift hybrid',
+                  color: 'amber' as const,
+                  who: '32-42. Had kids 2-7 years ago. Was athletic/lean pre-kids. Returned to demanding career fast. Underslept for years.',
+                  presenting: 'Never got back to pre-baby baseline. Carries 3-7kg she can\'t lose. Recovery broken. Cycle irregular post-kids.',
+                  selfStory: '"My body changed after kids." "I should be able to do this, I used to be a runner / netballer."',
+                  channel: 'IG (evening / naptime)',
+                },
+                {
+                  num: '04',
+                  badge: 'PRESENT',
+                  title: 'The Slipping High Performer',
+                  pattern: 'Androgen-Decline + Stress-Stored (male)',
+                  color: 'orange' as const,
+                  who: '42-55. Male executive / partner-track lawyer / surgeon / consultant. Brisbane or interstate. Travels a lot.',
+                  presenting: 'Capacity slipping over 3-5 years. Less drive, less recovery, less sharpness. Sex drive down. Performance is the flag, not weight.',
+                  selfStory: '"I\'m just getting older." "GP said my bloods are normal." "Maybe TRT."',
+                  channel: 'LinkedIn (weekday morning) primary',
+                },
+              ].map(a => {
+                const colorMap = {
+                  teal:   { border: 'border-teal-500/30',   bg: 'bg-teal-500/5',   accent: 'text-teal-400',   badgeBg: 'bg-teal-500/10 border-teal-500/30' },
+                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-400', badgeBg: 'bg-violet-500/10 border-violet-500/30' },
+                  amber:  { border: 'border-amber-500/30',  bg: 'bg-amber-500/5',  accent: 'text-amber-400',  badgeBg: 'bg-amber-500/10 border-amber-500/30' },
+                  orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-400', badgeBg: 'bg-orange-500/10 border-orange-500/30' },
+                }[a.color]
+                return (
+                  <div key={a.num} className={`p-4 rounded-lg border ${colorMap.border} ${colorMap.bg}`}>
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
+                      <span className={`text-lg font-bold font-mono ${colorMap.accent} opacity-60`}>{a.num}</span>
+                      <p className={`text-sm font-semibold ${colorMap.accent}`}>{a.title}</p>
+                      <span className={`text-[10px] font-bold uppercase tracking-widest border px-2 py-0.5 rounded-full ${colorMap.accent} ${colorMap.badgeBg}`}>{a.badge}</span>
+                      <span className="text-[11px] text-stone-500 italic">{a.pattern}</span>
+                    </div>
+                    <div className="space-y-1.5 text-xs">
+                      <p><span className="text-stone-500 font-semibold uppercase tracking-widest text-[10px]">Who: </span><span className="text-stone-300">{a.who}</span></p>
+                      <p><span className="text-stone-500 font-semibold uppercase tracking-widest text-[10px]">Presenting: </span><span className="text-stone-300">{a.presenting}</span></p>
+                      <p><span className="text-stone-500 font-semibold uppercase tracking-widest text-[10px]">Self-story: </span><span className="text-stone-400 italic">{a.selfStory}</span></p>
+                      <p><span className="text-stone-500 font-semibold uppercase tracking-widest text-[10px]">Channel: </span><span className="text-stone-400">{a.channel}</span></p>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+            <div className="mt-4 p-3 bg-stone-900 rounded-lg border border-stone-800">
+              <p className="text-xs text-stone-500"><strong className="text-stone-400">On the watch list:</strong> The Ex-Athlete Founder (Insulin-Drift, male). Not yet seen in gym. May appear as the LinkedIn/founder audience grows. Don\'t target in primary content/ads until volume justifies it.</p>
             </div>
           </Card>
 
@@ -1254,6 +1319,76 @@ export default function StrategyPage() {
               </div>
             </Card>
           ))}
+
+          <Card>
+            <SectionLabel>Archetype-Mapped Pattern Hooks</SectionLabel>
+            <Body className="mb-4">Every Pattern Recognition post (Wednesday) and most Authority posts should target ONE archetype with a hook that names their specific lived experience. Rotate across the 4 weekly. Generic Depleted hooks land softer than archetype-specific ones.</Body>
+            <div className="space-y-3">
+              {[
+                {
+                  arch: '01 Stressed Executive Woman',
+                  color: 'teal' as const,
+                  hooks: [
+                    '"You\'re falling asleep at 9pm and wide awake at 3am. Your cortisol is telling you something."',
+                    '"The 3pm crash. The coffee. The afternoon scroll. That\'s not laziness — that\'s a depleted system."',
+                    '"You can be the most disciplined person in your office and still have a body that won\'t change. Discipline isn\'t the variable."',
+                    '"If you\'re training before work, leading meetings all day, and still trying to be present at home — your body is in protection mode and you don\'t know it."',
+                  ],
+                },
+                {
+                  arch: '02 Perimenopausal Performer',
+                  color: 'violet' as const,
+                  hooks: [
+                    '"Your body changed at 42 and the program that worked at 32 stopped working. That\'s not failure. That\'s an oestrogen-shift pattern."',
+                    '"Your GP said your bloods are fine. That doesn\'t mean your body is."',
+                    '"Cardio is making your perimenopausal weight gain worse, not better. Here\'s why."',
+                    '"The training that built you in your 30s is breaking you in your 40s. Same effort. Different physiology."',
+                  ],
+                },
+                {
+                  arch: '03 Postnatal Athlete',
+                  color: 'amber' as const,
+                  hooks: [
+                    '"You had kids three years ago and still carry the weight. The reason isn\'t time. It\'s recovery debt."',
+                    '"You were a runner / netballer / triathlete. Now you can\'t lose 5kg. That\'s a state problem, not a training problem."',
+                    '"You\'re training when you can, eating when you can, sleeping when you can. The system can\'t convert any of it because there isn\'t enough of anything."',
+                    '"Postnatal isn\'t a window. It\'s a state — and yours hasn\'t shifted yet."',
+                  ],
+                },
+                {
+                  arch: '04 Slipping High Performer',
+                  color: 'orange' as const,
+                  hooks: [
+                    '"Your capacity is slipping and you\'re calling it ageing. It\'s not ageing. It\'s androgen decline stacked on chronic stress."',
+                    '"Your bloods are \'normal\'. Your performance isn\'t. There\'s a gap between clinical normal and operational normal."',
+                    '"TRT is not the answer to a stress problem. It\'s the answer to a TRT problem. Different things."',
+                    '"You were sharp at 40. Different at 45. Same brain. Different physiology. The substrate changed and the strategy didn\'t."',
+                  ],
+                },
+              ].map(a => {
+                const colorMap = {
+                  teal:   { border: 'border-teal-500/30',   bg: 'bg-teal-500/5',   accent: 'text-teal-400' },
+                  violet: { border: 'border-violet-500/30', bg: 'bg-violet-500/5', accent: 'text-violet-400' },
+                  amber:  { border: 'border-amber-500/30',  bg: 'bg-amber-500/5',  accent: 'text-amber-400' },
+                  orange: { border: 'border-orange-500/30', bg: 'bg-orange-500/5', accent: 'text-orange-400' },
+                }[a.color]
+                return (
+                  <div key={a.arch} className={`p-4 rounded-lg border ${colorMap.border} ${colorMap.bg}`}>
+                    <p className={`text-sm font-semibold mb-2 ${colorMap.accent}`}>{a.arch}</p>
+                    <ul className="space-y-1.5">
+                      {a.hooks.map((h, i) => (
+                        <li key={i} className="text-xs text-stone-300 italic leading-relaxed flex gap-2">
+                          <span className="text-stone-700 shrink-0">·</span>
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+              })}
+            </div>
+            <p className="text-xs text-stone-600 mt-3">Weekly rotation: archetype 1 → 2 → 3 → 4, then back to 1. Stressed Executive Woman gets the additional Sunday Diagnostic slot since she\'s the dominant audience.</p>
+          </Card>
 
           <Card>
             <SectionLabel>Content Production Guide</SectionLabel>
@@ -1712,8 +1847,54 @@ export default function StrategyPage() {
             <SectionLabel>Ad Objective & Audience</SectionLabel>
             <div className="space-y-3">
               <div><Heading>Objective</Heading><Body>Cold traffic → Scorecard. Never direct to purchase.</Body></div>
-              <div><Heading>Audience</Heading><Body>Cold - women and men 35–55. Interests: health, fitness, fat loss, body composition, wellness, personal development.</Body></div>
-              <div><Heading>Placement</Heading><Body>Instagram feed + Reels + Facebook feed. Start broad, let Meta optimise.</Body></div>
+              <div>
+                <Heading>Audience — Archetype-Targeted</Heading>
+                <Body>Run 3 separate ad sets, one per archetype, instead of one broad set. Each set narrows on the interests + behaviours that index Depleted-state for that archetype. The scorecard catches and routes them regardless.</Body>
+                <div className="mt-3 space-y-2">
+                  {[
+                    {
+                      arch: '01 Stressed Executive Woman',
+                      demo: 'Women 35-48, Brisbane / inner suburbs + remote AU, $100K+',
+                      interests: 'Corporate wellness, executive coaching, cortisol, burnout, productivity, leadership, women in business, working mothers',
+                      color: 'teal' as const,
+                    },
+                    {
+                      arch: '02 Perimenopausal Performer',
+                      demo: 'Women 40-50, Brisbane suburban + remote AU',
+                      interests: 'Perimenopause, menopause, HRT, women over 40, Davina McCall, midlife wellness, hormonal health',
+                      color: 'violet' as const,
+                    },
+                    {
+                      arch: '03 Postnatal Athlete',
+                      demo: 'Women 32-42, Brisbane + remote AU, parents of young kids',
+                      interests: 'Postnatal recovery, postpartum fitness, mum-fitness, parenting, breastfeeding, MumSafe, running clubs',
+                      color: 'amber' as const,
+                    },
+                    {
+                      arch: '04 Slipping High Performer',
+                      demo: 'Men 42-55, Brisbane / interstate, executives + professionals',
+                      interests: 'Executive burnout, TRT, men\'s health 40+, longevity, Huberman Lab, Peter Attia, Tim Ferriss, Bryan Johnson',
+                      color: 'orange' as const,
+                    },
+                  ].map(a => {
+                    const colorMap = {
+                      teal:   'border-teal-500/20 bg-teal-500/5 text-teal-400',
+                      violet: 'border-violet-500/20 bg-violet-500/5 text-violet-400',
+                      amber:  'border-amber-500/20 bg-amber-500/5 text-amber-400',
+                      orange: 'border-orange-500/20 bg-orange-500/5 text-orange-400',
+                    }[a.color]
+                    return (
+                      <div key={a.arch} className={`p-3 rounded-lg border ${colorMap.split(' ').slice(0, 2).join(' ')}`}>
+                        <p className={`text-xs font-bold mb-1.5 ${colorMap.split(' ').slice(2).join(' ')}`}>{a.arch}</p>
+                        <p className="text-[11px] text-stone-400 mb-1.5"><span className="text-stone-600 uppercase tracking-widest text-[10px] font-semibold">Demo: </span>{a.demo}</p>
+                        <p className="text-[11px] text-stone-300"><span className="text-stone-600 uppercase tracking-widest text-[10px] font-semibold">Interests: </span>{a.interests}</p>
+                      </div>
+                    )
+                  })}
+                </div>
+                <p className="text-xs text-stone-600 mt-3">Start with the Stressed Executive Woman set (dominant audience). Add the others once that one is producing leads at a sustainable CPL.</p>
+              </div>
+              <div><Heading>Placement</Heading><Body>Instagram feed + Reels + Facebook feed. Start broad within each ad set, let Meta optimise within the constraints.</Body></div>
               <div><Heading>Traffic type</Heading><Body>Cold only for now. Retargeting layer added at Day 30+ once pixel has enough data.</Body></div>
             </div>
           </Card>
@@ -2030,6 +2211,41 @@ export default function StrategyPage() {
                 <p className="text-[11px] text-stone-400 mt-2">All variants collapse to <code className="text-blue-500 font-mono">source=linkedin</code> on the lead, with the variant preserved as <code className="text-blue-500 font-mono">source_detail</code> for granular attribution.</p>
               </div>
             </div>
+          </Card>
+
+          {/* Archetype split */}
+          <Card>
+            <SectionLabel>Which Archetypes LinkedIn Reaches</SectionLabel>
+            <Body className="mb-3">Per the validated client mix (100% Remediation / Depleted), the 4 archetypes split unevenly across IG and LinkedIn. LinkedIn primarily reaches archetypes 1 and 4. See <strong className="text-stone-300">Positioning tab</strong> for full archetype detail.</Body>
+            <div className="space-y-2">
+              {[
+                { num: '01', name: 'Stressed Executive Woman', strength: 'Primary on LinkedIn',     color: 'teal' as const,   note: 'LinkedIn morning scroll before work matches her schedule exactly.' },
+                { num: '02', name: 'Perimenopausal Performer',  strength: 'Rare on LinkedIn',        color: 'violet' as const, note: 'IG-dominant. Don\'t bias LinkedIn content to her — she will not see it.' },
+                { num: '03', name: 'Postnatal Athlete',         strength: 'Rare on LinkedIn',        color: 'amber' as const,  note: 'IG-dominant. Naptime / evening scroll, not LinkedIn morning.' },
+                { num: '04', name: 'Slipping High Performer',   strength: 'Primary on LinkedIn',     color: 'orange' as const, note: 'Male executive. LinkedIn is his natural channel. Hooks should target this archetype on roughly 1 in 4 BR LinkedIn posts.' },
+              ].map(a => {
+                const colorMap = {
+                  teal:   { dot: 'bg-teal-400',   accent: 'text-teal-400' },
+                  violet: { dot: 'bg-violet-400', accent: 'text-violet-400' },
+                  amber:  { dot: 'bg-amber-400',  accent: 'text-amber-400' },
+                  orange: { dot: 'bg-orange-400', accent: 'text-orange-400' },
+                }[a.color]
+                return (
+                  <div key={a.num} className="flex items-start gap-3 p-3 rounded-lg bg-stone-950 border border-stone-800">
+                    <span className={`inline-block w-2 h-2 rounded-full mt-2 ${colorMap.dot}`} />
+                    <div className="flex-1">
+                      <div className="flex items-baseline gap-2 mb-1 flex-wrap">
+                        <span className="text-stone-500 font-mono text-xs">{a.num}</span>
+                        <p className={`text-sm font-medium ${colorMap.accent}`}>{a.name}</p>
+                        <span className="text-[11px] text-stone-500 italic">— {a.strength}</span>
+                      </div>
+                      <p className="text-xs text-stone-400 leading-relaxed">{a.note}</p>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+            <p className="text-xs text-stone-600 mt-3"><strong className="text-stone-400">Implication:</strong> the BR LinkedIn 12-week pipeline (24 posts) is rightly biased toward archetypes 1 and 4. Archetypes 2 and 3 get their primary reach via Instagram, not LinkedIn.</p>
           </Card>
 
           {/* How IG and LinkedIn coexist */}
