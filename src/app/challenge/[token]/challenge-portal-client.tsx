@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { legacyLetterToSlug } from '@/lib/pattern-mapping'
 
 const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
@@ -762,6 +762,7 @@ export default function ChallengePortalClient({
 }) {
   const [parqDone, setParqDone] = useState(parqCompleted)
   const [healthDecDone, setHealthDecDone] = useState(healthDecCompleted)
+  const formsRef = useRef<HTMLDivElement | null>(null)
   const [activeForm, setActiveForm] = useState<'parq' | 'health_dec' | null>(
     !parqCompleted ? 'parq' : !healthDecCompleted ? 'health_dec' : null
   )
@@ -830,7 +831,7 @@ export default function ChallengePortalClient({
 
         {/* Required Forms */}
         {!formsComplete && (
-          <div style={{ marginBottom: '48px' }}>
+          <div ref={formsRef} style={{ marginBottom: '48px', scrollMarginTop: '24px' }}>
             <div style={{
               background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.25)',
               borderRadius: '12px', padding: '16px 20px', marginBottom: '20px',
@@ -879,6 +880,9 @@ export default function ChallengePortalClient({
                 onComplete={() => {
                   setParqDone(true)
                   setActiveForm('health_dec')
+                  requestAnimationFrame(() => {
+                    formsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  })
                 }}
               />
             )}
