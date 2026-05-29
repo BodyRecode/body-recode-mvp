@@ -921,6 +921,7 @@ export default function StrategyPage() {
             <div className="flex items-center gap-2 mb-2"><Tag color="teal">Performance Coaching</Tag></div>
             <Heading>Ongoing Acquisition</Heading>
             <Body>Cold traffic → Scorecard → Zoom 1 booking → Zoom 2 → client. Two channels feeding the same scorecard: Instagram (consumer funnel, Meta ads) and LinkedIn (executive reframe, organic only). Both attributed separately in the CRM.</Body>
+            <p className="text-xs text-stone-700 mt-3"><strong className="text-stone-900">Audience reality:</strong> 100% of paying clients classify as Remediation / Depleted by CFFS. Strategy is calibrated to 4 Depleted-leaning archetypes — see <strong className="text-stone-900">Positioning tab</strong>.</p>
           </Card>
 
           <Card>
@@ -1187,18 +1188,20 @@ export default function StrategyPage() {
 
           <Card>
             <SectionLabel>Weekly Structure</SectionLabel>
+            <p className="text-xs text-stone-700 mb-3">Each non-Sunday slot rotates across the 4 archetypes week to week, so every archetype sees themselves at least once per fortnight. Sunday Diagnostic always targets the dominant archetype (Stressed Executive Woman) since it\'s the conversion-driving slot.</p>
             <div className="space-y-2">
               {[
-                { day: 'Monday', type: 'Authority', temp: 'Cold', goal: 'Make people think differently about their body', format: 'Carousel (5–7 slides) or short video', cta: 'None' },
-                { day: 'Tuesday', type: 'Contrarian', temp: 'Cold', goal: 'Challenge the standard fitness narrative', format: 'Short video or statement graphic', cta: 'None' },
-                { day: 'Wednesday', type: 'Pattern Recognition', temp: 'Cold', goal: 'Trigger self-recognition - "that\'s exactly me"', format: 'Carousel or graphic card', cta: 'Soft' },
-                { day: 'Friday', type: 'Coach Perspective', temp: 'Warm', goal: 'Build trust, introduce the system', format: 'Talking video or photo card', cta: 'Soft' },
-                { day: 'Sunday', type: 'Diagnostic / Funnel', temp: 'Hot', goal: 'Drive to the scorecard', format: 'Graphic card or reel', cta: 'Hard - scorecard link' },
+                { day: 'Monday', type: 'Authority', temp: 'Cold', archetype: 'Rotate 1→4', format: 'Carousel (5–7 slides) or short video', cta: 'None' },
+                { day: 'Tuesday', type: 'Contrarian', temp: 'Cold', archetype: 'Rotate 1→4', format: 'Short video or statement graphic', cta: 'None' },
+                { day: 'Wednesday', type: 'Pattern Recognition', temp: 'Cold', archetype: 'Rotate 1→4', format: 'Carousel or graphic card', cta: 'Soft' },
+                { day: 'Friday', type: 'Coach Perspective', temp: 'Warm', archetype: 'Rotate 1→4', format: 'Talking video or photo card', cta: 'Soft' },
+                { day: 'Sunday', type: 'Diagnostic / Funnel', temp: 'Hot', archetype: '01 Stressed Exec', format: 'Graphic card or reel', cta: 'Hard - scorecard link' },
               ].map(row => (
-                <div key={row.day} className="grid grid-cols-5 gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200 text-xs">
+                <div key={row.day} className="grid grid-cols-6 gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200 text-xs">
                   <div><p className="text-stone-400 mb-0.5">Day</p><p className="font-semibold text-[#1A1A1A]">{row.day}</p></div>
                   <div><p className="text-stone-400 mb-0.5">Type</p><p className="font-medium text-blue-500">{row.type}</p></div>
                   <div><p className="text-stone-400 mb-0.5">Temp</p><p className={row.temp === 'Hot' ? 'text-red-700' : row.temp === 'Warm' ? 'text-amber-700' : 'text-blue-700'}>{row.temp}</p></div>
+                  <div><p className="text-stone-400 mb-0.5">Archetype</p><p className="font-medium text-stone-900">{row.archetype}</p></div>
                   <div><p className="text-stone-400 mb-0.5">Format</p><p className="text-stone-600">{row.format}</p></div>
                   <div><p className="text-stone-400 mb-0.5">CTA</p><p className="text-stone-600">{row.cta}</p></div>
                 </div>
@@ -1680,24 +1683,53 @@ export default function StrategyPage() {
 
               <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
                 <p className="text-xs font-semibold text-[#1A1A1A] mb-2">Step 1 - Comment on hashtag posts (10 min)</p>
-                <p className="text-xs text-stone-500 mb-2">Browse these hashtags and leave 5–8 genuine comments on recent posts. Comments that add value get profile clicks.</p>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1.5">Primary</p>
-                    <div className="flex flex-wrap gap-1">
-                      {['#performancecoaching','#fatlosscoaching','#strengthcoaching','#bodyrecode','#brisbanefitness','#brisbanept','#brisbanecoach'].map(h => (
-                        <span key={h} className="text-[10px] text-blue-500 bg-blue-50 border border-blue-500/20 px-1.5 py-0.5 rounded">{h}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1.5">Secondary</p>
-                    <div className="flex flex-wrap gap-1">
-                      {['#fatlosstips','#trainingplateau','#metabolichealth','#compositioncoach','#hormonehealth','#womenshealth35','#cortisol'].map(h => (
-                        <span key={h} className="text-[10px] text-stone-600 bg-stone-200 border border-stone-300 px-1.5 py-0.5 rounded">{h}</span>
-                      ))}
-                    </div>
-                  </div>
+                <p className="text-xs text-stone-700 mb-3">Browse these hashtags and leave 5–8 genuine comments on recent posts. Hashtags grouped by archetype so each session targets one specific person, not generic fitness.</p>
+                <div className="space-y-2">
+                  {[
+                    {
+                      arch: '01 Stressed Executive Woman',
+                      tags: ['#executiveburnout','#cortisol','#highperformingwomen','#womeninbusiness','#workingmothers','#stressmanagement','#bodyrecode'],
+                      color: 'teal' as const,
+                    },
+                    {
+                      arch: '02 Perimenopausal Performer',
+                      tags: ['#perimenopause','#menopause','#hrtaustralia','#womenover40','#perimenopauseweightgain','#hormonehealth','#womenshealth40'],
+                      color: 'violet' as const,
+                    },
+                    {
+                      arch: '03 Postnatal Athlete',
+                      tags: ['#postnatalfitness','#postpartumfitness','#mumfitness','#postnatalrecovery','#mumsofbrisbane','#postpartumstrength','#mumlife'],
+                      color: 'amber' as const,
+                    },
+                    {
+                      arch: '04 Slipping High Performer',
+                      tags: ['#executiveburnout','#mensthealth40','#testosterone','#trtaustralia','#longevity','#executiveperformance','#midlifehealth'],
+                      color: 'orange' as const,
+                    },
+                    {
+                      arch: 'Brisbane local discovery',
+                      tags: ['#brisbanefitness','#brisbanecoach','#brisbanept','#bodyrecode','#brisbanewellness','#brisbanepersonaltrainer'],
+                      color: 'stone' as const,
+                    },
+                  ].map(g => {
+                    const accent = {
+                      teal:   'text-teal-700 bg-teal-50 border-teal-500/30',
+                      violet: 'text-violet-700 bg-violet-50 border-violet-500/30',
+                      amber:  'text-amber-700 bg-amber-50 border-amber-500/30',
+                      orange: 'text-orange-700 bg-orange-50 border-orange-500/30',
+                      stone:  'text-stone-700 bg-stone-100 border-stone-300',
+                    }[g.color]
+                    return (
+                      <div key={g.arch}>
+                        <p className="text-[11px] font-bold text-stone-900 uppercase tracking-widest mb-1.5">{g.arch}</p>
+                        <div className="flex flex-wrap gap-1">
+                          {g.tags.map(h => (
+                            <span key={h} className={`text-[10px] border px-1.5 py-0.5 rounded ${accent}`}>{h}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
 
@@ -1912,27 +1944,31 @@ export default function StrategyPage() {
 
           <div className="space-y-3">
             <SectionLabel>3 Ad Angles - Test Simultaneously</SectionLabel>
+            <p className="text-xs text-stone-700 mb-2">Each angle pairs with a specific archetype ad set above. Run all three at once, judge which combination of angle + audience produces lowest CPL and best scorecard completion. Cut the loser, scale the winner.</p>
             <ScriptBlock
               number={1}
-              angle="Silent Frustration"
+              angle="Silent Frustration — Stressed Executive Woman (01)"
               hook="You're training. You're eating well. Nothing is moving. Here's why."
               duration="~22 sec"
               script="If you're training consistently, eating well, and your body has stopped responding - that's not a discipline problem. That's a body state problem. Your biology is in protection mode. And when it's there, adding more training and cutting more food makes it worse. Before I give anyone a program, I read their body first. Take the free Body State Scorecard - link in bio. Two minutes. Find out which state your body is in."
             />
             <ScriptBlock
               number={2}
-              angle="Contrarian"
+              angle="Contrarian — Perimenopausal Performer (02)"
               hook="More training and less food is making it worse."
               duration="~20 sec"
               script="The standard advice when fat loss stalls - train harder, eat less. That's also the advice that drives cortisol up, suppresses your metabolism, and locks your body into a state where it actively resists fat loss. I've seen it hundreds of times. The problem was never effort. The problem was that nobody read the body before prescribing to it. Take the free Body State Scorecard - link in bio. Two minutes."
             />
             <ScriptBlock
               number={3}
-              angle="Diagnosis"
+              angle="Diagnosis — Postnatal Athlete (03)"
               hook="Your body is in one of three states right now. Find out which one."
               duration="~23 sec"
               script="Your body is operating in one of three states right now. Ready - it can respond to training and nutrition. Transitioning - mixed signals, inconsistent results. Or Depleted - in protection mode, actively resisting fat loss and performance. Most people who feel stuck are in Depleted and don't know it. Find out which state you're in. Take the free Body State Scorecard - link in bio. Two minutes. No cost."
             />
+            <div className="p-3 bg-orange-50 rounded-lg border border-orange-200 text-xs text-stone-700 leading-relaxed">
+              <strong className="text-stone-900">Slipping High Performer (04)</strong> — male executive archetype — primarily reached via LinkedIn (organic) per the LinkedIn tab. If/when an ad-targeted angle for him is needed, script angle: <em className="text-stone-800">"Your capacity is slipping. Your bloods are normal. The system needs to be read, not your testosterone."</em>
+            </div>
           </div>
 
           {/* Ad Graphics */}
@@ -2096,6 +2132,7 @@ export default function StrategyPage() {
                   color: 'teal' as const,
                   desc: 'Why high performers do not have a willpower problem, they have a physiology problem.',
                   hook: '"Discipline is a symptom. State is the variable."',
+                  targets: 'Archetype 01 (Stressed Executive Woman) + 04 (Slipping High Performer)',
                 },
                 {
                   num: '02',
@@ -2103,6 +2140,7 @@ export default function StrategyPage() {
                   color: 'violet' as const,
                   desc: 'Why adding more input fails when the body cannot convert it. Contrarian to LinkedIn\'s hustle default.',
                   hook: '"When the system stops responding, the instinct is to add more effort. That\'s the problem."',
+                  targets: 'Archetype 01 (Stressed Executive Woman) + 04 (Slipping High Performer)',
                 },
                 {
                   num: '03',
@@ -2110,6 +2148,7 @@ export default function StrategyPage() {
                   color: 'amber' as const,
                   desc: 'How depleted state degrades executive function, judgement, energy. Career-relevant angle.',
                   hook: '"The decisions you make at 2pm are not made by the same person who made them at 9am."',
+                  targets: 'Archetype 04 (Slipping High Performer) primary, 01 (Stressed Exec) secondary',
                 },
                 {
                   num: '04',
@@ -2117,6 +2156,7 @@ export default function StrategyPage() {
                   color: 'orange' as const,
                   desc: 'The methodology layer. How BR actually works. Bridges into B2B/licensable later.',
                   hook: '"Most coaches prescribe before they read. That\'s why most programs fail high performers."',
+                  targets: 'Archetypes 01 + 04 equally. Bridges into B2B coach audience later.',
                 },
               ].map(p => {
                 const colorMap = {
@@ -2131,15 +2171,16 @@ export default function StrategyPage() {
                       <span className={`text-lg font-bold font-mono ${colorMap.accent} opacity-60`}>{p.num}</span>
                       <div className="flex-1">
                         <p className={`text-sm font-semibold ${colorMap.accent} mb-1`}>{p.title}</p>
-                        <p className="text-xs text-stone-600 mb-2 leading-relaxed">{p.desc}</p>
-                        <p className="text-xs text-stone-700 italic leading-relaxed">{p.hook}</p>
+                        <p className="text-xs text-stone-700 mb-2 leading-relaxed">{p.desc}</p>
+                        <p className="text-[13px] text-stone-800 italic leading-relaxed mb-2">{p.hook}</p>
+                        <p className="text-[11px] text-stone-700"><span className="font-bold text-stone-900 uppercase tracking-widest">Targets: </span>{p.targets}</p>
                       </div>
                     </div>
                   </div>
                 )
               })}
             </div>
-            <p className="text-xs text-stone-400 mt-3">Each pillar has 8-12 angles in the bank. We don't burn them all in month one.</p>
+            <p className="text-xs text-stone-700 mt-3">Each pillar has 8-12 angles in the bank. We don\'t burn them all in month one. Pillars 1 and 4 are workhorse — they fit both LinkedIn primary archetypes equally.</p>
           </Card>
 
           {/* Tone */}
@@ -2317,6 +2358,7 @@ export default function StrategyPage() {
             startDay: 23, endDay: 45,
             color: 'stone' as const,
             items: [
+              'Identify which archetype ad set (01-04) produced lowest CPL and highest scorecard completion - lean in.',
               'Review ad performance - cut 2 underperforming angles',
               'Scale budget on winning angle to $40-50/day',
               'Continue organic content rhythm',
