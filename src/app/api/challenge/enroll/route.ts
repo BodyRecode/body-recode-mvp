@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { inngest } from '@/lib/inngest'
+import { sendChallengeWelcomeEmail } from '@/lib/challenge-welcome-email'
 
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
@@ -79,9 +80,11 @@ export async function POST(request: NextRequest) {
     .maybeSingle()
 
   let token: string
+  let isReturning = false
 
   if (existing) {
     token = existing.token
+    isReturning = true
   } else {
     // Create new enrollment
     const { data: enrollment, error: enrollError } = await admin
@@ -113,7 +116,9 @@ export async function POST(request: NextRequest) {
     // Fire automation trigger for challenge welcome sequence
     await fireTrigger('form_submitted', { leadId }, { form: 'challenge_signup' })
 
-    // Fire dedicated challenge sequence (welcome email + Day 5 Zoom + Day 14 ascension)
+    // Fire dedicated challenge sequence (coach notify + Day 5 Zoom + Day 14 ascension + SMS drip).
+    // Welcome email is sent synchronously below — not via Inngest — so signup confirmation never
+    // depends on the background pipeline.
     try {
       await inngest.send({
         name: 'challenge/enrolled',
@@ -130,5 +135,24 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  return NextResponse.json({ success: true, token })
+  const firstName = first_name.trim().split(' ')[0]
+  const portalUrl = `https://bodyrecode.au/challenge/${token}`
+  const welcome = await sendChallengeWelcomeEmail({
+    to: email.toLowerCase().trim(),
+    firstName,
+    portalUrl,
+    returning: isReturning,
+  })
+  if (!welcome.ok) {
+    console.error('[challenge/enroll] welcome email failed:', welcome.error)
+  } else {
+    await logLeadEvent({
+      leadId,
+      type: 'challenge_welcome_sent',
+      subject: isReturning ? 'Challenge portal link re-sent' : 'Challenge welcome email sent',
+      notes: `Resend id: ${welcome.id ?? 'unknown'}. Returning: ${isReturning}.`,
+    })
+  }
+
+  return NextResponse.json({ success: true, token, emailSent: welcome.ok })
 }

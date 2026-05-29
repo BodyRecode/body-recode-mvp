@@ -119,7 +119,7 @@ export const challengeSequenceFunction = inngest.createFunction(
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async ({ event, step }: { event: any; step: any }) => {
-    const { leadId, token, email, firstName, phone } = event.data as {
+    const { token, email, firstName, phone } = event.data as {
       leadId: string
       token: string
       email: string
@@ -130,37 +130,11 @@ export const challengeSequenceFunction = inngest.createFunction(
     const portalUrl = `https://bodyrecode.au/challenge/${token}`
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    // ── Step 1: Welcome email ──────────────────────────────────────────────
-    await step.run('send-welcome-email', async () => {
-      await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
-        to: email,
-        subject: `You're in, ${firstName}. Day 1 starts now.`,
-        html: challengeEmailShell(`
-${emailEyebrow('14-Day Body Decode Challenge')}
-${emailHeading(`Welcome in, ${firstName}.`)}
-${emailDivider()}
-${emailBody(`Hi ${firstName},`)}
-${emailBody('You are in. Day 1 starts today.')}
-${emailBody('Over the next 14 days you will follow a simple structure designed to calm your system, rebuild your baseline, and help you understand what is actually driving the way your body looks and feels.')}
-${emailFeaturedCard(
-  emailNumberedList([
-    'Your daily coaching note — opens each morning',
-    'Your 14-day training plan',
-    'Your HABNS nutrition guide',
-    'Your morning and evening reset sequences',
-    'The Body Decode Check-In — unlocks on Day 7',
-  ]),
-  { eyebrow: 'Inside your challenge portal' },
-)}
-${emailBody('Start simple. Follow the structure. Do not try to be perfect on Day 1.', { bottom: 28 })}
-${emailCta({ href: portalUrl, label: 'Open my challenge portal' })}
-${emailUrlFallback(portalUrl, 'Bookmark this link — your portal for the full 14 days')}
-`),
-      })
-    })
+    // Welcome email is sent synchronously by /api/challenge/enroll/route.ts so the user
+    // gets confirmation at signup time without depending on Inngest pickup. This function
+    // owns the time-shifted steps below.
 
-    // ── Step 2: Notify coach ───────────────────────────────────────────────
+    // ── Step 1: Notify coach ───────────────────────────────────────────────
     await step.run('notify-coach-enrollment', async () => {
       const enrolledAt = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', dateStyle: 'medium', timeStyle: 'short' })
       await resend.emails.send({
@@ -181,7 +155,7 @@ ${emailCta({ href: portalUrl, label: 'View their portal' })}
       })
     })
 
-    // ── Step 3: Wait 4 days → Day 5 Zoom invite ───────────────────────────
+    // ── Step 2: Wait 4 days → Day 5 Zoom invite ───────────────────────────
     await step.sleep('wait-for-day-5', '4d')
 
     await step.run('send-day5-zoom-invite', async () => {
@@ -223,7 +197,7 @@ ${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live 
       })
     })
 
-    // ── Step 4: Wait 9 more days → Day 14 ascension ───────────────────────
+    // ── Step 3: Wait 9 more days → Day 14 ascension ───────────────────────
     await step.sleep('wait-for-day-14', '9d')
 
     await step.run('send-day14-ascension', async () => {
