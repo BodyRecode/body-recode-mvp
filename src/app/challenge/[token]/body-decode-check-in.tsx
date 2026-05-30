@@ -142,22 +142,13 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
         </div>
       </div>
 
-      {/* CTA - flipped to Blueprint per 2026-05-27 funnel architecture lock */}
-      <div style={{ background: '#1A1A1A', border: '1px solid rgba(27, 109, 252,0.3)', borderRadius: '12px', padding: '22px' }}>
-        <p style={{ fontSize: '14px', color: '#B5CFFC', lineHeight: 1.7, margin: '0 0 16px' }}>
-          You have read your pattern. The next dose is correction. The 6-Week Body Rewire Blueprint takes the pattern you have just identified and runs six weeks of focused, pattern-specific corrective work.
-        </p>
-        <a
-          href="https://bodyrecode.au/blueprint?source=challenge_day7_result"
-          style={{
-            display: 'inline-block', padding: '12px 22px', borderRadius: '8px',
-            background: '#1B6DFC', color: '#FFFFFF',
-            fontSize: '13px', fontWeight: 700, textDecoration: 'none',
-          }}
-        >
-          Start the 6-Week Blueprint · $97
-        </a>
-      </div>
+      {/* No commercial CTA in-portal at Day 7.
+          The participant has 7 days of Challenge work remaining; the
+          in-portal result focuses on the pattern + actions for Week 2.
+          The Day 7 result email handles the Blueprint commercial layer
+          for those open to acting on it from outside the Challenge frame.
+          The Day 14 ascension email is the formal next push.
+          Decision logged 2026-05-30. */}
     </div>
   )
 }
