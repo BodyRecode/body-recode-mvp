@@ -1019,7 +1019,7 @@ export default function ChallengePortalClient({
         )}
 
         {/* Day 7 Body Decode Check-In */}
-        <div style={{ marginBottom: '48px' }}>
+        <div id="body-decode-check-in" style={{ marginBottom: '48px', scrollMarginTop: '24px' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
             Body Decode Check-In
           </p>
