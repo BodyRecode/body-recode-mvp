@@ -28,7 +28,7 @@ function buildResultRevealBlock(patternSlug: string, progressScore: number): str
   return `
 <div style="background:#FFFFFF;border:1px solid #E5E5E5;border-left:3px solid #1B6DFC;border-radius:14px;padding:24px 26px;margin:0 0 16px;">
   <p style="font-size:11px;font-weight:700;color:#1056D6;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-    Your 14-Day Progress
+    Your 7-Day Progress
   </p>
   <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 16px;">
     <tr>
@@ -51,10 +51,10 @@ function buildResultRevealBlock(patternSlug: string, progressScore: number): str
   </table>
   <p style="font-size:14px;color:#4A4A4A;margin:0;line-height:1.65;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
     ${progressScore >= 6
-      ? 'Strong fortnight. Your system has responded well to the structure.'
+      ? 'Strong first week. This is what your body has done across the first seven days of the reset, and it set the baseline that the second week has been consolidating.'
       : progressScore >= 4
-      ? 'Solid progress. The markers that have not shifted yet will often follow as the rhythm carries through.'
-      : 'Your body is still finding its baseline. The shifts will continue as you carry the rhythm forward.'}
+      ? 'Solid first-week progress. The markers that had not shifted yet at the Check-In often follow as the rhythm carries forward.'
+      : 'Your body was still finding its baseline at the Check-In. The shifts continue as you carry the rhythm forward.'}
   </p>
 </div>
 
