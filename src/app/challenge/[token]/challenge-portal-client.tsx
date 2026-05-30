@@ -1000,9 +1000,7 @@ export default function ChallengePortalClient({
                 ))}
               </div>
               <a
-                href={process.env.NEXT_PUBLIC_CHALLENGE_SESSION_VIDEO_URL ?? '#'}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`/challenge/${token}/day-5`}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '8px',
                   padding: '14px 26px', borderRadius: '10px',
@@ -1014,7 +1012,7 @@ export default function ChallengePortalClient({
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF" stroke="none" style={{ flexShrink: 0 }}>
                   <polygon points="6,4 22,12 6,20" />
                 </svg>
-                Watch the recording
+                Open Week One Progress Session
               </a>
             </div>
           </div>
