@@ -62,21 +62,30 @@ const cardBody: React.CSSProperties = {
 
 export default async function Day5Page({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
-  const admin = createAdminClient()
-  const { data: enrollment } = await admin
-    .from('challenge_enrollments')
-    .select('id, enrolled_at, status')
-    .eq('token', token)
-    .single()
 
-  if (!enrollment || enrollment.status !== 'active') notFound()
+  // Preview path: /challenge/preview/day-5 renders the design with mock data
+  // (no DB query, no auth, no real participant). Useful for sharing the
+  // design with collaborators (Amanda) without exposing a real enrollment token.
+  let currentDay: number
+  if (token === 'preview') {
+    currentDay = 14
+  } else {
+    const admin = createAdminClient()
+    const { data: enrollment } = await admin
+      .from('challenge_enrollments')
+      .select('id, enrolled_at, status')
+      .eq('token', token)
+      .single()
 
-  const enrolledAt = new Date(enrollment.enrolled_at as string)
-  const msPerDay = 1000 * 60 * 60 * 24
-  const currentDay = Math.min(
-    Math.floor((Date.now() - enrolledAt.getTime()) / msPerDay) + 1,
-    14
-  )
+    if (!enrollment || enrollment.status !== 'active') notFound()
+
+    const enrolledAt = new Date(enrollment.enrolled_at as string)
+    const msPerDay = 1000 * 60 * 60 * 24
+    currentDay = Math.min(
+      Math.floor((Date.now() - enrolledAt.getTime()) / msPerDay) + 1,
+      14
+    )
+  }
 
   const locked = currentDay < 5
 
