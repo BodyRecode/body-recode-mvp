@@ -2662,7 +2662,7 @@ export default function HelpPage() {
           </Section>
 
           <Section id="ch-quiz" title="Body Decode Check-In" colour="teal">
-            <p>Unlocks in the portal on Day 7. Not a quiz - a biological signal audit. Participants rate 8 body markers on their 7-day progress, then answer 2 pattern questions. The result identifies their dominant biological pattern and gives them specific actions for the next 7 days. Results are saved to Supabase and a result email is sent automatically.</p>
+            <p>Unlocks in the portal on Day 7. Not a quiz - a biological signal audit. Participants rate 8 body markers on their 7-day progress, then answer 2 pattern questions. The result identifies their dominant biological pattern and gives them specific actions for what comes after. Results are saved to Supabase. <strong>Day 14 Reveal Gate (locked 2026-05-30): the result email + in-portal result display are HELD until Day 14</strong>, so the participant experiences a single reveal moment at Challenge completion. The locked-state acknowledgement card shows on the portal home and on /check-in between Day 7 submission and Day 14 reveal. Late-takers who submit on or after Day 14 see the result immediately.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Structure</p>
             <StatusList items={[
@@ -2679,10 +2679,10 @@ export default function HelpPage() {
             ]} />
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">On submission</p>
-            <p>Pattern is determined client-side from Q2 answer (a/b/c/d maps directly to pattern). Progress score counts markers answered as "better" (keys not prefixed with "sq"). The result key, all answers, and a timestamp are saved via <strong>POST /api/challenge/quiz</strong>. A result email is sent with: progress score, pattern name and description, 3 action points, and a CTA to the Body State Scorecard at bodyrecode.au/scorecard.</p>
+            <p>Pattern is determined client-side from Q2 answer + gender (a/b/c/d gender-keyed to a slug via <strong>src/lib/pattern-mapping.ts</strong>). Progress score counts markers answered as &quot;better&quot; (keys not prefixed with &quot;sq&quot;). The result key, all answers, and a timestamp are saved via <strong>POST /api/challenge/quiz</strong>. <strong>The result email is gated until Day 14:</strong> the API computes currentDay from enrolled_at and only fires the immediate email if currentDay {'>='} 14 (late-takers). Otherwise the email is held and delivered as part of the Day 14 Result Reveal email by the Inngest Day 14 step. The CTA on the result links to <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">/blueprint?source=challenge_day7_result</code> (was scorecard pre-2026-05-27 lock).</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Return visits</p>
-            <p>The portal server page fetches <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">quiz_result</code> from Supabase and passes it to the client. If a result exists, it is shown immediately - the check-in form never appears again.</p>
+            <p>The <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">/check-in</code> page fetches <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">quiz_result</code> and currentDay. If a result exists AND currentDay {'>='} 14: the result is shown. If a result exists AND currentDay {'<'} 14: a locked acknowledgement card shows (&quot;Check-In complete. Your Body Decode result reveals on Day 14.&quot;) instead of the form OR the result. If no result exists: the form shows as normal regardless of currentDay (between Day 7 and Day 14 they can submit; after Day 14 they can still submit and get the result immediately).</p>
 
             <Note>Stage 1 language only - no Fat Map zone names, no "MZ" codes, no diagnostic framing. The check-in creates awareness of the pattern. The full Fat Map diagnostic is introduced in Stage 3 (Transformation Membership). Framework documentation in Dropbox: 06_Platform_Build/01_Pages/day7-body-decode-checkin.md</Note>
             <Note>Required Supabase columns: quiz_completed_at (timestamptz), quiz_result (text), quiz_answers (jsonb) on challenge_enrollments.</Note>
@@ -2701,7 +2701,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">challengeSequenceFunction - email sequence (Inngest)</p>
             <div className="space-y-2 mt-1">
               <ChecklistItem text="Step 1 (Day 5, 4-day sleep): Week One Progress Session email - announces the session is ready, links to CHALLENGE_SESSION_VIDEO_URL env var. Checks enrollment is still active before sending." />
-              <ChecklistItem text="Step 2 (Day 14, 9-day sleep after Day 5): Ascension email - acknowledges completion, lists what should have shifted, pitches the 6-Week Blueprint. Marks enrollment status as completed in Supabase." />
+              <ChecklistItem text="Step 2 (Day 14, 9-day sleep after Day 5): Day 14 step branches on quiz_completed_at. If Check-In was completed: sends Day 14 Result Reveal email - eyebrow 'Day 14 - Challenge complete + Result reveal', subject 'your Day 14 result + what's next', body includes progress card + pattern card + actions card + Blueprint ascension push. Single email, combines Result Reveal + Ascension. If Check-In NOT completed: sends the original ascension email - subject 'you finished the 14 days.', no result content. Both branches mark enrollment status as completed in Supabase and CTA to /blueprint?source=challenge_day14_ascension." />
             </div>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Environment variables required</p>
