@@ -686,11 +686,16 @@ export default function ChallengePortalClient({
           </div>
         )}
 
-        {/* Day 7 Body Decode Check-In — unlocks Day 7+, links to dedicated /day-7 page */}
+        {/* Body Decode Check-In / Body Decode Report card — single card that
+            evolves across three states:
+              - Day 7-13, no result: links to /day-7 to take the Check-In
+              - Day 7-13, saved result: links to /check-in for the Day 7 in-portal view
+              - Day 14+, saved result: links to /day-14 to frame and open the Report
+              - Day 14+, no result: links to /day-7 to take the Check-In (late) */}
         {currentDay >= 7 && (
           <div style={{ marginBottom: '48px' }}>
             <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              Body Decode Check-In
+              {savedQuizResult && currentDay >= 14 ? 'Body Decode Report' : 'Body Decode Check-In'}
             </p>
             <div style={{
               background: '#FFFFFF',
@@ -705,7 +710,9 @@ export default function ChallengePortalClient({
                   fontSize: '11px', fontWeight: 700, color: '#1056D6',
                   textTransform: 'uppercase' as const, letterSpacing: '0.12em',
                 }}>
-                  Day 7 · Body Decode Check-In
+                  {savedQuizResult && currentDay >= 14
+                    ? 'Day 14 · Body Decode Report'
+                    : 'Day 7 · Body Decode Check-In'}
                 </span>
                 <span style={{
                   fontSize: '10px', fontWeight: 700,
@@ -730,12 +737,12 @@ export default function ChallengePortalClient({
               <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
                 {savedQuizResult
                   ? (currentDay >= 14
-                      ? 'Your progress recap, your pattern, the three actions specific to your pattern, and the Blueprint preview are all on the Day 7 page.'
+                      ? 'Open the Day 14 page for the full read. Your pattern, what it means, where it shows up, what it is NOT, and the three actions specific to your pattern.'
                       : `Your 7-day progress, marker breakdown, and Week 2 focus are on the Day 7 page. Your full Body Decode Report arrives on Day 14. ${Math.max(14 - currentDay, 0)} day${Math.max(14 - currentDay, 0) === 1 ? '' : 's'} to go.`)
                   : 'A short structured signal audit. Rate 8 biological markers, answer 2 signal questions. Your 7-day progress is shown immediately; your full Body Decode Report arrives on Day 14.'}
               </p>
               <a
-                href={`/challenge/${token}/day-7`}
+                href={`/challenge/${token}/${savedQuizResult && currentDay >= 14 ? 'day-14' : 'day-7'}`}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '8px',
                   padding: '14px 26px', borderRadius: '10px',
@@ -745,7 +752,7 @@ export default function ChallengePortalClient({
                 }}
               >
                 {savedQuizResult
-                  ? (currentDay >= 14 ? 'View your Body Decode Report →' : 'View your 7-day progress →')
+                  ? (currentDay >= 14 ? 'Open your Body Decode Report →' : 'View your 7-day progress →')
                   : 'Open Body Decode Check-In →'}
               </a>
             </div>
