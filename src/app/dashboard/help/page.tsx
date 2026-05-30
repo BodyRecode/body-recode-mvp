@@ -2715,29 +2715,30 @@ export default function HelpPage() {
           </Section>
 
           <Section id="ch-sms" title="SMS Coaching Sequence" colour="teal">
-            <p>Handled by <strong>challengeSmsFunction</strong> in Inngest. Fires on the <strong>challenge/enrolled</strong> event in parallel with the email sequence. Sends 3 SMS messages per day for 14 days plus a 3-day transition sequence (Days 15-17). All messages are sent via Twilio.</p>
+            <p>Handled by <strong>challengeSmsFunction</strong> in Inngest. Fires on the <strong>challenge/enrolled</strong> event in parallel with the email sequence. <strong>Minimal Pulse cadence (rebuilt 2026-05-30):</strong> 1 morning portal nudge per day for 14 days + 3 afternoon boosts on key moments = 17 SMS total. The daily coaching content lives in the portal; SMS is the pulse that brings the participant back. <strong>The previous 3x/day rich-coaching corpus was retired</strong> because it duplicated the in-portal daily coaching notes. All messages sent via Twilio.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Timing structure</p>
             <StatusList items={[
               { label: 'Initial wait', desc: '1 hour after enrollment before the first message - gives participant time to check their email first' },
-              { label: 'Morning message', desc: 'First message of each day' },
-              { label: '7-hour gap', desc: 'Between morning and afternoon messages' },
-              { label: 'Afternoon message', desc: 'Second message - check-in, pattern observation' },
-              { label: '5-hour gap', desc: 'Between afternoon and evening messages' },
-              { label: 'Evening message', desc: 'Third message - wind-down, close the day' },
-              { label: '12-hour gap', desc: 'Overnight gap before next day morning message' },
+              { label: 'Morning nudge', desc: 'One per day, Day 1-14. Points to the portal for today\'s coaching note. ~140 chars each.' },
+              { label: 'Afternoon boost (Day 5, 7, 14 only)', desc: '8h after morning nudge. Used to drive action on the day\'s key moment (session video / Check-In / Body Decode Report email).' },
+              { label: 'Next day gap', desc: '16h after afternoon boost (24h total cycle), or 24h after morning if no boost that day.' },
             ]} />
 
-            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Special days</p>
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Per-day messages</p>
             <StatusList items={[
-              { label: 'Day 1 morning', desc: 'Includes the portal link so the participant can bookmark it' },
-              { label: 'Day 5', desc: 'Rest day. Afternoon message references the Week One Progress Session in their portal. Evening message reminds them if not watched.' },
-              { label: 'Day 7 morning', desc: 'Includes the Body Decode Check-In unlock - "Your Body Decode Check-In is now live in your portal. This takes about 5 minutes and shows you exactly what has shifted in your body this week."' },
-              { label: 'Day 14 evening', desc: 'Closing message - directs to portal and email for next step.' },
+              { label: 'Day 1 morning', desc: '"Welcome [name]. Day 1 is live in your portal. Today is for setup - read the training plan and nutrition guide, do the morning reset. The work begins gently. Portal: [link]"' },
+              { label: 'Day 5 afternoon boost', desc: '"Quick reminder [name]. Your Week One Progress Session is in the portal - watch it before bed if you haven\'t yet. It breaks down what your body has been doing all week: [link]"' },
+              { label: 'Day 7 afternoon boost', desc: '"Quick check [name]. Have you done your Body Decode Check-In yet? Takes 3 minutes and unlocks your Day 7 progress read. Portal: [link]"' },
+              { label: 'Day 14 morning', desc: '"Day 14 [name]. Final day. Your Body Decode Report drops in your inbox today. Today\'s note is in the portal: [link]"' },
+              { label: 'Day 14 afternoon boost', desc: '"Your Body Decode Report is in your inbox [name]. The full pattern read, what it means, where it shows up, and what comes next. Open the email." Times ~8h after morning so the Day 14 email (which fires through challengeSequenceFunction) has already landed.' },
             ]} />
 
-            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Transition sequence (Days 15-17)</p>
-            <p>After Day 14 the function sends 3 more single daily messages. Day 16 includes the Blueprint CTA: "Reply NEXT if you want the details." The sequence ends after Day 17.</p>
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Template variables</p>
+            <p>Templates use <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">%FIRST%</code> and <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">%URL%</code> placeholders. The <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">renderSms()</code> helper substitutes them at send time. Source of truth: <strong>SMS_MORNING</strong> + <strong>SMS_AFTERNOON_BOOST</strong> constants in <strong>src/lib/inngest-functions.ts</strong>.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Retired</p>
+            <p>The <strong>3x/day rich coaching corpus (morning + afternoon + evening per day)</strong> and the <strong>Days 15-17 transition sequence</strong> were both removed in the Minimal Pulse rebuild. The Day 14 Body Decode Report email (from challengeSequenceFunction) is the Blueprint ascension moment; the SMS afternoon boost just drives them to open it. No separate post-Challenge SMS nudges.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Environment variables required</p>
             <StatusList items={[

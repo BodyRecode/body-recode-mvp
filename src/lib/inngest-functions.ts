@@ -15,85 +15,40 @@ import { legacyLetterToSlug } from './pattern-mapping'
 import { buildDay14BodyDecodeReportEmail } from './challenge-checkin-emails'
 
 // ─── Challenge SMS Messages ───────────────────────────────────────────────────
+// Rebuilt 2026-05-30 as Minimal Pulse: 1 morning nudge per day (14 messages)
+// pointing to the portal, plus 3 afternoon boosts on key days (Day 5 session
+// reminder, Day 7 Check-In nudge, Day 14 Body Decode Report nudge). The
+// daily coaching content lives in the portal; SMS is the pulse that brings
+// the participant back. Previous design sent 3x/day rich coaching messages
+// which duplicated the in-portal coaching notes.
 
-const SMS_MESSAGES: Record<number, { morning: string; afternoon: string; evening: string }> = {
-  1: {
-    morning: `Morning.\n\nDay 1 is not about doing everything perfectly. It is about finding a steadier rhythm for today.\n\nIf you wake up feeling heavy or foggy, that is expected. Your body is shifting gears.\n\nKeep things simple this morning. One step at a time.`,
-    afternoon: `A quick check in.\n\nMost people feel a small dip around this time. The afternoon crash is part of the old pattern you are working to steady.\n\nIf you notice tiredness or cravings today, nothing is wrong. This usually settles within a few days.\n\nJust stay consistent with the basics. Light meals, steady water, no pressure.`,
-    evening: `Tonight is about slowing down.\n\nYour body is still regulating and it is normal if you feel a little tired or mentally drained.\n\nKeep things simple tonight. A light meal, some time away from your phone, and an earlier sleep if you can.\n\nDay 1 is complete. You showed up. That is enough.`,
-  },
-  2: {
-    morning: `Morning.\n\nDay 2 can feel a little heavier than yesterday. Your body is still clearing old patterns and settling into new ones, so waking up slower or feeling flat is completely normal.\n\nToday is about gentle consistency. No pressure to move fast.`,
-    afternoon: `Checking in.\n\nIf you notice a small crash or stronger cravings today, that is common on Day 2. Your system is shifting away from old patterns and it takes a little energy to stabilise.\n\nYou are not doing anything wrong. Stay focused on the basics.`,
-    evening: `Day 2 is usually where the tiredness shows up.\n\nIf you feel a bit drained or your mood is softer tonight, that is expected. Your body is adjusting and this is part of the process.\n\nKeep your evening calm. A quiet space, a warm shower, or logging off earlier can make tomorrow feel lighter.\n\nYou are doing well. Today counts.`,
-  },
-  3: {
-    morning: `Morning.\n\nDay 3 often brings the first small lift. You might notice moments where your head feels a little clearer or your body feels lighter, even if it comes and goes.\n\nThis is your system starting to steady itself. Keep your morning simple.`,
-    afternoon: `A quick check in.\n\nIf you are feeling more settled in some moments but still get an afternoon dip, that is normal. Day 3 often brings a mix of clarity and tiredness.\n\nStay consistent with the basics and keep things steady. These small shifts are the first signs of progress.`,
-    evening: `Tonight is about calming the day down.\n\nIf you feel a little clearer or less bloated tonight, notice it. Even small changes matter.\n\nYour body responds to consistency faster than you think. Keep your evening slow and gentle.\n\nDay 3 is complete. You are doing well.`,
-  },
-  4: {
-    morning: `Morning.\n\nDay 4 often feels a little steadier. Your body is beginning to find a rhythm and you may notice fewer dramatic swings in energy or hunger this morning.\n\nKeep your morning clear and simple. Today is about letting your body build on the consistency you have already started.`,
-    afternoon: `Checking in.\n\nBy Day 4, most people feel a more predictable afternoon dip rather than the heavy crash from earlier in the week.\n\nYour body is learning to stabilise energy rather than spike and crash. This is progress, even if it feels subtle.`,
-    evening: `Day 4 usually ends with a calmer evening.\n\nIf your cravings feel a little less intense tonight or you feel slightly more settled after dinner, that is a good sign.\n\nKeep your evening slow and uninterrupted where you can. These small consistent choices will make the next few days feel even easier.\n\nDay 4 is complete.`,
-  },
-  5: {
-    morning: `Morning.\n\nDay 5 often feels a little harder. Your body is regulating and this is usually where the wobble shows up - lower energy, stronger cravings or a softer mood.\n\nThis is expected. Nothing is wrong.\n\nToday is a rest day. Keep things simple and slow.`,
-    afternoon: `Checking in.\n\nIf you feel tired or more craving-driven today, that is normal for Day 5. Your system is adjusting and this dip is part of the process.\n\nYour Week One Progress Session is ready in your portal. Watch it today - it will make the rest of the challenge feel much clearer.`,
-    evening: `Your Week One Progress Session is available in your portal if you have not watched it yet.\n\nIt is 30 minutes and breaks down exactly what your body has been doing this week.\n\nKeep your evening calm and steady tonight.\n\nDay 5 is complete. You are doing well.`,
-  },
-  6: {
-    morning: `Morning.\n\nDay 6 often feels a little lighter. Your body is settling and you might notice small improvements in mood, energy or hunger this morning.\n\nLet them be small. You do not need to push or chase anything today. Your body responds best to consistency, not pressure.`,
-    afternoon: `Checking in.\n\nIf you feel steadier today but still get a small afternoon dip, that is normal. Your system is balancing itself and these waves are part of the process.\n\nStay consistent with your meals and keep things simple for the rest of the day.`,
-    evening: `Day 6 usually ends with a calmer evening.\n\nIf you notice you are a little less bloated or your cravings are slightly easier tonight, that is a good sign. Your system is responding to your routine.\n\nKeep your evening quiet and steady.\n\nDay 6 is complete. You are doing well.`,
-  },
-  7: {
-    morning: `Morning.\n\nDay 7 often feels clearer. Your body has settled more than it has all week and you may notice steadier energy or a lighter feeling through your morning.\n\nYou have already done a full week of work. Just stay steady with the basics.\n\nThe Body Decode Check-In is now unlocked in your portal. Complete it today.`,
-    afternoon: `Checking in.\n\nIf you feel a softer dip this afternoon or feel a little reflective about the week, that is normal for Day 7.\n\nYou have done a full week of consistent work. Your system is calmer, your cravings should be easier and your energy waves usually feel more predictable today.`,
-    evening: `You have reached the end of week one.\n\nTake a quiet moment tonight to notice anything that feels different, even if the changes are small.\n\nClearer hunger. Fewer afternoon crashes. Less bloating. More predictable moods.\n\nThese are all signs your system is responding. You have done well this week.`,
-  },
-  8: {
-    morning: `Morning.\n\nDay 8 often feels different. Your body has had a full week to settle and you may notice clearer mornings or steadier energy today.\n\nLet this be a quiet win, not something you need to push. The goal for this week is calm consistency, not intensity.`,
-    afternoon: `Checking in.\n\nIf today feels a little smoother or your cravings are lighter, that is expected on Day 8. Your system is more regulated and your afternoon dip should feel softer and more predictable.\n\nStay steady with your meals and avoid making big changes just because you feel better.`,
-    evening: `Your body usually feels calmer by Day 8.\n\nIf you notice that your evening feels less reactive or your hunger feels more controlled, that is a sign your rhythm is settling.\n\nKeep your evening quiet and steady.\n\nDay 8 is complete. You are doing well.`,
-  },
-  9: {
-    morning: `Morning.\n\nYour body is usually clearer by Day 9 and you might notice a lighter feeling through your morning or a steadier mood.\n\nLet that feel good without turning it into pressure. You do not need to push harder today. Consistency is what carries you through week two.`,
-    afternoon: `Checking in.\n\nIf you feel clearer today or notice fewer cravings, that is normal for Day 9. Your system is more regulated and your energy usually feels more predictable this week.\n\nStay steady and avoid overthinking your choices. The goal is ease, not control.`,
-    evening: `Tonight often feels calmer.\n\nYour body has settled into a clearer rhythm and your hunger and mood should feel more predictable now.\n\nTake the evening slowly and keep things simple.\n\nDay 9 is complete. You are doing well.`,
-  },
-  10: {
-    morning: `Morning.\n\nDay 10 often feels clearer and more stable. Your energy might rise a little earlier today and your hunger patterns may feel more predictable.\n\nLet this be a quiet win. Your body responds best when you stay calm and consistent. Keep your morning simple.`,
-    afternoon: `Checking in.\n\nIf you feel clearer this afternoon or notice your cravings are much lower, that is normal for Day 10. Your system is regulated and your body is responding to the rhythm you have built.\n\nAvoid tightening control or trying to speed things up. Progress happens faster when you stay steady.`,
-    evening: `Tonight often feels calmer and more predictable.\n\nIf you notice that your mood or hunger is steadier, that is a sign your body is adjusting well.\n\nKeep your evening routine quiet and consistent.\n\nDay 10 is complete. You are doing well.`,
-  },
-  11: {
-    morning: `Morning.\n\nDay 11 often feels steady and clear. You may notice lighter mornings, calmer hunger or a smoother mood today.\n\nYour system is more regulated now and it is normal to feel a little more grounded as you start your day. Consistency is carrying you, not perfection.`,
-    afternoon: `Checking in.\n\nIf today feels calmer or more predictable, that is expected for Day 11. Your body has settled into the rhythm you have built and your energy usually feels steadier this week.\n\nAvoid rushing ahead or trying to tighten control. Your progress comes from staying steady.`,
-    evening: `Day 11 usually ends with a quieter mind.\n\nIf your mood feels more stable or your hunger feels easier to manage tonight, take note of it. These are signs of a calmer system and stronger rhythm.\n\nKeep your evening simple and slow.\n\nDay 11 is complete. You are doing well.`,
-  },
-  12: {
-    morning: `Morning.\n\nDay 12 often feels clearer and more grounded. Your body has had time to settle and you may notice lighter mornings or a calmer mood today.\n\nLet this be a quiet moment of progress, not something you need to push. Your rhythm is doing the work for you.`,
-    afternoon: `Checking in.\n\nIf you feel clearer today or notice your cravings are softer, that is normal for Day 12. Your system is regulated and your body is responding well to the consistency you have built.\n\nStay steady and avoid rushing toward the end of the challenge.`,
-    evening: `Tonight might feel calmer or more reflective.\n\nYou have moved through most of the challenge and your body is showing the results of your consistency.\n\nTake a quiet moment to acknowledge the work you have done. Keep your evening simple and slow.\n\nDay 12 is complete. You are doing well.`,
-  },
-  13: {
-    morning: `Morning.\n\nDay 13 often feels lighter and clearer. Your body has had almost two full weeks to settle and you may notice a stronger sense of rhythm this morning.\n\nLet today be simple. The goal is to stay steady and let your body carry you through the final stretch.`,
-    afternoon: `Checking in.\n\nIf you feel more reflective today or notice a mix of pride and uncertainty, that is normal for Day 13. Your body is regulated and your system is calmer, so these thoughts naturally rise to the surface.\n\nStay steady with your meals and keep your day simple.`,
-    evening: `Your evening might feel softer or more emotional tonight.\n\nThis is normal. You have made real progress and your body is settling into a healthier rhythm.\n\nKeep your night calm and simple. A steady evening will help you move into the final day with clarity.\n\nDay 13 is complete. You are doing well.`,
-  },
-  14: {
-    morning: `Morning.\n\nDay 14 often feels lighter and clearer. Your body has had time to settle and you may notice calm energy or a steadier mood this morning.\n\nLet it be a quiet win. You have moved through two full weeks of consistency and your body is showing you what happens when you give it time and space.`,
-    afternoon: `Checking in.\n\nIf today feels a mix of calm, pride and a little uncertainty, that is normal for Day 14. Your system has shifted and it is expected to feel reflective as you come to the end of the challenge.\n\nYou have done something meaningful for your body over these past two weeks.`,
-    evening: `Take a moment tonight to notice how you feel.\n\nYour body is clearer. Your rhythm is steadier. Your cravings are softer. Your energy is more predictable.\n\nThese are all signs that your system has responded to your consistency.\n\nDay 14 is complete. You have done well.\n\nCheck your portal and email - your next step is waiting.`,
-  },
+const SMS_MORNING: Record<number, string> = {
+  1: `Welcome %FIRST%. Day 1 is live in your portal. Today is for setup - read the training plan and nutrition guide, do the morning reset. The work begins gently. Portal: %URL%`,
+  2: `Day 2 %FIRST%. First training day. Open today's coaching note in the portal before you train: %URL%`,
+  3: `Day 3 %FIRST%. Today's coaching note is in the portal: %URL%. The work compounds when the rhythm holds.`,
+  4: `Day 4 %FIRST%. Rest day. Today's coaching note is in the portal: %URL%. Sleep is the highest leverage variable - protect it.`,
+  5: `Day 5 %FIRST%. Halfway through Week 1. Today the Week One Progress Session lands. Open the portal for today's note + the session: %URL%`,
+  6: `Day 6 %FIRST%. Training day. Open today's coaching note before you train: %URL%`,
+  7: `Day 7 %FIRST%. End of Week 1. The Body Decode Check-In unlocks today - bottom of the portal home: %URL%`,
+  8: `Day 8 %FIRST%. Week 2 begins. The shifts compound from here. Today's coaching note is open: %URL%`,
+  9: `Day 9 %FIRST%. Today's coaching note is in the portal: %URL%. Stay steady.`,
+  10: `Day 10 %FIRST%. Training day. Open today's coaching note before you train: %URL%`,
+  11: `Day 11 %FIRST%. Today's coaching note is in the portal: %URL%. Three days to go.`,
+  12: `Day 12 %FIRST%. Training day. Open today's coaching note before you train: %URL%`,
+  13: `Day 13 %FIRST%. One day to go. Today's coaching note is in the portal: %URL%`,
+  14: `Day 14 %FIRST%. Final day. Your Body Decode Report drops in your inbox today. Today's note is in the portal: %URL%`,
 }
 
-const SMS_TRANSITION: Record<15 | 16 | 17, string> = {
-  15: `Good morning.\n\nDay 15 is your transition day. You completed the 14-Day Body Decode and today your body starts adjusting without the same daily structure.\n\nStay close to the rhythm you have built and keep things simple. Your next step is ready in your portal.`,
-  16: `Checking in.\n\nHow are you feeling without the full challenge structure?\n\nWhat feels easiest to keep in place - meals, water, sleep, or your general rhythm?\n\nThe 6-Week Body Recode Blueprint is where this reset becomes a result. Reply NEXT if you want the details.`,
-  17: `One last check in.\n\nYou finished the 14-Day Body Decode Challenge. That is not nothing.\n\nThe next phase - the 6-Week Blueprint - takes everything you started and builds on it with progressive training, signal-guided nutrition, and weekly accountability.\n\nHead to your portal to see the full next step.`,
+const SMS_AFTERNOON_BOOST: Partial<Record<number, string>> = {
+  5: `Quick reminder %FIRST%. Your Week One Progress Session is in the portal - watch it before bed if you haven't yet. It breaks down what your body has been doing all week: %URL%`,
+  7: `Quick check %FIRST%. Have you done your Body Decode Check-In yet? Takes 3 minutes and unlocks your Day 7 progress read. Portal: %URL%`,
+  14: `Your Body Decode Report is in your inbox %FIRST%. The full pattern read, what it means, where it shows up, and what comes next. Open the email.`,
 }
+
+function renderSms(template: string, firstName: string, portalUrl: string): string {
+  return template.replace(/%FIRST%/g, firstName).replace(/%URL%/g, portalUrl)
+}
+
 
 // ─── Challenge Email Helpers ────────────────────────────────────────────────
 
@@ -301,9 +256,14 @@ export const challengeSmsFunction = inngest.createFunction(
     // Wait 1 hour after enrollment before first message
     await step.sleep('sms-initial-wait', '1h')
 
+    // Minimal Pulse cadence:
+    //   - Day 1-14: one morning nudge per day pointing to the portal
+    //   - Day 5 afternoon: Week One Progress Session reminder
+    //   - Day 7 afternoon: Body Decode Check-In nudge
+    //   - Day 14 afternoon: Body Decode Report nudge (after the Day 14 email
+    //     has fired from challengeSequenceFunction)
+    // 14 morning + 3 afternoon boosts = 17 SMS across the 14 days.
     for (let day = 1; day <= 14; day++) {
-      const msgs = SMS_MESSAGES[day]
-
       // Check enrollment still active before each day's messages
       const isActive = await step.run(`sms-check-active-day${day}`, async () => {
         const admin = createAdminClient()
@@ -316,46 +276,31 @@ export const challengeSmsFunction = inngest.createFunction(
       })
       if (!isActive) return
 
-      // Morning message
+      // Morning portal nudge
       await step.run(`sms-day${day}-morning`, async () => {
-        let msg = msgs.morning
-        if (day === 1) msg += `\n\nYour portal: ${portalUrl}`
-        if (day === 7) msg += `\n\nPortal: ${portalUrl}`
+        const msg = renderSms(SMS_MORNING[day], firstName, portalUrl)
         await sendSms({ to: formattedPhone, message: msg })
       })
 
-      // Wait ~7h then afternoon message
-      await step.sleep(`sms-day${day}-afternoon-wait`, '7h')
-      await step.run(`sms-day${day}-afternoon`, async () => {
-        let msg = msgs.afternoon
-        if (day === 5) msg += `\n\nPortal: ${portalUrl}`
-        await sendSms({ to: formattedPhone, message: msg })
-      })
-
-      // Wait ~5h then evening message
-      await step.sleep(`sms-day${day}-evening-wait`, '5h')
-      await step.run(`sms-day${day}-evening`, async () => {
-        await sendSms({ to: formattedPhone, message: msgs.evening })
-      })
-
-      // Wait ~12h to start next day's morning message (total 24h cycle)
-      if (day < 14) {
-        await step.sleep(`sms-day${day}-next-day-wait`, '12h')
+      const afternoonBoost = SMS_AFTERNOON_BOOST[day]
+      if (afternoonBoost) {
+        // ~8h after morning for the boost
+        await step.sleep(`sms-day${day}-afternoon-wait`, '8h')
+        await step.run(`sms-day${day}-afternoon`, async () => {
+          const msg = renderSms(afternoonBoost, firstName, portalUrl)
+          await sendSms({ to: formattedPhone, message: msg })
+        })
+        // Remaining ~16h to next day's morning
+        if (day < 14) {
+          await step.sleep(`sms-day${day}-next-day-wait`, '16h')
+        }
+      } else {
+        // No boost today, full 24h sleep to next morning
+        if (day < 14) {
+          await step.sleep(`sms-day${day}-next-day-wait`, '24h')
+        }
       }
     }
-
-    // Transition days 15-17 (one message per day, 24h apart)
-    for (const day of [15, 16, 17] as const) {
-      await step.sleep(`sms-transition-day${day}-wait`, day === 15 ? '12h' : '24h')
-      await step.run(`sms-transition-day${day}`, async () => {
-        let msg = SMS_TRANSITION[day]
-        if (day === 15 || day === 17) msg += `\n\nPortal: ${portalUrl}`
-        await sendSms({ to: formattedPhone, message: msg })
-      })
-    }
-
-    // Suppress unused variable warning
-    void firstName
   }
 )
 
