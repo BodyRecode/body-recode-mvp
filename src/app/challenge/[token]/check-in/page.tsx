@@ -33,6 +33,9 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
   }
 
   const locked = currentDay < 7
+  const resultRevealUnlocked = currentDay >= 14
+  const showingLocked = savedResult && !resultRevealUnlocked
+  const showingResult = savedResult && resultRevealUnlocked
 
   return (
     <div style={{
@@ -65,12 +68,21 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
             fontSize: 'clamp(28px, 5vw, 40px)', fontWeight: 900,
             letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#1A1A1A', lineHeight: 1.1,
           }}>
-            {savedResult ? 'Your Body Decode result' : 'The Body Decode Check-In'}
+            {showingResult
+              ? 'Your Body Decode result'
+              : showingLocked
+              ? 'Check-In complete. Reveal on Day 14.'
+              : 'The Body Decode Check-In'}
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '20px' }} />
           {!savedResult && (
             <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
-              Two short parts. Five to ten minutes total. Rate eight biological markers, then answer two signal questions. Your dominant biological pattern is identified at the end. Your result is yours to keep.
+              Two short parts. Five to ten minutes total. Rate eight biological markers, then answer two signal questions. Your dominant biological pattern is identified at the end. Your full result is delivered on Day 14, when the reset is complete.
+            </p>
+          )}
+          {showingLocked && (
+            <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
+              You finished the Check-In. Your dominant biological pattern has been identified. Your full report reveals on Day 14, when the reset is complete and your body is ready for the next dose.
             </p>
           )}
         </div>
@@ -100,10 +112,10 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
         </div>
       )}
 
-      {/* Form / Result */}
+      {/* Form / Locked-result / Result */}
       {!locked && (
         <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px 32px' }}>
-          <BodyDecodeCheckIn token={token} savedResult={savedResult} />
+          <BodyDecodeCheckIn token={token} savedResult={savedResult} currentDay={currentDay} />
         </div>
       )}
 

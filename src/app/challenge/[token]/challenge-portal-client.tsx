@@ -708,24 +708,31 @@ export default function ChallengePortalClient({
                   Day 7 · Body Decode Check-In
                 </span>
                 <span style={{
-                  fontSize: '10px', fontWeight: 700, color: savedQuizResult ? '#1056D6' : '#6B6B6B',
+                  fontSize: '10px', fontWeight: 700,
+                  color: savedQuizResult ? (currentDay >= 14 ? '#1056D6' : '#1056D6') : '#6B6B6B',
                   background: savedQuizResult ? 'rgba(27,109,252,0.10)' : '#F5F5F5',
                   border: `1px solid ${savedQuizResult ? 'rgba(27,109,252,0.25)' : '#E5E5E5'}`,
                   borderRadius: '99px', padding: '3px 9px',
                   letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 }}>
-                  {savedQuizResult ? 'Complete' : '5-10 min · Unlocked'}
+                  {savedQuizResult
+                    ? (currentDay >= 14 ? 'Result ready' : 'Reveal on Day 14')
+                    : '5-10 min · Unlocked'}
                 </span>
               </div>
               <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
                 {savedQuizResult
-                  ? 'Your pattern has been read. Open the page to view your result.'
+                  ? (currentDay >= 14
+                      ? 'Your Body Decode result is ready.'
+                      : 'Check-In complete. Result reveals on Day 14.')
                   : 'Read the pattern your biology has settled into.'}
               </p>
               <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
                 {savedQuizResult
-                  ? 'Your result, pattern description, and what to focus on this week are all on the Day 7 page.'
-                  : 'A short structured signal audit. Rate 8 biological markers, answer 2 signal questions, and your dominant pattern is identified. Five to ten minutes. Your result is yours to keep.'}
+                  ? (currentDay >= 14
+                      ? 'Your progress score, pattern, and three actions for what comes next are all on the Day 7 page.'
+                      : `You finished the Check-In. Your full pattern report reveals on Day 14, when the reset is complete. ${Math.max(14 - currentDay, 0)} day${Math.max(14 - currentDay, 0) === 1 ? '' : 's'} to go.`)
+                  : 'A short structured signal audit. Rate 8 biological markers, answer 2 signal questions, and your dominant pattern is identified. Your full result is delivered on Day 14, when the reset is complete.'}
               </p>
               <a
                 href={`/challenge/${token}/day-7`}
@@ -737,7 +744,9 @@ export default function ChallengePortalClient({
                   letterSpacing: '0.01em',
                 }}
               >
-                {savedQuizResult ? 'View your pattern result →' : 'Open Body Decode Check-In →'}
+                {savedQuizResult
+                  ? (currentDay >= 14 ? 'View your Body Decode result →' : 'Open Day 7 page →')
+                  : 'Open Body Decode Check-In →'}
               </a>
             </div>
           </div>

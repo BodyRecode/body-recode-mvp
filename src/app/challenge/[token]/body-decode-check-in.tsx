@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { legacyLetterToSlug } from '@/lib/pattern-mapping'
+import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
 
 const PROGRESS_MARKERS = [
   { id: 'morning_energy',  label: 'Morning energy',            sub: 'How you feel when you wake up' },
@@ -36,49 +37,6 @@ const SIGNAL_QUESTIONS = [
     ],
   },
 ]
-
-const CHECKIN_PATTERNS: Record<string, { label: string; color: string; desc: string; actions: string[] }> = {
-  'stress-stored': {
-    label: 'Stress-Stored Pattern',
-    color: '#DC2626',
-    desc: 'Your body is storing and retaining in response to a chronic stress load. Cortisol and adrenaline are keeping your system in a state of low-grade alert, which signals your body to hold fat around the midsection as an energy reserve. The reset you have done this week is directly targeting this. The full picture requires understanding exactly how your stress hormones are behaving across the day.',
-    actions: [
-      'Sleep is your highest leverage point. Cortisol resets overnight. Prioritise sleep quality above everything else this week.',
-      'Keep training intensity moderate. Hard sessions spike cortisol further and can slow progress in this pattern.',
-      'Eat breakfast within 60 minutes of waking. This supports your morning cortisol curve and begins the process of hormonal regulation for the day.',
-    ],
-  },
-  'metabolic-drift': {
-    label: 'Insulin-Drift Pattern',
-    color: '#B7791F',
-    desc: 'Your body\'s ability to manage blood sugar has drifted. Insulin is staying elevated longer than it should, which drives energy crashes, persistent cravings, and the heaviness you feel after meals. Common in former athletes whose training response has changed but whose fuelling strategy has not adjusted. The nutrition structure you have been following this week is designed specifically for this. Restricting starchy carbohydrates to the post-training window forces your body to rebuild insulin sensitivity over time.',
-    actions: [
-      'Never skip breakfast. Blood sugar stability starts with your first meal. Skipping it creates a deficit that drives cravings throughout the rest of the day.',
-      'Walk after your evening meal. Even 15-20 minutes significantly lowers post-meal blood sugar.',
-      'Keep starchy carbohydrates strictly to the post-training window. Fruit is fine throughout the day. It metabolises differently to refined carbohydrates.',
-    ],
-  },
-  'hormonal-shift': {
-    label: 'Estrogen-Shift Pattern',
-    color: '#8b5cf6',
-    desc: 'Your body is in an oestrogen-driven conservation state. Storing and retaining as a protective mechanism driven by reproductive hormone signalling. Commonly associated with perimenopause, post-hormonal contraceptive adjustment, and states of chronic under-eating. One of the most common patterns and one of the most mismanaged. Typically treated with more restriction, which makes it worse.',
-    actions: [
-      'Avoid under-eating. This pattern responds poorly to caloric restriction. The body conserves harder when it perceives scarcity.',
-      'Prioritise sleep and recovery. Oestrogen balance is deeply tied to overnight restoration.',
-      'Be consistent with meal timing. Irregular eating disrupts the hormonal signals your body uses to decide whether to conserve or release stored energy.',
-    ],
-  },
-  'system-overload': {
-    label: 'Androgen-Decline Pattern',
-    color: '#1B6DFC',
-    desc: 'Your body is in a state of declining androgen function. Testosterone is no longer signalling muscle maintenance and recovery the way it once did. The result is reduced drive, slower recovery, and a sense that capacity is slipping despite consistent effort. Commonly presenting in men from their mid-thirties onward, and frequently missed or attributed to ageing as a fixed variable rather than a manageable hormonal state. Progress requires reducing total system demand and rebuilding the inputs that support testosterone signalling.',
-    actions: [
-      'Protect deep sleep. Testosterone synthesis happens during deep sleep. It is non-negotiable. Prioritise it above everything.',
-      'Eat enough protein and fat. Low-fat diets actively suppress testosterone production. Build meals around protein and do not fear dietary fat.',
-      'Train hard but rest harder. Strength stimulus is what signals testosterone synthesis. Recovery is what realises it. Do not chase volume.',
-    ],
-  },
-}
 
 function CheckInResult({ resultKey, progressScore }: { resultKey: string; progressScore: number }) {
   const pattern = CHECKIN_PATTERNS[resultKey]
@@ -153,10 +111,34 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
   )
 }
 
-export default function BodyDecodeCheckIn({ token, savedResult }: { token: string; savedResult: string | null }) {
+export default function BodyDecodeCheckIn({
+  token,
+  savedResult,
+  currentDay,
+}: {
+  token: string
+  savedResult: string | null
+  currentDay: number
+}) {
+  // Day 14 reveal gate (locked 2026-05-30): the Check-In form unlocks at
+  // Day 7 but the result is HELD until Day 14. So when there is a saved
+  // result and currentDay < 14, show the locked-reveal state, not the result.
+  const resultRevealUnlocked = currentDay >= 14
+
   // Translate any legacy letter quiz_result ('a'-'d') to canonical slug for rendering.
   const initialResultKey = savedResult ? legacyLetterToSlug(savedResult) : null
-  const [step, setStep] = useState<'progress' | 'signal' | 'result'>(initialResultKey ? 'result' : 'progress')
+
+  // If a result is saved and the reveal is locked, the user has already
+  // submitted - we show the locked state instead of putting them back into
+  // the form. Otherwise, fresh form OR the actual result.
+  const initialStep: 'progress' | 'signal' | 'result' | 'locked' =
+    initialResultKey
+      ? resultRevealUnlocked
+        ? 'result'
+        : 'locked'
+      : 'progress'
+
+  const [step, setStep] = useState<'progress' | 'signal' | 'result' | 'locked'>(initialStep)
   const [progress, setProgress] = useState<Record<string, string>>({})
   const [signals, setSignals] = useState<Record<string, string>>({})
   const [resultKey, setResultKey] = useState<string | null>(initialResultKey)
@@ -172,6 +154,7 @@ export default function BodyDecodeCheckIn({ token, savedResult }: { token: strin
     const result = signals['sq2']
     const answers = { ...progress, ...signals }
     let resolvedPattern = legacyLetterToSlug(result)
+    let revealUnlocked = resultRevealUnlocked
     try {
       const res = await fetch('/api/challenge/quiz', {
         method: 'POST',
@@ -180,12 +163,57 @@ export default function BodyDecodeCheckIn({ token, savedResult }: { token: strin
       })
       const data = await res.json().catch(() => null)
       if (data?.pattern) resolvedPattern = data.pattern
+      if (typeof data?.resultRevealUnlocked === 'boolean') revealUnlocked = data.resultRevealUnlocked
     } catch {
-      // still show result even if save fails
+      // still show locked acknowledgement even if save fails
     }
     setResultKey(resolvedPattern)
-    setStep('result')
+    setStep(revealUnlocked ? 'result' : 'locked')
     setSubmitting(false)
+  }
+
+  if (step === 'locked') {
+    const daysToReveal = Math.max(14 - currentDay, 0)
+    return (
+      <div style={{
+        background: '#FFFFFF',
+        border: '1px solid #E5E5E5',
+        borderLeft: '3px solid #1B6DFC',
+        borderRadius: '14px',
+        padding: '28px',
+        textAlign: 'center',
+      }}>
+        <div style={{
+          width: '56px', height: '56px', borderRadius: '50%',
+          background: 'rgba(27,109,252,0.08)',
+          border: '1px solid rgba(27,109,252,0.2)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          margin: '0 auto 18px',
+        }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1B6DFC" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 6v6l4 2" />
+            <circle cx="12" cy="12" r="10" />
+          </svg>
+        </div>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 12px' }}>
+          Check-In complete
+        </p>
+        <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
+          Your Body Decode result reveals on Day 14.
+        </p>
+        <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 8px' }}>
+          You finished the Check-In. Your full pattern read, why fat loss has stalled in your specific case, and your three actions for what comes next will be sent on Day 14 and shown here.
+        </p>
+        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: '0 0 4px' }}>
+          {daysToReveal > 0
+            ? `${daysToReveal} day${daysToReveal === 1 ? '' : 's'} until reveal.`
+            : 'Reveal opens shortly.'}
+        </p>
+        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>
+          Stay consistent with your training, your nutrition, your morning reset, and your evening rhythm. The reveal is the reward.
+        </p>
+      </div>
+    )
   }
 
   if (step === 'result' && resultKey) {

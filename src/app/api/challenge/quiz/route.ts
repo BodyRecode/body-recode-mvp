@@ -3,49 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { pickPatternSlug, type Gender, type QuizAnswer } from '@/lib/pattern-mapping'
-
-const PATTERNS: Record<string, { label: string; desc: string; color: string; actions: string[] }> = {
-  'stress-stored': {
-    label: 'Stress-Stored Pattern',
-    color: '#DC2626',
-    desc: 'Your body is storing and retaining in response to a chronic stress load. Cortisol and adrenaline are keeping your system in a state of low-grade alert, which signals your body to hold fat around the midsection as an energy reserve. The reset you have done this week is directly targeting this. The full picture requires understanding exactly how your stress hormones are behaving across the day.',
-    actions: [
-      'Sleep is your highest leverage point. Cortisol resets overnight. Prioritise sleep quality above everything else this week.',
-      'Keep training intensity moderate. Hard sessions spike cortisol further and can slow progress in this pattern.',
-      'Eat breakfast within 60 minutes of waking. This supports your morning cortisol curve and begins the process of hormonal regulation for the day.',
-    ],
-  },
-  'metabolic-drift': {
-    label: 'Insulin-Drift Pattern',
-    color: '#B7791F',
-    desc: 'Your body\'s ability to manage blood sugar has drifted. Insulin is staying elevated longer than it should, which drives energy crashes, persistent cravings, and the heaviness you feel after meals. Common in former athletes whose training response has changed but whose fuelling strategy has not adjusted. The nutrition structure you have been following this week is designed specifically for this. Restricting starchy carbohydrates to the post-training window forces your body to rebuild insulin sensitivity over time.',
-    actions: [
-      'Never skip breakfast. Blood sugar stability starts with your first meal. Skipping it creates a deficit that drives cravings throughout the rest of the day.',
-      'Walk after your evening meal. Even 15-20 minutes significantly lowers post-meal blood sugar.',
-      'Keep starchy carbohydrates strictly to the post-training window. Fruit is fine throughout the day. It metabolises differently to refined carbohydrates.',
-    ],
-  },
-  'hormonal-shift': {
-    label: 'Estrogen-Shift Pattern',
-    color: '#8b5cf6',
-    desc: 'Your body is in an oestrogen-driven conservation state. Storing and retaining as a protective mechanism driven by reproductive hormone signalling. Commonly associated with perimenopause, post-hormonal contraceptive adjustment, and states of chronic under-eating. One of the most common patterns and one of the most mismanaged. Typically treated with more restriction, which makes it worse.',
-    actions: [
-      'Avoid under-eating. This pattern responds poorly to caloric restriction. The body conserves harder when it perceives scarcity.',
-      'Prioritise sleep and recovery. Oestrogen balance is deeply tied to overnight restoration.',
-      'Be consistent with meal timing. Irregular eating disrupts the hormonal signals your body uses to decide whether to conserve or release stored energy.',
-    ],
-  },
-  'system-overload': {
-    label: 'Androgen-Decline Pattern',
-    color: '#1B6DFC',
-    desc: 'Your body is in a state of declining androgen function. Testosterone is no longer signalling muscle maintenance and recovery the way it once did. The result is reduced drive, slower recovery, and a sense that capacity is slipping despite consistent effort. Commonly presenting in men from their mid-thirties onward, and frequently missed or attributed to ageing as a fixed variable rather than a manageable hormonal state. Progress requires reducing total system demand and rebuilding the inputs that support testosterone signalling.',
-    actions: [
-      'Protect deep sleep. Testosterone synthesis happens during deep sleep. It is non-negotiable. Prioritise it above everything.',
-      'Eat enough protein and fat. Low-fat diets actively suppress testosterone production. Build meals around protein and do not fear dietary fat.',
-      'Train hard but rest harder. Strength stimulus is what signals testosterone synthesis. Recovery is what realises it. Do not chase volume.',
-    ],
-  },
-}
+import { CHECKIN_PATTERNS as PATTERNS } from '@/lib/checkin-patterns'
 
 function emailShell(body: string): string {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
@@ -98,7 +56,7 @@ export async function POST(request: NextRequest) {
 
   const { data: enrollment, error: fetchError } = await admin
     .from('challenge_enrollments')
-    .select('id, leads(name, email, gender)')
+    .select('id, enrolled_at, leads(name, email, gender)')
     .eq('token', token)
     .eq('status', 'active')
     .single()
@@ -133,7 +91,21 @@ export async function POST(request: NextRequest) {
   const firstName = leadRecord?.name?.split(' ')[0] ?? 'there'
   const email = leadRecord?.email
 
-  if (email && PATTERNS[patternSlug]) {
+  // Day 14 reveal gate (locked 2026-05-30): result is HELD until Day 14.
+  // The Check-In itself runs at Day 7+ (the form unlocks then), but the
+  // result email + in-portal display are gated until currentDay >= 14 so
+  // the participant experiences a single reveal moment at Challenge
+  // completion. If they happen to submit on/after Day 14 (rare late-takers),
+  // result emails immediately as before.
+  const enrolledAt = new Date(enrollment.enrolled_at as string)
+  const msPerDay = 1000 * 60 * 60 * 24
+  const currentDay = Math.min(
+    Math.floor((Date.now() - enrolledAt.getTime()) / msPerDay) + 1,
+    14
+  )
+  const resultRevealUnlocked = currentDay >= 14
+
+  if (email && PATTERNS[patternSlug] && resultRevealUnlocked) {
     const p = PATTERNS[patternSlug]
     const progressPercent = Math.round((progressScore / 8) * 100)
     try {
@@ -222,5 +194,9 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  return NextResponse.json({ success: true, pattern: patternSlug })
+  return NextResponse.json({
+    success: true,
+    pattern: patternSlug,
+    resultRevealUnlocked,
+  })
 }
