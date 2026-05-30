@@ -28,60 +28,97 @@ const SIGNAL_QUESTIONS = [
   },
 ]
 
+// In-portal Day 14 view (shown when result exists AND currentDay >= 14).
+// Mirrors the Day 14 Body Decode Report email structure exactly: pattern
+// hero + what this pattern means + where this shows up + what this is NOT
+// (anti-shame misreads) + three pattern actions + Blueprint CTA. Progress
+// recap intentionally omitted; bridge callback line at top references the
+// Day 7 score.
 function CheckInResult({ resultKey, progressScore }: { resultKey: string; progressScore: number }) {
   const pattern = CHECKIN_PATTERNS[resultKey]
   if (!pattern) return null
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-      {/* Progress summary */}
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '20px 22px' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
-          Your 7-Day Progress
-        </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '10px' }}>
-          <span style={{ fontSize: '32px', fontWeight: 900, color: '#1B6DFC', letterSpacing: '-0.02em' }}>{progressScore}</span>
-          <span style={{ fontSize: '14px', color: '#4A4A4A' }}>of 8 markers improving</span>
-        </div>
-        <div style={{ height: '6px', background: '#E5E5E5', borderRadius: '99px', overflow: 'hidden' }}>
-          <div style={{ height: '100%', background: '#1B6DFC', borderRadius: '99px', width: `${(progressScore / 8) * 100}%`, transition: 'width 0.6s ease' }} />
-        </div>
-        <p style={{ fontSize: '13px', color: '#4A4A4A', marginTop: '10px', lineHeight: 1.6 }}>
-          {progressScore >= 6
-            ? 'Strong week. Your system is responding well to the structure.'
-            : progressScore >= 4
-            ? 'Solid progress. The markers that have not shifted yet will often follow in week two.'
-            : 'Your body is still adjusting. Week two is typically where the clearer shifts happen. Stay consistent.'}
-        </p>
-      </div>
+      {/* Bridge callback line — references Day 7 score without repeating the card */}
+      <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
+        You finished the 14 days. On Day 7 you logged <strong style={{ color: '#1A1A1A' }}>{progressScore} of 8 markers improving</strong>. That signal is what made this reading possible.
+      </p>
 
-      {/* Pattern result */}
+      {/* Pattern hero — dark, big, branded */}
       <div style={{
-        background: '#FFFFFF',
-        border: `1px solid ${pattern.color}30`,
-        borderLeft: `3px solid ${pattern.color}`,
-        borderRadius: '12px', padding: '24px',
+        background: '#1A1A1A',
+        border: `1px solid ${pattern.color}40`,
+        borderLeft: `4px solid ${pattern.color}`,
+        borderRadius: '16px',
+        padding: '28px 26px',
       }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: pattern.color, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: pattern.color, letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 12px' }}>
           Your Biological Pattern
         </p>
-        <p style={{ fontSize: '21px', fontWeight: 800, color: '#1A1A1A', marginBottom: '14px', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
+        <p style={{ fontSize: '28px', fontWeight: 900, color: '#FFFFFF', margin: '0 0 16px', letterSpacing: '-0.025em', lineHeight: 1.1 }}>
           {pattern.label}
         </p>
-        <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+        <div style={{ width: '40px', height: '3px', background: pattern.color, borderRadius: '2px', marginBottom: '16px' }} />
+        <p style={{ fontSize: '14px', color: '#D5D5D5', lineHeight: 1.75, margin: 0 }}>
           {pattern.desc}
         </p>
       </div>
 
-      {/* Actions */}
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '22px' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '16px' }}>
-          What to focus on this week
+      {/* What this pattern means — doctrinal interpretation */}
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: pattern.color, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 14px' }}>
+          What this pattern means
+        </p>
+        {pattern.whatItMeans.map((para, i) => (
+          <p key={i} style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.75, margin: i === 0 ? '0' : '14px 0 0' }}>
+            {para}
+          </p>
+        ))}
+      </div>
+
+      {/* Where this shows up — lived expression */}
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: pattern.color, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 14px' }}>
+          Where this shows up
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {pattern.whereItShows.map((item, i) => (
+            <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+              <span style={{ display: 'inline-block', width: '6px', height: '6px', background: pattern.color, borderRadius: '99px', marginTop: '9px', flexShrink: 0 }} />
+              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{item}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* What this is NOT — anti-shame misread defusal */}
+      <div style={{ background: '#F7F7F5', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 8px' }}>
+          What this is NOT
+        </p>
+        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: '0 0 14px', fontStyle: 'italic' }}>
+          Read these. The way this pattern is usually framed is part of the reason it stays unsolved.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {pattern.whatItIsNot.map((item, i) => (
+            <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: '14px', fontWeight: 800, color: '#6B6B6B', minWidth: '16px' }}>×</span>
+              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{item}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Three pattern-specific actions */}
+      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 16px' }}>
+          Your three pattern-specific actions
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           {pattern.actions.map((action, i) => (
             <div key={i} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: pattern.color, minWidth: '20px', paddingTop: '2px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: pattern.color, minWidth: '20px', paddingTop: '2px', fontFamily: 'monospace' }}>
                 {String(i + 1).padStart(2, '0')}
               </span>
               <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>{action}</p>
@@ -90,13 +127,38 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
         </div>
       </div>
 
-      {/* No commercial CTA in-portal at Day 7.
-          The participant has 7 days of Challenge work remaining; the
-          in-portal result focuses on the pattern + actions for Week 2.
-          The Day 7 result email handles the Blueprint commercial layer
-          for those open to acting on it from outside the Challenge frame.
-          The Day 14 ascension email is the formal next push.
-          Decision logged 2026-05-30. */}
+      {/* What comes next — Blueprint ascension */}
+      <div style={{
+        background: '#1A1A1A',
+        border: '1px solid rgba(27,109,252,0.3)',
+        borderRadius: '14px',
+        padding: '28px 26px',
+      }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#B5CFFC', letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 12px' }}>
+          What comes next
+        </p>
+        <p style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', margin: '0 0 14px', lineHeight: 1.25 }}>
+          The 6-Week Body Rewire Blueprint.
+        </p>
+        <p style={{ fontSize: '14px', color: '#D5D5D5', lineHeight: 1.75, margin: '0 0 18px' }}>
+          You have read your pattern. The next dose is correction. The Blueprint takes the pattern you have just had read and runs six weeks of focused, pattern-specific corrective work.
+        </p>
+        <a
+          href="https://bodyrecode.au/blueprint?source=challenge_day14_report"
+          style={{
+            display: 'inline-block',
+            padding: '14px 24px',
+            borderRadius: '10px',
+            background: '#1B6DFC',
+            color: '#FFFFFF',
+            fontSize: '14px',
+            fontWeight: 800,
+            textDecoration: 'none',
+          }}
+        >
+          Start the 6-Week Blueprint · $97
+        </a>
+      </div>
     </div>
   )
 }

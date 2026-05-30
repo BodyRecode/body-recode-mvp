@@ -213,7 +213,6 @@ ${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live 
           firstName,
           patternSlug,
           progressScore,
-          markerRatings,
         })
 
         await resend.emails.send({

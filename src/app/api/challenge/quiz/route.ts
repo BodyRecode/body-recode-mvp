@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
     try {
       const resend = new Resend(process.env.RESEND_API_KEY)
       const built = resultRevealUnlocked
-        ? buildDay14BodyDecodeReportEmail({ firstName, patternSlug, progressScore, markerRatings })
+        ? buildDay14BodyDecodeReportEmail({ firstName, patternSlug, progressScore })
         : buildDay7ProgressEmail({ firstName, progressScore, markerRatings })
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',

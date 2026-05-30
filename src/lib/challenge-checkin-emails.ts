@@ -153,20 +153,85 @@ function day14TeaserCard(): string {
 `
 }
 
-function patternCard(patternSlug: string): string {
+function patternHeroCard(patternSlug: string): string {
   const p = CHECKIN_PATTERNS[patternSlug]
   if (!p) return ''
   return `
-<div style="background:#FFFFFF;border:1px solid ${p.color}25;border-left:3px solid ${p.color};border-radius:14px;padding:24px;margin:0 0 16px;">
-  <p style="font-size:11px;font-weight:700;color:${p.color};letter-spacing:0.14em;text-transform:uppercase;margin:0 0 8px;">
+<div style="background:#1A1A1A;border:1px solid ${p.color}40;border-left:4px solid ${p.color};border-radius:16px;padding:32px 28px;margin:0 0 16px;">
+  <p style="font-size:11px;font-weight:700;color:${p.color};letter-spacing:0.18em;text-transform:uppercase;margin:0 0 14px;">
     Your Biological Pattern
   </p>
-  <p style="font-size:21px;font-weight:800;color:#1A1A1A;margin:0 0 14px;letter-spacing:-0.01em;line-height:1.2;">
+  <p style="font-size:32px;font-weight:900;color:#FFFFFF;margin:0 0 18px;letter-spacing:-0.025em;line-height:1.1;">
     ${p.label}
   </p>
-  <p style="font-size:14px;color:#4A4A4A;line-height:1.75;margin:0;">
+  <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 18px;"><tr><td style="width:40px;height:3px;background:${p.color};border-radius:2px;line-height:0;">&nbsp;</td></tr></table>
+  <p style="font-size:15px;color:#D5D5D5;line-height:1.75;margin:0;">
     ${p.desc}
   </p>
+</div>
+`
+}
+
+function patternMeansCard(patternSlug: string): string {
+  const p = CHECKIN_PATTERNS[patternSlug]
+  if (!p) return ''
+  return `
+<div style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:14px;padding:24px 26px;margin:0 0 16px;">
+  <p style="font-size:11px;font-weight:700;color:${p.color};letter-spacing:0.14em;text-transform:uppercase;margin:0 0 14px;">
+    What this pattern means
+  </p>
+  ${p.whatItMeans.map((para, i) => `
+    <p style="font-size:14px;color:#4A4A4A;line-height:1.75;margin:${i === 0 ? '0' : '14px 0 0'};">
+      ${para}
+    </p>
+  `).join('')}
+</div>
+`
+}
+
+function patternShowsCard(patternSlug: string): string {
+  const p = CHECKIN_PATTERNS[patternSlug]
+  if (!p) return ''
+  return `
+<div style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:14px;padding:24px 26px;margin:0 0 16px;">
+  <p style="font-size:11px;font-weight:700;color:${p.color};letter-spacing:0.14em;text-transform:uppercase;margin:0 0 14px;">
+    Where this shows up
+  </p>
+  <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    ${p.whereItShows.map(item => `
+      <tr>
+        <td style="padding:8px 0;vertical-align:top;width:18px;">
+          <span style="display:inline-block;width:6px;height:6px;background:${p.color};border-radius:99px;margin-top:9px;"></span>
+        </td>
+        <td style="padding:8px 0;font-size:14px;color:#4A4A4A;line-height:1.65;">${item}</td>
+      </tr>
+    `).join('')}
+  </table>
+</div>
+`
+}
+
+function patternIsNotCard(patternSlug: string): string {
+  const p = CHECKIN_PATTERNS[patternSlug]
+  if (!p) return ''
+  return `
+<div style="background:#F7F7F5;border:1px solid #E5E5E5;border-radius:14px;padding:24px 26px;margin:0 0 16px;">
+  <p style="font-size:11px;font-weight:700;color:#6B6B6B;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 8px;">
+    What this is NOT
+  </p>
+  <p style="font-size:13px;color:#6B6B6B;line-height:1.6;margin:0 0 14px;font-style:italic;">
+    Read these. The way this pattern is usually framed is part of the reason it stays unsolved.
+  </p>
+  <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    ${p.whatItIsNot.map(item => `
+      <tr>
+        <td style="padding:8px 0;vertical-align:top;width:24px;">
+          <span style="font-size:14px;font-weight:800;color:#6B6B6B;">×</span>
+        </td>
+        <td style="padding:8px 0;font-size:14px;color:#4A4A4A;line-height:1.65;">${item}</td>
+      </tr>
+    `).join('')}
+  </table>
 </div>
 `
 }
@@ -195,9 +260,15 @@ function patternActionsCard(patternSlug: string): string {
 
 function blueprintCtaCard(): string {
   return `
-<div style="background:#1A1A1A;border:1px solid rgba(27,109,252,0.3);border-radius:14px;padding:24px 26px;margin:0 0 24px;">
-  <p style="font-size:14px;color:#B5CFFC;line-height:1.7;margin:0 0 16px;">
-    You have read your pattern. The next dose is correction. The 6-Week Body Rewire Blueprint takes the pattern you have just had read and runs six weeks of focused, pattern-specific corrective work. Training calibrated. Nutrition timed. Weekly coaching written for your pattern.
+<div style="background:#1A1A1A;border:1px solid rgba(27,109,252,0.3);border-radius:14px;padding:28px 26px;margin:0 0 24px;">
+  <p style="font-size:11px;font-weight:700;color:#B5CFFC;letter-spacing:0.18em;text-transform:uppercase;margin:0 0 14px;">
+    What comes next
+  </p>
+  <p style="font-size:20px;font-weight:800;color:#FFFFFF;letter-spacing:-0.02em;margin:0 0 14px;line-height:1.25;">
+    The 6-Week Body Rewire Blueprint.
+  </p>
+  <p style="font-size:14px;color:#D5D5D5;line-height:1.75;margin:0 0 18px;">
+    You have read your pattern. The next dose is correction. The Blueprint takes the pattern you have just had read and runs six weeks of focused, pattern-specific corrective work. Training calibrated. Nutrition timed. Weekly coaching written for your pattern.
   </p>
   <a href="https://bodyrecode.au/blueprint?source=challenge_day14_report" style="display:inline-block;padding:14px 24px;border-radius:10px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:800;text-decoration:none;">
     Start the 6-Week Blueprint · $97
@@ -243,18 +314,19 @@ export function buildDay7ProgressEmail({
 // ─── Day 14 Body Decode Report Email ────────────────────────────────────
 // Sent on Day 14 by Inngest if Check-In was completed, OR sent immediately
 // by the API route when a late-taker submits on/after Day 14.
-// Contains full pattern reveal + pattern-specific actions + Blueprint
-// ascension push. The 7-Day progress recap is included for context.
+// Pattern-focused: hero + what this pattern means + where this shows up +
+// what this is NOT (anti-shame misreads) + three pattern actions +
+// Blueprint ascension push. Progress recap intentionally OMITTED; the
+// participant already saw it in the Day 7 Progress email. A single bridge
+// callback line at the top references the Day 7 score.
 export function buildDay14BodyDecodeReportEmail({
   firstName,
   patternSlug,
   progressScore,
-  markerRatings,
 }: {
   firstName: string
   patternSlug: string
   progressScore: number
-  markerRatings: Record<string, string>
 }): { subject: string; html: string } {
   const subject = `${firstName}, your Body Decode Report is ready`
   const html = emailShell(`
@@ -266,15 +338,19 @@ export function buildDay14BodyDecodeReportEmail({
     </p>
     <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 22px;"><tr><td style="width:48px;height:3px;background:#1B6DFC;border-radius:2px;line-height:0;">&nbsp;</td></tr></table>
     <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:0;">Hi ${firstName},</p>
-    <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:8px 0 24px;">
-      You finished the 14 days. Here is your 7-day progress, the pattern your biology has settled into, the three actions specific to your pattern, and what comes next.
+    <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:8px 0 8px;">
+      You finished the 14 days. On Day 7 you logged ${progressScore} of 8 markers improving. That signal is what made this reading possible.
     </p>
-    ${progressScoreCard(progressScore)}
-    ${markerBreakdownCard(markerRatings)}
-    ${patternCard(patternSlug)}
+    <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:0 0 22px;">
+      Below is the read itself. The pattern your biology has settled into, what it actually means, where it shows up, what it is commonly mistaken for, the three actions specific to it, and what to do next.
+    </p>
+    ${patternHeroCard(patternSlug)}
+    ${patternMeansCard(patternSlug)}
+    ${patternShowsCard(patternSlug)}
+    ${patternIsNotCard(patternSlug)}
     ${patternActionsCard(patternSlug)}
     <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:0 0 20px;">
-      This is your baseline now. The question is: what do you build on top of it?
+      This is your baseline now. The question is what you build on top of it.
     </p>
     ${blueprintCtaCard()}
     <p style="color:#4A4A4A;font-size:14px;line-height:1.7;margin:0;">Or just reply to this email and I will personally help you figure out the right next step.</p>
