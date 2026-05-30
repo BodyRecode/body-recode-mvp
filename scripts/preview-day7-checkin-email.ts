@@ -51,17 +51,46 @@ function emailShell(body: string): string {
 
 async function main() {
   const p = PATTERNS[PATTERN_SLUG]
+  const progressPercent = Math.round((PROGRESS_SCORE / 8) * 100)
   const html = emailShell(`
-    <p style="color:#1A1A1A;font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;">
-      Your Body Decode Check-In
+    <!-- HERO: eyebrow + H1 + divider + intro -->
+    <p style="font-size:11px;font-weight:700;color:#1B6DFC;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 14px;">
+      Day 7 · Body Decode Check-In
     </p>
-    <p>Hi ${FIRST},</p>
-    <p>You completed the Day 7 Body Decode Check-In. Here is your result.</p>
+    <p style="color:#1A1A1A;font-size:34px;font-weight:900;letter-spacing:-0.035em;line-height:1.1;margin:0 0 14px;">
+      Your Body Decode <span style="color:#1B6DFC;">result.</span>
+    </p>
+    <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 22px;"><tr><td style="width:48px;height:3px;background:#1B6DFC;border-radius:2px;line-height:0;">&nbsp;</td></tr></table>
+    <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:0;">Hi ${FIRST},</p>
+    <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:8px 0 24px;">
+      Seven days of consistent work produced the data we needed to read your body's dominant pattern. Your result is below.
+    </p>
 
-    <div style="background:#FFFFFF;border:1px solid #2a2826;border-radius:12px;padding:18px 22px;margin:20px 0;">
-      <p style="font-size:11px;font-weight:700;color:#999999;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 8px;">Your 7-Day Progress</p>
-      <p style="font-size:28px;font-weight:900;color:#1B6DFC;margin:0 0 4px;letter-spacing:-0.02em;">${PROGRESS_SCORE}<span style="font-size:15px;font-weight:500;color:#999999;letter-spacing:0;"> of 8 markers improving</span></p>
-      <p style="font-size:13px;color:#999999;margin:0;line-height:1.6;">
+    <!-- PROGRESS card with bigger score + progress bar + Signal Blue left accent -->
+    <div style="background:#FFFFFF;border:1px solid #E5E5E5;border-left:3px solid #1B6DFC;border-radius:14px;padding:24px 26px;margin:0 0 16px;">
+      <p style="font-size:11px;font-weight:700;color:#1056D6;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 16px;">
+        Your 7-Day Progress
+      </p>
+      <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 16px;">
+        <tr>
+          <td style="vertical-align:baseline;padding:0;">
+            <span style="font-size:52px;font-weight:900;color:#1B6DFC;letter-spacing:-0.04em;line-height:1;">${PROGRESS_SCORE}</span>
+          </td>
+          <td style="vertical-align:baseline;padding:0 0 0 14px;">
+            <span style="font-size:15px;font-weight:600;color:#4A4A4A;">of 8 markers<br/>improving</span>
+          </td>
+        </tr>
+      </table>
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 14px;">
+        <tr>
+          <td bgcolor="#E5E5E5" style="background:#E5E5E5;height:8px;line-height:0;border-radius:99px;">
+            <table cellpadding="0" cellspacing="0" border="0" width="${progressPercent}%">
+              <tr><td bgcolor="#1B6DFC" style="background:#1B6DFC;height:8px;line-height:0;border-radius:99px;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <p style="font-size:14px;color:#4A4A4A;margin:0;line-height:1.65;">
         ${PROGRESS_SCORE >= 6
           ? 'Strong week. Your system is responding well to the structure.'
           : PROGRESS_SCORE >= 4
