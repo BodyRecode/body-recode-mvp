@@ -55,7 +55,7 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
           You are in.
         </p>
         <p style={{ fontSize: '15px', color: '#1056D6', lineHeight: 1.6, margin: 0 }}>
-          Check your email for portal access. Daily coaching messages will arrive on your phone. Day 1 starts now.
+          Check your email for portal access. Your daily coaching opens each morning in the portal. Reminders and check-ins land on your phone. Day 1 starts now.
         </p>
       </div>
     )
@@ -99,7 +99,7 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
       />
       <input
         type="tel"
-        placeholder="Mobile number (for daily coaching messages)"
+        placeholder="Mobile number (for session reminders and daily check-ins)"
         value={form.phone}
         onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
         required
@@ -605,7 +605,7 @@ export default function ChallengePage() {
             Fourteen days. No deficit. No high intensity. Just the read.
           </h2>
           <p style={{ fontSize: '16px', color: '#999999', marginBottom: '32px', lineHeight: 1.65 }}>
-            Free to join. Instant portal access. Daily coaching messages start the moment you sign up.
+            Free to join. Instant portal access. Day 1 starts the moment you sign up.
           </p>
           <SignupForm position="mid" darkBg />
         </div>
