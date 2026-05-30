@@ -193,7 +193,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
       {/* Primary CTA - Take the Check-In */}
       {!locked && (
         <div style={{ maxWidth: '720px', margin: '0 auto', padding: '24px 24px 8px' }}>
-          <Link href={`/challenge/${token}#body-decode-check-in`} style={{
+          <Link href={`/challenge/${token}/check-in`} style={{
             display: 'block', width: '100%', padding: '18px', borderRadius: '12px',
             background: '#1B6DFC', color: '#FFFFFF',
             fontSize: '17px', fontWeight: 800, textAlign: 'center',
@@ -367,7 +367,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
       {/* Secondary CTA at bottom (if unlocked) */}
       {!locked && (
         <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 8px' }}>
-          <Link href={`/challenge/${token}#body-decode-check-in`} style={{
+          <Link href={`/challenge/${token}/check-in`} style={{
             display: 'block', width: '100%', padding: '18px', borderRadius: '12px',
             background: '#1B6DFC', color: '#FFFFFF',
             fontSize: '17px', fontWeight: 800, textAlign: 'center',
