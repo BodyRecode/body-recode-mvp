@@ -3,17 +3,7 @@
 import { useState } from 'react'
 import { legacyLetterToSlug } from '@/lib/pattern-mapping'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
-
-const PROGRESS_MARKERS = [
-  { id: 'morning_energy',  label: 'Morning energy',            sub: 'How you feel when you wake up' },
-  { id: 'afternoon_energy',label: 'Afternoon energy',          sub: 'The 2-4pm window' },
-  { id: 'puffiness',       label: 'Puffiness and bloating',    sub: 'Through the day' },
-  { id: 'sleep',           label: 'Sleep quality',             sub: 'How rested you feel' },
-  { id: 'cravings',        label: 'Food cravings and hunger',  sub: 'Predictability and intensity' },
-  { id: 'clarity',         label: 'Mental clarity and focus',  sub: 'Sharpness across the day' },
-  { id: 'mood',            label: 'Mood stability',            sub: 'Consistency and evenness' },
-  { id: 'digestion',       label: 'Digestion',                 sub: 'Comfort and regularity' },
-]
+import { PROGRESS_MARKERS, MARKER_RATING_META, type MarkerRating } from '@/lib/checkin-markers'
 
 const SIGNAL_QUESTIONS = [
   {
@@ -111,42 +101,189 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
   )
 }
 
+// Day 7 in-portal view: shown between submission (Day 7+) and Day 14 reveal.
+// Renders progress score + per-marker breakdown + brief interpretation +
+// universal Week 2 guidance + Day 14 Body Decode Report teaser. No pattern.
+// Mirrors the structure of the Day 7 progress-feedback email.
+function Day7InPortalView({
+  markerRatings,
+  progressScore,
+}: {
+  markerRatings: Record<string, string>
+  progressScore: number
+}) {
+  const progressPercent = Math.round((progressScore / 8) * 100)
+  const interpretation = progressScore >= 6
+    ? 'Most of your markers are improving. Your system has responded well to the first week of structure. The markers that have not shifted yet usually follow as the rhythm carries into Week 2.'
+    : progressScore >= 4
+    ? 'A solid first week. Some markers are clearly shifting, others are still settling. That mix is exactly what Day 7 looks like for most participants. The patterns of the second week typically bring the rest into line.'
+    : 'Your body is still finding its baseline. That happens for some people. The shifts often appear later in Week 2 once the system has had more time with the new structure. Stay consistent.'
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+      {/* Progress score card */}
+      <div style={{
+        background: '#FFFFFF',
+        border: '1px solid #E5E5E5',
+        borderLeft: '3px solid #1B6DFC',
+        borderRadius: '14px',
+        padding: '24px 26px',
+      }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 16px' }}>
+          Your 7-Day Progress
+        </p>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px', marginBottom: '16px' }}>
+          <span style={{ fontSize: '48px', fontWeight: 900, color: '#1B6DFC', letterSpacing: '-0.04em', lineHeight: 1 }}>{progressScore}</span>
+          <span style={{ fontSize: '15px', fontWeight: 600, color: '#4A4A4A' }}>of 8 markers improving</span>
+        </div>
+        <div style={{ height: '8px', background: '#E5E5E5', borderRadius: '99px', overflow: 'hidden', marginBottom: '14px' }}>
+          <div style={{ height: '100%', width: `${progressPercent}%`, background: '#1B6DFC', borderRadius: '99px', transition: 'width 0.6s ease' }} />
+        </div>
+        <p style={{ fontSize: '14px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>
+          {interpretation}
+        </p>
+      </div>
+
+      {/* Per-marker breakdown */}
+      <div style={{
+        background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px',
+      }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 16px' }}>
+          Marker-by-marker
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+          {PROGRESS_MARKERS.map((m, i) => {
+            const ratingKey = (markerRatings[m.id] ?? 'same') as keyof typeof MARKER_RATING_META
+            const meta = MARKER_RATING_META[ratingKey]
+            return (
+              <div key={m.id} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                gap: '14px',
+                padding: '12px 0',
+                borderBottom: i < PROGRESS_MARKERS.length - 1 ? '1px solid #F0F0F0' : 'none',
+              }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 2px' }}>{m.label}</p>
+                  <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.5 }}>{m.sub}</p>
+                </div>
+                <span style={{
+                  fontSize: '11px', fontWeight: 700,
+                  color: meta.color, background: meta.background, border: `1px solid ${meta.border}`,
+                  padding: '5px 11px', borderRadius: '99px', letterSpacing: '0.04em',
+                  whiteSpace: 'nowrap',
+                }}>
+                  {meta.label}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Universal Week 2 guidance */}
+      <div style={{
+        background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px',
+      }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 16px' }}>
+          What to focus on in Week 2
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {[
+            'Protect sleep above all else. Most of the biological work this Challenge is doing happens overnight. Cortisol resets, hormones recalibrate, inflammation lowers.',
+            'Keep training intensity moderate. The reset only works if the system feels safe. Hard sessions spike cortisol and slow the regulation.',
+            'Eat breakfast within 60 minutes of waking. This anchors the cortisol curve and sets the rhythm for the rest of the day.',
+            'Walk after your evening meal. 15-20 minutes is enough. It lowers post-meal blood sugar and supports the overnight insulin recovery.',
+          ].map((principle, i) => (
+            <div key={i} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+              <span style={{
+                fontSize: '11px', fontWeight: 800, color: '#1B6DFC',
+                fontFamily: '"Courier New",Consolas,monospace',
+                minWidth: '24px', paddingTop: '3px',
+              }}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <p style={{ fontSize: '14px', color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>{principle}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Day 14 teaser */}
+      <div style={{
+        background: '#1A1A1A',
+        border: '1px solid rgba(27,109,252,0.3)',
+        borderRadius: '14px',
+        padding: '24px 26px',
+        position: 'relative', overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute', top: '-60%', right: '-30%',
+          width: '380px', height: '380px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.12) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
+        <p style={{ position: 'relative', fontSize: '11px', fontWeight: 700, color: '#B5CFFC', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 12px' }}>
+          On Day 14
+        </p>
+        <p style={{ position: 'relative', fontSize: '20px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
+          Your full Body Decode Report.
+        </p>
+        <p style={{ position: 'relative', fontSize: '14px', color: '#B5CFFC', margin: 0, lineHeight: 1.7 }}>
+          On Day 14 you receive the full read. Which of four patterns your body is currently working through, why fat loss has stalled in your specific case, and the three pattern-specific actions for what comes next. Stay consistent until then. The reveal is the reward for the work you put in across the full 14 days.
+        </p>
+      </div>
+    </div>
+  )
+}
+
 export default function BodyDecodeCheckIn({
   token,
   savedResult,
+  savedAnswers,
   currentDay,
 }: {
   token: string
   savedResult: string | null
+  savedAnswers: Record<string, string> | null
   currentDay: number
 }) {
-  // Day 14 reveal gate (locked 2026-05-30): the Check-In form unlocks at
-  // Day 7 but the result is HELD until Day 14. So when there is a saved
-  // result and currentDay < 14, show the locked-reveal state, not the result.
+  // Day 14 reveal gate (locked 2026-05-30): the Check-In submits on Day 7+
+  // but the PATTERN reveal is held until Day 14. Between Day 7 and Day 14
+  // the participant sees a "Day 7 in-portal view" showing their progress
+  // score, per-marker breakdown, brief interpretation, Week 2 guidance,
+  // and a Day 14 teaser. No pattern. On Day 14+ the full result renders.
   const resultRevealUnlocked = currentDay >= 14
 
   // Translate any legacy letter quiz_result ('a'-'d') to canonical slug for rendering.
   const initialResultKey = savedResult ? legacyLetterToSlug(savedResult) : null
 
-  // If a result is saved and the reveal is locked, the user has already
-  // submitted - we show the locked state instead of putting them back into
-  // the form. Otherwise, fresh form OR the actual result.
-  const initialStep: 'progress' | 'signal' | 'result' | 'locked' =
+  // Seed `progress` state with the saved marker ratings for return visits,
+  // so the Day 7 in-portal view has data to render without re-fetching.
+  // Filters out the sq (signal question) keys; only the 8 marker ratings.
+  const initialMarkerRatings: Record<string, string> = savedAnswers
+    ? Object.fromEntries(Object.entries(savedAnswers).filter(([k]) => !k.startsWith('sq')))
+    : {}
+
+  const initialStep: 'progress' | 'signal' | 'result' | 'day7-view' =
     initialResultKey
       ? resultRevealUnlocked
         ? 'result'
-        : 'locked'
+        : 'day7-view'
       : 'progress'
 
-  const [step, setStep] = useState<'progress' | 'signal' | 'result' | 'locked'>(initialStep)
-  const [progress, setProgress] = useState<Record<string, string>>({})
+  const [step, setStep] = useState<'progress' | 'signal' | 'result' | 'day7-view'>(initialStep)
+  const [progress, setProgress] = useState<Record<string, string>>(initialMarkerRatings)
   const [signals, setSignals] = useState<Record<string, string>>({})
   const [resultKey, setResultKey] = useState<string | null>(initialResultKey)
   const [submitting, setSubmitting] = useState(false)
 
   const allProgressDone = PROGRESS_MARKERS.every(m => progress[m.id])
   const allSignalsDone = SIGNAL_QUESTIONS.every(q => signals[q.id])
-  const progressScore = Object.values(progress).filter(v => v === 'better').length
+  const progressScore = Object.entries(progress)
+    .filter(([k]) => !k.startsWith('sq'))
+    .filter(([, v]) => v === 'better')
+    .length
 
   async function handleSubmit() {
     if (!allSignalsDone || submitting) return
@@ -165,55 +302,15 @@ export default function BodyDecodeCheckIn({
       if (data?.pattern) resolvedPattern = data.pattern
       if (typeof data?.resultRevealUnlocked === 'boolean') revealUnlocked = data.resultRevealUnlocked
     } catch {
-      // still show locked acknowledgement even if save fails
+      // still show day 7 view even if save fails
     }
     setResultKey(resolvedPattern)
-    setStep(revealUnlocked ? 'result' : 'locked')
+    setStep(revealUnlocked ? 'result' : 'day7-view')
     setSubmitting(false)
   }
 
-  if (step === 'locked') {
-    const daysToReveal = Math.max(14 - currentDay, 0)
-    return (
-      <div style={{
-        background: '#FFFFFF',
-        border: '1px solid #E5E5E5',
-        borderLeft: '3px solid #1B6DFC',
-        borderRadius: '14px',
-        padding: '28px',
-        textAlign: 'center',
-      }}>
-        <div style={{
-          width: '56px', height: '56px', borderRadius: '50%',
-          background: 'rgba(27,109,252,0.08)',
-          border: '1px solid rgba(27,109,252,0.2)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          margin: '0 auto 18px',
-        }}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1B6DFC" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 6v6l4 2" />
-            <circle cx="12" cy="12" r="10" />
-          </svg>
-        </div>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 12px' }}>
-          Check-In complete
-        </p>
-        <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
-          Your Body Decode result reveals on Day 14.
-        </p>
-        <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 8px' }}>
-          You finished the Check-In. Your full pattern read, why fat loss has stalled in your specific case, and your three actions for what comes next will be sent on Day 14 and shown here.
-        </p>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: '0 0 4px' }}>
-          {daysToReveal > 0
-            ? `${daysToReveal} day${daysToReveal === 1 ? '' : 's'} until reveal.`
-            : 'Reveal opens shortly.'}
-        </p>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>
-          Stay consistent with your training, your nutrition, your morning reset, and your evening rhythm. The reveal is the reward.
-        </p>
-      </div>
-    )
+  if (step === 'day7-view') {
+    return <Day7InPortalView markerRatings={progress} progressScore={progressScore} />
   }
 
   if (step === 'result' && resultKey) {

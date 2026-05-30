@@ -10,14 +10,16 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
   // (no DB query, no saved result, no real participant). For design preview only.
   let currentDay: number
   let savedResult: string | null = null
+  let savedAnswers: Record<string, string> | null = null
   if (token === 'preview') {
     currentDay = 14
     savedResult = null
+    savedAnswers = null
   } else {
     const admin = createAdminClient()
     const { data: enrollment } = await admin
       .from('challenge_enrollments')
-      .select('id, enrolled_at, status, quiz_result')
+      .select('id, enrolled_at, status, quiz_result, quiz_answers')
       .eq('token', token)
       .single()
 
@@ -30,11 +32,14 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
       14
     )
     savedResult = (enrollment.quiz_result as string | null) ?? null
+    savedAnswers = (enrollment.quiz_answers as Record<string, string> | null) ?? null
   }
 
   const locked = currentDay < 7
   const resultRevealUnlocked = currentDay >= 14
-  const showingLocked = savedResult && !resultRevealUnlocked
+  // "Day 7 view" = post-submission, pre-Day-14 state. Shows progress + Week 2
+  // guidance + Day 14 teaser. Pattern is held until Day 14.
+  const showingDay7View = savedResult && !resultRevealUnlocked
   const showingResult = savedResult && resultRevealUnlocked
 
   return (
@@ -69,20 +74,20 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
             letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#1A1A1A', lineHeight: 1.1,
           }}>
             {showingResult
-              ? 'Your Body Decode result'
-              : showingLocked
-              ? 'Check-In complete. Reveal on Day 14.'
+              ? 'Your Body Decode Report'
+              : showingDay7View
+              ? 'Your Day 7 progress is in.'
               : 'The Body Decode Check-In'}
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '20px' }} />
           {!savedResult && (
             <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
-              Two short parts. Five to ten minutes total. Rate eight biological markers, then answer two signal questions. Your dominant biological pattern is identified at the end. Your full result is delivered on Day 14, when the reset is complete.
+              Two short parts. Five to ten minutes total. Rate eight biological markers, then answer two signal questions. Your full Body Decode Report is delivered on Day 14, identifying which of four patterns your body is currently working through.
             </p>
           )}
-          {showingLocked && (
+          {showingDay7View && (
             <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
-              You finished the Check-In. Your dominant biological pattern has been identified. Your full report reveals on Day 14, when the reset is complete and your body is ready for the next dose.
+              You finished the Check-In. Below is what your body has done across the first seven days, what those signals mean, and what to focus on through Week 2. Your full Body Decode Report arrives on Day 14.
             </p>
           )}
         </div>
@@ -112,10 +117,15 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
         </div>
       )}
 
-      {/* Form / Locked-result / Result */}
+      {/* Form / Day-7-view / Result */}
       {!locked && (
         <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px 32px' }}>
-          <BodyDecodeCheckIn token={token} savedResult={savedResult} currentDay={currentDay} />
+          <BodyDecodeCheckIn
+            token={token}
+            savedResult={savedResult}
+            savedAnswers={savedAnswers}
+            currentDay={currentDay}
+          />
         </div>
       )}
 
