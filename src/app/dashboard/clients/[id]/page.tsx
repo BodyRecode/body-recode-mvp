@@ -607,9 +607,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               ) : (
                 <p className="text-xs text-[#999999]">Not sent yet — adds a 5-question follow-up card to the client's portal.</p>
               )}
+              {latestSupplementaryInvitation?.status === 'complete' && (
+                <p className="text-[11px] text-[#999999] mt-1">Need to update meds or dietary context again? Send a fresh one.</p>
+              )}
             </div>
             <div className="flex items-center gap-2">
-              {!latestSupplementaryInvitation && (
+              {(!latestSupplementaryInvitation || latestSupplementaryInvitation.status === 'complete') && (
                 <SendSupplementaryIntakeButton
                   clientId={client.id}
                   clientName={client.name}
