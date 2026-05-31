@@ -99,7 +99,7 @@ function PositioningTab() {
         <SectionLabel>Platform Spec</SectionLabel>
         <div className="space-y-3">
           {[
-            { platform: 'Instagram', handle: '@kade_dunstone_', link: 'bodyrecode.au/scorecard?source=instagram_kade' },
+            { platform: 'Instagram', handle: '@kade_dunstone_', link: 'performance.bodyrecode.au/scorecard?source=instagram_kade' },
           ].map(r => (
             <div key={r.platform} className="flex items-center justify-between py-2 border-b border-stone-200 last:border-0">
               <div>
@@ -668,8 +668,8 @@ function LaunchTab() {
         <SectionLabel>Source Tracking</SectionLabel>
         <div className="space-y-2">
           {[
-            { platform: 'Instagram bio',     url: 'bodyrecode.au/scorecard?source=instagram_kade' },
-            { platform: 'Instagram story',   url: 'bodyrecode.au/scorecard?source=instagram_kade_story' },
+            { platform: 'Instagram bio',     url: 'performance.bodyrecode.au/scorecard?source=instagram_kade' },
+            { platform: 'Instagram story',   url: 'performance.bodyrecode.au/scorecard?source=instagram_kade_story' },
           ].map(r => (
             <div key={r.platform} className="flex items-center justify-between py-2 border-b border-stone-200/60 last:border-0">
               <p className="text-sm text-stone-600 w-36 shrink-0">{r.platform}</p>

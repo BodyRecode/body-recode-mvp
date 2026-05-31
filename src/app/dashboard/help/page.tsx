@@ -2148,7 +2148,7 @@ export default function HelpPage() {
               <li><strong>Ad sets:</strong> Silent Frustration, Diagnosis, Contrarian - all at $10/day, Australia, broad audience</li>
               <li><strong>Optimisation:</strong> Maximize number of conversions - Body Recode pixel (ID: 972772552072010) - Lead event</li>
               <li><strong>Ad account:</strong> 190093840320613 - under Body Recode Business Manager</li>
-              <li><strong>Destination:</strong> <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">bodyrecode.au/scorecard?source=facebook_ad_[adset]</code></li>
+              <li><strong>Destination:</strong> <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">performance.bodyrecode.au/scorecard?source=facebook_ad_[adset]</code></li>
             </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Pixel</p>
@@ -2415,7 +2415,7 @@ export default function HelpPage() {
 
               <div className="bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg overflow-hidden">
                 <div className="px-4 py-2 border-b border-[#E5E5E5]"><span className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider">Link in Bio</span></div>
-                <div className="px-4 py-3 font-mono text-sm text-blue-500 select-all">bodyrecode.au/scorecard?source=instagram</div>
+                <div className="px-4 py-3 font-mono text-sm text-blue-500 select-all">performance.bodyrecode.au/scorecard?source=instagram</div>
               </div>
 
               <div className="bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg overflow-hidden">
@@ -2429,12 +2429,12 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Tracked Source URLs</p>
             <div className="space-y-2">
               {[
-                { source: 'Instagram bio', url: 'bodyrecode.au/scorecard?source=instagram' },
-                { source: 'Instagram story', url: 'bodyrecode.au/scorecard?source=instagram_story' },
-                { source: 'LinkedIn post', url: 'bodyrecode.au/scorecard?source=linkedin_post' },
-                { source: 'LinkedIn profile bio', url: 'bodyrecode.au/scorecard?source=linkedin_profile' },
-                { source: 'QR floor banner', url: 'bodyrecode.au/scorecard?source=qr_floor_banner' },
-                { source: 'QR flyer', url: 'bodyrecode.au/scorecard?source=qr_flyer' },
+                { source: 'Instagram bio', url: 'performance.bodyrecode.au/scorecard?source=instagram' },
+                { source: 'Instagram story', url: 'performance.bodyrecode.au/scorecard?source=instagram_story' },
+                { source: 'LinkedIn post', url: 'performance.bodyrecode.au/scorecard?source=linkedin_post' },
+                { source: 'LinkedIn profile bio', url: 'performance.bodyrecode.au/scorecard?source=linkedin_profile' },
+                { source: 'QR floor banner', url: 'performance.bodyrecode.au/scorecard?source=qr_floor_banner' },
+                { source: 'QR flyer', url: 'performance.bodyrecode.au/scorecard?source=qr_flyer' },
               ].map(row => (
                 <div key={row.source} className="flex items-center gap-3 bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg px-4 py-2.5">
                   <span className="text-[#6B6B6B] text-sm w-36 shrink-0">{row.source}</span>

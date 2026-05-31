@@ -241,7 +241,7 @@ export default function FunnelBProductArcPage() {
                   SCORECARD
                 </p>
                 <p style={{ fontSize: '10px', color: '#999999', margin: 0 }}>
-                  bodyrecode.au/scorecard
+                  performance.bodyrecode.au/scorecard
                 </p>
               </div>
             </div>

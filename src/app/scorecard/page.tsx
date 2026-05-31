@@ -2,8 +2,9 @@ import { redirect } from 'next/navigation'
 
 /**
  * The canonical Body State Scorecard lives at performance.bodyrecode.au/scorecard
- * (in the performance-bodyrecode repo). The bodyrecode.au/scorecard URL is preserved
- * as a redirect because it is referenced from many live surfaces:
+ * (in the performance-bodyrecode repo). The legacy bodyrecode.au/scorecard URL is preserved
+ * as a redirect because it may still be referenced from older surfaces (Instagram bio,
+ * QR codes printed in the past, etc.):
  *
  *   - Instagram bio link (?source=instagram, ?source=instagram_story)
  *   - LinkedIn profile / post / comment links

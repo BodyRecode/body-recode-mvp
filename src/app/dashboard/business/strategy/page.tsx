@@ -2239,9 +2239,9 @@ export default function StrategyPage() {
                 <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">Source URL variants</p>
                 <div className="space-y-1.5">
                   {[
-                    { where: 'In-post CTA',         url: 'bodyrecode.au/scorecard?source=linkedin_post' },
-                    { where: 'Profile bio link',    url: 'bodyrecode.au/scorecard?source=linkedin_profile' },
-                    { where: 'First comment / DM',  url: 'bodyrecode.au/scorecard?source=linkedin_comment' },
+                    { where: 'In-post CTA',         url: 'performance.bodyrecode.au/scorecard?source=linkedin_post' },
+                    { where: 'Profile bio link',    url: 'performance.bodyrecode.au/scorecard?source=linkedin_profile' },
+                    { where: 'First comment / DM',  url: 'performance.bodyrecode.au/scorecard?source=linkedin_comment' },
                   ].map(r => (
                     <div key={r.where} className="flex items-center gap-3 text-[11px]">
                       <span className="text-stone-600 w-32 shrink-0">{r.where}</span>
@@ -2442,7 +2442,7 @@ export default function StrategyPage() {
                   handle: '@body_recode_',
                   status: 'Live',
                   bioUpdated: true,
-                  linkSet: 'bodyrecode.au/scorecard?source=instagram',
+                  linkSet: 'performance.bodyrecode.au/scorecard?source=instagram',
                   statusColor: 'teal' as const,
                 },
                 {
@@ -2450,7 +2450,7 @@ export default function StrategyPage() {
                   handle: 'Body Recode',
                   status: 'Live',
                   bioUpdated: true,
-                  linkSet: 'bodyrecode.au/scorecard?source=facebook',
+                  linkSet: 'performance.bodyrecode.au/scorecard?source=facebook',
                   statusColor: 'teal' as const,
                 },
                 {
@@ -2458,7 +2458,7 @@ export default function StrategyPage() {
                   handle: 'Kade Dunstone (personal)',
                   status: 'Launching',
                   bioUpdated: false,
-                  linkSet: 'bodyrecode.au/scorecard?source=linkedin_profile',
+                  linkSet: 'performance.bodyrecode.au/scorecard?source=linkedin_profile',
                   statusColor: 'amber' as const,
                 },
               ].map(row => (
@@ -2502,7 +2502,7 @@ export default function StrategyPage() {
                 </div>
                 <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
                   <p className="text-stone-400 mb-1">Bio link</p>
-                  <p className="text-blue-500">bodyrecode.au/scorecard?source=instagram</p>
+                  <p className="text-blue-500">performance.bodyrecode.au/scorecard?source=instagram</p>
                 </div>
                 <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
                   <p className="text-stone-400 mb-1">Account type</p>
@@ -2555,7 +2555,7 @@ export default function StrategyPage() {
                 </div>
                 <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
                   <p className="text-stone-400 mb-1">CTA / scorecard link</p>
-                  <p className="text-blue-500">bodyrecode.au/scorecard?source=facebook</p>
+                  <p className="text-blue-500">performance.bodyrecode.au/scorecard?source=facebook</p>
                 </div>
                 <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
                   <p className="text-stone-400 mb-1">Bio updated</p>
@@ -2576,16 +2576,16 @@ export default function StrategyPage() {
               </div>
               <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
                 <p className="text-stone-400 mb-1">Profile bio link</p>
-                <p className="text-blue-500 break-all">bodyrecode.au/scorecard?source=linkedin_profile</p>
+                <p className="text-blue-500 break-all">performance.bodyrecode.au/scorecard?source=linkedin_profile</p>
               </div>
               <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
                 <p className="text-stone-400 mb-1">In-post CTA link</p>
-                <p className="text-blue-500 break-all">bodyrecode.au/scorecard?source=linkedin_post</p>
+                <p className="text-blue-500 break-all">performance.bodyrecode.au/scorecard?source=linkedin_post</p>
                 <p className="text-stone-400 mt-1">Put in first comment, not post body (kills reach)</p>
               </div>
               <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
                 <p className="text-stone-400 mb-1">Comment / DM follow-up link</p>
-                <p className="text-blue-500 break-all">bodyrecode.au/scorecard?source=linkedin_comment</p>
+                <p className="text-blue-500 break-all">performance.bodyrecode.au/scorecard?source=linkedin_comment</p>
               </div>
             </div>
             <p className="text-xs text-stone-400 mt-3">All variants collapse to <code className="text-blue-500 font-mono">source=linkedin</code> in the CRM with the variant preserved as <code className="text-blue-500 font-mono">source_detail</code> for granular attribution.</p>
@@ -2617,7 +2617,7 @@ export default function StrategyPage() {
                 // Instagram (pre-launch is complete)
                 { key: 'ig_username', item: 'Username is @body_recode_', defaultDone: true, group: 'Instagram' },
                 { key: 'ig_bio',      item: 'Instagram bio matches spec exactly', defaultDone: true, group: 'Instagram' },
-                { key: 'ig_biolink',  item: 'Bio link set to bodyrecode.au/scorecard?source=instagram', defaultDone: true, group: 'Instagram' },
+                { key: 'ig_biolink',  item: 'Bio link set to performance.bodyrecode.au/scorecard?source=instagram', defaultDone: true, group: 'Instagram' },
                 { key: 'ig_photo',    item: 'Profile photo on-brand and high contrast', defaultDone: false, group: 'Instagram' },
                 { key: 'ig_highlights', item: 'Highlight covers set up (can be empty)', defaultDone: false, group: 'Instagram' },
                 { key: 'ig_account',  item: 'Account is Creator or Business (not Personal)', defaultDone: true, group: 'Instagram' },
@@ -2627,7 +2627,7 @@ export default function StrategyPage() {
                 { key: 'fb_cta',     item: 'Facebook CTA button pointing to scorecard', defaultDone: false, group: 'Facebook' },
                 // LinkedIn (launching)
                 { key: 'li_bio',     item: 'LinkedIn personal bio includes Body Recode positioning', defaultDone: false, group: 'LinkedIn' },
-                { key: 'li_biolink', item: 'LinkedIn profile link set to bodyrecode.au/scorecard?source=linkedin_profile', defaultDone: false, group: 'LinkedIn' },
+                { key: 'li_biolink', item: 'LinkedIn profile link set to performance.bodyrecode.au/scorecard?source=linkedin_profile', defaultDone: false, group: 'LinkedIn' },
                 { key: 'li_banner',  item: 'LinkedIn banner image set (Studio of Ten banner can carry over until BR-specific is made)', defaultDone: false, group: 'LinkedIn' },
                 { key: 'li_post1',   item: 'First BR LinkedIn post scheduled / drafted (Tue 19 May 2026)', defaultDone: false, group: 'LinkedIn' },
               ].map(({ key, item, defaultDone, group }) => {
