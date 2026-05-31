@@ -1,6 +1,11 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import FunnelClient from './funnel-client'
 
+// Always fetch fresh - the funnel dashboard must reflect new enrollments
+// the moment they happen, not the cached version from page-build time.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function FunnelPage() {
   const admin = createAdminClient()
 
