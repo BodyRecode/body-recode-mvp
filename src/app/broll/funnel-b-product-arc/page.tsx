@@ -187,7 +187,6 @@ export default function FunnelBProductArcPage() {
                 padding: '16px 18px',
                 borderRadius: '12px',
                 border: `2px solid ${C.blue}`,
-                boxShadow: '0 8px 24px rgba(2, 26, 77, 0.25)',
                 textAlign: 'center',
                 minHeight: CARD_MIN_HEIGHT,
                 height: '100%',
