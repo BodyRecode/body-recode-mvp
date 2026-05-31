@@ -165,13 +165,14 @@ export default function FunnelBProductArcPage() {
           */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(5, 1fr)',
+            // 9 columns: alternating card (1fr) / arrow gutter (32px) / card / ...
+            gridTemplateColumns: '1.1fr 32px 1fr 32px 1.1fr 32px 1.1fr 32px 0.9fr',
             gridTemplateRows: 'auto 30px auto 30px auto 30px auto',
             gap: '12px',
             alignItems: 'stretch',
           }}>
-            {/* Row 1 — Stage 4 ascension card, col 4 (above Stage 3) */}
-            <div style={{ gridColumn: '4 / 5', gridRow: '1 / 2' }}>
+            {/* Row 1 — Stage 4 ascension card, col 7 (above Stage 3) */}
+            <div style={{ gridColumn: '7 / 8', gridRow: '1 / 2' }}>
               <div style={{
                 background: C.blueDeepest,
                 color: '#FFFFFF',
@@ -193,13 +194,13 @@ export default function FunnelBProductArcPage() {
               </div>
             </div>
 
-            {/* Row 2 — UP arrow from Stage 3 to Stage 4, col 4 */}
-            <div style={{ gridColumn: '4 / 5', gridRow: '2 / 3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '20px', color: C.blue, fontWeight: 800 }}>↑</span>
+            {/* Row 2 — UP arrow from Stage 3 to Stage 4, col 7 */}
+            <div style={{ gridColumn: '7 / 8', gridRow: '2 / 3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '22px', color: C.blue, fontWeight: 800 }}>↑</span>
             </div>
 
-            {/* Row 3 — Main horizontal funnel: Scorecard → Stage 1 → Stage 2 → Stage 3 → Bolt Ons */}
-            {/* Scorecard */}
+            {/* Row 3 — Main horizontal funnel with → arrows in cols 2, 4, 6, 8 */}
+            {/* Scorecard (col 1) */}
             <div style={{ gridColumn: '1 / 2', gridRow: '3 / 4' }}>
               <div style={{
                 background: C.text,
@@ -223,8 +224,12 @@ export default function FunnelBProductArcPage() {
                 </p>
               </div>
             </div>
-            {/* Stage 1 */}
-            <div style={{ gridColumn: '2 / 3', gridRow: '3 / 4' }}>
+            {/* → arrow col 2 */}
+            <div style={{ gridColumn: '2 / 3', gridRow: '3 / 4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '22px', color: C.blue, fontWeight: 800 }}>→</span>
+            </div>
+            {/* Stage 1 (col 3) */}
+            <div style={{ gridColumn: '3 / 4', gridRow: '3 / 4' }}>
               <div style={zone1Card(C.blue)}>
                 <div>
                   <span style={stageBadge(C.blue)}>Stage 1</span>
@@ -234,8 +239,12 @@ export default function FunnelBProductArcPage() {
                 <p style={cardPrice}>Free</p>
               </div>
             </div>
-            {/* Stage 2 */}
-            <div style={{ gridColumn: '3 / 4', gridRow: '3 / 4' }}>
+            {/* → arrow col 4 */}
+            <div style={{ gridColumn: '4 / 5', gridRow: '3 / 4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '22px', color: C.blue, fontWeight: 800 }}>→</span>
+            </div>
+            {/* Stage 2 (col 5) */}
+            <div style={{ gridColumn: '5 / 6', gridRow: '3 / 4' }}>
               <div style={zone1Card(C.blueDark)}>
                 <div>
                   <span style={stageBadge(C.blueDark)}>Stage 2</span>
@@ -245,8 +254,12 @@ export default function FunnelBProductArcPage() {
                 <p style={cardPrice}>$97 one-time</p>
               </div>
             </div>
-            {/* Stage 3 */}
-            <div style={{ gridColumn: '4 / 5', gridRow: '3 / 4' }}>
+            {/* → arrow col 6 */}
+            <div style={{ gridColumn: '6 / 7', gridRow: '3 / 4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '22px', color: C.blue, fontWeight: 800 }}>→</span>
+            </div>
+            {/* Stage 3 (col 7) */}
+            <div style={{ gridColumn: '7 / 8', gridRow: '3 / 4' }}>
               <div style={zone1Card(C.blueDeeper)}>
                 <div>
                   <span style={stageBadge(C.blueDeeper)}>Stage 3</span>
@@ -256,8 +269,12 @@ export default function FunnelBProductArcPage() {
                 <p style={cardPrice}>$49/wk</p>
               </div>
             </div>
-            {/* Bolt Ons (placeholder, RIGHT of Stage 3) */}
-            <div style={{ gridColumn: '5 / 6', gridRow: '3 / 4' }}>
+            {/* → arrow col 8 */}
+            <div style={{ gridColumn: '8 / 9', gridRow: '3 / 4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '22px', color: C.grey, fontWeight: 800 }}>→</span>
+            </div>
+            {/* Bolt Ons (col 9, RIGHT of Stage 3) */}
+            <div style={{ gridColumn: '9 / 10', gridRow: '3 / 4' }}>
               <div style={zone1Card(C.grey, true)}>
                 <div>
                   <span style={{ ...stageBadge(C.grey), background: '#D4D4D4', color: C.text }}>Side · Placeholder</span>
@@ -269,16 +286,16 @@ export default function FunnelBProductArcPage() {
               </div>
             </div>
 
-            {/* Row 4 — DOWN arrows from Stage 2 + Stage 3 */}
-            <div style={{ gridColumn: '3 / 4', gridRow: '4 / 5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '20px', color: C.amber, fontWeight: 800 }}>↓</span>
+            {/* Row 4 — DOWN arrows from Stage 2 (col 5) and Stage 3 (col 7) */}
+            <div style={{ gridColumn: '5 / 6', gridRow: '4 / 5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '22px', color: C.amber, fontWeight: 800 }}>↓</span>
             </div>
-            <div style={{ gridColumn: '4 / 5', gridRow: '4 / 5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '20px', color: C.grey, fontWeight: 800 }}>↓</span>
+            <div style={{ gridColumn: '7 / 8', gridRow: '4 / 5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '22px', color: C.grey, fontWeight: 800 }}>↓</span>
             </div>
 
-            {/* Row 5 — Side branches: 90-Day FU (under Stage 2) + Ebooks (under Stage 3) */}
-            <div style={{ gridColumn: '3 / 4', gridRow: '5 / 6' }}>
+            {/* Row 5 — 90-Day FU (col 5) + Ebooks (col 7) */}
+            <div style={{ gridColumn: '5 / 6', gridRow: '5 / 6' }}>
               <div style={zone1Card(C.amber)}>
                 <div>
                   <span style={stageBadge(C.amber)}>Re-engagement loop</span>
@@ -289,7 +306,7 @@ export default function FunnelBProductArcPage() {
                 <p style={{ ...cardPrice, color: C.amber }}>Free · auto</p>
               </div>
             </div>
-            <div style={{ gridColumn: '4 / 5', gridRow: '5 / 6' }}>
+            <div style={{ gridColumn: '7 / 8', gridRow: '5 / 6' }}>
               <div style={zone1Card(C.grey, true)}>
                 <div>
                   <span style={{ ...stageBadge(C.grey), background: '#D4D4D4', color: C.text }}>Side · Placeholder</span>
@@ -301,13 +318,13 @@ export default function FunnelBProductArcPage() {
               </div>
             </div>
 
-            {/* Row 6 — DOWN arrow from Ebooks to Socials */}
-            <div style={{ gridColumn: '4 / 5', gridRow: '6 / 7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '20px', color: C.grey, fontWeight: 800 }}>↓</span>
+            {/* Row 6 — DOWN arrow from Ebooks to Socials, col 7 */}
+            <div style={{ gridColumn: '7 / 8', gridRow: '6 / 7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '22px', color: C.grey, fontWeight: 800 }}>↓</span>
             </div>
 
-            {/* Row 7 — Socials (under Ebooks) with IG + LinkedIn icons */}
-            <div style={{ gridColumn: '4 / 5', gridRow: '7 / 8' }}>
+            {/* Row 7 — Socials (under Ebooks) with IG + LinkedIn icons, col 7 */}
+            <div style={{ gridColumn: '7 / 8', gridRow: '7 / 8' }}>
               <div style={{
                 background: C.bg,
                 border: `1px solid ${C.blue}40`,
