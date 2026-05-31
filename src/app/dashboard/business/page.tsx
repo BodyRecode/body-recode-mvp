@@ -17,11 +17,13 @@ import {
   Check,
   Clock,
   ArrowUpRight,
+  Mail,
 } from 'lucide-react'
 import { PageHeader, Card, SectionLabel, Btn, MONO_FONT } from '@/components/dashboard/ui'
 
 const modules = [
   { label: 'CRM',          description: 'Pipeline, contacts, opportunities',         href: '/dashboard/business/crm',          icon: Users },
+  { label: 'Waitlist',     description: 'Product launch waitlist signups',            href: '/dashboard/business/waitlist',     icon: Mail },
   { label: 'Inbox',        description: 'Email threads per lead',                    href: '/dashboard/business/inbox',        icon: MessageSquare },
   { label: 'Bookings',     description: 'Zoom 1, Zoom 2, calendar',                  href: '/dashboard/business/bookings',     icon: Calendar },
   { label: 'Availability', description: 'Set days and times leads can book',         href: '/dashboard/business/availability', icon: Clock },
