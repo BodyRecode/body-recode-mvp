@@ -140,147 +140,224 @@ export default function FunnelBProductArcPage() {
           </h1>
           <p style={{
             fontSize: '17px', color: C.body,
-            textAlign: 'center', marginBottom: '40px',
+            textAlign: 'center', marginBottom: '32px',
             maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.5,
           }}>
-            One entry. Three state-matched paths. Vertical ascension into bespoke 1:1.
+            Scorecard at entry. Five stages of ascension. Side branches feed the model.
           </p>
 
-          {/* Level 1 — Entry */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
-            <div style={{
-              background: C.text,
-              color: '#FFFFFF',
-              padding: '12px 28px',
-              borderRadius: '10px',
-              fontSize: '14px', fontWeight: 900, letterSpacing: '0.04em',
-            }}>
-              SCORECARD · bodyrecode.au/scorecard
+          {/*
+            5-column × 7-row grid representing the funnel architecture:
+
+              Row 1: . . . . [Stage 4 ascension] .
+              Row 2: . . . .       ↑              .
+              Row 3: [Scorecard] → [Stage 1] → [Stage 2] → [Stage 3] → [Bolt Ons]
+              Row 4: . .          .         ↓        ↓     .
+              Row 5: . .          .   [90 Day FU]  [Ebooks] .
+              Row 6: . .          .         .        ↓     .
+              Row 7: . .          .         .   [Socials] .
+
+            Columns: Scorecard | Stage 1 | Stage 2 | Stage 3 | Bolt Ons
+            Stage 4 ascension is UP from Stage 3 only (not from any stage).
+            90-Day Follow Up branches DOWN from Stage 2 (Blueprint).
+            Ebooks → Socials chain branches DOWN from Stage 3 (Membership).
+            Bolt Ons sits to the RIGHT of Stage 3.
+          */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5, 1fr)',
+            gridTemplateRows: 'auto 30px auto 30px auto 30px auto',
+            gap: '12px',
+            alignItems: 'stretch',
+          }}>
+            {/* Row 1 — Stage 4 ascension card, col 4 (above Stage 3) */}
+            <div style={{ gridColumn: '4 / 5', gridRow: '1 / 2' }}>
+              <div style={{
+                background: C.blueDeepest,
+                color: '#FFFFFF',
+                padding: '16px 18px',
+                borderRadius: '12px',
+                border: `2px solid ${C.blue}`,
+                boxShadow: '0 8px 24px rgba(2, 26, 77, 0.25)',
+                textAlign: 'center',
+              }}>
+                <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#B5CFFC', margin: '0 0 4px' }}>
+                  Stage 4 · Ascension ceiling
+                </p>
+                <p style={{ fontSize: '15px', fontWeight: 900, margin: '0 0 3px', letterSpacing: '-0.01em' }}>
+                  Online 1:1 Performance Coaching
+                </p>
+                <p style={{ fontSize: '11px', color: '#B5CFFC', margin: 0, lineHeight: 1.4 }}>
+                  $240 commencement + $149/wk · In-person 2x $299/wk · 3x $409/wk
+                </p>
+              </div>
+            </div>
+
+            {/* Row 2 — UP arrow from Stage 3 to Stage 4, col 4 */}
+            <div style={{ gridColumn: '4 / 5', gridRow: '2 / 3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '20px', color: C.blue, fontWeight: 800 }}>↑</span>
+            </div>
+
+            {/* Row 3 — Main horizontal funnel: Scorecard → Stage 1 → Stage 2 → Stage 3 → Bolt Ons */}
+            {/* Scorecard */}
+            <div style={{ gridColumn: '1 / 2', gridRow: '3 / 4' }}>
+              <div style={{
+                background: C.text,
+                color: '#FFFFFF',
+                padding: '16px 18px',
+                borderRadius: '12px',
+                textAlign: 'center',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}>
+                <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#999999', margin: '0 0 6px' }}>
+                  Entry
+                </p>
+                <p style={{ fontSize: '15px', fontWeight: 900, margin: '0 0 4px' }}>
+                  SCORECARD
+                </p>
+                <p style={{ fontSize: '10px', color: '#999999', margin: 0 }}>
+                  bodyrecode.au/scorecard
+                </p>
+              </div>
+            </div>
+            {/* Stage 1 */}
+            <div style={{ gridColumn: '2 / 3', gridRow: '3 / 4' }}>
+              <div style={zone1Card(C.blue)}>
+                <div>
+                  <span style={stageBadge(C.blue)}>Stage 1</span>
+                  <p style={cardTitle}>14-Day Body Decode Challenge</p>
+                  <p style={cardSub}>Free · 14 days</p>
+                </div>
+                <p style={cardPrice}>Free</p>
+              </div>
+            </div>
+            {/* Stage 2 */}
+            <div style={{ gridColumn: '3 / 4', gridRow: '3 / 4' }}>
+              <div style={zone1Card(C.blueDark)}>
+                <div>
+                  <span style={stageBadge(C.blueDark)}>Stage 2</span>
+                  <p style={cardTitle}>6-Week Body Rewire Blueprint</p>
+                  <p style={cardSub}>$97 · pattern-specific</p>
+                </div>
+                <p style={cardPrice}>$97 one-time</p>
+              </div>
+            </div>
+            {/* Stage 3 */}
+            <div style={{ gridColumn: '4 / 5', gridRow: '3 / 4' }}>
+              <div style={zone1Card(C.blueDeeper)}>
+                <div>
+                  <span style={stageBadge(C.blueDeeper)}>Stage 3</span>
+                  <p style={cardTitle}>Body Recode Membership</p>
+                  <p style={cardSub}>$49/wk · Fat Map intro</p>
+                </div>
+                <p style={cardPrice}>$49/wk</p>
+              </div>
+            </div>
+            {/* Bolt Ons (placeholder, RIGHT of Stage 3) */}
+            <div style={{ gridColumn: '5 / 6', gridRow: '3 / 4' }}>
+              <div style={zone1Card(C.grey, true)}>
+                <div>
+                  <span style={{ ...stageBadge(C.grey), background: '#D4D4D4', color: C.text }}>Side · Placeholder</span>
+                  <p style={cardTitle}>Bolt Ons</p>
+                  <p style={cardSub}>Not yet built</p>
+                  <p style={cardBody}>Add-on modules inside the Membership.</p>
+                </div>
+                <p style={{ ...cardPrice, color: C.grey }}>$10-100 TBD</p>
+              </div>
+            </div>
+
+            {/* Row 4 — DOWN arrows from Stage 2 + Stage 3 */}
+            <div style={{ gridColumn: '3 / 4', gridRow: '4 / 5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '20px', color: C.amber, fontWeight: 800 }}>↓</span>
+            </div>
+            <div style={{ gridColumn: '4 / 5', gridRow: '4 / 5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '20px', color: C.grey, fontWeight: 800 }}>↓</span>
+            </div>
+
+            {/* Row 5 — Side branches: 90-Day FU (under Stage 2) + Ebooks (under Stage 3) */}
+            <div style={{ gridColumn: '3 / 4', gridRow: '5 / 6' }}>
+              <div style={zone1Card(C.amber)}>
+                <div>
+                  <span style={stageBadge(C.amber)}>Re-engagement loop</span>
+                  <p style={cardTitle}>90-Day Follow Up</p>
+                  <p style={cardSub}>Automated · churn re-entry</p>
+                  <p style={cardBody}>Fires when a lead exits the Blueprint without ascending. 90-day email sequence + re-entry discount + referral incentive.</p>
+                </div>
+                <p style={{ ...cardPrice, color: C.amber }}>Free · auto</p>
+              </div>
+            </div>
+            <div style={{ gridColumn: '4 / 5', gridRow: '5 / 6' }}>
+              <div style={zone1Card(C.grey, true)}>
+                <div>
+                  <span style={{ ...stageBadge(C.grey), background: '#D4D4D4', color: C.text }}>Side · Placeholder</span>
+                  <p style={cardTitle}>Ebooks</p>
+                  <p style={cardSub}>Not yet built</p>
+                  <p style={cardBody}>Standalone $10-30 educational products. Pattern deep-dives, state-specific reads, Fat Map primer.</p>
+                </div>
+                <p style={{ ...cardPrice, color: C.grey }}>$10-30 TBD</p>
+              </div>
+            </div>
+
+            {/* Row 6 — DOWN arrow from Ebooks to Socials */}
+            <div style={{ gridColumn: '4 / 5', gridRow: '6 / 7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '20px', color: C.grey, fontWeight: 800 }}>↓</span>
+            </div>
+
+            {/* Row 7 — Socials (under Ebooks) with IG + LinkedIn icons */}
+            <div style={{ gridColumn: '4 / 5', gridRow: '7 / 8' }}>
+              <div style={{
+                background: C.bg,
+                border: `1px solid ${C.blue}40`,
+                borderTop: `3px solid ${C.blue}`,
+                borderRadius: '12px',
+                padding: '14px 18px',
+                textAlign: 'center',
+              }}>
+                <span style={stageBadge(C.blue)}>Distribution</span>
+                <p style={{ ...cardTitle, marginBottom: '10px' }}>Socials</p>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginTop: '6px' }}>
+                  {/* Instagram */}
+                  <div style={{
+                    width: '38px', height: '38px', borderRadius: '10px',
+                    background: 'linear-gradient(135deg, #FED373, #F2725D, #D62D80, #872D9A)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF">
+                      <path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.2-.1 1.6-.1 4.8-.1zm0-2.2C8.7 0 8.3 0 7.1.1 5.8.1 5 .3 4.2.6c-.8.3-1.5.7-2.2 1.4C1.3 2.7.9 3.4.6 4.2.3 5 .1 5.8.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.1 1.3.2 2.1.5 2.9.3.8.7 1.5 1.4 2.2.7.7 1.4 1.1 2.2 1.4.8.3 1.6.5 2.9.5 1.3.1 1.7.1 4.9.1s3.7 0 4.9-.1c1.3-.1 2.1-.2 2.9-.5.8-.3 1.5-.7 2.2-1.4.7-.7 1.1-1.4 1.4-2.2.3-.8.5-1.6.5-2.9.1-1.3.1-1.7.1-4.9s0-3.7-.1-4.9c-.1-1.3-.2-2.1-.5-2.9-.3-.8-.7-1.5-1.4-2.2C21.3.9 20.6.5 19.8.2 19 0 18.2-.1 16.9-.1 15.7 0 15.3 0 12 0z"/>
+                      <path d="M12 5.8c-3.4 0-6.2 2.8-6.2 6.2s2.8 6.2 6.2 6.2 6.2-2.8 6.2-6.2-2.8-6.2-6.2-6.2zm0 10.3c-2.3 0-4.1-1.8-4.1-4.1s1.8-4.1 4.1-4.1 4.1 1.8 4.1 4.1-1.8 4.1-4.1 4.1zM18.4 4.2c-.8 0-1.5.7-1.5 1.5s.7 1.5 1.5 1.5 1.5-.7 1.5-1.5-.6-1.5-1.5-1.5z"/>
+                    </svg>
+                  </div>
+                  {/* LinkedIn */}
+                  <div style={{
+                    width: '38px', height: '38px', borderRadius: '10px',
+                    background: '#0A66C2',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF">
+                      <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/>
+                    </svg>
+                  </div>
+                </div>
+                <p style={{ fontSize: '10px', color: C.grey, margin: '8px 0 0', letterSpacing: '0.04em' }}>
+                  Instagram · LinkedIn
+                </p>
+              </div>
             </div>
           </div>
-          <p style={{ textAlign: 'center', fontSize: '11px', color: C.grey, marginBottom: '20px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            ↓ state routes ↓
+
+          {/* Reading guide under the diagram */}
+          <p style={{
+            fontSize: '13px', color: C.grey,
+            textAlign: 'center', marginTop: '32px',
+            maxWidth: '900px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.65,
+          }}>
+            <strong style={{ color: C.text }}>Read the diagram:</strong> main flow is left-to-right Scorecard → Stage 1 → Stage 2 → Stage 3.
+            Stage 4 ascends UP from Stage 3 only. Bolt Ons live to the right of Stage 3.
+            90-Day Follow Up drops down from Stage 2 (Blueprint). Ebooks drop down from Stage 3 then down again to Socials (Instagram and LinkedIn distribution).
           </p>
-
-          {/* Level 2 — State-routed products (Stage 1, 2, 3 horizontal + 12-week side path) */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '12px',
-            marginBottom: '24px',
-          }}>
-            {/* Stage 1 — Challenge */}
-            <div style={zone1Card(C.blue)}>
-              <div>
-                <span style={stageBadge(C.blue)}>Stage 1 · Depleted entry</span>
-                <p style={cardTitle}>14-Day Body Decode Challenge</p>
-                <p style={cardSub}>Free · 14 days</p>
-                <p style={cardBody}>Reset the system. Read the pattern on Day 7. Body Decode Report on Day 14.</p>
-              </div>
-              <p style={cardPrice}>Free</p>
-            </div>
-            {/* Stage 2 — Blueprint */}
-            <div style={zone1Card(C.blueDark)}>
-              <div>
-                <span style={stageBadge(C.blueDark)}>Stage 2 · Transitioning entry</span>
-                <p style={cardTitle}>6-Week Body Rewire Blueprint</p>
-                <p style={cardSub}>$97 · 6 weeks · pattern-specific</p>
-                <p style={cardBody}>Pattern-specific training + nutrition + weekly coaching. Corrects the pattern.</p>
-              </div>
-              <p style={cardPrice}>$97 one-time</p>
-            </div>
-            {/* 12-Week State Program (parallel sidestep) */}
-            <div style={zone1Card(C.amber)}>
-              <div>
-                <span style={stageBadge(C.amber)}>$97 Sidestep · Self-guided</span>
-                <p style={cardTitle}>12-Week State Program</p>
-                <p style={cardSub}>$97 · 12 weeks · state-specific</p>
-                <p style={cardBody}>State-specific 12-week training + nutrition (Depleted / Transitioning / Ready). For those who don&apos;t enter via the Challenge.</p>
-              </div>
-              <p style={cardPrice}>$97 one-time</p>
-            </div>
-            {/* Stage 3 — Membership */}
-            <div style={zone1Card(C.blueDeeper)}>
-              <div>
-                <span style={stageBadge(C.blueDeeper)}>Stage 3 · Ready entry</span>
-                <p style={cardTitle}>Body Recode Membership</p>
-                <p style={cardSub}>$49/wk · ongoing · Fat Map intro</p>
-                <p style={cardBody}>Block by block calibration. First Fat Map exposure. Long-arc infrastructure.</p>
-              </div>
-              <p style={cardPrice}>$49/wk</p>
-            </div>
-          </div>
-
-          {/* Convergence + Vertical ascension UP into Stage 4 */}
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginBottom: '14px' }}>
-            <p style={{ fontSize: '11px', color: C.grey, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>
-              ↑ vertical ascension from any stage ↑
-            </p>
-            <div style={{
-              background: C.blueDeepest,
-              color: '#FFFFFF',
-              padding: '18px 32px',
-              borderRadius: '12px',
-              border: `2px solid ${C.blue}`,
-              boxShadow: '0 8px 24px rgba(2, 26, 77, 0.25)',
-              textAlign: 'center',
-            }}>
-              <p style={{ fontSize: '10px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#B5CFFC', margin: '0 0 6px' }}>
-                Stage 4 · Ascension ceiling
-              </p>
-              <p style={{ fontSize: '20px', fontWeight: 900, margin: '0 0 4px', letterSpacing: '-0.01em' }}>
-                Online 1:1 Performance Coaching
-              </p>
-              <p style={{ fontSize: '13px', color: '#B5CFFC', margin: 0 }}>
-                $240 commencement + $149/wk · In-person 2x ($299/wk) and 3x ($409/wk) for local clients
-              </p>
-            </div>
-          </div>
-
-          {/* Bottom row — Side branches and 90-day loop */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '12px',
-            marginTop: '24px',
-          }}>
-            <div style={zone1Card(C.grey, true)}>
-              <div>
-                <span style={{ ...stageBadge(C.grey), background: '#D4D4D4', color: C.text }}>Side product · Placeholder</span>
-                <p style={cardTitle}>Ebooks</p>
-                <p style={cardSub}>Not yet built</p>
-                <p style={cardBody}>Standalone $10-30 educational products (state-specific reads, deep-dives on patterns).</p>
-              </div>
-              <p style={{ ...cardPrice, color: C.grey }}>$10-30 TBD</p>
-            </div>
-            <div style={zone1Card(C.grey, true)}>
-              <div>
-                <span style={{ ...stageBadge(C.grey), background: '#D4D4D4', color: C.text }}>Side product · Placeholder</span>
-                <p style={cardTitle}>Bolt Ons</p>
-                <p style={cardSub}>Not yet built</p>
-                <p style={cardBody}>Add-ons inside the Membership (deep-dive modules, supplement protocols, specialty programs).</p>
-              </div>
-              <p style={{ ...cardPrice, color: C.grey }}>$10-100 TBD</p>
-            </div>
-            <div style={zone1Card(C.blue)}>
-              <div>
-                <span style={stageBadge(C.blue)}>Live · Member portal</span>
-                <p style={cardTitle}>Portal access</p>
-                <p style={cardSub}>Live · included</p>
-                <p style={cardBody}>Full member portal (training, nutrition, check-ins, Fat Map). Gated by tier.</p>
-              </div>
-              <p style={cardPrice}>Included</p>
-            </div>
-            <div style={zone1Card(C.amber)}>
-              <div>
-                <span style={stageBadge(C.amber)}>Side loop · Any-stage churn</span>
-                <p style={cardTitle}>90-Day Follow Up</p>
-                <p style={cardSub}>Automated · re-engagement</p>
-                <p style={cardBody}>Fires when a lead or client churns from any stage. 90-day email sequence + re-entry discount + referral incentive. Loops them back to the Scorecard.</p>
-              </div>
-              <p style={{ ...cardPrice, color: C.amber }}>Free · auto</p>
-            </div>
-          </div>
         </div>
       </section>
 
