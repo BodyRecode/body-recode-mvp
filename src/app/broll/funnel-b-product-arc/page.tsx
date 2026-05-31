@@ -3,14 +3,20 @@
 /**
  * B-roll canvas: Funnel B - State-First Product Arc (Full Funnel)
  *
- * The full Body Recode product funnel as actually built. Sibling of
- * /broll/full-funnel-arc (4-stage horizontal arc); this version shows
- * the complete architecture including:
- *   - Multiple state-first entries via the Scorecard
- *   - The 12-Week State Program ($97) parallel to the 6-Week Blueprint
- *   - Stage 4 (1:1 Performance Coaching) as VERTICAL ascension UP
- *   - 90-Day Follow Up as any-stage-churn re-engagement side loop
- *   - Side branches: Portal (live) + Ebooks/Bolt-Ons (placeholders)
+ * The Body Recode product ladder funnel (Challenge -> Blueprint ->
+ * Membership) with vertical ascension up to 1:1 Performance Coaching.
+ * Sibling of /broll/full-funnel-arc and the partner of
+ * /broll/funnel-a-direct-coaching-arc (the high-intent 1:1 path).
+ *
+ * Funnel B = product ladder. State-first entry via the Scorecard.
+ * Stage 4 ascension only from Stage 3 (Membership). Side branches:
+ *   - 90-Day Follow Up drops from Stage 2 (Blueprint exit re-engagement)
+ *   - Bolt Ons to the right of Stage 3 (placeholder)
+ *   - Ebooks below Stage 3, then Socials (IG + LinkedIn) below Ebooks
+ *
+ * The 12-Week State Program lives in Funnel A (it fires when a Zoom 1
+ * call is declined) and is documented in /broll/funnel-a-direct-coaching-arc,
+ * not here.
  *
  * Modeled on the Charlie Johnson / Grow Your Online Fitness Business
  * funnel diagram (reference images IMG_2065, IMG_3537, IMG_3538) but
@@ -18,13 +24,13 @@
  *
  * Three viewport-sized zones:
  *
- *   Zone 1: The full funnel diagram (entry -> products -> ascension)
+ *   Zone 1: The full Funnel B diagram (entry -> products -> ascension
+ *           up + side branches down)
  *   Zone 2: Stage 4 vertical ascension spotlight (the ceiling)
- *   Zone 3: Side products and loops (12-week, 90-day, placeholders)
+ *   Zone 3: Side products and loops (90-Day FU, Ebooks, Bolt Ons)
  *
  * Source of truth for pricing:
  *   src/app/dashboard/business/strategy/page.tsx (Stage 4 tiers)
- *   src/app/dashboard/preview/page.tsx (12-week state program)
  *   ~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/Body_Recode_Funnel_Master_Map_v1.0.md
  *   (supersession banner)
  *
@@ -557,34 +563,16 @@ export default function FunnelBProductArcPage() {
             The straight ascension is the main path. These are the parallel paths, the re-entry loop, and the side products that compound the model.
           </p>
 
-          {/* 4 cards: 12-Week State Program / 90-Day Follow Up / Ebooks / Bolt Ons */}
+          {/* 3 cards: 90-Day Follow Up / Ebooks / Bolt Ons
+              The 12-Week State Program used to sit here. It was removed
+              because it is a Funnel A artifact (triggered when a Zoom 1
+              call is declined), not a Funnel B sidestep. It is covered
+              in the separate /broll/funnel-a-direct-coaching-arc canvas. */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '20px',
           }}>
-            {/* 12-Week State Program */}
-            <div style={{
-              background: C.bg,
-              border: `1px solid ${C.amber}30`,
-              borderLeft: `4px solid ${C.amber}`,
-              borderRadius: '14px',
-              padding: '24px 26px',
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: C.amber, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                  Off-Challenge sidestep · Live
-                </span>
-                <span style={{ fontSize: '12px', fontWeight: 800, color: C.amber }}>$97</span>
-              </div>
-              <h3 style={{ fontSize: '22px', fontWeight: 900, color: C.text, letterSpacing: '-0.02em', margin: '0 0 10px', lineHeight: 1.2 }}>
-                12-Week State Program
-              </h3>
-              <p style={{ fontSize: '14px', color: C.body, lineHeight: 1.7, margin: 0 }}>
-                State-specific self-guided 12-week training + nutrition. Three variants (Depleted / Transitioning / Ready). For leads who don&apos;t enter through the Challenge but want a structured reset. Delivered at <span style={{ fontFamily: 'monospace', fontSize: '12px' }}>app.bodyrecode.au/program/[token]</span>. Triggered as the $97 downsell from the leads dashboard.
-              </p>
-            </div>
-
             {/* 90-Day Follow Up */}
             <div style={{
               background: C.bg,
