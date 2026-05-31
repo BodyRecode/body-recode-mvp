@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
       to: 'kade@bodyrecode.au',
       replyTo: cleanEmail,
       subject: `Custom time request — ${cleanName}`,
-      html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+      html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
 <body style="margin:0;padding:0;background-color:#FFFFFF;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
       from: 'Kade at Body Recode <kade@bodyrecode.au>',
       to: cleanEmail,
       subject: `Got your time request, ${firstName}`,
-      html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+      html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
 <body style="margin:0;padding:0;background-color:#FFFFFF;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">

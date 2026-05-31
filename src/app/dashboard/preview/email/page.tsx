@@ -7,7 +7,7 @@ const dateStr = 'Thursday, 17 April 2026'
 const timeStr = '10:00 am'
 const meetingLink = 'https://zoom.us/j/123456789'
 
-const bookingLinkHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+const bookingLinkHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
 <body style="margin:0;padding:0;background-color:#FFFFFF;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
@@ -35,7 +35,7 @@ const bookingLinkHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta
   </table>
 </body></html>`
 
-const confirmationHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+const confirmationHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
 <body style="margin:0;padding:0;background-color:#FFFFFF;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">

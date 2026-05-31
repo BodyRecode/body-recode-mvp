@@ -20,7 +20,7 @@ export default async function PreviewDownsellEmail({
   const checkoutUrl = '#'
   const programUrl = '#'
 
-  const offerHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+  const offerHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
 <body style="margin:0;padding:0;background-color:#FFFFFF;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
@@ -49,7 +49,7 @@ export default async function PreviewDownsellEmail({
   </table>
 </body></html>`
 
-  const deliveryHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="dark"/></head>
+  const deliveryHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
 <body style="margin:0;padding:0;background-color:#FFFFFF;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr>
