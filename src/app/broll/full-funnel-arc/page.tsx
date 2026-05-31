@@ -69,11 +69,11 @@ const STAGES = [
     n: 4,
     timing: 'Stage 4 · Ascension',
     badgeColor: '#021A4D',
-    duration: 'Bespoke',
-    price: '$195-$295/wk',
+    duration: '$240 + ongoing',
+    price: '$149/wk',
     name: 'The bespoke',
-    product: '1:1 Performance Coaching',
-    body: 'Fully custom plans, real-time biofeedback, bi-weekly Zoom coaching. Fat Map updated continuously. Elite-tier transformation.',
+    product: 'Online 1:1 Performance Coaching',
+    body: 'Fully custom plans, weekly check-ins, ongoing biofeedback review and adjustments. Fat Map updated continuously. $240 commencement covers the foundational read. In-person 2x ($299/wk) and 3x ($409/wk) available for local clients.',
     state: 'Ready',
   },
 ]
@@ -83,7 +83,7 @@ const COMPARISON_ROWS: { label: string; values: [string, string, string, string]
   { label: 'Time horizon',      values: ['14 days', '6 weeks', 'Months', 'Months to years'] },
   { label: 'Personalisation',   values: ['None', 'Pattern-specific structure', 'Pattern + Fat Map', 'Fully bespoke'] },
   { label: 'Fat Map presence',  values: ['Not introduced', 'Not introduced', 'First introduction', 'Used intensively'] },
-  { label: 'Coaching contact',  values: ['Automated only', 'Weekly feedback', 'Group + monthly review', 'Bi-weekly 1:1 Zoom'] },
+  { label: 'Coaching contact',  values: ['Automated only', 'Weekly feedback', 'Group + monthly review', 'Weekly 1:1 check-ins'] },
   { label: 'Conversion',        values: ['~50% landing', '~3.5% from Stage 1', 'Upsell from Stage 2', 'Application-gated'] },
 ]
 
