@@ -14,6 +14,7 @@ type Enrollment = {
   quiz_completed_at: string | null
   quiz_result: string | null
   quiz_answers: Record<string, string> | null
+  lead_id: string
 }
 
 type Lead = {
