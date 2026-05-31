@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { AlertTriangle, Search } from 'lucide-react'
 import { PageHeader, Card, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 
@@ -119,11 +120,22 @@ function TD({ children }: { children: React.ReactNode }) {
   return <td className="px-3 py-3 text-[#6B6B6B] align-middle">{children}</td>
 }
 
-function TDName({ name, email }: { name: string; email: string }) {
-  return (
-    <td className="px-3 py-3 align-middle">
+function TDName({ name, email, drillHref }: { name: string; email: string; drillHref?: string }) {
+  const inner = (
+    <>
       <div className="text-[13px] font-semibold text-[#1A1A1A]">{name}</div>
       <div className="text-[11px] text-[#999999]">{email}</div>
+    </>
+  )
+  return (
+    <td className="px-3 py-3 align-middle">
+      {drillHref ? (
+        <Link href={drillHref} className="block hover:text-[#1B6DFC] transition-colors">
+          {inner}
+        </Link>
+      ) : (
+        inner
+      )}
     </td>
   )
 }
@@ -265,7 +277,7 @@ export default function FunnelClient({
               const atRisk = e.currentDay >= 14 && !e.hasBlueprintPurchase
               return (
                 <TR key={e.id} highlight={atRisk}>
-                  <TDName name={e.name} email={e.email} />
+                  <TDName name={e.name} email={e.email} drillHref={`/dashboard/funnel/${e.token}`} />
                   <TD>
                     <span className="font-bold text-[#1A1A1A]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, 14)}</span>
                     <span className="text-[11px] text-[#999999]" style={{ fontFamily: MONO_FONT }}> / 14</span>
