@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { detectAppetiteSuppression } from '@/lib/nutrition-validation'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 60
 
@@ -147,9 +148,9 @@ Output JSON only:
     })
     const content = message.content[0]
     if (content.type === 'text') {
-      const m = content.text.match(/\{[\s\S]*\}/)
+      const m = extractFirstJsonObject(content.text)
       if (m) {
-        const parsed = JSON.parse(m[0])
+        const parsed = JSON.parse(m)
         suggestedJustification = String(parsed.justification || '').trim()
         evidenceSummary = String(parsed.evidence_summary || '').trim()
       }

@@ -7,6 +7,7 @@ import {
   buildCFFSUserPrompt,
   type CFFSBaselineContext,
 } from '@/lib/cffs-prompt'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
 
@@ -165,16 +166,16 @@ export async function POST(request: NextRequest) {
 
   console.log('Claude raw response:', content.text.slice(0, 200))
 
-  const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) {
+  const jsonText = extractFirstJsonObject(content.text)
+  if (!jsonText) {
     return NextResponse.json({ error: `Could not parse CFFS — AI returned: ${content.text.slice(0, 100)}` }, { status: 500 })
   }
 
   let cffsData
   try {
-    cffsData = JSON.parse(jsonMatch[0])
+    cffsData = JSON.parse(jsonText)
   } catch (err) {
-    return NextResponse.json({ error: `JSON parse failed: ${jsonMatch[0].slice(0, 100)}` }, { status: 500 })
+    return NextResponse.json({ error: `JSON parse failed: ${jsonText.slice(0, 100)}` }, { status: 500 })
   }
 
   // Strip em dashes from all generated text fields

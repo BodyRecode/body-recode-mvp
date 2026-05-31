@@ -8,6 +8,7 @@ import {
   stripEmDashes,
   type MedicationsCFFSContext,
 } from '@/lib/medications-analysis-prompt'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 /**
  * Generate the coach-facing Medications Analysis for a client. Writes the
@@ -131,8 +132,8 @@ export async function POST(
     return NextResponse.json({ error: 'Unexpected response from AI' }, { status: 500 })
   }
 
-  const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) {
+  const jsonText = extractFirstJsonObject(content.text)
+  if (!jsonText) {
     return NextResponse.json(
       { error: `Could not parse analysis. AI returned: ${content.text.slice(0, 160)}` },
       { status: 500 }
@@ -141,7 +142,7 @@ export async function POST(
 
   let parsed: { medications?: unknown; combined_picture?: unknown }
   try {
-    parsed = JSON.parse(jsonMatch[0])
+    parsed = JSON.parse(jsonText)
   } catch (err) {
     return NextResponse.json({ error: `Invalid JSON from AI: ${(err as Error).message}` }, { status: 500 })
   }

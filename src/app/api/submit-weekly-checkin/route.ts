@@ -8,6 +8,7 @@ import { darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { writeRecoverySignalBlock, evaluateRouterAfterCheckin } from '@/lib/recovery-ingest'
 import { appUrl } from '@/lib/app-url'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
 
@@ -204,10 +205,10 @@ async function generateCFWS(
   const content = message.content[0]
   if (content.type !== 'text') return
 
-  const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) return
+  const jsonText = extractFirstJsonObject(content.text)
+  if (!jsonText) return
 
-  const cfwsRaw = JSON.parse(jsonMatch[0])
+  const cfwsRaw = JSON.parse(jsonText)
   const cfwsData = stripEmDashes(cfwsRaw)
 
   // Archive any existing CFWS for this week (in case of regeneration)

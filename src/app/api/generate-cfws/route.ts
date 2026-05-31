@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
 
@@ -99,12 +100,12 @@ export async function POST(request: NextRequest) {
   const content = message.content[0]
   if (content.type !== 'text') return NextResponse.json({ error: 'Unexpected AI response' }, { status: 500 })
 
-  const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) return NextResponse.json({ error: 'Could not parse CFWS from AI response' }, { status: 500 })
+  const jsonText = extractFirstJsonObject(content.text)
+  if (!jsonText) return NextResponse.json({ error: 'Could not parse CFWS from AI response' }, { status: 500 })
 
   let cfwsData
   try {
-    cfwsData = JSON.parse(jsonMatch[0])
+    cfwsData = JSON.parse(jsonText)
   } catch {
     return NextResponse.json({ error: 'JSON parse failed' }, { status: 500 })
   }

@@ -9,6 +9,7 @@ import {
   findLeakedTerms,
   type MedicationsCFFSContext,
 } from '@/lib/medications-analysis-prompt'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 /**
  * Generate the client-facing Medications Reading. Requires the coach
@@ -110,14 +111,14 @@ export async function POST(
       lastError = 'Unexpected response from AI'
       continue
     }
-    const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) {
+    const jsonText = extractFirstJsonObject(content.text)
+    if (!jsonText) {
       lastError = `Could not parse: ${content.text.slice(0, 160)}`
       continue
     }
     let parsed: Record<string, unknown>
     try {
-      parsed = JSON.parse(jsonMatch[0])
+      parsed = JSON.parse(jsonText)
     } catch (err) {
       lastError = `Invalid JSON: ${(err as Error).message}`
       continue
@@ -143,7 +144,7 @@ export async function POST(
     }
     leaksSeen = Array.from(new Set([...leaksSeen, ...leaks].map(t => t.toLowerCase())))
     if (attempt < 3) {
-      conversation.push({ role: 'assistant', content: jsonMatch[0] })
+      conversation.push({ role: 'assistant', content: jsonText })
       conversation.push({
         role: 'user',
         content: `That draft contained internal terminology the client has never seen. These terms must not appear: ${leaks.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words. Return only the corrected JSON.`,

@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFFSSystemPrompt, buildCFFSUserPrompt } from '@/lib/cffs-prompt'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
 
@@ -148,9 +149,9 @@ export async function POST(request: NextRequest) {
 
       const content = message.content[0]
       if (content.type === 'text') {
-        const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-        if (jsonMatch) {
-          const cffsData = JSON.parse(jsonMatch[0]) as Record<string, unknown>
+        const jsonText = extractFirstJsonObject(content.text)
+        if (jsonText) {
+          const cffsData = JSON.parse(jsonText) as Record<string, unknown>
           cffsData.reassessment_flagged = false
           // Strip em dashes from every string field (style rule)
           const stripped = stripEmDashes(cffsData)

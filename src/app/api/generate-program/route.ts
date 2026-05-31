@@ -11,6 +11,7 @@ import {
   ProgramPrescriptionInputs,
   ExerciseRow,
 } from '@/lib/program-prompt'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
 
@@ -239,16 +240,16 @@ export async function POST(request: NextRequest) {
 
   console.log('Claude program response (first 300 chars):', content.text.slice(0, 300))
 
-  const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) {
+  const jsonText = extractFirstJsonObject(content.text)
+  if (!jsonText) {
     return NextResponse.json({ error: `Could not parse program — AI returned: ${content.text.slice(0, 200)}` }, { status: 500 })
   }
 
   let programData
   try {
-    programData = JSON.parse(jsonMatch[0])
+    programData = JSON.parse(jsonText)
   } catch {
-    return NextResponse.json({ error: `JSON parse failed: ${jsonMatch[0].slice(0, 100)}` }, { status: 500 })
+    return NextResponse.json({ error: `JSON parse failed: ${jsonText.slice(0, 100)}` }, { status: 500 })
   }
 
   // Doctrine enforcement — never trust the LLM for RPE ceilings or set

@@ -9,6 +9,7 @@ import {
   type ProgramReadingFRContext,
   type ProgramReadingProgramContext,
 } from '@/lib/client-program-reading-prompt'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 import { buildProgramReadingEmail } from '@/lib/program-reading-email'
 import { appUrl } from '@/lib/app-url'
 
@@ -124,8 +125,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unexpected response from AI' }, { status: 500 })
   }
 
-  const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) {
+  const jsonText = extractFirstJsonObject(content.text)
+  if (!jsonText) {
     return NextResponse.json(
       { error: `Could not parse reading. AI returned: ${content.text.slice(0, 120)}` },
       { status: 500 }
@@ -140,10 +141,10 @@ export async function POST(request: NextRequest) {
     pr_coach_note?: string
   }
   try {
-    reading = JSON.parse(jsonMatch[0])
+    reading = JSON.parse(jsonText)
   } catch {
     return NextResponse.json(
-      { error: `JSON parse failed: ${jsonMatch[0].slice(0, 120)}` },
+      { error: `JSON parse failed: ${jsonText.slice(0, 120)}` },
       { status: 500 }
     )
   }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
 
@@ -217,12 +218,12 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
   const content = message.content[0]
   if (content.type !== 'text') return NextResponse.json({ error: 'Unexpected AI response' }, { status: 500 })
 
-  const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) return NextResponse.json({ error: 'Could not parse suggestion' }, { status: 500 })
+  const jsonText = extractFirstJsonObject(content.text)
+  if (!jsonText) return NextResponse.json({ error: 'Could not parse suggestion' }, { status: 500 })
 
   let suggestion
   try {
-    suggestion = JSON.parse(jsonMatch[0])
+    suggestion = JSON.parse(jsonText)
   } catch {
     return NextResponse.json({ error: 'JSON parse failed' }, { status: 500 })
   }

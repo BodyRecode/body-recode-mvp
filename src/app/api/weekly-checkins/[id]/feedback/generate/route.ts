@@ -11,6 +11,7 @@ import {
   type PriorCheckinSummary,
   type ProgramContext,
 } from '@/lib/weekly-checkin-feedback-prompt'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 /**
  * Generate a draft coach response for a weekly check-in.
@@ -191,15 +192,15 @@ export async function POST(
       continue
     }
 
-    const jsonMatch = content.text.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) {
+    const jsonText = extractFirstJsonObject(content.text)
+    if (!jsonText) {
       lastError = `Could not parse draft. AI returned: ${content.text.slice(0, 160)}`
       continue
     }
 
     let parsed: { interpretation?: unknown; reframe?: unknown; next_focus?: unknown }
     try {
-      parsed = JSON.parse(jsonMatch[0])
+      parsed = JSON.parse(jsonText)
     } catch (err) {
       lastError = `Invalid JSON from AI: ${(err as Error).message}`
       continue
@@ -241,7 +242,7 @@ export async function POST(
     // model to redraft with the specific banned terms called out.
     totalLeaksSeen = Array.from(new Set([...totalLeaksSeen, ...leakedTerms].map(t => t.toLowerCase())))
     if (attempts < MAX_ATTEMPTS) {
-      conversation.push({ role: 'assistant', content: jsonMatch[0] })
+      conversation.push({ role: 'assistant', content: jsonText })
       conversation.push({
         role: 'user',
         content: `That draft contained internal terminology the client has never seen and that the system will reject. Specifically these terms must not appear: ${leakedTerms.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words to express the same idea. Return only the corrected JSON, no commentary.`,
