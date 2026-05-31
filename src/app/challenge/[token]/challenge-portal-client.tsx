@@ -181,7 +181,36 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
   )
 }
 
-
+function LockedMilestoneCard({
+  label, unlockDay, currentDay,
+}: { label: string; unlockDay: number; currentDay: number }) {
+  const days = Math.max(unlockDay - currentDay, 0)
+  return (
+    <div style={{ marginBottom: '48px' }}>
+      <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+        {label}
+      </p>
+      <div style={{
+        background: '#FFFFFF', border: '1px solid #E5E5E5',
+        borderRadius: '12px', padding: '24px', textAlign: 'center',
+      }}>
+        <div style={{
+          width: '48px', height: '48px', borderRadius: '50%',
+          background: '#E5E5E5', display: 'flex', alignItems: 'center',
+          justifyContent: 'center', margin: '0 auto 14px', fontSize: '22px',
+        }}>
+          🔒
+        </div>
+        <p style={{ fontSize: '15px', fontWeight: 700, color: '#4A4A4A', marginBottom: '6px' }}>
+          Unlocks on Day {unlockDay}
+        </p>
+        <p style={{ fontSize: '13px', color: '#999999', margin: 0 }}>
+          {days} day{days === 1 ? '' : 's'} to go
+        </p>
+      </div>
+    </div>
+  )
+}
 
 const PARQ_QUESTIONS = [
   {
@@ -612,7 +641,10 @@ export default function ChallengePortalClient({
           </div>
         </div>
 
-        {/* Day 5 Week One Progress Session — pre-recorded video, unlocks Day 5+ */}
+        {/* Day 5 Week One Progress Session — locked before Day 5, unlocks Day 5+ */}
+        {currentDay < 5 && (
+          <LockedMilestoneCard label="Week One Progress" unlockDay={5} currentDay={currentDay} />
+        )}
         {currentDay >= 5 && (
           <div style={{ marginBottom: '48px' }}>
             <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
@@ -686,16 +718,17 @@ export default function ChallengePortalClient({
           </div>
         )}
 
-        {/* Body Decode Check-In / Body Decode Report card — single card that
-            evolves across three states:
-              - Day 7-13, no result: links to /day-7 to take the Check-In
-              - Day 7-13, saved result: links to /check-in for the Day 7 in-portal view
-              - Day 14+, saved result: links to /day-14 to frame and open the Report
-              - Day 14+, no result: links to /day-7 to take the Check-In (late) */}
+        {/* Day 7 Body Decode Check-In — locked before Day 7. Stays on the Day 7
+            page on Day 14+ as a permanent re-entry point to the 7-day progress
+            view. Does NOT transform into the Day 14 Report — that lives in its
+            own card below. */}
+        {currentDay < 7 && (
+          <LockedMilestoneCard label="Body Decode Check-In" unlockDay={7} currentDay={currentDay} />
+        )}
         {currentDay >= 7 && (
           <div style={{ marginBottom: '48px' }}>
             <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              {savedQuizResult && currentDay >= 14 ? 'Body Decode Report' : 'Body Decode Check-In'}
+              Body Decode Check-In
             </p>
             <div style={{
               background: '#FFFFFF',
@@ -710,9 +743,7 @@ export default function ChallengePortalClient({
                   fontSize: '11px', fontWeight: 700, color: '#1056D6',
                   textTransform: 'uppercase' as const, letterSpacing: '0.12em',
                 }}>
-                  {savedQuizResult && currentDay >= 14
-                    ? 'Day 14 · Body Decode Report'
-                    : 'Day 7 · Body Decode Check-In'}
+                  Day 7 · Body Decode Check-In
                 </span>
                 <span style={{
                   fontSize: '10px', fontWeight: 700,
@@ -722,27 +753,21 @@ export default function ChallengePortalClient({
                   borderRadius: '99px', padding: '3px 9px',
                   letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 }}>
-                  {savedQuizResult
-                    ? (currentDay >= 14 ? 'Report ready' : 'Progress in')
-                    : '5-10 min · Unlocked'}
+                  {savedQuizResult ? 'Progress in' : '5-10 min · Unlocked'}
                 </span>
               </div>
               <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
                 {savedQuizResult
-                  ? (currentDay >= 14
-                      ? 'Your Body Decode Report is ready.'
-                      : 'Your Day 7 progress is in.')
+                  ? 'Your Day 7 progress is in.'
                   : 'Read the pattern your biology has settled into.'}
               </p>
               <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
                 {savedQuizResult
-                  ? (currentDay >= 14
-                      ? 'Open the Day 14 page for the full read. Your pattern, what it means, where it shows up, what it is NOT, and the three actions specific to your pattern.'
-                      : `Your 7-day progress, marker breakdown, and Week 2 focus are on the Day 7 page. Your full Body Decode Report arrives on Day 14. ${Math.max(14 - currentDay, 0)} day${Math.max(14 - currentDay, 0) === 1 ? '' : 's'} to go.`)
+                  ? `Your 7-day progress, marker breakdown, and Week 2 focus are on the Day 7 page.${currentDay < 14 ? ` Your full Body Decode Report arrives on Day 14. ${14 - currentDay} day${14 - currentDay === 1 ? '' : 's'} to go.` : ''}`
                   : 'A short structured signal audit. Rate 8 biological markers, answer 2 signal questions. Your 7-day progress is shown immediately; your full Body Decode Report arrives on Day 14.'}
               </p>
               <a
-                href={`/challenge/${token}/${savedQuizResult && currentDay >= 14 ? 'day-14' : 'day-7'}`}
+                href={`/challenge/${token}/day-7`}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '8px',
                   padding: '14px 26px', borderRadius: '10px',
@@ -751,35 +776,72 @@ export default function ChallengePortalClient({
                   letterSpacing: '0.01em',
                 }}
               >
-                {savedQuizResult
-                  ? (currentDay >= 14 ? 'Open your Body Decode Report →' : 'View your 7-day progress →')
-                  : 'Open Body Decode Check-In →'}
+                {savedQuizResult ? 'View your 7-day progress →' : 'Open Body Decode Check-In →'}
               </a>
             </div>
           </div>
         )}
-        {currentDay < 7 && (
+
+        {/* Day 14 Body Decode Report — locked before Day 14, live Day 14+. Its
+            own card so the report is a first-class milestone rather than a
+            transform on the Day 7 card. If the user reaches Day 14 without a
+            saved Check-In, the card sends them back to /day-7 to take it. */}
+        {currentDay < 14 && (
+          <LockedMilestoneCard label="Body Decode Report" unlockDay={14} currentDay={currentDay} />
+        )}
+        {currentDay >= 14 && (
           <div style={{ marginBottom: '48px' }}>
             <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              Body Decode Check-In
+              Body Decode Report
             </p>
             <div style={{
-              background: '#FFFFFF', border: '1px solid #E5E5E5',
-              borderRadius: '12px', padding: '24px', textAlign: 'center',
+              background: '#FFFFFF',
+              border: '1px solid #E5E5E5',
+              borderLeft: '3px solid #1B6DFC',
+              borderRadius: '14px',
+              padding: '24px 26px',
+              boxShadow: '0 1px 4px rgba(27, 109, 252, 0.06)',
             }}>
-              <div style={{
-                width: '48px', height: '48px', borderRadius: '50%',
-                background: '#E5E5E5', display: 'flex', alignItems: 'center',
-                justifyContent: 'center', margin: '0 auto 14px', fontSize: '22px',
-              }}>
-                🔒
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px', flexWrap: 'wrap' as const }}>
+                <span style={{
+                  fontSize: '11px', fontWeight: 700, color: '#1056D6',
+                  textTransform: 'uppercase' as const, letterSpacing: '0.12em',
+                }}>
+                  Day 14 · Body Decode Report
+                </span>
+                <span style={{
+                  fontSize: '10px', fontWeight: 700,
+                  color: savedQuizResult ? '#1056D6' : '#B7791F',
+                  background: savedQuizResult ? 'rgba(27,109,252,0.10)' : 'rgba(183,121,31,0.10)',
+                  border: `1px solid ${savedQuizResult ? 'rgba(27,109,252,0.25)' : 'rgba(183,121,31,0.25)'}`,
+                  borderRadius: '99px', padding: '3px 9px',
+                  letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+                }}>
+                  {savedQuizResult ? 'Report ready' : 'Action needed'}
+                </span>
               </div>
-              <p style={{ fontSize: '15px', fontWeight: 700, color: '#4A4A4A', marginBottom: '6px' }}>
-                Unlocks on Day 7
+              <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
+                {savedQuizResult
+                  ? 'Your Body Decode Report is ready.'
+                  : 'Take your Day 7 Check-In first.'}
               </p>
-              <p style={{ fontSize: '13px', color: '#999999', margin: 0 }}>
-                {7 - currentDay} day{7 - currentDay === 1 ? '' : 's'} to go
+              <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
+                {savedQuizResult
+                  ? 'Open the Day 14 page for the full read. Your pattern, what it means, where it shows up, what it is NOT, and the three actions specific to your pattern.'
+                  : 'Your Body Decode Report depends on the Day 7 Check-In. Take it now and your Report will unlock immediately.'}
               </p>
+              <a
+                href={`/challenge/${token}/${savedQuizResult ? 'day-14' : 'day-7'}`}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '8px',
+                  padding: '14px 26px', borderRadius: '10px',
+                  background: '#1B6DFC', color: '#FFFFFF',
+                  fontSize: '14px', fontWeight: 800, textDecoration: 'none',
+                  letterSpacing: '0.01em',
+                }}
+              >
+                {savedQuizResult ? 'Open your Body Decode Report →' : 'Open Body Decode Check-In →'}
+              </a>
             </div>
           </div>
         )}
