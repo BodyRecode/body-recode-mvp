@@ -8,51 +8,11 @@ import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clam
 import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike, BRIDGE_CEILING_BUFFER, NUTRITION_DOCTRINE_VERSION, detectAppetiteSuppression } from '@/lib/nutrition-validation'
 import { emitValidatorEvent, type ValidatorEventTier, type ValidatorEventFinalOutcome } from '@/lib/nutrition-telemetry'
 import { randomUUID } from 'crypto'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
-
-// Extract the first top-level JSON object from text the model emits. The
-// greedy /\{[\s\S]*\}/ used previously matched first-{ to last-} — if the model
-// added trailing commentary that contained curly braces (e.g., "the {window}
-// stays steady"), the regex over-captured and JSON.parse crashed with
-// "Unexpected non-whitespace character after JSON at position N". This walker
-// counts braces, respects string literals + escapes, and stops at the matching
-// close of the first {.
-//
-// Also handles the model wrapping output in a ```json fence (audit finding #10
-// on 2026-05-25): if a fence is present, start the scan inside the fence to
-// avoid picking up a stray { from any pre-fence prose.
-function extractFirstJsonObject(text: string): string | null {
-  // Prefer scanning inside a ```json (or bare ```) fence if one exists — the
-  // fence is an unambiguous "JSON starts here" marker.
-  const fenceMatch = text.match(/```(?:json)?\s*\n/)
-  const scanStart = fenceMatch && typeof fenceMatch.index === 'number'
-    ? fenceMatch.index + fenceMatch[0].length
-    : 0
-  const start = text.indexOf('{', scanStart)
-  if (start === -1) return null
-  let depth = 0
-  let inString = false
-  let escaped = false
-  for (let i = start; i < text.length; i++) {
-    const ch = text[i]
-    if (escaped) { escaped = false; continue }
-    if (inString) {
-      if (ch === '\\') escaped = true
-      else if (ch === '"') inString = false
-      continue
-    }
-    if (ch === '"') inString = true
-    else if (ch === '{') depth++
-    else if (ch === '}') {
-      depth--
-      if (depth === 0) return text.slice(start, i + 1)
-    }
-  }
-  return null
-}
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
