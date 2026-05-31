@@ -167,7 +167,9 @@ export default function FunnelADirectCoachingArcPage() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 32px 1fr 32px 1fr 32px 1fr 32px 1fr',
-            gridTemplateRows: `${CARD_MIN_HEIGHT} 26px ${CARD_MIN_HEIGHT} 26px ${CARD_MIN_HEIGHT} 26px ${CARD_MIN_HEIGHT}`,
+            // Card rows auto-size to their tallest card so body copy
+            // doesn't overflow into the arrow gaps. Arrow rows stay fixed.
+            gridTemplateRows: 'auto 24px auto 24px auto 24px auto',
             gap: '10px',
             alignItems: 'stretch',
           }}>
@@ -274,7 +276,7 @@ export default function FunnelADirectCoachingArcPage() {
                   <span style={stageBadge(C.blueDeeper)}>Conversion</span>
                   <p style={cardTitle}>Zoom 1 sales call</p>
                   <p style={cardSub}>4-stage Call Companion</p>
-                  <p style={cardBody}>Listen (Recap + Hot Spot) then Pitch (System + Offer). 3 paths out: A Declined / B Needs Time / C Proceeding.</p>
+                  <p style={cardBody}>Listen then Pitch. 3 decision paths: A Declined / B Needs Time / C Proceeding.</p>
                 </div>
                 <p style={cardPrice}>Free</p>
               </div>
@@ -328,7 +330,7 @@ export default function FunnelADirectCoachingArcPage() {
                   <span style={stageBadge(C.amber)}>Decline downsell · Live</span>
                   <p style={cardTitle}>$97 12-Week State Program</p>
                   <p style={cardSub}>State-specific · self-guided</p>
-                  <p style={cardBody}>Fires alongside the 3-email sequence. State-tailored 12-week training + nutrition delivered at app.bodyrecode.au/program/[token].</p>
+                  <p style={cardBody}>Fires alongside the 3-email sequence. 12-week training + nutrition tailored to body state.</p>
                 </div>
                 <p style={{ ...cardPrice, color: C.amber }}>$97 one-time</p>
               </div>
