@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { AlertTriangle, Search } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { AlertTriangle, Search, ChevronRight } from 'lucide-react'
 import { PageHeader, Card, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 
 const PATTERN_COLOURS: Record<string, string> = {
@@ -105,10 +106,13 @@ function Table({ headers, children }: { headers: string[]; children: React.React
   )
 }
 
-function TR({ children, highlight }: { children: React.ReactNode; highlight?: boolean }) {
+function TR({ children, highlight, href }: { children: React.ReactNode; highlight?: boolean; href?: string }) {
+  const router = useRouter()
+  const clickable = !!href
   return (
     <tr
-      className="border-b border-[#E5E5E5] last:border-b-0 transition-colors hover:bg-[#E5E5E5]/40"
+      onClick={clickable ? () => router.push(href!) : undefined}
+      className={`border-b border-[#E5E5E5] last:border-b-0 transition-colors hover:bg-[#E5E5E5]/40 ${clickable ? 'cursor-pointer' : ''}`}
       style={highlight ? { background: 'rgba(239,68,68,0.04)' } : undefined}
     >
       {children}
@@ -276,7 +280,7 @@ export default function FunnelClient({
             {filteredChallenge.map(e => {
               const atRisk = e.currentDay >= 14 && !e.hasBlueprintPurchase
               return (
-                <TR key={e.id} highlight={atRisk}>
+                <TR key={e.id} highlight={atRisk} href={`/dashboard/funnel/${e.token}`}>
                   <TDName name={e.name} email={e.email} drillHref={`/dashboard/funnel/${e.token}`} />
                   <TD>
                     <span className="font-bold text-[#1A1A1A]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, 14)}</span>
@@ -297,7 +301,12 @@ export default function FunnelClient({
                         ? <StatusBadge label="Not yet" colour="#DC2626" />
                         : <StatusBadge label="In progress" colour="#999999" />}
                   </TD>
-                  <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.enrolledAt)}</span></TD>
+                  <TD>
+                    <div className="flex items-center justify-between gap-2">
+                      <span style={{ fontFamily: MONO_FONT }}>{formatDate(e.enrolledAt)}</span>
+                      <ChevronRight size={14} className="text-[#999999]" />
+                    </div>
+                  </TD>
                 </TR>
               )
             })}
