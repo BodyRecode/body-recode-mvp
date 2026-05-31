@@ -420,6 +420,20 @@ export default function FunnelBProductArcPage() {
         borderBottom: `1px solid ${C.border}`,
       }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', width: '100%' }}>
+          {/* Cross-reference banner: Funnel B converges with Funnel A here */}
+          <div style={{
+            background: `${C.blue}10`, border: `1px solid ${C.blue}40`,
+            borderRadius: '10px', padding: '10px 18px',
+            margin: '0 auto 28px', maxWidth: '900px', textAlign: 'center',
+          }}>
+            <span style={{ fontSize: '11px', fontWeight: 800, color: C.blueDark, letterSpacing: '0.12em', textTransform: 'uppercase', marginRight: '8px' }}>
+              Funnels converge here
+            </span>
+            <span style={{ fontSize: '13px', color: C.body, lineHeight: 1.55 }}>
+              This is the same destination as <strong style={{ color: C.text }}>Zone 3 in /broll/funnel-a-direct-coaching-arc</strong>. Both funnels end up at 1:1 Performance Coaching; they enter through different doors.
+            </span>
+          </div>
+
           <p style={{ ...eyebrow, marginBottom: '16px', textAlign: 'center' }}>
             Zone 2 · The ceiling
           </p>

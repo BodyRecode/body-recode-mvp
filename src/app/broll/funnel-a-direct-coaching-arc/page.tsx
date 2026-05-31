@@ -54,7 +54,7 @@ const eyebrow: React.CSSProperties = {
   letterSpacing: '0.18em', textTransform: 'uppercase',
 }
 
-const CARD_MIN_HEIGHT = '160px'
+const CARD_MIN_HEIGHT = '140px'
 
 const zone1Card = (color: string, isPlaceholder = false): React.CSSProperties => ({
   background: isPlaceholder ? '#F7F7F5' : C.bg,
@@ -116,7 +116,7 @@ export default function FunnelADirectCoachingArcPage() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: '60px 48px',
+        padding: '40px 48px',
         position: 'relative',
         overflow: 'hidden',
       }}>
@@ -135,19 +135,19 @@ export default function FunnelADirectCoachingArcPage() {
         }} />
 
         <div style={{ position: 'relative', maxWidth: '1480px', margin: '0 auto', width: '100%' }}>
-          <p style={{ ...eyebrow, marginBottom: '14px', textAlign: 'center' }}>
+          <p style={{ ...eyebrow, marginBottom: '10px', textAlign: 'center' }}>
             Funnel A · Direct Coaching Arc
           </p>
           <h1 style={{
-            fontSize: 'clamp(36px, 4.5vw, 54px)', fontWeight: 900,
+            fontSize: 'clamp(32px, 4vw, 46px)', fontWeight: 900,
             letterSpacing: '-0.035em', lineHeight: 1.05,
-            color: C.text, marginBottom: '14px', textAlign: 'center',
+            color: C.text, marginBottom: '10px', textAlign: 'center',
           }}>
             Scorecard to <span style={{ color: C.blue }}>1:1 coaching.</span>
           </h1>
           <p style={{
-            fontSize: '17px', color: C.body,
-            textAlign: 'center', marginBottom: '32px',
+            fontSize: '15px', color: C.body,
+            textAlign: 'center', marginBottom: '20px',
             maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.5,
           }}>
             High-intent path. One Zoom call. Three decision paths out. Recovery branch for the no.
@@ -167,8 +167,8 @@ export default function FunnelADirectCoachingArcPage() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 32px 1fr 32px 1fr 32px 1fr 32px 1fr',
-            gridTemplateRows: `${CARD_MIN_HEIGHT} 30px ${CARD_MIN_HEIGHT} 30px ${CARD_MIN_HEIGHT} 30px ${CARD_MIN_HEIGHT}`,
-            gap: '12px',
+            gridTemplateRows: `${CARD_MIN_HEIGHT} 26px ${CARD_MIN_HEIGHT} 26px ${CARD_MIN_HEIGHT} 26px ${CARD_MIN_HEIGHT}`,
+            gap: '10px',
             alignItems: 'stretch',
           }}>
             {/* Row 1 — Stage 4 subscription tiers ceiling card, col 9 (above Commencement) */}
@@ -335,17 +335,16 @@ export default function FunnelADirectCoachingArcPage() {
             </div>
           </div>
 
-          {/* Reading guide under the diagram */}
+          {/* Reading guide under the diagram (compact, Path A/B/C detail lives in Zone 2) */}
           <p style={{
-            fontSize: '13px', color: C.grey,
-            textAlign: 'center', marginTop: '24px',
-            maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.65,
+            fontSize: '12px', color: C.grey,
+            textAlign: 'center', marginTop: '16px',
+            maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55,
           }}>
-            <strong style={{ color: C.text }}>Read the diagram:</strong> main flow Scorecard → $37 Report → Zoom invite → Zoom call → Commencement → Coaching subscription.
-            Stage 4 ascends UP from Commencement.
-            <strong style={{ color: C.amber }}> Path A (Declined)</strong> drops down from the Zoom call into the 3-email re-engagement and the $97 12-Week State Program downsell.
-            <strong style={{ color: C.text }}> Path B (Needs Time)</strong> sets status to Zoom Completed for manual follow-up — not shown.
-            <strong style={{ color: C.blue }}> Path C (Proceeding)</strong> is the forward arrow into Commencement.
+            <strong style={{ color: C.amber }}>Path A (Declined)</strong> drops the decline branch ·
+            <strong style={{ color: C.grey }}> Path B (Needs Time)</strong> = manual follow-up, not drawn ·
+            <strong style={{ color: C.blue }}> Path C (Proceeding)</strong> = forward arrow into Commencement.
+            Full path detail in Zone 2.
           </p>
         </div>
       </section>
@@ -526,6 +525,20 @@ export default function FunnelADirectCoachingArcPage() {
         }} />
 
         <div style={{ position: 'relative', maxWidth: '1280px', margin: '0 auto', width: '100%' }}>
+          {/* Cross-reference banner: Funnel A converges with Funnel B here */}
+          <div style={{
+            background: `${C.blue}10`, border: `1px solid ${C.blue}40`,
+            borderRadius: '10px', padding: '10px 18px',
+            margin: '0 auto 28px', maxWidth: '900px', textAlign: 'center',
+          }}>
+            <span style={{ fontSize: '11px', fontWeight: 800, color: C.blueDark, letterSpacing: '0.12em', textTransform: 'uppercase', marginRight: '8px' }}>
+              Funnels converge here
+            </span>
+            <span style={{ fontSize: '13px', color: C.body, lineHeight: 1.55 }}>
+              This is the same destination as <strong style={{ color: C.text }}>Stage 4 in /broll/funnel-b-product-arc</strong>. Both funnels end up at 1:1 Performance Coaching; they enter through different doors.
+            </span>
+          </div>
+
           <p style={{ ...eyebrow, marginBottom: '16px', textAlign: 'center' }}>
             Zone 3 · The back-end
           </p>
