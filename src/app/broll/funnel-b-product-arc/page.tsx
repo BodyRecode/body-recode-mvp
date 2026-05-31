@@ -51,6 +51,11 @@ const eyebrow: React.CSSProperties = {
   letterSpacing: '0.18em', textTransform: 'uppercase',
 }
 
+// All cards (main row + branches + ceiling + entry + socials) share the
+// same outer dimensions: equal width (controlled by the 9-col grid using
+// equal 1fr columns) and a fixed minHeight so rows align visually.
+const CARD_MIN_HEIGHT = '160px'
+
 const zone1Card = (color: string, isPlaceholder = false): React.CSSProperties => ({
   background: isPlaceholder ? '#F7F7F5' : C.bg,
   border: isPlaceholder ? '1px dashed #D4D4D4' : `1px solid ${color}40`,
@@ -60,7 +65,9 @@ const zone1Card = (color: string, isPlaceholder = false): React.CSSProperties =>
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  minHeight: '120px',
+  minHeight: CARD_MIN_HEIGHT,
+  height: '100%',
+  boxSizing: 'border-box',
 })
 
 const stageBadge = (color: string): React.CSSProperties => ({
@@ -165,9 +172,10 @@ export default function FunnelBProductArcPage() {
           */}
           <div style={{
             display: 'grid',
-            // 9 columns: alternating card (1fr) / arrow gutter (32px) / card / ...
-            gridTemplateColumns: '1.1fr 32px 1fr 32px 1.1fr 32px 1.1fr 32px 0.9fr',
-            gridTemplateRows: 'auto 30px auto 30px auto 30px auto',
+            // 9 columns: equal 1fr cards alternating with 32px arrow gutters
+            // so every card has the same width.
+            gridTemplateColumns: '1fr 32px 1fr 32px 1fr 32px 1fr 32px 1fr',
+            gridTemplateRows: `${CARD_MIN_HEIGHT} 30px ${CARD_MIN_HEIGHT} 30px ${CARD_MIN_HEIGHT} 30px ${CARD_MIN_HEIGHT}`,
             gap: '12px',
             alignItems: 'stretch',
           }}>
@@ -181,14 +189,20 @@ export default function FunnelBProductArcPage() {
                 border: `2px solid ${C.blue}`,
                 boxShadow: '0 8px 24px rgba(2, 26, 77, 0.25)',
                 textAlign: 'center',
+                minHeight: CARD_MIN_HEIGHT,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                boxSizing: 'border-box',
               }}>
-                <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#B5CFFC', margin: '0 0 4px' }}>
+                <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#B5CFFC', margin: '0 0 6px' }}>
                   Stage 4 · Ascension ceiling
                 </p>
-                <p style={{ fontSize: '15px', fontWeight: 900, margin: '0 0 3px', letterSpacing: '-0.01em' }}>
+                <p style={{ fontSize: '15px', fontWeight: 900, margin: '0 0 6px', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
                   Online 1:1 Performance Coaching
                 </p>
-                <p style={{ fontSize: '11px', color: '#B5CFFC', margin: 0, lineHeight: 1.4 }}>
+                <p style={{ fontSize: '11px', color: '#B5CFFC', margin: 0, lineHeight: 1.45 }}>
                   $240 commencement + $149/wk · In-person 2x $299/wk · 3x $409/wk
                 </p>
               </div>
@@ -208,15 +222,17 @@ export default function FunnelBProductArcPage() {
                 padding: '16px 18px',
                 borderRadius: '12px',
                 textAlign: 'center',
+                minHeight: CARD_MIN_HEIGHT,
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
+                boxSizing: 'border-box',
               }}>
                 <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#999999', margin: '0 0 6px' }}>
                   Entry
                 </p>
-                <p style={{ fontSize: '15px', fontWeight: 900, margin: '0 0 4px' }}>
+                <p style={{ fontSize: '17px', fontWeight: 900, margin: '0 0 6px', letterSpacing: '0.04em' }}>
                   SCORECARD
                 </p>
                 <p style={{ fontSize: '10px', color: '#999999', margin: 0 }}>
@@ -330,35 +346,42 @@ export default function FunnelBProductArcPage() {
                 border: `1px solid ${C.blue}40`,
                 borderTop: `3px solid ${C.blue}`,
                 borderRadius: '12px',
-                padding: '14px 18px',
+                padding: '16px 18px',
                 textAlign: 'center',
+                minHeight: CARD_MIN_HEIGHT,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                boxSizing: 'border-box',
               }}>
                 <span style={stageBadge(C.blue)}>Distribution</span>
-                <p style={{ ...cardTitle, marginBottom: '10px' }}>Socials</p>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginTop: '6px' }}>
+                <p style={{ ...cardTitle, marginBottom: '12px' }}>Socials</p>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
                   {/* Instagram */}
                   <div style={{
-                    width: '38px', height: '38px', borderRadius: '10px',
+                    width: '40px', height: '40px', borderRadius: '10px',
                     background: 'linear-gradient(135deg, #FED373, #F2725D, #D62D80, #872D9A)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFFFFF">
                       <path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.2-.1 1.6-.1 4.8-.1zm0-2.2C8.7 0 8.3 0 7.1.1 5.8.1 5 .3 4.2.6c-.8.3-1.5.7-2.2 1.4C1.3 2.7.9 3.4.6 4.2.3 5 .1 5.8.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.1 1.3.2 2.1.5 2.9.3.8.7 1.5 1.4 2.2.7.7 1.4 1.1 2.2 1.4.8.3 1.6.5 2.9.5 1.3.1 1.7.1 4.9.1s3.7 0 4.9-.1c1.3-.1 2.1-.2 2.9-.5.8-.3 1.5-.7 2.2-1.4.7-.7 1.1-1.4 1.4-2.2.3-.8.5-1.6.5-2.9.1-1.3.1-1.7.1-4.9s0-3.7-.1-4.9c-.1-1.3-.2-2.1-.5-2.9-.3-.8-.7-1.5-1.4-2.2C21.3.9 20.6.5 19.8.2 19 0 18.2-.1 16.9-.1 15.7 0 15.3 0 12 0z"/>
                       <path d="M12 5.8c-3.4 0-6.2 2.8-6.2 6.2s2.8 6.2 6.2 6.2 6.2-2.8 6.2-6.2-2.8-6.2-6.2-6.2zm0 10.3c-2.3 0-4.1-1.8-4.1-4.1s1.8-4.1 4.1-4.1 4.1 1.8 4.1 4.1-1.8 4.1-4.1 4.1zM18.4 4.2c-.8 0-1.5.7-1.5 1.5s.7 1.5 1.5 1.5 1.5-.7 1.5-1.5-.6-1.5-1.5-1.5z"/>
                     </svg>
                   </div>
                   {/* LinkedIn */}
                   <div style={{
-                    width: '38px', height: '38px', borderRadius: '10px',
+                    width: '40px', height: '40px', borderRadius: '10px',
                     background: '#0A66C2',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFFFFF">
                       <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/>
                     </svg>
                   </div>
                 </div>
-                <p style={{ fontSize: '10px', color: C.grey, margin: '8px 0 0', letterSpacing: '0.04em' }}>
+                <p style={{ fontSize: '10px', color: C.grey, margin: '10px 0 0', letterSpacing: '0.04em' }}>
                   Instagram · LinkedIn
                 </p>
               </div>
