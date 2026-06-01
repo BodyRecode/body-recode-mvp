@@ -12,7 +12,7 @@ export default async function Image() {
         style={{
           width: '1200px',
           height: '630px',
-          background: '#FFFFFF',
+          background: '#08090B',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-start',
@@ -21,40 +21,46 @@ export default async function Image() {
           overflow: 'hidden',
         }}
       >
-        {/* Helix */}
-        <img
-          src="https://bodyrecode.au/helix-icon.png"
-          style={{
-            position: 'absolute',
-            right: '-40px',
-            top: '0',
-            height: '100%',
-            width: 'auto',
-            opacity: 0.08,
-          }}
-        />
-
         {/* Signal Blue glow top right */}
         <div
           style={{
             position: 'absolute',
-            top: '-100px',
-            right: '-100px',
-            width: '500px',
-            height: '500px',
+            top: '-160px',
+            right: '-120px',
+            width: '620px',
+            height: '620px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(27,109,252,0.12) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(27,109,252,0.28) 0%, transparent 70%)',
           }}
         />
 
         {/* Content */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', position: 'relative' }}>
+          {/* spec strip */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '8px 16px',
+              border: '1px solid rgba(255,255,255,0.16)',
+              borderRadius: '999px',
+              alignSelf: 'flex-start',
+              marginBottom: '6px',
+            }}
+          >
+            <div style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#5390FF' }} />
+            <div style={{ fontSize: '15px', color: '#8A8E9B', letterSpacing: '0.06em' }}>
+              v1.0 · 208 signals · 8 domains · 5 pillars · 3 states
+            </div>
+          </div>
+
           <div
             style={{
               fontSize: '16px',
               fontWeight: 700,
               letterSpacing: '0.2em',
-              color: '#1B6DFC',
+              color: '#5390FF',
               textTransform: 'uppercase',
             }}
           >
@@ -64,7 +70,7 @@ export default async function Image() {
             style={{
               fontSize: '80px',
               fontWeight: 900,
-              color: '#1A1A1A',
+              color: '#FFFFFF',
               lineHeight: 1.05,
               letterSpacing: '-0.02em',
             }}
@@ -75,8 +81,8 @@ export default async function Image() {
             style={{
               fontSize: '24px',
               fontWeight: 400,
-              color: '#4A4A4A',
-              maxWidth: '580px',
+              color: '#C5C8D2',
+              maxWidth: '600px',
               lineHeight: 1.5,
             }}
           >
@@ -87,7 +93,7 @@ export default async function Image() {
               marginTop: '8px',
               fontSize: '16px',
               fontWeight: 600,
-              color: '#999999',
+              color: '#565A66',
               letterSpacing: '0.05em',
             }}
           >
