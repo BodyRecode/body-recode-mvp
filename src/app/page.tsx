@@ -451,6 +451,7 @@ export default function HomePage() {
                       {e.live ? 'Live' : 'In dev'}
                     </span>
                   </div>
+                  <p style={{ fontFamily: MONO, fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: TXT_MUTE, marginBottom: 5 }}>{e.kicker}</p>
                   <p style={{ fontSize: 12.5, fontWeight: 700, color: e.live ? TXT : TXT_DIM, lineHeight: 1.3 }}>{e.title}</p>
                 </div>
               ))}
