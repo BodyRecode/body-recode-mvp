@@ -42,8 +42,13 @@ export default async function PortalCheckinPage({ params }: { params: Promise<{ 
 
   const window = getCheckInWindowStatus()
   const testMode = isCheckinTestMode()
+  // Per-client override set by coach via the Reopen button on the client
+  // profile. When `checkin_window_override_until` is a future timestamp the
+  // window is open for this client only, regardless of the global schedule.
+  const overrideUntil = client.checkin_window_override_until ? new Date(client.checkin_window_override_until) : null
+  const overrideActive = overrideUntil ? overrideUntil.getTime() > Date.now() : false
 
-  if (!window.isOpen && !testMode) {
+  if (!window.isOpen && !testMode && !overrideActive) {
     const opensAt = window.opensAt.toLocaleString('en-AU', {
       timeZone: 'Australia/Brisbane',
       weekday: 'long',
