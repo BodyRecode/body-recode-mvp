@@ -36,6 +36,7 @@ const SECTIONS = [
   { id: 'stripe-payments',  title: '19. Stripe Payments',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'training-program', title: '20. Training Program',   colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'program-reading',  title: '20b. Program Reading',   colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'trajectory-reading', title: '20c. Block-End Trajectory Reading', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'macro-arc',        title: '21. Macro Training Arc', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'program-coach-guidance', title: '21b. Program Coach Guidance', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'nutrition-plan',   title: '22. Nutrition Plan',     colour: 'teal' as const, category: 'coaching' as Category },
@@ -1562,6 +1563,40 @@ export default function HelpPage() {
             <p>Same content rules as the Foundational Reading: no sets / reps / loads / RPE / percentages, no specific exercise names, no calorie or macro targets, no diagnoses, no causal claims, no em dashes, no exclamation marks. The body is interpreted as coherent, never broken. Conservative resolution overrides optimistic interpretation. Whenever the &quot;not doing yet&quot; section touches on fat loss or weight, the AI must reassure the client that outcomes typically follow as a downstream consequence of building capacity first.</p>
 
             <Note>The Program Reading is per-block, not per-client. Each new program row gets its own reading. Generating a new block clears the prior reading state and creates a fresh canvas. The Foundational Reading is the constant; the Program Reading evolves with each block.</Note>
+          </Section>
+
+          {/* Block-end Trajectory Reading - client-facing read of the CFWS arc */}
+          <Section id="trajectory-reading" title="20c. Block-End Trajectory Reading - Client Facing" colour="teal">
+            <p>The Block-End Trajectory Reading is the client-facing read of the whole training block, written once the block has finished. Where the Foundational Reading is the client translation of the CFFS (a single snapshot) and the Program Reading frames the prescription, the Trajectory Reading is the client translation of the <strong>CFWS arc</strong>: it reads the SEQUENCE of weekly syntheses across the block and tells the client how their signal moved over time, not where it sits in any one week. It is the fifth reading and the first that reads time, not a moment.</p>
+
+            <p>It sits below the Program Reading on the client&apos;s program page once published, and is also available as a standalone document. It exists so the client can step back from the week-to-week, see the shape of where they have been travelling, and trust that the work compounded even on the flat weeks.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">How to publish a Trajectory Reading</p>
+            <p>On the client profile, open <strong>Training Program</strong>. The <strong>Block-End Trajectory Reading - Client Facing</strong> panel sits directly below the Program Reading panel. Unlike the Program Reading, it is <strong>coach-gated like the Foundational Reading</strong>: generating produces a DRAFT only, and a separate publish step surfaces it and emails the client.</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li>The panel shows a <strong>block-status note</strong>. The reading is designed for block end; before then it shows the current week of the block (e.g. &ldquo;week 4 of 6&rdquo;). You can still generate an early draft from the weeks completed so far, with a confirm.</li>
+              <li><strong>Generate draft</strong> reads every non-archived CFWS row in the block&apos;s week range (oldest first), plus the published Foundational Reading for voice. It writes a draft and does NOT publish or email.</li>
+              <li>If there are no weekly syntheses (CFWS) in the block range, generation refuses with a clear message. Generate the weekly check-in syntheses first.</li>
+              <li><strong>Publish &amp; notify</strong> surfaces the reading at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/portal/[token]/program</code> and, the first time this block is published, emails the client (&ldquo;your block-end reading is ready&rdquo;). Republishing never re-emails.</li>
+              <li>The standalone document lives at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/portal/[token]/program/trajectory-reading</code> via the &quot;View as document&quot; link.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">The five sections</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>01 Where this block started</strong> - The starting line, drawn from the earliest weeks and the Foundational state. The anchor the arc is measured against.</li>
+              <li><strong>02 How your signal moved</strong> - The heart of the reading. The direction of travel across the block: recovery, energy, regulation, capacity, consistency. Honest about the shape, including flat or mixed arcs.</li>
+              <li><strong>03 What held steady</strong> - What persisted across the whole block. Constancy is signal too.</li>
+              <li><strong>04 What this sets up next</strong> - Forward-looking and non-prescriptive. What the block has readied the body for. Consolidation, not escalation, when the arc warrants caution.</li>
+              <li><strong>05 A note from your coach</strong> - Short closing in Kade&apos;s voice on the arc of their work.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Coach Guidance, edit, and re-publish</p>
+            <p>Same affordances as the other reading panels: <strong>Coach Guidance</strong> (standing notes applied on every Generate / Regenerate, e.g. &ldquo;weeks 3-4 were disrupted by travel, frame the dip as expected&rdquo;), <strong>inline editing</strong> (pencil per section, em dashes stripped on save), <strong>Regenerate</strong> (re-reads the arc; if live it stays live and the client is not re-emailed), and <strong>Unpublish / Republish</strong>.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Doctrine guardrails</p>
+            <p>Same content rules as the other readings, plus two specific to reading time: a single bad week is never the verdict (pattern-based interpretation over event-based), and <strong>the AI must not manufacture progress the weekly data does not support</strong> - conservative resolution means a genuinely flat or mixed arc is read honestly and supportively, never inflated. Weight and body composition are never the measure of the arc; the underlying signal is.</p>
+
+            <Note>Per-block, like the Program Reading. Each program row gets its own trajectory reading once its block completes. Coach-gated end to end: nothing reaches the client until you publish.</Note>
           </Section>
 
           <Section id="macro-arc" title="21. Macro Training Arc" colour="teal">

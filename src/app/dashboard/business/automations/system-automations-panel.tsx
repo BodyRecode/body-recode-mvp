@@ -129,6 +129,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'trajectory-reading-published',
+    name: 'Block-End Trajectory Reading Published',
+    description: 'Client-facing notification that the block-end reading (the read of the CFWS arc across the completed block) is live in the portal. Coach-gated: drafts do not email; only the first publish per block does.',
+    trigger: 'Coach clicks Publish & notify on a Block-End Trajectory Reading',
+    steps: 1,
+  },
+  {
     id: 'nutrition-reading-published',
     name: 'Nutrition Reading Published',
     description: 'Client-facing notification that a new nutrition plan is live in the portal, with the Nutrition Reading at the top.',
