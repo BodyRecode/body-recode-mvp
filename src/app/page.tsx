@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import MarketingNav from '@/components/marketing/nav'
-import MarketingFooter from '@/components/marketing/footer'
+import Image from 'next/image'
 import LicensingEnquiryForm from '@/components/marketing/licensing-enquiry-form'
 
 export const metadata: Metadata = {
@@ -9,67 +8,255 @@ export const metadata: Metadata = {
     'Body Recode™ is a biological interpretation system. One interpretive engine. Five environments. Licensable across performance coaching, executive, tactical, clinical and developmental contexts.',
 }
 
-const TEAL = '#1B6DFC'
+/* ---------- Tokens (dark "platform" expression of the shared brand) ---------- */
+const BLUE = '#1B6DFC'
+const BLUE_LIGHT = '#5390FF'
+const CANVAS = '#08090B'
+const CANVAS_2 = '#0C0E12'
+const SURFACE = '#121419'
+const BORDER = 'rgba(255,255,255,0.08)'
+const BORDER_STRONG = 'rgba(255,255,255,0.14)'
+const TXT = '#FFFFFF'
+const TXT_BODY = '#C5C8D2'
+const TXT_DIM = '#8A8E9B'
+const TXT_MUTE = '#565A66'
+const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
+
+/* ---------- Data ---------- */
+const DOMAINS = [
+  { num: '01', name: 'Training Load', desc: 'Physical stress exposure, training history, volume and fatigue patterns.' },
+  { num: '02', name: 'Recovery Capacity', desc: 'The system’s ability to restore and return to baseline between exposures.' },
+  { num: '03', name: 'Stress Architecture', desc: 'How the stress response is organised and its capacity to resolve accumulated load.' },
+  { num: '04', name: 'Hormonal Signals', desc: 'Endocrine markers and hormonal regulation patterns affecting body state.' },
+  { num: '05', name: 'Fat Distribution', desc: 'Adaptive fat accumulation read as hormonal signalling via the Fat Map Method™.' },
+  { num: '06', name: 'Sleep Quality', desc: 'Sleep depth, recovery patterns and nervous system restoration during rest.' },
+  { num: '07', name: 'Behavioural Patterns', desc: 'Observable behaviours reflecting underlying biological state and adaptation capacity.' },
+  { num: '08', name: 'Emotional Load', desc: 'Emotional threat, identity load and over-compliance read as structural stressors.' },
+]
+
+const PILLARS_SHORT = [
+  { abbr: 'FMM', name: 'Fat Map Method™' },
+  { abbr: 'PTS', name: 'Performance Training System' },
+  { abbr: 'HABNS', name: 'Hybrid Animal-Based Nutrition' },
+  { abbr: 'RRS', name: 'Recovery & Regulation System' },
+  { abbr: 'BIRS', name: 'Behaviour, Identity & Rhythm' },
+]
+
+const PILLARS = [
+  {
+    num: '02',
+    name: 'Performance Training System',
+    abbr: 'PTS',
+    desc: 'Reads physical stress exposure, training load, fatigue and adaptation signals. Defines the risk and capacity picture for what training the body can tolerate now.',
+  },
+  {
+    num: '03',
+    name: 'Hybrid Animal-Based Nutrition System',
+    abbr: 'HABNS',
+    desc: 'Interprets nutritional sufficiency and biological threat signalling. Assesses whether intake is supporting regulation or reinforcing scarcity and hormonal disruption.',
+  },
+  {
+    num: '04',
+    name: 'Recovery and Regulation System',
+    abbr: 'RRS',
+    desc: 'Reads the system’s capacity to restore, downregulate and return to baseline. Distinguishes genuine recovery from suppression: the body that appears stable but is not regenerating.',
+  },
+  {
+    num: '05',
+    name: 'Behaviour, Identity and Rhythm System',
+    abbr: 'BIRS',
+    desc: 'Interprets emotional load, identity constraints and behavioural patterns as structural biological stressors. Compliance and identity threat are inputs, not psychology.',
+  },
+]
+
+const FAT_ZONES = [
+  { zone: 'MZ1', name: 'Stress Belt', loc: 'Stomach / Waist', signal: 'Cortisol and adrenaline dominance' },
+  { zone: 'MZ2', name: 'Gut and Bloat', loc: 'Digestive region', signal: 'Insulin timing disruption' },
+  { zone: 'MZ3', name: 'Hip and Thigh', loc: 'Hips / Thighs', signal: 'Reproductive hormone and metabolic conservation' },
+  { zone: 'MZ4', name: 'Upper Body Stress', loc: 'Upper body', signal: 'Nervous system load, adrenaline, sleep retention' },
+]
+
+const STATES = [
+  {
+    label: 'Remediation',
+    pub: 'Depleted',
+    c: '#F04438',
+    text: 'The body is under load it cannot resolve. Stress architecture is dominant. Recovery is compromised. Pushing performance-level intervention here is counterproductive. Most who present believing they are in Optimisation are actually here.',
+  },
+  {
+    label: 'Optimisation',
+    pub: 'Transitioning',
+    c: '#F5A623',
+    text: 'The body has stabilised. Capacity exists to pursue body composition and performance goals. This is where most coaching begins, but very few clients are actually here when they arrive.',
+  },
+  {
+    label: 'Post-Optimisation',
+    pub: 'Ready',
+    c: BLUE_LIGHT,
+    text: 'The body is performing. The goal shifts to identity-level performance and long-term system maintenance. Built over time. Cannot be forced.',
+  },
+]
+
+const ENVIRONMENTS = [
+  {
+    live: true,
+    kicker: 'Health & Fitness',
+    title: 'Performance Coaching',
+    desc: 'The origin environment and first proof of concept. General-population clients whose bodies have stopped responding to effort. Available online worldwide and face-to-face in Brisbane.',
+    link: { href: 'https://performance.bodyrecode.au', label: 'Visit Performance Coaching →' },
+  },
+  {
+    kicker: 'Corporate & Executive',
+    title: 'Executive Performance',
+    desc: 'High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress: cortisol elevation, recovery suppression, regulatory disruption.',
+  },
+  {
+    kicker: 'Military & Tactical',
+    title: 'Operational Readiness',
+    desc: 'Defence personnel, law enforcement and tactical operators. The stakes of misread body state in this environment are operational. An operator in Remediation pushed through performance-level training is a liability.',
+  },
+  {
+    kicker: 'Medical & Allied Health',
+    title: 'Clinical Integration',
+    desc: 'GPs, physiotherapists, sports medicine practitioners and allied health professionals. Body Recode™ sits upstream of clinical assessment, providing a structured biological read that informs the clinical picture before the appointment.',
+  },
+  {
+    kicker: 'Education & Youth',
+    title: 'Developmental Performance',
+    desc: 'Young athletes, student populations and development-stage bodies. The earlier a body is read correctly, the less dysfunction accumulates over time.',
+  },
+]
 
 export default function HomePage() {
   return (
-    <div style={{ background: '#FFFFFF', minHeight: '100vh' }}>
-      <MarketingNav variant="ip" />
-
-      {/* HERO */}
-      <section
+    <div style={{ background: CANVAS, minHeight: '100vh', color: TXT_BODY, overflowX: 'hidden' }}>
+      {/* ===== NAV ===== */}
+      <nav
         style={{
-          background: '#FFFFFF',
-          paddingTop: 160,
-          paddingBottom: 120,
-          paddingLeft: 20,
-          paddingRight: 20,
-          borderBottom: '1px solid #E5E5E5',
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+          background: 'rgba(8,9,11,0.72)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderBottom: `1px solid ${BORDER}`,
         }}
       >
-        <div style={{ maxWidth: 880, margin: '0 auto' }}>
+        <div
+          style={{
+            maxWidth: 1200,
+            margin: '0 auto',
+            padding: '0 24px',
+            height: 72,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <a href="/" style={{ display: 'block' }}>
+            <Image
+              src="/logo-black.png"
+              alt="Body Recode"
+              width={220}
+              height={97}
+              priority
+              style={{ height: 44, width: 'auto', filter: 'brightness(0) invert(1)' }}
+            />
+          </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+            <a href="#engine" className="nav-link" style={navLink}>The engine</a>
+            <a href="#environments" className="nav-link" style={navLink}>Environments</a>
+            <a href="#licensing" className="nav-link" style={navLink}>Licensing</a>
+            <a
+              href="#enquire"
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: TXT,
+                background: BLUE,
+                padding: '9px 18px',
+                borderRadius: 8,
+                textDecoration: 'none',
+                boxShadow: `0 0 0 1px ${BLUE}, 0 8px 24px -8px ${BLUE}`,
+              }}
+            >
+              Enquire
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* ===== HERO ===== */}
+      <section
+        style={{
+          position: 'relative',
+          padding: '120px 24px 100px',
+          borderBottom: `1px solid ${BORDER}`,
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)',
+          backgroundSize: '28px 28px',
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            top: -120,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 720,
+            height: 360,
+            background: 'radial-gradient(ellipse at center, rgba(27,109,252,0.22), transparent 70%)',
+            filter: 'blur(20px)',
+            pointerEvents: 'none',
+          }}
+        />
+        <div style={{ maxWidth: 920, margin: '0 auto', position: 'relative' }}>
           <div
             style={{
-              width: 32,
-              height: 3,
-              background: TEAL,
-              borderRadius: 2,
-              marginBottom: 24,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
+              padding: '6px 12px 6px 10px',
+              border: `1px solid ${BORDER_STRONG}`,
+              borderRadius: 999,
+              marginBottom: 28,
+              background: 'rgba(255,255,255,0.02)',
             }}
-          />
+          >
+            <span style={{ width: 7, height: 7, borderRadius: '50%', background: BLUE_LIGHT, boxShadow: `0 0 8px ${BLUE_LIGHT}` }} />
+            <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.08em', color: TXT_DIM }}>
+              v1.0 · 208 signals · 8 domains · 5 pillars · 3 states
+            </span>
+          </div>
+
           <p
             style={{
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: '0.18em',
-              color: TEAL,
+              fontFamily: MONO,
+              fontSize: 12,
+              fontWeight: 600,
+              letterSpacing: '0.22em',
+              color: BLUE_LIGHT,
               textTransform: 'uppercase',
-              marginBottom: 28,
+              marginBottom: 24,
             }}
           >
             Biological Interpretation Platform
           </p>
           <h1
             style={{
-              fontSize: 'clamp(34px, 6vw, 56px)',
+              fontSize: 'clamp(40px, 7vw, 72px)',
               fontWeight: 800,
-              color: '#1A1A1A',
-              letterSpacing: '-0.025em',
-              lineHeight: 1.05,
+              color: TXT,
+              letterSpacing: '-0.03em',
+              lineHeight: 1.02,
               marginBottom: 28,
             }}
           >
-            Interpretation before prescription.
+            Interpretation
+            <br />
+            before prescription.
           </h1>
-          <p
-            style={{
-              fontSize: 17,
-              lineHeight: 1.7,
-              color: '#6B6B6B',
-              maxWidth: 640,
-              marginBottom: 36,
-            }}
-          >
+          <p style={{ fontSize: 18, lineHeight: 1.7, color: TXT_DIM, maxWidth: 620, marginBottom: 40 }}>
             Body Recode™ is the upstream interpretive layer for performance, clinical and tactical
             practice. One engine reads body state across 208 structured signals before any
             intervention is designed. The system terminates at interpretation. What is built on top
@@ -79,727 +266,517 @@ export default function HomePage() {
             <a
               href="#enquire"
               style={{
-                background: TEAL,
-                color: '#FFFFFF',
+                background: BLUE,
+                color: TXT,
                 fontWeight: 700,
                 fontSize: 14,
-                padding: '14px 28px',
+                padding: '15px 30px',
                 borderRadius: 10,
                 textDecoration: 'none',
-                letterSpacing: '0.01em',
+                boxShadow: `0 10px 30px -10px ${BLUE}`,
               }}
             >
               Enquire about licensing
             </a>
             <a
-              href="#system"
+              href="#engine"
               style={{
-                background: '#FFFFFF',
-                color: '#3A3A3A',
+                background: 'rgba(255,255,255,0.03)',
+                color: TXT,
                 fontWeight: 600,
                 fontSize: 14,
-                padding: '14px 28px',
+                padding: '15px 30px',
                 borderRadius: 10,
-                border: '1px solid #E5E5E5',
+                border: `1px solid ${BORDER_STRONG}`,
                 textDecoration: 'none',
               }}
             >
-              How the system works
+              See the engine ↓
             </a>
           </div>
         </div>
       </section>
 
-      {/* THE PROBLEM */}
-      <section
-        id="system"
-        style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}
-      >
-        <div style={{ maxWidth: 880, margin: '0 auto' }}>
-          <SectionLabel>The Problem</SectionLabel>
-          <SectionHeading>Every intervention fails at the same point.</SectionHeading>
-          <div style={{ maxWidth: 640, color: '#6B6B6B', fontSize: 16, lineHeight: 1.85 }}>
-            <p style={{ marginBottom: 18 }}>
-              The conventional model is to assess goals, prescribe an approach, measure output and
-              adjust. This works when the body is in a state to respond. Most of the time, it is
-              not. The model assumes readiness. It rarely asks whether it exists.
-            </p>
-            <p>
-              The result is effort without response. Training that does not build. Nutrition that
-              does not shift body composition. Recovery that never fully lands. The intervention is
-              not wrong. The sequencing is.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* THE SOLUTION */}
-      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
-        <div style={{ maxWidth: 880, margin: '0 auto' }}>
-          <SectionLabel>The Solution</SectionLabel>
-          <SectionHeading>Read the body first. Then prescribe.</SectionHeading>
-          <p
-            style={{
-              maxWidth: 640,
-              color: '#6B6B6B',
-              fontSize: 16,
-              lineHeight: 1.85,
-              marginBottom: 40,
-            }}
-          >
-            Body Recode™ sits one layer upstream of every intervention. Before anything is
-            prescribed, the system asks one question: what state is this body actually in right
-            now, and why is it organised that way?
+      {/* ===== THE PROBLEM ===== */}
+      <Section>
+        <SectionLabel>The Problem</SectionLabel>
+        <SectionHeading>Every intervention fails at the same point.</SectionHeading>
+        <Prose>
+          <p style={{ marginBottom: 18 }}>
+            The conventional model is to assess goals, prescribe an approach, measure output and
+            adjust. This works when the body is in a state to respond. Most of the time, it is not.
+            The model assumes readiness. It rarely asks whether it exists.
           </p>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: 12,
-            }}
-          >
-            <StatCard value="208" label="Intake data points" detail="Structured across eight signal domains. Not a questionnaire. A biological read." />
-            <StatCard value="5" label="Interpretive pillars" detail="Each reads a different domain. The output is always a synthesis." />
-            <StatCard value="3" label="Body state classifications" detail="Every body, every environment. The classification drives everything downstream." />
-          </div>
-        </div>
-      </section>
+          <p>
+            The result is effort without response. Training that does not build. Nutrition that does
+            not shift body composition. Recovery that never fully lands. The intervention is not
+            wrong. The sequencing is.
+          </p>
+        </Prose>
+      </Section>
 
-      {/* TWO LAYERS */}
-      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
+      {/* ===== THE SOLUTION ===== */}
+      <Section>
+        <SectionLabel>The Solution</SectionLabel>
+        <SectionHeading>Read the body first. Then prescribe.</SectionHeading>
+        <Prose style={{ marginBottom: 44 }}>
+          Body Recode™ sits one layer upstream of every intervention. Before anything is prescribed,
+          the system asks one question: what state is this body actually in right now, and why is it
+          organised that way?
+        </Prose>
+        <Grid min={220}>
+          <StatCard value="208" label="Intake data points" detail="Structured across eight signal domains. Not a questionnaire. A biological read." />
+          <StatCard value="5" label="Interpretive pillars" detail="Each reads a different domain. The output is always a synthesis." />
+          <StatCard value="3" label="Body state classifications" detail="Every body, every environment. The classification drives everything downstream." />
+        </Grid>
+      </Section>
+
+      {/* ===== ARCHITECTURE ===== */}
+      <Section wide>
+        <SectionLabel>Architecture</SectionLabel>
+        <SectionHeading>Two layers. Neither collapses into the other.</SectionHeading>
+        <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
+          The interpretive layer is owned by Body Recode™. The execution layer is owned by the
+          practitioner. The separation is architectural, not stylistic. It is what makes the system
+          defensible and licensable.
+        </Prose>
+        <Grid min={300}>
+          <LayerCard
+            accent
+            label="Layer 1 · Interpretation"
+            owner="Owned by Body Recode™"
+            body="Takes structured input data across eight signal domains and produces the CFFS: Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation."
+          />
+          <LayerCard
+            label="Layer 2 · Execution"
+            owner="Owned by the practitioner"
+            body="Downstream of the CFFS, the practitioner designs the actual intervention: training, nutrition, load management, clinical protocol, performance strategy. Everything here is derived from the interpretation. The interpretation never changes to accommodate the execution."
+          />
+        </Grid>
+      </Section>
+
+      {/* ===== THE ENGINE (schematic) ===== */}
+      <section id="engine" style={{ padding: '100px 24px', background: CANVAS_2, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
-          <SectionLabel>Architecture</SectionLabel>
-          <SectionHeading>Two layers. Neither collapses into the other.</SectionHeading>
-          <p
-            style={{
-              maxWidth: 720,
-              color: '#6B6B6B',
-              fontSize: 16,
-              lineHeight: 1.85,
-              marginBottom: 40,
-            }}
-          >
-            The interpretive layer is owned by Body Recode™. The execution layer is owned by the
-            practitioner. The separation is architectural, not stylistic. It is what makes the
-            system defensible and licensable.
-          </p>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: 16,
-            }}
-          >
-            <Card accent>
-              <CardLabel accent>Layer 1 · Interpretation</CardLabel>
-              <CardBody>
-                Takes structured input data across eight signal domains and produces the CFFS:
-                Coach-Facing Foundational Synthesis. It does not prescribe. It does not design
-                programs. Interpretation terminates at interpretation.
-              </CardBody>
-            </Card>
-            <Card>
-              <CardLabel>Layer 2 · Execution</CardLabel>
-              <CardBody>
-                Downstream of the CFFS, the practitioner designs the actual intervention: training,
-                nutrition, load management, clinical protocol, performance strategy. Everything in
-                the execution layer is derived from the interpretation. The interpretation never
-                changes to accommodate the execution.
-              </CardBody>
-            </Card>
-          </div>
-        </div>
-      </section>
+          <SectionLabel>The Engine</SectionLabel>
+          <SectionHeading>One interpretive core. Built to scale across industries.</SectionHeading>
+          <Prose style={{ maxWidth: 720, marginBottom: 56 }}>
+            Structured client data is read across five pillars, classified into a body state, and
+            resolved into the CFFS. The engine is environment-agnostic. Each execution layer is a
+            downstream application with its own product, interface and practitioner tools.
+          </Prose>
 
-      {/* PLATFORM DIAGRAM */}
-      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
-        <div style={{ maxWidth: 1040, margin: '0 auto' }}>
-          <SectionLabel>Platform</SectionLabel>
-          <SectionHeading>One engine. Built to scale across industries.</SectionHeading>
-          <p
-            style={{
-              maxWidth: 720,
-              color: '#6B6B6B',
-              fontSize: 16,
-              lineHeight: 1.85,
-              marginBottom: 40,
-            }}
-          >
-            The interpretation engine ingests structured client data, classifies body state, and
-            produces the CFFS. This engine is environment-agnostic. Each execution layer is a
-            downstream application: its own product, its own interface, its own practitioner tools.
-          </p>
-          <div
-            style={{
-              border: '1px solid #E5E5E5',
-              borderRadius: 16,
-              overflow: 'hidden',
-              background: '#FFFFFF',
-            }}
-          >
-            <div
-              style={{
-                background: 'rgba(16, 225, 194, 0.08)',
-                borderBottom: '1px solid rgba(16, 225, 194, 0.18)',
-                padding: 20,
-                textAlign: 'center',
-              }}
-            >
-              <p
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: '0.2em',
-                  color: TEAL,
-                  textTransform: 'uppercase',
-                }}
-              >
-                Body Recode™ Interpretation Engine
-              </p>
-              <p style={{ fontSize: 11, color: '#6B6B6B', marginTop: 6 }}>
-                Intake · Classification · CFFS
-              </p>
-            </div>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(5, 1fr)',
-                borderTop: '1px solid #E5E5E5',
-              }}
-            >
-              {[
-                { name: 'Performance Coaching', live: true },
-                { name: 'Executive Performance', live: false },
-                { name: 'Operational Readiness', live: false },
-                { name: 'Clinical Integration', live: false },
-                { name: 'Developmental Performance', live: false },
-              ].map((env, i) => (
-                <div
-                  key={env.name}
-                  style={{
-                    padding: 16,
-                    textAlign: 'center',
-                    borderRight: i < 4 ? '1px solid #E5E5E5' : 'none',
-                    background: env.live ? 'rgba(16, 225, 194, 0.05)' : 'transparent',
-                  }}
-                >
-                  <p
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: '0.12em',
-                      color: env.live ? TEAL : '#999999',
-                      textTransform: 'uppercase',
-                      lineHeight: 1.4,
-                    }}
-                  >
-                    {env.name}
-                  </p>
-                  <div
-                    style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: '50%',
-                      background: env.live ? TEAL : '#E5E5E5',
-                      margin: '8px auto 0',
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SIGNAL DOMAINS */}
-      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
-        <div style={{ maxWidth: 1040, margin: '0 auto' }}>
-          <SectionLabel>Foundational Intake</SectionLabel>
-          <SectionHeading>208 structured signals. Eight domains.</SectionHeading>
-          <p
-            style={{
-              maxWidth: 720,
-              color: '#6B6B6B',
-              fontSize: 16,
-              lineHeight: 1.85,
-              marginBottom: 40,
-            }}
-          >
-            Before any interpretation begins, the system collects structured data across eight
-            distinct signal domains. The depth and specificity of the intake is what makes the
-            output defensible.
-          </p>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: 12,
-            }}
-          >
-            {[
-              { num: '01', name: 'Training Load', desc: 'Physical stress exposure, training history, volume and fatigue patterns.' },
-              { num: '02', name: 'Recovery Capacity', desc: 'The system’s ability to restore and return to baseline between exposures.' },
-              { num: '03', name: 'Stress Architecture', desc: 'How the stress response is organised and its capacity to resolve accumulated load.' },
-              { num: '04', name: 'Hormonal Signals', desc: 'Endocrine markers and hormonal regulation patterns affecting body state.' },
-              { num: '05', name: 'Fat Distribution', desc: 'Adaptive fat accumulation read as hormonal signalling via the Fat Map Method™.' },
-              { num: '06', name: 'Sleep Quality', desc: 'Sleep depth, recovery patterns and nervous system restoration during rest.' },
-              { num: '07', name: 'Behavioural Patterns', desc: 'Observable behaviours reflecting underlying biological state and adaptation capacity.' },
-              { num: '08', name: 'Emotional Load', desc: 'Emotional threat, identity load and over-compliance read as structural stressors.' },
-            ].map((d) => (
-              <div
-                key={d.num}
-                style={{
-                  background: '#FFFFFF',
-                  border: '1px solid #E5E5E5',
-                  borderRadius: 16,
-                  padding: 24,
-                }}
-              >
-                <p
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: '0.18em',
-                    color: TEAL,
-                    textTransform: 'uppercase',
-                    marginBottom: 12,
-                  }}
-                >
-                  {d.num}
-                </p>
-                <p style={{ fontSize: 14, fontWeight: 700, color: '#1A1A1A', marginBottom: 8 }}>
-                  {d.name}
-                </p>
-                <p style={{ fontSize: 12, color: '#6B6B6B', lineHeight: 1.7 }}>{d.desc}</p>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {/* INPUT */}
+            <StageCard kicker="Input" title="Foundational Intake" meta="208 structured signals">
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {DOMAINS.map((d) => (
+                  <span key={d.num} style={chip}>{d.name}</span>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </StageCard>
 
-      {/* INTERPRETIVE PILLARS */}
-      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
-        <div style={{ maxWidth: 1040, margin: '0 auto' }}>
-          <SectionLabel>Interpretive Pillars</SectionLabel>
-          <SectionHeading>Five pillars. One synthesised read.</SectionHeading>
-          <p
-            style={{
-              maxWidth: 720,
-              color: '#6B6B6B',
-              fontSize: 16,
-              lineHeight: 1.85,
-              marginBottom: 40,
-            }}
-          >
-            The engine reads the body across five distinct pillars simultaneously. Each contributes
-            signal data. No single pillar drives the output in isolation. The interpretation is
-            always a synthesis of the full picture.
-          </p>
+            <Connector />
 
-          {/* Pillar 1 featured */}
-          <div
-            style={{
-              background: 'rgba(16, 225, 194, 0.05)',
-              border: '1px solid rgba(16, 225, 194, 0.25)',
-              borderRadius: 16,
-              padding: 32,
-              marginBottom: 16,
-            }}
-          >
+            {/* ENGINE CORE */}
             <div
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: 12,
+                position: 'relative',
+                border: '1px solid rgba(27,109,252,0.45)',
+                borderRadius: 18,
+                padding: '32px 28px',
+                background: 'linear-gradient(180deg, rgba(27,109,252,0.10), rgba(27,109,252,0.02))',
+                boxShadow: `0 0 60px -20px ${BLUE}, inset 0 1px 0 rgba(255,255,255,0.05)`,
               }}
             >
-              <p
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: '0.18em',
-                  color: TEAL,
-                  textTransform: 'uppercase',
-                }}
-              >
-                Pillar 01
-              </p>
-              <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  background: TEAL,
-                  color: '#FFFFFF',
-                  padding: '4px 10px',
-                  borderRadius: 999,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.12em',
-                }}
-              >
-                Primary
-              </span>
-            </div>
-            <h3 style={{ fontSize: 20, fontWeight: 700, color: '#1A1A1A', marginBottom: 12 }}>
-              Fat Map Method™
-            </h3>
-            <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.85, marginBottom: 24 }}>
-              Fat accumulation patterns are read as hormonal and metabolic signalling, not simple
-              energy surplus. Where the body stores fat reflects its adaptive response to the
-              current hormonal and regulatory environment.
-            </p>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                gap: 10,
-              }}
-            >
-              {[
-                { zone: 'MZ1', name: 'Stress Belt', loc: 'Stomach / Waist', signal: 'Cortisol and adrenaline dominance' },
-                { zone: 'MZ2', name: 'Gut and Bloat', loc: 'Digestive region', signal: 'Insulin timing disruption' },
-                { zone: 'MZ3', name: 'Hip and Thigh', loc: 'Hips / Thighs', signal: 'Reproductive hormone and metabolic conservation' },
-                { zone: 'MZ4', name: 'Upper Body Stress', loc: 'Upper body', signal: 'Nervous system load, adrenaline, sleep retention' },
-              ].map((z) => (
-                <div
-                  key={z.zone}
-                  style={{
-                    background: 'rgba(12, 10, 9, 0.4)',
-                    border: '1px solid rgba(16, 225, 194, 0.15)',
-                    borderRadius: 12,
-                    padding: 16,
-                  }}
-                >
-                  <div
-                    style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}
-                  >
-                    <p
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 700,
-                        letterSpacing: '0.15em',
-                        color: TEAL,
-                        textTransform: 'uppercase',
-                      }}
-                    >
-                      {z.zone}
-                    </p>
-                    <p style={{ fontSize: 11, color: '#6B6B6B' }}>{z.loc}</p>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 8 }}>
+                <p style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: '0.16em', color: BLUE_LIGHT, textTransform: 'uppercase' }}>
+                  Body Recode™ Interpretation Engine
+                </p>
+                <span style={{ ...chip, borderColor: 'rgba(27,109,252,0.4)', color: BLUE_LIGHT }}>Owned · Layer 1</span>
+              </div>
+              <Grid min={150} gap={10}>
+                {PILLARS_SHORT.map((p) => (
+                  <div key={p.abbr} style={{ border: `1px solid ${BORDER}`, borderRadius: 10, padding: '14px', background: 'rgba(255,255,255,0.02)' }}>
+                    <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', color: BLUE_LIGHT, marginBottom: 6 }}>{p.abbr}</p>
+                    <p style={{ fontSize: 12.5, color: TXT_BODY, lineHeight: 1.4, fontWeight: 500 }}>{p.name}</p>
                   </div>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A', marginBottom: 4 }}>
-                    {z.name}
-                  </p>
-                  <p style={{ fontSize: 11, color: '#6B6B6B', lineHeight: 1.6 }}>{z.signal}</p>
-                </div>
-              ))}
+                ))}
+              </Grid>
             </div>
-          </div>
 
-          {/* Pillars 2-5 */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: 12,
-            }}
-          >
-            {[
-              {
-                num: '02',
-                name: 'Performance Training System',
-                abbr: 'PTS',
-                desc: 'Reads physical stress exposure, training load, fatigue and adaptation signals. Defines the risk and capacity picture for what training the body can tolerate now.',
-              },
-              {
-                num: '03',
-                name: 'Hybrid Animal-Based Nutrition System',
-                abbr: 'HABNS',
-                desc: 'Interprets nutritional sufficiency and biological threat signalling. Assesses whether intake is supporting regulation or reinforcing scarcity and hormonal disruption.',
-              },
-              {
-                num: '04',
-                name: 'Recovery and Regulation System',
-                abbr: 'RRS',
-                desc: 'Reads the system’s capacity to restore, downregulate and return to baseline. Distinguishes genuine recovery from suppression: the body that appears stable but is not regenerating.',
-              },
-              {
-                num: '05',
-                name: 'Behaviour, Identity and Rhythm System',
-                abbr: 'BIRS',
-                desc: 'Interprets emotional load, identity constraints and behavioural patterns as structural biological stressors. Compliance and identity threat are inputs, not psychology.',
-              },
-            ].map((p) => (
-              <div
-                key={p.num}
-                style={{
-                  background: '#FFFFFF',
-                  border: '1px solid #E5E5E5',
-                  borderRadius: 16,
-                  padding: 24,
-                }}
-              >
+            <Connector />
+
+            {/* CLASSIFICATION */}
+            <StageCard kicker="Classification" title="Body State" meta="1 of 3">
+              <Grid min={180} gap={10}>
+                {STATES.map((s) => (
+                  <div key={s.label} style={{ border: `1px solid ${BORDER}`, borderLeft: `3px solid ${s.c}`, borderRadius: 10, padding: '14px 16px', background: 'rgba(255,255,255,0.02)' }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: TXT, marginBottom: 3 }}>{s.label}</p>
+                    <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE }}>public: {s.pub}</p>
+                  </div>
+                ))}
+              </Grid>
+            </StageCard>
+
+            <Connector />
+
+            {/* OUTPUT */}
+            <StageCard kicker="Output" title="CFFS" meta="Coach-Facing Foundational Synthesis" tail>
+              <p style={{ fontSize: 14, color: TXT_DIM, lineHeight: 1.7 }}>
+                A single synthesised read. Non-prescriptive. Interpretation terminates here. The
+                execution layer is built downstream by the practitioner, and never changes the
+                interpretation to suit itself.
+              </p>
+            </StageCard>
+
+            <div style={{ textAlign: 'center', margin: '8px 0 4px', fontFamily: MONO, fontSize: 11, letterSpacing: '0.18em', color: TXT_MUTE, textTransform: 'uppercase' }}>
+              ↓ deployed into five environments ↓
+            </div>
+
+            <Grid min={170} gap={10} style={{ marginTop: 12 }}>
+              {ENVIRONMENTS.map((e) => (
                 <div
+                  key={e.title}
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: 10,
+                    border: e.live ? '1px solid rgba(27,109,252,0.4)' : `1px solid ${BORDER}`,
+                    borderRadius: 12,
+                    padding: '16px',
+                    background: e.live ? 'rgba(27,109,252,0.06)' : SURFACE,
                   }}
                 >
-                  <p
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      letterSpacing: '0.18em',
-                      color: '#6B6B6B',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    Pillar {p.num}
-                  </p>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      color: '#6B6B6B',
-                      border: '1px solid #E5E5E5',
-                      padding: '2px 8px',
-                      borderRadius: 999,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.1em',
-                    }}
-                  >
-                    {p.abbr}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: e.live ? BLUE_LIGHT : '#3A3D47', boxShadow: e.live ? `0 0 8px ${BLUE_LIGHT}` : 'none' }} />
+                    <span style={{ fontFamily: MONO, fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: e.live ? BLUE_LIGHT : TXT_MUTE }}>
+                      {e.live ? 'Live' : 'In dev'}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 12.5, fontWeight: 700, color: e.live ? TXT : TXT_DIM, lineHeight: 1.3 }}>{e.title}</p>
                 </div>
-                <p style={{ fontSize: 15, fontWeight: 700, color: '#1A1A1A', marginBottom: 10 }}>
-                  {p.name}
-                </p>
-                <p style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.7 }}>{p.desc}</p>
+              ))}
+            </Grid>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SIGNAL DOMAINS ===== */}
+      <Section wide>
+        <SectionLabel>Foundational Intake</SectionLabel>
+        <SectionHeading>208 structured signals. Eight domains.</SectionHeading>
+        <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
+          Before any interpretation begins, the system collects structured data across eight distinct
+          signal domains. The depth and specificity of the intake is what makes the output
+          defensible.
+        </Prose>
+        <Grid min={230}>
+          {DOMAINS.map((d) => (
+            <div key={d.num} style={cardStyle}>
+              <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', color: BLUE_LIGHT, textTransform: 'uppercase', marginBottom: 12 }}>{d.num}</p>
+              <p style={{ fontSize: 14, fontWeight: 700, color: TXT, marginBottom: 8 }}>{d.name}</p>
+              <p style={{ fontSize: 12.5, color: TXT_DIM, lineHeight: 1.7 }}>{d.desc}</p>
+            </div>
+          ))}
+        </Grid>
+      </Section>
+
+      {/* ===== INTERPRETIVE PILLARS ===== */}
+      <Section wide>
+        <SectionLabel>Interpretive Pillars</SectionLabel>
+        <SectionHeading>Five pillars. One synthesised read.</SectionHeading>
+        <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
+          The engine reads the body across five distinct pillars simultaneously. Each contributes
+          signal data. No single pillar drives the output in isolation. The interpretation is always
+          a synthesis of the full picture.
+        </Prose>
+
+        {/* Pillar 1 featured */}
+        <div
+          style={{
+            background: 'linear-gradient(180deg, rgba(27,109,252,0.08), rgba(27,109,252,0.02))',
+            border: '1px solid rgba(27,109,252,0.35)',
+            borderRadius: 18,
+            padding: 32,
+            marginBottom: 16,
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, flexWrap: 'wrap', gap: 8 }}>
+            <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', color: BLUE_LIGHT, textTransform: 'uppercase' }}>
+              Pillar 01 · FMM
+            </p>
+            <span style={{ fontFamily: MONO, fontSize: 10, fontWeight: 700, background: BLUE, color: TXT, padding: '4px 10px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+              Primary
+            </span>
+          </div>
+          <h3 style={{ fontSize: 22, fontWeight: 700, color: TXT, marginBottom: 12 }}>Fat Map Method™</h3>
+          <p style={{ fontSize: 14, color: TXT_DIM, lineHeight: 1.85, marginBottom: 24, maxWidth: 760 }}>
+            Fat accumulation patterns are read as hormonal and metabolic signalling, not simple energy
+            surplus. Where the body stores fat reflects its adaptive response to the current hormonal
+            and regulatory environment.
+          </p>
+          <Grid min={220} gap={10}>
+            {FAT_ZONES.map((z) => (
+              <div key={z.zone} style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${BORDER}`, borderRadius: 12, padding: 16 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', color: BLUE_LIGHT }}>{z.zone}</p>
+                  <p style={{ fontSize: 11, color: TXT_MUTE }}>{z.loc}</p>
+                </div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: TXT, marginBottom: 4 }}>{z.name}</p>
+                <p style={{ fontSize: 11.5, color: TXT_DIM, lineHeight: 1.6 }}>{z.signal}</p>
               </div>
             ))}
-          </div>
+          </Grid>
         </div>
-      </section>
 
-      {/* BODY STATES */}
-      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
-        <div style={{ maxWidth: 1040, margin: '0 auto' }}>
-          <SectionLabel>Classification Output</SectionLabel>
-          <SectionHeading>Three body states. Every body, every environment.</SectionHeading>
-          <p
-            style={{
-              maxWidth: 720,
-              color: '#6B6B6B',
-              fontSize: 16,
-              lineHeight: 1.85,
-              marginBottom: 40,
-            }}
-          >
-            The interpretation produces one of three classifications. The classification drives the
-            entire downstream approach.
-          </p>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: 12,
-            }}
-          >
-            <BodyStateCard
-              label="Remediation"
-              public="Depleted"
-              colour="#DC2626"
-              bg="#2d0d0d"
-              text="The body is under load it cannot resolve. Stress architecture is dominant. Recovery is compromised. Pushing performance-level intervention here is counterproductive. Most who present believing they are in Optimisation are actually here."
-            />
-            <BodyStateCard
-              label="Optimisation"
-              public="Transitioning"
-              colour="#B7791F"
-              bg="#2d1f0a"
-              text="The body has stabilised. Capacity exists to pursue body composition and performance goals. This is where most coaching begins, but very few clients are actually here when they arrive."
-            />
-            <BodyStateCard
-              label="Post-Optimisation"
-              public="Ready"
-              colour="#1B6DFC"
-              bg="#B5CFFC"
-              text="The body is performing. The goal shifts to identity-level performance and long-term system maintenance. Built over time. Cannot be forced."
-            />
-          </div>
-          <p style={{ fontSize: 12, color: '#999999', marginTop: 24, maxWidth: 720, lineHeight: 1.7 }}>
-            Practitioner-facing labels are shown above. Consumer-facing translations (Depleted /
-            Transitioning / Ready) are used in client communication, never in the CFFS.
-          </p>
-        </div>
-      </section>
+        {/* Pillars 2-5 */}
+        <Grid min={300}>
+          {PILLARS.map((p) => (
+            <div key={p.num} style={cardStyle}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', color: TXT_MUTE, textTransform: 'uppercase' }}>Pillar {p.num}</p>
+                <span style={{ fontFamily: MONO, fontSize: 10, fontWeight: 700, color: TXT_DIM, border: `1px solid ${BORDER_STRONG}`, padding: '2px 8px', borderRadius: 999, letterSpacing: '0.1em' }}>{p.abbr}</span>
+              </div>
+              <p style={{ fontSize: 15, fontWeight: 700, color: TXT, marginBottom: 10 }}>{p.name}</p>
+              <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.7 }}>{p.desc}</p>
+            </div>
+          ))}
+        </Grid>
+      </Section>
 
-      {/* ENVIRONMENTS */}
-      <section style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}>
+      {/* ===== BODY STATES ===== */}
+      <Section wide>
+        <SectionLabel>Classification Output</SectionLabel>
+        <SectionHeading>Three body states. Every body, every environment.</SectionHeading>
+        <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
+          The interpretation produces one of three classifications. The classification drives the
+          entire downstream approach.
+        </Prose>
+        <Grid min={300}>
+          {STATES.map((s) => (
+            <div key={s.label} style={{ ...cardStyle, borderTop: `2px solid ${s.c}` }}>
+              <div style={{ width: 28, height: 2, background: s.c, borderRadius: 2, marginBottom: 14 }} />
+              <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', color: s.c, textTransform: 'uppercase', marginBottom: 4 }}>{s.label}</p>
+              <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, marginBottom: 14 }}>public: {s.pub}</p>
+              <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.8 }}>{s.text}</p>
+            </div>
+          ))}
+        </Grid>
+        <p style={{ fontSize: 12, color: TXT_MUTE, marginTop: 24, maxWidth: 720, lineHeight: 1.7 }}>
+          Practitioner-facing labels are shown above. Consumer-facing translations (Depleted /
+          Transitioning / Ready) are used in client communication, never in the CFFS.
+        </p>
+      </Section>
+
+      {/* ===== ENVIRONMENTS ===== */}
+      <section id="environments" style={{ padding: '100px 24px', background: CANVAS_2, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>Environments</SectionLabel>
           <SectionHeading>One engine. Five environments.</SectionHeading>
-          <p
-            style={{
-              maxWidth: 720,
-              color: '#6B6B6B',
-              fontSize: 16,
-              lineHeight: 1.85,
-              marginBottom: 40,
-            }}
-          >
+          <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
             The interpretive layer does not care what environment the body is operating in. The body
             responds to load through the same biological mechanisms regardless of context. What
             changes between environments is what the practitioner does with the interpretation.
-          </p>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: 12,
-            }}
-          >
-            <EnvCard
-              live
-              kicker="Health & Fitness"
-              title="Performance Coaching"
-              desc="The origin environment and first proof of concept. General-population clients whose bodies have stopped responding to effort. Available online worldwide and face-to-face in Brisbane."
-              link={{ href: 'https://performance.bodyrecode.au', label: 'Performance Coaching →' }}
-            />
-            <EnvCard
-              kicker="Corporate & Executive"
-              title="Executive Performance"
-              desc="High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress: cortisol elevation, recovery suppression, regulatory disruption."
-            />
-            <EnvCard
-              kicker="Military & Tactical"
-              title="Operational Readiness"
-              desc="Defence personnel, law enforcement and tactical operators. The stakes of misread body state in this environment are operational. An operator in Remediation pushed through performance-level training is a liability."
-            />
-            <EnvCard
-              kicker="Medical & Allied Health"
-              title="Clinical Integration"
-              desc="GPs, physiotherapists, sports medicine practitioners and allied health professionals. Body Recode™ sits upstream of clinical assessment, providing a structured biological read that informs the clinical picture before the appointment."
-            />
-            <EnvCard
-              kicker="Education & Youth"
-              title="Developmental Performance"
-              desc="Young athletes, student populations and development-stage bodies. The earlier a body is read correctly, the less dysfunction accumulates over time."
-            />
-          </div>
+          </Prose>
+          <Grid min={300}>
+            {ENVIRONMENTS.map((e) => (
+              <div
+                key={e.title}
+                style={{
+                  background: e.live ? 'rgba(27,109,252,0.06)' : SURFACE,
+                  border: e.live ? '1px solid rgba(27,109,252,0.35)' : `1px solid ${BORDER}`,
+                  borderRadius: 16,
+                  padding: 28,
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                  <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', color: e.live ? BLUE_LIGHT : TXT_MUTE, textTransform: 'uppercase' }}>{e.kicker}</p>
+                  <span
+                    style={{
+                      fontFamily: MONO,
+                      fontSize: 10,
+                      fontWeight: 700,
+                      background: e.live ? BLUE : 'transparent',
+                      color: e.live ? TXT : TXT_MUTE,
+                      border: e.live ? 'none' : `1px solid ${BORDER_STRONG}`,
+                      padding: '4px 10px',
+                      borderRadius: 999,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.12em',
+                    }}
+                  >
+                    {e.live ? 'Live' : 'In development'}
+                  </span>
+                </div>
+                <h3 style={{ fontSize: 18, fontWeight: 700, color: TXT, marginBottom: 10 }}>{e.title}</h3>
+                <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.75, marginBottom: e.link ? 18 : 0 }}>{e.desc}</p>
+                {e.link && (
+                  <a href={e.link.href} style={{ fontSize: 13, color: BLUE_LIGHT, fontWeight: 600, textDecoration: 'none' }}>{e.link.label}</a>
+                )}
+              </div>
+            ))}
+          </Grid>
         </div>
       </section>
 
-      {/* LICENSING OPTIONS */}
-      <section
-        id="licensing"
-        style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}
-      >
-        <div style={{ maxWidth: 1040, margin: '0 auto' }}>
-          <SectionLabel>For Practitioners and Organisations</SectionLabel>
-          <SectionHeading>The interpretation engine is licensable.</SectionHeading>
-          <p
-            style={{
-              maxWidth: 720,
-              color: '#6B6B6B',
-              fontSize: 16,
-              lineHeight: 1.85,
-              marginBottom: 40,
-            }}
-          >
-            Body Recode™ is built as one interpretive core with multiple execution layers on top.
-            The interpretation engine, the intake architecture and the CFFS methodology are
-            available for licensing, white-labelling or integration into existing workflows.
-          </p>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-              gap: 12,
-            }}
-          >
-            <LicenseCard
-              title="License"
-              desc="Use the Body Recode™ interpretation system within your practice. Full access to the intake architecture, the five interpretive pillars and the CFFS output framework."
-            />
-            <LicenseCard
-              title="White-label"
-              desc="Deploy the system under your own brand. The engine, intake and output documents are built to operate independently of the Body Recode™ identity where required."
-            />
-            <LicenseCard
-              title="Integrate"
-              desc="Embed the interpretation layer into existing clinical, coaching or organisational workflows. The system sits upstream of whatever the practitioner does with the output."
-            />
-          </div>
-        </div>
-      </section>
+      {/* ===== LICENSING ===== */}
+      <Section id="licensing" wide>
+        <SectionLabel>For Practitioners and Organisations</SectionLabel>
+        <SectionHeading>The interpretation engine is licensable.</SectionHeading>
+        <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
+          Body Recode™ is built as one interpretive core with multiple execution layers on top. The
+          interpretation engine, the intake architecture and the CFFS methodology are available for
+          licensing, white-labelling or integration into existing workflows.
+        </Prose>
+        <Grid min={260}>
+          <LicenseCard title="License" desc="Use the Body Recode™ interpretation system within your practice. Full access to the intake architecture, the five interpretive pillars and the CFFS output framework." />
+          <LicenseCard title="White-label" desc="Deploy the system under your own brand. The engine, intake and output documents are built to operate independently of the Body Recode™ identity where required." />
+          <LicenseCard title="Integrate" desc="Embed the interpretation layer into existing clinical, coaching or organisational workflows. The system sits upstream of whatever the practitioner does with the output." />
+        </Grid>
+      </Section>
 
-      {/* ENQUIRY */}
-      <section
-        id="enquire"
-        style={{ background: '#FFFFFF', padding: '96px 20px', borderBottom: '1px solid #E5E5E5' }}
-      >
+      {/* ===== ENQUIRY ===== */}
+      <section id="enquire" style={{ padding: '100px 24px', background: CANVAS_2, borderTop: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
           <SectionLabel>Enquire</SectionLabel>
           <SectionHeading>Talk to us about deploying the system.</SectionHeading>
-          <p
-            style={{
-              color: '#6B6B6B',
-              fontSize: 16,
-              lineHeight: 1.85,
-              marginBottom: 32,
-            }}
-          >
-            Licensing and integration enquiries are handled directly by the founder. Tell us where
-            you are operating and what you are trying to solve. We will respond within two business
-            days.
-          </p>
+          <Prose style={{ marginBottom: 36 }}>
+            Licensing and integration enquiries are handled directly by the founder. Tell us where you
+            are operating and what you are trying to solve. We will respond within two business days.
+          </Prose>
           <LicensingEnquiryForm />
         </div>
       </section>
 
-      <MarketingFooter variant="ip" />
+      {/* ===== FOOTER ===== */}
+      <footer style={{ background: CANVAS, borderTop: `1px solid ${BORDER}`, padding: '64px 24px 36px' }}>
+        <div style={{ maxWidth: 1040, margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 40, marginBottom: 48 }}>
+            <div>
+              <Image
+                src="/logo-black.png"
+                alt="Body Recode"
+                width={220}
+                height={97}
+                style={{ height: 40, width: 'auto', marginBottom: 18, filter: 'brightness(0) invert(1)' }}
+              />
+              <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.7 }}>
+                Biological interpretation platform.
+                <br />
+                One engine. Five environments.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <FooterHead>Environments</FooterHead>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <a href="https://performance.bodyrecode.au" style={{ fontSize: 13, color: BLUE_LIGHT, fontWeight: 600, textDecoration: 'none' }}>Performance Coaching</a>
+                <span style={{ fontFamily: MONO, fontSize: 9, fontWeight: 700, background: BLUE, color: TXT, padding: '2px 7px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: '0.12em' }}>Live</span>
+              </div>
+              <span style={{ fontSize: 13, color: TXT_MUTE }}>Executive Performance</span>
+              <span style={{ fontSize: 13, color: TXT_MUTE }}>Operational Readiness</span>
+              <span style={{ fontSize: 13, color: TXT_MUTE }}>Clinical Integration</span>
+              <span style={{ fontSize: 13, color: TXT_MUTE }}>Developmental Performance</span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <FooterHead>Contact</FooterHead>
+              <a href="mailto:info@bodyrecode.au" style={{ fontSize: 13, color: TXT_DIM, textDecoration: 'none' }}>info@bodyrecode.au</a>
+              <a href="#enquire" style={{ fontSize: 13, color: TXT_DIM, textDecoration: 'none' }}>Licensing enquiry</a>
+              <span style={{ fontSize: 13, color: TXT_MUTE }}>Brisbane, Australia</span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <FooterHead>Legal</FooterHead>
+              <a href="/privacy" style={{ fontSize: 13, color: TXT_DIM, textDecoration: 'none' }}>Privacy</a>
+              <a href="/terms" style={{ fontSize: 13, color: TXT_DIM, textDecoration: 'none' }}>Terms</a>
+              <a href="/kade" style={{ fontSize: 13, color: TXT_DIM, textDecoration: 'none' }}>Founder</a>
+            </div>
+          </div>
+          <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 24, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+            <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, letterSpacing: '0.04em' }}>© {YEAR} Body Recode™. All rights reserved.</p>
+            <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, letterSpacing: '0.04em' }}>Interpretation before prescription.</p>
+          </div>
+        </div>
+      </footer>
+
+      <style>{`
+        .nav-link { transition: color 0.15s; }
+        .nav-link:hover { color: #fff !important; }
+        @media (max-width: 720px) {
+          .nav-link { display: none; }
+        }
+      `}</style>
     </div>
   )
 }
 
-/* ---------- Local presentation helpers ---------- */
+const YEAR = 2026
+
+/* ---------- Layout primitives ---------- */
+
+function Section({ id, wide, children }: { id?: string; wide?: boolean; children: React.ReactNode }) {
+  return (
+    <section id={id} style={{ padding: '100px 24px', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ maxWidth: wide ? 1040 : 880, margin: '0 auto' }}>{children}</div>
+    </section>
+  )
+}
+
+function Grid({ min, gap = 12, style, children }: { min: number; gap?: number; style?: React.CSSProperties; children: React.ReactNode }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fit, minmax(${min}px, 1fr))`, gap, ...style }}>
+      {children}
+    </div>
+  )
+}
+
+function Prose({ style, children }: { style?: React.CSSProperties; children: React.ReactNode }) {
+  return <div style={{ maxWidth: 640, color: TXT_DIM, fontSize: 16, lineHeight: 1.85, ...style }}>{children}</div>
+}
+
+const cardStyle: React.CSSProperties = {
+  background: SURFACE,
+  border: `1px solid ${BORDER}`,
+  borderRadius: 16,
+  padding: 24,
+}
+
+function Connector() {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', height: 36 }}>
+      <div style={{ width: 1, height: '100%', background: 'linear-gradient(180deg, rgba(27,109,252,0.5), rgba(27,109,252,0.1))' }} />
+    </div>
+  )
+}
+
+function StageCard({ kicker, title, meta, tail, children }: { kicker: string; title: string; meta: string; tail?: boolean; children: React.ReactNode }) {
+  return (
+    <div style={{ border: `1px solid ${BORDER}`, borderRadius: 16, padding: '24px', background: SURFACE }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 18, flexWrap: 'wrap', gap: 6 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
+          <span style={{ fontFamily: MONO, fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', color: TXT_MUTE, textTransform: 'uppercase' }}>{kicker}</span>
+          <span style={{ fontSize: 17, fontWeight: 700, color: TXT }}>{title}</span>
+        </div>
+        <span style={{ fontFamily: MONO, fontSize: 11, color: tail ? BLUE_LIGHT : TXT_MUTE }}>{meta}</span>
+      </div>
+      {children}
+    </div>
+  )
+}
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <div
-        style={{ width: 32, height: 3, background: TEAL, borderRadius: 2, marginBottom: 16 }}
-      />
-      <p
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: '0.18em',
-          color: TEAL,
-          textTransform: 'uppercase',
-          marginBottom: 16,
-        }}
-      >
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+      <span style={{ width: 28, height: 2, borderRadius: 2, background: BLUE }} />
+      <span style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.2em', color: BLUE_LIGHT, textTransform: 'uppercase' }}>
         {children}
-      </p>
-    </>
+      </span>
+    </div>
   )
 }
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2
-      style={{
-        fontSize: 'clamp(26px, 4vw, 36px)',
-        fontWeight: 800,
-        color: '#1A1A1A',
-        letterSpacing: '-0.02em',
-        lineHeight: 1.15,
-        marginBottom: 24,
-      }}
-    >
+    <h2 style={{ fontSize: 'clamp(28px, 4.5vw, 40px)', fontWeight: 800, color: TXT, letterSpacing: '-0.025em', lineHeight: 1.12, marginBottom: 20 }}>
       {children}
     </h2>
   )
@@ -807,208 +784,63 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 
 function StatCard({ value, label, detail }: { value: string; label: string; detail: string }) {
   return (
-    <div
-      style={{
-        background: '#FFFFFF',
-        border: '1px solid #E5E5E5',
-        borderRadius: 16,
-        padding: 24,
-      }}
-    >
-      <p style={{ fontSize: 26, fontWeight: 800, color: TEAL, marginBottom: 6 }}>{value}</p>
-      <p style={{ fontSize: 14, fontWeight: 700, color: '#1A1A1A', marginBottom: 8 }}>{label}</p>
-      <p style={{ fontSize: 12, color: '#6B6B6B', lineHeight: 1.7 }}>{detail}</p>
+    <div style={cardStyle}>
+      <p style={{ fontSize: 30, fontWeight: 800, color: BLUE_LIGHT, marginBottom: 6, letterSpacing: '-0.02em' }}>{value}</p>
+      <p style={{ fontSize: 14, fontWeight: 700, color: TXT, marginBottom: 8 }}>{label}</p>
+      <p style={{ fontSize: 12.5, color: TXT_DIM, lineHeight: 1.7 }}>{detail}</p>
     </div>
   )
 }
 
-function Card({ accent, children }: { accent?: boolean; children: React.ReactNode }) {
+function LayerCard({ accent, label, owner, body }: { accent?: boolean; label: string; owner: string; body: string }) {
   return (
     <div
       style={{
-        background: accent ? 'rgba(16, 225, 194, 0.05)' : '#FFFFFF',
-        border: accent ? '1px solid rgba(16, 225, 194, 0.25)' : '1px solid #E5E5E5',
-        borderRadius: 16,
+        background: accent ? 'linear-gradient(180deg, rgba(27,109,252,0.08), rgba(27,109,252,0.02))' : SURFACE,
+        border: accent ? '1px solid rgba(27,109,252,0.35)' : `1px solid ${BORDER}`,
+        borderRadius: 18,
         padding: 32,
       }}
     >
-      {children}
-    </div>
-  )
-}
-
-function CardLabel({ accent, children }: { accent?: boolean; children: React.ReactNode }) {
-  return (
-    <p
-      style={{
-        fontSize: 11,
-        fontWeight: 700,
-        letterSpacing: '0.18em',
-        color: accent ? TEAL : '#6B6B6B',
-        textTransform: 'uppercase',
-        marginBottom: 14,
-      }}
-    >
-      {children}
-    </p>
-  )
-}
-
-function CardBody({ children }: { children: React.ReactNode }) {
-  return <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.85 }}>{children}</p>
-}
-
-function BodyStateCard({
-  label,
-  public: publicLabel,
-  colour,
-  bg,
-  text,
-}: {
-  label: string
-  public: string
-  colour: string
-  bg: string
-  text: string
-}) {
-  return (
-    <div
-      style={{
-        background: '#FFFFFF',
-        border: `1px solid ${colour}33`,
-        borderRadius: 16,
-        padding: 28,
-      }}
-    >
-      <div style={{ width: 32, height: 3, background: colour, borderRadius: 2, marginBottom: 14 }} />
-      <p
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: '0.18em',
-          color: colour,
-          textTransform: 'uppercase',
-          marginBottom: 4,
-        }}
-      >
-        {label}
-      </p>
-      <p
-        style={{
-          fontSize: 11,
-          color: '#999999',
-          marginBottom: 14,
-          letterSpacing: '0.05em',
-        }}
-      >
-        Public: {publicLabel}
-      </p>
-      <p style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.8 }}>{text}</p>
-    </div>
-  )
-}
-
-function EnvCard({
-  live,
-  kicker,
-  title,
-  desc,
-  link,
-}: {
-  live?: boolean
-  kicker: string
-  title: string
-  desc: string
-  link?: { href: string; label: string }
-}) {
-  return (
-    <div
-      style={{
-        background: live ? 'rgba(16, 225, 194, 0.05)' : '#FFFFFF',
-        border: live ? '1px solid rgba(16, 225, 194, 0.3)' : '1px solid #E5E5E5',
-        borderRadius: 16,
-        padding: 28,
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 12,
-        }}
-      >
-        <p
-          style={{
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: '0.18em',
-            color: live ? TEAL : '#999999',
-            textTransform: 'uppercase',
-          }}
-        >
-          {kicker}
-        </p>
-        <span
-          style={{
-            fontSize: 10,
-            fontWeight: 700,
-            background: live ? TEAL : 'transparent',
-            color: live ? '#FFFFFF' : '#999999',
-            border: live ? 'none' : '1px solid #E5E5E5',
-            padding: '4px 10px',
-            borderRadius: 999,
-            textTransform: 'uppercase',
-            letterSpacing: '0.12em',
-          }}
-        >
-          {live ? 'Live' : 'In Development'}
-        </span>
-      </div>
-      <h3 style={{ fontSize: 17, fontWeight: 700, color: '#1A1A1A', marginBottom: 10 }}>{title}</h3>
-      <p style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.75, marginBottom: link ? 18 : 0 }}>
-        {desc}
-      </p>
-      {link && (
-        <a
-          href={link.href}
-          style={{
-            fontSize: 13,
-            color: TEAL,
-            fontWeight: 600,
-            textDecoration: 'none',
-          }}
-        >
-          {link.label}
-        </a>
-      )}
+      <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', color: accent ? BLUE_LIGHT : TXT_DIM, textTransform: 'uppercase', marginBottom: 8 }}>{label}</p>
+      <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, marginBottom: 16 }}>{owner}</p>
+      <p style={{ fontSize: 14, color: TXT_DIM, lineHeight: 1.85 }}>{body}</p>
     </div>
   )
 }
 
 function LicenseCard({ title, desc }: { title: string; desc: string }) {
   return (
-    <div
-      style={{
-        background: '#FFFFFF',
-        border: '1px solid #E5E5E5',
-        borderRadius: 16,
-        padding: 28,
-      }}
-    >
-      <p
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: '0.18em',
-          color: TEAL,
-          textTransform: 'uppercase',
-          marginBottom: 12,
-        }}
-      >
-        {title}
-      </p>
-      <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.8 }}>{desc}</p>
+    <div style={{ ...cardStyle, padding: 28 }}>
+      <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', color: BLUE_LIGHT, textTransform: 'uppercase', marginBottom: 12 }}>{title}</p>
+      <p style={{ fontSize: 14, color: TXT_DIM, lineHeight: 1.8 }}>{desc}</p>
     </div>
   )
+}
+
+function FooterHead({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', color: TXT_MUTE, textTransform: 'uppercase', marginBottom: 4 }}>
+      {children}
+    </p>
+  )
+}
+
+const navLink: React.CSSProperties = {
+  fontSize: 13,
+  fontWeight: 500,
+  color: TXT_DIM,
+  textDecoration: 'none',
+  letterSpacing: '0.01em',
+}
+
+const chip: React.CSSProperties = {
+  fontFamily: MONO,
+  fontSize: 11,
+  color: TXT_DIM,
+  border: `1px solid ${BORDER}`,
+  borderRadius: 7,
+  padding: '5px 10px',
+  background: 'rgba(255,255,255,0.02)',
+  letterSpacing: '0.02em',
 }

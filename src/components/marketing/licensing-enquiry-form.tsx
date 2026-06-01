@@ -2,7 +2,10 @@
 
 import { useState } from 'react'
 
-const TEAL = '#1B6DFC'
+const BLUE = '#1B6DFC'
+const BLUE_LIGHT = '#5390FF'
+const TXT_DIM = '#8A8E9B'
+const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
 const ENVIRONMENTS = [
   'Performance Coaching',
@@ -70,29 +73,30 @@ export default function LicensingEnquiryForm() {
     return (
       <div
         style={{
-          background: 'rgba(16, 225, 194, 0.06)',
-          border: '1px solid rgba(16, 225, 194, 0.3)',
+          background: 'rgba(27,109,252,0.08)',
+          border: '1px solid rgba(27,109,252,0.4)',
           borderRadius: 16,
           padding: 32,
         }}
       >
-        <div style={{ width: 32, height: 3, background: TEAL, borderRadius: 2, marginBottom: 16 }} />
+        <div style={{ width: 28, height: 2, background: BLUE, borderRadius: 2, marginBottom: 16 }} />
         <p
           style={{
+            fontFamily: MONO,
             fontSize: 11,
             fontWeight: 700,
-            letterSpacing: '0.18em',
-            color: TEAL,
+            letterSpacing: '0.2em',
+            color: BLUE_LIGHT,
             textTransform: 'uppercase',
             marginBottom: 12,
           }}
         >
           Received
         </p>
-        <h3 style={{ fontSize: 20, fontWeight: 700, color: '#ffffff', marginBottom: 12 }}>
+        <h3 style={{ fontSize: 20, fontWeight: 700, color: '#FFFFFF', marginBottom: 12 }}>
           Thank you. Your enquiry is in.
         </h3>
-        <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.8 }}>
+        <p style={{ fontSize: 14, color: TXT_DIM, lineHeight: 1.8 }}>
           We will respond within two business days from kade@bodyrecode.au. If your enquiry is
           time-sensitive, reply directly to that email.
         </p>
@@ -126,8 +130,8 @@ export default function LicensingEnquiryForm() {
           style={{
             fontSize: 13,
             color: '#fca5a5',
-            background: '#2d0d0d',
-            border: '1px solid #DC262633',
+            background: 'rgba(240,68,56,0.10)',
+            border: '1px solid rgba(240,68,56,0.35)',
             padding: '10px 14px',
             borderRadius: 10,
           }}
@@ -141,7 +145,7 @@ export default function LicensingEnquiryForm() {
           type="submit"
           disabled={status === 'submitting'}
           style={{
-            background: TEAL,
+            background: BLUE,
             color: '#FFFFFF',
             fontWeight: 700,
             fontSize: 14,
@@ -151,22 +155,52 @@ export default function LicensingEnquiryForm() {
             cursor: status === 'submitting' ? 'wait' : 'pointer',
             opacity: status === 'submitting' ? 0.6 : 1,
             letterSpacing: '0.01em',
+            boxShadow: `0 10px 30px -12px ${BLUE}`,
           }}
         >
           {status === 'submitting' ? 'Sending…' : 'Send enquiry'}
         </button>
-        <p style={{ fontSize: 12, color: '#999999' }}>
+        <p style={{ fontSize: 12, color: TXT_DIM }}>
           Or email{' '}
-          <a href="mailto:info@bodyrecode.au" style={{ color: '#6B6B6B', textDecoration: 'underline' }}>
+          <a href="mailto:info@bodyrecode.au" style={{ color: BLUE_LIGHT, textDecoration: 'underline' }}>
             info@bodyrecode.au
           </a>
         </p>
       </div>
+
+      <style>{`
+        .ip-field {
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.14);
+          border-radius: 10px;
+          padding: 12px 14px;
+          font-size: 14px;
+          color: #FFFFFF;
+          outline: none;
+          width: 100%;
+          transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .ip-field::placeholder { color: #565A66; }
+        .ip-field:focus {
+          border-color: ${BLUE};
+          box-shadow: 0 0 0 3px rgba(27,109,252,0.18);
+        }
+        .ip-field option { background: #121419; color: #FFFFFF; }
+      `}</style>
     </form>
   )
 }
 
 /* ---------- Field primitives ---------- */
+
+const labelStyle: React.CSSProperties = {
+  fontFamily: MONO,
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.12em',
+  color: TXT_DIM,
+  textTransform: 'uppercase',
+}
 
 function Field({
   label,
@@ -183,23 +217,13 @@ function Field({
 }) {
   return (
     <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <span
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: '0.12em',
-          color: '#6B6B6B',
-          textTransform: 'uppercase',
-        }}
-      >
-        {label}
-      </span>
+      <span style={labelStyle}>{label}</span>
       <input
         name={name}
         type={type}
         required={required}
         autoComplete={autoComplete}
-        style={fieldInputStyle}
+        className="ip-field"
       />
     </label>
   )
@@ -216,18 +240,8 @@ function SelectField({
 }) {
   return (
     <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <span
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: '0.12em',
-          color: '#6B6B6B',
-          textTransform: 'uppercase',
-        }}
-      >
-        {label}
-      </span>
-      <select name={name} style={fieldInputStyle} defaultValue="">
+      <span style={labelStyle}>{label}</span>
+      <select name={name} className="ip-field" defaultValue="">
         <option value="" disabled>
           Select…
         </option>
@@ -254,35 +268,15 @@ function TextareaField({
 }) {
   return (
     <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <span
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: '0.12em',
-          color: '#6B6B6B',
-          textTransform: 'uppercase',
-        }}
-      >
-        {label}
-      </span>
+      <span style={labelStyle}>{label}</span>
       <textarea
         name={name}
         required={required}
         placeholder={placeholder}
         rows={5}
-        style={{ ...fieldInputStyle, fontFamily: 'inherit', resize: 'vertical', minHeight: 120 }}
+        className="ip-field"
+        style={{ fontFamily: 'inherit', resize: 'vertical', minHeight: 120 }}
       />
     </label>
   )
-}
-
-const fieldInputStyle: React.CSSProperties = {
-  background: '#FFFFFF',
-  border: '1px solid #E5E5E5',
-  borderRadius: 10,
-  padding: '12px 14px',
-  fontSize: 14,
-  color: '#3A3A3A',
-  outline: 'none',
-  width: '100%',
 }
