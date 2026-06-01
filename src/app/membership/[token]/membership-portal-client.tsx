@@ -1111,7 +1111,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
   )
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 
       {/* Header */}
       <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', padding: '16px 24px' }}>
@@ -1154,7 +1154,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
             <div style={{ background: '#FFFFFF', border: `1px solid ${config.colour}30`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
               {label('Your Pattern')}
               <div style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', marginBottom: 8 }}>{config.label}</div>
-              <p style={{ fontSize: 14, color: '#999999', margin: 0, lineHeight: 1.7 }}>{config.description}</p>
+              <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>{config.description}</p>
             </div>
 
             {/* Block and week status */}
@@ -1248,7 +1248,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                 {trainingData.rules.map((rule, i) => (
                   <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                     <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-                    <span style={{ fontSize: 13, color: '#999999', lineHeight: 1.65 }}>{rule}</span>
+                    <span style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.65 }}>{rule}</span>
                   </div>
                 ))}
               </div>
@@ -1309,7 +1309,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                   {s.points.map((point, j) => (
                     <div key={j} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                       <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-                      <span style={{ fontSize: 13, color: '#999999', lineHeight: 1.65 }}>{point}</span>
+                      <span style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.65 }}>{point}</span>
                     </div>
                   ))}
                 </div>
@@ -1338,7 +1338,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
           <div>
             {card(<>
               {label('Pattern Resource Library')}
-              <p style={{ fontSize: 14, color: '#999999', margin: 0, lineHeight: 1.7 }}>Deep-dive guides for the {config.label} pattern. These go beyond the programme - they explain the biology, the protocols, and how to apply them.</p>
+              <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>Deep-dive guides for the {config.label} pattern. These go beyond the programme - they explain the biology, the protocols, and how to apply them.</p>
             </>)}
 
             {resources.map((resource, i) => (
@@ -1358,7 +1358,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                 </button>
                 {expandedResource === resource.title && (
                   <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '16px 20px' }}>
-                    <p style={{ fontSize: 14, color: '#999999', margin: 0, lineHeight: 1.8 }}>{resource.content}</p>
+                    <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0, lineHeight: 1.8 }}>{resource.content}</p>
                   </div>
                 )}
               </div>
@@ -1371,7 +1371,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
           <div>
             {card(<>
               {label('Weekly Check-In')}
-              <p style={{ fontSize: 14, color: '#999999', margin: '0 0 4px', lineHeight: 1.7 }}>Week {currentWeek} of Block {block}. Rate each marker from 1 (poor) to 5 (excellent).</p>
+              <p style={{ fontSize: 14, color: '#4A4A4A', margin: '0 0 4px', lineHeight: 1.7 }}>Week {currentWeek} of Block {block}. Rate each marker from 1 (poor) to 5 (excellent).</p>
             </>)}
 
             {thisWeekCheckin ? (
@@ -1445,7 +1445,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                 {label('Previous Check-Ins')}
                 {[...checkins].sort((a, b) => b.week_number - a.week_number).slice(0, 5).map(c => (
                   <div key={c.id} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 10, padding: '14px 16px', marginBottom: 10 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#999999', marginBottom: 8 }}>Block {block} - Week {c.week_number}</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#4A4A4A', marginBottom: 8 }}>Block {block} - Week {c.week_number}</div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                       {CHECKIN_MARKERS.map(m => (
                         <div key={m.key} style={{ fontSize: 12, color: '#4A4A4A' }}>
@@ -1465,7 +1465,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
           <div>
             {card(<>
               {label('Check-In Trend Dashboard')}
-              <p style={{ fontSize: 14, color: '#999999', margin: 0, lineHeight: 1.7 }}>Your 8 biological markers visualised over time. Data from weekly check-ins.</p>
+              <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>Your 8 biological markers visualised over time. Data from weekly check-ins.</p>
             </>)}
 
             {checkins.length === 0 ? (
@@ -1506,7 +1506,7 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                     const sorted = [...checkins].sort((a, b) => a.week_number - b.week_number)
                     return (
                       <div key={m.key} style={{ marginBottom: 16 }}>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: '#999999', marginBottom: 6 }}>{m.label}</div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: '#4A4A4A', marginBottom: 6 }}>{m.label}</div>
                         <div style={{ display: 'flex', gap: 4, alignItems: 'flex-end', height: 40 }}>
                           {sorted.map(c => {
                             const val = (c as any)[m.key] ?? 0

@@ -310,7 +310,7 @@ export default function MembershipPage() {
               <Play size={28} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} style={{ marginLeft: '4px' }} />
             </div>
             <p style={{
-              fontSize: '12px', fontWeight: 700, color: '#999999',
+              fontSize: '12px', fontWeight: 700, color: '#4A4A4A',
               margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase',
               position: 'relative',
             }}>
@@ -343,7 +343,7 @@ export default function MembershipPage() {
                 borderRadius: '12px', padding: '16px', textAlign: 'center',
               }}>
                 <p style={{ fontSize: '22px', fontWeight: 900, color: '#1B6DFC', margin: '0 0 4px', letterSpacing: '-0.02em' }}>{stat.value}</p>
-                <p style={{ fontSize: '11px', color: '#999999', margin: 0, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{stat.label}</p>
+                <p style={{ fontSize: '11px', color: '#4A4A4A', margin: 0, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{stat.label}</p>
               </div>
             ))}
           </div>
@@ -423,9 +423,9 @@ export default function MembershipPage() {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                 <span style={{ fontSize: '14px', fontWeight: 800, color: block.status === 'complete' ? '#999999' : '#1A1A1A' }}>{block.label}</span>
-                <span style={{ fontSize: '12px', color: '#999999' }}>{block.weeks}</span>
+                <span style={{ fontSize: '12px', color: '#4A4A4A' }}>{block.weeks}</span>
                 {block.status === 'complete' && (
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#999999', background: '#F7F7F7', padding: '2px 8px', borderRadius: '99px' }}>Complete</span>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', background: '#F7F7F7', padding: '2px 8px', borderRadius: '99px' }}>Complete</span>
                 )}
                 {block.status === 'active' && (
                   <span style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', background: 'rgba(27, 109, 252,0.1)', padding: '2px 8px', borderRadius: '99px' }}>Starts here</span>
@@ -540,7 +540,7 @@ export default function MembershipPage() {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                 <span style={{ fontSize: '14px', fontWeight: 800, color: '#1A1A1A' }}>{p.name}</span>
-                <span style={{ fontSize: '12px', color: '#999999' }}>· {p.driver}</span>
+                <span style={{ fontSize: '12px', color: '#4A4A4A' }}>· {p.driver}</span>
               </div>
               <p style={{ fontSize: '13px', color: '#3A3A3A', lineHeight: 1.6, margin: '0 0 10px', fontWeight: 600 }}>{p.signal}</p>
               <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Block A prescription</p>
@@ -570,7 +570,7 @@ export default function MembershipPage() {
           <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '12px', lineHeight: 1.2, color: '#FFFFFF' }}>
             Same portal. Block by block. Calibrated to your data.
           </h2>
-          <p style={{ fontSize: '16px', color: '#999999', marginBottom: '32px', lineHeight: 1.65 }}>
+          <p style={{ fontSize: '16px', color: '#4A4A4A', marginBottom: '32px', lineHeight: 1.65 }}>
             $49 per week. Cancel anytime. Your Blueprint pattern continuity carries through. Block A loads automatically the moment you join.
           </p>
           <CheckoutForm position="mid" darkBg />
@@ -706,13 +706,13 @@ export default function MembershipPage() {
         <div style={{ width: '40px', height: '3px', background: '#1B6DFC', marginBottom: '28px', borderRadius: '2px' }} />
         <h2 style={{ fontSize: 'clamp(28px, 5vw, 40px)', fontWeight: 900, letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '20px', color: '#1A1A1A' }}>
           The long arc.<br />
-          <span style={{ color: '#999999' }}>Block by block. Calibrated to your data.</span>
+          <span style={{ color: '#4A4A4A' }}>Block by block. Calibrated to your data.</span>
         </h2>
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '36px' }}>
           $49 per week. Cancel anytime. Block A loads automatically the moment you join. Pattern continuity carries through from the Blueprint. A monthly Loom from me reading your check-in data. The infrastructure for the state shift.
         </p>
         <CheckoutForm position="footer" />
-        <p style={{ fontSize: '13px', color: '#999999', marginTop: '20px', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '13px', color: '#4A4A4A', marginTop: '20px', lineHeight: 1.6 }}>
           Already a Blueprint member? Your portal upgrades automatically on sign-up. No new token or login required.
         </p>
       </div>
@@ -720,7 +720,7 @@ export default function MembershipPage() {
       {/* Footer */}
       <div style={{ borderTop: '1px solid #E5E5E5', padding: '28px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', justifyContent: 'space-between' }}>
-          <p style={{ fontSize: '13px', color: '#999999', margin: 0 }}>
+          <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0 }}>
             &copy; {new Date().getFullYear()} Body Recode. All rights reserved.
           </p>
           <div style={{ display: 'flex', gap: '20px' }}>
