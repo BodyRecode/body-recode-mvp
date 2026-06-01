@@ -202,7 +202,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const checkinWindow = getCheckInWindowStatus()
   const testMode = isCheckinTestMode()
-  const windowOpen = checkinWindow.isOpen || testMode
+  // Per-client override (set by coach via the Reopen button on the client
+  // profile). When `checkin_window_override_until` is a future timestamp the
+  // window is open for this client only, regardless of the global Fri-Sun
+  // schedule. Used when a client missed their window and the coach wants to
+  // let them complete it ad-hoc.
+  const overrideUntil = client.checkin_window_override_until ? new Date(client.checkin_window_override_until) : null
+  const overrideActive = overrideUntil ? overrideUntil.getTime() > Date.now() : false
+  const windowOpen = checkinWindow.isOpen || testMode || overrideActive
   const startDate = client.coaching_started_at || client.created_at
   const weekNumber = startDate ? getWeekNumber(startDate) : null
 

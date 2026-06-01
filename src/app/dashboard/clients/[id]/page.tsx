@@ -20,6 +20,7 @@ import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import CoachResponseCard from './coach-response-card'
 import MajorSection from './major-section'
 import MedicationsAnalysisPanel from './medications-analysis-panel'
+import ReopenCheckinButton from './reopen-checkin-button'
 import BloodPanelsPanel, { type BloodPanelData } from './blood-panels-panel'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
@@ -1114,9 +1115,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         defaultOpen={cfwsActionRequired}
         attentionLabel={latestCheckinNeedsResponse ? 'Latest check-in needs response' : (cfwsActionRequired ? 'New CFWS ready to generate' : null)}
         actionRight={
-          checkinToken
-            ? <CopyLinkButton token={checkinToken} label="Copy check-in link" path="/checkin" />
-            : undefined
+          <>
+            <ReopenCheckinButton clientId={id} overrideUntil={client.checkin_window_override_until ?? null} />
+            {checkinToken && <CopyLinkButton token={checkinToken} label="Copy check-in link" path="/checkin" />}
+          </>
         }
       >
 
