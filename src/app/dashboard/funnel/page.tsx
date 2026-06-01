@@ -18,7 +18,7 @@ export default async function FunnelPage() {
   ] = await Promise.all([
     admin
       .from('challenge_enrollments')
-      .select('id, token, email, current_day, enrolled_at, quiz_result, quiz_completed_at, leads(name, email, phone)')
+      .select('id, token, current_day, enrolled_at, quiz_result, quiz_completed_at, leads(name, email, phone)')
       .order('enrolled_at', { ascending: false }),
     admin
       .from('blueprint_enrollments')
@@ -66,13 +66,13 @@ export default async function FunnelPage() {
         id: e.id,
         token: e.token,
         name: (e.leads as any)?.name ?? 'Unknown',
-        email: (e.leads as any)?.email ?? e.email ?? '',
+        email: (e.leads as any)?.email ?? '',
         phone: (e.leads as any)?.phone ?? '',
         currentDay: e.current_day ?? 1,
         enrolledAt: e.enrolled_at,
         quizResult: e.quiz_result,
         quizCompleted: !!e.quiz_completed_at,
-        hasBlueprintPurchase: blueprintEmails.has(((e.leads as any)?.email ?? e.email ?? '').toLowerCase()),
+        hasBlueprintPurchase: blueprintEmails.has(((e.leads as any)?.email ?? '').toLowerCase()),
       }))}
       blueprintEnrollments={(blueprintEnrollments ?? []).map(e => ({
         id: e.id,
