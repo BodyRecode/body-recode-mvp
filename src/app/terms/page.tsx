@@ -1,22 +1,38 @@
 import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 
-const section = (title: string, children: React.ReactNode) => (
-  <div style={{ marginBottom: '40px' }}>
-    <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#E5E5E5', letterSpacing: '-0.01em', marginBottom: '14px' }}>{title}</h2>
-    {children}
+const section = (n: number, title: string, children: React.ReactNode) => (
+  <div style={{ marginBottom: '32px' }}>
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '14px' }}>
+      <span style={{
+        fontSize: '11px', fontWeight: 800, color: '#1B6DFC',
+        letterSpacing: '0.12em', fontFamily: 'ui-monospace, SFMono-Regular, monospace',
+        background: 'rgba(27, 109, 252, 0.10)', padding: '4px 10px',
+        borderRadius: '6px', flexShrink: 0,
+      }}>
+        {String(n).padStart(2, '0')}
+      </span>
+      <h2 style={{
+        fontSize: '20px', fontWeight: 800, color: '#1A1A1A',
+        letterSpacing: '-0.02em', lineHeight: 1.25, margin: 0,
+      }}>
+        {title}
+      </h2>
+    </div>
+    <div style={{ paddingLeft: '0' }}>{children}</div>
   </div>
 )
 
 const p = (text: string) => (
-  <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.75, margin: '0 0 12px' }}>{text}</p>
+  <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 12px' }}>{text}</p>
 )
 
 const bullets = (items: string[]) => (
   <ul style={{ paddingLeft: '0', margin: '0 0 12px', listStyle: 'none' }}>
     {items.map(item => (
       <li key={item} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginBottom: '8px' }}>
-        <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#1B6DFC', flexShrink: 0, marginTop: '8px' }} />
-        <span style={{ fontSize: '15px', color: '#999999', lineHeight: 1.7 }}>{item}</span>
+        <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#1B6DFC', flexShrink: 0, marginTop: '9px' }} />
+        <span style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7 }}>{item}</span>
       </li>
     ))}
   </ul>
@@ -25,92 +41,142 @@ const bullets = (items: string[]) => (
 export default function TermsPage() {
   return (
     <div style={{
-      minHeight: '100vh', background: '#fafaf9', color: '#E5E5E5',
+      minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
-      <div style={{ borderBottom: '1px solid #e7e5e0', padding: '18px 24px', background: '#ffffff' }}>
-        <div style={{ maxWidth: '680px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      {/* Header */}
+      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', background: '#FFFFFF' }}>
+        <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link href="/">
             <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
           </Link>
-          <Link href="/challenge" style={{ fontSize: '13px', color: '#1056D6', textDecoration: 'none', fontWeight: 500 }}>
+          <Link href="/challenge" style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <ArrowLeft size={13} />
             Back to challenge
           </Link>
         </div>
       </div>
 
-      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '52px 24px 100px' }}>
+      {/* Hero with Signal Blue radial glow */}
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', top: '-140px', right: '-140px',
+          width: '480px', height: '480px', borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.10) 0%, transparent 65%)',
+          pointerEvents: 'none',
+        }} />
 
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
-          Legal
-        </p>
-        <h1 style={{ fontSize: '32px', fontWeight: 900, letterSpacing: '-0.02em', color: '#E5E5E5', marginBottom: '8px' }}>
-          Terms and Conditions
-        </h1>
-        <p style={{ fontSize: '14px', color: '#6B6B6B', marginBottom: '48px' }}>Last updated: December 2025</p>
+        <div style={{ maxWidth: '720px', margin: '0 auto', padding: '52px 24px 24px', position: 'relative' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
+            Legal
+          </p>
+          <h1 style={{
+            fontSize: 'clamp(30px, 5vw, 42px)', fontWeight: 900,
+            letterSpacing: '-0.035em', margin: '8px 0 8px', color: '#1A1A1A', lineHeight: 1.05,
+          }}>
+            Terms <span style={{ color: '#1B6DFC' }}>and Conditions.</span>
+          </h1>
+          <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '16px' }} />
+          <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0 }}>
+            Last updated: December 2025
+          </p>
+        </div>
+      </div>
 
-        <div style={{ background: '#ffffff', border: '1px solid #e7e5e0', borderRadius: '12px', padding: '24px 28px', marginBottom: '48px' }}>
-          <p style={{ fontSize: '15px', color: '#999999', lineHeight: 1.75, margin: 0 }}>
+      {/* Intro card */}
+      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '16px 24px 0' }}>
+        <div style={{
+          background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px',
+          padding: '24px 26px', boxShadow: '0 1px 4px rgba(27, 109, 252, 0.04)',
+        }}>
+          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
             Please read these Terms and Conditions carefully before using bodyrecode.au, participating in the 14-Day Body Decode Challenge, or accessing any Body Recode programs including the Blueprint, Membership, or personalised coaching. By accessing our website or programs, you agree to these Terms.
           </p>
         </div>
+      </div>
 
-        {section('1. Program Purpose', <>
+      {/* Sections */}
+      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '40px 24px 0' }}>
+
+        {section(1, 'Program Purpose', <>
           {p('Body Recode provides training, nutrition, and lifestyle guidance for general well-being. Programs are not medical advice or clinical treatment. Seek medical clearance before beginning any program.')}
         </>)}
 
-        {section('2. Not Medical Advice', <>
+        {section(2, 'Not Medical Advice', <>
           {p('Body Recode coaches are not doctors, dietitians, psychologists, or healthcare providers. All coaching and content are for general education and do not constitute medical advice.')}
         </>)}
 
-        {section('3. Payment Terms', <>
+        {section(3, 'Payment Terms', <>
           {p('For paid programs:')}
           {bullets(['All payments are final unless stated otherwise', 'Payment plans must be completed in full', 'Failed payments may pause program access'])}
           {p('Refunds are not provided for change of mind.')}
         </>)}
 
-        {section('4. User Responsibilities', <>
+        {section(4, 'User Responsibilities', <>
           {p('Participants agree to:')}
           {bullets(['Train safely within their own limits', 'Stop exercising if pain or discomfort occurs', 'Seek medical attention when needed', 'Use Body Recode materials for personal use only', 'Not share or distribute proprietary resources'])}
         </>)}
 
-        {section('5. Coaching Access and Expectations', <>
+        {section(5, 'Coaching Access and Expectations', <>
           {p('Coaching access may include WhatsApp coaching messages, email support, video responses, and check-ins. Support is provided within the boundaries of the chosen program.')}
         </>)}
 
-        {section('6. Results Disclaimer', <>
+        {section(6, 'Results Disclaimer', <>
           {p('We do not guarantee specific outcomes. Results vary based on consistency, effort, lifestyle, and individual factors.')}
         </>)}
 
-        {section('7. Intellectual Property', <>
+        {section(7, 'Intellectual Property', <>
           {p('All Body Recode content including training plans, nutrition guides, frameworks, coaching guides, branding, and messaging are owned by Body Recode and may not be copied, shared, or redistributed without written permission.')}
         </>)}
 
-        {section('8. Termination', <>
+        {section(8, 'Termination', <>
           {p('We may suspend or remove access for abusive behaviour, sharing copyrighted materials, or program rule violations. Refunds are not provided for terminated accounts.')}
         </>)}
 
-        {section('9. Community Participation', <>
+        {section(9, 'Community Participation', <>
           {p('Any group or community spaces require respectful conduct. No spam, harassment, or unsolicited promotion is permitted.')}
         </>)}
 
-        {section('10. Waiver of Liability', <>
+        {section(10, 'Waiver of Liability', <>
           {p('You assume all risks associated with fitness activities. Body Recode is not responsible for injury, illness, damages, or losses arising from participation in any program.')}
         </>)}
 
-        {section('11. Governing Law', <>
+        {section(11, 'Governing Law', <>
           {p('These Terms are governed by Australian law.')}
         </>)}
 
-        {section('12. Contact Us', <>
-          <div style={{ background: '#ffffff', border: '1px solid #e7e5e0', borderRadius: '10px', padding: '18px 20px' }}>
-            <p style={{ fontSize: '15px', color: '#E5E5E5', fontWeight: 600, margin: '0 0 4px' }}>Body Recode</p>
-            <p style={{ fontSize: '14px', color: '#999999', margin: '0 0 2px' }}>Email: info@bodyrecode.au</p>
-            <p style={{ fontSize: '14px', color: '#999999', margin: 0 }}>Website: www.bodyrecode.au</p>
+        {section(12, 'Contact Us', <>
+          <div style={{
+            background: '#FAFAFA', border: '1px solid #EEEEEE', borderLeft: '3px solid #1B6DFC',
+            borderRadius: '10px', padding: '16px 18px',
+          }}>
+            <p style={{ fontSize: '11px', fontWeight: 800, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+              Body Recode
+            </p>
+            <p style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: 600, margin: '0 0 2px' }}>
+              Email: <a href="mailto:info@bodyrecode.au" style={{ color: '#1B6DFC', textDecoration: 'none' }}>info@bodyrecode.au</a>
+            </p>
+            <p style={{ fontSize: '14px', color: '#4A4A4A', margin: 0 }}>
+              Website: <a href="https://www.bodyrecode.au" style={{ color: '#1B6DFC', textDecoration: 'none' }}>www.bodyrecode.au</a>
+            </p>
           </div>
         </>)}
 
       </div>
+
+      {/* Footer back link */}
+      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 80px' }}>
+        <Link href="/" style={{
+          display: 'inline-flex', alignItems: 'center', gap: '8px',
+          padding: '14px 24px', borderRadius: '10px',
+          background: '#FFFFFF', border: '1px solid #E5E5E5', color: '#1A1A1A',
+          fontSize: '14px', fontWeight: 700, textDecoration: 'none',
+        }}>
+          <ArrowLeft size={14} />
+          Back to bodyrecode.au
+        </Link>
+      </div>
+
     </div>
   )
 }
