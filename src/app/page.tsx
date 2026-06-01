@@ -147,7 +147,7 @@ export default function HomePage() {
             maxWidth: 1200,
             margin: '0 auto',
             padding: '0 24px',
-            height: 72,
+            height: 84,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -160,7 +160,7 @@ export default function HomePage() {
               width={220}
               height={97}
               priority
-              style={{ height: 54, width: 'auto', filter: 'brightness(0) invert(1)' }}
+              style={{ height: 64, width: 'auto', filter: 'brightness(0) invert(1)' }}
             />
           </a>
           <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
@@ -657,7 +657,7 @@ export default function HomePage() {
                 alt="Body Recode"
                 width={220}
                 height={97}
-                style={{ height: 48, width: 'auto', marginBottom: 18, filter: 'brightness(0) invert(1)' }}
+                style={{ height: 56, width: 'auto', marginBottom: 18, filter: 'brightness(0) invert(1)' }}
               />
               <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.7 }}>
                 Biological interpretation platform.
