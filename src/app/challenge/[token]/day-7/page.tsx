@@ -134,60 +134,48 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
       </div>
 
       {/* Video placeholder */}
+      {/* Video placeholder — always renders the dark player block.
+          Day-gated CTAs below stay gated by `locked`; only the hero video
+          slot is unconditional, matching the pattern on /day-5 + /day-14. */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px 24px' }}>
-        {locked ? (
+        <div style={{
+          position: 'relative', width: '100%', aspectRatio: '16 / 9',
+          background: '#1A1A1A', borderRadius: '14px', overflow: 'hidden',
+          border: '1px solid #2C2C2C',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '14px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+        }}>
           <div style={{
-            position: 'relative', width: '100%', aspectRatio: '16 / 9',
-            background: '#F5F5F5', borderRadius: '14px', border: '1px dashed #D4D4D4',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '10px',
-          }}>
-            <p style={{ fontSize: '13px', fontWeight: 700, color: '#999999', letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>
-              Unlocks on Day 7
-            </p>
-            <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0 }}>
-              You are currently on Day {currentDay} of 14.
-            </p>
-          </div>
-        ) : (
+            position: 'absolute', inset: 0,
+            background: 'radial-gradient(ellipse at center, rgba(27, 109, 252, 0.08) 0%, transparent 60%)',
+            pointerEvents: 'none',
+          }} />
           <div style={{
-            position: 'relative', width: '100%', aspectRatio: '16 / 9',
-            background: '#1A1A1A', borderRadius: '14px', overflow: 'hidden',
-            border: '1px solid #2C2C2C',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '14px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+            width: '72px', height: '72px', borderRadius: '50%',
+            background: '#1B6DFC',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 4px 16px rgba(27, 109, 252, 0.4)',
+            position: 'relative',
           }}>
-            <div style={{
-              position: 'absolute', inset: 0,
-              background: 'radial-gradient(ellipse at center, rgba(27, 109, 252, 0.08) 0%, transparent 60%)',
-              pointerEvents: 'none',
-            }} />
-            <div style={{
-              width: '72px', height: '72px', borderRadius: '50%',
-              background: '#1B6DFC',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 16px rgba(27, 109, 252, 0.4)',
-              position: 'relative',
-            }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="#FFFFFF" stroke="none" style={{ marginLeft: '4px' }}>
-                <polygon points="6,4 22,12 6,20" />
-              </svg>
-            </div>
-            <p style={{
-              fontSize: '12px', fontWeight: 700, color: '#999999',
-              margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase',
-              position: 'relative',
-            }}>
-              Pre-Check-In Intro Reel · 60-75 sec
-            </p>
-            <p style={{
-              fontSize: '11px', color: '#6B6B6B',
-              margin: 0, fontStyle: 'italic', textAlign: 'center', padding: '0 16px',
-              position: 'relative',
-            }}>
-              Placeholder. Production in progress with Amanda.
-            </p>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="#FFFFFF" stroke="none" style={{ marginLeft: '4px' }}>
+              <polygon points="6,4 22,12 6,20" />
+            </svg>
           </div>
-        )}
+          <p style={{
+            fontSize: '12px', fontWeight: 700, color: '#999999',
+            margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase',
+            position: 'relative',
+          }}>
+            Pre-Check-In Intro Reel · 60-75 sec
+          </p>
+          <p style={{
+            fontSize: '11px', color: '#6B6B6B',
+            margin: 0, fontStyle: 'italic', textAlign: 'center', padding: '0 16px',
+            position: 'relative',
+          }}>
+            Placeholder. Production in progress with Amanda.
+          </p>
+        </div>
       </div>
 
       {/* Primary CTA - Take the Check-In */}
