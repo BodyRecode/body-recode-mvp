@@ -28,46 +28,56 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col items-center justify-center px-6 py-12">
       <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-semibold text-[#1A1A1A] tracking-tight">Body Recode™</h1>
-          <p className="text-stone-400 text-sm mt-1">Coach Portal</p>
+        <div className="text-center mb-10">
+          <img
+            src="https://bodyrecode.au/logo-black.png"
+            width="280"
+            alt="Body Recode"
+            className="mx-auto mb-8"
+          />
+          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-2">Coach Portal</h1>
+          <p className="text-[#6B6B6B] text-sm">Sign in to your coaching dashboard.</p>
         </div>
+
+        {error && (
+          <div className="mb-6 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+            <p className="text-sm text-red-700">{error}</p>
+          </div>
+        )}
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-sm text-stone-700 mb-1.5">Email</label>
+            <label className="block text-[11px] font-bold uppercase tracking-widest text-[#999999] mb-1.5">Email</label>
             <input
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="w-full bg-stone-50 border border-stone-200 text-[#1A1A1A] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-stone-500"
+              autoComplete="email"
+              className="w-full bg-[#FFFFFF] border border-[#E5E5E5] text-[#1A1A1A] rounded-xl px-3.5 py-3 text-sm placeholder:text-[#C4C4C4] focus:outline-none focus:border-[#1B6DFC] transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-stone-700 mb-1.5">Password</label>
+            <label className="block text-[11px] font-bold uppercase tracking-widest text-[#999999] mb-1.5">Password</label>
             <input
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              className="w-full bg-stone-50 border border-stone-200 text-[#1A1A1A] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-stone-500"
+              autoComplete="current-password"
+              className="w-full bg-[#FFFFFF] border border-[#E5E5E5] text-[#1A1A1A] rounded-xl px-3.5 py-3 text-sm placeholder:text-[#C4C4C4] focus:outline-none focus:border-[#1B6DFC] transition-colors"
             />
           </div>
-
-          {error && (
-            <p className="text-red-700 text-sm">{error}</p>
-          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-white text-stone-50 font-medium rounded-lg py-2.5 text-sm hover:bg-stone-100 transition-colors disabled:opacity-50"
+            className="w-full bg-[#1B6DFC] text-white font-bold rounded-xl py-3.5 text-sm hover:bg-[#5390FF] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
       </div>
