@@ -20,6 +20,7 @@ import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import CoachResponseCard from './coach-response-card'
 import MajorSection from './major-section'
 import MedicationsAnalysisPanel from './medications-analysis-panel'
+import BloodPanelsPanel, { type BloodPanelData } from './blood-panels-panel'
 import NewIntakeButton from '@/components/new-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
@@ -111,6 +112,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .eq('status', 'draft')
       .maybeSingle(),
   ])
+
+  // Client-uploaded blood panels (Health Markers feature). Newest first.
+  const { data: bloodPanels } = await admin
+    .from('blood_panels')
+    .select('id, status, approved_for_plan, submitted_at, collected_on, lab_name, original_filename, client_note, panel_summary, markers, gp_flags, extraction_meta, analysis, analyzed_at, reading, reading_generated_at, reading_published_at, approved_at')
+    .eq('client_id', id)
+    .order('submitted_at', { ascending: false })
 
   // Coach response history for this client. Joined to recentCheckins by id
   // so the UI can show a "Coach response" pill on the submission rows AND
@@ -662,6 +670,26 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           reading={(client.medications_reading as null | { mr_what_youre_taking: string; mr_why_it_matters: string; mr_how_we_account_for_it: string; mr_what_to_watch: string }) ?? null}
           readingGeneratedAt={client.medications_reading_generated_at ?? null}
           readingPublishedAt={client.medications_reading_published_at ?? null}
+        />
+      </MajorSection>
+
+      <MajorSection
+        id="bloods"
+        title="Health Markers"
+        subtitle="- blood panels"
+        defaultOpen={(bloodPanels ?? []).some(p => p.status === 'extracted' || p.status === 'failed')}
+        attentionLabel={
+          (bloodPanels ?? []).some(p => p.status === 'failed')
+            ? 'Read failed'
+            : (bloodPanels ?? []).some(p => p.status === 'extracted')
+            ? 'Needs review'
+            : null
+        }
+      >
+        <BloodPanelsPanel
+          clientId={client.id}
+          clientFirstName={client.name?.split(' ')[0] ?? 'client'}
+          panels={(bloodPanels ?? []) as BloodPanelData[]}
         />
       </MajorSection>
 

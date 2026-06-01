@@ -7,6 +7,7 @@ import {
   buildCFFSUserPrompt,
   type CFFSBaselineContext,
 } from '@/lib/cffs-prompt'
+import { buildBloodMarkerCFFSSection, type BloodMarker } from '@/lib/blood-panel-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
@@ -69,6 +70,7 @@ export async function POST(request: NextRequest) {
     { data: intake, error: intakeError },
     { data: clientRow },
     { data: baselineRow },
+    { data: bloodPanel },
   ] = await Promise.all([
     admin.from('intakes').select('*').eq('id', intake_id).single(),
     admin.from('clients').select('medications').eq('id', client_id).maybeSingle(),
@@ -77,6 +79,16 @@ export async function POST(request: NextRequest) {
       .select('bodyweight_kg, waist_cm, hips_cm, chest_cm, captured_at, photo_front_url, photo_side_url, photo_back_url')
       .eq('client_id', client_id)
       .order('captured_at', { ascending: false, nullsFirst: false })
+      .limit(1)
+      .maybeSingle(),
+    // Latest COACH-APPROVED blood panel only. Unapproved panels never touch
+    // the plan. This is the coach gate from the Health Markers feature.
+    admin
+      .from('blood_panels')
+      .select('panel_summary, collected_on, markers, analysis')
+      .eq('client_id', client_id)
+      .eq('approved_for_plan', true)
+      .order('approved_at', { ascending: false, nullsFirst: false })
       .limit(1)
       .maybeSingle(),
   ])
@@ -137,9 +149,23 @@ export async function POST(request: NextRequest) {
       source: { type: 'base64', media_type: image.media_type, data: image.base64 },
     })
   }
+  const bloodMarkerSection = buildBloodMarkerCFFSSection(
+    bloodPanel
+      ? {
+          panel_summary: bloodPanel.panel_summary ?? null,
+          collected_on: bloodPanel.collected_on ?? null,
+          markers: (bloodPanel.markers ?? []) as BloodMarker[],
+          combined_picture: (bloodPanel.analysis as { combined_picture?: string } | null)?.combined_picture ?? null,
+        }
+      : null
+  )
+  if (bloodMarkerSection) {
+    console.log(`[CFFS] client=${String(client_id).slice(0, 8)} approved blood panel attached (${((bloodPanel?.markers ?? []) as unknown[]).length} markers)`)
+  }
+
   userContent.push({
     type: 'text',
-    text: buildCFFSUserPrompt(intake, clientRow?.medications ?? null, baselineContext),
+    text: buildCFFSUserPrompt(intake, clientRow?.medications ?? null, baselineContext, bloodMarkerSection),
   })
 
   // Generate CFFS via Claude

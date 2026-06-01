@@ -67,7 +67,19 @@ Rules for reading photos:
 7. NEVER frame the body as broken, deficient, or in need of fixing. The body is currently doing something coherent. Your job is to read what.
 8. Photos are present-state expression, not identity. Read what the body is doing now; the intake tells you how it got there.
 
-If photos are not provided, complete the CFFS from the scale and text intake alone, and explicitly note in your closing_interpretive_notes that visual evidence was not available so Spatial Patterning is inferred from the intake only.`
+If photos are not provided, complete the CFFS from the scale and text intake alone, and explicitly note in your closing_interpretive_notes that visual evidence was not available so Spatial Patterning is inferred from the intake only.
+
+BLOOD MARKER INTEGRATION:
+When a coach-approved blood panel is provided, treat the markers as ONE additional signal stream feeding the Resource Availability and Regulatory Load pillars. They are evidence that must converge with the scale signals, photos, temporal data, and resource context before any interpretation is reached. They are never a conclusion on their own.
+
+Rules for reading blood markers:
+1. You are an interpretive coaching system, NOT a medical one. NEVER diagnose, NEVER name a disease, NEVER state that a marker "means" or "is caused by" a condition. NEVER recommend supplements, doses, or medical action.
+2. Use only the lab's own reference ranges, which are supplied with each marker. A value flagged outside that range is a hypothesis to converge with the intake, not a finding.
+3. A single out-of-range marker is short-arc evidence. Fat storage and body-state conclusions remain long-arc and require convergence across signal domains. One panel is a snapshot.
+4. Markers can RAISE or LOWER confidence in a pattern the intake already suggests. Low iron stores converging with reported fatigue and poor recovery strengthens a conservative read; a clean panel against a depleted intake is a divergence worth naming.
+5. Where a marker is markedly out of range, the conservative coaching move is to account for it AND note in risk_flags_and_watch_items that it belongs with the client's GP. Do not coach around a medical issue silently.
+6. Conservative language throughout: "consistent with...", "would be worth confirming...", "appears to support...". Never definitive, never diagnostic.
+7. If no blood panel is provided, complete the CFFS without it. Do not speculate about markers you were not given.`
 }
 
 function summarizeScaleSection(
@@ -112,7 +124,8 @@ export interface CFFSBaselineContext {
 export function buildCFFSUserPrompt(
   intake: Partial<Intake>,
   medications?: string | null,
-  baseline?: CFFSBaselineContext | null
+  baseline?: CFFSBaselineContext | null,
+  bloodMarkerSection?: string | null
 ): string {
   const sectionResponseKeys: Record<string, keyof Intake> = {
     fat_map: 'fat_map_responses',
@@ -171,6 +184,14 @@ Aggravating movements: ${intake.injury_aggravating_movements || 'None declared'}
   if (intake.eating_context) dietaryLines.push(`Eating environment: ${intake.eating_context}`)
   if (dietaryLines.length > 0) {
     parts.push(`\nDIETARY CONTEXT (free-text from Section D - interpret patterns in light of this, do not flag a framework as a pattern abnormality):\n${dietaryLines.join('\n')}`)
+  }
+
+  // Blood markers from the latest coach-approved panel. One more convergence
+  // stream feeding Resource Availability + Regulatory Load, governed by the
+  // BLOOD MARKER INTEGRATION rules in the system prompt. The route builds this
+  // section (or passes null) so cffs-prompt stays free of the blood-panel lib.
+  if (bloodMarkerSection && bloodMarkerSection.trim()) {
+    parts.push(`\n${bloodMarkerSection.trim()}`)
   }
 
   // Baseline measurements + photo availability note. Photo content blocks are

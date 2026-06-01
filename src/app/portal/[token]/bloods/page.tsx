@@ -1,0 +1,109 @@
+import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
+import { notFound, redirect } from 'next/navigation'
+import Link from 'next/link'
+import ClientHeader from '@/components/client-header'
+import { isCoachEmail } from '@/lib/coach-auth'
+import BloodUploadForm from './blood-upload-form'
+
+/**
+ * Client-facing Health Markers page. Always available: the client can upload a
+ * copy of their blood test results at any time, and see the history of what
+ * they have uploaded plus links to any published readings. The medical detail
+ * (numbers, ranges) stays in the coach view; here the client sees status and
+ * their published reading only.
+ */
+export default async function BloodsPage({ params }: { params: Promise<{ token: string }> }) {
+  const { token } = await params
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/portal/login')
+
+  const admin = createAdminClient()
+  const { data: client } = await admin
+    .from('clients')
+    .select('id, name, email')
+    .eq('onboarding_token', token)
+    .maybeSingle()
+  if (!client) return notFound()
+
+  const userEmail = (user.email ?? '').toLowerCase()
+  if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) redirect(`/portal/${token}`)
+
+  const { data: panels } = await admin
+    .from('blood_panels')
+    .select('id, status, submitted_at, collected_on, lab_name, reading_published_at')
+    .eq('client_id', client.id)
+    .order('submitted_at', { ascending: false })
+
+  const list = panels ?? []
+
+  return (
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
+      <ClientHeader />
+      <div className="max-w-lg mx-auto px-6 py-10">
+        <div className="mb-8">
+          <Link href={`/portal/${token}`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">← Back</Link>
+          <p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase mt-5 mb-2">Health Markers</p>
+          <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight mb-2">Your blood test results</h1>
+          <p className="text-[#6B6B6B] text-sm leading-relaxed">
+            If you have recent blood work, you can upload a copy here. Your coach reads it as one more signal alongside everything else, so your training and nutrition account for what is actually happening in your body. We are not your doctor: anything medical stays with your GP, and we will always point you back to them when that is the right call.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 mb-8">
+          <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-3">Upload results</p>
+          <BloodUploadForm clientId={client.id} />
+        </div>
+
+        {list.length > 0 && (
+          <div>
+            <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-3">Your uploads</p>
+            <div className="space-y-3">
+              {list.map(panel => {
+                const dateLabel = panel.collected_on
+                  ? new Date(panel.collected_on).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
+                  : new Date(panel.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
+                const published = !!panel.reading_published_at
+                return published ? (
+                  <Link
+                    key={panel.id}
+                    href={`/portal/${token}/bloods/${panel.id}`}
+                    className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+                  >
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Blood panel · {dateLabel}</p>
+                        <p className="text-xs text-[#6B6B6B] leading-relaxed">Your coach has written up what this means for your coaching.</p>
+                      </div>
+                      <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Read →</span>
+                    </div>
+                  </Link>
+                ) : (
+                  <div key={panel.id} className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/60 p-5">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-[#3A3A3A] mb-1">Blood panel · {dateLabel}</p>
+                        <p className="text-xs text-[#999999] leading-relaxed">
+                          {panel.status === 'failed'
+                            ? 'We had trouble reading this file. Your coach has been notified and may ask for a clearer copy.'
+                            : 'Received. Your coach is reviewing it. You will see their write-up here once it is ready.'}
+                        </p>
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#999999] ml-4 shrink-0">
+                        {panel.status === 'failed' ? 'Needs a clearer copy' : 'In review'}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        <div className="h-10" />
+      </div>
+    </div>
+  )
+}

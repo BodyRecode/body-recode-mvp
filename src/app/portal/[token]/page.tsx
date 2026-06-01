@@ -606,6 +606,23 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </Link>
         </div>
 
+        {/* Health Markers - always-on self-serve blood test upload */}
+        <div className="mb-10">
+          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-white uppercase">Health Markers</p></div>
+          <Link
+            href={`/portal/${token}/bloods`}
+            className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-4 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-[#3A3A3A]">Blood test results</p>
+                <p className="text-xs text-[#999999] mt-0.5">Have recent blood work? Upload a copy so your coach can factor it into your plan.</p>
+              </div>
+              <span className="text-xs text-[#999999] ml-4">→</span>
+            </div>
+          </Link>
+        </div>
+
         {/* Coach feedback */}
         {(latestProgramReview?.coach_notes || latestNutritionReview?.coach_notes) && (
           <div className="mb-10">

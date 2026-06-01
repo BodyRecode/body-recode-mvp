@@ -76,6 +76,13 @@ const AUTOMATIC_AUTOMATIONS = [
     trigger: 'Coach approves clearance from dashboard',
     steps: 1,
   },
+  {
+    id: 'blood-panel-uploaded',
+    name: 'Blood Test Results Uploaded',
+    description: 'Coach notification when a client uploads blood test results from the Health Markers section of their portal. The file is read automatically and the markers are transcribed against the lab\'s own reference ranges. Nothing influences the plan until the coach reviews and clicks Approve for plan.',
+    trigger: 'Client uploads blood test results via portal',
+    steps: 1,
+  },
   // Weekly + session automations
   {
     id: 'weekly-checkin-submitted',
