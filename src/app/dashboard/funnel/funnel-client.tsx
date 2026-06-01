@@ -145,14 +145,28 @@ function TDName({ name, email, drillHref }: { name: string; email: string; drill
   )
 }
 
+type PagesTokens = {
+  challenge?: string
+  blueprint?: string
+  membership?: string
+  portalOnboarding?: string
+  portalCheckin?: string
+  portalBaseline?: string
+  intakeFoundational?: string
+  intakeSupplementary?: string
+  scorecardReport?: string
+}
+
 export default function FunnelClient({
   challengeEnrollments,
   blueprintEnrollments,
   membershipEnrollments,
+  pagesTokens,
 }: {
   challengeEnrollments: ChallengeRow[]
   blueprintEnrollments: BlueprintRow[]
   membershipEnrollments: MembershipRow[]
+  pagesTokens: PagesTokens
 }) {
   const [tab, setTab] = useState<'challenge' | 'blueprint' | 'membership' | 'pages'>('challenge')
   const [search, setSearch] = useState('')
@@ -388,13 +402,7 @@ export default function FunnelClient({
       </Card>
 
       {/* Pages tab - URL catalog across the funnel */}
-      {tab === 'pages' && (
-        <PagesIndex
-          challengeToken={challengeEnrollments[0]?.token}
-          blueprintToken={blueprintEnrollments[0]?.token}
-          membershipToken={membershipEnrollments[0]?.token}
-        />
-      )}
+      {tab === 'pages' && <PagesIndex tokens={pagesTokens} />}
     </div>
   )
 }

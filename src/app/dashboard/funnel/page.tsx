@@ -15,6 +15,10 @@ export default async function FunnelPage() {
     { data: membershipEnrollments },
     { data: blueprintCheckins },
     { data: membershipCheckins },
+    { data: testClient },
+    { data: foundationalIntake },
+    { data: supplementaryIntake },
+    { data: scorecardReport },
   ] = await Promise.all([
     admin
       .from('challenge_enrollments')
@@ -34,6 +38,32 @@ export default async function FunnelPage() {
     admin
       .from('membership_checkins')
       .select('enrollment_id, week_number, energy_levels, morning_energy, sleep_quality, afternoon_crash, hunger_cravings, training_recovery, mood_stability, physical_changes, submitted_at'),
+    // Test Client seed for Stage 4 {token} routes (Pages tab)
+    admin
+      .from('clients')
+      .select('id, onboarding_token, checkin_token, baseline_token')
+      .eq('email', 'test-client@bodyrecode.au')
+      .maybeSingle(),
+    admin
+      .from('intake_invitations')
+      .select('token')
+      .eq('kind', 'foundational')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    admin
+      .from('intake_invitations')
+      .select('token')
+      .eq('kind', 'supplementary')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    admin
+      .from('scorecard_reports')
+      .select('token')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
   ])
 
   // Build blueprint token set for cross-referencing
@@ -98,6 +128,17 @@ export default async function FunnelPage() {
         lastCheckin: membershipCheckinMap[e.id] ?? null,
         blueprintToken: e.blueprint_token,
       }))}
+      pagesTokens={{
+        challenge: challengeEnrollments?.[0]?.token,
+        blueprint: blueprintEnrollments?.[0]?.token,
+        membership: membershipEnrollments?.[0]?.token,
+        portalOnboarding: testClient?.onboarding_token ?? undefined,
+        portalCheckin: testClient?.checkin_token ?? undefined,
+        portalBaseline: testClient?.baseline_token ?? undefined,
+        intakeFoundational: foundationalIntake?.token,
+        intakeSupplementary: supplementaryIntake?.token,
+        scorecardReport: scorecardReport?.token,
+      }}
     />
   )
 }
