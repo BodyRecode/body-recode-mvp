@@ -5,7 +5,9 @@ import DraftActions from './draft-actions'
 import DeleteProgramButton from './delete-button'
 import ProgramWeeklyReview from './weekly-review'
 import ProgramReadingPanel from './program-reading-panel'
+import TrajectoryReadingPanel from './trajectory-reading-panel'
 import CoachGuidanceEditor from './coach-guidance-editor'
+import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import RegenerateButton from './regenerate-button'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 
@@ -271,7 +273,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, onboarding_token')
+    .select('id, name, onboarding_token, coaching_started_at')
     .eq('id', id)
     .maybeSingle()
 
@@ -391,6 +393,33 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             program={activeProgram as unknown as Parameters<typeof ProgramReadingPanel>[0]['program']}
             clientToken={client.onboarding_token ?? null}
           />
+
+          {/* Client-facing Block-end Trajectory Reading - reads the CFWS arc */}
+          {(() => {
+            const cs = client.coaching_started_at as string | null
+            const gen = activeProgram.generated_at
+            const dur = activeProgram.week_duration ?? null
+            let blockStatus: Parameters<typeof TrajectoryReadingPanel>[0]['blockStatus'] = null
+            if (cs && gen) {
+              const startMs = new Date(cs).getTime()
+              const startWeek = Math.floor((new Date(gen).getTime() - startMs) / 86_400_000 / 7) + 1
+              const currentWeek = getWeekNumber(cs)
+              const endWeek = dur ? startWeek + dur - 1 : currentWeek
+              blockStatus = {
+                isAtBlockEnd: currentWeek >= endWeek,
+                currentWeek,
+                weekDuration: dur,
+                weeksRemaining: Math.max(0, endWeek - currentWeek),
+              }
+            }
+            return (
+              <TrajectoryReadingPanel
+                program={activeProgram as unknown as Parameters<typeof TrajectoryReadingPanel>[0]['program']}
+                clientToken={client.onboarding_token ?? null}
+                blockStatus={blockStatus}
+              />
+            )
+          })()}
 
           <div className="mb-3 flex items-center justify-between">
             <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Sessions</p>

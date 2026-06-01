@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import ClientHeader from '@/components/client-header'
 import ProgramReadingInline from '@/components/program-reading-inline'
+import TrajectoryReadingInline from '@/components/trajectory-reading-inline'
 import Link from 'next/link'
 
 interface Exercise {
@@ -53,12 +54,13 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
   const { data: program } = await admin
     .from('programs')
-    .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, sessions, weekly_pattern_summary, progression_notes, client_note, current_direction, last_review_at, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, program_reading_published_at')
+    .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, sessions, weekly_pattern_summary, progression_notes, client_note, current_direction, last_review_at, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, program_reading_published_at, tr_where_this_block_started, tr_how_your_signal_moved, tr_what_held_steady, tr_what_this_sets_up_next, tr_coach_note, trajectory_reading_published_at')
     .eq('client_id', client.id)
     .eq('is_active', true)
     .maybeSingle()
 
   const programReadingPublished = !!program?.program_reading_published_at
+  const trajectoryReadingPublished = !!program?.trajectory_reading_published_at
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
@@ -88,6 +90,21 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
                   program_reading_published_at: program.program_reading_published_at,
                 }}
                 documentHref={`/portal/${token}/program/reading`}
+              />
+            )}
+
+            {/* Block-end Trajectory Reading - the arc across the whole block */}
+            {trajectoryReadingPublished && (
+              <TrajectoryReadingInline
+                reading={{
+                  tr_where_this_block_started: program.tr_where_this_block_started,
+                  tr_how_your_signal_moved: program.tr_how_your_signal_moved,
+                  tr_what_held_steady: program.tr_what_held_steady,
+                  tr_what_this_sets_up_next: program.tr_what_this_sets_up_next,
+                  tr_coach_note: program.tr_coach_note,
+                  trajectory_reading_published_at: program.trajectory_reading_published_at,
+                }}
+                documentHref={`/portal/${token}/program/trajectory-reading`}
               />
             )}
 
