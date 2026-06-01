@@ -21,7 +21,7 @@ import { Resend } from 'resend'
 import {
   darkEmailShell,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
-  emailFeaturedCard, emailStatusCard, emailCta, emailUrlFallback,
+  emailFeaturedCard, emailNumberedList, emailStatusCard, emailCta, emailUrlFallback,
 } from '../src/lib/email-shell'
 import { darkEmailSignature } from '../src/lib/email-signature'
 import { portalUrl, portalLoginUrl } from '../src/lib/app-url'
@@ -44,11 +44,27 @@ ${emailHeading('A few new things inside your portal')}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody('A quick walk-through of what has been added to your portal over the last few weeks. None of it changes what we are doing together. It gives both of us more signal to work with, and gives you more to see.', { bottom: 16 })}
-${emailBody('<strong style="color:#1A1A1A;">First, the look.</strong> You will have noticed the whole platform has moved from the old dark theme to a clean, light one. That was deliberate: your information is easier to read at a glance, it holds up far better on a phone (the old dark screens inverted badly in some apps), and the calmer layout keeps the focus on what your body is actually telling us rather than the interface around it.', { bottom: 28 })}
+${emailBody('<strong style="color:#1A1A1A;">First, the look.</strong> You will have noticed the whole platform has moved from the old dark theme to a clean, light one. That was deliberate: your information is easier to read at a glance, it holds up far better on a phone (the old dark screens inverted badly in some apps), and the calmer layout keeps the focus on what your body is actually telling us rather than the interface around it.', { bottom: 36 })}
+${emailEyebrow('The big one · Health Markers')}
+${emailHeading('Your blood work, finally working for your training.', { size: 26 })}
+${emailDivider()}
+${emailBody('Most blood panels get a thirty-second glance from a GP and then sit in a drawer. From today, you can upload yours straight to your portal: a PDF, or even a photo of the page. From there it stops being a dead sheet of numbers and starts pulling its weight inside your coaching.', { bottom: 20 })}
 ${emailFeaturedCard(
-  `${emailBody('If you have recent blood work, you can now upload it straight from your portal: a PDF, or even a photo of the page. The system reads every marker against your lab’s own reference ranges and flags anything sitting outside them so we can account for it in your training and nutrition.', { size: 15, bottom: 14 })}${emailBody('To be clear, I am not your doctor and this is never a diagnosis. Anything medical stays with your GP, and I will always point you back to them when that is the right call. It is simply one more signal alongside everything else.', { size: 15, bottom: 0 })}`,
-  { eyebrow: 'New · Health Markers' },
+  emailNumberedList([
+    'Upload it in seconds. A PDF or a clear photo of the results page is all it takes.',
+    'Every marker is read against your lab’s own reference ranges, so nothing gets lost in the noise.',
+    'Anything sitting outside range is flagged, accounted for in your training and nutrition, and pointed back to your GP where it belongs.',
+  ]),
+  { eyebrow: 'What happens when you upload' },
 )}
+${emailBody('To be clear: I am not your doctor and this is never a diagnosis. Anything medical stays with your GP, and I will always point you back to them when that is the right call. This simply turns your bloods into one more honest signal about what is actually happening inside your body, sitting alongside everything else we track.', { bottom: 24 })}
+${emailStatusCard({
+  eyebrow: 'Where this is heading',
+  headline: 'One upload today. A moving picture tomorrow.',
+  body: 'This is the first step of something much bigger. As you add panels over time, the system builds a view of how your markers move across months, not a single snapshot, and starts reading those trends against your training, nutrition and recovery. The direction we are building toward: your plan adapting to what your bloods, your check-ins and your logged sessions are saying together, and an early nudge when something begins to drift long before it becomes a problem. Today is where that starts.',
+})}
+${emailEyebrow('Also new')}
+${emailDivider()}
 ${emailBody('<strong style="color:#1A1A1A;">Your Readings.</strong> Your program and nutrition plan now sit underneath plain-English readings that explain the why, not just the what. There is a reading for your training block, one for your nutrition plan, and one that accounts for any medications or supports you have told me about.', { bottom: 16 })}
 ${emailBody('<strong style="color:#1A1A1A;">Written feedback on every check-in.</strong> When you submit a weekly check-in you now get a written response back from me, on the portal and by email: how I am reading the week, any reframe if the picture has shifted, and the one thing to hold for the week ahead.', { bottom: 16 })}
 ${emailBody('<strong style="color:#1A1A1A;">Log your sets while you train.</strong> You can now log your training set by set, in the gym, as you go. It snapshots what was prescribed so we can both see how the actual work compared to the plan when we look back.', { bottom: 28 })}
