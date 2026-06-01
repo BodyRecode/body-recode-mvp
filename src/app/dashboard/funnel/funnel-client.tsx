@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AlertTriangle, Search, ChevronRight } from 'lucide-react'
 import { PageHeader, Card, MONO_FONT, accentColour } from '@/components/dashboard/ui'
+import PagesIndex from './pages-index'
 
 const PATTERN_COLOURS: Record<string, string> = {
   'stress-stored': '#DC2626',
@@ -153,7 +154,7 @@ export default function FunnelClient({
   blueprintEnrollments: BlueprintRow[]
   membershipEnrollments: MembershipRow[]
 }) {
-  const [tab, setTab] = useState<'challenge' | 'blueprint' | 'membership'>('challenge')
+  const [tab, setTab] = useState<'challenge' | 'blueprint' | 'membership' | 'pages'>('challenge')
   const [search, setSearch] = useState('')
 
   const q = search.toLowerCase()
@@ -246,6 +247,7 @@ export default function FunnelClient({
             { id: 'challenge', label: `Challenge (${challengeEnrollments.length})` },
             { id: 'blueprint', label: `Blueprint (${blueprintEnrollments.length})` },
             { id: 'membership', label: `Membership (${membershipEnrollments.length})` },
+            { id: 'pages', label: 'Pages' },
           ] as const).map(t => (
             <button
               key={t.id}
@@ -270,7 +272,7 @@ export default function FunnelClient({
       </div>
 
       {/* Tables */}
-      <Card padding="none" className="overflow-hidden">
+      <Card padding="none" className={`overflow-hidden ${tab === 'pages' ? 'hidden' : ''}`}>
 
         {tab === 'challenge' && (
           <Table headers={['Name', 'Day', 'Pattern', 'Quiz', 'Blueprint', 'Enrolled']}>
@@ -384,6 +386,15 @@ export default function FunnelClient({
         )}
 
       </Card>
+
+      {/* Pages tab - URL catalog across the funnel */}
+      {tab === 'pages' && (
+        <PagesIndex
+          challengeToken={challengeEnrollments[0]?.token}
+          blueprintToken={blueprintEnrollments[0]?.token}
+          membershipToken={membershipEnrollments[0]?.token}
+        />
+      )}
     </div>
   )
 }
