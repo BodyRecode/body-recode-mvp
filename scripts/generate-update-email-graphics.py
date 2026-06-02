@@ -1,41 +1,46 @@
 #!/usr/bin/env python3
 """
-Light-themed brand graphics for the client product-update email.
+Light UI-card mockups for the client product-update email.
 
-Matches the platform email palette (Pure White / Graphite Black / Signal Blue
-#1B6DFC), NOT the old dark+mint marketing graphics. Three inline images that
-carry the email's story:
+Matches the ESTABLISHED email-image language from the 2026-05-12 broadcast
+(render_images.py): literal, evocative mockups of the actual portal cards, NOT
+abstract infographics. Same card grammar (accent bar + mono caps header,
+"view as document" pill, numbered section label, body, toggle row) but ported
+to the current LIGHT palette (Pure White card on a light backdrop, Signal Blue
+#1B6DFC accent) since the platform flipped from dark+teal to light.
 
-  email-hero.png            1200x500   "What's new in your portal" banner
-  email-health-markers.png  1200x720   blood-panel marker rows w/ range bars
-  email-trajectory.png      1200x720   signal-over-the-block line chart
+Cards (the two features that are NEW since the last email):
+  email-health-markers.png    blood-panel markers card
+  email-block-end-reading.png  the Block-End Trajectory Reading inline card
 
 Outputs to:
   ~/body-recode-mvp/public/email/   (served at https://app.bodyrecode.au/email/*)
   ~/Public/                          (local copy per feedback_post_graphics)
 
-Rendered at 2x for retina, downscaled on save.
+W=1040 @ 2x retina; the email references them at width=480 (logical).
 """
 
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont
 from pathlib import Path
 
-# ---- Light palette (email canvas) ----
-BG        = '#FFFFFF'
-SURFACE   = '#F7F7F7'
-INK       = '#1A1A1A'
-BODY      = '#4A4A4A'
-MUTED     = '#6B6B6B'
-SUBTLE    = '#999999'
-HAIRLINE  = '#E5E5E5'
-BLUE      = '#1B6DFC'
-BLUE_DK   = '#1559D6'
-BLUE_BG   = '#EAF1FE'
-AMBER     = '#B7791F'
-AMBER_BG  = '#FBF3E3'
-GREEN     = '#1F9D6B'
-
+W = 1040
 SCALE = 2
+
+# ---- Light palette (mirrors the live portal cards) ----
+PAGE_BG    = (244, 246, 248)   # #F4F6F8 light backdrop so the white card reads
+CARD_BG    = (255, 255, 255)   # #FFFFFF
+SURFACE    = (247, 247, 247)   # #F7F7F7 range track
+BORDER     = (229, 229, 229)   # #E5E5E5
+BLUE       = (27, 109, 252)    # #1B6DFC
+BLUE_DK    = (21, 89, 214)     # #1559D6
+BLUE_BG    = (234, 241, 254)   # #EAF1FE
+INK        = (26, 26, 26)      # #1A1A1A
+TEXT_BODY  = (43, 43, 43)      # #2B2B2B
+TEXT_DIM   = (107, 107, 107)   # #6B6B6B
+TEXT_MUTED = (153, 153, 153)   # #999999
+AMBER      = (183, 121, 31)    # #B7791F
+AMBER_BG   = (251, 243, 227)   # #FBF3E3
+
 OUT_DIRS = [
     Path.home() / 'body-recode-mvp' / 'public' / 'email',
     Path.home() / 'Public',
@@ -43,259 +48,199 @@ OUT_DIRS = [
 for d in OUT_DIRS:
     d.mkdir(parents=True, exist_ok=True)
 
-HELV      = '/System/Library/Fonts/Helvetica.ttc'
-HELV_NEUE = '/System/Library/Fonts/HelveticaNeue.ttc'
-SF_MONO   = '/System/Library/Fonts/SFNSMono.ttf'
 
-
-def font(size, weight='regular'):
-    size *= SCALE
-    if weight in ('bold', 'black'):
-        return ImageFont.truetype(HELV, size, index=1)  # Helvetica Bold (upright)
-    if weight == 'medium':
-        return ImageFont.truetype(HELV_NEUE, size, index=1)
-    return ImageFont.truetype(HELV, size, index=0)
-
-
-def mono(size):
+def font(size, *, mono=False, bold=False):
+    if mono:
+        try:
+            return ImageFont.truetype('/System/Library/Fonts/Menlo.ttc', size * SCALE, index=1 if bold else 0)
+        except Exception:
+            return ImageFont.load_default()
+    path = ('/System/Library/Fonts/Supplemental/Arial Bold.ttf' if bold
+            else '/System/Library/Fonts/Supplemental/Arial.ttf')
     try:
-        return ImageFont.truetype(SF_MONO, size * SCALE)
+        return ImageFont.truetype(path, size * SCALE)
     except Exception:
-        return ImageFont.truetype(HELV, size * SCALE, index=0)
+        return ImageFont.load_default()
 
 
-def rgb(h):
-    h = h.lstrip('#')
-    return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
+def unicode_font(size):
+    try:
+        return ImageFont.truetype('/System/Library/Fonts/Supplemental/Arial Unicode.ttf', size * SCALE)
+    except Exception:
+        return font(size)
 
 
-def rgba(h, a=255):
-    return (*rgb(h), a)
+F_HEADER_CAPS = font(11, mono=True, bold=True)
+F_LABEL       = font(10, mono=True)
+F_LABEL_B     = font(10, mono=True, bold=True)
+F_SECTION     = font(11, mono=True, bold=True)
+F_TITLE_LG    = font(18, bold=True)
+F_TITLE_SM    = font(13, bold=True)
+F_BODY        = font(13)
+F_BODY_SM     = font(12)
+F_TAG         = font(9, mono=True, bold=True)
+F_CHEV        = unicode_font(12)
 
 
-def text_w(d, t, f):
-    b = d.textbbox((0, 0), t, font=f)
-    return b[2] - b[0]
+def rrect(d, xy, radius, fill=None, outline=None, width=1):
+    x0, y0, x1, y1 = [c * SCALE for c in xy]
+    d.rounded_rectangle((x0, y0, x1, y1), radius=radius * SCALE,
+                        fill=fill, outline=outline, width=width * SCALE if outline else 0)
 
 
-def tracked(d, xy, text, f, fill, tracking):
-    """Draw text with letter-spacing (for uppercase eyebrows)."""
-    x, y = xy
-    for ch in text:
-        d.text((x, y), ch, font=f, fill=fill)
-        x += text_w(d, ch, f) + tracking * SCALE
+def text(d, xy, s, fnt, fill):
+    d.text((xy[0] * SCALE, xy[1] * SCALE), s, font=fnt, fill=fill)
 
 
-def new_canvas(w, h):
-    return Image.new('RGBA', (w * SCALE, h * SCALE), rgba(BG))
+def measure(d, s, fnt):
+    b = d.textbbox((0, 0), s, font=fnt)
+    return ((b[2] - b[0]) // SCALE, (b[3] - b[1]) // SCALE)
 
 
-def dotted_grid(img, x0, y0, x1, y1, gap=22, colour=HAIRLINE, alpha=130):
-    layer = Image.new('RGBA', img.size, (0, 0, 0, 0))
-    d = ImageDraw.Draw(layer)
-    yy = y0
-    while yy <= y1:
-        xx = x0
-        while xx <= x1:
-            d.ellipse((xx, yy, xx + SCALE, yy + SCALE), fill=(*rgb(colour), alpha))
-            xx += gap * SCALE
-        yy += gap * SCALE
-    img.alpha_composite(layer)
+def wrap(d, s, fnt, max_px):
+    words, lines, cur = s.split(), [], []
+    for w in words:
+        if measure(d, ' '.join(cur + [w]), fnt)[0] <= max_px:
+            cur.append(w)
+        else:
+            if cur:
+                lines.append(' '.join(cur))
+            cur = [w]
+    if cur:
+        lines.append(' '.join(cur))
+    return lines
 
 
-def soft_shadow(img, xy, radius, blur=18, alpha=22):
-    layer = Image.new('RGBA', img.size, (0, 0, 0, 0))
-    d = ImageDraw.Draw(layer)
-    d.rounded_rectangle(xy, radius=radius, fill=(15, 23, 42, alpha))
-    layer = layer.filter(ImageFilter.GaussianBlur(blur))
-    img.alpha_composite(layer)
+def accent_bar(d, x, y, w=28, h=3):
+    rrect(d, (x, y, x + w, y + h), 2, fill=BLUE)
+
+
+def new_canvas(height):
+    img = Image.new('RGB', (W, height * SCALE), color=PAGE_BG)
+    return img, ImageDraw.Draw(img, 'RGBA')
+
+
+def hairline(d, x0, x1, y):
+    d.line([(x0 * SCALE, y * SCALE), (x1 * SCALE, y * SCALE)], fill=BORDER, width=1 * SCALE)
 
 
 def save(img, name):
-    flat = Image.new('RGB', img.size, rgb(BG))
-    flat.paste(img, mask=img.split()[3])
-    out = flat.resize((img.width // SCALE, img.height // SCALE), Image.LANCZOS)
-    for d in OUT_DIRS:
-        out.save(d / name, 'PNG')
-    print(f'Wrote {name}  ({out.width}x{out.height})')
+    for dd in OUT_DIRS:
+        img.save(dd / name, optimize=True)
+    print(f'  ✓ {name}  ({img.size[0]}x{img.size[1]}px)')
 
 
 # ============================================================
-# 1. HERO  "What's new in your portal"
+# Block-End Trajectory Reading card (mirrors trajectory-reading-inline.tsx)
 # ============================================================
-def render_hero():
-    W, H = 1200, 500
-    img = new_canvas(W, H)
-    d = ImageDraw.Draw(img)
-    s = SCALE
+def render_block_end_reading():
+    H = 392
+    img, d = new_canvas(H)
+    PAD = 28
+    inner = W // SCALE - PAD
+    rrect(d, (PAD, PAD, inner, H - PAD), 18, fill=CARD_BG, outline=BORDER)
 
-    # faint dotted grid in the right third
-    dotted_grid(img, int(W*0.58)*s, 40*s, (W-40)*s, (H-40)*s, gap=26, alpha=90)
+    y = PAD + 22
+    accent_bar(d, PAD + 22, y + 4)
+    text(d, (PAD + 22 + 36, y), 'BLOCK-END READING', F_HEADER_CAPS, INK)
 
-    # soft blue glow top-right
-    glow = Image.new('RGBA', img.size, (0, 0, 0, 0))
-    gd = ImageDraw.Draw(glow)
-    gd.ellipse(((W-260)*s, -160*s, (W+160)*s, 260*s), fill=(*rgb(BLUE), 26))
-    glow = glow.filter(ImageFilter.GaussianBlur(120))
-    img.alpha_composite(glow)
+    doc = 'VIEW AS DOCUMENT'
+    dw, _ = measure(d, doc, F_LABEL)
+    pill_w = dw + 28
+    pill_x = inner - 22 - pill_w
+    rrect(d, (pill_x, y - 4, pill_x + pill_w, y + 18), 6, outline=BORDER)
+    text(d, (pill_x + 14, y), doc, F_LABEL, TEXT_DIM)
 
-    pad = 84 * s
-    # eyebrow
-    tracked(d, (pad, 150*s), 'BODY RECODE  ·  PRODUCT UPDATE', font(13, 'bold'), rgb(BLUE), 3)
-    # accent bar
-    d.rounded_rectangle((pad, 182*s, pad + 54*s, 186*s), radius=2*s, fill=rgb(BLUE))
-    # headline (two lines)
-    d.text((pad, 206*s), 'A few new things', font=font(52, 'black'), fill=rgb(INK))
-    d.text((pad, 272*s), 'inside your portal', font=font(52, 'black'), fill=rgb(INK))
-    # subline
-    d.text((pad, 356*s), 'More signal to work with. More to see.',
-           font=font(20, 'regular'), fill=rgb(MUTED))
+    y += 34
+    hairline(d, PAD + 22, inner - 22, y)
 
-    save(img, 'email-hero.png')
+    y += 24
+    text(d, (PAD + 22, y), '01 · Where this block started', F_SECTION, BLUE)
+
+    y += 24
+    body = ("You opened this block under-recovered, with energy that dipped through "
+            "the middle of each week. Across the six weeks that steadied: the recovery "
+            "between your sessions came back first, then your energy began to hold "
+            "flatter day to day.")
+    for line in wrap(d, body, F_BODY, inner - 22 - (PAD + 22)):
+        text(d, (PAD + 22, y), line, F_BODY, TEXT_BODY)
+        y += 25
+
+    y = H - PAD - 36
+    hairline(d, PAD + 22, inner - 22, y)
+    label, chev = 'Read the full arc', '▾'
+    lw, _ = measure(d, label, F_BODY_SM)
+    cw, _ = measure(d, chev, F_CHEV)
+    sx = (W // SCALE - (lw + 8 + cw)) // 2
+    text(d, (sx, y + 12), label, F_BODY_SM, TEXT_DIM)
+    text(d, (sx + lw + 8, y + 12), chev, F_CHEV, TEXT_DIM)
+
+    save(img, 'email-block-end-reading.png')
 
 
 # ============================================================
-# 2. HEALTH MARKERS  blood-panel rows with range bars
+# Health Markers card (evocative of /portal/[token]/bloods + reading)
 # ============================================================
 def render_health_markers():
-    W, H = 1200, 720
-    img = new_canvas(W, H)
-    d = ImageDraw.Draw(img)
-    s = SCALE
-    pad = 84 * s
+    H = 372
+    img, d = new_canvas(H)
+    PAD = 28
+    inner = W // SCALE - PAD
+    rrect(d, (PAD, PAD, inner, H - PAD), 18, fill=CARD_BG, outline=BORDER)
 
-    tracked(d, (pad, 70*s), 'NEW  ·  HEALTH MARKERS', font(13, 'bold'), rgb(BLUE), 3)
-    d.text((pad, 100*s), 'Your blood work, read as a signal.',
-           font=font(40, 'black'), fill=rgb(INK))
-    d.text((pad, 162*s), 'Every marker checked against your lab’s own range.',
-           font=font(19, 'regular'), fill=rgb(MUTED))
+    y = PAD + 22
+    accent_bar(d, PAD + 22, y + 4)
+    text(d, (PAD + 22 + 36, y), 'HEALTH MARKERS', F_HEADER_CAPS, INK)
 
-    # card
-    cx0, cy0, cx1, cy1 = pad, 226*s, (W-84)*s, (H-70)*s
-    soft_shadow(img, (cx0, cy0+8*s, cx1, cy1+8*s), 26*s)
-    d.rounded_rectangle((cx0, cy0, cx1, cy1), radius=26*s, fill=rgb(BG), outline=rgb(HAIRLINE), width=1*s)
+    tag = '12 MARKERS READ'
+    tw, _ = measure(d, tag, F_LABEL)
+    pill_w = tw + 28
+    pill_x = inner - 22 - pill_w
+    rrect(d, (pill_x, y - 4, pill_x + pill_w, y + 18), 6, outline=BORDER)
+    text(d, (pill_x + 14, y), tag, F_LABEL, TEXT_DIM)
 
-    # rows: (label, position 0..1 along range, status)
+    y += 34
+    hairline(d, PAD + 22, inner - 22, y)
+
     rows = [
-        ('Ferritin',        0.46, 'in'),
-        ('Vitamin D',       0.28, 'in'),
-        ('Thyroid (TSH)',   0.83, 'flag'),
-        ('HbA1c',           0.40, 'in'),
-        ('Cholesterol',     0.58, 'in'),
+        ('Ferritin',      0.46, 'in'),
+        ('Vitamin D',     0.28, 'in'),
+        ('Thyroid (TSH)', 0.84, 'flag'),
+        ('HbA1c',         0.40, 'in'),
     ]
-    n = len(rows)
-    inner_top = cy0 + 44*s
-    inner_bot = cy1 - 44*s
-    row_h = (inner_bot - inner_top) / n
-    label_x = cx0 + 44*s
-    bar_x0 = cx0 + 360*s
-    bar_x1 = cx1 - 150*s
-    f_label = font(20, 'medium')
-    f_tag = font(12, 'bold')
-
+    label_x = PAD + 22
+    bar_x0 = PAD + 220
+    bar_x1 = inner - 168
+    row_top = y + 30
+    row_h = 64
     for i, (label, pos, status) in enumerate(rows):
-        ry = inner_top + row_h * i + row_h/2
-        # label
-        d.text((label_x, ry - text_w(d, 'X', f_label)*0 - 14*s), label, font=f_label, fill=rgb(INK))
+        ry = row_top + row_h * i
+        text(d, (label_x, ry - 7), label, F_TITLE_SM, INK)
         # range track
-        track_y = int(ry)
-        d.rounded_rectangle((bar_x0, track_y-4*s, bar_x1, track_y+4*s), radius=4*s, fill=rgb(SURFACE))
-        # "normal band" lighter blue segment in the middle
-        band0 = bar_x0 + (bar_x1-bar_x0)*0.18
-        band1 = bar_x0 + (bar_x1-bar_x0)*0.78
-        d.rounded_rectangle((band0, track_y-4*s, band1, track_y+4*s), radius=4*s, fill=rgb(BLUE_BG))
-        # dot
-        dot_x = bar_x0 + (bar_x1-bar_x0)*pos
+        rrect(d, (bar_x0, ry - 3, bar_x1, ry + 3), 3, fill=SURFACE)
+        b0 = bar_x0 + (bar_x1 - bar_x0) * 0.18
+        b1 = bar_x0 + (bar_x1 - bar_x0) * 0.80
+        rrect(d, (b0, ry - 3, b1, ry + 3), 3, fill=BLUE_BG)
+        dx = bar_x0 + (bar_x1 - bar_x0) * pos
         col = AMBER if status == 'flag' else BLUE
         ring = AMBER_BG if status == 'flag' else BLUE_BG
-        d.ellipse((dot_x-13*s, track_y-13*s, dot_x+13*s, track_y+13*s), fill=rgb(ring))
-        d.ellipse((dot_x-8*s, track_y-8*s, dot_x+8*s, track_y+8*s), fill=rgb(col))
-        # status tag on the right
-        if status == 'flag':
-            tag = 'REVIEW W/ GP'
-            tw = text_w(d, tag, f_tag)
-            tagx = cx1 - 44*s - tw - 24*s
-            d.rounded_rectangle((tagx, track_y-15*s, tagx+tw+24*s, track_y+15*s), radius=15*s, fill=rgb(AMBER_BG))
-            d.text((tagx+12*s, track_y-9*s), tag, font=f_tag, fill=rgb(AMBER))
-        else:
-            tag = 'IN RANGE'
-            tw = text_w(d, tag, f_tag)
-            tagx = cx1 - 44*s - tw - 24*s
-            d.rounded_rectangle((tagx, track_y-15*s, tagx+tw+24*s, track_y+15*s), radius=15*s, fill=rgb(BLUE_BG))
-            d.text((tagx+12*s, track_y-9*s), tag, font=f_tag, fill=rgb(BLUE_DK))
-        # row divider
-        if i < n-1:
-            dy = inner_top + row_h*(i+1)
-            d.line((cx0+44*s, dy, cx1-44*s, dy), fill=rgb(HAIRLINE), width=1*s)
+        d.ellipse(((dx - 11) * SCALE, (ry - 11) * SCALE, (dx + 11) * SCALE, (ry + 11) * SCALE), fill=ring)
+        d.ellipse(((dx - 6) * SCALE, (ry - 6) * SCALE, (dx + 6) * SCALE, (ry + 6) * SCALE), fill=col)
+        # status tag
+        tl = 'REVIEW W/ GP' if status == 'flag' else 'IN RANGE'
+        tcol = AMBER if status == 'flag' else BLUE_DK
+        tbg = AMBER_BG if status == 'flag' else BLUE_BG
+        tlw, _ = measure(d, tl, F_TAG)
+        tagx = inner - 22 - tlw - 22
+        rrect(d, (tagx, ry - 11, tagx + tlw + 22, ry + 11), 11, fill=tbg)
+        text(d, (tagx + 11, ry - 6), tl, F_TAG, tcol)
+        if i < len(rows) - 1:
+            hairline(d, PAD + 22, inner - 22, ry + row_h // 2)
 
     save(img, 'email-health-markers.png')
 
 
-# ============================================================
-# 3. TRAJECTORY  signal-over-the-block line chart
-# ============================================================
-def render_trajectory():
-    W, H = 1200, 720
-    img = new_canvas(W, H)
-    d = ImageDraw.Draw(img)
-    s = SCALE
-    pad = 84 * s
-
-    tracked(d, (pad, 70*s), 'NEW  ·  BLOCK-END READING', font(13, 'bold'), rgb(BLUE), 3)
-    d.text((pad, 100*s), 'The trend, not the snapshot.',
-           font=font(40, 'black'), fill=rgb(INK))
-    d.text((pad, 162*s), 'How your signal moved across the whole block.',
-           font=font(19, 'regular'), fill=rgb(MUTED))
-
-    # plot area
-    px0, py0, px1, py1 = pad, 250*s, (W-84)*s, (H-96)*s
-    # gridlines
-    for gi in range(1, 4):
-        gy = py0 + (py1-py0)*gi/4
-        d.line((px0, gy, px1, gy), fill=rgb(HAIRLINE), width=1*s)
-
-    # weekly signal values (0..1), a dip then recovery and climb
-    vals = [0.30, 0.38, 0.34, 0.52, 0.66, 0.82]
-    n = len(vals)
-    def X(i): return px0 + (px1-px0) * i/(n-1)
-    def Y(v): return py1 - (py1-py0) * v
-    pts = [(X(i), Y(v)) for i, v in enumerate(vals)]
-
-    # area fill under the line
-    area = Image.new('RGBA', img.size, (0, 0, 0, 0))
-    ad = ImageDraw.Draw(area)
-    poly = pts + [(px1, py1), (px0, py1)]
-    ad.polygon(poly, fill=(*rgb(BLUE), 28))
-    img.alpha_composite(area)
-
-    # the line
-    d.line(pts, fill=rgb(BLUE), width=5*s, joint='curve')
-
-    # week labels + points
-    f_wk = mono(12)
-    for i, (x, y) in enumerate(pts):
-        last = (i == n-1)
-        r = 11*s if last else 7*s
-        d.ellipse((x-r-4*s, y-r-4*s, x+r+4*s, y+r+4*s), fill=rgb(BLUE_BG))
-        d.ellipse((x-r, y-r, x+r, y+r), fill=rgb(BLUE) if last else rgb(BG), outline=rgb(BLUE), width=3*s)
-        lbl = f'W{i+1}'
-        d.text((x - text_w(d, lbl, f_wk)/2, py1 + 14*s), lbl, font=f_wk, fill=rgb(SUBTLE))
-
-    # annotations: start + now
-    f_an = font(14, 'bold')
-    # start
-    sx, sy = pts[0]
-    d.text((sx + 14*s, sy - 6*s), 'where you started', font=f_an, fill=rgb(MUTED))
-    # now
-    nx, ny = pts[-1]
-    txt = 'where you are now'
-    d.text((nx - text_w(d, txt, f_an) - 16*s, ny - 34*s), txt, font=f_an, fill=rgb(BLUE_DK))
-
-    save(img, 'email-trajectory.png')
-
-
 if __name__ == '__main__':
-    render_hero()
     render_health_markers()
-    render_trajectory()
+    render_block_end_reading()
     print('\nDone. Hosted at https://app.bodyrecode.au/email/<name>.png after deploy.')
