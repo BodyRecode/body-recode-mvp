@@ -54,6 +54,11 @@ function fullRule(top = 0, bottom = 24): string {
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:${top}px 0 ${bottom}px;"><tr><td height="1" bgcolor="#E5E5E5" style="background-color:#E5E5E5;line-height:1px;font-size:0;">&nbsp;</td></tr></table>`
 }
 
+/** Editorial pull-quote: blue left border + large italic ink, matching the reading-layout standfirst style. The email's emotional beat. */
+function pullQuote(text: string): string {
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 32px;"><tr><td style="padding:2px 0 2px 26px;border-left:3px solid #1B6DFC;"><p style="font-size:21px;font-weight:400;font-style:italic;color:#1A1A1A;line-height:1.55;letter-spacing:-0.005em;margin:0;font-family:${FONT_STACK};">${text}</p></td></tr></table>`
+}
+
 /** The recurring "Signal" masthead: series name + issue + date, headline, standfirst. */
 function signalMasthead(): string {
   const series = `<p style="font-size:12px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;margin:0 0 18px;font-family:${FONT_STACK};"><span style="color:#1B6DFC;">Signal</span><span style="color:#C8C8C8;">&nbsp;&nbsp;·&nbsp;&nbsp;</span><span style="color:#999999;">${SIGNAL_ISSUE}&nbsp;&nbsp;·&nbsp;&nbsp;${SIGNAL_DATE}</span></p>`
@@ -124,6 +129,7 @@ ${emailFeaturedCard(
 )}
 ${emailCta({ href: portalLink, label: 'Open your portal' })}
 ${emailUrlFallback(portalLink)}
+${pullQuote('And whatever this week looked like, it counts. The strong weeks and the flat ones sit on the same line, and that line is moving. Keep showing up. You are not behind. You are in process.')}
 ${emailBody('Any questions, just hit reply.', { size: 15, bottom: 4 })}
 ${darkEmailSignature()}
 `
