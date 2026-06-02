@@ -139,7 +139,12 @@ ${emailStatusCard({
 ${emailCta({ href: portalLink, label: 'Open your portal' })}
 ${emailUrlFallback(portalLink)}
 ${pullQuote('And whatever this week looked like, it counts. The strong weeks and the flat ones sit on the same line, and that line is moving. Keep showing up. You are not behind. You are in process.')}
-${emailBody('Any questions, just hit reply.', { size: 15, bottom: 4 })}
+${fullRule(8, 26)}
+${emailEyebrow('Feedback')}
+${emailHeading('Tell me what would help.', { size: 22 })}
+${emailBody('What is working, what is not, what you wish existed. Coaching, the platform, your experience, all of it is fair game. Send a short note and I read every single one. They are exactly what we use to decide what to build next.', { bottom: 22 })}
+${emailCta({ href: `${portalLink}/feedback`, label: 'Share feedback' })}
+${emailBody('Or just hit reply to this email. Either reaches me.', { size: 15, bottom: 4 })}
 ${darkEmailSignature()}
 `
   return darkEmailShell(inner, { previewText: PREVIEW_TEXT })
