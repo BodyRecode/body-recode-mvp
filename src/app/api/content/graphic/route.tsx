@@ -14,17 +14,14 @@ async function getLogoData(req: NextRequest): Promise<string> {
   return `data:image/png;base64,${base64}`
 }
 
-// Photo library — pass ?photo=N to pick (1-4 = new library, omit/0 = original kade.jpg)
-// 1: kade-headshot-01 (square)  2: kade-headshot-02 (square)
-// 3: kade-portrait-square        4: kade-portrait-tall (1080x1350)
+// Photo library — pass ?photo=N to pick from /public/ (1-8 currently live)
+// 1-7: kade-1 through kade-7 (1080x1080 square headshots from IMG_2561-2567)
+// 8: kade-8 (1080x1350 tall portrait)
+// 0 / omitted: kade.jpg (original, kept for back-compat)
 async function getPhotoData(req: NextRequest, photoIndex: number): Promise<string> {
   const baseUrl = new URL(req.url).origin
   const filename =
-    photoIndex === 1 ? 'kade-1.jpg' :
-    photoIndex === 2 ? 'kade-2.jpg' :
-    photoIndex === 3 ? 'kade-3.jpg' :
-    photoIndex === 4 ? 'kade-4.jpg' :
-    'kade.jpg'
+    photoIndex >= 1 && photoIndex <= 8 ? `kade-${photoIndex}.jpg` : 'kade.jpg'
   const res = await fetch(`${baseUrl}/${filename}`)
   const buffer = await res.arrayBuffer()
   const base64 = Buffer.from(buffer).toString('base64')
