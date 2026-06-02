@@ -14,9 +14,18 @@ async function getLogoData(req: NextRequest): Promise<string> {
   return `data:image/png;base64,${base64}`
 }
 
-async function getPhotoData(req: NextRequest): Promise<string> {
+// Photo library — pass ?photo=N to pick (1-4 = new library, omit/0 = original kade.jpg)
+// 1: kade-headshot-01 (square)  2: kade-headshot-02 (square)
+// 3: kade-portrait-square        4: kade-portrait-tall (1080x1350)
+async function getPhotoData(req: NextRequest, photoIndex: number): Promise<string> {
   const baseUrl = new URL(req.url).origin
-  const res = await fetch(`${baseUrl}/kade.jpg`)
+  const filename =
+    photoIndex === 1 ? 'kade-1.jpg' :
+    photoIndex === 2 ? 'kade-2.jpg' :
+    photoIndex === 3 ? 'kade-3.jpg' :
+    photoIndex === 4 ? 'kade-4.jpg' :
+    'kade.jpg'
+  const res = await fetch(`${baseUrl}/${filename}`)
   const buffer = await res.arrayBuffer()
   const base64 = Buffer.from(buffer).toString('base64')
   return `data:image/jpeg;base64,${base64}`
@@ -36,7 +45,8 @@ export async function GET(request: NextRequest) {
   const accentColor = accent === 'red' ? '#DC2626' : accent === 'amber' ? '#B7791F' : '#1B6DFC'
 
   const isPhotoStyle = style === 'photo-split' || style === 'photo-quote' || style === 'photo-right' || style === 'photo-top'
-  const photoSrc = isPhotoStyle ? await getPhotoData(request) : ''
+  const photoIndex = parseInt(searchParams.get('photo') ?? '0', 10)
+  const photoSrc = isPhotoStyle ? await getPhotoData(request, photoIndex) : ''
 
   const logoSrc = await getLogoData(request)
 
@@ -79,7 +89,7 @@ export async function GET(request: NextRequest) {
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 80px 80px 60px' }}>
             <div style={{ width: '40px', height: '4px', background: '#1B6DFC', marginBottom: '32px' }} />
             {label && <div style={{ fontSize: '38px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
-            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '52px', color: '#6B6B6B', lineHeight: 1.5, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', right: '80px', height: '80px', objectFit: 'contain' }} />
@@ -98,7 +108,7 @@ export async function GET(request: NextRequest) {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ width: '40px', height: '4px', background: '#1B6DFC', marginBottom: '32px' }} />
             {label && <div style={{ fontSize: '38px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
-            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '780px' }}>{displayText}</div>
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '780px' }}>{displayText}</div>
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -126,7 +136,7 @@ export async function GET(request: NextRequest) {
           <div style={{ position: 'absolute', bottom: 0, left: 0, width: '1080px', height: '460px', background: '#FFFFFF', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '36px 80px 48px' }}>
             <div style={{ width: '40px', height: '4px', background: '#1B6DFC', marginBottom: '20px' }} />
             {label && <div style={{ fontSize: '38px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '14px' }}>{label}</div>}
-            <div style={{ fontSize: '44px', fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '14px' }}>{displayText}</div>
+            <div style={{ fontSize: '44px', fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '14px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '38px', color: '#6B6B6B', lineHeight: 1.45 }}>{sub.length > 80 ? sub.slice(0, 77) + '...' : sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '36px', right: '80px', height: '80px', objectFit: 'contain' }} />
@@ -146,7 +156,7 @@ export async function GET(request: NextRequest) {
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 60px 80px 80px' }}>
             <div style={{ width: '40px', height: '4px', background: '#1B6DFC', marginBottom: '32px' }} />
             {label && <div style={{ fontSize: '38px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>{label}</div>}
-            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '52px', color: '#6B6B6B', lineHeight: 1.5, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '80px', height: '80px', objectFit: 'contain' }} />
@@ -177,7 +187,7 @@ export async function GET(request: NextRequest) {
             </div>
           )}
           {/* Headline */}
-          <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.025em', maxWidth: '880px', marginBottom: '36px' }}>
+          <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.15, letterSpacing: '-0.025em', maxWidth: '880px', marginBottom: '36px' }}>
             {displayText}
           </div>
           {/* Body copy */}
@@ -221,7 +231,7 @@ export async function GET(request: NextRequest) {
               </div>
             )}
             {/* Headline */}
-            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '820px', marginBottom: '32px' }}>
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '820px', marginBottom: '32px' }}>
               {displayText}
             </div>
             {/* Description */}
@@ -254,7 +264,7 @@ export async function GET(request: NextRequest) {
             <div style={{ fontSize: '38px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '24px' }}>Body State Scorecard</div>
 
             {/* Headline */}
-            <div style={{ fontSize: '62px', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '36px' }}>
+            <div style={{ fontSize: '62px', fontWeight: 800, color: '#1A1A1A', lineHeight: 1.15, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '36px' }}>
               {displayText || 'Your body is operating in one of three states right now.'}
             </div>
 
@@ -357,7 +367,7 @@ export async function GET(request: NextRequest) {
           )}
 
           {/* Hook headline */}
-          <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '40px' }}>{displayText}</div>
+          <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '40px' }}>{displayText}</div>
 
           {/* Sub copy */}
           {sub && (
@@ -393,7 +403,7 @@ export async function GET(request: NextRequest) {
           <div style={{ fontSize: '100px', fontWeight: 800, color: '#1B6DFC', lineHeight: 1, marginBottom: '40px', letterSpacing: '-0.04em', opacity: 0.25 }}>{slideNum}</div>
 
           {/* Point headline */}
-          <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '36px' }}>{displayText}</div>
+          <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '36px' }}>{displayText}</div>
 
           {/* Supporting copy */}
           {sub && (
@@ -425,7 +435,7 @@ export async function GET(request: NextRequest) {
           <div style={{ width: '48px', height: '4px', background: '#1B6DFC', marginBottom: '48px' }} />
 
           {/* CTA headline */}
-          <div style={{ fontSize: '64px', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '32px' }}>
+          <div style={{ fontSize: '64px', fontWeight: 800, color: '#1A1A1A', lineHeight: 1.15, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '32px' }}>
             {displayText || 'Find out which state your body is in.'}
           </div>
 
@@ -477,7 +487,7 @@ export async function GET(request: NextRequest) {
             style={{
               fontSize: fontSize(displayText.length),
               fontWeight: 700,
-              color: '#ffffff',
+              color: '#1A1A1A',
               lineHeight: 1.25,
               letterSpacing: '-0.02em',
               maxWidth: '880px',
@@ -546,7 +556,7 @@ export async function GET(request: NextRequest) {
             style={{
               fontSize: fontSize(displayText.length),
               fontWeight: 700,
-              color: '#ffffff',
+              color: '#1A1A1A',
               lineHeight: 1.3,
               letterSpacing: '-0.01em',
               maxWidth: '880px',
@@ -598,7 +608,7 @@ export async function GET(request: NextRequest) {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ width: '48px', height: '4px', background: '#1B6DFC', marginBottom: '36px' }} />
             {label && <div style={{ fontSize: '38px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '24px' }}>{label}</div>}
-            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px' }}>{displayText}</div>
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '52px', color: '#6B6B6B', lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginTop: '32px' }}>{sub}</div>}
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -630,7 +640,7 @@ export async function GET(request: NextRequest) {
             )}
 
             {/* Main quote */}
-            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px' }}>
+            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px' }}>
               {displayText}
             </div>
 
@@ -705,7 +715,7 @@ export async function GET(request: NextRequest) {
               <div style={{ fontSize: '26px', fontWeight: 600, color: 'rgba(196, 181, 253, 0.65)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '32px' }}>{label}</div>
             )}
 
-            <div style={{ fontSize: aicmHeadlineSize(displayText.length), fontWeight: 800, color: '#ffffff', lineHeight: 1.15, letterSpacing: '-0.025em', maxWidth: '900px', display: 'flex' }}>
+            <div style={{ fontSize: aicmHeadlineSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.15, letterSpacing: '-0.025em', maxWidth: '900px', display: 'flex' }}>
               {displayText}
             </div>
 
@@ -750,7 +760,7 @@ export async function GET(request: NextRequest) {
           style={{
             fontSize: fontSize(displayText.length),
             fontWeight: 700,
-            color: '#ffffff',
+            color: '#1A1A1A',
             lineHeight: 1.35,
             letterSpacing: '-0.01em',
             maxWidth: '880px',
