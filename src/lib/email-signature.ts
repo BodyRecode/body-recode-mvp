@@ -19,12 +19,17 @@ const NAME = 'Kade Dunstone'
 const CREDENTIALS = 'Human Movement Scientist · Business Entrepreneur · Body Recode Founder'
 const URL = 'https://performance.bodyrecode.au'
 const URL_LABEL = 'performance.bodyrecode.au'
+const SITE_URL = 'https://bodyrecode.au'
+const SITE_LABEL = 'bodyrecode.au'
 const IG_URL = 'https://instagram.com/kade_dunstone_'
 const IG_LABEL = '@kade_dunstone_'
 const FF = `-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif`
 
-/** The two-link row (performance site | Instagram), Signal Blue, shared by both signature variants. */
-const LINK_ROW = `<a href="${URL}" style="font-size:12px;color:#1B6DFC;text-decoration:none;font-family:${FF};font-weight:600;">${URL_LABEL}</a><span style="font-size:12px;color:#C8C8C8;font-family:${FF};">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="${IG_URL}" style="font-size:12px;color:#1B6DFC;text-decoration:none;font-family:${FF};font-weight:600;">${IG_LABEL}</a>`
+const LINK_STYLE = `font-size:12px;color:#1B6DFC;text-decoration:none;font-family:${FF};font-weight:600;`
+const SEP = `<span style="font-size:12px;color:#C8C8C8;font-family:${FF};">&nbsp;&nbsp;|&nbsp;&nbsp;</span>`
+
+/** The link row (performance site | marketing site | Instagram), Signal Blue, shared by both signature variants. */
+const LINK_ROW = `<a href="${URL}" style="${LINK_STYLE}">${URL_LABEL}</a>${SEP}<a href="${SITE_URL}" style="${LINK_STYLE}">${SITE_LABEL}</a>${SEP}<a href="${IG_URL}" style="${LINK_STYLE}">${IG_LABEL}</a>`
 
 export function emailSignature(): string {
   return `
