@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
 
   const accentColor = accent === 'red' ? '#DC2626' : accent === 'amber' ? '#B7791F' : '#1B6DFC'
 
-  const isPhotoStyle = style === 'photo-split' || style === 'photo-quote' || style === 'photo-right' || style === 'photo-top'
+  const isPhotoStyle = style === 'photo-split' || style === 'photo-quote' || style === 'photo-right' || style === 'photo-top' || style === 'photo-overlay'
   const photoIndex = parseInt(searchParams.get('photo') ?? '0', 10)
   const photoSrc = isPhotoStyle ? await getPhotoData(request, photoIndex) : ''
 
@@ -141,6 +141,45 @@ export async function GET(request: NextRequest) {
         </div>
       ),
       { width: 1080, height: 1080 }
+    )
+  }
+
+  // Style 3c: Full-bleed photo background with centred text overlay.
+  // Mirrors the Chase Life Consulting style: bold serif hook + lighter body, dark gradient for legibility, handle bottom centre.
+  // Supports format=square (1080x1080) or format=story (1080x1920).
+  if (style === 'photo-overlay') {
+    const isStory = format === 'story'
+    const W = 1080
+    const H = isStory ? 1920 : 1080
+    const handle = label || '@kadedunstone'
+    return new ImageResponse(
+      (
+        <div style={{ width: `${W}px`, height: `${H}px`, position: 'relative', display: 'flex', fontFamily: 'sans-serif', overflow: 'hidden' }}>
+          {/* Full-bleed photo background */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={photoSrc} style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${H}px`, objectFit: 'cover' }} alt="" />
+          {/* Dark gradient overlay — heavier at top + bottom for text legibility */}
+          <div style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${H}px`, background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 35%, rgba(0,0,0,0.25) 65%, rgba(0,0,0,0.7) 100%)' }} />
+          {/* Centre text block */}
+          <div style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${H}px`, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '80px 100px', textAlign: 'center' }}>
+            {/* Bold serif hook (matches example style) */}
+            <div style={{ fontSize: fontSize(displayText.length) * 0.85, fontWeight: 700, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '0.005em', maxWidth: '880px', fontFamily: 'Georgia, serif', textShadow: '0 2px 16px rgba(0,0,0,0.5)' }}>
+              {displayText}
+            </div>
+            {/* Lighter body copy below */}
+            {sub && (
+              <div style={{ fontSize: '34px', color: '#F5F5F5', lineHeight: 1.55, fontWeight: 400, maxWidth: '780px', marginTop: '36px', textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
+                {sub}
+              </div>
+            )}
+          </div>
+          {/* Handle bottom centre */}
+          <div style={{ position: 'absolute', bottom: '50px', left: 0, width: `${W}px`, display: 'flex', justifyContent: 'center' }}>
+            <div style={{ fontSize: '24px', color: 'rgba(255,255,255,0.85)', fontWeight: 500, letterSpacing: '0.04em', textShadow: '0 1px 6px rgba(0,0,0,0.6)' }}>{handle}</div>
+          </div>
+        </div>
+      ),
+      { width: W, height: H }
     )
   }
 
