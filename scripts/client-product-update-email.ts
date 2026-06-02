@@ -27,6 +27,12 @@ import { darkEmailSignature } from '../src/lib/email-signature'
 import { portalUrl, portalLoginUrl } from '../src/lib/app-url'
 
 const LIVE = process.argv.includes('--live')
+// --only=a@x.com,b@y.com restricts a live send to specific addresses (e.g. to
+// resend just the ones a rate-limit dropped, without re-emailing everyone).
+const ONLY = (process.argv.find(a => a.startsWith('--only='))?.split('=')[1] ?? '')
+  .split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms))
 
 // "Signal" - the recurring Body Recode portal-update series. Bump SIGNAL_ISSUE
 // and SIGNAL_DATE each send; the standfirst line stays constant so the series
@@ -188,10 +194,13 @@ async function main() {
     process.exit(1)
   }
 
-  const recipients = (clients ?? []).filter(c => c.email && c.onboarding_token)
+  let recipients = (clients ?? []).filter(c => c.email && c.onboarding_token)
   const skipped = (clients ?? []).filter(c => !c.email || !c.onboarding_token)
+  if (ONLY.length) {
+    recipients = recipients.filter(c => ONLY.includes((c.email as string).toLowerCase()))
+  }
 
-  console.log(`Mode      : LIVE broadcast`)
+  console.log(`Mode      : LIVE broadcast${ONLY.length ? ` (--only: ${ONLY.join(', ')})` : ''}`)
   console.log(`Active    : ${(clients ?? []).length}`)
   console.log(`Sendable  : ${recipients.length}`)
   if (skipped.length) {
@@ -201,28 +210,44 @@ async function main() {
   console.log('')
 
   let sent = 0
-  for (const c of recipients) {
+  const failures: string[] = []
+  for (let i = 0; i < recipients.length; i++) {
+    const c = recipients[i]
     const firstName = firstNameOf(c.name)
     const html = buildHtml(firstName, portalUrl(c.onboarding_token as string))
-    try {
-      const result = await resend.emails.send({
-        from: FROM,
-        to: c.email as string,
-        subject: SUBJECT_LIVE,
-        html,
-      })
-      if (result.error) {
-        console.log(`  FAIL  ${c.email}  ${JSON.stringify(result.error)}`)
-      } else {
-        sent++
-        console.log(`  sent  ${c.email}  (${result.data?.id})`)
+    // Resend free tier caps at 2 requests/second. Throttle to stay safely under.
+    if (i > 0) await sleep(600)
+    let ok = false
+    for (let attempt = 1; attempt <= 3 && !ok; attempt++) {
+      try {
+        const result = await resend.emails.send({
+          from: FROM,
+          to: c.email as string,
+          subject: SUBJECT_LIVE,
+          html,
+        })
+        if (result.error) {
+          const isRate = (result.error as { statusCode?: number }).statusCode === 429
+          if (isRate && attempt < 3) { await sleep(1200); continue }
+          console.log(`  FAIL  ${c.email}  ${JSON.stringify(result.error)}`)
+          failures.push(c.email as string)
+        } else {
+          sent++
+          ok = true
+          console.log(`  sent  ${c.email}  (${result.data?.id})`)
+        }
+      } catch (err) {
+        if (attempt < 3) { await sleep(1200); continue }
+        console.log(`  FAIL  ${c.email}  ${err}`)
+        failures.push(c.email as string)
       }
-    } catch (err) {
-      console.log(`  FAIL  ${c.email}  ${err}`)
     }
   }
 
   console.log(`\nDone. ${sent}/${recipients.length} sent.`)
+  if (failures.length) {
+    console.log(`Retry the misses with:\n  npx tsx scripts/client-product-update-email.ts --live --only=${failures.join(',')}`)
+  }
 }
 
 main().then(() => process.exit(0)).catch(err => { console.error(err); process.exit(1) })
