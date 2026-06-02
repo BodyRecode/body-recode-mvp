@@ -166,17 +166,19 @@ export async function GET(request: NextRequest) {
           {/* Full-bleed photo background */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={photoSrc} style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${H}px`, objectFit: 'cover' }} alt="" />
-          {/* Dark gradient overlay — heavier at top + bottom for text legibility */}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${H}px`, background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 35%, rgba(0,0,0,0.25) 65%, rgba(0,0,0,0.7) 100%)' }} />
+          {/* Soft gradient — heavy only at the very edges, photo stays visible */}
+          <div style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${H}px`, background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.0) 25%, rgba(0,0,0,0.0) 75%, rgba(0,0,0,0.45) 100%)' }} />
+          {/* Soft radial darken behind the centre text block only — keeps photo clear elsewhere */}
+          <div style={{ position: 'absolute', top: '38%', left: '8%', width: '84%', height: '24%', background: 'radial-gradient(ellipse, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.0) 75%)' }} />
           {/* Centre text block */}
           <div style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${H}px`, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '80px 100px', textAlign: 'center' }}>
             {/* Bold serif hook (matches example style) */}
-            <div style={{ fontSize: hookSize(displayText.length), fontWeight: 700, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '0.005em', maxWidth: '880px', fontFamily: 'Georgia, serif', textShadow: '0 2px 16px rgba(0,0,0,0.5)' }}>
+            <div style={{ fontSize: hookSize(displayText.length), fontWeight: 700, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '0.005em', maxWidth: '880px', fontFamily: 'Georgia, serif', textShadow: '0 3px 24px rgba(0,0,0,0.85)' }}>
               {displayText}
             </div>
             {/* Lighter body copy below */}
             {sub && (
-              <div style={{ fontSize: '34px', color: '#F5F5F5', lineHeight: 1.55, fontWeight: 400, maxWidth: '780px', marginTop: '36px', textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
+              <div style={{ fontSize: '34px', color: '#F5F5F5', lineHeight: 1.55, fontWeight: 400, maxWidth: '780px', marginTop: '36px', textShadow: '0 2px 18px rgba(0,0,0,0.85)' }}>
                 {sub}
               </div>
             )}
