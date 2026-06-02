@@ -31,7 +31,7 @@ const LIVE = process.argv.includes('--live')
 // "Signal" - the recurring Body Recode portal-update series. Bump SIGNAL_ISSUE
 // and SIGNAL_DATE each send; the standfirst line stays constant so the series
 // reads the same way every issue.
-const SIGNAL_ISSUE = 'No. 01'
+const SIGNAL_ISSUE = 'No. 02'  // No. 01 was the 2026-05-12 update (pre-Signal branding)
 const SIGNAL_DATE = 'June 2026'
 const SIGNAL_STANDFIRST = 'What your portal can now see, and what it means for your coaching.'
 
@@ -88,6 +88,11 @@ ${emailFeaturedCard(
   { eyebrow: 'What happens when you upload' },
 )}
 ${emailBody('To be clear: I am not your doctor and this is never a diagnosis. Anything medical stays with your GP, and I will always point you back to them when that is the right call. This simply turns your bloods into one more honest signal about what is actually happening inside your body, sitting alongside everything else we track.', { bottom: 24 })}
+${emailFeaturedCard(
+  `${emailBody('<strong style="color:#1A1A1A;">Do this one this week.</strong> If you have had blood work in the last six to twelve months, dig it out and upload it now. If you have not, it is worth booking a simple panel with your GP. The sooner your bloods are in your portal, the sooner they start shaping your training and nutrition, so please get them in as soon as you can.', { size: 15, bottom: 0 })}`,
+  { eyebrow: 'Your move' },
+)}
+${emailCta({ href: `${portalLink}/bloods`, label: 'Upload your blood test' })}
 ${emailStatusCard({
   eyebrow: 'Where this is heading',
   headline: 'One upload today. A moving picture tomorrow.',
