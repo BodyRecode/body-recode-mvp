@@ -63,6 +63,14 @@ export async function GET(request: NextRequest) {
   // Truncate text for display
   const displayText = text.length > 140 ? text.slice(0, 137) + '...' : text
 
+  function hookSize(len: number) {
+    if (len <= 40) return '68px'
+    if (len <= 60) return '60px'
+    if (len <= 80) return '52px'
+    if (len <= 120) return '46px'
+    return '40px'
+  }
+
   function fontSize(len: number) {
     if (len <= 40) return '72px'
     if (len <= 60) return '62px'
@@ -163,7 +171,7 @@ export async function GET(request: NextRequest) {
           {/* Centre text block */}
           <div style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${H}px`, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '80px 100px', textAlign: 'center' }}>
             {/* Bold serif hook (matches example style) */}
-            <div style={{ fontSize: fontSize(displayText.length) * 0.85, fontWeight: 700, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '0.005em', maxWidth: '880px', fontFamily: 'Georgia, serif', textShadow: '0 2px 16px rgba(0,0,0,0.5)' }}>
+            <div style={{ fontSize: hookSize(displayText.length), fontWeight: 700, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '0.005em', maxWidth: '880px', fontFamily: 'Georgia, serif', textShadow: '0 2px 16px rgba(0,0,0,0.5)' }}>
               {displayText}
             </div>
             {/* Lighter body copy below */}
