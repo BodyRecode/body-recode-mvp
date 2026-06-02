@@ -127,6 +127,15 @@ ${emailFeaturedCard(
   emailBody('Two minutes, every week. It is the highest-leverage thing you do here, and it is the one thing only you can give.', { size: 15, bottom: 0 }),
   { eyebrow: 'If you do one thing' },
 )}
+${emailEyebrow('Respect')}
+${emailHeading('Some of you are doing remarkable things.', { size: 24 })}
+${emailDivider()}
+${emailBody('I want to take a second to say this plainly. Across this group there are people showing up week after week, holding the work through the hard stretches, and turning a real corner in how they feel, move, recover and carry themselves. No shortcuts and no extremes. Just consistent, honest work against their own signal. It is genuinely something to watch, and if that is you right now, you have my respect. If it is not yet, you are in very good company to learn from.', { bottom: 20 })}
+${emailStatusCard({
+  eyebrow: 'Coming soon',
+  headline: 'A place for those stories.',
+  body: 'Soon I want to give some of these journeys a home: a members section where, with their blessing, we walk through how the turn actually happened. Not before-and-afters, the real arc. If that could be you one day, keep going.',
+})}
 ${emailCta({ href: portalLink, label: 'Open your portal' })}
 ${emailUrlFallback(portalLink)}
 ${pullQuote('And whatever this week looked like, it counts. The strong weeks and the flat ones sit on the same line, and that line is moving. Keep showing up. You are not behind. You are in process.')}
