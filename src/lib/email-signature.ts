@@ -31,6 +31,11 @@ const SEP = `<span style="font-size:12px;color:#C8C8C8;font-family:${FF};">&nbsp
 /** The link row (performance site | marketing site | Instagram), Signal Blue, shared by both signature variants. */
 const LINK_ROW = `<a href="${URL}" style="${LINK_STYLE}">${URL_LABEL}</a>${SEP}<a href="${SITE_URL}" style="${LINK_STYLE}">${SITE_LABEL}</a>${SEP}<a href="${IG_URL}" style="${LINK_STYLE}">${IG_LABEL}</a>`
 
+// Daily-rotating tagline strip under the signature (see src/app/api/sig-tag +
+// src/lib/sig-taglines.ts). One brand line per UTC day, so a recipient who gets
+// two emails in a week sees it change. Rendered 960x80, shown at 480x40.
+const SIG_TAG = `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td><a href="${SITE_URL}" style="text-decoration:none;display:block;"><img src="https://bodyrecode.au/api/sig-tag" width="480" height="40" alt="" style="display:block;border:0;width:100%;max-width:480px;height:auto;" /></a></td></tr></table>`
+
 export function emailSignature(): string {
   return `
     <table cellpadding="0" cellspacing="0" style="margin-top:32px;padding-top:24px;border-top:1px solid #E5E5E5;">
@@ -46,7 +51,8 @@ export function emailSignature(): string {
           ${LINK_ROW}
         </td>
       </tr>
-    </table>`
+    </table>
+    ${SIG_TAG}`
 }
 
 /**
@@ -71,5 +77,6 @@ export function darkEmailSignature(): string {
           ${LINK_ROW}
         </td>
       </tr>
-    </table>`
+    </table>
+    ${SIG_TAG}`
 }
