@@ -39,7 +39,7 @@ A body that has spent five years on broken sleep and sustained stress and incomp
 She isn't behind. Her body has been waiting for conditions that never came.
 
 #bodyrecode #postnatalfitness #postpartumfitness #mumfitness #performancecoaching$cap$,
- '/calendar/br-2026-06-03_pattern_01.png'),
+ '/calendar/br-2026-06-03_pattern_01.png,/calendar/br-2026-06-03_pattern_02.png,/calendar/br-2026-06-03_pattern_03.png,/calendar/br-2026-06-03_pattern_04.png,/calendar/br-2026-06-03_pattern_05.png,/calendar/br-2026-06-03_pattern_06.png'),
 
 ('2026-06-05', '18:00', 'body_recode', 'instagram', 'coach', 'scale',
  '"Every protocol I try fails."',
@@ -113,7 +113,7 @@ Eat before you train. Drop the cardio dose. Give the system something to recover
 Once the state shifts, the body releases what it's been holding. Until then, every fasted morning is another deposit into a debt the system can't afford.
 
 #bodyrecode #perimenopause #womenshealth40 #hormonehealth #performancecoaching$cap$,
- '/calendar/br-2026-06-09_contrarian_01.png'),
+ '/calendar/br-2026-06-09_contrarian_01.png,/calendar/br-2026-06-09_contrarian_02.png,/calendar/br-2026-06-09_contrarian_03.png,/calendar/br-2026-06-09_contrarian_04.png,/calendar/br-2026-06-09_contrarian_05.png'),
 
 -- Week 2 (10-16 Jun)
 ('2026-06-10', '12:00', 'body_recode', 'instagram', 'pattern', 'scale',
@@ -130,7 +130,7 @@ This is cortisol stacked on declining testosterone, on years of running too hard
 The distribution is information. The body is showing you where the dysregulation is.
 
 #bodyrecode #mensthealth40 #cortisol #executiveperformance #midlifehealth$cap$,
- '/calendar/br-2026-06-10_pattern_01.png'),
+ '/calendar/br-2026-06-10_pattern_01.png,/calendar/br-2026-06-10_pattern_02.png,/calendar/br-2026-06-10_pattern_03.png,/calendar/br-2026-06-10_pattern_04.png,/calendar/br-2026-06-10_pattern_05.png,/calendar/br-2026-06-10_pattern_06.png'),
 
 ('2026-06-12', '18:00', 'body_recode', 'instagram', 'coach', 'scale',
  '"I am doing everything right."',
@@ -208,7 +208,7 @@ She isn't being loyal to the version of herself that was. She's asking a body th
 The new program is designed for the body she has now, not the one she had. Lower frequency. Higher recovery priority. The same effort placed differently starts producing results again once the state has shifted to accept it.
 
 #bodyrecode #postnatalfitness #mumlife #postpartumstrength #performancecoaching$cap$,
- '/calendar/br-2026-06-16_contrarian_01.png'),
+ '/calendar/br-2026-06-16_contrarian_01.png,/calendar/br-2026-06-16_contrarian_02.png,/calendar/br-2026-06-16_contrarian_03.png,/calendar/br-2026-06-16_contrarian_04.png,/calendar/br-2026-06-16_contrarian_05.png'),
 
 -- Week 3 (17-23 Jun) — REELS BEGIN
 ('2026-06-17', '12:00', 'body_recode', 'instagram', 'pattern', 'scale',
@@ -225,7 +225,7 @@ You can train hard and eat clean and watch all three hold for a year. The state 
 The fat hasn't betrayed her. It's a reading of what the system is doing right now.
 
 #bodyrecode #cortisol #fatloss #womenshealth #executivehealth$cap$,
- '/calendar/br-2026-06-17_pattern_01.png'),
+ '/calendar/br-2026-06-17_pattern_01.png,/calendar/br-2026-06-17_pattern_02.png,/calendar/br-2026-06-17_pattern_03.png,/calendar/br-2026-06-17_pattern_04.png,/calendar/br-2026-06-17_pattern_05.png'),
 
 ('2026-06-19', '18:00', 'body_recode', 'instagram', 'coach', 'scale',
  'Same advice. Different bodies. (REEL)',
@@ -312,7 +312,7 @@ Either one alone is easy to dismiss. Together they're a body shifting state. The
 If sleep has also fragmented in a way it hadn't before, if mood is more variable around the cycle, if heat regulation has shifted, you're watching the state turn over in front of you. If the prescription doesn't catch up to the new physiology, the same training will break her faster than it built her.
 
 #bodyrecode #perimenopause #womenshealth40 #cyclehealth #hormonehealth$cap$,
- '/calendar/br-2026-06-24_pattern_01.png'),
+ '/calendar/br-2026-06-24_pattern_01.png,/calendar/br-2026-06-24_pattern_02.png,/calendar/br-2026-06-24_pattern_03.png,/calendar/br-2026-06-24_pattern_04.png,/calendar/br-2026-06-24_pattern_05.png,/calendar/br-2026-06-24_pattern_06.png'),
 
 ('2026-06-26', '18:00', 'body_recode', 'instagram', 'coach', 'scale',
  'You are not behind. You are reading the wrong map. (REEL)',
