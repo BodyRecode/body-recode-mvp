@@ -546,7 +546,7 @@ export default function HelpPage() {
             <ol className="space-y-1.5 list-decimal list-inside text-[#3A3A3A] text-sm">
               <li>Client profile created in the Clients dashboard.</li>
               <li>Welcome email sent to the client with their intake link.</li>
-              <li>Client completes the foundational intake (208 questions, 15-20 min).</li>
+              <li>Client completes the foundational intake (221 questions, 15-20 min).</li>
               <li>CFFS generated automatically and appears on the client profile.</li>
             </ol>
             <p>Your manual steps after conversion:</p>
@@ -662,13 +662,13 @@ export default function HelpPage() {
               <li><strong>Coaching Agreement</strong> - reviewed and e-signed in the portal. You receive a notification when signed.</li>
               <li><strong>Health Declaration</strong> - health and readiness screening. You receive a notification when submitted. If medical clearance is flagged, a Medical Clearance step is automatically inserted before intake unlocks.</li>
               <li><strong>Medical Clearance</strong> (if required) - the moment the health declaration flags clearance, the client gets an auto-email (Kade voice, dark template) pointing them at the Medical Clearance card on their portal. They download a real PDF (server-rendered via puppeteer, pre-filled with their name), take it to their GP, and upload the completed form. You review it and mark clearance received on the client profile, which unlocks the intake.</li>
-              <li><strong>Foundational Intake</strong> - 208-question intake covering all signal domains. You receive a notification when submitted.</li>
+              <li><strong>Foundational Intake</strong> - 221-question intake covering all signal domains. You receive a notification when submitted.</li>
               <li><strong>Baseline Documentation</strong> - bodyweight, waist, hips, chest, and three progress photos (front, side, back). You receive a notification when submitted. Once both intake and baseline are in, you get a second &quot;completed onboarding - CFFS ready&quot; email and the Generate CFFS button becomes available on the client profile.</li>
             </ol>
             <p>You receive a notification email at every step as the client completes it. All submitted documents (agreement, health declaration, intake, baseline) are viewable and printable from the client profile.</p>
             <Note>CFFS is coach-triggered, not auto-generated. After both intake and baseline are submitted, click <strong>Generate CFFS</strong> on the client profile. Auto-generation was removed 2026-05-13 so coach can review intake responses before locking the read.</Note>
             <Training title="What the intake is building">
-              <p>The 208-question intake is not a form. It is the raw material for the CFFS - a structured read of the client&apos;s current body state across all signal domains. The questions exist because body response patterns don&apos;t reveal themselves in a short intake. Depth matters.</p>
+              <p>The 221-question intake is not a form. It is the raw material for the CFFS - a structured read of the client&apos;s current body state across all signal domains. The questions exist because body response patterns don&apos;t reveal themselves in a short intake. Depth matters.</p>
               <p className="mt-2">The baseline measurements taken here are the reference point for everything that follows. Week 1 data only becomes meaningful because of what was captured here. Encourage the client to be accurate rather than aspirational with their numbers.</p>
             </Training>
 
@@ -931,7 +931,7 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>Lightweight</strong>: re-run CFFS engine against the original intake plus the recent CFWS history. No client effort. Default for block-end and single-notch drift.</li>
               <li><strong>Delta intake</strong>: a shortened ~30-question form covering domains likely to have changed. Default for multi-notch drops or two-or-more concurrent Amber/Red signals.</li>
-              <li><strong>Full re-intake</strong>: client completes the full 208 questions again. Default for the 12-week cap, two-band body state changes, or Restoration phase exit.</li>
+              <li><strong>Full re-intake</strong>: client completes the full 221 questions again. Default for the 12-week cap, two-band body state changes, or Restoration phase exit.</li>
             </ul>
             <Note>The current Regenerate CFFS button performs the lightweight path (re-runs against existing intake). Delta intake and full re-intake flows are doctrine-defined but not yet implemented as separate UI flows. They will be added when the trigger conditions become common.</Note>
 
@@ -1369,7 +1369,7 @@ export default function HelpPage() {
             <p className="font-semibold text-[#1A1A1A] mt-4">Form drafts - clients can resume mid-form</p>
             <p>Every long form in the portal saves the client&apos;s answers to their browser as they go. If they close the tab or come back two days later, their progress is restored - they pick up where they left off, not from the start. This applies to:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li>Foundational Intake (208 questions)</li>
+              <li>Foundational Intake (221 questions)</li>
               <li>Health Declaration (40+ fields)</li>
               <li>Baseline Documentation (measurements only - photos must be re-picked, browser security)</li>
               <li>Weekly Check-In (Form A and Form B independently)</li>

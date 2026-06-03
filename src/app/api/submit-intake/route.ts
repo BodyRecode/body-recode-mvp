@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
       html: buildCoachNotificationEmail({
         eyebrow: 'Foundational Intake',
         heading: `${clientName} submitted their intake`,
-        body: `${clientName} has completed and submitted all 208 questions of their foundational intake. Their baseline (measurements and front/side/back photos) is the remaining onboarding step. Once that lands you will receive a second email confirming the CFFS is ready to generate from your dashboard, and the Fat Map will read the photos as part of Spatial Patterning. The Portal Orientation email has been sent to them automatically so they can read through the portal while baseline is still outstanding.`,
+        body: `${clientName} has completed and submitted all 221 questions of their foundational intake. Their baseline (measurements and front/side/back photos) is the remaining onboarding step. Once that lands you will receive a second email confirming the CFFS is ready to generate from your dashboard, and the Fat Map will read the photos as part of Spatial Patterning. The Portal Orientation email has been sent to them automatically so they can read through the portal while baseline is still outstanding.`,
         ctaLabel: 'Open client profile',
         ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
         footnote: 'Their next portal task (Baseline Documentation) is now unlocked.',

@@ -44,7 +44,7 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'intake-submitted',
     name: 'Foundational Intake Submitted',
-    description: 'Coach notification when a client completes their 208-question intake. Also triggers automatic CFFS generation in the background.',
+    description: 'Coach notification when a client completes their 221-question intake. Also triggers automatic CFFS generation in the background.',
     trigger: 'Client submits Foundational Intake via portal',
     steps: 1,
   },
@@ -270,7 +270,7 @@ const MANUAL_AUTOMATIONS = [
   {
     id: 'send-intake',
     name: 'Send Foundational Intake Email',
-    description: 'Manually email a client the link to their 208-question foundational intake.',
+    description: 'Manually email a client the link to their 221-question foundational intake.',
     trigger: 'Click "Send intake email" on the Intake row of the client profile',
     steps: 1,
   },

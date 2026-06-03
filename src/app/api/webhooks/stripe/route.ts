@@ -1021,7 +1021,7 @@ ${emailBody(`Commencement fee confirmed. The welcome email and intake link have 
 ${emailStatusCard({
   eyebrow: 'Next step',
   headline: 'Wait for intake completion',
-  body: `${lead.name} now has portal access and will start the onboarding flow: agreement → health declaration → 208-question intake → baseline. You will be notified as each step lands.`,
+  body: `${lead.name} now has portal access and will start the onboarding flow: agreement → health declaration → 221-question intake → baseline. You will be notified as each step lands.`,
 })}
 ${emailCta({ href: `${appUrl()}/dashboard/leads/${lead.id}`, label: 'View lead' })}
 ${darkEmailSignature()}
@@ -1055,7 +1055,7 @@ ${emailFeaturedCard(
   emailNumberedList([
     'Coaching Agreement',
     'Health Declaration',
-    'Foundational Intake (208 questions across 8 areas, 15-20 min)',
+    'Foundational Intake (221 questions across 9 areas, 15-20 min)',
     'Baseline Documentation (photos and measurements)',
   ]),
   { eyebrow: 'Inside the portal, work through' },

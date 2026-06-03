@@ -316,7 +316,7 @@ export default function GymSessionsPage() {
               Locking in now
             </p>
           </div>
-          <p className="text-[14px] text-[#3A3A3A] leading-relaxed italic mb-3">"Good. Here's exactly what happens next. I'll send you a link straight to your inbox now for the $240 commencement fee. Once that's through, three things happen automatically. Welcome email with portal access. Your foundational intake unlocks - 208 questions across 8 areas. And I get notified at every step. Once your intake's in, your CFFS generates. I review it, send you the subscription link at the launch rate, and we lock in your start date. Sound good?"</p>
+          <p className="text-[14px] text-[#3A3A3A] leading-relaxed italic mb-3">"Good. Here's exactly what happens next. I'll send you a link straight to your inbox now for the $240 commencement fee. Once that's through, three things happen automatically. Welcome email with portal access. Your foundational intake unlocks - 221 questions across 9 areas. And I get notified at every step. Once your intake's in, your CFFS generates. I review it, send you the subscription link at the launch rate, and we lock in your start date. Sound good?"</p>
           <p className="text-[12px] text-[#999999] leading-relaxed">Open the lead in <span className="text-[#6B6B6B]">/dashboard/leads</span>, run companion → Path C → pick pathway (in-person / online) → Send commencement fee → Mark Complete. Stripe link goes to her instantly.</p>
         </div>
 

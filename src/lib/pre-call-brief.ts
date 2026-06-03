@@ -814,7 +814,7 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('')
   lines.push('Bridge: "Based on what you told me about [hot spot], here\'s exactly how my coaching gets to that."')
   lines.push('')
-  lines.push('• 208-question intake → CFFS (Foundational Synthesis). From you, not a template.')
+  lines.push('• 221-question intake → CFFS (Foundational Synthesis). From you, not a template.')
   lines.push('• Fat Map - 4 zones where load shows up:')
   fatMapZones.forEach(z => lines.push(z))
   if (isIndeterminate) {

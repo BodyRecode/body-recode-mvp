@@ -107,7 +107,7 @@ const HOW_IT_WORKS_STAGES = [
     subtitle: '208 Data Points',
     body: 'The system begins with a structured biological intake across eight signal domains. 208 data points in total. Nothing is assumed. Nothing is filled in from a template.',
     chips: ['Training History', 'Nutrition History', 'Metabolic Indicators', 'Hormonal Signals', 'Recovery Patterns', 'Stress Markers', 'Sleep Quality', 'Body Composition'],
-    coachScript: '"First thing you do is the foundational intake. 208 questions across eight areas. This is what gives me the data to read what\'s actually going on with your body — not from a template, from you."',
+    coachScript: '"First thing you do is the foundational intake. 221 questions across nine areas. This is what gives me the data to read what\'s actually going on with your body — not from a template, from you."',
   },
   {
     number: '02',

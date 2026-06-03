@@ -166,7 +166,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   const activeCffs = cffsRecords?.find(c => !c.is_archived) || null
   const archivedCffs = cffsRecords?.filter(c => c.is_archived) || []
-  // Split by kind. The foundational invitation is the original 208-question
+  // Split by kind. The foundational invitation is the original 221-question
   // intake (drives status of the Intake row). The supplementary is the
   // 5-question follow-up added 2026-05-12 (medications + dietary context)
   // and gets its own status row beneath. Treat a row with no `kind` as
