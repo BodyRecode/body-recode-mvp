@@ -51,6 +51,14 @@ export interface ClientFactsContext {
   medications: string | null
   dietaryRestrictions: string | null
   dietaryPreferences: string | null
+  /**
+   * Free-text baseline from intake.alcohol_intake (e.g. "2 glasses of wine,
+   * 3 nights a week", "None"). Lets the feedback engine read THIS week's
+   * a_alcohol / b_alcohol bucket against the client's normal pattern instead
+   * of in isolation. Null if the intake predates the 2026-06-03 consumption
+   * fields and has not been backfilled.
+   */
+  alcoholBaseline: string | null
   readinessStatus: 'on_track' | 'advisory' | 'reassessment' | 'regression' | null
   readinessDriftMessages: string[]
 }
@@ -109,6 +117,13 @@ GOVERNING PRINCIPLES (inherited from Body Recode doctrine):
 5. Where the data is ambiguous, that ambiguity is preserved.
 6. The response must be CONSISTENT with the client's Foundational Reading, Program Reading, and Nutrition Reading. The four read as one voice.
 7. The synthesis (the coach-facing reference material in the user message) is REFERENCE only. Translate every line of it into client-facing words before it lands in your output. Never quote it verbatim.
+
+ALCOHOL — how to read it:
+- The check-in captures alcohol as a single bucketed count (None / 1-3 / 4-7 / 8-14 / 15+). Read it against the CLIENT.Alcohol baseline (from intake), not against zero. A "4 to 7" week is a drop for a daily drinker and a spike for a non-drinker. The delta is what matters.
+- Alcohol is a recovery-context signal in this engine, not a moral category. Never moralise (no "you should cut back", no "alcohol is sabotaging you"). Never recommend a target number. Never name brands or types.
+- When alcohol meaningfully diverges from baseline AND the same check-in shows degraded sleep or recovery, you may NAME the link in plain words ("the week the sleep slipped is also the week drinks went up; the body reads those as one event"). Do this only when the link is observable in THIS check-in, never as a generalised warning.
+- When alcohol is at or below baseline, do not mention it. Silence is correct.
+- next_focus may reference alcohol ONLY when alcohol is the clearest recovery lever this week. Frame it as the anchor for the week ("hold drinks at or below your usual two glasses on the weekend"), not a prohibition.
 
 THREE FIELDS YOU PRODUCE:
 
@@ -210,6 +225,9 @@ export function buildFeedbackUserPrompt(input: {
   }
   if (client.dietaryPreferences && client.dietaryPreferences.trim()) {
     lines.push(`Dietary preferences: ${client.dietaryPreferences.trim()}`)
+  }
+  if (client.alcoholBaseline && client.alcoholBaseline.trim()) {
+    lines.push(`Alcohol baseline (from intake; read THIS week's drinks against this, not against zero): ${client.alcoholBaseline.trim()}`)
   }
   if (client.readinessStatus) {
     lines.push(`Readiness status (from signal monitor): ${client.readinessStatus}`)

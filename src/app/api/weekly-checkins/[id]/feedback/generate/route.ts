@@ -62,7 +62,7 @@ export async function POST(
   // column on this schema, so order by submitted_at to pick the most recent.
   const { data: intake } = await admin
     .from('intakes')
-    .select('dietary_restrictions, dietary_preferences')
+    .select('dietary_restrictions, dietary_preferences, alcohol_intake')
     .eq('client_id', client.id)
     .order('submitted_at', { ascending: false })
     .limit(1)
@@ -137,6 +137,7 @@ export async function POST(
       medications: client.medications ?? null,
       dietaryRestrictions: intake?.dietary_restrictions ?? null,
       dietaryPreferences: intake?.dietary_preferences ?? null,
+      alcoholBaseline: intake?.alcohol_intake ?? null,
       readinessStatus: null,
       readinessDriftMessages: [],
     },
