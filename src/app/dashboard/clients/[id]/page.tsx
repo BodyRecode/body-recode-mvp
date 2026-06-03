@@ -16,6 +16,7 @@ import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
 import ClientReadingPanel from './client-reading-panel'
 import MedicationsEditor from './medications-editor'
+import DietaryConsumptionEditor from './dietary-consumption-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import CoachResponseCard from './coach-response-card'
 import MajorSection from './major-section'
@@ -68,7 +69,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .order('created_at', { ascending: false }),
     admin
       .from('intakes')
-      .select('id')
+      .select('id, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context, dietary_updated_at')
       .eq('client_id', id)
       .order('submitted_at', { ascending: false, nullsFirst: false })
       .limit(1),
@@ -174,7 +175,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     .find(i => (i.kind ?? 'foundational') === 'foundational') || null
   const latestSupplementaryInvitation = (invitations ?? [])
     .find(i => i.kind === 'supplementary') || null
-  const latestIntakeId = intakes?.[0]?.id || null
+  const latestIntake = intakes?.[0] || null
+  const latestIntakeId = latestIntake?.id || null
   const intakeDone = !!latestIntakeId || latestFoundationalInvitation?.status === 'complete'
   const latestCfws = cfwsRecords?.[0] || null
   const checkinToken = client.checkin_token as string | undefined
@@ -584,10 +586,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       )}
 
       {/* Updates · Supplementary intake.
-          5-question follow-up (medications + dietary context) added
-          2026-05-12. Three states: not sent yet (CTA to add it to the
-          portal), pending (sitting in their portal — coach can email or
-          copy the link), complete (with completion timestamp).  */}
+          9-question follow-up (medications + 8 dietary/consumption fields).
+          Three states: not sent yet (CTA to add it to the portal), pending
+          (sitting in their portal — coach can email or copy the link),
+          complete (with completion timestamp). For coach-driven edits of the
+          dietary fields, the Dietary & Consumption editor below is the faster
+          path; this client-driven flow also auto-regenerates the CFFS.  */}
       {latestFoundationalInvitation?.status === 'complete' && (
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
           <div className="flex items-center justify-between">
@@ -614,7 +618,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   )}
                 </div>
               ) : (
-                <p className="text-xs text-[#999999]">Not sent yet — adds a 5-question follow-up card to the client's portal.</p>
+                <p className="text-xs text-[#999999]">Not sent yet — adds a 9-question follow-up card (meds + dietary/consumption) to the client's portal.</p>
               )}
               {latestSupplementaryInvitation?.status === 'complete' && (
                 <p className="text-[11px] text-[#999999] mt-1">Need to update meds or dietary context again? Send a fresh one.</p>
@@ -673,6 +677,31 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           readingPublishedAt={client.medications_reading_published_at ?? null}
         />
       </MajorSection>
+
+      {latestIntakeId && (
+        <MajorSection
+          id="dietary-consumption"
+          title="Dietary & Consumption"
+          defaultOpen={false}
+        >
+          <DietaryConsumptionEditor
+            clientId={client.id}
+            initialValues={{
+              dietary_restrictions: latestIntake?.dietary_restrictions ?? '',
+              dietary_preferences: latestIntake?.dietary_preferences ?? '',
+              typical_day_eating: latestIntake?.typical_day_eating ?? '',
+              meals_per_day: latestIntake?.meals_per_day ?? '',
+              fluid_intake: latestIntake?.fluid_intake ?? '',
+              caffeine_intake: latestIntake?.caffeine_intake ?? '',
+              alcohol_intake: latestIntake?.alcohol_intake ?? '',
+              eating_context: latestIntake?.eating_context ?? '',
+            }}
+            updatedAt={latestIntake?.dietary_updated_at ?? null}
+            activeProgramGeneratedAt={activeProgram?.generated_at ?? null}
+            activeNutritionGeneratedAt={activeNutritionPlan?.generated_at ?? null}
+          />
+        </MajorSection>
+      )}
 
       <MajorSection
         id="bloods"

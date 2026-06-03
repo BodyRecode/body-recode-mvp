@@ -23,7 +23,12 @@ ALTER TABLE intakes
   ADD COLUMN IF NOT EXISTS meals_per_day   TEXT,
   ADD COLUMN IF NOT EXISTS fluid_intake    TEXT,
   ADD COLUMN IF NOT EXISTS caffeine_intake TEXT,
-  ADD COLUMN IF NOT EXISTS alcohol_intake  TEXT;
+  ADD COLUMN IF NOT EXISTS alcohol_intake  TEXT,
+  -- Stamped whenever a coach edits any Section D dietary/consumption field via
+  -- the client-profile editor, so the nutrition/program prescription can show a
+  -- staleness banner (mirrors clients.medications_updated_at). Null until the
+  -- first coach edit; the original intake submission does not set it.
+  ADD COLUMN IF NOT EXISTS dietary_updated_at TIMESTAMPTZ;
 
 COMMENT ON COLUMN intakes.meals_per_day IS
   'How many times the client eats on a typical day (main meals + snacks). Free text. Required at intake. Read by nutrition + CFFS prompts; feeds appetite-suppression meal-count rules with a real frequency baseline.';
@@ -36,3 +41,6 @@ COMMENT ON COLUMN intakes.caffeine_intake IS
 
 COMMENT ON COLUMN intakes.alcohol_intake IS
   'Typical alcohol intake: what, how many standard drinks, days per week. "None" stored verbatim. Free text. Required at intake. Read by nutrition + CFFS prompts (caloric load, sleep and recovery impact).';
+
+COMMENT ON COLUMN intakes.dietary_updated_at IS
+  'Timestamp of the last coach edit to any Section D dietary/consumption field via the client-profile Dietary & Consumption editor. Drives the prescription-staleness banner. Null until first coach edit; original intake submission does not set it.';
