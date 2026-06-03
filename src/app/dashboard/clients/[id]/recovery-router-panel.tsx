@@ -178,7 +178,7 @@ export function RecoveryRouterPanel({
           <p className="text-[11px] text-[#6B6B6B] mt-1" style={{ fontFamily: MONO_FONT }}>
             entered {new Date(snapshot.activeState.entered_at).toLocaleString('en-AU', { dateStyle: 'medium' })} · lock-in {snapshot.activeState.min_duration_days}d · max {snapshot.activeState.max_duration_days}d
           </p>
-          <p className="text-[12px] text-[#d6d3d1] mt-2">{snapshot.activeState.entry_rationale}</p>
+          <p className="text-[12px] text-[#1A1A1A] mt-2">{snapshot.activeState.entry_rationale}</p>
         </div>
       )}
 
@@ -224,7 +224,7 @@ export function RecoveryRouterPanel({
                     <span className="text-[#999999]">
                       {new Date(e.documented_at).toLocaleString('en-AU', { dateStyle: 'short', timeStyle: 'short' })}
                     </span>
-                    <span className="text-[#d6d3d1]">{actionLabel(action)}</span>
+                    <span className="text-[#1A1A1A]">{actionLabel(action)}</span>
                     {pid && pid !== 'null' && <span className="text-[#6B6B6B]">→ {pid}</span>}
                     {e.observe_only && <span className="text-[#6B6B6B]">(shadow)</span>}
                   </div>

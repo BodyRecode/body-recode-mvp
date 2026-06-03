@@ -197,7 +197,7 @@ export default async function RecoveryRegulationPage() {
                 <div className="grid md:grid-cols-2 gap-4 text-[12px]" style={{ fontFamily: MONO_FONT }}>
                   <div>
                     <div className="text-[10px] uppercase tracking-wider text-[#999999] mb-2">Training constraints</div>
-                    <dl className="space-y-1 text-[#d6d3d1]">
+                    <dl className="space-y-1 text-[#1A1A1A]">
                       <ConstraintRow label="Load reduction" value={p.trainingConstraints.loadReductionPct ? `${fmtRange(p.trainingConstraints.loadReductionPct)}%` : '—'} />
                       <ConstraintRow label="Density rest +" value={p.trainingConstraints.densityRestIncreasePct ? `${fmtRange(p.trainingConstraints.densityRestIncreasePct)}%` : '—'} />
                       <ConstraintRow label="Sessions/wk cap" value={p.trainingConstraints.sessionsPerWeekCap ?? '—'} />
@@ -212,7 +212,7 @@ export default async function RecoveryRegulationPage() {
                   </div>
                   <div>
                     <div className="text-[10px] uppercase tracking-wider text-[#999999] mb-2">Exit criteria</div>
-                    <ul className="space-y-1 text-[#d6d3d1]">
+                    <ul className="space-y-1 text-[#1A1A1A]">
                       {p.exitCriteria.stableRecoveryDaysMin && (
                         <li>Stable recovery markers ≥ {p.exitCriteria.stableRecoveryDaysMin} days</li>
                       )}
@@ -230,7 +230,7 @@ export default async function RecoveryRegulationPage() {
                       ))}
                     </ul>
                     <div className="text-[10px] uppercase tracking-wider text-[#999999] mt-4 mb-2">Escalation</div>
-                    <ul className="space-y-1 text-[#d6d3d1]">
+                    <ul className="space-y-1 text-[#1A1A1A]">
                       <li>T1 review at {p.escalation.tier1ReviewDays} days</li>
                       <li>T2 → {p.escalation.tier2EscalateTo.replace(/_/g, ' ')} at {p.escalation.tier2EscalateDays} days</li>
                       <li>T3 cycling within {p.escalation.tier3CyclesWithinDays} days → system review</li>
@@ -246,13 +246,13 @@ export default async function RecoveryRegulationPage() {
                     <div className="grid md:grid-cols-2 gap-4 mt-3 text-[12px]" style={{ fontFamily: MONO_FONT }}>
                       <div>
                         <div className="text-[10px] uppercase tracking-wider text-[#999999] mb-2">Prohibited</div>
-                        <ul className="space-y-1 text-[#d6d3d1] list-disc list-inside">
+                        <ul className="space-y-1 text-[#1A1A1A] list-disc list-inside">
                           {p.prohibitions.map((x, i) => <li key={i}>{x}</li>)}
                         </ul>
                       </div>
                       <div>
                         <div className="text-[10px] uppercase tracking-wider text-[#999999] mb-2">Common failures</div>
-                        <ul className="space-y-1 text-[#d6d3d1] list-disc list-inside">
+                        <ul className="space-y-1 text-[#1A1A1A] list-disc list-inside">
                           {p.commonFailures.map((x, i) => <li key={i}>{x}</li>)}
                         </ul>
                       </div>
@@ -287,7 +287,7 @@ export default async function RecoveryRegulationPage() {
               <div className="border-t border-[#E5E5E5] divide-y divide-[#E5E5E5]">
                 {files.map(f => (
                   <details key={f.filename} className="px-4 py-2.5">
-                    <summary className="cursor-pointer text-[13px] text-[#d6d3d1] hover:text-[#1A1A1A]">
+                    <summary className="cursor-pointer text-[13px] text-[#1A1A1A] hover:text-[#1A1A1A]">
                       {f.title}
                     </summary>
                     <pre className="mt-3 text-[12px] text-[#6B6B6B] whitespace-pre-wrap leading-relaxed font-sans max-h-[60vh] overflow-y-auto">
@@ -309,7 +309,7 @@ export default async function RecoveryRegulationPage() {
               <div className="border-t border-[#E5E5E5] divide-y divide-[#E5E5E5]">
                 {files.map(f => (
                   <details key={f.filename} className="px-4 py-2.5">
-                    <summary className="cursor-pointer text-[13px] text-[#d6d3d1] hover:text-[#1A1A1A]">
+                    <summary className="cursor-pointer text-[13px] text-[#1A1A1A] hover:text-[#1A1A1A]">
                       {f.title}
                     </summary>
                     <pre className="mt-3 text-[12px] text-[#6B6B6B] whitespace-pre-wrap leading-relaxed font-sans max-h-[60vh] overflow-y-auto">
@@ -352,7 +352,7 @@ function ConstraintRow({ label, value, highlight }: { label: string; value: stri
   return (
     <div className="flex justify-between gap-3">
       <dt className="text-[#6B6B6B]">{label}</dt>
-      <dd className={highlight ? 'text-[#B7791F] font-semibold' : 'text-[#d6d3d1]'}>{value}</dd>
+      <dd className={highlight ? 'text-[#B7791F] font-semibold' : 'text-[#1A1A1A]'}>{value}</dd>
     </div>
   )
 }
