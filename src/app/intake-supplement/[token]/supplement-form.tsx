@@ -29,8 +29,8 @@ const QUESTIONS: Array<{
 }> = [
   {
     id: 'medications',
-    label: 'List any medications you take regularly. Include prescribed medications (hormonal support like TRT or GLP-1, cardiovascular medications, antidepressants, ADHD medications, contraceptives, etc.) and any chronic over-the-counter use (daily anti-inflammatories, painkillers). Include dose where known.',
-    hint: 'Write "None" if you take no medications.',
+    label: 'List anything you are currently taking that may affect your hormones, recovery, training response, or body composition. Include prescribed medications (hormonal support like TRT, HRT, or GLP-1; cardiovascular, antidepressants, ADHD medications, contraceptives, beta-blockers, corticosteroids), chronic over-the-counter use (daily anti-inflammatories, painkillers, antihistamines), performance and recovery peptides, SARMs, anabolic compounds, or any hormone-modulating compound, and hormone-affecting supplements at therapeutic dose (DIM, ashwagandha cycles, melatonin, etc.). Include dose, frequency, and how long you have been on each where known.',
+    hint: 'Asked in confidence and without judgement. Disclosure produces a better read, missing context produces a worse one. Write "None" if none apply.',
     required: true,
   },
   {

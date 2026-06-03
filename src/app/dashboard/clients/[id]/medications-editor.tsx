@@ -120,7 +120,7 @@ export default function MedicationsEditor({
           <textarea
             value={value}
             onChange={e => setValue(e.target.value)}
-            placeholder="e.g. TRT 150mg test cypionate / week, year 2. Metoprolol 25mg / day for BP, year 1. No NSAIDs. No other meds."
+            placeholder="e.g. TRT 150mg test cypionate / week, year 2. CJC-1295 + ipamorelin 100mcg ED, 8 weeks on / 4 off. Metoprolol 25mg / day for BP, year 1. No NSAIDs. No other meds."
             className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-3 text-[#1A1A1A] text-sm leading-relaxed focus:outline-none focus:border-[#D4D4D4] placeholder-[#4A4A4A] min-h-[120px]"
           />
           {error && <p className="text-xs text-red-700">{error}</p>}

@@ -149,10 +149,13 @@ Occupation: ${intake.occupation || 'Not provided'}`)
 
   // Medications - critical context for pattern interpretation. Beta-blockers
   // blunt HR signals, SSRIs flatten affect, stimulants elevate baseline HR,
-  // contraceptives/HRT can dominate cycle interpretation, etc. The CFFS must
-  // factor this in before classifying patterns.
+  // contraceptives/HRT can dominate cycle interpretation, etc. The field now
+  // also captures performance and recovery compounds (peptides, SARMs,
+  // anabolics, hormone modulators) which materially shift body composition,
+  // recovery capacity, and androgenic signal interpretation. The CFFS must
+  // factor all of this in before classifying patterns.
   if (medications && medications.trim()) {
-    parts.push(`\nMEDICATIONS (interpretation context — may confound HR, mood, sleep, and cycle signals):\n${medications.trim()}`)
+    parts.push(`\nMEDICATIONS AND PERFORMANCE COMPOUNDS (interpretation context that may confound HR, mood, sleep, cycle signals, body composition, and recovery scoring):\n${medications.trim()}\n\nReading rules: (1) when this field includes performance or recovery compounds (peptides, SARMs, anabolic compounds, exogenous androgens, growth-axis compounds), do not read body composition gains or recovery capacity as a clean training-stimulus signal. Interpret with the compound context. (2) Never moralise, never recommend cessation, never frame the disclosure as risk. The disclosure exists so the read is accurate. (3) Read silently against the context; do not name specific compound classes back to the client in any narrative field that propagates to client-facing readings.`)
   }
 
   // Scale sections
