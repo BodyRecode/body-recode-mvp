@@ -78,6 +78,10 @@ export async function POST(request: NextRequest) {
     dietary_restrictions: (formData.dietary_restrictions as string) || '',
     dietary_preferences: (formData.dietary_preferences as string) || '',
     typical_day_eating: (formData.typical_day_eating as string) || '',
+    meals_per_day: (formData.meals_per_day as string) || '',
+    fluid_intake: (formData.fluid_intake as string) || '',
+    caffeine_intake: (formData.caffeine_intake as string) || '',
+    alcohol_intake: (formData.alcohol_intake as string) || '',
     eating_context: (formData.eating_context as string) || '',
     // Goals
     primary_goal: (formData.goal_primary as string) || '',

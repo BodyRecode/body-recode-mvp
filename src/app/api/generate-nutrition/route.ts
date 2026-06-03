@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     admin.from('clients').select('id, name, medications').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
-      .select('id, date_of_birth, gender, primary_goal, training_days_available, injury_location_current, injury_primary_concern, nutrition_responses, sleep_responses, stress_responses, training_responses, dietary_restrictions, dietary_preferences, typical_day_eating, eating_context')
+      .select('id, date_of_birth, gender, primary_goal, training_days_available, injury_location_current, injury_primary_concern, nutrition_responses, sleep_responses, stress_responses, training_responses, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context')
       .eq('client_id', client_id)
       .order('submitted_at', { ascending: false })
       .limit(1)
@@ -142,6 +142,10 @@ export async function POST(request: NextRequest) {
     if (intake.dietary_restrictions) intakeLines.push(`\nDIETARY RESTRICTIONS (allergies, intolerances, medical — HARD CONSTRAINT, never violate):\n${intake.dietary_restrictions}`)
     if (intake.dietary_preferences) intakeLines.push(`\nDIETARY PREFERENCES (personal, cultural, religious, framework — HARD CONSTRAINT):\n${intake.dietary_preferences}`)
     if (intake.typical_day_eating) intakeLines.push(`\nTYPICAL DAY'S EATING (baseline to design FROM):\n${intake.typical_day_eating}`)
+    if (intake.meals_per_day) intakeLines.push(`\nMEALS PER DAY (current eating frequency baseline; see appetite-suppression meal-count rules):\n${intake.meals_per_day}`)
+    if (intake.fluid_intake) intakeLines.push(`\nDAILY FLUIDS (water and other drinks; factor sugary/caloric drinks into the energy picture):\n${intake.fluid_intake}`)
+    if (intake.caffeine_intake) intakeLines.push(`\nDAILY CAFFEINE (timing matters for sleep, appetite and stimulant interactions):\n${intake.caffeine_intake}`)
+    if (intake.alcohol_intake) intakeLines.push(`\nALCOHOL INTAKE (caloric load, sleep and recovery impact; design realistically around it, do not moralise):\n${intake.alcohol_intake}`)
     if (intake.eating_context) intakeLines.push(`\nEATING ENVIRONMENT (shapes adherence design):\n${intake.eating_context}`)
   } else {
     intakeLines.push(`Foundational intake: not yet submitted (using baseline data only).`)

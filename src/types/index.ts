@@ -101,6 +101,10 @@ export interface Intake {
   dietary_restrictions: string
   dietary_preferences: string
   typical_day_eating: string
+  meals_per_day: string
+  fluid_intake: string
+  caffeine_intake: string
+  alcohol_intake: string
   eating_context: string
   // Goals
   primary_goal: string

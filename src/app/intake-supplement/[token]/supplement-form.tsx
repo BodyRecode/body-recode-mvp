@@ -8,6 +8,10 @@ interface Initial {
   dietary_restrictions: string
   dietary_preferences: string
   typical_day_eating: string
+  meals_per_day: string
+  fluid_intake: string
+  caffeine_intake: string
+  alcohol_intake: string
   eating_context: string
 }
 
@@ -44,7 +48,31 @@ const QUESTIONS: Array<{
   {
     id: 'typical_day_eating',
     label: 'Walk us through what you typically eat on an average day. Include breakfast, lunch, dinner, and any snacks.',
-    hint: 'Be honest — this is what we design from, not what you think we want to hear. If your days vary a lot, describe a common pattern and a common variant.',
+    hint: 'Be honest, this is what we design from, not what you think we want to hear. If your days vary a lot, describe a common pattern and a common variant.',
+    required: true,
+  },
+  {
+    id: 'meals_per_day',
+    label: 'On a typical day, how many times do you eat? Count main meals and snacks separately.',
+    hint: 'E.g. "3 meals plus 2 snacks". If it varies, give your most common number.',
+    required: true,
+  },
+  {
+    id: 'fluid_intake',
+    label: 'What do you drink across a typical day, and roughly how much?',
+    hint: 'Include water, tea, soft drink, juice, cordial, milk, and so on. A rough estimate is fine (e.g. "2 litres of water, 1 can of soft drink").',
+    required: true,
+  },
+  {
+    id: 'caffeine_intake',
+    label: 'What is your daily caffeine intake?',
+    hint: 'Include coffee, tea, energy drinks, and pre-workout. Give the number of serves and roughly when you have them (e.g. "2 coffees, both before midday"). Write "None" if you have no caffeine.',
+    required: true,
+  },
+  {
+    id: 'alcohol_intake',
+    label: 'What is your typical alcohol intake?',
+    hint: 'Include what you drink, how many standard drinks, and how many days per week (e.g. "2 glasses of wine, 3 nights a week"). Write "None" if you do not drink.',
     required: true,
   },
   {

@@ -10,7 +10,11 @@ import SupplementForm from './supplement-form'
  *   2. dietary_restrictions     (per-intake  -> intakes.dietary_restrictions)
  *   3. dietary_preferences      (per-intake  -> intakes.dietary_preferences)
  *   4. typical_day_eating       (per-intake  -> intakes.typical_day_eating)
- *   5. eating_context           (per-intake  -> intakes.eating_context, optional)
+ *   5. meals_per_day            (per-intake  -> intakes.meals_per_day)
+ *   6. fluid_intake             (per-intake  -> intakes.fluid_intake)
+ *   7. caffeine_intake          (per-intake  -> intakes.caffeine_intake)
+ *   8. alcohol_intake           (per-intake  -> intakes.alcohol_intake)
+ *   9. eating_context           (per-intake  -> intakes.eating_context, optional)
  *
  * The form is single-page (no multi-section wizard). Token must be on a
  * supplementary invitation, status pending. Pre-fills from the existing
@@ -63,7 +67,7 @@ export default async function SupplementaryIntakePage({
 
   const { data: latestIntake } = await admin
     .from('intakes')
-    .select('id, dietary_restrictions, dietary_preferences, typical_day_eating, eating_context')
+    .select('id, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context')
     .eq('client_id', invitation.client_id)
     .order('submitted_at', { ascending: false })
     .limit(1)
@@ -78,6 +82,10 @@ export default async function SupplementaryIntakePage({
         dietary_restrictions: latestIntake?.dietary_restrictions ?? '',
         dietary_preferences: latestIntake?.dietary_preferences ?? '',
         typical_day_eating: latestIntake?.typical_day_eating ?? '',
+        meals_per_day: latestIntake?.meals_per_day ?? '',
+        fluid_intake: latestIntake?.fluid_intake ?? '',
+        caffeine_intake: latestIntake?.caffeine_intake ?? '',
+        alcohol_intake: latestIntake?.alcohol_intake ?? '',
         eating_context: latestIntake?.eating_context ?? '',
       }}
     />

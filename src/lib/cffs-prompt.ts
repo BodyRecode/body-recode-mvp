@@ -181,6 +181,10 @@ Aggravating movements: ${intake.injury_aggravating_movements || 'None declared'}
   if (intake.dietary_restrictions) dietaryLines.push(`Restrictions (allergies, intolerances, medical): ${intake.dietary_restrictions}`)
   if (intake.dietary_preferences) dietaryLines.push(`Preferences / framework: ${intake.dietary_preferences}`)
   if (intake.typical_day_eating) dietaryLines.push(`Typical day's eating: ${intake.typical_day_eating}`)
+  if (intake.meals_per_day) dietaryLines.push(`Meals/snacks per day: ${intake.meals_per_day}`)
+  if (intake.fluid_intake) dietaryLines.push(`Daily fluids: ${intake.fluid_intake}`)
+  if (intake.caffeine_intake) dietaryLines.push(`Daily caffeine: ${intake.caffeine_intake}`)
+  if (intake.alcohol_intake) dietaryLines.push(`Alcohol intake: ${intake.alcohol_intake}`)
   if (intake.eating_context) dietaryLines.push(`Eating environment: ${intake.eating_context}`)
   if (dietaryLines.length > 0) {
     parts.push(`\nDIETARY CONTEXT (free-text from Section D - interpret patterns in light of this, do not flag a framework as a pattern abnormality):\n${dietaryLines.join('\n')}`)
