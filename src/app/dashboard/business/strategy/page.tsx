@@ -2492,7 +2492,7 @@ export default function StrategyPage() {
               <div>
                 <Heading>Current Bio</Heading>
                 <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 text-sm text-stone-700 leading-relaxed whitespace-pre-line font-mono">
-                  {`Performance coaching for people whose bodies stopped responding.\nBody state interpretation. Training. Nutrition.\n↓ Find out which state you're in (2 min)`}
+                  {`Trained 5 days a week. Ate clean. Body still won't shift?\nYou're Depleted, Transitioning, or Ready.\nFree 2-min Scorecard to find out.`}
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 text-xs">
