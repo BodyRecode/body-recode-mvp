@@ -686,6 +686,11 @@ export async function GET(request: NextRequest) {
     }
     const T = THEMES[searchParams.get('theme') ?? 'paper'] ?? THEMES.paper
 
+    // Carousel affordances: ?num= renders a big serif slide number; ?cue=swipe
+    // adds a swipe indicator (slide 1); ?cue=end marks the final slide.
+    const num = searchParams.get('num')
+    const cue = searchParams.get('cue')
+
     function serifSize(len: number) {
       if (isStory) {
         if (len <= 40) return '108px'
@@ -711,13 +716,18 @@ export async function GET(request: NextRequest) {
       (
         <div style={{ width: `${W}px`, height: `${H}px`, background: T.bg, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: isStory ? '130px 110px' : '110px 100px', fontFamily: 'sans-serif', position: 'relative' }}>
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+            {/* Big serif slide number (carousel interior slides) */}
+            {num && (
+              <div style={{ fontSize: isStory ? '160px' : '128px', fontWeight: 600, color: T.accent, lineHeight: 0.9, letterSpacing: '-0.02em', marginBottom: '24px', fontFamily: '"Source Serif 4", Georgia, serif' }}>{num}</div>
+            )}
+
             {/* Eyebrow — pillar accent, the thread back to the ecosystem */}
             {label && (
               <div style={{ fontSize: '28px', fontWeight: 700, color: T.accent, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '22px', fontFamily: 'sans-serif' }}>{label}</div>
             )}
 
-            {/* Short rule */}
-            <div style={{ width: '52px', height: '3px', background: T.accent, marginBottom: '40px' }} />
+            {/* Short rule — hidden on numbered slides (the number leads) */}
+            {!num && <div style={{ width: '52px', height: '3px', background: T.accent, marginBottom: '40px' }} />}
 
             {/* Serif headline */}
             <div style={{ fontSize: serifSize(displayText.length), fontWeight: 600, color: T.ink, lineHeight: 1.22, letterSpacing: '-0.01em', maxWidth: '900px', fontFamily: '"Source Serif 4", Georgia, serif' }}>
@@ -730,10 +740,15 @@ export async function GET(request: NextRequest) {
             )}
           </div>
 
-          {/* Handle footer */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ width: '36px', height: '2px', background: T.rule }} />
-            <div style={{ fontSize: '27px', fontWeight: 500, color: T.muted, letterSpacing: '0.06em', fontFamily: 'sans-serif' }}>@kade_dunstone_</div>
+          {/* Footer: handle + optional swipe/end cue */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ width: '36px', height: '2px', background: T.rule }} />
+              <div style={{ fontSize: '27px', fontWeight: 500, color: T.muted, letterSpacing: '0.06em', fontFamily: 'sans-serif' }}>@kade_dunstone_</div>
+            </div>
+            {cue === 'swipe' && (
+              <div style={{ fontSize: '24px', fontWeight: 700, color: T.accent, letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'sans-serif' }}>Swipe →</div>
+            )}
           </div>
         </div>
       ),
