@@ -683,6 +683,13 @@ export async function GET(request: NextRequest) {
       clay:   { bg: '#F3E9E1', ink: '#2A1E16', accent: '#B5552F', muted: '#74655B', rule: '#DECBBC' }, // identity / rebuild
       indigo: { bg: '#ECEAF6', ink: '#1E1A33', accent: '#6C4DD6', muted: '#62597E', rule: '#D2CCE8' }, // AI & leverage
       dark:   { bg: '#161616', ink: '#F2EFEA', accent: '#6FA0FF', muted: '#A8A29A', rule: '#3A3A3A' }, // statement / impact
+      // Solid pillar fills — saturated version of each pillar's own colour, for
+      // carousel CLOSE slides (so the set builds to its hue, not a generic black).
+      'paper-solid':  { bg: '#1B6DFC', ink: '#FFFFFF', accent: '#FFFFFF', muted: 'rgba(255,255,255,0.78)', rule: 'rgba(255,255,255,0.42)' },
+      'ink-solid':    { bg: '#1B6DFC', ink: '#FFFFFF', accent: '#FFFFFF', muted: 'rgba(255,255,255,0.78)', rule: 'rgba(255,255,255,0.42)' },
+      'sage-solid':   { bg: '#3E6B43', ink: '#F4F8F2', accent: '#FFFFFF', muted: 'rgba(255,255,255,0.78)', rule: 'rgba(255,255,255,0.42)' },
+      'clay-solid':   { bg: '#B5552F', ink: '#FCF5EF', accent: '#FFFFFF', muted: 'rgba(255,255,255,0.80)', rule: 'rgba(255,255,255,0.44)' },
+      'indigo-solid': { bg: '#5B3FC4', ink: '#F4F1FD', accent: '#FFFFFF', muted: 'rgba(255,255,255,0.80)', rule: 'rgba(255,255,255,0.42)' },
     }
     const T = THEMES[searchParams.get('theme') ?? 'paper'] ?? THEMES.paper
 
