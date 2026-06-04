@@ -21,10 +21,10 @@ insert into calendar_posts (date, time, brand, platform, type, phase, title, not
  $g$/api/content/graphic?style=personal-photo&layout=overlay&theme=clay&photo=8&label=ARRIVAL&text=I%27ve+spent+20+years+helping+people+understand+their+body.+Most+of+the+work+was+never+in+the+gym.$g$),
 
 ('2026-06-10', '18:00', 'personal_brand', 'instagram', 'coach', 'scale',
- $t$At 19, a doctor ended the only future I'd planned.$t$,
- $n$Identity · STORY (photo) · military discharge at 19 — vulnerable scene.$n$,
+ $t$At 21, a doctor ended the only future I'd planned.$t$,
+ $n$Identity · STORY (photo) · military discharge at 21 — vulnerable scene.$n$,
  null,
- $g$/api/content/graphic?style=personal-photo&layout=overlay&theme=clay&photo=2&label=REBUILD&text=At+19%2C+a+doctor+ended+the+only+future+I%27d+planned.$g$),
+ $g$/api/content/graphic?style=personal-photo&layout=overlay&theme=clay&photo=2&label=REBUILD&text=At+21%2C+a+doctor+ended+the+only+future+I%27d+planned.$g$),
 
 ('2026-06-12', '07:00', 'personal_brand', 'instagram', 'contrarian', 'scale',
  $t$You can't out-train a nervous system in protection mode.$t$,

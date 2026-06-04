@@ -62,7 +62,7 @@ function kitPreview(params: string) {
 const KIT_PLAN: { week: string; range: string; posts: { date: string; pillar: KitPillar; eyebrow: string; format: KitFormat; treatment: string; hook: string }[] }[] = [
   { week: 'Week 1', range: 'Jun 8-14 · Lead with the human', posts: [
     { date: 'Mon 8',  pillar: 'Launch',   eyebrow: 'ARRIVAL', format: 'Photo',    treatment: 'Overlay · kade-8', hook: "I've spent 20 years helping people understand their body. Most of the work was never in the gym." },
-    { date: 'Wed 10', pillar: 'Identity', eyebrow: 'REBUILD', format: 'Photo',    treatment: 'Overlay · kade-2', hook: "At 19, a doctor ended the only future I'd planned." },
+    { date: 'Wed 10', pillar: 'Identity', eyebrow: 'REBUILD', format: 'Photo',    treatment: 'Overlay · kade-2', hook: "At 21, a doctor ended the only future I'd planned." },
     { date: 'Fri 12', pillar: 'Body',     eyebrow: 'BODY',    format: 'Card',     treatment: 'Clay card',        hook: "You can't out-train a nervous system in protection mode." },
     { date: 'Sun 14', pillar: 'Identity', eyebrow: 'REBUILD', format: 'Story',    treatment: 'Clay card · story', hook: "Three times I've had to become someone new from scratch." },
   ]},
@@ -488,7 +488,7 @@ function ScriptsTab() {
     },
     {
       id: 'p1d', type: 'Story', pillar: 'Body', pillarColor: 'teal', platform: 'Instagram',
-      hook: 'I was medically discharged from the military at 19.',
+      hook: 'I was medically discharged from the military at 21.',
       body: "Structural issues in both legs. Years of building toward soldier - gone in a single assessment. That forced me to understand the body in a way no training qualification ever taught me. The setback became the foundation.",
     },
     {
@@ -558,7 +558,7 @@ function ScriptsTab() {
     {
       id: 'p4a', type: 'Story', pillar: 'Identity', pillarColor: 'orange', platform: 'Instagram',
       hook: "I've rebuilt my identity three times. Each time I thought I was losing. Each time I was building.",
-      body: "Military discharge at 19. Fitness industry exit at 30. End of a 20-year relationship. Each one felt like failure. Each one produced the framework I now teach.",
+      body: "Military discharge at 21. Fitness industry exit at 30. End of a 20-year relationship. Each one felt like failure. Each one produced the framework I now teach.",
     },
     {
       id: 'p4b', type: 'Contrarian', pillar: 'Identity', pillarColor: 'orange', platform: 'Instagram',
@@ -601,7 +601,7 @@ function ScriptsTab() {
     {
       id: 'v4', type: 'Video - 60s', pillar: 'Identity', pillarColor: 'orange', platform: 'Instagram Reel',
       hook: "I've rebuilt my identity three times. Each one produced a framework.",
-      copy: "At 19 I was medically discharged from the military.\n\nI had built my entire identity around becoming a soldier. It was gone overnight.\n\nThat forced me to understand the body differently. The setback became the system.\n\nAt 30 I walked away from the commercial fitness industry.\n\nScale without systems creates noise. I learned that by being inside it.\n\nAnd then I walked away from a 20-year relationship.\n\nAnd had to rebuild self-trust from nothing.\n\nThat's when I understood - people don't lose performance. They lose clarity.\n\nEvery rebuild produced a framework.\n\nBody Recode is all three of them combined.",
+      copy: "At 21 I was medically discharged from the military.\n\nI had built my entire identity around becoming a soldier. It was gone overnight.\n\nThat forced me to understand the body differently. The setback became the system.\n\nAt 30 I walked away from the commercial fitness industry.\n\nScale without systems creates noise. I learned that by being inside it.\n\nAnd then I walked away from a 20-year relationship.\n\nAnd had to rebuild self-trust from nothing.\n\nThat's when I understood - people don't lose performance. They lose clarity.\n\nEvery rebuild produced a framework.\n\nBody Recode is all three of them combined.",
     },
   ]
 
