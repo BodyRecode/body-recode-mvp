@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
 
   const accentColor = accent === 'red' ? '#DC2626' : accent === 'amber' ? '#B7791F' : '#1B6DFC'
 
-  const isPhotoStyle = style === 'photo-split' || style === 'photo-quote' || style === 'photo-right' || style === 'photo-top' || style === 'photo-overlay'
+  const isPhotoStyle = style === 'photo-split' || style === 'photo-quote' || style === 'photo-right' || style === 'photo-top' || style === 'photo-overlay' || style === 'personal-photo'
   const photoIndex = parseInt(searchParams.get('photo') ?? '0', 10)
   const photoSrc = isPhotoStyle ? await getPhotoData(request, photoIndex) : ''
 
@@ -671,10 +671,20 @@ export async function GET(request: NextRequest) {
     const isStory = format === 'story'
     const W = 1080
     const H = isStory ? 1920 : 1080
-    const PAPER = '#FAF8F4'
-    const INK = '#1A1A1A'
-    const MUTED = '#6B6B6B'
-    const RULE = '#D8D2C8'
+
+    // Pillar-keyed editorial palettes — muted, magazine-like, never loud.
+    // Each carries a paper tone + ink + accent so the feed has colour rhythm
+    // instead of one flat beige. ?theme= (default 'paper'); accent ties pillars
+    // to the ecosystem (Signal Blue on launch/thinking, distinct hues elsewhere).
+    const THEMES: Record<string, { bg: string; ink: string; accent: string; muted: string; rule: string }> = {
+      paper:  { bg: '#FAF8F4', ink: '#1A1A1A', accent: '#1B6DFC', muted: '#6B6B6B', rule: '#D8D2C8' }, // launch / default
+      ink:    { bg: '#ECEFF3', ink: '#16202E', accent: '#1B6DFC', muted: '#566273', rule: '#CDD5DF' }, // thinking
+      sage:   { bg: '#EAEFE8', ink: '#1E2A1E', accent: '#4F7A52', muted: '#5E6B5C', rule: '#CBD6C7' }, // body
+      clay:   { bg: '#F3E9E1', ink: '#2A1E16', accent: '#B5552F', muted: '#74655B', rule: '#DECBBC' }, // identity / rebuild
+      indigo: { bg: '#ECEAF6', ink: '#1E1A33', accent: '#6C4DD6', muted: '#62597E', rule: '#D2CCE8' }, // AI & leverage
+      dark:   { bg: '#161616', ink: '#F2EFEA', accent: '#6FA0FF', muted: '#A8A29A', rule: '#3A3A3A' }, // statement / impact
+    }
+    const T = THEMES[searchParams.get('theme') ?? 'paper'] ?? THEMES.paper
 
     function serifSize(len: number) {
       if (isStory) {
@@ -699,31 +709,90 @@ export async function GET(request: NextRequest) {
 
     return new ImageResponse(
       (
-        <div style={{ width: `${W}px`, height: `${H}px`, background: PAPER, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: isStory ? '130px 110px' : '110px 100px', fontFamily: 'sans-serif', position: 'relative' }}>
+        <div style={{ width: `${W}px`, height: `${H}px`, background: T.bg, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: isStory ? '130px 110px' : '110px 100px', fontFamily: 'sans-serif', position: 'relative' }}>
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
-            {/* Eyebrow — the single Signal Blue thread back to the ecosystem */}
+            {/* Eyebrow — pillar accent, the thread back to the ecosystem */}
             {label && (
-              <div style={{ fontSize: '28px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '22px', fontFamily: 'sans-serif' }}>{label}</div>
+              <div style={{ fontSize: '28px', fontWeight: 700, color: T.accent, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '22px', fontFamily: 'sans-serif' }}>{label}</div>
             )}
 
             {/* Short rule */}
-            <div style={{ width: '52px', height: '3px', background: '#1B6DFC', marginBottom: '40px' }} />
+            <div style={{ width: '52px', height: '3px', background: T.accent, marginBottom: '40px' }} />
 
             {/* Serif headline */}
-            <div style={{ fontSize: serifSize(displayText.length), fontWeight: 600, color: INK, lineHeight: 1.22, letterSpacing: '-0.01em', maxWidth: '900px', fontFamily: '"Source Serif 4", Georgia, serif' }}>
+            <div style={{ fontSize: serifSize(displayText.length), fontWeight: 600, color: T.ink, lineHeight: 1.22, letterSpacing: '-0.01em', maxWidth: '900px', fontFamily: '"Source Serif 4", Georgia, serif' }}>
               {displayText}
             </div>
 
             {/* Optional sub line */}
             {sub && (
-              <div style={{ fontSize: isStory ? '40px' : '34px', color: MUTED, lineHeight: 1.55, fontWeight: 400, maxWidth: '840px', marginTop: '36px', fontFamily: 'sans-serif' }}>{sub}</div>
+              <div style={{ fontSize: isStory ? '40px' : '34px', color: T.muted, lineHeight: 1.55, fontWeight: 400, maxWidth: '840px', marginTop: '36px', fontFamily: 'sans-serif' }}>{sub}</div>
             )}
           </div>
 
           {/* Handle footer */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ width: '36px', height: '2px', background: RULE }} />
-            <div style={{ fontSize: '27px', fontWeight: 500, color: MUTED, letterSpacing: '0.06em', fontFamily: 'sans-serif' }}>@kade_dunstone_</div>
+            <div style={{ width: '36px', height: '2px', background: T.rule }} />
+            <div style={{ fontSize: '27px', fontWeight: 500, color: T.muted, letterSpacing: '0.06em', fontFamily: 'sans-serif' }}>@kade_dunstone_</div>
+          </div>
+        </div>
+      ),
+      { width: W, height: H, fonts: [{ name: 'Source Serif 4', data: serifSemiBold, weight: 600, style: 'normal' }] }
+    )
+  }
+
+  // ── PERSONAL BRAND — PHOTO (@kade_dunstone_) ───────────────────
+  // Light photo-forward editorial card: Kade's portrait fills the top, a warm
+  // paper panel below carries the accent eyebrow + serif headline + wordmark.
+  // Theme-aware (same palettes as `personal`). ?photo=1-8. Square + story.
+  if (style === 'personal-photo') {
+    const isStory = format === 'story'
+    const W = 1080
+    const H = isStory ? 1920 : 1080
+    const photoH = isStory ? 1180 : 600
+    const PANEL_PAD = isStory ? '90px 110px 120px' : '60px 90px 90px'
+
+    const PT: Record<string, { bg: string; ink: string; accent: string; muted: string }> = {
+      paper:  { bg: '#FAF8F4', ink: '#1A1A1A', accent: '#1B6DFC', muted: '#6B6B6B' },
+      ink:    { bg: '#ECEFF3', ink: '#16202E', accent: '#1B6DFC', muted: '#566273' },
+      sage:   { bg: '#EAEFE8', ink: '#1E2A1E', accent: '#4F7A52', muted: '#5E6B5C' },
+      clay:   { bg: '#F3E9E1', ink: '#2A1E16', accent: '#B5552F', muted: '#74655B' },
+      indigo: { bg: '#ECEAF6', ink: '#1E1A33', accent: '#6C4DD6', muted: '#62597E' },
+      dark:   { bg: '#161616', ink: '#F2EFEA', accent: '#6FA0FF', muted: '#A8A29A' },
+    }
+    const P = PT[searchParams.get('theme') ?? 'paper'] ?? PT.paper
+
+    function pSize(len: number) {
+      if (len <= 40) return isStory ? '76px' : '60px'
+      if (len <= 70) return isStory ? '64px' : '50px'
+      if (len <= 100) return isStory ? '56px' : '42px'
+      return isStory ? '48px' : '36px'
+    }
+
+    const serifSemiBold = await fetch(new URL('./fonts/SourceSerif4-SemiBold.ttf', import.meta.url)).then(r => r.arrayBuffer())
+
+    return new ImageResponse(
+      (
+        <div style={{ width: `${W}px`, height: `${H}px`, background: P.bg, display: 'flex', flexDirection: 'column', fontFamily: 'sans-serif' }}>
+          {/* Photo top */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={photoSrc} style={{ width: `${W}px`, height: `${photoH}px`, objectFit: 'cover', objectPosition: 'center top' }} alt="" />
+          {/* Paper panel */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: PANEL_PAD, position: 'relative' }}>
+            {label && (
+              <div style={{ fontSize: '26px', fontWeight: 700, color: P.accent, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '18px' }}>{label}</div>
+            )}
+            <div style={{ width: '52px', height: '3px', background: P.accent, marginBottom: '28px' }} />
+            <div style={{ fontSize: pSize(displayText.length), fontWeight: 600, color: P.ink, lineHeight: 1.2, letterSpacing: '-0.01em', maxWidth: '900px', fontFamily: '"Source Serif 4", Georgia, serif' }}>
+              {displayText}
+            </div>
+            {sub && (
+              <div style={{ fontSize: isStory ? '34px' : '28px', color: P.muted, lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginTop: '24px' }}>{sub}</div>
+            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginTop: '36px' }}>
+              <div style={{ width: '32px', height: '2px', background: P.muted, opacity: 0.5 }} />
+              <div style={{ fontSize: '24px', fontWeight: 500, color: P.muted, letterSpacing: '0.06em' }}>@kade_dunstone_</div>
+            </div>
           </div>
         </div>
       ),
