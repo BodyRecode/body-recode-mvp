@@ -47,7 +47,7 @@ function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 
 
 // ─── Content Kit ──────────────────────────────────────────────────────────────
 
-type KitFormat = 'Card' | 'Photo' | 'Carousel' | 'Reel'
+type KitFormat = 'Card' | 'Photo' | 'Carousel' | 'Reel' | 'Story'
 type KitPillar = 'Launch' | 'Body' | 'Thinking' | 'AI' | 'Identity'
 
 const KIT_PILLAR_COLOR: Record<KitPillar, 'teal' | 'violet' | 'amber' | 'orange' | 'stone'> = {
@@ -94,7 +94,7 @@ const KIT_PLAN: { week: string; range: string; posts: { date: string; pillar: Ki
 
 function ContentKitTab() {
   const formatColor: Record<KitFormat, 'teal' | 'violet' | 'amber' | 'orange' | 'stone'> = {
-    Card: 'stone', Photo: 'teal', Carousel: 'violet', Reel: 'amber',
+    Card: 'stone', Photo: 'teal', Carousel: 'violet', Reel: 'amber', Story: 'orange',
   }
   return (
     <div className="space-y-5">
