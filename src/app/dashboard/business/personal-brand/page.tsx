@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 
-type Tab = 'positioning' | 'story' | 'pillars' | 'scripts' | 'cadence' | 'launch'
+type Tab = 'calendar' | 'positioning' | 'story' | 'pillars' | 'scripts' | 'cadence' | 'launch'
 
 const TABS: { id: Tab; label: string }[] = [
+  { id: 'calendar', label: 'Content Calendar' },
   { id: 'positioning', label: 'Positioning' },
   { id: 'story', label: 'Story Library' },
   { id: 'pillars', label: 'Content Pillars' },
@@ -41,6 +42,185 @@ function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${styles[color]}`}>
       {children}
     </span>
+  )
+}
+
+// ─── Content Calendar ─────────────────────────────────────────────────────────
+
+type PillarKey = 'Launch' | 'Body' | 'Thinking' | 'AI' | 'Identity'
+type Format = 'Quote' | 'Carousel' | 'Reel'
+type Status = 'planned' | 'ready' | 'posted'
+
+interface CalPost {
+  date: string      // ISO date
+  day: string       // Mon / Wed / Fri / Sun
+  pillar: PillarKey
+  type: string      // Arrival, Contrarian, Framework...
+  format: Format
+  eyebrow: string   // the Signal Blue label printed on the card
+  hook: string      // the headline printed on the card
+  sub?: string      // optional sub line
+}
+
+const PILLAR_COLOR: Record<PillarKey, 'teal' | 'violet' | 'amber' | 'orange' | 'stone'> = {
+  Launch: 'stone',
+  Body: 'teal',
+  Thinking: 'violet',
+  AI: 'amber',
+  Identity: 'orange',
+}
+
+// 4-week launch calendar — 4 posts/week (Mon/Wed/Fri/Sun), drawn from the
+// Script Library on this page. Week 1 = launch sequence, then a rolling
+// rotation across the four pillars.
+const CALENDAR: { week: string; range: string; posts: CalPost[] }[] = [
+  {
+    week: 'Week 1', range: 'Jun 8-14 · Launch sequence',
+    posts: [
+      { date: '2026-06-08', day: 'Mon', pillar: 'Launch', type: 'Arrival', format: 'Quote', eyebrow: 'ARRIVAL', hook: "I've spent 20 years helping people understand their body. Most of the work was never in the gym." },
+      { date: '2026-06-10', day: 'Wed', pillar: 'Thinking', type: 'Contrarian', format: 'Quote', eyebrow: 'THINKING', hook: 'The problem is not effort. Effort is everywhere.', sub: 'Nobody reads the situation before prescribing to it. That is true in coaching, and in most areas of life.' },
+      { date: '2026-06-12', day: 'Fri', pillar: 'Identity', type: 'Rebuild', format: 'Quote', eyebrow: 'REBUILD', hook: "I've rebuilt my identity three times. Each time I thought I was starting over. Each time I was going deeper." },
+      { date: '2026-06-14', day: 'Sun', pillar: 'Thinking', type: 'System', format: 'Quote', eyebrow: 'SYSTEMS', hook: 'I stopped writing programs and started building systems.', sub: 'Programs solve yesterday’s problem. Systems solve the pattern underneath it.' },
+    ],
+  },
+  {
+    week: 'Week 2', range: 'Jun 15-21 · Pillar rotation begins',
+    posts: [
+      { date: '2026-06-15', day: 'Mon', pillar: 'Launch', type: 'Connection', format: 'Quote', eyebrow: 'BODY RECODE', hook: 'Body Recode is the result of every rebuild.', sub: 'An interpretive system: read the body before prescribing to it.' },
+      { date: '2026-06-17', day: 'Wed', pillar: 'Body', type: 'Framework', format: 'Carousel', eyebrow: 'BODY', hook: 'Three states. One body. Completely different responses to the same training.' },
+      { date: '2026-06-19', day: 'Fri', pillar: 'AI', type: 'Contrarian', format: 'Quote', eyebrow: 'AI & LEVERAGE', hook: "AI doesn't make you smarter. It makes your current thinking louder." },
+      { date: '2026-06-21', day: 'Sun', pillar: 'Thinking', type: 'Contrarian', format: 'Quote', eyebrow: 'THINKING', hook: "Most people don't have a discipline problem. They have a clarity problem." },
+    ],
+  },
+  {
+    week: 'Week 3', range: 'Jun 22-28 · Story + depth',
+    posts: [
+      { date: '2026-06-22', day: 'Mon', pillar: 'Identity', type: 'Story / Reel', format: 'Reel', eyebrow: 'REBUILD', hook: "I've rebuilt my identity three times. Each one produced a framework." },
+      { date: '2026-06-24', day: 'Wed', pillar: 'Body', type: 'Observation', format: 'Quote', eyebrow: 'BODY', hook: "You can't out-train a nervous system in protection mode." },
+      { date: '2026-06-26', day: 'Fri', pillar: 'AI', type: 'Story', format: 'Quote', eyebrow: 'AI & LEVERAGE', hook: 'Most coaches rent software. I built mine.', sub: 'A full coaching and CRM platform, built with AI as a co-founder.' },
+      { date: '2026-06-28', day: 'Sun', pillar: 'Thinking', type: 'Observation', format: 'Quote', eyebrow: 'THINKING', hook: 'Clarity is upstream of everything.' },
+    ],
+  },
+  {
+    week: 'Week 4', range: 'Jun 29 - Jul 5 · Reinforce the positions',
+    posts: [
+      { date: '2026-06-29', day: 'Mon', pillar: 'Identity', type: 'Contrarian', format: 'Quote', eyebrow: 'REBUILD', hook: 'Rebuilding is not failure. It is the process of building better structure.' },
+      { date: '2026-07-01', day: 'Wed', pillar: 'Body', type: 'Contrarian', format: 'Quote', eyebrow: 'BODY', hook: 'The body is not broken. It is being misread.' },
+      { date: '2026-07-03', day: 'Fri', pillar: 'AI', type: 'Contrarian', format: 'Quote', eyebrow: 'AI & LEVERAGE', hook: "You don't need to know how to code. You need to know what you're building and why." },
+      { date: '2026-07-05', day: 'Sun', pillar: 'Thinking', type: 'Framework', format: 'Carousel', eyebrow: 'THINKING', hook: 'Interpretation vs prescription. The difference matters more than most people realise.' },
+    ],
+  },
+]
+
+function CalendarTab() {
+  const [previewFor, setPreviewFor] = useState<string | null>(null)
+  const [status, setStatus] = useState<Record<string, Status>>({})
+  const [copied, setCopied] = useState<string | null>(null)
+
+  function graphicUrl(p: CalPost) {
+    const params = new URLSearchParams({ style: 'personal', label: p.eyebrow, text: p.hook })
+    if (p.sub) params.set('sub', p.sub)
+    return `/api/content/graphic?${params.toString()}`
+  }
+
+  async function download(p: CalPost) {
+    const res = await fetch(graphicUrl(p))
+    const blob = await res.blob()
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = `kade-${p.date}-${p.pillar.toLowerCase()}.png`
+    a.click()
+    URL.revokeObjectURL(a.href)
+  }
+
+  async function copyHook(p: CalPost) {
+    await navigator.clipboard.writeText([p.hook, p.sub].filter(Boolean).join('\n\n'))
+    setCopied(p.date)
+    setTimeout(() => setCopied(null), 1500)
+  }
+
+  function cycleStatus(date: string) {
+    setStatus(s => {
+      const cur = s[date] ?? 'planned'
+      const next: Status = cur === 'planned' ? 'ready' : cur === 'ready' ? 'posted' : 'planned'
+      return { ...s, [date]: next }
+    })
+  }
+
+  const statusStyle: Record<Status, string> = {
+    planned: 'bg-stone-100 text-stone-500 border-stone-200',
+    ready: 'bg-blue-50 text-blue-500 border-blue-200',
+    posted: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+  }
+
+  return (
+    <div className="space-y-5">
+      <Card>
+        <SectionLabel>How this calendar works</SectionLabel>
+        <p className="text-sm text-stone-600 leading-relaxed">
+          4 posts per week (Mon / Wed / Fri / Sun) across the four pillars, drawn from your Script Library. Week 1 runs the launch sequence; weeks 2-4 rotate the pillars. Each post generates a graphic on the new editorial <span className="text-[#1A1A1A] font-medium">@kade_dunstone_</span> card &mdash; warm paper, serif headline, Signal Blue eyebrow &mdash; distinct from the Body Recode system cards.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {(Object.keys(PILLAR_COLOR) as PillarKey[]).map(k => (
+            <Tag key={k} color={PILLAR_COLOR[k]}>{k}</Tag>
+          ))}
+        </div>
+      </Card>
+
+      {CALENDAR.map(wk => (
+        <Card key={wk.week}>
+          <div className="flex items-baseline justify-between mb-4">
+            <p className="text-sm font-semibold text-[#1A1A1A]">{wk.week}</p>
+            <p className="text-xs text-stone-500">{wk.range}</p>
+          </div>
+          <div className="space-y-2">
+            {wk.posts.map(p => {
+              const st = status[p.date] ?? 'planned'
+              const open = previewFor === p.date
+              return (
+                <div key={p.date} className="border border-stone-200 rounded-lg overflow-hidden">
+                  <div className="flex items-start gap-3 px-4 py-3">
+                    {/* Date */}
+                    <div className="w-12 shrink-0 text-center">
+                      <p className="text-[10px] uppercase tracking-wide text-stone-400">{p.day}</p>
+                      <p className="text-sm font-mono text-stone-600">{p.date.slice(8)}</p>
+                    </div>
+                    {/* Body */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <Tag color={PILLAR_COLOR[p.pillar]}>{p.pillar}</Tag>
+                        <span className="text-xs text-stone-400">{p.type}</span>
+                        <span className="text-[10px] uppercase tracking-wide text-stone-400 border border-stone-200 rounded px-1.5 py-0.5">{p.format}</span>
+                      </div>
+                      <p className="text-sm text-stone-800 leading-snug">{p.hook}</p>
+                      {p.sub && <p className="text-xs text-stone-500 mt-1 leading-snug">{p.sub}</p>}
+                      {/* Actions */}
+                      <div className="flex items-center gap-3 mt-2.5">
+                        <button onClick={() => setPreviewFor(open ? null : p.date)} className="text-xs text-blue-500 hover:text-blue-700 transition-colors">{open ? 'Hide graphic' : 'Preview graphic'}</button>
+                        <button onClick={() => download(p)} className="text-xs text-blue-500 hover:text-blue-700 transition-colors">Download</button>
+                        <button onClick={() => copyHook(p)} className="text-xs text-stone-500 hover:text-stone-700 transition-colors">{copied === p.date ? 'Copied' : 'Copy copy'}</button>
+                      </div>
+                    </div>
+                    {/* Status */}
+                    <button
+                      onClick={() => cycleStatus(p.date)}
+                      className={`shrink-0 text-[10px] uppercase tracking-wide font-medium border rounded-md px-2 py-1 transition-colors ${statusStyle[st]}`}
+                      title="Click to cycle status"
+                    >{st}</button>
+                  </div>
+                  {open && (
+                    <div className="border-t border-stone-200 bg-stone-50 p-4 flex justify-center">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={graphicUrl(p)} alt={`${p.pillar} graphic`} className="w-full max-w-xs rounded-lg border border-stone-200 shadow-sm" />
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </Card>
+      ))}
+    </div>
   )
 }
 
@@ -706,9 +886,10 @@ function LaunchTab() {
 }
 
 export default function PersonalBrandPage() {
-  const [tab, setTab] = useState<Tab>('positioning')
+  const [tab, setTab] = useState<Tab>('calendar')
 
   const tabContent: Record<Tab, React.ReactNode> = {
+    calendar:    <CalendarTab />,
     positioning: <PositioningTab />,
     story:       <StoryTab />,
     pillars:     <PillarsTab />,

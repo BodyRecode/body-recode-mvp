@@ -661,45 +661,73 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // ── PERSONAL BRAND ─────────────────────────────────────────────
-  // Dark, minimal, one strong line. Handle at bottom. No logo.
-  // Supports format=square (1080x1080) or format=story (1080x1920)
+  // ── PERSONAL BRAND (@kade_dunstone_) ───────────────────────────
+  // Editorial light card: warm paper, Signal Blue eyebrow + rule, Georgia
+  // serif headline, wordmark handle. No logo. Reads as "the person, the
+  // thinking" — deliberately distinct from the Body Recode system cards,
+  // tied back to the ecosystem only by the single Signal Blue thread.
+  // Supports format=square (1080x1080) or format=story (1080x1920).
   if (style === 'personal') {
     const isStory = format === 'story'
     const W = 1080
     const H = isStory ? 1920 : 1080
+    const PAPER = '#FAF8F4'
+    const INK = '#1A1A1A'
+    const MUTED = '#6B6B6B'
+    const RULE = '#D8D2C8'
+
+    function serifSize(len: number) {
+      if (isStory) {
+        if (len <= 40) return '108px'
+        if (len <= 60) return '92px'
+        if (len <= 80) return '78px'
+        if (len <= 100) return '66px'
+        if (len <= 120) return '58px'
+        return '50px'
+      }
+      if (len <= 40) return '76px'
+      if (len <= 60) return '64px'
+      if (len <= 80) return '56px'
+      if (len <= 100) return '48px'
+      if (len <= 120) return '42px'
+      return '36px'
+    }
+
+    // Editorial serif headline — Source Serif 4 (SIL OFL), bundled so the
+    // serif renders on the edge runtime instead of silently falling back.
+    const serifSemiBold = await fetch(new URL('./fonts/SourceSerif4-SemiBold.ttf', import.meta.url)).then(r => r.arrayBuffer())
 
     return new ImageResponse(
       (
-        <div style={{ width: `${W}px`, height: `${H}px`, background: '#FFFFFF', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '100px', fontFamily: 'sans-serif', position: 'relative' }}>
-          {/* Subtle left border accent */}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '3px', height: `${H}px`, background: 'linear-gradient(to bottom, rgba(255,255,255,0.5), transparent)' }} />
-
+        <div style={{ width: `${W}px`, height: `${H}px`, background: PAPER, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: isStory ? '130px 110px' : '110px 100px', fontFamily: 'sans-serif', position: 'relative' }}>
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
-            {/* Optional context label */}
+            {/* Eyebrow — the single Signal Blue thread back to the ecosystem */}
             {label && (
-              <div style={{ fontSize: '26px', fontWeight: 600, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '48px' }}>{label}</div>
+              <div style={{ fontSize: '28px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '22px', fontFamily: 'sans-serif' }}>{label}</div>
             )}
 
-            {/* Main quote */}
-            <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '880px' }}>
+            {/* Short rule */}
+            <div style={{ width: '52px', height: '3px', background: '#1B6DFC', marginBottom: '40px' }} />
+
+            {/* Serif headline */}
+            <div style={{ fontSize: serifSize(displayText.length), fontWeight: 600, color: INK, lineHeight: 1.22, letterSpacing: '-0.01em', maxWidth: '900px', fontFamily: '"Source Serif 4", Georgia, serif' }}>
               {displayText}
             </div>
 
-            {/* Sub line */}
+            {/* Optional sub line */}
             {sub && (
-              <div style={{ fontSize: '42px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, fontWeight: 400, maxWidth: '820px', marginTop: '40px' }}>{sub}</div>
+              <div style={{ fontSize: isStory ? '40px' : '34px', color: MUTED, lineHeight: 1.55, fontWeight: 400, maxWidth: '840px', marginTop: '36px', fontFamily: 'sans-serif' }}>{sub}</div>
             )}
           </div>
 
-          {/* Handle at bottom */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '32px', height: '2px', background: 'rgba(255,255,255,0.5)' }} />
-            <div style={{ fontSize: '28px', fontWeight: 500, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.08em' }}>@kade_dunstone_</div>
+          {/* Handle footer */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ width: '36px', height: '2px', background: RULE }} />
+            <div style={{ fontSize: '27px', fontWeight: 500, color: MUTED, letterSpacing: '0.06em', fontFamily: 'sans-serif' }}>@kade_dunstone_</div>
           </div>
         </div>
       ),
-      { width: W, height: H }
+      { width: W, height: H, fonts: [{ name: 'Source Serif 4', data: serifSemiBold, weight: 600, style: 'normal' }] }
     )
   }
 
@@ -757,7 +785,7 @@ export async function GET(request: NextRequest) {
               <div style={{ fontSize: '26px', fontWeight: 600, color: 'rgba(196, 181, 253, 0.65)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '32px' }}>{label}</div>
             )}
 
-            <div style={{ fontSize: aicmHeadlineSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.15, letterSpacing: '-0.025em', maxWidth: '900px', display: 'flex' }}>
+            <div style={{ fontSize: aicmHeadlineSize(displayText.length), fontWeight: 800, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '-0.025em', maxWidth: '900px', display: 'flex' }}>
               {displayText}
             </div>
 
