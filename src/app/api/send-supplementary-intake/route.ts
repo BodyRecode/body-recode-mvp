@@ -7,8 +7,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
  * invitation surfaces as a task card on the client's portal landing page;
  * we do NOT email the link (the portal IS the channel).
  *
- * Supplementary intakes ask only the fields added after the original 208-
- * question intake (currently: medications + 4 dietary context fields). On
+ * Supplementary intakes ask only the fields added after the original
+ * 221-question intake (currently: medications + 4 dietary context fields). On
  * submission, the answers UPDATE the most recent intake row for the client,
  * update clients.medications, and trigger CFFS regeneration.
  *
