@@ -774,9 +774,13 @@ export async function GET(request: NextRequest) {
     return new ImageResponse(
       (
         <div style={{ width: `${W}px`, height: `${H}px`, background: P.bg, display: 'flex', flexDirection: 'column', fontFamily: 'sans-serif' }}>
-          {/* Photo top */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photoSrc} style={{ width: `${W}px`, height: `${photoH}px`, objectFit: 'cover', objectPosition: 'center top' }} alt="" />
+          {/* Photo top — anchored to the TOP of a clipped container so the head
+              is never cropped (Satori ignores objectPosition, so we position the
+              full-aspect image explicitly instead of relying on object-fit). */}
+          <div style={{ width: `${W}px`, height: `${photoH}px`, position: 'relative', overflow: 'hidden', display: 'flex' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={photoSrc} style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${photoIndex === 8 ? 1350 : 1080}px` }} alt="" />
+          </div>
           {/* Paper panel */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: PANEL_PAD, position: 'relative' }}>
             {label && (
