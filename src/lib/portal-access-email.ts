@@ -19,24 +19,39 @@ interface SendPortalAccessOpts {
 }
 
 /**
+ * Result of a portal-access send attempt. `ok:false` always carries a `reason`
+ * so callers can alert/surface the exact failure instead of swallowing it.
+ *
+ * NOTE: `ok:true` means Resend *accepted* the message, not that it was
+ * delivered. Recipient-side junking/bounces (e.g. Outlook) are only
+ * observable via Resend delivery webhooks, not at send time.
+ */
+export type PortalAccessResult =
+  | { ok: true; portalUrl: string }
+  | { ok: false; reason: 'no_email' | 'no_token' | 'no_api_key' | 'send_error'; detail?: string; portalUrl?: string }
+
+/**
  * Sends the portal access email and logs to client_communications.
- * Returns false if the client has no email or no onboarding token.
+ * Never throws — returns a structured result so the caller can decide how
+ * loudly to surface a failure.
  */
 export async function sendPortalAccessEmail({
   admin,
   client,
   sentBy = null,
   trigger,
-}: SendPortalAccessOpts): Promise<boolean> {
-  if (!client.email || !client.onboarding_token) return false
-  if (!process.env.RESEND_API_KEY) return false
+}: SendPortalAccessOpts): Promise<PortalAccessResult> {
+  if (!client.email) return { ok: false, reason: 'no_email' }
+  if (!client.onboarding_token) return { ok: false, reason: 'no_token' }
+  if (!process.env.RESEND_API_KEY) return { ok: false, reason: 'no_api_key' }
 
   const firstName = client.name.split(' ')[0]
   const portalUrl = `https://app.bodyrecode.au/portal/${client.onboarding_token}`
   const subject = `${firstName}, your portal is ready`
 
   const resend = new Resend(process.env.RESEND_API_KEY)
-  await resend.emails.send({
+  try {
+    await resend.emails.send({
     from: 'Kade at Body Recode <kade@bodyrecode.au>',
     to: client.email,
     subject,
@@ -61,8 +76,12 @@ export async function sendPortalAccessEmail({
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Sign in with your email. No password. The code does the work.</p>
       ${darkEmailSignature()}
       <p style="margin:20px 0 0;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${portalUrl}</p>
-`, { previewText: `Welcome ${firstName} — four steps to complete before we start coaching.` }),
-  })
+`, { previewText: `Welcome ${firstName} - four steps to complete before we start coaching.` }),
+    })
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err)
+    return { ok: false, reason: 'send_error', detail, portalUrl }
+  }
 
   await logClientCommunication(admin, {
     clientId: client.id,
@@ -73,5 +92,5 @@ export async function sendPortalAccessEmail({
     meta: { url: portalUrl, trigger },
   })
 
-  return true
+  return { ok: true, portalUrl }
 }

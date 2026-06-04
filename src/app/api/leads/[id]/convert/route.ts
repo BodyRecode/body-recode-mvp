@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendPortalAccessEmail } from '@/lib/portal-access-email'
+import { sendCoachAlert } from '@/lib/coach-alert'
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
@@ -67,25 +68,44 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   // Open the portal: email the client their portal link straight away so they
   // can start the onboarding stack (agreement, health declaration, intake,
-  // baseline). Wrapped so a delivery failure can't fail the conversion.
-  try {
-    await sendPortalAccessEmail({
-      admin: createAdminClient(),
-      client: {
-        id: client.id,
-        name: client.name,
-        email: client.email,
-        onboarding_token: client.onboarding_token,
-      },
-      sentBy: user.id,
-      trigger: markPaid ? 'convert_paid' : 'convert_no_payment',
+  // baseline). A delivery failure must NOT fail the conversion (the client and
+  // intake already exist) but it must NEVER be silent: the result is returned
+  // to the UI and, as a backup, an alert is emailed to the coach.
+  const portalUrl = client.onboarding_token
+    ? `https://app.bodyrecode.au/portal/${client.onboarding_token}`
+    : null
+
+  const emailResult = await sendPortalAccessEmail({
+    admin: createAdminClient(),
+    client: {
+      id: client.id,
+      name: client.name,
+      email: client.email,
+      onboarding_token: client.onboarding_token,
+    },
+    sentBy: user.id,
+    trigger: markPaid ? 'convert_paid' : 'convert_no_payment',
+  })
+
+  if (!emailResult.ok) {
+    console.error('[leads/convert] Portal access email failed:', emailResult.reason, emailResult.detail ?? '')
+    await sendCoachAlert({
+      subject: `Portal email did NOT send to ${client.name}`,
+      lines: [
+        `<strong>${client.name}</strong> was just converted to a client, but their portal access email failed to send.`,
+        `Reason: <strong>${emailResult.reason}</strong>${emailResult.detail ? ` (${emailResult.detail})` : ''}`,
+        client.email ? `Email on file: ${client.email}` : `No email address is on file for this client.`,
+        portalUrl ? `Send them this portal link manually: <a href="${portalUrl}">${portalUrl}</a>` : `No onboarding token yet, so no portal link could be generated.`,
+        `They will not be able to start onboarding until they have this link.`,
+      ],
     })
-  } catch (err) {
-    console.error('[leads/convert] Portal access email failed:', err)
   }
 
   return NextResponse.json({
     client_id: client.id,
     intake_token: invitation.token,
+    portal_url: portalUrl,
+    portal_email_sent: emailResult.ok,
+    portal_email_reason: emailResult.ok ? null : emailResult.reason,
   })
 }

@@ -11,7 +11,11 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [intakeLink, setIntakeLink] = useState('')
+  const [portalLink, setPortalLink] = useState('')
+  const [portalEmailSent, setPortalEmailSent] = useState<boolean | null>(null)
+  const [portalEmailReason, setPortalEmailReason] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [portalCopied, setPortalCopied] = useState(false)
 
   if (alreadyConverted && clientId && !intakeLink) {
     return (
@@ -35,6 +39,9 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     if (res.ok) {
       const link = `${window.location.origin}/intake/${data.intake_token}`
       setIntakeLink(link)
+      setPortalLink(data.portal_url || '')
+      setPortalEmailSent(data.portal_email_sent ?? null)
+      setPortalEmailReason(data.portal_email_reason ?? null)
       router.refresh()
     } else {
       alert(data.error || 'Conversion failed')
@@ -62,18 +69,52 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     setTimeout(() => setCopied(false), 2000)
   }
 
+  function copyPortal() {
+    navigator.clipboard.writeText(portalLink)
+    setPortalCopied(true)
+    setTimeout(() => setPortalCopied(false), 2000)
+  }
+
   if (intakeLink) {
     return (
-      <div className="space-y-3">
-        <p className="text-sm text-blue-500 font-medium">Client created. Send this intake link:</p>
-        <div className="bg-[#E5E5E5] rounded-lg px-4 py-3 flex items-center gap-3">
-          <p className="text-[#6B6B6B] text-xs font-mono flex-1 truncate">{intakeLink}</p>
-          <button
-            onClick={copy}
-            className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#D4D4D4] text-[#3A3A3A] hover:border-[#4A4A4A] hover:text-[#1A1A1A] transition-colors"
-          >
-            {copied ? 'Copied!' : 'Copy'}
-          </button>
+      <div className="space-y-4">
+        {/* Portal access email status - never silent */}
+        {portalEmailSent === true && (
+          <p className="text-sm text-green-600 font-medium">✓ Portal access email sent to the client.</p>
+        )}
+        {portalEmailSent === false && (
+          <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 space-y-1">
+            <p className="text-sm text-red-700 font-bold">⚠ Portal access email did NOT send{portalEmailReason ? ` (${portalEmailReason})` : ''}.</p>
+            <p className="text-xs text-red-700">Send the client their portal link manually (below). I&apos;ve also emailed you an alert.</p>
+          </div>
+        )}
+
+        {portalLink && (
+          <div className="space-y-1.5">
+            <p className="text-xs font-medium text-[#6B6B6B]">Portal link (client signs in here):</p>
+            <div className="bg-[#E5E5E5] rounded-lg px-4 py-3 flex items-center gap-3">
+              <p className="text-[#6B6B6B] text-xs font-mono flex-1 truncate">{portalLink}</p>
+              <button
+                onClick={copyPortal}
+                className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#D4D4D4] text-[#3A3A3A] hover:border-[#4A4A4A] hover:text-[#1A1A1A] transition-colors"
+              >
+                {portalCopied ? 'Copied!' : 'Copy'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="space-y-1.5">
+          <p className="text-xs font-medium text-[#6B6B6B]">Intake link:</p>
+          <div className="bg-[#E5E5E5] rounded-lg px-4 py-3 flex items-center gap-3">
+            <p className="text-[#6B6B6B] text-xs font-mono flex-1 truncate">{intakeLink}</p>
+            <button
+              onClick={copy}
+              className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#D4D4D4] text-[#3A3A3A] hover:border-[#4A4A4A] hover:text-[#1A1A1A] transition-colors"
+            >
+              {copied ? 'Copied!' : 'Copy'}
+            </button>
+          </div>
         </div>
       </div>
     )

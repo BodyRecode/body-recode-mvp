@@ -24,12 +24,25 @@ export async function POST(
   if (!client.email) return NextResponse.json({ error: 'No email address for this client' }, { status: 400 })
   if (!client.onboarding_token) return NextResponse.json({ error: 'No onboarding token' }, { status: 400 })
 
-  const sent = await sendPortalAccessEmail({
+  const result = await sendPortalAccessEmail({
     admin,
     client,
     sentBy: user.id,
     trigger: 'manual',
   })
 
-  return NextResponse.json({ sent })
+  if (!result.ok) {
+    const messages: Record<string, string> = {
+      no_email: 'No email address for this client',
+      no_token: 'No onboarding token',
+      no_api_key: 'Email service is not configured',
+      send_error: 'Email provider rejected the send',
+    }
+    return NextResponse.json(
+      { sent: false, error: messages[result.reason] ?? result.reason, reason: result.reason },
+      { status: 502 },
+    )
+  }
+
+  return NextResponse.json({ sent: true })
 }
