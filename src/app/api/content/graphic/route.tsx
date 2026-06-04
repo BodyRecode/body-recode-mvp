@@ -771,36 +771,108 @@ export async function GET(request: NextRequest) {
 
     const serifSemiBold = await fetch(new URL('./fonts/SourceSerif4-SemiBold.ttf', import.meta.url)).then(r => r.arrayBuffer())
 
+    const natH = photoIndex === 8 ? 1350 : 1080 // 1-7 are square, 8 is tall
+    const layout = searchParams.get('layout') ?? 'top'
+    const serifFamily = '"Source Serif 4", Georgia, serif'
+    const FONTS = { width: W, height: H, fonts: [{ name: 'Source Serif 4', data: serifSemiBold, weight: 600 as const, style: 'normal' as const }] }
+
+    // Eyebrow + rule + headline + wordmark, shared across layouts.
+    const TextBlock = ({ onDark = false }: { onDark?: boolean }) => {
+      const accent = onDark ? '#FFFFFF' : P.accent
+      const ink = onDark ? '#FFFFFF' : P.ink
+      const muted = onDark ? 'rgba(255,255,255,0.72)' : P.muted
+      const shadow = onDark ? '0 2px 18px rgba(0,0,0,0.7)' : 'none'
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {label && <div style={{ fontSize: '26px', fontWeight: 700, color: onDark ? 'rgba(255,255,255,0.85)' : P.accent, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '18px', textShadow: shadow }}>{label}</div>}
+          <div style={{ width: '52px', height: '3px', background: accent, marginBottom: '28px' }} />
+          <div style={{ fontSize: pSize(displayText.length), fontWeight: 600, color: ink, lineHeight: 1.2, letterSpacing: '-0.01em', maxWidth: '900px', fontFamily: serifFamily, textShadow: shadow }}>{displayText}</div>
+          {sub && <div style={{ fontSize: isStory ? '34px' : '28px', color: muted, lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginTop: '24px', textShadow: shadow }}>{sub}</div>}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginTop: '36px' }}>
+            <div style={{ width: '32px', height: '2px', background: muted, opacity: 0.6 }} />
+            <div style={{ fontSize: '24px', fontWeight: 500, color: muted, letterSpacing: '0.06em', textShadow: shadow }}>@kade_dunstone_</div>
+          </div>
+        </div>
+      )
+    }
+
+    // OVERLAY — full-bleed portrait, serif hook over a bottom gradient.
+    if (layout === 'overlay') {
+      const scale = Math.max(W / 1080, H / natH)
+      const imgW = Math.round(1080 * scale), imgH = Math.round(natH * scale)
+      return new ImageResponse(
+        (
+          <div style={{ width: `${W}px`, height: `${H}px`, position: 'relative', display: 'flex', fontFamily: 'sans-serif', overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={photoSrc} style={{ position: 'absolute', top: 0, left: `${Math.round((W - imgW) / 2)}px`, width: `${imgW}px`, height: `${imgH}px` }} alt="" />
+            <div style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${H}px`, background: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.5) 68%, rgba(0,0,0,0.88) 100%)' }} />
+            <div style={{ position: 'absolute', bottom: isStory ? '120px' : '90px', left: isStory ? '110px' : '90px', right: '90px', display: 'flex', flexDirection: 'column' }}>
+              <TextBlock onDark />
+            </div>
+          </div>
+        ), FONTS,
+      )
+    }
+
+    // SPLIT — portrait one side (centred crop, full height), paper panel beside.
+    if (layout === 'split') {
+      const colW = 540
+      const scale = Math.max(colW / 1080, H / natH)
+      const imgW = Math.round(1080 * scale), imgH = Math.round(natH * scale)
+      return new ImageResponse(
+        (
+          <div style={{ width: `${W}px`, height: `${H}px`, background: P.bg, display: 'flex', fontFamily: 'sans-serif' }}>
+            <div style={{ width: `${colW}px`, height: `${H}px`, position: 'relative', overflow: 'hidden', display: 'flex' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photoSrc} style={{ position: 'absolute', top: 0, left: `${Math.round((colW - imgW) / 2)}px`, width: `${imgW}px`, height: `${imgH}px` }} alt="" />
+            </div>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 70px' }}>
+              <TextBlock />
+            </div>
+          </div>
+        ), FONTS,
+      )
+    }
+
+    // INSET — framed portrait on paper, magazine-style, serif headline below.
+    if (layout === 'inset') {
+      const frameW = isStory ? 860 : 820, frameH = isStory ? 900 : 520
+      const fscale = Math.max(frameW / 1080, frameH / natH)
+      const imgW = Math.round(1080 * fscale), imgH = Math.round(natH * fscale)
+      return new ImageResponse(
+        (
+          <div style={{ width: `${W}px`, height: `${H}px`, background: P.bg, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: isStory ? '110px 110px' : '80px 90px', fontFamily: 'sans-serif' }}>
+            {label && <div style={{ fontSize: '26px', fontWeight: 700, color: P.accent, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '28px', alignSelf: 'flex-start' }}>{label}</div>}
+            <div style={{ width: `${frameW}px`, height: `${frameH}px`, position: 'relative', overflow: 'hidden', display: 'flex', flexShrink: 0 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photoSrc} style={{ position: 'absolute', top: 0, left: `${Math.round((frameW - imgW) / 2)}px`, width: `${imgW}px`, height: `${imgH}px` }} alt="" />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignSelf: 'flex-start', marginTop: '36px' }}>
+              <div style={{ fontSize: pSize(displayText.length), fontWeight: 600, color: P.ink, lineHeight: 1.2, letterSpacing: '-0.01em', maxWidth: '900px', fontFamily: serifFamily }}>{displayText}</div>
+              {sub && <div style={{ fontSize: isStory ? '34px' : '28px', color: P.muted, lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginTop: '20px' }}>{sub}</div>}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginTop: '28px' }}>
+                <div style={{ width: '32px', height: '2px', background: P.muted, opacity: 0.5 }} />
+                <div style={{ fontSize: '24px', fontWeight: 500, color: P.muted, letterSpacing: '0.06em' }}>@kade_dunstone_</div>
+              </div>
+            </div>
+          </div>
+        ), FONTS,
+      )
+    }
+
+    // TOP (default) — portrait fills the top, paper panel below.
     return new ImageResponse(
       (
         <div style={{ width: `${W}px`, height: `${H}px`, background: P.bg, display: 'flex', flexDirection: 'column', fontFamily: 'sans-serif' }}>
-          {/* Photo top — anchored to the TOP of a clipped container so the head
-              is never cropped (Satori ignores objectPosition, so we position the
-              full-aspect image explicitly instead of relying on object-fit). */}
           <div style={{ width: `${W}px`, height: `${photoH}px`, position: 'relative', overflow: 'hidden', display: 'flex' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photoSrc} style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${photoIndex === 8 ? 1350 : 1080}px` }} alt="" />
+            <img src={photoSrc} style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${natH}px` }} alt="" />
           </div>
-          {/* Paper panel */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: PANEL_PAD, position: 'relative' }}>
-            {label && (
-              <div style={{ fontSize: '26px', fontWeight: 700, color: P.accent, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '18px' }}>{label}</div>
-            )}
-            <div style={{ width: '52px', height: '3px', background: P.accent, marginBottom: '28px' }} />
-            <div style={{ fontSize: pSize(displayText.length), fontWeight: 600, color: P.ink, lineHeight: 1.2, letterSpacing: '-0.01em', maxWidth: '900px', fontFamily: '"Source Serif 4", Georgia, serif' }}>
-              {displayText}
-            </div>
-            {sub && (
-              <div style={{ fontSize: isStory ? '34px' : '28px', color: P.muted, lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginTop: '24px' }}>{sub}</div>
-            )}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginTop: '36px' }}>
-              <div style={{ width: '32px', height: '2px', background: P.muted, opacity: 0.5 }} />
-              <div style={{ fontSize: '24px', fontWeight: 500, color: P.muted, letterSpacing: '0.06em' }}>@kade_dunstone_</div>
-            </div>
+            <TextBlock />
           </div>
         </div>
-      ),
-      { width: W, height: H, fonts: [{ name: 'Source Serif 4', data: serifSemiBold, weight: 600, style: 'normal' }] }
+      ), FONTS,
     )
   }
 
