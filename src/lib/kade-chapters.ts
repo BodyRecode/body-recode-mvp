@@ -287,7 +287,104 @@ Either way, it was the only thread of him I had left.
 
 And I wasn't going to let it go.`,
   },
-  { slug: 'too-much-and-not-enough',     number: 4, part: 1, partLabel: 'The Father & The Fracture', title: 'Too Much and Not Enough',     summary: 'Being the favourite and the hardest to handle. The birth of emotional duality.' },
+  {
+    slug: 'too-much-and-not-enough',
+    number: 4,
+    part: 1,
+    partLabel: 'The Father & The Fracture',
+    title: 'Too Much and Not Enough',
+    summary: 'Being the favourite and the hardest to handle. The birth of emotional duality.',
+    publishedAt: '2026-04-28',
+    content: `Two stories started forming about me at the same time, and I lived inside both of them.
+
+The first story was that I was the favourite.
+
+I never heard anyone say it out loud. I don't think it was technically true in any measurable sense. But there was a feeling that came from one person specifically, and that feeling did the work of making me believe it.
+
+My favourite aunty.
+
+She was the same aunty who took me and my older sister into the master bedroom and delivered the news of my father's death. So she was already a load-bearing figure in my world before any of what came next. The person who showed up at the worst moment of my life. The person who carried something into a room she didn't want to carry.
+
+But beyond that, in the years that followed, she became something else. She made me feel like the most special kid in the world.
+
+It wasn't one thing. It was all of it.
+
+The way she spoke to me. The time she gave me. The attention. The small consistent presence of someone who was paying attention to who I actually was, not just what I was doing. She didn't have to tell me I mattered. I felt it in everything she did.
+
+A kid who has just lost his anchor needs to feel like he matters somewhere. After my father died, that need didn't go away. It got bigger. And she filled some part of it without ever announcing she was doing it.
+
+She made me believe I was chosen.
+
+So I carried that. Quietly. The favourite story.
+
+But there was a second story running at the same time.
+
+I was the hardest to handle.
+
+This part wasn't fiction.
+
+The anger was always close to the surface. I was set off easily. Things that wouldn't have moved most kids would tip me straight over the edge. The destruction we already talked about, the broken windows, the fights, the burnt paddock, the basketball ring, those weren't isolated incidents. They were just the loud examples of a temperament that was constantly pulled tight.
+
+I was exhausting to live with. I knew it then. I know it now. The adults around me were doing their best with a kid whose grief had no exit, and that meant they were absorbing whatever I couldn't process myself. Day after day. Year after year. Anger that came out of nowhere. A boy who couldn't tell you what was wrong because he didn't know either.
+
+I felt that too.
+
+I knew I was the kid people braced for.
+
+I knew I was the one who needed managing.
+
+I knew, at some level, that even people who loved me were tired of me sometimes.
+
+So both stories existed at once.
+
+The favourite. The hardest to handle.
+
+The chosen one. The problem one.
+
+The kid who was loved unconditionally by his aunty. The kid who watched the rest of the family take a breath before walking into a room with him.
+
+I didn't reconcile the two stories at the time. I didn't have the words for it. I just lived inside both of them at once and didn't notice that the shape they made was contradictory.
+
+But the shape was forming.
+
+Because here's what I think now, looking back at that kid.
+
+If you're the favourite and the hardest to handle at the same time, you grow up believing two things about yourself simultaneously.
+
+You're worthy of love. And you're too much.
+
+You're chosen. And you're a burden.
+
+You belong. And you're using up your welcome.
+
+That doesn't go away when you grow up. That goes with you. Into every relationship. Into every workplace. Into every friendship and every business and every romance and every space you walk into for the rest of your life.
+
+You reach for closeness and brace for rejection at the same time.
+
+You believe you matter and assume you'll wear people out.
+
+You let people in and start counting the cost of being yourself.
+
+I didn't know any of that at the time. I just knew that I felt the weight of needing to be loved and the weight of being too much, and I couldn't put either one down.
+
+That's the pattern that started forming in those years.
+
+It would take me decades to even see it.
+
+And longer than that to do anything about it.
+
+But it started here.
+
+In a kid who was held close by his favourite aunty and dreaded by the people who had to pick up the pieces of his anger, all in the same breath.
+
+Too much.
+
+And not enough.
+
+Both at once.
+
+For a long time.`,
+  },
   { slug: 'learning-the-mask',           number: 5, part: 1, partLabel: 'The Father & The Fracture', title: 'Learning the Mask',           summary: 'Early adolescence. People-pleasing, over-functioning, and managing other people\'s energy.' },
 
   // PART II: BUILDING MYSELF FROM SCRATCH
