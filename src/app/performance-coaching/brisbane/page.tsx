@@ -75,7 +75,7 @@ export default function PerformanceCoachBrisbanePage() {
             Most coaching in Brisbane escalates when progress stalls: more sessions, more intensity, more restriction. Body Recode™ does the opposite. Before any training is prescribed, we establish what your biology is actually doing and why.
           </p>
           <p className="text-stone-600 text-lg leading-relaxed mb-6">
-            This means building a complete picture across eight domains: training history, stress load, sleep and recovery, body pattern signals, nutrition behaviours, schedule, stimulant use, and hormonal context. Not a fitness test. A full read of your system.
+            This means building a complete picture across nine domains: training history, stress load, sleep and recovery, body pattern signals, nutrition behaviours, schedule, stimulant use, and hormonal context. Not a fitness test. A full read of your system.
           </p>
           <p className="text-stone-600 text-lg leading-relaxed">
             From that picture, everything is designed around your individual biological profile: training, recovery, and lifestyle inputs. Not a template. Not a generic program. A system built for exactly where you are right now.

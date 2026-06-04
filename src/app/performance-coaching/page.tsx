@@ -42,7 +42,7 @@ export default function PerformanceCoachingPage() {
           </h2>
           <div className="max-w-2xl space-y-6 text-stone-600 text-lg leading-relaxed">
             <p>
-              Performance Coaching is the downstream application of the Body Recode™ interpretive system in the health and fitness environment. It does not begin with a program. It begins with interpretation. A full biological intake across eight domains produces the CFFS: the Coach-Facing Foundational Synthesis. Every decision operates within the boundaries the CFFS defines.
+              Performance Coaching is the downstream application of the Body Recode™ interpretive system in the health and fitness environment. It does not begin with a program. It begins with interpretation. A full biological intake across nine domains produces the CFFS: the Coach-Facing Foundational Synthesis. Every decision operates within the boundaries the CFFS defines.
             </p>
             <p>
               The coaching system runs on two parallel documents throughout the entire client relationship: the CFFS, foundational and non-temporal, produced at intake; and the CFWS, the Coach-Facing Weekly Synthesis, which captures how the system is responding to applied load in real time. Both feed a continuous loop: interpretation informs execution, execution informs interpretation.

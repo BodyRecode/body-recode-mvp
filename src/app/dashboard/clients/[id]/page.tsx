@@ -991,7 +991,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               This is not a summary. It is a structured interpretation of how this client&apos;s system is currently organising itself.
             </p>
             <p className="text-sm text-[#999999] leading-relaxed">
-              The CFFS translates 208 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses - you remain the interpretive authority.
+              The CFFS translates 221 data points across nine signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses - you remain the interpretive authority.
             </p>
           </div>
 

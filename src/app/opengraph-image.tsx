@@ -51,7 +51,7 @@ export default async function Image() {
           >
             <div style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#5390FF' }} />
             <div style={{ fontSize: '15px', color: '#8A8E9B', letterSpacing: '0.06em' }}>
-              v1.0 · 208 signals · 8 domains · 5 pillars · 3 states
+              v1.0 · 221 signals · 8 domains · 5 pillars · 3 states
             </div>
           </div>
 

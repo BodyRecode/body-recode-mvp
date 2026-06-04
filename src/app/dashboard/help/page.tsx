@@ -690,7 +690,7 @@ export default function HelpPage() {
 
           {/* Section 8 */}
           <Section id="cffs" title="10. CFFS - Coach-Facing Foundational Synthesis" colour="teal">
-            <p>The CFFS is the structured interpretation of the client&apos;s current body state across 8 signal domains, labelled <strong>Foundational Synthesis - CFFS</strong> on the client profile.</p>
+            <p>The CFFS is the structured interpretation of the client&apos;s current body state across 9 signal domains, labelled <strong>Foundational Synthesis - CFFS</strong> on the client profile.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">When is the CFFS generated</p>
             <p>As of 2026-05-13, the CFFS is <strong>coach-triggered</strong>, not auto-generated. The trigger sequence is:</p>

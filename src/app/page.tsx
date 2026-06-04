@@ -225,7 +225,7 @@ export default function HomePage() {
           >
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: BLUE_LIGHT, boxShadow: `0 0 8px ${BLUE_LIGHT}` }} />
             <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.08em', color: TXT_DIM }}>
-              v1.0 · 208 signals · 8 domains · 5 pillars · 3 states
+              v1.0 · 221 signals · 8 domains · 5 pillars · 3 states
             </span>
           </div>
 
@@ -258,7 +258,7 @@ export default function HomePage() {
           </h1>
           <p style={{ fontSize: 18, lineHeight: 1.7, color: TXT_DIM, maxWidth: 620, marginBottom: 40 }}>
             Body Recode™ is the upstream interpretive layer for performance, clinical and tactical
-            practice. One engine reads body state across 208 structured signals before any
+            practice. One engine reads body state across 221 structured signals before any
             intervention is designed. The system terminates at interpretation. What is built on top
             of it is yours.
           </p>
@@ -325,7 +325,7 @@ export default function HomePage() {
           organised that way?
         </Prose>
         <Grid min={220}>
-          <StatCard value="208" label="Intake data points" detail="Structured across eight signal domains. Not a questionnaire. A biological read." />
+          <StatCard value="221" label="Intake data points" detail="Structured across nine signal domains. Not a questionnaire. A biological read." />
           <StatCard value="5" label="Interpretive pillars" detail="Each reads a different domain. The output is always a synthesis." />
           <StatCard value="3" label="Body state classifications" detail="Every body, every environment. The classification drives everything downstream." />
         </Grid>
@@ -345,7 +345,7 @@ export default function HomePage() {
             accent
             label="Layer 1 · Interpretation"
             owner="Owned by Body Recode™"
-            body="Takes structured input data across eight signal domains and produces the CFFS: Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation."
+            body="Takes structured input data across nine signal domains and produces the CFFS: Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation."
           />
           <LayerCard
             label="Layer 2 · Execution"
@@ -368,7 +368,7 @@ export default function HomePage() {
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {/* INPUT */}
-            <StageCard kicker="Input" title="Foundational Intake" meta="208 structured signals">
+            <StageCard kicker="Input" title="Foundational Intake" meta="221 structured signals">
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {DOMAINS.map((d) => (
                   <span key={d.num} style={chip}>{d.name}</span>
@@ -463,7 +463,7 @@ export default function HomePage() {
       {/* ===== SIGNAL DOMAINS ===== */}
       <Section wide>
         <SectionLabel>Foundational Intake</SectionLabel>
-        <SectionHeading>208 structured signals. Eight domains.</SectionHeading>
+        <SectionHeading>221 structured signals. Nine domains.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
           Before any interpretation begins, the system collects structured data across eight distinct
           signal domains. The depth and specificity of the intake is what makes the output
