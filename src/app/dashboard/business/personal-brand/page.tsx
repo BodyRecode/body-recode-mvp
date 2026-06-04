@@ -60,29 +60,35 @@ function kitPreview(params: string) {
 }
 
 const KIT_PLAN: { week: string; range: string; posts: { date: string; pillar: KitPillar; eyebrow: string; format: KitFormat; treatment: string; hook: string }[] }[] = [
-  { week: 'Week 1', range: 'Jun 8-14 · Launch', posts: [
-    { date: 'Mon 8',  pillar: 'Launch',   eyebrow: 'ARRIVAL',      format: 'Photo',    treatment: 'Overlay · kade-8', hook: "I've spent 20 years helping people understand their body. Most of the work was never in the gym." },
-    { date: 'Wed 10', pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Card',     treatment: 'Clay card',        hook: 'The problem is not effort. Effort is everywhere.' },
-    { date: 'Fri 12', pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Photo',    treatment: 'Overlay · kade-2', hook: "I've rebuilt my identity three times. Each time I thought I was starting over." },
-    { date: 'Sun 14', pillar: 'Thinking', eyebrow: 'SYSTEMS',      format: 'Card',     treatment: 'Clay card',        hook: 'I stopped writing programs and started building systems.' },
+  { week: 'Week 1', range: 'Jun 8-14 · Lead with the human', posts: [
+    { date: 'Mon 8',  pillar: 'Launch',   eyebrow: 'ARRIVAL', format: 'Photo',    treatment: 'Overlay · kade-8', hook: "I've spent 20 years helping people understand their body. Most of the work was never in the gym." },
+    { date: 'Wed 10', pillar: 'Identity', eyebrow: 'REBUILD', format: 'Photo',    treatment: 'Overlay · kade-2', hook: "At 19, a doctor ended the only future I'd planned." },
+    { date: 'Fri 12', pillar: 'Body',     eyebrow: 'BODY',    format: 'Card',     treatment: 'Clay card',        hook: "You can't out-train a nervous system in protection mode." },
+    { date: 'Sun 14', pillar: 'Identity', eyebrow: 'REBUILD', format: 'Story',    treatment: 'Clay card · story', hook: "Three times I've had to become someone new from scratch." },
   ]},
-  { week: 'Week 2', range: 'Jun 15-21 · Pillar rotation', posts: [
-    { date: 'Mon 15', pillar: 'Launch',   eyebrow: 'BODY RECODE',  format: 'Card',     treatment: 'Clay card',        hook: 'Body Recode is the result of every rebuild.' },
+  { week: 'Week 2', range: 'Jun 15-21', posts: [
+    { date: 'Mon 15', pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Card',     treatment: 'Clay card · teaser', hook: "The reason most people stay stuck isn't discipline." },
     { date: 'Wed 17', pillar: 'Body',     eyebrow: 'BODY',         format: 'Carousel', treatment: '5 slides → solid close', hook: 'Three states. One body. Completely different responses to the same training.' },
-    { date: 'Fri 19', pillar: 'AI',       eyebrow: 'AI & LEVERAGE',format: 'Card',     treatment: 'Clay card',        hook: "AI doesn't make you smarter. It makes your current thinking louder." },
-    { date: 'Sun 21', pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Card',     treatment: 'Clay card',        hook: "Most people don't have a discipline problem. They have a clarity problem." },
+    { date: 'Fri 19', pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Card',     treatment: 'Clay card',        hook: "Most people don't have a discipline problem. They have a clarity problem." },
+    { date: 'Sun 21', pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Photo',    treatment: 'Split · kade-1',   hook: 'I helped build gyms across the country. Then I walked away.' },
   ]},
-  { week: 'Week 3', range: 'Jun 22-28 · Story + depth', posts: [
-    { date: 'Mon 22', pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Reel',     treatment: 'Photo cover · kade-8', hook: "I've rebuilt my identity three times. Each one produced a framework." },
-    { date: 'Wed 24', pillar: 'Body',     eyebrow: 'BODY',         format: 'Card',     treatment: 'Clay card',        hook: "You can't out-train a nervous system in protection mode." },
-    { date: 'Fri 26', pillar: 'AI',       eyebrow: 'AI & LEVERAGE',format: 'Photo',    treatment: 'Split · kade-2',   hook: 'Most coaches rent software. I built mine.' },
-    { date: 'Sun 28', pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Card',     treatment: 'Clay card',        hook: 'Clarity is upstream of everything.' },
+  { week: 'Week 3', range: 'Jun 22-28 · Build + depth', posts: [
+    { date: 'Mon 22', pillar: 'AI',       eyebrow: 'AI & LEVERAGE',format: 'Photo',    treatment: 'Overlay · kade-8', hook: "I built my own coaching software. I'm not a developer." },
+    { date: 'Wed 24', pillar: 'Body',     eyebrow: 'BODY',         format: 'Card',     treatment: 'Clay card',        hook: 'The body is not broken. It is being misread.' },
+    { date: 'Fri 26', pillar: 'AI',       eyebrow: 'AI & LEVERAGE',format: 'Card',     treatment: 'Clay card',        hook: "AI doesn't make you smarter. It makes your current thinking louder." },
+    { date: 'Sun 28', pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Story',    treatment: 'Clay card · story', hook: "I walked away from a 20-year relationship and didn't know who I was without it." },
   ]},
-  { week: 'Week 4', range: 'Jun 29 - Jul 5 · Reinforce', posts: [
-    { date: 'Mon 29', pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Card',     treatment: 'Clay card',        hook: 'Rebuilding is not failure. It is the process of building better structure.' },
-    { date: 'Wed 1',  pillar: 'Body',     eyebrow: 'BODY',         format: 'Card',     treatment: 'Clay card',        hook: 'The body is not broken. It is being misread.' },
-    { date: 'Fri 3',  pillar: 'AI',       eyebrow: 'AI & LEVERAGE',format: 'Card',     treatment: 'Clay card',        hook: "You don't need to know how to code. You need to know what you're building and why." },
+  { week: 'Week 4', range: 'Jun 29 - Jul 5', posts: [
+    { date: 'Mon 29', pillar: 'AI',       eyebrow: 'AI & LEVERAGE',format: 'Photo',    treatment: 'Split · kade-2',   hook: 'Most coaches rent their software. I built mine, from scratch.' },
+    { date: 'Wed 1',  pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Card',     treatment: 'Clay card',        hook: "Rebuilding is not failure. It's how you build better structure." },
+    { date: 'Fri 3',  pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Photo',    treatment: 'Inset · kade-8',   hook: 'For years I measured everything against one question: would he be proud?' },
     { date: 'Sun 5',  pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Carousel', treatment: '5 slides → solid close', hook: 'Interpretation vs prescription. The difference matters more than most people realise.' },
+  ]},
+  { week: 'Reels — Phase 2', range: 'from w/c Jul 6 · pending HeyGen avatar', posts: [
+    { date: 'Mon 6',  pillar: 'Body',     eyebrow: 'BODY',         format: 'Reel', treatment: 'Talking head · pending avatar', hook: "Why your body stopped responding - and it's not what most coaches say." },
+    { date: 'Mon 13', pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Reel', treatment: 'Talking head · pending avatar', hook: "The reason most people stay stuck isn't discipline. It's this." },
+    { date: 'Mon 20', pillar: 'AI',       eyebrow: 'AI & LEVERAGE',format: 'Reel', treatment: 'Talking head · pending avatar', hook: 'I built my own coaching platform. No coding background.' },
+    { date: 'Mon 27', pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Reel', treatment: 'Talking head · pending avatar', hook: "I've rebuilt my identity three times. Each one produced a framework." },
   ]},
 ]
 
@@ -139,9 +145,9 @@ function ContentKitTab() {
       </Card>
 
       <Card>
-        <SectionLabel>Launch Content Plan — 4 weeks</SectionLabel>
+        <SectionLabel>Launch Content Plan</SectionLabel>
         <p className="text-xs text-stone-500 mb-4">
-          16 posts, 4/week (Mon/Wed/Fri/Sun). ~1 in 4 carries a photo; framework posts are carousels; the rest are clay colour cards. These are <strong className="text-stone-600">scheduled in the one Content Calendar</strong> (Marketing Strategy → Content Calendar, filter Personal Brand) &mdash; this is the plan reference.
+          The launch month <strong className="text-stone-600">leads with the human</strong> &mdash; story + photo posts carry it, two framework carousels teach, and sharp cards punctuate. Story hooks are specific scenes, not maxims; you write the detail in the caption. <strong className="text-stone-600">Reels start as a Phase-2 block from w/c 6 Jul</strong>, once the HeyGen avatar is ready (talking-head is where the relationship really forms). All <strong className="text-stone-600">scheduled in the one Content Calendar</strong> (Marketing Strategy → Content Calendar, filter Personal Brand) &mdash; this is the plan reference.
         </p>
         <div className="space-y-4">
           {KIT_PLAN.map(wk => (
