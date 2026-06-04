@@ -385,7 +385,124 @@ Both at once.
 
 For a long time.`,
   },
-  { slug: 'learning-the-mask',           number: 5, part: 1, partLabel: 'The Father & The Fracture', title: 'Learning the Mask',           summary: 'Early adolescence. People-pleasing, over-functioning, and managing other people\'s energy.' },
+  {
+    slug: 'learning-the-mask',
+    number: 5,
+    part: 1,
+    partLabel: 'The Father & The Fracture',
+    title: 'Learning the Mask',
+    summary: 'Early adolescence. People-pleasing, over-functioning, and managing other people\'s energy.',
+    publishedAt: '2026-04-29',
+    content: `I'm not sure the anger ever really stopped coming out.
+
+I think I just got better at holding it in until it had no choice but to come out anyway.
+
+That's the truth I didn't want to admit for years. The mask wasn't transformation. It wasn't healing. It wasn't growing up. It was containment. The same pressure building underneath, only now the seal was tighter and I'd learned not to let it spill in public.
+
+I can't tell you exactly when it shifted. There's no scene I can point to. No conversation. No moment where I made a decision to start hiding the rage. The change happened the way most adolescent changes happen, in increments small enough that you don't notice they're adding up.
+
+By a certain age, the things I used to do as a kid weren't options anymore.
+
+You can break a window when you're eight and people will call you troubled. You can bring down a basketball ring at school and people will shake their heads. You can scratch up the janitor's car and people will write it off as a kid acting out his grief.
+
+By thirteen, fourteen, fifteen, the same behaviour reads differently. The world starts treating you like a man. The room you used to have to be wild in starts closing. The grace people extended to the boy whose dad just died has expired by the time you hit high school. Now you're just an angry kid, and angry kids don't get understood. They get managed.
+
+So I learned to manage myself instead.
+
+I became useful.
+
+That's the first thing. I'd already been hustling since I was eight. Washing cars, mowing lawns, selling drawings, flipping basketball cards. That impulse never went away. It got more sophisticated as I got older. Where there was work, I'd find it. Where there was something to fix, I'd fix it. Where someone needed help, I'd step in.
+
+Being useful is its own form of cover.
+
+If you're the kid carrying the boxes, you're not the kid breaking the windows. If you're the kid making people laugh, you're not the kid threatening to ruin the room. If you're the kid handling the situation, you're not the situation. The doing was the disguise. It hid what was still underneath, and it earned me enough goodwill to buy the room I needed to feel like myself again.
+
+I learned to read people.
+
+Quickly. Quietly. I think kids who lose a parent young get good at this whether they want to or not. You're trying to figure out what the adults around you need, what they're not saying, what the air in the room actually means. Because the air in the room used to be safe, and then one day it wasn't, and now you watch it carefully for the rest of your life.
+
+So I'd walk into a space and read it before I spoke. Who was carrying what. Who needed what. Where the energy was. What kind of version of me they needed in this particular moment.
+
+And then I'd be that.
+
+Not consciously. Not strategically. Just instinctively. A built-in radar that started running and never turned off.
+
+People-pleasing isn't the word I'd use. It wasn't about being liked. It was about being safe. If everyone around me was steady, I was steady. If the room was good, I was good. If the people I cared about were getting what they needed, I had room to breathe.
+
+Over-functioning is closer.
+
+I'd take on more than I needed to. Carry more than was mine. Cover for people who hadn't asked me to. Show up. Reliably. For everyone. Sometimes that was love. Sometimes it was just the only way I knew to feel safe.
+
+The mask got better as I got older.
+
+But it never solved anything.
+
+The pressure was still building.
+
+And every now and then it would come out anyway.
+
+I don't remember specific incidents. That's the part I can't fill in. Those years run together for me the way a long quiet road runs together when you've been driving for hours. The mask makes life uniform. Endurance is by definition unmemorable. The whole point of containment is that nothing happens. Nothing visible. Nothing dramatic. Nothing that anyone would write down later.
+
+But the moments did happen.
+
+Whatever they were, wherever they were, however they came out. I'd hold and hold and hold and then I'd snap. Not at the people who deserved it. Not at strangers. Usually at people closest to me, in private, in moments that weren't the right size for the response that came out. That's what containment does. It doesn't choose its exits. It just finds the nearest one when the pressure breaks the seal.
+
+Here's what I want to say about those moments though.
+
+I never hated myself for them.
+
+That's the part I'm most surprised by, looking back.
+
+Most kids would. Most adults would. Most people in this kind of story turn it inward. They watch themselves lose control and they decide they're broken. They start carrying shame on top of the grief, and the shame becomes its own weight, and now they have two things to contain instead of one.
+
+I didn't do that.
+
+I don't know why I didn't, but I didn't.
+
+I think it was my aunty.
+
+I think it was the favourite story. The one she planted before I was even old enough to question it. The story that I was the most special kid in the world. That story was inside me before the grief landed. It was already structural. So when I lost control, my response wasn't "I'm broken." It was "I lost control." A behaviour, not an identity. Something that happened, not something I was.
+
+I think it was also my father.
+
+His code. The one he gave me before he left. Right and wrong. Own your shit. Take responsibility. That code wasn't only for the protection of the underdog kids. It was for the protection of myself. It said: when you mess up, you own it, and then you move on. You don't carry it forever. You don't make it the centre of who you are. You just acknowledge it and keep walking.
+
+So I'd lose it, and then I'd own it, and then I'd keep going.
+
+That was the pattern.
+
+I've always been good with me. Even when I shouldn't have been. Even when I'd just done something I wasn't proud of. Even when I'd let someone down or said something I shouldn't have said. I'd take it in, accept it, and not let it metastasise into something bigger.
+
+I think that's one of the things that saved me.
+
+Because adolescence into early adulthood for someone carrying what I was carrying could very easily have gone sideways. Some of it did. The fights. The wildness. The destruction. But the thing that could have made it permanent, the self-loathing, the identity collapse, the certainty that I was broken at my core, that part never landed.
+
+I had two stories about myself by then, remember.
+
+I was too much. And I was not enough.
+
+But underneath both of them was something else.
+
+I was still okay.
+
+That was the third story, and it was quieter than the other two, but it was the one that lasted.
+
+The mask wasn't strength. It wasn't growth. It wasn't healing.
+
+But it was endurance. And underneath the endurance was the part of me that was, somehow, still good with myself.
+
+Which meant I could keep going.
+
+Which meant I would survive the years where almost nothing was settled in me.
+
+Which meant, eventually, when the time came, I would be able to look at the mask and recognise it for what it was, and start doing the actual work underneath.
+
+But that was decades away.
+
+For now, I just learned to hold it.
+
+And mostly, I held it well.`,
+  },
 
   // PART II: BUILDING MYSELF FROM SCRATCH
   { slug: 'running-on-empty',            number: 6,  part: 2, partLabel: 'Building Myself From Scratch', title: 'Running on Empty',            summary: 'Hustle as identity. Earning my place. Outperforming the pain.' },
