@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 
-type Tab = 'positioning' | 'story' | 'pillars' | 'scripts' | 'cadence' | 'launch'
+type Tab = 'kit' | 'positioning' | 'story' | 'pillars' | 'scripts' | 'cadence' | 'launch'
 
 const TABS: { id: Tab; label: string }[] = [
+  { id: 'kit', label: 'Content Kit' },
   { id: 'positioning', label: 'Positioning' },
   { id: 'story', label: 'Story Library' },
   { id: 'pillars', label: 'Content Pillars' },
@@ -41,6 +42,134 @@ function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${styles[color]}`}>
       {children}
     </span>
+  )
+}
+
+// ─── Content Kit ──────────────────────────────────────────────────────────────
+
+type KitFormat = 'Card' | 'Photo' | 'Carousel' | 'Reel'
+type KitPillar = 'Launch' | 'Body' | 'Thinking' | 'AI' | 'Identity'
+
+const KIT_PILLAR_COLOR: Record<KitPillar, 'teal' | 'violet' | 'amber' | 'orange' | 'stone'> = {
+  Launch: 'stone', Body: 'teal', Thinking: 'violet', AI: 'amber', Identity: 'orange',
+}
+
+// graphic-route preview helper (clay is the brand default, so theme is implicit)
+function kitPreview(params: string) {
+  return `/api/content/graphic?${params}`
+}
+
+const KIT_PLAN: { week: string; range: string; posts: { date: string; pillar: KitPillar; eyebrow: string; format: KitFormat; treatment: string; hook: string }[] }[] = [
+  { week: 'Week 1', range: 'Jun 8-14 · Launch', posts: [
+    { date: 'Mon 8',  pillar: 'Launch',   eyebrow: 'ARRIVAL',      format: 'Photo',    treatment: 'Overlay · kade-8', hook: "I've spent 20 years helping people understand their body. Most of the work was never in the gym." },
+    { date: 'Wed 10', pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Card',     treatment: 'Clay card',        hook: 'The problem is not effort. Effort is everywhere.' },
+    { date: 'Fri 12', pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Photo',    treatment: 'Overlay · kade-2', hook: "I've rebuilt my identity three times. Each time I thought I was starting over." },
+    { date: 'Sun 14', pillar: 'Thinking', eyebrow: 'SYSTEMS',      format: 'Card',     treatment: 'Clay card',        hook: 'I stopped writing programs and started building systems.' },
+  ]},
+  { week: 'Week 2', range: 'Jun 15-21 · Pillar rotation', posts: [
+    { date: 'Mon 15', pillar: 'Launch',   eyebrow: 'BODY RECODE',  format: 'Card',     treatment: 'Clay card',        hook: 'Body Recode is the result of every rebuild.' },
+    { date: 'Wed 17', pillar: 'Body',     eyebrow: 'BODY',         format: 'Carousel', treatment: '5 slides → solid close', hook: 'Three states. One body. Completely different responses to the same training.' },
+    { date: 'Fri 19', pillar: 'AI',       eyebrow: 'AI & LEVERAGE',format: 'Card',     treatment: 'Clay card',        hook: "AI doesn't make you smarter. It makes your current thinking louder." },
+    { date: 'Sun 21', pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Card',     treatment: 'Clay card',        hook: "Most people don't have a discipline problem. They have a clarity problem." },
+  ]},
+  { week: 'Week 3', range: 'Jun 22-28 · Story + depth', posts: [
+    { date: 'Mon 22', pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Reel',     treatment: 'Photo cover · kade-8', hook: "I've rebuilt my identity three times. Each one produced a framework." },
+    { date: 'Wed 24', pillar: 'Body',     eyebrow: 'BODY',         format: 'Card',     treatment: 'Clay card',        hook: "You can't out-train a nervous system in protection mode." },
+    { date: 'Fri 26', pillar: 'AI',       eyebrow: 'AI & LEVERAGE',format: 'Photo',    treatment: 'Split · kade-2',   hook: 'Most coaches rent software. I built mine.' },
+    { date: 'Sun 28', pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Card',     treatment: 'Clay card',        hook: 'Clarity is upstream of everything.' },
+  ]},
+  { week: 'Week 4', range: 'Jun 29 - Jul 5 · Reinforce', posts: [
+    { date: 'Mon 29', pillar: 'Identity', eyebrow: 'REBUILD',      format: 'Card',     treatment: 'Clay card',        hook: 'Rebuilding is not failure. It is the process of building better structure.' },
+    { date: 'Wed 1',  pillar: 'Body',     eyebrow: 'BODY',         format: 'Card',     treatment: 'Clay card',        hook: 'The body is not broken. It is being misread.' },
+    { date: 'Fri 3',  pillar: 'AI',       eyebrow: 'AI & LEVERAGE',format: 'Card',     treatment: 'Clay card',        hook: "You don't need to know how to code. You need to know what you're building and why." },
+    { date: 'Sun 5',  pillar: 'Thinking', eyebrow: 'THINKING',     format: 'Carousel', treatment: '5 slides → solid close', hook: 'Interpretation vs prescription. The difference matters more than most people realise.' },
+  ]},
+]
+
+function ContentKitTab() {
+  const formatColor: Record<KitFormat, 'teal' | 'violet' | 'amber' | 'orange' | 'stone'> = {
+    Card: 'stone', Photo: 'teal', Carousel: 'violet', Reel: 'amber',
+  }
+  return (
+    <div className="space-y-5">
+      <Card>
+        <SectionLabel>Brand Colour — Clay</SectionLabel>
+        <p className="text-sm text-stone-600 leading-relaxed">
+          One signature colour across the whole @kade_dunstone_ feed &mdash; warm <span className="font-medium text-[#1A1A1A]">Clay</span>, deliberately distinct from Body Recode (Signal Blue), AI Co-Founder (indigo) and Studio of Ten (dark). Pillars are told apart by the eyebrow label, not by colour. Variety comes from format (photo, carousel) and the solid-clay close slide &mdash; not from switching hue.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          {[
+            { name: 'Paper tint', hex: '#F3E9E1' },
+            { name: 'Ink', hex: '#2A1E16' },
+            { name: 'Accent / solid', hex: '#B5552F' },
+          ].map(s => (
+            <div key={s.name} className="flex items-center gap-2 border border-stone-200 rounded-lg px-3 py-2">
+              <span className="w-6 h-6 rounded" style={{ background: s.hex, border: '1px solid rgba(0,0,0,0.08)' }} />
+              <div>
+                <p className="text-xs font-medium text-[#1A1A1A]">{s.name}</p>
+                <p className="text-[10px] text-stone-500 font-mono">{s.hex}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      <Card>
+        <SectionLabel>Card Formats</SectionLabel>
+        <p className="text-xs text-stone-500 mb-4">Every post is one of these, always in clay. Live previews:</p>
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { label: 'Colour card', url: kitPreview('style=personal&label=THINKING&text=Clarity+is+upstream+of+everything.') },
+            { label: 'Photo (overlay)', url: kitPreview('style=personal-photo&layout=overlay&photo=8&label=REBUILD&text=I%27ve+rebuilt+my+identity+three+times.') },
+            { label: 'Carousel close', url: kitPreview('style=personal&theme=clay-solid&text=You+don%27t+need+to+code.+You+need+to+know+what+you%27re+building+and+why.') },
+          ].map(p => (
+            <div key={p.label}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={p.url} alt={p.label} className="w-full rounded-lg border border-stone-200" />
+              <p className="text-[10px] text-stone-500 mt-1 text-center">{p.label}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Tag color="stone">Colour card</Tag>
+          <Tag color="teal">Photo · top / overlay / split / inset</Tag>
+          <Tag color="violet">Carousel · numbered → solid close</Tag>
+          <Tag color="amber">Reel · photo cover</Tag>
+        </div>
+      </Card>
+
+      <Card>
+        <SectionLabel>Launch Content Plan — 4 weeks</SectionLabel>
+        <p className="text-xs text-stone-500 mb-4">
+          16 posts, 4/week (Mon/Wed/Fri/Sun). ~1 in 4 carries a photo; framework posts are carousels; the rest are clay colour cards. These are <strong className="text-stone-600">scheduled in the one Content Calendar</strong> (Marketing Strategy → Content Calendar, filter Personal Brand) &mdash; this is the plan reference.
+        </p>
+        <div className="space-y-4">
+          {KIT_PLAN.map(wk => (
+            <div key={wk.week}>
+              <div className="flex items-baseline justify-between mb-2">
+                <p className="text-sm font-semibold text-[#1A1A1A]">{wk.week}</p>
+                <p className="text-xs text-stone-500">{wk.range}</p>
+              </div>
+              <div className="space-y-1.5">
+                {wk.posts.map(p => (
+                  <div key={p.date} className="flex items-start gap-3 py-1.5 border-b border-stone-200/60 last:border-0">
+                    <span className="text-xs font-mono text-stone-500 w-12 shrink-0">{p.date}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                        <Tag color={KIT_PILLAR_COLOR[p.pillar]}>{p.pillar}</Tag>
+                        <Tag color={formatColor[p.format]}>{p.format}</Tag>
+                        <span className="text-[10px] text-stone-400">{p.treatment}</span>
+                      </div>
+                      <p className="text-sm text-stone-700 leading-snug">{p.hook}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+    </div>
   )
 }
 
@@ -706,9 +835,10 @@ function LaunchTab() {
 }
 
 export default function PersonalBrandPage() {
-  const [tab, setTab] = useState<Tab>('positioning')
+  const [tab, setTab] = useState<Tab>('kit')
 
   const tabContent: Record<Tab, React.ReactNode> = {
+    kit:         <ContentKitTab />,
     positioning: <PositioningTab />,
     story:       <StoryTab />,
     pillars:     <PillarsTab />,

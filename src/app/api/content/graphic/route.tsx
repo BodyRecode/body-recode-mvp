@@ -691,7 +691,8 @@ export async function GET(request: NextRequest) {
       'clay-solid':   { bg: '#B5552F', ink: '#FCF5EF', accent: '#FFFFFF', muted: 'rgba(255,255,255,0.80)', rule: 'rgba(255,255,255,0.44)' },
       'indigo-solid': { bg: '#5B3FC4', ink: '#F4F1FD', accent: '#FFFFFF', muted: 'rgba(255,255,255,0.80)', rule: 'rgba(255,255,255,0.42)' },
     }
-    const T = THEMES[searchParams.get('theme') ?? 'paper'] ?? THEMES.paper
+    // Clay is the approved @kade_dunstone_ brand colour — the default theme.
+    const T = THEMES[searchParams.get('theme') ?? 'clay'] ?? THEMES.clay
 
     // Carousel affordances: ?num= renders a big serif slide number; ?cue=swipe
     // adds a swipe indicator (slide 1); ?cue=end marks the final slide.
@@ -782,7 +783,7 @@ export async function GET(request: NextRequest) {
       indigo: { bg: '#ECEAF6', ink: '#1E1A33', accent: '#6C4DD6', muted: '#62597E' },
       dark:   { bg: '#161616', ink: '#F2EFEA', accent: '#6FA0FF', muted: '#A8A29A' },
     }
-    const P = PT[searchParams.get('theme') ?? 'paper'] ?? PT.paper
+    const P = PT[searchParams.get('theme') ?? 'clay'] ?? PT.clay
 
     function pSize(len: number) {
       if (len <= 40) return isStory ? '76px' : '60px'
