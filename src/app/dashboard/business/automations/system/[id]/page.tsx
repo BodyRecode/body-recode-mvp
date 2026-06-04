@@ -389,7 +389,7 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
         subject: '{firstName}, your portal is ready',
         paragraphs: [
           'Hi {firstName},',
-          'Your portal is open. Four steps to complete before we start coaching: Coaching Agreement, Health Declaration, Foundational Intake (221 questions across 9 areas), and Baseline Documentation.',
+          'Your portal is open. Four steps to complete before we start coaching: Coaching Agreement, Health Declaration, Foundational Intake (221 questions across 8 areas), and Baseline Documentation.',
           'Once your intake is in, your CFFS generates automatically. That is the read I work from to write your program. No template. Built around what your body is actually doing.',
         ],
         cta: 'Open my portal →',

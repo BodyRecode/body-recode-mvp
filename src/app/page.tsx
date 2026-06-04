@@ -325,7 +325,7 @@ export default function HomePage() {
           organised that way?
         </Prose>
         <Grid min={220}>
-          <StatCard value="221" label="Intake data points" detail="Structured across nine signal domains. Not a questionnaire. A biological read." />
+          <StatCard value="221" label="Intake data points" detail="Structured across eight signal domains. Not a questionnaire. A biological read." />
           <StatCard value="5" label="Interpretive pillars" detail="Each reads a different domain. The output is always a synthesis." />
           <StatCard value="3" label="Body state classifications" detail="Every body, every environment. The classification drives everything downstream." />
         </Grid>
@@ -345,7 +345,7 @@ export default function HomePage() {
             accent
             label="Layer 1 · Interpretation"
             owner="Owned by Body Recode™"
-            body="Takes structured input data across nine signal domains and produces the CFFS: Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation."
+            body="Takes structured input data across eight signal domains and produces the CFFS: Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation."
           />
           <LayerCard
             label="Layer 2 · Execution"
@@ -463,7 +463,7 @@ export default function HomePage() {
       {/* ===== SIGNAL DOMAINS ===== */}
       <Section wide>
         <SectionLabel>Foundational Intake</SectionLabel>
-        <SectionHeading>221 structured signals. Nine domains.</SectionHeading>
+        <SectionHeading>221 structured signals. Eight domains.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
           Before any interpretation begins, the system collects structured data across eight distinct
           signal domains. The depth and specificity of the intake is what makes the output

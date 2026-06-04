@@ -12,7 +12,7 @@ const TERMS: Array<{ term: string; def: string }> = [
   },
   {
     term: 'CFFS - Coach-Facing Foundational Synthesis',
-    def: 'The structured interpretation your coach generates from your foundational intake. It translates your intake answers across nine signal domains into a single picture of how your body is currently organising itself. You see the client-facing version called the Foundational Reading; your coach reads the technical version.',
+    def: 'The structured interpretation your coach generates from your foundational intake. It translates your intake answers across eight signal domains into a single picture of how your body is currently organising itself. You see the client-facing version called the Foundational Reading; your coach reads the technical version.',
   },
   {
     term: 'CFWS - Coach-Facing Weekly Synthesis',
