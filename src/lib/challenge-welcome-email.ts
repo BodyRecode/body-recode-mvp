@@ -68,7 +68,9 @@ ${emailFeaturedCard(
     'Your 14-day training plan',
     'Your HABNS nutrition guide',
     'Your morning and evening reset sequences',
-    'The Body Decode Check-In — unlocks on Day 7',
+    'Week One Progress Session — unlocks Day 5',
+    'The Body Decode Check-In — unlocks Day 7',
+    'Your Body Decode Report — released Day 14',
   ]),
   { eyebrow: 'Inside your challenge portal' },
 )}
