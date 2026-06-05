@@ -161,14 +161,14 @@ const WHAT_YOU_GET = [
     icon: LineChart,
     title: 'Body Decode Result',
     timing: 'Day 14',
-    desc: 'Delivered automatically the moment you finish the Check-In. Your state. Why fat loss has stalled. The specific pattern your body is locked in. And the three things to actually do next.',
+    desc: 'Released on Day 14. Your state. Why fat loss has stalled. The specific pattern your body is locked in. And the three things to actually do next.',
     featured: true,
   },
   {
     icon: Activity,
     title: 'Body Decode Check-In',
     timing: 'Day 7',
-    desc: 'The full read. Eight biological markers, scored. Tells you exactly where your body sits, whether you are still Depleted, moving into Transitioning, or already Ready, and which pattern is holding the system.',
+    desc: 'The Day 7 read. Eight biological markers, scored. Tells you exactly how your body is responding through Week One, and what to focus on for Week Two. Your pattern read is held for the Day 14 Body Decode Report.',
     featured: true,
   },
   {
