@@ -99,7 +99,7 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
       />
       <input
         type="tel"
-        placeholder="Mobile number (for session reminders and daily check-ins)"
+        placeholder="Mobile number (daily portal nudge + Day 5, Day 7, and Day 14 reminders)"
         value={form.phone}
         onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
         required
