@@ -859,11 +859,11 @@ export default function ChallengePortalClient({
             <p style={{ fontSize: '20px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
               You have built the foundation. Now build on it.
             </p>
-            <p style={{ fontSize: '14px', color: '#99d6d0', lineHeight: 1.7, marginBottom: '20px' }}>
+            <p style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: 1.7, marginBottom: '20px' }}>
               The 6-Week Body Recode Blueprint takes everything you have started here and adds structure, pattern recognition, and education to help you understand exactly why your body responds the way it does.
             </p>
             <a
-              href="https://bodyrecode.au"
+              href="https://bodyrecode.au/blueprint?source=challenge_day14_portal"
               style={{
                 display: 'inline-block', padding: '14px 24px', borderRadius: '10px',
                 background: '#1B6DFC', color: '#FFFFFF',

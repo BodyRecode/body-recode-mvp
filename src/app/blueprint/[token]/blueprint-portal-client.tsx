@@ -1580,7 +1580,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
                 </div>
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                   <a
-                    href="/membership"
+                    href="/membership?source=blueprint_week6_portal"
                     style={{ display: 'inline-block', padding: '13px 24px', background: '#1B6DFC', color: '#FFFFFF', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none' }}
                   >
                     Join the Membership - $49/week

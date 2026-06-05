@@ -131,7 +131,7 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
           <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
-            An 8 to 9 minute session walking you through what has actually happened in your biology across the first 5 days, why the signals you have been feeling matter, and what Week 2 is building toward.
+            Seven focused minutes walking you through what has actually happened in your biology across the first 5 days, why the signals you have been feeling matter, and what Week 2 is building toward.
           </p>
         </div>
       </div>
