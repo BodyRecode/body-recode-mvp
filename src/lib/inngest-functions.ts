@@ -20,7 +20,13 @@ import {
 import {
   buildBlueprintCheckinPromptEmail,
   buildBlueprintCheckinReminderEmail,
+  buildBlueprintWeekEmail,
+  buildBlueprintWeek7FollowupEmail,
 } from './blueprint-emails'
+import {
+  buildMembershipCheckinPromptEmail,
+  buildMembershipCheckinReminderEmail,
+} from './membership-emails'
 
 // ─── Challenge SMS Messages ───────────────────────────────────────────────────
 // Rebuilt 2026-05-30 as Minimal Pulse: 1 morning nudge per day (14 messages)
@@ -450,160 +456,6 @@ async function executeAction(
 
 // ─── Blueprint Email Sequence ─────────────────────────────────────────────────
 
-const BLUEPRINT_PATTERN_CONFIG: Record<string, { label: string; colour: string }> = {
-  'stress-stored':   { label: 'Stress-Stored',    colour: '#DC2626' },
-  'metabolic-drift': { label: 'Insulin-Drift',    colour: '#B7791F' },
-  'hormonal-shift':  { label: 'Estrogen-Shift',   colour: '#8b5cf6' },
-  'system-overload': { label: 'Androgen-Decline', colour: '#1B6DFC' },
-}
-
-const BLUEPRINT_WEEK_EMAILS: Record<number, {
-  subject: (firstName: string) => string
-  body: (firstName: string, portalUrl: string) => string
-  patternBlock: Record<string, string>
-}> = {
-  1: {
-    subject: (n) => `Week 1 starts today, ${n}`,
-    body: (n, url) => `
-${emailEyebrow('Week 1 · Regulate')}
-${emailHeading('Re-establish biological rhythm.')}
-${emailDivider()}
-${emailBody(`Hi ${n},`)}
-${emailBody('Your six-week programme starts today. The first two weeks are called the Regulate phase — and the goal is simple: re-establish biological rhythm.')}
-${emailBody('This week is not about pushing hard. It is about removing the inputs that have been keeping your system in a stressed state and replacing them with a structure your body can actually respond to. Consistent meals, controlled training intensity, prioritised sleep.')}
-${emailBody('Your first education lesson — Cortisol and the Stress Response — is now unlocked in your portal. It explains the biology behind why this phase is designed the way it is. Worth reading before your first session.', { bottom: 28 })}
-${emailCta({ href: url, label: 'Open your portal' })}
-${emailUrlFallback(url, 'Or paste this link into your browser')}
-`,
-    patternBlock: {
-      'stress-stored':   'Your cortisol curve is the target this week. Eat breakfast within an hour of waking, never train fasted, and keep caffeine before noon. Every one of these rules is directly lowering the cortisol load your body is carrying.',
-      'metabolic-drift': 'Start the post-meal walk habit this week - 15 minutes after every meal. And protein first at every meal without exception. These two things are the foundation everything else builds on.',
-      'hormonal-shift':  'The most important thing you can do this week is eat. Full meals, generous fat, consistent timing. Do not skip breakfast. Do not reduce portions. Your hormonal axis responds to adequacy, not restriction.',
-      'system-overload': 'Eat before every session. Always. Your nervous system cannot recover from training on empty and this week is about giving it every advantage. Keep rest periods at two to three minutes between sets.',
-    },
-  },
-  2: {
-    subject: (n) => `Week 2 - your insulin lesson is unlocked`,
-    body: (n, url) => `
-${emailEyebrow('Week 2 · Insulin and Blood Sugar')}
-${emailHeading('Why timing beats quantity.')}
-${emailDivider()}
-${emailBody(`Hi ${n},`)}
-${emailBody('You are into your second week. Your education lesson for this week — Insulin and Blood Sugar Control — is now unlocked in the portal.')}
-${emailBody('This lesson explains why the timing of your carbohydrates matters more than the quantity, why snacking keeps fat metabolism switched off even if you are eating healthy food, and why afternoon cravings are not a willpower problem.')}
-${emailBody('If your energy has been more even this week than last week, or the afternoon crash has softened, that is your cortisol curve starting to normalise. The insulin work this week builds on that foundation.', { bottom: 28 })}
-${emailCta({ href: url, label: 'Read the lesson' })}
-${emailUrlFallback(url, 'Or paste this link into your browser')}
-`,
-    patternBlock: {
-      'stress-stored':   'Cortisol raises blood sugar directly even without eating - through a process called gluconeogenesis. As your cortisol load comes down this week, your insulin sensitivity improves as a downstream effect. The two are linked.',
-      'metabolic-drift': 'Insulin sensitivity is your primary target. The fasting gaps between your meals, the post-training carb window, and the post-meal walks are all working on this directly. Stay strict with the rest day protocol this week.',
-      'hormonal-shift':  'Insulin resistance drives oestrogen excess through increased aromatase activity. Improving your insulin sensitivity is a direct lever for the hormonal balance your pattern needs. Keep fat intake generous this week.',
-      'system-overload': 'One night of poor sleep reduces insulin sensitivity by 20 to 30 percent the next day. Sleep quality is a metabolic variable for your pattern, not just a recovery variable. Protect it this week.',
-    },
-  },
-  3: {
-    subject: (n) => `${n} - you are at the midpoint`,
-    body: (n, url) => `
-${emailEyebrow('Week 3 · Adapt Phase Begins')}
-${emailHeading('Progressive load starts now.')}
-${emailDivider()}
-${emailBody(`Hi ${n},`)}
-${emailBody('Three weeks in. You have moved through the full Regulate phase and the Adapt phase starts this week. Progressive load begins — your training intensity target increases and the sessions will ask more of you.')}
-${emailBody('Your Week 3 education lesson — Testosterone and Muscle Signal — is now unlocked. It covers why training harder and eating less are two of the most reliable ways to suppress the hormone responsible for body composition change, and what actually drives it instead.')}
-${emailBody('This is also a good week to submit your check-in if you have not already. Eight markers, two minutes. It gives you a clear picture of what has shifted since Week 1.', { bottom: 28 })}
-${emailCta({ href: url, label: 'Submit your check-in' })}
-${emailUrlFallback(url, 'Or paste this link into your browser')}
-`,
-    patternBlock: {
-      'stress-stored':   'Cortisol and testosterone have a direct inverse relationship. As your cortisol curve normalises through the Adapt phase, testosterone signal recovers as a downstream effect. The controlled training intensity is protecting this recovery.',
-      'metabolic-drift': 'Improving insulin sensitivity reduces aromatase activity, which increases testosterone availability. The Session B finisher is now your most important metabolic tool. Do not skip it.',
-      'hormonal-shift':  'For your pattern, the balance of testosterone relative to oestrogen is the critical variable. Do not push to the lower end of your RIR target if recovery feels compromised this week. Consistency outweighs intensity.',
-      'system-overload': 'Chronic neurological overload is one of the most reliable ways to suppress testosterone. The recovery-first structure this week - three RIR, extended rest, no finisher - is directly protecting testosterone output.',
-    },
-  },
-  4: {
-    subject: (n) => `Week 4 - thyroid and metabolic rate`,
-    body: (n, url) => `
-${emailEyebrow('Week 4 · Thyroid and Metabolic Rate')}
-${emailHeading('Why cutting calories backfires.')}
-${emailDivider()}
-${emailBody(`Hi ${n},`)}
-${emailBody('Four weeks in. Your Week 4 education lesson — Thyroid and Metabolic Rate — is now unlocked.')}
-${emailBody('This lesson covers the mechanism behind why cutting calories makes the body burn less, not more. And why each restriction cycle leaves metabolic rate a little lower than before. If you have dieted multiple times in the past and felt like it gets harder each time, this lesson explains exactly why — and what the programme has been doing to reverse it.')}
-${emailBody('Body composition changes are often most visible around now for people who have been consistent through the first three weeks. If things are shifting, it is because the hormonal environment has changed enough to allow it.', { bottom: 28 })}
-${emailCta({ href: url, label: 'Read the lesson' })}
-${emailUrlFallback(url, 'Or paste this link into your browser')}
-`,
-    patternBlock: {
-      'stress-stored':   'Cortisol impairs the conversion of inactive T4 to active T3. Reducing your cortisol load through the programme directly supports thyroid function. You do not need to target the thyroid separately - it improves as cortisol normalises.',
-      'metabolic-drift': 'Thyroid function improves as insulin sensitivity is restored and systemic inflammation reduces. Both are direct targets of your programme. Metabolic rate recovery is a downstream effect of the primary work you have been doing.',
-      'hormonal-shift':  'Oestrogen excess can block thyroid receptors directly, reducing hormone effectiveness even when blood levels appear normal. Restoring hormonal balance through your programme removes this block. Keep fat intake generous this week.',
-      'system-overload': 'Subclinical thyroid suppression is common in your pattern due to the combination of chronic stress load and often-inadequate food intake. The non-negotiable food volume in your programme is protecting thyroid output.',
-    },
-  },
-  5: {
-    subject: (n) => `Week 5 - the final lesson`,
-    body: (n, url) => `
-${emailEyebrow('Week 5 · Sleep Hormones and Recovery')}
-${emailHeading('The upstream variable.')}
-${emailDivider()}
-${emailBody(`Hi ${n},`)}
-${emailBody('Five weeks in. Your final education lesson — Sleep Hormones and Recovery — is now unlocked.')}
-${emailBody('This lesson ties all five hormones together. It covers what actually happens during sleep, why alcohol reduces recovery even when it helps you fall asleep, and why one night of poor sleep undoes more progress than most people realise. Every hormone in this series resets during sleep. It is the upstream variable that determines how much everything else is working.')}
-${emailBody('This is also a peak effort week for most patterns. Your sessions should feel different to Week 1 — more output from the same perceived effort. That is the system responding. Keep sleep as the priority this week to convert the training stimulus into actual adaptation.', { bottom: 28 })}
-${emailCta({ href: url, label: 'Read the lesson' })}
-${emailUrlFallback(url, 'Or paste this link into your browser')}
-`,
-    patternBlock: {
-      'stress-stored':   'Sleep is treated as a training variable in your programme because it is one. Poor sleep is the fastest way to spike cortisol and undo a week of work. If sleep quality is not where you need it, reduce session intensity before anything else.',
-      'metabolic-drift': 'One night of poor sleep reduces insulin sensitivity by 20 to 30 percent the following day. Given that insulin sensitivity is your primary target, sleep quality is not optional this week. It is part of the protocol.',
-      'hormonal-shift':  'Deep sleep is when growth hormone peaks and reproductive hormones complete their daily reset cycle. Disrupted sleep directly disrupts the hormonal balance your programme is working to restore. Protecting sleep is protecting the result.',
-      'system-overload': 'Sleep is the primary recovery stimulus for your nervous system. It outranks training in your programme. The highest-leverage action available to you right now is consistent, high-quality sleep. Everything else is built around protecting it.',
-    },
-  },
-  6: {
-    subject: (n) => `Final week, ${n}. What comes next.`,
-    body: (n, url) => `
-${emailEyebrow('Week 6 · Embed and Deload')}
-${emailHeading('Final week — adaptations land here.')}
-${emailDivider()}
-${emailBody(`Hi ${n},`)}
-${emailBody('Final week. This is a deload week — training volume drops by 30 percent, intensity stays controlled, and nutrition stays exactly the same. The body makes its biggest adaptations when load drops and recovery takes over.')}
-${emailBody('Take some time this week to compare where you are now with where you started. Energy through the day. Sleep quality. Afternoon crashes. Hunger between meals. Training recovery. These are the markers that the programme targets first, and after six weeks of consistent work they should look different to Week 1.')}
-${emailBody('The 6-Week Blueprint was Stage 2. What you have built here is the hormonal foundation that makes Stage 3 possible. Your portal will show you what comes next.', { bottom: 28 })}
-${emailCta({ href: url, label: 'See what comes next' })}
-${emailUrlFallback(url, 'Or paste this link into your browser')}
-`,
-    patternBlock: {
-      'stress-stored':   'Six weeks of lowered cortisol load has changed your biological baseline. The visceral fat that cortisol was protecting should be more accessible now. The next phase builds progressive intensity on a system that can actually handle it.',
-      'metabolic-drift': 'Your insulin sensitivity is significantly different to Week 1. The afternoon crashes, the urgent between-meal hunger, the inability to use fat as fuel - these patterns shift when the hormonal environment changes. You have changed the environment.',
-      'hormonal-shift':  'Restriction and overtraining were driving your pattern. Six weeks of adequacy and consistency has been correcting the hormonal imbalance at the root. The physical changes may still be arriving - they often lag the hormonal changes by two to three weeks.',
-      'system-overload': 'Your nervous system has had six weeks of reduced demand and adequate recovery. The flat, unresponsive feeling that characterised your pattern at the start should be significantly different now. Stage 3 introduces progressive challenge to a system that can absorb it.',
-    },
-  },
-}
-
-// Phase 3a migration — outer wrapper now goes through darkEmailShell.
-// Pattern callout block preserved (it's specific to the Blueprint flow
-// and intentionally on-brand); body content kept as-is for Phase 3b.
-function blueprintEmailShell(body: string, patternLabel: string, patternColour: string, patternCallout: string): string {
-  const patternBlock = `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-left:3px solid ${patternColour};margin:24px 0 0;">
-        <tr>
-          <td style="padding-left:16px;">
-            <p style="font-size:11px;font-weight:700;color:${patternColour};letter-spacing:0.12em;text-transform:uppercase;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${patternLabel}</p>
-            <p style="font-size:13px;color:#4A4A4A;line-height:1.7;margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${patternCallout}</p>
-          </td>
-        </tr>
-      </table>`
-  return darkEmailShell(`
-${emailLogo()}
-${body}
-${patternBlock}
-${darkEmailSignature()}
-`)
-}
 
 export const blueprintEmailSequenceFunction = inngest.createFunction(
   {
@@ -639,20 +491,17 @@ export const blueprintEmailSequenceFunction = inngest.createFunction(
         if (!enrollment || enrollment.status !== 'active') return
 
         const pattern = enrollment.pattern === 'pending' ? 'stress-stored' : enrollment.pattern
-        const pc = BLUEPRINT_PATTERN_CONFIG[pattern] ?? BLUEPRINT_PATTERN_CONFIG['stress-stored']
-        const emailDef = BLUEPRINT_WEEK_EMAILS[week]
-        const patternCallout = emailDef.patternBlock[pattern] ?? emailDef.patternBlock['stress-stored']
-
+        const built = buildBlueprintWeekEmail({
+          week: week as 1 | 2 | 3 | 4 | 5 | 6,
+          firstName,
+          portalUrl,
+          pattern,
+        })
         await resend.emails.send({
           from: 'Kade at Body Recode <kade@bodyrecode.au>',
           to: email,
-          subject: emailDef.subject(firstName),
-          html: blueprintEmailShell(
-            emailDef.body(firstName, portalUrl),
-            pc.label,
-            pc.colour,
-            patternCallout,
-          ),
+          subject: built.subject,
+          html: built.html,
         })
       })
     }
@@ -671,28 +520,12 @@ export const blueprintEmailSequenceFunction = inngest.createFunction(
       if (!enrollment) return
 
       const pattern = enrollment.pattern === 'pending' ? 'stress-stored' : enrollment.pattern
-      const pc = BLUEPRINT_PATTERN_CONFIG[pattern] ?? BLUEPRINT_PATTERN_CONFIG['stress-stored']
-
+      const built = buildBlueprintWeek7FollowupEmail({ firstName, portalUrl, pattern })
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
-        subject: `${firstName}, you finished the Blueprint.`,
-        html: blueprintEmailShell(
-          `
-${emailEyebrow('Blueprint Complete')}
-${emailHeading(`Six weeks done, ${firstName}.`)}
-${emailDivider()}
-${emailBody(`Hi ${firstName},`)}
-${emailBody('You finished the 6-Week Body Rewire Blueprint. That is not a small thing.')}
-${emailBody('Most people who start a structured programme abandon it before Week 3. You went all six weeks. That means your hormonal environment, your training capacity, your metabolic baseline — all of them are in a different place to where they were when you started.')}
-${emailBody('Stage 3 is where this becomes a long-term result. Progressive challenge applied to a system that can now absorb it. If you want to talk through what the right next step looks like for your pattern, reply to this email and I will come back to you personally.', { bottom: 28 })}
-${emailCta({ href: portalUrl, label: 'Open your portal' })}
-${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
-`,
-          pc.label,
-          pc.colour,
-          `You completed the ${pc.label} pattern programme. The work you have done over six weeks has addressed the specific biological mechanism driving your pattern. Reply to this email if you want to discuss Stage 3.`,
-        ),
+        subject: built.subject,
+        html: built.html,
       })
     })
   }
@@ -869,22 +702,18 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
           if (process.env.RESEND_API_KEY) {
             const resend = new Resend(process.env.RESEND_API_KEY)
             const portalUrl = `${appUrl()}/membership/${token}`
+            const built = buildMembershipCheckinPromptEmail({
+              firstName: first_name,
+              block,
+              completedWeek,
+              newWeek: week,
+              portalUrl,
+            })
             await resend.emails.send({
               from: 'Kade at Body Recode <kade@bodyrecode.au>',
               to: email,
-              subject: `Block ${block} Week ${completedWeek} check-in is due`,
-              html: darkEmailShell(`
-${emailLogo()}
-${emailEyebrow(`Membership · Block ${block} Week ${completedWeek}`)}
-${emailHeading(`Block ${block} Week ${completedWeek} check-in is due.`)}
-${emailDivider()}
-${emailBody(`Hi ${first_name},`)}
-${emailBody(`Block ${block} Week ${completedWeek} is complete. Week ${week} is now live in your portal.`)}
-${emailBody(`Submit your Week ${completedWeek} check-in before moving on. This is the data that feeds your monthly Loom review — the more consistent the data, the more useful the feedback.`, { bottom: 28 })}
-${emailCta({ href: portalUrl, label: `Submit Week ${completedWeek} check-in` })}
-${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
-${darkEmailSignature()}
-`, { previewText: `${first_name}, submit your Block ${block} Week ${completedWeek} check-in.` }),
+              subject: built.subject,
+              html: built.html,
             })
           }
         })
@@ -917,21 +746,17 @@ ${darkEmailSignature()}
           if (process.env.RESEND_API_KEY) {
             const resend = new Resend(process.env.RESEND_API_KEY)
             const portalUrl = `${appUrl()}/membership/${token}`
+            const built = buildMembershipCheckinReminderEmail({
+              firstName: first_name,
+              block,
+              completedWeek,
+              portalUrl,
+            })
             await resend.emails.send({
               from: 'Kade at Body Recode <kade@bodyrecode.au>',
               to: email,
-              subject: `Reminder: Block ${block} Week ${completedWeek} check-in not yet submitted`,
-              html: darkEmailShell(`
-${emailLogo()}
-${emailEyebrow(`Membership · Block ${block} Week ${completedWeek}`)}
-${emailHeading('Your check-in is still outstanding.')}
-${emailDivider()}
-${emailBody(`Hi ${first_name},`)}
-${emailBody(`Your Block ${block} Week ${completedWeek} check-in is still outstanding. This data is what your monthly Loom review is built from — without it, I am working blind.`, { bottom: 28 })}
-${emailCta({ href: portalUrl, label: 'Submit check-in now' })}
-${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
-${darkEmailSignature()}
-`, { previewText: `${first_name}, your Block ${block} Week ${completedWeek} check-in is overdue.` }),
+              subject: built.subject,
+              html: built.html,
             })
           }
         })

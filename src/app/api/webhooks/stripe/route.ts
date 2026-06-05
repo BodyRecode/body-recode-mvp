@@ -12,6 +12,14 @@ import {
   emailLogo, emailEyebrow, emailHeading, emailDivider,
   emailBody, emailStatusCard, emailCta, emailNumberedList, emailFeaturedCard,
 } from '@/lib/email-shell'
+import {
+  buildBlueprintPurchaseWelcomeEmail,
+  buildBlueprintCoachNotificationEmail,
+} from '@/lib/blueprint-emails'
+import {
+  buildMembershipPurchaseWelcomeEmail,
+  buildMembershipCoachNotificationEmail,
+} from '@/lib/membership-emails'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -574,41 +582,12 @@ ${darkEmailSignature()}
       const resend = new Resend(process.env.RESEND_API_KEY)
       const portalUrl = `${appUrl()}/blueprint/${enrollment.token}`
 
-      const patternLabel: Record<string, string> = {
-        'stress-stored': 'Stress-Stored',
-        'metabolic-drift': 'Insulin-Drift',
-        'hormonal-shift': 'Estrogen-Shift',
-        'system-overload': 'Androgen-Decline',
-      }
-      const patternDisplay = pattern ? patternLabel[pattern] ?? pattern : null
-
-      const phaseLines = [
-        '<strong style="color:#1A1A1A;">Phase 1 — Regulate</strong> (Weeks 1-2). Re-establish structure and biological rhythm.',
-        '<strong style="color:#1A1A1A;">Phase 2 — Adapt</strong> (Weeks 3-4). Drive adaptation through progressive load.',
-        '<strong style="color:#1A1A1A;">Phase 3 — Embed</strong> (Weeks 5-6). Lock in the new baseline before Stage 3.',
-      ]
-      const patternLine = patternDisplay
-        ? `Your programme has been built around your <strong style="color:#1A1A1A;">${patternDisplay}</strong> pattern.`
-        : 'Your first step is a short pattern assessment so the programme can be built around your biology.'
-
-      const blueprintInner = `
-${emailLogo()}
-${emailEyebrow('Body Rewire Blueprint')}
-${emailHeading('Your 6-week programme is ready.')}
-${emailDivider()}
-${emailBody(`Hi ${firstName},`)}
-${emailBody(patternLine)}
-${emailBody('The programme runs across three phases:')}
-${emailFeaturedCard(emailNumberedList(phaseLines), { eyebrow: 'How the six weeks unfold' })}
-${emailCta({ href: portalUrl, label: 'Open my Blueprint' })}
-${emailUrlFallback(portalUrl, 'Bookmark this link — your portal for the full 6 weeks')}
-${darkEmailSignature()}
-`
+      const welcome = buildBlueprintPurchaseWelcomeEmail({ firstName, portalUrl, pattern })
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
-        subject: `Your 6-Week Body Rewire Blueprint is ready`,
-        html: darkEmailShell(blueprintInner, { previewText: `${firstName}, your Blueprint is ready.` }),
+        subject: welcome.subject,
+        html: welcome.html,
       })
 
       // Fire week-advance sequence
@@ -617,24 +596,12 @@ ${darkEmailSignature()}
         data: { token: enrollment.token, email, firstName },
       })
 
-      // Coach notification
-      const blueprintCoachInner = `
-${emailLogo()}
-${emailEyebrow('Blueprint Purchased')}
-${emailHeading(`${name} bought the Blueprint.`)}
-${emailDivider()}
-${emailStatusCard({
-  eyebrow: 'New enrollment',
-  headline: `Email: ${email}`,
-  body: `Pattern: ${patternDisplay ?? 'Pending assessment'}. Week-advance sequence has been fired via Inngest.`,
-})}
-${darkEmailSignature()}
-`
+      const coachNotify = buildBlueprintCoachNotificationEmail({ name, email, pattern })
       await resend.emails.send({
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
-        subject: `Blueprint purchased - ${name}`,
-        html: darkEmailShell(blueprintCoachInner, { previewText: `${name} bought the Blueprint.` }),
+        subject: coachNotify.subject,
+        html: coachNotify.html,
       })
     }
 
@@ -670,47 +637,25 @@ ${darkEmailSignature()}
       // so the user's prior Blueprint URL is not orphaned.
       const portalUrl = `${appUrl()}/membership/${membership.token}`
 
-      const membershipInner = `
-${emailLogo()}
-${emailEyebrow('Body Recode Membership')}
-${emailHeading(`Welcome to the Membership, ${first_name}.`)}
-${emailDivider()}
-${emailBody(`Hi ${first_name},`)}
-${emailBody('You are in. Your Body Recode Membership is active and <strong style="color:#1A1A1A;">Block A is loaded into your portal</strong>.')}
-${emailBody('Block A — Consolidate picks up directly from where the Blueprint ended. Your pattern rules carry forward. The training and nutrition have been built on top of the foundation you have already established.', { bottom: 28 })}
-${emailCta({ href: portalUrl, label: 'Open my portal' })}
-${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
-${emailStatusCard({
-  eyebrow: 'What is next',
-  headline: 'Week 4 coach Loom · monthly group Q&A',
-  body: 'Your first monthly coach Loom will be sent at the end of Week 4. Monthly group Q&A call details to follow.',
-})}
-${darkEmailSignature()}
-`
+      const welcome = buildMembershipPurchaseWelcomeEmail({ firstName: first_name, portalUrl })
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
-        subject: `Welcome to the Body Recode Membership`,
-        html: darkEmailShell(membershipInner, { previewText: `Welcome ${first_name}, your Membership is active.` }),
+        subject: welcome.subject,
+        html: welcome.html,
       })
 
-      const membershipCoachInner = `
-${emailLogo()}
-${emailEyebrow('Membership Purchased')}
-${emailHeading(`${first_name} joined the Membership.`)}
-${emailDivider()}
-${emailStatusCard({
-  eyebrow: 'New enrollment',
-  headline: `Email: ${email}`,
-  body: `Pattern: ${pattern_from_blueprint || 'Pending assessment'}. Blueprint token: ${blueprint_token || 'None — direct join'}. Week-advance sequence fired via Inngest.`,
-})}
-${darkEmailSignature()}
-`
+      const coachNotify = buildMembershipCoachNotificationEmail({
+        firstName: first_name,
+        email,
+        pattern: pattern_from_blueprint || null,
+        blueprintToken: blueprint_token || null,
+      })
       await resend.emails.send({
         from: 'Body Recode <kade@bodyrecode.au>',
         to: 'kade@bodyrecode.au',
-        subject: `Membership purchased - ${first_name}`,
-        html: darkEmailShell(membershipCoachInner, { previewText: `${first_name} joined the Membership.` }),
+        subject: coachNotify.subject,
+        html: coachNotify.html,
       })
 
       await inngest.send({

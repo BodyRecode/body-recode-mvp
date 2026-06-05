@@ -55,6 +55,15 @@ const ASSET_GROUPS: AssetGroup[] = [
     ],
   },
   {
+    title: 'Funnel B Emails (Challenge → Blueprint → Membership)',
+    icon: Mail,
+    assets: [
+      { label: 'Challenge Emails (6 total)',  description: 'Welcome (new + returning), Day 5 unlock, Day 7 Progress, Day 14 Body Decode Report (×4 patterns), Day 14 fallback. All rendered via the production builders.', href: '/dashboard/preview/challenge-emails',  tag: 'Stage 1', tagAccent: 'neutral' },
+      { label: 'Blueprint Emails (9 total)',  description: 'Purchase welcome, coach notification, Weeks 1-6 programme emails (per pattern), Week 7 follow-up, weekly check-in prompt, 2-day reminder.',                                href: '/dashboard/preview/blueprint-emails',  tag: 'Stage 2', tagAccent: 'neutral' },
+      { label: 'Membership Emails (4 total)', description: 'Purchase welcome, coach notification, weekly check-in prompt (per Block × Week), 2-day reminder.',                                                                          href: '/dashboard/preview/membership-emails', tag: 'Stage 3', tagAccent: 'neutral' },
+    ],
+  },
+  {
     title: 'Client-Facing Pages',
     icon: FileText,
     assets: [
