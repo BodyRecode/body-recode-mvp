@@ -511,7 +511,7 @@ export default function ChallengePage() {
             What your Day 14 result looks like.
           </h2>
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '36px' }}>
-            You finish the Check-In. Within minutes you receive a personalised report. One of four patterns. Why fat loss has stalled in your specific case. Three actions to take in week two.
+            You take the Check-In on Day 7. By Day 14, the full Body Decode Report drops. One of four patterns. Why fat loss has stalled in your specific case. Three actions to take next.
           </p>
 
           {/* Mockup card */}
@@ -547,7 +547,7 @@ export default function ChallengePage() {
                   Stress-Stored Pattern
                 </p>
                 <p style={{ fontSize: '12px', color: '#6B6B6B', margin: '6px 0 0', fontStyle: 'italic' }}>
-                  One of four. Yours is determined by your Day 7 Check-In.
+                  One of four. Read from your Day 7 Check-In. Released on Day 14.
                 </p>
               </div>
 
