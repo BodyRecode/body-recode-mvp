@@ -37,7 +37,7 @@ import {
 // which duplicated the in-portal coaching notes.
 
 const SMS_MORNING: Record<number, string> = {
-  1: `Welcome %FIRST%. Day 1 is live in your portal. Today is for setup - read the training plan and nutrition guide, do the morning reset. The work begins gently. Portal: %URL%`,
+  1: `Welcome %FIRST%. Day 1 is live in your portal. Today is for setup - read the training plan and nutrition guide, do the morning reset. The work begins gently. Portal: %URL%. To stop these nudges any time, email kade@bodyrecode.au.`,
   2: `Day 2 %FIRST%. First training day. Open today's coaching note in the portal before you train: %URL%`,
   3: `Day 3 %FIRST%. Today's coaching note is in the portal: %URL%. The work compounds when the rhythm holds.`,
   4: `Day 4 %FIRST%. Rest day. Today's coaching note is in the portal: %URL%. Sleep is the highest leverage variable - protect it.`,
