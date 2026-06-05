@@ -664,9 +664,11 @@ ${darkEmailSignature()}
 
     if (membership && process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY)
-      const portalUrl = blueprint_token
-        ? `${appUrl()}/blueprint/${blueprint_token}`
-        : `${appUrl()}/membership/${membership.token}`
+      // Always route to the Membership portal — that is where Block A
+      // actually lives. The Blueprint portal at /blueprint/{token} still
+      // resolves and gracefully hands off via the Week 6 handoff card,
+      // so the user's prior Blueprint URL is not orphaned.
+      const portalUrl = `${appUrl()}/membership/${membership.token}`
 
       const membershipInner = `
 ${emailLogo()}

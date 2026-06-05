@@ -1425,7 +1425,13 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
   )
 }
 
-export default function BlueprintPortalClient({ enrollment }: { enrollment: Enrollment }) {
+export default function BlueprintPortalClient({
+  enrollment,
+  activeMembershipToken,
+}: {
+  enrollment: Enrollment
+  activeMembershipToken: string | null
+}) {
   const [pattern, setPattern] = useState(enrollment.pattern)
   const [activeTab, setActiveTab] = useState('home')
 
@@ -1551,8 +1557,29 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
               )
             })()}
 
-            {/* Week 6 ascension CTA */}
-            {currentWeek === 6 && (
+            {/* Week 6: ascension CTA (no Membership yet) OR handoff card (Membership already active) */}
+            {currentWeek === 6 && activeMembershipToken && (
+              <div style={{ background: '#FFFFFF', border: '1px solid #1B6DFC', borderRadius: 12, padding: '24px', marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #1B6DFC, #8b5cf6)' }} />
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  Membership active
+                </div>
+                <div style={{ fontSize: 20, fontWeight: 700, color: '#1A1A1A', marginBottom: 12 }}>
+                  Your work has moved.
+                </div>
+                <p style={{ fontSize: 14, color: '#4A4A4A', margin: '0 0 20px', lineHeight: 1.8 }}>
+                  Block A is loaded and live in your Membership portal. The training, nutrition, and weekly check-in continue there from here. Your Blueprint pattern, your six weeks of foundation, and your check-in history all carry forward.
+                </p>
+                <a
+                  href={`/membership/${activeMembershipToken}`}
+                  style={{ display: 'inline-block', padding: '13px 24px', background: '#1B6DFC', color: '#FFFFFF', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none' }}
+                >
+                  Continue at your Membership portal →
+                </a>
+              </div>
+            )}
+
+            {currentWeek === 6 && !activeMembershipToken && (
               <div style={{ background: '#FFFFFF', border: '1px solid #1B6DFC', borderRadius: 12, padding: '24px', marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #1B6DFC, #8b5cf6)' }} />
                 <div style={{ fontSize: 11, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
@@ -1562,7 +1589,7 @@ export default function BlueprintPortalClient({ enrollment }: { enrollment: Enro
                   You built the foundation. Now keep going.
                 </div>
                 <p style={{ fontSize: 14, color: '#4A4A4A', margin: '0 0 20px', lineHeight: 1.8 }}>
-                  Six weeks established the rhythm. The Body Recode Membership is where that work compounds. Same portal, same pattern - new blocks every six weeks with a coach watching your numbers.
+                  Six weeks established the rhythm. The Body Recode Membership is where that work compounds. Same coaching system, same pattern continuity - new blocks every six weeks with a coach watching your numbers.
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
                   {[
