@@ -17,6 +17,10 @@ import {
   buildDay5UnlockEmail,
   buildDay14FallbackEmail,
 } from './challenge-checkin-emails'
+import {
+  buildBlueprintCheckinPromptEmail,
+  buildBlueprintCheckinReminderEmail,
+} from './blueprint-emails'
 
 // ─── Challenge SMS Messages ───────────────────────────────────────────────────
 // Rebuilt 2026-05-30 as Minimal Pulse: 1 morning nudge per day (14 messages)
@@ -729,31 +733,17 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
           const resend = new Resend(process.env.RESEND_API_KEY)
           const portalUrl = `${appUrl()}/blueprint/${token}`
           const completedWeek = week - 1
+          const built = buildBlueprintCheckinPromptEmail({
+            firstName,
+            completedWeek,
+            newWeek: week,
+            portalUrl,
+          })
           await resend.emails.send({
             from: 'Kade at Body Recode <kade@bodyrecode.au>',
             to: email,
-            subject: `Week ${completedWeek} check-in is due`,
-            html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-        </td></tr>
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${firstName},</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Week ${completedWeek} is complete. Week ${week} is now live in your portal.</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Before you move into the new week, take 2 minutes to submit your Week ${completedWeek} check-in. It tracks the 8 biological markers that show whether the programme is working - energy, sleep, recovery, cravings, and more.</p>
-          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Week ${completedWeek} Check-In</a></td></tr>
-          </table>
-          ${darkEmailSignature()}
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+            subject: built.subject,
+            html: built.html,
           })
         }
       })
@@ -784,30 +774,16 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
         if (process.env.RESEND_API_KEY) {
           const resend = new Resend(process.env.RESEND_API_KEY)
           const portalUrl = `${appUrl()}/blueprint/${token}`
+          const built = buildBlueprintCheckinReminderEmail({
+            firstName,
+            completedWeek,
+            portalUrl,
+          })
           await resend.emails.send({
             from: 'Kade at Body Recode <kade@bodyrecode.au>',
             to: email,
-            subject: `Reminder: Week ${completedWeek} check-in not yet submitted`,
-            html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-          <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
-        </td></tr>
-        <tr><td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Hi ${firstName},</p>
-          <p style="margin:0 0 18px;font-size:15px;color:#999999;">Your Week ${completedWeek} check-in is still outstanding. It takes 2 minutes and gives you a clear read on what the programme is doing to your biology.</p>
-          <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
-            <tr><td><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Submit Check-In Now</a></td></tr>
-          </table>
-          ${darkEmailSignature()}
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+            subject: built.subject,
+            html: built.html,
           })
         }
       })
