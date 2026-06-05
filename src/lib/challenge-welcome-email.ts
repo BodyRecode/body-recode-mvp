@@ -27,19 +27,18 @@ ${darkEmailSignature()}
 `)
 }
 
-export async function sendChallengeWelcomeEmail({
-  to,
+// Pure builder: returns {subject, html} so the preview route can render the
+// exact bytes that get sent. Send path below composes this and hands the
+// HTML to Resend.
+export function buildChallengeWelcomeEmail({
   firstName,
   portalUrl,
   returning = false,
-}: ChallengeWelcomeParams): Promise<ChallengeWelcomeResult> {
-  const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey) {
-    return { ok: false, error: 'RESEND_API_KEY missing' }
-  }
-
-  const resend = new Resend(apiKey)
-
+}: {
+  firstName: string
+  portalUrl: string
+  returning?: boolean
+}): { subject: string; html: string } {
   const subject = returning
     ? `Here is your challenge portal link, ${firstName}.`
     : `You're in, ${firstName}. Day 1 starts now.`
@@ -83,6 +82,23 @@ ${emailBody(
 ${emailCta({ href: portalUrl, label: 'Open my challenge portal' })}
 ${emailUrlFallback(portalUrl, 'Bookmark this link — your portal for the full 14 days')}
 `)
+
+  return { subject, html }
+}
+
+export async function sendChallengeWelcomeEmail({
+  to,
+  firstName,
+  portalUrl,
+  returning = false,
+}: ChallengeWelcomeParams): Promise<ChallengeWelcomeResult> {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    return { ok: false, error: 'RESEND_API_KEY missing' }
+  }
+
+  const resend = new Resend(apiKey)
+  const { subject, html } = buildChallengeWelcomeEmail({ firstName, portalUrl, returning })
 
   try {
     const { data, error } = await resend.emails.send({

@@ -19,6 +19,22 @@
 import { darkEmailSignature } from './email-signature'
 import { CHECKIN_PATTERNS } from './checkin-patterns'
 import { PROGRESS_MARKERS, MARKER_RATING_META, type MarkerRating } from './checkin-markers'
+import {
+  darkEmailShell, emailUrlFallback,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  emailCta, emailFeaturedCard, emailNumberedList, emailStatusCard,
+} from './email-shell'
+
+// Outer shell shared with the Day 5 unlock + Day 14 fallback builders below.
+// The Day 7 + Day 14 Report builders earlier in this file use their own
+// inline `emailShell` because they were written before the helpers landed.
+function challengeArcShell(body: string): string {
+  return darkEmailShell(`
+${emailLogo()}
+${body}
+${darkEmailSignature()}
+`)
+}
 
 function emailShell(body: string): string {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
@@ -355,5 +371,79 @@ export function buildDay14BodyDecodeReportEmail({
     ${blueprintCtaCard()}
     <p style="color:#4A4A4A;font-size:14px;line-height:1.7;margin:0;">Or just reply to this email and I will personally help you figure out the right next step.</p>
   `)
+  return { subject, html }
+}
+
+// ─── Day 5 Week One Progress Session Unlock Email ────────────────────────
+// Sent at Day 5 by Inngest when the Week One Progress Session video unlocks.
+// 7-minute single HeyGen render walking participants through what their
+// body has done across the first five days. Runtime + framing locked v6.1
+// (2026-06-04). sessionVideoUrl points at the hosted .mp4 (or the portal
+// page if no env var is set).
+export function buildDay5UnlockEmail({
+  firstName,
+  portalUrl,
+  sessionVideoUrl,
+}: {
+  firstName: string
+  portalUrl: string
+  sessionVideoUrl: string
+}): { subject: string; html: string } {
+  const subject = `Day 5 - Your Week One Progress Session is ready`
+  const html = challengeArcShell(`
+${emailEyebrow('Day 5 · Week One Progress')}
+${emailHeading('Your Week One session is ready.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('You have made it to Day 5. That puts you ahead of most people who started.')}
+${emailBody('Your Week One Progress Session is now available to watch. Seven focused minutes I recorded specifically for this point in the challenge.')}
+${emailFeaturedCard(
+  emailNumberedList([
+    'What your body has actually been doing this week',
+    'How to decode the signals you have been feeling — energy, digestion, puffiness, mood',
+    'Why rhythm matters more than restriction',
+    'What Week 2 is building toward',
+    'The next step after the challenge for those who want to go deeper',
+  ]),
+  { eyebrow: 'In this session' },
+)}
+${emailBody('I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset — it will make Week 2 feel much clearer.', { bottom: 28 })}
+${emailCta({ href: sessionVideoUrl, label: 'Watch the session (7 min)' })}
+${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live Session section')}
+`)
+  return { subject, html }
+}
+
+// ─── Day 14 Plain Ascension Fallback Email ───────────────────────────────
+// Sent at Day 14 by Inngest when the participant did NOT complete the
+// Body Decode Check-In. No result to reveal — acknowledgement of the 14
+// days finished + Blueprint ascension push. Participants who DID complete
+// the Check-In get buildDay14BodyDecodeReportEmail instead (above).
+export function buildDay14FallbackEmail({
+  firstName,
+}: {
+  firstName: string
+}): { subject: string; html: string } {
+  const subject = `${firstName}, you finished the 14 days.`
+  const blueprintUrl = 'https://bodyrecode.au/blueprint?source=challenge_day14_ascension'
+  const html = challengeArcShell(`
+${emailEyebrow('Day 14 · Challenge Complete')}
+${emailHeading(`14 days done, ${firstName}.`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('You finished the challenge. That is not nothing.')}
+${emailBody('Most people who start something like this quit before Day 5. You made it to Day 14. That means your body has had 14 consecutive days of structured rhythm. Consistent training, real food, better sleep, predictable timing.')}
+${emailFeaturedCard(emailNumberedList(['Reduced the daily puffiness and inflammation','Stabilised your energy across the day','Calmed the afternoon cravings','Improved your sleep quality','Given your digestion a cleaner baseline']), { eyebrow: 'What that should have done' })}
+${emailBody('This is your baseline now. The question is: what do you build on top of it?')}
+${emailBody('The 6-Week Body Rewire Blueprint takes everything you have started and runs six weeks of focused, pattern-specific corrective work. Training calibrated. Nutrition timed. Weekly coaching written for your pattern.', { bottom: 24 })}
+${emailStatusCard({
+  eyebrow: 'Next step',
+  headline: '6-Week Body Rewire Blueprint',
+  body: 'Six weeks of pattern-specific corrective work. $97 one-time. Your pattern carries through from the Challenge into Week 1.',
+})}
+${emailCta({ href: blueprintUrl, label: 'Start the 6-Week Blueprint · $97' })}
+${emailUrlFallback(blueprintUrl, 'Or paste this link into your browser')}
+${emailBody('Or just reply to this email and I will personally help you figure out the right next step.', { size: 14, bottom: 0 })}
+`)
   return { subject, html }
 }

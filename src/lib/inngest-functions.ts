@@ -12,7 +12,11 @@ import type { TriggerContext } from './automation-engine'
 import { appUrl } from '@/lib/app-url'
 import { logLeadEvent } from './log-lead-event'
 import { legacyLetterToSlug } from './pattern-mapping'
-import { buildDay14BodyDecodeReportEmail } from './challenge-checkin-emails'
+import {
+  buildDay14BodyDecodeReportEmail,
+  buildDay5UnlockEmail,
+  buildDay14FallbackEmail,
+} from './challenge-checkin-emails'
 
 // ─── Challenge SMS Messages ───────────────────────────────────────────────────
 // Rebuilt 2026-05-30 as Minimal Pulse: 1 morning nudge per day (14 messages)
@@ -105,31 +109,12 @@ export const challengeSequenceFunction = inngest.createFunction(
       if (!enrollment || enrollment.status !== 'active') return
 
       const sessionVideoUrl = process.env.CHALLENGE_SESSION_VIDEO_URL ?? portalUrl
+      const built = buildDay5UnlockEmail({ firstName, portalUrl, sessionVideoUrl })
       await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to: email,
-        subject: `Day 5 - Your Week One Progress Session is ready`,
-        html: challengeEmailShell(`
-${emailEyebrow('Day 5 · Week One Progress')}
-${emailHeading('Your Week One session is ready.')}
-${emailDivider()}
-${emailBody(`Hi ${firstName},`)}
-${emailBody('You have made it to Day 5. That puts you ahead of most people who started.')}
-${emailBody('Your Week One Progress Session is now available to watch. Seven focused minutes I recorded specifically for this point in the challenge.')}
-${emailFeaturedCard(
-  emailNumberedList([
-    'What your body has actually been doing this week',
-    'How to decode the signals you have been feeling — energy, digestion, puffiness, mood',
-    'Why rhythm matters more than restriction',
-    'What Week 2 is building toward',
-    'The next step after the challenge for those who want to go deeper',
-  ]),
-  { eyebrow: 'In this session' },
-)}
-${emailBody('I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset — it will make Week 2 feel much clearer.', { bottom: 28 })}
-${emailCta({ href: sessionVideoUrl, label: 'Watch the session (7 min)' })}
-${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live Session section')}
-`),
+        subject: built.subject,
+        html: built.html,
       })
     })
 
@@ -178,29 +163,12 @@ ${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live 
         })
       } else {
         // No Check-In on record. Plain ascension push, no result content.
+        const built = buildDay14FallbackEmail({ firstName })
         await resend.emails.send({
           from: 'Kade at Body Recode <kade@bodyrecode.au>',
           to: email,
-          subject: `${firstName}, you finished the 14 days.`,
-          html: challengeEmailShell(`
-${emailEyebrow('Day 14 · Challenge Complete')}
-${emailHeading(`14 days done, ${firstName}.`)}
-${emailDivider()}
-${emailBody(`Hi ${firstName},`)}
-${emailBody('You finished the challenge. That is not nothing.')}
-${emailBody('Most people who start something like this quit before Day 5. You made it to Day 14. That means your body has had 14 consecutive days of structured rhythm. Consistent training, real food, better sleep, predictable timing.')}
-${emailFeaturedCard(emailNumberedList(['Reduced the daily puffiness and inflammation','Stabilised your energy across the day','Calmed the afternoon cravings','Improved your sleep quality','Given your digestion a cleaner baseline']), { eyebrow: 'What that should have done' })}
-${emailBody('This is your baseline now. The question is: what do you build on top of it?')}
-${emailBody('The 6-Week Body Rewire Blueprint takes everything you have started and runs six weeks of focused, pattern-specific corrective work. Training calibrated. Nutrition timed. Weekly coaching written for your pattern.', { bottom: 24 })}
-${emailStatusCard({
-  eyebrow: 'Next step',
-  headline: '6-Week Body Rewire Blueprint',
-  body: 'Six weeks of pattern-specific corrective work. $97 one-time. Your pattern carries through from the Challenge into Week 1.',
-})}
-${emailCta({ href: 'https://bodyrecode.au/blueprint?source=challenge_day14_ascension', label: 'Start the 6-Week Blueprint · $97' })}
-${emailUrlFallback('https://bodyrecode.au/blueprint?source=challenge_day14_ascension', 'Or paste this link into your browser')}
-${emailBody('Or just reply to this email and I will personally help you figure out the right next step.', { size: 14, bottom: 0 })}
-`),
+          subject: built.subject,
+          html: built.html,
         })
       }
 
