@@ -283,7 +283,7 @@ export default function PortalDayPage() {
                   Week One Progress Session
                 </p>
                 <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0 }}>
-                  Unlocks tomorrow on Day 5. A 30-minute recorded session walking you through what your body has been doing.
+                  Unlocks tomorrow on Day 5. A focused seven-minute session walking you through what your body has been doing.
                 </p>
               </div>
               <p style={{ fontSize: '11px', fontWeight: 700, color: '#999999', letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>

@@ -671,14 +671,14 @@ export default function ChallengePortalClient({
                   borderRadius: '99px', padding: '3px 9px',
                   letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 }}>
-                  30 min · on demand
+                  7 min · on demand
                 </span>
               </div>
               <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
                 Decode what your body has been doing this week.
               </p>
               <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
-                A 30-minute session walking you through exactly what has been happening in your biology, what the signals mean, and what Week 2 is building toward. Pre-recorded — watch any time.
+                A focused seven-minute session walking you through exactly what has been happening in your biology, what the signals mean, and what Week 2 is building toward. Pre-recorded — watch any time.
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px' }}>
                 {[

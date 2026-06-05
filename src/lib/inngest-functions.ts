@@ -115,7 +115,7 @@ ${emailHeading('Your Week One session is ready.')}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody('You have made it to Day 5. That puts you ahead of most people who started.')}
-${emailBody('Your Week One Progress Session is now available to watch. It is a 30-minute session I recorded specifically for this point in the challenge.')}
+${emailBody('Your Week One Progress Session is now available to watch. Seven focused minutes I recorded specifically for this point in the challenge.')}
 ${emailFeaturedCard(
   emailNumberedList([
     'What your body has actually been doing this week',
@@ -127,7 +127,7 @@ ${emailFeaturedCard(
   { eyebrow: 'In this session' },
 )}
 ${emailBody('I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset — it will make Week 2 feel much clearer.', { bottom: 28 })}
-${emailCta({ href: sessionVideoUrl, label: 'Watch the session (30 min)' })}
+${emailCta({ href: sessionVideoUrl, label: 'Watch the session (7 min)' })}
 ${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live Session section')}
 `),
       })
