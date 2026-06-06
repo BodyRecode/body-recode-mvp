@@ -62,8 +62,8 @@ export async function GET(request: NextRequest) {
           currency: 'aud',
           unit_amount: 3700,
           product_data: {
-            name: 'Body Decode Report',
-            description: 'Your personalised body state interpretation. What your scores mean for your training and fat loss.',
+            name: 'Body Decode Report + State Field Guide',
+            description: 'Your personalised body state interpretation, plus the state-matched Field Guide ebook for your scorecard result. Two deliverables, one price — locked.',
           },
         },
         quantity: 1,

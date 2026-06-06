@@ -662,7 +662,7 @@ async function resyncScorecardWorkflow(
       position: 7, type: 'action', action_type: 'send_email',
       config: {
         subject: 'The prescription problem',
-        body: `Hi {{first_name}},\n\nMost coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state does not factor into it at all.\n\nYour scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.\n\nA program built for a Ready state will not work for a Depleted state. That is not a motivation problem. That is a prescription problem.\n\nThat is exactly what the call addresses. Building the approach around your actual state, not a generic template.\n\nBook here: https://bodyrecode.au/book\n\nKade\nBody Recode`,
+        body: `Hi {{first_name}},\n\nMost coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state does not factor into it at all.\n\nYour scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.\n\nA program built for a Ready state will not work for a Depleted state. That is not a motivation problem. That is a prescription problem.\n\nThat is exactly what the call addresses. Building the approach around your actual state, not a generic template.\n\nBook here: https://bodyrecode.au/book\n\n---\n\nIf you would rather start with the written read of your state instead, the {{scorecard_state}} Field Guide is $19. 25 pages. What this state means, why standard moves are not landing, the first four moves to bring the load down. Instant delivery to your inbox.\n\nGet the {{scorecard_state}} Field Guide: https://bodyrecode.au/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day8\n\nKade\nBody Recode`,
       },
     },
     { position: 8, type: 'wait', action_type: null, config: { unit: 'days', amount: '5' } },
@@ -670,7 +670,7 @@ async function resyncScorecardWorkflow(
       position: 9, type: 'action', action_type: 'send_email',
       config: {
         subject: 'Last one from me, {{first_name}}',
-        body: `Hi {{first_name}},\n\nLast email from me on this.\n\nYour scorecard result is still there whenever you want to act on it. The call is still available. The report is still there if you want the written breakdown first.\n\nNo follow-up after this.\n\nBook a call: https://bodyrecode.au/book\nGet the report: https://bodyrecode.au/get-report\n\nKade\nBody Recode`,
+        body: `Hi {{first_name}},\n\nLast email from me on this.\n\nYour scorecard result is still there whenever you want to act on it. The call is still available. The report and the {{scorecard_state}} Field Guide are still there if you want the written breakdown first.\n\nNo follow-up after this.\n\nBook a call: https://bodyrecode.au/book\nGet the report + bundled Field Guide: https://bodyrecode.au/get-report\nOr just the Field Guide ($19): https://bodyrecode.au/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day13\n\nKade\nBody Recode`,
       },
     },
   ]

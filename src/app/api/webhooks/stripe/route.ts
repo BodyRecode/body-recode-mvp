@@ -565,6 +565,68 @@ ${darkEmailSignature()}
         html: darkEmailShell(reportInner, { previewText: `${firstName}, your Body Decode Report is ready.` }),
       })
 
+      // Phase B5: bundle the matching State Field Guide alongside the Report.
+      // Locked Plan §6.3: the scorecard-result secondary is the Report + Guide
+      // bundle at $37. The Report stays the hero (sent above); the matching
+      // State Guide is the value-add (fulfilled below). If the Guide product
+      // for this body_state has not been authored/seeded yet (digital_asset_metadata
+      // row missing), the bundle silently degrades to Report-only — no crash,
+      // no email mention of a Guide that does not yet exist.
+      const normalisedState = body_state?.toLowerCase().match(/^(depleted|transitioning|ready)/)?.[1]
+      if (normalisedState) {
+        const { data: guideProduct } = await admin
+          .from('be_products')
+          .select('id, name, kind, digital_asset_metadata!inner(slug, source_path, fulfilment_kind, engine_call, ascension_cta_path, active, state_match)')
+          .eq('kind', 'field_guide')
+          .eq('digital_asset_metadata.state_match', normalisedState)
+          .eq('digital_asset_metadata.active', true)
+          .maybeSingle()
+
+        if (guideProduct) {
+          const meta = Array.isArray(guideProduct.digital_asset_metadata)
+            ? guideProduct.digital_asset_metadata[0]
+            : guideProduct.digital_asset_metadata
+
+          if (meta) {
+            const { data: existingClient } = await admin
+              .from('clients')
+              .select('id')
+              .ilike('email', email)
+              .maybeSingle()
+
+            const { data: guidePurchase } = await admin
+              .from('digital_asset_purchases')
+              .insert({
+                client_id: existingClient?.id ?? null,
+                email_at_purchase: email.toLowerCase(),
+                product_id: guideProduct.id,
+                stripe_payment_id: session.payment_intent as string ?? null,
+                stripe_session_id: `${session.id}__bundle_guide`,  // suffix to avoid unique conflict with the Report row if a separate one ever lands
+                status: 'paid',
+                source: `scorecard_report_bundle_${normalisedState}`,
+              })
+              .select('id')
+              .single()
+
+            if (guidePurchase) {
+              await fulfilInstantPdf({
+                purchase_id: guidePurchase.id,
+                product: { id: guideProduct.id, name: guideProduct.name, kind: guideProduct.kind },
+                meta: {
+                  slug: meta.slug,
+                  source_path: meta.source_path,
+                  fulfilment_kind: meta.fulfilment_kind,
+                  engine_call: meta.engine_call,
+                  ascension_cta_path: meta.ascension_cta_path,
+                },
+                email,
+                source: `scorecard_report_bundle_${normalisedState}`,
+              })
+            }
+          }
+        }
+      }
+
       // Schedule 3-email report follow-up sequence
       const { email1: f1, email2: f2, email3: f3 } = buildReportFollowUpEmails(firstName, body_state, BOOKING_LINK)
       const day2 = daysAfter9amBrisbane(nextMorning9amBrisbane(), 1)
