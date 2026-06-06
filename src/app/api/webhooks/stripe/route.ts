@@ -20,8 +20,81 @@ import {
   buildMembershipPurchaseWelcomeEmail,
   buildMembershipCoachNotificationEmail,
 } from '@/lib/membership-emails'
+import {
+  buildDigitalAssetDeliveryEmail,
+  ascensionCtaFor,
+  type AscensionTarget,
+} from '@/lib/digital-asset-emails'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+
+const LIBRARY_BUCKET = 'library-assets'
+
+// Phase A — instant_pdf fulfilment.
+// Generates a signed URL for the PDF, builds the reader URL, and sends
+// the delivery email with the state-matched ascension CTA. Marks the
+// purchase row fulfilled.
+async function fulfilInstantPdf(args: {
+  purchase_id: string
+  product: { id: string; name: string; kind: string | null }
+  meta: {
+    slug: string
+    source_path: string
+    fulfilment_kind: string
+    engine_call: string | null
+    ascension_cta_path: string | null
+  }
+  email: string
+  source: string
+}) {
+  const admin = createAdminClient()
+  const firstName = args.email.split('@')[0]
+  const productTitle = args.product.name
+
+  // 1. Sign a 24-hour download URL.
+  const { data: signed } = await admin.storage
+    .from(LIBRARY_BUCKET)
+    .createSignedUrl(args.meta.source_path, 60 * 60 * 24)
+  const pdfUrl = signed?.signedUrl ?? ''
+
+  // 2. Reader URL: members get the membership-token link, cold buyers get
+  // their purchase-id token. We use the purchase id directly so the email
+  // link is stable.
+  const readerUrl = `${appUrl()}/library/${args.purchase_id}/${args.meta.slug}`
+
+  // 3. Ascension CTA from metadata (state-matched).
+  const ascensionTarget = (args.meta.ascension_cta_path as AscensionTarget) || 'depleted'
+  const ascension = ascensionCtaFor(ascensionTarget, args.source)
+
+  // 4. Send the delivery email.
+  if (process.env.RESEND_API_KEY && pdfUrl) {
+    const resend = new Resend(process.env.RESEND_API_KEY)
+    const built = buildDigitalAssetDeliveryEmail({
+      firstName,
+      productTitle,
+      pdfUrl,
+      readerUrl,
+      ascensionCtaLabel: ascension.label,
+      ascensionCtaUrl: ascension.url,
+    })
+    await resend.emails.send({
+      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      to: args.email,
+      subject: built.subject,
+      html: built.html,
+    })
+  }
+
+  // 5. Mark the purchase fulfilled with the signed PDF URL as output_ref.
+  await admin
+    .from('digital_asset_purchases')
+    .update({
+      status: 'fulfilled',
+      fulfilled_at: new Date().toISOString(),
+      output_ref: pdfUrl,
+    })
+    .eq('id', args.purchase_id)
+}
 
 export async function POST(request: NextRequest) {
   const body = await request.text()
@@ -732,6 +805,77 @@ ${darkEmailSignature()}
         name: 'extension/enrolled',
         data: { token: enrollment.token, email, firstName: first_name },
       })
+    }
+
+    return NextResponse.json({ received: true })
+  }
+
+  // Handle Digital Asset purchase (Field Guides / protocols / bolt-ons).
+  // Phase A locked 2026-06-06 — see 2026-06-06_Phase_A_Reconcile.md §4.4.
+  if (session.metadata?.type === 'digital_asset_purchase') {
+    const { product_id, email, source } = session.metadata
+    const admin = createAdminClient()
+
+    const { data: product } = await admin
+      .from('be_products')
+      .select('id, name, kind')
+      .eq('id', product_id)
+      .single()
+
+    const { data: meta } = await admin
+      .from('digital_asset_metadata')
+      .select('slug, source_path, fulfilment_kind, engine_call, ascension_cta_path')
+      .eq('product_id', product_id)
+      .single()
+
+    if (!product || !meta) {
+      console.error('[stripe webhook] digital_asset_purchase: product or metadata not found', { product_id })
+      return NextResponse.json({ received: true })
+    }
+
+    // Look up existing client by email if any (backfills client_id).
+    const { data: existingClient } = await admin
+      .from('clients')
+      .select('id')
+      .ilike('email', email)
+      .maybeSingle()
+
+    const { data: purchase, error: purchaseError } = await admin
+      .from('digital_asset_purchases')
+      .insert({
+        client_id: existingClient?.id ?? null,
+        email_at_purchase: email.toLowerCase(),
+        product_id,
+        stripe_payment_id: session.payment_intent as string ?? null,
+        stripe_session_id: session.id,
+        status: 'paid',
+        source: source ?? 'direct',
+        raw: session as unknown as Record<string, unknown>,
+      })
+      .select('id')
+      .single()
+
+    if (purchaseError || !purchase) {
+      console.error('[stripe webhook] digital_asset_purchase insert error:', purchaseError)
+      return NextResponse.json({ received: true })
+    }
+
+    // Fulfilment routing by kind. Phase A ships instant_pdf live; the
+    // other three branches are stubbed (Phase B/C/D will wire them up).
+    if (meta.fulfilment_kind === 'instant_pdf') {
+      await fulfilInstantPdf({ purchase_id: purchase.id, product, meta, email, source: source ?? 'direct' })
+    } else if (meta.fulfilment_kind === 'instant_engine') {
+      // Phase C — bolt_on_ai. Enqueue the matching engine call.
+      // TODO(Phase C): inngest.send({ name: 'digital_asset/engine_call', ... })
+      console.log('[stripe webhook] digital_asset_purchase instant_engine stub', purchase.id)
+    } else if (meta.fulfilment_kind === 'coach_task') {
+      // Phase D — bolt_on_human. Create a coach Today's Focus action.
+      // TODO(Phase D): create coach_tasks row + due_at SLA
+      console.log('[stripe webhook] digital_asset_purchase coach_task stub', purchase.id)
+    } else if (meta.fulfilment_kind === 'shipping') {
+      // Phase E — bolt_on_physical. Write to shipping queue.
+      // TODO(Phase E): shipping_queue insert
+      console.log('[stripe webhook] digital_asset_purchase shipping stub', purchase.id)
     }
 
     return NextResponse.json({ received: true })
