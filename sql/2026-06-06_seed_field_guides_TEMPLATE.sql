@@ -43,7 +43,7 @@ WITH new_product AS (
     'The Depleted Field Guide',
     'Why a clean diet and hard training stopped working — and the first moves to bring the load down. A 25-page state-matched playbook for adults whose body state has gone Depleted.',
     19.00,
-    'one-time',
+    'one_time',
     'body_recode',
     'field_guide'
   )
@@ -91,7 +91,7 @@ WITH new_product AS (
     'The Transitioning Field Guide',
     'Your pattern is identified — here is the corrective sequence before it slips back. A 25-page state-matched playbook for adults whose body state has reached Transitioning.',
     19.00,
-    'one-time',
+    'one_time',
     'body_recode',
     'field_guide'
   )
@@ -139,7 +139,7 @@ WITH new_product AS (
     'The Ready Field Guide',
     'You respond now — here is how to compound it instead of losing it again. A 25-page state-matched playbook for adults whose body state has reached Ready.',
     19.00,
-    'one-time',
+    'one_time',
     'body_recode',
     'field_guide'
   )
