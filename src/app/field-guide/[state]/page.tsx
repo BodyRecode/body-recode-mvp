@@ -20,17 +20,17 @@ const STATE_LABELS: Record<string, { title: string; subtitle: string; bodyLine: 
   depleted: {
     title: 'The Depleted Field Guide.',
     subtitle: 'Why a clean diet and hard training stopped working.',
-    bodyLine: 'A 25-page state-matched playbook for adults whose body state has gone Depleted. What is happening biologically. Why standard moves make it worse. The first four moves to bring the load down.',
+    bodyLine: 'A 44-page state-matched playbook for adults whose body state has gone Depleted. What is happening biologically. Why standard moves make it worse. The first four moves to bring the load down.',
   },
   transitioning: {
     title: 'The Transitioning Field Guide.',
     subtitle: 'Your pattern is identified. Here is the corrective sequence before it slips back.',
-    bodyLine: 'A 25-page state-matched playbook for adults whose body state has reached Transitioning. What this state means. Why the next 90 days matter. The corrective sequence that locks the progress in.',
+    bodyLine: 'A 44-page state-matched playbook for adults whose body state has reached Transitioning. What this state means. Why the next 90 days matter. The corrective sequence that locks the progress in.',
   },
   ready: {
     title: 'The Ready Field Guide.',
     subtitle: 'You respond now. Here is how to compound it instead of losing it again.',
-    bodyLine: 'A 25-page state-matched playbook for adults whose body state has reached Ready. Why you respond now. The compounding rules. How to stay Ready instead of slipping back.',
+    bodyLine: 'A 44-page state-matched playbook for adults whose body state has reached Ready. Why you respond now. The compounding rules. How to stay Ready instead of slipping back.',
   },
 }
 
@@ -48,18 +48,32 @@ export default async function FieldGuideLandingPage({
 
   const copy = STATE_LABELS[state]
 
-  // Look up the active Field Guide product for this state.
+  // Look up the active Field Guide product for this state. Split into two
+  // queries: nested-foreign-table filter via Supabase REST is fragile for
+  // 1:1 PK-as-FK relationships, so we find the metadata row first then
+  // fetch the product by its product_id.
   const admin = createAdminClient()
-  const { data: product } = await admin
-    .from('be_products')
-    .select('id, name, price, kind, digital_asset_metadata!inner(slug, state_match, active)')
-    .eq('kind', 'field_guide')
-    .eq('digital_asset_metadata.state_match', state)
-    .eq('digital_asset_metadata.active', true)
+  const { data: meta } = await admin
+    .from('digital_asset_metadata')
+    .select('product_id, slug')
+    .eq('state_match', state)
+    .eq('active', true)
     .maybeSingle()
 
-  const productId = product?.id ?? null
-  const productPrice = product?.price ?? 19
+  let productId: string | null = null
+  let productPrice = 19
+  if (meta?.product_id) {
+    const { data: product } = await admin
+      .from('be_products')
+      .select('id, name, price, kind')
+      .eq('id', meta.product_id)
+      .eq('kind', 'field_guide')
+      .maybeSingle()
+    if (product) {
+      productId = product.id
+      productPrice = Number(product.price) || 19
+    }
+  }
 
   return (
     <div style={{
