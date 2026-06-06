@@ -14,6 +14,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
 import { appUrl } from '@/lib/app-url'
 import { buildDigitalAssetDeliveryEmail, ascensionCtaFor, type AscensionTarget } from '@/lib/digital-asset-emails'
 
@@ -25,8 +26,23 @@ async function handle(request: NextRequest) {
   const email = (url.searchParams.get('email') ?? '').toLowerCase().trim()
   const slug = url.searchParams.get('slug') ?? 'depleted-field-guide'
 
-  if (!secret || secret !== process.env.ADMIN_SECRET) {
-    return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  // Accept either: a matching ADMIN_SECRET query param, OR an authenticated
+  // Supabase session (admin coach logged into the dashboard). The latter
+  // lets Kade hit this from his browser without copying the env secret.
+  let authed = false
+  if (secret && process.env.ADMIN_SECRET && secret === process.env.ADMIN_SECRET) {
+    authed = true
+  } else {
+    try {
+      const supabase = await createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) authed = true
+    } catch {
+      // ignore
+    }
+  }
+  if (!authed) {
+    return NextResponse.json({ error: 'Unauthorised — sign in to the dashboard first, or pass ?secret=ADMIN_SECRET' }, { status: 401 })
   }
   if (!email || !email.includes('@')) {
     return NextResponse.json({ error: 'email query param required' }, { status: 400 })
