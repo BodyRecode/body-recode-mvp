@@ -168,10 +168,10 @@ const STATES = [
 ]
 
 const ZONES = [
-  { zone: 'MZ1', name: 'Stress Belt', loc: 'Stomach / Waist', signal: 'Cortisol and adrenaline dominance' },
-  { zone: 'MZ2', name: 'Gut & Bloat', loc: 'Digestive region', signal: 'Insulin timing disruption' },
-  { zone: 'MZ3', name: 'Hip & Thigh', loc: 'Hips / Thighs', signal: 'Reproductive hormone and metabolic conservation' },
-  { zone: 'MZ4', name: 'Upper Body Stress', loc: 'Upper body', signal: 'Nervous system load, adrenaline, sleep retention' },
+  { zone: 'MZ1', name: 'Stress Belt', loc: 'Stomach / Waist', signal: 'Cortisol and adrenaline dominance', ext: ['Lower Abdominal Compression', 'Lower Back Shelf', 'Solar Plexus Compression'] },
+  { zone: 'MZ2', name: 'Gut & Bloat', loc: 'Digestive region', signal: 'Insulin timing disruption', ext: ['Lower Abdominal Distension', 'Ribcage Bloat'] },
+  { zone: 'MZ3', name: 'Hip & Thigh', loc: 'Hips / Thighs', signal: 'Reproductive hormone and metabolic conservation', ext: ['Glute Shelf Retention', 'Lower Quad Crest Retention', 'Hamstring Tie-In Retention'] },
+  { zone: 'MZ4', name: 'Upper Body Stress', loc: 'Upper body', signal: 'Nervous system load, adrenaline, sleep retention', ext: ['Upper Back Puffiness', 'Shoulder Bracing', 'Neck Holding'] },
 ]
 
 const INFRA = [
@@ -420,10 +420,12 @@ export default function EnginePage() {
       {/* STATES + ZONES */}
       <Section wide>
         <SectionLabel>The Classification</SectionLabel>
-        <SectionHeading>Three body states. The Fat Map’s four zones.</SectionHeading>
+        <SectionHeading>Three body states. Four zones, eleven sub-zones.</SectionHeading>
         <Prose style={{ marginBottom: 40 }}>
-          The deep state (named below) is the engine’s own classification, distinct from the public scorecard
-          label. Fat-storage conclusions are valid only on the long arc — months, not weeks.
+          The deep state (named below) is the engine’s own classification, with a public-facing label for
+          client language. The Fat Map reads at two resolutions: the macro zone says <em>where</em> load is
+          expressed, the extended sub-zone says <em>how</em>. Fat-storage conclusions are valid only on the
+          long arc — months, not weeks.
         </Prose>
         <Grid min={240} gap={12} style={{ marginBottom: 28 }}>
           {STATES.map((s) => (
@@ -441,7 +443,15 @@ export default function EnginePage() {
             <div key={z.zone} style={{ ...cardStyle, padding: 18 }}>
               <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, color: BLUE_LIGHT, letterSpacing: '0.1em', marginBottom: 8 }}>{z.zone} · {z.name}</p>
               <p style={{ fontSize: 12.5, color: TXT_MUTE, marginBottom: 6 }}>{z.loc}</p>
-              <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.6 }}>{z.signal}</p>
+              <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.6, marginBottom: 12 }}>{z.signal}</p>
+              <p style={{ fontFamily: MONO, fontSize: 9, fontWeight: 700, letterSpacing: '0.14em', color: TXT_MUTE, textTransform: 'uppercase', marginBottom: 6 }}>Extended zones</p>
+              <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {z.ext.map((e) => (
+                  <li key={e} style={{ fontSize: 12, color: TXT_DIM, lineHeight: 1.4, paddingLeft: 12, position: 'relative' }}>
+                    <span style={{ position: 'absolute', left: 0, color: BLUE_LIGHT }}>·</span>{e}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </Grid>
