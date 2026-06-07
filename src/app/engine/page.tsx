@@ -45,13 +45,6 @@ const STAGES = [
 
 const INPUTS = [
   {
-    name: 'Public Scorecard',
-    meta: 'pre-client',
-    model: null,
-    desc: 'Top-of-funnel quiz. Five sections (Energy, Sleep, Stress, Training Response, Fat Loss), scored 1–3 each. Produces a provisional body state and a deterministic coach-facing pre-call brief.',
-    store: 'leads.*',
-  },
-  {
     name: 'Foundational Intake',
     meta: '8 domains · ~200 scale signals',
     model: null,
@@ -298,7 +291,8 @@ export default function EnginePage() {
         </Grid>
         <Callout>
           The CFFS is coach-triggered only after <strong style={{ color: TXT_BODY }}>both</strong> the intake and the baseline photos are in,
-          so the Fat Map can read spatial patterning from the photos. The scorecard never generates a CFFS — it is pre-client.
+          so the Fat Map can read spatial patterning from the photos. The engine's entry point is the Foundational Intake — the public scorecard
+          is a Performance Coaching lead-gen tool, upstream of and separate from the engine.
         </Callout>
       </Section>
 
