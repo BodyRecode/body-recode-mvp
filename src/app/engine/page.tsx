@@ -26,6 +26,15 @@ const HAIKU = 'Claude Haiku 4.5'
 const SONNET = 'Claude Sonnet 4.6'
 
 /* ---------- Data ---------- */
+const FOOTPRINT = [
+  { n: '126k', l: 'lines of code', d: 'TypeScript across the platform' },
+  { n: '192', l: 'API routes', d: '25 of them call a model' },
+  { n: '65', l: 'database tables', d: 'across 63 schema files' },
+  { n: '12', l: 'prompt files', d: '3,764 lines of encoded doctrine' },
+  { n: '200', l: 'intake signals', d: 'per client, across 8 domains' },
+  { n: '2', l: 'Claude models', d: 'Haiku 4.5 + Sonnet 4.6' },
+]
+
 const STAGES = [
   { n: '00', label: 'Input Layer', tag: 'Capture' },
   { n: '01', label: 'CFFS — Core Interpretation', tag: 'Layer 1 · owned' },
@@ -219,6 +228,30 @@ export default function EnginePage() {
             <Chip>3 body states</Chip>
             <Chip>Interpretation terminates at the CFFS</Chip>
           </div>
+        </div>
+      </section>
+
+      {/* BY THE NUMBERS */}
+      <section style={{ padding: '64px 24px', borderBottom: `1px solid ${BORDER}`, background: CANVAS_2 }}>
+        <div style={{ maxWidth: 1040, margin: '0 auto' }}>
+          <SectionLabel>By the Numbers</SectionLabel>
+          <p style={{ fontSize: 15.5, color: TXT_DIM, lineHeight: 1.7, maxWidth: 680, marginBottom: 34 }}>
+            Not a prompt and a table. A full production system — every figure counted directly from the codebase.
+          </p>
+          <Grid min={150} gap={1} style={{ border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden', background: BORDER }}>
+            {FOOTPRINT.map((f) => (
+              <div key={f.l} style={{ background: SURFACE, padding: '22px 20px' }}>
+                <p style={{ fontSize: 32, fontWeight: 800, color: BLUE_LIGHT, letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 8 }}>{f.n}</p>
+                <p style={{ fontSize: 13, fontWeight: 700, color: TXT, marginBottom: 4 }}>{f.l}</p>
+                <p style={{ fontSize: 11.5, color: TXT_MUTE, lineHeight: 1.5 }}>{f.d}</p>
+              </div>
+            ))}
+          </Grid>
+          <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, lineHeight: 1.7, marginTop: 20, letterSpacing: '0.02em' }}>
+            The interpretation itself is small and dense — 25 model-backed routes and 12 prompt files.
+            The rest is the platform that captures the inputs and runs the coaching around them.
+            Behind all of it: a 39,087-line interpretive canon the prompts operationalise.
+          </p>
         </div>
       </section>
 
