@@ -91,6 +91,8 @@ const SECTIONS = [
   { id: 'mb-checkin',       title: 'Check-In and Trends',    colour: 'teal' as const, category: 'membership' as Category },
   { id: 'mb-automation',    title: 'Automation',             colour: 'teal' as const, category: 'membership' as Category },
   { id: 'mb-database',      title: 'Database',               colour: 'teal' as const, category: 'membership' as Category },
+  { id: 'mb-library',       title: 'Library and Field Guides', colour: 'teal' as const, category: 'membership' as Category },
+  { id: 'mb-bolt-ons',      title: 'Bolt-on Store',          colour: 'teal' as const, category: 'membership' as Category },
 ]
 
 const CATEGORIES: { id: Category; label: string }[] = [
@@ -3190,6 +3192,46 @@ export default function HelpPage() {
             ]} />
 
             <Note>To create a test membership enrollment: INSERT INTO membership_enrollments (email, first_name, pattern, pattern_source, current_block, current_week) VALUES (&apos;email&apos;, &apos;Name&apos;, &apos;stress-stored&apos;, &apos;blueprint&apos;, &apos;A&apos;, 1) RETURNING token;</Note>
+          </Section>
+
+          <Section id="mb-library" title="Library and State Field Guides" colour="teal">
+            <p>The <strong>Library</strong> is the canonical reader surface for every PDF the platform sells. Three State Field Guides shipped 2026-06-06 (Depleted / Transitioning / Ready, ~41-44 pages each), authored as state-matched playbooks for the three scorecard cohorts and bundled with the $37 Scorecard Report.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Token routing</p>
+            <p>The route is <code>/library/{'{token}'}</code> and the token resolves two ways: an <code>active membership_enrollments.token</code> shows every active <code>field_guide</code> and <code>protocol</code> entitled to members, OR a <code>digital_asset_purchases.id</code> shows that cold buyer their single asset. Same reader code, different token shape.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">PDF reader</p>
+            <p>Click into any library item and the reader at <code>/library/{'{token}'}/{'{slug}'}</code> server-renders an iframe pointing at a 24-hour Supabase signed URL (private bucket <code>library-assets</code>). Download CTA in the top-right delivers the PDF directly.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Adding a new asset</p>
+            <p>Render the PDF → upload to <code>library-assets/{'{folder}/{slug}'}-v1.pdf</code> → seed one row in <code>be_products</code> + one in <code>digital_asset_metadata</code>. Members see the new item the moment the metadata row is <code>active = true</code>. For Field Guides use <code>kind = &apos;field_guide&apos;</code> with the right <code>state_match</code>; for protocols use <code>kind = &apos;protocol&apos;</code>.</p>
+          </Section>
+
+          <Section id="mb-bolt-ons" title="Bolt-on Store and Protocol Packs" colour="teal">
+            <p>The <strong>Bolt-on Store</strong> (shipped 2026-06-07) is the members-only à-la-carte ascension surface above the $49/wk Membership. First pack live: <strong>The Sleep Reset Protocol</strong> ($19, a seven-day intervention to restore sleep architecture). Three more Protocol Packs queued (Travel Adaptation / Deload Week / Cycle Syncing) plus four AI Deep-Dives queued.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Member entry point</p>
+            <p>From the library at <code>/library/{'{member_token}'}</code> the top-right has a <strong>Bolt-on store →</strong> link. Non-members hitting <code>/library/{'{token}'}/store</code> directly get the &quot;Unlocks inside Membership&quot; upgrade prompt routing to <code>/membership</code>.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Store index</p>
+            <p>The index at <code>/library/{'{member_token}'}/store</code> shows every active product where <code>kind IN (&apos;protocol&apos;, &apos;bolt_on_ai&apos;, &apos;bolt_on_human&apos;, &apos;bolt_on_physical&apos;)</code>, grouped by category. Each card shows the pack&apos;s cover thumbnail + tagline + price + a <strong>Read more →</strong> link to the ad detail page.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Per-pack ad page</p>
+            <p>Clicking a card lands on <code>/library/{'{member_token}'}/store/{'{slug}'}</code> — the actual sales surface. Cover hero left, headline + sub right, primary &quot;Add&quot; card with the price, three columns (Who this is for / What is inside / Format), dark CTA footer with a second &quot;Add&quot;. Ad copy lives in <code>src/lib/bolt-on-ad-copy.ts</code> keyed by slug.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Checkout and delivery</p>
+            <p>The <strong>Add</strong> button POSTs to <code>/api/digital-assets/checkout</code> with the member&apos;s email pre-filled and a <code>bolt_on_store_{'{kind}'}</code> source attribution. Stripe Checkout returns to <code>/library/pending</code>. Fulfilment runs through the same Phase A <code>fulfilInstantPdf()</code> webhook branch as Field Guides — instant delivery email + library row.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Adding a new pack</p>
+            <StatusList items={[
+              { label: '1. Author', desc: 'Write the pack markdown (~2,500 words for protocol packs). Voice: short, prescriptive, no em dashes.' },
+              { label: '2. Render PDF', desc: 'Run /tmp/render_protocol_pack.py with a new PACK_CONFIG entry. NextPageTemplate MUST come BEFORE PageBreak in build_cover_flow.' },
+              { label: '3. Render cover PNG', desc: 'pypdfium2 render page 1 at 2.5x, upload to library-assets/{folder}/{slug}-v1-cover.png.' },
+              { label: '4. Ad copy', desc: 'Add a slug entry to src/lib/bolt-on-ad-copy.ts (tagline, hero, who-it-is-for, what-is-inside, format).' },
+              { label: '5. Seed SQL', desc: 'One row in be_products (type=one_time, category=body_recode, kind=protocol|bolt_on_ai), one in digital_asset_metadata.' },
+              { label: '6. Verify', desc: 'Adapt scripts/verify-sleep-reset-e2e.ts with the new slug, run, expect 5/5 green.' },
+            ]} />
+            <Note>The Phase A <code>instant_engine</code> fulfilment branch is a stub today. The four queued AI Deep-Dives will need that branch wired into Inngest before they can sell.</Note>
           </Section>
 
         </div>
