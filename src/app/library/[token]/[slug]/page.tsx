@@ -17,7 +17,7 @@ const LIBRARY_BUCKET = 'library-assets'
 async function resolveAccess(
   token: string,
   slug: string,
-): Promise<{ pdfUrl: string; title: string; firstName: string; backHref: string } | null> {
+): Promise<{ pdfUrl: string; title: string; firstName: string; backHref: string; isMember: boolean } | null> {
   const admin = createAdminClient()
 
   // 1. Load the asset by slug so we know what file we are serving.
@@ -55,6 +55,7 @@ async function resolveAccess(
       title: product.name,
       firstName: member.first_name ?? 'there',
       backHref: `/library/${token}`,
+      isMember: true,
     }
   }
 
@@ -75,6 +76,7 @@ async function resolveAccess(
       title: product.name,
       firstName: purchase.email_at_purchase.split('@')[0],
       backHref: `/library/${token}`,
+      isMember: false,
     }
   }
 
@@ -109,14 +111,21 @@ export default async function LibraryReaderPage({
           <p style={{ fontSize: '13px', fontWeight: 700, color: '#1A1A1A', margin: 0 }}>
             {access.title}
           </p>
-          <a
-            href={access.pdfUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 600 }}
-          >
-            Download PDF ↗
-          </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            {access.isMember && (
+              <Link href={`/membership/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 600 }}>
+                Membership home →
+              </Link>
+            )}
+            <a
+              href={access.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 600 }}
+            >
+              Download PDF ↗
+            </a>
+          </div>
         </div>
       </div>
 

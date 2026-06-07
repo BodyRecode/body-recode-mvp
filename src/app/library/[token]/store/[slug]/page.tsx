@@ -122,11 +122,16 @@ export default async function BoltOnDetailPage({ params }: { params: Promise<{ t
     }}>
       {/* Top nav */}
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
           <Link href={`/library/${token}/store`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 600 }}>
             ← Bolt-on store
           </Link>
-          <img src="https://bodyrecode.au/logo-black.png" width="140" alt="Body Recode" style={{ display: 'block' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+            <Link href={`/membership/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 600 }}>
+              Membership home →
+            </Link>
+            <img src="https://bodyrecode.au/logo-black.png" width="140" alt="Body Recode" style={{ display: 'block' }} />
+          </div>
         </div>
       </div>
 
