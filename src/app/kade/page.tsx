@@ -51,7 +51,7 @@ export default function KadePage() {
             <div>
               <div className="flex items-center gap-2 mb-0.5">
                 <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">Studio of Ten</p>
-                <span className="text-[9px] font-bold tracking-[0.15em] text-[#B5552F] uppercase">Coming soon</span>
+                <span className="text-[9px] font-bold tracking-[0.15em] text-[#B5552F] uppercase">Launching soon</span>
               </div>
               <p className="text-xs text-[#6E5B4D] italic">Capped 10-client build studio for solo operators</p>
             </div>
