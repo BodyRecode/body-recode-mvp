@@ -11,12 +11,12 @@ const serif = Source_Serif_4({
 
 export const metadata: Metadata = {
   title: 'Kade Dunstone',
-  description: 'Performance coach. Builder. Father.',
+  description: 'Three rebuilds. One constant. I never stopped building.',
 }
 
 export default function KadePage() {
   return (
-    <div className={`${serif.className} min-h-screen bg-[#F5EFE4] text-[#2A2520] flex flex-col items-center justify-center px-5 py-16`}>
+    <div className={`${serif.className} min-h-screen bg-[#F3E9E1] text-[#2A1E16] flex flex-col items-center justify-center px-5 py-16`}>
       <div className="w-full max-w-sm">
 
         {/* Identity */}
@@ -25,93 +25,101 @@ export default function KadePage() {
           <img
             src="/kade.jpg"
             alt="Kade Dunstone"
-            className="w-20 h-20 rounded-full object-cover object-top mx-auto mb-5 border border-[#D8CDB5]"
+            className="w-20 h-20 rounded-full object-cover object-top mx-auto mb-5 border border-[#E0D1C0]"
             style={{ objectPosition: '50% 20%' }}
           />
-          <h1 className="text-2xl font-semibold text-[#2A2520] mb-1 tracking-tight">Kade Dunstone</h1>
-          <p className="text-sm text-[#6B6056] italic">Performance coach. Builder. Father.</p>
-          <p className="text-xs text-[#857968] mt-2 tracking-wide italic">Three rebuilds. Still building.</p>
+          <h1 className="text-2xl font-semibold text-[#2A1E16] mb-2 tracking-tight">Kade Dunstone</h1>
+          <p className="text-sm text-[#2A1E16] leading-snug">
+            Three rebuilds. One constant.
+            <br />
+            <em className="text-[#B5552F]">I never stopped building.</em>
+          </p>
+          <p className="text-xs text-[#6E5B4D] mt-3 tracking-wide italic">Performance coach. Father. Builder.</p>
         </div>
 
-        {/* Links — single warm-ink accent across the whole stack */}
+        {/* Clay rule */}
+        <div className="w-12 h-px bg-[#B5552F] mx-auto mb-10" />
+
+        {/* Links — single clay accent across the whole stack */}
         <div className="space-y-3">
 
           {/* Studio of Ten */}
           <a
             href="https://studiooften.com"
-            className="group flex items-center justify-between w-full bg-[#FBF6EC] border border-[#D8CDB5] hover:border-[#2A2520] hover:bg-[#F2EAD8] rounded-xl px-5 py-4 transition-colors"
+            className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>
-              <p className="text-base font-semibold text-[#2A2520]">Studio of Ten</p>
-              <p className="text-xs text-[#6B6056] mt-0.5 italic">Capped 10-client build studio for solo operators</p>
+              <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">Studio of Ten</p>
+              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">Capped 10-client build studio for solo operators</p>
             </div>
-            <span className="text-[#2A2520] text-lg" aria-hidden>→</span>
+            <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>
           </a>
 
           {/* Performance Coaching */}
           <a
             href="https://performance.bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#FBF6EC] border border-[#D8CDB5] hover:border-[#2A2520] hover:bg-[#F2EAD8] rounded-xl px-5 py-4 transition-colors"
+            className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>
-              <p className="text-base font-semibold text-[#2A2520]">Performance Coaching</p>
-              <p className="text-xs text-[#6B6056] mt-0.5 italic">1:1 coaching, online and in Brisbane</p>
+              <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">Performance Coaching</p>
+              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">1:1 coaching, online and in Brisbane</p>
             </div>
-            <span className="text-[#2A2520] text-lg" aria-hidden>→</span>
+            <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>
           </a>
 
           {/* Body Recode Platform */}
           <a
             href="https://bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#FBF6EC] border border-[#D8CDB5] hover:border-[#2A2520] hover:bg-[#F2EAD8] rounded-xl px-5 py-4 transition-colors"
+            className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>
-              <p className="text-base font-semibold text-[#2A2520]">Body Recode™</p>
-              <p className="text-xs text-[#6B6056] mt-0.5 italic">The biological interpretation platform</p>
+              <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">Body Recode™</p>
+              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">The biological interpretation platform</p>
             </div>
-            <span className="text-[#2A2520] text-lg" aria-hidden>→</span>
+            <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>
           </a>
 
           {/* AI Co-Founder Method */}
           <a
             href="https://aicofoundermethod.com"
-            className="group flex items-center justify-between w-full bg-[#FBF6EC] border border-[#D8CDB5] hover:border-[#2A2520] hover:bg-[#F2EAD8] rounded-xl px-5 py-4 transition-colors"
+            className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>
-              <p className="text-base font-semibold text-[#2A2520]">AI Co-Founder Method</p>
-              <p className="text-xs text-[#6B6056] mt-0.5 italic">Build with AI as your co-founder</p>
+              <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">AI Co-Founder Method</p>
+              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">Build with AI as your co-founder</p>
             </div>
-            <span className="text-[#2A2520] text-lg" aria-hidden>→</span>
+            <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>
           </a>
 
           {/* Tracing Myself — memoir */}
           <Link
             href="/kade/chapters"
-            className="group flex items-center justify-between w-full bg-[#FBF6EC] border border-[#D8CDB5] hover:border-[#2A2520] hover:bg-[#F2EAD8] rounded-xl px-5 py-4 transition-colors"
+            className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>
-              <p className="text-base font-semibold text-[#2A2520]">Tracing Myself</p>
-              <p className="text-xs text-[#6B6056] mt-0.5 italic">A memoir, published as I write it</p>
+              <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">Tracing Myself</p>
+              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">A memoir, published as I write it</p>
             </div>
-            <span className="text-[#2A2520] text-lg" aria-hidden>→</span>
+            <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>
           </Link>
 
           {/* Contact */}
           <a
             href="mailto:kade@bodyrecode.au"
-            className="group flex items-center justify-between w-full bg-[#FBF6EC] border border-[#D8CDB5] hover:border-[#2A2520] hover:bg-[#F2EAD8] rounded-xl px-5 py-4 transition-colors"
+            className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>
-              <p className="text-base font-semibold text-[#2A2520]">Get in touch</p>
-              <p className="text-xs text-[#6B6056] mt-0.5 italic">kade@bodyrecode.au</p>
+              <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">Get in touch</p>
+              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">kade@bodyrecode.au</p>
             </div>
-            <span className="text-[#2A2520] text-lg" aria-hidden>→</span>
+            <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>
           </a>
 
         </div>
 
-        {/* Footer */}
-        <p className="text-center text-xs text-[#857968] mt-12 italic tracking-wide">bodyrecode.au/kade</p>
+        {/* Footer — @kade_dunstone_ wordmark, no logo per personal brand spec */}
+        <p className="text-center text-xs text-[#8A7565] mt-12 italic tracking-[0.15em]">@kade_dunstone_</p>
+        <p className="text-center text-[10px] text-[#8A7565] mt-1 tracking-wide">bodyrecode.au/kade</p>
       </div>
     </div>
   )
