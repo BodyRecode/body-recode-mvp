@@ -31,7 +31,7 @@ const FOOTPRINT = [
   { n: '192', l: 'API routes', d: '25 of them call a model' },
   { n: '65', l: 'database tables', d: 'across 63 schema files' },
   { n: '12', l: 'prompt files', d: '3,764 lines of encoded doctrine' },
-  { n: '200', l: 'intake signals', d: 'per client, across 8 domains' },
+  { n: '221', l: 'intake signals', d: 'per client, across 8 domains' },
   { n: '2', l: 'Claude models', d: 'Haiku 4.5 + Sonnet 4.6' },
 ]
 

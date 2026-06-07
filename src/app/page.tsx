@@ -360,11 +360,31 @@ export default function HomePage() {
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>The Engine</SectionLabel>
           <SectionHeading>One interpretive core. Built to scale across industries.</SectionHeading>
-          <Prose style={{ maxWidth: 720, marginBottom: 56 }}>
+          <Prose style={{ maxWidth: 720, marginBottom: 28 }}>
             Structured client data is read across five pillars, classified into a body state, and
             resolved into the CFFS. The engine is environment-agnostic. Each execution layer is a
             downstream application with its own product, interface and practitioner tools.
           </Prose>
+
+          <a
+            href="/engine"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              background: 'rgba(27,109,252,0.08)',
+              color: BLUE_LIGHT,
+              fontWeight: 600,
+              fontSize: 13.5,
+              padding: '12px 22px',
+              borderRadius: 10,
+              border: '1px solid rgba(27,109,252,0.4)',
+              textDecoration: 'none',
+              marginBottom: 56,
+            }}
+          >
+            Open the engine — full technical breakdown →
+          </a>
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {/* INPUT */}
