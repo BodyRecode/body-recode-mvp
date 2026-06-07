@@ -103,6 +103,17 @@ export default async function LibraryIndexPage({ params }: { params: Promise<{ t
         </div>
       </div>
 
+      {context.kind === 'member' && (
+        <div style={{ maxWidth: '720px', margin: '0 auto', padding: '14px 24px 0', textAlign: 'right' }}>
+          <Link href={`/library/${token}/store`} style={{
+            fontSize: '12px', fontWeight: 700, color: '#1B6DFC',
+            textDecoration: 'none', letterSpacing: '0.06em',
+          }}>
+            Bolt-on store  →
+          </Link>
+        </div>
+      )}
+
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '52px 24px 24px' }}>
         <p style={{
           fontSize: '11px', fontWeight: 700, color: '#1B6DFC',
