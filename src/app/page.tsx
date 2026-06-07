@@ -70,10 +70,10 @@ const PILLARS = [
 ]
 
 const FAT_ZONES = [
-  { zone: 'MZ1', name: 'Stress Belt', loc: 'Stomach / Waist', signal: 'Cortisol and adrenaline dominance' },
-  { zone: 'MZ2', name: 'Gut and Bloat', loc: 'Digestive region', signal: 'Insulin timing disruption' },
-  { zone: 'MZ3', name: 'Hip and Thigh', loc: 'Hips / Thighs', signal: 'Reproductive hormone and metabolic conservation' },
-  { zone: 'MZ4', name: 'Upper Body Stress', loc: 'Upper body', signal: 'Nervous system load, adrenaline, sleep retention' },
+  { zone: 'MZ1', name: 'Stress Belt', loc: 'Stomach / Waist', signal: 'Cortisol and adrenaline dominance', ext: ['Lower Abdominal Compression', 'Lower Back Shelf', 'Solar Plexus Compression'] },
+  { zone: 'MZ2', name: 'Gut and Bloat', loc: 'Digestive region', signal: 'Insulin timing disruption', ext: ['Lower Abdominal Distension', 'Ribcage Bloat'] },
+  { zone: 'MZ3', name: 'Hip and Thigh', loc: 'Hips / Thighs', signal: 'Reproductive hormone and metabolic conservation', ext: ['Glute Shelf Retention', 'Lower Quad Crest Retention', 'Hamstring Tie-In Retention'] },
+  { zone: 'MZ4', name: 'Upper Body Stress', loc: 'Upper body', signal: 'Nervous system load, adrenaline, sleep retention', ext: ['Upper Back Puffiness', 'Shoulder Bracing', 'Neck Holding'] },
 ]
 
 const STATES = [
@@ -542,10 +542,15 @@ export default function HomePage() {
                   <p style={{ fontSize: 11, color: TXT_MUTE }}>{z.loc}</p>
                 </div>
                 <p style={{ fontSize: 13, fontWeight: 700, color: TXT, marginBottom: 4 }}>{z.name}</p>
-                <p style={{ fontSize: 11.5, color: TXT_DIM, lineHeight: 1.6 }}>{z.signal}</p>
+                <p style={{ fontSize: 11.5, color: TXT_DIM, lineHeight: 1.6, marginBottom: 10 }}>{z.signal}</p>
+                <p style={{ fontFamily: MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: '0.14em', color: TXT_MUTE, textTransform: 'uppercase', marginBottom: 4 }}>Extended zones</p>
+                <p style={{ fontSize: 11, color: TXT_MUTE, lineHeight: 1.55 }}>{z.ext.join(' · ')}</p>
               </div>
             ))}
           </Grid>
+          <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, lineHeight: 1.6, marginTop: 14 }}>
+            Each macro zone resolves further into extended sub-zones — the macro zone reads where load is expressed, the sub-zone reads how.
+          </p>
         </div>
 
         {/* Pillars 2-5 */}
