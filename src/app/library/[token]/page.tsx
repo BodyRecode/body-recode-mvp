@@ -34,15 +34,30 @@ async function resolveTokenContext(token: string): Promise<
     .maybeSingle()
 
   if (member && !member.cancelled_at) {
-    // Active member: load every active field_guide + protocol.
+    // Active member: field_guides are included with Membership (always shown).
+    // Protocols + AI deep-dives are PAID bolt-ons (only shown after the
+    // member has a fulfilled digital_asset_purchases row for that product).
     const { data: products } = await admin
       .from('be_products')
       .select('id, name, kind, digital_asset_metadata!inner(slug, state_match, active)')
-      .in('kind', ['field_guide', 'protocol'])
+      .in('kind', ['field_guide', 'protocol', 'bolt_on_ai'])
+
+    // Pull the member's purchased product_ids so we can filter bolt-ons.
+    const { data: purchases } = await admin
+      .from('digital_asset_purchases')
+      .select('product_id, status')
+      .eq('email_at_purchase', member.email.toLowerCase())
+      .in('status', ['paid', 'fulfilled'])
+    const purchasedIds = new Set((purchases ?? []).map(p => p.product_id))
+
     const assets: LibraryItem[] = (products ?? [])
       .map(p => {
         const meta = Array.isArray(p.digital_asset_metadata) ? p.digital_asset_metadata[0] : p.digital_asset_metadata
         if (!meta || !meta.active) return null
+        // Field Guides are member-entitled by default.
+        // Bolt-on kinds gate on purchase.
+        const isBoltOn = p.kind === 'protocol' || p.kind === 'bolt_on_ai'
+        if (isBoltOn && !purchasedIds.has(p.id)) return null
         return { slug: meta.slug, title: p.name, state_match: meta.state_match, kind: p.kind }
       })
       .filter((x): x is LibraryItem => x !== null)
@@ -84,7 +99,7 @@ export default async function LibraryIndexPage({ params }: { params: Promise<{ t
     ? 'Your Body Recode Library.'
     : 'Your purchase.'
   const subtitle = context.kind === 'member'
-    ? 'Every Field Guide and protocol pack is included with your Membership.'
+    ? 'Every Field Guide is included with your Membership. Bolt-ons you have purchased land here too.'
     : 'Your delivery is ready below.'
 
   return (

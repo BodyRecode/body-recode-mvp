@@ -1024,7 +1024,26 @@ type CheckIn = {
   submitted_at: string
 }
 
-export default function MembershipPortalClient({ enrollment }: { enrollment: MemberEnrollment }) {
+type FeaturedBoltOn = {
+  product_id: string
+  slug: string
+  name: string
+  price: number
+  kind: string
+  tagline: string
+  hero_headline: string
+  cover_signed_url: string
+}
+
+export default function MembershipPortalClient({
+  enrollment,
+  featuredBoltOn,
+  libraryToken,
+}: {
+  enrollment: MemberEnrollment
+  featuredBoltOn?: FeaturedBoltOn | null
+  libraryToken?: string
+}) {
   const [activeTab, setActiveTab] = useState('home')
   const [equipment, setEquipment] = useState<'gym' | 'home' | 'bodyweight'>('gym')
   const [expandedSession, setExpandedSession] = useState<string | null>(null)
@@ -1175,6 +1194,51 @@ export default function MembershipPortalClient({ enrollment }: { enrollment: Mem
                 </div>
               </div>
             </>)}
+
+            {/* Featured Bolt-on */}
+            {featuredBoltOn && libraryToken && (
+              <a
+                href={`/library/${libraryToken}/store/${featuredBoltOn.slug}`}
+                style={{
+                  display: 'block', textDecoration: 'none', color: 'inherit',
+                  marginBottom: 16,
+                  background: '#FFFFFF',
+                  border: '1px solid #E5E5E5',
+                  borderLeft: '4px solid #1B6DFC',
+                  borderRadius: 12, overflow: 'hidden',
+                }}
+              >
+                <div style={{ display: 'grid', gridTemplateColumns: '88px 1fr auto', gap: 16, alignItems: 'center', padding: '14px 16px' }}>
+                  <div style={{
+                    width: 88, aspectRatio: '1 / 1.414', borderRadius: 6, overflow: 'hidden',
+                    background: '#FAFAFA', border: '1px solid #EAEAEA', flexShrink: 0,
+                  }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={featuredBoltOn.cover_signed_url} alt={featuredBoltOn.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{
+                      fontSize: 10, fontWeight: 700, color: '#1B6DFC',
+                      letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4,
+                    }}>
+                      New Bolt-on  ·  ${featuredBoltOn.price.toFixed(0)}
+                    </div>
+                    <div style={{
+                      fontSize: 16, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em',
+                      lineHeight: 1.25, marginBottom: 4,
+                    }}>
+                      {featuredBoltOn.name}
+                    </div>
+                    <div style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.5 }}>
+                      {featuredBoltOn.tagline}
+                    </div>
+                  </div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.10em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+                    Read  →
+                  </div>
+                </div>
+              </a>
+            )}
 
             {/* Weekly coaching note */}
             {coachingNote && card(<>
