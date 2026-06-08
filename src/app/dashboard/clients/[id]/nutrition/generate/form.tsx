@@ -33,6 +33,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
   const [mealFrequency, setMealFrequency] = useState(4)
   const [trainingDaysPerWeek, setTrainingDaysPerWeek] = useState(3)
   const [foodExclusions, setFoodExclusions] = useState('')
+  const [coachGuidance, setCoachGuidance] = useState('')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -57,6 +58,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
         meal_frequency: mealFrequency,
         training_days_per_week: trainingDaysPerWeek,
         food_exclusions: foodExclusions.split(',').map(s => s.trim()).filter(Boolean),
+        coach_guidance: coachGuidance.trim() || null,
       }),
     })
 
@@ -246,6 +248,19 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
           placeholder="e.g. dairy, shellfish, eggs (comma separated)"
           className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-2.5 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-700"
         />
+      </div>
+
+      {/* Coach Guidance (standing free-text steering — mirrors training_plans.coach_guidance) */}
+      <div>
+        <label className="block text-xs font-bold text-stone-600 uppercase tracking-widest mb-2">Coach Guidance (optional)</label>
+        <textarea
+          value={coachGuidance}
+          onChange={e => setCoachGuidance(e.target.value)}
+          placeholder="Standing context for this plan — travel block, recent dietary change, post-illness framing, life event constraints. Read at every generation. Persists on the plan; leave blank to keep the prior plan's guidance."
+          className="w-full bg-stone-100 border border-stone-300 rounded-lg px-4 py-3 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-700 min-h-[120px]"
+          rows={5}
+        />
+        <p className="text-xs text-stone-400 mt-2">Bounded by HABNS doctrine: cannot override validator floors, appetite-suppression hard rules, dietary restrictions or preferences. See nutrition-prompt.ts § COACH GUIDANCE.</p>
       </div>
 
       {error && (

@@ -57,6 +57,25 @@ HABNS FIRST PRINCIPLES (LAYER 2 — NON-NEGOTIABLE)
 10. **Energy Availability is PERCEIVED, Not Calculated** — The body interprets erratic timing or implied scarcity as threat regardless of caloric mathematics. Predictability matters more than precise targets.
 
 ═══════════════════════════════════════
+COACH GUIDANCE (CONTEXT-LEVEL OVERRIDE)
+═══════════════════════════════════════
+The user message may include a section labelled "COACH GUIDANCE". When present, treat it as authoritative coach intent for THIS client and THIS plan. Coach guidance exists to override engine-default conservatism that HABNS doctrine permits but the engine applies anyway in the absence of evidence, and to inject standing context (travel block, dietary change mid-plan, post-illness recovery framing, life event constraints) that should propagate to every generation without re-encoding into intake fields.
+
+Authority of coach guidance:
+- IT MAY OVERRIDE: meal frequency selection within doctrine-permitted ranges, food selection bias within the dietary framework, weekly_structure_notes day-by-day rigidity (e.g. "treat travel days as flexible meal-timing"), substitution generosity, sample-foods culture/cuisine bias, what_not_to_change additions or removals where they reflect the client's stated reality.
+- IT MAY NOT OVERRIDE: appetite-suppression hard rules (meal_frequency ≥ 4 for stimulant/GLP-1/serotonergic users; per-meal protein caps), validator bodyweight-derived calorie and protein floors, dietary RESTRICTIONS or PREFERENCES from intake, RRS recovery-state constraint manifests, transitional override gating, HABNS first principles. These remain hard floors regardless of guidance content.
+
+When coach guidance specifies a behavioural reality (e.g. "client is travelling for 4 weeks with no kitchen", "client now eats 2 meals/day not 3") and the intake field still reflects an older state, trust the guidance — the intake may be lagging.
+
+Interpretation rules for common guidance phrases:
+- "travelling" / "away for X weeks" / "no kitchen" → bias food selection toward portable, restaurant-resolvable, no-prep options. Loosen weekly_structure_notes timing rigidity. Acknowledge in the rationale that the plan is adherence-designed for the travel window, not the home baseline.
+- "compresses to two meals" / "skips lunch" / "fasted morning" → meal_frequency may compress to the stated count IF protein anchor still distributes evenly within per-meal caps AND no appetite-suppression hard rule applies. Document the shift in rationale.
+- "post-illness" / "appetite reduced" / "regulation impaired" → de-escalate to stabilisation entry-state framing if not already there; soften portion guidance with "if appetite allows" language; do NOT lower the protein anchor below the validator floor.
+- "wants more flexibility" / "less rigid" → expand substitution_options across all categories; loosen execution_rules from "must" to "aim for"; preserve protein anchor and meal frequency.
+
+When coach guidance and HABNS doctrine conflict on a safety-relevant variable (calorie floor, per-meal protein cap, appetite-suppression meal count, allergy avoidance), doctrine wins and you note it in the rationale as "Coach guidance partially applied: [variable] held at doctrine floor because [reason]".
+
+═══════════════════════════════════════
 DIETARY CONTEXT (HARD CONSTRAINTS — never violate)
 ═══════════════════════════════════════
 The user message may include DIETARY RESTRICTIONS, DIETARY PREFERENCES, TYPICAL DAY'S EATING, and EATING ENVIRONMENT sections sourced from Section D of the client's intake. Each behaves differently and you must treat them as such.
@@ -494,9 +513,22 @@ export function buildNutritionUserPrompt(
   cffsText: string | null,
   intakeText: string | null,
   previousPlans: Array<{ plan_name: string; entry_state: string; generated_at: string }> | null,
-  medications?: string | null
+  medications?: string | null,
+  coachGuidance?: string | null,
 ): string {
   const lines: string[] = []
+
+  // COACH GUIDANCE — placed first so it frames every downstream choice.
+  // Authority and scope rules are defined in the system prompt under
+  // "COACH GUIDANCE (CONTEXT-LEVEL OVERRIDE)".
+  const trimmedGuidance = coachGuidance?.trim()
+  if (trimmedGuidance) {
+    lines.push('═══════════════════════════════════════')
+    lines.push('COACH GUIDANCE (apply throughout — overrides engine-default conservatism within HABNS doctrine)')
+    lines.push('═══════════════════════════════════════')
+    lines.push(trimmedGuidance)
+    lines.push('')
+  }
 
   if (medications) {
     lines.push('═══════════════════════════════════════')

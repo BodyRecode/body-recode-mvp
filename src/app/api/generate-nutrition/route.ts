@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
     transitional_override_active,
     transitional_override_floor_kcal,
     transitional_override_justification,
+    coach_guidance,
   } = body
 
   if (!client_id || !entry_state || !protein_anchor_g || !carb_demand_level) {
@@ -206,8 +207,29 @@ export async function POST(request: NextRequest) {
     ? '\n\n' + buildRecoveryNutritionPromptSection(activeRecoveryManifest.playbook)
     : ''
 
+  // Coach guidance precedence: explicit value in this request body wins (the
+  // coach is steering THIS generation). If absent, fall back to the value
+  // persisted on the most recent plan so standing guidance carries forward
+  // across regenerations.
+  const trimmedInboundGuidance = typeof coach_guidance === 'string' ? coach_guidance.trim() : ''
+  let resolvedCoachGuidance: string | null = trimmedInboundGuidance || null
+  if (!resolvedCoachGuidance) {
+    const { data: lastPlan } = await admin
+      .from('nutrition_plans')
+      .select('coach_guidance')
+      .eq('client_id', client_id)
+      .order('generated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    const carried = (lastPlan as { coach_guidance?: string | null } | null)?.coach_guidance ?? null
+    resolvedCoachGuidance = (typeof carried === 'string' && carried.trim()) || null
+  }
+  if (resolvedCoachGuidance) {
+    console.log('[generate-nutrition] Coach guidance applied:', resolvedCoachGuidance.slice(0, 120))
+  }
+
   const systemPrompt = buildNutritionSystemPrompt() + recoveryPromptSection
-  const userPrompt = buildNutritionUserPrompt(inputs, cffsText, intakeText, previousPlans, client.medications)
+  const userPrompt = buildNutritionUserPrompt(inputs, cffsText, intakeText, previousPlans, client.medications, resolvedCoachGuidance)
 
   // Tiered model strategy:
   //   Tier 1: Haiku 4.5 — fast (~15s), passes for typical clients without
@@ -471,6 +493,10 @@ export async function POST(request: NextRequest) {
     // graceful-degradation retry below as the bridge-mode columns so the
     // route doesn't blow up if the migration hasn't been run yet.
     doctrine_version: NUTRITION_DOCTRINE_VERSION,
+    // Standing coach guidance — persisted so future generations pick it up
+    // by default. Same graceful-degradation pattern below in case migration
+    // 2026-06-09_nutrition_coach_guidance hasn't been run yet.
+    coach_guidance: resolvedCoachGuidance,
   }
   if (overrideActive) {
     insertRow.transitional_override_active = true
@@ -495,13 +521,14 @@ export async function POST(request: NextRequest) {
   // Phase 4 (doctrine_version) columns don't exist yet (migration not run),
   // retry without them so the plan still ships. Coach loses the audit trail
   // / version tag until migration runs, but generation isn't blocked.
-  if (saveError && /column .* does not exist|transitional_override|doctrine_version/i.test(saveError.message)) {
-    console.warn('[generate-nutrition] additive columns missing — retrying insert without them. Run sql/2026-05-25_nutrition_transitional_override.sql and sql/2026-05-26_nutrition_doctrine_version.sql to enable persistence.')
+  if (saveError && /column .* does not exist|transitional_override|doctrine_version|coach_guidance/i.test(saveError.message)) {
+    console.warn('[generate-nutrition] additive columns missing — retrying insert without them. Run sql/2026-05-25_nutrition_transitional_override.sql, sql/2026-05-26_nutrition_doctrine_version.sql, and sql/2026-06-09_nutrition_coach_guidance.sql to enable persistence.')
     delete insertRow.transitional_override_active
     delete insertRow.transitional_override_floor_kcal
     delete insertRow.transitional_override_justification
     delete insertRow.transitional_override_expires_at
     delete insertRow.doctrine_version
+    delete insertRow.coach_guidance
     const retry = await admin.from('nutrition_plans').insert(insertRow).select('id').single()
     savedPlan = retry.data
     saveError = retry.error
