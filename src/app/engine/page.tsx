@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'The Engine — Inside Body Recode™ Biological Interpretation',
+  title: 'The Engine — Inside Body Recode™ Biological Interpretation (Layer 1)',
   description:
-    'The deep technical map of the Body Recode™ interpretation engine. Every stage, every model, every signal — what is done, how it is done, and what it produces.',
+    'The deep technical map of the Body Recode™ interpretation engine (Layer 1). The read instrument, the CFFS, the weekly CFWS, and the doctrine — where interpretation terminates. The downstream application is documented separately.',
   // Exposes engine internals (models, data flow). Kept out of search by default.
   // Flip to index:true if this should be publicly discoverable.
   robots: { index: false, follow: false },
@@ -23,24 +23,22 @@ const TXT_MUTE = '#565A66'
 const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
 const HAIKU = 'Claude Haiku 4.5'
-const SONNET = 'Claude Sonnet 4.6'
 
 /* ---------- Data ---------- */
 const FOOTPRINT = [
-  { n: '126k', l: 'lines of code', d: 'TypeScript across the platform' },
-  { n: '192', l: 'API routes', d: '25 of them call a model' },
-  { n: '65', l: 'database tables', d: 'across 63 schema files' },
-  { n: '12', l: 'prompt files', d: '3,764 lines of encoded doctrine' },
-  { n: '221', l: 'intake signals', d: 'per client, across 8 domains' },
-  { n: '2', l: 'Claude models', d: 'Haiku 4.5 + Sonnet 4.6' },
+  { n: '221', l: 'intake signals', d: 'the read instrument · 8 domains' },
+  { n: '5', l: 'interpretive pillars', d: 'FMM primary + PTS/HABNS/RRS/BIRS' },
+  { n: '4 + 11', l: 'Fat Map zones', d: 'macro + extended' },
+  { n: '3', l: 'body states', d: 'the classification' },
+  { n: 'CFFS', l: 'one read', d: 'refreshed weekly as the CFWS' },
+  { n: '39k', l: 'lines of canon', d: 'the doctrine behind it' },
 ]
 
 const STAGES = [
-  { n: '00', label: 'Input Layer', tag: 'Capture' },
-  { n: '01', label: 'CFFS — Core Interpretation', tag: 'Layer 1 · owned' },
-  { n: '02', label: 'The Reading Family', tag: 'Client-facing' },
-  { n: '03', label: 'Execution Generators', tag: 'Layer 2' },
-  { n: '04', label: 'Longitudinal Monitoring', tag: 'Across the block' },
+  { n: '00', label: 'The Read Instrument', tag: 'Inputs' },
+  { n: '01', label: 'CFFS — Core Interpretation', tag: 'Layer 1 · the terminus' },
+  { n: '02', label: 'CFWS — Weekly Re-Read', tag: 'Layer 1' },
+  { n: '03', label: 'Signal Monitoring', tag: 'Layer 1 · governance' },
 ]
 
 const INPUTS = [
@@ -97,60 +95,11 @@ const CFFS_OUTPUTS = [
   'exposure_readiness ×4 (Capacity / Schedule / Regulation / Behaviour)',
 ]
 
-const READINGS = [
-  { name: 'Foundational Reading (FR)', from: 'CFFS', gate: 'Auto-publishes + emails on first generate', store: 'cffs.cr_*' },
-  { name: 'Program Reading (PR)', from: 'published FR + active program', gate: 'Auto-publishes + emails on first generate', store: 'programs.pr_*' },
-  { name: 'Nutrition Reading (NR)', from: 'published FR + active plan', gate: 'Auto-publishes + emails on first generate', store: 'nutrition_plans.nr_*' },
-  { name: 'Medications Reading (MR)', from: 'coach Medications Analysis', gate: 'Draft → publish. No email path.', store: 'clients.medications_reading' },
-  { name: 'Block-End Trajectory Reading', from: 'the full CFWS sequence', gate: 'Draft → publish. Emails on first publish.', store: 'programs.tr_*' },
-]
-
-const GENERATORS = [
-  {
-    name: 'Program (Training)',
-    model: HAIKU,
-    desc: 'Builds a training block from CFFS readiness + prescription inputs + the approved exercise library. Ten doctrine boundaries; per-(training age × phase) RPE and volume calibration. Two deterministic post-clamps adjust load down to doctrine and recovery state.',
-    store: 'programs',
-  },
-  {
-    name: 'Nutrition (Plan)',
-    model: `${HAIKU} ×3 → ${SONNET}`,
-    desc: 'The most defended generator. Three parallel Haiku attempts; the first that passes the validator wins. If none pass, the least-bad attempt’s issues become a correction note and one Sonnet call escalates. Structured foods, server-recomputed macros, appetite-suppression hard rules, doctrine-version stamped, every attempt logged to telemetry.',
-    store: 'nutrition_plans',
-  },
-  {
-    name: 'Medications Analysis',
-    model: HAIKU,
-    desc: 'Coach-facing per-medication breakdown (clinical vocabulary allowed here). Influence on program, nutrition and recovery, plus a combined picture. The client never sees this — the Medications Reading translates it.',
-    store: 'clients.medications_analysis',
-  },
-  {
-    name: 'Blood Panel Analysis',
-    model: HAIKU,
-    desc: 'Reads the transcribed markers into a coaching interpretation. Single out-of-range marker = hypothesis, not finding. Coach approval is what lets the next CFFS read it.',
-    store: 'blood_panels.analysis',
-  },
-  {
-    name: 'Coach Guidance Suggest',
-    model: HAIKU,
-    desc: 'Drafts the standing override text the program engine parses on every regeneration — within the engine’s authority bounds, using the phrases it recognises. Coach saves it; the route does not persist.',
-    store: 'training_plans.coach_guidance',
-  },
-  {
-    name: 'Recovery Clamp',
-    model: null,
-    desc: 'A deterministic second pass that only reduces an existing prescription’s load envelope when the client is in an active recovery state. Never invents exercises. Every adjustment is audited.',
-    store: 'recovery_adjustments',
-  },
-]
-
-const LONGITUDINAL = [
-  { name: 'Weekly Check-In (A / B)', model: null, desc: 'Alternating long-form questionnaires plus Recovery Signals and alcohol buckets. Fri 6pm–Sun 6:30pm window with a per-client override. Captures the raw weekly signal.' },
-  { name: 'CFWS', model: HAIKU, desc: 'The weekly analogue of the CFFS. Synthesises the Form A+B pair against the CFFS baseline and assigns the four readiness colours. Readiness moves one notch at a time; Red is the floor.' },
-  { name: 'Weekly Feedback', model: HAIKU, desc: 'The coach’s three-field client-facing response (Interpretation / optional Reframe / This week hold this). A banned-term gate retries up to 3× rather than ship internal jargon.' },
-  { name: 'Signal Monitoring', model: null, desc: 'Deterministic drift detector across consecutive CFWS. Routes to lightweight / delta / full reassessment. Signal-based triggers suppressed until the CFFS is ≥21 days old; the 12-week cap forces a full re-intake.' },
-  { name: 'RPE Creep Monitor', model: null, desc: 'Objective load signal: avg logged RPE ≥ prescribed +1.0 = creep; +2.0 or any set ≥9.5 = severe. Folds into Signal Monitoring.' },
-  { name: 'Workout Logging', model: null, desc: 'Live set-by-set logging that snapshots the prescription at session start, so progress analysis stays stable against later edits.' },
+// Layer 2 — the Performance Coaching application built on the engine (summarised here; documented separately)
+const LAYER2 = [
+  { group: 'Client readings', items: ['Foundational', 'Program', 'Nutrition', 'Medications', 'Trajectory'] },
+  { group: 'Generators', items: ['Program (training)', 'Nutrition (+ validator)', 'Medications Analysis', 'Blood Panel Analysis', 'Coach Guidance', 'Recovery Clamp'] },
+  { group: 'The weekly loop', items: ['Weekly check-ins (A / B)', 'Coach feedback', 'Workout logging', 'Block-end review'] },
 ]
 
 const PILLARS = [
@@ -175,12 +124,12 @@ const ZONES = [
 ]
 
 const INFRA = [
-  { k: 'Models', v: `${HAIKU} everywhere. ${SONNET} only as the nutrition escalation. Photos and lab files run on the same Haiku call as the text.` },
+  { k: 'Model', v: `${HAIKU} for the read — one model, multimodal. Photos and lab files run in the same call as the text.` },
   { k: 'JSON', v: 'A brace-counting extractor, never a greedy regex. Every parse survives prose, code fences and stray commentary.' },
   { k: 'Em dashes', v: 'Recursively stripped from every generated string. A banned AI-writing signal across the whole platform.' },
-  { k: 'Banned terms', v: 'A regex gate blocks internal jargon (CFFS, CFWS, RPE, cortisol, HPA axis) from client prose, retrying on a leak.' },
-  { k: 'Nutrition validator', v: 'The one generate → validate → retry → escalate loop. Doctrine-versioned; every attempt is telemetered.' },
-  { k: 'Audit', v: 'Every recovery adjustment and reassessment writes an audit row. Nothing the engine changes is silent.' },
+  { k: 'One live read', v: 'Generating a CFFS or CFWS archives the prior one. reassessment_flagged is always server-set, never by the model.' },
+  { k: 'Non-diagnostic', v: 'No interpretive surface names a disease, alters a lab range, or gives medical advice. A marker is a hypothesis, not a finding.' },
+  { k: 'Governed, not assumed', v: 'Drift and reassessment are surfaced, not silent — the integrity of the read is monitored across the block.' },
 ]
 
 /* ---------- Page ---------- */
@@ -194,7 +143,8 @@ export default function EnginePage() {
           <div style={{ display: 'flex', gap: 22, alignItems: 'center', flexWrap: 'wrap' }}>
             <a href="/#engine" style={navLink}>Schematic</a>
             <a href="#stage-01" style={navLink}>CFFS</a>
-            <a href="#stage-02" style={navLink}>Readings</a>
+            <a href="#stage-02" style={navLink}>CFWS</a>
+            <a href="#layer2" style={navLink}>Layer 2</a>
             <a href="#pillars" style={navLink}>Pillars</a>
             <a href="/" style={{ ...navLink, color: BLUE_LIGHT }}>← Home</a>
           </div>
@@ -204,15 +154,15 @@ export default function EnginePage() {
       {/* HERO */}
       <section style={{ padding: '110px 24px 80px', borderBottom: `1px solid ${BORDER}`, background: `radial-gradient(900px 420px at 50% -10%, rgba(27,109,252,0.10), transparent)` }}>
         <div style={{ maxWidth: 880, margin: '0 auto' }}>
-          <SectionLabel>Inside the Engine</SectionLabel>
+          <SectionLabel>Inside the Engine · Layer 1</SectionLabel>
           <h1 style={{ fontSize: 'clamp(34px, 6vw, 58px)', fontWeight: 800, color: TXT, letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: 24 }}>
-            The full read.<br />Every stage, opened up.
+            The read.<br />Where the engine stops.
           </h1>
           <Prose style={{ maxWidth: 660, fontSize: 17 }}>
-            The homepage shows the engine as a schematic. This is the deep version: what each stage does,
-            how it does it, which model runs, what it reads, and what it produces. Structured data goes in;
-            a single conservative interpretation comes out; everything downstream is built on top of it and
-            never bends it back.
+            The homepage shows the engine as a schematic. This is the deep version of the engine itself — Layer 1.
+            Structured data goes in; a single conservative interpretation comes out as the CFFS, refreshed weekly as
+            the CFWS. It prescribes nothing. Everything downstream — programs, nutrition, the client readings, the
+            coaching loop — is the Performance Coaching application (Layer 2), powered by this read and documented separately.
           </Prose>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 34 }}>
             <Chip>One interpretive core</Chip>
@@ -229,7 +179,7 @@ export default function EnginePage() {
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>By the Numbers</SectionLabel>
           <p style={{ fontSize: 15.5, color: TXT_DIM, lineHeight: 1.7, maxWidth: 680, marginBottom: 34 }}>
-            Not a prompt and a table. A full production system — every figure counted directly from the codebase.
+            The interpretation core is small and dense. Every figure is counted directly from the codebase.
           </p>
           <Grid min={150} gap={1} style={{ border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden', background: BORDER }}>
             {FOOTPRINT.map((f) => (
@@ -241,9 +191,9 @@ export default function EnginePage() {
             ))}
           </Grid>
           <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, lineHeight: 1.7, marginTop: 20, letterSpacing: '0.02em' }}>
-            The interpretation itself is small and dense — 25 model-backed routes and 12 prompt files.
-            The rest is the platform that captures the inputs and runs the coaching around them.
-            Behind all of it: a 39,087-line interpretive canon the prompts operationalise.
+            This is the engine alone. The application built on it — the Performance Coaching environment, ~126k lines
+            across 192 routes and 65 tables — is the far larger codebase, documented separately. The interpretation is
+            small; the system that makes it usable is large.
           </p>
         </div>
       </section>
@@ -251,11 +201,11 @@ export default function EnginePage() {
       {/* PIPELINE OVERVIEW */}
       <Section id="overview">
         <SectionLabel>The Pipeline</SectionLabel>
-        <SectionHeading>Five stages. One direction of travel.</SectionHeading>
+        <SectionHeading>Four engine stages, then the handoff.</SectionHeading>
         <Prose style={{ marginBottom: 44 }}>
-          Capture feeds interpretation. Interpretation feeds both the client-facing translations and the
-          execution generators. The whole thing is then watched, week over week, until the block closes and
-          the arc is read back.
+          The read instrument feeds the CFFS. The CFFS is re-read weekly as the CFWS, and a deterministic monitor
+          watches it for drift. That is the whole engine — it terminates here. Everything past it is the
+          Performance Coaching application (Layer 2), powered by the read.
         </Prose>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
           {STAGES.map((s, i) => (
@@ -275,7 +225,7 @@ export default function EnginePage() {
 
       {/* STAGE 00 — INPUT */}
       <Section id="stage-00" wide>
-        <StageHead n="00" title="The Input Layer" sub="Mostly deterministic capture. The only model here transcribes blood panels." />
+        <StageHead n="00" title="The Read Instrument" sub="What the engine reads. Mostly deterministic capture; the only model here transcribes blood panels. The capture surfaces are delivered by the application — the signal schema is the engine's." />
         <Grid min={250} gap={12}>
           {INPUTS.map((it) => (
             <div key={it.name} style={cardStyle}>
@@ -333,68 +283,77 @@ export default function EnginePage() {
         </div>
       </section>
 
-      {/* STAGE 02 — READINGS */}
+      {/* STAGE 02 — CFWS */}
       <Section id="stage-02" wide>
-        <StageHead n="02" title="The Reading Family" sub="The CFFS is never shown to the client. Each analysis is translated into plain language in Kade’s voice. All five run on Haiku 4.5." />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {READINGS.map((r) => (
-            <div key={r.name} style={{ ...cardStyle, padding: '20px 24px', display: 'grid', gridTemplateColumns: 'minmax(180px, 1.2fr) 1fr 1fr', gap: 18, alignItems: 'center' }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: TXT }}>{r.name}</p>
-              <div>
-                <ColLabel>Derived from</ColLabel>
-                <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.6 }}>{r.from}</p>
-              </div>
-              <div>
-                <ColLabel>Gate</ColLabel>
-                <p style={{ fontSize: 12.5, color: TXT_DIM, lineHeight: 1.6 }}>{r.gate}</p>
-                <p style={{ fontFamily: MONO, fontSize: 10.5, color: TXT_MUTE, marginTop: 6 }}>{r.store}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <Callout>
-          Every reading shares one discipline: no sets, reps or RPE; no calories, macros or food names; no diagnoses; no em dashes.
-          Whenever fat loss is named as deferred, the same paragraph reassures that those outcomes follow naturally downstream —
-          the framing is never “we are not focused on this.”
-        </Callout>
+        <StageHead n="02" title="The CFWS" sub="Coach-Facing Weekly Synthesis — the weekly re-read. Still interpretation, still coach-facing, still prescribes nothing." />
+        <Grid min={260} gap={20}>
+          <div>
+            <ColLabel>Reads</ColLabel>
+            <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.8 }}>
+              The week’s check-in signal, anchored to the CFFS baseline. The capture itself is a Layer 2 surface; the
+              engine consumes it the way it consumes the intake.
+            </p>
+          </div>
+          <div>
+            <ColLabel>Rule</ColLabel>
+            <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.8 }}>
+              Readiness moves <strong style={{ color: TXT_BODY }}>one notch at a time</strong> from the CFFS anchor.
+              Red is the floor. Two-notch jumps only on a named safety event. Single-form answers can’t downgrade alone.
+            </p>
+          </div>
+          <div>
+            <ColLabel>Produces</ColLabel>
+            <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.8 }}>
+              A weekly synthesis + the four readiness colours → <span style={{ fontFamily: MONO, color: BLUE_LIGHT }}>cfws.*</span>.
+              The accumulated sequence becomes the input to the block-end arc.
+            </p>
+          </div>
+        </Grid>
+        <div style={{ marginTop: 16 }}><ModelBadge>{HAIKU}</ModelBadge></div>
       </Section>
 
-      {/* STAGE 03 — GENERATORS */}
+      {/* STAGE 03 — SIGNAL MONITORING */}
       <section id="stage-03" style={{ padding: '100px 24px', background: CANVAS_2, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
-          <StageHead n="03" title="The Execution Generators" sub="Layer 2. These consume the CFFS and design the intervention — inside doctrine, so they never override the interpretation." />
-          <Grid min={300} gap={12}>
-            {GENERATORS.map((g) => (
-              <div key={g.name} style={cardStyle}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12, gap: 8 }}>
-                  <p style={{ fontSize: 15, fontWeight: 700, color: TXT }}>{g.name}</p>
-                  {g.model ? <ModelBadge>{g.model}</ModelBadge> : <span style={{ ...chip, fontSize: 9 }}>deterministic</span>}
-                </div>
-                <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.75, marginBottom: 14 }}>{g.desc}</p>
-                <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE }}>→ {g.store}</p>
-              </div>
-            ))}
+          <StageHead n="03" title="Signal Monitoring" sub="The engine’s self-governance: it decides when the read has drifted enough to need refreshing. Deterministic. Prescribes nothing." />
+          <Grid min={230} gap={12}>
+            <MiniCard title="Drift" body="Any Red in the latest CFWS = high. The same signal Amber/Red across two consecutive weeks = sustained instability. A two-notch drop = high." />
+            <MiniCard title="Reassessment routing" body="Drift routes to a lightweight, delta, or full re-read. Signal-based triggers are suppressed until the CFFS is ≥21 days old; a 12-week cap forces a full re-intake." />
+            <MiniCard title="RPE creep as signal" body="Avg logged RPE ≥ prescribed +1.0 = creep; +2.0 or any set ≥9.5 = severe. The logging is a Layer 2 surface; the monitor consumes it as one more drift input." />
           </Grid>
+          <Callout>
+            This is where Layer 1 ends. The monitor’s recommendation loops back to a fresh CFFS. Everything past this point is the application.
+          </Callout>
         </div>
       </section>
 
-      {/* STAGE 04 — LONGITUDINAL */}
-      <Section id="stage-04" wide>
-        <StageHead n="04" title="Longitudinal Monitoring" sub="What runs across the block after the first read. The monitors are deterministic; only the two syntheses use a model." />
-        <Grid min={300} gap={12}>
-          {LONGITUDINAL.map((l) => (
-            <div key={l.name} style={cardStyle}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10, gap: 8 }}>
-                <p style={{ fontSize: 15, fontWeight: 700, color: TXT }}>{l.name}</p>
-                {l.model ? <ModelBadge>{l.model}</ModelBadge> : <span style={{ ...chip, fontSize: 9 }}>deterministic</span>}
-              </div>
-              <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.75 }}>{l.desc}</p>
+      {/* LAYER 2 — THE APPLICATION (handoff) */}
+      <Section id="layer2" wide>
+        <SectionLabel>Layer 2 · Powered by the engine</SectionLabel>
+        <SectionHeading>What’s built on the read.</SectionHeading>
+        <Prose style={{ marginBottom: 40 }}>
+          The engine terminates at the CFFS. Everything below is the <strong style={{ color: TXT_BODY }}>Performance Coaching
+          application</strong> — the first of five environments — powered by the read. It consumes the CFFS and never bends it.
+          It is documented separately; the other environments (Executive, Tactical, Clinical, Developmental) build their own
+          Layer 2 on the same engine.
+        </Prose>
+        <Grid min={250} gap={12}>
+          {LAYER2.map((g) => (
+            <div key={g.group} style={cardStyle}>
+              <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', color: BLUE_LIGHT, textTransform: 'uppercase', marginBottom: 12 }}>{g.group}</p>
+              <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {g.items.map((it) => (
+                  <li key={it} style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.5, paddingLeft: 12, position: 'relative' }}>
+                    <span style={{ position: 'absolute', left: 0, color: BLUE_LIGHT }}>·</span>{it}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </Grid>
         <Callout>
-          When a block closes, the accumulated weekly syntheses become the input sequence for the Block-End Trajectory
-          Reading — the client analogue of the arc — which closes the reading family for that block.
+          Execution is bounded by interpretation, never the reverse. A program that wants more load or a client who wants a
+          faster result never changes the read. That asymmetry is the whole contract between the two layers.
         </Callout>
       </Section>
 
