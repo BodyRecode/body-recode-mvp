@@ -1418,12 +1418,19 @@ export default function HelpPage() {
             <p className="font-semibold text-[#1A1A1A] mt-4">5. Substitution-equivalence validator wired in (item E)</p>
             <p><code>validateNutritionPlan</code> now runs <code>validateSubstitutionOptions</code> against the food-reference table. Three new issue codes: <code>SUBSTITUTION_MACRO_DRIFT</code> (a labelled-equivalent swap drifts &gt;20% on a macro or &gt;15% on kcal), <code>SUBSTITUTION_UNPARSED</code> (line doesn&apos;t match the expected shape), <code>SUBSTITUTION_UNKNOWN_FOOD</code> (food outside the reference table). On a fresh nutrition generation, a swap-math failure feeds back into the existing one-shot retry loop the same way safety-floor failures do — model gets the specific drift named and tries again. Stops Ruby-Cate-style errors at generation time.</p>
 
+            <p className="font-semibold text-[#1A1A1A] mt-4">6. Pre-publish audit pill on the client profile (item H)</p>
+            <p>Every Foundational Reading / Program Reading / Nutrition Plan section header on the client profile now shows a green / amber / red pill: <strong>green</strong> = audit passes, <strong>amber</strong> = review (stale doctrine version or validator warnings), <strong>red</strong> = regenerate (banned terms leaked or blocking validator errors). Click the pill to expand and see the specific failures (which banned terms, which validator codes, which doctrine version mismatch). All checks happen server-side at page render so there&apos;s no client-side latency.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">7. Doctrine version coverage summary (item G)</p>
+            <p>The audit dashboard at <code>/dashboard/system-health/banned-terms-audit</code> now opens with a &quot;Doctrine version coverage&quot; card per doctrine key (Foundational, Program, Nutrition). Shows current version + count on current + count stale. A bump of any constant in <code>src/lib/doctrine-versions.ts</code> renders all rows on the old version stale, and the count updates on next page load. Makes the bump impact visible without operational complexity.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">8. Versioned change log per client (item I)</p>
+            <p>Every regenerate of FR / PR / NR snapshots the previous content into <code>artefact_version_archive</code> BEFORE the new version overwrites the live row. Schema applied 2026-06-09. Captures: artefact_type, source_row_id, doctrine_version it was generated under, full content as JSONB, generated_at, archived_at, archived_by (coach user id), archive_reason (optional). Best-effort archive (errors logged, never thrown) so a transient failure can&apos;t block a regenerate. Dashboard diff view is queued as a polish step; the data layer is queryable today.</p>
+
             <p className="font-semibold text-[#1A1A1A] mt-4">What&apos;s still queued</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li><strong>(H) Pre-publish dry-run preview</strong> — composite audit panel showing macros + jargon + substitution + doctrine version BEFORE clicking Publish.</li>
-              <li><strong>(G) Doctrine refresh trigger</strong> — auto-fire when a version bumps, surface in Today&apos;s Focus per affected client.</li>
-              <li><strong>(F) Rule contradiction detector</strong> — machine-check execution rules against listed foods.</li>
-              <li><strong>(I) Versioned change log</strong> — every regenerate archives prior version, dashboard shows diff.</li>
+              <li><strong>(F) Rule contradiction detector</strong> — machine-check execution rules against listed foods. Deferred per original strategy.</li>
+              <li><strong>Diff UI on the change log</strong> — dashboard view to select two archived versions and see side-by-side. Schema is in place; UI is next polish step.</li>
             </ul>
           </Section>
 
