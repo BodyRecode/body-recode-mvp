@@ -191,7 +191,7 @@ export default async function BoltOnDetailPage({ params }: { params: Promise<{ t
         {/* Hero text */}
         <div>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '14px' }}>
-            Protocol Pack  ·  Members only
+            {pack.kind === 'bolt_on_ai' ? 'AI Deep-Dive' : pack.kind === 'protocol' ? 'Protocol Pack' : pack.kind === 'bolt_on_human' ? 'Coach Touchpoint' : 'Bolt-on'}  ·  Members only
           </p>
           <h1 style={{ fontSize: 'clamp(32px, 4.4vw, 46px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.05, color: '#1A1A1A', marginBottom: '14px' }}>
             {copy.hero_headline}
