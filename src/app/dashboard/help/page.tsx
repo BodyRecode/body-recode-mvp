@@ -32,6 +32,7 @@ const SECTIONS = [
   { id: 'assets',           title: '16b. Assets',            colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'admin-actions',    title: '17. Admin Actions',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'system-health',    title: '17b. System Health',     colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'licensee-readiness', title: '17d. Licensee Readiness Audits', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'onboarding-nudges',title: '17c. Onboarding Nudges', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'stripe-payments',  title: '19. Stripe Payments',    colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'training-program', title: '20. Training Program',   colour: 'teal' as const, category: 'coaching' as Category },
@@ -1396,6 +1397,34 @@ export default function HelpPage() {
             <p>Open any run in Dashboard → System and click <strong>Download .md</strong> in the top right of the report. This saves a markdown file named <code>body-recode-health-YYYY-MM-DD.md</code> to your machine. Move it to Dropbox → 01_BODY_RECODE → 06_SAAS_PLATFORM_BUILD → SYSTEM-HEALTH-CHECK to keep a permanent record.</p>
 
             <Note>The health check runs on Vercel&apos;s servers and cannot write directly to your local Dropbox. The download button in the dashboard is the bridge - one click saves the file locally.</Note>
+          </Section>
+
+          <Section id="licensee-readiness" title="17d. Licensee Readiness: Audits + Versioning + Validators" colour="teal">
+            <p>Ruby-Cate&apos;s nutrition plan audit (2026-06-09) surfaced a class of error that&apos;s critical for licensing: AI-generated artefacts that look plausible but were produced under doctrine versions that no longer reflect the current rules. Her published Foundational Reading contained &quot;mid-arc compression&quot; and &quot;sympathetic dominance&quot;, her Nutrition Reading contained &quot;downregulating&quot; three times and &quot;wired-but-tired&quot;, and her substitution list claimed &quot;100g dry rice ↔ 150g raw potato — equal carb substitution&quot; (3x off). All banned in weekly-check-in feedback for a month, but never enforced on FR/PR/NR because each generator carried its own ad-hoc list.</p>
+            <p>Five system changes shipped 2026-06-09 to close this gap:</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">1. Shared banned-terms constant (item B)</p>
+            <p>All client-facing generators now import the same regex list from <code>src/lib/banned-client-terms.ts</code>. The Foundational Reading, Program Reading, Nutrition Reading, and Trajectory Reading generators each run <code>findLeakedTerms</code> on their JSON output before persisting. If any banned term appears (CFFS, CFWS, mid-arc, spatial patterning, downregulate, sympathetic dominance, etc.), the API returns a 500 and the coach is prompted to Regenerate. Single source of truth means adding a new banned term in one place blocks it across every generator.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">2. Backfill audit dashboard (item A)</p>
+            <p>New panel at <code>/dashboard/system-health/banned-terms-audit</code>. Scans every active client&apos;s published FR / PR / NR against the shared banned-terms list AND against the current doctrine version. Shows: leak rate (red &gt;30%, amber &gt;10%, green &le;10%) + per-client cards listing every leaked or stale artefact with the specific banned terms found + the publish date + a deep-link &quot;Open to regenerate&quot;. As of 2026-06-09, leak rate across active clients is 44% (8 of 18 published artefacts) — the dashboard makes the staleness visible so regenerates can be prioritised.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">3. Doctrine version stamps everywhere (item D)</p>
+            <p>Every AI-generated artefact now stamps the doctrine version that produced it onto its DB row. New columns: <code>cffs.fr_doctrine_version</code>, <code>programs.pr_doctrine_version</code> / <code>tr_doctrine_version</code>, <code>nutrition_plans.doctrine_version</code> (pre-existing), <code>weekly_checkin_feedback.doctrine_version</code>, <code>clients.medications_*_doctrine_version</code>, <code>blood_panels.*_doctrine_version</code>. Constants single-source at <code>src/lib/doctrine-versions.ts</code> — bump when shipping a generator change. <code>isDoctrineStale(stored, key)</code> compares stored stamp to current. The audit dashboard shows BOTH leak status (amber) AND stale-doctrine status (blue) per artefact.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">4. Food reference table (item C)</p>
+            <p>22 staple foods with per-gram macros at <code>src/lib/food-reference.ts</code>. Covers Tier 1 + Tier 2 of the nutrition prompt&apos;s allowed list (chicken breast/thigh, beef mince 5%/15%, sirloin, salmon, cod, mackerel, trout, tuna, eggs, white/sweet potato, white rice dry+cooked, sourdough, banana, berries, melon, honey, ghee, tallow, olive oil, butter, avocado oil). Helpers: <code>lookupFood(name)</code>, <code>validateSubstitutions(original, subs)</code>, <code>parseSubstitutionLine(line)</code>.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">5. Substitution-equivalence validator wired in (item E)</p>
+            <p><code>validateNutritionPlan</code> now runs <code>validateSubstitutionOptions</code> against the food-reference table. Three new issue codes: <code>SUBSTITUTION_MACRO_DRIFT</code> (a labelled-equivalent swap drifts &gt;20% on a macro or &gt;15% on kcal), <code>SUBSTITUTION_UNPARSED</code> (line doesn&apos;t match the expected shape), <code>SUBSTITUTION_UNKNOWN_FOOD</code> (food outside the reference table). On a fresh nutrition generation, a swap-math failure feeds back into the existing one-shot retry loop the same way safety-floor failures do — model gets the specific drift named and tries again. Stops Ruby-Cate-style errors at generation time.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">What&apos;s still queued</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>(H) Pre-publish dry-run preview</strong> — composite audit panel showing macros + jargon + substitution + doctrine version BEFORE clicking Publish.</li>
+              <li><strong>(G) Doctrine refresh trigger</strong> — auto-fire when a version bumps, surface in Today&apos;s Focus per affected client.</li>
+              <li><strong>(F) Rule contradiction detector</strong> — machine-check execution rules against listed foods.</li>
+              <li><strong>(I) Versioned change log</strong> — every regenerate archives prior version, dashboard shows diff.</li>
+            </ul>
           </Section>
 
           <Section id="onboarding-nudges" title="17c. Onboarding Nudges and Form Drafts" colour="teal">
