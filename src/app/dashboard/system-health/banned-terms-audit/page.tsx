@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronLeft, AlertTriangle, CheckCircle } from 'lucide-react'
 import { findLeakedTerms } from '@/lib/banned-client-terms'
+import { DOCTRINE_VERSIONS, isDoctrineStale } from '@/lib/doctrine-versions'
 import { PageHeader, Card, MONO_FONT } from '@/components/dashboard/ui'
 
 /**
@@ -23,9 +24,9 @@ import { PageHeader, Card, MONO_FONT } from '@/components/dashboard/ui'
 interface LeakReport {
   clientId: string
   clientName: string
-  fr: { id: string; leaks: string[]; publishedAt: string | null } | null
-  pr: { id: string; programName: string | null; leaks: string[]; publishedAt: string | null } | null
-  nr: { id: string; planName: string | null; leaks: string[]; publishedAt: string | null } | null
+  fr: { id: string; leaks: string[]; publishedAt: string | null; storedVersion: string | null; isStale: boolean } | null
+  pr: { id: string; programName: string | null; leaks: string[]; publishedAt: string | null; storedVersion: string | null; isStale: boolean } | null
+  nr: { id: string; planName: string | null; leaks: string[]; publishedAt: string | null; storedVersion: string | null; isStale: boolean } | null
 }
 
 export default async function BannedTermsAuditPage() {
@@ -48,7 +49,7 @@ export default async function BannedTermsAuditPage() {
   for (const client of clients ?? []) {
     const { data: cffsRows } = await admin
       .from('cffs')
-      .select('id, cr_where_you_are, cr_what_your_body_is_telling_us, cr_what_were_focusing_on_first, cr_what_were_not_doing_yet, cr_coach_note, client_reading_published_at')
+      .select('id, cr_where_you_are, cr_what_your_body_is_telling_us, cr_what_were_focusing_on_first, cr_what_were_not_doing_yet, cr_coach_note, client_reading_published_at, fr_doctrine_version')
       .eq('client_id', client.id)
       .eq('is_archived', false)
       .not('client_reading_published_at', 'is', null)
@@ -66,12 +67,14 @@ export default async function BannedTermsAuditPage() {
         ...findLeakedTerms(r.cr_coach_note ?? ''),
       ])
       if (leaks.length > 0) totalArtefactsLeaked++
-      if (leaks.length > 0) frReport = { id: r.id, leaks, publishedAt: r.client_reading_published_at }
+      const storedVersion = r.fr_doctrine_version ?? null
+      const isStale = isDoctrineStale(storedVersion, 'foundational_reading')
+      if (leaks.length > 0 || isStale) frReport = { id: r.id, leaks, publishedAt: r.client_reading_published_at, storedVersion, isStale }
     }
 
     const { data: prog } = await admin
       .from('programs')
-      .select('id, block_name, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, program_reading_published_at')
+      .select('id, block_name, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, program_reading_published_at, pr_doctrine_version')
       .eq('client_id', client.id)
       .eq('is_active', true)
       .not('program_reading_published_at', 'is', null)
@@ -87,12 +90,14 @@ export default async function BannedTermsAuditPage() {
         ...findLeakedTerms(prog.pr_coach_note ?? ''),
       ])
       if (leaks.length > 0) totalArtefactsLeaked++
-      if (leaks.length > 0) prReport = { id: prog.id, programName: prog.block_name, leaks, publishedAt: prog.program_reading_published_at }
+      const storedVersion = prog.pr_doctrine_version ?? null
+      const isStale = isDoctrineStale(storedVersion, 'program_reading')
+      if (leaks.length > 0 || isStale) prReport = { id: prog.id, programName: prog.block_name, leaks, publishedAt: prog.program_reading_published_at, storedVersion, isStale }
     }
 
     const { data: np } = await admin
       .from('nutrition_plans')
-      .select('id, plan_name, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at')
+      .select('id, plan_name, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at, doctrine_version')
       .eq('client_id', client.id)
       .eq('is_active', true)
       .not('nutrition_reading_published_at', 'is', null)
@@ -108,7 +113,9 @@ export default async function BannedTermsAuditPage() {
         ...findLeakedTerms(np.nr_coach_note ?? ''),
       ])
       if (leaks.length > 0) totalArtefactsLeaked++
-      if (leaks.length > 0) nrReport = { id: np.id, planName: np.plan_name, leaks, publishedAt: np.nutrition_reading_published_at }
+      const storedVersion = np.doctrine_version ?? null
+      const isStale = isDoctrineStale(storedVersion, 'nutrition_reading')
+      if (leaks.length > 0 || isStale) nrReport = { id: np.id, planName: np.plan_name, leaks, publishedAt: np.nutrition_reading_published_at, storedVersion, isStale }
     }
 
     if (frReport || prReport || nrReport) {
@@ -161,9 +168,9 @@ export default async function BannedTermsAuditPage() {
                   <Link href={`/dashboard/clients/${r.clientId}`} className="text-xs font-bold text-[#1B6DFC] hover:text-[#1057CC]">Open profile →</Link>
                 </div>
                 <div className="space-y-2">
-                  {r.fr && <LeakRow label="Foundational Reading" terms={r.fr.leaks} clientHref={`/dashboard/clients/${r.clientId}#cffs`} publishedAt={r.fr.publishedAt} />}
-                  {r.pr && <LeakRow label={`Program Reading${r.pr.programName ? ` (${r.pr.programName})` : ''}`} terms={r.pr.leaks} clientHref={`/dashboard/clients/${r.clientId}#training`} publishedAt={r.pr.publishedAt} />}
-                  {r.nr && <LeakRow label={`Nutrition Reading${r.nr.planName ? ` (${r.nr.planName})` : ''}`} terms={r.nr.leaks} clientHref={`/dashboard/clients/${r.clientId}#nutrition`} publishedAt={r.nr.publishedAt} />}
+                  {r.fr && <LeakRow label="Foundational Reading" terms={r.fr.leaks} clientHref={`/dashboard/clients/${r.clientId}#cffs`} publishedAt={r.fr.publishedAt} storedVersion={r.fr.storedVersion} isStale={r.fr.isStale} currentVersion={DOCTRINE_VERSIONS.foundational_reading} />}
+                  {r.pr && <LeakRow label={`Program Reading${r.pr.programName ? ` (${r.pr.programName})` : ''}`} terms={r.pr.leaks} clientHref={`/dashboard/clients/${r.clientId}#training`} publishedAt={r.pr.publishedAt} storedVersion={r.pr.storedVersion} isStale={r.pr.isStale} currentVersion={DOCTRINE_VERSIONS.program_reading} />}
+                  {r.nr && <LeakRow label={`Nutrition Reading${r.nr.planName ? ` (${r.nr.planName})` : ''}`} terms={r.nr.leaks} clientHref={`/dashboard/clients/${r.clientId}#nutrition`} publishedAt={r.nr.publishedAt} storedVersion={r.nr.storedVersion} isStale={r.nr.isStale} currentVersion={DOCTRINE_VERSIONS.nutrition_reading} />}
                 </div>
               </Card>
             ))}
@@ -174,14 +181,21 @@ export default async function BannedTermsAuditPage() {
   )
 }
 
-function LeakRow({ label, terms, clientHref, publishedAt }: { label: string; terms: string[]; clientHref: string; publishedAt: string | null }) {
+function LeakRow({ label, terms, clientHref, publishedAt, storedVersion, isStale, currentVersion }: { label: string; terms: string[]; clientHref: string; publishedAt: string | null; storedVersion: string | null; isStale: boolean; currentVersion: string }) {
+  const hasLeaks = terms.length > 0
+  const flags = []
+  if (hasLeaks) flags.push(`Leaked: ${terms.join(', ')}`)
+  if (isStale) flags.push(`Stored v${storedVersion ?? 'unknown'} ≠ current v${currentVersion}`)
   return (
-    <div className="rounded-lg border border-amber-200 bg-amber-50/40 px-3 py-2 flex items-center justify-between gap-3 flex-wrap">
+    <div className={`rounded-lg border px-3 py-2 flex items-center justify-between gap-3 flex-wrap ${hasLeaks ? 'border-amber-200 bg-amber-50/40' : 'border-blue-200 bg-blue-50/40'}`}>
       <div className="min-w-0">
-        <p className="text-xs font-bold text-amber-900">{label}</p>
-        <p className="text-[10px] text-[#6B6B6B] mt-0.5">Published {publishedAt ? new Date(publishedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) : 'unknown'} · Leaked: <span className="font-mono">{terms.join(', ')}</span></p>
+        <p className={`text-xs font-bold ${hasLeaks ? 'text-amber-900' : 'text-blue-900'}`}>{label}</p>
+        <p className="text-[10px] text-[#6B6B6B] mt-0.5">
+          Published {publishedAt ? new Date(publishedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) : 'unknown'}
+          {flags.map((f, i) => <span key={i}> · <span className="font-mono">{f}</span></span>)}
+        </p>
       </div>
-      <Link href={clientHref} className="shrink-0 text-[10px] font-bold uppercase tracking-widest text-amber-900 hover:text-amber-700">
+      <Link href={clientHref} className={`shrink-0 text-[10px] font-bold uppercase tracking-widest ${hasLeaks ? 'text-amber-900 hover:text-amber-700' : 'text-blue-900 hover:text-blue-700'}`}>
         Open to regenerate →
       </Link>
     </div>

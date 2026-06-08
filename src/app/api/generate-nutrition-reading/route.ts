@@ -191,6 +191,7 @@ export async function POST(request: NextRequest) {
   }
   const cleaned = audit.cleaned
 
+  const { DOCTRINE_VERSIONS } = await import('@/lib/doctrine-versions')
   const now = new Date().toISOString()
   // Auto-publish on generation. Regenerations stay published silently. Mirrors
   // the Program Reading flow.
@@ -202,6 +203,7 @@ export async function POST(request: NextRequest) {
       nr_how_well_know_its_working: cleaned.nr_how_well_know_its_working,
       nr_what_were_not_doing_yet: cleaned.nr_what_were_not_doing_yet,
       nr_coach_note: cleaned.nr_coach_note,
+      doctrine_version: DOCTRINE_VERSIONS.nutrition_reading,
       nutrition_reading_generated_at: now,
       nutrition_reading_published_at: now,
     })

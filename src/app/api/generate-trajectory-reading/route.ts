@@ -50,6 +50,8 @@ export async function POST(request: NextRequest) {
   }
   const cleanedSections = audit.cleaned as typeof result.sections
 
+  const { DOCTRINE_VERSIONS } = await import('@/lib/doctrine-versions')
+
   // Coach-gated: generate ONLY drafts. Publishing (and the client email) is a
   // separate, deliberate step via /api/publish-trajectory-reading.
   const admin = createAdminClient()
@@ -61,6 +63,7 @@ export async function POST(request: NextRequest) {
       tr_what_held_steady: cleanedSections.tr_what_held_steady,
       tr_what_this_sets_up_next: cleanedSections.tr_what_this_sets_up_next,
       tr_coach_note: cleanedSections.tr_coach_note,
+      tr_doctrine_version: DOCTRINE_VERSIONS.trajectory_reading,
       trajectory_reading_generated_at: new Date().toISOString(),
     })
     .eq('id', program_id)

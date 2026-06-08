@@ -175,6 +175,7 @@ export async function POST(request: NextRequest) {
   }
   const cleaned = audit.cleaned
 
+  const { DOCTRINE_VERSIONS } = await import('@/lib/doctrine-versions')
   const now = new Date().toISOString()
   // Auto-publish on generation. Regenerations stay published silently.
   const { data: updated, error: updateErr } = await admin
@@ -187,6 +188,7 @@ export async function POST(request: NextRequest) {
       cr_coach_note: cleaned.cr_coach_note,
       client_reading_generated_at: now,
       client_reading_published_at: now,
+      fr_doctrine_version: DOCTRINE_VERSIONS.foundational_reading,
     })
     .eq('id', cffs_id)
     .select()
