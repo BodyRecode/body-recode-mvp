@@ -922,14 +922,47 @@ ${darkEmailSignature()}
       return NextResponse.json({ received: true })
     }
 
-    // Fulfilment routing by kind. Phase A ships instant_pdf live; the
-    // other three branches are stubbed (Phase B/C/D will wire them up).
+    // Fulfilment routing by kind. Phase A shipped instant_pdf; Phase C shipped
+    // instant_engine (bolt_on_ai). coach_task + shipping branches are still stubs.
     if (meta.fulfilment_kind === 'instant_pdf') {
       await fulfilInstantPdf({ purchase_id: purchase.id, product, meta, email, source: source ?? 'direct' })
     } else if (meta.fulfilment_kind === 'instant_engine') {
-      // Phase C — bolt_on_ai. Enqueue the matching engine call.
-      // TODO(Phase C): inngest.send({ name: 'digital_asset/engine_call', ... })
-      console.log('[stripe webhook] digital_asset_purchase instant_engine stub', purchase.id)
+      // 1. Send the "we're generating" email synchronously so the buyer
+      //    knows the order landed even if Inngest is slow to pick up.
+      if (process.env.RESEND_API_KEY) {
+        try {
+          const { Resend: ResendCls } = await import('resend')
+          const { buildDeepDiveGeneratingEmail } = await import('@/lib/digital-asset-engine-emails')
+          const resend = new ResendCls(process.env.RESEND_API_KEY)
+          const firstName = email.split('@')[0]
+          const built = buildDeepDiveGeneratingEmail({
+            firstName,
+            productTitle: product.name,
+            etaMinutes: 10,
+          })
+          await resend.emails.send({
+            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            to: email,
+            subject: built.subject,
+            html: built.html,
+          })
+        } catch (e) {
+          console.error('[stripe webhook] instant_engine generating email failed:', e)
+        }
+      }
+
+      // 2. Fire the Inngest event. The fulfilment function picks it up,
+      //    runs the engine, renders the PDF, uploads, marks fulfilled,
+      //    sends the ready email.
+      try {
+        const { inngest } = await import('@/lib/inngest')
+        await inngest.send({
+          name: 'digital_asset/engine_call',
+          data: { purchase_id: purchase.id },
+        })
+      } catch (e) {
+        console.error('[stripe webhook] inngest.send digital_asset/engine_call failed:', e)
+      }
     } else if (meta.fulfilment_kind === 'coach_task') {
       // Phase D — bolt_on_human. Create a coach Today's Focus action.
       // TODO(Phase D): create coach_tasks row + due_at SLA

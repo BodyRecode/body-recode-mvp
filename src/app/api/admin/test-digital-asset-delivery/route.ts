@@ -90,6 +90,38 @@ async function handle(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to create test purchase', detail: purchaseError?.message }, { status: 500 })
   }
 
+  // 2a. If this is an instant_engine product, run the orchestrator inline
+  // (bypassing Inngest so the response surfaces any error immediately).
+  if (meta.fulfilment_kind === 'instant_engine') {
+    try {
+      const { fulfilInstantEngine } = await import('@/lib/instant-engine-fulfilment')
+      await fulfilInstantEngine(purchase.id)
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e)
+      return NextResponse.json({
+        error: 'instant_engine fulfilment failed',
+        detail: msg,
+        purchase_id: purchase.id,
+      }, { status: 500 })
+    }
+    const { data: refetched } = await admin
+      .from('digital_asset_purchases')
+      .select('status, output_ref, fulfilled_at')
+      .eq('id', purchase.id)
+      .maybeSingle()
+    return NextResponse.json({
+      ok: true,
+      purchase_id: purchase.id,
+      product: product.name,
+      email,
+      fulfilment_kind: 'instant_engine',
+      status: refetched?.status,
+      output_ref: refetched?.output_ref,
+      fulfilled_at: refetched?.fulfilled_at,
+      note: 'A real digital_asset_purchases row was created. Delete it from Supabase if you want to keep prod data clean.',
+    })
+  }
+
   // 3. Sign a 24-hour PDF download URL.
   const { data: signed, error: signError } = await admin.storage
     .from(LIBRARY_BUCKET)

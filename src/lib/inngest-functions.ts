@@ -1190,3 +1190,28 @@ export const executeWorkflowFunction = inngest.createFunction(
     }
   }
 )
+
+
+// ─── Digital Asset Engine Fulfilment ──────────────────────────────────────────
+// Phase C — bolt_on_ai products with fulfilment_kind='instant_engine'.
+// Triggered by the Stripe webhook after the purchase row is inserted.
+// Runs the engine, renders the deep-dive PDF, uploads to library, sends
+// the ready email. See src/lib/instant-engine-fulfilment.ts for the body.
+export const digitalAssetEngineFulfilmentFunction = inngest.createFunction(
+  {
+    id: 'digital-asset-engine-fulfilment',
+    retries: 3,
+    triggers: [{ event: 'digital_asset/engine_call' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const { purchase_id } = event.data as { purchase_id: string }
+
+    await step.run('fulfil-instant-engine', async () => {
+      const { fulfilInstantEngine } = await import('@/lib/instant-engine-fulfilment')
+      await fulfilInstantEngine(purchase_id)
+    })
+
+    return { ok: true, purchase_id }
+  }
+)

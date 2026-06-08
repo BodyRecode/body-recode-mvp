@@ -113,6 +113,19 @@ export default async function BoltOnDetailPage({ params }: { params: Promise<{ t
   const copy = BOLT_ON_AD_COPY[slug]
   if (!pack || !copy) return notFound()
 
+  // AI Deep-Dives require a coaching clients row (their engines read CFFS/CFWS/programs).
+  // A direct visit to /store/{ai-slug} from an ineligible member 404s rather than
+  // letting them buy a product the engine cannot fulfil.
+  if (pack.kind === 'bolt_on_ai') {
+    const admin = createAdminClient()
+    const { data: client } = await admin
+      .from('clients')
+      .select('id')
+      .ilike('email', member.email)
+      .maybeSingle()
+    if (!client) return notFound()
+  }
+
   const coverSigned = await signCover(copy.cover_path)
 
   return (

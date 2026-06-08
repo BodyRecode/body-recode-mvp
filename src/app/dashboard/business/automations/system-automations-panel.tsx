@@ -220,6 +220,20 @@ const AUTOMATIC_AUTOMATIONS = [
     trigger: 'Remote agent cron — Mondays 9am Brisbane (0 23 * * 0 UTC)',
     steps: 1,
   },
+  {
+    id: 'digital-asset-instant-pdf',
+    name: 'Digital Asset — Instant PDF Delivery',
+    description: 'Phase A fulfilment branch. Stripe webhook receives checkout.session.completed for a digital_asset_purchase with fulfilment_kind=\'instant_pdf\' (Field Guides + Protocol Packs). Synchronously signs a 24h Supabase Storage URL, sends the branded delivery email, marks the purchase fulfilled with output_ref = signed URL. Lives at src/app/api/webhooks/stripe/route.ts::fulfilInstantPdf.',
+    trigger: 'Stripe checkout.session.completed (instant_pdf)',
+    steps: 1,
+  },
+  {
+    id: 'digital-asset-instant-engine',
+    name: 'Digital Asset — AI Deep-Dive (Instant Engine)',
+    description: 'Phase C fulfilment branch shipped 2026-06-08. Stripe webhook receives checkout.session.completed for a bolt_on_ai product (fulfilment_kind=\'instant_engine\'), sends the synchronous \"generating\" email, then fires Inngest event digital_asset/engine_call. The digitalAssetEngineFulfilmentFunction runs the matching engine (engine_call=\'trajectory\'|\'cffs\'|\'fat_map\'|\'health_markers\'), stores output in digital_asset_purchases.raw.engine_output, renders the deep-dive page to PDF via puppeteer, uploads to library-assets/deep-dives/{purchase_id}.pdf, marks fulfilled, sends the \"ready\" email. Only \'trajectory\' is live today; the other three engine_call branches will throw until implemented.',
+    trigger: 'Stripe checkout.session.completed (instant_engine) → Inngest digital_asset/engine_call',
+    steps: 3,
+  },
 ]
 
 const MANUAL_AUTOMATIONS = [

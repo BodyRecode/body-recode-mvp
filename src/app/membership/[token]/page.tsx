@@ -17,11 +17,19 @@ export type FeaturedBoltOn = {
 async function pickFeaturedBoltOn(memberEmail: string): Promise<FeaturedBoltOn | null> {
   const admin = createAdminClient()
 
-  // Bolt-on products active right now.
+  // AI Deep-Dives require a coaching clients row. Drop bolt_on_ai from the
+  // candidate set for members without one.
+  const { data: client } = await admin
+    .from('clients')
+    .select('id')
+    .ilike('email', memberEmail)
+    .maybeSingle()
+  const candidateKinds = client ? ['protocol', 'bolt_on_ai'] : ['protocol']
+
   const { data: products } = await admin
     .from('be_products')
     .select('id, name, price, kind, created_at, digital_asset_metadata!inner(slug, active)')
-    .in('kind', ['protocol', 'bolt_on_ai'])
+    .in('kind', candidateKinds)
     .order('created_at', { ascending: false })
 
   if (!products?.length) return null

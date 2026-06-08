@@ -54,12 +54,29 @@ const KIND_TO_LABEL: Record<string, string> = {
   'bolt_on_physical': 'Physical Products',
 }
 
-async function loadBoltOns(): Promise<StoreProduct[]> {
+async function memberHasClient(email: string): Promise<boolean> {
   const admin = createAdminClient()
+  const { data: client } = await admin
+    .from('clients')
+    .select('id')
+    .ilike('email', email)
+    .maybeSingle()
+  return !!client
+}
+
+async function loadBoltOns(memberEmail: string): Promise<StoreProduct[]> {
+  const admin = createAdminClient()
+  const isCoachingClient = await memberHasClient(memberEmail)
+  // AI Deep-Dives require a coaching clients row (their engines read CFFS/CFWS/programs).
+  // Filter the kinds we query for accordingly.
+  const visibleKinds = isCoachingClient
+    ? ['protocol', 'bolt_on_ai', 'bolt_on_human', 'bolt_on_physical']
+    : ['protocol', 'bolt_on_human', 'bolt_on_physical']
+
   const { data: products } = await admin
     .from('be_products')
     .select('id, name, description, price, kind, digital_asset_metadata!inner(slug, active)')
-    .in('kind', ['protocol', 'bolt_on_ai', 'bolt_on_human', 'bolt_on_physical'])
+    .in('kind', visibleKinds)
   if (!products) return []
 
   const enriched = await Promise.all(products.map(async p => {
@@ -131,7 +148,7 @@ export default async function BoltOnStorePage({ params }: { params: Promise<{ to
   const member = await resolveMember(token)
   if (!member) return <UpgradePrompt />
 
-  const products = await loadBoltOns()
+  const products = await loadBoltOns(member.email)
   const grouped = products.reduce<Record<string, StoreProduct[]>>((acc, p) => {
     if (!acc[p.category_label]) acc[p.category_label] = []
     acc[p.category_label].push(p)
