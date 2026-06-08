@@ -25,6 +25,7 @@ const BLOCK_NAME_OPTIONS = [
   'Deload / Restoration Block',
   'Active Recovery Block',
   'Consolidation Block',
+  'Travel-Adapted Movement Continuity',
 ]
 
 const EQUIPMENT_OPTIONS = [
