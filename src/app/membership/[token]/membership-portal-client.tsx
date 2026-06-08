@@ -1037,11 +1037,11 @@ type FeaturedBoltOn = {
 
 export default function MembershipPortalClient({
   enrollment,
-  featuredBoltOn,
+  featuredBoltOns,
   libraryToken,
 }: {
   enrollment: MemberEnrollment
-  featuredBoltOn?: FeaturedBoltOn | null
+  featuredBoltOns?: FeaturedBoltOn[]
   libraryToken?: string
 }) {
   const [activeTab, setActiveTab] = useState('home')
@@ -1195,49 +1195,63 @@ export default function MembershipPortalClient({
               </div>
             </>)}
 
-            {/* Featured Bolt-on */}
-            {featuredBoltOn && libraryToken && (
-              <a
-                href={`/library/${libraryToken}/store/${featuredBoltOn.slug}`}
-                style={{
-                  display: 'block', textDecoration: 'none', color: 'inherit',
-                  marginBottom: 16,
-                  background: '#FFFFFF',
-                  border: '1px solid #E5E5E5',
-                  borderLeft: '4px solid #1B6DFC',
-                  borderRadius: 12, overflow: 'hidden',
-                }}
-              >
-                <div style={{ display: 'grid', gridTemplateColumns: '88px 1fr auto', gap: 16, alignItems: 'center', padding: '14px 16px' }}>
-                  <div style={{
-                    width: 88, aspectRatio: '1 / 1.414', borderRadius: 6, overflow: 'hidden',
-                    background: '#FAFAFA', border: '1px solid #EAEAEA', flexShrink: 0,
-                  }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={featuredBoltOn.cover_signed_url} alt={featuredBoltOn.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                  </div>
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{
-                      fontSize: 10, fontWeight: 700, color: '#1B6DFC',
-                      letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4,
-                    }}>
-                      New Bolt-on  ·  ${featuredBoltOn.price.toFixed(0)}
-                    </div>
-                    <div style={{
-                      fontSize: 16, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em',
-                      lineHeight: 1.25, marginBottom: 4,
-                    }}>
-                      {featuredBoltOn.name}
-                    </div>
-                    <div style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.5 }}>
-                      {featuredBoltOn.tagline}
-                    </div>
-                  </div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.10em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
-                    Read  →
-                  </div>
+            {/* Featured Bolt-ons */}
+            {featuredBoltOns && featuredBoltOns.length > 0 && libraryToken && (
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 10, padding: '0 2px' }}>
+                  <p style={{ fontSize: 11, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', margin: 0 }}>
+                    Bolt-on store
+                  </p>
+                  <a href={`/library/${libraryToken}/store`} style={{ fontSize: 11, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.10em', textTransform: 'uppercase', textDecoration: 'none' }}>
+                    See all  →
+                  </a>
                 </div>
-              </a>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {featuredBoltOns.map((b, i) => (
+                    <a
+                      key={b.slug}
+                      href={`/library/${libraryToken}/store/${b.slug}`}
+                      style={{
+                        display: 'block', textDecoration: 'none', color: 'inherit',
+                        background: '#FFFFFF',
+                        border: '1px solid #E5E5E5',
+                        borderLeft: i === 0 ? '4px solid #1B6DFC' : '1px solid #E5E5E5',
+                        borderRadius: 12, overflow: 'hidden',
+                      }}
+                    >
+                      <div style={{ display: 'grid', gridTemplateColumns: '88px 1fr auto', gap: 16, alignItems: 'center', padding: '14px 16px' }}>
+                        <div style={{
+                          width: 88, aspectRatio: '1 / 1.414', borderRadius: 6, overflow: 'hidden',
+                          background: '#FAFAFA', border: '1px solid #EAEAEA', flexShrink: 0,
+                        }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={b.cover_signed_url} alt={b.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                        </div>
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{
+                            fontSize: 10, fontWeight: 700, color: '#1B6DFC',
+                            letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4,
+                          }}>
+                            {b.kind === 'bolt_on_ai' ? 'AI Deep-Dive' : b.kind === 'protocol' ? 'Protocol Pack' : 'Bolt-on'}  ·  ${b.price.toFixed(0)}
+                          </div>
+                          <div style={{
+                            fontSize: 16, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em',
+                            lineHeight: 1.25, marginBottom: 4,
+                          }}>
+                            {b.name}
+                          </div>
+                          <div style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.5 }}>
+                            {b.tagline}
+                          </div>
+                        </div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.10em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+                          Read  →
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
             )}
 
             {/* Weekly coaching note */}

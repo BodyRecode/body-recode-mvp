@@ -17,7 +17,7 @@ export type FeaturedBoltOn = {
 // Hidden from non-coaching members because their engines read coaching-only data.
 const COACHING_ONLY_ENGINE_CALLS = new Set(['trajectory', 'cffs', 'fat_map', 'health_markers'])
 
-async function pickFeaturedBoltOn(memberEmail: string): Promise<FeaturedBoltOn | null> {
+async function pickFeaturedBoltOns(memberEmail: string, max = 3): Promise<FeaturedBoltOn[]> {
   const admin = createAdminClient()
 
   const { data: client } = await admin
@@ -33,7 +33,7 @@ async function pickFeaturedBoltOn(memberEmail: string): Promise<FeaturedBoltOn |
     .in('kind', ['protocol', 'bolt_on_ai'])
     .order('created_at', { ascending: false })
 
-  if (!products?.length) return null
+  if (!products?.length) return []
 
   // Pull purchases so we don't feature what they already own.
   const { data: purchases } = await admin
@@ -43,7 +43,9 @@ async function pickFeaturedBoltOn(memberEmail: string): Promise<FeaturedBoltOn |
     .in('status', ['paid', 'fulfilled'])
   const purchasedIds = new Set((purchases ?? []).map(p => p.product_id))
 
+  const out: FeaturedBoltOn[] = []
   for (const p of products) {
+    if (out.length >= max) break
     const meta = Array.isArray(p.digital_asset_metadata) ? p.digital_asset_metadata[0] : p.digital_asset_metadata
     if (!meta?.active) continue
     if (purchasedIds.has(p.id)) continue
@@ -56,12 +58,11 @@ async function pickFeaturedBoltOn(memberEmail: string): Promise<FeaturedBoltOn |
     ) continue
     const copy = BOLT_ON_AD_COPY[meta.slug]
     if (!copy) continue
-    // Sign the cover URL
     const { data: signed } = await admin.storage
       .from('library-assets')
       .createSignedUrl(copy.cover_path, 60 * 60 * 24)
     if (!signed?.signedUrl) continue
-    return {
+    out.push({
       product_id: p.id,
       slug: meta.slug,
       name: p.name,
@@ -70,9 +71,9 @@ async function pickFeaturedBoltOn(memberEmail: string): Promise<FeaturedBoltOn |
       tagline: copy.tagline,
       hero_headline: copy.hero_headline,
       cover_signed_url: signed.signedUrl,
-    }
+    })
   }
-  return null
+  return out
 }
 
 export default async function MembershipPortalPage({ params }: { params: Promise<{ token: string }> }) {
@@ -87,14 +88,14 @@ export default async function MembershipPortalPage({ params }: { params: Promise
 
   if (!enrollment) return notFound()
 
-  const featuredBoltOn = enrollment.email
-    ? await pickFeaturedBoltOn(enrollment.email)
-    : null
+  const featuredBoltOns = enrollment.email
+    ? await pickFeaturedBoltOns(enrollment.email, 3)
+    : []
 
   return (
     <MembershipPortalClient
       enrollment={enrollment}
-      featuredBoltOn={featuredBoltOn}
+      featuredBoltOns={featuredBoltOns}
       libraryToken={enrollment.token}
     />
   )
