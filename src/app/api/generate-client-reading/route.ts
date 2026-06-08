@@ -154,7 +154,26 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const cleaned = stripEmDashes(reading)
+  // Strip em dashes + audit client-facing fields against the shared
+  // banned-terms list (src/lib/banned-client-terms.ts). Added 2026-06-09
+  // after Ruby's published FR was found to contain "mid-arc compression"
+  // and "sympathetic dominance" — banned client-facing terms that were
+  // previously enforced only on weekly-checkin-feedback.
+  const { auditClientReadingFields } = await import('@/lib/banned-client-terms')
+  const audit = auditClientReadingFields(reading, [
+    'cr_where_you_are',
+    'cr_what_your_body_is_telling_us',
+    'cr_what_were_focusing_on_first',
+    'cr_what_were_not_doing_yet',
+    'cr_coach_note',
+  ])
+  if (!audit.ok) {
+    return NextResponse.json(
+      { error: `Reading leaked internal terminology (${audit.leaks.join(', ')}). Click Regenerate to redraft.` },
+      { status: 500 }
+    )
+  }
+  const cleaned = audit.cleaned
 
   const now = new Date().toISOString()
   // Auto-publish on generation. Regenerations stay published silently.

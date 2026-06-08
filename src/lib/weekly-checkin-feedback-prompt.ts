@@ -397,61 +397,13 @@ function renderCheckinResponses(
  * rule and into a client email. Matches the cleaner used by the Foundational
  * Reading generator.
  */
-export function stripEmDashes<T>(value: T): T {
-  if (typeof value === 'string') return value.replace(/—/g, ', ') as T
-  if (Array.isArray(value)) return value.map(stripEmDashes) as T
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, stripEmDashes(v)])
-    ) as T
-  }
-  return value
-}
+// stripEmDashes + findLeakedTerms moved to src/lib/banned-client-terms.ts
+// (2026-06-09). Re-exported below so existing callers keep working.
+export { stripEmDashes } from './banned-client-terms'
 
 /**
- * Internal terminology the client has never seen. Surfaces as a generation
- * failure so the coach can regenerate rather than ship leaked jargon. The
- * system prompt already forbids these explicitly; this is the second line
- * of defence.
+ * Banned client-facing terminology — single source of truth at
+ * [[src/lib/banned-client-terms.ts]] (2026-06-09). Re-exported here so
+ * existing callers that import from this file keep working.
  */
-const BANNED_CLIENT_TERMS: RegExp[] = [
-  // Acronyms
-  /\bCFFS\b/i,
-  /\bCFWS\b/i,
-  /\bRPE\b/i,
-  /\bRPE creep\b/i,
-  // Internal naming
-  /\bcoach[- ]facing\b/i,
-  /\b(foundational|weekly) synthesis\b/i,
-  /\bthe synthesis\b/i,
-  /\bspatial patterning\b/i,
-  /\b(exposure|capacity|regulation|behaviour|behavior) readiness\b/i,
-  /\bdrift advisory\b/i,
-  /\breassessment trigger\b/i,
-  /\b(signal|readiness) monitor\b/i,
-  /\bresolution state\b/i,
-  /\bbody state classification\b/i,
-  // Internal arc / pattern jargon
-  /\bmid[- ]arc\b/i,
-  /\blong[- ]arc\b/i,
-  /\bstress[- ]belt\b/i,
-  /\bwired[- ]but[- ]tired\b/i,
-  // Clinical / physiological jargon
-  /\b(sympathetic|parasympathetic) dominance\b/i,
-  /\bsympathetic (overdrive|activation|load)\b/i,
-  /\bfight[- ]or[- ]flight\b/i,
-  /\bautonomic\b/i,
-  /\bnervous system (overdrive|dysregulation|dysregulated)\b/i,
-  /\bhpa axis\b/i,
-  /\bcortisol\b/i,
-  /\bdownregulation\b/i,
-]
-
-export function findLeakedTerms(text: string): string[] {
-  const hits: string[] = []
-  for (const re of BANNED_CLIENT_TERMS) {
-    const match = text.match(re)
-    if (match) hits.push(match[0])
-  }
-  return hits
-}
+export { findLeakedTerms } from './banned-client-terms'

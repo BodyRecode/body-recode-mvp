@@ -14,7 +14,7 @@
  */
 
 import type { Intake } from '@/types'
-import { findLeakedTerms } from './weekly-checkin-feedback-prompt'
+import { findLeakedTerms } from './banned-client-terms'
 
 export interface MedicationsCFFSContext {
   body_state_classification: string | null
@@ -263,15 +263,6 @@ export function buildClientReadingUserPrompt(input: {
  * banned list stays a single source of truth.
  * ────────────────────────────────────────────────────────────────────────── */
 
-export function stripEmDashes<T>(value: T): T {
-  if (typeof value === 'string') return value.replace(/—/g, ', ') as T
-  if (Array.isArray(value)) return value.map(stripEmDashes) as T
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, stripEmDashes(v)])
-    ) as T
-  }
-  return value
-}
-
-export { findLeakedTerms }
+// stripEmDashes + findLeakedTerms moved to src/lib/banned-client-terms.ts
+// (2026-06-09). Re-exported here so existing callers keep working.
+export { stripEmDashes, findLeakedTerms } from './banned-client-terms'

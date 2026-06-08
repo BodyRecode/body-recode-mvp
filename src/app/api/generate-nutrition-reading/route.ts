@@ -171,7 +171,25 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const cleaned = stripEmDashes(reading)
+  // Banned-terms audit added 2026-06-09 — see banned-client-terms.ts.
+  // Ruby's NR was generated 2026-05-12 and ships "mid-arc compression" +
+  // "downregulating" + "wired-but-tired" because NR had no leak check at
+  // the time. Now blocked at generation.
+  const { auditClientReadingFields } = await import('@/lib/banned-client-terms')
+  const audit = auditClientReadingFields(reading, [
+    'nr_why_this_plan',
+    'nr_what_this_nutrition_is_doing',
+    'nr_how_well_know_its_working',
+    'nr_what_were_not_doing_yet',
+    'nr_coach_note',
+  ])
+  if (!audit.ok) {
+    return NextResponse.json(
+      { error: `Reading leaked internal terminology (${audit.leaks.join(', ')}). Click Regenerate to redraft.` },
+      { status: 500 }
+    )
+  }
+  const cleaned = audit.cleaned
 
   const now = new Date().toISOString()
   // Auto-publish on generation. Regenerations stay published silently. Mirrors

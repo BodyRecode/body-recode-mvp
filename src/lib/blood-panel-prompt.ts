@@ -448,4 +448,4 @@ export function normaliseExtraction(raw: unknown): BloodPanelExtraction {
   return stripEmDashes(extraction)
 }
 
-export { findLeakedTerms, stripEmDashes }
+export { findLeakedTerms, stripEmDashes } from './banned-client-terms'
