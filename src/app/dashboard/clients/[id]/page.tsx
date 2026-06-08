@@ -20,6 +20,8 @@ import DietaryConsumptionEditor from './dietary-consumption-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import CoachResponseCard from './coach-response-card'
 import MajorSection from './major-section'
+import ArtefactAuditPill from './artefact-audit-pill'
+import { auditFoundationalReading, auditProgramReading, auditNutritionPlan } from '@/lib/artefact-audit'
 import AutoResponseToggle from './auto-response-toggle'
 import MedicationsAnalysisPanel from './medications-analysis-panel'
 import ReopenCheckinButton from './reopen-checkin-button'
@@ -134,6 +136,16 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   const feedbackByCheckinId = new Map<string, NonNullable<typeof feedbackHistory>[number]>()
   for (const f of feedbackHistory ?? []) feedbackByCheckinId.set(f.weekly_checkin_id, f)
+
+  // Pre-publish dry-run audits (item H, 2026-06-09). Each helper returns null
+  // when the corresponding artefact isn't yet published. Pill renders as
+  // green/amber/red on the relevant MajorSection header so the coach sees
+  // audit status before opening the section.
+  const [frAudit, prAudit, nrAudit] = await Promise.all([
+    auditFoundationalReading(admin, id),
+    auditProgramReading(admin, id),
+    auditNutritionPlan(admin, id),
+  ])
 
   // Lookup from feedback row back to its check-in (week + form), for the
   // history section headers.
@@ -730,6 +742,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         subtitle="- CFFS"
         defaultOpen={cffsActionRequired}
         attentionLabel={!activeCffs ? 'No CFFS yet' : (!frPublished ? 'FR not published' : null)}
+        actionRight={frAudit ? <ArtefactAuditPill audit={frAudit} /> : undefined}
       >
       {!activeCffs ? (
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-8 text-center">
@@ -1318,12 +1331,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         defaultOpen={trainingActionRequired}
         attentionLabel={!activeProgram ? 'No active program' : draftProgram ? 'Draft awaiting review' : null}
         actionRight={
-          <Link
-            href={`/dashboard/clients/${id}/plan`}
-            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
-          >
-            Macro Plan
-          </Link>
+          <>
+            {prAudit && <ArtefactAuditPill audit={prAudit} />}
+            <Link
+              href={`/dashboard/clients/${id}/plan`}
+              className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+            >
+              Macro Plan
+            </Link>
+          </>
         }
       >
         <div className="space-y-2">
@@ -1387,12 +1403,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         defaultOpen={nutritionActionRequired}
         attentionLabel={!activeNutritionPlan ? 'No active plan' : draftNutritionPlan ? 'Draft awaiting review' : null}
         actionRight={
-          <Link
-            href={`/dashboard/clients/${id}/nutrition/suggest`}
-            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
-          >
-            {activeNutritionPlan ? 'Regenerate' : 'Generate Plan'}
-          </Link>
+          <>
+            {nrAudit && <ArtefactAuditPill audit={nrAudit} />}
+            <Link
+              href={`/dashboard/clients/${id}/nutrition/suggest`}
+              className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+            >
+              {activeNutritionPlan ? 'Regenerate' : 'Generate Plan'}
+            </Link>
+          </>
         }
       >
         <div className="space-y-2">
