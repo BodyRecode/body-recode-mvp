@@ -330,6 +330,22 @@ SUBSTITUTION RULES:
 - No cross-category substitution.
 - Food intolerance flags from CFFS / intake are hard exclusions, not preferences.
 
+SUBSTITUTION FORMAT (STRICT — validator parses each line and rejects non-conformant ones):
+- Every line in substitution_options.protein, .carbohydrate, and .fat MUST use this exact shape:
+    "OriginalFood (Ng state) ↔ AltFood1 (Ng state), AltFood2 (Ng state), AltFood3 (Ng state)"
+  where the arrow is the unicode "↔" (U+2194) and (Ng state) is the portion grams plus the form, e.g. "(150g raw)", "(80g dry)", "(120g cooked)", "(150g drained)", "(20g drizzle)", "(10g)".
+- The left side is the original food from the meals (the thing being swapped OUT). The right side is one or more alternatives separated by commas, each with its own (Ng state).
+- DO NOT write prose like "X can substitute Y at Meal 3 if travelling" — that line FAILS validation. If you want to flag context, append it after an em-dash AFTER the structured list: "...Alt (Ng state) — when travelling".
+- Examples that PASS:
+    "Greek yoghurt, full-fat (150g) ↔ cottage cheese (150g), kefir unsweetened (200g), eggs (3 whole)"
+    "White rice, cooked (150g cooked) ↔ white potato, cooked (200g cooked), banana (1 medium ~120g), sweet potato cooked (200g cooked)"
+    "Olive oil (15g drizzle) ↔ avocado (100g), butter (10g) — butter only on cooked food, never on salad"
+- Examples that FAIL (do not emit these):
+    "Eggs can substitute Greek yoghurt at Meal 1"
+    "Grilled chicken breast (120g raw, approximately 26g protein) can substitute salmon"
+    "Use cottage cheese instead of yoghurt when travelling"
+- If coach_guidance asks for "more substitutions" or "more flexibility", that means MORE entries on the right-hand side of the ↔, NOT writing each entry as a sentence. Stay strict on format.
+
 VARIETY ACROSS MEALS (CRITICAL — eats monotony cause adherence failure):
 - ROTATE primary carb sources across the day. No single carb source (e.g. white potato) should appear in more than 2 of N meals. Rotate among the Tier 1 carb pool: white rice (cooked), white potato (cooked), sweet potato (cooked), banana, mixed berries, honey. A 5-meal plan with potato in 4 meals is a generation failure — re-emit with rotation.
 - ROTATE primary protein sources where reasonable. No more than 2 meals with the same primary protein (e.g. chicken at lunch AND dinner is fine; chicken at lunch + chicken snack + chicken dinner is not). Rotate among beef, poultry, fish, eggs, dairy (Greek yoghurt / cottage cheese), tinned fish.
@@ -480,9 +496,9 @@ Return ONLY valid JSON. No markdown, no explanation outside the JSON object. Do 
   },
   "food_selection_guidelines": ["string"],
   "substitution_options": {
-    "protein": ["string"],
-    "carbohydrate": ["string"],
-    "fat": ["string"]
+    "protein": ["string — STRICT FORMAT: 'OriginalFood (Ng state) ↔ Alt1 (Ng state), Alt2 (Ng state)' — never prose sentences"],
+    "carbohydrate": ["string — same strict format"],
+    "fat": ["string — same strict format"]
   },
   "execution_rules": ["string"],
   "what_not_to_change": ["string"],

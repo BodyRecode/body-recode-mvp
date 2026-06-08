@@ -9,9 +9,14 @@ import { createClient } from '@supabase/supabase-js'
 const CLIENT_ID = '403af6c4-136a-40e9-bd90-7d8e1dd101b9'
 const PLAN_ID = '8899d670-a4c7-438e-8e9e-02f2b22d2cc9'
 
-const GUIDANCE = `Travel block (5 June 2026 to 5 July 2026). Samantha is away from home for four weeks with no kitchen access and eats out / orders takeaway daily. The plan must work in restaurants and hotel rooms, not at her stove. Loosen meal-time rigidity: timing is approximate, not clock-precise. Substitution generosity is high — surface portable, restaurant-resolvable, no-prep options across substitution_options for every meal slot.
+const GUIDANCE = `Travel block (5 June 2026 to 5 July 2026). Samantha is away from home for four weeks with no kitchen access and eats out / orders takeaway daily. The plan must work in restaurants and hotel rooms, not at her stove.
 
-Honour her natural eating rhythm during travel. Her stated typical_day_eating notes that she often compresses to 2 meals (skips lunch when breakfast happens, or skips breakfast when lunch happens). For the travel block, treat meal_frequency=3 as the target but allow weekly_structure_notes to acknowledge that compressing to 2 substantive meals is acceptable AS LONG AS the protein anchor still distributes evenly within per-meal caps (no appetite-suppression medication, so the 4-meal hard rule does NOT apply here). Do not prescribe lunch as a separate locked event if she's stated breakfast XOR lunch is her honest pattern.
+Adherence design (apply within strict output format — substitution_options MUST stay in the "Food (Ng state) ↔ Alt1 (Ng state), Alt2 (Ng state)" shape, NEVER prose sentences):
+- Loosen meal-time rigidity in weekly_structure_notes only (timing is approximate, not clock-precise).
+- Expand substitution_options by adding MORE comma-separated alternatives on the right-hand side of the ↔ for each line — at least 4-5 alternatives per protein/carb/fat line, biased toward portable, restaurant-resolvable, no-prep foods (Greek yoghurt cups, tinned fish, cooked chicken from a deli, sushi protein, eggs, banana, sweet potato, white rice, avocado). Do NOT write sentences describing when to use each swap; that note can go after an em-dash on a single line if needed.
+- Surface adherence design choices in execution_rules and weekly_structure_notes, not in substitution_options.
+
+Honour her natural eating rhythm during travel. Her stated typical_day_eating notes she often compresses to 2 meals (skips lunch when breakfast happens, or skips breakfast when lunch happens). For the travel block, treat meal_frequency=3 as the target but allow weekly_structure_notes to acknowledge that compressing to 2 substantive meals is acceptable AS LONG AS the protein anchor still distributes evenly within per-meal caps (no appetite-suppression medication, so the 4-meal hard rule does NOT apply). Do not prescribe lunch as a separate locked event if she has stated breakfast XOR lunch is her honest pattern.
 
 Hold the regulation-first framing. She is still Remediation per CFFS; this block maintains nutritional stability under travel disruption, not aggressive recomposition. Goal is consistency under disruption, not capacity build. After her return on 6 July, regenerate without travel guidance to resume the home-kitchen baseline plan.
 
