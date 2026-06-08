@@ -125,6 +125,24 @@ export default async function BannedTermsAuditPage() {
 
   const leakRate = totalArtefactsChecked > 0 ? Math.round((totalArtefactsLeaked / totalArtefactsChecked) * 100) : 0
 
+  // Doctrine version summary — count active artefacts on the current version
+  // vs stale. Surfaces the bump impact without needing an Inngest pipeline.
+  // Item (G), 2026-06-09.
+  const doctrineSummary: { key: string; label: string; current: string; onCurrent: number; stale: number }[] = []
+  let frOnCurrent = 0, frStale = 0
+  let prOnCurrent = 0, prStale = 0
+  let nrOnCurrent = 0, nrStale = 0
+  for (const r of reports) {
+    if (r.fr) (r.fr.isStale ? frStale++ : frOnCurrent++)
+    if (r.pr) (r.pr.isStale ? prStale++ : prOnCurrent++)
+    if (r.nr) (r.nr.isStale ? nrStale++ : nrOnCurrent++)
+  }
+  // Also count artefacts that PASSED the audit (no reports entry) — they are
+  // necessarily on current version with no leaks, so all on-current.
+  doctrineSummary.push({ key: 'foundational_reading', label: 'Foundational Reading', current: DOCTRINE_VERSIONS.foundational_reading, onCurrent: frOnCurrent, stale: frStale })
+  doctrineSummary.push({ key: 'program_reading', label: 'Program Reading', current: DOCTRINE_VERSIONS.program_reading, onCurrent: prOnCurrent, stale: prStale })
+  doctrineSummary.push({ key: 'nutrition_reading', label: 'Nutrition Reading', current: DOCTRINE_VERSIONS.nutrition_reading, onCurrent: nrOnCurrent, stale: nrStale })
+
   return (
     <div className="max-w-4xl">
       <Link href="/dashboard/system-health" className="inline-flex items-center gap-1 text-xs text-[#999999] hover:text-[#3A3A3A] transition-colors mb-4">
@@ -147,6 +165,37 @@ export default async function BannedTermsAuditPage() {
           <p className="text-[10px] text-[#6B6B6B] mt-1">{totalArtefactsLeaked} of {totalArtefactsChecked} artefacts</p>
         </Card>
       </div>
+
+      <Card padding="md" className="mb-6">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999] mb-3">Doctrine version coverage</p>
+        <div className="space-y-2">
+          {doctrineSummary.map(d => {
+            const total = d.onCurrent + d.stale
+            const pct = total > 0 ? Math.round((d.onCurrent / total) * 100) : 100
+            return (
+              <div key={d.key} className="flex items-center gap-3 text-xs">
+                <span className="text-[#1A1A1A] font-semibold min-w-[160px]">{d.label}</span>
+                <span className="text-[#6B6B6B] font-mono text-[10px]">v{d.current}</span>
+                <span className="flex-1 text-right text-[#6B6B6B]">
+                  <span className={pct === 100 ? 'text-green-700 font-semibold' : 'text-amber-700 font-semibold'}>{d.onCurrent}</span>
+                  <span> on current</span>
+                  {d.stale > 0 && (
+                    <>
+                      <span className="text-[#D1D5DB] mx-2">·</span>
+                      <span className="text-amber-700 font-semibold">{d.stale}</span>
+                      <span> stale</span>
+                    </>
+                  )}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+        <p className="text-[10px] text-[#999999] mt-3 leading-relaxed">
+          A doctrine bump in <span className="font-mono">src/lib/doctrine-versions.ts</span> renders all rows on the old version stale.
+          The audit panel below names the affected clients so the impact of a bump is visible before regenerate work begins.
+        </p>
+      </Card>
 
       {reports.length === 0 ? (
         <Card padding="lg" className="text-center">

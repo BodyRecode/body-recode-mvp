@@ -192,6 +192,28 @@ export async function POST(request: NextRequest) {
   const cleaned = audit.cleaned
 
   const { DOCTRINE_VERSIONS } = await import('@/lib/doctrine-versions')
+
+  // Archive previous NR version (item I, 2026-06-09).
+  if (plan.nr_why_this_plan || plan.nr_what_this_nutrition_is_doing) {
+    const { archiveArtefactVersion } = await import('@/lib/artefact-archive')
+    void archiveArtefactVersion({
+      admin,
+      clientId: plan.client_id,
+      artefactType: 'nr',
+      sourceRowId: plan_id,
+      doctrineVersion: plan.doctrine_version ?? null,
+      content: {
+        nr_why_this_plan: plan.nr_why_this_plan,
+        nr_what_this_nutrition_is_doing: plan.nr_what_this_nutrition_is_doing,
+        nr_how_well_know_its_working: plan.nr_how_well_know_its_working,
+        nr_what_were_not_doing_yet: plan.nr_what_were_not_doing_yet,
+        nr_coach_note: plan.nr_coach_note,
+      },
+      generatedAt: plan.nutrition_reading_generated_at ?? null,
+      archivedBy: user.id,
+    })
+  }
+
   const now = new Date().toISOString()
   // Auto-publish on generation. Regenerations stay published silently. Mirrors
   // the Program Reading flow.

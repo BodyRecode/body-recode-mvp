@@ -183,6 +183,28 @@ export async function POST(request: NextRequest) {
   const cleaned = audit.cleaned
 
   const { DOCTRINE_VERSIONS } = await import('@/lib/doctrine-versions')
+
+  // Archive previous PR version (item I, 2026-06-09).
+  if (program.pr_why_this_block || program.pr_what_this_program_is_doing) {
+    const { archiveArtefactVersion } = await import('@/lib/artefact-archive')
+    void archiveArtefactVersion({
+      admin,
+      clientId: program.client_id,
+      artefactType: 'pr',
+      sourceRowId: program_id,
+      doctrineVersion: program.pr_doctrine_version ?? null,
+      content: {
+        pr_why_this_block: program.pr_why_this_block,
+        pr_what_this_program_is_doing: program.pr_what_this_program_is_doing,
+        pr_how_well_know_its_working: program.pr_how_well_know_its_working,
+        pr_what_were_not_doing_yet: program.pr_what_were_not_doing_yet,
+        pr_coach_note: program.pr_coach_note,
+      },
+      generatedAt: program.program_reading_generated_at ?? null,
+      archivedBy: user.id,
+    })
+  }
+
   const now = new Date().toISOString()
   // Auto-publish on generation. Regenerations stay published silently. Mirrors
   // the Foundational Reading flow.

@@ -176,6 +176,29 @@ export async function POST(request: NextRequest) {
   const cleaned = audit.cleaned
 
   const { DOCTRINE_VERSIONS } = await import('@/lib/doctrine-versions')
+
+  // Archive the previous FR version before overwriting (item I, 2026-06-09).
+  // Best-effort — failures here can't block the regenerate.
+  if (cffs.cr_where_you_are || cffs.cr_what_your_body_is_telling_us) {
+    const { archiveArtefactVersion } = await import('@/lib/artefact-archive')
+    void archiveArtefactVersion({
+      admin,
+      clientId: cffs.client_id,
+      artefactType: 'fr',
+      sourceRowId: cffs_id,
+      doctrineVersion: cffs.fr_doctrine_version ?? null,
+      content: {
+        cr_where_you_are: cffs.cr_where_you_are,
+        cr_what_your_body_is_telling_us: cffs.cr_what_your_body_is_telling_us,
+        cr_what_were_focusing_on_first: cffs.cr_what_were_focusing_on_first,
+        cr_what_were_not_doing_yet: cffs.cr_what_were_not_doing_yet,
+        cr_coach_note: cffs.cr_coach_note,
+      },
+      generatedAt: cffs.client_reading_generated_at ?? null,
+      archivedBy: user.id,
+    })
+  }
+
   const now = new Date().toISOString()
   // Auto-publish on generation. Regenerations stay published silently.
   const { data: updated, error: updateErr } = await admin
