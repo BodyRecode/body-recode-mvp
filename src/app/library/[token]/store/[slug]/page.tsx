@@ -12,6 +12,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import BoltOnCheckoutButton from '../checkout-button'
+import QuestionBuy from './question-buy'
 import { BOLT_ON_AD_COPY } from '@/lib/bolt-on-ad-copy'
 
 type Member = { token: string; first_name: string; email: string }
@@ -35,13 +36,14 @@ type PackProduct = {
   price: number
   kind: string
   slug: string
+  engine_call: string | null
 }
 
 async function loadPack(slug: string): Promise<PackProduct | null> {
   const admin = createAdminClient()
   const { data: meta } = await admin
     .from('digital_asset_metadata')
-    .select('slug, product_id, active')
+    .select('slug, product_id, active, engine_call')
     .eq('slug', slug)
     .maybeSingle()
   if (!meta || !meta.active) return null
@@ -57,8 +59,13 @@ async function loadPack(slug: string): Promise<PackProduct | null> {
     price: Number(product.price) || 0,
     kind: product.kind,
     slug: meta.slug,
+    engine_call: meta.engine_call ?? null,
   }
 }
+
+// engine_calls whose engines read coaching-only tables. Members without a
+// coaching clients row can't buy these.
+const COACHING_ONLY_ENGINE_CALLS = new Set(['trajectory', 'cffs', 'fat_map', 'health_markers'])
 
 async function signCover(coverPath: string): Promise<string | null> {
   const admin = createAdminClient()
@@ -113,10 +120,16 @@ export default async function BoltOnDetailPage({ params }: { params: Promise<{ t
   const copy = BOLT_ON_AD_COPY[slug]
   if (!pack || !copy) return notFound()
 
-  // AI Deep-Dives require a coaching clients row (their engines read CFFS/CFWS/programs).
-  // A direct visit to /store/{ai-slug} from an ineligible member 404s rather than
-  // letting them buy a product the engine cannot fulfil.
-  if (pack.kind === 'bolt_on_ai') {
+  // Some AI Deep-Dives require a coaching clients row (their engines read
+  // CFFS/CFWS/programs). The Membership-tier engine ('member_question') is
+  // open to any active member. A direct visit to /store/{ai-slug} from an
+  // ineligible member 404s rather than letting them buy a product the engine
+  // cannot fulfil.
+  if (
+    pack.kind === 'bolt_on_ai'
+    && pack.engine_call
+    && COACHING_ONLY_ENGINE_CALLS.has(pack.engine_call)
+  ) {
     const admin = createAdminClient()
     const { data: client } = await admin
       .from('clients')
@@ -188,29 +201,45 @@ export default async function BoltOnDetailPage({ params }: { params: Promise<{ t
             {copy.hero_sub}
           </p>
 
-          {/* Price + Add */}
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '20px',
-            padding: '20px 24px',
-            background: '#FAFAFA',
-            border: '1px solid #E5E5E5',
-            borderRadius: '14px',
-          }}>
-            <div style={{ flex: 1 }}>
-              <p style={{ fontSize: '11px', fontWeight: 700, color: '#888888', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 4px' }}>
-                {pack.name}
-              </p>
-              <p style={{ fontSize: '28px', fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.02em' }}>
-                ${pack.price.toFixed(0)}
-                <span style={{ fontSize: '14px', fontWeight: 600, color: '#888888', marginLeft: '10px' }}>one-time</span>
-              </p>
+          {/* Price + Add — variant differs for member_question (textarea) */}
+          {pack.engine_call === 'member_question' ? (
+            <div style={{
+              padding: '24px 26px',
+              background: '#FAFAFA',
+              border: '1px solid #E5E5E5',
+              borderRadius: '14px',
+            }}>
+              <QuestionBuy
+                productId={pack.id}
+                email={member.email}
+                source={`bolt_on_detail_${pack.kind}_${pack.slug}`}
+                price={pack.price}
+              />
             </div>
-            <BoltOnCheckoutButton
-              productId={pack.id}
-              email={member.email}
-              source={`bolt_on_detail_${pack.kind}_${pack.slug}`}
-            />
-          </div>
+          ) : (
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '20px',
+              padding: '20px 24px',
+              background: '#FAFAFA',
+              border: '1px solid #E5E5E5',
+              borderRadius: '14px',
+            }}>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: '11px', fontWeight: 700, color: '#888888', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 4px' }}>
+                  {pack.name}
+                </p>
+                <p style={{ fontSize: '28px', fontWeight: 900, color: '#1A1A1A', margin: 0, letterSpacing: '-0.02em' }}>
+                  ${pack.price.toFixed(0)}
+                  <span style={{ fontSize: '14px', fontWeight: 600, color: '#888888', marginLeft: '10px' }}>one-time</span>
+                </p>
+              </div>
+              <BoltOnCheckoutButton
+                productId={pack.id}
+                email={member.email}
+                source={`bolt_on_detail_${pack.kind}_${pack.slug}`}
+              />
+            </div>
+          )}
         </div>
       </div>
 

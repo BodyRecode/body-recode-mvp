@@ -902,6 +902,12 @@ ${darkEmailSignature()}
       .ilike('email', email)
       .maybeSingle()
 
+    // Lift the engine-input fields out of session.metadata into raw at top
+    // level so orchestrator code can read them without spelunking. Currently
+    // only `question` (for member_question deep-dive); future engines that
+    // capture pre-purchase input land here too.
+    const metaQuestion = typeof session.metadata?.question === 'string' ? session.metadata.question : null
+
     const { data: purchase, error: purchaseError } = await admin
       .from('digital_asset_purchases')
       .insert({
@@ -912,7 +918,10 @@ ${darkEmailSignature()}
         stripe_session_id: session.id,
         status: 'paid',
         source: source ?? 'direct',
-        raw: session as unknown as Record<string, unknown>,
+        raw: {
+          ...(session as unknown as Record<string, unknown>),
+          ...(metaQuestion ? { question: metaQuestion } : {}),
+        },
       })
       .select('id')
       .single()

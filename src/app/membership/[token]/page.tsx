@@ -14,22 +14,23 @@ export type FeaturedBoltOn = {
   cover_signed_url: string
 }
 
+// Hidden from non-coaching members because their engines read coaching-only data.
+const COACHING_ONLY_ENGINE_CALLS = new Set(['trajectory', 'cffs', 'fat_map', 'health_markers'])
+
 async function pickFeaturedBoltOn(memberEmail: string): Promise<FeaturedBoltOn | null> {
   const admin = createAdminClient()
 
-  // AI Deep-Dives require a coaching clients row. Drop bolt_on_ai from the
-  // candidate set for members without one.
   const { data: client } = await admin
     .from('clients')
     .select('id')
     .ilike('email', memberEmail)
     .maybeSingle()
-  const candidateKinds = client ? ['protocol', 'bolt_on_ai'] : ['protocol']
+  const isCoachingClient = !!client
 
   const { data: products } = await admin
     .from('be_products')
-    .select('id, name, price, kind, created_at, digital_asset_metadata!inner(slug, active)')
-    .in('kind', candidateKinds)
+    .select('id, name, price, kind, created_at, digital_asset_metadata!inner(slug, active, engine_call)')
+    .in('kind', ['protocol', 'bolt_on_ai'])
     .order('created_at', { ascending: false })
 
   if (!products?.length) return null
@@ -46,6 +47,13 @@ async function pickFeaturedBoltOn(memberEmail: string): Promise<FeaturedBoltOn |
     const meta = Array.isArray(p.digital_asset_metadata) ? p.digital_asset_metadata[0] : p.digital_asset_metadata
     if (!meta?.active) continue
     if (purchasedIds.has(p.id)) continue
+    // Skip coaching-only AI deep-dives for non-coaching members.
+    if (
+      p.kind === 'bolt_on_ai'
+      && meta.engine_call
+      && COACHING_ONLY_ENGINE_CALLS.has(meta.engine_call)
+      && !isCoachingClient
+    ) continue
     const copy = BOLT_ON_AD_COPY[meta.slug]
     if (!copy) continue
     // Sign the cover URL

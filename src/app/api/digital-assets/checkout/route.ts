@@ -23,10 +23,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   }
 
-  const { product_id, email, source } = body as {
+  const { product_id, email, source, question } = body as {
     product_id?: string
     email?: string
     source?: string
+    question?: string
   }
 
   if (!product_id || typeof product_id !== 'string') {
@@ -34,6 +35,14 @@ export async function POST(request: NextRequest) {
   }
   if (!email || typeof email !== 'string' || !email.includes('@')) {
     return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
+  }
+
+  // For member_question products the buyer's question is captured pre-purchase
+  // and threaded through Stripe metadata to the webhook (where it lands on
+  // digital_asset_purchases.raw.question). Validated against length here.
+  const trimmedQuestion = typeof question === 'string' ? question.trim() : ''
+  if (trimmedQuestion.length > 1200) {
+    return NextResponse.json({ error: 'Question too long (max 1200 chars)' }, { status: 400 })
   }
 
   const normalisedEmail = email.toLowerCase().trim()
@@ -56,12 +65,18 @@ export async function POST(request: NextRequest) {
 
   const { data: meta } = await admin
     .from('digital_asset_metadata')
-    .select('slug, fulfilment_kind, monthly_cap, active')
+    .select('slug, fulfilment_kind, monthly_cap, active, engine_call')
     .eq('product_id', product_id)
     .single()
 
   if (!meta || !meta.active) {
     return NextResponse.json({ error: 'Asset is not available for purchase' }, { status: 404 })
+  }
+
+  // engine_call='member_question' MUST carry a question payload (min 8 chars
+  // after trim). Trying to buy without one means the buyer skipped the input.
+  if (meta.engine_call === 'member_question' && trimmedQuestion.length < 8) {
+    return NextResponse.json({ error: 'Please write your question first (8 characters minimum)' }, { status: 400 })
   }
 
   // 2. Bolt-on human-touch cap enforcement (Phase D stub — present so the
@@ -125,6 +140,9 @@ export async function POST(request: NextRequest) {
         email: normalisedEmail,
         slug: meta.slug,
         source: source ?? 'direct',
+        // Stripe metadata values cap at 500 chars. Trim the question; the
+        // ad detail UI already gates to 600 server-side, so this is a safety net.
+        ...(trimmedQuestion && { question: trimmedQuestion.slice(0, 480) }),
       },
       success_url: `${appUrl()}/library/pending?email=${encodeURIComponent(normalisedEmail)}&slug=${encodeURIComponent(meta.slug)}`,
       cancel_url: `${appUrl()}/`,

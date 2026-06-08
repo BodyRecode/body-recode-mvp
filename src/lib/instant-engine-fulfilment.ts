@@ -35,6 +35,10 @@ import {
   generateTrajectoryReadingForLatestBlock,
   type TrajectoryGenerationResult,
 } from '@/lib/trajectory-generator'
+import {
+  generateMemberQuestion,
+  type MemberQuestionResult,
+} from '@/lib/member-question-generator'
 import { buildDeepDiveReadyEmail } from '@/lib/digital-asset-engine-emails'
 
 const LIBRARY_BUCKET = 'library-assets'
@@ -106,6 +110,7 @@ type EngineOutputEnvelope = {
   engine_call: string
   generated_at: string
   trajectory?: TrajectoryGenerationResult
+  member_question?: MemberQuestionResult
 }
 
 export async function fulfilInstantEngine(purchaseId: string): Promise<void> {
@@ -138,34 +143,59 @@ export async function fulfilInstantEngine(purchaseId: string): Promise<void> {
   }
   if (!meta.engine_call) throw new InstantEngineFulfilmentError('Missing engine_call')
 
-  // 2. Resolve client_id by email if not already linked
-  let clientId = purchase.client_id
-  if (!clientId) {
-    const { data: client } = await admin
-      .from('clients')
-      .select('id')
-      .ilike('email', purchase.email_at_purchase)
-      .maybeSingle()
-    if (!client) {
-      throw new InstantEngineFulfilmentError(
-        `No coaching client found for ${purchase.email_at_purchase}. AI deep-dives require an active coaching client record.`,
-      )
-    }
-    clientId = client.id
-    await admin
-      .from('digital_asset_purchases')
-      .update({ client_id: clientId })
-      .eq('id', purchaseId)
-  }
-
-  // 3. Dispatch on engine_call
+  // 2. Engine dispatch.
   const envelope: EngineOutputEnvelope = {
     engine_call: meta.engine_call,
     generated_at: new Date().toISOString(),
   }
 
   if (meta.engine_call === 'trajectory') {
+    // Coaching-client-only engines. Resolve client_id by email.
+    let clientId = purchase.client_id
+    if (!clientId) {
+      const { data: client } = await admin
+        .from('clients')
+        .select('id')
+        .ilike('email', purchase.email_at_purchase)
+        .maybeSingle()
+      if (!client) {
+        throw new InstantEngineFulfilmentError(
+          `No coaching client found for ${purchase.email_at_purchase}. ${meta.engine_call} engine requires an active coaching client record.`,
+        )
+      }
+      clientId = client.id
+      await admin
+        .from('digital_asset_purchases')
+        .update({ client_id: clientId })
+        .eq('id', purchaseId)
+    }
     envelope.trajectory = await generateTrajectoryReadingForLatestBlock(clientId!)
+  } else if (meta.engine_call === 'member_question') {
+    // Membership-tier engine. Reads enrollment + check-ins. Question was
+    // captured pre-purchase via Stripe metadata, stored on raw.question.
+    const rawObj = (purchase.raw as Record<string, unknown> | null) ?? {}
+    const question = typeof rawObj.question === 'string' ? rawObj.question : ''
+    if (!question.trim()) {
+      throw new InstantEngineFulfilmentError(
+        `member_question engine requires raw.question text on the purchase row`,
+      )
+    }
+    // Find member by email so we can read their enrollment + check-ins.
+    const { data: enrolment } = await admin
+      .from('membership_enrollments')
+      .select('id')
+      .ilike('email', purchase.email_at_purchase)
+      .is('cancelled_at', null)
+      .maybeSingle()
+    if (!enrolment) {
+      throw new InstantEngineFulfilmentError(
+        `No active Membership enrollment found for ${purchase.email_at_purchase}.`,
+      )
+    }
+    envelope.member_question = await generateMemberQuestion({
+      enrolmentId: enrolment.id,
+      question,
+    })
   } else {
     throw new InstantEngineFulfilmentError(
       `engine_call '${meta.engine_call}' not yet implemented`,
@@ -220,15 +250,13 @@ export async function fulfilInstantEngine(purchaseId: string): Promise<void> {
   // Reader URL uses the member's library token if we can resolve one,
   // otherwise the purchase id (which the library reader route already handles).
   let readerToken: string = purchaseId
-  if (purchase.client_id || clientId) {
-    const { data: member } = await admin
-      .from('membership_enrollments')
-      .select('token')
-      .ilike('email', purchase.email_at_purchase)
-      .is('cancelled_at', null)
-      .maybeSingle()
-    if (member?.token) readerToken = member.token
-  }
+  const { data: member } = await admin
+    .from('membership_enrollments')
+    .select('token')
+    .ilike('email', purchase.email_at_purchase)
+    .is('cancelled_at', null)
+    .maybeSingle()
+  if (member?.token) readerToken = member.token
   const readerUrl = `${appUrl()}/library/${readerToken}/${meta.slug}`
   const firstName = purchase.email_at_purchase.split('@')[0]
 

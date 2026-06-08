@@ -11,6 +11,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import TrajectoryReadingLayout from '@/components/trajectory-reading-layout'
+import MemberQuestionLayout from '@/components/member-question-layout'
 
 type EngineEnvelope = {
   engine_call: string
@@ -29,6 +30,20 @@ type EngineEnvelope = {
     programId: string
     programName: string | null
     clientName: string
+  }
+  member_question?: {
+    sections: {
+      mq_what_youre_asking: string
+      mq_what_the_data_says: string
+      mq_body_recode_reading: string
+      mq_this_week: string
+    }
+    memberName: string
+    patternLabel: string
+    blockLabel: string
+    weekNumber: number
+    question: string
+    checkInsRead: number
   }
 }
 
@@ -64,6 +79,23 @@ export default async function DeepDiveRenderPage({
     .eq('id', purchase.product_id)
     .maybeSingle()
   const productName = product?.name ?? 'AI Deep-Dive'
+
+  if (envelope.engine_call === 'member_question' && envelope.member_question) {
+    const mq = envelope.member_question
+    return (
+      <MemberQuestionLayout
+        data={{
+          question: mq.question,
+          sections: mq.sections,
+          memberName: mq.memberName,
+          patternLabel: mq.patternLabel,
+          blockLabel: mq.blockLabel,
+          weekNumber: mq.weekNumber,
+          generated_at: envelope.generated_at,
+        }}
+      />
+    )
+  }
 
   if (envelope.engine_call === 'trajectory' && envelope.trajectory) {
     const t = envelope.trajectory

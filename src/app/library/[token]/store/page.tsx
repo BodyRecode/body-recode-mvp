@@ -64,24 +64,32 @@ async function memberHasClient(email: string): Promise<boolean> {
   return !!client
 }
 
+// engine_call values whose engines read coaching-only data (CFFS / CFWS /
+// programs / blood panels). bolt_on_ai products with these engines are
+// hidden from members who aren't also a coaching client. The Membership-
+// tier engine ('member_question') is visible to ALL members.
+const COACHING_ONLY_ENGINE_CALLS = new Set(['trajectory', 'cffs', 'fat_map', 'health_markers'])
+
 async function loadBoltOns(memberEmail: string): Promise<StoreProduct[]> {
   const admin = createAdminClient()
   const isCoachingClient = await memberHasClient(memberEmail)
-  // AI Deep-Dives require a coaching clients row (their engines read CFFS/CFWS/programs).
-  // Filter the kinds we query for accordingly.
-  const visibleKinds = isCoachingClient
-    ? ['protocol', 'bolt_on_ai', 'bolt_on_human', 'bolt_on_physical']
-    : ['protocol', 'bolt_on_human', 'bolt_on_physical']
 
   const { data: products } = await admin
     .from('be_products')
-    .select('id, name, description, price, kind, digital_asset_metadata!inner(slug, active)')
-    .in('kind', visibleKinds)
+    .select('id, name, description, price, kind, digital_asset_metadata!inner(slug, active, engine_call)')
+    .in('kind', ['protocol', 'bolt_on_ai', 'bolt_on_human', 'bolt_on_physical'])
   if (!products) return []
 
   const enriched = await Promise.all(products.map(async p => {
     const meta = Array.isArray(p.digital_asset_metadata) ? p.digital_asset_metadata[0] : p.digital_asset_metadata
     if (!meta || !meta.active) return null
+    // Hide coaching-only AI deep-dives from non-coaching members.
+    if (
+      p.kind === 'bolt_on_ai'
+      && meta.engine_call
+      && COACHING_ONLY_ENGINE_CALLS.has(meta.engine_call)
+      && !isCoachingClient
+    ) return null
     const copy = BOLT_ON_AD_COPY[meta.slug]
     let coverSigned: string | null = null
     if (copy?.cover_path) {
