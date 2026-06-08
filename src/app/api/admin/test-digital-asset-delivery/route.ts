@@ -25,6 +25,10 @@ async function handle(request: NextRequest) {
   const secret = url.searchParams.get('secret')
   const email = (url.searchParams.get('email') ?? '').toLowerCase().trim()
   const slug = url.searchParams.get('slug') ?? 'depleted-field-guide'
+  // Test-only: pin the engine to a specific client's data (the email param
+  // still controls who the delivery email goes to). Lets us exercise a
+  // bolt_on_ai product against a real client without spamming them.
+  const asClientId = url.searchParams.get('as_client_id') ?? null
 
   // Accept either: a matching ADMIN_SECRET query param, OR an authenticated
   // Supabase session (admin coach logged into the dashboard). The latter
@@ -73,10 +77,11 @@ async function handle(request: NextRequest) {
   }
 
   // 2. Create the purchase row (status='paid' to mirror webhook).
+  // If as_client_id is set, pin the engine to that client's data.
   const { data: purchase, error: purchaseError } = await admin
     .from('digital_asset_purchases')
     .insert({
-      client_id: null,
+      client_id: asClientId,
       email_at_purchase: email,
       product_id: product.id,
       stripe_payment_id: `test-${Date.now()}`,

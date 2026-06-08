@@ -20,6 +20,17 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { appUrl } from '@/lib/app-url'
 import { Resend } from 'resend'
 import puppeteer, { type Browser } from 'puppeteer-core'
+
+/**
+ * Base URL for the internal puppeteer render hit. Unlike appUrl(), this
+ * honours localhost in dev because the render route is on the SAME server
+ * the orchestrator is running on — never leaks to email.
+ */
+function internalRenderBase(): string {
+  const raw = process.env.NEXT_PUBLIC_APP_URL?.trim()
+  if (raw) return raw.replace(/\/+$/, '')
+  return 'http://localhost:3000'
+}
 import {
   generateTrajectoryReadingForLatestBlock,
   type TrajectoryGenerationResult,
@@ -69,7 +80,7 @@ async function launchEngineBrowser(): Promise<Browser> {
 }
 
 async function renderRouteToPdf(path: string): Promise<Uint8Array> {
-  const url = `${appUrl()}${path}`
+  const url = `${internalRenderBase()}${path}`
   const browser = await launchEngineBrowser()
   try {
     const page = await browser.newPage()
