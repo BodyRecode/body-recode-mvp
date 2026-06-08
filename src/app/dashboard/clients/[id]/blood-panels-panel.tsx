@@ -32,6 +32,25 @@ interface ClientReading {
   bp_what_to_watch: string
 }
 
+interface FramedPattern {
+  id: string
+  label: string
+  observation: string
+  whatWouldClarify: string[]
+  clinicianQuestion: string
+  caveat: string
+  confidence: 'low' | 'moderate'
+}
+interface LensResult {
+  derived: Record<string, { value: number; unit?: string; system?: string } | undefined>
+  framed_patterns: FramedPattern[]
+  patterns: Array<{ id: string; label: string; evidence: string; confidence: string }>
+  unresolved_markers: string[]
+  missing_for_patterns: string[]
+  note?: string
+  disclaimer: string
+}
+
 export interface BloodPanelData {
   id: string
   status: string
@@ -112,6 +131,8 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [status, setStatus] = useState<string | null>(null)
+  const [lens, setLens] = useState<LensResult | null>(null)
+  const [lensOpen, setLensOpen] = useState(false)
 
   const markers = panel.markers ?? []
   const hasMarkers = markers.length > 0
@@ -176,6 +197,20 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         ? 'Approved for plan. Regenerate the CFFS to fold these markers into the Foundational Reading, program, and nutrition.'
         : 'Approval revoked. These markers will not feed the next CFFS.')
       router.refresh()
+    }
+  }
+
+  async function runLens() {
+    setError(null); setStatus(null); setBusy('lens'); setLensOpen(true)
+    try {
+      const res = await fetch(`${base}/research-lens`, { method: 'POST' })
+      const json = await res.json()
+      if (!res.ok) { setError(json.error ?? 'Research Lens failed'); return }
+      setLens(json as LensResult)
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setBusy(null)
     }
   }
 
@@ -318,10 +353,91 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
           </div>
         )}
 
+        {/* Research Lens — coach-only exploratory cross-marker reading. */}
+        {hasMarkers && (
+          <div className="border border-violet-200 bg-violet-50/40 rounded-lg overflow-hidden">
+            <button
+              type="button"
+              onClick={() => (lensOpen ? setLensOpen(false) : (lens ? setLensOpen(true) : runLens()))}
+              className="w-full px-4 py-2.5 flex items-center justify-between gap-3 text-left hover:bg-violet-50 transition-colors"
+            >
+              <span className="flex items-center gap-2 flex-wrap">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-violet-700">Research Lens</span>
+                <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-violet-100 border border-violet-200 text-violet-700">coach only · exploratory · not shared · not in plan</span>
+              </span>
+              <span className="text-xs font-medium text-violet-700 shrink-0">{busy === 'lens' ? 'Running…' : lensOpen ? 'Hide' : lens ? 'Show' : 'Run'}</span>
+            </button>
+
+            {lensOpen && (
+              <div className="px-4 pb-4 pt-1 space-y-3">
+                {!lens && busy === 'lens' && <p className="text-xs text-violet-700">Reading across markers…</p>}
+                {lens && (
+                  <>
+                    {/* Derived metrics */}
+                    {lens.derived && Object.values(lens.derived).some(Boolean) && (
+                      <div className="flex flex-wrap gap-2">
+                        {lens.derived.non_hdl && <Metric label="non-HDL" v={`${lens.derived.non_hdl.value} ${lens.derived.non_hdl.unit ?? ''}`} />}
+                        {lens.derived.remnant_cholesterol && <Metric label="remnant" v={`${lens.derived.remnant_cholesterol.value} ${lens.derived.remnant_cholesterol.unit ?? ''}`} />}
+                        {lens.derived.tg_hdl_ratio && <Metric label="TG:HDL" v={`${lens.derived.tg_hdl_ratio.value} (${lens.derived.tg_hdl_ratio.system})`} />}
+                        {lens.derived.homa_ir && <Metric label="HOMA-IR" v={`${lens.derived.homa_ir.value}`} />}
+                        {lens.derived.apob_apoa1 && <Metric label="ApoB:ApoA1" v={`${lens.derived.apob_apoa1.value}`} />}
+                      </div>
+                    )}
+
+                    {/* Framed patterns */}
+                    {lens.framed_patterns.length === 0 ? (
+                      <p className="text-xs text-violet-700">{lens.note ?? 'No contextual patterns assessable from these markers.'}</p>
+                    ) : (
+                      lens.framed_patterns.map((p, i) => (
+                        <div key={i} className="bg-white border border-violet-200 rounded-lg p-3 space-y-2">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="text-sm font-semibold text-[#1A1A1A]">{p.label}</p>
+                            <span className="text-[9px] font-bold uppercase tracking-widest text-violet-600">{p.confidence}</span>
+                          </div>
+                          <p className="text-xs text-[#3A3A3A] leading-relaxed">{p.observation}</p>
+                          {p.whatWouldClarify.length > 0 && (
+                            <p className="text-[11px] text-[#6B6B6B] leading-relaxed"><span className="font-bold uppercase tracking-widest text-[10px] text-violet-600">What would clarify: </span>{p.whatWouldClarify.join(', ')}</p>
+                          )}
+                          <p className="text-[11px] text-[#3A3A3A] leading-relaxed"><span className="font-bold uppercase tracking-widest text-[10px] text-violet-600">Ask a clinician: </span>{p.clinicianQuestion}</p>
+                          {p.caveat && <p className="text-[11px] text-[#999999] italic leading-relaxed">{p.caveat}</p>}
+                        </div>
+                      ))
+                    )}
+
+                    {lens.missing_for_patterns.length > 0 && (
+                      <details className="text-[11px] text-[#6B6B6B]">
+                        <summary className="cursor-pointer">Not assessable ({lens.missing_for_patterns.length})</summary>
+                        <ul className="mt-1 space-y-0.5 pl-3">{lens.missing_for_patterns.map((m, i) => <li key={i}>· {m}</li>)}</ul>
+                      </details>
+                    )}
+                    {lens.unresolved_markers.length > 0 && (
+                      <p className="text-[11px] text-[#999999]">Unmapped markers (not read by the Lens): {lens.unresolved_markers.join(', ')}</p>
+                    )}
+
+                    <div className="flex items-center justify-between gap-3 pt-1">
+                      <p className="text-[10px] text-[#999999] italic leading-relaxed">{lens.disclaimer}</p>
+                      <button type="button" onClick={runLens} disabled={busy === 'lens'} className="text-[11px] font-medium text-violet-700 hover:text-violet-900 shrink-0 disabled:opacity-50">Re-run</button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {error && <p className="text-xs text-red-700">{error}</p>}
         {status && <p className="text-xs text-blue-500">{status}</p>}
       </div>
     </div>
+  )
+}
+
+function Metric({ label, v }: { label: string; v: string }) {
+  return (
+    <span className="inline-flex items-baseline gap-1.5 bg-white border border-violet-200 rounded-md px-2 py-1">
+      <span className="text-[9px] font-bold uppercase tracking-widest text-violet-600">{label}</span>
+      <span className="text-xs font-medium text-[#1A1A1A]">{v}</span>
+    </span>
   )
 }
 
