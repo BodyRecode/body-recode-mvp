@@ -139,6 +139,23 @@ export function formatCalorieBand(low: number, high: number): string {
 export interface ValidationIssue {
   code: string
   message: string
+  /**
+   * 'error' issues block the plan (validation `ok=false`, generation retries).
+   * 'warning' issues are surfaced to the coach for manual review but do NOT
+   * fail validation. Substitution-audit findings (UNPARSED / UNKNOWN_FOOD /
+   * MACRO_DRIFT) are warnings — the food-reference table only covers Tier 1+2
+   * canonical names, so legitimate variants ("Greek yoghurt full-fat",
+   * "tuna canned in spring water") routinely fall outside it. Blocking on
+   * these put the engine in an infinite retry loop on plans that were
+   * otherwise sound. Defaults to 'error' when omitted so the existing checks
+   * keep their hard-block behaviour.
+   */
+  severity?: 'error' | 'warning'
+}
+
+/** True if the issue blocks the plan (severity 'error' or unspecified). */
+function isBlocking(issue: ValidationIssue): boolean {
+  return (issue.severity ?? 'error') === 'error'
 }
 
 /**
@@ -242,6 +259,7 @@ export function validateSubstitutionOptions(
         issues.push({
           code: 'SUBSTITUTION_UNPARSED',
           message: `Substitution line ${category}[${i}] could not be parsed for verification: "${line.slice(0, 80)}"`,
+          severity: 'warning',
         })
         continue
       }
@@ -250,12 +268,14 @@ export function validateSubstitutionOptions(
         issues.push({
           code: 'SUBSTITUTION_UNKNOWN_FOOD',
           message: `Substitution ${category}[${i}] contains foods outside the reference table (${result.unknown.join(', ')}). Coach should verify manually.`,
+          severity: 'warning',
         })
       }
       for (const drift of result.drifts) {
         issues.push({
           code: 'SUBSTITUTION_MACRO_DRIFT',
           message: `Substitution ${category}[${i}]: ${drift.sub.name} ${drift.sub.grams}g is ${(drift.worstPct * 100).toFixed(0)}% off on ${drift.worstMetric} vs ${parsed.original!.name} ${parsed.original!.grams}g.`,
+          severity: 'warning',
         })
       }
     }
@@ -576,11 +596,12 @@ export function validateNutritionPlan(
       })
     }
     // Substitution audit also runs under the override (it's about swap
-    // accuracy, not safety floors).
+    // accuracy, not safety floors). Substitution findings are warnings, not
+    // blockers — they surface for coach review but do not fail the plan.
     issues.push(...validateSubstitutionOptions(input.substitution_options))
     // Skip the standard carb/fat floors when the override is active —
     // that's the point of the override.
-    return { ok: issues.length === 0, issues, totals, band }
+    return { ok: !issues.some(isBlocking), issues, totals, band }
   }
 
   // Daily safety floors. These are not target macros — they're minimums that
@@ -615,8 +636,9 @@ export function validateNutritionPlan(
   }
 
   // Substitution audit (item E, 2026-06-09). Runs after the standard
-  // floors so the report shows safety-floor issues first.
+  // floors so the report shows safety-floor issues first. Substitution
+  // findings are warnings — surfaced for coach review, not blocking.
   issues.push(...validateSubstitutionOptions(input.substitution_options))
 
-  return { ok: issues.length === 0, issues, totals, band }
+  return { ok: !issues.some(isBlocking), issues, totals, band }
 }
