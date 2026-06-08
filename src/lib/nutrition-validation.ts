@@ -176,6 +176,12 @@ export function humaniseValidationIssue(issue: ValidationIssue): string {
       return `${issue.message} The transitional override means you replaced the bodyweight floors with an explicit kcal floor, and the plan still needs to hit that.`
     case 'TRANSITIONAL_CEILING_EXCEEDED':
       return `${issue.message} The protein anchor is probably driving kcal up. Lower the protein anchor on the suggest page (try ~1.2-1.4 g/kg) so the plan can land near your bridge floor.`
+    case 'SUBSTITUTION_MACRO_DRIFT':
+      return `${issue.message} Coach swap labelled equivalent but the food-reference table shows the macros diverge enough to mislead the client. Tighten the portion size or pick a closer alternative.`
+    case 'SUBSTITUTION_UNPARSED':
+      return `${issue.message} The substitution line doesn't follow the "Food (Ng state) ↔ alternative (Ng state)" shape so it can't be checked against the food-reference table. Coach reviews manually.`
+    case 'SUBSTITUTION_UNKNOWN_FOOD':
+      return `${issue.message} The food-reference table covers Tier 1 + Tier 2 of the nutrition prompt's allowed list; foods outside that need coach verification.`
     default:
       return issue.message
   }
@@ -201,6 +207,60 @@ export interface NutritionValidationInput {
     active: boolean
     floor_kcal: number
   } | null
+  /**
+   * Substitution options from the generated plan. Validated against the
+   * food-reference table at generation time. Added 2026-06-09 (item E in
+   * the licensee-readiness plan) after Ruby's published plan was found to
+   * have three swap-math errors that would mislead the client.
+   */
+  substitution_options?: Record<string, string[]> | null
+}
+
+/**
+ * Validate substitution_options against the food-reference table. Returns
+ * a structured list of drift findings: which line, which sub, which macro
+ * drifted, and by what percent. Lines that can't be parsed or contain
+ * foods outside the reference table are returned separately as "unknown"
+ * — coach reviews those manually.
+ */
+export function validateSubstitutionOptions(
+  options: Record<string, string[]> | null | undefined,
+): ValidationIssue[] {
+  if (!options) return []
+  const issues: ValidationIssue[] = []
+  // Import lazily so this file stays loadable in environments without the
+  // food-reference table compiled in. Circular-import safe.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { parseSubstitutionLine, validateSubstitutions } = require('./food-reference') as typeof import('./food-reference')
+
+  for (const [category, lines] of Object.entries(options)) {
+    if (!Array.isArray(lines)) continue
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i]
+      const parsed = parseSubstitutionLine(line)
+      if (!parsed.ok) {
+        issues.push({
+          code: 'SUBSTITUTION_UNPARSED',
+          message: `Substitution line ${category}[${i}] could not be parsed for verification: "${line.slice(0, 80)}"`,
+        })
+        continue
+      }
+      const result = validateSubstitutions(parsed.original!, parsed.subs!)
+      if (result.unknown.length > 0) {
+        issues.push({
+          code: 'SUBSTITUTION_UNKNOWN_FOOD',
+          message: `Substitution ${category}[${i}] contains foods outside the reference table (${result.unknown.join(', ')}). Coach should verify manually.`,
+        })
+      }
+      for (const drift of result.drifts) {
+        issues.push({
+          code: 'SUBSTITUTION_MACRO_DRIFT',
+          message: `Substitution ${category}[${i}]: ${drift.sub.name} ${drift.sub.grams}g is ${(drift.worstPct * 100).toFixed(0)}% off on ${drift.worstMetric} vs ${parsed.original!.name} ${parsed.original!.grams}g.`,
+        })
+      }
+    }
+  }
+  return issues
 }
 
 /**
@@ -515,6 +575,9 @@ export function validateNutritionPlan(
         message: `Daily kcal ${totals.kcal} exceeds the transitional ceiling of ${ceilingKcal} kcal (bridge floor ${override.floor_kcal} + ${BRIDGE_CEILING_BUFFER} buffer). Bridge mode targets the floor, not above it — lower the protein anchor or reduce portions.`,
       })
     }
+    // Substitution audit also runs under the override (it's about swap
+    // accuracy, not safety floors).
+    issues.push(...validateSubstitutionOptions(input.substitution_options))
     // Skip the standard carb/fat floors when the override is active —
     // that's the point of the override.
     return { ok: issues.length === 0, issues, totals, band }
@@ -550,6 +613,10 @@ export function validateNutritionPlan(
       })
     }
   }
+
+  // Substitution audit (item E, 2026-06-09). Runs after the standard
+  // floors so the report shows safety-floor issues first.
+  issues.push(...validateSubstitutionOptions(input.substitution_options))
 
   return { ok: issues.length === 0, issues, totals, band }
 }

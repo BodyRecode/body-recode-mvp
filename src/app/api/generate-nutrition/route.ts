@@ -261,6 +261,12 @@ export async function POST(request: NextRequest) {
       medications: client?.medications ?? null,
       carb_demand_level: (String(p.carb_demand_level || carb_demand_level || '').toLowerCase() as 'low' | 'moderate' | 'high' | '') || null,
       transitional_override: overrideActive ? { active: true, floor_kcal: overrideFloor } : null,
+      // Substitution audit added 2026-06-09 (item E). If the model
+      // proposes a swap labelled "equivalent" but the food-reference
+      // table shows the macros diverge >20% protein/carb/fat or >15% kcal,
+      // validation fails and the model gets a retry message naming the
+      // drift. Stops Ruby-Cate-style swap errors at generation time.
+      substitution_options: (p.substitution_options as Record<string, string[]>) || null,
     })
   }
 
