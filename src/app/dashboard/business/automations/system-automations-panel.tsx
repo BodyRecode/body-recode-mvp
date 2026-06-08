@@ -311,10 +311,17 @@ const MANUAL_AUTOMATIONS = [
   },
   {
     id: 'weekly-checkin-feedback',
-    name: 'Weekly Check-In Coach Feedback',
-    description: 'Saves a 3-field response (Interpretation, optional Reframe, This week hold this) on a weekly check-in and emails the client. Click Generate response to have Claude draft all three fields from the check-in + synthesis + prior check-ins + active program (you review and approve before anything sends). Feedback also appears under the check-in in their portal. BCCs the coach. Re-saving overwrites the prior response and re-sends.',
-    trigger: 'Click "Save and email client" on /dashboard/clients/[id]/checkins/[week]/[form]',
+    name: 'Weekly Check-In Coach Feedback (manual or auto)',
+    description: 'Saves a 3-field response (Interpretation, optional Reframe, This week hold this) on a weekly check-in and emails the client. Click Generate response to have Claude draft all three fields from the check-in + synthesis + prior check-ins + active program. Manual flow: you review and approve before sending. Auto flow: when clients.auto_checkin_response_enabled is true (default), the auto-response Inngest worker generates a draft 30 seconds after submission and schedules send 4 hours later, BCC the coach. You can Edit, Send-now, or Skip from the response form during the 4h window, or flip auto off per-client on the profile. Feedback appears under the check-in in their portal. Re-saving overwrites the prior response and re-sends.',
+    trigger: 'Manual: click "Save and email client" on /dashboard/clients/[id]/checkins/[week]/[form]. Auto: client submits a weekly check-in.',
     steps: 1,
+  },
+  {
+    id: 'weekly-checkin-auto-response',
+    name: 'Weekly Check-In Auto-Response Pipeline',
+    description: 'When a client submits a weekly check-in, the system fires an Inngest event "weekly-checkin/submitted". The worker waits 30s, checks per-client opt-out + skip flag + existing-feedback gate, generates the 3-field draft via Claude Haiku 4.5 with the new CFFS-anchored rubric, inserts a weekly_checkin_feedback row with auto_send_scheduled_at = now + 4h, then sleeps until that time. On wake it re-checks (coach may have sent manually, skipped, or toggled auto off in the window) and either sends the branded email + BCCs the coach + logs to client_communications, or exits. On generation failure (3 retries hit jargon leaks etc.), stamps weekly_checkins.auto_response_failure_reason and exits — the coach writes manually. Per-client opt-out: clients.auto_checkin_response_enabled (default true).',
+    trigger: 'Client submits a weekly check-in (Form A or B). Worker pipeline runs over 4h+30s total.',
+    steps: 6,
   },
   {
     id: 'inbox-reply',

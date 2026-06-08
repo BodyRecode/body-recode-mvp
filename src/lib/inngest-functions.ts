@@ -1215,3 +1215,204 @@ export const digitalAssetEngineFulfilmentFunction = inngest.createFunction(
     return { ok: true, purchase_id }
   }
 )
+
+/* ===========================================================================
+ * Weekly Check-In Auto-Response
+ *
+ * Trigger: weekly-checkin/submitted (fired from /api/submit-weekly-checkin/
+ * route.ts after a successful insert).
+ *
+ * Flow:
+ *   1. 30s settle delay so any rapid back-to-back writes complete.
+ *   2. Eligibility gate: client.auto_checkin_response_enabled must be true;
+ *      check-in must not be skipped; no feedback row already exists (coach
+ *      beat us, or duplicate event).
+ *   3. Generate draft via shared generateFeedbackDraft. On failure, stamp
+ *      weekly_checkins.auto_response_attempted_at + failure_reason and exit
+ *      (Today's Focus surfaces the AI-failed flag, coach writes manually).
+ *   4. Insert weekly_checkin_feedback row WITHOUT email_sent_at, with
+ *      auto_generated_at = now and auto_send_scheduled_at = now + 4h.
+ *   5. step.sleepUntil scheduled time.
+ *   6. Re-check: did the coach send manually in the window? Did they skip?
+ *      Did they toggle auto-response off? If any: exit. Otherwise: send
+ *      branded email + stamp email_sent_at + log to client_communications.
+ *
+ * Auto-retries: Inngest default per-step retries handle transient failures.
+ * The eligibility checks are idempotent — re-running them is safe.
+ * ========================================================================== */
+export const weeklyCheckinAutoResponseFunction = inngest.createFunction(
+  {
+    id: 'weekly-checkin-auto-response',
+    retries: 2,
+    triggers: [{ event: 'weekly-checkin/submitted' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const { checkin_id } = event.data as { checkin_id: string }
+
+    // ── Step 1: settle delay ────────────────────────────────────────────
+    await step.sleep('settle', '30s')
+
+    // ── Step 2: eligibility gate ───────────────────────────────────────
+    const gate = await step.run('check-eligibility', async () => {
+      const admin = createAdminClient()
+      const { data: checkin } = await admin
+        .from('weekly_checkins')
+        .select('id, client_id, week_number, form_type, coach_skipped_at')
+        .eq('id', checkin_id)
+        .maybeSingle()
+      if (!checkin) return { ok: false, reason: 'check-in not found' }
+      if (checkin.coach_skipped_at) return { ok: false, reason: 'coach skipped' }
+
+      const { data: client } = await admin
+        .from('clients')
+        .select('id, auto_checkin_response_enabled')
+        .eq('id', checkin.client_id)
+        .maybeSingle()
+      if (!client) return { ok: false, reason: 'client not found' }
+      if (!client.auto_checkin_response_enabled) return { ok: false, reason: 'auto-response disabled for client' }
+
+      const { data: existingFeedback } = await admin
+        .from('weekly_checkin_feedback')
+        .select('id')
+        .eq('weekly_checkin_id', checkin_id)
+        .maybeSingle()
+      if (existingFeedback) return { ok: false, reason: 'feedback already exists (coach beat us)' }
+
+      return { ok: true as const, checkin }
+    })
+
+    if (!gate.ok) return { ok: false, reason: gate.reason }
+
+    // ── Step 3: generate draft ─────────────────────────────────────────
+    const generated = await step.run('generate-draft', async () => {
+      const { generateFeedbackDraft } = await import('@/lib/weekly-checkin-feedback-generate')
+      const admin = createAdminClient()
+      const result = await generateFeedbackDraft(admin, checkin_id)
+
+      await admin
+        .from('weekly_checkins')
+        .update({
+          auto_response_attempted_at: new Date().toISOString(),
+          auto_response_failure_reason: result.ok ? null : result.error,
+        })
+        .eq('id', checkin_id)
+
+      if (!result.ok) {
+        return { ok: false as const, error: result.error }
+      }
+      return { ok: true as const, draft: result.draft }
+    })
+
+    if (!generated.ok) return { ok: false, reason: `generate failed: ${generated.error}` }
+
+    // ── Step 4: insert feedback row with scheduled send 4h out ─────────
+    const FOUR_HOURS_MS = 4 * 60 * 60 * 1000
+    const scheduledIso = new Date(Date.now() + FOUR_HOURS_MS).toISOString()
+
+    const inserted = await step.run('insert-feedback-draft', async () => {
+      const admin = createAdminClient()
+      const { data, error } = await admin
+        .from('weekly_checkin_feedback')
+        .insert({
+          weekly_checkin_id: checkin_id,
+          client_id: gate.checkin.client_id,
+          coach_id: null, // system-generated, no human coach id
+          interpretation: generated.draft.interpretation,
+          reframe: generated.draft.reframe,
+          next_focus: generated.draft.next_focus,
+          auto_generated_at: new Date().toISOString(),
+          auto_send_scheduled_at: scheduledIso,
+        })
+        .select('id')
+        .single()
+      if (error) throw new Error(`feedback insert failed: ${error.message}`)
+      return { id: data.id, scheduledIso }
+    })
+
+    // ── Step 5: sleep until scheduled send time ────────────────────────
+    await step.sleepUntil('wait-for-send-window', inserted.scheduledIso)
+
+    // ── Step 6: re-check + send ────────────────────────────────────────
+    await step.run('send-or-skip', async () => {
+      const admin = createAdminClient()
+
+      const { data: feedback } = await admin
+        .from('weekly_checkin_feedback')
+        .select('id, interpretation, reframe, next_focus, email_sent_at, auto_send_scheduled_at')
+        .eq('id', inserted.id)
+        .maybeSingle()
+      if (!feedback) return { skipped: 'feedback row was deleted (coach skipped)' }
+      if (feedback.email_sent_at) return { skipped: 'coach sent manually during window' }
+
+      // Re-check client opt-out and skip in case coach toggled during window
+      const { data: checkin } = await admin
+        .from('weekly_checkins')
+        .select('id, week_number, form_type, client_id, coach_skipped_at')
+        .eq('id', checkin_id)
+        .maybeSingle()
+      if (!checkin) return { skipped: 'check-in not found' }
+      if (checkin.coach_skipped_at) return { skipped: 'coach skipped during window' }
+
+      const { data: client } = await admin
+        .from('clients')
+        .select('id, name, email, onboarding_token, auto_checkin_response_enabled')
+        .eq('id', checkin.client_id)
+        .maybeSingle()
+      if (!client) return { skipped: 'client not found' }
+      if (!client.auto_checkin_response_enabled) return { skipped: 'auto-response disabled during window' }
+      if (!client.email || !client.onboarding_token) return { skipped: 'client missing email or token' }
+
+      // Build + send the email using the same path the manual route uses.
+      const { buildWeeklyCheckinFeedbackEmail } = await import('@/lib/weekly-checkin-feedback-email')
+      const { appUrlFor } = await import('@/lib/app-url')
+      const { COACH_BCC } = await import('@/lib/email-shell')
+      const { logClientCommunication } = await import('@/lib/client-communications')
+
+      const firstName = client.name?.split(' ')[0] ?? 'there'
+      const checkinUrl = appUrlFor(`/portal/${client.onboarding_token}/checkin/${checkin.week_number}/${(checkin.form_type as string).toLowerCase()}`)
+      const { subject, html } = buildWeeklyCheckinFeedbackEmail({
+        firstName,
+        weekNumber: checkin.week_number,
+        formType: checkin.form_type as 'A' | 'B',
+        interpretation: feedback.interpretation,
+        reframe: feedback.reframe,
+        nextFocus: feedback.next_focus,
+        checkinUrl,
+      })
+
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: client.email,
+        bcc: COACH_BCC,
+        subject,
+        html,
+      })
+
+      const sentAt = new Date().toISOString()
+      await admin
+        .from('weekly_checkin_feedback')
+        .update({ email_sent_at: sentAt })
+        .eq('id', feedback.id)
+
+      await logClientCommunication(admin, {
+        clientId: client.id,
+        kind: 'weekly_checkin_feedback',
+        subject,
+        toAddress: client.email,
+        meta: {
+          weekly_checkin_id: checkin_id,
+          week_number: checkin.week_number,
+          form_type: checkin.form_type,
+          auto_generated: true,
+          auto_sent: true,
+        },
+      })
+
+      return { sent: true, sentAt }
+    })
+
+    return { ok: true, checkin_id }
+  }
+)

@@ -20,6 +20,7 @@ import DietaryConsumptionEditor from './dietary-consumption-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import CoachResponseCard from './coach-response-card'
 import MajorSection from './major-section'
+import AutoResponseToggle from './auto-response-toggle'
 import MedicationsAnalysisPanel from './medications-analysis-panel'
 import ReopenCheckinButton from './reopen-checkin-button'
 import BloodPanelsPanel, { type BloodPanelData } from './blood-panels-panel'
@@ -1150,6 +1151,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </>
         }
       >
+
+        <AutoResponseToggle
+          clientId={id}
+          initialEnabled={client.auto_checkin_response_enabled ?? true}
+        />
 
         {/* Latest CFWS */}
         {latestCfws ? (

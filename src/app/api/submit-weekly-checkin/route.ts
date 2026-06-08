@@ -69,6 +69,20 @@ export async function POST(request: NextRequest) {
     console.error('Notification error:', err)
   )
 
+  // Fire the auto-coach-response Inngest worker. It will run a 30s settle
+  // delay, gate on client.auto_checkin_response_enabled + skip flag +
+  // existing-feedback check, generate the draft via the shared
+  // generateFeedbackDraft helper, then schedule the send 4h out. The coach
+  // can intervene during the window via the feedback form (Edit, Send now,
+  // Skip) or by toggling auto-response off on the client profile.
+  if (inserted?.id) {
+    const { inngest } = await import('@/lib/inngest')
+    inngest.send({
+      name: 'weekly-checkin/submitted',
+      data: { checkin_id: inserted.id },
+    }).catch(err => console.error('Inngest send error (weekly-checkin/submitted):', err))
+  }
+
   // Recovery and Regulation — Phase 2 RSIB ingest.
   // The three RSIB questions per 13D_13 are already captured under
   // a_recovery / a_sessions / a_sleep (and b_*) in the existing form,
