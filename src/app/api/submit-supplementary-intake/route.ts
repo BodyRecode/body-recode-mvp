@@ -70,20 +70,41 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // 3. Update the intake row with the four dietary fields
-  const { error: updIntakeErr } = await admin
+  // 3. Update the intake row with the 8 dietary + consumption fields. If the
+  // consumption columns (added 2026-06-03) don't exist yet (migration not
+  // run), retry with only the original 4 dietary columns and continue —
+  // medications + CFFS regen still get to run, which matters more for the
+  // coaching flow than losing 4 free-text fields the coach can capture
+  // manually. Mirrors the bridge-mode / doctrine-version graceful retry
+  // pattern from generate-nutrition. Triggered by Amanda's 2026-06-09 submit
+  // failure before the 2026-06-03 migration was run on prod.
+  const dietaryFields = {
+    dietary_restrictions: (formData.dietary_restrictions as string) || '',
+    dietary_preferences: (formData.dietary_preferences as string) || '',
+    typical_day_eating: (formData.typical_day_eating as string) || '',
+    eating_context: (formData.eating_context as string) || '',
+  }
+  const consumptionFields = {
+    meals_per_day: (formData.meals_per_day as string) || '',
+    fluid_intake: (formData.fluid_intake as string) || '',
+    caffeine_intake: (formData.caffeine_intake as string) || '',
+    alcohol_intake: (formData.alcohol_intake as string) || '',
+  }
+  let updIntakeErr = (await admin
     .from('intakes')
-    .update({
-      dietary_restrictions: (formData.dietary_restrictions as string) || '',
-      dietary_preferences: (formData.dietary_preferences as string) || '',
-      typical_day_eating: (formData.typical_day_eating as string) || '',
-      meals_per_day: (formData.meals_per_day as string) || '',
-      fluid_intake: (formData.fluid_intake as string) || '',
-      caffeine_intake: (formData.caffeine_intake as string) || '',
-      alcohol_intake: (formData.alcohol_intake as string) || '',
-      eating_context: (formData.eating_context as string) || '',
-    })
+    .update({ ...dietaryFields, ...consumptionFields })
     .eq('id', latestIntake.id)
+  ).error
+  let consumptionFieldsLost = false
+  if (updIntakeErr && /column .* does not exist|meals_per_day|fluid_intake|caffeine_intake|alcohol_intake/i.test(updIntakeErr.message)) {
+    console.warn('[submit-supplementary-intake] consumption columns missing — retrying with dietary fields only. Run sql/2026-06-03_intakes_consumption_detail.sql to enable persistence of meals_per_day / fluid_intake / caffeine_intake / alcohol_intake.')
+    consumptionFieldsLost = true
+    updIntakeErr = (await admin
+      .from('intakes')
+      .update(dietaryFields)
+      .eq('id', latestIntake.id)
+    ).error
+  }
 
   if (updIntakeErr) {
     console.error('Update intake error:', updIntakeErr)
@@ -185,6 +206,9 @@ export async function POST(request: NextRequest) {
 
     const bodyLines: string[] = []
     bodyLines.push(`${clientName} just completed the supplementary intake. The dietary context fields are now on their intake row and any new medications have been written to their profile.`)
+    if (consumptionFieldsLost) {
+      bodyLines.push(`Heads up: the four consumption fields (meals_per_day, fluid_intake, caffeine_intake, alcohol_intake) were NOT saved because their database columns do not exist yet. Run sql/2026-06-03_intakes_consumption_detail.sql in Supabase to enable these, then ask ${clientName} to retake the supplementary so the consumption data lands. The dietary restrictions / preferences / typical day / eating context DID save.`)
+    }
     if (cffsRegeneratedAt) {
       bodyLines.push(`Their CFFS has been auto-regenerated against the updated intake + medications context, so the next program / nutrition / weekly synthesis will use it.`)
     } else {
