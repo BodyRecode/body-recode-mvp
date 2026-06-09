@@ -217,9 +217,16 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'digital-asset-instant-engine',
     name: 'Digital Asset — AI Deep-Dive (Instant Engine)',
-    description: 'Phase C fulfilment branch shipped 2026-06-08. Stripe webhook receives checkout.session.completed for a bolt_on_ai product (fulfilment_kind=\'instant_engine\'), sends the synchronous \"generating\" email, then fires Inngest event digital_asset/engine_call. The digitalAssetEngineFulfilmentFunction runs the matching engine (engine_call=\'trajectory\'|\'cffs\'|\'fat_map\'|\'health_markers\'|\'member_question\'), stores output in digital_asset_purchases.raw.engine_output, renders the deep-dive page to PDF via puppeteer, uploads to library-assets/deep-dives/{purchase_id}.pdf, marks fulfilled, sends the \"ready\" email. Live engines: \'trajectory\' (coaching-client-only) + \'member_question\' (open to any Member, pre-purchase question capture via Stripe session.metadata.question → digital_asset_purchases.raw.question). Other three branches throw until implemented.',
-    trigger: 'Stripe checkout.session.completed (instant_engine) → Inngest digital_asset/engine_call',
+    description: 'Phase C.9 fulfilment branch shipped 2026-06-08, extended 2026-06-10. Stripe webhook receives checkout.session.completed for a bolt_on_ai product (fulfilment_kind=\'instant_engine\'). Single-shot deep-dives: webhook sends the synchronous \"generating\" email and fires Inngest event digital_asset/engine_call → digitalAssetEngineFulfilmentFunction runs the matching engine (engine_call=\'trajectory\'|\'member_question\'|\'member_custom_block\'|\'cffs\'|\'fat_map\'|\'health_markers\'), stores output in digital_asset_purchases.raw.engine_output, renders the deep-dive page to PDF via puppeteer, uploads to library-assets/deep-dives/{purchase_id}.pdf, marks fulfilled, sends the \"ready\" email. Live single-shot engines: \'trajectory\' (coaching-client-only), \'member_question\' (open to any Member, pre-purchase question via Stripe session.metadata.question), \'member_custom_block\' (open to any Member, pre-purchase constraints via Stripe session.metadata.constraints). \'cffs\'|\'fat_map\'|\'health_markers\' throw until implemented.',
+    trigger: 'Stripe checkout.session.completed (instant_engine, single-shot) → Inngest digital_asset/engine_call',
     steps: 3,
+  },
+  {
+    id: 'weekly-pattern-report-sequence',
+    name: 'Weekly Pattern Report — 4-Delivery Sequence',
+    description: 'Phase C.9 sequence variant shipped 2026-06-10. When a Member buys the Weekly Pattern Report bolt-on (engine_call=\'weekly_pattern_report\'), the webhook fires Inngest event digital_asset/weekly_pattern_purchased instead of the single-shot one. weeklyPatternReportSequenceFunction picks it up, runs a 4-iteration loop with step.sleep(\'7d\') between deliveries (Inngest holds long sleeps natively). Each delivery creates a CHILD digital_asset_purchases row (stripe_session_id \'wpr_{parent_id}_{week_n}\' for idempotency) that links back to the parent in raw.parent_purchase_id with raw.delivery_number set; the child then flows through the EXISTING fulfilInstantEngine orchestrator using the same path as one-shot deep-dives. After delivery 4 the parent row is marked status=\'completed\'. Each delivery PDF + email is independent and stored under its own purchase id.',
+    trigger: 'Stripe checkout.session.completed (Weekly Pattern Report) → Inngest digital_asset/weekly_pattern_purchased',
+    steps: 9,
   },
 ]
 
