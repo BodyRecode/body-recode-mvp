@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { INTAKE_SECTIONS, Question } from '@/lib/intake-questions'
 import { useFormDraft } from '@/lib/use-form-draft'
 
@@ -11,6 +11,7 @@ interface Props {
   token: string
   clientName?: string
   portalToken?: string | null
+  prefill?: Record<string, string>
 }
 
 // Treat a question as required by default; only text fields are optional
@@ -206,8 +207,31 @@ function QuestionInput({
 
 type Draft = { sectionIndex: number; formData: FormData }
 
-export default function IntakeForm({ token, clientName, portalToken }: Props) {
-  const [draft, setDraft, clearDraft] = useFormDraft<Draft>(`intake:${token}`, { sectionIndex: 0, formData: {} })
+export default function IntakeForm({ token, clientName, portalToken, prefill }: Props) {
+  const [draft, setDraft, clearDraft, hydrated] = useFormDraft<Draft>(`intake:${token}`, { sectionIndex: 0, formData: {} })
+
+  // Seed identity fields the client already entered earlier in onboarding.
+  // Runs once after the local draft hydrates so a resumed draft wins; we only
+  // fill fields that are still empty, so a returning client's edits are never
+  // overwritten.
+  const prefillApplied = useRef(false)
+  useEffect(() => {
+    if (!hydrated || prefillApplied.current || !prefill) return
+    prefillApplied.current = true
+    setDraft(prev => {
+      const merged = { ...prev.formData }
+      let changed = false
+      for (const [key, val] of Object.entries(prefill)) {
+        const existing = merged[key]
+        if (val && (existing === undefined || existing === '')) {
+          merged[key] = val
+          changed = true
+        }
+      }
+      return changed ? { ...prev, formData: merged } : prev
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated])
   const sectionIndex = draft.sectionIndex
   const formData = draft.formData
   const setSectionIndex = (next: number | ((p: number) => number)) =>
