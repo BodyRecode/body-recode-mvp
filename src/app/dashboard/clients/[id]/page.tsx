@@ -12,6 +12,7 @@ import PackageManager from '@/components/package-manager'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
 import CopyLinkButton from './copy-link-button'
+import IssueLoginCodeButton from './issue-login-code-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
 import ClientReadingPanel from './client-reading-panel'
@@ -482,6 +483,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <SendPortalEmailButton clientId={client.id} />
             <SendPortalOrientationButton clientId={client.id} />
             <PortalInviteButton clientId={client.id} onboardingToken={client.onboarding_token} />
+            <IssueLoginCodeButton clientId={client.id} />
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">

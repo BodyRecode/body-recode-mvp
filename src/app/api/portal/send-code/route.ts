@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logClientCommunication } from '@/lib/client-communications'
+import { createPortalLoginCode, PORTAL_CODE_TTL_MINUTES } from '@/lib/portal-login-code'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
@@ -10,12 +11,7 @@ import {
 } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
 
-const CODE_TTL_MINUTES = 10
-
-function generateCode(): string {
-  // 6-digit, no leading-zero ambiguity (always pad to 6)
-  return Math.floor(Math.random() * 1_000_000).toString().padStart(6, '0')
-}
+const CODE_TTL_MINUTES = PORTAL_CODE_TTL_MINUTES
 
 export async function POST(request: NextRequest) {
   const { email } = await request.json()
@@ -25,27 +21,14 @@ export async function POST(request: NextRequest) {
   }
 
   const cleanEmail = email.trim().toLowerCase()
-  const code = generateCode()
-  const expiresAt = new Date(Date.now() + CODE_TTL_MINUTES * 60 * 1000).toISOString()
 
   const admin = createAdminClient()
 
-  // Invalidate any existing unused codes for this email so only the latest works
-  await admin
-    .from('portal_login_codes')
-    .update({ used_at: new Date().toISOString() })
-    .eq('email', cleanEmail)
-    .is('used_at', null)
-
-  // Insert the new code
-  const { error: insertError } = await admin
-    .from('portal_login_codes')
-    .insert({ email: cleanEmail, code, expires_at: expiresAt })
-
-  if (insertError) {
-    console.error('Failed to store portal login code:', insertError)
+  const created = await createPortalLoginCode(admin, cleanEmail, CODE_TTL_MINUTES)
+  if (!created) {
     return NextResponse.json({ error: 'Failed to send code' }, { status: 500 })
   }
+  const { code } = created
 
   // Send via Resend. Fully branded, no clickable auth link for any mail
   // scanner to pre-fetch.
