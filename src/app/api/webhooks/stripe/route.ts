@@ -963,17 +963,26 @@ ${darkEmailSignature()}
         }
       }
 
-      // 2. Fire the Inngest event. The fulfilment function picks it up,
-      //    runs the engine, renders the PDF, uploads, marks fulfilled,
-      //    sends the ready email.
+      // 2. Fire the Inngest event. Single-shot deep-dives use the standard
+      //    `digital_asset/engine_call` event. Weekly Pattern Report is a
+      //    4-delivery sequence so it fires a different event that the
+      //    weeklyPatternReportSequenceFunction picks up (delivers report
+      //    #1 immediately, then 3 more at 7-day intervals).
       try {
         const { inngest } = await import('@/lib/inngest')
-        await inngest.send({
-          name: 'digital_asset/engine_call',
-          data: { purchase_id: purchase.id },
-        })
+        if (meta.engine_call === 'weekly_pattern_report') {
+          await inngest.send({
+            name: 'digital_asset/weekly_pattern_purchased',
+            data: { parent_purchase_id: purchase.id, product_id, email: email.toLowerCase() },
+          })
+        } else {
+          await inngest.send({
+            name: 'digital_asset/engine_call',
+            data: { purchase_id: purchase.id },
+          })
+        }
       } catch (e) {
-        console.error('[stripe webhook] inngest.send digital_asset/engine_call failed:', e)
+        console.error('[stripe webhook] inngest.send instant_engine failed:', e)
       }
     } else if (meta.fulfilment_kind === 'coach_task') {
       // Phase D — bolt_on_human. Create a coach Today's Focus action.

@@ -36,6 +36,11 @@ async function handle(request: NextRequest) {
   // directly onto raw.{question|constraints} so the orchestrator can read it.
   const testQuestion = url.searchParams.get('question') ?? null
   const testConstraints = url.searchParams.get('constraints') ?? null
+  // For weekly_pattern_report deep-dives, delivery_number controls which of
+  // the 4 reports this is (used in meta line + prompt context).
+  const testDeliveryNumber = url.searchParams.get('delivery_number')
+    ? Number(url.searchParams.get('delivery_number'))
+    : null
 
   // Accept either: a matching ADMIN_SECRET query param, OR an authenticated
   // Supabase session (admin coach logged into the dashboard). The latter
@@ -95,10 +100,11 @@ async function handle(request: NextRequest) {
       stripe_session_id: `cs_test_admin_${Date.now()}`,
       status: 'paid',
       source: 'admin_test_delivery',
-      raw: testQuestion || testConstraints
+      raw: testQuestion || testConstraints || testDeliveryNumber
         ? {
             ...(testQuestion ? { question: testQuestion } : {}),
             ...(testConstraints ? { constraints: testConstraints } : {}),
+            ...(testDeliveryNumber ? { delivery_number: testDeliveryNumber } : {}),
           }
         : null,
     })

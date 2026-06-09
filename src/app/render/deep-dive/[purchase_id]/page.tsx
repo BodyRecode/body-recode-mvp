@@ -13,6 +13,7 @@ import { notFound } from 'next/navigation'
 import TrajectoryReadingLayout from '@/components/trajectory-reading-layout'
 import MemberQuestionLayout from '@/components/member-question-layout'
 import CustomBlockLayout from '@/components/custom-block-layout'
+import WeeklyPatternLayout from '@/components/weekly-pattern-layout'
 
 type EngineEnvelope = {
   engine_call: string
@@ -45,6 +46,20 @@ type EngineEnvelope = {
     weekNumber: number
     question: string
     checkInsRead: number
+  }
+  weekly_pattern_report?: {
+    sections: {
+      wpr_this_week: string
+      wpr_trend: string
+      wpr_one_focus: string
+    }
+    memberName: string
+    patternLabel: string
+    blockLabel: string
+    weekNumber: number
+    deliveryNumber: number
+    checkInsRead: number
+    latestCheckinWeek: number | null
   }
   member_custom_block?: {
     sections: {
@@ -96,6 +111,23 @@ export default async function DeepDiveRenderPage({
     .eq('id', purchase.product_id)
     .maybeSingle()
   const productName = product?.name ?? 'AI Deep-Dive'
+
+  if (envelope.engine_call === 'weekly_pattern_report' && envelope.weekly_pattern_report) {
+    const wp = envelope.weekly_pattern_report
+    return (
+      <WeeklyPatternLayout
+        data={{
+          sections: wp.sections,
+          memberName: wp.memberName,
+          patternLabel: wp.patternLabel,
+          blockLabel: wp.blockLabel,
+          weekNumber: wp.weekNumber,
+          deliveryNumber: wp.deliveryNumber,
+          generated_at: envelope.generated_at,
+        }}
+      />
+    )
+  }
 
   if (envelope.engine_call === 'member_custom_block' && envelope.member_custom_block) {
     const cb = envelope.member_custom_block

@@ -43,6 +43,10 @@ import {
   generateCustomBlock,
   type CustomBlockResult,
 } from '@/lib/custom-block-generator'
+import {
+  generateWeeklyPattern,
+  type WeeklyPatternResult,
+} from '@/lib/weekly-pattern-generator'
 import { buildDeepDiveReadyEmail } from '@/lib/digital-asset-engine-emails'
 
 const LIBRARY_BUCKET = 'library-assets'
@@ -116,6 +120,7 @@ type EngineOutputEnvelope = {
   trajectory?: TrajectoryGenerationResult
   member_question?: MemberQuestionResult
   member_custom_block?: CustomBlockResult
+  weekly_pattern_report?: WeeklyPatternResult
 }
 
 export async function fulfilInstantEngine(purchaseId: string): Promise<void> {
@@ -175,6 +180,27 @@ export async function fulfilInstantEngine(purchaseId: string): Promise<void> {
         .eq('id', purchaseId)
     }
     envelope.trajectory = await generateTrajectoryReadingForLatestBlock(clientId!)
+  } else if (meta.engine_call === 'weekly_pattern_report') {
+    // Membership-tier engine. No pre-purchase input - reads check-ins + pattern.
+    // Delivery number lives on raw.delivery_number (set by the Inngest
+    // sequence function that fires reports 1-4 at 7-day intervals).
+    const rawObj = (purchase.raw as Record<string, unknown> | null) ?? {}
+    const deliveryNumber = typeof rawObj.delivery_number === 'number' ? rawObj.delivery_number : 1
+    const { data: enrolment } = await admin
+      .from('membership_enrollments')
+      .select('id')
+      .ilike('email', purchase.email_at_purchase)
+      .is('cancelled_at', null)
+      .maybeSingle()
+    if (!enrolment) {
+      throw new InstantEngineFulfilmentError(
+        `No active Membership enrollment found for ${purchase.email_at_purchase}.`,
+      )
+    }
+    envelope.weekly_pattern_report = await generateWeeklyPattern({
+      enrolmentId: enrolment.id,
+      deliveryNumber,
+    })
   } else if (meta.engine_call === 'member_question' || meta.engine_call === 'member_custom_block') {
     // Membership-tier engines. Reads enrollment + check-ins. Pre-purchase
     // input lives on raw - 'question' for member_question, 'constraints' for

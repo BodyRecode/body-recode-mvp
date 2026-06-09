@@ -1416,3 +1416,81 @@ export const weeklyCheckinAutoResponseFunction = inngest.createFunction(
     return { ok: true, checkin_id }
   }
 )
+
+// ─── Weekly Pattern Report Sequence ───────────────────────────────────────────
+// Fired by the Stripe webhook when a Member buys the Weekly Pattern Report
+// product (engine_call='weekly_pattern_report'). Delivers 4 reports at 7-day
+// intervals using the SAME orchestrator as one-shot deep-dives.
+//
+// Each delivery creates a CHILD digital_asset_purchases row (synthetic
+// stripe_session_id, links back to the parent in raw.parent_purchase_id) so
+// each report's PDF + status lives independently. The parent purchase tracks
+// the subscription, the children are the deliveries.
+//
+// Maximum lifespan 4 weeks - Inngest holds sleeps across that span natively.
+export const weeklyPatternReportSequenceFunction = inngest.createFunction(
+  {
+    id: 'weekly-pattern-report-sequence',
+    retries: 3,
+    triggers: [{ event: 'digital_asset/weekly_pattern_purchased' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const { parent_purchase_id, product_id, email } = event.data as {
+      parent_purchase_id: string
+      product_id: string
+      email: string
+    }
+
+    for (let week = 1; week <= 4; week++) {
+      if (week > 1) {
+        // Inngest holds sleeps across the function lifetime; no in-process cost.
+        await step.sleep(`wait-week-${week}`, '7d')
+      }
+      await step.run(`deliver-week-${week}`, async () => {
+        const admin = createAdminClient()
+
+        // Idempotency: if delivery N already exists for this parent, skip.
+        const { data: existing } = await admin
+          .from('digital_asset_purchases')
+          .select('id')
+          .eq('stripe_session_id', `wpr_${parent_purchase_id}_${week}`)
+          .maybeSingle()
+        if (existing) return { skipped: true, reason: 'already-delivered', week }
+
+        const { data: child, error: childErr } = await admin
+          .from('digital_asset_purchases')
+          .insert({
+            client_id: null,
+            email_at_purchase: email.toLowerCase(),
+            product_id,
+            stripe_payment_id: null,
+            stripe_session_id: `wpr_${parent_purchase_id}_${week}`,
+            status: 'paid',
+            source: 'weekly_pattern_sequence',
+            raw: { parent_purchase_id, delivery_number: week },
+          })
+          .select('id')
+          .single()
+        if (childErr || !child) {
+          throw new Error(`Failed to create child purchase for week ${week}: ${childErr?.message}`)
+        }
+
+        const { fulfilInstantEngine } = await import('@/lib/instant-engine-fulfilment')
+        await fulfilInstantEngine(child.id)
+        return { delivered: true, week, child_purchase_id: child.id }
+      })
+    }
+
+    // Mark the parent as completed once all four deliveries are done.
+    await step.run('mark-parent-completed', async () => {
+      const admin = createAdminClient()
+      await admin
+        .from('digital_asset_purchases')
+        .update({ status: 'completed', fulfilled_at: new Date().toISOString() })
+        .eq('id', parent_purchase_id)
+    })
+
+    return { ok: true, parent_purchase_id }
+  }
+)
