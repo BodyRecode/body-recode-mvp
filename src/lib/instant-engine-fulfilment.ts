@@ -39,6 +39,10 @@ import {
   generateMemberQuestion,
   type MemberQuestionResult,
 } from '@/lib/member-question-generator'
+import {
+  generateCustomBlock,
+  type CustomBlockResult,
+} from '@/lib/custom-block-generator'
 import { buildDeepDiveReadyEmail } from '@/lib/digital-asset-engine-emails'
 
 const LIBRARY_BUCKET = 'library-assets'
@@ -111,6 +115,7 @@ type EngineOutputEnvelope = {
   generated_at: string
   trajectory?: TrajectoryGenerationResult
   member_question?: MemberQuestionResult
+  member_custom_block?: CustomBlockResult
 }
 
 export async function fulfilInstantEngine(purchaseId: string): Promise<void> {
@@ -170,16 +175,12 @@ export async function fulfilInstantEngine(purchaseId: string): Promise<void> {
         .eq('id', purchaseId)
     }
     envelope.trajectory = await generateTrajectoryReadingForLatestBlock(clientId!)
-  } else if (meta.engine_call === 'member_question') {
-    // Membership-tier engine. Reads enrollment + check-ins. Question was
-    // captured pre-purchase via Stripe metadata, stored on raw.question.
+  } else if (meta.engine_call === 'member_question' || meta.engine_call === 'member_custom_block') {
+    // Membership-tier engines. Reads enrollment + check-ins. Pre-purchase
+    // input lives on raw - 'question' for member_question, 'constraints' for
+    // member_custom_block. Both are captured via Stripe metadata in the
+    // shared input pattern.
     const rawObj = (purchase.raw as Record<string, unknown> | null) ?? {}
-    const question = typeof rawObj.question === 'string' ? rawObj.question : ''
-    if (!question.trim()) {
-      throw new InstantEngineFulfilmentError(
-        `member_question engine requires raw.question text on the purchase row`,
-      )
-    }
     // Find member by email so we can read their enrollment + check-ins.
     const { data: enrolment } = await admin
       .from('membership_enrollments')
@@ -192,10 +193,28 @@ export async function fulfilInstantEngine(purchaseId: string): Promise<void> {
         `No active Membership enrollment found for ${purchase.email_at_purchase}.`,
       )
     }
-    envelope.member_question = await generateMemberQuestion({
-      enrolmentId: enrolment.id,
-      question,
-    })
+    if (meta.engine_call === 'member_question') {
+      const question = typeof rawObj.question === 'string' ? rawObj.question : ''
+      if (!question.trim()) {
+        throw new InstantEngineFulfilmentError('member_question engine requires raw.question text on the purchase row')
+      }
+      envelope.member_question = await generateMemberQuestion({
+        enrolmentId: enrolment.id,
+        question,
+      })
+    } else {
+      // member_custom_block: input field stored at raw.constraints
+      const constraints = typeof rawObj.constraints === 'string'
+        ? rawObj.constraints
+        : (typeof rawObj.question === 'string' ? rawObj.question : '')
+      if (!constraints.trim()) {
+        throw new InstantEngineFulfilmentError('member_custom_block engine requires raw.constraints text on the purchase row')
+      }
+      envelope.member_custom_block = await generateCustomBlock({
+        enrolmentId: enrolment.id,
+        constraints,
+      })
+    }
   } else {
     throw new InstantEngineFulfilmentError(
       `engine_call '${meta.engine_call}' not yet implemented`,

@@ -903,10 +903,12 @@ ${darkEmailSignature()}
       .maybeSingle()
 
     // Lift the engine-input fields out of session.metadata into raw at top
-    // level so orchestrator code can read them without spelunking. Currently
-    // only `question` (for member_question deep-dive); future engines that
-    // capture pre-purchase input land here too.
+    // level so orchestrator code can read them without spelunking.
+    //   - member_question deep-dive uses `question`
+    //   - member_custom_block deep-dive uses `constraints`
+    // Future engines that capture pre-purchase input add their own field here.
     const metaQuestion = typeof session.metadata?.question === 'string' ? session.metadata.question : null
+    const metaConstraints = typeof session.metadata?.constraints === 'string' ? session.metadata.constraints : null
 
     const { data: purchase, error: purchaseError } = await admin
       .from('digital_asset_purchases')
@@ -921,6 +923,7 @@ ${darkEmailSignature()}
         raw: {
           ...(session as unknown as Record<string, unknown>),
           ...(metaQuestion ? { question: metaQuestion } : {}),
+          ...(metaConstraints ? { constraints: metaConstraints } : {}),
         },
       })
       .select('id')

@@ -12,6 +12,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import TrajectoryReadingLayout from '@/components/trajectory-reading-layout'
 import MemberQuestionLayout from '@/components/member-question-layout'
+import CustomBlockLayout from '@/components/custom-block-layout'
 
 type EngineEnvelope = {
   engine_call: string
@@ -43,6 +44,22 @@ type EngineEnvelope = {
     blockLabel: string
     weekNumber: number
     question: string
+    checkInsRead: number
+  }
+  member_custom_block?: {
+    sections: {
+      cb_reading: string
+      cb_week_one_intent: string
+      cb_week_one_sessions: { title: string; focus: string; movements: string; notes: string }[]
+      cb_week_two_intent: string
+      cb_week_two_sessions: { title: string; focus: string; movements: string; notes: string }[]
+      cb_return_to_normal: string
+    }
+    memberName: string
+    patternLabel: string
+    blockLabel: string
+    weekNumber: number
+    constraints: string
     checkInsRead: number
   }
 }
@@ -79,6 +96,23 @@ export default async function DeepDiveRenderPage({
     .eq('id', purchase.product_id)
     .maybeSingle()
   const productName = product?.name ?? 'AI Deep-Dive'
+
+  if (envelope.engine_call === 'member_custom_block' && envelope.member_custom_block) {
+    const cb = envelope.member_custom_block
+    return (
+      <CustomBlockLayout
+        data={{
+          constraints: cb.constraints,
+          sections: cb.sections,
+          memberName: cb.memberName,
+          patternLabel: cb.patternLabel,
+          blockLabel: cb.blockLabel,
+          weekNumber: cb.weekNumber,
+          generated_at: envelope.generated_at,
+        }}
+      />
+    )
+  }
 
   if (envelope.engine_call === 'member_question' && envelope.member_question) {
     const mq = envelope.member_question

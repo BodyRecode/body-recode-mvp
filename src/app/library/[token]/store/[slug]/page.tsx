@@ -12,7 +12,29 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import BoltOnCheckoutButton from '../checkout-button'
-import QuestionBuy from './question-buy'
+import InputBuy from './input-buy'
+
+// Per-engine_call input config for engines that capture a free-text payload
+// pre-purchase. Other engine_call values use the simple BoltOnCheckoutButton.
+const INPUT_BUY_CONFIG: Record<string, {
+  label: string
+  placeholder: string
+  buttonLabel: string
+  fieldName: 'question' | 'constraints'
+}> = {
+  member_question: {
+    label: 'Your question',
+    placeholder: 'What is actually going on with your body right now? Be specific - the more concrete your question, the sharper the response.',
+    buttonLabel: 'Ask Kade',
+    fieldName: 'question',
+  },
+  member_custom_block: {
+    label: 'Your constraint',
+    placeholder: 'Describe the situation. What changes for the next two weeks? Travel and where? Injury and which joint? Less time and how much? List everything that matters - the block adapts to what you write.',
+    buttonLabel: 'Generate my block',
+    fieldName: 'constraints',
+  },
+}
 import { BOLT_ON_AD_COPY } from '@/lib/bolt-on-ad-copy'
 
 type Member = { token: string; first_name: string; email: string }
@@ -201,19 +223,23 @@ export default async function BoltOnDetailPage({ params }: { params: Promise<{ t
             {copy.hero_sub}
           </p>
 
-          {/* Price + Add — variant differs for member_question (textarea) */}
-          {pack.engine_call === 'member_question' ? (
+          {/* Price + Add — engines that capture pre-purchase input use InputBuy */}
+          {pack.engine_call && INPUT_BUY_CONFIG[pack.engine_call] ? (
             <div style={{
               padding: '24px 26px',
               background: '#FAFAFA',
               border: '1px solid #E5E5E5',
               borderRadius: '14px',
             }}>
-              <QuestionBuy
+              <InputBuy
                 productId={pack.id}
                 email={member.email}
                 source={`bolt_on_detail_${pack.kind}_${pack.slug}`}
                 price={pack.price}
+                inputLabel={INPUT_BUY_CONFIG[pack.engine_call].label}
+                inputPlaceholder={INPUT_BUY_CONFIG[pack.engine_call].placeholder}
+                buttonLabel={INPUT_BUY_CONFIG[pack.engine_call].buttonLabel}
+                fieldName={INPUT_BUY_CONFIG[pack.engine_call].fieldName}
               />
             </div>
           ) : (

@@ -29,12 +29,13 @@ async function handle(request: NextRequest) {
   // still controls who the delivery email goes to). Lets us exercise a
   // bolt_on_ai product against a real client without spamming them.
   const asClientId = url.searchParams.get('as_client_id') ?? null
-  // Test-only: for member_question deep-dives, the buyer's question is
-  // normally captured pre-purchase via the ad-detail form and threaded
-  // through Stripe metadata to the webhook. Bypassing Stripe in this test
-  // endpoint, we accept the question as a query param and write it directly
-  // onto raw.question so the orchestrator can read it.
+  // Test-only: for member_question and member_custom_block deep-dives, the
+  // buyer's free-text input is captured pre-purchase via the ad-detail form
+  // and threaded through Stripe metadata to the webhook. Bypassing Stripe in
+  // this test endpoint, we accept the input as a query param and write it
+  // directly onto raw.{question|constraints} so the orchestrator can read it.
   const testQuestion = url.searchParams.get('question') ?? null
+  const testConstraints = url.searchParams.get('constraints') ?? null
 
   // Accept either: a matching ADMIN_SECRET query param, OR an authenticated
   // Supabase session (admin coach logged into the dashboard). The latter
@@ -94,7 +95,12 @@ async function handle(request: NextRequest) {
       stripe_session_id: `cs_test_admin_${Date.now()}`,
       status: 'paid',
       source: 'admin_test_delivery',
-      raw: testQuestion ? { question: testQuestion } : null,
+      raw: testQuestion || testConstraints
+        ? {
+            ...(testQuestion ? { question: testQuestion } : {}),
+            ...(testConstraints ? { constraints: testConstraints } : {}),
+          }
+        : null,
     })
     .select('id')
     .single()
