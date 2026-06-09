@@ -86,12 +86,20 @@ ${darkEmailSignature()}
   // the runtime — keeps the import line stable for future template edits.
   void EMAIL_BLUE
 
-  await resend.emails.send({
+  const { error: sendError } = await resend.emails.send({
     from: 'Body Recode <kade@bodyrecode.au>',
     to: cleanEmail,
     subject,
     html: darkEmailShell(inner, { previewText: `Your Body Recode sign-in code: ${code}` }),
   })
+
+  // Resend's SDK returns errors in the result object rather than throwing, so
+  // an unchecked send silently reports success while no email is delivered.
+  // Surface the failure to the UI instead of falsely showing "code sent".
+  if (sendError) {
+    console.error('Resend failed to send portal login code:', sendError)
+    return NextResponse.json({ error: 'Failed to send code. Please try again or contact your coach.' }, { status: 500 })
+  }
 
   // Best-effort: link this code email to the matching client (if any).
   const { data: clientRow } = await admin
