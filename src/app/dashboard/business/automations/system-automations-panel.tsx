@@ -136,10 +136,10 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
-    id: 'nutrition-reading-published',
-    name: 'Nutrition Reading Published',
-    description: 'Client-facing notification that a new nutrition plan is live in the portal, with the Nutrition Reading at the top.',
-    trigger: 'Coach publishes a Nutrition Reading for a new nutrition plan',
+    id: 'nutrition-plan-published-to-client',
+    name: 'Nutrition Plan Published to Client',
+    description: 'Client-facing notification that a new nutrition plan is live in the portal. 2026-06-09 onwards this is gated on the coach clicking Notify Client on the active plan view, decoupled from Nutrition Reading state.',
+    trigger: 'Coach clicks Notify Client on the active nutrition plan view (gated on plan is_active + Nutrition Reading published)',
     steps: 1,
   },
   // Cron-driven client emails

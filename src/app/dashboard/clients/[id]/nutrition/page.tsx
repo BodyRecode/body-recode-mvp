@@ -6,6 +6,7 @@ import NutritionDraftActions from './draft-actions'
 import DeleteNutritionPlanButton from './delete-button'
 import NutritionWeeklyReview from './weekly-review'
 import NutritionReadingPanel from './nutrition-reading-panel'
+import NotifyClientButton from './notify-client-button'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 import {
   computeNutritionTotals,
@@ -79,6 +80,11 @@ interface NutritionPlan {
   // Phase 4 commit 2: doctrine version stamp. Null for plans inserted before
   // the doctrine-versioning migration ran (grandfathered).
   doctrine_version?: string | null
+  // 2026-06-09: client-facing notification decoupled from reading state.
+  // Null until the coach clicks Notify on the active plan view.
+  published_to_client_at?: string | null
+  published_to_client_by?: string | null
+  nutrition_reading_published_at?: string | null
 }
 
 function parseText(text: string): { intro: string | null; points: string[] } {
@@ -717,6 +723,13 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
           <h1 className="text-2xl font-semibold text-[#1A1A1A]">Nutrition Plan</h1>
         </div>
         <div className="flex items-center gap-2">
+          {activePlan && (
+            <NotifyClientButton
+              planId={activePlan.id}
+              publishedToClientAt={activePlan.published_to_client_at ?? null}
+              nutritionReadingPublishedAt={activePlan.nutrition_reading_published_at ?? null}
+            />
+          )}
           {activePlan && (
             <DeleteNutritionPlanButton planId={activePlan.id} label="Delete Active Plan" />
           )}

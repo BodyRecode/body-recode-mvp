@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import {
@@ -10,8 +9,12 @@ import {
   type NutritionReadingPlanContext,
 } from '@/lib/client-nutrition-reading-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
-import { buildNutritionReadingEmail } from '@/lib/nutrition-reading-email'
-import { appUrl } from '@/lib/app-url'
+
+// Pre-2026-06-09 this route also sent the client-facing email when the
+// reading was first generated for a plan. That trigger conflated "interpretive
+// context generated" with "tell the client to look at the new plan". The
+// notification is now a separate coach-gated step at
+// /api/notify-client-nutrition-plan, stamping nutrition_plans.published_to_client_at.
 
 export const maxDuration = 300
 
@@ -52,7 +55,7 @@ export async function POST(request: NextRequest) {
 
   const { data: client, error: clientErr } = await admin
     .from('clients')
-    .select('id, name, email, onboarding_token')
+    .select('id, name')
     .eq('id', plan.client_id)
     .single()
 
@@ -238,40 +241,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to save reading' }, { status: 500 })
   }
 
-  // Notify the client - first time only per nutrition_plans row. New plans get
-  // new rows, so each new plan naturally triggers one email.
-  let emailSent = false
-  let emailError: string | null = null
-  if (!plan.nutrition_reading_email_sent_at && client.email && client.onboarding_token) {
-    try {
-      const firstName = client.name?.split(' ')[0] ?? 'there'
-      const baseUrl = appUrl()
-      const portalUrl = `${baseUrl}/portal/${client.onboarding_token}/my-plan`
-      const { subject, html } = buildNutritionReadingEmail({
-        firstName,
-        planName: plan.plan_name,
-        portalUrl,
-      })
+  // No email send here. The client notification is a separate coach action
+  // at /api/notify-client-nutrition-plan. Coach reviews the plan + reading,
+  // then clicks Notify, then the email goes out and published_to_client_at
+  // is stamped.
 
-      const resend = new Resend(process.env.RESEND_API_KEY)
-      await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
-        to: client.email,
-        subject,
-        html,
-      })
-
-      await admin
-        .from('nutrition_plans')
-        .update({ nutrition_reading_email_sent_at: new Date().toISOString() })
-        .eq('id', plan_id)
-
-      emailSent = true
-    } catch (err) {
-      emailError = err instanceof Error ? err.message : String(err)
-      console.error('Nutrition Reading email failed to send:', emailError)
-    }
-  }
-
-  return NextResponse.json({ plan: updated, emailSent, emailError })
+  return NextResponse.json({ plan: updated })
 }

@@ -1884,9 +1884,12 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li>Reads the latest published Foundational Reading for voice and state context (required — the panel will refuse to generate without one).</li>
               <li>Reads the active nutrition plan row (entry state, PTS phase, carb demand, modulation level, active strategies, key priorities, structure / progression notes, entry state summary).</li>
-              <li>Auto-publishes on first generation and emails the client a heads-up that the new plan is ready.</li>
-              <li>Per-plan: each new nutrition plan row gets its own reading. Regenerating a plan creates a new row, which triggers a fresh reading and one client email.</li>
+              <li>Auto-publishes on first generation. <strong>No client email here.</strong> The notification is now a separate coach-gated step (see Notify Client below).</li>
+              <li>Per-plan: each new nutrition plan row gets its own reading. Regenerating a plan creates a new row, which triggers a fresh reading.</li>
             </ul>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Notify Client (2026-06-09)</p>
+            <p>The client-facing email is no longer auto-fired by the Reading generator. Once the active plan has a published Nutrition Reading, a <strong>Notify Client</strong> button appears in the plan view header. Click to send the new-plan email to the client and stamp <code className="bg-[#E5E5E5] px-1 rounded text-[#1B6DFC] text-xs">nutrition_plans.published_to_client_at</code>. If the client was already notified for this plan, the button label switches to <strong>Notify Again</strong> with the prior send date shown — useful when a plan revision is significant enough to warrant a second nudge. Pre-2026-06-09 the email was bolted to Reading generation using a sticky first-time-per-row flag, which silently dropped two cases: promoting a new plan without regenerating the reading sent nothing, AND regenerating the reading on the same plan row also sent nothing. This change decouples eating-instruction publish from interpretive context generation.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Five sections</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
