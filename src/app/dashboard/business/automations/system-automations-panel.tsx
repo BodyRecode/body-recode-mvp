@@ -113,33 +113,20 @@ const AUTOMATIC_AUTOMATIONS = [
     trigger: 'Client requests sign-in on portal login page',
     steps: 1,
   },
-  // Reading published (auto on coach publish)
-  {
-    id: 'foundational-reading-published',
-    name: 'Foundational Reading Published',
-    description: 'Client-facing notification that their Foundational Reading (translation of the CFFS) is live in the portal.',
-    trigger: 'Coach publishes the Foundational Reading from the CFFS',
-    steps: 1,
-  },
-  {
-    id: 'program-reading-published',
-    name: 'Program Reading Published',
-    description: 'Client-facing notification that a new training block is live in the portal, with the Program Reading at the top.',
-    trigger: 'Coach publishes a Program Reading for a new training block',
-    steps: 1,
-  },
-  {
-    id: 'trajectory-reading-published',
-    name: 'Block-End Trajectory Reading Published',
-    description: 'Client-facing notification that the block-end reading (the read of the CFWS arc across the completed block) is live in the portal. Coach-gated: drafts do not email; only the first publish per block does.',
-    trigger: 'Coach clicks Publish & notify on a Block-End Trajectory Reading',
-    steps: 1,
-  },
+  // Plan published to client (manual, coach-gated). Reading-published auto-emails
+  // scrapped 2026-06-09 — only plan publishes notify the client now.
   {
     id: 'nutrition-plan-published-to-client',
     name: 'Nutrition Plan Published to Client',
-    description: 'Client-facing notification that a new nutrition plan is live in the portal. 2026-06-09 onwards this is gated on the coach clicking Notify Client on the active plan view, decoupled from Nutrition Reading state.',
+    description: 'Client-facing notification that a new nutrition plan is live in the portal. Coach clicks Notify Client on the active plan view.',
     trigger: 'Coach clicks Notify Client on the active nutrition plan view (gated on plan is_active + Nutrition Reading published)',
+    steps: 1,
+  },
+  {
+    id: 'training-plan-published-to-client',
+    name: 'Training Plan Published to Client',
+    description: 'Client-facing notification that a new training block is live in the portal. Coach clicks Notify Client on the active program view.',
+    trigger: 'Coach clicks Notify Client on the active program view (gated on program status=active + Program Reading published)',
     steps: 1,
   },
   // Cron-driven client emails

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import DraftActions from './draft-actions'
 import DeleteProgramButton from './delete-button'
+import NotifyClientButton from './notify-client-button'
 import ProgramWeeklyReview from './weekly-review'
 import ProgramReadingPanel from './program-reading-panel'
 import TrajectoryReadingPanel from './trajectory-reading-panel'
@@ -51,6 +52,10 @@ interface Program {
   current_direction: string | null
   last_review_at: string | null
   prescription_rationale: string | null
+  // 2026-06-09: client-facing notification decoupled from reading state.
+  published_to_client_at?: string | null
+  published_to_client_by?: string | null
+  program_reading_published_at?: string | null
 }
 
 function parseText(text: string): { intro: string | null; points: string[] } {
@@ -322,6 +327,13 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           <h1 className="text-2xl font-semibold text-[#1A1A1A]">Training Program</h1>
         </div>
         <div className="flex items-center gap-2">
+          {activeProgram && (
+            <NotifyClientButton
+              programId={activeProgram.id}
+              publishedToClientAt={activeProgram.published_to_client_at ?? null}
+              programReadingPublishedAt={activeProgram.program_reading_published_at ?? null}
+            />
+          )}
           {activeProgram && (
             <DeleteProgramButton programId={activeProgram.id} label="Delete Active Program" />
           )}

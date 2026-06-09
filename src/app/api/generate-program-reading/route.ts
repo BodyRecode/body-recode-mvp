@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import {
@@ -10,8 +9,10 @@ import {
   type ProgramReadingProgramContext,
 } from '@/lib/client-program-reading-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
-import { buildProgramReadingEmail } from '@/lib/program-reading-email'
-import { appUrl } from '@/lib/app-url'
+
+// Reading-published client emails scrapped 2026-06-09. The Program Reading
+// generates silently. Client gets one email per training block via the
+// Notify Client button at /api/notify-client-training-plan.
 
 export const maxDuration = 300
 
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest) {
 
   const { data: client, error: clientErr } = await admin
     .from('clients')
-    .select('id, name, email, onboarding_token')
+    .select('id, name')
     .eq('id', program.client_id)
     .single()
 
@@ -229,40 +230,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to save reading' }, { status: 500 })
   }
 
-  // Notify the client - first time only per program row. New blocks get new
-  // program rows, so each new block naturally triggers one email.
-  let emailSent = false
-  let emailError: string | null = null
-  if (!program.program_reading_email_sent_at && client.email && client.onboarding_token) {
-    try {
-      const firstName = client.name?.split(' ')[0] ?? 'there'
-      const baseUrl = appUrl()
-      const portalUrl = `${baseUrl}/portal/${client.onboarding_token}/program`
-      const { subject, html } = buildProgramReadingEmail({
-        firstName,
-        blockName: program.block_name,
-        portalUrl,
-      })
+  // No client email on Program Reading publish. The Program Reading frames
+  // the new block but the email-trigger event is the explicit Notify Client
+  // action on the program view, not Reading generation.
 
-      const resend = new Resend(process.env.RESEND_API_KEY)
-      await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
-        to: client.email,
-        subject,
-        html,
-      })
-
-      await admin
-        .from('programs')
-        .update({ program_reading_email_sent_at: new Date().toISOString() })
-        .eq('id', program_id)
-
-      emailSent = true
-    } catch (err) {
-      emailError = err instanceof Error ? err.message : String(err)
-      console.error('Program Reading email failed to send:', emailError)
-    }
-  }
-
-  return NextResponse.json({ program: updated, emailSent, emailError })
+  return NextResponse.json({ program: updated })
 }

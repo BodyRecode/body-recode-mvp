@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import {
@@ -9,8 +8,10 @@ import {
   type CFFSContext,
 } from '@/lib/client-reading-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
-import { buildFoundationalReadingEmail } from '@/lib/foundational-reading-email'
-import { appUrl } from '@/lib/app-url'
+
+// Reading-published client emails scrapped 2026-06-09 per product call:
+// only nutrition plan + training plan publishes notify the client now.
+// Readings still generate and live in the portal, but they don't email.
 
 export const maxDuration = 300
 
@@ -61,7 +62,7 @@ export async function POST(request: NextRequest) {
 
   const { data: client, error: clientErr } = await admin
     .from('clients')
-    .select('id, name, email, onboarding_token, package')
+    .select('id, name, package')
     .eq('id', cffs.client_id)
     .single()
 
@@ -225,40 +226,9 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // Notify the client - first time only, never on regenerations
-  let emailSent = false
-  let emailError: string | null = null
-  if (!cffs.client_reading_email_sent_at && client.email && client.onboarding_token) {
-    try {
-      const firstName = client.name?.split(' ')[0] ?? 'there'
-      const baseUrl = appUrl()
-      const portalUrl = `${baseUrl}/portal/${client.onboarding_token}/foundational-reading`
-      const { subject, html } = buildFoundationalReadingEmail({
-        firstName,
-        bodyState: cffs.body_state_classification ?? null,
-        portalUrl,
-      })
+  // No client email on Foundational Reading publish. Reading sits silently
+  // in the portal until the client is notified about the plan that consumes
+  // it (Notify Client button on Training Plan or Nutrition Plan).
 
-      const resend = new Resend(process.env.RESEND_API_KEY)
-      await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
-        to: client.email,
-        subject,
-        html,
-      })
-
-      await admin
-        .from('cffs')
-        .update({ client_reading_email_sent_at: new Date().toISOString() })
-        .eq('id', cffs_id)
-
-      emailSent = true
-    } catch (err) {
-      // Email failure should not break the reading generation flow
-      emailError = err instanceof Error ? err.message : String(err)
-      console.error('Foundational Reading email failed to send:', emailError)
-    }
-  }
-
-  return NextResponse.json({ cffs: updated, emailSent, emailError })
+  return NextResponse.json({ cffs: updated })
 }
