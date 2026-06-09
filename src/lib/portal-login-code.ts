@@ -29,13 +29,14 @@ export async function createPortalLoginCode(
   const code = generateCode()
   const expiresAt = new Date(Date.now() + ttlMinutes * 60 * 1000).toISOString()
 
-  // Invalidate any existing unused codes for this email so only the latest works.
-  await admin
-    .from('portal_login_codes')
-    .update({ used_at: new Date().toISOString() })
-    .eq('email', cleanEmail)
-    .is('used_at', null)
-
+  // NOTE: we deliberately do NOT invalidate prior unused codes here. The login
+  // form forces the user to click "Send sign-in code" (which calls this) before
+  // it reveals the code-entry field — so invalidating prior codes would kill any
+  // code a coach has relayed by phone/text the instant the client requests one
+  // to reach that field. Letting short-lived codes coexist makes both the
+  // self-serve and coach-issued (relay) paths work. Each code is still
+  // single-use: verify-code stamps used_at on whichever code is actually entered,
+  // and all codes expire within their TTL regardless.
   const { error } = await admin
     .from('portal_login_codes')
     .insert({ email: cleanEmail, code, expires_at: expiresAt })
