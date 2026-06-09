@@ -131,6 +131,23 @@ export async function POST(request: NextRequest) {
       .eq('id', invitation.client_id)
   }
 
+  // Persist the client's mobile number to clients.phone so the weekly
+  // check-in window SMS reminders (and any future SMS) have a number to send
+  // to. The intake collects mobile_number into the intake snapshot, but the
+  // crons read clients.phone — without this write the number is captured but
+  // never usable, which is why most clients had no phone on file. Only write
+  // when a value is present so we never blank out a number the coach already
+  // entered manually on the profile.
+  const mobileNumber = typeof formData.mobile_number === 'string'
+    ? formData.mobile_number.trim()
+    : ''
+  if (mobileNumber) {
+    await admin
+      .from('clients')
+      .update({ phone: mobileNumber })
+      .eq('id', invitation.client_id)
+  }
+
   // Notify coach + send Portal Orientation to the client
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)

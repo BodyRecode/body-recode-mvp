@@ -37,7 +37,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   // Create client
   const { data: client, error: clientError } = await supabase
     .from('clients')
-    .insert({ coach_id: user.id, name: lead.name, email: lead.email || null })
+    .insert({ coach_id: user.id, name: lead.name, email: lead.email || null, phone: lead.phone || null })
     .select()
     .single()
 
