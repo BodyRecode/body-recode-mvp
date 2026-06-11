@@ -1,6 +1,22 @@
 import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 import { readFileSync } from 'fs'
+import {
+  darkEmailShell,
+  emailLogo,
+  emailEyebrow,
+  emailHeading,
+  emailDivider,
+  emailBody,
+  emailFeaturedCard,
+  emailCta,
+  emailUrlFallback,
+  EMAIL_FF,
+  EMAIL_GRAPHITE,
+  EMAIL_BODY,
+  EMAIL_BLUE_DARK,
+} from '../src/lib/email-shell'
+import { darkEmailSignature } from '../src/lib/email-signature'
 
 readFileSync('.env.local', 'utf8').split('\n').forEach(line => {
   const m = line.match(/^([A-Z_][A-Z0-9_]*)=(.*)$/)
@@ -11,6 +27,120 @@ const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SU
 const resend = new Resend(process.env.RESEND_API_KEY!)
 
 const DRAFTS_PATH = '/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-10_reengagement_drafts.json'
+
+const APP = 'https://app.bodyrecode.au'
+
+// Per-state offer payload. Mirrors STATE_CONFIG in draft-reengagement-emails.ts
+// so the send script can render a structured branded featured card + CTA
+// rather than relying on inline anchors Claude wrote into the prose.
+const STATE_OFFER: Record<string, {
+  eyebrow: string
+  product_name: string
+  product_price: number
+  product_url: string
+  product_promise: string
+  cta_label: string
+}> = {
+  'Depleted State': {
+    eyebrow: 'Depleted State follow-up',
+    product_name: 'The Depleted Field Guide',
+    product_price: 19,
+    product_url: `${APP}/field-guide/depleted`,
+    product_promise: 'Why clean eating and hard training stop working once you are here, and the first moves to bring the load down.',
+    cta_label: 'Read the Depleted Field Guide',
+  },
+  'Transitioning State': {
+    eyebrow: 'Transitioning State follow-up',
+    product_name: 'The Transitioning Field Guide',
+    product_price: 19,
+    product_url: `${APP}/field-guide/transitioning`,
+    product_promise: 'Your pattern is identifiable. The corrective sequence to lock the next phase before it slips back.',
+    cta_label: 'Read the Transitioning Field Guide',
+  },
+  'Ready State': {
+    eyebrow: 'Ready State follow-up',
+    product_name: 'The Ready Field Guide',
+    product_price: 19,
+    product_url: `${APP}/field-guide/ready`,
+    product_promise: 'Compound beats novelty. The progression that holds, written for people whose body can already take the work.',
+    cta_label: 'Read the Ready Field Guide',
+  },
+}
+
+const BOOK_URL = `${APP}/book`
+
+/**
+ * Strip the CTA paragraphs and signoff out of Claude's freeform draft, leaving
+ * just the reading paragraphs. Those reading paragraphs get re-flowed through
+ * emailBody() so they pick up the branded font + colour, and the CTA / signoff
+ * are re-rendered as a proper featured card + signature.
+ */
+function extractProseParagraphs(body_html: string): string[] {
+  const matches = [...body_html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)]
+  return matches
+    .map(m => m[1].trim())
+    .filter(text => {
+      if (!text) return false
+      // Drop "Kade" / "Kade." signoff line; we render a real signature.
+      if (/^Kade\.?$/i.test(text.replace(/<[^>]+>/g, '').trim())) return false
+      // Drop CTA-only paragraphs (single anchor with no surrounding prose).
+      const stripped = text.replace(/<\/?(strong|em|b|i)>/gi, '').trim()
+      if (/^<a\b[^>]*>[^<]*<\/a>\.?$/i.test(stripped)) return false
+      // Drop "If you want this walked through, book a free strategy call." style
+      // paragraphs — we re-render the booking option after the CTA explicitly.
+      const visible = stripped.replace(/<a[^>]*>([^<]*)<\/a>/gi, '$1').toLowerCase()
+      if (/(book a free|strategy call|walk(ed)? through with me|talk it through)/.test(visible) && stripped.includes('<a')) return false
+      return true
+    })
+    // Strip any stray inline anchors out of the prose (we surface them as buttons).
+    .map(p => p.replace(/<a[^>]*>([^<]*)<\/a>/gi, '$1'))
+}
+
+function firstName(name: string, email: string): string {
+  const n = (name ?? '').trim().split(/\s+/)[0]
+  if (n && n !== '?') return n
+  return email.split('@')[0]
+}
+
+function buildBranded(d: {
+  name: string
+  email: string
+  state: string
+  score: number
+  draft: { subject: string; preheader: string; body_html: string }
+}): { subject: string; html: string } {
+  const offer = STATE_OFFER[d.state] ?? STATE_OFFER['Depleted State']
+  const prose = extractProseParagraphs(d.draft.body_html)
+  const fn = firstName(d.name, d.email)
+
+  // Featured card body: small eyebrow + headline + promise line.
+  const cardInner = `
+    <p style="margin:0 0 6px;font-size:13px;font-weight:800;color:${EMAIL_GRAPHITE};letter-spacing:-0.01em;font-family:${EMAIL_FF};line-height:1.35;">${offer.product_name}</p>
+    <p style="margin:0 0 14px;font-size:13px;color:${EMAIL_BLUE_DARK};font-weight:700;font-family:${EMAIL_FF};">$${offer.product_price} · ~20 minute read</p>
+    <p style="margin:0;font-size:14px;color:${EMAIL_BODY};line-height:1.65;font-family:${EMAIL_FF};">${offer.product_promise}</p>
+  `
+
+  // Booking option rendered as a small secondary line under the CTA.
+  const bookingLine = `<p style="margin:24px 0 0;font-size:14px;color:${EMAIL_BODY};line-height:1.65;font-family:${EMAIL_FF};">If you would rather walk it through, <a href="${BOOK_URL}" style="color:${EMAIL_BLUE_DARK};font-weight:700;text-decoration:underline;">book a free strategy call</a>.</p>`
+
+  const inner = `
+${emailLogo()}
+${emailEyebrow(offer.eyebrow)}
+${emailHeading(`${fn}, your scorecard read.`)}
+${emailDivider()}
+${prose.map(p => emailBody(p)).join('\n')}
+${emailFeaturedCard(cardInner, { eyebrow: 'Start here' })}
+${emailCta({ href: offer.product_url, label: offer.cta_label })}
+${emailUrlFallback(offer.product_url, 'Or paste this link into your browser')}
+${bookingLine}
+${darkEmailSignature()}
+`
+
+  return {
+    subject: d.draft.subject,
+    html: darkEmailShell(inner, { previewText: d.draft.preheader }),
+  }
+}
 
 // Optional flags:
 //   --preview      -> only send the first 3 to kade@bodyrecode.au (subject prefixed [PREVIEW])
@@ -48,46 +178,17 @@ async function main() {
 
   console.log(`Sending ${targets.length} emails${isPreview ? ' (PREVIEW to kade)' : ''}...`)
 
-  // Render the HTML body with a Body Recode-style minimal shell (light theme).
-  function wrap(body_html: string, preheader: string) {
-    return `<!doctype html>
-<html><head>
-<meta charset="utf-8" />
-<meta name="color-scheme" content="light only" />
-<meta name="supported-color-schemes" content="light" />
-<style>
-  body { background: #FFFFFF; color: #1A1A1A; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.7; }
-  .preheader { display: none; opacity: 0; visibility: hidden; height: 0; width: 0; overflow: hidden; }
-  .container { max-width: 540px; margin: 0 auto; padding: 36px 24px; }
-  .logo { width: 120px; }
-  p { font-size: 15px; color: #2B2B2B; margin: 0 0 16px; }
-  a { color: #1B6DFC; text-decoration: underline; }
-  .signoff { margin-top: 24px; padding-top: 18px; border-top: 1px solid #E5E5E5; font-size: 12px; color: #6B6B6B; }
-</style>
-</head><body>
-  <span class="preheader">${preheader}</span>
-  <div class="container">
-    <img class="logo" src="https://bodyrecode.au/logo-black.png" alt="Body Recode" />
-    <div style="height: 28px"></div>
-    ${body_html}
-    <div class="signoff">
-      You're getting this because you completed the Body State Scorecard at bodyrecode.au. Reply to this email if you'd rather not hear from me again.
-    </div>
-  </div>
-</body></html>`
-  }
-
   let sent = 0, failed = 0
   for (const d of targets) {
     const to = isPreview ? 'kade@bodyrecode.au' : d.email
-    const subject = isPreview ? `[PREVIEW for ${d.name}] ${d.draft.subject}` : d.draft.subject
-    const html = wrap(d.draft.body_html, d.draft.preheader)
+    const { subject, html } = buildBranded(d)
+    const wrappedSubject = isPreview ? `[PREVIEW for ${d.name}] ${subject}` : subject
 
     try {
       const r = await resend.emails.send({
         from: 'Kade at Body Recode <kade@bodyrecode.au>',
         to,
-        subject,
+        subject: wrappedSubject,
         html,
         replyTo: 'kade@bodyrecode.au',
       })
@@ -98,7 +199,6 @@ async function main() {
         sent++
         console.log(`  ✓ ${d.email}  (${d.state} ${d.score}/15)`)
         if (!isPreview) {
-          // Log to lead_events so the timeline shows the send
           await admin.from('lead_events').insert({
             lead_id: d.lead_id,
             event_type: 'reengagement_email_sent',
