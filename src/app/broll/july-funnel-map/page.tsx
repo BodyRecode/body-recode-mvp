@@ -73,10 +73,10 @@ export default function JulyFunnelMapPage() {
         <div style={{ position: 'relative', maxWidth: '1080px', margin: '0 auto', width: '100%' }}>
           <p style={eyebrow}>July 2026 · Funnel Map</p>
           <h1 style={{ fontSize: 'clamp(36px, 4.5vw, 54px)', fontWeight: 900, letterSpacing: '-0.035em', lineHeight: 1.05, textAlign: 'center', margin: '0 0 14px' }}>
-            One door: <span style={{ color: C.blue }}>the scorecard.</span>
+            One door in. <span style={{ color: C.blue }}>One ceiling.</span>
           </h1>
           <p style={{ fontSize: '17px', color: C.body, textAlign: 'center', margin: '0 auto 28px', maxWidth: '820px', lineHeight: 1.5 }}>
-            Paid and organic both drive to the scorecard. It reads each lead&apos;s state, then routes them to the product built for it. Every path ascends to 1:1 coaching.
+            The scorecard routes each lead into the ladder by state. From there they climb the ladder — or ascend straight to 1:1 coaching, the ceiling reachable from any stage.
           </p>
 
           {/* entry chips → scorecard */}
@@ -98,45 +98,48 @@ export default function JulyFunnelMapPage() {
           <div style={{ background: C.text, color: '#fff', borderRadius: '13px', padding: '18px', textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
             <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#999', margin: '0 0 5px' }}>The one front door · free · 2 minutes</p>
             <p style={{ fontSize: '20px', fontWeight: 900, letterSpacing: '0.04em', margin: '0 0 4px' }}>SCORECARD</p>
-            <p style={{ fontSize: '11px', color: '#999', margin: 0 }}>reads your state + captures your email</p>
+            <p style={{ fontSize: '11px', color: '#999', margin: 0 }}>reads your state + routes you into the ladder</p>
           </div>
 
           <div style={arrow(C.blue)}>↓</div>
-          <p style={{ textAlign: 'center', fontSize: '11px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.grey, margin: '0 0 10px' }}>Routed by state</p>
+          <p style={{ textAlign: 'center', fontSize: '11px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.grey, margin: '0 0 10px' }}>Enter by state · climb the ladder →</p>
 
-          {/* three state branches */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', maxWidth: '940px', margin: '0 auto' }}>
+          {/* the ladder: 3 stages with → progression */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 26px 1fr 26px 1fr', alignItems: 'center', gap: '8px', maxWidth: '980px', margin: '0 auto' }}>
             <div style={ladderCard('#DC2626')}>
               <span style={badge('#DC2626')}>If Depleted</span>
-              <p style={cTitle}>Stage 1 · Free 14-Day Challenge</p>
-              <p style={cSub}>AI video · Day 14 reveals your pattern</p>
+              <p style={cTitle}>Stage 1 · Free Challenge</p>
+              <p style={cSub}>14 days · pattern revealed</p>
               <p style={{ ...cPrice, color: '#DC2626' }}>Free</p>
             </div>
+            <div style={{ ...arrow(C.blue), margin: 0 }}>→</div>
             <div style={ladderCard(C.amber)}>
               <span style={badge(C.amber)}>If Transitioning</span>
-              <p style={cTitle}>Stage 2 · 6-Week Blueprint</p>
-              <p style={cSub}>Pattern-specific · self-serve</p>
-              <p style={{ ...cPrice, color: C.amber }}>$97 one-time</p>
+              <p style={cTitle}>Stage 2 · Blueprint</p>
+              <p style={cSub}>6 weeks · pattern-specific</p>
+              <p style={{ ...cPrice, color: C.amber }}>$97</p>
             </div>
+            <div style={{ ...arrow(C.blue), margin: 0 }}>→</div>
             <div style={ladderCard(C.blue)}>
               <span style={badge(C.blue)}>If Ready</span>
               <p style={cTitle}>Stage 3 · Membership</p>
-              <p style={cSub}>Fat Map intro · recurring</p>
+              <p style={cSub}>Fat Map · recurring</p>
               <p style={cPrice}>$49/wk</p>
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', maxWidth: '940px', margin: '0 auto' }}>
-            <div style={arrow(C.blue)}>↓</div><div style={arrow(C.blue)}>↓</div><div style={arrow(C.blue)}>↓</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 26px 1fr 26px 1fr', maxWidth: '980px', margin: '4px auto 0' }}>
+            <div style={{ ...arrow(C.blueDeepest), margin: 0 }}>↓</div><div></div><div style={{ ...arrow(C.blueDeepest), margin: 0 }}>↓</div><div></div><div style={{ ...arrow(C.blueDeepest), margin: 0 }}>↓</div>
           </div>
+          <p style={{ textAlign: 'center', fontSize: '11px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.blueDeepest, margin: '2px 0 6px' }}>↑ Ascend to coaching from any stage</p>
 
           <div style={{ background: C.blueDeepest, border: `2px solid ${C.blue}`, color: '#fff', borderRadius: '13px', padding: '18px', textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
-            <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#B5CFFC', margin: '0 0 5px' }}>Stage 4 · all paths converge</p>
+            <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#B5CFFC', margin: '0 0 5px' }}>Stage 4 · the ceiling</p>
             <p style={{ fontSize: '19px', fontWeight: 900, margin: '0 0 5px' }}>1:1 Performance Coaching</p>
             <p style={{ fontSize: '11px', color: '#B5CFFC', margin: 0 }}>$240 commencement + $149/wk online · $299/wk 2x · $409/wk 3x</p>
           </div>
 
           <p style={{ fontSize: '13px', color: C.grey, textAlign: 'center', margin: '28px auto 0', maxWidth: '900px', lineHeight: 1.6 }}>
-            <strong style={{ color: C.text }}>Read it:</strong> paid and organic both feed ONE front door — the scorecard — so you capture every lead&apos;s state and email. The scorecard routes by state: <strong style={{ color: C.text }}>Depleted → Challenge</strong>, Transitioning → Blueprint, Ready → Membership. All ascend to coaching. (Funnel B products are pre-launch — the scorecard captures the waitlist for each; the live path today is the $37 Body Decode Report + a free call.)
+            <strong style={{ color: C.text }}>Read it:</strong> one front door (the scorecard) reads state and routes each lead into the ladder — Depleted → Challenge, Transitioning → Blueprint, Ready → Membership. From their entry rung they can <strong style={{ color: C.text }}>climb the ladder (→)</strong> or <strong style={{ color: C.text }}>ascend straight to 1:1 coaching from any stage</strong> — coaching is the ceiling, not just the last step. (Funnel B is pre-launch — the scorecard captures the waitlist for each; live path today is the $37 report + a free call.)
           </p>
         </div>
       </section>
