@@ -199,6 +199,9 @@ async function main() {
         sent++
         console.log(`  ✓ ${d.email}  (${d.state} ${d.score}/15)`)
         if (!isPreview) {
+          // Non-blocking: insert returns { error } rather than throwing, and the
+          // surrounding try/catch covers any real throw. (Supabase query builders
+          // are thenable but have no .catch, which broke the production build.)
           await admin.from('lead_events').insert({
             lead_id: d.lead_id,
             event_type: 'reengagement_email_sent',
@@ -209,7 +212,7 @@ async function main() {
               days_ago: d.days_ago,
               resend_id: r.data?.id,
             },
-          }).catch(() => {/* lead_events may not exist or have different schema; non-blocking */})
+          })
         }
       }
     } catch (e) {
