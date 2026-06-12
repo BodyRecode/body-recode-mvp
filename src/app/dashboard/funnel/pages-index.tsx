@@ -226,6 +226,7 @@ const STAGES: StageGroup[] = [
       { name: 'Full Funnel Arc', url: '/broll/full-funnel-arc', description: '4-stage horizontal funnel: Free → $97 → $49/wk → $149/wk.' },
       { name: 'Funnel A · Direct Coaching Arc', url: '/broll/funnel-a-direct-coaching-arc', description: 'High-intent path: Scorecard → Zoom 1 → Commencement → Subscription.' },
       { name: 'Funnel B · Product Arc', url: '/broll/funnel-b-product-arc', description: 'Product ladder: Scorecard → Stage 1 → 2 → 3 → 4 ascension + side branches.' },
+      { name: 'July 2026 Funnel Map', url: '/broll/july-funnel-map', description: 'Two doors → one room: paid Challenge ladder (Stage 1–4) + organic Scorecard arc converging at coaching. Cash reality + the 6 metrics to track.' },
     ],
   },
 ]
