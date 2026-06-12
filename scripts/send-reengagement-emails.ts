@@ -199,20 +199,16 @@ async function main() {
         sent++
         console.log(`  ✓ ${d.email}  (${d.state} ${d.score}/15)`)
         if (!isPreview) {
-          // Non-blocking: insert returns { error } rather than throwing, and the
-          // surrounding try/catch covers any real throw. (Supabase query builders
-          // are thenable but have no .catch, which broke the production build.)
-          await admin.from('lead_events').insert({
+          // lead_events columns are lead_id, type, subject, sent_at, resend_email_id, notes
+          // (NOT event_type/metadata — that silently failed every prior send).
+          const { error: logErr } = await admin.from('lead_events').insert({
             lead_id: d.lead_id,
-            event_type: 'reengagement_email_sent',
-            metadata: {
-              subject: d.draft.subject,
-              state: d.state,
-              score: d.score,
-              days_ago: d.days_ago,
-              resend_id: r.data?.id,
-            },
+            type: 'reengagement_email_sent',
+            subject: d.draft.subject,
+            resend_email_id: r.data?.id,
+            notes: `${d.state} ${d.score}/15`,
           })
+          if (logErr) console.error(`    (log failed for ${d.email}: ${logErr.message})`)
         }
       }
     } catch (e) {
