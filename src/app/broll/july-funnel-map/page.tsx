@@ -55,10 +55,6 @@ const cTitle: React.CSSProperties = { fontSize: '16px', fontWeight: 900, color: 
 const cSub: React.CSSProperties = { fontSize: '11px', fontWeight: 700, color: C.grey, letterSpacing: '0.03em', margin: 0 }
 const cPrice: React.CSSProperties = { fontSize: '12px', fontWeight: 800, color: C.blueDark, margin: '6px 0 0' }
 const arrow = (color: string): React.CSSProperties => ({ textAlign: 'center', fontSize: '20px', fontWeight: 800, color, lineHeight: 1, margin: '4px 0' })
-const colHead = (bg: string, color: string): React.CSSProperties => ({
-  textAlign: 'center', fontSize: '11px', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase',
-  padding: '7px', borderRadius: '8px', background: bg, color, marginBottom: '8px',
-})
 
 const mCard = (top = C.blue): React.CSSProperties => ({
   background: C.bg, border: `1px solid ${C.border}`, borderTop: `3px solid ${top}`,
@@ -77,84 +73,70 @@ export default function JulyFunnelMapPage() {
         <div style={{ position: 'relative', maxWidth: '1080px', margin: '0 auto', width: '100%' }}>
           <p style={eyebrow}>July 2026 · Funnel Map</p>
           <h1 style={{ fontSize: 'clamp(36px, 4.5vw, 54px)', fontWeight: 900, letterSpacing: '-0.035em', lineHeight: 1.05, textAlign: 'center', margin: '0 0 14px' }}>
-            Two doors. <span style={{ color: C.blue }}>One room.</span>
+            One door: <span style={{ color: C.blue }}>the scorecard.</span>
           </h1>
-          <p style={{ fontSize: '17px', color: C.body, textAlign: 'center', margin: '0 auto 32px', maxWidth: '820px', lineHeight: 1.5 }}>
-            Paid traffic enters through the free Challenge. Organic enters through the Scorecard. Both converge on 1:1 coaching.
+          <p style={{ fontSize: '17px', color: C.body, textAlign: 'center', margin: '0 auto 28px', maxWidth: '820px', lineHeight: 1.5 }}>
+            Paid and organic both drive to the scorecard. It reads each lead&apos;s state, then routes them to the product built for it. Every path ascends to 1:1 coaching.
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', maxWidth: '940px', margin: '0 auto', width: '100%', alignItems: 'start' }}>
-            {/* LEFT — Funnel B ladder */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={colHead(C.blue, '#fff')}>Paid · Ad spend → Funnel B</div>
-              <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: '12px', padding: '13px', textAlign: 'center' }}>
-                <p style={{ fontSize: '14px', fontWeight: 900, margin: '0 0 2px' }}>Cold audience</p>
-                <p style={{ fontSize: '11px', color: C.grey, margin: 0 }}>Meta / Instagram ads</p>
-              </div>
-              <div style={arrow(C.blue)}>↓</div>
-              <div style={ladderCard(C.blue)}>
-                <span style={badge(C.blue)}>Stage 1 · AI video</span>
-                <p style={cTitle}>Free 14-Day Challenge</p>
-                <p style={cSub}>Day 7 Check-In → Day 14 Body Decode Report · ▶ video lives here</p>
-                <p style={cPrice}>Free</p>
-              </div>
-              <div style={arrow(C.blue)}>↓</div>
-              <div style={ladderCard(C.blueDark)}>
-                <span style={badge(C.amber)}>Stage 2 · First cash</span>
-                <p style={cTitle}>6-Week Body Rewire Blueprint</p>
-                <p style={cSub}>Pattern-specific · self-serve</p>
-                <p style={cPrice}>$97 one-time</p>
-              </div>
-              <div style={arrow(C.blue)}>↓</div>
-              <div style={ladderCard(C.blueDeeper)}>
-                <span style={badge(C.blueDeeper)}>Stage 3</span>
-                <p style={cTitle}>Body Recode Membership</p>
-                <p style={cSub}>Fat Map intro · recurring</p>
-                <p style={cPrice}>$49/wk</p>
-              </div>
+          {/* entry chips → scorecard */}
+          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', maxWidth: '620px', margin: '0 auto' }}>
+            <div style={{ flex: 1, background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: '12px', padding: '13px', textAlign: 'center' }}>
+              <p style={{ fontSize: '14px', fontWeight: 900, margin: '0 0 2px' }}>Paid · Ads</p>
+              <p style={{ fontSize: '11px', color: C.grey, margin: 0 }}>Meta / Instagram</p>
             </div>
-
-            {/* RIGHT — Funnel A organic */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={colHead('#F0F0F0', C.text)}>Organic · Content → Funnel A</div>
-              <div style={{ background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: '12px', padding: '13px', textAlign: 'center' }}>
-                <p style={{ fontSize: '14px', fontWeight: 900, margin: '0 0 2px' }}>IG ladder</p>
-                <p style={{ fontSize: '11px', color: C.grey, margin: 0 }}>5x per week · belief sequence</p>
-              </div>
-              <div style={arrow(C.grey)}>↓</div>
-              <div style={{ background: C.text, color: '#fff', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
-                <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#999', margin: '0 0 5px' }}>Entry</p>
-                <p style={{ fontSize: '18px', fontWeight: 900, letterSpacing: '0.04em', margin: '0 0 4px' }}>SCORECARD</p>
-                <p style={{ fontSize: '10px', color: '#999', margin: 0 }}>free · 2 minutes</p>
-              </div>
-              <div style={arrow(C.grey)}>↓</div>
-              <div style={ladderCard(C.blue)}>
-                <span style={badge(C.blue)}>Result</span>
-                <p style={cTitle}>Body State</p>
-                <p style={cSub}>Depleted / Transitioning / Ready</p>
-              </div>
-              <div style={arrow(C.grey)}>↓</div>
-              <div style={ladderCard(C.blueDark)}>
-                <span style={badge(C.blueDark)}>Conversion</span>
-                <p style={cTitle}>Zoom · single call</p>
-                <p style={cSub}>free · the one booking that matters</p>
-              </div>
+            <div style={{ flex: 1, background: C.bgSoft, border: `1px solid ${C.border}`, borderRadius: '12px', padding: '13px', textAlign: 'center' }}>
+              <p style={{ fontSize: '14px', fontWeight: 900, margin: '0 0 2px' }}>Organic · IG ladder</p>
+              <p style={{ fontSize: '11px', color: C.grey, margin: 0 }}>5x per week</p>
             </div>
           </div>
-
-          {/* converge arrows */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', maxWidth: '940px', margin: '6px auto 0' }}>
-            <div style={arrow(C.blue)}>↓</div>
-            <div style={arrow(C.blue)}>↓</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', maxWidth: '620px', margin: '0 auto' }}>
+            <div style={arrow(C.grey)}>↓</div><div style={arrow(C.grey)}>↓</div>
           </div>
-          <div style={{ background: C.blueDeepest, border: `2px solid ${C.blue}`, color: '#fff', borderRadius: '13px', padding: '18px', textAlign: 'center', maxWidth: '640px', margin: '6px auto 0' }}>
-            <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#B5CFFC', margin: '0 0 5px' }}>Stage 4 · Both funnels converge here</p>
+
+          {/* the one front door */}
+          <div style={{ background: C.text, color: '#fff', borderRadius: '13px', padding: '18px', textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
+            <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#999', margin: '0 0 5px' }}>The one front door · free · 2 minutes</p>
+            <p style={{ fontSize: '20px', fontWeight: 900, letterSpacing: '0.04em', margin: '0 0 4px' }}>SCORECARD</p>
+            <p style={{ fontSize: '11px', color: '#999', margin: 0 }}>reads your state + captures your email</p>
+          </div>
+
+          <div style={arrow(C.blue)}>↓</div>
+          <p style={{ textAlign: 'center', fontSize: '11px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.grey, margin: '0 0 10px' }}>Routed by state</p>
+
+          {/* three state branches */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', maxWidth: '940px', margin: '0 auto' }}>
+            <div style={ladderCard('#DC2626')}>
+              <span style={badge('#DC2626')}>If Depleted</span>
+              <p style={cTitle}>Stage 1 · Free 14-Day Challenge</p>
+              <p style={cSub}>AI video · Day 14 reveals your pattern</p>
+              <p style={{ ...cPrice, color: '#DC2626' }}>Free</p>
+            </div>
+            <div style={ladderCard(C.amber)}>
+              <span style={badge(C.amber)}>If Transitioning</span>
+              <p style={cTitle}>Stage 2 · 6-Week Blueprint</p>
+              <p style={cSub}>Pattern-specific · self-serve</p>
+              <p style={{ ...cPrice, color: C.amber }}>$97 one-time</p>
+            </div>
+            <div style={ladderCard(C.blue)}>
+              <span style={badge(C.blue)}>If Ready</span>
+              <p style={cTitle}>Stage 3 · Membership</p>
+              <p style={cSub}>Fat Map intro · recurring</p>
+              <p style={cPrice}>$49/wk</p>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', maxWidth: '940px', margin: '0 auto' }}>
+            <div style={arrow(C.blue)}>↓</div><div style={arrow(C.blue)}>↓</div><div style={arrow(C.blue)}>↓</div>
+          </div>
+
+          <div style={{ background: C.blueDeepest, border: `2px solid ${C.blue}`, color: '#fff', borderRadius: '13px', padding: '18px', textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
+            <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#B5CFFC', margin: '0 0 5px' }}>Stage 4 · all paths converge</p>
             <p style={{ fontSize: '19px', fontWeight: 900, margin: '0 0 5px' }}>1:1 Performance Coaching</p>
             <p style={{ fontSize: '11px', color: '#B5CFFC', margin: 0 }}>$240 commencement + $149/wk online · $299/wk 2x · $409/wk 3x</p>
           </div>
 
           <p style={{ fontSize: '13px', color: C.grey, textAlign: 'center', margin: '28px auto 0', maxWidth: '900px', lineHeight: 1.6 }}>
-            <strong style={{ color: C.text }}>Read it:</strong> ad spend points ONLY at the free Challenge (left). Funnel B climbs Stage 1 → 2 → 3 (Challenge → Blueprint → Membership), then ascends into 1:1 coaching — the Stage 4 ceiling both doors reach. The Scorecard (right) is fed free by the organic ladder. First cash is the $97 Blueprint; coaching is the real revenue.
+            <strong style={{ color: C.text }}>Read it:</strong> paid and organic both feed ONE front door — the scorecard — so you capture every lead&apos;s state and email. The scorecard routes by state: <strong style={{ color: C.text }}>Depleted → Challenge</strong>, Transitioning → Blueprint, Ready → Membership. All ascend to coaching. (Funnel B products are pre-launch — the scorecard captures the waitlist for each; the live path today is the $37 Body Decode Report + a free call.)
           </p>
         </div>
       </section>
@@ -213,13 +195,13 @@ export default function JulyFunnelMapPage() {
             Six numbers decide <span style={{ color: C.blue }}>if the engine pays for itself.</span>
           </h2>
           <p style={{ fontSize: '17px', color: C.body, textAlign: 'center', margin: '0 auto 48px', maxWidth: '820px', lineHeight: 1.5 }}>
-            Track the Funnel B chain weekly. This is the July baseline — scorecard completions become a secondary organic read.
+            Track the chain weekly, from scorecard completion through to coaching. This is the July baseline.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '18px' }}>
             {[
-              ['1 · Ad → LP', 'Cost per signup', 'Your top KPI. Set a ceiling and watch it weekly.', C.blue],
-              ['2 · LP', 'Signup rate', 'Free + video should run high. Low = the page or video is the problem.', C.blue],
+              ['1 · Traffic → Scorecard', 'Cost per completion', 'Your top KPI. Every click should finish the 2-min scorecard. Set a ceiling.', C.blue],
+              ['2 · Scorecard → product', '% Depleted → Challenge', 'State mix + routing. Most land Depleted, so most route to the Challenge.', C.blue],
               ['3 · Engagement', 'Day 7 completion', 'The warm-up is working if a healthy share reach Day 7.', C.blue],
               ['4 · Trust peak', 'Day 14 views', 'Drop-off here means the 14-day experience is leaking.', C.blue],
               ['5 · Monetisation', 'Blueprint take-rate', 'The number that decides if ads self-liquidate.', C.amber],
