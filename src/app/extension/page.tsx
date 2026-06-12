@@ -3,8 +3,14 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Play } from 'lucide-react'
+import { isProductLive } from '@/lib/product-launch'
+import { WaitlistCTA } from '@/components/product-waitlist-cta'
 
 function CheckoutForm({ teal }: { teal?: boolean }) {
+  // Pre-launch: capture waitlist instead of Stripe checkout until NEXT_PUBLIC_EXTENSION_LIVE=true.
+  if (!isProductLive('extension')) {
+    return <WaitlistCTA product="extension" productName="90-Day Extension" />
+  }
   const router = useRouter()
   const [form, setForm] = useState({ name: '', email: '' })
   const [loading, setLoading] = useState(false)

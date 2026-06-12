@@ -13,7 +13,7 @@
 // NEXT_PUBLIC_* literals (Next inlines them at build time); do not access via a
 // computed key.
 
-export type LaunchProduct = 'challenge' | 'blueprint' | 'membership'
+export type LaunchProduct = 'challenge' | 'blueprint' | 'membership' | 'extension'
 
 export function isProductLive(product: LaunchProduct): boolean {
   switch (product) {
@@ -23,5 +23,7 @@ export function isProductLive(product: LaunchProduct): boolean {
       return process.env.NEXT_PUBLIC_BLUEPRINT_LIVE === 'true'
     case 'membership':
       return process.env.NEXT_PUBLIC_MEMBERSHIP_LIVE === 'true'
+    case 'extension':
+      return process.env.NEXT_PUBLIC_EXTENSION_LIVE === 'true'
   }
 }

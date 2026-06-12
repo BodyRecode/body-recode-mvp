@@ -8,9 +8,9 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
-type Product = 'challenge' | 'blueprint' | 'membership'
+type Product = 'challenge' | 'blueprint' | 'membership' | 'extension'
 
-const ALLOWED_PRODUCTS: Product[] = ['challenge', 'blueprint', 'membership']
+const ALLOWED_PRODUCTS: Product[] = ['challenge', 'blueprint', 'membership', 'extension']
 
 // CORS: performance.bodyrecode.au and localhost (dev). Matches the pattern
 // already used by /api/scorecard/submit and /api/scorecard-report/checkout.
