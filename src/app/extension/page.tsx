@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { Play } from 'lucide-react'
 
 function CheckoutForm({ teal }: { teal?: boolean }) {
   const router = useRouter()
@@ -85,9 +86,37 @@ export default function ExtensionPage() {
         <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '14px' }}>
           The Blueprint built your foundation. But six weeks is not long enough to embed the changes permanently - especially when life interrupted along the way.
         </p>
-        <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '40px' }}>
+        <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '32px' }}>
           The 90-Day Extension gives you 12 more weeks of progressive, pattern-specific programming - without the ongoing subscription commitment.
         </p>
+
+        {/* EXPLAINER VIDEO PLACEHOLDER - to be replaced with actual video when Amanda delivers */}
+        <div style={{
+          position: 'relative', width: '100%', aspectRatio: '16 / 9',
+          background: '#1A1A1A', borderRadius: '14px', marginBottom: '32px',
+          overflow: 'hidden', border: '1px solid #2C2C2C',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexDirection: 'column', gap: '14px', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+        }}>
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'radial-gradient(ellipse at center, rgba(27, 109, 252, 0.08) 0%, transparent 60%)',
+            pointerEvents: 'none',
+          }} />
+          <div style={{
+            width: '68px', height: '68px', borderRadius: '50%', background: '#1B6DFC',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 4px 16px rgba(27, 109, 252, 0.4)', position: 'relative',
+          }}>
+            <Play size={28} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} style={{ marginLeft: '4px' }} />
+          </div>
+          <p style={{ fontSize: '12px', fontWeight: 700, color: '#999999', margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase', position: 'relative' }}>
+            Explainer video · 60 seconds
+          </p>
+          <p style={{ fontSize: '11px', color: '#6B6B6B', margin: 0, fontStyle: 'italic', position: 'relative' }}>
+            Placeholder. Production in progress with Amanda.
+          </p>
+        </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '32px' }}>
           {[{ value: '12', label: 'Weeks' }, { value: '$197', label: 'One-time' }, { value: 'Day 1', label: 'Instant access' }].map(s => (
