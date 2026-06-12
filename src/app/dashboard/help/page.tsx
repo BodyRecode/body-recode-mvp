@@ -2711,6 +2711,9 @@ export default function HelpPage() {
             <p>On submission the form calls <strong>POST /api/challenge/enroll</strong>. If successful, the form is replaced with a success message confirming enrollment and telling the participant to check their email and phone. The portal link is emailed immediately via the welcome email.</p>
 
             <Note>The landing page links to /privacy and /terms. Both pages are built and live. They are light-theme pages matching the landing page aesthetic.</Note>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Pre-launch waitlist mode (2026-06-12)</p>
+            <p>Challenge, Blueprint, and Membership are gated behind launch flags (<strong>NEXT_PUBLIC_CHALLENGE_LIVE / _BLUEPRINT_LIVE / _MEMBERSHIP_LIVE</strong>). While a flag is unset or not <strong>&apos;true&apos;</strong>, that product&apos;s landing page shows a <strong>&quot;Starting soon · join the waitlist&quot;</strong> capture instead of live enrollment/checkout. Waitlist signups go to the <strong>product_waitlist</strong> table (same pool the scorecard &quot;coming soon&quot; CTAs feed) and are viewable at <strong>Dashboard → Business → Waitlist</strong>. To launch a product: set its flag to &apos;true&apos; in Vercel and redeploy — the live enroll form / Stripe checkout returns automatically. Marketing copy and pricing stay visible in waitlist mode; only the transaction is gated.</p>
           </Section>
 
           <Section id="ch-enrollment" title="Enrollment Flow" colour="teal">
