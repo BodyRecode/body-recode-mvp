@@ -3,8 +3,14 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Dumbbell, Salad, Video, Users, Library, LineChart, Play, BarChart3, FileText } from 'lucide-react'
+import { isProductLive } from '@/lib/product-launch'
+import { WaitlistCTA } from '@/components/product-waitlist-cta'
 
 function CheckoutForm({ position, teal, darkBg }: { position: string; teal?: boolean; darkBg?: boolean }) {
+  // Pre-launch: capture waitlist instead of Stripe checkout until NEXT_PUBLIC_MEMBERSHIP_LIVE=true.
+  if (!isProductLive('membership')) {
+    return <WaitlistCTA product="membership" productName="Body Recode Membership" position={position} darkBg={darkBg} />
+  }
   const router = useRouter()
   const [form, setForm] = useState({ name: '', email: '' })
   const [loading, setLoading] = useState(false)

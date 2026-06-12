@@ -3,8 +3,14 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Dna, Dumbbell, Salad, BookOpen, FileText, BarChart3, Compass, ArrowRight, Play } from 'lucide-react'
+import { isProductLive } from '@/lib/product-launch'
+import { WaitlistCTA } from '@/components/product-waitlist-cta'
 
 function CheckoutForm({ position, teal, darkBg }: { position: string; teal?: boolean; darkBg?: boolean }) {
+  // Pre-launch: capture waitlist instead of Stripe checkout until NEXT_PUBLIC_BLUEPRINT_LIVE=true.
+  if (!isProductLive('blueprint')) {
+    return <WaitlistCTA product="blueprint" productName="6-Week Body Rewire Blueprint" position={position} darkBg={darkBg} />
+  }
   const router = useRouter()
   const [form, setForm] = useState({ name: '', email: '' })
   const [loading, setLoading] = useState(false)

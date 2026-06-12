@@ -2,8 +2,14 @@
 
 import { useState, useRef } from 'react'
 import { Dumbbell, Salad, Sunrise, Moon, FileText, Video, Activity, LineChart, ChevronRight, Zap } from 'lucide-react'
+import { isProductLive } from '@/lib/product-launch'
+import { WaitlistCTA } from '@/components/product-waitlist-cta'
 
 function SignupForm({ position, teal, darkBg }: { position: string; teal?: boolean; darkBg?: boolean }) {
+  // Pre-launch: capture waitlist instead of live enrollment until NEXT_PUBLIC_CHALLENGE_LIVE=true.
+  if (!isProductLive('challenge')) {
+    return <WaitlistCTA product="challenge" productName="14-Day Body Decode Challenge" position={position} darkBg={darkBg} />
+  }
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', gender: '' })
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
