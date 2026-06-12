@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { ExternalLink, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react'
+import { appUrl } from '@/lib/app-url'
 
 // All known token slots in the URL catalog. Each maps to either an
 // enrollment token (Challenge/Blueprint/Membership) or a per-client token
@@ -240,7 +241,9 @@ function urlFor(page: PageEntry, tokens: Tokens): string {
 
 function fullUrl(url: string): string {
   if (url.startsWith('http')) return url
-  return `http://localhost:3000${url}`
+  // Production-safe canonical domain (https://app.bodyrecode.au), not a
+  // hardcoded localhost — so Open/Copy work from any device (iPad, phone).
+  return `${appUrl()}${url}`
 }
 
 function CopyButton({ value }: { value: string }) {
@@ -345,7 +348,7 @@ export default function PagesIndex({ tokens }: { tokens: Tokens }) {
                           <p className="text-[13px] font-bold text-stone-900 group-hover:text-blue-700 transition truncate">{page.name}</p>
                           {page.external && <ExternalLink className="w-3 h-3 text-stone-400 flex-shrink-0" />}
                         </div>
-                        <p className="text-[11px] font-mono text-stone-500 truncate mt-0.5">{url}</p>
+                        <p className="text-[11px] font-mono text-stone-500 truncate mt-0.5">{fullForOpen}</p>
                         <p className="text-[11px] text-stone-500 mt-1 leading-snug">{page.description}</p>
                       </div>
                       <div className="flex items-center gap-1 flex-shrink-0 pt-1">
