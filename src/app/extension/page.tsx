@@ -27,9 +27,9 @@ function CheckoutForm({ teal }: { teal?: boolean }) {
 
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '15px 16px', borderRadius: '10px',
-    border: teal ? '1px solid rgba(27, 109, 252,0.3)' : '1px solid #d6d3d1',
+    border: teal ? '1px solid rgba(27, 109, 252,0.3)' : '1px solid #D4D4D4',
     background: teal ? 'rgba(255,255,255,0.7)' : '#ffffff',
-    color: '#E5E5E5', fontSize: '15px', outline: 'none', boxSizing: 'border-box',
+    color: '#1A1A1A', fontSize: '15px', outline: 'none', boxSizing: 'border-box',
   }
 
   return (
@@ -42,7 +42,7 @@ function CheckoutForm({ teal }: { teal?: boolean }) {
       <button type="submit" disabled={loading || !form.name.trim() || !form.email.trim()} style={{
         width: '100%', padding: '17px', borderRadius: '10px', border: 'none',
         background: loading ? 'rgba(27, 109, 252,0.6)' : '#1B6DFC',
-        color: '#1A1A1A', fontSize: '16px', fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer', boxSizing: 'border-box',
+        color: '#FFFFFF', fontSize: '16px', fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer', boxSizing: 'border-box',
       }}>
         {loading ? 'Redirecting to checkout...' : 'Get the Extension - $197 AUD'}
       </button>
@@ -63,7 +63,7 @@ const WHAT_YOU_GET = [
 export default function ExtensionPage() {
   const formRef = useRef<HTMLDivElement>(null)
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#E5E5E5', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
       <div style={{ padding: '20px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto' }}>
           <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
@@ -76,7 +76,7 @@ export default function ExtensionPage() {
           <span style={{ fontSize: '12px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' }}>90-Day Body Rewire Extension</span>
         </div>
 
-        <h1 style={{ fontSize: 'clamp(34px, 7vw, 50px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.08, color: '#E5E5E5', marginBottom: '24px' }}>
+        <h1 style={{ fontSize: 'clamp(34px, 7vw, 50px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.08, color: '#1A1A1A', marginBottom: '24px' }}>
           Not ready for the membership.<br /><span style={{ color: '#1B6DFC' }}>Keep going anyway.</span>
         </h1>
 
@@ -103,21 +103,21 @@ export default function ExtensionPage() {
 
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '0 24px 72px', borderTop: '1px solid #E5E5E5' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '72px 0 12px' }}>What is included</p>
-        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '28px', color: '#E5E5E5' }}>Everything in your portal from Day 1.</h2>
+        <h2 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '28px', color: '#1A1A1A' }}>Everything in your portal from Day 1.</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '48px' }}>
           {WHAT_YOU_GET.map((item, i) => (
             <div key={i} style={{ background: '#ffffff', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '18px 20px', display: 'flex', gap: '16px' }}>
               <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(27, 109, 252,0.1)', border: '1px solid rgba(27, 109, 252,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '12px', fontWeight: 800, color: '#1B6DFC' }}>{i + 1}</div>
               <div>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: '#E5E5E5', marginBottom: '4px' }}>{item.title}</p>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '4px' }}>{item.title}</p>
                 <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <div style={{ background: '#f5f4f0', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '24px' }}>
-          <p style={{ fontSize: '14px', fontWeight: 700, color: '#E5E5E5', marginBottom: '8px' }}>How it connects to the membership</p>
+        <div style={{ background: '#F8F8F8', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '24px' }}>
+          <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '8px' }}>How it connects to the membership</p>
           <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
             The Extension covers Blocks A and B. If you join the membership afterwards, you pick up at Block C - no repeated content, no backtracking. The Extension is a stepping stone, not a detour.
           </p>
