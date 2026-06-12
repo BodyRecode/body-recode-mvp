@@ -1434,6 +1434,9 @@ export default function BlueprintPortalClient({
 }) {
   const [pattern, setPattern] = useState(enrollment.pattern)
   const [activeTab, setActiveTab] = useState('home')
+  // Week 6: Extension is a decline-path downsell, revealed only if they say they're
+  // not ready for the recurring Membership (avoids cannibalising Membership LTV).
+  const [showExtension, setShowExtension] = useState(false)
 
   if (pattern === 'pending') {
     return (
@@ -1613,10 +1616,10 @@ export default function BlueprintPortalClient({
                     Join the Membership - $49/week
                   </a>
                   <a
-                    href="/extension"
+                    href="https://bodyrecode.au/book?from=blueprint_week6"
                     style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#1B6DFC', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #1B6DFC' }}
                   >
-                    90-Day Extension - $197
+                    Or skip to 1:1 coaching →
                   </a>
                   <a
                     href="mailto:kade@bodyrecode.au?subject=Blueprint complete - question about next step"
@@ -1624,13 +1627,29 @@ export default function BlueprintPortalClient({
                   >
                     Ask a question first
                   </a>
-                  <a
-                    href="https://bodyrecode.au/book?from=blueprint_week6"
-                    style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#1B6DFC', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #1B6DFC' }}
-                  >
-                    Or skip to 1:1 coaching →
-                  </a>
                 </div>
+
+                {/* Decline-path downsell: Extension surfaces only if they say they're not ready to commit to the recurring Membership */}
+                {!showExtension ? (
+                  <button
+                    onClick={() => setShowExtension(true)}
+                    style={{ background: 'none', border: 'none', padding: '14px 0 0', color: '#6B6B6B', fontSize: 13, fontWeight: 600, textDecoration: 'underline', cursor: 'pointer' }}
+                  >
+                    Not ready for a subscription?
+                  </button>
+                ) : (
+                  <div style={{ marginTop: 16, padding: '16px 18px', background: '#F8F8F8', border: '1px solid #E5E5E5', borderRadius: 10 }}>
+                    <p style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.6, margin: '0 0 12px' }}>
+                      Prefer to keep going without a subscription? The <strong>90-Day Extension</strong> gives you 12 more weeks (Blocks A + B) for a one-time <strong>$197</strong>. If you join the Membership later, you pick up at Block C - no backtracking.
+                    </p>
+                    <a
+                      href="/extension"
+                      style={{ display: 'inline-block', padding: '11px 20px', background: 'transparent', color: '#1B6DFC', fontWeight: 700, fontSize: 13, borderRadius: 8, textDecoration: 'none', border: '1px solid #1B6DFC' }}
+                    >
+                      See the 90-Day Extension - $197 →
+                    </a>
+                  </div>
+                )}
               </div>
             )}
 
