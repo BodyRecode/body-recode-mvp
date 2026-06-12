@@ -1624,6 +1624,12 @@ export default function BlueprintPortalClient({
                   >
                     Ask a question first
                   </a>
+                  <a
+                    href="https://bodyrecode.au/book?from=blueprint_week6"
+                    style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#1B6DFC', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #1B6DFC' }}
+                  >
+                    Or skip to 1:1 coaching →
+                  </a>
                 </div>
               </div>
             )}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { CoachingAscensionCTA } from '@/components/coaching-ascension-cta'
 
 type MemberEnrollment = {
   id: string
@@ -1194,6 +1195,11 @@ export default function MembershipPortalClient({
                 </div>
               </div>
             </>)}
+
+            {/* Stage 4 ascension: Membership is the most natural step to 1:1 coaching */}
+            <div style={{ marginBottom: 16 }}>
+              <CoachingAscensionCTA source="membership_block" variant="primary" />
+            </div>
 
             {/* Featured Bolt-ons */}
             {featuredBoltOns && featuredBoltOns.length > 0 && libraryToken && (

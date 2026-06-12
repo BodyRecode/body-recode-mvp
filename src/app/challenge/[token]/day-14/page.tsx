@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { CoachingAscensionCTA } from '@/components/coaching-ascension-cta'
 
 const card: React.CSSProperties = {
   background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px',
@@ -311,6 +312,13 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
           }}>
             Open your Body Decode Report →
           </Link>
+        </div>
+      )}
+
+      {/* Stage 4 ascension: skip ahead to 1:1 coaching from the Challenge */}
+      {!locked && (
+        <div style={{ maxWidth: '720px', margin: '0 auto', padding: '8px 24px 0' }}>
+          <CoachingAscensionCTA source="challenge_day14" variant="secondary" />
         </div>
       )}
 
