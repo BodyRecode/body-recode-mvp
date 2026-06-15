@@ -129,6 +129,20 @@ const AUTOMATIC_AUTOMATIONS = [
     trigger: 'Coach clicks Notify Client on the active program view (gated on program status=active + Program Reading published)',
     steps: 1,
   },
+  {
+    id: 'weekly-checkin-draft-preview',
+    name: 'Weekly Check-In Draft Preview (Coach)',
+    description: 'Coach-only preview email of an auto-generated weekly check-in response, sent the moment the Inngest worker drafts it. Allows Kade to review, edit, send now, or skip from his inbox before the 4h scheduled-send fires.',
+    trigger: 'Auto-response Inngest worker drafts a feedback row (between draft generation and 4h sleep)',
+    steps: 1,
+  },
+  {
+    id: 'weekly-checkin-auto-rescue',
+    name: 'Weekly Check-In Auto-Response Rescue',
+    description: 'Every 4h: re-fires the weekly-checkin/submitted Inngest event for any check-in that the auto-response pipeline never touched (auto_response_attempted_at IS NULL AND no feedback row AND submitted >6h ago AND client opted in). Safety net for transient Inngest delivery failures. Built 2026-06-14 after Ruby-Cate Week 6 silently dropped.',
+    trigger: 'Vercel cron every 4h (0 */4 * * *)',
+    steps: 1,
+  },
   // Cron-driven client emails
   {
     id: 'checkin-window-open',

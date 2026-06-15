@@ -1254,32 +1254,47 @@ export const weeklyCheckinAutoResponseFunction = inngest.createFunction(
     await step.sleep('settle', '30s')
 
     // ── Step 2: eligibility gate ───────────────────────────────────────
+    // Every exit (pass or fail) stamps weekly_checkins.auto_response_attempted_at
+    // so silent drops become visible in the DB. Pre-2026-06-14 the gate
+    // returned silently on fail — Ruby's Week 6 was lost to this and we
+    // couldn't tell "ran and gated" from "never ran" from "send failed".
     const gate = await step.run('check-eligibility', async () => {
       const admin = createAdminClient()
+
+      const stamp = async (reason: string | null) => {
+        await admin
+          .from('weekly_checkins')
+          .update({
+            auto_response_attempted_at: new Date().toISOString(),
+            auto_response_failure_reason: reason,
+          })
+          .eq('id', checkin_id)
+      }
+
       const { data: checkin } = await admin
         .from('weekly_checkins')
         .select('id, client_id, week_number, form_type, coach_skipped_at')
         .eq('id', checkin_id)
         .maybeSingle()
-      if (!checkin) return { ok: false, reason: 'check-in not found' }
-      if (checkin.coach_skipped_at) return { ok: false, reason: 'coach skipped' }
+      if (!checkin) { await stamp('gate: check-in not found'); return { ok: false, reason: 'check-in not found' } }
+      if (checkin.coach_skipped_at) { await stamp('gate: coach skipped'); return { ok: false, reason: 'coach skipped' } }
 
       const { data: client } = await admin
         .from('clients')
-        .select('id, auto_checkin_response_enabled')
+        .select('id, name, auto_checkin_response_enabled')
         .eq('id', checkin.client_id)
         .maybeSingle()
-      if (!client) return { ok: false, reason: 'client not found' }
-      if (!client.auto_checkin_response_enabled) return { ok: false, reason: 'auto-response disabled for client' }
+      if (!client) { await stamp('gate: client not found'); return { ok: false, reason: 'client not found' } }
+      if (!client.auto_checkin_response_enabled) { await stamp('gate: auto-response disabled for client'); return { ok: false, reason: 'auto-response disabled for client' } }
 
       const { data: existingFeedback } = await admin
         .from('weekly_checkin_feedback')
         .select('id')
         .eq('weekly_checkin_id', checkin_id)
         .maybeSingle()
-      if (existingFeedback) return { ok: false, reason: 'feedback already exists (coach beat us)' }
+      if (existingFeedback) { await stamp('gate: feedback already exists (coach beat us)'); return { ok: false, reason: 'feedback already exists (coach beat us)' } }
 
-      return { ok: true as const, checkin }
+      return { ok: true as const, checkin, clientName: client.name as string | null }
     })
 
     if (!gate.ok) return { ok: false, reason: gate.reason }
@@ -1328,6 +1343,43 @@ export const weeklyCheckinAutoResponseFunction = inngest.createFunction(
         .single()
       if (error) throw new Error(`feedback insert failed: ${error.message}`)
       return { id: data.id, scheduledIso }
+    })
+
+    // ── Step 4b: email Kade a [Draft] preview ──────────────────────────
+    // Per feedback_preview_new_emails: auto-triggered Inngest sends must
+    // surface to Kade before they reach the client. The dashboard surfaces
+    // it too, but inbox is the channel Kade actually watches in real time.
+    // Best-effort: a preview-send failure must NEVER abort the auto path.
+    await step.run('email-coach-draft-preview', async () => {
+      try {
+        const { buildWeeklyCheckinDraftPreviewEmail } = await import('@/lib/weekly-checkin-draft-preview-email')
+        const { appUrlFor } = await import('@/lib/app-url')
+
+        const firstName = (gate.clientName ?? 'Client').split(' ')[0]
+        const dashboardUrl = appUrlFor(`/dashboard/clients/${gate.checkin.client_id}#weekly-checkins`)
+        const { subject, html } = buildWeeklyCheckinDraftPreviewEmail({
+          clientFirstName: firstName,
+          weekNumber: gate.checkin.week_number,
+          formType: gate.checkin.form_type as 'A' | 'B',
+          interpretation: generated.draft.interpretation,
+          reframe: generated.draft.reframe,
+          nextFocus: generated.draft.next_focus,
+          scheduledSendAt: inserted.scheduledIso,
+          dashboardUrl,
+        })
+
+        const resend = new Resend(process.env.RESEND_API_KEY)
+        await resend.emails.send({
+          from: 'Body Recode Platform <kade@bodyrecode.au>',
+          to: 'kade@bodyrecode.au',
+          subject,
+          html,
+        })
+        return { ok: true }
+      } catch (err) {
+        console.error('Draft preview email failed (non-blocking):', err)
+        return { ok: false, error: err instanceof Error ? err.message : String(err) }
+      }
     })
 
     // ── Step 5: sleep until scheduled send time ────────────────────────

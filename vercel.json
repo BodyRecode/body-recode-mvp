@@ -43,6 +43,10 @@
     {
       "path": "/api/keepalive",
       "schedule": "0 9 * * 1,5"
+    },
+    {
+      "path": "/api/cron/weekly-checkin-auto-rescue",
+      "schedule": "0 */4 * * *"
     }
   ]
 }
