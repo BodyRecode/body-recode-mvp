@@ -3,8 +3,23 @@ import { notFound } from 'next/navigation'
 import { getWeekNumber, getCheckInWindowStatus, isCheckinTestMode } from '@/lib/weekly-checkin-questions'
 import CheckInForm from '@/app/checkin/[token]/checkin-form'
 
-export default async function PortalCheckinPage({ params }: { params: Promise<{ token: string }> }) {
+export default async function PortalCheckinPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ token: string }>
+  searchParams: Promise<{ form?: string }>
+}) {
   const { token } = await params
+  const sp = await searchParams
+  // Coach-supplied form override: ?form=a or ?form=b lets the coach pin the
+  // form to the one the client missed when their per-client rotation has
+  // drifted out of phase with the global rotation. Used together with the
+  // checkin_window_override_until 24h reopen button. Validated to A or B
+  // and ignored otherwise.
+  const overrideForm: 'A' | 'B' | null = sp?.form
+    ? (sp.form.toUpperCase() === 'A' ? 'A' : sp.form.toUpperCase() === 'B' ? 'B' : null)
+    : null
   const admin = createAdminClient()
 
   const { data: client } = await admin
@@ -73,7 +88,7 @@ export default async function PortalCheckinPage({ params }: { params: Promise<{ 
 
   const startDate = client.coaching_started_at || client.created_at
   const weekNumber = getWeekNumber(startDate)
-  let { formType } = window
+  let formType: 'A' | 'B' = overrideForm ?? window.formType
 
   const { data: existing } = await admin
     .from('weekly_checkins')
