@@ -89,14 +89,18 @@ Get the read right and the same effort finally lands somewhere.
 
 ('2026-06-21', '18:00', 'personal_brand', 'instagram', 'coach', 'scale',
  $t$I helped build gyms across the country. Then I walked away.$t$,
- $n$Identity · STORY (photo) · fitness exit.$n$,
- $c$I helped build gyms across the country. Good ones. Busy ones.
-Then I walked away, because busy isn't the same as building something that holds.
-Scale without systems is just noise at higher volume. I learned that standing inside it.
-That lesson is in everything I build now.
+ $n$Identity · STORY (photo) · the 20-year relationship + the gym exit.$n$,
+ $c$I helped build gyms across the country.
+Then a 20-year relationship ended, and I walked away from all of it.
+
+It took me longer than it should have to see why. She wanted to be the lead in her own life, and she was never going to be that with me in the picture. I hadn't set out to take up the room. I just had. And that cost both of us, for years before either of us named it.
+
+Walking away wasn't strategic. It was the only honest move left. It gave her the space she'd been reaching for, and it gave me room to start building something that was actually mine.
+
+What I'm building now is slower. More honest. More me.
 
 #kadedunstone #interpretbeforeyouact #rebuild #identity #startingover$c$,
- $g$/api/content/graphic?style=personal-photo&layout=split&theme=clay&photo=1&label=REBUILD&text=I+helped+build+gyms+across+the+country.+Then+I+walked+away.&sub=Scale+without+systems+is+just+noise.+I+learned+that+from+the+inside.$g$),
+ $g$/api/content/graphic?style=personal-photo&layout=split&theme=clay&photo=1&label=REBUILD&text=I+helped+build+gyms+across+the+country.+Then+I+walked+away.&sub=She+wanted+to+be+the+lead+in+her+own+life.+With+me+in+the+picture%2C+she+couldn%27t+be.$g$),
 
 ('2026-06-22', '07:00', 'personal_brand', 'instagram', 'coach', 'scale',
  $t$I built my own coaching software. I'm not a developer.$t$,
