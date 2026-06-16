@@ -191,6 +191,30 @@ case "$TYPE" in
     CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.6)" -gravity southeast -annotate +80+40 "$HANDLE" )
     ;;
 
+  reel_cover)
+    # Placeholder cover frame for an Amanda-produced HeyGen reel. 1080x1080
+    # square (the grid-visible crop of the 9:16 reel). Greyscale photo BG +
+    # heavy gradient + on-screen hook lines + REEL badge top-right + logo
+    # top-left + handle bottom. Swapped for Amanda's MP4 cover frame when
+    # the reel itself ships.
+    [ -z "$PHOTO" ] && { echo "reel_cover template requires .photo" >&2; exit 1; }
+    PF="$(photo_path "$PHOTO")"
+    CMD+=( "$PF" -resize 1080x1080^ -gravity center -extent 1080x1080 -colorspace gray -colorspace sRGB )
+    # Heavier gradient than coach — reel covers compete with motion in feed
+    CMD+=( '(' -size 1080x1080 gradient:'rgba(0,0,0,0.55)-rgba(0,0,0,0.85)' ')' -compose multiply -composite )
+    # Top-left logo
+    CMD+=( "$LOGO_W_180" -gravity northwest -geometry +60+60 -compose over -composite )
+    # Top-right REEL badge (Signal Blue chip)
+    CMD+=( -fill "#1B6DFC" -draw "roundrectangle 870,70 1020,118 6,6" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill white -gravity northeast -annotate +80+82 "REEL  ▷" )
+    # Centered on-screen hook lines (italic serif for pull-quote feel)
+    CMD+=( -font "$GEORGIA_BOLD_ITALIC" -pointsize 64 -fill white -gravity center -annotate +0-100 "$HOOK1" )
+    [ -n "$HOOK2" ] && CMD+=( -font "$GEORGIA_BOLD_ITALIC" -pointsize 64 -fill white -gravity center -annotate +0-10 "$HOOK2" )
+    [ -n "$HOOK3" ] && CMD+=( -font "$GEORGIA_BOLD_ITALIC" -pointsize 64 -fill white -gravity center -annotate +0+80 "$HOOK3" )
+    # Handle bottom
+    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.7)" -gravity south -annotate +0+50 "$HANDLE" )
+    ;;
+
   carousel)
     # Multi-slide swipe-through post. Reads .slides[] from spec and writes
     # one PNG per slide named {slug}_01.png ... {slug}_NN.png.
