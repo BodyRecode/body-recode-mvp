@@ -97,7 +97,7 @@ export default async function BannedTermsAuditPage() {
 
     const { data: np } = await admin
       .from('nutrition_plans')
-      .select('id, plan_name, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at, doctrine_version')
+      .select('id, plan_name, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at, nutrition_reading_doctrine_version')
       .eq('client_id', client.id)
       .eq('is_active', true)
       .not('nutrition_reading_published_at', 'is', null)
@@ -113,7 +113,7 @@ export default async function BannedTermsAuditPage() {
         ...findLeakedTerms(np.nr_coach_note ?? ''),
       ])
       if (leaks.length > 0) totalArtefactsLeaked++
-      const storedVersion = np.doctrine_version ?? null
+      const storedVersion = np.nutrition_reading_doctrine_version ?? null
       const isStale = isDoctrineStale(storedVersion, 'nutrition_reading')
       if (leaks.length > 0 || isStale) nrReport = { id: np.id, planName: np.plan_name, leaks, publishedAt: np.nutrition_reading_published_at, storedVersion, isStale }
     }
