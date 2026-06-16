@@ -314,6 +314,26 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
     }
   }
 
+  // Same resolution for the active program so the coach can update guidance
+  // and trigger a regeneration without first having to advance to a new
+  // macro block.
+  let activeTrainingPlan: { id: string; coach_guidance: string | null } | null = null
+  if (activeProgram) {
+    const { data: planBlock } = await admin
+      .from('plan_blocks')
+      .select('plan_id')
+      .eq('program_id', activeProgram.id)
+      .maybeSingle()
+    if (planBlock?.plan_id) {
+      const { data: tp } = await admin
+        .from('training_plans')
+        .select('id, coach_guidance')
+        .eq('id', planBlock.plan_id)
+        .maybeSingle()
+      if (tp) activeTrainingPlan = tp
+    }
+  }
+
   return (
     <div className="max-w-5xl mx-auto">
       {/* Header */}
@@ -433,14 +453,24 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             )
           })()}
 
+          {activeTrainingPlan && (
+            <CoachGuidanceEditor
+              trainingPlanId={activeTrainingPlan.id}
+              initial={activeTrainingPlan.coach_guidance}
+            />
+          )}
+
           <div className="mb-3 flex items-center justify-between">
             <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Sessions</p>
-            <Link
-              href={`/dashboard/clients/${id}/program/draft/${activeProgram.id}`}
-              className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
-            >
-              Edit exercises →
-            </Link>
+            <div className="flex items-center gap-2">
+              {activeTrainingPlan && <RegenerateButton programId={activeProgram.id} />}
+              <Link
+                href={`/dashboard/clients/${id}/program/draft/${activeProgram.id}`}
+                className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+              >
+                Edit exercises →
+              </Link>
+            </div>
           </div>
 
           <div className="flex gap-8">
