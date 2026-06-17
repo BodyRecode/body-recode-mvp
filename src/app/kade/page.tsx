@@ -40,26 +40,50 @@ export default function KadePage() {
         {/* Clay rule */}
         <div className="w-12 h-px bg-[#B5552F] mx-auto mb-10" />
 
-        {/* Featured — Challenge promo (Clay-led, sits above the standard stack) */}
-        <a
-          href="https://bodyrecode.au/challenge"
-          className="group block w-full bg-[#2A1E16] hover:bg-[#3a2a1f] rounded-xl px-6 py-6 transition-colors mb-8 shadow-sm"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase">Free · 14 days</span>
-            <span className="text-[9px] font-bold tracking-[0.15em] text-[#B5552F] uppercase bg-[#F3E9E1] px-2 py-0.5 rounded">New</span>
+        {/* FEATURED SECTION — Challenge promo */}
+        <section className="mb-12">
+          <div className="text-center mb-4">
+            <p className="text-[10px] font-bold tracking-[0.3em] text-[#B5552F] uppercase">Featured · Body Recode</p>
           </div>
-          <p className="text-lg font-semibold text-[#FAF3EB] mb-2 leading-snug">
-            The 14-Day Body Decode Challenge
-          </p>
-          <p className="text-sm text-[#D8CDB5] italic leading-relaxed mb-4">
-            Read which state your body is in. Free 14-day diagnostic. Open now.
-          </p>
-          <p className="text-sm text-[#E8B89A] font-semibold inline-flex items-center gap-1.5 group-hover:text-[#FAF3EB] transition-colors">
-            Start the Challenge
-            <span aria-hidden>→</span>
-          </p>
-        </a>
+
+          <a
+            href="https://bodyrecode.au/challenge"
+            className="group block w-full bg-[#2A1E16] hover:bg-[#3a2a1f] rounded-2xl px-7 py-8 transition-colors shadow-md"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-[9px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase">14-Day Diagnostic</span>
+              <span className="text-[8px] font-bold tracking-[0.2em] text-[#2A1E16] uppercase bg-[#E8B89A] px-2 py-1 rounded">Now Open</span>
+            </div>
+
+            <h2 className="text-2xl font-semibold text-[#FAF3EB] mb-3 leading-tight tracking-tight">
+              The 14-Day Body Decode Challenge
+            </h2>
+
+            <p className="text-sm text-[#D8CDB5] italic leading-relaxed mb-5">
+              Find out which of three states your body is in &mdash; Depleted, Transitioning, or Ready. Read the pattern. Run the diagnostic. Two weeks.
+            </p>
+
+            <div className="flex items-center gap-4 mb-6 pt-4 border-t border-[#5a4a3a]/40">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[#B5552F] text-sm">●</span>
+                <span className="text-xs text-[#D8CDB5]">Free</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[#B5552F] text-sm">●</span>
+                <span className="text-xs text-[#D8CDB5]">14 days</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[#B5552F] text-sm">●</span>
+                <span className="text-xs text-[#D8CDB5]">Pattern read</span>
+              </div>
+            </div>
+
+            <div className="inline-flex items-center gap-2 bg-[#B5552F] group-hover:bg-[#C9633A] text-[#FAF3EB] font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors">
+              Start the Challenge
+              <span aria-hidden>→</span>
+            </div>
+          </a>
+        </section>
 
         {/* Links — single clay accent across the whole stack */}
         <div className="space-y-3">
