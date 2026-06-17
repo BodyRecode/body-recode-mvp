@@ -793,9 +793,9 @@ export default function BlueprintPage() {
             {[
               {
                 state: 'No pattern read yet',
-                desc: 'Take the free 14-Day Challenge first. By Day 14 your pattern is identified through the Body Decode Check-In. Then you come back here.',
-                cta: 'Start the Free Challenge',
-                href: '/challenge',
+                desc: 'Start with the free 2-minute Body State Scorecard. It captures your state and routes you into the free 14-Day Challenge if you are Depleted. By Day 14 of the Challenge your pattern is identified through the Body Decode Check-In. Then you come back here.',
+                cta: 'Start with the Scorecard',
+                href: 'https://performance.bodyrecode.au/scorecard?intent=challenge&source=blueprint_filter',
               },
               {
                 state: 'Past Depleted (Ready State)',
