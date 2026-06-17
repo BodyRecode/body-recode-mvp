@@ -40,6 +40,27 @@ export default function KadePage() {
         {/* Clay rule */}
         <div className="w-12 h-px bg-[#B5552F] mx-auto mb-10" />
 
+        {/* Featured — Challenge promo (Clay-led, sits above the standard stack) */}
+        <a
+          href="https://bodyrecode.au/challenge"
+          className="group block w-full bg-[#2A1E16] hover:bg-[#3a2a1f] rounded-xl px-6 py-6 transition-colors mb-8 shadow-sm"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase">Free · 14 days</span>
+            <span className="text-[9px] font-bold tracking-[0.15em] text-[#B5552F] uppercase bg-[#F3E9E1] px-2 py-0.5 rounded">New</span>
+          </div>
+          <p className="text-lg font-semibold text-[#FAF3EB] mb-2 leading-snug">
+            The 14-Day Body Decode Challenge
+          </p>
+          <p className="text-sm text-[#D8CDB5] italic leading-relaxed mb-4">
+            Read which state your body is in. Free 14-day diagnostic. Open now.
+          </p>
+          <p className="text-sm text-[#E8B89A] font-semibold inline-flex items-center gap-1.5 group-hover:text-[#FAF3EB] transition-colors">
+            Start the Challenge
+            <span aria-hidden>→</span>
+          </p>
+        </a>
+
         {/* Links — single clay accent across the whole stack */}
         <div className="space-y-3">
 
