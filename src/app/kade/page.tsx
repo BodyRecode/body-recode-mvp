@@ -42,64 +42,91 @@ export default function KadePage() {
 
         {/* FEATURED SECTION — Challenge as hero product, Scorecard as the visible 2-step door */}
         <section className="mb-12">
-          <div className="text-center mb-4">
-            <p className="text-[10px] font-bold tracking-[0.3em] text-[#B5552F] uppercase">Featured · Body Recode</p>
+          {/* Section eyebrow with Clay rules either side */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="flex-1 h-px bg-[#B5552F]/30" />
+            <p className="text-[10px] font-bold tracking-[0.3em] text-[#B5552F] uppercase whitespace-nowrap">Featured · Body Recode</p>
+            <div className="flex-1 h-px bg-[#B5552F]/30" />
           </div>
 
           <a
             href="https://bodyrecode.au/scorecard?intent=challenge&source=kade"
-            className="group block w-full bg-[#2A1E16] hover:bg-[#3a2a1f] rounded-2xl px-7 py-8 transition-colors shadow-md"
+            className="group block w-full rounded-2xl px-7 py-8 transition-all shadow-lg hover:shadow-xl overflow-hidden relative"
+            style={{
+              background: 'radial-gradient(circle at 20% 0%, #3a2a1f 0%, #2A1E16 55%, #1d130c 100%)',
+            }}
           >
-            <div className="flex items-center justify-between mb-4">
+            {/* Subtle Clay glow top-right for depth */}
+            <div
+              aria-hidden
+              className="absolute -top-20 -right-20 w-64 h-64 pointer-events-none opacity-40"
+              style={{
+                background: 'radial-gradient(circle, rgba(181, 85, 47, 0.35) 0%, transparent 60%)',
+              }}
+            />
+
+            {/* Status row */}
+            <div className="relative flex items-center justify-between mb-6">
               <span className="text-[9px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase">14-Day Diagnostic</span>
-              <span className="text-[8px] font-bold tracking-[0.2em] text-[#2A1E16] uppercase bg-[#E8B89A] px-2 py-1 rounded">Open Now</span>
+              <span className="inline-flex items-center gap-1.5 text-[9px] font-bold tracking-[0.2em] text-[#2A1E16] uppercase bg-[#E8B89A] px-2.5 py-1 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#B5552F]" />
+                Open Now
+              </span>
             </div>
 
-            <h2 className="text-2xl font-semibold text-[#FAF3EB] mb-3 leading-tight tracking-tight">
+            {/* Title — bigger, more presence */}
+            <h2 className="relative text-3xl font-semibold text-[#FAF3EB] mb-4 leading-[1.1] tracking-tight">
               The 14-Day Body Decode Challenge
             </h2>
 
-            <p className="text-sm text-[#D8CDB5] italic leading-relaxed mb-5">
+            {/* Description */}
+            <p className="relative text-[15px] text-[#D8CDB5] italic leading-relaxed mb-6">
               The free 14-day diagnostic that reads your body, names your pattern, and tells you which of three states you&apos;re in &mdash; Depleted, Transitioning, or Ready.
             </p>
 
-            <div className="flex items-center gap-4 mb-6 pt-4 border-t border-[#5a4a3a]/40">
-              <div className="flex items-center gap-1.5">
-                <span className="text-[#B5552F] text-sm">●</span>
-                <span className="text-xs text-[#D8CDB5]">Free</span>
+            {/* Value props — slightly larger, divided cleanly */}
+            <div className="relative grid grid-cols-3 gap-3 mb-7 pt-5 border-t border-[#5a4a3a]/50">
+              <div className="text-center">
+                <p className="text-base font-semibold text-[#FAF3EB] mb-0.5">Free</p>
+                <p className="text-[10px] text-[#8A7565] uppercase tracking-wider">No payment</p>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-[#B5552F] text-sm">●</span>
-                <span className="text-xs text-[#D8CDB5]">14 days</span>
+              <div className="text-center border-x border-[#5a4a3a]/40">
+                <p className="text-base font-semibold text-[#FAF3EB] mb-0.5">14 days</p>
+                <p className="text-[10px] text-[#8A7565] uppercase tracking-wider">Daily portal</p>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-[#B5552F] text-sm">●</span>
-                <span className="text-xs text-[#D8CDB5]">Pattern read</span>
-              </div>
-            </div>
-
-            {/* How to start — 2-step honesty about the Scorecard being the door */}
-            <div className="mb-6 pt-5 border-t border-[#5a4a3a]/40">
-              <p className="text-[9px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase mb-3">How to start</p>
-              <div className="space-y-2.5">
-                <div className="flex items-start gap-3">
-                  <span className="text-[#B5552F] font-bold text-sm leading-tight w-4 shrink-0">1.</span>
-                  <p className="text-xs text-[#D8CDB5] leading-relaxed">
-                    Take the <span className="text-[#FAF3EB] font-semibold">2-minute Body State Scorecard</span>. It confirms the Challenge is the right next step for you and reads your starting state.
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-[#B5552F] font-bold text-sm leading-tight w-4 shrink-0">2.</span>
-                  <p className="text-xs text-[#D8CDB5] leading-relaxed">
-                    Get your state result + your access to the 14-Day Challenge in one go.
-                  </p>
-                </div>
+              <div className="text-center">
+                <p className="text-base font-semibold text-[#FAF3EB] mb-0.5">1 of 4</p>
+                <p className="text-[10px] text-[#8A7565] uppercase tracking-wider">Pattern read</p>
               </div>
             </div>
 
-            <div className="inline-flex items-center gap-2 bg-[#B5552F] group-hover:bg-[#C9633A] text-[#FAF3EB] font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors">
+            {/* How to start — numbered Clay circles for visual hierarchy */}
+            <div className="relative mb-7">
+              <p className="text-[9px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase mb-4">How to start</p>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3.5">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#B5552F] text-[#FAF3EB] text-xs font-bold flex items-center justify-center mt-px">
+                    1
+                  </span>
+                  <p className="text-[13px] text-[#D8CDB5] leading-relaxed">
+                    Take the <span className="text-[#FAF3EB] font-semibold">2-minute Body State Scorecard</span>. It reads your starting state and confirms the Challenge is your fit.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3.5">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#B5552F] text-[#FAF3EB] text-xs font-bold flex items-center justify-center mt-px">
+                    2
+                  </span>
+                  <p className="text-[13px] text-[#D8CDB5] leading-relaxed">
+                    Get your state result + your <span className="text-[#FAF3EB] font-semibold">Challenge access in one go.</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Full-width CTA button — more presence, clearer click target */}
+            <div className="relative flex items-center justify-center gap-2 bg-[#B5552F] group-hover:bg-[#C9633A] text-[#FAF3EB] font-semibold text-base px-5 py-3.5 rounded-lg transition-colors w-full text-center">
               Start with the Scorecard
-              <span aria-hidden>→</span>
+              <span aria-hidden className="text-lg transition-transform group-hover:translate-x-0.5">→</span>
             </div>
           </a>
         </section>
