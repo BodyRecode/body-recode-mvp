@@ -40,7 +40,7 @@ export default function KadePage() {
         {/* Clay rule */}
         <div className="w-12 h-px bg-[#B5552F] mx-auto mb-10" />
 
-        {/* FEATURED SECTION — Scorecard (the front door to Challenge / Blueprint / Membership) */}
+        {/* FEATURED SECTION — Challenge as hero product, Scorecard as the visible 2-step door */}
         <section className="mb-12">
           <div className="text-center mb-4">
             <p className="text-[10px] font-bold tracking-[0.3em] text-[#B5552F] uppercase">Featured · Body Recode</p>
@@ -51,35 +51,54 @@ export default function KadePage() {
             className="group block w-full bg-[#2A1E16] hover:bg-[#3a2a1f] rounded-2xl px-7 py-8 transition-colors shadow-md"
           >
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[9px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase">State Read · 2 min</span>
-              <span className="text-[8px] font-bold tracking-[0.2em] text-[#2A1E16] uppercase bg-[#E8B89A] px-2 py-1 rounded">Free</span>
+              <span className="text-[9px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase">14-Day Diagnostic</span>
+              <span className="text-[8px] font-bold tracking-[0.2em] text-[#2A1E16] uppercase bg-[#E8B89A] px-2 py-1 rounded">Open Now</span>
             </div>
 
             <h2 className="text-2xl font-semibold text-[#FAF3EB] mb-3 leading-tight tracking-tight">
-              Find out which state your body is in.
+              The 14-Day Body Decode Challenge
             </h2>
 
             <p className="text-sm text-[#D8CDB5] italic leading-relaxed mb-5">
-              The 2-minute Body State Scorecard reads where you are right now &mdash; Depleted, Transitioning, or Ready. Your result unlocks the right next step, including the free 14-Day Body Decode Challenge.
+              The free 14-day diagnostic that reads your body, names your pattern, and tells you which of three states you&apos;re in &mdash; Depleted, Transitioning, or Ready.
             </p>
 
             <div className="flex items-center gap-4 mb-6 pt-4 border-t border-[#5a4a3a]/40">
-              <div className="flex items-center gap-1.5">
-                <span className="text-[#B5552F] text-sm">●</span>
-                <span className="text-xs text-[#D8CDB5]">2 minutes</span>
-              </div>
               <div className="flex items-center gap-1.5">
                 <span className="text-[#B5552F] text-sm">●</span>
                 <span className="text-xs text-[#D8CDB5]">Free</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="text-[#B5552F] text-sm">●</span>
-                <span className="text-xs text-[#D8CDB5]">No email until your result</span>
+                <span className="text-xs text-[#D8CDB5]">14 days</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[#B5552F] text-sm">●</span>
+                <span className="text-xs text-[#D8CDB5]">Pattern read</span>
+              </div>
+            </div>
+
+            {/* How to start — 2-step honesty about the Scorecard being the door */}
+            <div className="mb-6 pt-5 border-t border-[#5a4a3a]/40">
+              <p className="text-[9px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase mb-3">How to start</p>
+              <div className="space-y-2.5">
+                <div className="flex items-start gap-3">
+                  <span className="text-[#B5552F] font-bold text-sm leading-tight w-4 shrink-0">1.</span>
+                  <p className="text-xs text-[#D8CDB5] leading-relaxed">
+                    Take the <span className="text-[#FAF3EB] font-semibold">2-minute Body State Scorecard</span>. It confirms the Challenge is the right next step for you and reads your starting state.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-[#B5552F] font-bold text-sm leading-tight w-4 shrink-0">2.</span>
+                  <p className="text-xs text-[#D8CDB5] leading-relaxed">
+                    Get your state result + your access to the 14-Day Challenge in one go.
+                  </p>
+                </div>
               </div>
             </div>
 
             <div className="inline-flex items-center gap-2 bg-[#B5552F] group-hover:bg-[#C9633A] text-[#FAF3EB] font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors">
-              Take the Scorecard
+              Start with the Scorecard
               <span aria-hidden>→</span>
             </div>
           </a>
