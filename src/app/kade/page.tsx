@@ -81,7 +81,7 @@ export default function KadePage() {
 
             {/* Description */}
             <p className="relative text-[15px] text-[#D8CDB5] italic leading-relaxed mb-6">
-              The free 14-day diagnostic that reads your body, names your pattern, and tells you which of three states you&apos;re in &mdash; Depleted, Transitioning, or Ready.
+              Fourteen days of daily structured input. Day 7 check-in. By Day 14 your Body Decode Report names your specific pattern &mdash; the one driving how your body has been responding.
             </p>
 
             {/* Value props — slightly larger, divided cleanly */}
