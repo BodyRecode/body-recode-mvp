@@ -238,7 +238,7 @@ There's no such thing as a generic perimenopause body. Two women in perimenopaus
 
 The four patterns sit underneath the state read. Stress-Stored. Insulin-Drift. Estrogen-Shift. Androgen-Decline. Same demographic, different patterns, different programs.
 
-What works is reading the body in front of me, designing for where it actually is, and adjusting as the state shifts. Most women have been prescribed at without ever being read.
+What works is reading the body in front of me, designing for where it actually is, and adjusting as the state shifts. Most women have been given prescriptions without ever being read first.
 
 #bodyrecode #perimenopause #womenshealth40 #hormonehealth #performancecoaching$cap$,
  'REEL_TBD'),
