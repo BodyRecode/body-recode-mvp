@@ -229,7 +229,7 @@ The fat hasn't betrayed her. It's a reading of what the system is doing right no
 
 ('2026-06-19', '18:00', 'body_recode', 'instagram', 'coach', 'scale',
  'Same advice. Different bodies. (REEL)',
- 'REEL · Arch 02 Perimenopausal Performer · Topic 4 · Amanda HeyGen production. FIRST REEL OF V2. Voice decision (HeyGen+Kade VO vs ElevenLabs) must be locked before this fires.',
+ 'REEL · Arch 02 Perimenopausal Performer · Topic 4 · Amanda HeyGen production. FIRST REEL OF V2. Voice decision (HeyGen+Kade VO vs ElevenLabs) must be locked before this fires. B-ROLL: S4 https://bodyrecode.au/broll/states-split · S5 https://bodyrecode.au/broll/blueprint-six-weeks',
  $cap$Every week I see content telling women in perimenopause to lift heavy, eat more protein, and stop doing cardio.
 
 The advice itself is reasonable. It skips the part that matters.
@@ -283,7 +283,7 @@ She isn't behind on a schedule. Her body has been waiting for conditions that ha
 
 ('2026-06-23', '07:00', 'body_recode', 'instagram', 'contrarian', 'scale',
  'TRT is not first. (REEL)',
- 'REEL · Arch 04 Slipping High Performer · Topic 5 Intelligent Approach · Amanda HeyGen production.',
+ 'REEL · Arch 04 Slipping High Performer · Topic 5 Intelligent Approach · Amanda HeyGen production. B-ROLL: S3 https://bodyrecode.au/broll/one-vs-many-variables · S4 https://bodyrecode.au/broll/order-of-operations',
  $cap$Every man in his 40s who walks into my practice has either looked at TRT or already started it.
 
 It rarely delivers what they expect.
@@ -318,7 +318,7 @@ If sleep has also fragmented in a way it hadn't before, if mood is more variable
 
 ('2026-06-26', '18:00', 'body_recode', 'instagram', 'coach', 'scale',
  'You are not behind. You are reading the wrong map. (REEL)',
- 'REEL · Arch 03 Postnatal Athlete · Topic 4 Prescription Without Interpretation · Amanda HeyGen production.',
+ 'REEL · Arch 03 Postnatal Athlete · Topic 4 Prescription Without Interpretation · Amanda HeyGen production. B-ROLL: S4 https://bodyrecode.au/broll/postnatal-substrate (Zone 1) · S5 https://bodyrecode.au/broll/postnatal-substrate (Zone 2)',
  $cap$The first thing I tell every postnatal woman I work with is that the timeline she has in her head is wrong.
 
 She believes the window to lose the baby weight was the first 12 months. It wasn't. She believes she should be back to pre-baby shape by now. She shouldn't necessarily be. She believes other women she sees are doing it, so she should be able to.
@@ -376,7 +376,7 @@ The willpower isn't the problem. The order of operations is.
 
 ('2026-06-30', '07:00', 'body_recode', 'instagram', 'contrarian', 'scale',
  'Pulling back is the intervention. (REEL)',
- 'REEL · Arch 01 Stressed Executive Woman · Topic 5 Intelligent Approach · Amanda HeyGen production.',
+ 'REEL · Arch 01 Stressed Executive Woman · Topic 5 Intelligent Approach · Amanda HeyGen production. B-ROLL: S3 https://bodyrecode.au/broll/rhythm-vs-restriction · S4 https://bodyrecode.au/broll/pull-back-intervention',
  $cap$When a high-performing woman hits a plateau, every instinct she has is to push harder.
 
 Add training. Cut food. Lock in tighter.

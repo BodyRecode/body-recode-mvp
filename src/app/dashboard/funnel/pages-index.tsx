@@ -230,6 +230,21 @@ const STAGES: StageGroup[] = [
       { name: 'July 2026 Funnel Map', url: '/broll/july-funnel-map', description: 'Two doors → one room: paid Challenge ladder (Stage 1–4) + organic Scorecard arc converging at coaching. Cash reality + the 6 metrics to track.' },
     ],
   },
+  {
+    stage: 'B-roll canvases · V2 IG Reels (Amanda HeyGen production)',
+    blurb: 'Inset-card cutaways used in the June V2 reel pipeline. Each canvas pairs to a specific reel scene — Amanda screen-records the relevant zone in 9:16 portrait crop.',
+    accent: '#1B6DFC',
+    funnel: 'meta',
+    pages: [
+      { name: 'States Split · Depleted vs Transitioning', url: '/broll/states-split', description: 'Reel 1 S4. Two state cards side-by-side, generic demographic program struck through.' },
+      { name: 'Blueprint Six Weeks (reused)', url: '/broll/blueprint-six-weeks', description: 'Reel 1 S5. Six-week shape of the Blueprint.' },
+      { name: 'One vs Many Variables', url: '/broll/one-vs-many-variables', description: 'Reel 2 S3. TRT acts on one variable. System dysregulated across four.' },
+      { name: 'Order of Operations', url: '/broll/order-of-operations', description: 'Reel 2 S4. Four-step doctrine: read → reduce → restore → then consider hormonal support.' },
+      { name: 'Postnatal Substrate', url: '/broll/postnatal-substrate', description: 'Reel 3 S4 (Zone 1, conditions absent) + S5 (Zone 2, restore the substrate).' },
+      { name: 'Rhythm vs Restriction (reused)', url: '/broll/rhythm-vs-restriction', description: 'Reel 4 S3. Reactive Biology vs Regulated Biology side-by-side.' },
+      { name: 'Pull-Back Intervention', url: '/broll/pull-back-intervention', description: 'Reel 4 S4. REDUCE training / INCREASE recovery / RESTORE sleep + regulation.' },
+    ],
+  },
 ]
 
 function urlFor(page: PageEntry, tokens: Tokens): string {
