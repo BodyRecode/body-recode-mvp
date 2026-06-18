@@ -240,6 +240,8 @@ The four patterns sit underneath the state read. Stress-Stored. Insulin-Drift. E
 
 What works is reading the body in front of me, designing for where it actually is, and adjusting as the state shifts. Most women have been given prescriptions without ever being read first.
 
+If you want a read on your own state, the 2-minute Scorecard is in my bio.
+
 #bodyrecode #perimenopause #womenshealth40 #hormonehealth #performancecoaching$cap$,
  '/calendar/br-2026-06-19_coach.png'),
 
@@ -328,6 +330,8 @@ Her body hasn't had the regulatory environment it needed to recover. Sleep was b
 The work is to create those conditions. Not to add more training. Not to cut more food. To restore the substrate, then build from where the body actually is.
 
 She isn't behind. She's reading the wrong map.
+
+If you want to read the right map, the 2-minute Scorecard is in my bio.
 
 #bodyrecode #postnatalfitness #mumfitness #postpartumstrength #performancecoaching$cap$,
  '/calendar/br-2026-06-26_coach.png'),
