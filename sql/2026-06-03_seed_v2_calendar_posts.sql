@@ -241,7 +241,7 @@ The four patterns sit underneath the state read. Stress-Stored. Insulin-Drift. E
 What works is reading the body in front of me, designing for where it actually is, and adjusting as the state shifts. Most women have been given prescriptions without ever being read first.
 
 #bodyrecode #perimenopause #womenshealth40 #hormonehealth #performancecoaching$cap$,
- 'REEL_TBD'),
+ '/calendar/br-2026-06-19_coach.png'),
 
 ('2026-06-21', '08:00', 'body_recode', 'instagram', 'diagnostic', 'scale',
  'Between Depleted and Transitioning?',
@@ -293,7 +293,7 @@ The work, in order: read the state. Reduce the load the body is carrying. Restor
 TRT isn't wrong. It's just not first. Most men skip the first three steps and go straight to the fourth, and wonder why the same problems come back six months later.
 
 #bodyrecode #testosterone #mensthealth40 #executiveperformance #midlifehealth$cap$,
- 'REEL_TBD'),
+ '/calendar/br-2026-06-23_contrarian.png'),
 
 -- Week 4 (24-30 Jun)
 ('2026-06-24', '12:00', 'body_recode', 'instagram', 'pattern', 'scale',
@@ -330,7 +330,7 @@ The work is to create those conditions. Not to add more training. Not to cut mor
 She isn't behind. She's reading the wrong map.
 
 #bodyrecode #postnatalfitness #mumfitness #postpartumstrength #performancecoaching$cap$,
- 'REEL_TBD'),
+ '/calendar/br-2026-06-26_coach.png'),
 
 ('2026-06-28', '08:00', 'body_recode', 'instagram', 'diagnostic', 'scale',
  'Read the state. Then prescribe.',
@@ -388,7 +388,7 @@ Pulling back feels like giving up. To a system already running on stress hormone
 The bottleneck isn't effort. It's the conditions for effort to land.
 
 #bodyrecode #cortisol #womenshealth #executivehealth #performancecoaching$cap$,
- 'REEL_TBD');
+ '/calendar/br-2026-06-30_contrarian.png');
 
 commit;
 
