@@ -58,7 +58,7 @@ insert into calendar_posts (date, time, brand, platform, type, phase, rung, titl
  'CAROUSEL · Arch 03 Postnatal Athlete · Topic 2 Why Effort Isn''t Working · Rung R2', null, null),
 ('2026-07-17','18:00','body_recode','instagram','coach','scale','R5',
  'Smart men don''t need more discipline. They need a better model.',
- 'REEL · Arch 04 Slipping High Performer · Topic 5 Intelligent Approach · Rung R5', null, null),
+ 'REEL · Arch 04 Slipping High Performer · Topic 5 Intelligent Approach · Rung R5 · PENDING June reel test outcome — revert to static if test underperforms', null, null),
 ('2026-07-19','08:00','body_recode','instagram','diagnostic','scale','Action',
  'Depleted, Transitioning, or Ready? Two minutes tells you.',
  'STATIC · Arch 01 Stressed Executive Woman · Topic 1 Body State · Hard CTA -> Scorecard · Rung Action', null, null),
@@ -67,13 +67,13 @@ insert into calendar_posts (date, time, brand, platform, type, phase, rung, titl
  'STATIC · Arch 02 Perimenopausal Performer · Topic 1 Body State · Rung R1', null, null),
 ('2026-07-21','07:00','body_recode','instagram','contrarian','scale','R4',
  'You''re not behind a timeline. You were handed the wrong map.',
- 'REEL · Arch 03 Postnatal Athlete · Topic 4 Prescription Without Interpretation · Rung R4', null, null),
+ 'REEL · Arch 03 Postnatal Athlete · Topic 4 Prescription Without Interpretation · Rung R4 · PENDING June reel test outcome — revert to static if test underperforms', null, null),
 ('2026-07-22','12:00','body_recode','instagram','pattern','scale','R3',
  'Belly fat at 45 isn''t ageing. It''s a stress readout.',
  'CAROUSEL · Arch 04 Slipping High Performer · Topic 3 Cortisol and Fat Storage · Rung R3', null, null),
 ('2026-07-24','18:00','body_recode','instagram','coach','scale','R5',
  'Built for the woman who is excellent everywhere except where she was misinformed.',
- 'REEL · Arch 01 Stressed Executive Woman · Topic 5 Intelligent Approach · Rung R5', null, null),
+ 'REEL · Arch 01 Stressed Executive Woman · Topic 5 Intelligent Approach · Rung R5 · PENDING June reel test outcome — revert to static if test underperforms', null, null),
 ('2026-07-26','08:00','body_recode','instagram','diagnostic','scale','Action',
  'Stop guessing which plan fits. Read the state behind the symptoms.',
  'STATIC · Arch 02 Perimenopausal Performer · Topic 1 Body State · Hard CTA -> Scorecard · Rung Action', null, null),
@@ -82,7 +82,7 @@ insert into calendar_posts (date, time, brand, platform, type, phase, rung, titl
  'STATIC · Arch 03 Postnatal Athlete · Topic 3 Cortisol and Fat Storage · Rung R3', null, null),
 ('2026-07-28','07:00','body_recode','instagram','contrarian','scale','R4',
  'TRT isn''t first. Reading the state is.',
- 'REEL · Arch 04 Slipping High Performer · Topic 4 Prescription Without Interpretation · Rung R4', null, null);
+ 'REEL · Arch 04 Slipping High Performer · Topic 4 Prescription Without Interpretation · Rung R4 · PENDING June reel test outcome — revert to static if test underperforms', null, null);
 
 commit;
 
