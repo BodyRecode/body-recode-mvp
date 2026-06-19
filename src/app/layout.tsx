@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: 'Body Recode™ | Biological Interpretation Platform',
   description:
     'Body Recode™ is a biological interpretation system. One interpretive engine. Five environments. Licensable across performance coaching, executive, tactical, clinical and developmental contexts.',
+  other: {
+    'facebook-domain-verification': '4krhdl24q7osiw8uhnvyf93htlv3nj',
+  },
 };
 
 const META_PIXEL_ID = '972772552072010';
