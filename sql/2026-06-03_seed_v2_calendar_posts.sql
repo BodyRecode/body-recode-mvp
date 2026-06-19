@@ -313,6 +313,8 @@ Either one alone is easy to dismiss. Together they're a body shifting state. The
 
 If sleep has also fragmented in a way it hadn't before, if mood is more variable around the cycle, if heat regulation has shifted, you're watching the state turn over in front of you. If the prescription doesn't catch up to the new physiology, the same training will break her faster than it built her.
 
+Read the state first. Then write the prescription. Not the other way around.
+
 #bodyrecode #perimenopause #womenshealth40 #cyclehealth #hormonehealth$cap$,
  '/calendar/br-2026-06-24_pattern_01.png,/calendar/br-2026-06-24_pattern_02.png,/calendar/br-2026-06-24_pattern_03.png,/calendar/br-2026-06-24_pattern_04.png,/calendar/br-2026-06-24_pattern_05.png,/calendar/br-2026-06-24_pattern_06.png'),
 
@@ -390,6 +392,8 @@ The intervention that actually works is the opposite. Reduce training volume. In
 Pulling back feels like giving up. To a system already running on stress hormones, it's the only intervention that lets state shift. Once it shifts, the same effort starts producing results again.
 
 The bottleneck isn't effort. It's the conditions for effort to land.
+
+The state was always the variable. Effort was never the answer.
 
 #bodyrecode #cortisol #womenshealth #executivehealth #performancecoaching$cap$,
  '/calendar/br-2026-06-30_contrarian.png');
