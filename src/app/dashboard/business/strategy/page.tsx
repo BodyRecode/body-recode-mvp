@@ -1161,6 +1161,29 @@ export default function StrategyPage() {
             <p className="text-sm text-stone-700 leading-relaxed">Everything in this tab is the <strong className="text-[#1A1A1A]">Instagram</strong> content system - temperature ladder, weekly cadence, post types, production tools. LinkedIn runs a different cadence (1-2/wk vs 5/wk), different format (short essays, no carousels), and different tone (executive reframe, no fat-loss language). See the <strong className="text-blue-700">LinkedIn tab</strong> for that system.</p>
           </Card>
 
+          <Card className="border-[#1B6DFC]/40 bg-[#1B6DFC]/5">
+            <SectionLabel>Doctrine · One Message, Obsessively Repeated</SectionLabel>
+            <p className="text-sm text-stone-700 leading-relaxed mb-3">
+              Brands are built by becoming known for ONE thing. Variety of message is <em>not</em> authority. Variety of <strong>expression</strong> on the same message is authority. ~1% of any given audience has actually seen a previous post; even they forget within days. The instinct to vary the topic is the instinct that prevents brand recognition from forming.
+            </p>
+            <div className="p-3 bg-white border border-[#1B6DFC]/30 rounded-lg mb-3">
+              <p className="text-[10px] font-bold tracking-[0.18em] text-[#1B6DFC] uppercase mb-1.5">The ONE Body Recode message</p>
+              <p className="text-base font-semibold text-[#1A1A1A] leading-snug italic">
+                "It's a state problem, not a discipline / training / nutrition / willpower problem. Read the state first, then prescribe."
+              </p>
+            </div>
+            <p className="text-xs text-stone-700 leading-relaxed mb-1.5">
+              <strong className="text-[#1A1A1A]">How to apply across every surface:</strong>
+            </p>
+            <ul className="text-xs text-stone-700 leading-relaxed space-y-1 list-disc pl-5">
+              <li>Vary the entry (hook, archetype, signal). Always land on the state-first frame.</li>
+              <li>Don't draft a post that ends without it. Different door, same room.</li>
+              <li>Stop optimising for topic novelty. Optimise for the 100th way to say the same thing.</li>
+              <li>Reels, captions, ads, emails, landing pages, even error states — all bend back to state-first.</li>
+              <li>"I said that already" is the wrong instinct. The next viewer is new. Say it again.</li>
+            </ul>
+          </Card>
+
           <Card>
             <SectionLabel>Content Temperature - Hormozi Engagement Ladder</SectionLabel>
             <Body className="mb-4">Every post targets one temperature level. Cold content moves people from unaware to problem aware. Warm content moves them from problem aware to solution aware. Hot content pushes them to act. The ratio should be roughly 60% cold, 30% warm, 10% hot.</Body>
