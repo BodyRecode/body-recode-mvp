@@ -5,6 +5,7 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { generatePreCallBrief } from '@/lib/pre-call-brief'
 import { appUrl } from '@/lib/app-url'
+import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
 import {
   darkEmailShell,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
@@ -293,6 +294,36 @@ ${darkEmailSignature()}
       subject: `New Scorecard — ${first_name} (${body_state}, ${score}/15)`,
       html: darkEmailShell(coachInner, { previewText: `${first_name} just completed the scorecard — ${body_state}, ${score}/15.` }),
     })
+  }
+
+  // Fire Meta Conversions API event server-side.
+  // Mirrors the browser-side Lead event the scorecard frontend fires, but
+  // hashes PII and includes IP/UA so we recover iOS-blocked attribution.
+  // Non-blocking — failure here must not break the user response.
+  try {
+    const { clientIp, clientUserAgent } = extractClientContext(request)
+    await fireMetaCapiEvent({
+      eventName: 'CompleteRegistration',
+      eventSourceUrl: 'https://performance.bodyrecode.au/scorecard',
+      actionSource: 'website',
+      userData: {
+        email,
+        firstName: first_name,
+        lastName: last_name || undefined,
+        country: 'AU',
+        clientIp,
+        clientUserAgent,
+      },
+      customData: {
+        content_name: 'scorecard_complete',
+        content_category: body_state,
+        value: score,
+        currency: 'AUD',
+        source,
+      },
+    })
+  } catch (capiErr) {
+    console.error('[scorecard/submit] CAPI fire threw (non-fatal):', capiErr)
   }
 
   return NextResponse.json({ success: true, lead_id: leadId }, { headers: CORS })
