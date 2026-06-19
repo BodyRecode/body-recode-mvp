@@ -315,6 +315,8 @@ If sleep has also fragmented in a way it hadn't before, if mood is more variable
 
 Read the state first. Then write the prescription. Not the other way around.
 
+If you're watching this stack in your own body, the 2-minute Scorecard reads the state. The link is in my bio.
+
 #bodyrecode #perimenopause #womenshealth40 #cyclehealth #hormonehealth$cap$,
  '/calendar/br-2026-06-24_pattern_01.png,/calendar/br-2026-06-24_pattern_02.png,/calendar/br-2026-06-24_pattern_03.png,/calendar/br-2026-06-24_pattern_04.png,/calendar/br-2026-06-24_pattern_05.png,/calendar/br-2026-06-24_pattern_06.png'),
 
