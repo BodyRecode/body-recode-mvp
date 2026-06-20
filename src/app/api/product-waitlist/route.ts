@@ -7,6 +7,7 @@
 
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
 
 type Product = 'challenge' | 'blueprint' | 'membership' | 'extension'
 
@@ -78,6 +79,34 @@ export async function POST(req: Request) {
   if (error) {
     console.error('[product-waitlist] insert error', error)
     return NextResponse.json({ error: 'Failed to join waitlist' }, { status: 500, headers })
+  }
+
+  // Fire Meta CAPI Lead event server-side. Waitlist signup = strong intent
+  // signal (visitor saw the product LP + handed over email). Until the
+  // Challenge / Blueprint / Membership signup forms go live, waitlist is
+  // the closest cold-funnel conversion event we can optimise on.
+  // Non-blocking so any CAPI failure cannot break the waitlist response.
+  try {
+    const { clientIp, clientUserAgent } = extractClientContext(req)
+    await fireMetaCapiEvent({
+      eventName: 'Lead',
+      eventSourceUrl: `https://bodyrecode.au/${product}`,
+      actionSource: 'website',
+      userData: {
+        email,
+        firstName: first_name || undefined,
+        country: 'AU',
+        clientIp,
+        clientUserAgent,
+      },
+      customData: {
+        content_name: `waitlist_${product}`,
+        content_category: body_state || 'unknown_state',
+        source: source || 'unknown_source',
+      },
+    })
+  } catch (capiErr) {
+    console.error('[product-waitlist] CAPI fire threw (non-fatal):', capiErr)
   }
 
   return NextResponse.json({ ok: true, product }, { status: 200, headers })
