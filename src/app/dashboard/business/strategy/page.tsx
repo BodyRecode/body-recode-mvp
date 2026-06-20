@@ -1209,6 +1209,66 @@ export default function StrategyPage() {
             </div>
           </Card>
 
+          <Card className="border-amber-500/30 bg-amber-500/5">
+            <SectionLabel>Per-post measurement ladder · diagnose where it broke</SectionLabel>
+            <p className="text-sm text-stone-700 leading-relaxed mb-3">
+              Conversion is downstream of reach. Before blaming the caption or CTA, find which gate the post failed at. Fix the <strong>earliest broken step</strong> — don&apos;t rewrite the CTA on a post nobody saw.
+            </p>
+            <div className="space-y-2">
+              {[
+                {
+                  gate: 'Gate 1',
+                  label: 'Reach',
+                  metric: 'Views (reels) · Impressions (statics)',
+                  bad: 'Reels <500 / Statics <300',
+                  diagnose: 'Distribution failure — algorithm didn&apos;t pick it up',
+                  cause: 'Weak hook · wrong format for slot · time of day · hashtags off',
+                  fix: 'Rewrite the hook for the next post in the same slot. Don&apos;t touch the CTA — nobody saw it.',
+                  source: 'IG native analytics on the post',
+                },
+                {
+                  gate: 'Gate 2',
+                  label: 'Engagement → Click',
+                  metric: 'Link clicks (bio) · Profile visits',
+                  bad: 'Views >1K but link clicks = 0',
+                  diagnose: 'CTA failure — people saw it but didn&apos;t act',
+                  cause: 'CTA too subtle · &quot;Scorecard&quot; not named in caption · bio link unclear · friction in tap path',
+                  fix: 'Strengthen CTA copy. Name &quot;Scorecard&quot; explicitly. Simplify bio link routing.',
+                  source: 'IG analytics + Linktree/native bio clicks',
+                },
+                {
+                  gate: 'Gate 3',
+                  label: 'Click → Conversion',
+                  metric: 'Scorecard signups (lead created)',
+                  bad: 'Clicks happened but Scorecard signup = 0',
+                  diagnose: 'Landing page failure — people landed but bounced',
+                  cause: '/scorecard intro page friction · first question off · mobile UX broken · loading too slow',
+                  fix: 'Check Vercel analytics bounce rate. Review /scorecard intro copy. Test mobile journey.',
+                  source: 'Supabase `leads` table · Vercel analytics',
+                },
+              ].map(row => (
+                <div key={row.gate} className="p-3 bg-white rounded-lg border border-amber-200">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[10px] font-bold tracking-[0.15em] text-amber-700 uppercase">{row.gate}</span>
+                    <span className="text-sm font-bold text-[#1A1A1A]">{row.label}</span>
+                    <span className="text-xs text-stone-400">·</span>
+                    <span className="text-xs text-stone-600">{row.metric}</span>
+                  </div>
+                  <p className="text-xs text-red-700 font-medium mb-1">If: {row.bad}</p>
+                  <p className="text-xs text-stone-700 leading-snug mb-1" dangerouslySetInnerHTML={{ __html: `<strong>Diagnose:</strong> ${row.diagnose}` }} />
+                  <p className="text-xs text-stone-600 leading-snug mb-1" dangerouslySetInnerHTML={{ __html: `<strong>Likely cause:</strong> ${row.cause}` }} />
+                  <p className="text-xs text-blue-700 font-medium leading-snug mb-1" dangerouslySetInnerHTML={{ __html: `<strong>Fix:</strong> ${row.fix}` }} />
+                  <p className="text-[10px] text-stone-400 italic">Source: {row.source}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 p-3 bg-amber-100/40 rounded-lg border border-amber-200">
+              <p className="text-xs text-stone-700">
+                <strong>Healthy benchmark for the V2 reel pipeline:</strong> &gt;2K views, &gt;50 link clicks, &gt;5 Scorecard starts per reel. Multiply the format that hits this. Kill what underperforms two reels in a row.
+              </p>
+            </div>
+          </Card>
+
           <Card>
             <SectionLabel>Weekly Structure</SectionLabel>
             <p className="text-xs text-stone-700 mb-3">Each non-Sunday slot rotates across the 4 archetypes week to week, so every archetype sees themselves at least once per fortnight. Sunday Diagnostic always targets the dominant archetype (Stressed Executive Woman) since it\'s the conversion-driving slot.</p>
