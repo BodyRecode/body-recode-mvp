@@ -231,28 +231,57 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const clientId = invoice.lines?.data?.[0]?.metadata?.client_id
+    // Resolve sub id once — used for both client lookup fallback and
+    // subscription refresh below. Stripe SDK v18+ dropped invoice.subscription
+    // from the typed surface; access raw + new lines.data[].subscription path.
+    const invoiceWithSub = invoice as Stripe.Invoice & { subscription?: string | Stripe.Subscription | null }
+    type LineItem = Stripe.InvoiceLineItem & { subscription?: string | null; parent?: { subscription_item_details?: { subscription?: string | null } | null } | null }
+    const firstLine = invoice.lines?.data?.[0] as LineItem | undefined
+    const subId = (typeof invoiceWithSub.subscription === 'string' ? invoiceWithSub.subscription : invoiceWithSub.subscription?.id ?? null)
+      ?? (typeof firstLine?.subscription === 'string' ? firstLine.subscription : null)
+      ?? firstLine?.parent?.subscription_item_details?.subscription
+      ?? null
+
+    // Resolve client_id with a fallback chain: line metadata (initial
+    // checkout), then client_subscriptions, then clients.stripe_customer_id.
+    // Stripe doesn't propagate sub metadata to subscription_cycle invoice
+    // line metadata, so recurring renewals used to silently skip the insert.
+    let clientId: string | null = firstLine?.metadata?.client_id ?? null
+    const admin = createAdminClient()
+    if (!clientId && subId) {
+      const { data: subRow } = await admin
+        .from('client_subscriptions')
+        .select('client_id')
+        .eq('stripe_subscription_id', subId)
+        .maybeSingle()
+      clientId = subRow?.client_id ?? null
+    }
+    if (!clientId) {
+      const customerId = typeof invoice.customer === 'string' ? invoice.customer : invoice.customer?.id ?? null
+      if (customerId) {
+        const { data: clientRow } = await admin
+          .from('clients')
+          .select('id')
+          .eq('stripe_customer_id', customerId)
+          .maybeSingle()
+        clientId = clientRow?.id ?? null
+      }
+    }
     if (clientId && invoice.amount_paid > 0) {
-      const admin = createAdminClient()
+      const paidAt = invoice.status_transitions?.paid_at
+        ? new Date(invoice.status_transitions.paid_at * 1000).toISOString()
+        : new Date().toISOString()
       await admin.from('be_payments').insert({
         client_id: clientId,
         amount: invoice.amount_paid / 100,
         status: 'paid',
         stripe_payment_id: null,
-        paid_at: new Date().toISOString(),
+        stripe_subscription_id: subId,
+        paid_at: paidAt,
       })
     }
-
-    // Refresh the parent subscription so client_subscriptions reflects the
-    // advanced current_period_end. In Stripe SDK v18+, invoice.subscription
-    // was removed from the typed surface; access the raw field defensively.
-    const invoiceWithSub = invoice as Stripe.Invoice & { subscription?: string | Stripe.Subscription | null }
-    const subId = typeof invoiceWithSub.subscription === 'string'
-      ? invoiceWithSub.subscription
-      : invoiceWithSub.subscription?.id ?? null
     if (subId) {
       try {
-        const admin = createAdminClient()
         const sub = await stripe.subscriptions.retrieve(subId, {
           expand: ['items.data.price.product'],
         })
