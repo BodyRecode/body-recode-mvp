@@ -113,14 +113,28 @@ export async function POST(
   }
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 3 })
 
-  let message
-  try {
-    message = await anthropic.messages.create({
+  // Token-budget strategy: start at 8000, retry once at 16000 if the model
+  // hits max_tokens. Amanda's W6 stack (Vyvanse + Brintellix + GLP-1 +
+  // estradiol patches + lysine) was the trigger — 4000 was tight, the
+  // model truncated mid-object, extractFirstJsonObject correctly returned
+  // null, and the error message just showed the truncated prefix. Larger
+  // stacks need more room.
+  async function callModel(maxTokens: number) {
+    return anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 4000,
+      max_tokens: maxTokens,
       system: buildCoachAnalysisSystemPrompt(),
       messages: [{ role: 'user', content: userPrompt }],
     })
+  }
+
+  let message
+  try {
+    message = await callModel(8000)
+    if (message.stop_reason === 'max_tokens') {
+      console.warn('[medications-analyze] hit max_tokens at 8000, retrying at 16000')
+      message = await callModel(16000)
+    }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
     console.error('Anthropic API error (medications analyze):', msg)
@@ -134,10 +148,15 @@ export async function POST(
 
   const jsonText = extractFirstJsonObject(content.text)
   if (!jsonText) {
-    return NextResponse.json(
-      { error: `Could not parse analysis. AI returned: ${content.text.slice(0, 160)}` },
-      { status: 500 }
-    )
+    // Distinguish "model truncated" from "model emitted garbage" — the
+    // coach-facing error message is very different.
+    const truncated = message.stop_reason === 'max_tokens'
+    const usage = `(in=${message.usage?.input_tokens ?? '?'}, out=${message.usage?.output_tokens ?? '?'})`
+    const detail = truncated
+      ? `Model truncated at 16000 tokens ${usage}. This medication stack is unusually large. Open a code change to raise the cap.`
+      : `Model returned non-JSON or unbalanced output ${usage}. First 160 chars: ${content.text.slice(0, 160)}`
+    console.error('[medications-analyze] parse failed:', detail)
+    return NextResponse.json({ error: `Could not parse analysis. ${detail}` }, { status: 500 })
   }
 
   let parsed: { medications?: unknown; combined_picture?: unknown }

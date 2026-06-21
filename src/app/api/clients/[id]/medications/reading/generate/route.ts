@@ -94,12 +94,25 @@ export async function POST(
   for (let attempt = 1; attempt <= 3; attempt++) {
     let message
     try {
+      // Start at 8000. If the model hits max_tokens (large stack — Amanda's
+      // estradiol+Vyvanse+Brintellix+GLP-1+lysine is the trigger case), retry
+      // once at 16000 before falling through to the jargon-leak retry loop.
+      // Pre-2026-06-15 default was 3000 which truncated on stacks ≥4 meds.
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 3000,
+        max_tokens: 8000,
         system: buildClientReadingSystemPrompt(),
         messages: conversation,
       })
+      if (message.stop_reason === 'max_tokens') {
+        console.warn('[medications-reading] hit max_tokens at 8000, retrying at 16000')
+        message = await anthropic.messages.create({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 16000,
+          system: buildClientReadingSystemPrompt(),
+          messages: conversation,
+        })
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       console.error('Anthropic API error (medications reading):', msg)
@@ -113,7 +126,10 @@ export async function POST(
     }
     const jsonText = extractFirstJsonObject(content.text)
     if (!jsonText) {
-      lastError = `Could not parse: ${content.text.slice(0, 160)}`
+      const truncated = message.stop_reason === 'max_tokens'
+      lastError = truncated
+        ? `Truncated at 16000 tokens (in=${message.usage?.input_tokens ?? '?'}, out=${message.usage?.output_tokens ?? '?'}). Raise the cap.`
+        : `Could not parse: ${content.text.slice(0, 160)}`
       continue
     }
     let parsed: Record<string, unknown>
