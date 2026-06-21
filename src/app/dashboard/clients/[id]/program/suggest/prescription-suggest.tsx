@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 
 const NAV_SECTIONS = [
   { id: 'rationale', title: 'Rationale' },
@@ -281,6 +282,19 @@ export default function PrescriptionSuggest({
 
   return (
     <div className="max-w-5xl mx-auto py-10 px-4">
+      <GenerationProgressOverlay
+        active={generating}
+        title="Generating Training Program"
+        stages={[
+          { start: 0,   label: 'Reading CFFS, active recovery state, intake, and macro arc context' },
+          { start: 6,   label: 'Drafting per-session structure (primaries, accessories, sets / reps / RPE)' },
+          { start: 40,  label: 'Applying coach guidance and RRS clamps to the prescription' },
+          { start: 70,  label: 'Validating against doctrine ceilings and eligibility floors' },
+          { start: 90,  label: 'Saving the draft and redirecting to the program view' },
+          { start: 130, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Program generation uses Claude Sonnet 4.6 for high-accuracy constraint satisfaction across exercise selection, set / rep design, RPE, and RRS recovery clamps. Typical: 60 to 120 seconds. The page is not frozen, please don't refresh."
+      />
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 text-stone-500 text-sm mb-3">

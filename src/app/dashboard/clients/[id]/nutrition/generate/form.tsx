@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 
 const ENTRY_STATE_OPTIONS = [
   { value: 'stabilisation', label: 'Stabilisation', desc: 'Instability, high constraints, recovery impaired. Carbs: Low. No modulation.' },
@@ -90,6 +91,19 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <GenerationProgressOverlay
+        active={loading}
+        title="Generating Nutrition Plan"
+        stages={[
+          { start: 0,   label: 'Reading client context (CFFS, intake, baseline, medications, dietary)' },
+          { start: 5,   label: 'Drafting 3 candidate plans in parallel (Claude Haiku 4.5)' },
+          { start: 40,  label: 'Validating each candidate against doctrine rules' },
+          { start: 50,  label: 'Escalating to Claude Sonnet 4.6 if no candidate passed' },
+          { start: 95,  label: 'Polishing the higher-accuracy plan' },
+          { start: 135, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Nutrition plan generation uses Claude Haiku 4.5 with Sonnet 4.6 escalation for high-accuracy constraint satisfaction. Typical: 60 to 90 seconds. The page is not frozen, please don't refresh."
+      />
 
       {/* Plan Name */}
       <div>

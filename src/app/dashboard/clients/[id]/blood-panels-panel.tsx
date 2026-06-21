@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 
 interface Marker {
   name: string
@@ -219,6 +220,55 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
 
   return (
     <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
+      <GenerationProgressOverlay
+        active={busy === 'reextract'}
+        title="Re-reading Blood Panel File"
+        stages={[
+          { start: 0,  label: 'Loading the uploaded blood test image / PDF' },
+          { start: 4,  label: 'Multimodal extraction of every marker, value, unit, and reference range' },
+          { start: 25, label: 'Flagging out-of-range markers against the lab\'s own ranges' },
+          { start: 40, label: 'Saving extracted markers to the panel' },
+          { start: 60, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Blood panel re-extraction uses Claude Haiku 4.5 multimodal. Typical: 30 to 50 seconds. The page is not frozen, please don't refresh."
+      />
+      <GenerationProgressOverlay
+        active={busy === 'analyze'}
+        title="Generating Coach Analysis"
+        stages={[
+          { start: 0,  label: 'Reading every marker on this panel + CFFS + medications' },
+          { start: 4,  label: 'Drafting per-marker reasoning (physiology + clinical context)' },
+          { start: 20, label: 'Drafting cross-marker patterns and the combined picture' },
+          { start: 32, label: 'Saving the coach analysis' },
+          { start: 50, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Coach analysis uses Claude Haiku 4.5. Coach-facing only — separate from the client-facing reading. Typical: 25 to 45 seconds. The page is not frozen, please don't refresh."
+      />
+      <GenerationProgressOverlay
+        active={busy === 'reading'}
+        title="Generating Client Reading"
+        stages={[
+          { start: 0,  label: 'Reading the coach analysis you saved + CFFS + medications' },
+          { start: 4,  label: 'Drafting the client-facing prose under conservative-disclosure doctrine' },
+          { start: 20, label: 'Scanning for banned terms and over-claiming' },
+          { start: 25, label: 'Auto-retrying if any banned terms leaked' },
+          { start: 35, label: 'Saving the new reading' },
+          { start: 55, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Client reading uses Claude Haiku 4.5 with automatic banned-term retry, gated by conservative-disclosure doctrine (no diagnosis language, no severity scoring). Typical: 25 to 45 seconds. The page is not frozen, please don't refresh."
+      />
+      <GenerationProgressOverlay
+        active={busy === 'lens'}
+        title="Running Research Lens"
+        stages={[
+          { start: 0,  label: 'Computing derived metrics (non-HDL, remnant cholesterol, TG:HDL, HOMA-IR, ApoB:ApoA1)' },
+          { start: 6,  label: 'Detecting the six named patterns deterministically' },
+          { start: 12, label: 'Drafting prose framing for any patterns found' },
+          { start: 35, label: 'Returning the result (not persisted — exploratory only)' },
+          { start: 55, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Research Lens is coach / admin only, exploratory, and never written to the panel or injected into the plan. Uses Claude Haiku 4.5. Typical: 25 to 45 seconds. The page is not frozen, please don't refresh."
+      />
       {/* Header */}
       <div className="px-4 py-3 border-b border-[#E5E5E5] flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2.5 flex-wrap">
