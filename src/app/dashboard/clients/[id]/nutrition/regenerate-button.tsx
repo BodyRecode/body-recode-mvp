@@ -69,6 +69,13 @@ export default function NutritionRegenerateButton({ nutritionPlanId }: { nutriti
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(data.error || `Server returned ${res.status}`)
+      // Scroll to top BEFORE refresh so the coach lands on the new Draft
+      // banner. Without this the page re-renders in place and the coach keeps
+      // looking at the (now superseded) active plan they clicked from — read
+      // as "regen didn't change anything".
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
       startTransition(() => router.refresh())
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not regenerate')
