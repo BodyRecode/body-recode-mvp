@@ -344,6 +344,11 @@ SUBSTITUTION FORMAT (STRICT — validator parses each line and rejects non-confo
     "Eggs can substitute Greek yoghurt at Meal 1"
     "Grilled chicken breast (120g raw, approximately 26g protein) can substitute salmon"
     "Use cottage cheese instead of yoghurt when travelling"
+    "10g almonds (breakfast) ↔ ..."           ← grams BEFORE the food name fails; must be "Almonds (10g) ↔ ..."
+    "Chicken breast (raw) (lunch) ↔ ..."      ← trailing "(meal name)" paren fails; never append meal context in parens
+    "3 whole eggs (breakfast) ↔ ..."          ← count-units fail when no gram weight is given; write "Eggs (150g, 3 whole) ↔ ..." instead
+- DO NOT append meal-context parens like "(breakfast)", "(lunch)", "(3pm anchor)", or "(dinner)" to either side of the ↔. The validator parses each LHS as "Food (Ng state)" and a trailing meal-name paren breaks it. If meal context matters, surface it in the meal's notes field, not the substitution line.
+- DO NOT put grams as a prefix ("10g almonds"). Grams go INSIDE the parens after the food name ("Almonds (10g)"). The parser anchors on the trailing "(Ng state)" pattern.
 - If coach_guidance asks for "more substitutions" or "more flexibility", that means MORE entries on the right-hand side of the ↔, NOT writing each entry as a sentence. Stay strict on format.
 
 VARIETY ACROSS MEALS (CRITICAL — eats monotony cause adherence failure):

@@ -128,7 +128,10 @@ export async function auditNutritionPlan(
     ...findLeakedTerms(np.nr_what_were_not_doing_yet ?? ''),
     ...findLeakedTerms(np.nr_coach_note ?? ''),
   ])
-  const isStale = isDoctrineStale(np.doctrine_version, 'nutrition_reading')
+  // np.doctrine_version is the PLAN doctrine stamp (see 2026-06-16 split).
+  // Check it against the plan key, not the reading key. They happen to be
+  // equal right now, but a one-sided bump would silently mislabel plans.
+  const isStale = isDoctrineStale(np.doctrine_version, 'nutrition_plan')
 
   const issues: AuditIssue[] = []
   try {

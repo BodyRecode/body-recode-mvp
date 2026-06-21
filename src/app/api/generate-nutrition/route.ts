@@ -5,7 +5,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescriptionInputs } from '@/lib/nutrition-prompt'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clamp'
-import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike, BRIDGE_CEILING_BUFFER, NUTRITION_DOCTRINE_VERSION, detectAppetiteSuppression } from '@/lib/nutrition-validation'
+import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike, BRIDGE_CEILING_BUFFER, detectAppetiteSuppression } from '@/lib/nutrition-validation'
+import { DOCTRINE_VERSIONS } from '@/lib/doctrine-versions'
 import { emitValidatorEvent, type ValidatorEventTier, type ValidatorEventFinalOutcome } from '@/lib/nutrition-telemetry'
 import { randomUUID } from 'crypto'
 import { extractFirstJsonObject } from '@/lib/extract-json'
@@ -305,7 +306,7 @@ export async function POST(request: NextRequest) {
   ) {
     void emitValidatorEvent(admin, {
       client_id,
-      doctrine_version: NUTRITION_DOCTRINE_VERSION,
+      doctrine_version: DOCTRINE_VERSIONS.nutrition_plan,
       attempt_tier: tier,
       attempt_index: index,
       ok: val.ok,
@@ -504,7 +505,10 @@ export async function POST(request: NextRequest) {
     // against the current constant to flag stale plans. Wrapped by the same
     // graceful-degradation retry below as the bridge-mode columns so the
     // route doesn't blow up if the migration hasn't been run yet.
-    doctrine_version: NUTRITION_DOCTRINE_VERSION,
+    // Uses DOCTRINE_VERSIONS.nutrition_plan (canonical source) — the legacy
+    // NUTRITION_DOCTRINE_VERSION constant in nutrition-validation.ts froze
+    // at 2026-05-26.4 and would have stamped every new plan as stale.
+    doctrine_version: DOCTRINE_VERSIONS.nutrition_plan,
     // Standing coach guidance — persisted so future generations pick it up
     // by default. Same graceful-degradation pattern below in case migration
     // 2026-06-09_nutrition_coach_guidance hasn't been run yet.

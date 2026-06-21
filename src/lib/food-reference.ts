@@ -302,10 +302,30 @@ export function parseSubstitutionLine(line: string): ParsedSubLine {
   const [, lhs, rhs] = arrowMatch
 
   const extractPortion = (text: string): SubstitutionTarget | null => {
-    // Match "Food name (Ng [state])"
-    const m = text.match(/^(.+?)\s*\((\d+(?:\.\d+)?)\s*g(?:\s+[^)]+)?\)\s*$/)
-    if (!m) return null
-    return { name: m[1].trim(), grams: parseFloat(m[2]) }
+    // Strip trailing parens that don't contain grams. Catches the engine
+    // drift where the LHS gets meal-context tacked on ("Chicken (raw)
+    // (lunch)" -> "Chicken (raw)"; "almonds (breakfast)" -> "almonds").
+    // Keep stripping as long as the rightmost paren is gram-free. A "~Ng"
+    // approximation still counts as grams.
+    let cleaned = text.trim()
+    while (true) {
+      const m = cleaned.match(/^(.*?)\s*\(([^()]*)\)\s*$/)
+      if (!m) break
+      if (/~?\s*\d+(?:\.\d+)?\s*g\b/i.test(m[2])) break
+      cleaned = m[1].trim()
+      if (!cleaned) return null
+    }
+
+    // Canonical: "Food name (Ng [state])". State is optional after the grams.
+    const canonical = cleaned.match(/^(.+?)\s*\(~?\s*(\d+(?:\.\d+)?)\s*g(?:\s+[^)]+)?\)\s*$/)
+    if (canonical) return { name: canonical[1].trim(), grams: parseFloat(canonical[2]) }
+
+    // Drift: "Ng Food name" with grams as a prefix instead of inside parens.
+    // Common with one-word foods ("10g almonds", "15g olive oil").
+    const gramsPrefix = cleaned.match(/^~?\s*(\d+(?:\.\d+)?)\s*g\s+(.+?)\s*$/)
+    if (gramsPrefix) return { name: gramsPrefix[2].trim(), grams: parseFloat(gramsPrefix[1]) }
+
+    return null
   }
 
   const original = extractPortion(lhs.trim())
