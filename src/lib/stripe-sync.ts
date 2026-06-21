@@ -117,10 +117,22 @@ export async function syncSubscriptionFromStripe(
     productId = prod?.id ?? null
   }
 
-  // Derive a human label from the product name if we have it
-  const productName = typeof price?.product === 'object' && price.product && !('deleted' in price.product)
-    ? (price.product as Stripe.Product).name
-    : null
+  // Derive a human label from the product name. The product comes back as
+  // either a string id (default) or an expanded object. We can't expand
+  // through to it from list calls because data.items.data.price.product is
+  // 5 levels deep and Stripe caps expansion at 4. Fetch it separately when
+  // it's just an id.
+  let productName: string | null = null
+  if (typeof price?.product === 'object' && price.product && !('deleted' in price.product)) {
+    productName = (price.product as Stripe.Product).name
+  } else if (typeof price?.product === 'string') {
+    try {
+      const prod = await stripe.products.retrieve(price.product)
+      if (!prod.deleted) productName = prod.name
+    } catch {
+      productName = null
+    }
+  }
 
   const row = {
     client_id: match.clientId,
@@ -240,12 +252,13 @@ export async function refreshClientFromStripe(
 
   if (!customerId) return { synced: 0, subscriptions: [] }
 
-  // Fetch all subscriptions (any status) for this customer
+  // Fetch all subscriptions (any status) for this customer. Product names
+  // are resolved per-sub inside syncSubscriptionFromStripe — we can't expand
+  // data.items.data.price.product here (5 levels, Stripe caps at 4).
   const subs = await stripe.subscriptions.list({
     customer: customerId,
     status: 'all',
     limit: 100,
-    expand: ['data.items.data.price.product'],
   })
 
   const out: Array<{ id: string; status: string }> = []

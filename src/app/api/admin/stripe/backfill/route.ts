@@ -96,7 +96,6 @@ export async function POST(_request: NextRequest) {
           customer: customer.id,
           status: 'all',
           limit: 100,
-          expand: ['data.items.data.price.product'],
         })
         for (const sub of subs.data) {
           await syncSubscriptionFromStripe(admin, sub)
