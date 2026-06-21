@@ -7,6 +7,8 @@ import DeleteNutritionPlanButton from './delete-button'
 import NutritionWeeklyReview from './weekly-review'
 import NutritionReadingPanel from './nutrition-reading-panel'
 import NotifyClientButton from './notify-client-button'
+import NutritionCoachGuidanceEditor from './coach-guidance-editor'
+import NutritionRegenerateButton from './regenerate-button'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 import {
   computeNutritionTotals,
@@ -85,6 +87,11 @@ interface NutritionPlan {
   published_to_client_at?: string | null
   published_to_client_by?: string | null
   nutrition_reading_published_at?: string | null
+  // Standing coach steering for the nutrition generator. Read at every
+  // Generate / Regenerate; carries forward across regen via inheritance.
+  // Editable inline via the NutritionCoachGuidanceEditor on the draft and
+  // active plan views.
+  coach_guidance?: string | null
 }
 
 function parseText(text: string): { intro: string | null; points: string[] } {
@@ -756,8 +763,15 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
             <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">
               Draft - Pending Approval
             </span>
-            <NutritionDraftActions planId={draftPlan.id} clientId={id} />
+            <div className="flex items-center gap-2">
+              <NutritionRegenerateButton nutritionPlanId={draftPlan.id} />
+              <NutritionDraftActions planId={draftPlan.id} clientId={id} />
+            </div>
           </div>
+          <NutritionCoachGuidanceEditor
+            nutritionPlanId={draftPlan.id}
+            initial={draftPlan.coach_guidance ?? null}
+          />
           <NutritionPlanBody plan={draftPlan} idPrefix="draft-" />
         </div>
       )}
@@ -792,6 +806,18 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
             plan={activePlan as unknown as Parameters<typeof NutritionReadingPanel>[0]['plan']}
             clientToken={client.onboarding_token}
           />
+
+          {/* Standing coach guidance — read at every Regenerate. Mirrors the
+              program-side editor so the coach can refine steering without
+              going back to the prescription form. */}
+          <NutritionCoachGuidanceEditor
+            nutritionPlanId={activePlan.id}
+            initial={activePlan.coach_guidance ?? null}
+          />
+
+          <div className="mb-3 flex items-center justify-end">
+            <NutritionRegenerateButton nutritionPlanId={activePlan.id} />
+          </div>
 
           <div className="flex gap-8">
             <StickyScrollNav sections={nutritionNavSections(activePlan)} />

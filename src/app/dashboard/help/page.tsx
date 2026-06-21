@@ -40,6 +40,7 @@ const SECTIONS = [
   { id: 'trajectory-reading', title: '20c. Block-End Trajectory Reading', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'macro-arc',        title: '21. Macro Training Arc', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'program-coach-guidance', title: '21b. Program Coach Guidance', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'nutrition-coach-guidance', title: '21c. Nutrition Coach Guidance', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'nutrition-plan',   title: '22. Nutrition Plan',     colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'nutrition-reading', title: '22b. Nutrition Reading', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'business-engine',  title: 'Business Engine',        colour: 'amber' as const, category: 'business' as Category },
@@ -1735,6 +1736,38 @@ export default function HelpPage() {
             </ul>
 
             <Note>The Regenerate button is the existing generate route under the hood — it auto-replaces the current draft. There is no separate &quot;regenerate&quot; state. If you want a specific phase to read differently from the arc-wide guidance, edit the guidance temporarily, regenerate, then change it back. Per-phase override fields are not yet built; add a registry future-work line if you start needing them.</Note>
+          </Section>
+
+          <Section id="nutrition-coach-guidance" title="21c. Nutrition Coach Guidance" colour="teal">
+            <p>Standing free-text steering for the HABNS nutrition generator. Lives on the <code>nutrition_plans</code> row, so it auto-applies to the next Generate / Regenerate for the client. Mirrors the program-side Coach Guidance (§21b) and replaces the &quot;you had to go back to the Generate form to change one line&quot; workflow that existed until 2026-06-22.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">When to use it</p>
+            <p>Open the Nutrition Plan section of a client profile. Above the draft body (and above the active plan body) you&apos;ll see the <strong>Coach Guidance (nutrition plan)</strong> card. Click <strong>Edit</strong>, write what the engine doesn&apos;t know from the prescription inputs alone, click <strong>Save guidance</strong>, then click <strong>Regenerate with guidance</strong>. The draft is replaced by a new one generated with your guidance applied.</p>
+
+            <p>Common things to write:</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li>Behavioural reality the intake can&apos;t carry: <em>&quot;Travelling for 4 weeks, no kitchen. Bias toward portable / restaurant-resolvable options.&quot;</em></li>
+              <li>Meal architecture shaping: <em>&quot;Meal 4 designed as a no-cook 20g protein anchor (Greek yoghurt, eggs, protein shake). Bias mid-afternoon to land on the 3-4pm crash.&quot;</em></li>
+              <li>Flexibility / rigidity tuning: <em>&quot;Wants more flexibility. Expand substitution_options across all categories; loosen execution_rules from must to aim for.&quot;</em></li>
+              <li>Compression / restructure (within doctrine): <em>&quot;Client now compresses to two meals on workdays. Adjust meal_frequency where doctrine allows; appetite-suppression floor of 4 still wins.&quot;</em></li>
+              <li>Cuisine / framework bias: <em>&quot;Halal + South Asian foundation. Sample foods should reflect this; no pork, no alcohol, dahls and roti welcome.&quot;</em></li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Drafting guidance with AI</p>
+            <p>The card has a <strong>Suggest with AI</strong> sub-panel. Pick an intent (simplify execution / push the demand / add flexibility / restructure meals), tick the levers you want pulled (meal count, protein distribution, food friction, food variety, timing), optionally add a one-line context note, then click <strong>Draft guidance</strong>. Claude pulls the latest non-archived CFFS, the client&apos;s medications, and the dietary context (restrictions, preferences, typical day&apos;s eating, eating environment) automatically and writes a 3-6 paragraph guidance block using the exact phrases the nutrition engine recognises (&quot;travelling / no kitchen&quot;, &quot;compresses to two meals&quot;, &quot;wants more flexibility&quot;, &quot;small protein anchor&quot;, etc.). The draft drops into the textarea — edit before saving. Treat AI-drafted guidance as a starter; the value is in the edits you make.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">What it can and cannot do</p>
+            <p>Coach guidance <strong>can</strong> override engine-default conservatism within HABNS doctrine: meal frequency selection within doctrine ranges, food selection bias within the dietary framework, substitution generosity, weekly_structure_notes rigidity, sample-foods culture / cuisine bias, what_not_to_change additions or removals where they reflect the client&apos;s stated reality.</p>
+            <p>Coach guidance <strong>cannot</strong> override safety-relevant floors: appetite-suppression hard rules (meal_frequency ≥ 4 for stimulant / GLP-1 / SSRI / SNRI clients, per-meal protein caps), validator bodyweight-derived calorie and protein floors, dietary RESTRICTIONS or PREFERENCES from intake, RRS recovery-state constraint manifests, transitional override gating, HABNS first principles. If your guidance conflicts with one of these the engine surfaces &quot;Coach guidance partially applied: [variable] held at doctrine floor because [reason]&quot; in the rationale.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Scope and persistence</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li>Lives on the nutrition_plans row. Editable on both draft and active plan views.</li>
+              <li>Persists across Regenerate; carries forward to the next plan generated for the client via inheritance unless explicitly overwritten on the Generate form.</li>
+              <li>Edit any time. The next Generate or Regenerate picks up the change.</li>
+            </ul>
+
+            <Note>The Regenerate button on this section is wired to <code>/api/regenerate-nutrition</code>, which lifts the stored primary inputs (entry_state, body_state, pts_phase, protein anchor, carb_demand, meal_frequency, transitional override state) from the existing plan and forwards them to <code>/api/generate-nutrition</code>. The coach_guidance is read inside generate-nutrition automatically. If you need to change primary inputs (e.g. switch entry_state from stabilisation to training_support), go back to the Generate Plan form instead.</Note>
           </Section>
 
           <Section id="nutrition-plan" title="22. Nutrition Plan - HABNS" colour="teal">
