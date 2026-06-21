@@ -88,7 +88,17 @@ export default async function PortalCheckinPage({
 
   const startDate = client.coaching_started_at || client.created_at
   const weekNumber = getWeekNumber(startDate)
-  let formType: 'A' | 'B' = overrideForm ?? window.formType
+  // Form-pick priority:
+  //   1. ?form= URL override (manual coach hand-off)
+  //   2. checkin_window_override_form (smart Reopen — 2026-06-21) — set
+  //      automatically by the Reopen API when the client missed a window
+  //      and the global rotation has since ticked past it
+  //   3. Current global rotation
+  const overrideFormDb: 'A' | 'B' | null =
+    (overrideActive && (client.checkin_window_override_form === 'A' || client.checkin_window_override_form === 'B'))
+      ? client.checkin_window_override_form
+      : null
+  let formType: 'A' | 'B' = overrideForm ?? overrideFormDb ?? window.formType
 
   const { data: existing } = await admin
     .from('weekly_checkins')

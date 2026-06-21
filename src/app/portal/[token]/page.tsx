@@ -234,12 +234,22 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     ? (thisWeekFormADone && thisWeekFormBDone)
     : (thisWeekFormADone || thisWeekFormBDone)
 
-  // Determine which form to show next in test mode
-  const activeFormType: 'A' | 'B' = testMode && checkinWindow.formType === 'A' && thisWeekFormADone && !thisWeekFormBDone
-    ? 'B'
-    : testMode && checkinWindow.formType === 'B' && thisWeekFormBDone && !thisWeekFormADone
-    ? 'A'
-    : checkinWindow.formType
+  // Determine which form to show next.
+  // Priority: smart-Reopen override_form (2026-06-21) > test-mode flip >
+  // current global rotation. The override_form is set by the coach Reopen
+  // API when the client's last form matches the current rotation (i.e.
+  // they missed the previous window and the catch-up would otherwise land
+  // on the same form they just did).
+  const smartOverrideForm: 'A' | 'B' | null =
+    (overrideActive && (client.checkin_window_override_form === 'A' || client.checkin_window_override_form === 'B'))
+      ? client.checkin_window_override_form
+      : null
+  const activeFormType: 'A' | 'B' = smartOverrideForm
+    ?? (testMode && checkinWindow.formType === 'A' && thisWeekFormADone && !thisWeekFormBDone
+      ? 'B'
+      : testMode && checkinWindow.formType === 'B' && thisWeekFormBDone && !thisWeekFormADone
+      ? 'A'
+      : checkinWindow.formType)
 
   const opensAt = checkinWindow.opensAt.toLocaleString('en-AU', {
     timeZone: 'Australia/Brisbane',
