@@ -58,12 +58,20 @@ export default function NutritionCoachGuidanceEditor({
   const [saving, setSaving] = useState(false)
   const [savedAt, setSavedAt] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [open, setOpen] = useState(!!initial)
+  // Card open: defaults open when guidance is set (so the coach sees what's
+  // there) AND when no guidance is set (so the empty-state one-click starter
+  // flow is reachable without an extra click). Coach can always Hide.
+  const [open, setOpen] = useState(true)
 
-  // AI assist state
-  const [assistOpen, setAssistOpen] = useState(false)
+  // AI assist state. When no guidance has been saved yet, auto-expand the
+  // Suggest-with-AI panel so the Draft guidance button is a single click
+  // away. Defaults are pre-selected (intent = simplify, levers = food
+  // friction + meal count) so the coach can just click Draft without
+  // configuring anything. When guidance already exists, keep the panel
+  // collapsed so the saved text reads first.
+  const [assistOpen, setAssistOpen] = useState(!initial)
   const [intent, setIntent] = useState<Intent>('simplify')
-  const [levers, setLevers] = useState<Lever[]>(['food_friction'])
+  const [levers, setLevers] = useState<Lever[]>(['food_friction', 'meal_count'])
   const [coachNote, setCoachNote] = useState('')
   const [suggesting, setSuggesting] = useState(false)
   const [assistError, setAssistError] = useState<string | null>(null)
@@ -182,6 +190,11 @@ export default function NutritionCoachGuidanceEditor({
             </button>
             {assistOpen && (
               <div className="px-3 pb-3 border-t border-[#E5E5E5]">
+                {!savedValue && (
+                  <div className="mt-3 -mx-1 mb-3 px-3 py-2 rounded-md bg-[rgba(27,109,252,0.06)] border border-[rgba(27,109,252,0.18)] text-[11px] text-[#1B6DFC] leading-relaxed">
+                    Sensible defaults are pre-selected (Simplify execution, Food friction + Meal count). Tap <span className="font-semibold">Draft guidance</span> at the bottom for a one-click starter you can edit, then Save.
+                  </div>
+                )}
                 <div className="pt-3 mb-3">
                   <p
                     className="text-[10px] font-bold text-[#6B6B6B] uppercase mb-1.5"
