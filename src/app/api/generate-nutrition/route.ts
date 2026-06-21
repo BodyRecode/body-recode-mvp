@@ -450,6 +450,18 @@ export async function POST(request: NextRequest) {
     }, { status: 422 })
   }
 
+  // Archive any existing drafts for this client (only one draft at a time).
+  // Mirrors the generate-program pattern. Without this, every Regenerate
+  // stacks another draft row and the dashboard's `.find(p => p.status ===
+  // 'draft')` picks whichever the order returns first, leaving orphans
+  // visible only in the DB. Surfaced by Razia: three regens stacked three
+  // draft rows.
+  await admin
+    .from('nutrition_plans')
+    .delete()
+    .eq('client_id', client_id)
+    .eq('status', 'draft')
+
   // Save as draft. Transitional override (Phase 3A) is appended only when
   // active so older deployments without the migration don't blow up on
   // unknown columns — the insert silently omits the override fields.
