@@ -738,14 +738,39 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         />
       </MajorSection>
 
+      {/* Supplementary intake newer than active CFFS → coach action prompt.
+          As of 2026-06-21 the supplementary intake no longer auto-regenerates
+          the CFFS; coach reviews and regenerates manually. Triggered by Kade
+          seeing a "Foundational Synthesis generated 21 June 2026" he hadn't
+          asked for after Amanda's W7 supplementary submission. */}
       <MajorSection
         id="cffs"
         title="Foundational Synthesis"
         subtitle="- CFFS"
-        defaultOpen={cffsActionRequired}
-        attentionLabel={!activeCffs ? 'No CFFS yet' : (!frPublished ? 'FR not published' : null)}
+        defaultOpen={cffsActionRequired || (
+          !!latestSupplementaryInvitation?.completed_at &&
+          (!activeCffs?.generated_at || new Date(latestSupplementaryInvitation.completed_at).getTime() > new Date(activeCffs.generated_at).getTime())
+        )}
+        attentionLabel={!activeCffs ? 'No CFFS yet' : (
+          latestSupplementaryInvitation?.status === 'complete' && latestSupplementaryInvitation.completed_at && activeCffs.generated_at &&
+          new Date(latestSupplementaryInvitation.completed_at).getTime() > new Date(activeCffs.generated_at).getTime()
+            ? 'Supplementary newer — regenerate'
+            : (!frPublished ? 'FR not published' : null)
+        )}
         actionRight={frAudit ? <ArtefactAuditPill audit={frAudit} /> : undefined}
       >
+      {latestSupplementaryInvitation?.status === 'complete' && latestSupplementaryInvitation.completed_at && activeCffs?.generated_at &&
+       new Date(latestSupplementaryInvitation.completed_at).getTime() > new Date(activeCffs.generated_at).getTime() && (
+        <div className="mb-4 rounded-xl border border-amber-300 bg-amber-50 p-4">
+          <p className="text-[11px] font-bold tracking-widest text-amber-800 uppercase mb-1">Supplementary intake newer than CFFS</p>
+          <p className="text-sm text-[#3A3A3A] leading-relaxed mb-3">
+            {client.name?.split(' ')[0] ?? 'The client'} submitted a supplementary intake on {formatDate(latestSupplementaryInvitation.completed_at)}. The dietary + medication context is saved on their file, but the CFFS still reflects the pre-update state. Click Regenerate below to refresh the CFFS so downstream artefacts (program, nutrition, weekly synthesis) read the new context.
+          </p>
+          {latestIntakeId && (
+            <RegenerateCFFSButton clientId={client.id} intakeId={latestIntakeId} />
+          )}
+        </div>
+      )}
       {!activeCffs ? (
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-8 text-center">
           <p className="text-[#6B6B6B] mb-2">No CFFS generated yet</p>

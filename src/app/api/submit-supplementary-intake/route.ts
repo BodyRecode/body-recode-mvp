@@ -1,15 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { buildCFFSSystemPrompt, buildCFFSUserPrompt } from '@/lib/cffs-prompt'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
-import { extractFirstJsonObject } from '@/lib/extract-json'
 
-export const maxDuration = 300
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
+export const maxDuration = 60
 
 /**
  * Submission endpoint for the supplementary intake form.
@@ -131,70 +126,20 @@ export async function POST(request: NextRequest) {
     .update({ status: 'complete', completed_at: new Date().toISOString() })
     .eq('id', invitation.id)
 
-  // 6. Auto-regenerate CFFS. The intake is now updated with dietary context;
-  //    clients.medications is fresh. Pull the full intake row + medications
-  //    and pass to the existing CFFS prompt. Archive the active CFFS first.
-  let cffsRegeneratedAt: string | null = null
-  let foundationalReadingArchived = false
-  try {
-    const [{ data: fullIntake }, { data: clientRow }] = await Promise.all([
-      admin.from('intakes').select('*').eq('id', latestIntake.id).single(),
-      admin.from('clients').select('medications').eq('id', invitation.client_id).single(),
-    ])
-
-    if (fullIntake) {
-      // Detect whether the soon-to-be-archived CFFS had a published Foundational
-      // Reading. If so, flag it in the coach notification so Kade knows to
-      // regenerate it (otherwise the client portal won't have a reading until
-      // he does).
-      const { data: existingCffs } = await admin
-        .from('cffs')
-        .select('client_reading_published_at')
-        .eq('client_id', invitation.client_id)
-        .eq('is_archived', false)
-        .maybeSingle()
-      foundationalReadingArchived = !!existingCffs?.client_reading_published_at
-
-      // Archive existing CFFS
-      await admin
-        .from('cffs')
-        .update({ is_archived: true })
-        .eq('client_id', invitation.client_id)
-        .eq('is_archived', false)
-
-      const message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 6000,
-        system: buildCFFSSystemPrompt(),
-        messages: [{
-          role: 'user',
-          content: buildCFFSUserPrompt(fullIntake, clientRow?.medications ?? null),
-        }],
-      })
-
-      const content = message.content[0]
-      if (content.type === 'text') {
-        const jsonText = extractFirstJsonObject(content.text)
-        if (jsonText) {
-          const cffsData = JSON.parse(jsonText) as Record<string, unknown>
-          cffsData.reassessment_flagged = false
-          // Strip em dashes from every string field (style rule)
-          const stripped = stripEmDashes(cffsData)
-          await admin.from('cffs').insert({
-            client_id: invitation.client_id,
-            intake_id: latestIntake.id,
-            ...(stripped as Record<string, unknown>),
-          })
-          cffsRegeneratedAt = new Date().toISOString()
-        }
-      }
-    }
-  } catch (err) {
-    console.error('Supplementary CFFS regen error:', err)
-    // Do not roll back the dietary + medication writes
-  }
-
-  // 7. Notify Kade
+  // 6. Notify Kade.
+  //
+  // 2026-06-21: CFFS is NOT auto-regenerated anymore. Prior behaviour
+  // (auto-archive existing CFFS + draft a fresh one) was removed because
+  // it surprised Kade — he wanted to see the supplementary first and
+  // decide whether to refresh the CFFS. Now mirrors the Medications +
+  // Dietary editors: a coach review action.
+  //
+  // The supplementary write IS still saved (dietary fields on intake +
+  // medications on the client row); only the CFFS regen step is gated
+  // on coach click. The client profile renders a "supplementary newer
+  // than CFFS → Regenerate" banner inside the Foundational Synthesis
+  // section, computed from `intake_invitations.completed_at` vs
+  // `cffs.generated_at`.
   try {
     const { data: client } = await admin
       .from('clients')
@@ -209,14 +154,7 @@ export async function POST(request: NextRequest) {
     if (consumptionFieldsLost) {
       bodyLines.push(`Heads up: the four consumption fields (meals_per_day, fluid_intake, caffeine_intake, alcohol_intake) were NOT saved because their database columns do not exist yet. Run sql/2026-06-03_intakes_consumption_detail.sql in Supabase to enable these, then ask ${clientName} to retake the supplementary so the consumption data lands. The dietary restrictions / preferences / typical day / eating context DID save.`)
     }
-    if (cffsRegeneratedAt) {
-      bodyLines.push(`Their CFFS has been auto-regenerated against the updated intake + medications context, so the next program / nutrition / weekly synthesis will use it.`)
-    } else {
-      bodyLines.push(`CFFS auto-regeneration did NOT run successfully. The dietary + medication data IS saved. Trigger a manual CFFS regenerate from their client profile when you can.`)
-    }
-    if (foundationalReadingArchived) {
-      bodyLines.push(`Heads up: their previous Foundational Reading was on the now-archived CFFS, so the client portal currently has no published FR. Open the Foundational Reading panel on their profile and click Regenerate to republish it (or leave it as-is if you'd rather the previous reading stays archived).`)
-    }
+    bodyLines.push(`The CFFS has NOT been auto-regenerated. Open ${clientName}'s profile, review the updated dietary + medication context, then click Regenerate on the Foundational Synthesis panel when you're ready. Until you do, the existing CFFS (and any downstream program / nutrition / weekly synthesis) keeps running off the pre-update context.`)
 
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
@@ -229,9 +167,7 @@ export async function POST(request: NextRequest) {
         body: bodyLines.join('\n\n'),
         ctaLabel: 'Open client profile',
         ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
-        footnote: cffsRegeneratedAt
-          ? 'CFFS regenerated. Review on the profile.'
-          : 'CFFS regeneration pending. Trigger manually.',
+        footnote: 'CFFS regeneration is a coach action. Trigger from the profile when ready.',
       }),
     })
   } catch (err) {
@@ -240,16 +176,7 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({
     ok: true,
-    cffsRegenerated: !!cffsRegeneratedAt,
-    foundationalReadingArchived,
+    cffsRegenerated: false,
+    foundationalReadingArchived: false,
   })
-}
-
-function stripEmDashes(obj: unknown): unknown {
-  if (typeof obj === 'string') return obj.replace(/\s*—\s*/g, ', ')
-  if (Array.isArray(obj)) return obj.map(stripEmDashes)
-  if (obj && typeof obj === 'object') {
-    return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, stripEmDashes(v)]))
-  }
-  return obj
 }
