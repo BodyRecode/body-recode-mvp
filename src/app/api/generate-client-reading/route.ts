@@ -88,57 +88,13 @@ export async function POST(request: NextRequest) {
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
-  let message
-  try {
-    message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 6000,
-      system: buildClientReadingSystemPrompt(),
-      messages: [{
-        role: 'user',
-        content: buildClientReadingUserPrompt(
-          intake,
-          cffsContext,
-          { name: client.name, package: client.package },
-          cffs.cr_coach_guidance ?? null
-        ),
-      }],
-    })
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('Anthropic API error:', msg)
-    return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
-  }
-
-  const content = message.content[0]
-  if (content.type !== 'text') {
-    return NextResponse.json({ error: 'Unexpected response from AI' }, { status: 500 })
-  }
-
-  const jsonText = extractFirstJsonObject(content.text)
-  if (!jsonText) {
-    return NextResponse.json(
-      { error: `Could not parse reading. AI returned: ${content.text.slice(0, 120)}` },
-      { status: 500 }
-    )
-  }
-
-  let reading: {
-    cr_where_you_are?: string
-    cr_what_your_body_is_telling_us?: string
-    cr_what_were_focusing_on_first?: string
-    cr_what_were_not_doing_yet?: string
-    cr_coach_note?: string
-  }
-  try {
-    reading = JSON.parse(jsonText)
-  } catch (err) {
-    return NextResponse.json(
-      { error: `JSON parse failed: ${jsonText.slice(0, 120)}` },
-      { status: 500 }
-    )
-  }
-
+  // Banned-terms aware retry loop, same shape as generate-program-reading
+  // and medications-reading. Pre-2026-06-22 was single-shot — anything that
+  // leaked failed the whole route and the coach had to click Regenerate
+  // again, which would often hit the same leak (Haiku gravitates back to
+  // the natural physiology vocabulary for Remediation / nervous-system
+  // body states).
+  const { auditClientReadingFields } = await import('@/lib/banned-client-terms')
   const required = [
     'cr_where_you_are',
     'cr_what_your_body_is_telling_us',
@@ -146,35 +102,87 @@ export async function POST(request: NextRequest) {
     'cr_what_were_not_doing_yet',
     'cr_coach_note',
   ] as const
-  for (const key of required) {
-    if (!reading[key] || typeof reading[key] !== 'string') {
-      return NextResponse.json(
-        { error: `Missing or invalid section: ${key}` },
-        { status: 500 }
-      )
+  const conversation: { role: 'user' | 'assistant'; content: string }[] = [
+    {
+      role: 'user',
+      content: buildClientReadingUserPrompt(
+        intake,
+        cffsContext,
+        { name: client.name, package: client.package },
+        cffs.cr_coach_guidance ?? null
+      ),
+    },
+  ]
+  let cleaned: Record<string, string> | null = null
+  let leaksSeen: string[] = []
+  let lastError: string | null = null
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    let message
+    try {
+      message = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 6000,
+        system: buildClientReadingSystemPrompt(),
+        messages: conversation,
+      })
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      console.error('Anthropic API error (client reading):', msg)
+      return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
+    }
+
+    const content = message.content[0]
+    if (!content || content.type !== 'text') {
+      lastError = 'Unexpected response from AI'
+      continue
+    }
+
+    const jsonText = extractFirstJsonObject(content.text)
+    if (!jsonText) {
+      lastError = `Could not parse reading. AI returned: ${content.text.slice(0, 120)}`
+      continue
+    }
+
+    let reading: Record<string, unknown>
+    try {
+      reading = JSON.parse(jsonText)
+    } catch (err) {
+      lastError = `JSON parse failed: ${(err as Error).message}`
+      continue
+    }
+
+    const missing = required.filter(k => typeof reading[k] !== 'string' || !(reading[k] as string).trim())
+    if (missing.length > 0) {
+      lastError = `Missing required sections: ${missing.join(', ')}`
+      continue
+    }
+
+    const audit = auditClientReadingFields(reading as Record<string, string>, required as unknown as string[])
+    if (audit.ok) {
+      cleaned = audit.cleaned as Record<string, string>
+      break
+    }
+
+    leaksSeen = Array.from(new Set([...leaksSeen, ...audit.leaks].map(t => t.toLowerCase())))
+    if (attempt < 3) {
+      conversation.push({ role: 'assistant', content: jsonText })
+      conversation.push({
+        role: 'user',
+        content: `That draft contained internal terminology the client has never seen and the system will reject. These terms must not appear anywhere in the output: ${audit.leaks.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words to express the same idea. Return only the corrected JSON, no commentary.`,
+      })
+      lastError = `Leaked: ${audit.leaks.join(', ')}`
     }
   }
 
-  // Strip em dashes + audit client-facing fields against the shared
-  // banned-terms list (src/lib/banned-client-terms.ts). Added 2026-06-09
-  // after Ruby's published FR was found to contain "mid-arc compression"
-  // and "sympathetic dominance" — banned client-facing terms that were
-  // previously enforced only on weekly-checkin-feedback.
-  const { auditClientReadingFields } = await import('@/lib/banned-client-terms')
-  const audit = auditClientReadingFields(reading, [
-    'cr_where_you_are',
-    'cr_what_your_body_is_telling_us',
-    'cr_what_were_focusing_on_first',
-    'cr_what_were_not_doing_yet',
-    'cr_coach_note',
-  ])
-  if (!audit.ok) {
+  if (!cleaned) {
     return NextResponse.json(
-      { error: `Reading leaked internal terminology (${audit.leaks.join(', ')}). Click Regenerate to redraft.` },
+      {
+        error: `Reading leaked internal terminology after 3 attempts (${leaksSeen.length ? leaksSeen.join(', ') : lastError ?? 'unknown'}). Click Regenerate to try a fresh start.`,
+      },
       { status: 500 }
     )
   }
-  const cleaned = audit.cleaned
 
   const { DOCTRINE_VERSIONS } = await import('@/lib/doctrine-versions')
 

@@ -99,57 +99,14 @@ export async function POST(request: NextRequest) {
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
-  let message
-  try {
-    message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 6000,
-      system: buildProgramReadingSystemPrompt(),
-      messages: [{
-        role: 'user',
-        content: buildProgramReadingUserPrompt(
-          frContext,
-          programContext,
-          { name: client.name },
-          program.pr_coach_guidance ?? null
-        ),
-      }],
-    })
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('Anthropic API error:', msg)
-    return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
-  }
-
-  const content = message.content[0]
-  if (content.type !== 'text') {
-    return NextResponse.json({ error: 'Unexpected response from AI' }, { status: 500 })
-  }
-
-  const jsonText = extractFirstJsonObject(content.text)
-  if (!jsonText) {
-    return NextResponse.json(
-      { error: `Could not parse reading. AI returned: ${content.text.slice(0, 120)}` },
-      { status: 500 }
-    )
-  }
-
-  let reading: {
-    pr_why_this_block?: string
-    pr_what_this_program_is_doing?: string
-    pr_how_well_know_its_working?: string
-    pr_what_were_not_doing_yet?: string
-    pr_coach_note?: string
-  }
-  try {
-    reading = JSON.parse(jsonText)
-  } catch {
-    return NextResponse.json(
-      { error: `JSON parse failed: ${jsonText.slice(0, 120)}` },
-      { status: 500 }
-    )
-  }
-
+  // Banned-terms aware retry loop. Single-shot pre-2026-06-22 was leaking
+  // terms like "autonomic" on nervous-system-themed blocks (Razia's Block 1)
+  // even with the system prompt's ban list, because Haiku gravitates back to
+  // the natural physiology vocabulary. Up to 3 attempts; on leak, the
+  // failed JSON + an explicit "these terms must not appear" message are
+  // appended to the conversation so the model gets corrective feedback
+  // instead of being asked the same question again.
+  const { auditClientReadingFields } = await import('@/lib/banned-client-terms')
   const required = [
     'pr_why_this_block',
     'pr_what_this_program_is_doing',
@@ -157,31 +114,87 @@ export async function POST(request: NextRequest) {
     'pr_what_were_not_doing_yet',
     'pr_coach_note',
   ] as const
-  for (const key of required) {
-    if (!reading[key] || typeof reading[key] !== 'string') {
-      return NextResponse.json(
-        { error: `Missing or invalid section: ${key}` },
-        { status: 500 }
-      )
+  const conversation: { role: 'user' | 'assistant'; content: string }[] = [
+    {
+      role: 'user',
+      content: buildProgramReadingUserPrompt(
+        frContext,
+        programContext,
+        { name: client.name },
+        program.pr_coach_guidance ?? null
+      ),
+    },
+  ]
+  let cleaned: Record<string, string> | null = null
+  let leaksSeen: string[] = []
+  let lastError: string | null = null
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    let message
+    try {
+      message = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 6000,
+        system: buildProgramReadingSystemPrompt(),
+        messages: conversation,
+      })
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      console.error('Anthropic API error (program reading):', msg)
+      return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
+    }
+
+    const content = message.content[0]
+    if (!content || content.type !== 'text') {
+      lastError = 'Unexpected response from AI'
+      continue
+    }
+
+    const jsonText = extractFirstJsonObject(content.text)
+    if (!jsonText) {
+      lastError = `Could not parse reading. AI returned: ${content.text.slice(0, 120)}`
+      continue
+    }
+
+    let reading: Record<string, unknown>
+    try {
+      reading = JSON.parse(jsonText)
+    } catch (err) {
+      lastError = `JSON parse failed: ${(err as Error).message}`
+      continue
+    }
+
+    const missing = required.filter(k => typeof reading[k] !== 'string' || !(reading[k] as string).trim())
+    if (missing.length > 0) {
+      lastError = `Missing required sections: ${missing.join(', ')}`
+      continue
+    }
+
+    const audit = auditClientReadingFields(reading as Record<string, string>, required as unknown as string[])
+    if (audit.ok) {
+      cleaned = audit.cleaned as Record<string, string>
+      break
+    }
+
+    leaksSeen = Array.from(new Set([...leaksSeen, ...audit.leaks].map(t => t.toLowerCase())))
+    if (attempt < 3) {
+      conversation.push({ role: 'assistant', content: jsonText })
+      conversation.push({
+        role: 'user',
+        content: `That draft contained internal terminology the client has never seen and the system will reject. These terms must not appear anywhere in the output: ${audit.leaks.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words to express the same idea. Return only the corrected JSON, no commentary.`,
+      })
+      lastError = `Leaked: ${audit.leaks.join(', ')}`
     }
   }
 
-  // Banned-terms audit added 2026-06-09 — see banned-client-terms.ts.
-  const { auditClientReadingFields } = await import('@/lib/banned-client-terms')
-  const audit = auditClientReadingFields(reading, [
-    'pr_why_this_block',
-    'pr_what_this_program_is_doing',
-    'pr_how_well_know_its_working',
-    'pr_what_were_not_doing_yet',
-    'pr_coach_note',
-  ])
-  if (!audit.ok) {
+  if (!cleaned) {
     return NextResponse.json(
-      { error: `Reading leaked internal terminology (${audit.leaks.join(', ')}). Click Regenerate to redraft.` },
+      {
+        error: `Reading leaked internal terminology after 3 attempts (${leaksSeen.length ? leaksSeen.join(', ') : lastError ?? 'unknown'}). Click Regenerate to try a fresh start.`,
+      },
       { status: 500 }
     )
   }
-  const cleaned = audit.cleaned
 
   const { DOCTRINE_VERSIONS } = await import('@/lib/doctrine-versions')
 
