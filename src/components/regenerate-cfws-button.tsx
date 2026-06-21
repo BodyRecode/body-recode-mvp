@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 
 export default function RegenerateCFWSButton({ clientId, weekNumber }: { clientId: string; weekNumber: number }) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
@@ -27,12 +28,26 @@ export default function RegenerateCFWSButton({ clientId, weekNumber }: { clientI
   }
 
   return (
-    <button
-      onClick={regenerate}
-      disabled={status === 'loading' || status === 'done'}
-      className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
-    >
-      {status === 'loading' ? 'Generating…' : status === 'done' ? 'Done - reloading' : status === 'error' ? `Error: ${errorMsg || 'retry'}` : 'Generate CFWS'}
-    </button>
+    <>
+      <GenerationProgressOverlay
+        active={status === 'loading'}
+        title="Generating Weekly Synthesis"
+        stages={[
+          { start: 0,  label: 'Reading both check-in responses for this week' },
+          { start: 4,  label: 'Reading CFFS, active program, active nutrition plan' },
+          { start: 10, label: 'Synthesising signal pattern, drift, and next-week direction' },
+          { start: 40, label: 'Saving and refreshing the page' },
+          { start: 70, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Weekly Synthesis (CFWS) generation uses Claude Sonnet 4.6. Typical: 40 to 60 seconds. The page is not frozen, please don't refresh."
+      />
+      <button
+        onClick={regenerate}
+        disabled={status === 'loading' || status === 'done'}
+        className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+      >
+        {status === 'loading' ? 'Generating…' : status === 'done' ? 'Done - reloading' : status === 'error' ? `Error: ${errorMsg || 'retry'}` : 'Generate CFWS'}
+      </button>
+    </>
   )
 }

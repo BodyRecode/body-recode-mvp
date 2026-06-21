@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 
 interface MedicationRow {
   name: string
@@ -145,6 +146,31 @@ export default function MedicationsAnalysisPanel({
 
   return (
     <div className="mt-3 space-y-3">
+      <GenerationProgressOverlay
+        active={analyzing}
+        title="Analysing Medications"
+        stages={[
+          { start: 0,  label: 'Reading client medications field, intake context, CFFS' },
+          { start: 4,  label: 'Drafting per-medication analysis (purpose, influence on client / program / nutrition / recovery)' },
+          { start: 18, label: 'Drafting the combined picture across all medications' },
+          { start: 30, label: 'Saving and refreshing the panel' },
+          { start: 50, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Medications Analysis uses Claude Haiku 4.5. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
+      />
+      <GenerationProgressOverlay
+        active={generatingReading}
+        title="Generating Medications Reading"
+        stages={[
+          { start: 0,  label: 'Reading the medications analysis you just saved' },
+          { start: 4,  label: 'Drafting the 4 client-facing reading sections' },
+          { start: 18, label: 'Scanning for banned client-facing terms' },
+          { start: 22, label: 'Auto-retrying if any banned terms leaked' },
+          { start: 35, label: 'Saving and refreshing the panel' },
+          { start: 55, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Medications Reading generation uses Claude Haiku 4.5 with automatic banned-term retry. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
+      />
       <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-[#E5E5E5] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2.5 flex-wrap">

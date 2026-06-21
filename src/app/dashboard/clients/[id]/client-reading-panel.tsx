@@ -4,6 +4,7 @@ import { useState, useTransition, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ClientViewModal from '@/components/dashboard/client-view-modal'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 import {
   Sparkles, EyeOff, Eye, ExternalLink, Loader2, Download, Mail,
   Pencil, Check, X, Save, MessageSquare, Info,
@@ -115,6 +116,19 @@ export default function ClientReadingPanel({
 
   return (
     <div className="mb-6">
+      <GenerationProgressOverlay
+        active={generating}
+        title="Foundational Reading"
+        stages={[
+          { start: 0,  label: 'Reading CFFS, intake, and coach guidance' },
+          { start: 4,  label: 'Drafting the 5 client-facing reading sections' },
+          { start: 18, label: 'Scanning for banned client-facing terms' },
+          { start: 22, label: 'Auto-retrying if any banned terms leaked' },
+          { start: 35, label: 'Saving the new draft and refreshing the panel' },
+          { start: 55, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Foundational Reading generation uses Claude Haiku 4.5 with automatic banned-term retry. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
+      />
       <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />

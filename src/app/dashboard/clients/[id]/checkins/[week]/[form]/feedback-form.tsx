@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 
 interface ExistingFeedback {
   id: string
@@ -334,6 +335,20 @@ export default function CheckinFeedbackForm({
 
   return (
     <div>
+    <GenerationProgressOverlay
+      active={generating}
+      title="Drafting Coach Response"
+      stages={[
+        { start: 0,  label: 'Reading this check-in plus the last 4 check-ins for trajectory' },
+        { start: 4,  label: 'Reading CFFS, active program, active nutrition plan' },
+        { start: 10, label: 'Drafting the 3 fields (Interpretation, Reframe, Next focus)' },
+        { start: 22, label: 'Scanning for banned client-facing terms' },
+        { start: 27, label: 'Auto-retrying if any banned terms leaked' },
+        { start: 40, label: 'Returning the draft for your review' },
+        { start: 60, label: 'Taking longer than usual, give it another moment' },
+      ]}
+      disclaimer="Coach Response drafting uses Claude Haiku 4.5 with automatic banned-term retry. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
+    />
     <AutoDraftBanner />
     <AiFailureBanner />
     <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">

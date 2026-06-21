@@ -3,6 +3,7 @@
 import { useState, useTransition, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import ClientViewModal from '@/components/dashboard/client-view-modal'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 import {
   Sparkles, EyeOff, Eye, Loader2, Mail,
   Pencil, Check, X, Save, MessageSquare, Info, CalendarClock,
@@ -128,6 +129,19 @@ export default function TrajectoryReadingPanel({
 
   return (
     <div className="mb-6">
+      <GenerationProgressOverlay
+        active={generating}
+        title="Block-End Trajectory Reading"
+        stages={[
+          { start: 0,  label: 'Reading every weekly synthesis (CFWS) from this block' },
+          { start: 6,  label: 'Reading active program, CFFS, and coach guidance' },
+          { start: 12, label: 'Drafting the trajectory across the block (5 sections)' },
+          { start: 35, label: 'Scanning for banned client-facing terms' },
+          { start: 45, label: 'Saving the new draft and refreshing the panel' },
+          { start: 75, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Trajectory Reading reads the whole block's signal arc, not a single moment. Uses Claude Sonnet 4.6. Typical: 50 to 70 seconds. The page is not frozen, please don't refresh."
+      />
       <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
