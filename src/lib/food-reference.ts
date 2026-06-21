@@ -127,6 +127,48 @@ export const FOOD_DB: Record<string, FoodMacros> = {
     pg_protein: 0.003, pg_carb: 0.82, pg_fat: 0, pg_kcal: 3.30,
     state: 'fresh', aliases: ['honey'],
   },
+  // ─── More proteins (commonly emitted as substitutions) ──────────────
+  'tinned salmon (drained)': {
+    pg_protein: 0.21, pg_carb: 0, pg_fat: 0.09, pg_kcal: 1.65,
+    state: 'drained', aliases: ['tinned salmon', 'canned salmon', 'salmon canned', 'salmon (canned)', 'salmon tinned'],
+  },
+  'lamb mince (raw)': {
+    pg_protein: 0.19, pg_carb: 0, pg_fat: 0.17, pg_kcal: 2.29,
+    state: 'raw', aliases: ['lamb mince', 'minced lamb', 'lamb'],
+  },
+  'greek yoghurt full-fat': {
+    pg_protein: 0.09, pg_carb: 0.036, pg_fat: 0.05, pg_kcal: 0.95,
+    state: 'fresh', aliases: ['greek yoghurt', 'greek yogurt', 'greek yoghurt (full-fat)', 'full-fat greek yoghurt', 'greek yoghurt, full-fat', 'full fat greek yoghurt'],
+  },
+  'cottage cheese (full-fat)': {
+    pg_protein: 0.11, pg_carb: 0.034, pg_fat: 0.043, pg_kcal: 0.97,
+    state: 'fresh', aliases: ['cottage cheese', 'full-fat cottage cheese'],
+  },
+  'kefir (full-fat)': {
+    pg_protein: 0.033, pg_carb: 0.049, pg_fat: 0.035, pg_kcal: 0.66,
+    state: 'fresh', aliases: ['kefir', 'full-fat kefir', 'kefir unsweetened'],
+  },
+  // ─── Nuts ────────────────────────────────────────────────────────────
+  'almonds': {
+    pg_protein: 0.21, pg_carb: 0.22, pg_fat: 0.50, pg_kcal: 5.79,
+    state: 'fresh', aliases: ['almonds', 'raw almonds', 'whole almonds'],
+  },
+  'cashews': {
+    pg_protein: 0.18, pg_carb: 0.30, pg_fat: 0.44, pg_kcal: 5.55,
+    state: 'fresh', aliases: ['cashews', 'cashew nuts'],
+  },
+  'walnuts': {
+    pg_protein: 0.15, pg_carb: 0.14, pg_fat: 0.65, pg_kcal: 6.54,
+    state: 'fresh', aliases: ['walnuts'],
+  },
+  'mixed nuts': {
+    pg_protein: 0.18, pg_carb: 0.22, pg_fat: 0.53, pg_kcal: 6.05,
+    state: 'fresh', aliases: ['mixed nuts'],
+  },
+  'avocado (fresh)': {
+    pg_protein: 0.02, pg_carb: 0.085, pg_fat: 0.15, pg_kcal: 1.60,
+    state: 'fresh', aliases: ['avocado', 'fresh avocado'],
+  },
   // ─── Fats ────────────────────────────────────────────────────────────
   'ghee': {
     pg_protein: 0, pg_carb: 0, pg_fat: 0.99, pg_kcal: 8.95,
@@ -146,7 +188,7 @@ export const FOOD_DB: Record<string, FoodMacros> = {
   },
   'butter': {
     pg_protein: 0.009, pg_carb: 0.001, pg_fat: 0.81, pg_kcal: 7.34,
-    state: 'fresh', aliases: ['butter'],
+    state: 'fresh', aliases: ['butter', 'unsalted butter', 'salted butter'],
   },
 }
 
@@ -161,13 +203,28 @@ export const FOOD_DB: Record<string, FoodMacros> = {
  */
 export function lookupFood(name: string): { canonical: string; macros: FoodMacros } | null {
   const cleaned = name.toLowerCase().trim()
-  for (const [canonical, macros] of Object.entries(FOOD_DB)) {
-    if (canonical === cleaned) return { canonical, macros }
-    if (macros.aliases.some(a => a === cleaned)) return { canonical, macros }
-    // also try without trailing parenthesised qualifier
-    const noQual = cleaned.replace(/\s*\([^)]*\)\s*$/, '')
-    if (canonical === noQual) return { canonical, macros }
-    if (macros.aliases.some(a => a === noQual)) return { canonical, macros }
+  // Variants to try, in order. The match takes the first hit, so put the
+  // more-specific variants first.
+  const variants = new Set<string>()
+  variants.add(cleaned)
+  // Strip trailing parenthesised qualifier ("chicken breast (raw)" → "chicken breast")
+  variants.add(cleaned.replace(/\s*\([^)]*\)\s*$/, '').trim())
+  // Strip leading count tokens ("1 banana" → "banana", "3 whole eggs" → "whole eggs")
+  variants.add(cleaned.replace(/^(?:\d+(?:\.\d+)?|one|two|three|four|five|six|seven|eight)\s+/, '').trim())
+  // Strip BOTH leading count AND trailing qualifier
+  variants.add(
+    cleaned
+      .replace(/^(?:\d+(?:\.\d+)?|one|two|three|four|five|six|seven|eight)\s+/, '')
+      .replace(/\s*\([^)]*\)\s*$/, '')
+      .trim()
+  )
+
+  for (const v of variants) {
+    if (!v) continue
+    for (const [canonical, macros] of Object.entries(FOOD_DB)) {
+      if (canonical === v) return { canonical, macros }
+      if (macros.aliases.some(a => a === v)) return { canonical, macros }
+    }
   }
   return null
 }
@@ -241,11 +298,22 @@ export function validateSubstitutions(
     const subF = m.pg_fat * sub.grams
     const subK = m.pg_kcal * sub.grams
 
-    const safeDiv = (sub: number, orig: number) => (orig === 0 && sub === 0) ? 0 : Math.abs(sub - orig) / Math.max(orig, 0.0001)
-    const proteinPct = safeDiv(subP, origP)
-    const carbPct = safeDiv(subC, origC)
-    const fatPct = safeDiv(subF, origF)
-    const kcalPct = safeDiv(subK, origK)
+    // Percent drift with negligible-floor protection. When the ORIGINAL macro
+    // is near zero (olive oil has ~0g protein/carb), a 1.5g difference in the
+    // substitute produces nonsense like "90000% off on protein". Treat the
+    // macro as a pass when the absolute difference is below the coaching
+    // floor: 1.5g for macros, 15kcal for energy. Real signal (salmon vs
+    // chicken thigh fat) still surfaces; "butter vs olive oil protein" no
+    // longer noise-floods the audit.
+    const pctOrZero = (sub: number, orig: number, absFloor: number): number => {
+      if (Math.abs(sub - orig) < absFloor) return 0
+      if (orig <= 0) return Infinity
+      return Math.abs(sub - orig) / orig
+    }
+    const proteinPct = pctOrZero(subP, origP, 1.5)
+    const carbPct = pctOrZero(subC, origC, 1.5)
+    const fatPct = pctOrZero(subF, origF, 1.5)
+    const kcalPct = pctOrZero(subK, origK, 15)
 
     let worstMetric: 'protein' | 'carb' | 'fat' | 'kcal' = 'protein'
     let worstPct = proteinPct
@@ -332,13 +400,33 @@ export function parseSubstitutionLine(line: string): ParsedSubLine {
   if (!original) return { ok: false, raw: line }
 
   const subs: SubstitutionTarget[] = []
-  // RHS may be comma-separated; some entries lack portion info ("turkey",
-  // "lean ground turkey") — we skip those rather than fail the whole line.
-  for (const piece of rhs.split(',')) {
+  // RHS is comma-separated, BUT commas inside parens are part of a single
+  // entry (e.g. "(cooked, boiled)" describes one state). Split only on
+  // top-level commas, tracking paren depth.
+  for (const piece of splitTopLevel(rhs, ',')) {
     const portion = extractPortion(piece.trim())
     if (portion) subs.push(portion)
   }
 
   if (subs.length === 0) return { ok: false, raw: line }
   return { ok: true, original, subs, raw: line }
+}
+
+/** Split `text` on `sep` only when not inside parentheses. */
+function splitTopLevel(text: string, sep: string): string[] {
+  const out: string[] = []
+  let depth = 0
+  let buf = ''
+  for (const ch of text) {
+    if (ch === '(') depth++
+    else if (ch === ')') depth = Math.max(0, depth - 1)
+    if (ch === sep && depth === 0) {
+      out.push(buf)
+      buf = ''
+    } else {
+      buf += ch
+    }
+  }
+  if (buf.length) out.push(buf)
+  return out
 }
