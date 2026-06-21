@@ -163,7 +163,7 @@ export default function PostnatalSubstratePage() {
             fontSize: '21px', color: '#4A4A4A', lineHeight: 1.5,
             marginBottom: '48px', maxWidth: '900px',
           }}>
-            Not more training. Not less food. The conditions the body needs to release what it has been holding — given consistently, long enough to register as safe.
+            Not more training. Not less food. The conditions the body needs to release what it has been holding, given consistently, long enough to register as safe.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
