@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getDefaultCoachId } from '@/lib/default-coach'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
@@ -32,9 +33,11 @@ export async function POST(request: NextRequest) {
   if (existingLead) {
     lead = existingLead
   } else {
+    const coachId = await getDefaultCoachId(admin)
     const { data: newLead, error: leadError } = await admin
       .from('leads')
       .insert({
+        coach_id: coachId,
         name: cleanName,
         email: cleanEmail,
         phone: cleanPhone,

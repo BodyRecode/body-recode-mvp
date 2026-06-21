@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getDefaultCoachId } from '@/lib/default-coach'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { generatePreCallBrief } from '@/lib/pre-call-brief'
@@ -129,9 +130,11 @@ export async function POST(request: NextRequest) {
       dbSourceDetail = source || 'scorecard'
     }
 
+    const coachId = await getDefaultCoachId(supabase)
     const { data: newLead, error: leadError } = await supabase
       .from('leads')
       .insert({
+        coach_id: coachId,
         name: fullName,
         email: email.toLowerCase().trim(),
         source: dbSource,

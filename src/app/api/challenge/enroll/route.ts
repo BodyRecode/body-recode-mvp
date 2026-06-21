@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getDefaultCoachId } from '@/lib/default-coach'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { inngest } from '@/lib/inngest'
@@ -50,9 +51,11 @@ export async function POST(request: NextRequest) {
     // Update name + phone + gender (overwrite if previously unset or different)
     await admin.from('leads').update({ name: fullName, phone: phone.trim(), gender: validGender }).eq('id', leadId)
   } else {
+    const coachId = await getDefaultCoachId(admin)
     const { data: newLead, error: leadError } = await admin
       .from('leads')
       .insert({
+        coach_id: coachId,
         name: fullName,
         email: email.toLowerCase().trim(),
         phone: phone.trim(),

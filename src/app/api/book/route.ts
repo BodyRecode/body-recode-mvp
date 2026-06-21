@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getDefaultCoachId } from '@/lib/default-coach'
 import { createZoomMeeting } from '@/lib/zoom'
 import { Resend } from 'resend'
 import { logLeadEvent } from '@/lib/log-lead-event'
@@ -80,9 +81,11 @@ export async function POST(request: NextRequest) {
     }
   } else {
     // Create new lead
+    const coachId = await getDefaultCoachId(admin)
     const { data: newLead, error: leadError } = await admin
       .from('leads')
       .insert({
+        coach_id: coachId,
         name: name.trim(),
         email: email.trim().toLowerCase(),
         phone: phone?.trim() || null,

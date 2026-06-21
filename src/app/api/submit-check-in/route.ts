@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse, after } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getDefaultCoachId } from '@/lib/default-coach'
 import { buildReportEmail, buildFollowUpEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from '@/lib/generate-report'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
@@ -83,7 +84,9 @@ export async function POST(request: NextRequest) {
 
   // Save lead first, before any email sending, so it's never lost
   const supabase = createAdminClient()
+  const coachId = await getDefaultCoachId(supabase)
   const { data: newLead, error: leadError } = await supabase.from('leads').insert({
+    coach_id: coachId,
     name,
     email,
     phone: phone || null,
