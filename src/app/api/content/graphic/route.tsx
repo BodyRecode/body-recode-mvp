@@ -680,7 +680,8 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
   if (style === 'personal') {
     const isStory = format === 'story'
     const W = 1080
-    const H = isStory ? 1920 : 1080
+    // 4:5 portrait (1080×1350) for IG grid display per social-asset-spec.md
+    const H = isStory ? 1920 : 1350
 
     // Pillar-keyed editorial palettes — muted, magazine-like, never loud.
     // Each carries a paper tone + ink + accent so the feed has colour rhythm
@@ -781,8 +782,10 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
   if (style === 'personal-photo') {
     const isStory = format === 'story'
     const W = 1080
-    const H = isStory ? 1920 : 1080
-    const photoH = isStory ? 1180 : 600
+    // 4:5 portrait (1080×1350) for IG grid display per social-asset-spec.md
+    const H = isStory ? 1920 : 1350
+    // Photo takes ~55% of canvas height (TOP layout) — proportional scale from 600/1080
+    const photoH = isStory ? 1180 : 750
     const PANEL_PAD = isStory ? '90px 110px 120px' : '60px 90px 90px'
 
     const PT: Record<string, { bg: string; ink: string; accent: string; muted: string }> = {
@@ -869,7 +872,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
 
     // INSET — framed portrait on paper, magazine-style, serif headline below.
     if (layout === 'inset') {
-      const frameW = isStory ? 860 : 820, frameH = isStory ? 900 : 520
+      const frameW = isStory ? 860 : 820, frameH = isStory ? 900 : 650
       const fscale = Math.max(frameW / 1080, frameH / natH)
       const imgW = Math.round(1080 * fscale), imgH = Math.round(natH * fscale)
       return new ImageResponse(
