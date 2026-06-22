@@ -29,6 +29,16 @@ async function getPhotoData(req: NextRequest, photoIndex: number): Promise<strin
 }
 
 export async function GET(request: NextRequest) {
+  const response = await _generateGraphic(request)
+  const { searchParams } = new URL(request.url)
+  if (searchParams.get('download') === '1') {
+    const fname = (searchParams.get('filename') || 'body-recode-graphic').replace(/[^\w.\-]+/g, '-')
+    response.headers.set('Content-Disposition', `attachment; filename="${fname}.png"`)
+  }
+  return response
+}
+
+async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
   const { searchParams } = new URL(request.url)
   const text = searchParams.get('text') ?? ''
   const sub = searchParams.get('sub') ?? ''

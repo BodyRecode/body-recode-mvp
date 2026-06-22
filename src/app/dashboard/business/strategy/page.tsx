@@ -440,11 +440,14 @@ function ContentCalendar() {
                 // Carousel - multiple slides
                 <div className="space-y-3">
                   <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">{graphicUrls.length} slides - download each</p>
-                  {graphicUrls.map((url: string, i: number) => (
+                  {graphicUrls.map((url: string, i: number) => {
+                    const dlName = `${activePost.title.replace(/\s+/g, '-').toLowerCase()}-slide-${i + 1}`
+                    const dlUrl = `${url}${url.includes('?') ? '&' : '?'}download=1&filename=${encodeURIComponent(dlName)}`
+                    return (
                     <div key={i}>
                       <a
-                        href={url}
-                        download={`${activePost.title.replace(/\s+/g, '-').toLowerCase()}-slide-${i + 1}.png`}
+                        href={dlUrl}
+                        download={`${dlName}.png`}
                         className="flex items-center justify-center gap-1.5 w-full mb-1.5 px-3 py-2 bg-stone-200 hover:bg-stone-300 border border-stone-300 rounded-lg text-xs font-medium text-stone-700 transition-colors"
                       >
                         ↓ {CAROUSEL_LABELS[i] ?? `Slide ${i + 1}`}
@@ -454,19 +457,23 @@ function ContentCalendar() {
                         <img src={url} alt={`Slide ${i + 1}`} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
                     </div>
-                  ))}
+                  )})}
                 </div>
               ) : (
                 <>
-                {isSingleGraphic && (
-                  <a
-                    href={graphicUrls[0]}
-                    download={`${activePost.title.replace(/\s+/g, '-').toLowerCase()}.png`}
-                    className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-stone-200 hover:bg-stone-300 border border-stone-300 rounded-lg text-xs font-medium text-stone-700 transition-colors"
-                  >
-                    ↓ Download graphic
-                  </a>
-                )}
+                {isSingleGraphic && (() => {
+                  const dlName = activePost.title.replace(/\s+/g, '-').toLowerCase()
+                  const dlUrl = `${graphicUrls[0]}${graphicUrls[0].includes('?') ? '&' : '?'}download=1&filename=${encodeURIComponent(dlName)}`
+                  return (
+                    <a
+                      href={dlUrl}
+                      download={`${dlName}.png`}
+                      className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-stone-200 hover:bg-stone-300 border border-stone-300 rounded-lg text-xs font-medium text-stone-700 transition-colors"
+                    >
+                      ↓ Download graphic
+                    </a>
+                  )
+                })()}
                 <div className="rounded-xl overflow-hidden bg-stone-50 border border-stone-200" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '280px' }}>
                   {isSingleGraphic ? (
                     // eslint-disable-next-line @next/next/no-img-element
