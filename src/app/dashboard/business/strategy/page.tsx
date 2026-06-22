@@ -452,7 +452,7 @@ function ContentCalendar() {
                       >
                         ↓ {CAROUSEL_LABELS[i] ?? `Slide ${i + 1}`}
                       </a>
-                      <div className="rounded-xl overflow-hidden bg-stone-50 border border-stone-200" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '180px' }}>
+                      <div className="rounded-xl overflow-hidden bg-stone-50 border border-stone-200" style={{ aspectRatio: '4/5', position: 'relative', minHeight: '225px' }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={url} alt={`Slide ${i + 1}`} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
@@ -474,7 +474,7 @@ function ContentCalendar() {
                     </a>
                   )
                 })()}
-                <div className="rounded-xl overflow-hidden bg-stone-50 border border-stone-200" style={{ aspectRatio: '1/1', position: 'relative', minHeight: '280px' }}>
+                <div className="rounded-xl overflow-hidden bg-stone-50 border border-stone-200" style={{ aspectRatio: '4/5', position: 'relative', minHeight: '350px' }}>
                   {isSingleGraphic ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={graphicUrls[0]} alt={activePost.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
