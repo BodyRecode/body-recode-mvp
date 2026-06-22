@@ -130,6 +130,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'trajectory-reading-published-to-client',
+    name: 'Block-End Trajectory Reading Published to Client',
+    description: 'Client-facing notification that a block-end trajectory reading is in the portal. Mirror of the Program / Nutrition Notify Client pattern. Restored 2026-06-22 after 2026-06-09 scrap proved confusing — block-end readings are their own reflection moment and deserve their own coach-gated notification.',
+    trigger: 'Coach clicks Notify Client on the trajectory reading panel (gated on trajectory_reading_published_at present)',
+    steps: 1,
+  },
+  {
     id: 'weekly-checkin-draft-preview',
     name: 'Weekly Check-In Draft Preview (Coach)',
     description: 'Coach-only preview email of an auto-generated weekly check-in response, sent the moment the Inngest worker drafts it. Allows Kade to review, edit, send now, or skip from his inbox before the 4h scheduled-send fires.',

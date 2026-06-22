@@ -1678,6 +1678,8 @@ export default function HelpPage() {
             <p>Same content rules as the other readings, plus two specific to reading time: a single bad week is never the verdict (pattern-based interpretation over event-based), and <strong>the AI must not manufacture progress the weekly data does not support</strong> - conservative resolution means a genuinely flat or mixed arc is read honestly and supportively, never inflated. Weight and body composition are never the measure of the arc; the underlying signal is.</p>
 
             <Note>Per-block, like the Program Reading. Each program row gets its own trajectory reading once its block completes. Coach-gated end to end: nothing reaches the client until you publish.</Note>
+
+            <Note><strong>Notify Client (restored 2026-06-22).</strong> Publish to portal and notification email are now two separate clicks, mirroring the Program / Nutrition Notify Client pattern. <strong>Publish</strong> surfaces the reading on the client portal; once published, a <strong>Notify Client</strong> button appears for the explicit send. Email stamps <code className="bg-[#E5E5E5] px-1 rounded text-[#1B6DFC] text-xs">programs.trajectory_reading_email_sent_at</code> and the button label flips to <strong>Notify Again</strong>. The earlier 2026-06-09 decision to drop the auto-email was kept in spirit (publish doesn&apos;t auto-fire), but block-end readings are their own reflection moment and need their own coach-gated notify path rather than waiting for the next program publish to be the client touchpoint.</Note>
           </Section>
 
           <Section id="macro-arc" title="21. Macro Training Arc" colour="teal">
