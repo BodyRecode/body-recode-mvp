@@ -64,10 +64,15 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     .eq('is_active', true)
     .eq('current_direction', 'rebuild')
 
+  // Filter on is_active=true, not status='active'. The two get out of sync
+  // when a plan is superseded: generate-nutrition flips is_active=false on
+  // the old plan but leaves its `status` column as 'active'. Without this,
+  // a 'rebuild' direction set on a now-superseded plan keeps showing on
+  // the coaching dashboard forever.
   const { data: rebuildNutrition } = await supabase
     .from('nutrition_plans')
     .select('client_id')
-    .eq('status', 'active')
+    .eq('is_active', true)
     .eq('current_direction', 'rebuild')
 
   const rebuildTrainingIds = new Set((rebuildPrograms || []).map(r => r.client_id))

@@ -23,10 +23,15 @@ export async function POST(
 
   if (!draft) return NextResponse.json({ error: 'Draft not found' }, { status: 404 })
 
-  // Deactivate existing active plan
+  // Archive existing active plan(s). Set BOTH is_active=false AND
+  // status='archived' — pre-2026-06-22 this only flipped is_active, which
+  // left the old plan with status='active' is_active=false. Any query
+  // filtering by status alone (e.g. coaching-dashboard rebuild-attention
+  // panel) would then pick up the archived plan and surface a stale
+  // current_direction signal forever.
   await admin
     .from('nutrition_plans')
-    .update({ is_active: false })
+    .update({ is_active: false, status: 'archived' })
     .eq('client_id', draft.client_id)
     .eq('is_active', true)
 

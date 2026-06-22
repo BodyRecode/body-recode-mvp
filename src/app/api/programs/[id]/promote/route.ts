@@ -22,10 +22,13 @@ export async function POST(
   if (!draft) return NextResponse.json({ error: 'Program not found' }, { status: 404 })
   if (draft.status !== 'draft') return NextResponse.json({ error: 'Program is not a draft' }, { status: 400 })
 
-  // Deactivate any existing active program for this client (becomes archived history)
+  // Archive any existing active program for this client. Set BOTH is_active=false
+  // AND status='archived' — pre-2026-06-22 this only flipped is_active, leaving
+  // the old program with status='active' is_active=false (same bug pattern the
+  // nutrition promote route had).
   await admin
     .from('programs')
-    .update({ is_active: false })
+    .update({ is_active: false, status: 'archived' })
     .eq('client_id', draft.client_id)
     .eq('is_active', true)
 
