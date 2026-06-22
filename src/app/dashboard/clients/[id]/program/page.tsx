@@ -473,23 +473,29 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             )
           })()}
 
-          {/* Client-facing Block-end Trajectory Reading - reads the CFWS arc */}
+          {/* Client-facing Block-end Trajectory Reading - reads the CFWS arc.
+              Only renders for the ACTIVE block once it has reached its end —
+              before that, the panel just shows a countdown that adds noise
+              without any action attached. The full block-end visibility job
+              is handled by the rescue paths (Today's Focus action card,
+              client profile amber banner, archived-block inline notice on
+              this page above), so a mid-block countdown panel was redundant. */}
           {(() => {
             const cs = client.coaching_started_at as string | null
             const gen = activeProgram.generated_at
             const dur = activeProgram.week_duration ?? null
-            let blockStatus: Parameters<typeof TrajectoryReadingPanel>[0]['blockStatus'] = null
-            if (cs && gen) {
-              const startMs = new Date(cs).getTime()
-              const startWeek = Math.floor((new Date(gen).getTime() - startMs) / 86_400_000 / 7) + 1
-              const currentWeek = getWeekNumber(cs)
-              const endWeek = dur ? startWeek + dur - 1 : currentWeek
-              blockStatus = {
-                isAtBlockEnd: currentWeek >= endWeek,
-                currentWeek,
-                weekDuration: dur,
-                weeksRemaining: Math.max(0, endWeek - currentWeek),
-              }
+            if (!cs || !gen || !dur) return null
+            const startMs = new Date(cs).getTime()
+            const startWeek = Math.floor((new Date(gen).getTime() - startMs) / 86_400_000 / 7) + 1
+            const currentWeek = getWeekNumber(cs)
+            const endWeek = startWeek + dur - 1
+            const isAtBlockEnd = currentWeek >= endWeek
+            if (!isAtBlockEnd) return null
+            const blockStatus: Parameters<typeof TrajectoryReadingPanel>[0]['blockStatus'] = {
+              isAtBlockEnd: true,
+              currentWeek,
+              weekDuration: dur,
+              weeksRemaining: 0,
             }
             return (
               <TrajectoryReadingPanel
