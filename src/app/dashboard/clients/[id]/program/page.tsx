@@ -427,35 +427,45 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             clientToken={client.onboarding_token ?? null}
           />
 
-          {/* Pending block-end Trajectory Reading for the most recently
-              archived program. Surfaces when a previous block ended without
-              its trajectory reading being published — typical case is a coach
-              who shipped the next block (archiving the previous one) before
-              firing the block-end reading. Without this notice the panel for
-              the archived block is unreachable, since the main TrajectoryReadingPanel
-              below ties to the ACTIVE program. */}
+          {/* Most recent archived program's Block-End Trajectory Reading.
+              Always renders so the coach can either (a) generate + publish a
+              pending one or (b) re-view a published one. Without this the
+              archived block's reading was unreachable from the program page
+              entirely - the main TrajectoryReadingPanel below ties to the
+              ACTIVE program. Amber notice only shows when the reading hasn't
+              been published yet (pending action). */}
           {(() => {
-            const pending = archivedPrograms?.find(p => !p.trajectory_reading_published_at)
-            if (!pending) return null
+            const archived = archivedPrograms?.[0]
+            if (!archived) return null
+            const isPending = !archived.trajectory_reading_published_at
             const blockStatus: Parameters<typeof TrajectoryReadingPanel>[0]['blockStatus'] = {
               isAtBlockEnd: true,
               currentWeek: null,
-              weekDuration: pending.week_duration ?? null,
+              weekDuration: archived.week_duration ?? null,
               weeksRemaining: 0,
             }
-            const endedAt = pending.generated_at && pending.week_duration
-              ? new Date(new Date(pending.generated_at).getTime() + pending.week_duration * 7 * 86_400_000).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
+            const endedAt = archived.generated_at && archived.week_duration
+              ? new Date(new Date(archived.generated_at).getTime() + archived.week_duration * 7 * 86_400_000).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
               : null
             return (
               <div className="mb-6">
-                <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mb-3">
-                  <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-1">Pending block-end reading</p>
-                  <p className="text-sm text-amber-800">
-                    <span className="font-semibold">{pending.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Generate it now so the client has a record of the block arc before the next one is in full swing.
-                  </p>
-                </div>
+                {isPending ? (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mb-3">
+                    <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-1">Pending block-end reading</p>
+                    <p className="text-sm text-amber-800">
+                      <span className="font-semibold">{archived.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Generate it now so the client has a record of the block arc before the next one is in full swing.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="bg-stone-50 border border-stone-200 rounded-lg px-4 py-3 mb-3">
+                    <p className="text-xs font-bold text-stone-600 uppercase tracking-widest mb-1">Previous block reading</p>
+                    <p className="text-sm text-stone-700">
+                      Block-end reading for <span className="font-semibold">{archived.block_name}</span>{endedAt ? `, ended around ${endedAt}` : ''}. Published to the client portal. Edit + republish below if needed.
+                    </p>
+                  </div>
+                )}
                 <TrajectoryReadingPanel
-                  program={pending as unknown as Parameters<typeof TrajectoryReadingPanel>[0]['program']}
+                  program={archived as unknown as Parameters<typeof TrajectoryReadingPanel>[0]['program']}
                   clientToken={client.onboarding_token ?? null}
                   blockStatus={blockStatus}
                 />

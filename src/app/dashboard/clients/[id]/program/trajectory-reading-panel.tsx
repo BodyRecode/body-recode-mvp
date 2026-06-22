@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import ClientViewModal from '@/components/dashboard/client-view-modal'
 import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 import {
-  Sparkles, EyeOff, Eye, Loader2, Mail,
+  Sparkles, EyeOff, Eye, Loader2,
   Pencil, Check, X, Save, MessageSquare, Info, CalendarClock,
 } from 'lucide-react'
 
@@ -64,7 +64,9 @@ export default function TrajectoryReadingPanel({
 
   const generated = !!program.trajectory_reading_generated_at
   const published = !!program.trajectory_reading_published_at
-  const emailSent = !!program.trajectory_reading_email_sent_at
+  // emailSent removed 2026-06-22: publish endpoint stopped sending emails on
+  // 2026-06-09 so the field never stamps. The "Notified" badge and the
+  // "Republish" label that referenced it were misleading.
   const atBlockEnd = blockStatus?.isAtBlockEnd ?? false
 
   const generate = async () => {
@@ -104,7 +106,7 @@ export default function TrajectoryReadingPanel({
   const togglePublish = async () => {
     if (publishing) return
     const action = published ? 'unpublish' : 'publish'
-    if (action === 'publish' && !emailSent && !confirm('Publish this reading to the client portal and email the client that their block-end reading is ready?')) return
+    if (action === 'publish' && !confirm('Publish this reading to the client portal? The client is NOT auto-emailed — surface it manually if you want them to know it is ready (reading-published emails were scrapped 2026-06-09 in favour of the next program publish being the next client touchpoint).')) return
     if (action === 'unpublish' && !confirm('Take this reading down from the client portal? You can republish at any time.')) return
     setError(null)
     setNotice(null)
@@ -117,8 +119,7 @@ export default function TrajectoryReadingPanel({
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(data.error || `Server returned ${res.status}`)
-      if (data.emailSent) setNotice('Published. Notification email sent to client.')
-      if (data.emailError) setNotice(`Published, but email failed to send: ${data.emailError}`)
+      if (action === 'publish') setNotice('Published to the client portal. No notification email sent (by design).')
       startTransition(() => router.refresh())
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not update')
@@ -169,15 +170,9 @@ export default function TrajectoryReadingPanel({
               {published ? 'Live in portal' : 'Draft'}
             </span>
           )}
-          {emailSent && (
-            <span
-              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] uppercase"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
-              title={`Notification sent ${new Date(program.trajectory_reading_email_sent_at!).toLocaleString('en-AU')}`}
-            >
-              <Mail size={10} /> Notified
-            </span>
-          )}
+          {/* "Notified" badge removed 2026-06-22: publish-trajectory-reading
+              endpoint stopped sending emails on 2026-06-09, so this would never
+              render and was misleading. The published badge is enough signal. */}
           <button
             onClick={generate}
             disabled={generating || isPending}
@@ -201,7 +196,7 @@ export default function TrajectoryReadingPanel({
               }`}
             >
               {publishing ? <Loader2 size={13} className="animate-spin" /> : (published ? <EyeOff size={13} /> : <Eye size={13} />)}
-              {publishing ? 'Updating...' : (published ? 'Unpublish' : (emailSent ? 'Republish' : 'Publish & notify'))}
+              {publishing ? 'Updating...' : (published ? 'Unpublish' : 'Publish')}
             </button>
           )}
         </div>
@@ -228,7 +223,7 @@ export default function TrajectoryReadingPanel({
             <>
               <p className="text-[#6B6B6B] text-[14px] mb-2">Block complete - trajectory reading available</p>
               <p className="text-[#999999] text-[12px]">
-                Click Generate draft. It reads every weekly synthesis across this block into one arc. Review it, then Publish to surface it on the portal and email the client.
+                Click Generate draft. It reads every weekly synthesis across this block into one arc. Review it, then Publish to surface it on the client portal. The client is not auto-emailed when published (by design since 2026-06-09).
               </p>
             </>
           ) : (
