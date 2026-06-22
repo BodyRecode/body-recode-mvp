@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
-# Render a single Body Recode IG post (1080x1080 PNG) from a JSON spec piped on stdin.
+# Render a single Body Recode IG post (1080x1350 PNG, 4:5 portrait) from a JSON spec piped on stdin.
 # Usage: cat post.json | scripts/ig-generator/render-post.sh
 # Or:    scripts/ig-generator/render-post.sh < post.json
 #
+# Asset spec: 1080x1350 (4:5). 96px safe zone on every edge — no important
+# copy/logo/CTA inside the outer 96px ring. See social-asset-spec.md.
+#
 # Spec fields (all strings unless noted):
 #   slug          required  output filename basename (no extension)
-#   type          required  authority | contrarian | pattern | coach | diagnostic
+#   type          required  authority | contrarian | pattern | coach | diagnostic | reel_cover | carousel
 #   label         optional  small-caps eyebrow (default derived from type)
 #   hook_1        required  primary hook line 1
 #   hook_2        optional  hook line 2 (recommended)
@@ -14,7 +17,7 @@
 #   hook_3_blue   optional  "true" to render hook_3 in Signal Blue (contrarian default)
 #   sub_1         optional  sub-copy line 1
 #   sub_2         optional  sub-copy line 2
-#   photo         optional  integer 1-8 (required for coach/diagnostic)
+#   photo         optional  integer 1-8 (required for coach/diagnostic/reel_cover)
 #   list          optional  JSON array of bullet strings (pattern only)
 #   cta_text      optional  CTA button label (diagnostic only)
 #   cta_eyebrow   optional  eyebrow text on diagnostic (default "FREE · 2 MINUTES")
@@ -81,15 +84,15 @@ CMD=( magick )
 
 case "$TYPE" in
   authority)
-    CMD+=( -size 1080x1080 xc:white )
-    CMD+=( "$LOGO_B_180" -gravity northwest -geometry +60+60 -compose over -composite )
-    CMD+=( -fill "#1B6DFC" -draw "rectangle 80,380 144,388" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -annotate +160+402 "$LABEL" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 68 -fill "#1A1A1A" -annotate +80+520 "$HOOK1" )
-    [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize 68 -fill "#1A1A1A" -annotate +80+620 "$HOOK2" )
-    [ -n "$SUB1"  ] && CMD+=( -font "$SANS"      -pointsize 26 -fill "#5C5C5C" -annotate +80+720 "$SUB1" )
-    [ -n "$SUB2"  ] && CMD+=( -font "$SANS"      -pointsize 26 -fill "#5C5C5C" -annotate +80+762 "$SUB2" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "#7C7C7C" -gravity south -annotate +0+50 "$HANDLE" )
+    CMD+=( -size 1080x1350 xc:white )
+    CMD+=( "$LOGO_B_180" -gravity northwest -geometry +96+96 -compose over -composite )
+    CMD+=( -fill "#1B6DFC" -draw "rectangle 96,515 160,523" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -annotate +176+537 "$LABEL" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 68 -fill "#1A1A1A" -annotate +96+655 "$HOOK1" )
+    [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize 68 -fill "#1A1A1A" -annotate +96+755 "$HOOK2" )
+    [ -n "$SUB1"  ] && CMD+=( -font "$SANS"      -pointsize 26 -fill "#5C5C5C" -annotate +96+855 "$SUB1" )
+    [ -n "$SUB2"  ] && CMD+=( -font "$SANS"      -pointsize 26 -fill "#5C5C5C" -annotate +96+897 "$SUB2" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "#7C7C7C" -gravity south -annotate +0+96 "$HANDLE" )
     ;;
 
   contrarian)
@@ -98,8 +101,8 @@ case "$TYPE" in
     H3_COLOR="#1B6DFC"
     [ "$HOOK3_BLUE" = "false" ] && H3_COLOR="white"
 
-    CMD+=( -size 1080x1080 xc:'#0F0F0F' )
-    CMD+=( "$LOGO_W_180" -gravity northwest -geometry +60+60 -compose over -composite )
+    CMD+=( -size 1080x1350 xc:'#0F0F0F' )
+    CMD+=( "$LOGO_W_180" -gravity northwest -geometry +96+96 -compose over -composite )
     if [ -n "$HOOK3" ]; then
       CMD+=( -font "$SANS_BOLD" -pointsize 96 -fill white       -gravity center -annotate +0-120 "$HOOK1" )
       CMD+=( -font "$SANS_BOLD" -pointsize 96 -fill "$H2_COLOR" -gravity center -annotate +0-10  "$HOOK2" )
@@ -110,28 +113,28 @@ case "$TYPE" in
     fi
     [ -n "$SUB1" ] && CMD+=( -font "$SANS" -pointsize 26 -fill "rgba(255,255,255,0.7)" -gravity center -annotate +0+250 "$SUB1" )
     [ -n "$SUB2" ] && CMD+=( -font "$SANS" -pointsize 26 -fill "rgba(255,255,255,0.7)" -gravity center -annotate +0+290 "$SUB2" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.55)" -gravity south -annotate +0+50 "$HANDLE" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.55)" -gravity south -annotate +0+96 "$HANDLE" )
     ;;
 
   pattern)
-    CMD+=( -size 1080x1080 xc:white )
-    CMD+=( "$LOGO_B_180" -gravity northwest -geometry +60+60 -compose over -composite )
-    CMD+=( -fill "#1B6DFC" -draw "rectangle 80,360 144,368" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -annotate +160+382 "$LABEL" )
-    CMD+=( -font "$GEORGIA_BOLD" -pointsize 58 -fill "#1A1A1A" -annotate +80+490 "$HOOK1" )
-    [ -n "$HOOK2" ] && CMD+=( -font "$GEORGIA_BOLD_ITALIC" -pointsize 58 -fill "#1A1A1A" -annotate +80+560 "$HOOK2" )
+    CMD+=( -size 1080x1350 xc:white )
+    CMD+=( "$LOGO_B_180" -gravity northwest -geometry +96+96 -compose over -composite )
+    CMD+=( -fill "#1B6DFC" -draw "rectangle 96,495 160,503" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -annotate +176+517 "$LABEL" )
+    CMD+=( -font "$GEORGIA_BOLD" -pointsize 58 -fill "#1A1A1A" -annotate +96+625 "$HOOK1" )
+    [ -n "$HOOK2" ] && CMD+=( -font "$GEORGIA_BOLD_ITALIC" -pointsize 58 -fill "#1A1A1A" -annotate +96+695 "$HOOK2" )
 
     LIST_COUNT="$(echo "$SPEC" | jq -r '.list // [] | length')"
-    Y=670
+    Y=805
     for i in $(seq 0 $((LIST_COUNT - 1))); do
       ITEM="$(echo "$SPEC" | jq -r ".list[$i]")"
-      CMD+=( -font "$SANS_BOLD" -pointsize 26 -fill "#1B6DFC" -annotate "+80+${Y}" "→" )
-      CMD+=( -font "$SANS"      -pointsize 24 -fill "#2A2A2A" -annotate "+130+${Y}" "$ITEM" )
+      CMD+=( -font "$SANS_BOLD" -pointsize 26 -fill "#1B6DFC" -annotate "+96+${Y}" "→" )
+      CMD+=( -font "$SANS"      -pointsize 24 -fill "#2A2A2A" -annotate "+146+${Y}" "$ITEM" )
       Y=$((Y + 50))
     done
     # Soft CTA (optional): small Signal Blue italic line below the list.
-    [ -n "$SOFT_CTA" ] && CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill "#1B6DFC" -annotate "+80+$((Y + 20))" "$SOFT_CTA" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "#7C7C7C" -gravity south -annotate +0+50 "$HANDLE" )
+    [ -n "$SOFT_CTA" ] && CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill "#1B6DFC" -annotate "+96+$((Y + 20))" "$SOFT_CTA" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "#7C7C7C" -gravity south -annotate +0+96 "$HANDLE" )
     ;;
 
   coach)
@@ -141,10 +144,11 @@ case "$TYPE" in
     # is last so short pull-quotes don't end with an unclosed quote.
     [ -z "$PHOTO" ] && { echo "coach template requires .photo" >&2; exit 1; }
     PF="$(photo_path "$PHOTO")"
-    CMD+=( "$PF" -resize 1080x1080^ -gravity center -extent 1080x1080 -colorspace gray -colorspace sRGB )
-    CMD+=( '(' -size 1080x1080 radial-gradient:'rgba(0,0,0,0)-rgba(0,0,0,0.85)' ')' -compose multiply -composite )
-    CMD+=( -fill "rgba(0,0,0,0.55)" -draw "rectangle 0,720 1080,1080" )
-    CMD+=( "$LOGO_W_180" -gravity northwest -geometry +60+60 -compose over -composite )
+    CMD+=( "$PF" -resize 1080x1350^ -gravity center -extent 1080x1350 -colorspace gray -colorspace sRGB )
+    CMD+=( '(' -size 1080x1350 radial-gradient:'rgba(0,0,0,0)-rgba(0,0,0,0.85)' ')' -compose multiply -composite )
+    # Bottom dark slab covers the text region (proportionally taller than the 1080² version)
+    CMD+=( -fill "rgba(0,0,0,0.55)" -draw "rectangle 0,900 1080,1350" )
+    CMD+=( "$LOGO_W_180" -gravity northwest -geometry +96+96 -compose over -composite )
 
     # Build the line list with their fonts, then close the quote on the last one
     LINES=()
@@ -154,8 +158,9 @@ case "$TYPE" in
     [ -n "$SUB2"  ] && LINES+=( "bold|$SUB2"   )
     LAST_IDX=$(( ${#LINES[@]} - 1 ))
 
-    # Vertical offsets from the bottom (gravity southwest): 290 / 225 / 160 / 95
-    OFFSETS=( 290 225 160 95 )
+    # Vertical offsets from the bottom (gravity southwest): +46 vs the 1080² version
+    # so the lowest line clears the 96px bottom safe zone.
+    OFFSETS=( 336 271 206 141 )
     for idx in "${!LINES[@]}"; do
       entry="${LINES[$idx]}"
       font_kind="${entry%%|*}"
@@ -163,12 +168,12 @@ case "$TYPE" in
       [ "$idx" -eq 0 ] && text="\"$text"
       [ "$idx" -eq "$LAST_IDX" ] && text="${text}\""
       if [ "$font_kind" = "italic" ]; then F="$GEORGIA_ITALIC"; else F="$GEORGIA_BOLD_ITALIC"; fi
-      CMD+=( -font "$F" -pointsize 52 -fill white -gravity southwest -annotate "+80+${OFFSETS[$idx]}" "$text" )
+      CMD+=( -font "$F" -pointsize 52 -fill white -gravity southwest -annotate "+96+${OFFSETS[$idx]}" "$text" )
     done
 
     # Soft CTA (optional): small Signal Blue caps line at top-right, doesn't crowd the pull-quote.
-    [ -n "$SOFT_CTA" ] && CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -gravity northeast -annotate +60+85 "$SOFT_CTA" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.7)" -gravity southwest -annotate +80+35 "$HANDLE" )
+    [ -n "$SOFT_CTA" ] && CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -gravity northeast -annotate +96+121 "$SOFT_CTA" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.7)" -gravity southwest -annotate +96+96 "$HANDLE" )
     ;;
 
   diagnostic)
@@ -177,47 +182,49 @@ case "$TYPE" in
     [ -z "$CTA_EYEBROW" ] && CTA_EYEBROW="FREE · 2 MINUTES"
     [ -z "$CTA_TEXT"    ] && CTA_TEXT="→ Link in bio"
 
-    CMD+=( "$PF" -resize 1080x1080^ -gravity center -extent 1080x1080 -colorspace gray -colorspace sRGB )
-    CMD+=( '(' -size 1080x500 gradient:'rgba(0,0,0,0)-rgba(0,0,0,0.95)' ')' -geometry +0+580 -compose over -composite )
-    CMD+=( "$LOGO_W_180" -gravity northwest -geometry +60+60 -compose over -composite )
-    CMD+=( -fill "#1B6DFC" -draw "rectangle 80,720 144,728" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -gravity northwest -annotate +160+714 "$CTA_EYEBROW" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 56 -fill white -gravity northwest -annotate +80+760 "$HOOK1" )
-    [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize 56 -fill white -gravity northwest -annotate +80+828 "$HOOK2" )
-    [ -n "$SUB1"  ] && CMD+=( -font "$SANS"      -pointsize 28 -fill "rgba(255,255,255,0.88)" -gravity northwest -annotate +80+910 "$SUB1" )
-    [ -n "$SUB2"  ] && CMD+=( -font "$SANS"      -pointsize 28 -fill "rgba(255,255,255,0.88)" -gravity northwest -annotate +80+950 "$SUB2" )
-    CMD+=( -fill "#1B6DFC" -draw "roundrectangle 80,1000 380,1052 8,8" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill white -gravity northwest -annotate +110+1014 "$CTA_TEXT" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.6)" -gravity southeast -annotate +80+40 "$HANDLE" )
+    CMD+=( "$PF" -resize 1080x1350^ -gravity center -extent 1080x1350 -colorspace gray -colorspace sRGB )
+    # Gradient at the bottom — covers ~625px from bottom edge (proportional scale of original 500/1080)
+    CMD+=( '(' -size 1080x625 gradient:'rgba(0,0,0,0)-rgba(0,0,0,0.95)' ')' -geometry +0+725 -compose over -composite )
+    CMD+=( "$LOGO_W_180" -gravity northwest -geometry +96+96 -compose over -composite )
+    CMD+=( -fill "#1B6DFC" -draw "rectangle 96,855 160,863" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -gravity northwest -annotate +176+849 "$CTA_EYEBROW" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 56 -fill white -gravity northwest -annotate +96+895 "$HOOK1" )
+    [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize 56 -fill white -gravity northwest -annotate +96+963 "$HOOK2" )
+    [ -n "$SUB1"  ] && CMD+=( -font "$SANS"      -pointsize 28 -fill "rgba(255,255,255,0.88)" -gravity northwest -annotate +96+1045 "$SUB1" )
+    [ -n "$SUB2"  ] && CMD+=( -font "$SANS"      -pointsize 28 -fill "rgba(255,255,255,0.88)" -gravity northwest -annotate +96+1085 "$SUB2" )
+    CMD+=( -fill "#1B6DFC" -draw "roundrectangle 96,1140 396,1192 8,8" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill white -gravity northwest -annotate +126+1154 "$CTA_TEXT" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.6)" -gravity southeast -annotate +96+96 "$HANDLE" )
     ;;
 
   reel_cover)
-    # Placeholder cover frame for an Amanda-produced HeyGen reel. 1080x1080
-    # square (the grid-visible crop of the 9:16 reel). Greyscale photo BG +
-    # heavy gradient + on-screen hook lines + REEL badge top-right + logo
-    # top-left + handle bottom. Swapped for Amanda's MP4 cover frame when
-    # the reel itself ships.
+    # Placeholder cover frame for an Amanda-produced HeyGen reel. 1080x1350
+    # (4:5 portrait — grid-visible crop of the 9:16 reel; central band per
+    # social-asset-spec.md). Greyscale photo BG + heavy gradient + on-screen
+    # hook lines + REEL badge top-right + logo top-left + handle bottom.
+    # Swapped for Amanda's MP4 cover frame when the reel itself ships.
     [ -z "$PHOTO" ] && { echo "reel_cover template requires .photo" >&2; exit 1; }
     PF="$(photo_path "$PHOTO")"
-    CMD+=( "$PF" -resize 1080x1080^ -gravity center -extent 1080x1080 -colorspace gray -colorspace sRGB )
+    CMD+=( "$PF" -resize 1080x1350^ -gravity center -extent 1080x1350 -colorspace gray -colorspace sRGB )
     # Heavier gradient than coach — reel covers compete with motion in feed
-    CMD+=( '(' -size 1080x1080 gradient:'rgba(0,0,0,0.55)-rgba(0,0,0,0.85)' ')' -compose multiply -composite )
+    CMD+=( '(' -size 1080x1350 gradient:'rgba(0,0,0,0.55)-rgba(0,0,0,0.85)' ')' -compose multiply -composite )
     # Top-left logo
-    CMD+=( "$LOGO_W_180" -gravity northwest -geometry +60+60 -compose over -composite )
-    # Top-right REEL badge (Signal Blue chip)
-    CMD+=( -fill "#1B6DFC" -draw "roundrectangle 870,70 1020,118 6,6" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill white -gravity northeast -annotate +80+82 "REEL  ▷" )
+    CMD+=( "$LOGO_W_180" -gravity northwest -geometry +96+96 -compose over -composite )
+    # Top-right REEL badge (Signal Blue chip) — pushed in to clear right safe zone
+    CMD+=( -fill "#1B6DFC" -draw "roundrectangle 834,96 984,144 6,6" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill white -gravity northeast -annotate +109+109 "REEL  ▷" )
     # Centered on-screen hook lines (italic serif for pull-quote feel)
     CMD+=( -font "$GEORGIA_BOLD_ITALIC" -pointsize 64 -fill white -gravity center -annotate +0-100 "$HOOK1" )
     [ -n "$HOOK2" ] && CMD+=( -font "$GEORGIA_BOLD_ITALIC" -pointsize 64 -fill white -gravity center -annotate +0-10 "$HOOK2" )
     [ -n "$HOOK3" ] && CMD+=( -font "$GEORGIA_BOLD_ITALIC" -pointsize 64 -fill white -gravity center -annotate +0+80 "$HOOK3" )
     # Handle bottom
-    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.7)" -gravity south -annotate +0+50 "$HANDLE" )
+    CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.7)" -gravity south -annotate +0+96 "$HANDLE" )
     ;;
 
   carousel)
     # Multi-slide swipe-through post. Reads .slides[] from spec and writes
-    # one PNG per slide named {slug}_01.png ... {slug}_NN.png.
+    # one PNG per slide named {slug}_01.png ... {slug}_NN.png. Each slide
+    # 1080x1350 (4:5 portrait) with 96px safe zone.
     # Each slide: { hook, hook_2?, sub?, blue?, is_cta?, cta_text? }
     #   - hook/hook_2: centered sans-bold text, big
     #   - sub: smaller, lower-contrast support line
@@ -240,27 +247,27 @@ case "$TYPE" in
 
       if [ "$S_CTA" = "true" ]; then
         # Dark CTA slide (visual punch at the end of the swipe)
-        SCMD+=( -size 1080x1080 xc:'#0F0F0F' )
-        SCMD+=( "$LOGO_W_180" -gravity northwest -geometry +60+60 -compose over -composite )
+        SCMD+=( -size 1080x1350 xc:'#0F0F0F' )
+        SCMD+=( "$LOGO_W_180" -gravity northwest -geometry +96+96 -compose over -composite )
         SCMD+=( -font "$SANS_BOLD" -pointsize 70 -fill white -gravity center -annotate +0-120 "$S_HOOK" )
         [ -n "$S_HOOK2" ] && SCMD+=( -font "$SANS_BOLD" -pointsize 70 -fill white -gravity center -annotate +0-30 "$S_HOOK2" )
         [ -n "$S_SUB"   ] && SCMD+=( -font "$SANS" -pointsize 26 -fill "rgba(255,255,255,0.75)" -gravity center -annotate +0+80 "$S_SUB" )
-        # CTA pill
-        SCMD+=( -fill "#1B6DFC" -draw "roundrectangle 360,820 720,872 8,8" )
-        SCMD+=( -font "$SANS_BOLD" -pointsize 22 -fill white -gravity north -annotate +0+832 "$S_CTA_TXT" )
+        # CTA pill (centered horizontally, shifted down for taller canvas)
+        SCMD+=( -fill "#1B6DFC" -draw "roundrectangle 360,1090 720,1142 8,8" )
+        SCMD+=( -font "$SANS_BOLD" -pointsize 22 -fill white -gravity north -annotate +0+1102 "$S_CTA_TXT" )
         # Slide counter top-right + handle bottom
-        SCMD+=( -font "$SANS_BOLD" -pointsize 16 -fill "rgba(255,255,255,0.5)" -gravity northeast -annotate +60+85 "$S_DISPLAY" )
-        SCMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.55)" -gravity south -annotate +0+50 "$HANDLE" )
+        SCMD+=( -font "$SANS_BOLD" -pointsize 16 -fill "rgba(255,255,255,0.5)" -gravity northeast -annotate +96+121 "$S_DISPLAY" )
+        SCMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.55)" -gravity south -annotate +0+96 "$HANDLE" )
       else
         # White content slide
-        SCMD+=( -size 1080x1080 xc:white )
-        SCMD+=( "$LOGO_B_180" -gravity northwest -geometry +60+60 -compose over -composite )
+        SCMD+=( -size 1080x1350 xc:white )
+        SCMD+=( "$LOGO_B_180" -gravity northwest -geometry +96+96 -compose over -composite )
         if [ "$S_BLUE" = "true" ]; then HC="#1B6DFC"; else HC="#1A1A1A"; fi
         SCMD+=( -font "$SANS_BOLD" -pointsize 76 -fill "$HC" -gravity center -annotate +0-60 "$S_HOOK" )
         [ -n "$S_HOOK2" ] && SCMD+=( -font "$SANS_BOLD" -pointsize 76 -fill "$HC" -gravity center -annotate +0+40 "$S_HOOK2" )
         [ -n "$S_SUB"   ] && SCMD+=( -font "$SANS" -pointsize 28 -fill "#5C5C5C" -gravity center -annotate +0+150 "$S_SUB" )
-        SCMD+=( -font "$SANS_BOLD" -pointsize 16 -fill "#7C7C7C" -gravity northeast -annotate +60+85 "$S_DISPLAY" )
-        SCMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "#7C7C7C" -gravity south -annotate +0+50 "$HANDLE" )
+        SCMD+=( -font "$SANS_BOLD" -pointsize 16 -fill "#7C7C7C" -gravity northeast -annotate +96+121 "$S_DISPLAY" )
+        SCMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "#7C7C7C" -gravity south -annotate +0+96 "$HANDLE" )
       fi
 
       SCMD+=( "$S_OUT" )
