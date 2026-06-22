@@ -64,11 +64,22 @@ export type DoctrineKey = keyof typeof DOCTRINE_VERSIONS
 
 /**
  * Is the stored doctrine_version for an artefact stale compared to the
- * current constant? Returns true when stored is null OR doesn't match the
- * current value. The dashboard uses this to decide whether to show the
- * amber "Regenerate recommended" pill.
+ * current constant?
+ *
+ * - Returns FALSE when stored is null/undefined → grandfathered. These are
+ *   artefacts generated before doctrine-versioning was rolled out; there
+ *   was no version to stamp at the time, and flagging them as stale on
+ *   every coach view becomes constant noise. The coach can still see they
+ *   have no stamped version and choose to regenerate; this just stops the
+ *   pill from screaming about it.
+ * - Returns TRUE when stored is a string that doesn't match the current
+ *   value → genuinely stale (an older doctrine version than what's live).
+ *
+ * Previously returned true for null (pre-2026-06-22). The change aligns
+ * the audit pill behaviour with the nutrition page's local check, which
+ * already guarded on non-null and treated null as grandfathered.
  */
 export function isDoctrineStale(stored: string | null | undefined, key: DoctrineKey): boolean {
-  if (!stored) return true
+  if (!stored) return false
   return stored !== DOCTRINE_VERSIONS[key]
 }
