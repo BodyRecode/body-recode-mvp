@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 import { checkPrescriptionFeasibility, humaniseValidationIssue } from '@/lib/nutrition-validation'
 
 function parseReason(text: string): { intro: string | null; points: string[] } {
@@ -184,20 +185,10 @@ export default function NutritionPrescriptionSuggest({
   // the coach toggles bridge mode OFF after it auto-scaled the anchor down.
   const [proteinAnchorBeforeBridge, setProteinAnchorBeforeBridge] = useState<number | null>(null)
   const [editingField, setEditingField] = useState<string | null>(null)
-  const [generationElapsed, setGenerationElapsed] = useState(0)
-
-  // Tick a 1Hz timer while generating so the overlay can show elapsed seconds
-  // and progress through synthetic stages. Sonnet 4.6 takes ~60-90s for a
-  // full structured-foods plan with validation + retries — silent waits feel
-  // broken, so the overlay shows what stage the engine is in.
-  useEffect(() => {
-    if (!generating) {
-      setGenerationElapsed(0)
-      return
-    }
-    const t = setInterval(() => setGenerationElapsed(s => s + 1), 1000)
-    return () => clearInterval(t)
-  }, [generating])
+  // Elapsed-seconds counter + staged readout now live inside the shared
+  // GenerationProgressOverlay (src/components/generation-progress-overlay.tsx).
+  // This page was the original source of the pattern; refactored 2026-06-22
+  // to consume the shared component so every generation surface looks identical.
 
   // Module-level ref so we can abort an in-flight fetch when the coach toggles
   // bridge mode OFF mid-fetch. Without this, the fetch resolves and stomps
@@ -401,19 +392,19 @@ export default function NutritionPrescriptionSuggest({
 
   if (loading) {
     return (
-      <div className="space-y-3">
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-            <p className="text-sm text-stone-600">Reading client context and generating prescription suggestion...</p>
-          </div>
-          <div className="space-y-2">
-            {[...Array(7)].map((_, i) => (
-              <div key={i} className="h-4 bg-stone-200 rounded animate-pulse" style={{ width: `${60 + (i % 3) * 15}%` }} />
-            ))}
-          </div>
-        </div>
-      </div>
+      <GenerationProgressOverlay
+        active={true}
+        title="Generating Nutrition Prescription"
+        stages={[
+          { start: 0,  label: 'Reading CFFS, intake, baseline, medications, dietary context' },
+          { start: 6,  label: 'Synthesising entry state, body state, PTS phase' },
+          { start: 14, label: 'Drafting protein anchor, carb tier, meal frequency, exclusions' },
+          { start: 28, label: 'Validating feasibility against appetite-suppression doctrine' },
+          { start: 40, label: 'Returning the prescription suggestion for your review' },
+          { start: 60, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Prescription suggestion uses Claude Sonnet 4.6 for the full interpretive synthesis (body state, PTS phase, anchor, carb tier, feasibility checks). Typical: 30 to 50 seconds. The page is not frozen, please don't refresh."
+      />
     )
   }
 
@@ -432,20 +423,6 @@ export default function NutritionPrescriptionSuggest({
 
   const toggle = (field: string) => setEditingField(editingField === field ? null : field)
 
-  // Synthetic progress stages for the generation overlay. Sonnet 4.6 emits the
-  // plan in one shot (no streaming), so we can't show real progress — but a
-  // staged timeline based on elapsed seconds gives the same psychological
-  // affordance and stops the wait from feeling broken.
-  const generationStages: Array<{ start: number; label: string }> = [
-    { start: 0, label: 'Reading client context (CFFS, intake, baseline, medications)' },
-    { start: 3, label: 'Drafting 3 candidate plans in parallel (fast model)' },
-    { start: 35, label: 'Validating each candidate against the doctrine rules' },
-    { start: 45, label: 'Escalating to higher-accuracy model if no candidate passed' },
-    { start: 90, label: 'Polishing the higher-accuracy plan' },
-    { start: 130, label: 'Taking longer than usual — give it another moment' },
-  ]
-  const currentStage = [...generationStages].reverse().find(s => generationElapsed >= s.start) ?? generationStages[0]
-
   function applyFeasibilityPatch(patch: Partial<{ protein_anchor_g: number; meal_frequency: number }>) {
     if (typeof patch.protein_anchor_g === 'number') setProteinAnchorG(patch.protein_anchor_g)
     if (typeof patch.meal_frequency === 'number') setMealFrequency(patch.meal_frequency)
@@ -453,38 +430,19 @@ export default function NutritionPrescriptionSuggest({
 
   return (
     <div className="flex gap-8 max-w-5xl relative">
-      {generating && (
-        <div className="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center px-6">
-          <div className="bg-white border border-stone-200 rounded-2xl shadow-2xl max-w-md w-full p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="relative w-3 h-3">
-                <div className="absolute inset-0 bg-blue-500 rounded-full animate-ping opacity-75" />
-                <div className="relative w-3 h-3 bg-blue-500 rounded-full" />
-              </div>
-              <p className="text-xs font-bold uppercase tracking-widest text-blue-600">Generating Plan</p>
-              <span className="ml-auto text-xs font-mono text-stone-500 tabular-nums">{generationElapsed}s</span>
-            </div>
-            <p className="text-sm text-stone-700 leading-relaxed mb-4 min-h-[2.5rem]">
-              {currentStage.label}…
-            </p>
-            <div className="space-y-1.5">
-              {generationStages.filter(s => s.start < 100).map((s, i) => {
-                const done = generationElapsed >= (generationStages[i + 1]?.start ?? Infinity)
-                const active = currentStage.start === s.start
-                return (
-                  <div key={s.start} className="flex items-center gap-2">
-                    <div className={`w-1.5 h-1.5 rounded-full ${done ? 'bg-blue-500' : active ? 'bg-blue-300 animate-pulse' : 'bg-stone-300'}`} />
-                    <span className={`text-xs ${done ? 'text-stone-500 line-through' : active ? 'text-stone-800' : 'text-stone-400'}`}>{s.label}</span>
-                  </div>
-                )
-              })}
-            </div>
-            <p className="text-[11px] text-stone-400 mt-4 leading-relaxed">
-              Nutrition generation uses Claude Sonnet 4.6 for high-accuracy constraint satisfaction. Typical generation: 60-90 seconds. The page is not frozen — please don&apos;t refresh.
-            </p>
-          </div>
-        </div>
-      )}
+      <GenerationProgressOverlay
+        active={generating}
+        title="Generating Nutrition Plan"
+        stages={[
+          { start: 0,   label: 'Reading client context (CFFS, intake, baseline, medications, dietary)' },
+          { start: 5,   label: 'Drafting 3 candidate plans in parallel (Claude Haiku 4.5)' },
+          { start: 40,  label: 'Validating each candidate against doctrine rules' },
+          { start: 50,  label: 'Escalating to Claude Sonnet 4.6 if no candidate passed' },
+          { start: 95,  label: 'Polishing the higher-accuracy plan' },
+          { start: 135, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Nutrition plan generation uses Claude Haiku 4.5 with Sonnet 4.6 escalation for high-accuracy constraint satisfaction. Typical: 60 to 90 seconds. The page is not frozen, please don't refresh."
+      />
       <StickyScrollNav sections={NAV_SECTIONS} />
       <div className="flex-1 min-w-0 space-y-4">
 
