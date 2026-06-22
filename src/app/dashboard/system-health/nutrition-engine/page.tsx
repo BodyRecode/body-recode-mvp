@@ -4,7 +4,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Database } from 'lucide-react'
 import { PageHeader, Card, MONO_FONT, EmptyState } from '@/components/dashboard/ui'
-import { NUTRITION_DOCTRINE_VERSION, humaniseValidationIssue } from '@/lib/nutrition-validation'
+import { humaniseValidationIssue } from '@/lib/nutrition-validation'
+import { DOCTRINE_VERSIONS } from '@/lib/doctrine-versions'
 
 /**
  * Nutrition Engine telemetry dashboard.
@@ -199,7 +200,7 @@ export default async function NutritionEngineHealthPage({
                 }`}
               >
                 v{v}
-                {v === NUTRITION_DOCTRINE_VERSION && <span className="ml-1 text-[9px] opacity-70">(current)</span>}
+                {v === DOCTRINE_VERSIONS.nutrition_plan && <span className="ml-1 text-[9px] opacity-70">(current)</span>}
               </Link>
             ))}
           </div>

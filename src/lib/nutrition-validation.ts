@@ -12,23 +12,21 @@
  */
 
 /**
- * Doctrine version stamped onto every nutrition_plans row at generation time.
- * Bump when ANY of the following changes materially:
- *   - A validator rule is added, removed, or its threshold/scope changes
- *   - A constant in this file changes (PER_MEAL_PROTEIN_CAP, BRIDGE_CEILING_BUFFER, etc.)
- *   - A pre-flight feasibility check is added or modified
- *   - The system or user prompt in nutrition-prompt.ts changes materially
- *     (formatting tweaks don't count; rule additions / threshold edits do)
+ * Doctrine version is now exclusively maintained in `src/lib/doctrine-versions.ts`
+ * (DOCTRINE_VERSIONS.nutrition_plan). The legacy NUTRITION_DOCTRINE_VERSION
+ * constant that used to live here was the cause of the 2026-06-22 staleness
+ * regression: generate-nutrition route had been migrated to stamp from the
+ * new consolidated source, but the coach UI staleness check + system-health
+ * page still imported this legacy constant for comparison — so every freshly
+ * regenerated plan immediately flagged as stale (newer-than-the-comparator).
  *
- * Format: YYYY-MM-DD, suffix .1/.2 for same-day patches. Sorts as string.
- * Older plans on stale versions are flagged on the coach view (soft hint)
- * and surfaced in the validator-events dashboard.
- *
- * Do NOT skip this bump — it is the only signal that lets the coach UI
- * tell stale plans from current ones, and the only key that lets the
- * telemetry dashboard slice fire-rates by doctrine version.
+ * Re-exporting under the old name keeps any out-of-tree imports working
+ * during the transition, but DO NOT add new usages. Bump versions in
+ * doctrine-versions.ts only.
  */
-export const NUTRITION_DOCTRINE_VERSION = '2026-05-26.4'
+export { DOCTRINE_VERSIONS as _DOCTRINE_VERSIONS } from './doctrine-versions'
+import { DOCTRINE_VERSIONS } from './doctrine-versions'
+export const NUTRITION_DOCTRINE_VERSION = DOCTRINE_VERSIONS.nutrition_plan
 
 export interface StructuredFood {
   name: string
