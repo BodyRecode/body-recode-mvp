@@ -57,7 +57,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   if (clientError) console.error('Client fetch error:', clientError)
   if (!client) notFound()
 
-  const [{ data: cffsRecords }, { data: invitations }, { data: intakes }, { data: cfwsRecords }, { data: recentCheckins }, { data: baselines }, { data: activePrograms }, { data: draftPrograms }, { data: activeNutritionPlans }, { data: draftNutritionPlans }] = await Promise.all([
+  const [{ data: cffsRecords }, { data: invitations }, { data: intakes }, { data: cfwsRecords }, { data: recentCheckins }, { data: baselines }, { data: activePrograms }, { data: draftPrograms }, { data: activeNutritionPlans }, { data: draftNutritionPlans }, { data: pendingTrajectoryRows }] = await Promise.all([
     admin
       .from('cffs')
       .select('*')
@@ -117,7 +117,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .eq('client_id', id)
       .eq('status', 'draft')
       .maybeSingle(),
+    // Archived programs with no published trajectory reading. The page
+    // surfaces a top-of-page amber banner if one exists, so a block-end
+    // reading skipped during a block transition is visible without the
+    // coach needing to click into the program page first.
+    admin
+      .from('programs')
+      .select('id, block_name, week_duration, generated_at')
+      .eq('client_id', id)
+      .eq('is_active', false)
+      .neq('status', 'draft')
+      .is('trajectory_reading_published_at', null)
+      .order('generated_at', { ascending: false })
+      .limit(1),
   ])
+
+  const pendingTrajectory = pendingTrajectoryRows?.[0] ?? null
 
   // Client-uploaded blood panels (Health Markers feature). Newest first.
   const { data: bloodPanels } = await admin
@@ -351,6 +366,26 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           }
         />
       </div>
+
+      {/* Pending block-end Trajectory Reading. Surfaces at top of profile so
+          a skipped block-end reading isn't only discoverable from the program
+          page (where it sits inline above the active block's panel). */}
+      {pendingTrajectory && (() => {
+        const endedAt = pendingTrajectory.generated_at && pendingTrajectory.week_duration
+          ? new Date(new Date(pendingTrajectory.generated_at).getTime() + pendingTrajectory.week_duration * 7 * 86_400_000).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
+          : null
+        return (
+          <Link
+            href={`/dashboard/clients/${id}/program`}
+            className="block bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-2xl p-4 mb-4 transition-colors"
+          >
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-amber-700 mb-1">Pending block-end reading</p>
+            <p className="text-sm text-amber-900">
+              <span className="font-semibold">{pendingTrajectory.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Click through to generate it now →
+            </p>
+          </Link>
+        )
+      })()}
 
       {/* Deliberate Start Window */}
       <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
