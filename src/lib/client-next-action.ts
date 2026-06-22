@@ -90,6 +90,21 @@ export interface ClientNextActionInput {
    * left-joining weekly_checkins → weekly_checkin_feedback and picking the
    * most recent unanswered one.
    */
+  /**
+   * The most-recently archived program for this client that has not yet had
+   * its trajectory reading published. Surfaces a "generate block-end reading"
+   * action in Today's Focus so the artefact doesn't get skipped when the
+   * coach has already moved on to the next block. Caller computes by
+   * left-joining archived programs against trajectory_reading_published_at
+   * IS NULL.
+   */
+  pendingTrajectoryReading: {
+    programId: string
+    blockName: string
+    generatedAt: string | null
+    weekDuration: number | null
+  } | null
+
   unansweredCheckin: {
     weekNumber: number
     formType: 'A' | 'B'
@@ -140,6 +155,7 @@ export type NextActionStage =
   | 'active_reassessment'
   | 'active_checkin_overdue'
   | 'active_checkin_feedback_pending'
+  | 'active_trajectory_reading_pending'
   | 'active_drift'
   | 'active_bridge_expiring'         // bridge mode plan within 7 days of expiry
   | 'active_bridge_expired'          // bridge mode plan past its expiry date
@@ -498,6 +514,30 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
           : `Submitted ${u.daysSince} day${u.daysSince === 1 ? '' : 's'} ago - send your read`,
       href: `${profileHref}/checkins/${u.weekNumber}/${u.formType.toLowerCase()}`,
       accent: u.daysSince >= 3 ? 'amber' : 'teal',
+      priority: 20,
+      badge: composedBadge,
+    }
+  }
+
+  // Pending block-end Trajectory Reading on an archived program. Surfaces
+  // after check-in feedback (responding to a fresh client signal beats
+  // generating a retrospective reading) but before bridge / drift / steady
+  // so the artefact gets generated before too many blocks pile up. Common
+  // case: coach published the next block, archiving the previous one,
+  // without firing the trajectory reading on the way out.
+  if (input.pendingTrajectoryReading) {
+    const t = input.pendingTrajectoryReading
+    const endedLabel = t.generatedAt && t.weekDuration
+      ? new Date(new Date(t.generatedAt).getTime() + t.weekDuration * 7 * 86_400_000).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
+      : null
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'active_trajectory_reading_pending',
+      headline: `Generate block-end reading for ${t.blockName}`,
+      sublabel: endedLabel ? `Block ended around ${endedLabel}` : 'Block already archived without its trajectory reading',
+      href: `${profileHref}/program`,
+      accent: 'amber',
       priority: 20,
       badge: composedBadge,
     }

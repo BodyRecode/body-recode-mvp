@@ -56,6 +56,7 @@ interface Program {
   published_to_client_at?: string | null
   published_to_client_by?: string | null
   program_reading_published_at?: string | null
+  trajectory_reading_published_at?: string | null
 }
 
 function parseText(text: string): { intro: string | null; points: string[] } {
@@ -425,6 +426,42 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             program={activeProgram as unknown as Parameters<typeof ProgramReadingPanel>[0]['program']}
             clientToken={client.onboarding_token ?? null}
           />
+
+          {/* Pending block-end Trajectory Reading for the most recently
+              archived program. Surfaces when a previous block ended without
+              its trajectory reading being published — typical case is a coach
+              who shipped the next block (archiving the previous one) before
+              firing the block-end reading. Without this notice the panel for
+              the archived block is unreachable, since the main TrajectoryReadingPanel
+              below ties to the ACTIVE program. */}
+          {(() => {
+            const pending = archivedPrograms?.find(p => !p.trajectory_reading_published_at)
+            if (!pending) return null
+            const blockStatus: Parameters<typeof TrajectoryReadingPanel>[0]['blockStatus'] = {
+              isAtBlockEnd: true,
+              currentWeek: null,
+              weekDuration: pending.week_duration ?? null,
+              weeksRemaining: 0,
+            }
+            const endedAt = pending.generated_at && pending.week_duration
+              ? new Date(new Date(pending.generated_at).getTime() + pending.week_duration * 7 * 86_400_000).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
+              : null
+            return (
+              <div className="mb-6">
+                <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mb-3">
+                  <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-1">Pending block-end reading</p>
+                  <p className="text-sm text-amber-800">
+                    <span className="font-semibold">{pending.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Generate it now so the client has a record of the block arc before the next one is in full swing.
+                  </p>
+                </div>
+                <TrajectoryReadingPanel
+                  program={pending as unknown as Parameters<typeof TrajectoryReadingPanel>[0]['program']}
+                  clientToken={client.onboarding_token ?? null}
+                  blockStatus={blockStatus}
+                />
+              </div>
+            )
+          })()}
 
           {/* Client-facing Block-end Trajectory Reading - reads the CFWS arc */}
           {(() => {

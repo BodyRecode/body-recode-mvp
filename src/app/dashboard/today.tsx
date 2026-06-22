@@ -49,6 +49,7 @@ export default async function TodayWidget() {
     { data: cffsRows },
     { data: trainingPlans },
     { data: programs },
+    { data: archivedProgramsPendingTrajectory },
     { data: nutritionPlans },
     { data: cfwsAll },
     { data: weeklyCheckins },
@@ -72,6 +73,15 @@ export default async function TodayWidget() {
       .from('programs')
       .select('id, client_id, block_name, week_duration, generated_at, is_active, program_reading_published_at')
       .eq('is_active', true),
+    // Archived programs whose block-end trajectory reading was never published.
+    // Caller computes "most recent unpublished per client" client-side.
+    admin
+      .from('programs')
+      .select('id, client_id, block_name, week_duration, generated_at')
+      .eq('is_active', false)
+      .neq('status', 'draft')
+      .is('trajectory_reading_published_at', null)
+      .order('generated_at', { ascending: false }),
     admin
       .from('nutrition_plans')
       .select('id, client_id, plan_name, is_active, nutrition_reading_published_at, transitional_override_active, transitional_override_floor_kcal, transitional_override_expires_at')
@@ -117,6 +127,15 @@ export default async function TodayWidget() {
 
   const programByClient = new Map<string, NonNullable<typeof programs>[number]>()
   for (const p of programs ?? []) programByClient.set(p.client_id, p)
+
+  // Most recent archived program per client whose trajectory reading was
+  // never published. The fetch already orders by generated_at desc, so the
+  // first hit per client is the freshest unpublished one — leave the rest
+  // in case the coach has multiple skipped blocks (rare but possible).
+  const pendingTrajectoryByClient = new Map<string, NonNullable<typeof archivedProgramsPendingTrajectory>[number]>()
+  for (const p of archivedProgramsPendingTrajectory ?? []) {
+    if (!pendingTrajectoryByClient.has(p.client_id)) pendingTrajectoryByClient.set(p.client_id, p)
+  }
 
   const nutritionByClient = new Map<string, NonNullable<typeof nutritionPlans>[number]>()
   for (const n of nutritionPlans ?? []) nutritionByClient.set(n.client_id, n)
@@ -284,6 +303,16 @@ export default async function TodayWidget() {
       thisWeeksCheckinSubmitted,
       currentWeekNumber,
       unansweredCheckin,
+      pendingTrajectoryReading: (() => {
+        const p = pendingTrajectoryByClient.get(client.id)
+        if (!p) return null
+        return {
+          programId: p.id,
+          blockName: p.block_name,
+          generatedAt: p.generated_at ?? null,
+          weekDuration: p.week_duration ?? null,
+        }
+      })(),
       paymentSignal,
       paymentDetail,
     }
