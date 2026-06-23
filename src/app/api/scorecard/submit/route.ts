@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
   // write a junk value or violate the leads CHECK constraints.
   const sexVal: BiologicalSex | null = biological_sex === 'M' || biological_sex === 'F' ? biological_sex : null
   const ageVal: AgeBand | null = ['under_35', '35_44', '45_54', '55_plus'].includes(age_band as string) ? (age_band as AgeBand) : null
-  const storageVal: FatStorage | null = ['midsection', 'hips_thighs', 'all_over', 'low_tone'].includes(fat_storage as string) ? (fat_storage as FatStorage) : null
+  const storageVal: FatStorage | null = ['midsection', 'posterior', 'hips_thighs', 'all_over', 'low_tone'].includes(fat_storage as string) ? (fat_storage as FatStorage) : null
   // Cycle status only applies to females.
   const cycleVal: CycleStatus | null = sexVal === 'F' && ['regular', 'irregular', 'perimenopausal', 'postmenopausal'].includes(cycle_status as string) ? (cycle_status as CycleStatus) : null
 

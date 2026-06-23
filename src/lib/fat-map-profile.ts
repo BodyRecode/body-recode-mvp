@@ -27,7 +27,7 @@ export type Profile = 'Stress-Stored' | 'Insulin-Drift' | 'Estrogen-Shift' | 'An
 
 export type BiologicalSex = 'M' | 'F'
 export type AgeBand = 'under_35' | '35_44' | '45_54' | '55_plus'
-export type FatStorage = 'midsection' | 'hips_thighs' | 'all_over' | 'low_tone'
+export type FatStorage = 'midsection' | 'posterior' | 'hips_thighs' | 'all_over' | 'low_tone'
 export type CycleStatus = 'regular' | 'irregular' | 'perimenopausal' | 'postmenopausal'
 
 export interface ProfileSignals {
@@ -61,11 +61,15 @@ export const PROFILE_DESCRIPTORS: Record<Profile, string> = {
 
 /**
  * Fat-storage location → Fat Map profile. Mirrors the doctrine in the
- * pre-call brief Fat Map section: stomach/waist = cortisol, hips/thighs =
+ * pre-call brief Fat Map section: front belly/stomach = cortisol, hips/thighs =
  * oestrogen, full-body softening = insulin, lost tone/drive = androgen.
+ * Posterior/flank storage (lower back, love handles, upper back) is the
+ * subcutaneous insulin-handling pattern → Insulin-Drift (the front belly is
+ * the cortisol tell; sparing the front rules Stress-Stored OUT).
  */
 const STORAGE_PROFILE: Record<FatStorage, Profile> = {
   midsection: 'Stress-Stored',
+  posterior: 'Insulin-Drift',
   hips_thighs: 'Estrogen-Shift',
   all_over: 'Insulin-Drift',
   low_tone: 'Androgen-Decline',
