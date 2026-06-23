@@ -11,8 +11,20 @@ interface Props {
   token: string
   clientName?: string
   portalToken?: string | null
-  prefill?: Record<string, string>
+  identity?: Record<string, string>
 }
+
+// Identity fields the client already provided in the Health Declaration. In the
+// intake we show these back as a read-only confirmation card instead of asking
+// the client to type them a second time. (Relationship is shown for context but
+// is not an intake question, so it is not in this submittable set.)
+const CARRIED_IDENTITY_FIELDS = [
+  'full_name',
+  'date_of_birth',
+  'mobile_number',
+  'emergency_contact_name',
+  'emergency_contact_phone',
+] as const
 
 // Treat a question as required by default; only text fields are optional
 // unless explicitly flagged required. `required: false` always wins.
@@ -20,6 +32,19 @@ function isRequired(q: Question): boolean {
   if (q.required === true) return true
   if (q.required === false) return false
   return q.type !== 'text'
+}
+
+// Human-friendly display of a carried identity value in the confirmation card.
+// Date of birth is stored as yyyy-mm-dd; render it as a readable date.
+function formatIdentityValue(id: string, value: FormValue | undefined): string {
+  if (value === undefined || value === null || value === '') return ''
+  if (id === 'date_of_birth' && typeof value === 'string') {
+    const [y, m, d] = value.split('-').map(Number)
+    if (y && m && d) {
+      return new Date(y, m - 1, d).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })
+    }
+  }
+  return String(value)
 }
 
 function isAnswered(q: Question, value: FormValue | undefined): boolean {
@@ -207,8 +232,17 @@ function QuestionInput({
 
 type Draft = { sectionIndex: number; formData: FormData }
 
-export default function IntakeForm({ token, clientName, portalToken, prefill }: Props) {
+export default function IntakeForm({ token, clientName, portalToken, identity }: Props) {
   const [draft, setDraft, clearDraft, hydrated] = useFormDraft<Draft>(`intake:${token}`, { sectionIndex: 0, formData: {} })
+
+  // True when the client already supplied identity in the Health Declaration,
+  // so the intake can confirm those details instead of re-asking. Only the
+  // submittable carried fields count toward this (relationship is context only).
+  const hasPriorIdentity = Boolean(
+    identity && CARRIED_IDENTITY_FIELDS.some(f => identity[f])
+  )
+  // Whether the read-only confirmation card is in edit mode.
+  const [editingIdentity, setEditingIdentity] = useState(false)
 
   // Seed identity fields the client already entered earlier in onboarding.
   // Runs once after the local draft hydrates so a resumed draft wins; we only
@@ -216,12 +250,12 @@ export default function IntakeForm({ token, clientName, portalToken, prefill }: 
   // overwritten.
   const prefillApplied = useRef(false)
   useEffect(() => {
-    if (!hydrated || prefillApplied.current || !prefill) return
+    if (!hydrated || prefillApplied.current || !identity) return
     prefillApplied.current = true
     setDraft(prev => {
       const merged = { ...prev.formData }
       let changed = false
-      for (const [key, val] of Object.entries(prefill)) {
+      for (const [key, val] of Object.entries(identity)) {
         const existing = merged[key]
         if (val && (existing === undefined || existing === '')) {
           merged[key] = val
@@ -262,6 +296,16 @@ export default function IntakeForm({ token, clientName, portalToken, prefill }: 
   const isLast = sectionIndex === INTAKE_SECTIONS.length - 1
   const progressPct = Math.round(((sectionIndex + 1) / INTAKE_SECTIONS.length) * 100)
 
+  // On the identity section, when the client already supplied these details in
+  // their health declaration, render the carried fields inside a confirmation
+  // card and drop them from the normal question list so they aren't asked twice.
+  const showIdentityConfirm = section.id === 'identity' && hasPriorIdentity
+  const carried = new Set<string>(CARRIED_IDENTITY_FIELDS)
+  const carriedQuestions = showIdentityConfirm ? section.questions.filter(q => carried.has(q.id)) : []
+  const visibleQuestions = showIdentityConfirm
+    ? section.questions.filter(q => !carried.has(q.id))
+    : section.questions
+
   function setValue(id: string, value: FormValue) {
     setFormData(prev => ({ ...prev, [id]: value }))
     // Clear error for this question as soon as it has a value
@@ -301,6 +345,11 @@ export default function IntakeForm({ token, clientName, portalToken, prefill }: 
   }
 
   function scrollToFirstMissed(missedIds: string[]) {
+    // If a missed field lives inside the collapsed identity confirmation card,
+    // open the card to edit mode first so the input is actually reachable.
+    if (showIdentityConfirm && !editingIdentity && missedIds.some(id => carried.has(id))) {
+      setEditingIdentity(true)
+    }
     setTimeout(() => {
       const first = missedIds[0]
       const el = document.getElementById(`q-${first}`)
@@ -444,9 +493,73 @@ export default function IntakeForm({ token, clientName, portalToken, prefill }: 
         {/* Divider */}
         <div className="h-px bg-stone-100 mb-8" />
 
+        {/* Confirmation card for identity details the client already entered in
+            their Health Declaration. Shown read-only so they confirm rather than
+            re-type. An Edit toggle reveals the underlying inputs for corrections,
+            and any edit flows straight back to the submitted form data. */}
+        {section.id === 'identity' && showIdentityConfirm && (
+          <div className="mb-8 rounded-2xl border border-stone-200 bg-stone-50/60 p-5">
+            <div className="flex items-start justify-between gap-3 mb-4">
+              <div>
+                <p className="text-[13px] font-bold text-[#1A1A1A]">Confirm your details</p>
+                <p className="text-[12px] text-stone-500 mt-0.5 leading-relaxed">
+                  We&apos;ve carried these across from your health declaration so you don&apos;t have to enter them again. Tap edit if anything needs changing.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditingIdentity(v => !v)}
+                className="shrink-0 text-[12px] font-semibold text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
+              >
+                {editingIdentity ? 'Done' : 'Edit'}
+              </button>
+            </div>
+
+            {editingIdentity ? (
+              <div className="space-y-6">
+                {carriedQuestions.map(q => {
+                  const hasError = errors.has(q.id)
+                  return (
+                    <div key={q.id} id={`q-${q.id}`} className={hasError ? 'border-l-2 border-red-500 pl-4 -ml-4 scroll-mt-24' : 'scroll-mt-24'}>
+                      <QuestionInput
+                        question={q}
+                        value={formData[q.id]}
+                        onChange={(val) => setValue(q.id, val)}
+                        onToggle={(opt) => toggleMultiselect(q.id, opt)}
+                        hasError={hasError}
+                      />
+                      {hasError && <p className="text-red-700 text-xs mt-2 font-medium">Please answer this question.</p>}
+                    </div>
+                  )
+                })}
+              </div>
+            ) : (
+              <dl className="divide-y divide-stone-200">
+                {carriedQuestions.map(q => {
+                  const hasError = errors.has(q.id)
+                  return (
+                    <div key={q.id} id={`q-${q.id}`} className="flex items-baseline justify-between gap-4 py-2.5 scroll-mt-24">
+                      <dt className={`text-[13px] ${hasError ? 'text-red-700' : 'text-stone-500'}`}>{q.text}</dt>
+                      <dd className={`text-[14px] font-medium text-right ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>
+                        {formatIdentityValue(q.id, formData[q.id] || identity?.[q.id]) || <span className="text-red-700 font-normal">Tap edit to add</span>}
+                      </dd>
+                    </div>
+                  )
+                })}
+                {identity?.emergency_contact_relationship && (
+                  <div className="flex items-baseline justify-between gap-4 py-2.5">
+                    <dt className="text-[13px] text-stone-500">Emergency contact relationship</dt>
+                    <dd className="text-[14px] font-medium text-right text-[#1A1A1A]">{identity.emergency_contact_relationship}</dd>
+                  </div>
+                )}
+              </dl>
+            )}
+          </div>
+        )}
+
         {/* Questions */}
         <div className="space-y-8">
-          {section.questions.map(q => {
+          {visibleQuestions.map(q => {
             const hasError = errors.has(q.id)
             return (
               <div

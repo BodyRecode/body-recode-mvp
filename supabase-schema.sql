@@ -21,6 +21,16 @@ create table clients (
   created_at timestamptz default now()
 );
 
+-- Canonical identity fields (single source of truth). The client enters these
+-- once in the Health Declaration (first onboarding form); the Foundational
+-- Intake reads them back as a confirmation card instead of re-asking. Added
+-- 2026-06-23. phone already existed for SMS reminders.
+alter table clients add column if not exists phone text;
+alter table clients add column if not exists date_of_birth date;
+alter table clients add column if not exists emergency_contact_name text;
+alter table clients add column if not exists emergency_contact_relationship text;
+alter table clients add column if not exists emergency_contact_phone text;
+
 -- Intake invitations (unique links sent to clients)
 create table intake_invitations (
   id uuid primary key default uuid_generate_v4(),

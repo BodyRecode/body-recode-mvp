@@ -7,7 +7,7 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
 
   const { data: invitation } = await admin
     .from('intake_invitations')
-    .select('*, clients(name, phone, onboarding_token, health_declaration_data)')
+    .select('*, clients(name, phone, date_of_birth, emergency_contact_name, emergency_contact_relationship, emergency_contact_phone, onboarding_token, health_declaration_data)')
     .eq('token', token)
     .single()
 
@@ -25,28 +25,32 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
   const clientRecord = invitation.clients as {
     name: string
     phone: string | null
+    date_of_birth: string | null
+    emergency_contact_name: string | null
+    emergency_contact_relationship: string | null
+    emergency_contact_phone: string | null
     onboarding_token: string | null
     health_declaration_data: {
       personalDetails?: { dob?: string; phone?: string }
-      emergencyContact?: { name?: string; phone?: string }
+      emergencyContact?: { name?: string; relationship?: string; phone?: string }
     } | null
   } | null
   const portalToken = clientRecord?.onboarding_token ?? null
 
-  // Pre-fill the intake's identity fields from details the client already
-  // entered earlier in onboarding, so they don't have to type name / DOB /
-  // mobile / emergency contact a second time. The onboarding order is
-  // agreement -> health declaration -> intake, so by this point the health
-  // declaration (DOB, mobile, emergency contact) and the client record (name,
-  // phone) are already populated. Only non-empty values are sent; the form
-  // seeds these into empty fields and never overwrites a resumed draft.
+  // Single source of truth for identity. The client enters these once in the
+  // Health Declaration (the first onboarding form); they are promoted to
+  // first-class `clients` columns there. The intake reads them here and asks
+  // the client to CONFIRM rather than re-type. We fall back to the health
+  // declaration JSONB for any client onboarded before the canonical columns
+  // existed, so nothing regresses for in-flight clients.
   const hd = clientRecord?.health_declaration_data ?? null
-  const prefill: Record<string, string> = {
+  const identity: Record<string, string> = {
     full_name: clientRecord?.name ?? '',
-    date_of_birth: hd?.personalDetails?.dob ?? '',
+    date_of_birth: clientRecord?.date_of_birth ?? hd?.personalDetails?.dob ?? '',
     mobile_number: clientRecord?.phone ?? hd?.personalDetails?.phone ?? '',
-    emergency_contact_name: hd?.emergencyContact?.name ?? '',
-    emergency_contact_phone: hd?.emergencyContact?.phone ?? '',
+    emergency_contact_name: clientRecord?.emergency_contact_name ?? hd?.emergencyContact?.name ?? '',
+    emergency_contact_relationship: clientRecord?.emergency_contact_relationship ?? hd?.emergencyContact?.relationship ?? '',
+    emergency_contact_phone: clientRecord?.emergency_contact_phone ?? hd?.emergencyContact?.phone ?? '',
   }
 
   if (invitation.status === 'complete') {
@@ -76,5 +80,5 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
     )
   }
 
-  return <IntakeForm token={token} clientName={clientRecord?.name} portalToken={portalToken} prefill={prefill} />
+  return <IntakeForm token={token} clientName={clientRecord?.name} portalToken={portalToken} identity={identity} />
 }

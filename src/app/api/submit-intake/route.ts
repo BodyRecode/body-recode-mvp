@@ -138,13 +138,22 @@ export async function POST(request: NextRequest) {
   // never usable, which is why most clients had no phone on file. Only write
   // when a value is present so we never blank out a number the coach already
   // entered manually on the profile.
-  const mobileNumber = typeof formData.mobile_number === 'string'
-    ? formData.mobile_number.trim()
-    : ''
-  if (mobileNumber) {
+  // Keep the canonical identity columns on `clients` in sync with whatever the
+  // client confirmed/corrected in the intake. These are the single source of
+  // truth the Health Declaration first populated; if the client edited a value
+  // in the confirmation card, that correction propagates back here so the
+  // record stays consistent. Only non-empty values are written so we never
+  // blank out a detail the coach entered manually.
+  const str = (v: unknown) => (typeof v === 'string' ? v.trim() : '')
+  const identityUpdate: Record<string, string> = {}
+  if (str(formData.mobile_number)) identityUpdate.phone = str(formData.mobile_number)
+  if (str(formData.date_of_birth)) identityUpdate.date_of_birth = str(formData.date_of_birth)
+  if (str(formData.emergency_contact_name)) identityUpdate.emergency_contact_name = str(formData.emergency_contact_name)
+  if (str(formData.emergency_contact_phone)) identityUpdate.emergency_contact_phone = str(formData.emergency_contact_phone)
+  if (Object.keys(identityUpdate).length > 0) {
     await admin
       .from('clients')
-      .update({ phone: mobileNumber })
+      .update(identityUpdate)
       .eq('id', invitation.client_id)
   }
 

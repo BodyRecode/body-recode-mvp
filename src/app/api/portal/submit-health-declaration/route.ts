@@ -17,12 +17,28 @@ export async function POST(req: NextRequest) {
     .eq('id', clientId)
     .maybeSingle()
 
+  // Promote the identity fields the client enters here to first-class columns
+  // on `clients` so they become the single source of truth for downstream
+  // forms (the Foundational Intake reads these and asks the client to confirm
+  // rather than re-type). The full JSONB declaration is still stored verbatim
+  // as the point-in-time legal record. Only write non-empty values so a number
+  // the coach already added manually is never blanked out.
+  const pd = (data?.personalDetails ?? {}) as { dob?: string; phone?: string }
+  const ec = (data?.emergencyContact ?? {}) as { name?: string; relationship?: string; phone?: string }
+  const canonical: Record<string, string> = {}
+  if (pd.dob) canonical.date_of_birth = pd.dob
+  if (pd.phone) canonical.phone = pd.phone
+  if (ec.name) canonical.emergency_contact_name = ec.name
+  if (ec.relationship) canonical.emergency_contact_relationship = ec.relationship
+  if (ec.phone) canonical.emergency_contact_phone = ec.phone
+
   const { error } = await admin
     .from('clients')
     .update({
       health_declaration_submitted_at: new Date().toISOString(),
       medical_clearance_required: requiresClearance,
       health_declaration_data: data,
+      ...canonical,
     })
     .eq('id', clientId)
 
