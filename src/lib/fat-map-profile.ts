@@ -53,7 +53,7 @@ export const PROFILE_DRIVERS: Record<Profile, string> = {
 
 export const PROFILE_DESCRIPTORS: Record<Profile, string> = {
   'Stress-Stored': 'Managing a lot, holding on. Harder you push, tighter the body holds.',
-  'Insulin-Drift': 'Effort going in but insulin signalling has drifted. Storage is full-body, response is suppressed.',
+  'Insulin-Drift': 'Effort going in but insulin signalling has drifted. The body stores readily and the response stays suppressed.',
   'Estrogen-Shift': 'Long-arc oestrogen-driven conservation. Slow to shift, but moves once restriction stops and the cycle is respected.',
   'Androgen-Decline': 'Output going up but the testosterone-signalling channel never recovers. Drive and capacity slipping.',
   'Indeterminate': 'Scorecard alone doesn\'t cleanly point at one of the four. The intake will tell us which.',

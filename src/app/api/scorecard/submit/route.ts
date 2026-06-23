@@ -395,7 +395,8 @@ ${darkEmailSignature()}
     lead_id: leadId,
     profile: namedZone ? fatMapProfile : null,
     profile_confidence: namedZone ? profileConfidence : null,
-    profile_driver: namedZone ? PROFILE_DRIVERS[fatMapProfile] : null,
+    // Strip the coach-facing "(male-dominant)" / "(female)" parenthetical for the lead view.
+    profile_driver: namedZone ? PROFILE_DRIVERS[fatMapProfile].replace(/\s*\([^)]*\)\s*$/, '') : null,
     profile_descriptor: PROFILE_DESCRIPTORS[fatMapProfile],
   }, { headers: CORS })
 }
