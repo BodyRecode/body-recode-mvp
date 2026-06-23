@@ -237,18 +237,48 @@ export async function generateFeedbackDraft(
       ...findLeakedTerms(candidate.next_focus),
     ]
 
-    if (leakedTerms.length === 0) {
+    // Nutrition-prescription grounding: if the active plan has a meal
+    // frequency, scan every field for "(N) meals" / "(N) snacks" patterns
+    // and verify they match the plan exactly. Catches the case where the
+    // prompt rule was followed in spirit but the model split the count into
+    // "three meals plus one snack" or similar workarounds.
+    //
+    // Triggered by Amanda W7 (2026-06-23): next_focus said "three meals
+    // plus one snack" against her 4-meal active plan. Ruby W6/W7 hit the
+    // same pattern. The prompt rule alone wasn't enough.
+    const mealMismatches = nutritionCtx?.mealFrequency != null
+      ? findMealCountMismatches(
+          [candidate.interpretation, candidate.reframe ?? '', candidate.next_focus],
+          nutritionCtx.mealFrequency
+        )
+      : []
+
+    if (leakedTerms.length === 0 && mealMismatches.length === 0) {
       return { ok: true, draft: candidate, attempts }
     }
 
-    totalLeaksSeen = Array.from(new Set([...totalLeaksSeen, ...leakedTerms].map(t => t.toLowerCase())))
+    totalLeaksSeen = Array.from(new Set([
+      ...totalLeaksSeen,
+      ...leakedTerms,
+      ...mealMismatches.map(m => `meal-count:${m}`),
+    ].map(t => t.toLowerCase())))
+
     if (attempts < MAX_ATTEMPTS) {
       conversation.push({ role: 'assistant', content: jsonText })
+      const correctionParts: string[] = []
+      if (leakedTerms.length > 0) {
+        correctionParts.push(`Internal terminology must not appear: ${leakedTerms.map(t => `"${t}"`).join(', ')}.`)
+      }
+      if (mealMismatches.length > 0 && nutritionCtx?.mealFrequency != null) {
+        correctionParts.push(
+          `Meal-count mismatch. Their ACTIVE NUTRITION PLAN prescribes ${nutritionCtx.mealFrequency} meals per day. The draft used: ${mealMismatches.map(m => `"${m}"`).join(', ')}. Every reference must say "${numberWord(nutritionCtx.mealFrequency)} meals" (or "${nutritionCtx.mealFrequency} meals") with NO snack split. Do NOT write "three meals plus one snack" — the plan calls all four eating windows meals.`
+        )
+      }
       conversation.push({
         role: 'user',
-        content: `That draft contained internal terminology the client has never seen and that the system will reject. Specifically these terms must not appear: ${leakedTerms.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words to express the same idea. Return only the corrected JSON, no commentary.`,
+        content: `${correctionParts.join(' ')} Rewrite the entire JSON object correcting these. Return only the corrected JSON, no commentary.`,
       })
-      lastError = `Leaked: ${leakedTerms.join(', ')}`
+      lastError = `Leaked: ${leakedTerms.join(', ')}${mealMismatches.length ? `; meal-count: ${mealMismatches.join(', ')}` : ''}`
     }
   }
 
@@ -258,4 +288,57 @@ export async function generateFeedbackDraft(
     leaks: totalLeaksSeen,
     attempts,
   }
+}
+
+const WORD_TO_NUMBER: Record<string, number> = {
+  one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+}
+const NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
+
+function numberWord(n: number): string {
+  return NUMBER_WORDS[n] ?? String(n)
+}
+
+/**
+ * Scan output text for "(N) meals" or "(N) snacks" patterns and return any
+ * fragments where the count doesn't match the expected meal frequency.
+ *
+ * Catches both numeric ("3 meals") and word ("three meals") forms, and
+ * flags the snack-split workaround ("three meals plus one snack" when the
+ * plan is 4) because every eating window the plan prescribes is a meal,
+ * not "meals + snacks".
+ *
+ * Returns the offending fragments (max 80 chars) for the retry prompt to
+ * quote back at the model.
+ */
+function findMealCountMismatches(texts: string[], expectedMeals: number): string[] {
+  const mismatches: string[] = []
+  // Matches: "3 meals", "three meals", "3 snacks", "two snacks" (case-insensitive)
+  const pattern = /\b(\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten)\s*(meals?|snacks?)\b/gi
+  for (const text of texts) {
+    if (!text) continue
+    let match: RegExpExecArray | null
+    pattern.lastIndex = 0
+    while ((match = pattern.exec(text)) !== null) {
+      const numToken = match[1].toLowerCase()
+      const unitToken = match[2].toLowerCase()
+      const n = WORD_TO_NUMBER[numToken] ?? Number(numToken)
+      if (!Number.isFinite(n)) continue
+      // Any snack mention is a violation: the plan doesn't distinguish
+      // meals from snacks — every eating window is a meal.
+      if (unitToken.startsWith('snack')) {
+        const start = Math.max(0, match.index - 20)
+        const end = Math.min(text.length, match.index + match[0].length + 20)
+        mismatches.push(text.slice(start, end).trim())
+        continue
+      }
+      // Meal mentions must match the prescribed frequency.
+      if (n !== expectedMeals) {
+        const start = Math.max(0, match.index - 20)
+        const end = Math.min(text.length, match.index + match[0].length + 20)
+        mismatches.push(text.slice(start, end).trim())
+      }
+    }
+  }
+  return Array.from(new Set(mismatches))
 }
