@@ -7,11 +7,22 @@
  * Pure function. Deterministic. Run inline after scorecard submit.
  */
 
-type SectionKey = '01' | '02' | '03' | '04' | '05'
-type SectionScores = Partial<Record<SectionKey, number>>
+import {
+  type SectionKey,
+  type SectionScores,
+  type StateName,
+  type Profile,
+  type BiologicalSex,
+  type AgeBand,
+  type FatStorage,
+  type CycleStatus,
+  PROFILE_DRIVERS,
+  PROFILE_DESCRIPTORS,
+  pickFloor,
+  typeFatMapProfile,
+} from './fat-map-profile'
+
 type Quality = 'green' | 'yellow' | 'red'
-type StateName = 'Depleted State' | 'Transitioning State' | 'Ready State'
-type Profile = 'Stress-Stored' | 'Insulin-Drift' | 'Estrogen-Shift' | 'Androgen-Decline' | 'Indeterminate'
 type AnswerLetter = 'A' | 'B' | 'C' | 'D'
 
 export interface LeadBriefInput {
@@ -22,6 +33,11 @@ export interface LeadBriefInput {
   approach_response?: AnswerLetter | null
   investment_readiness?: AnswerLetter | null
   lead_quality?: Quality | null
+  // Fat Map typing signals (optional — legacy leads/briefs omit them).
+  biological_sex?: BiologicalSex | null
+  age_band?: AgeBand | null
+  fat_storage?: FatStorage | null
+  cycle_status?: CycleStatus | null
 }
 
 const SECTIONS: Record<SectionKey, { name: string; descriptors: [string, string, string] }> = {
@@ -64,152 +80,6 @@ const INVESTMENT_LABELS: Record<AnswerLetter, string> = {
   B: 'Within the next 1-3 months',
   C: 'Just exploring for now',
   D: 'Looking for free resources only',
-}
-
-// =============================================================
-// Profile and floor detection
-// =============================================================
-
-/**
- * Pick the floor (lowest section). When sections tie at the lowest score,
- * fall back to the priority order: Stress > Sleep > Energy > Training > Fat Loss
- * (root-cause hierarchy — stress drives compensation patterns most often).
- *
- * Returns null when no scores are present (so the caller can decide what to
- * do, instead of silently defaulting to Stress like the old version).
- */
-function pickFloor(scores: SectionScores): SectionKey | null {
-  const priority: SectionKey[] = ['03', '02', '01', '04', '05']
-  const present = priority.filter(k => scores[k] != null) as SectionKey[]
-  if (present.length === 0) return null
-
-  let lowest = Infinity
-  for (const k of present) {
-    const v = scores[k]!
-    if (v < lowest) lowest = v
-  }
-  // Among the floor-tied keys, return the highest-priority one.
-  for (const k of priority) {
-    if (scores[k] != null && scores[k] === lowest) return k
-  }
-  return present[0]
-}
-
-/**
- * Best-guess Fat Map profile from the scorecard pattern.
- *
- * Returns confidence so the brief can mark provisional reads. The coach
- * confirms on intake — the scorecard alone can't fully separate the four
- * profiles, but the score pattern usually points to one.
- *
- * Logic:
- *   - Stress-Stored: stress is at the floor or stress=1 dominantly
- *   - Androgen-Decline: sleep AND energy both low (testosterone-signalling
- *     channel wrecked), even if stress reads "managed". Male-skewed in
- *     practice; coach confirms gender on intake.
- *   - Insulin-Drift: fat loss specifically stalled while foundations OK.
- *     Male-dominant per doctrine; coach confirms gender on intake.
- *   - Estrogen-Shift: long-arc resistance, training AND fat loss both
- *     stuck while foundations OK. Female per doctrine; coach confirms
- *     gender on intake.
- *
- * Coach-facing note: profile assignment from scorecard alone cannot apply
- * the doctrinal gender keying. The brief surfaces the most likely profile;
- * the coach reconciles against the client's gender at the start of the
- * session.
- *
- * When the pattern doesn't clearly fit any, fall back to whichever the floor
- * suggests (low confidence), but never default unconditionally to
- * Stress-Stored just because we ran out of branches.
- */
-function pickProfile(
-  scores: SectionScores,
-  floor: SectionKey | null,
-  state: StateName
-): { profile: Profile; confidence: 'high' | 'low' } {
-  const stress = scores['03']
-  const sleep = scores['02']
-  const energy = scores['01']
-  const training = scores['04']
-  const fatLoss = scores['05']
-
-  // Ready State by definition means foundations are intact - the Fat Map
-  // profiles describe compensation patterns, which Ready bodies don't have.
-  // Only assign a profile if there's a clear contradicting signal.
-  if (state === 'Ready State') {
-    if (stress === 1) return { profile: 'Stress-Stored', confidence: 'low' }
-    return { profile: 'Indeterminate', confidence: 'high' }
-  }
-
-  // Without at least one section at 1, the scorecard isn't pointing at any
-  // single Fat Map profile. Don't force a guess - mark as Indeterminate.
-  const present = Object.values(scores).filter(v => v != null) as number[]
-  const hasFloorAtOne = present.some(v => v === 1)
-
-  if (!hasFloorAtOne) {
-    return { profile: 'Indeterminate', confidence: 'high' }
-  }
-
-  // From here we have at least one section at 1 — the pattern is real.
-
-  // 1. Stress-dominant.
-  if (stress === 1) {
-    return { profile: 'Stress-Stored', confidence: 'high' }
-  }
-
-  // 2. Nervous-system blown — sleep + energy both compromised.
-  //    Common pattern: high-functioner who says stress is fine but can't sleep.
-  if (sleep === 1 && energy != null && energy <= 2) {
-    return { profile: 'Androgen-Decline', confidence: 'high' }
-  }
-  if (energy === 1 && sleep != null && sleep <= 2) {
-    return { profile: 'Androgen-Decline', confidence: 'high' }
-  }
-
-  // 3. Long-arc hormonal — training and fat loss both stuck, foundations OK.
-  if (
-    fatLoss != null && training != null && stress != null && sleep != null &&
-    fatLoss <= 2 && training <= 2 && (fatLoss === 1 || training === 1) &&
-    stress >= 2 && sleep >= 2
-  ) {
-    return { profile: 'Estrogen-Shift', confidence: 'high' }
-  }
-
-  // 4. Insulin-only — fat loss alone is the floor, foundations strong.
-  if (
-    fatLoss === 1 && stress != null && sleep != null && energy != null && training != null &&
-    stress >= 2 && sleep >= 2 && energy >= 2 && training >= 2
-  ) {
-    return { profile: 'Insulin-Drift', confidence: 'high' }
-  }
-
-  // 5. Floor-based soft fallback when the patterns above don't quite fit.
-  //    Confidence stays low here - the data alone isn't definitive.
-  switch (floor) {
-    case '03': return { profile: 'Stress-Stored', confidence: 'low' }
-    case '02':
-    case '01': return { profile: 'Androgen-Decline', confidence: 'low' }
-    case '04': return { profile: 'Estrogen-Shift', confidence: 'low' }
-    case '05': return { profile: 'Insulin-Drift', confidence: 'low' }
-  }
-
-  return { profile: 'Indeterminate', confidence: 'high' }
-}
-
-const PROFILE_DRIVERS: Record<Profile, string> = {
-  'Stress-Stored': 'cortisol-driven',
-  'Insulin-Drift': 'insulin-driven (male-dominant)',
-  'Estrogen-Shift': 'oestrogen-driven (female)',
-  'Androgen-Decline': 'testosterone-driven (male)',
-  'Indeterminate': 'TBD on intake',
-}
-
-const PROFILE_DESCRIPTORS: Record<Profile, string> = {
-  'Stress-Stored': 'Managing a lot, holding on. Harder you push, tighter the body holds.',
-  'Insulin-Drift': 'Effort going in but insulin signalling has drifted. Storage is full-body, response is suppressed.',
-  'Estrogen-Shift': 'Long-arc oestrogen-driven conservation. Slow to shift, but moves once restriction stops and the cycle is respected.',
-  'Androgen-Decline': 'Output going up but the testosterone-signalling channel never recovers. Drive and capacity slipping.',
-  'Indeterminate': 'Scorecard alone doesn\'t cleanly point at one of the four. The intake will tell us which.',
 }
 
 // =============================================================
@@ -597,7 +467,12 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   const scores = input.scorecard_section_scores ?? {}
   const floor = pickFloor(scores)
   const floorName = floor ? SECTIONS[floor].name : 'Unclear (no section scores recorded)'
-  const { profile, confidence: profileConfidence } = pickProfile(scores, floor, state)
+  const { profile, confidence: profileConfidence } = typeFatMapProfile(scores, state, {
+    sex: input.biological_sex,
+    ageBand: input.age_band,
+    fatStorage: input.fat_storage,
+    cycleStatus: input.cycle_status,
+  })
   const isIndeterminate = profile === 'Indeterminate'
   const driver = PROFILE_DRIVERS[profile]
   const profileDescriptor = PROFILE_DESCRIPTORS[profile]

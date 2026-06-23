@@ -5,6 +5,15 @@ import { getDefaultCoachId } from '@/lib/default-coach'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { generatePreCallBrief } from '@/lib/pre-call-brief'
+import {
+  typeFatMapProfile,
+  PROFILE_DRIVERS,
+  PROFILE_DESCRIPTORS,
+  type BiologicalSex,
+  type AgeBand,
+  type FatStorage,
+  type CycleStatus,
+} from '@/lib/fat-map-profile'
 import { appUrl } from '@/lib/app-url'
 import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
 import {
@@ -57,7 +66,7 @@ export async function POST(request: NextRequest) {
     console.error('[scorecard/submit] Failed to parse JSON body:', e)
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400, headers: CORS })
   }
-  const { first_name, last_name, email, score, body_state, source, section_scores, approach_response, investment_readiness } = body as {
+  const { first_name, last_name, email, score, body_state, source, section_scores, approach_response, investment_readiness, biological_sex, age_band, fat_storage, cycle_status } = body as {
     first_name: string
     last_name?: string
     email: string
@@ -67,7 +76,26 @@ export async function POST(request: NextRequest) {
     section_scores?: Record<string, number>
     approach_response?: 'A' | 'B' | 'C' | 'D'
     investment_readiness?: 'A' | 'B' | 'C' | 'D'
+    biological_sex?: BiologicalSex
+    age_band?: AgeBand
+    fat_storage?: FatStorage
+    cycle_status?: CycleStatus
   }
+
+  // Whitelist the Fat Map typing signals so a malformed payload can never
+  // write a junk value or violate the leads CHECK constraints.
+  const sexVal: BiologicalSex | null = biological_sex === 'M' || biological_sex === 'F' ? biological_sex : null
+  const ageVal: AgeBand | null = ['under_35', '35_44', '45_54', '55_plus'].includes(age_band as string) ? (age_band as AgeBand) : null
+  const storageVal: FatStorage | null = ['midsection', 'hips_thighs', 'all_over', 'low_tone'].includes(fat_storage as string) ? (fat_storage as FatStorage) : null
+  // Cycle status only applies to females.
+  const cycleVal: CycleStatus | null = sexVal === 'F' && ['regular', 'irregular', 'perimenopausal', 'postmenopausal'].includes(cycle_status as string) ? (cycle_status as CycleStatus) : null
+
+  // Type the lead into one of the four Fat Map zones (sex-gated, storage-led).
+  const { profile: fatMapProfile, confidence: profileConfidence } = typeFatMapProfile(
+    (section_scores ?? {}) as Record<'01' | '02' | '03' | '04' | '05', number>,
+    body_state as 'Depleted State' | 'Transitioning State' | 'Ready State',
+    { sex: sexVal, ageBand: ageVal, fatStorage: storageVal, cycleStatus: cycleVal },
+  )
   console.log('[scorecard/submit] Received:', { first_name, last_name, email, score, body_state, source, approach_response, investment_readiness })
 
   // Compose full name for leads.name. Surname optional on legacy callers
@@ -168,6 +196,12 @@ export async function POST(request: NextRequest) {
       investment_readiness: investment_readiness ?? null,
       red_flag: redFlag,
       lead_quality: leadQuality,
+      biological_sex: sexVal,
+      age_band: ageVal,
+      fat_storage: storageVal,
+      cycle_status: cycleVal,
+      scorecard_profile: fatMapProfile,
+      scorecard_profile_confidence: profileConfidence,
       updated_at: new Date().toISOString(),
     })
     .eq('id', leadId)
@@ -183,6 +217,10 @@ export async function POST(request: NextRequest) {
       approach_response: approach_response ?? null,
       investment_readiness: investment_readiness ?? null,
       lead_quality: leadQuality,
+      biological_sex: sexVal,
+      age_band: ageVal,
+      fat_storage: storageVal,
+      cycle_status: cycleVal,
     })
     await supabase.from('leads').update({ pre_call_brief: brief }).eq('id', leadId)
     console.log('[scorecard/submit] Pre-call brief generated for lead:', leadId)
@@ -274,6 +312,25 @@ export async function POST(request: NextRequest) {
       </table>`
       : ''
 
+    // Fat Map zone card — the gender-keyed profile typed from the scorecard.
+    const AGE_LABELS: Record<string, string> = {
+      under_35: 'Under 35', '35_44': '35–44', '45_54': '45–54', '55_plus': '55+',
+    }
+    const sexLabel = sexVal === 'M' ? 'Male' : sexVal === 'F' ? 'Female' : null
+    const demoLine = [sexLabel, ageVal ? AGE_LABELS[ageVal] : null].filter(Boolean).join(' · ')
+    const profileBlock = fatMapProfile !== 'Indeterminate'
+      ? `
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FFFFFF" style="background-color:#FFFFFF;margin:0 0 16px;">
+        <tr>
+          <td style="padding:16px 20px;border:1px solid rgba(27,109,252,0.25);border-left:3px solid #1B6DFC;border-radius:12px;font-family:${EMAIL_FF};">
+            <p style="margin:0 0 6px;font-size:10px;font-weight:700;color:#1056D6;letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Fat Map Zone${profileConfidence === 'low' ? ' · provisional' : ''}</p>
+            <p style="margin:0 0 6px;font-size:18px;font-weight:800;color:#1A1A1A;font-family:${EMAIL_FF};letter-spacing:-0.01em;">${fatMapProfile} <span style="font-size:13px;font-weight:600;color:#6B6B6B;">(${PROFILE_DRIVERS[fatMapProfile]})</span></p>
+            ${demoLine ? `<p style="margin:0;font-size:13px;color:#4A4A4A;line-height:1.6;font-family:${EMAIL_FF};">${demoLine}${storageVal ? ` · stores fat: ${storageVal.replace('_', ' ')}` : ''}</p>` : ''}
+          </td>
+        </tr>
+      </table>`
+      : ''
+
     const coachInner = `
 ${emailLogo()}
 ${emailEyebrow('New Scorecard')}
@@ -281,6 +338,7 @@ ${emailHeading(`${first_name} just completed the scorecard.`)}
 ${emailDivider()}
 ${emailBody(email, { color: '#6B6B6B', size: 14, bottom: 22 })}
 ${statsBlock}
+${profileBlock}
 ${leadQualityBlock}
 ${emailStatusCard({
   eyebrow: 'Next step',
@@ -329,5 +387,15 @@ ${darkEmailSignature()}
     console.error('[scorecard/submit] CAPI fire threw (non-fatal):', capiErr)
   }
 
-  return NextResponse.json({ success: true, lead_id: leadId }, { headers: CORS })
+  // Return the Fat Map zone so the scorecard result screen can reveal it.
+  // Indeterminate (Ready foundations / no clear pattern) returns no named zone.
+  const namedZone = fatMapProfile !== 'Indeterminate'
+  return NextResponse.json({
+    success: true,
+    lead_id: leadId,
+    profile: namedZone ? fatMapProfile : null,
+    profile_confidence: namedZone ? profileConfidence : null,
+    profile_driver: namedZone ? PROFILE_DRIVERS[fatMapProfile] : null,
+    profile_descriptor: PROFILE_DESCRIPTORS[fatMapProfile],
+  }, { headers: CORS })
 }
