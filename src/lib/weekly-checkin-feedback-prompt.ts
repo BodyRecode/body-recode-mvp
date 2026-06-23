@@ -46,6 +46,25 @@ export interface ProgramContext {
   rpeCreepSummary: string | null
 }
 
+/**
+ * Active nutrition plan context (added 2026-06-21).
+ *
+ * Pre-2026-06-21 the feedback generator had zero awareness of the
+ * client's actual nutrition prescription. Result: next_focus eating
+ * anchors were invented from typical-day intake answers and contradicted
+ * the active plan. Ruby-Cate W6 prescribed "three anchor times" when her
+ * plan is 4 meals; W7 repeated the error ("the same three meals you've
+ * been hitting"). Wire the prescription in so anchors stay aligned.
+ */
+export interface NutritionContext {
+  planName: string | null
+  mealFrequency: number | null
+  proteinAnchorG: number | null
+  estimatedCalorieBand: string | null
+  keyPriorities: string[] | null
+  weeklyStructureNotes: string | null
+}
+
 export interface ClientFactsContext {
   firstName: string
   medications: string | null
@@ -205,6 +224,13 @@ THREE FIELDS YOU PRODUCE:
 
    - The intervention is a CONCRETE BEHAVIORAL ANCHOR, not a passive watch. "Notice when X shows up" is NOT a next_focus. "Hold X at Y times per day, regardless of how you feel" IS a next_focus. Coach feedback is supposed to move the needle on the named risk.
 
+   - NUTRITION-PRESCRIPTION GROUNDING (added 2026-06-21, hard rule).
+       Any next_focus that references the client's eating MUST use the meal frequency from ACTIVE NUTRITION PLAN verbatim. NEVER invent a meal count. NEVER infer from the intake's typical-day answer. If the plan says 4 meals, the anchor is 4. If 5, the anchor is 5.
+       Forbidden phrasings: "the same three meals you've been hitting" (when plan is 4), "stick to your two-meal pattern" (when plan prescribes more). These are factual contradictions with the prescription and break client trust.
+       Worked failure that motivated this rule: Ruby-Cate W6 and W7 next_focus prescribed "three anchor times" / "the same three meals you've been hitting" when her active plan was 4 meals + 110g protein anchor. Coach had to correct both before send.
+       If ACTIVE NUTRITION PLAN is absent (no plan on file), do NOT write a meal-count anchor in next_focus. Pick a different lever (sleep timing, training session count, walk frequency, alcohol cap, etc.).
+       Same logic applies to protein anchor, calorie band, and any other prescribed metric: if it appears in your next_focus, match the plan number exactly.
+
    - 40-100 words. Direct, second person. Count your words. If over 100, cut.
    - PARAGRAPHING: 1 short paragraph is usually right. If you genuinely need to separate "the anchor" from "why it matters", use 2 paragraphs separated by blank line (\\n\\n). Never one big block.
 
@@ -279,8 +305,9 @@ export function buildFeedbackUserPrompt(input: {
   }
   priorCheckins: PriorCheckinSummary[]
   program: ProgramContext | null
+  nutrition: NutritionContext | null
 }): string {
-  const { client, cffs, thisCheckin, priorCheckins, program } = input
+  const { client, cffs, thisCheckin, priorCheckins, program, nutrition } = input
 
   const lines: string[] = []
 
@@ -347,6 +374,27 @@ export function buildFeedbackUserPrompt(input: {
     if (program.rpeCreepSummary) {
       lines.push(`RPE creep monitor: ${program.rpeCreepSummary}`)
     }
+    lines.push('')
+  }
+
+  if (nutrition) {
+    lines.push('ACTIVE NUTRITION PLAN')
+    lines.push('Authoritative prescription. Any eating anchor in next_focus MUST match these numbers exactly. Never invent a meal count.')
+    if (nutrition.planName) lines.push(`Plan: ${nutrition.planName}`)
+    if (nutrition.mealFrequency != null) lines.push(`Meal frequency (PRESCRIBED): ${nutrition.mealFrequency} meals per day`)
+    if (nutrition.proteinAnchorG != null) lines.push(`Protein anchor: ${nutrition.proteinAnchorG}g/day`)
+    if (nutrition.estimatedCalorieBand) lines.push(`Calorie band: ${nutrition.estimatedCalorieBand}`)
+    if (nutrition.keyPriorities && nutrition.keyPriorities.length > 0) {
+      lines.push('Key priorities (use these as the candidate next_focus eating anchors):')
+      for (const p of nutrition.keyPriorities) lines.push(`  - ${p}`)
+    }
+    if (nutrition.weeklyStructureNotes) {
+      lines.push('Weekly structure notes:')
+      lines.push(nutrition.weeklyStructureNotes)
+    }
+    lines.push('')
+  } else {
+    lines.push('ACTIVE NUTRITION PLAN: none on file. Do NOT prescribe meal-count anchors in next_focus. Choose a different lever.')
     lines.push('')
   }
 

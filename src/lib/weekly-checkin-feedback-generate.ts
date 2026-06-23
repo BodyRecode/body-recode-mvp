@@ -19,6 +19,7 @@ import {
   type FeedbackCFFSContext,
   type PriorCheckinSummary,
   type ProgramContext,
+  type NutritionContext,
 } from './weekly-checkin-feedback-prompt'
 import { extractFirstJsonObject } from './extract-json'
 
@@ -54,7 +55,7 @@ export async function generateFeedbackDraft(
   }
 
   // ── Client + intake + CFFS + prior + program in parallel ───────────────
-  const [{ data: client }, { data: intake }, { data: cffsRows }, { data: priorRows }, { data: program }] = await Promise.all([
+  const [{ data: client }, { data: intake }, { data: cffsRows }, { data: priorRows }, { data: program }, { data: nutritionPlan }] = await Promise.all([
     admin.from('clients').select('id, name, medications').eq('id', checkin.client_id).maybeSingle(),
     admin
       .from('intakes')
@@ -83,6 +84,12 @@ export async function generateFeedbackDraft(
     admin
       .from('programs')
       .select('block_name, week_duration, generated_at')
+      .eq('client_id', checkin.client_id)
+      .eq('is_active', true)
+      .maybeSingle(),
+    admin
+      .from('nutrition_plans')
+      .select('plan_name, meal_frequency, protein_anchor_g, estimated_calorie_band, key_priorities, weekly_structure_notes')
       .eq('client_id', checkin.client_id)
       .eq('is_active', true)
       .maybeSingle(),
@@ -123,6 +130,17 @@ export async function generateFeedbackDraft(
       }
     : null
 
+  const nutritionCtx: NutritionContext | null = nutritionPlan
+    ? {
+        planName: nutritionPlan.plan_name ?? null,
+        mealFrequency: nutritionPlan.meal_frequency ?? null,
+        proteinAnchorG: nutritionPlan.protein_anchor_g ?? null,
+        estimatedCalorieBand: nutritionPlan.estimated_calorie_band ?? null,
+        keyPriorities: Array.isArray(nutritionPlan.key_priorities) ? nutritionPlan.key_priorities : null,
+        weeklyStructureNotes: nutritionPlan.weekly_structure_notes ?? null,
+      }
+    : null
+
   const firstName = client.name?.split(' ')[0] ?? 'there'
   const userPrompt = buildFeedbackUserPrompt({
     client: {
@@ -143,6 +161,7 @@ export async function generateFeedbackDraft(
     },
     priorCheckins,
     program: programCtx,
+    nutrition: nutritionCtx,
   })
 
   if (!process.env.ANTHROPIC_API_KEY) {
