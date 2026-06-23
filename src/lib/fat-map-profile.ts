@@ -51,12 +51,26 @@ export const PROFILE_DRIVERS: Record<Profile, string> = {
   'Indeterminate': 'TBD on intake',
 }
 
+/** Coach-facing descriptors (pre-call brief). Terse, clinical, coach voice. */
 export const PROFILE_DESCRIPTORS: Record<Profile, string> = {
   'Stress-Stored': 'Managing a lot, holding on. Harder you push, tighter the body holds.',
   'Insulin-Drift': 'Effort going in but insulin signalling has drifted. The body stores readily and the response stays suppressed.',
   'Estrogen-Shift': 'Long-arc oestrogen-driven conservation. Slow to shift, but moves once restriction stops and the cycle is respected.',
   'Androgen-Decline': 'Output going up but the testosterone-signalling channel never recovers. Drive and capacity slipping.',
   'Indeterminate': 'Scorecard alone doesn\'t cleanly point at one of the four. The intake will tell us which.',
+}
+
+/**
+ * Lead-facing descriptors shown on the free scorecard result reveal. Speak to
+ * the person, recognition + named mechanism, stop short of the prescription
+ * (that is the $37 report's job). Approved 2026-06-24.
+ */
+export const PROFILE_DESCRIPTORS_LEAD: Record<Profile, string> = {
+  'Stress-Stored': "You're managing a lot, and your body is holding on because of it. The harder you push, the tighter it holds, so effort alone keeps backfiring.",
+  'Insulin-Drift': "You're putting the work in, but your body is storing easily and not responding to it. The input is there; the signal that turns it into change has drifted.",
+  'Estrogen-Shift': "Your body has shifted into a slower, more protective mode. It's not broken and it's not effort; it responds again once the approach respects what's changed.",
+  'Androgen-Decline': "You're still putting the output in, but your drive, recovery and capacity have slipped. The system that turns training into results isn't bouncing back.",
+  'Indeterminate': "No single pattern stands out from your answers yet. We'll pin down exactly what's driving your result on your call.",
 }
 
 /**

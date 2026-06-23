@@ -8,7 +8,7 @@ import { generatePreCallBrief } from '@/lib/pre-call-brief'
 import {
   typeFatMapProfile,
   PROFILE_DRIVERS,
-  PROFILE_DESCRIPTORS,
+  PROFILE_DESCRIPTORS_LEAD,
   type BiologicalSex,
   type AgeBand,
   type FatStorage,
@@ -397,6 +397,6 @@ ${darkEmailSignature()}
     profile_confidence: namedZone ? profileConfidence : null,
     // Strip the coach-facing "(male-dominant)" / "(female)" parenthetical for the lead view.
     profile_driver: namedZone ? PROFILE_DRIVERS[fatMapProfile].replace(/\s*\([^)]*\)\s*$/, '') : null,
-    profile_descriptor: PROFILE_DESCRIPTORS[fatMapProfile],
+    profile_descriptor: PROFILE_DESCRIPTORS_LEAD[fatMapProfile],
   }, { headers: CORS })
 }
