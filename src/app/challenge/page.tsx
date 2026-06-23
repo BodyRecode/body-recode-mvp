@@ -322,7 +322,7 @@ export default function ChallengePage() {
                 Built by Kade Dunstone
               </p>
               <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.3 }}>
-                Human Movement Scientist · Business Entrepreneur · Body Recode Founder
+                Sports Scientist · Business Entrepreneur · Body Recode Founder
               </p>
             </div>
           </div>
@@ -672,7 +672,7 @@ export default function ChallengePage() {
           <div style={{ position: 'absolute', bottom: '22px', left: '24px', right: '24px' }}>
             <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', margin: '0 0 3px' }}>Kade Dunstone</p>
             <p style={{ fontSize: '13px', color: '#1B6DFC', margin: 0, fontWeight: 600 }}>
-              Founder, Body Recode · Human Movement Scientist · Business Entrepreneur · National and International Competitor
+              Founder, Body Recode · Sports Scientist · Business Entrepreneur · National and International Competitor
             </p>
           </div>
         </div>

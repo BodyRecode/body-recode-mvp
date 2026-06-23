@@ -153,7 +153,7 @@ export default async function Image() {
               Built by Kade Dunstone
             </div>
             <div style={{ fontSize: '15px', color: '#6B6B6B' }}>
-              Human Movement Scientist · Business Entrepreneur · Body Recode Founder
+              Sports Scientist · Business Entrepreneur · Body Recode Founder
             </div>
           </div>
           <div

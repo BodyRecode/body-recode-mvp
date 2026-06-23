@@ -214,7 +214,7 @@ export default function ReportClient({ report }: { report: {
                 Prepared by Kade Dunstone
               </p>
               <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.3 }}>
-                Human Movement Scientist · Business Entrepreneur · Body Recode Founder
+                Sports Scientist · Business Entrepreneur · Body Recode Founder
               </p>
             </div>
           </div>

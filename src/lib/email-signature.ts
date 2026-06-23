@@ -16,7 +16,7 @@
 // headshot + name + credentials + performance link AND the Instagram handle.
 const PHOTO = 'https://bodyrecode.au/kade-circle.png'
 const NAME = 'Kade Dunstone'
-const CREDENTIALS = 'Human Movement Scientist · Business Entrepreneur · Body Recode Founder'
+const CREDENTIALS = 'Sports Scientist · Business Entrepreneur · Body Recode Founder'
 const URL = 'https://performance.bodyrecode.au'
 const URL_LABEL = 'performance.bodyrecode.au'
 const SITE_URL = 'https://bodyrecode.au'

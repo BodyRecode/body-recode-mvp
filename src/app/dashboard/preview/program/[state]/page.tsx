@@ -320,7 +320,7 @@ export default async function PreviewProgramPage({
               Written by Kade Dunstone
             </p>
             <p style={{ fontSize: '11px', color: '#6B6B6B', margin: 0, lineHeight: 1.45 }}>
-              Human Movement Scientist · Business Entrepreneur · Body Recode Founder
+              Sports Scientist · Business Entrepreneur · Body Recode Founder
             </p>
           </div>
         </div>
