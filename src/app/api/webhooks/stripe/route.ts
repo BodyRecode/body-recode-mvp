@@ -8,6 +8,7 @@ import { inngest } from '@/lib/inngest'
 import { syncSubscriptionFromStripe, markCommencementPaid } from '@/lib/stripe-sync'
 import { getDefaultCoachId } from '@/lib/default-coach'
 import { appUrl } from '@/lib/app-url'
+import { getCoachingPackage } from '@/lib/coaching-packages'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider,
@@ -294,20 +295,55 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   }
 
-  // Handle invoice payment failure
+  // Handle invoice payment failure.
+  //
+  // Client_id resolution: same fallback chain as invoice.payment_succeeded
+  // above. Stripe propagates line metadata on the FIRST invoice (which the
+  // initial checkout session created) but NOT on subsequent renewal invoices,
+  // so a renewal failure would previously slip through silently. We now also
+  // look up client_subscriptions by subscription id, and finally clients by
+  // stripe_customer_id, so every renewal failure surfaces an email.
   if (event.type === 'invoice.payment_failed') {
     const invoice = event.data.object as Stripe.Invoice
-    const clientId = invoice.lines?.data?.[0]?.metadata?.client_id
+    const invoiceWithSub = invoice as Stripe.Invoice & { subscription?: string | Stripe.Subscription | null }
+    type LineItem = Stripe.InvoiceLineItem & { subscription?: string | null; parent?: { subscription_item_details?: { subscription?: string | null } | null } | null }
+    const firstLine = invoice.lines?.data?.[0] as LineItem | undefined
+    const subId = (typeof invoiceWithSub.subscription === 'string' ? invoiceWithSub.subscription : invoiceWithSub.subscription?.id ?? null)
+      ?? (typeof firstLine?.subscription === 'string' ? firstLine.subscription : null)
+      ?? firstLine?.parent?.subscription_item_details?.subscription
+      ?? null
+
+    let clientId: string | null = firstLine?.metadata?.client_id ?? null
+    const admin = createAdminClient()
+    if (!clientId && subId) {
+      const { data: subRow } = await admin
+        .from('client_subscriptions')
+        .select('client_id')
+        .eq('stripe_subscription_id', subId)
+        .maybeSingle()
+      clientId = subRow?.client_id ?? null
+    }
+    if (!clientId) {
+      const customerId = typeof invoice.customer === 'string' ? invoice.customer : invoice.customer?.id ?? null
+      if (customerId) {
+        const { data: clientRow } = await admin
+          .from('clients')
+          .select('id')
+          .eq('stripe_customer_id', customerId)
+          .maybeSingle()
+        clientId = clientRow?.id ?? null
+      }
+    }
+
     if (clientId) {
-      const admin = createAdminClient()
       await admin.from('be_payments').insert({
         client_id: clientId,
         amount: invoice.amount_due / 100,
         status: 'failed',
         stripe_payment_id: null,
+        stripe_subscription_id: subId,
       })
 
-      // Notify coach of failed payment
       if (process.env.RESEND_API_KEY) {
         const { data: client } = await admin
           .from('clients')
@@ -315,20 +351,36 @@ export async function POST(request: NextRequest) {
           .eq('id', clientId)
           .single()
         if (client) {
+          const amountAud = (invoice.amount_due / 100).toLocaleString('en-AU', { style: 'currency', currency: 'AUD' })
+          const attempts = invoice.attempt_count ?? 1
+          const nextRetry = invoice.next_payment_attempt
+            ? new Date(invoice.next_payment_attempt * 1000).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'Australia/Brisbane' })
+            : null
           const resend = new Resend(process.env.RESEND_API_KEY)
+          const inner = `
+${emailLogo()}
+${emailEyebrow('Payment Failed')}
+${emailHeading(`${client.name}'s payment didn't go through.`)}
+${emailDivider()}
+${emailBody(`A subscription invoice for ${amountAud} failed on attempt ${attempts}. ${nextRetry ? `Stripe will retry on ${nextRetry}.` : 'Stripe has stopped retrying — this needs manual action.'}`)}
+${emailStatusCard({
+  eyebrow: 'Details',
+  headline: `${client.name} · ${client.email ?? '(no email)'}`,
+  body: `Reach out to the client to update their payment method. If you don't hear back, pause the subscription in Stripe to prevent the dunning chain hammering their card. Coaching access stays on until you remove it manually.`,
+})}
+${emailCta({ href: `${appUrl()}/dashboard/clients/${clientId}#payments`, label: 'Open client' })}
+${darkEmailSignature()}
+`
           await resend.emails.send({
-            from: 'Body Recode <kade@bodyrecode.au>',
+            from: 'Body Recode System <kade@bodyrecode.au>',
             to: 'kade@bodyrecode.au',
             subject: `Payment failed — ${client.name}`,
-            html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
-  <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
-  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">Payment failed — ${client.name}</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">A subscription payment for ${client.name} (${client.email}) has failed. Check Stripe for details.</p>
-  <a href="${appUrl()}/dashboard/business/payments" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View Payments</a>
-</div>`,
+            html: darkEmailShell(inner, { previewText: `${client.name}'s payment didn't go through.` }),
           })
         }
       }
+    } else {
+      console.warn('[stripe webhook] invoice.payment_failed: could not resolve client_id', { invoice_id: invoice.id, subscription: subId, customer: invoice.customer })
     }
     return NextResponse.json({ received: true })
   }
@@ -367,7 +419,7 @@ export async function POST(request: NextRequest) {
 
     const { data: existingClient } = await admin
       .from('clients')
-      .select('subscription_active, name, email')
+      .select('subscription_active, name, email, package')
       .eq('id', session.client_reference_id)
       .maybeSingle()
 
@@ -419,6 +471,37 @@ ${darkEmailSignature()}
         paid_at: new Date().toISOString(),
       })
     }
+
+    // Notify coach — first subscription start. This is the "they actioned
+    // the link" event Kade needs to see so he can confirm the start date
+    // with the client and lock in sessions. Recurring renewals stay silent
+    // (would be noisy at scale) — only the initial subscription start emails.
+    if (process.env.RESEND_API_KEY && existingClient) {
+      const pkg = existingClient.package ? getCoachingPackage(existingClient.package) : null
+      const firstAmountAud = session.amount_total ? (session.amount_total / 100).toLocaleString('en-AU', { style: 'currency', currency: 'AUD' }) : null
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      const inner = `
+${emailLogo()}
+${emailEyebrow('Subscription Started')}
+${emailHeading(`${existingClient.name ?? 'A client'} just locked in their subscription.`)}
+${emailDivider()}
+${emailBody(`Their first weekly payment has cleared. Subscription is active.`)}
+${emailStatusCard({
+  eyebrow: 'Details',
+  headline: pkg ? `${pkg.label} · ${pkg.price}` : 'Package unknown',
+  body: `${firstAmountAud ? `First invoice: ${firstAmountAud}. ` : ''}${existingClient.email ?? ''}. Confirm the start date and send the session-lock-in message.`,
+})}
+${emailCta({ href: `${appUrl()}/dashboard/clients/${session.client_reference_id}#payments`, label: 'Open client' })}
+${darkEmailSignature()}
+`
+      await resend.emails.send({
+        from: 'Body Recode System <kade@bodyrecode.au>',
+        to: 'kade@bodyrecode.au',
+        subject: `Subscription started — ${existingClient.name ?? 'client'}`,
+        html: darkEmailShell(inner, { previewText: `${existingClient.name ?? 'A client'} started their subscription.` }),
+      })
+    }
+
     return NextResponse.json({ received: true })
   }
 
