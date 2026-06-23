@@ -48,13 +48,15 @@ async function main() {
 
   const draft = result.draft
 
-  // Overwrite existing feedback row text (do NOT touch email_sent_at)
+  // Overwrite existing feedback row text (do NOT touch email_sent_at).
+  // Also pull approval_token — needed for the Approve & Send URL.
   const { data: existing } = await admin
     .from('weekly_checkin_feedback')
-    .select('id')
+    .select('id, approval_token')
     .eq('weekly_checkin_id', CHECKIN.id)
     .maybeSingle()
   if (!existing) throw new Error('No feedback row to overwrite')
+  if (!existing.approval_token) throw new Error('Feedback row missing approval_token — cannot build Approve URL')
 
   await admin
     .from('weekly_checkin_feedback')
@@ -73,9 +75,13 @@ async function main() {
     .single()
   const firstName = (client?.name ?? 'Ruby').split(' ')[0]
 
-  // Build preview email and send to Kade
+  // Build preview email and send to Kade.
+  // Approve URL must hit the actual approve endpoint with the token —
+  // NOT the dashboard URL. First version of this script used the dashboard
+  // URL, which silently navigated Kade to the dashboard without firing
+  // the send. Ruby's W7 send had to be triggered by curl as a result.
   const dashboardUrl = appUrlFor(`/dashboard/clients/${CHECKIN.client_id}#weekly-checkins`)
-  const approveUrl = appUrlFor(`/dashboard/clients/${CHECKIN.client_id}#weekly-checkins`)
+  const approveUrl = appUrlFor(`/api/coach/approve-checkin-response?token=${existing.approval_token}`)
 
   const { subject, html } = buildWeeklyCheckinDraftPreviewEmail({
     clientFirstName: firstName,
