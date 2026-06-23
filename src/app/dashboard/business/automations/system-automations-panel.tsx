@@ -222,6 +222,20 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'subscription-started-notify',
+    name: 'Subscription Started — Coach Notify',
+    description: 'Emails Kade once per client when they complete the subscription checkout link and the first weekly payment clears. Closes the silent-success gap where subscription_active would flip to true without telling the coach — Kade had no signal that a Send Subscription link he sent was actioned. Includes package + price, first invoice amount, client email, and a deep link to the client #payments section. Recurring renewals stay silent by design.',
+    trigger: 'Stripe checkout.session.completed (subscription mode, first start)',
+    steps: 1,
+  },
+  {
+    id: 'payment-failed-notify',
+    name: 'Payment Failed — Coach Notify',
+    description: 'Emails Kade on any failed subscription invoice — first checkout card decline AND renewal card decline. Rebuilt 2026-06-23 from a minimal version that only resolved client_id from invoice line metadata (which Stripe does NOT propagate to renewal invoices, so renewal failures slipped through silently). Now uses the same fallback chain as the success handler: line metadata → client_subscriptions → clients.stripe_customer_id. Email includes amount, attempt count, next retry date or "stopped retrying", and a direct client link so Kade can pause / message / collect.',
+    trigger: 'Stripe invoice.payment_failed',
+    steps: 1,
+  },
+  {
     id: 'lead-quality-weekly-report',
     name: 'Lead Quality Weekly Report',
     description: 'Scheduled remote Claude agent (runs on Anthropic infra, not Vercel cron) curls /api/admin/lead-quality-stats?email=true every Monday 9am Brisbane. Endpoint computes new leads by tier (green/yellow/red), all-time show + close rate per tier, and red-flagged vs clean comparison. Emails Kade a branded report with a verdict on whether the Hormozi red flag hypothesis is holding. Routine: trig_01UmzsNPJguEMZ3zTufciRZJ. Added 2026-04-29 when the qualifier questions launched on the scorecard.',
