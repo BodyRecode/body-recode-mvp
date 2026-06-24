@@ -156,3 +156,80 @@ SAFETY
 VOICE
 - Plain, warm, specific. Name the breath. No diagnoses, no medical claims, no em dashes.
 `.trim()
+
+// ---------------------------------------------------------------------------
+// Generated-sequence shape + post-LLM clamp (enforcement, not prose).
+// ---------------------------------------------------------------------------
+
+export interface YogaPoseRef {
+  name: string
+  side?: 'left' | 'right' | 'both'
+  hold_seconds?: number
+  breaths?: number
+  cue?: string
+}
+
+export interface YogaSequenceSegment {
+  key: string
+  label: string
+  poses: YogaPoseRef[]
+}
+
+export interface YogaSequence {
+  practice_name: string
+  intention: string
+  segments: YogaSequenceSegment[]
+  summary?: string
+}
+
+/**
+ * Clamp the generated sequence to the hard floor. The generator may only use
+ * poses from the allowed set (the library already filtered by intensity
+ * ceiling and contraindications), so any pose outside it is dropped. We also
+ * enforce bilateral symmetry and a closing rest. Soft issues are returned as
+ * notes rather than silently changed.
+ */
+export function clampYogaSequence(
+  sequence: YogaSequence,
+  allowedPoseNames: Iterable<string>,
+): { sequence: YogaSequence; notes: string[] } {
+  const allowed = new Set(Array.from(allowedPoseNames).map((n) => n.toLowerCase().trim()))
+  const notes: string[] = []
+
+  const segments: YogaSequenceSegment[] = []
+  for (const seg of sequence.segments ?? []) {
+    const kept: YogaPoseRef[] = []
+    for (const pose of seg.poses ?? []) {
+      if (!allowed.has(pose.name?.toLowerCase().trim())) {
+        notes.push(`Removed "${pose.name}" (outside allowed library for this state).`)
+        continue
+      }
+      kept.push(pose)
+    }
+    // Bilateral symmetry: a one-sided pose must be balanced by its mirror.
+    const balanced: YogaPoseRef[] = []
+    for (let i = 0; i < kept.length; i++) {
+      const pose = kept[i]
+      balanced.push(pose)
+      if (pose.side === 'left' || pose.side === 'right') {
+        const mirror = pose.side === 'left' ? 'right' : 'left'
+        const next = kept[i + 1]
+        const alreadyMirrored =
+          next && next.name === pose.name && next.side === mirror
+        if (!alreadyMirrored) {
+          balanced.push({ ...pose, side: mirror })
+          notes.push(`Added the ${mirror} side of "${pose.name}" for symmetry.`)
+        }
+      }
+    }
+    if (balanced.length > 0) segments.push({ ...seg, poses: balanced })
+  }
+
+  // Always end in stillness.
+  const last = segments[segments.length - 1]
+  if (!last || last.key !== 'rest') {
+    notes.push('Practice did not close with rest; a closing rest should be added.')
+  }
+
+  return { sequence: { ...sequence, segments }, notes }
+}
