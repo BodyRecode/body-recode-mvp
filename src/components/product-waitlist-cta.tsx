@@ -23,13 +23,17 @@ export function WaitlistCTA({
   position?: string
   darkBg?: boolean
 }) {
-  const [form, setForm] = useState({ name: '', email: '' })
+  const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '' })
   const [status, setStatus] = useState<'idle' | 'submitting' | 'done' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
 
+  // First name, last name and email are required; phone is optional (captured
+  // for the launch-day SMS without adding friction that would cost signups).
+  const canSubmit = !!form.first_name.trim() && !!form.last_name.trim() && !!form.email.trim() && form.email.includes('@')
+
   async function join(e: React.FormEvent) {
     e.preventDefault()
-    if (!form.email.trim() || !form.email.includes('@')) return
+    if (!canSubmit) return
     setStatus('submitting')
     setError(null)
     try {
@@ -38,7 +42,9 @@ export function WaitlistCTA({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: form.email.trim(),
-          first_name: form.name.trim() || null,
+          first_name: form.first_name.trim() || null,
+          last_name: form.last_name.trim() || null,
+          phone: form.phone.trim() || null,
           product,
           source: `${product}_lp_${position}`,
         }),
@@ -94,18 +100,27 @@ export function WaitlistCTA({
         </span>
       </div>
       <div style={{ display: 'flex', gap: '10px' }}>
-        <input type="text" placeholder="Your name" value={form.name}
-          onChange={e => setForm(f => ({ ...f, name: e.target.value }))} style={inputStyle} />
-        <input type="email" placeholder="Email address" value={form.email} required
-          onChange={e => setForm(f => ({ ...f, email: e.target.value }))} style={inputStyle} />
+        <input type="text" placeholder="First name" value={form.first_name} required
+          onChange={e => setForm(f => ({ ...f, first_name: e.target.value }))} style={inputStyle} />
+        <input type="text" placeholder="Last name" value={form.last_name} required
+          onChange={e => setForm(f => ({ ...f, last_name: e.target.value }))} style={inputStyle} />
+      </div>
+      <input type="email" placeholder="Email address" value={form.email} required
+        onChange={e => setForm(f => ({ ...f, email: e.target.value }))} style={inputStyle} />
+      <div>
+        <input type="tel" placeholder="Mobile number (optional)" value={form.phone}
+          onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} style={inputStyle} />
+        <p style={{ fontSize: '11px', color: subText, margin: '6px 2px 0', lineHeight: 1.5 }}>
+          Optional. Add it and we&apos;ll text you the moment the {productName} opens.
+        </p>
       </div>
       {error && <p style={{ fontSize: '13px', color: '#dc2626', margin: 0 }}>{error}</p>}
-      <button type="submit" disabled={status === 'submitting' || !form.email.trim()}
+      <button type="submit" disabled={status === 'submitting' || !canSubmit}
         style={{
           width: '100%', padding: '17px', borderRadius: '10px', border: 'none',
-          background: status === 'submitting' ? 'rgba(27,109,252,0.6)' : '#1B6DFC',
+          background: status === 'submitting' || !canSubmit ? 'rgba(27,109,252,0.6)' : '#1B6DFC',
           color: '#ffffff', fontSize: '16px', fontWeight: 800,
-          cursor: status === 'submitting' ? 'not-allowed' : 'pointer',
+          cursor: status === 'submitting' || !canSubmit ? 'not-allowed' : 'pointer',
           letterSpacing: '0.01em', transition: 'background 0.2s', boxSizing: 'border-box',
         }}>
         {status === 'submitting' ? 'Adding you...' : `Join the ${productName} waitlist`}

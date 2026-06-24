@@ -41,6 +41,8 @@ export async function POST(req: Request) {
   let body: {
     email?: string
     first_name?: string
+    last_name?: string
+    phone?: string
     body_state?: string
     product?: string
     source?: string
@@ -54,6 +56,8 @@ export async function POST(req: Request) {
   const email = (body.email ?? '').trim().toLowerCase()
   const product = (body.product ?? '').trim() as Product
   const first_name = body.first_name?.trim() || null
+  const last_name = body.last_name?.trim() || null
+  const phone = body.phone?.trim() || null
   const body_state = body.body_state?.trim() || null
   const source = body.source?.trim() || null
 
@@ -72,7 +76,7 @@ export async function POST(req: Request) {
   const { error } = await admin
     .from('product_waitlist')
     .upsert(
-      { email, first_name, body_state, product, source },
+      { email, first_name, last_name, phone, body_state, product, source },
       { onConflict: 'email,product', ignoreDuplicates: true },
     )
 
@@ -95,6 +99,8 @@ export async function POST(req: Request) {
       userData: {
         email,
         firstName: first_name || undefined,
+        lastName: last_name || undefined,
+        phone: phone || undefined,
         country: 'AU',
         clientIp,
         clientUserAgent,

@@ -9,6 +9,8 @@ type WaitlistRow = {
   id: string
   email: string
   first_name: string | null
+  last_name: string | null
+  phone: string | null
   body_state: string | null
   product: Product
   source: string | null
@@ -31,7 +33,7 @@ function fmtDate(iso: string): string {
 }
 
 function toCsv(rows: WaitlistRow[]): string {
-  const header = ['email', 'first_name', 'body_state', 'product', 'source', 'created_at', 'notified_at']
+  const header = ['email', 'first_name', 'last_name', 'phone', 'body_state', 'product', 'source', 'created_at', 'notified_at']
   const escape = (v: string | null | undefined) => {
     if (v === null || v === undefined) return ''
     const s = String(v)
@@ -42,6 +44,8 @@ function toCsv(rows: WaitlistRow[]): string {
     lines.push([
       escape(r.email),
       escape(r.first_name),
+      escape(r.last_name),
+      escape(r.phone),
       escape(r.body_state),
       escape(r.product),
       escape(r.source),
@@ -159,7 +163,8 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
             <thead>
               <tr className="bg-stone-50 border-b border-stone-200">
                 <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Email</th>
-                <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">First name</th>
+                <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Name</th>
+                <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Phone</th>
                 <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Body state</th>
                 {activeTab === 'all' && (
                   <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Product</th>
@@ -179,7 +184,8 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
                         <span>{r.email}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-stone-700">{r.first_name ?? '-'}</td>
+                    <td className="px-4 py-3 text-stone-700">{[r.first_name, r.last_name].filter(Boolean).join(' ') || '-'}</td>
+                    <td className="px-4 py-3 text-stone-600 text-xs">{r.phone ?? '-'}</td>
                     <td className="px-4 py-3 text-stone-700">
                       {r.body_state ? (
                         <div className="inline-flex items-center gap-1.5">
