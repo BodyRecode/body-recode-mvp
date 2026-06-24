@@ -23,13 +23,15 @@ export function WaitlistCTA({
   position?: string
   darkBg?: boolean
 }) {
-  const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '' })
+  const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', gender: '' })
   const [status, setStatus] = useState<'idle' | 'submitting' | 'done' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
 
-  // First name, last name and email are required; phone is optional (captured
-  // for the launch-day SMS without adding friction that would cost signups).
-  const canSubmit = !!form.first_name.trim() && !!form.last_name.trim() && !!form.email.trim() && form.email.includes('@')
+  // Capture the full enrolment dataset once, so launch needs zero re-asking.
+  // All fields required (mirrors the live enrol form: first/last/email/phone/gender).
+  const canSubmit = !!form.first_name.trim() && !!form.last_name.trim()
+    && !!form.email.trim() && form.email.includes('@')
+    && !!form.phone.trim() && !!form.gender
 
   async function join(e: React.FormEvent) {
     e.preventDefault()
@@ -45,6 +47,7 @@ export function WaitlistCTA({
           first_name: form.first_name.trim() || null,
           last_name: form.last_name.trim() || null,
           phone: form.phone.trim() || null,
+          gender: form.gender || null,
           product,
           source: `${product}_lp_${position}`,
         }),
@@ -108,12 +111,21 @@ export function WaitlistCTA({
       <input type="email" placeholder="Email address" value={form.email} required
         onChange={e => setForm(f => ({ ...f, email: e.target.value }))} style={inputStyle} />
       <div>
-        <input type="tel" placeholder="Mobile number (optional)" value={form.phone}
+        <input type="tel" placeholder="Mobile number" value={form.phone} required
           onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} style={inputStyle} />
         <p style={{ fontSize: '11px', color: subText, margin: '6px 2px 0', lineHeight: 1.5 }}>
-          Optional. Add it and we&apos;ll text you the moment the {productName} opens.
+          We&apos;ll text you the moment the {productName} opens, plus your daily reminders once you start.
         </p>
       </div>
+      <select
+        value={form.gender} required
+        onChange={e => setForm(f => ({ ...f, gender: e.target.value }))}
+        style={{ ...inputStyle, color: form.gender ? '#1A1A1A' : '#999999', appearance: 'auto' }}
+      >
+        <option value="" disabled>Biological sex</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
       {error && <p style={{ fontSize: '13px', color: '#dc2626', margin: 0 }}>{error}</p>}
       <button type="submit" disabled={status === 'submitting' || !canSubmit}
         style={{

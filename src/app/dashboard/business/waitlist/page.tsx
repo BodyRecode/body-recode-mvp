@@ -11,6 +11,7 @@ type WaitlistRow = {
   first_name: string | null
   last_name: string | null
   phone: string | null
+  gender: string | null
   body_state: string | null
   product: 'challenge' | 'blueprint' | 'membership'
   source: string | null
@@ -22,7 +23,7 @@ export default async function WaitlistPage() {
   const admin = createAdminClient()
   const { data, error } = await admin
     .from('product_waitlist')
-    .select('id, email, first_name, last_name, phone, body_state, product, source, notified_at, created_at')
+    .select('id, email, first_name, last_name, phone, gender, body_state, product, source, notified_at, created_at')
     .order('created_at', { ascending: false })
 
   if (error) {
