@@ -125,6 +125,7 @@ export function WaitlistCTA({
         <option value="" disabled>Biological sex</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
+        <option value="prefer_not_to_say">Prefer not to say</option>
       </select>
       {error && <p style={{ fontSize: '13px', color: '#dc2626', margin: 0 }}>{error}</p>}
       <button type="submit" disabled={status === 'submitting' || !canSubmit}

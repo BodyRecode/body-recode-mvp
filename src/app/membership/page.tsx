@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { Dumbbell, Salad, Video, Users, Library, LineChart, Play, BarChart3, FileText } from 'lucide-react'
+import { Dumbbell, Salad, Video, Users, Library, LineChart, BarChart3, FileText } from 'lucide-react'
 import { isProductLive } from '@/lib/product-launch'
 import { WaitlistCTA } from '@/components/product-waitlist-cta'
 
@@ -284,52 +284,8 @@ export default function MembershipPage() {
 
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '32px' }} />
 
-          {/* EXPLAINER VIDEO PLACEHOLDER */}
-          <div style={{
-            position: 'relative',
-            width: '100%',
-            aspectRatio: '16 / 9',
-            background: '#1A1A1A',
-            borderRadius: '14px',
-            marginBottom: '32px',
-            overflow: 'hidden',
-            border: '1px solid #2C2C2C',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            gap: '14px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
-          }}>
-            <div style={{
-              position: 'absolute', inset: 0,
-              background: 'radial-gradient(ellipse at center, rgba(27, 109, 252, 0.08) 0%, transparent 60%)',
-              pointerEvents: 'none',
-            }} />
-            <div style={{
-              width: '68px', height: '68px', borderRadius: '50%',
-              background: '#1B6DFC',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 16px rgba(27, 109, 252, 0.4)',
-              position: 'relative',
-            }}>
-              <Play size={28} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} style={{ marginLeft: '4px' }} />
-            </div>
-            <p style={{
-              fontSize: '12px', fontWeight: 700, color: '#4A4A4A',
-              margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase',
-              position: 'relative',
-            }}>
-              Explainer video · 60 seconds
-            </p>
-            <p style={{
-              fontSize: '11px', color: '#6B6B6B',
-              margin: 0, fontStyle: 'italic',
-              position: 'relative',
-            }}>
-              Placeholder. Production in progress with Amanda.
-            </p>
-          </div>
+          {/* Explainer video intentionally hidden until production is delivered.
+              (Previously a public "Placeholder. Production in progress" box.) */}
 
           <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '14px' }}>
             Most programmes deliver the work for a fixed window. Six weeks. Twelve weeks. Three months. The window closes, the structure disappears, and the body slowly returns to where it was.
@@ -576,7 +532,7 @@ export default function MembershipPage() {
           <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '12px', lineHeight: 1.2, color: '#FFFFFF' }}>
             Same portal. Block by block. Calibrated to your data.
           </h2>
-          <p style={{ fontSize: '16px', color: '#4A4A4A', marginBottom: '32px', lineHeight: 1.65 }}>
+          <p style={{ fontSize: '16px', color: '#999999', marginBottom: '32px', lineHeight: 1.65 }}>
             $49 per week. Cancel anytime. Your Blueprint pattern continuity carries through. Block A loads automatically the moment you join.
           </p>
           <CheckoutForm position="mid" darkBg />
