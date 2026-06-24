@@ -103,7 +103,7 @@ const WHAT_YOU_GET = [
     title: 'Progressive training blocks',
     timing: 'Every 6 weeks',
     featured: true,
-    desc: 'Block A picks up from Blueprint Week 6. Every six weeks a new block unlocks. More demanding movement patterns, more sophisticated programming. Gym, home with dumbbells, or bodyweight. All three versions every session.',
+    desc: 'Block A picks up from your locked foundation. Every six weeks a new block unlocks. More demanding movement patterns, more sophisticated programming. Gym, home with dumbbells, or bodyweight. All three versions every session.',
   },
   {
     icon: Salad,
@@ -137,10 +137,10 @@ const WHAT_YOU_GET = [
 
 const BLOCKS = [
   {
-    label: 'Blueprint',
-    weeks: 'Weeks 1-6',
+    label: 'Foundation',
+    weeks: 'Pattern locked',
     status: 'complete',
-    desc: 'Three phases: Regulate, Adapt, Embed. Pattern identified and corrected. Body comes out of compensation. Foundation locked.',
+    desc: 'Your pattern is identified and the body is out of acute compensation. Via the 6-Week Blueprint if you have done it, or calibrated from your intake if you are starting here. Locked before Block A either way.',
   },
   {
     label: 'Block A - Consolidate',
@@ -325,7 +325,7 @@ export default function MembershipPage() {
           Not a restart. A continuation.
         </h2>
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '24px' }}>
-          The Membership picks up exactly where the Blueprint ended. Your pattern is already identified. Your portal is already open. Block A loads automatically and the progression continues without a gap.
+          If you have done the Blueprint, the Membership picks up exactly where it ended. If you are starting here, your intake locks your pattern first, then Block A begins. Either way your portal opens and the progression continues without a gap.
         </p>
         <div style={{
           background: 'rgba(27, 109, 252,0.08)', border: '1px solid rgba(27, 109, 252,0.2)',
@@ -352,7 +352,7 @@ export default function MembershipPage() {
             State shift is a months-long arc, not a six-week event.
           </h2>
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>
-            The Blueprint corrects the pattern. The body comes out of acute compensation. But moving from Depleted to Transitioning takes months of consistent inputs landing on a stable system. Moving from Transitioning to Ready takes longer. The arc that should follow the Blueprint needs infrastructure.
+            Correcting the pattern brings the body out of acute compensation, whether that happens in the Blueprint or in your first weeks here. But moving from Depleted to Transitioning takes months of consistent inputs landing on a stable system. Moving from Transitioning to Ready takes longer. The arc that follows pattern correction needs infrastructure.
           </p>
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '28px' }}>
             Block A is calibrated to a body still consolidating. Block B steps up the load as the body comes online. Block C compounds. Pattern continuity carries every block. Your weekly check-in data calibrates the work as your state shifts. This is what most subscriptions miss. They deliver content. The Membership delivers calibration.
@@ -533,7 +533,7 @@ export default function MembershipPage() {
             Same portal. Block by block. Calibrated to your data.
           </h2>
           <p style={{ fontSize: '16px', color: '#999999', marginBottom: '32px', lineHeight: 1.65 }}>
-            $49 per week. Cancel anytime. Your Blueprint pattern continuity carries through. Block A loads automatically the moment you join.
+            $49 per week. Cancel anytime. Your pattern continuity carries through. Block A loads from your locked foundation the moment you join.
           </p>
           <CheckoutForm position="mid" darkBg />
         </div>
@@ -671,11 +671,11 @@ export default function MembershipPage() {
           <span style={{ color: '#4A4A4A' }}>Block by block. Calibrated to your data.</span>
         </h2>
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '36px' }}>
-          $49 per week. Cancel anytime. Block A loads automatically the moment you join. Pattern continuity carries through from the Blueprint. A monthly Loom from me reading your check-in data. The infrastructure for the state shift.
+          $49 per week. Cancel anytime. Block A loads from your locked foundation the moment you join. A monthly Loom from me reading your check-in data. The infrastructure for the state shift.
         </p>
         <CheckoutForm position="footer" />
         <p style={{ fontSize: '13px', color: '#4A4A4A', marginTop: '20px', lineHeight: 1.6 }}>
-          Already a Blueprint member? Your portal upgrades automatically on sign-up. No new token or login required.
+          Already a Blueprint member? Your portal upgrades automatically on sign-up, no new login. New here? Your portal opens on sign-up and Block A calibrates from your intake.
         </p>
       </div>
 
