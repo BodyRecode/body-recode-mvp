@@ -147,12 +147,6 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
           <h1 className="text-2xl font-semibold text-[#1A1A1A]">Macro Training Arc</h1>
           <p className="text-sm text-stone-500 mt-1">Plan the full sequence of meso blocks. Each block links to a generated program.</p>
         </div>
-        <Link
-          href={`/dashboard/clients/${id}/plan/suggest`}
-          className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors shrink-0"
-        >
-          {activePlan || draftPlan ? 'Suggest New Arc' : 'Suggest Arc'}
-        </Link>
       </div>
 
       {/* Hierarchy Visual */}
@@ -162,6 +156,16 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
           activeProgram={activeProgram ?? null}
           nutritionPlan={nutritionPlan ?? null}
         />
+      </div>
+
+      {/* Suggest arc (blue button, below the hierarchy - matches the yoga plan) */}
+      <div className="mb-6">
+        <Link
+          href={`/dashboard/clients/${id}/plan/suggest`}
+          className="inline-block py-3 px-5 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#5390FF] transition-colors"
+        >
+          {activePlan || draftPlan ? 'Suggest New Arc' : 'Suggest Arc'}
+        </Link>
       </div>
 
       {/* Draft - show preview with Approve/Discard */}
