@@ -193,7 +193,7 @@ export default async function YogaProgramView({
   // Session-log completions for the active block (coach + client logged practices).
   const { data: completions } = activeProgram
     ? await admin.from('session_completions')
-        .select('id, session_index, day_label, completed_at, logged_by, session_notes')
+        .select('id, session_index, week_number_in_block, day_label, completed_at, logged_by, session_notes')
         .eq('program_id', activeProgram.id).eq('status', 'completed')
     : { data: [] }
 
@@ -270,6 +270,7 @@ export default async function YogaProgramView({
           <div className="mt-4">
             <YogaSessionLog
               programId={activeProgram.id}
+              weeks={activeProgram.week_duration ?? 4}
               practices={(activeProgram.sessions ?? []).map((s, i) => ({ index: i, day_label: s.day_label }))}
               completions={completions ?? []}
             />

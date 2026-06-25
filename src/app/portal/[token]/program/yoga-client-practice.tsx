@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import ClientHeader from '@/components/client-header'
 import ProgramReadingInline from '@/components/program-reading-inline'
-import YogaLogButton from './yoga-log-button'
+import YogaClientProgress from './yoga-client-progress'
 
 interface YogaPose {
   name: string
@@ -34,8 +34,8 @@ function holdText(p: YogaPose): string {
 }
 
 export default function YogaClientPractice({
-  token, programId, blockName, sessions, reading, loggedIndexes,
-}: { token: string; programId: string; blockName: string; sessions: YogaSession[]; reading: Reading | null; loggedIndexes: number[] }) {
+  token, programId, blockName, sessions, reading, weeks, completions,
+}: { token: string; programId: string; blockName: string; sessions: YogaSession[]; reading: Reading | null; weeks: number; completions: { session_index: number; week_number_in_block: number }[] }) {
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
@@ -55,12 +55,18 @@ export default function YogaClientPractice({
             />
           )}
 
+          {/* Block progress - log each practice, week by week */}
+          <YogaClientProgress
+            token={token}
+            programId={programId}
+            weeks={weeks}
+            practices={sessions.map((s, i) => ({ index: i, day_label: s.day_label }))}
+            completions={completions}
+          />
+
           {sessions.map((session, sIdx) => (
             <div key={sIdx} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5">
-              <div className="flex items-start justify-between gap-3 mb-1">
-                <p className="text-lg font-bold text-[#1A1A1A]">{session.day_label}</p>
-                <YogaLogButton token={token} programId={programId} sessionIndex={sIdx} alreadyLogged={loggedIndexes.includes(sIdx)} />
-              </div>
+              <p className="text-lg font-bold text-[#1A1A1A] mb-1">{session.day_label}</p>
               {session.intention && <p className="text-sm text-[#6B6B6B] mb-4">{session.intention}</p>}
               <div className="space-y-6">
                 {session.segments.map((seg, i) => (

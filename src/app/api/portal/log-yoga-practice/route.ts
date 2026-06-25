@@ -7,7 +7,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 export const maxDuration = 30
 
 export async function POST(request: NextRequest) {
-  const { token, program_id, session_index, notes = null } = await request.json()
+  const { token, program_id, session_index, week_number_in_block = 1, notes = null } = await request.json()
   if (!token || !program_id || session_index === undefined || session_index === null) {
     return NextResponse.json({ error: 'Missing token, program_id or session_index' }, { status: 400 })
   }
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       session_index: Number(session_index),
       day_label: (session.day_label as string) ?? `Practice ${Number(session_index) + 1}`,
       session_name: (session.day_label as string) ?? null,
-      week_number_in_block: 1,
+      week_number_in_block: Number(week_number_in_block) || 1,
       prescription_snapshot: session,
       status: 'completed',
       session_notes: notes,

@@ -74,12 +74,11 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
       } : null
       const { data: comps } = await admin
         .from('session_completions')
-        .select('session_index')
+        .select('session_index, week_number_in_block')
         .eq('program_id', program.id).eq('status', 'completed')
-      const loggedIndexes = (comps ?? []).map((c) => c.session_index as number)
       return (
         // @ts-expect-error sessions JSONB is loosely typed at the DB boundary
-        <YogaClientPractice token={token} programId={program.id} blockName={program.block_name} sessions={yogaSessions} reading={reading} loggedIndexes={loggedIndexes} />
+        <YogaClientPractice token={token} programId={program.id} blockName={program.block_name} sessions={yogaSessions} reading={reading} weeks={program.week_duration ?? 4} completions={comps ?? []} />
       )
     }
   }
