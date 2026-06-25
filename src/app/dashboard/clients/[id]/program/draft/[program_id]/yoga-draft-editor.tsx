@@ -45,6 +45,7 @@ export default function YogaDraftEditor({
   const [sessions, setSessions] = useState<Session[]>(program.sessions ?? [])
   const [library, setLibrary] = useState<LibraryItem[]>([])
   const [editing, setEditing] = useState<string | null>(null) // "si-segi-pi"
+  const [swapping, setSwapping] = useState<string | null>(null)
   const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
   const [busy, setBusy] = useState<string | null>(null)
@@ -186,43 +187,49 @@ export default function YogaDraftEditor({
                   <div className="space-y-2">
                     {seg.poses.map((p, pi) => {
                       const key = `${si}-${segi}-${pi}`
-                      const open = editing === key
-                      return open ? (
-                        <div key={pi} className="bg-white border border-[#1B6DFC]/30 rounded-lg p-3 space-y-2">
-                          <div className="flex items-center gap-2">
-                            <select value={p.name} onChange={(e) => { const lib = library.find((l) => l.name === e.target.value); mutatePose(si, segi, pi, { name: e.target.value, sanskrit_name: lib?.sanskrit_name ?? null }) }}
-                              className={`${inp} flex-1 font-medium`}>
-                              {!library.some((l) => l.name === p.name) && <option value={p.name}>{p.name}</option>}
-                              {library.map((l) => <option key={l.id} value={l.name}>{l.name}</option>)}
-                            </select>
-                            <button onClick={() => setEditing(null)} className="text-xs font-semibold text-[#1B6DFC] px-2 shrink-0">Done</button>
-                          </div>
-                          <div className="flex flex-wrap items-center gap-2">
-                            <select value={p.side ?? ''} onChange={(e) => mutatePose(si, segi, pi, { side: e.target.value || null })} className={inp}>
-                              <option value="">both sides</option>
-                              <option value="left">left</option>
-                              <option value="right">right</option>
-                            </select>
-                            <input type="number" value={p.hold_seconds ?? ''} placeholder="hold s"
-                              onChange={(e) => mutatePose(si, segi, pi, { hold_seconds: e.target.value ? Number(e.target.value) : null, breaths: null })} className={`${inp} w-24`} />
-                            <input type="number" value={p.breaths ?? ''} placeholder="breaths"
-                              onChange={(e) => mutatePose(si, segi, pi, { breaths: e.target.value ? Number(e.target.value) : null, hold_seconds: null })} className={`${inp} w-24`} />
-                            <input value={p.cue ?? ''} placeholder="cue" onChange={(e) => mutatePose(si, segi, pi, { cue: e.target.value })} className={`${inp} flex-1 min-w-[160px]`} />
-                            <button onClick={() => removePose(si, segi, pi)} className="text-xs text-stone-400 hover:text-red-700 px-2">Remove</button>
-                          </div>
+                      const isEditing = editing === key
+                      const isSwapping = swapping === key
+                      return (
+                        <div key={pi} className={`rounded-lg border transition-colors ${isEditing ? 'border-stone-400 bg-stone-200/50' : 'border-transparent hover:border-stone-300 cursor-pointer'}`}>
+                          {!isEditing ? (
+                            <div className="flex items-center gap-3 text-sm px-3 py-2" onClick={() => setEditing(key)}>
+                              <span className="flex-1 text-stone-800 font-medium">
+                                {p.name}
+                                {p.side && p.side !== 'both' ? <span className="text-stone-400 font-normal"> ({p.side})</span> : null}
+                              </span>
+                              <span className="text-stone-400 whitespace-nowrap text-xs w-20 text-right">{holdText(p)}</span>
+                            </div>
+                          ) : (
+                            <div className="px-3 py-3 space-y-3">
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-semibold text-stone-900 flex-1">
+                                  {p.name}{p.sanskrit_name && <span className="ml-1.5 text-xs italic text-stone-400">{p.sanskrit_name}</span>}
+                                </span>
+                                <button onClick={() => setSwapping(isSwapping ? null : key)} className="text-xs px-2.5 py-1 border border-stone-400 text-stone-600 rounded hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors">{isSwapping ? 'Cancel' : 'Swap'}</button>
+                                <button onClick={() => { setEditing(null); setSwapping(null) }} className="text-xs text-stone-400 hover:text-stone-600 transition-colors">Done</button>
+                              </div>
+                              {isSwapping && (
+                                <select defaultValue="" onChange={(e) => { if (e.target.value) { const lib = library.find((l) => l.name === e.target.value); mutatePose(si, segi, pi, { name: e.target.value, sanskrit_name: lib?.sanskrit_name ?? null }); setSwapping(null) } }} className={`${inp} w-full`}>
+                                  <option value="">Choose a pose to swap in…</option>
+                                  {library.map((l) => <option key={l.id} value={l.name}>{l.name}</option>)}
+                                </select>
+                              )}
+                              <div className="flex flex-wrap items-center gap-2">
+                                <select value={p.side ?? ''} onChange={(e) => mutatePose(si, segi, pi, { side: e.target.value || null })} className={inp}>
+                                  <option value="">both sides</option>
+                                  <option value="left">left</option>
+                                  <option value="right">right</option>
+                                </select>
+                                <input type="number" value={p.hold_seconds ?? ''} placeholder="hold s"
+                                  onChange={(e) => mutatePose(si, segi, pi, { hold_seconds: e.target.value ? Number(e.target.value) : null, breaths: null })} className={`${inp} w-24`} />
+                                <input type="number" value={p.breaths ?? ''} placeholder="breaths"
+                                  onChange={(e) => mutatePose(si, segi, pi, { breaths: e.target.value ? Number(e.target.value) : null, hold_seconds: null })} className={`${inp} w-24`} />
+                                <input value={p.cue ?? ''} placeholder="cue" onChange={(e) => mutatePose(si, segi, pi, { cue: e.target.value })} className={`${inp} flex-1 min-w-[160px]`} />
+                                <button onClick={() => removePose(si, segi, pi)} className="text-xs text-stone-400 hover:text-red-700 px-2">Remove</button>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      ) : (
-                        <button key={pi} onClick={() => setEditing(key)} className="w-full text-left bg-white border border-stone-200 rounded-lg px-3 py-2 hover:border-stone-300 transition-colors">
-                          <div className="flex items-baseline justify-between gap-3">
-                            <span className="text-sm font-medium text-stone-900">
-                              {p.name}
-                              {p.side && p.side !== 'both' ? <span className="text-stone-400 font-normal"> ({p.side})</span> : null}
-                              {p.sanskrit_name && <span className="ml-2 text-xs italic text-stone-400">{p.sanskrit_name}</span>}
-                            </span>
-                            {holdText(p) && <span className="text-xs text-stone-500 shrink-0">{holdText(p)}</span>}
-                          </div>
-                          {p.cue && <p className="text-xs text-stone-500 mt-0.5">{p.cue}</p>}
-                        </button>
                       )
                     })}
                   </div>
