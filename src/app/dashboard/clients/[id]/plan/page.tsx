@@ -4,6 +4,7 @@ import Link from 'next/link'
 import MacroPlanEditor from './macro-plan-editor'
 import PlanDraftActions from './draft-actions'
 import HierarchyVisual from './hierarchy-visual'
+import YogaMacroPlanView from './yoga-macro-plan-view'
 
 interface PlanBlock {
   id: string
@@ -110,13 +111,18 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
     { data: activeProgram },
     { data: nutritionPlan },
   ] = await Promise.all([
-    admin.from('clients').select('id, name').eq('id', id).maybeSingle(),
+    admin.from('clients').select('id, name, modality').eq('id', id).maybeSingle(),
     admin.from('training_plans').select('*, plan_blocks(*)').eq('client_id', id).order('created_at', { ascending: false }),
     admin.from('programs').select('block_name, progression_phase, training_goal, training_frequency, week_duration').eq('client_id', id).eq('is_active', true).maybeSingle(),
     admin.from('nutrition_plans').select('entry_state, carb_demand_level, modulation_level').eq('client_id', id).eq('is_active', true).maybeSingle(),
   ])
 
   if (!client) notFound()
+
+  // Modality routing: yoga clients use the yoga macro plan surface.
+  if (client.modality === 'yoga') {
+    return <YogaMacroPlanView clientId={client.id} clientName={client.name} />
+  }
 
   const draftPlan = plans?.find(p => p.status === 'draft') as Plan | undefined
   const activePlan = plans?.find(p => p.is_active && p.status !== 'draft') as Plan | undefined

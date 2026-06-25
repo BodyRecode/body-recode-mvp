@@ -43,6 +43,11 @@ export async function POST(request: NextRequest) {
     // Block parameters (parallel to a strength block).
     week_duration = 4,        // 4 | 6 | 8
     practices_per_week = 2,   // 2-4
+    // When generated from a macro-plan block: the block's ceiling + name, and
+    // the plan_block to mark in progress.
+    ceiling: ceilingOverride = null,
+    block_name_override = null,
+    plan_block_id = null,
   } = body
 
   if (!client_id) {
@@ -60,9 +65,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `Client not found (${clientError?.message ?? 'none'})` }, { status: 404 })
   }
 
-  // Recovery state -> intensity ceiling (hard cap).
+  // Recovery state -> intensity ceiling (hard cap). A macro-plan block can
+  // pass its own ceiling directly.
   const level = (Math.max(0, Math.min(4, Number(rrs_level))) as RRSLevel)
-  const ceiling: YogaIntensity = intensityCeilingForState(level)
+  const validCeilings = ['restorative', 'gentle', 'moderate', 'strong']
+  const ceiling: YogaIntensity = validCeilings.includes(String(ceilingOverride))
+    ? (ceilingOverride as YogaIntensity)
+    : intensityCeilingForState(level)
 
   // Fetch the yoga library, then apply the two hard floors in code:
   // intensity ceiling and client contraindications.
@@ -165,7 +174,7 @@ export async function POST(request: NextRequest) {
     .from('programs')
     .insert({
       client_id,
-      block_name: block.block_name || 'Yoga Block',
+      block_name: block_name_override || block.block_name || 'Yoga Block',
       modality: 'yoga',
       progression_phase: 'restoration',
       training_goal: 'capacity',
@@ -185,6 +194,11 @@ export async function POST(request: NextRequest) {
     .single()
   if (progErr || !program) {
     return NextResponse.json({ error: `Failed to save block: ${progErr?.message}` }, { status: 500 })
+  }
+
+  // If generated from a macro-plan block, mark it in progress.
+  if (plan_block_id) {
+    await admin.from('plan_blocks').update({ status: 'in_progress' }).eq('id', plan_block_id)
   }
 
   return NextResponse.json({

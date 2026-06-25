@@ -180,7 +180,13 @@ export default async function YogaProgramView({
           <h1 className="text-2xl font-semibold text-[#1A1A1A]">Yoga Block</h1>
           <p className="text-sm text-stone-500 mt-1">Powered by Body Recode. The engine reads, you prescribe.</p>
         </div>
-        <span className="shrink-0 rounded-full bg-blue-50 border border-blue-200 px-3 py-1 text-xs font-semibold text-[#1B6DFC]">yoga modality</span>
+        <div className="flex items-center gap-2 shrink-0">
+          <Link href={`/dashboard/clients/${clientId}/plan`}
+            className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors">
+            Macro Plan
+          </Link>
+          <span className="rounded-full bg-blue-50 border border-blue-200 px-3 py-1 text-xs font-semibold text-[#1B6DFC]">yoga modality</span>
+        </div>
       </div>
 
       <div className="mb-6">
