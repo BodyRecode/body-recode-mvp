@@ -4,6 +4,7 @@ import { YogaSuggestPlanButton } from './yoga-plan-actions'
 import YogaHierarchyVisual from './yoga-hierarchy-visual'
 import YogaMacroPlanEditor from './yoga-macro-plan-editor'
 import PlanDraftActions from './draft-actions'
+import YogaCreatePlanForm from './yoga-create-plan-form'
 
 interface PlanBlock {
   id: string
@@ -146,8 +147,13 @@ export default async function YogaMacroPlanView({
           <YogaMacroPlanEditor clientId={clientId} planId={activePlan.id} initialBlocks={blocks} />
         </div>
       ) : !draftPlan ? (
-        <div className="bg-stone-50 border border-dashed border-stone-300 rounded-xl p-8 text-center text-sm text-stone-500">
-          No arc yet. Suggest one to map out the client&apos;s journey.
+        <div>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-px bg-stone-200" />
+            <p className="text-xs text-stone-400 uppercase tracking-widest">Manual Entry</p>
+            <div className="flex-1 h-px bg-stone-200" />
+          </div>
+          <YogaCreatePlanForm clientId={clientId} />
         </div>
       ) : null}
     </div>
