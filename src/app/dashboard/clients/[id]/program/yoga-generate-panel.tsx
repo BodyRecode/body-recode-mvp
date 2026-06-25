@@ -27,9 +27,10 @@ export default function YogaGeneratePanel({ clientId }: { clientId: string }) {
   const [error, setError] = useState<string | null>(null)
   const [notes, setNotes] = useState<string[] | null>(null)
 
-  const [blockName, setBlockName] = useState('Yoga Practice')
   const [minutes, setMinutes] = useState(45)
   const [rrsLevel, setRrsLevel] = useState(3)
+  const [weeks, setWeeks] = useState(4)
+  const [perWeek, setPerWeek] = useState(2)
   const [flags, setFlags] = useState<string[]>([])
   const [bodyState, setBodyState] = useState('')
   const [guidance, setGuidance] = useState('')
@@ -46,9 +47,10 @@ export default function YogaGeneratePanel({ clientId }: { clientId: string }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           client_id: clientId,
-          block_name: blockName,
           target_minutes: minutes,
           rrs_level: rrsLevel,
+          week_duration: weeks,
+          practices_per_week: perWeek,
           contraindications: flags,
           body_state_context: bodyState || null,
           coach_guidance: guidance || null,
@@ -71,7 +73,7 @@ export default function YogaGeneratePanel({ clientId }: { clientId: string }) {
         onClick={() => setOpen(true)}
         className="w-full sm:w-auto py-3 px-5 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#5390FF] transition-colors"
       >
-        Generate a practice
+        Generate a block
       </button>
     )
   }
@@ -91,19 +93,30 @@ export default function YogaGeneratePanel({ clientId }: { clientId: string }) {
         ]}
       />
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-stone-900">Generate a yoga practice</h3>
+        <h3 className="text-sm font-semibold text-stone-900">Generate a yoga block</h3>
         <button onClick={() => setOpen(false)} className="text-xs text-stone-500 hover:text-stone-800">close</button>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className={labelClass}>Practice name
-          <input value={blockName} onChange={(e) => setBlockName(e.target.value)} className={`${inputClass} mt-1 normal-case`} />
+      <div className="grid gap-4 sm:grid-cols-3">
+        <label className={labelClass}>Block length
+          <select value={weeks} onChange={(e) => setWeeks(Number(e.target.value))} className={`${inputClass} mt-1 normal-case`}>
+            <option value={4}>4 weeks</option>
+            <option value={6}>6 weeks</option>
+            <option value={8}>8 weeks</option>
+          </select>
         </label>
-        <label className={labelClass}>Length (minutes)
+        <label className={labelClass}>Practices / week
+          <select value={perWeek} onChange={(e) => setPerWeek(Number(e.target.value))} className={`${inputClass} mt-1 normal-case`}>
+            <option value={2}>2 per week</option>
+            <option value={3}>3 per week</option>
+            <option value={4}>4 per week</option>
+          </select>
+        </label>
+        <label className={labelClass}>Length each (min)
           <input type="number" min={15} max={90} step={5} value={minutes}
             onChange={(e) => setMinutes(Number(e.target.value))} className={`${inputClass} mt-1`} />
         </label>
-        <label className={`${labelClass} sm:col-span-2`}>Recovery state (sets the intensity ceiling)
+        <label className={`${labelClass} sm:col-span-3`}>Recovery state (sets the intensity ceiling)
           <select value={rrsLevel} onChange={(e) => setRrsLevel(Number(e.target.value))} className={`${inputClass} mt-1 normal-case`}>
             {RRS_LEVELS.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
           </select>
@@ -144,7 +157,7 @@ export default function YogaGeneratePanel({ clientId }: { clientId: string }) {
 
       <button onClick={generate} disabled={loading}
         className="mt-4 w-full sm:w-auto py-3 px-5 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#5390FF] disabled:opacity-40 transition-colors">
-        {loading ? 'Sequencing…' : 'Generate practice'}
+        {loading ? 'Sequencing…' : 'Generate block'}
       </button>
     </div>
   )

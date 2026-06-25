@@ -3,6 +3,7 @@ import Link from 'next/link'
 import YogaGeneratePanel from './yoga-generate-panel'
 import YogaPublishButton from './yoga-publish-button'
 import ProgramReadingPanel from './program-reading-panel'
+import StickyScrollNav from '@/components/sticky-scroll-nav'
 
 interface YogaPose {
   name: string
@@ -43,9 +44,9 @@ function paragraphs(text: string): string[] {
   return text.split(/\n{2,}|\n/).map((s) => s.trim()).filter(Boolean)
 }
 
-function TextSection({ num, label, body }: { num: string; label: string; body: string }) {
+function TextSection({ id, num, label, body }: { id?: string; num: string; label: string; body: string }) {
   return (
-    <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+    <div id={id} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
       <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200 bg-stone-100/80">
         <span className="text-[11px] font-black text-[#1B6DFC]">{num}</span>
         <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">{label}</p>
@@ -65,7 +66,7 @@ function BlockBody({ program }: { program: YogaProgram }) {
   return (
     <div className="space-y-4">
       {/* Identity card */}
-      <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+      <div id="yoga-identity" className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5">
         <div className="flex items-start justify-between mb-3">
           <div>
             <h2 className="text-lg font-semibold text-[#1A1A1A]">{program.block_name}</h2>
@@ -86,7 +87,7 @@ function BlockBody({ program }: { program: YogaProgram }) {
 
       {/* Rationale */}
       {program.prescription_rationale && (
-        <div className="bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
+        <div id="yoga-rationale" className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
           <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-3">Prescription Rationale</p>
           <div className="space-y-2">
             {paragraphs(program.prescription_rationale).map((para, i) => (
@@ -98,16 +99,16 @@ function BlockBody({ program }: { program: YogaProgram }) {
 
       {/* Weekly Structure */}
       {program.weekly_pattern_summary && (
-        <TextSection num="01" label="Weekly Structure" body={program.weekly_pattern_summary} />
+        <TextSection id="yoga-weekly" num="01" label="Weekly Structure" body={program.weekly_pattern_summary} />
       )}
 
       {/* Progression */}
       {program.progression_notes && (
-        <TextSection num="02" label="Progression Strategy" body={program.progression_notes} />
+        <TextSection id="yoga-progression" num="02" label="Progression Strategy" body={program.progression_notes} />
       )}
 
       {/* Practices (the strength "Sessions" pattern) */}
-      <div className="mt-2">
+      <div id="yoga-practices" className="scroll-mt-8 mt-2">
         <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 px-1">Practices</p>
         <div className="space-y-3">
           {sessions.map((s, sIdx) => (
@@ -206,7 +207,20 @@ export default async function YogaProgramView({
             />
           </div>
 
-          <BlockBody program={latest} />
+          <div className="flex gap-6">
+            <div className="hidden lg:block">
+              <StickyScrollNav sections={[
+                { id: 'yoga-identity', title: 'Identity' },
+                ...(latest.prescription_rationale ? [{ id: 'yoga-rationale', title: 'Rationale' }] : []),
+                ...(latest.weekly_pattern_summary ? [{ id: 'yoga-weekly', title: 'Weekly Structure' }] : []),
+                ...(latest.progression_notes ? [{ id: 'yoga-progression', title: 'Progression' }] : []),
+                { id: 'yoga-practices', title: 'Practices' },
+              ]} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <BlockBody program={latest} />
+            </div>
+          </div>
         </div>
       ) : (
         <div className="bg-stone-50 border border-dashed border-stone-300 rounded-xl p-8 text-center text-sm text-stone-500">
