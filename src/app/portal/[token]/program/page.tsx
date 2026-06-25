@@ -60,12 +60,22 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
     .eq('is_active', true)
     .maybeSingle()
 
-  // Modality fork: a published yoga practice renders the yoga view.
+  // Modality fork: a published yoga block renders the yoga view.
   if (program?.modality === 'yoga') {
-    const yogaSession = (program.sessions as Array<Record<string, unknown>> | undefined)?.[0]
-    if (yogaSession) {
-      // @ts-expect-error sessions JSONB is loosely typed at the DB boundary
-      return <YogaClientPractice token={token} session={yogaSession} />
+    const yogaSessions = (program.sessions as Array<Record<string, unknown>> | undefined) ?? []
+    if (yogaSessions.length) {
+      const reading = program.program_reading_published_at ? {
+        pr_why_this_block: program.pr_why_this_block,
+        pr_what_this_program_is_doing: program.pr_what_this_program_is_doing,
+        pr_how_well_know_its_working: program.pr_how_well_know_its_working,
+        pr_what_were_not_doing_yet: program.pr_what_were_not_doing_yet,
+        pr_coach_note: program.pr_coach_note,
+        program_reading_published_at: program.program_reading_published_at,
+      } : null
+      return (
+        // @ts-expect-error sessions JSONB is loosely typed at the DB boundary
+        <YogaClientPractice token={token} blockName={program.block_name} sessions={yogaSessions} reading={reading} />
+      )
     }
   }
 

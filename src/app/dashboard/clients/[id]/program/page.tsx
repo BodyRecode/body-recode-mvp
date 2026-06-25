@@ -289,7 +289,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
   // Modality routing: yoga clients use the yoga programming surface; the
   // strength flow below is untouched.
   if (client.modality === 'yoga') {
-    return <YogaProgramView clientId={client.id} clientName={client.name} />
+    return <YogaProgramView clientId={client.id} clientName={client.name} clientToken={client.onboarding_token ?? null} />
   }
 
   const { data: programs } = await admin

@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import YogaGeneratePanel from './yoga-generate-panel'
 import YogaPublishButton from './yoga-publish-button'
+import ProgramReadingPanel from './program-reading-panel'
 
 interface YogaPose {
   name: string
@@ -151,17 +152,17 @@ function BlockBody({ program }: { program: YogaProgram }) {
 }
 
 export default async function YogaProgramView({
-  clientId, clientName,
-}: { clientId: string; clientName: string }) {
+  clientId, clientName, clientToken,
+}: { clientId: string; clientName: string; clientToken: string | null }) {
   const admin = createAdminClient()
   const { data: programs } = await admin
     .from('programs')
-    .select('id, block_name, sessions, generated_at, is_active, published_to_client_at, prescription_rationale, weekly_pattern_summary, progression_notes, training_frequency, week_duration')
+    .select('id, block_name, sessions, generated_at, is_active, published_to_client_at, prescription_rationale, weekly_pattern_summary, progression_notes, training_frequency, week_duration, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, pr_coach_guidance, program_reading_generated_at, program_reading_published_at, program_reading_email_sent_at')
     .eq('client_id', clientId)
     .eq('modality', 'yoga')
     .order('generated_at', { ascending: false })
 
-  const latest = (programs?.[0] as YogaProgram | undefined)
+  const latest = (programs?.[0] as (YogaProgram & Record<string, string | null>) | undefined)
   const past = (programs ?? []).slice(1) as YogaProgram[]
   const isPublished = !!latest?.published_to_client_at
 
@@ -195,6 +196,16 @@ export default async function YogaProgramView({
             </span>
             <YogaPublishButton programId={latest.id} published={isPublished} />
           </div>
+
+          {/* Client-facing Program Reading - generate / edit / publish (reuses the strength panel) */}
+          <div className="mb-4">
+            <ProgramReadingPanel
+              program={latest as unknown as Parameters<typeof ProgramReadingPanel>[0]['program']}
+              clientToken={clientToken}
+              generateRoute="/api/generate-yoga-reading"
+            />
+          </div>
+
           <BlockBody program={latest} />
         </div>
       ) : (

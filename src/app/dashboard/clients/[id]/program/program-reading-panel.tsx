@@ -43,9 +43,11 @@ const SECTION_LABELS: { field: SectionField; label: string }[] = [
 export default function ProgramReadingPanel({
   program,
   clientToken,
+  generateRoute = '/api/generate-program-reading',
 }: {
   program: Reading
   clientToken: string | null
+  generateRoute?: string
 }) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
@@ -73,7 +75,7 @@ export default function ProgramReadingPanel({
     setEmailNotice(null)
     setGenerating(true)
     try {
-      const res = await fetch('/api/generate-program-reading', {
+      const res = await fetch(generateRoute, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ program_id: program.id }),
