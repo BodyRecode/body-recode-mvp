@@ -4,6 +4,8 @@ import YogaGeneratePanel from './yoga-generate-panel'
 import YogaPublishButton from './yoga-publish-button'
 import ProgramReadingPanel from './program-reading-panel'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
+import DraftActions from './draft-actions'
+import DeleteProgramButton from './delete-button'
 
 interface YogaPose {
   name: string
@@ -152,20 +154,51 @@ function BlockBody({ program }: { program: YogaProgram }) {
   )
 }
 
+function BlockSection({ program, clientToken }: { program: YogaProgram; clientToken: string | null }) {
+  return (
+    <>
+      {/* Client-facing Program Reading - generate / edit / publish (reuses the strength panel) */}
+      <div className="mb-4">
+        <ProgramReadingPanel
+          program={program as unknown as Parameters<typeof ProgramReadingPanel>[0]['program']}
+          clientToken={clientToken}
+          generateRoute="/api/generate-yoga-reading"
+        />
+      </div>
+      <div className="flex gap-6">
+        <div className="hidden lg:block">
+          <StickyScrollNav sections={[
+            { id: 'yoga-identity', title: 'Identity' },
+            ...(program.prescription_rationale ? [{ id: 'yoga-rationale', title: 'Rationale' }] : []),
+            ...(program.weekly_pattern_summary ? [{ id: 'yoga-weekly', title: 'Weekly Structure' }] : []),
+            ...(program.progression_notes ? [{ id: 'yoga-progression', title: 'Progression' }] : []),
+            { id: 'yoga-practices', title: 'Practices' },
+          ]} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <BlockBody program={program} />
+        </div>
+      </div>
+    </>
+  )
+}
+
 export default async function YogaProgramView({
   clientId, clientName, clientToken,
 }: { clientId: string; clientName: string; clientToken: string | null }) {
   const admin = createAdminClient()
   const { data: programs } = await admin
     .from('programs')
-    .select('id, block_name, sessions, generated_at, is_active, published_to_client_at, prescription_rationale, weekly_pattern_summary, progression_notes, training_frequency, week_duration, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, pr_coach_guidance, program_reading_generated_at, program_reading_published_at, program_reading_email_sent_at')
+    .select('id, block_name, sessions, generated_at, is_active, status, published_to_client_at, prescription_rationale, weekly_pattern_summary, progression_notes, training_frequency, week_duration, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, pr_coach_guidance, program_reading_generated_at, program_reading_published_at, program_reading_email_sent_at')
     .eq('client_id', clientId)
     .eq('modality', 'yoga')
     .order('generated_at', { ascending: false })
 
-  const latest = (programs?.[0] as (YogaProgram & Record<string, string | null>) | undefined)
-  const past = (programs ?? []).slice(1) as YogaProgram[]
-  const isPublished = !!latest?.published_to_client_at
+  type P = YogaProgram & { status?: string }
+  const all = (programs ?? []) as P[]
+  const draftProgram = all.find((p) => p.status === 'draft')
+  const activeProgram = all.find((p) => p.is_active && p.status !== 'draft')
+  const past = all.filter((p) => p.id !== draftProgram?.id && p.id !== activeProgram?.id)
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -178,9 +211,13 @@ export default async function YogaProgramView({
             <span className="text-stone-700">Yoga Block</span>
           </div>
           <h1 className="text-2xl font-semibold text-[#1A1A1A]">Yoga Block</h1>
-          <p className="text-sm text-stone-500 mt-1">Powered by Body Recode. The engine reads, you prescribe.</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
+          {activeProgram && <YogaPublishButton programId={activeProgram.id} published={!!activeProgram.published_to_client_at} />}
+          {activeProgram && <DeleteProgramButton programId={activeProgram.id} label="Delete Active Block" />}
+          {draftProgram && !activeProgram && (
+            <DeleteProgramButton programId={draftProgram.id} label="Delete Draft" confirmMessage="Delete this draft block? This cannot be undone." />
+          )}
           <Link href={`/dashboard/clients/${clientId}/plan`}
             className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors">
             Macro Plan
@@ -193,46 +230,34 @@ export default async function YogaProgramView({
         <YogaGeneratePanel clientId={clientId} />
       </div>
 
-      {latest && latest.sessions?.length ? (
-        <div>
+      {/* Draft - pending approval */}
+      {draftProgram && (
+        <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <span className={`text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wide border ${isPublished
-              ? 'bg-blue-50 border-blue-200 text-[#1B6DFC]'
-              : 'bg-amber-50 border-amber-700 text-amber-700'}`}>
-              {isPublished ? 'Published' : 'Draft - Pending Approval'}
-            </span>
-            <YogaPublishButton programId={latest.id} published={isPublished} />
+            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">Draft - Pending Approval</span>
+            <DraftActions programId={draftProgram.id} clientId={clientId} />
           </div>
-
-          {/* Client-facing Program Reading - generate / edit / publish (reuses the strength panel) */}
-          <div className="mb-4">
-            <ProgramReadingPanel
-              program={latest as unknown as Parameters<typeof ProgramReadingPanel>[0]['program']}
-              clientToken={clientToken}
-              generateRoute="/api/generate-yoga-reading"
-            />
-          </div>
-
-          <div className="flex gap-6">
-            <div className="hidden lg:block">
-              <StickyScrollNav sections={[
-                { id: 'yoga-identity', title: 'Identity' },
-                ...(latest.prescription_rationale ? [{ id: 'yoga-rationale', title: 'Rationale' }] : []),
-                ...(latest.weekly_pattern_summary ? [{ id: 'yoga-weekly', title: 'Weekly Structure' }] : []),
-                ...(latest.progression_notes ? [{ id: 'yoga-progression', title: 'Progression' }] : []),
-                { id: 'yoga-practices', title: 'Practices' },
-              ]} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <BlockBody program={latest} />
-            </div>
-          </div>
+          <BlockSection program={draftProgram} clientToken={clientToken} />
         </div>
-      ) : (
+      )}
+
+      {/* Active block */}
+      {activeProgram ? (
+        <div>
+          {draftProgram && (
+            <div className="flex items-center gap-3 mb-4 mt-2">
+              <div className="flex-1 h-px bg-stone-200" />
+              <p className="text-xs text-stone-400 uppercase tracking-widest">Current Active Block</p>
+              <div className="flex-1 h-px bg-stone-200" />
+            </div>
+          )}
+          <BlockSection program={activeProgram} clientToken={clientToken} />
+        </div>
+      ) : !draftProgram ? (
         <div className="bg-stone-50 border border-dashed border-stone-300 rounded-xl p-8 text-center text-sm text-stone-500">
           No block yet. Generate one to get started.
         </div>
-      )}
+      ) : null}
 
       {past.length > 0 && (
         <div className="mt-8">
