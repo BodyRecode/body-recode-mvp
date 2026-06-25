@@ -23,58 +23,70 @@ const intensityColour: Record<string, string> = {
   moderate: 'text-blue-600 bg-blue-50 border-blue-200',
   strong: 'text-violet-700 bg-violet-50 border-violet-200',
 }
-const statusStyle: Record<string, string> = {
-  planned: 'bg-stone-200 text-stone-600 border-stone-300',
-  in_progress: 'bg-amber-50 text-amber-700 border-amber-200',
-  complete: 'bg-green-50 text-green-700 border-green-200',
+const statusColour: Record<string, string> = {
+  planned: 'text-stone-600 bg-stone-200 border-stone-300',
+  in_progress: 'text-amber-700 bg-amber-50 border-amber-200',
+  complete: 'text-green-700 bg-green-50 border-green-200',
+}
+
+function BlockEditForm({ block, onSave, onCancel, saving }: {
+  block: Block; onSave: (u: Partial<Block>) => void; onCancel: () => void; saving: boolean
+}) {
+  const [f, setF] = useState({
+    block_name: block.block_name, phase_category: block.phase_category ?? 'gentle',
+    week_duration: block.week_duration, phase_objective: block.phase_objective ?? '',
+  })
+  return (
+    <div className="bg-stone-100 border border-stone-300 rounded-xl p-4 space-y-3">
+      <input value={f.block_name} onChange={(e) => setF({ ...f, block_name: e.target.value })}
+        placeholder="Block name" className={`${inp} w-full font-semibold`} />
+      <div className="flex flex-wrap items-center gap-2">
+        <select value={f.phase_category} onChange={(e) => setF({ ...f, phase_category: e.target.value })} className={`${inp} capitalize`}>
+          {INTENSITIES.map((x) => <option key={x} value={x}>{x}</option>)}
+        </select>
+        <select value={f.week_duration} onChange={(e) => setF({ ...f, week_duration: Number(e.target.value) })} className={inp}>
+          {WEEKS.map((w) => <option key={w} value={w}>{w} weeks</option>)}
+        </select>
+        <input value={f.phase_objective} onChange={(e) => setF({ ...f, phase_objective: e.target.value })}
+          placeholder="focus" className={`${inp} flex-1 min-w-[120px]`} />
+      </div>
+      <div className="flex gap-2">
+        <button onClick={() => onSave(f)} disabled={saving} className="flex-1 py-2 bg-[#1B6DFC] text-white font-semibold rounded-md text-sm disabled:opacity-40">{saving ? 'Saving…' : 'Save'}</button>
+        <button onClick={onCancel} className="px-4 py-2 border border-stone-300 text-stone-600 rounded-md text-sm hover:border-stone-500">Cancel</button>
+      </div>
+    </div>
+  )
 }
 
 export default function YogaMacroPlanEditor({
   clientId, planId, initialBlocks,
 }: { clientId: string; planId: string; initialBlocks: Block[] }) {
-  const [blocks, setBlocks] = useState<Block[]>(
-    initialBlocks.slice().sort((a, b) => a.position - b.position),
-  )
+  const [blocks, setBlocks] = useState<Block[]>(initialBlocks.slice().sort((a, b) => a.position - b.position))
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [adding, setAdding] = useState(false)
+  const [showAdd, setShowAdd] = useState(false)
   const [newBlock, setNewBlock] = useState({ block_name: '', phase_category: 'gentle', week_duration: 4, phase_objective: '' })
 
-  function patchLocal(id: string, updates: Partial<Block>) {
-    setBlocks((bs) => bs.map((b) => (b.id === id ? { ...b, ...updates } : b)))
-  }
-
-  async function saveBlock(b: Block) {
-    setBusy(b.id); setError(null)
+  async function saveBlock(id: string, updates: Partial<Block>) {
+    setBusy(id); setError(null)
     try {
-      const res = await fetch(`/api/plan/${planId}/blocks/${b.id}`, {
+      const res = await fetch(`/api/plan/${planId}/blocks/${id}`, {
         method: 'PATCH', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          block_name: b.block_name, phase_category: b.phase_category,
-          phase_objective: b.phase_objective, week_duration: b.week_duration,
-        }),
+        body: JSON.stringify(updates),
       })
-      if (!res.ok) setError((await res.json()).error || 'Save failed')
+      if (!res.ok) { setError((await res.json()).error || 'Save failed'); return }
+      setBlocks((bs) => bs.map((b) => (b.id === id ? { ...b, ...updates } : b)))
+      setEditingId(null)
     } catch { setError('Save failed') } finally { setBusy(null) }
   }
 
-  async function markComplete(b: Block) {
-    setBusy(b.id)
-    try {
-      const res = await fetch(`/api/plan/${planId}/blocks/${b.id}`, {
-        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'complete' }),
-      })
-      if (res.ok) patchLocal(b.id, { status: 'complete' })
-    } finally { setBusy(null) }
-  }
-
-  async function deleteBlock(b: Block) {
+  async function deleteBlock(id: string) {
     if (!confirm('Remove this block from the arc?')) return
-    setBusy(b.id)
+    setBusy(id)
     try {
-      const res = await fetch(`/api/plan/${planId}/blocks/${b.id}`, { method: 'DELETE' })
-      if (res.ok) setBlocks((bs) => bs.filter((x) => x.id !== b.id).map((x, i) => ({ ...x, position: i + 1 })))
+      const res = await fetch(`/api/plan/${planId}/blocks/${id}`, { method: 'DELETE' })
+      if (res.ok) setBlocks((bs) => bs.filter((x) => x.id !== id).map((x, i) => ({ ...x, position: i + 1 })))
     } finally { setBusy(null) }
   }
 
@@ -95,63 +107,67 @@ export default function YogaMacroPlanEditor({
       if (!res.ok) { setError(data.error || 'Add failed'); return }
       setBlocks((bs) => [...bs, data.block as Block])
       setNewBlock({ block_name: '', phase_category: 'gentle', week_duration: 4, phase_objective: '' })
-      setAdding(false)
+      setShowAdd(false)
     } catch { setError('Add failed') } finally { setBusy(null) }
   }
 
   return (
-    <div className="space-y-2">
-      {error && <p className="text-sm text-red-600">{error}</p>}
+    <div>
+      {error && <p className="text-sm text-red-600 mb-2">{error}</p>}
 
-      {blocks.map((b, i) => (
-        <div key={b.id}>
-          {i > 0 && <div className="flex justify-center py-1"><div className="w-px h-4 bg-stone-300" /></div>}
-          <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs font-bold text-stone-400 w-5 shrink-0">{b.position}</span>
-              <input value={b.block_name} onChange={(e) => patchLocal(b.id, { block_name: e.target.value })}
-                className={`${inp} flex-1 font-semibold`} />
-              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize shrink-0 ${statusStyle[b.status] ?? statusStyle.planned}`}>
-                {b.status.replace('_', ' ')}
-              </span>
-            </div>
-            <div className="flex flex-wrap items-center gap-2 pl-7">
-              <select value={b.phase_category ?? 'gentle'} onChange={(e) => patchLocal(b.id, { phase_category: e.target.value })}
-                className={`${inp} capitalize ${intensityColour[b.phase_category ?? '']}`}>
-                {INTENSITIES.map((x) => <option key={x} value={x}>{x}</option>)}
-              </select>
-              <select value={b.week_duration} onChange={(e) => patchLocal(b.id, { week_duration: Number(e.target.value) })} className={inp}>
-                {WEEKS.map((w) => <option key={w} value={w}>{w} weeks</option>)}
-              </select>
-              <input value={b.phase_objective ?? ''} onChange={(e) => patchLocal(b.id, { phase_objective: e.target.value })}
-                placeholder="focus" className={`${inp} flex-1 min-w-[120px]`} />
-            </div>
-            <div className="flex items-center justify-between gap-2 pl-7 mt-3">
-              <div className="flex items-center gap-2">
-                <button onClick={() => saveBlock(b)} disabled={busy === b.id}
-                  className="text-xs font-semibold px-3 py-1.5 rounded-md border border-stone-300 text-stone-700 hover:border-stone-500 disabled:opacity-40">
-                  {busy === b.id ? 'Saving…' : 'Save'}
-                </button>
-                <button onClick={() => deleteBlock(b)} disabled={busy === b.id}
-                  className="text-xs font-medium px-3 py-1.5 rounded-md text-stone-500 hover:text-red-600">Delete</button>
-                {b.status !== 'complete' && b.status !== 'planned' && (
-                  <button onClick={() => markComplete(b)} className="text-xs font-medium px-3 py-1.5 rounded-md text-stone-500 hover:text-green-700">Mark complete</button>
-                )}
+      <div className="space-y-2 mb-4">
+        {blocks.map((b, i) => (
+          <div key={b.id}>
+            {i > 0 && (
+              <div className="flex items-center gap-2 px-6 py-1">
+                <div className="w-px h-4 bg-stone-300 mx-auto" />
               </div>
-              <YogaGenerateBlockButton
-                clientId={clientId} planBlockId={b.id} blockName={b.block_name}
-                ceiling={b.phase_category ?? 'gentle'} weekDuration={b.week_duration}
-                done={b.status === 'in_progress' || b.status === 'complete'}
-              />
-            </div>
+            )}
+            {editingId === b.id ? (
+              <BlockEditForm block={b} saving={busy === b.id}
+                onSave={(u) => saveBlock(b.id, u)} onCancel={() => setEditingId(null)} />
+            ) : (
+              <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-stone-400 w-5">{b.position}</span>
+                    <p className="text-sm font-semibold text-stone-900">{b.block_name}</p>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${statusColour[b.status] ?? statusColour.planned}`}>
+                      {b.status.replace('_', ' ')}
+                    </span>
+                    {b.phase_category && (
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${intensityColour[b.phase_category] || ''}`}>
+                        {b.phase_category}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 text-xs text-stone-500 mb-2 pl-7">
+                  <span>{b.week_duration} weeks</span>
+                  {b.phase_objective && <span>{b.phase_objective}</span>}
+                </div>
+                <div className="flex items-center gap-3 pl-7 mt-2">
+                  {b.status !== 'complete' && (
+                    <YogaGenerateBlockButton
+                      clientId={clientId} planBlockId={b.id} blockName={b.block_name}
+                      ceiling={b.phase_category ?? 'gentle'} weekDuration={b.week_duration}
+                      done={b.status === 'in_progress'}
+                    />
+                  )}
+                  <button onClick={() => setEditingId(b.id)} className="text-xs text-stone-400 hover:text-stone-600 transition-colors">Edit</button>
+                  <button onClick={() => deleteBlock(b.id)} className="text-xs text-stone-400 hover:text-red-700 transition-colors">Remove</button>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       {/* Add block */}
-      <div className="flex justify-center py-1"><div className="w-px h-4 bg-stone-300" /></div>
-      {adding ? (
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-4 space-y-3">
+      {showAdd ? (
+        <div className="bg-stone-100 border border-stone-300 rounded-xl p-4 space-y-3 mb-4">
           <input value={newBlock.block_name} onChange={(e) => setNewBlock({ ...newBlock, block_name: e.target.value })}
             placeholder="Block name" className={`${inp} w-full font-semibold`} />
           <div className="flex flex-wrap items-center gap-2">
@@ -164,18 +180,15 @@ export default function YogaMacroPlanEditor({
             <input value={newBlock.phase_objective} onChange={(e) => setNewBlock({ ...newBlock, phase_objective: e.target.value })}
               placeholder="focus" className={`${inp} flex-1 min-w-[120px]`} />
           </div>
-          <div className="flex items-center gap-2">
-            <button onClick={addBlock} disabled={busy === 'add'}
-              className="text-xs font-semibold px-4 py-1.5 rounded-md bg-[#1B6DFC] text-white hover:bg-[#5390FF] disabled:opacity-40">
-              {busy === 'add' ? 'Adding…' : 'Add block'}
-            </button>
-            <button onClick={() => setAdding(false)} className="text-xs text-stone-500 hover:text-stone-800">cancel</button>
+          <div className="flex gap-2">
+            <button onClick={addBlock} disabled={busy === 'add'} className="flex-1 py-2 bg-[#1B6DFC] text-white font-semibold rounded-md text-sm disabled:opacity-40">{busy === 'add' ? 'Adding…' : 'Add Block'}</button>
+            <button onClick={() => setShowAdd(false)} className="px-4 py-2 border border-stone-300 text-stone-600 rounded-md text-sm hover:border-stone-500">Cancel</button>
           </div>
         </div>
       ) : (
-        <button onClick={() => setAdding(true)}
-          className="w-full py-3 rounded-xl border border-dashed border-stone-300 text-sm text-stone-500 hover:border-stone-400 hover:text-stone-700 transition-colors">
-          + Add a block
+        <button onClick={() => setShowAdd(true)}
+          className="w-full py-3 border-2 border-dashed border-stone-300 text-stone-500 rounded-xl text-sm hover:border-stone-500 hover:text-stone-700 transition-colors">
+          + Add Block
         </button>
       )}
     </div>

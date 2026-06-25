@@ -65,14 +65,12 @@ export function YogaGenerateBlockButton({
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <span className="inline-flex items-center gap-2">
       <button onClick={generate} disabled={loading}
-        className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors ${done
-          ? 'border border-stone-300 text-stone-600 hover:border-stone-500'
-          : 'bg-[#1B6DFC] text-white hover:bg-[#5390FF]'} disabled:opacity-40`}>
-        {loading ? 'Generating…' : done ? 'Regenerate' : 'Generate this block'}
+        className="text-xs text-[#1B6DFC] hover:underline disabled:opacity-40 transition-colors">
+        {loading ? 'Generating…' : done ? 'Regenerate →' : 'Generate block →'}
       </button>
       {error && <span className="text-xs text-red-600">{error}</span>}
-    </div>
+    </span>
   )
 }
