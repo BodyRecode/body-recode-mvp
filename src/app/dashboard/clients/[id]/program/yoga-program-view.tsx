@@ -5,6 +5,7 @@ import ProgramReadingPanel from './program-reading-panel'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 import DraftActions from './draft-actions'
 import DeleteProgramButton from './delete-button'
+import ProgramWeeklyReview from './weekly-review'
 
 interface YogaPose {
   name: string
@@ -177,12 +178,12 @@ export default async function YogaProgramView({
   const admin = createAdminClient()
   const { data: programs } = await admin
     .from('programs')
-    .select('id, block_name, sessions, generated_at, is_active, status, published_to_client_at, prescription_rationale, weekly_pattern_summary, progression_notes, training_frequency, week_duration, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, pr_coach_guidance, program_reading_generated_at, program_reading_published_at, program_reading_email_sent_at')
+    .select('id, block_name, sessions, generated_at, is_active, status, published_to_client_at, prescription_rationale, weekly_pattern_summary, progression_notes, training_frequency, week_duration, current_direction, last_review_at, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, pr_coach_guidance, program_reading_generated_at, program_reading_published_at, program_reading_email_sent_at')
     .eq('client_id', clientId)
     .eq('modality', 'yoga')
     .order('generated_at', { ascending: false })
 
-  type P = YogaProgram & { status?: string }
+  type P = YogaProgram & { status?: string; current_direction?: string | null; last_review_at?: string | null }
   const all = (programs ?? []) as P[]
   const draftProgram = all.find((p) => p.status === 'draft')
   const activeProgram = all.find((p) => p.is_active && p.status !== 'draft')
@@ -256,6 +257,15 @@ export default async function YogaProgramView({
             </Link>
           </div>
           <BlockSection program={activeProgram} withNav={true} />
+
+          {/* Weekly Review - client check-in feedback (reuses the strength component) */}
+          <div className="mt-4">
+            <ProgramWeeklyReview
+              programId={activeProgram.id}
+              currentDirection={(activeProgram as P).current_direction ?? null}
+              lastReviewAt={(activeProgram as P).last_review_at ?? null}
+            />
+          </div>
         </div>
       ) : !draftProgram ? (
         <div className="bg-stone-50 border border-dashed border-stone-300 rounded-xl p-8 text-center text-sm text-stone-500">
