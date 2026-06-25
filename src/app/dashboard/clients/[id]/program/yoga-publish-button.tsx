@@ -12,8 +12,8 @@ export default function YogaPublishButton({
 
   if (published) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
-        <span className="h-1.5 w-1.5 rounded-full bg-green-500" /> Published to client
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 border border-blue-200 px-3 py-1 text-xs font-semibold text-[#1B6DFC]">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#1B6DFC]" /> Published to client
       </span>
     )
   }
@@ -39,8 +39,8 @@ export default function YogaPublishButton({
   return (
     <div className="flex items-center gap-3">
       <button onClick={publish} disabled={loading}
-        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-60">
-        {loading ? 'Publishing...' : 'Publish to client'}
+        className="rounded-md bg-[#1B6DFC] px-4 py-2 text-xs font-semibold text-white hover:bg-[#5390FF] disabled:opacity-40 transition-colors">
+        {loading ? 'Publishing…' : 'Publish to client'}
       </button>
       {error && <span className="text-xs text-red-600">{error}</span>}
     </div>

@@ -38,34 +38,37 @@ export default function YogaClientPractice({
           {session.intention && <p className="text-[#6B6B6B] text-sm">{session.intention}</p>}
         </div>
 
-        <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-6">
-          <h2 className="text-lg font-bold text-[#1A1A1A] mb-5">{session.day_label}</h2>
+        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5">
+          <p className="text-lg font-bold text-[#1A1A1A] mb-5">{session.day_label}</p>
           <div className="space-y-6">
             {session.segments.map((seg, i) => (
               <div key={i}>
-                <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[#3A3A3A]">{seg.label}</div>
+                <p className="mb-2 text-xs font-bold text-[#1B6DFC] uppercase tracking-widest">{seg.label}</p>
                 <ol className="space-y-3">
                   {seg.poses.map((p, j) => (
-                    <li key={j} className="border-b border-[#F0F0F0] pb-3 last:border-0">
+                    <li key={j} className="border-b border-[#E5E5E5] pb-3 last:border-0 last:pb-0">
                       <div className="flex items-baseline justify-between gap-3">
                         <span className="text-[15px] font-semibold text-[#1A1A1A]">
                           {p.name}
                           {p.side && p.side !== 'both' ? <span className="text-[#999999] font-normal"> ({p.side})</span> : null}
                         </span>
-                        {holdText(p) && <span className="whitespace-nowrap text-xs text-[#6B6B6B]">{holdText(p)}</span>}
+                        {holdText(p) && <span className="whitespace-nowrap text-xs text-[#999999]">{holdText(p)}</span>}
                       </div>
-                      {p.cue && <p className="mt-1 text-sm text-[#6B6B6B]">{p.cue}</p>}
+                      {p.cue && <p className="mt-1 text-sm text-[#3A3A3A] leading-relaxed">{p.cue}</p>}
                     </li>
                   ))}
                 </ol>
               </div>
             ))}
           </div>
-
-          {session.summary && (
-            <p className="mt-6 rounded-xl bg-[#F7F7F7] p-4 text-sm text-[#3A3A3A]">{session.summary}</p>
-          )}
         </div>
+
+        {session.summary && (
+          <div className="mt-5 bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4">
+            <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">From your coach</p>
+            <p className="text-sm text-[#3A3A3A] leading-relaxed">{session.summary}</p>
+          </div>
+        )}
       </div>
     </div>
   )
