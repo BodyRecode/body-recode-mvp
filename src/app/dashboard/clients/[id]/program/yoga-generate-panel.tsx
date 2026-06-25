@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 
 const RRS_LEVELS = [
   { value: 4, label: 'Level 4 — stable, well recovered (allows strong)' },
@@ -74,6 +75,18 @@ export default function YogaGeneratePanel({ clientId }: { clientId: string }) {
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-5">
+      <GenerationProgressOverlay
+        active={loading}
+        title="Sequencing the practice"
+        stages={[
+          { start: 0,  label: 'Reading the recovery state and setting the intensity ceiling' },
+          { start: 4,  label: 'Filtering the library by ceiling and contraindications' },
+          { start: 8,  label: 'Sequencing the practice through the arc, breath to movement' },
+          { start: 22, label: 'Applying the doctrine clamp: allowed poses, symmetry, closing rest' },
+          { start: 30, label: 'Saving the practice' },
+          { start: 50, label: 'Taking a little longer, give it another moment' },
+        ]}
+      />
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-sm font-semibold">Generate a yoga practice</h3>
         <button onClick={() => setOpen(false)} className="text-xs text-gray-500 hover:text-gray-800">close</button>
