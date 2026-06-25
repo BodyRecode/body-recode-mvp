@@ -8,10 +8,10 @@ import {
   intensityAtOrBelow,
   filterContraindicated,
   practiceArc,
-  clampYogaSequence,
+  clampYogaBlock,
   RRSLevel,
   YogaIntensity,
-  YogaSequence,
+  YogaBlock,
 } from '@/lib/yoga-doctrine'
 import {
   buildYogaSystemPrompt,
@@ -33,7 +33,6 @@ export async function POST(request: NextRequest) {
   const body = await request.json()
   const {
     client_id,
-    block_name = 'Yoga Practice',
     target_minutes = 45,
     // RRS execution level 0-4. Defaults to standard (3) until wired to the
     // recovery state machine. Determines the intensity ceiling.
@@ -41,6 +40,9 @@ export async function POST(request: NextRequest) {
     contraindications = [],
     body_state_context = null,
     coach_guidance = null,
+    // Block parameters (parallel to a strength block).
+    week_duration = 4,        // 4 | 6 | 8
+    practices_per_week = 2,   // 2-4
   } = body
 
   if (!client_id) {
@@ -84,12 +86,15 @@ export async function POST(request: NextRequest) {
 
   const arc = practiceArc(ceiling)
 
-  // Generate via Claude (Haiku, matching the strength engine's speed choice).
+  const weeks = [4, 6, 8].includes(Number(week_duration)) ? Number(week_duration) : 4
+  const perWeek = Math.max(2, Math.min(4, Number(practices_per_week)))
+
+  // Generate the block via Claude (Haiku, matching the strength engine).
   let message
   try {
     message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 4000,
+      max_tokens: 7000,
       system: buildYogaSystemPrompt(),
       messages: [{
         role: 'user',
@@ -100,6 +105,8 @@ export async function POST(request: NextRequest) {
           body_state_context,
           available as YogaMovementRow[],
           Number(target_minutes),
+          perWeek,
+          weeks,
           coach_guidance,
         ),
       }],
@@ -116,82 +123,75 @@ export async function POST(request: NextRequest) {
 
   const jsonText = extractFirstJsonObject(content.text)
   if (!jsonText) {
-    return NextResponse.json({ error: `Could not parse practice — AI returned: ${content.text.slice(0, 200)}` }, { status: 500 })
+    return NextResponse.json({ error: `Could not parse block — AI returned: ${content.text.slice(0, 200)}` }, { status: 500 })
   }
 
-  let parsed: YogaSequence
+  let parsed: YogaBlock
   try {
-    parsed = JSON.parse(jsonText) as YogaSequence
+    parsed = JSON.parse(jsonText) as YogaBlock
   } catch {
     return NextResponse.json({ error: `JSON parse failed: ${jsonText.slice(0, 120)}` }, { status: 500 })
   }
 
-  // Enforcement: allowed poses only (state ceiling + contraindications),
-  // bilateral symmetry, closing rest.
-  const { sequence, notes } = clampYogaSequence(parsed, available.map((p) => p.name))
+  // Enforcement: allowed poses only (ceiling + contraindications), symmetry,
+  // closing rest, applied to every practice in the block.
+  const { block, notes } = clampYogaBlock(parsed, available.map((p) => p.name))
 
-  // Enrich poses with sanskrit names from the library for the review display.
-  const sanskritByName = new Map(
-    available.map((p) => [p.name.toLowerCase().trim(), p.sanskrit_name]),
-  )
-  const enrichedSegments = sequence.segments.map((seg) => ({
-    key: seg.key,
-    label: seg.label,
-    poses: seg.poses.map((pose) => ({
-      name: pose.name,
-      sanskrit_name: sanskritByName.get(pose.name.toLowerCase().trim()) ?? null,
-      side: pose.side ?? null,
-      hold_seconds: pose.hold_seconds ?? null,
-      breaths: pose.breaths ?? null,
-      cue: pose.cue ?? null,
-    })),
-  }))
-  const poseCount = enrichedSegments.reduce((n, s) => n + s.poses.length, 0)
-
-  // Persist into programs.sessions JSONB (the production model), tagged
-  // modality = 'yoga'. The strength-shaped NOT NULL columns get neutral
-  // placeholders; they are ignored for yoga and exist only to satisfy the
-  // current schema. (Phase: generalise these to nullable later.)
-  const yogaSessions = [{
-    day_label: sequence.practice_name,
+  // Enrich poses with sanskrit names for the display.
+  const sanskritByName = new Map(available.map((p) => [p.name.toLowerCase().trim(), p.sanskrit_name]))
+  const sessions = block.practices.map((pr) => ({
+    day_label: pr.day_label,
     skeleton: 'Yoga Practice',
     modality: 'yoga',
-    intention: sequence.intention,
-    summary: sequence.summary ?? null,
+    intention: pr.intention ?? null,
     ceiling,
-    segments: enrichedSegments,
-  }]
+    segments: pr.segments.map((seg) => ({
+      key: seg.key,
+      label: seg.label,
+      poses: seg.poses.map((pose) => ({
+        name: pose.name,
+        sanskrit_name: sanskritByName.get(pose.name.toLowerCase().trim()) ?? null,
+        side: pose.side ?? null,
+        hold_seconds: pose.hold_seconds ?? null,
+        breaths: pose.breaths ?? null,
+        cue: pose.cue ?? null,
+      })),
+    })),
+  }))
 
+  // Persist into the shared programs columns, tagged modality = 'yoga'.
+  // training_frequency = practices/week, week_duration = block weeks (both reused).
   const { data: program, error: progErr } = await admin
     .from('programs')
     .insert({
       client_id,
-      block_name,
+      block_name: block.block_name || 'Yoga Block',
       modality: 'yoga',
       progression_phase: 'restoration',
       training_goal: 'capacity',
-      training_frequency: 2,
+      training_frequency: perWeek,
       training_age: 'beginner',
-      week_duration: 4,
+      week_duration: weeks,
       equipment_access: [],
-      sessions: yogaSessions,
-      weekly_pattern_summary: notes.length ? notes.join(' ') : null,
-      // Coach-gated: created as a draft. Not visible to the client until the
-      // coach publishes (see /api/publish-yoga-practice).
+      sessions,
+      prescription_rationale: block.rationale ?? null,
+      weekly_pattern_summary: block.weekly_structure ?? null,
+      progression_notes: block.progression ?? null,
+      // Coach-gated draft until published.
       status: 'draft',
       is_active: false,
     })
     .select('id')
     .single()
   if (progErr || !program) {
-    return NextResponse.json({ error: `Failed to save practice: ${progErr?.message}` }, { status: 500 })
+    return NextResponse.json({ error: `Failed to save block: ${progErr?.message}` }, { status: 500 })
   }
 
   return NextResponse.json({
     program_id: program.id,
     ceiling,
-    pose_count: poseCount,
+    practices: sessions.length,
     clamp_notes: notes,
-    sequence: { ...sequence, segments: enrichedSegments },
+    block: { ...block, practices: sessions },
   })
 }

@@ -7,7 +7,7 @@ import { createClient } from '@supabase/supabase-js'
 import Anthropic from '@anthropic-ai/sdk'
 import {
   intensityCeilingForState, intensityAtOrBelow, filterContraindicated,
-  practiceArc, clampYogaSequence, RRSLevel, YogaIntensity, YogaSequence,
+  practiceArc, clampYogaBlock, RRSLevel, YogaIntensity, YogaBlock,
 } from '../src/lib/yoga-doctrine'
 import { buildYogaSystemPrompt, buildYogaUserPrompt, YogaMovementRow } from '../src/lib/yoga-prompt'
 
@@ -43,34 +43,35 @@ async function main() {
   const arc = practiceArc(ceiling)
   const msg = await anthropic.messages.create({
     model: 'claude-haiku-4-5-20251001',
-    max_tokens: 4000,
+    max_tokens: 7000,
     system: buildYogaSystemPrompt(),
-    messages: [{ role: 'user', content: buildYogaUserPrompt(client.name, ceiling, arc, 'Running on empty, poor sleep, stress high. Needs downregulation.', available as YogaMovementRow[], 45, null) }],
+    messages: [{ role: 'user', content: buildYogaUserPrompt(client.name, ceiling, arc, 'Running on empty, poor sleep, stress high. Needs downregulation.', available as YogaMovementRow[], 45, 2, 4, null) }],
   })
   const text = msg.content[0].type === 'text' ? msg.content[0].text : ''
   const json = text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1)
-  const parsed = JSON.parse(json) as YogaSequence
-  const { sequence, notes } = clampYogaSequence(parsed, available.map((p) => p.name))
+  const parsed = JSON.parse(json) as YogaBlock
+  const { block, notes } = clampYogaBlock(parsed, available.map((p) => p.name))
 
-  console.log(`PRACTICE: ${sequence.practice_name}`)
-  console.log(`intention: ${sequence.intention}\n`)
-  for (const seg of sequence.segments) {
-    console.log(`  [${seg.label}]`)
-    for (const p of seg.poses) {
-      const hold = p.hold_seconds ? `${p.hold_seconds}s` : p.breaths ? `${p.breaths} breaths` : ''
-      console.log(`    - ${p.name}${p.side && p.side !== 'both' ? ` (${p.side})` : ''}  ${hold}  ${p.cue ?? ''}`)
+  console.log(`BLOCK: ${block.block_name}`)
+  console.log(`rationale: ${block.rationale}\n`)
+  console.log(`weekly structure: ${block.weekly_structure}\n`)
+  console.log(`progression: ${block.progression}\n`)
+  for (const pr of block.practices) {
+    console.log(`  >> ${pr.day_label} — ${pr.intention ?? ''}`)
+    for (const seg of pr.segments) {
+      console.log(`     [${seg.label}] ${seg.poses.map((p) => p.name).join(', ')}`)
     }
   }
   console.log(`\nclamp notes: ${notes.length ? notes.join(' | ') : 'none'}`)
-  console.log(`summary: ${sequence.summary ?? ''}`)
 
   // store
-  const sessions = [{ day_label: sequence.practice_name, skeleton: 'Yoga Practice', modality: 'yoga', intention: sequence.intention, summary: sequence.summary ?? null, ceiling, segments: sequence.segments }]
+  const sessions = block.practices.map((pr) => ({ day_label: pr.day_label, skeleton: 'Yoga Practice', modality: 'yoga', intention: pr.intention ?? null, ceiling, segments: pr.segments }))
   const { data: prog, error } = await admin.from('programs').insert({
-    client_id: clientId, block_name: sequence.practice_name, modality: 'yoga',
+    client_id: clientId, block_name: block.block_name || 'Yoga Block', modality: 'yoga',
     progression_phase: 'restoration', training_goal: 'capacity', training_frequency: 2,
     training_age: 'beginner', week_duration: 4, equipment_access: [], sessions,
-    status: 'draft', is_active: false,
+    prescription_rationale: block.rationale ?? null, weekly_pattern_summary: block.weekly_structure ?? null,
+    progression_notes: block.progression ?? null, status: 'draft', is_active: false,
   }).select('id').single()
   if (error) throw error
   console.log(`\nstored program id: ${prog.id}`)

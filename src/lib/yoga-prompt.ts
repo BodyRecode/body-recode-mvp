@@ -30,34 +30,47 @@ export interface YogaMovementRow {
 export function buildYogaSystemPrompt(): string {
   return `${YOGA_GENERATION_DOCTRINE}
 
+YOU ARE PROGRAMMING A MULTI-WEEK BLOCK, not a single class. A block is a
+weekly template of practices that repeats across the block, deepening over the
+weeks. You write the weekly template (the practices), plus the reasoning, the
+weekly structure, and how it progresses week to week.
+
 OUTPUT FORMAT
 Return ONLY a JSON object, no preamble, in this exact shape:
 {
-  "practice_name": string,
-  "intention": string,                // one sentence, the focus of this practice
-  "segments": [
+  "block_name": string,               // e.g. "Block 1: Grounding & Breath"
+  "rationale": string,                // why this block for this client, given their state. 2-4 sentences, plain, no diagnoses.
+  "weekly_structure": string,         // the weekly shape: which practices on which days, their theme and length.
+  "progression": string,              // how the block evolves week to week (e.g. longer holds, more depth), staying within the ceiling.
+  "practices": [                      // the weekly template, one entry per practice/week
     {
-      "key": string,                  // one of the arc segment keys provided
-      "label": string,
-      "poses": [
+      "day_label": string,            // e.g. "Practice 1 — Grounding"
+      "intention": string,            // one sentence focus
+      "segments": [
         {
-          "name": string,             // EXACTLY a name from the available poses list
-          "side": "left" | "right" | "both" | null,
-          "hold_seconds": number | null,
-          "breaths": number | null,
-          "cue": string                // short, in the coach's warm voice
+          "key": string,              // one of the arc segment keys provided
+          "label": string,
+          "poses": [
+            {
+              "name": string,         // EXACTLY a name from the available poses list
+              "side": "left" | "right" | "both" | null,
+              "hold_seconds": number | null,
+              "breaths": number | null,
+              "cue": string            // short, in the coach's warm voice
+            }
+          ]
         }
       ]
     }
-  ],
-  "summary": string                   // 1-2 sentences the coach could read to the client
+  ]
 }
 
 RULES
 - Use ONLY poses from the available list, by their exact name. Do not invent poses.
-- Follow the provided arc segments in order. Fill each from its allowed families.
+- Each practice follows the provided arc segments in order, filled from allowed families.
 - For any one-sided pose, sequence both sides (left then right).
-- Keep within the client's intensity ceiling. Gentler is fine, stronger is not.`
+- Keep every practice within the client's intensity ceiling. Gentler is fine, stronger is not.
+- Make the practices distinct from each other (vary the focus across the week), but coherent as one block.`
 }
 
 export function buildYogaUserPrompt(
@@ -67,6 +80,8 @@ export function buildYogaUserPrompt(
   bodyStateContext: string | null,
   availablePoses: YogaMovementRow[],
   targetMinutes: number,
+  practicesPerWeek: number,
+  weekDuration: number,
   coachGuidance?: string | null,
 ): string {
   const arcText = arc
@@ -88,15 +103,16 @@ export function buildYogaUserPrompt(
 
   return `CLIENT: ${clientName}
 
+BLOCK: ${weekDuration} weeks, ${practicesPerWeek} practices per week.
 INTENSITY CEILING: ${ceiling} (do not exceed; gentler is allowed)
-TARGET LENGTH: about ${targetMinutes} minutes
+TARGET LENGTH per practice: about ${targetMinutes} minutes
 
 ${bodyStateContext ? `BODY STATE (from the reading):\n${bodyStateContext}\n` : ''}${coachGuidance ? `\nCOACH GUIDANCE (authoritative for this client):\n${coachGuidance}\n` : ''}
-PRACTICE ARC (use these segment keys, in this order):
+PRACTICE ARC (each practice uses these segment keys, in this order):
 ${arcText}
 
 AVAILABLE POSES (use only these, by exact name):
 ${poseText}
 
-Sequence one coherent practice for ${clientName} now. Return the JSON object only.`
+Program a ${weekDuration}-week block for ${clientName} now: write the block_name, rationale, weekly_structure, progression, and exactly ${practicesPerWeek} distinct practices (the weekly template). Return the JSON object only.`
 }

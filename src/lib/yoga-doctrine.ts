@@ -182,6 +182,41 @@ export interface YogaSequence {
   summary?: string
 }
 
+/** One practice within a block (the weekly template repeats with progression). */
+export interface YogaPractice {
+  day_label: string
+  intention?: string
+  segments: YogaSequenceSegment[]
+}
+
+/** A multi-week yoga block, parallel to a strength training block. Stored in
+ *  the shared programs columns (block_name, prescription_rationale,
+ *  weekly_pattern_summary, progression_notes, sessions). */
+export interface YogaBlock {
+  block_name: string
+  rationale: string
+  weekly_structure: string
+  progression: string
+  practices: YogaPractice[]
+}
+
+/** Clamp every practice in a block: allowed poses only, symmetry, closing rest. */
+export function clampYogaBlock(
+  block: YogaBlock,
+  allowedPoseNames: Iterable<string>,
+): { block: YogaBlock; notes: string[] } {
+  const notes: string[] = []
+  const practices = (block.practices ?? []).map((pr) => {
+    const { sequence, notes: n } = clampYogaSequence(
+      { practice_name: pr.day_label, intention: pr.intention ?? '', segments: pr.segments },
+      allowedPoseNames,
+    )
+    notes.push(...n)
+    return { day_label: pr.day_label, intention: pr.intention, segments: sequence.segments }
+  })
+  return { block: { ...block, practices }, notes }
+}
+
 /**
  * Clamp the generated sequence to the hard floor. The generator may only use
  * poses from the allowed set (the library already filtered by intensity
