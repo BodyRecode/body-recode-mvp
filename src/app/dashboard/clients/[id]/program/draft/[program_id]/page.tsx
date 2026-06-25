@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import DraftEditor from './draft-editor'
+import YogaDraftEditor from './yoga-draft-editor'
 
 export default async function DraftReviewPage({
   params,
@@ -26,6 +27,10 @@ export default async function DraftReviewPage({
     .maybeSingle()
 
   if (!program) notFound()
+
+  if (program.modality === 'yoga') {
+    return <YogaDraftEditor clientId={id} clientName={client.name} program={program} />
+  }
 
   return (
     <DraftEditor

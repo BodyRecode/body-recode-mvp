@@ -219,7 +219,13 @@ export default async function YogaProgramView({
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">Draft - Pending Approval</span>
-            <DraftActions programId={draftProgram.id} clientId={clientId} />
+            <div className="flex items-center gap-2">
+              <Link href={`/dashboard/clients/${clientId}/program/draft/${draftProgram.id}`}
+                className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors">
+                Edit poses →
+              </Link>
+              <DraftActions programId={draftProgram.id} clientId={clientId} />
+            </div>
           </div>
           <BlockSection program={draftProgram} withNav={false} />
         </div>
@@ -242,6 +248,12 @@ export default async function YogaProgramView({
               clientToken={clientToken}
               generateRoute="/api/generate-yoga-reading"
             />
+          </div>
+          <div className="flex justify-end mb-3">
+            <Link href={`/dashboard/clients/${clientId}/program/draft/${activeProgram.id}`}
+              className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors">
+              Edit poses →
+            </Link>
           </div>
           <BlockSection program={activeProgram} withNav={true} />
         </div>
