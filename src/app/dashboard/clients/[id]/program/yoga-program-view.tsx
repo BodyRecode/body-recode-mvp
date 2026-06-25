@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import YogaGeneratePanel from './yoga-generate-panel'
+import YogaPublishButton from './yoga-publish-button'
 
 interface YogaPose {
   name: string
@@ -72,7 +73,7 @@ export default async function YogaProgramView({
   const admin = createAdminClient()
   const { data: programs } = await admin
     .from('programs')
-    .select('id, block_name, sessions, generated_at, is_active')
+    .select('id, block_name, sessions, generated_at, is_active, published_to_client_at')
     .eq('client_id', clientId)
     .eq('modality', 'yoga')
     .order('generated_at', { ascending: false })
@@ -96,8 +97,18 @@ export default async function YogaProgramView({
 
       <YogaGeneratePanel clientId={clientId} />
 
-      {latestSession ? (
-        <PracticeView session={latestSession} />
+      {latest && latestSession ? (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+            <span className="text-sm text-gray-600">
+              {latest.published_to_client_at
+                ? 'This practice is live in the client portal.'
+                : 'Draft. The client cannot see this until you publish it.'}
+            </span>
+            <YogaPublishButton programId={latest.id} published={!!latest.published_to_client_at} />
+          </div>
+          <PracticeView session={latestSession} />
+        </div>
       ) : (
         <div className="rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
           No practice yet. Generate one to get started.

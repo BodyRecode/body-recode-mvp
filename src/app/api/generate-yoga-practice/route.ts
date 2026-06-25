@@ -176,7 +176,10 @@ export async function POST(request: NextRequest) {
       equipment_access: [],
       sessions: yogaSessions,
       weekly_pattern_summary: notes.length ? notes.join(' ') : null,
-      is_active: true,
+      // Coach-gated: created as a draft. Not visible to the client until the
+      // coach publishes (see /api/publish-yoga-practice).
+      status: 'draft',
+      is_active: false,
     })
     .select('id')
     .single()

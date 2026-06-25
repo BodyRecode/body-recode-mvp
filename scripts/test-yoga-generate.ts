@@ -69,7 +69,8 @@ async function main() {
   const { data: prog, error } = await admin.from('programs').insert({
     client_id: clientId, block_name: sequence.practice_name, modality: 'yoga',
     progression_phase: 'restoration', training_goal: 'capacity', training_frequency: 2,
-    training_age: 'beginner', week_duration: 4, equipment_access: [], sessions, is_active: true,
+    training_age: 'beginner', week_duration: 4, equipment_access: [], sessions,
+    status: 'draft', is_active: false,
   }).select('id').single()
   if (error) throw error
   console.log(`\nstored program id: ${prog.id}`)
