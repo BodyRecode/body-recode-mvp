@@ -130,66 +130,65 @@ export async function POST(request: NextRequest) {
   // bilateral symmetry, closing rest.
   const { sequence, notes } = clampYogaSequence(parsed, available.map((p) => p.name))
 
-  // Persist: reuse programs + program_sessions, store poses in session_yoga_poses.
-  const byName = new Map(available.map((p) => [p.name.toLowerCase().trim(), p.id]))
+  // Enrich poses with sanskrit names from the library for the review display.
+  const sanskritByName = new Map(
+    available.map((p) => [p.name.toLowerCase().trim(), p.sanskrit_name]),
+  )
+  const enrichedSegments = sequence.segments.map((seg) => ({
+    key: seg.key,
+    label: seg.label,
+    poses: seg.poses.map((pose) => ({
+      name: pose.name,
+      sanskrit_name: sanskritByName.get(pose.name.toLowerCase().trim()) ?? null,
+      side: pose.side ?? null,
+      hold_seconds: pose.hold_seconds ?? null,
+      breaths: pose.breaths ?? null,
+      cue: pose.cue ?? null,
+    })),
+  }))
+  const poseCount = enrichedSegments.reduce((n, s) => n + s.poses.length, 0)
+
+  // Persist into programs.sessions JSONB (the production model), tagged
+  // modality = 'yoga'. The strength-shaped NOT NULL columns get neutral
+  // placeholders; they are ignored for yoga and exist only to satisfy the
+  // current schema. (Phase: generalise these to nullable later.)
+  const yogaSessions = [{
+    day_label: sequence.practice_name,
+    skeleton: 'Yoga Practice',
+    modality: 'yoga',
+    intention: sequence.intention,
+    summary: sequence.summary ?? null,
+    ceiling,
+    segments: enrichedSegments,
+  }]
 
   const { data: program, error: progErr } = await admin
     .from('programs')
-    .insert({ client_id, name: block_name, is_active: true, notes: sequence.intention })
-    .select('id')
-    .single()
-  if (progErr || !program) {
-    return NextResponse.json({ error: `Failed to save program: ${progErr?.message}` }, { status: 500 })
-  }
-
-  const { data: session, error: sessErr } = await admin
-    .from('program_sessions')
     .insert({
-      program_id: program.id,
-      week_number: 1,
-      day_label: 'Practice',
-      session_name: sequence.practice_name,
-      skeleton_type: 'Sequential Time Block',
-      notes: sequence.summary ?? null,
-      sort_order: 0,
+      client_id,
+      block_name,
+      modality: 'yoga',
+      progression_phase: 'restoration',
+      training_goal: 'capacity',
+      training_frequency: 2,
+      training_age: 'beginner',
+      week_duration: 4,
+      equipment_access: [],
+      sessions: yogaSessions,
+      weekly_pattern_summary: notes.length ? notes.join(' ') : null,
+      is_active: true,
     })
     .select('id')
     .single()
-  if (sessErr || !session) {
-    return NextResponse.json({ error: `Failed to save session: ${sessErr?.message}` }, { status: 500 })
-  }
-
-  const poseRows: Array<Record<string, unknown>> = []
-  let order = 0
-  for (const seg of sequence.segments) {
-    for (const pose of seg.poses) {
-      const moveId = byName.get(pose.name.toLowerCase().trim())
-      if (!moveId) continue
-      poseRows.push({
-        session_id: session.id,
-        yoga_movement_id: moveId,
-        segment_key: seg.key,
-        sort_order: order++,
-        side: pose.side ?? null,
-        hold_seconds: pose.hold_seconds ?? null,
-        breaths: pose.breaths ?? null,
-        cue: pose.cue ?? null,
-      })
-    }
-  }
-  if (poseRows.length > 0) {
-    const { error: poseErr } = await admin.from('session_yoga_poses').insert(poseRows)
-    if (poseErr) {
-      return NextResponse.json({ error: `Failed to save poses: ${poseErr.message}` }, { status: 500 })
-    }
+  if (progErr || !program) {
+    return NextResponse.json({ error: `Failed to save practice: ${progErr?.message}` }, { status: 500 })
   }
 
   return NextResponse.json({
     program_id: program.id,
-    session_id: session.id,
     ceiling,
-    pose_count: poseRows.length,
+    pose_count: poseCount,
     clamp_notes: notes,
-    sequence,
+    sequence: { ...sequence, segments: enrichedSegments },
   })
 }

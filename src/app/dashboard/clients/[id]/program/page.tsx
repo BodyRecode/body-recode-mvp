@@ -11,6 +11,7 @@ import CoachGuidanceEditor from './coach-guidance-editor'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import RegenerateButton from './regenerate-button'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
+import YogaProgramView from './yoga-program-view'
 
 interface Exercise {
   exercise_name: string
@@ -279,11 +280,17 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, onboarding_token, coaching_started_at')
+    .select('id, name, onboarding_token, coaching_started_at, modality')
     .eq('id', id)
     .maybeSingle()
 
   if (!client) notFound()
+
+  // Modality routing: yoga clients use the yoga programming surface; the
+  // strength flow below is untouched.
+  if (client.modality === 'yoga') {
+    return <YogaProgramView clientId={client.id} clientName={client.name} />
+  }
 
   const { data: programs } = await admin
     .from('programs')
