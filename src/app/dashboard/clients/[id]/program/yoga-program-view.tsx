@@ -1,6 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
-import YogaGeneratePanel from './yoga-generate-panel'
 import YogaPublishButton from './yoga-publish-button'
 import ProgramReadingPanel from './program-reading-panel'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
@@ -226,10 +225,6 @@ export default async function YogaProgramView({
         </div>
       </div>
 
-      <div className="mb-6">
-        <YogaGeneratePanel clientId={clientId} />
-      </div>
-
       {/* Draft - pending approval */}
       {draftProgram && (
         <div className="mb-8">
@@ -255,7 +250,8 @@ export default async function YogaProgramView({
         </div>
       ) : !draftProgram ? (
         <div className="bg-stone-50 border border-dashed border-stone-300 rounded-xl p-8 text-center text-sm text-stone-500">
-          No block yet. Generate one to get started.
+          No block yet. Generate one from the{' '}
+          <Link href={`/dashboard/clients/${clientId}/plan`} className="text-[#1B6DFC] hover:underline">Macro Plan</Link>.
         </div>
       ) : null}
 
