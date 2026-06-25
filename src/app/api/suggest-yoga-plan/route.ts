@@ -59,12 +59,12 @@ export async function POST(request: NextRequest) {
   const blocks = (plan.blocks ?? []).filter((b) => b.block_name)
   if (blocks.length === 0) return NextResponse.json({ error: 'No blocks suggested' }, { status: 500 })
 
-  // Deactivate prior plans, create the new one as a draft (is_active=false).
-  await admin.from('training_plans').update({ is_active: false }).eq('client_id', client_id).eq('is_active', true)
+  // Replace any existing draft (the active plan stays until this is approved).
+  await admin.from('training_plans').delete().eq('client_id', client_id).eq('status', 'draft')
 
   const { data: tp, error: tpErr } = await admin
     .from('training_plans')
-    .insert({ client_id, plan_name: plan.plan_name || 'Yoga Arc', macro_objective: plan.macro_objective ?? null, is_active: true })
+    .insert({ client_id, plan_name: plan.plan_name || 'Yoga Arc', macro_objective: plan.macro_objective ?? null, status: 'draft', is_active: false })
     .select('id')
     .single()
   if (tpErr || !tp) return NextResponse.json({ error: `Failed to save plan: ${tpErr?.message}` }, { status: 500 })
