@@ -1,7 +1,8 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
-import { YogaSuggestPlanButton, YogaGenerateBlockButton } from './yoga-plan-actions'
+import { YogaSuggestPlanButton } from './yoga-plan-actions'
 import YogaHierarchyVisual from './yoga-hierarchy-visual'
+import YogaMacroPlanEditor from './yoga-macro-plan-editor'
 
 interface PlanBlock {
   id: string
@@ -17,19 +18,6 @@ interface TrainingPlan {
   plan_name: string
   macro_objective: string | null
   plan_blocks: PlanBlock[]
-}
-
-const intensityColour: Record<string, string> = {
-  restorative: 'text-green-600 bg-green-50 border-green-200',
-  gentle: 'text-blue-400 bg-blue-50 border-blue-200',
-  moderate: 'text-blue-600 bg-blue-50 border-blue-200',
-  strong: 'text-violet-700 bg-violet-50 border-violet-200',
-}
-const statusStyle: Record<string, string> = {
-  planned: 'bg-stone-200 text-stone-600 border-stone-300',
-  in_progress: 'bg-amber-50 text-amber-700 border-amber-200',
-  complete: 'bg-green-50 text-green-700 border-green-200',
-  skipped: 'bg-stone-100 text-stone-400 border-stone-200',
 }
 
 export default async function YogaMacroPlanView({
@@ -87,50 +75,8 @@ export default async function YogaMacroPlanView({
             <p className="text-xs text-stone-400 mt-2">{blocks.length} blocks · {totalWeeks} weeks total</p>
           </div>
 
-          {/* Block timeline (connected) */}
-          <div className="space-y-2">
-            {blocks.map((block, i) => (
-              <div key={block.id}>
-                {i > 0 && (
-                  <div className="flex justify-center py-1">
-                    <div className="w-px h-4 bg-stone-300" />
-                  </div>
-                )}
-                <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
-                  <div className="flex items-start justify-between mb-2 gap-3">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-xs font-bold text-stone-400 w-5 shrink-0">{block.position}</span>
-                      <p className="text-sm font-semibold text-stone-900 truncate">{block.block_name}</p>
-                    </div>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      {block.phase_category && (
-                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${intensityColour[block.phase_category] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
-                          {block.phase_category}
-                        </span>
-                      )}
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${statusStyle[block.status] ?? statusStyle.planned}`}>
-                        {block.status.replace('_', ' ')}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between gap-4 pl-7">
-                    <div className="flex items-center gap-4 text-xs text-stone-500">
-                      <span>{block.week_duration} weeks</span>
-                      {block.phase_objective && <span>{block.phase_objective}</span>}
-                    </div>
-                    <YogaGenerateBlockButton
-                      clientId={clientId}
-                      planBlockId={block.id}
-                      blockName={block.block_name}
-                      ceiling={block.phase_category ?? 'gentle'}
-                      weekDuration={block.week_duration}
-                      done={block.status === 'in_progress' || block.status === 'complete'}
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Editable block arc */}
+          <YogaMacroPlanEditor clientId={clientId} planId={plan.id} initialBlocks={blocks} />
         </div>
       ) : (
         <div className="bg-stone-50 border border-dashed border-stone-300 rounded-xl p-8 text-center text-sm text-stone-500">
