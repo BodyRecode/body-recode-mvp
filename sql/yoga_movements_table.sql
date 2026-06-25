@@ -108,10 +108,80 @@ VALUES
 ('Pigeon','Eka Pada Rajakapotasana','seated','moderate','intermediate','{hips,hip_flexors}','none','{bolster}','{knee_injury}','static',60,NULL,'square the hips, breathe into the stretch','twist','deep hip release'),
 -- Core
 ('Boat Pose','Navasana','core','strong','intermediate','{core,hip_flexors}','none','{}','{low_back_injury,pregnancy}','static',20,5,'lift the chest, draw the navel in','forward_fold','steady core, steady breath'),
-('Forearm Plank','Phalakasana','core','strong','foundational','{core,shoulders}','arms','{}','{wrist_injury,low_back_injury}','static',20,5,'one long line, hips level','child','whole-body stability'),
+('Forearm Plank','Phalakasana','core','strong','foundational','{core,shoulders}','arms','{}','{wrist_injury,low_back_injury}','static',20,5,'one long line, hips level','restorative','whole-body stability'),
 -- Inversion (gentle)
 ('Legs Up the Wall','Viparita Karani','restorative','restorative','foundational','{nervous_system,legs}','none','{wall,bolster}','{glaucoma}','static',180,NULL,'let the breath slow all the way down','standing','deep downregulation'),
 ('Supported Shoulderstand','Salamba Sarvangasana','inversion','strong','advanced','{spine,nervous_system}','full','{blanket}','{neck_injury,high_blood_pressure,glaucoma,pregnancy}','static',30,NULL,'lift through the legs, soft neck','backbend','calming inversion, contraindication-sensitive'),
 -- Restorative / close
 ('Reclined Bound Angle','Supta Baddha Konasana','restorative','restorative','foundational','{hips,chest,nervous_system}','none','{bolster,blanket}','{}','static',180,NULL,'let gravity do the work',NULL,'fully supported opening'),
 ('Corpse Pose','Savasana','restorative','restorative','foundational','{nervous_system}','none','{bolster,blanket}','{}','static',300,NULL,'complete stillness, natural breath',NULL,'integrate the practice');
+
+-- ---------- Expansion seed (v1.1): broader working repertoire ----------
+INSERT INTO yoga_movements
+  (name, sanskrit_name, family, intensity, level, target_regions, weight_bearing, props, contraindications, hold_style, default_hold_seconds, default_breaths, breath_cue, counterpose_family, cue)
+VALUES
+-- Breath / pranayama
+('Alternate Nostril Breath','Nadi Shodhana','pranayama','restorative','foundational','{nervous_system}','none','{}','{}','static',120,NULL,'balance the breath side to side',NULL,'calm and centre the mind'),
+('Extended Exhale Breath','Vishama Vritti','pranayama','restorative','foundational','{nervous_system}','none','{}','{}','static',90,NULL,'make the exhale longer than the inhale',NULL,'downshift the nervous system'),
+('Box Breath','Sama Vritti','pranayama','gentle','foundational','{nervous_system}','none','{}','{}','static',90,NULL,'equal inhale, hold, exhale, hold',NULL,'a steady, square breath'),
+-- Sun salutation components
+('Half Lift','Ardha Uttanasana','forward_fold','gentle','foundational','{spine,hamstrings}','legs','{block}','{low_back_injury}','dynamic',NULL,1,'inhale to a long flat back','forward_fold','lengthen the spine'),
+('Low Lunge','Anjaneyasana','standing','moderate','foundational','{hip_flexors,legs}','legs','{}','{knee_injury}','static',30,5,'sink the hips, lift the chest','forward_fold','open the front of the hip'),
+('High Lunge','Ashta Chandrasana','standing','strong','foundational','{legs,hip_flexors}','legs','{}','{}','static',30,5,'back leg strong, front knee over ankle','forward_fold','strength and length'),
+('Plank','Phalakasana Full','core','strong','foundational','{core,shoulders}','arms','{}','{wrist_injury}','static',20,5,'one long line from heels to crown','restorative','whole-body tension'),
+('Four-Limbed Staff','Chaturanga Dandasana','core','strong','intermediate','{core,shoulders,arms}','arms','{}','{wrist_injury,shoulder_injury}','dynamic',NULL,1,'lower halfway, elbows hugging in','backbend','control the descent'),
+('Upward Dog','Urdhva Mukha Svanasana','backbend','moderate','intermediate','{spine,chest}','arms','{}','{low_back_injury,wrist_injury}','dynamic',NULL,1,'open the chest, thighs lifted','forward_fold','lift through the heart'),
+('Sun Salutation B','Surya Namaskar B','sun_salutation','strong','intermediate','{full_body}','full','{}','{wrist_injury,high_blood_pressure}','dynamic',NULL,1,'chair, lunge, build the heat',NULL,'a stronger warming flow'),
+-- Standing
+('Extended Side Angle','Utthita Parsvakonasana','standing','strong','foundational','{hips,legs,side_body}','legs','{block}','{}','static',30,5,'one long line from heel to hand','twist','length along the whole side'),
+('Reverse Warrior','Viparita Virabhadrasana','standing','moderate','foundational','{side_body,legs}','legs','{}','{}','static',20,5,'reach up and back, legs strong','side_bend','open the side body'),
+('Pyramid Pose','Parsvottanasana','standing','moderate','intermediate','{hamstrings,hips}','legs','{block}','{low_back_injury}','static',30,5,'square the hips, fold with a long spine','backbend','length over depth'),
+('Wide-Leg Forward Fold','Prasarita Padottanasana','forward_fold','moderate','foundational','{hamstrings,spine}','legs','{block}','{low_back_injury}','static',45,NULL,'hinge from the hips, crown down','backbend','a calming standing fold'),
+('Goddess Pose','Utkata Konasana','standing','strong','foundational','{hips,legs}','legs','{}','{knee_injury}','static',30,5,'sink low, knees over the toes','standing','strong and grounded'),
+('Gate Pose','Parighasana','kneeling','gentle','foundational','{side_body,hips}','legs','{}','{knee_injury}','static',30,5,'lengthen the top side over the leg','side_bend','open the side waist'),
+('Standing Side Bend','Parsva Tadasana','side_bend','gentle','foundational','{side_body,spine}','legs','{}','{}','static',20,NULL,'reach up and over, feet grounded','side_bend','length through the side body'),
+-- Balance
+('Half Moon','Ardha Chandrasana','balance','strong','intermediate','{legs,core,hips}','legs','{block}','{}','static',20,NULL,'stack the hips, open the chest','standing','balance, strength, openness'),
+('Warrior III','Virabhadrasana III','balance','strong','intermediate','{legs,core,back}','legs','{block}','{}','static',20,NULL,'reach forward and back, one long line','standing','steady, level, strong'),
+('Dancer Pose','Natarajasana','balance','strong','advanced','{legs,chest,shoulders}','legs','{strap}','{low_back_injury}','static',20,NULL,'kick into the hand, lift the chest','forward_fold','grace and backbend together'),
+('Crow Pose','Bakasana','balance','strong','advanced','{core,arms}','arms','{}','{wrist_injury,pregnancy}','static',15,NULL,'knees high on the arms, gaze forward','restorative','arm balance, gaze and core'),
+('Standing Hand-to-Big-Toe','Utthita Hasta Padangusthasana','balance','strong','advanced','{hamstrings,core}','legs','{strap}','{}','static',20,NULL,'extend the lifted leg, steady gaze','standing','balance with a long leg'),
+-- Backbend
+('Locust Pose','Salabhasana','backbend','moderate','foundational','{spine,back}','full','{}','{low_back_injury,pregnancy}','static',20,5,'lift the chest and legs, lengthen','forward_fold','strengthen the back body'),
+('Bow Pose','Dhanurasana','backbend','strong','intermediate','{spine,chest,hip_flexors}','full','{}','{low_back_injury,neck_injury,pregnancy}','static',20,5,'kick into the hands, lift and open','forward_fold','a fuller heart opener'),
+('Sphinx Pose','Salamba Bhujangasana','backbend','gentle','foundational','{spine}','full','{}','{low_back_injury}','static',45,NULL,'forearms down, lengthen the low back','restorative','a gentle supported backbend'),
+('Wheel Pose','Urdhva Dhanurasana','backbend','strong','advanced','{spine,chest,shoulders}','full','{}','{low_back_injury,neck_injury,high_blood_pressure,wrist_injury}','static',15,5,'press evenly, lift the front body','forward_fold','a deep backbend, approach with care'),
+('Fish Pose','Matsyasana','backbend','moderate','intermediate','{chest,spine}','full','{bolster}','{neck_injury}','static',30,5,'open the chest, soften the throat','forward_fold','counter to shoulderstand'),
+-- Twist
+('Revolved Lunge','Parivrtta Anjaneyasana','twist','strong','intermediate','{spine,hips}','legs','{}','{pregnancy}','static',20,5,'lengthen then revolve from the navel','standing','a twisting lunge'),
+('Revolved Triangle','Parivrtta Trikonasana','twist','strong','advanced','{spine,hamstrings}','legs','{block}','{pregnancy,low_back_injury}','static',20,5,'square the hips, twist with a long spine','forward_fold','length and rotation'),
+('Revolved Chair','Parivrtta Utkatasana','twist','strong','intermediate','{spine,legs}','legs','{}','{pregnancy}','static',20,5,'hook the elbow, lift the chest','standing','a strong standing twist'),
+('Marichi Twist','Marichyasana C','twist','moderate','intermediate','{spine,hips}','none','{}','{pregnancy}','static',30,5,'sit tall, wrap and revolve','seated','a seated bind and twist'),
+-- Forward fold / seated / hips
+('Head-to-Knee Pose','Janu Sirsasana','forward_fold','moderate','foundational','{hamstrings,spine}','none','{strap}','{low_back_injury}','static',45,NULL,'lengthen over the straight leg','backbend','a calming seated fold'),
+('Seated Wide-Angle Fold','Upavistha Konasana','forward_fold','moderate','intermediate','{hamstrings,hips}','none','{bolster}','{low_back_injury}','static',60,NULL,'walk the hands forward, long spine','backbend','open hips and hamstrings'),
+('Cow Face Pose','Gomukhasana','seated','moderate','intermediate','{shoulders,hips}','none','{strap}','{shoulder_injury,knee_injury}','static',45,NULL,'stack the knees, open the chest','seated','shoulders and hips together'),
+('Hero Pose','Virasana','seated','gentle','foundational','{quadriceps}','none','{block}','{knee_injury}','static',60,NULL,'sit tall between the heels','kneeling','a tall kneeling seat'),
+('Fire Log Pose','Agnistambhasana','seated','moderate','intermediate','{hips}','none','{bolster}','{knee_injury}','static',60,NULL,'stack the shins, fold to deepen','seated','a deep outer-hip opener'),
+('Easy Seat','Sukhasana','seated','restorative','foundational','{hips,spine}','none','{bolster}','{}','static',60,NULL,'sit tall, soften the shoulders','seated','a simple grounded seat'),
+('Lizard Pose','Utthan Pristhasana','seated','moderate','intermediate','{hip_flexors,hips}','legs','{block}','{knee_injury}','static',45,NULL,'sink the hips, breathe in','twist','a deep low hip opener'),
+('Garland Pose','Malasana','seated','gentle','foundational','{hips,groin,ankles}','legs','{block}','{knee_injury}','static',45,NULL,'sink the hips, press elbows to knees','standing','a grounding deep squat'),
+('Frog Pose','Mandukasana','seated','strong','advanced','{hips,groin}','none','{bolster}','{knee_injury}','static',60,NULL,'widen the knees slowly, breathe','seated','an intense hip opener, go slow'),
+-- Kneeling / supine
+('Puppy Pose','Uttana Shishosana','kneeling','gentle','foundational','{shoulders,spine}','arms','{bolster}','{shoulder_injury}','static',45,NULL,'walk the hands forward, melt the chest','restorative','heart-opening on the floor'),
+('Happy Baby','Ananda Balasana','supine','gentle','foundational','{hips,low_back}','none','{}','{pregnancy}','static',45,NULL,'hold the feet, rock gently','supine','release the low back and hips'),
+('Knees-to-Chest','Apanasana','supine','restorative','foundational','{low_back}','none','{}','{}','static',30,NULL,'hug the knees, soften the back','backbend','soothe the low back'),
+('Reclined Hand-to-Big-Toe','Supta Padangusthasana','supine','gentle','foundational','{hamstrings}','none','{strap}','{}','static',45,NULL,'extend the leg with a strap','supine','a supported hamstring stretch'),
+('Reclined Twist Restorative','Supta Jathara Parivartanasana','restorative','restorative','foundational','{spine,hips}','none','{bolster}','{}','static',90,NULL,'let the knees fall, fully supported','supine','a long, supported unwind'),
+-- Core / inversion
+('Side Plank','Vasisthasana','core','strong','intermediate','{core,shoulders}','arms','{}','{wrist_injury,shoulder_injury}','static',20,NULL,'stack or stagger the feet, lift the hips','restorative','lateral strength and balance'),
+('Dolphin Pose','Ardha Pincha Mayurasana','inversion','strong','intermediate','{shoulders,core}','arms','{}','{shoulder_injury,high_blood_pressure}','static',30,5,'forearms down, lift the hips high','restorative','build toward inversions safely'),
+('Plow Pose','Halasana','inversion','strong','advanced','{spine,shoulders}','full','{blanket}','{neck_injury,high_blood_pressure,pregnancy,glaucoma}','static',30,NULL,'feet overhead, protect the neck','backbend','calming but neck-sensitive'),
+('Headstand','Sirsasana','inversion','strong','advanced','{shoulders,core}','arms','{wall}','{neck_injury,high_blood_pressure,glaucoma,pregnancy}','static',30,NULL,'weight in the forearms, not the head','restorative','advanced only, contraindication-sensitive'),
+-- Restorative / close
+('Supported Childs Pose','Salamba Balasana','restorative','restorative','foundational','{spine,hips}','none','{bolster,blanket}','{knee_injury}','static',180,NULL,'rest the torso on the bolster','backbend','fully supported rest'),
+('Supported Fish','Salamba Matsyasana','restorative','restorative','foundational','{chest,spine}','none','{bolster}','{}','static',180,NULL,'let the chest drape open','forward_fold','a passive heart opener'),
+('Supported Bridge','Salamba Setu Bandha','restorative','restorative','foundational','{spine,hips}','none','{block}','{neck_injury}','static',180,NULL,'rest the sacrum on the block','forward_fold','a gentle supported backbend'),
+('Constructive Rest','Savasana Variation','restorative','restorative','foundational','{low_back,nervous_system}','none','{}','{}','static',180,NULL,'feet wide, knees together, soften','restorative','release the low back'),
+('Supported Forward Fold','Salamba Paschimottanasana','restorative','restorative','foundational','{spine,hamstrings}','none','{bolster}','{}','static',180,NULL,'rest the torso forward on support','backbend','a calming supported fold'),
+('Seated Side Bend','Parsva Sukhasana','side_bend','gentle','foundational','{side_body,spine}','none','{}','{}','static',30,NULL,'reach over, lengthen the waist','side_bend','open the side body seated');
