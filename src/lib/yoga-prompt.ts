@@ -82,7 +82,7 @@ export function buildYogaUserPrompt(
         ? (p.default_hold_seconds ? `${p.default_hold_seconds}s` : 'hold')
         : (p.default_breaths ? `${p.default_breaths} breaths` : 'flow')
       const props = p.props.length ? ` props:[${p.props.join(',')}]` : ''
-      return `- ${p.name}${p.sanskrit_name ? ` (${p.sanskrit_name})` : ''} | ${p.family} | ${p.intensity} | regions:[${p.target_regions.join(',')}] | ${hold}${props}${p.breath_cue ? ` | breath: ${p.breath_cue}` : ''}`
+      return `- ${p.name} | ${p.family} | ${p.intensity} | regions:[${p.target_regions.join(',')}] | ${hold}${props}${p.breath_cue ? ` | breath: ${p.breath_cue}` : ''}`
     })
     .join('\n')
 

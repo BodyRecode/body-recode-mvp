@@ -189,34 +189,51 @@ export interface YogaSequence {
  * enforce bilateral symmetry and a closing rest. Soft issues are returned as
  * notes rather than silently changed.
  */
+/** Normalise a pose name for tolerant matching: lowercase, drop any
+ * parenthetical (e.g. an appended Sanskrit name), collapse whitespace. */
+function normaliseName(n: string): string {
+  return (n ?? '')
+    .toLowerCase()
+    .replace(/\([^)]*\)/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 export function clampYogaSequence(
   sequence: YogaSequence,
   allowedPoseNames: Iterable<string>,
 ): { sequence: YogaSequence; notes: string[] } {
-  const allowed = new Set(Array.from(allowedPoseNames).map((n) => n.toLowerCase().trim()))
+  // Map normalised name -> canonical library name, so a fuzzy model output
+  // ("Child's Pose (Balasana)") resolves to the canonical name and is kept.
+  const canonical = new Map<string, string>()
+  for (const n of allowedPoseNames) canonical.set(normaliseName(n), n)
   const notes: string[] = []
 
   const segments: YogaSequenceSegment[] = []
   for (const seg of sequence.segments ?? []) {
     const kept: YogaPoseRef[] = []
     for (const pose of seg.poses ?? []) {
-      if (!allowed.has(pose.name?.toLowerCase().trim())) {
+      const match = canonical.get(normaliseName(pose.name))
+      if (!match) {
         notes.push(`Removed "${pose.name}" (outside allowed library for this state).`)
         continue
       }
-      kept.push(pose)
+      kept.push({ ...pose, name: match })
     }
     // Bilateral symmetry: a one-sided pose must be balanced by its mirror.
+    // Only add a mirror when neither neighbour is already the matching side,
+    // so an existing left/right pair is left alone.
     const balanced: YogaPoseRef[] = []
     for (let i = 0; i < kept.length; i++) {
       const pose = kept[i]
       balanced.push(pose)
       if (pose.side === 'left' || pose.side === 'right') {
         const mirror = pose.side === 'left' ? 'right' : 'left'
+        const prev = kept[i - 1]
         const next = kept[i + 1]
-        const alreadyMirrored =
-          next && next.name === pose.name && next.side === mirror
-        if (!alreadyMirrored) {
+        const pairedWithPrev = prev && prev.name === pose.name && prev.side === mirror
+        const pairedWithNext = next && next.name === pose.name && next.side === mirror
+        if (!pairedWithPrev && !pairedWithNext) {
           balanced.push({ ...pose, side: mirror })
           notes.push(`Added the ${mirror} side of "${pose.name}" for symmetry.`)
         }
