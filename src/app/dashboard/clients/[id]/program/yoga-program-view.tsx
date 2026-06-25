@@ -153,18 +153,17 @@ function BlockBody({ program }: { program: YogaProgram }) {
   )
 }
 
-function BlockSection({ program }: { program: YogaProgram }) {
+function BlockSection({ program, withNav }: { program: YogaProgram; withNav: boolean }) {
+  if (!withNav) return <BlockBody program={program} />
   return (
-    <div className="flex gap-6">
-      <div className="hidden lg:block">
-        <StickyScrollNav sections={[
-          { id: 'yoga-identity', title: 'Identity' },
-          ...(program.prescription_rationale ? [{ id: 'yoga-rationale', title: 'Rationale' }] : []),
-          ...(program.weekly_pattern_summary ? [{ id: 'yoga-weekly', title: 'Weekly Structure' }] : []),
-          ...(program.progression_notes ? [{ id: 'yoga-progression', title: 'Progression' }] : []),
-          { id: 'yoga-practices', title: 'Practices' },
-        ]} />
-      </div>
+    <div className="flex gap-8">
+      <StickyScrollNav sections={[
+        { id: 'yoga-identity', title: 'Identity' },
+        ...(program.prescription_rationale ? [{ id: 'yoga-rationale', title: 'Rationale' }] : []),
+        ...(program.weekly_pattern_summary ? [{ id: 'yoga-weekly', title: 'Weekly Structure' }] : []),
+        ...(program.progression_notes ? [{ id: 'yoga-progression', title: 'Progression' }] : []),
+        { id: 'yoga-practices', title: 'Practices' },
+      ]} />
       <div className="flex-1 min-w-0">
         <BlockBody program={program} />
       </div>
@@ -222,7 +221,7 @@ export default async function YogaProgramView({
             <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">Draft - Pending Approval</span>
             <DraftActions programId={draftProgram.id} clientId={clientId} />
           </div>
-          <BlockSection program={draftProgram} />
+          <BlockSection program={draftProgram} withNav={false} />
         </div>
       )}
 
@@ -244,7 +243,7 @@ export default async function YogaProgramView({
               generateRoute="/api/generate-yoga-reading"
             />
           </div>
-          <BlockSection program={activeProgram} />
+          <BlockSection program={activeProgram} withNav={true} />
         </div>
       ) : !draftProgram ? (
         <div className="bg-stone-50 border border-dashed border-stone-300 rounded-xl p-8 text-center text-sm text-stone-500">
