@@ -363,7 +363,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             />
           )}
           {activeProgram && (
-            <DeleteProgramButton programId={activeProgram.id} label="Delete Active Program" />
+            <DeleteProgramButton programId={activeProgram.id} label="Delete Active Block" />
           )}
           {draftProgram && !activeProgram && (
             <DeleteProgramButton
@@ -378,6 +378,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           >
             Macro Plan
           </Link>
+          <span className="rounded-full bg-blue-50 border border-blue-200 px-3 py-1 text-xs font-semibold text-[#1B6DFC]">strength modality</span>
         </div>
       </div>
 
