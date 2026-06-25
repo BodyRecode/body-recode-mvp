@@ -6,6 +6,7 @@ import StickyScrollNav from '@/components/sticky-scroll-nav'
 import DraftActions from './draft-actions'
 import DeleteProgramButton from './delete-button'
 import ProgramWeeklyReview from './weekly-review'
+import YogaSessionLog from './yoga-session-log'
 
 interface YogaPose {
   name: string
@@ -189,6 +190,13 @@ export default async function YogaProgramView({
   const activeProgram = all.find((p) => p.is_active && p.status !== 'draft')
   const past = all.filter((p) => p.id !== draftProgram?.id && p.id !== activeProgram?.id)
 
+  // Session-log completions for the active block (coach + client logged practices).
+  const { data: completions } = activeProgram
+    ? await admin.from('session_completions')
+        .select('id, session_index, day_label, completed_at, logged_by, session_notes')
+        .eq('program_id', activeProgram.id).eq('status', 'completed')
+    : { data: [] }
+
   return (
     <div className="max-w-5xl mx-auto">
       {/* Header */}
@@ -257,6 +265,15 @@ export default async function YogaProgramView({
             </Link>
           </div>
           <BlockSection program={activeProgram} withNav={true} />
+
+          {/* Session Log - coach logs in-person practices for the client */}
+          <div className="mt-4">
+            <YogaSessionLog
+              programId={activeProgram.id}
+              practices={(activeProgram.sessions ?? []).map((s, i) => ({ index: i, day_label: s.day_label }))}
+              completions={completions ?? []}
+            />
+          </div>
 
           {/* Weekly Review - client check-in feedback (reuses the strength component) */}
           <div className="mt-4">
