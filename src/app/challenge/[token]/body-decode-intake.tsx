@@ -108,6 +108,7 @@ const CYCLE_OPTIONS: { value: CycleStatus; label: string }[] = [
 export interface IntakeResult {
   score: number
   body_state: 'Depleted State' | 'Transitioning State' | 'Ready State'
+  section_scores?: Partial<Record<'01' | '02' | '03' | '04' | '05', number>>
   profile: string | null
   profile_confidence: 'high' | 'low' | null
   profile_driver: string | null

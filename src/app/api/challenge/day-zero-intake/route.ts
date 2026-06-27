@@ -177,6 +177,7 @@ export async function POST(request: NextRequest) {
     success: true,
     score: total,
     body_state: bodyState,
+    section_scores,
     profile: namedZone ? fatMapProfile : null,
     profile_confidence: namedZone ? profileConfidence : null,
     profile_driver: namedZone ? PROFILE_DRIVERS[fatMapProfile].replace(/\s*\([^)]*\)\s*$/, '') : null,
