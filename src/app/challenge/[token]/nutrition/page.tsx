@@ -532,7 +532,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
               {[
                 { name: 'Electrolytes', timing: 'Daily', note: 'Especially important on training days and in the morning' },
                 { name: 'Whey protein', timing: 'Post-training', note: 'Fast-digesting protein to kickstart recovery' },
-                { name: 'FocusFuel', timing: 'Pre-training', note: 'Clean energy without seed oils or artificial sweeteners' },
+                { name: 'FocusFuel', timing: 'Pre-training', note: 'Clean energy without seed oils or artificial sweeteners', comingSoon: true },
                 { name: 'Creatine', timing: 'Daily', note: '5g per day. Supports performance and recovery' },
                 { name: 'Magnesium', timing: 'Evening', note: 'Supports sleep quality and muscle recovery' },
               ].map((s, i) => (
@@ -541,12 +541,17 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                   paddingTop: i === 0 ? '0' : '14px',
                   paddingBottom: '14px',
                   borderBottom: i < 4 ? '1px solid #E5E5E5' : 'none',
+                  opacity: s.comingSoon ? 0.75 : 1,
                 }}>
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: '14px', fontWeight: 600, color: '#1A1A1A', margin: '0 0 3px' }}>{s.name}</p>
                     <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.4 }}>{s.note}</p>
                   </div>
-                  <span style={{ fontSize: '11px', color: '#1B6DFC', background: 'rgba(27,109,252,0.08)', border: '1px solid rgba(27,109,252,0.2)', padding: '3px 10px', borderRadius: '99px', marginLeft: '16px', whiteSpace: 'nowrap' as const }}>{s.timing}</span>
+                  {s.comingSoon ? (
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#B7791F', background: 'rgba(217,119,6,0.08)', border: '1px solid rgba(217,119,6,0.25)', padding: '3px 10px', borderRadius: '99px', marginLeft: '16px', whiteSpace: 'nowrap' as const, letterSpacing: '0.04em', textTransform: 'uppercase' as const }}>Coming soon</span>
+                  ) : (
+                    <span style={{ fontSize: '11px', color: '#1B6DFC', background: 'rgba(27,109,252,0.08)', border: '1px solid rgba(27,109,252,0.2)', padding: '3px 10px', borderRadius: '99px', marginLeft: '16px', whiteSpace: 'nowrap' as const }}>{s.timing}</span>
+                  )}
                 </div>
               ))}
             </div>
