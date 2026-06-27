@@ -14,6 +14,7 @@ export type LeadEventType =
   | 'challenge_enrolled'
   | 'challenge_welcome_sent'
   | 'challenge_coach_notified'
+  | 'day_zero_intake_completed'
   | 'custom_time_requested'
 
 export async function logLeadEvent(params: {

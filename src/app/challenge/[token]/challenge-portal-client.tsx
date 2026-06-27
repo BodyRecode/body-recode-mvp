@@ -1,6 +1,8 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import BodyDecodeIntakeForm, { type IntakeResult } from './body-decode-intake'
+import BodyDecodeIntakeResult from './body-decode-intake-result'
 
 const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
   1: {
@@ -448,7 +450,7 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
 }
 
 export default function ChallengePortalClient({
-  token, firstName, currentDay, enrolledAt, parqCompleted, healthDecCompleted, savedQuizResult,
+  token, firstName, currentDay, enrolledAt, parqCompleted, healthDecCompleted, savedQuizResult, bodyDecodeIntakeCompleted,
 }: {
   token: string
   firstName: string
@@ -457,10 +459,14 @@ export default function ChallengePortalClient({
   parqCompleted: boolean
   healthDecCompleted: boolean
   savedQuizResult: string | null
+  bodyDecodeIntakeCompleted: boolean
 }) {
+  const [intakeDone, setIntakeDone] = useState(bodyDecodeIntakeCompleted)
+  const [intakeResult, setIntakeResult] = useState<IntakeResult | null>(null)
   const [parqDone, setParqDone] = useState(parqCompleted)
   const [healthDecDone, setHealthDecDone] = useState(healthDecCompleted)
   const formsRef = useRef<HTMLDivElement | null>(null)
+  const intakeRef = useRef<HTMLDivElement | null>(null)
   const [activeForm, setActiveForm] = useState<'parq' | 'health_dec' | null>(
     !parqCompleted ? 'parq' : !healthDecCompleted ? 'health_dec' : null
   )
@@ -526,8 +532,41 @@ export default function ChallengePortalClient({
           </div>
         </div>
 
+        {/* Day 0 Body Decode Intake — gates everything else until done.
+            Scorecard signups arrive with intakeDone=true (skip the form,
+            their state classification already lives on the lead row).
+            Cold-paid / gym-floor / direct enrollers see the form, submit it,
+            see their state-routed result, then click Continue to advance. */}
+        {!intakeDone && !intakeResult && (
+          <div ref={intakeRef} style={{ marginBottom: '48px', scrollMarginTop: '24px' }}>
+            <BodyDecodeIntakeForm
+              token={token}
+              onComplete={result => {
+                setIntakeResult(result)
+                requestAnimationFrame(() => {
+                  intakeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                })
+              }}
+            />
+          </div>
+        )}
+
+        {!intakeDone && intakeResult && (
+          <div ref={intakeRef} style={{ marginBottom: '48px', scrollMarginTop: '24px' }}>
+            <BodyDecodeIntakeResult
+              result={intakeResult}
+              onContinue={() => {
+                setIntakeDone(true)
+                requestAnimationFrame(() => {
+                  formsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                })
+              }}
+            />
+          </div>
+        )}
+
         {/* Required Forms */}
-        {!formsComplete && (
+        {intakeDone && !formsComplete && (
           <div ref={formsRef} style={{ marginBottom: '48px', scrollMarginTop: '24px' }}>
             <div style={{
               background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.25)',
@@ -595,6 +634,13 @@ export default function ChallengePortalClient({
           </div>
         )}
 
+        {/* Everything below this point is gated on the Day 0 intake being done.
+            Until the intake is complete (either via prior scorecard data or via
+            the in-portal Body Decode Intake form above), the rest of the
+            Challenge surface stays hidden so the enroller can't skip the
+            state-capture step. */}
+        {intakeDone && (
+        <>
         {formsComplete && (
           <div style={{
             background: 'rgba(27, 109, 252,0.06)', border: '1px solid rgba(27, 109, 252,0.2)',
@@ -873,6 +919,8 @@ export default function ChallengePortalClient({
               See the 6-Week Blueprint
             </a>
           </div>
+        )}
+        </>
         )}
 
       </div>
