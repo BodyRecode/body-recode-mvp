@@ -313,31 +313,77 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
         </div>
       </div>
 
-      {/* CARD 5 — How the 6 Weeks Work */}
+      {/* CARD 5 — How the 6 Weeks Work · the first Blueprint upsell in the
+          14-day arc. Treated as a conversion moment, not an educational card:
+          gradient background mirroring the Day 14 ascension card so it reads
+          as a product surface, not another teaching block. */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '20px 24px 0' }}>
-        <div style={card}>
-          <p style={cardLabel}>Card 5 of 5</p>
-          <p style={cardTitle}>How the 6 Weeks Work</p>
-          <p style={{ ...cardBody, marginBottom: '20px' }}>
-            What happens after Day 14 if you continue. The 6-Week Body Rewire Blueprint is structured in three phases. Two weeks each. Each phase has a specific biological job.
+        <div style={{
+          background: 'linear-gradient(135deg, #EAF2FF 0%, #B5CFFC 100%)',
+          border: '1px solid rgba(27, 109, 252,0.30)',
+          borderRadius: '16px',
+          padding: '28px 28px',
+          boxShadow: '0 6px 24px -10px rgba(27,109,252,0.35)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px', flexWrap: 'wrap' as const }}>
+            <p style={{ fontSize: '11px', fontWeight: 800, color: '#0B4ABF', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: 0 }}>
+              Card 5 of 5 · What comes next
+            </p>
+            <span style={{
+              fontSize: '10px', fontWeight: 800, color: '#0B4ABF',
+              background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(27,109,252,0.35)',
+              borderRadius: '99px', padding: '3px 10px',
+              letterSpacing: '0.1em', textTransform: 'uppercase' as const,
+            }}>
+              Day 14 unlock
+            </span>
+            <span style={{
+              fontSize: '10px', fontWeight: 800, color: '#0B4ABF',
+              background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(27,109,252,0.35)',
+              borderRadius: '99px', padding: '3px 10px',
+              letterSpacing: '0.1em', textTransform: 'uppercase' as const,
+            }}>
+              $97 one-time
+            </span>
+          </div>
+          <h2 style={{ fontSize: '26px', fontWeight: 900, color: '#0B1F3F', letterSpacing: '-0.025em', margin: '0 0 8px', lineHeight: 1.18 }}>
+            The 6-Week Body Rewire Blueprint
+          </h2>
+          <p style={{ fontSize: '15px', color: '#1A1A1A', lineHeight: 1.7, margin: '0 0 20px' }}>
+            What happens after Day 14 if you continue. The Blueprint is structured in three phases — two weeks each. Each phase has a specific biological job.
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
             {SIX_WEEKS_PHASES.map((p, i) => (
               <div key={p.label} style={{
-                background: '#FAFAFA', border: '1px solid #EEEEEE',
-                borderLeft: '3px solid #1B6DFC', borderRadius: '10px', padding: '16px 18px',
+                background: 'rgba(255,255,255,0.7)',
+                border: '1px solid rgba(27, 109, 252, 0.25)',
+                borderLeft: '3px solid #1B6DFC',
+                borderRadius: '10px', padding: '16px 18px',
               }}>
                 <p style={{ fontSize: '11px', fontWeight: 800, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' as const, margin: '0 0 6px' }}>
                   Phase {i + 1}
                 </p>
-                <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 8px' }}>{p.label}</p>
-                <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{p.body}</p>
+                <p style={{ fontSize: '15px', fontWeight: 700, color: '#0B1F3F', margin: '0 0 8px' }}>{p.label}</p>
+                <p style={{ fontSize: '14px', color: '#3A3A3A', lineHeight: 1.65, margin: 0 }}>{p.body}</p>
               </div>
             ))}
           </div>
-          <p style={{ ...cardBody, marginTop: '20px', marginBottom: 0 }}>
+          <p style={{ fontSize: '14px', color: '#0B1F3F', lineHeight: 1.7, margin: '0 0 20px', fontWeight: 600 }}>
             On Day 14 your portal will show you the clear next step. You are further along than you think.
           </p>
+          <a
+            href="https://bodyrecode.au/blueprint?source=challenge_day5_card5"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              padding: '14px 24px', borderRadius: '10px',
+              background: '#1B6DFC', color: '#FFFFFF',
+              fontSize: '14px', fontWeight: 800, textDecoration: 'none',
+              letterSpacing: '0.01em',
+              boxShadow: '0 8px 20px -6px rgba(27,109,252,0.55)',
+            }}
+          >
+            See the Blueprint <span aria-hidden>→</span>
+          </a>
         </div>
       </div>
 
