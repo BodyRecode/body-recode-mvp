@@ -748,7 +748,15 @@ export default function BlueprintPage() {
           <img
             src="/kade-11.jpg"
             alt="Kade Dunstone"
-            style={{ width: '100%', display: 'block', maxHeight: '360px', objectFit: 'cover', objectPosition: 'top center' }}
+            style={{
+              width: '100%', display: 'block',
+              // Portrait-friendly 4:5 frame caps height on narrow screens
+              // and lets more of the seated shot breathe on desktop.
+              // Caption is overlaid bottom-left so the lower third needs
+              // to stay visible — center-center the crop.
+              aspectRatio: '4 / 5', maxHeight: '560px',
+              objectFit: 'cover', objectPosition: 'center center',
+            }}
           />
           <div style={{
             position: 'absolute', inset: 0,
