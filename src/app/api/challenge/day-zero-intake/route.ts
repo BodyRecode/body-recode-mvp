@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     token,
     section_scores,
     approach_response,
-    investment_readiness,
+    ascension_intent,
     biological_sex,
     age_band,
     fat_storage,
@@ -42,12 +42,20 @@ export async function POST(request: NextRequest) {
     token: string
     section_scores: Record<'01' | '02' | '03' | '04' | '05', number>
     approach_response?: 'A' | 'B' | 'C' | 'D'
-    investment_readiness?: 'A' | 'B' | 'C' | 'D'
+    ascension_intent?: 'A' | 'B' | 'C' | 'D'
     biological_sex?: BiologicalSex
     age_band?: AgeBand
     fat_storage?: FatStorage
     cycle_status?: CycleStatus
   }
+
+  // ascension_intent replaces the scorecard's investment_readiness for the
+  // Day 0 context. Stored on the enrolment, never on leads, so it doesn't
+  // pollute scorecard semantics. Whitelist to A|B|C|D.
+  const ascensionIntentVal: 'A' | 'B' | 'C' | 'D' | null =
+    ascension_intent === 'A' || ascension_intent === 'B' || ascension_intent === 'C' || ascension_intent === 'D'
+      ? ascension_intent
+      : null
 
   if (!token) {
     return NextResponse.json({ error: 'Missing token.' }, { status: 400 })
@@ -83,16 +91,20 @@ export async function POST(request: NextRequest) {
     { sex: sexVal, ageBand: ageVal, fatStorage: storageVal, cycleStatus: cycleVal },
   )
 
-  // Compute lead quality from qualifier answers (same rules as scorecard).
-  let redCount = 0
-  if (approach_response === 'C' || approach_response === 'D') redCount++
-  if (investment_readiness === 'C' || investment_readiness === 'D') redCount++
+  // Lead quality at Day 0 is approach-only (single axis). The scorecard's
+  // 2-axis approach+investment scoring doesn't apply here — investment
+  // readiness is asked about THE Challenge they just took for free, so
+  // it's a meaningless red-flag signal in this context. ascension_intent
+  // replaces it but is forward-looking + not red-flagged (all 4 answers
+  // including "Not sure yet" are valid intentions). Day 0 enrollers
+  // therefore max out at 'yellow' lead quality; only scorecard signups
+  // can hit 'red' (both axes flagged).
+  const approachIsRed = approach_response === 'C' || approach_response === 'D'
   const leadQuality: 'green' | 'yellow' | 'red' | null =
-    !approach_response || !investment_readiness ? null
-    : redCount === 0 ? 'green'
-    : redCount === 1 ? 'yellow'
-    : 'red'
-  const redFlag = redCount >= 1
+    !approach_response ? null
+    : approachIsRed ? 'yellow'
+    : 'green'
+  const redFlag = approachIsRed
 
   const admin = createAdminClient()
 
@@ -116,7 +128,8 @@ export async function POST(request: NextRequest) {
       scorecard_body_state: bodyState,
       scorecard_section_scores: section_scores,
       approach_response: approach_response ?? null,
-      investment_readiness: investment_readiness ?? null,
+      // investment_readiness deliberately left null at Day 0 — see
+      // ascension_intent written to challenge_enrollments below.
       red_flag: redFlag,
       lead_quality: leadQuality,
       biological_sex: sexVal,
@@ -137,10 +150,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to save intake.' }, { status: 500 })
   }
 
-  // Stamp enrolment so the portal advances past the intake gate.
+  // Stamp enrolment + persist the Day 0-specific forward-intent answer.
   const { error: enrollUpdateErr } = await admin
     .from('challenge_enrollments')
-    .update({ body_decode_intake_completed_at: new Date().toISOString() })
+    .update({
+      body_decode_intake_completed_at: new Date().toISOString(),
+      ascension_intent: ascensionIntentVal,
+    })
     .eq('id', enrollment.id)
 
   if (enrollUpdateErr) {
@@ -153,7 +169,7 @@ export async function POST(request: NextRequest) {
     leadId: enrollment.lead_id,
     type: 'day_zero_intake_completed',
     subject: 'Day 0 Body Decode Intake completed',
-    notes: `Score ${total}/15 · ${bodyState} · Zone: ${fatMapProfile}${profileConfidence === 'low' ? ' (provisional)' : ''}${leadQuality ? ` · Quality ${leadQuality}` : ''}.`,
+    notes: `Score ${total}/15 · ${bodyState} · Zone: ${fatMapProfile}${profileConfidence === 'low' ? ' (provisional)' : ''}${leadQuality ? ` · Quality ${leadQuality}` : ''}${ascensionIntentVal ? ` · Intent ${ascensionIntentVal}` : ''}.`,
   })
 
   const namedZone = fatMapProfile !== 'Indeterminate'

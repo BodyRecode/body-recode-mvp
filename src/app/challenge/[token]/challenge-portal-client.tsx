@@ -496,7 +496,7 @@ export default function ChallengePortalClient({
             borderRadius: '99px', padding: '5px 14px',
           }}>
             <span style={{ fontSize: '12px', fontWeight: 700, color: '#1B6DFC' }}>
-              Day {currentDay} of 14
+              {intakeDone ? `Day ${currentDay} of 14` : 'Day 0 · Setup'}
             </span>
           </div>
         </div>
@@ -507,14 +507,16 @@ export default function ChallengePortalClient({
         {/* Welcome */}
         <div style={{ marginBottom: '40px' }}>
           <h1 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '6px' }}>
-            Welcome back, {firstName}.
+            {intakeDone ? `Welcome back, ${firstName}.` : `Welcome, ${firstName}.`}
           </h1>
           <p style={{ fontSize: '15px', color: '#4A4A4A', margin: 0 }}>
-            14-Day Body Decode Challenge
+            {intakeDone ? '14-Day Body Decode Challenge' : 'Before your 14-Day Body Decode Challenge begins'}
           </p>
         </div>
 
-        {/* Progress bar */}
+        {/* Progress bar — hidden during Day 0 setup; only meaningful once the
+            Challenge has actually started (post-intake). */}
+        {intakeDone && (
         <div style={{ marginBottom: '48px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
             <span style={{ fontSize: '12px', fontWeight: 700, color: '#4A4A4A', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Progress</span>
@@ -531,6 +533,7 @@ export default function ChallengePortalClient({
             <span style={{ fontSize: '11px', color: '#999999' }}>Day 14</span>
           </div>
         </div>
+        )}
 
         {/* Day 0 Body Decode Intake — gates everything else until done.
             Scorecard signups arrive with intakeDone=true (skip the form,
