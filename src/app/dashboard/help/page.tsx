@@ -63,6 +63,7 @@ const SECTIONS = [
   { id: 'ch-landing',       title: 'Landing Page',           colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-enrollment',    title: 'Enrollment Flow',        colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-portal',        title: 'Participant Portal',     colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-day-zero',      title: 'Day 0 Body Decode Intake', colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-forms',         title: 'PAR-Q and Health Dec',   colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-resources',     title: 'Training and Nutrition', colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-quiz',          title: 'Body Decode Check-In',   colour: 'teal' as const, category: 'challenge' as Category },
@@ -2801,6 +2802,33 @@ export default function HelpPage() {
             <p>Day is calculated server-side on every page load as <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">Math.floor((now - enrolledAt) / 86400000) + 1</code>, clamped between 1 and 14. Day 1 is the day of enrollment. Day 2 starts 24 hours after enrollment.</p>
 
             <Note>The portal does not require a login. Anyone with the token URL can access the portal. Tokens are UUID format (32 hex characters) - they are not guessable by brute force.</Note>
+          </Section>
+
+          <Section id="ch-day-zero" title="Day 0 Body Decode Intake" colour="teal">
+            <p>The Day 0 Body Decode Intake is the FIRST thing a Challenge enroller sees in the portal — gating ALL other content (PAR-Q, Health Declaration, Today&apos;s Note, Resources, Day 5/7/14 milestones) until done. Captures scorecard-equivalent signals (5 section scores, 4 demographics, 2 qualifiers — ~3 minutes) so cold-paid / gym-floor / direct enrollers get the same state classification as scorecard signups.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Why it exists</p>
+            <p>The locked scorecard-first routing rule has two exceptions: cold-paid Meta ads and gym-floor QR scans both go DIRECT to /challenge (no scorecard) because adding a quiz between ad-click/QR-scan and signup tanks cold-paid economics and gym-floor conversion. Pre-fix, those enrollers had no state classification at signup — only on Day 7 via a 2-question quiz stored in a different table. The Day 0 intake captures the same signals AFTER enrolment instead of BEFORE, where friction doesn&apos;t hurt the conversion event Meta optimises on.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Skip logic for scorecard signups</p>
+            <p>Critical UX: scorecard signups must NOT see the intake form again. The portal checks <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">leads.scorecard_profile</code> on load — if populated, the intake auto-skips and the enroller goes straight to PAR-Q. So the Day 0 intake is exclusively for non-scorecard enrollers.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">State-routed result card</p>
+            <p>After intake submit, the enroller sees a state-routed result card mirroring the public scorecard result page:</p>
+            <ul className="list-disc list-inside space-y-1 mt-2">
+              <li><strong>Depleted</strong> → &quot;Challenge is your fit&quot; + Continue Challenge (no ascension shown)</li>
+              <li><strong>Transitioning</strong> → Continue Challenge default + Blueprint recommendation card (&quot;Your state suggests Blueprint&quot;)</li>
+              <li><strong>Ready</strong> → Continue Challenge default + Membership recommendation card (&quot;Your state suggests Membership&quot;)</li>
+            </ul>
+            <p className="mt-2">Continue Challenge always stays the default action — honours the free 14-day Challenge promise the enroller signed up for. Ascension is the OPTION, not a redirect. CTAs route to <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">/blueprint?from=challenge_day_zero&state=transitioning</code> and <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">/membership?from=challenge_day_zero&state=ready</code> for attribution.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">How data persists</p>
+            <p>POST <strong>/api/challenge/day-zero-intake</strong> writes to the SAME columns the public scorecard writes to: <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">leads.scorecard_score</code>, <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">scorecard_body_state</code>, <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">scorecard_profile</code>, <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">scorecard_section_scores</code>, <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">biological_sex</code>, <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">age_band</code>, <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">fat_storage</code>, <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">cycle_status</code>, <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">approach_response</code>, <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">investment_readiness</code>, <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">lead_quality</code>. Uses the shared <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">typeFatMapProfile()</code> from <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">src/lib/fat-map-profile.ts</code>. Same body-state thresholds as scorecard (≤8 Depleted, ≤11 Transitioning, ≥12 Ready). Stamps <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">challenge_enrollments.body_decode_intake_completed_at</code> so the portal advances past the gate, and logs a <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">day_zero_intake_completed</code> lead event.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Source attribution</p>
+            <p>Whether a lead&apos;s Fat Map zone was classified via the scorecard or via Day 0 intake is derivable from <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">challenge_enrollments.body_decode_intake_completed_at</code> — non-null means the data came from inside the portal. No separate scorecard_source column needed.</p>
+
+            <Note>Required Supabase columns: body_decode_intake_completed_at (timestamptz, nullable) on challenge_enrollments. Applied via sql/2026-06-27_challenge_day_zero_intake.sql.</Note>
           </Section>
 
           <Section id="ch-forms" title="PAR-Q and Health Declaration" colour="teal">
