@@ -5,6 +5,7 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { inngest } from '@/lib/inngest'
 import { sendChallengeWelcomeEmail, sendCoachEnrollmentNotification } from '@/lib/challenge-welcome-email'
+import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
 
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
@@ -182,6 +183,38 @@ export async function POST(request: NextRequest) {
       subject: isReturning ? 'Coach notified of re-signup' : 'Coach notified of new enrollment',
       notes: `Resend id: ${coachNotify.id ?? 'unknown'}. Returning: ${isReturning}.`,
     })
+  }
+
+  // Fire Meta Conversions API Lead event server-side. The Challenge enrolment
+  // is the single highest-value cold-funnel conversion event: a real user has
+  // handed over name + email + phone + gender and is now inside a 14-day
+  // diagnostic. Once Challenge is live this is what Meta optimises on.
+  // Non-blocking try/catch so any CAPI failure cannot break the user response.
+  try {
+    const { clientIp, clientUserAgent } = extractClientContext(request)
+    const [enrollFirstName, ...enrollLastNameParts] = fullName.split(' ')
+    await fireMetaCapiEvent({
+      eventName: 'Lead',
+      eventSourceUrl: 'https://bodyrecode.au/challenge',
+      actionSource: 'website',
+      userData: {
+        email: trimmedEmail,
+        phone: trimmedPhone,
+        firstName: enrollFirstName,
+        lastName: enrollLastNameParts.join(' ') || undefined,
+        country: 'AU',
+        clientIp,
+        clientUserAgent,
+      },
+      customData: {
+        content_name: 'challenge_enrolled',
+        content_category: gender || 'unknown',
+        source: 'challenge_signup_form',
+        returning: isReturning,
+      },
+    })
+  } catch (capiErr) {
+    console.error('[challenge/enroll] CAPI fire threw (non-fatal):', capiErr)
   }
 
   return NextResponse.json({ success: true, token, emailSent: welcome.ok, coachNotified: coachNotify.ok })
