@@ -42,6 +42,11 @@ LOGO_W_180="$TMP/logo-w-180.png"
 LOGO_B_180="$TMP/logo-b-180.png"
 [ ! -f "$LOGO_W_180" ] && magick "$LOGO_BLACK" -fill white -colorize 100 -resize 180x "$LOGO_W_180"
 [ ! -f "$LOGO_B_180" ] && magick "$LOGO_BLACK" -resize 180x "$LOGO_B_180"
+# Larger logo pair for the ad template (cold ad creative reads at thumbnail scale)
+LOGO_W_AD="$TMP/logo-w-240.png"
+LOGO_B_AD="$TMP/logo-b-240.png"
+[ ! -f "$LOGO_W_AD" ] && magick "$LOGO_BLACK" -fill white -colorize 100 -resize 240x "$LOGO_W_AD"
+[ ! -f "$LOGO_B_AD" ] && magick "$LOGO_BLACK" -resize 240x "$LOGO_B_AD"
 
 HANDLE="@body_recode_"
 
@@ -275,6 +280,92 @@ case "$TYPE" in
       echo "$S_OUT"
     done
     exit 0
+    ;;
+
+  ad)
+    # Cold-paid Meta ad creative. 4:5 portrait. Offer-first hierarchy:
+    # the FREE 14-Day Challenge banner is the loudest visual element.
+    # Hook below in plain buyer language. Promise line. No coach doctrine.
+    #
+    # Fields:
+    #   hook_1, hook_2 (optional)  - buyer-language hook
+    #   sub_1                       - one-line promise (default: "Find out why in 14 days. Free.")
+    #   photo (optional 1-8)        - if provided, photo variant; else statement variant
+    OFFER_HEADLINE="${LABEL:-FREE · 14-DAY BODY DECODE CHALLENGE}"
+    OFFER_SUB="${SOFT_CTA:-Find your pattern in 14 days. No payment.}"
+    PROMISE="${SUB1:-Find out why in 14 days. Free.}"
+    CTA_PILL="${CTA_TEXT:-Start the free 14-day Challenge}"
+    HOOK1_LEN=${#HOOK1}
+    HOOK2_LEN=${#HOOK2}
+
+    if [ -n "$PHOTO" ]; then
+      # PHOTO VARIANT — kade portrait fills top (760px), dark slab below carries
+      # blue offer banner + hook + promise + CTA pill. Photo shrunk vs the
+      # statement variant to give the lower 590px room to breathe.
+      PF="$(photo_path "$PHOTO")"
+      CMD+=( "$PF" -resize 1080x760^ -gravity north -extent 1080x760 -colorspace gray -colorspace sRGB )
+      # Extend canvas with a black bottom panel
+      CMD+=( -background "#0F0F0F" -gravity north -extent 1080x1350 )
+      # Signal Blue offer strip directly under the photo (120px tall)
+      CMD+=( -fill "#1B6DFC" -draw "rectangle 0,755 1080,890" )
+      # FREE headline stays stroke-bold; sub line reverts to regular weight.
+      CMD+=( -font "$SANS_BOLD" -pointsize 38 -fill white -stroke white -strokewidth 1 -gravity north -annotate +0+795 "$OFFER_HEADLINE" +stroke )
+      CMD+=( -font "$SANS" -pointsize 26 -fill "rgba(255,255,255,0.92)" -gravity north -annotate +0+852 "$OFFER_SUB" )
+      # Logo top-left (over the photo, safe zone)
+      CMD+=( "$LOGO_W_AD" -gravity northwest -geometry +96+96 -compose over -composite )
+      # Hook in the dark panel — auto-shrink for long hooks (bumped one size)
+      _maxlen=$HOOK1_LEN; [ ${HOOK2_LEN:-0} -gt $_maxlen ] && _maxlen=$HOOK2_LEN
+      PH_PT=54
+      [ "$_maxlen" -gt 26 ] && PH_PT=46
+      [ "$_maxlen" -gt 30 ] && PH_PT=40
+      [ "$_maxlen" -gt 36 ] && PH_PT=36
+      PH_GAP=$(( PH_PT + (PH_PT / 3) ))
+      PH_HOOK2_Y=$(( 925 + PH_GAP ))
+      CMD+=( -font "$SANS_BOLD" -pointsize $PH_PT -fill white -gravity north -annotate +0+925 "$HOOK1" )
+      [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize $PH_PT -fill white -gravity north -annotate "+0+${PH_HOOK2_Y}" "$HOOK2" )
+      # Promise — uses `caption:` so long subs wrap to 2 lines
+      # at a consistent readable size instead of shrinking.
+      CMD+=( \( -background "#0F0F0F" -fill "rgba(255,255,255,0.86)" -font "$SANS" -pointsize 30 -size 888x -gravity center caption:"$PROMISE" \) -gravity north -geometry +0+1075 -composite )
+      # CTA pill — Signal Blue, centred lower-mid (taller for bigger CTA text). Regular weight.
+      CMD+=( -fill "#1B6DFC" -draw "roundrectangle 220,1165 860,1245 12,12" )
+      CMD+=( -font "$SANS_BOLD" -pointsize 28 -fill white -gravity north -annotate +0+1187 "$CTA_PILL" )
+      CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "rgba(255,255,255,0.6)" -gravity south -annotate +0+50 "$HANDLE" )
+    else
+      # STATEMENT VARIANT — Signal Blue offer banner at top, hook large mid, promise below
+      CMD+=( -size 1080x1350 xc:white )
+      # Logo top-left
+      CMD+=( "$LOGO_B_AD" -gravity northwest -geometry +96+96 -compose over -composite )
+      # BIG offer banner — Signal Blue strip, ~230px tall, centred under the logo
+      CMD+=( -fill "#1B6DFC" -draw "rectangle 0,230 1080,460" )
+      # FREE headline stays stroke-bold; sub line reverts to regular weight.
+      CMD+=( -font "$SANS_BOLD" -pointsize 46 -fill white -stroke white -strokewidth 1 -gravity north -annotate +0+282 "$OFFER_HEADLINE" +stroke )
+      CMD+=( -font "$SANS" -pointsize 28 -fill "rgba(255,255,255,0.92)" -gravity north -annotate +0+362 "$OFFER_SUB" )
+      # Hook in dark grey, larger for thumbnail impact.
+      # Auto-shrink for long hooks so text never overflows the 888px usable
+      # width (1080 canvas - 96px safe zone × 2).
+      _maxlen=$HOOK1_LEN; [ ${HOOK2_LEN:-0} -gt $_maxlen ] && _maxlen=$HOOK2_LEN
+      HOOK_PT=92
+      [ "$_maxlen" -gt 22 ] && HOOK_PT=82
+      [ "$_maxlen" -gt 26 ] && HOOK_PT=72
+      [ "$_maxlen" -gt 30 ] && HOOK_PT=62
+      [ "$_maxlen" -gt 36 ] && HOOK_PT=54
+      # Line gap scales with point size (~1.4× line-height)
+      HOOK_GAP=$(( HOOK_PT + (HOOK_PT / 3) ))
+      HOOK2_Y=$(( 550 + HOOK_GAP ))
+      CMD+=( -font "$SANS_BOLD" -pointsize $HOOK_PT -fill "#1A1A1A" -gravity north -annotate +0+550 "$HOOK1" )
+      [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize $HOOK_PT -fill "#1A1A1A" -gravity north -annotate "+0+${HOOK2_Y}" "$HOOK2" )
+      # Promise line below hook — uses `caption:` so long subs wrap to 2 lines
+      # at a consistent readable size instead of shrinking. Wraps inside the
+      # 888px usable width (1080 − 96 × 2 safe zones).
+      CMD+=( \( -background white -fill "#5C5C5C" -font "$SANS" -pointsize 38 -size 888x -gravity center caption:"$PROMISE" \) -gravity north -geometry +0+870 -composite )
+      # Subtle Signal Blue accent rule — bridges promise to CTA without adding words
+      CMD+=( -fill "#1B6DFC" -draw "rectangle 510,1010 570,1018" )
+      # CTA pill — Signal Blue, centred lower-mid (taller for bigger CTA text). Regular weight.
+      CMD+=( -fill "#1B6DFC" -draw "roundrectangle 220,1130 860,1220 12,12" )
+      CMD+=( -font "$SANS_BOLD" -pointsize 28 -fill white -gravity north -annotate +0+1156 "$CTA_PILL" )
+      # Handle bottom (one size up)
+      CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#7C7C7C" -gravity south -annotate +0+50 "$HANDLE" )
+    fi
     ;;
 
   *)
