@@ -661,9 +661,15 @@ export default function ChallengePage() {
           boxShadow: '0 0 0 1px rgba(27, 109, 252,0.15), 0 24px 48px rgba(0,0,0,0.12)',
         }}>
           <img
-            src="/kade.jpg"
+            src="/kade-11.jpg"
             alt="Kade Dunstone"
-            style={{ width: '100%', display: 'block', maxHeight: '460px', objectFit: 'cover', objectPosition: 'top center' }}
+            style={{
+              width: '100%', display: 'block',
+              // Source kade-11 is 561x701 (4:5). Match the frame so the
+              // image renders in full — head + body, nothing cropped.
+              aspectRatio: '4 / 5',
+              objectFit: 'cover', objectPosition: 'top center',
+            }}
           />
           <div style={{
             position: 'absolute', inset: 0,
