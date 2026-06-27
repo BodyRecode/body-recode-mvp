@@ -750,12 +750,11 @@ export default function BlueprintPage() {
             alt="Kade Dunstone"
             style={{
               width: '100%', display: 'block',
-              // Portrait-friendly 4:5 frame caps height on narrow screens
-              // and lets more of the seated shot breathe on desktop.
-              // Caption is overlaid bottom-left so the lower third needs
-              // to stay visible — center-center the crop.
-              aspectRatio: '4 / 5', maxHeight: '560px',
-              objectFit: 'cover', objectPosition: 'center center',
+              // Source is 561x701 (4:5). Match the frame so the image
+              // renders in full with no cropping — nothing gets cut.
+              // top-center is the safety net for any future crop.
+              aspectRatio: '4 / 5',
+              objectFit: 'cover', objectPosition: 'top center',
             }}
           />
           <div style={{
