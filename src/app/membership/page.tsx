@@ -284,8 +284,58 @@ export default function MembershipPage() {
 
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '32px' }} />
 
-          {/* Explainer video intentionally hidden until production is delivered.
-              (Previously a public "Placeholder. Production in progress" box.) */}
+          {/* Explainer video placeholder. Branded video frame with a play
+              button + "Coming soon" treatment — reads as intentional
+              production-in-progress, not as broken. Mirrors the
+              treatment on /blueprint and /challenge. Replace this block
+              with the real <video> element + poster image when
+              production delivers. */}
+          <div style={{
+            position: 'relative',
+            background: 'linear-gradient(135deg, #1A1A1A 0%, #0B1F3F 100%)',
+            border: '1px solid rgba(27,109,252,0.35)',
+            borderRadius: '14px',
+            aspectRatio: '16 / 9',
+            marginBottom: '32px',
+            overflow: 'hidden',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 10px 30px -8px rgba(27,109,252,0.35)',
+          }}>
+            <div style={{
+              position: 'absolute', top: '-100px', right: '-100px',
+              width: '380px', height: '380px', borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(27,109,252,0.25) 0%, transparent 65%)',
+              pointerEvents: 'none',
+            }} />
+            <div style={{
+              position: 'absolute', bottom: '-100px', left: '-100px',
+              width: '300px', height: '300px', borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(27,109,252,0.15) 0%, transparent 70%)',
+              pointerEvents: 'none',
+            }} />
+            <div style={{ position: 'relative', textAlign: 'center', padding: '24px' }}>
+              <div style={{
+                width: '72px', height: '72px', borderRadius: '50%',
+                background: 'rgba(27,109,252,0.18)',
+                border: '1.5px solid rgba(255,255,255,0.4)',
+                margin: '0 auto 18px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="#FFFFFF" style={{ marginLeft: '4px' }}>
+                  <polygon points="6,4 22,12 6,20" />
+                </svg>
+              </div>
+              <p style={{ fontSize: '12px', fontWeight: 800, color: '#7BB3FF', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 8px' }}>
+                Explainer · 3 minutes
+              </p>
+              <p style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.015em', margin: '0 0 6px', lineHeight: 1.25 }}>
+                How the Membership works
+              </p>
+              <p style={{ fontSize: '12px', fontWeight: 700, color: '#8A8A8E', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>
+                Coming soon
+              </p>
+            </div>
+          </div>
 
           <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '14px' }}>
             Most programmes deliver the work for a fixed window. Six weeks. Twelve weeks. Three months. The window closes, the structure disappears, and the body slowly returns to where it was.
