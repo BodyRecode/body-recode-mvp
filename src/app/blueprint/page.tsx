@@ -746,7 +746,7 @@ export default function BlueprintPage() {
           boxShadow: '0 0 0 1px rgba(27, 109, 252, 0.15), 0 24px 48px rgba(0,0,0,0.12)',
         }}>
           <img
-            src="/kade.jpg"
+            src="/kade-11.jpg"
             alt="Kade Dunstone"
             style={{ width: '100%', display: 'block', maxHeight: '360px', objectFit: 'cover', objectPosition: 'top center' }}
           />
