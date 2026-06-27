@@ -9,11 +9,19 @@ const SIGNAL_QUESTIONS = [
   {
     id: 'sq1',
     question: 'Where do you most notice excess puffiness or softness in your body?',
+    // Q1 is informational/self-identification only — pattern assignment runs
+    // off sq2 + gender via pickPatternSlug() in pattern-mapping.ts. Letter
+    // values a-d preserved exactly to keep any legacy quiz_answers JSONB
+    // historically interpretable. New posterior option appended as 'e' (mirrors
+    // the scorecard storage taxonomy added 2026-06-24); option 'a' reworded
+    // from "Stomach and waist" → "Belly and front of the stomach" to
+    // disambiguate from posterior — same anterior semantic, clearer wording.
     options: [
-      { value: 'a', label: 'Stomach and waist, above and below the navel' },
+      { value: 'a', label: 'Belly and front of the stomach' },
       { value: 'b', label: 'Lower gut and abdomen, even when you have not eaten much' },
       { value: 'c', label: 'Hips, thighs, and lower body' },
       { value: 'd', label: 'Upper back, chest, or arms' },
+      { value: 'e', label: 'Lower back, love handles and upper back' },
     ],
   },
   {
