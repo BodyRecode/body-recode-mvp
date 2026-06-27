@@ -546,9 +546,9 @@ export default function ChallengePortalClient({
               token={token}
               onComplete={result => {
                 setIntakeResult(result)
-                requestAnimationFrame(() => {
-                  intakeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                })
+                // Scroll to top so the result hero lands at the top of the
+                // viewport, not mid-page where the user submitted from.
+                window.scrollTo({ top: 0, behavior: 'instant' })
               }}
             />
           </div>
@@ -560,9 +560,11 @@ export default function ChallengePortalClient({
               result={intakeResult}
               onContinue={() => {
                 setIntakeDone(true)
-                requestAnimationFrame(() => {
-                  formsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                })
+                // Scroll all the way to the top so PAR-Q lands at the top of
+                // the viewport, not mid-page where the user left off scrolling
+                // through the result card. instant — no smooth transition mid-
+                // gate-flip to avoid disorientation.
+                window.scrollTo({ top: 0, behavior: 'instant' })
               }}
             />
           </div>
