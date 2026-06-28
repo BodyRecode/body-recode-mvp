@@ -42,3 +42,7 @@ next-env.d.ts
 
 # Supabase CLI link state
 supabase/.temp/
+
+# Local marketing/design WIP assets (not part of the app build)
+public/floor-banner/
+public/ChatGPT Image*.png
