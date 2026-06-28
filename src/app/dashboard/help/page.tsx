@@ -44,6 +44,7 @@ const SECTIONS = [
   { id: 'nutrition-plan',   title: '22. Nutrition Plan',     colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'nutrition-reading', title: '22b. Nutrition Reading', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'business-engine',  title: 'Business Engine',        colour: 'amber' as const, category: 'business' as Category },
+  { id: 'ceo-dashboard',    title: 'CEO Dashboard - Scorecard', colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-crm',           title: '23. CRM & Pipeline',     colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-bookings',      title: '24. Bookings',           colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-automations',   title: '25. Automations',        colour: 'amber' as const, category: 'business' as Category },
@@ -1984,6 +1985,29 @@ export default function HelpPage() {
                 </div>
               ))}
             </div>
+          </Section>
+
+          <Section id="ceo-dashboard" title="CEO Dashboard - Company Scorecard" colour="amber">
+            <p>The CEO Dashboard lives at <strong>Scorecard</strong> in the top nav (<strong>/dashboard/scorecard</strong>). It is the one-glance view of whether the business is winning this week. It is built on the rule from Ryan Deiss&apos;s Scalable Operating System: <strong>the scorecard mirrors your Value Engines</strong> - every metric maps to a stage in how Body Recode acquires customers (Growth Engine) or serves them (Fulfilment Engine), plus the cash view.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">What you see</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>Four hero cards</strong> - MRR, Cash This Week, Active Clients, Check-In Rate. The numbers a CEO glances at first.</li>
+              <li><strong>Growth Engine trend table</strong> - week over week (6 completed weeks + this week to date): New Leads, Decode/Digital Sales, Challenge Enrollments, Zoom Calls, Blueprint Sales, New Coaching Clients, Cash Collected. Each row is traffic-lit against its target on the <strong>last completed week</strong> (so a part-finished current week never shows a false red). This week&apos;s column is shown in grey as a pacing figure, not scored.</li>
+              <li><strong>Fulfilment &amp; Cash snapshots</strong> - point-in-time cards (MRR, Active Coaching Clients, Active Members, Check-In Completion %, Payments Overdue) each showing Target / Actual / Status.</li>
+            </ul>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">How the status colours work</p>
+            <StatusList items={[
+              { label: 'On Track', desc: 'Blue - at or above target (or at/below, for "lower is better" metrics like Overdue)' },
+              { label: 'Watch', desc: 'Amber - within ~20% of target but not there yet' },
+              { label: 'Off Track', desc: 'Red - missing target with no buffer' },
+            ]} />
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Setting your targets</p>
+            <p>Targets are not edited in the UI (yet). They live in code at <strong>src/lib/scorecard.ts</strong> in the <strong>TARGETS</strong> object - one number per metric. Review them at the start of each quarter (Deiss&apos;s Quarterly Sprint cadence): edit the numbers, redeploy. The values shipped are draft placeholders, so the board will read red until you set real targets.</p>
+
+            <Note>Everything is auto-pulled live from Supabase/Stripe - there is no manual data entry. (Deiss prescribes manual entry so a team &quot;owns its numbers&quot;; with a live system and a near-solo operator that is friction with no payoff, so we auto-pull.) Metrics read from the same tables the rest of the platform uses: leads, digital_asset_purchases, challenge/blueprint/membership enrollments, client_subscriptions, client_payment_plan, weekly_checkins. Coming in v2: inline-editable targets, persisted weekly snapshots so the snapshot metrics also get real week-over-week history, and per-row sparklines.</Note>
           </Section>
 
           <Section id="be-crm" title="23. CRM & Pipeline" colour="amber">
