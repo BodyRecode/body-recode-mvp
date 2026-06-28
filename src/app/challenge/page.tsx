@@ -243,33 +243,13 @@ export default function ChallengePage() {
         </div>
       </div>
 
-      {/* Scorecard-first soft banner — routes new visitors through the state read so Depleted/Transitioning/Ready land on the right product (per project_landing_pages_state_first + feedback_scorecard_first_routing) */}
-      <div style={{ background: 'rgba(27, 109, 252, 0.06)', borderTop: '1px solid rgba(27, 109, 252, 0.18)', borderBottom: '1px solid rgba(27, 109, 252, 0.18)', padding: '14px 24px', position: 'relative', zIndex: 9 }}>
-        <div style={{ maxWidth: '680px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
-          <p style={{ fontSize: '13px', color: '#1A1A1A', margin: 0, lineHeight: 1.5 }}>
-            <strong style={{ color: '#1B6DFC' }}>New here?</strong> The 2-min Body State Scorecard reads your state first &mdash; it confirms the Challenge is your fit and routes you here automatically if you are Depleted.
-          </p>
-          <a
-            href="https://performance.bodyrecode.au/scorecard?intent=challenge&source=challenge_lp_banner"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: '#1B6DFC',
-              color: '#FFFFFF',
-              fontSize: '13px',
-              fontWeight: 600,
-              padding: '8px 14px',
-              borderRadius: '6px',
-              textDecoration: 'none',
-              whiteSpace: 'nowrap',
-              flexShrink: 0,
-            }}
-          >
-            Take the Scorecard <span aria-hidden>→</span>
-          </a>
-        </div>
-      </div>
+      {/* Scorecard-first soft banner removed 2026-06-28 — Day 0 Body Decode
+          Intake (shipped earlier this session) now handles state-routing for
+          any enroller without scorecard data, so the banner was friction
+          without value for the primary users of this page (cold-paid +
+          gym-floor, which are the explicit exceptions to the scorecard-first
+          routing rule per feedback_scorecard_first_routing). Warm visitors
+          who land here still get state-typed via Day 0 intake post-signup. */}
 
       {/* HERO */}
       <div style={{ position: 'relative', overflow: 'hidden' }}>
