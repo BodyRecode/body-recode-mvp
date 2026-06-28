@@ -327,3 +327,155 @@ export async function computeScorecard(admin: SupabaseClient, now = new Date()):
     generatedAt: now,
   }
 }
+
+/* ── Weekly snapshot + Pulse diff ───────────────────────────────────────────
+ * The cron writes one snapshot row per metric each Monday for the week that
+ * just closed. Flow metrics can be back-computed from timestamps so their
+ * week-over-week delta always works live; snapshot metrics (MRR etc.) cannot,
+ * so their history comes from this table. */
+
+const lastCompletedIndex = (weeks: WeekRange[]) => weeks.length - 2
+
+function dateKey(d: Date): string {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
+export interface SnapshotRow {
+  week_start: string
+  metric_key: string
+  engine: EngineKey
+  unit: Unit
+  value: number
+  target: number
+  status: Status
+}
+
+/** Rows to persist for the just-completed week (flow = last completed week's
+ * total; snapshots = current point-in-time reading). */
+export function snapshotRowsFor(data: ScorecardData): SnapshotRow[] {
+  const weekStart = dateKey(data.weeks[lastCompletedIndex(data.weeks)].start)
+  const flowRows: SnapshotRow[] = data.flow.map(m => ({
+    week_start: weekStart, metric_key: m.key, engine: m.engine, unit: m.unit,
+    value: m.lastWeek, target: m.target, status: m.status,
+  }))
+  const snapRows: SnapshotRow[] = data.snapshots.map(m => ({
+    week_start: weekStart, metric_key: m.key, engine: m.engine, unit: m.unit,
+    value: m.actual, target: m.target, status: m.status,
+  }))
+  return [...flowRows, ...snapRows]
+}
+
+/** Compute the scorecard and upsert this week's snapshot. Idempotent on
+ * (week_start, metric_key). Returns the data + the rows written. */
+export async function writeWeeklySnapshot(admin: SupabaseClient, now = new Date()) {
+  const data = await computeScorecard(admin, now)
+  const rows = snapshotRowsFor(data)
+  const { error } = await admin
+    .from('scorecard_snapshots')
+    .upsert(rows, { onConflict: 'week_start,metric_key' })
+  if (error) throw new Error(`scorecard snapshot upsert failed: ${error.message}`)
+  return { data, rows }
+}
+
+export interface PulseLine {
+  key: string
+  label: string
+  engine: EngineKey
+  unit: Unit
+  direction: Direction
+  current: number
+  prior: number | null     // null when no comparison available
+  status: Status
+  priorStatus: Status | null
+  flippedToRed: boolean
+  flippedToGreen: boolean
+}
+
+export interface WeeklyPulse {
+  weekStart: string
+  weekLabel: string
+  lines: PulseLine[]
+  redCount: number
+  worsened: PulseLine[]   // flipped to red, or dropped a status band
+  improved: PulseLine[]   // flipped to green, or climbed a status band
+}
+
+const STATUS_RANK: Record<Status, number> = { red: 0, yellow: 1, green: 2 }
+
+/** Build the week-over-week digest for the Pulse email. priorSnap maps
+ * metric_key -> the previous week's snapshot (value + status) for the snapshot
+ * metrics; flow metrics get their prior from the live trend. */
+export function buildWeeklyPulse(
+  data: ScorecardData,
+  priorSnap: Map<string, { value: number; status: Status }>,
+): WeeklyPulse {
+  const weeks = data.weeks
+  const li = lastCompletedIndex(weeks)
+  const completedWeek = weeks[li]
+
+  const lines: PulseLine[] = []
+
+  for (const m of data.flow) {
+    const prior = m.values[li - 1] ?? null
+    lines.push(linify(m.key, m.label, m.engine, m.unit, m.direction, m.lastWeek, prior, m.status, prior == null ? null : statusFor(prior, m.target, m.direction)))
+  }
+  for (const m of data.snapshots) {
+    const p = priorSnap.get(m.key) ?? null
+    lines.push(linify(m.key, m.label, m.engine, m.unit, m.direction, m.actual, p?.value ?? null, m.status, p?.status ?? null))
+  }
+
+  const worsened = lines.filter(l => l.flippedToRed || (l.priorStatus && STATUS_RANK[l.status] < STATUS_RANK[l.priorStatus]))
+  const improved = lines.filter(l => l.flippedToGreen || (l.priorStatus && STATUS_RANK[l.status] > STATUS_RANK[l.priorStatus]))
+
+  return {
+    weekStart: dateKey(completedWeek.start),
+    weekLabel: `${completedWeek.start.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })} – ${addDays(completedWeek.start, 6).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}`,
+    lines,
+    redCount: lines.filter(l => l.status === 'red').length,
+    worsened,
+    improved,
+  }
+}
+
+function linify(
+  key: string, label: string, engine: EngineKey, unit: Unit, direction: Direction,
+  current: number, prior: number | null, status: Status, priorStatus: Status | null,
+): PulseLine {
+  return {
+    key, label, engine, unit, direction, current, prior, status, priorStatus,
+    flippedToRed: priorStatus != null && priorStatus !== 'red' && status === 'red',
+    flippedToGreen: priorStatus != null && priorStatus !== 'green' && status === 'green',
+  }
+}
+
+/** Read a week's snapshot rows into a metric_key -> {value,status} map. */
+export async function readSnapshotMap(admin: SupabaseClient, weekStart: string) {
+  const { data } = await admin
+    .from('scorecard_snapshots')
+    .select('metric_key, value, status')
+    .eq('week_start', weekStart)
+  const map = new Map<string, { value: number; status: Status }>()
+  for (const r of data ?? []) map.set(r.metric_key as string, { value: Number(r.value), status: r.status as Status })
+  return map
+}
+
+/** The Monday (YYYY-MM-DD) of the week BEFORE the just-completed one — the
+ * comparison baseline for snapshot metrics. */
+export function priorWeekStartKey(now = new Date()): string {
+  const weeks = recentWeeks(now, 6)
+  return dateKey(weeks[lastCompletedIndex(weeks) - 1].start)
+}
+
+export function formatDelta(current: number, prior: number | null, unit: Unit): string {
+  if (prior == null) return '—'
+  const diff = current - prior
+  if (diff === 0) return '±0'
+  const sign = diff > 0 ? '+' : '−'
+  const mag = Math.abs(diff)
+  if (unit === 'currency') return `${sign}${AUD.format(Math.round(mag))}`
+  if (unit === 'percent') return `${sign}${Math.round(mag)}%`
+  return `${sign}${Math.round(mag)}`
+}
