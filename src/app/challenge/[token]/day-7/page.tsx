@@ -128,7 +128,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
           <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
-            A short structured signal audit that uses what your body has actually been doing this week to identify the specific pattern your biology is currently working through. The pattern is what makes the rest of the Challenge make sense.
+            It reads how your body has shifted this week to identify your specific pattern. The pattern is what makes the rest of the Challenge make sense.
           </p>
         </div>
       </div>

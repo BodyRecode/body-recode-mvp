@@ -815,7 +815,7 @@ export default function ChallengePortalClient({
               <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
                 {savedQuizResult
                   ? `Your 7-day progress, marker breakdown, and Week 2 focus are on the Day 7 page.${currentDay < 14 ? ` Your full Body Decode Report arrives on Day 14. ${14 - currentDay} day${14 - currentDay === 1 ? '' : 's'} to go.` : ''}`
-                  : 'A short structured signal audit. Rate 8 biological markers, answer 2 signal questions. Your 7-day progress is shown immediately; your full Body Decode Report arrives on Day 14.'}
+                  : 'It reads how your body has shifted this week to identify your specific pattern. Rate 8 biological markers, answer 2 signal questions. Your 7-day progress is shown immediately; your full Body Decode Report arrives on Day 14.'}
               </p>
               <a
                 href={`/challenge/${token}/day-7`}
