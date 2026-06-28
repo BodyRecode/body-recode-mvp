@@ -23,6 +23,7 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { derivePaymentSignal } from '@/lib/payment-signal'
+import { getCoachingPackage, isNonBillingPackage } from '@/lib/coaching-packages'
 
 export type EngineKey = 'growth' | 'fulfilment' | 'cash'
 export type Direction = 'higher' | 'lower'
@@ -72,12 +73,12 @@ export const FLOW_METRICS: MetricDef[] = [
   { key: 'zoom_calls',       label: 'Zoom Calls',           engine: 'growth', direction: 'higher', unit: 'count',    hint: 'Sales calls (by call date)' },
   { key: 'blueprint_sales',  label: 'Blueprint Sales',      engine: 'growth', direction: 'higher', unit: 'count',    hint: '$97 Blueprint purchases' },
   { key: 'new_clients',      label: 'New Coaching Clients', engine: 'growth', direction: 'higher', unit: 'count',    hint: 'Commencement fee paid' },
-  { key: 'cash_collected',   label: 'Cash Collected',       engine: 'cash',   direction: 'higher', unit: 'currency', hint: 'One-time + digital (recurring shows in MRR)' },
+  { key: 'cash_collected',   label: 'Cash Collected',       engine: 'cash',   direction: 'higher', unit: 'currency', hint: 'One-time + digital + manually recorded payments' },
 ]
 
 /** Fulfilment Engine + Cash = point-in-time snapshots. */
 export const SNAPSHOT_METRICS: MetricDef[] = [
-  { key: 'mrr',            label: 'MRR',                  engine: 'cash',        direction: 'higher', unit: 'currency', hint: 'Active subscriptions, normalised monthly' },
+  { key: 'mrr',            label: 'MRR',                  engine: 'cash',        direction: 'higher', unit: 'currency', hint: 'Active subs + off-platform packages, monthly' },
   { key: 'active_clients', label: 'Active Coaching Clients', engine: 'fulfilment', direction: 'higher', unit: 'count', hint: 'Started and not churned' },
   { key: 'active_members', label: 'Active Members',       engine: 'fulfilment',  direction: 'higher', unit: 'count',    hint: 'Membership, not cancelled' },
   { key: 'checkin_rate',   label: 'Check-In Completion',  engine: 'fulfilment',  direction: 'higher', unit: 'percent',  hint: 'This week, across active clients' },
@@ -145,6 +146,20 @@ export function formatValue(value: number, unit: Unit): string {
   return String(Math.round(value))
 }
 
+/** Monthly value of a coaching package for an off-platform (no-Stripe) client.
+ * Reads the package price string ("$299/week") and normalises to monthly.
+ * Returns 0 for non-billing (contra/comp) packages or unparseable prices. */
+function packageMonthly(pkg: string | null): number {
+  if (!pkg || isNonBillingPackage(pkg)) return 0
+  const def = getCoachingPackage(pkg)
+  if (!def) return 0
+  const m = def.price.match(/\$([\d,.]+)\s*\/\s*(week|fortnight|month|year)/i)
+  if (!m) return 0
+  const amount = parseFloat(m[1].replace(/,/g, ''))
+  if (!Number.isFinite(amount)) return 0
+  return toMonthly(amount, m[2].toLowerCase())
+}
+
 /** Normalise a subscription's amount to a monthly figure for MRR. */
 function toMonthly(amount: number, interval: string | null): number {
   switch (interval) {
@@ -205,7 +220,7 @@ export async function computeScorecard(admin: SupabaseClient, now = new Date()):
 
   const [
     leads, clients, subs, payPlans, plans, digital, products,
-    challenge, blueprint, membership, checkins,
+    challenge, blueprint, membership, checkins, manualPayments,
   ] = await Promise.all([
     safe<Row>(admin.from('leads').select('created_at, zoom_1_date').gte('created_at', windowStart)),
     safe<Row>(admin.from('clients').select('id, name, coaching_started_at, active, package')),
@@ -218,6 +233,11 @@ export async function computeScorecard(admin: SupabaseClient, now = new Date()):
     safe<Row>(admin.from('blueprint_enrollments').select('purchase_date').gte('purchase_date', windowStart)),
     safe<Row>(admin.from('membership_enrollments').select('joined_at, cancelled_at')),
     safe<Row>(admin.from('weekly_checkins').select('client_id, submitted_at').gte('submitted_at', curWeek.start.toISOString())),
+    // Manually recorded payments (Business → Payments → Record payment). Captures
+    // off-platform money (e.g. weekly direct deposits). Stripe-sourced be_payments
+    // rows carry a stripe id and are excluded below so we don't double-count the
+    // revenue already summed from the Stripe-backed tables.
+    safe<Row>(admin.from('be_payments').select('amount, status, stripe_payment_id, stripe_subscription_id, paid_at, created_at').gte('created_at', windowStart)),
   ])
 
   const priceById = new Map(products.map(p => [p.id as string, Number(p.price) || 0]))
@@ -244,7 +264,14 @@ export async function computeScorecard(admin: SupabaseClient, now = new Date()):
     payPlans.map(p => feeByPlan.get(p.payment_plan_id as string) ?? 0),
   )
   const blueprintRevenue = bucket(weeks, blueprint.map(b => asDate(b.purchase_date)), blueprint.map(() => BLUEPRINT_PRICE))
-  const cashCollected = weeks.map((_, i) => digitalRevenue[i] + feeRevenue[i] + blueprintRevenue[i])
+  // Manual payments: paid, off-platform only (no Stripe id → not already counted).
+  const manual = manualPayments.filter(p => p.status === 'paid' && !p.stripe_payment_id && !p.stripe_subscription_id)
+  const manualRevenue = bucket(
+    weeks,
+    manual.map(p => asDate(p.paid_at) ?? asDate(p.created_at)),
+    manual.map(p => Number(p.amount) || 0),
+  )
+  const cashCollected = weeks.map((_, i) => digitalRevenue[i] + feeRevenue[i] + blueprintRevenue[i] + manualRevenue[i])
 
   const flowValues: Record<string, number[]> = {
     new_leads: newLeads,
@@ -279,12 +306,23 @@ export async function computeScorecard(admin: SupabaseClient, now = new Date()):
   }
   const planByClient = new Map(payPlans.map(p => [p.client_id as string, p]))
 
-  const mrr = subs
+  const stripeMrr = subs
     .filter(s => (s.status === 'active' || s.status === 'trialing') && asDate(s.current_period_end) && asDate(s.current_period_end)! >= now)
     .reduce((sum, s) => sum + toMonthly(Number(s.amount) || 0, (s.billing_interval as string) ?? null), 0)
 
   const activeClientRows = clients.filter(c => c.active !== false && asDate(c.coaching_started_at) && asDate(c.coaching_started_at)! <= today)
   const activeClients = activeClientRows.length
+
+  // Off-platform MRR: active clients on a billing package with NO subscription
+  // row at all (genuinely paying off-Stripe, e.g. weekly direct deposit). We
+  // require zero sub rows — not merely "no active sub" — so a lapsed/past_due
+  // Stripe client isn't silently re-counted at package rate. Value comes from
+  // the package price, normalised monthly. This makes off-platform clients
+  // (Greg, $299/wk '2x') visible in MRR without manual modelling.
+  const clientsWithAnySub = new Set((subs as Row[]).map(s => s.client_id as string))
+  const offPlatform = activeClientRows.filter(c => !clientsWithAnySub.has(c.id as string) && packageMonthly(c.package as string) > 0)
+  const offPlatformMrr = offPlatform.reduce((sum, c) => sum + packageMonthly(c.package as string), 0)
+  const mrr = stripeMrr + offPlatformMrr
   const activeMembers = membership.filter(m => !m.cancelled_at).length
 
   const checkinClients = new Set(checkins.map(c => c.client_id as string))
