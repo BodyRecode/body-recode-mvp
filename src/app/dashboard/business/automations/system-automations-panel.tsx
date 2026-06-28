@@ -166,6 +166,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'weekly-scorecard-pulse',
+    name: 'Weekly Pulse (CEO Scorecard)',
+    description: 'Monday 7am Brisbane cron. Freezes the week\'s scorecard into scorecard_snapshots, then emails Kade the CEO Dashboard already read: what flipped red, biggest movers vs last week, full metric table, and the 15-minute review steps. Internal report — to kade@ only, no client send.',
+    trigger: 'Vercel cron weekly (Mon 7am AEST)',
+    steps: 1,
+  },
+  {
     id: 'checkin-confirmation',
     name: 'Weekly Check-in Confirmation',
     description: 'Sent automatically when a client submits a check-in form. Confirmation to client + notification to coach.',
