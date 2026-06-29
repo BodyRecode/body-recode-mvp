@@ -1,0 +1,98 @@
+{
+  "_meta": {
+    "description": "78 stories for Days 2-14 of the launch event window (1 Jul - 13 Jul 2026). Day 1 (Tue 30 Jun, 6 stories) shipped separately in earlier commit.",
+    "out_dir": "/Users/kadedunstone/body-recode-mvp/public/stories/launch-window"
+  },
+  "posts": [
+    { "slug": "story-2026-07-01_01_countdown", "type": "story", "category": "countdown", "countdown": "12" },
+    { "slug": "story-2026-07-01_02_hook", "type": "story", "category": "hook", "label": "READ FIRST", "hook_1": "Effort isn't the variable that's missing.", "sub_1": "Most plans skip the read. The Body Decode starts with it." },
+    { "slug": "story-2026-07-01_03_pattern", "type": "story", "category": "pattern", "label": "02 OF 04", "pattern_name": "Insulin-Drift", "pattern_color": "#B7791F", "hook_1": "Your body is storing easily and slow to release.", "sub_1": "Effort is going in but the signal that turns it into change has drifted." },
+    { "slug": "story-2026-07-01_04_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 7", "hook_1": "Halfway. The Body Decode Check-In unlocks.", "sub_1": "8 markers + 2 signals. Result held until Day 14." },
+    { "slug": "story-2026-07-01_05_quote", "type": "story", "category": "quote", "hook_1": "Most plans were written for the body you had, not the body you have now." },
+    { "slug": "story-2026-07-01_06_photo", "type": "story", "category": "photo_overlay", "photo": "9", "hook_1": "I built this for the people who feel like the rules just changed.", "sub_1": "Opens Monday 13 July. Free." },
+
+    { "slug": "story-2026-07-02_01_countdown", "type": "story", "category": "countdown", "countdown": "11" },
+    { "slug": "story-2026-07-02_02_hook", "type": "story", "category": "hook", "label": "READ THIS", "hook_1": "Train harder. Eat less. The body holds on harder.", "sub_1": "More effort on a stressed system is the trap most people fall into next." },
+    { "slug": "story-2026-07-02_03_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 14", "hook_1": "The Body Decode Report reveals your pattern.", "sub_1": "What it means. Where it shows up. What it isn't. Three actions specific to it." },
+    { "slug": "story-2026-07-02_04_quote", "type": "story", "category": "quote", "hook_1": "Your body isn't broken. It was misread." },
+    { "slug": "story-2026-07-02_05_disqualifier", "type": "story", "category": "disqualifier", "not_line": "you want a quick fix or harder discipline.", "is_line": "you want to understand the pattern your body has settled into." },
+    { "slug": "story-2026-07-02_06_photo", "type": "story", "category": "photo_overlay", "photo": "7", "hook_1": "20 years of coaching. This is what I should have built first.", "sub_1": "Opens Monday 13 July." },
+
+    { "slug": "story-2026-07-03_01_countdown", "type": "story", "category": "countdown", "countdown": "10" },
+    { "slug": "story-2026-07-03_02_hook", "type": "story", "category": "hook", "label": "THREE STATES", "hook_1": "Three states. Yours is one of them.", "sub_1": "Depleted. Transitioning. Ready. The Challenge reads which one you're in." },
+    { "slug": "story-2026-07-03_03_pattern", "type": "story", "category": "pattern", "label": "03 OF 04", "pattern_name": "Estrogen-Shift", "pattern_color": "#8b5cf6", "hook_1": "A slower, more protective mode. Common in perimenopause.", "sub_1": "It's not broken. It responds again when the approach respects what's changed." },
+    { "slug": "story-2026-07-03_04_quote", "type": "story", "category": "quote", "hook_1": "Before I write a single program, I read the body first." },
+    { "slug": "story-2026-07-03_05_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 1", "hook_1": "Setup. No training yet. The reset begins with a clean signal.", "sub_1": "14 days. Free. Opens 13 July." },
+    { "slug": "story-2026-07-03_06_photo", "type": "story", "category": "photo_overlay", "photo": "3", "hook_1": "If you've been doing everything right and still nowhere, this is the next move.", "sub_1": "14-day Body Decode. Free. Opens Monday." },
+
+    { "slug": "story-2026-07-04_01_countdown", "type": "story", "category": "countdown", "countdown": "9" },
+    { "slug": "story-2026-07-04_02_hook", "type": "story", "category": "hook", "label": "THE BODY HOLDS", "hook_1": "Trained 5x a week. Ate clean. Body wouldn't move.", "sub_1": "There's a reason and it isn't effort." },
+    { "slug": "story-2026-07-04_03_pattern", "type": "story", "category": "pattern", "label": "04 OF 04", "pattern_name": "Androgen-Decline", "pattern_color": "#1B6DFC", "hook_1": "Capacity slipping despite consistent effort. Recovery doubled.", "sub_1": "Common in men 35+. The system that turns training into results isn't bouncing back." },
+    { "slug": "story-2026-07-04_04_quote", "type": "story", "category": "quote", "hook_1": "Discipline is a symptom. State is the variable." },
+    { "slug": "story-2026-07-04_05_disqualifier", "type": "story", "category": "disqualifier", "not_line": "you think a perimenopause plan is the same plan that worked at 30.", "is_line": "you suspect your body has changed and the old rules stopped working." },
+    { "slug": "story-2026-07-04_06_photo", "type": "story", "category": "photo_overlay", "photo": "11", "hook_1": "The bodies that don't respond aren't broken. They were never read first.", "sub_1": "Opens Monday 13 July. Free." },
+
+    { "slug": "story-2026-07-05_01_countdown", "type": "story", "category": "countdown", "countdown": "8" },
+    { "slug": "story-2026-07-05_02_hook", "type": "story", "category": "hook", "label": "ONE OF FOUR", "hook_1": "Most women I see at 40+ are sitting in a Stress-Stored pattern.", "sub_1": "It feels like discipline failing. It's cortisol doing what cortisol does." },
+    { "slug": "story-2026-07-05_03_pattern", "type": "story", "category": "pattern", "label": "DEEPER READ", "pattern_name": "Stress-Stored", "pattern_color": "#DC2626", "hook_1": "Wired and tired. Holding weight at the middle. Tight even after rest.", "sub_1": "The midsection is where cortisol stores because cortisol receptors are densest there." },
+    { "slug": "story-2026-07-05_04_quote", "type": "story", "category": "quote", "hook_1": "The body that doesn't respond isn't broken. It's misread." },
+    { "slug": "story-2026-07-05_05_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 7", "hook_1": "Body Decode Check-In. 5 minutes. The signal that makes the Day 14 read possible.", "sub_1": "Rate 8 markers. Answer 2 signal questions. Done." },
+    { "slug": "story-2026-07-05_06_photo", "type": "story", "category": "photo_overlay", "photo": "4", "hook_1": "If every plan has stopped working, the plan isn't the variable.", "sub_1": "Opens 13 July. Free." },
+
+    { "slug": "story-2026-07-06_01_countdown", "type": "story", "category": "countdown", "countdown": "7" },
+    { "slug": "story-2026-07-06_02_launch_reveal", "type": "story", "category": "launch_reveal", "label": "ONE WEEK TO GO", "date_line": "Monday 13 July", "hook_1": "The 14-Day Body Decode Challenge.", "sub_1": "Free. Read your starting point first. Then the next move is clear." },
+    { "slug": "story-2026-07-06_03_hook", "type": "story", "category": "hook", "label": "NO CATCH", "hook_1": "Free for everyone. No payment. No catch.", "sub_1": "14 days. Read the body first. Decide what's next from there." },
+    { "slug": "story-2026-07-06_04_pattern", "type": "story", "category": "pattern", "label": "INSULIN-DRIFT", "pattern_name": "Insulin-Drift", "pattern_color": "#B7791F", "hook_1": "Mid-afternoon crash. Heavy after meals. Evening cravings.", "sub_1": "Insulin sensitivity is one of the most responsive systems in the body. Weeks of correct inputs move it." },
+    { "slug": "story-2026-07-06_05_quote", "type": "story", "category": "quote", "hook_1": "Your body has been signalling for years. The Challenge reads it." },
+    { "slug": "story-2026-07-06_06_photo", "type": "story", "category": "photo_overlay", "photo": "5", "hook_1": "Built for the people who've done everything right and got nowhere.", "sub_1": "One week from today." },
+
+    { "slug": "story-2026-07-07_01_countdown", "type": "story", "category": "countdown", "countdown": "6" },
+    { "slug": "story-2026-07-07_02_hook", "type": "story", "category": "hook", "label": "THE RESET", "hook_1": "Some bodies need a reset, not another protocol.", "sub_1": "If yours has stopped responding, more program isn't the answer. A read is." },
+    { "slug": "story-2026-07-07_03_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 14", "hook_1": "Your pattern. Named. Defined. What it means and what it isn't.", "sub_1": "Plus the three actions specific to it. This is the read most people never get." },
+    { "slug": "story-2026-07-07_04_quote", "type": "story", "category": "quote", "hook_1": "After 20 years of coaching, this is what I should have built first." },
+    { "slug": "story-2026-07-07_05_disqualifier", "type": "story", "category": "disqualifier", "not_line": "you want to be told to push harder.", "is_line": "you suspect the answer isn't more effort." },
+    { "slug": "story-2026-07-07_06_photo", "type": "story", "category": "photo_overlay", "photo": "2", "hook_1": "Six days. Then 14 days that change how you read your body.", "sub_1": "Opens Monday 13 July. Free." },
+
+    { "slug": "story-2026-07-08_01_countdown", "type": "story", "category": "countdown", "countdown": "5" },
+    { "slug": "story-2026-07-08_02_hook", "type": "story", "category": "hook", "label": "THE TRAP", "hook_1": "If every diet has stopped working, the diet isn't the variable.", "sub_1": "Your body is operating in a specific state. The state decides which diet works." },
+    { "slug": "story-2026-07-08_03_pattern", "type": "story", "category": "pattern", "label": "ESTROGEN-SHIFT", "pattern_name": "Estrogen-Shift", "pattern_color": "#8b5cf6", "hook_1": "Storage settling in hips, glutes, outer thighs. Sleep lighter. Mood variable.", "sub_1": "This pattern responds to consistency and fuelling. It conserves harder when you restrict." },
+    { "slug": "story-2026-07-08_04_quote", "type": "story", "category": "quote", "hook_1": "What if your body was misread, not broken?" },
+    { "slug": "story-2026-07-08_05_launch_reveal", "type": "story", "category": "launch_reveal", "label": "FIVE DAYS TO GO", "date_line": "OPENS MONDAY", "hook_1": "14 days. Free. Decide what's next from a real read.", "sub_1": "13 July at 7am." },
+    { "slug": "story-2026-07-08_06_photo", "type": "story", "category": "photo_overlay", "photo": "6", "hook_1": "Stop guessing which plan fits. Read the state behind the symptoms.", "sub_1": "Opens Monday." },
+
+    { "slug": "story-2026-07-09_01_countdown", "type": "story", "category": "countdown", "countdown": "4" },
+    { "slug": "story-2026-07-09_02_hook", "type": "story", "category": "hook", "label": "STARTING POINT", "hook_1": "Your starting point matters more than your program.", "sub_1": "The same program lands differently on two different bodies. The state decides." },
+    { "slug": "story-2026-07-09_03_pattern", "type": "story", "category": "pattern", "label": "ANDROGEN-DECLINE", "pattern_name": "Androgen-Decline", "pattern_color": "#1B6DFC", "hook_1": "Drive slipping. Recovery doubled. Lower abdomen and chest storage.", "sub_1": "Testosterone is a state. States respond to inputs. The right inputs move it in weeks." },
+    { "slug": "story-2026-07-09_04_quote", "type": "story", "category": "quote", "hook_1": "If recovery has changed, your plan should too." },
+    { "slug": "story-2026-07-09_05_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 1", "hook_1": "Orientation. Read the daily note. Do the morning reset. Eat clean. Walk.", "sub_1": "First training session is tomorrow. Starting with one calm day is part of the design." },
+    { "slug": "story-2026-07-09_06_photo", "type": "story", "category": "photo_overlay", "photo": "8", "hook_1": "Four days. Then the read most people never get.", "sub_1": "Opens 13 July." },
+
+    { "slug": "story-2026-07-10_01_countdown", "type": "story", "category": "countdown", "countdown": "3" },
+    { "slug": "story-2026-07-10_02_hook", "type": "story", "category": "hook", "label": "THREE DAYS", "hook_1": "If you've been training hard with no return, this is the first move.", "sub_1": "Not another program. A read. Then the program comes." },
+    { "slug": "story-2026-07-10_03_quote", "type": "story", "category": "quote", "hook_1": "I built this for the people who have done everything right and got nowhere." },
+    { "slug": "story-2026-07-10_04_launch_reveal", "type": "story", "category": "launch_reveal", "label": "OPENS", "date_line": "THIS MONDAY", "hook_1": "Three days. Then the doors open.", "sub_1": "14 days. Free. No payment." },
+    { "slug": "story-2026-07-10_05_disqualifier", "type": "story", "category": "disqualifier", "not_line": "you want the next quick-fix protocol.", "is_line": "you're ready to understand WHY before you do anything next." },
+    { "slug": "story-2026-07-10_06_photo", "type": "story", "category": "photo_overlay", "photo": "12", "hook_1": "Read the body first. Every time.", "sub_1": "Opens Monday 13 July." },
+
+    { "slug": "story-2026-07-11_01_countdown", "type": "story", "category": "countdown", "countdown": "2" },
+    { "slug": "story-2026-07-11_02_hook", "type": "story", "category": "hook", "label": "TWO DAYS", "hook_1": "Two days. Then 14 days that change how you read your body.", "sub_1": "Free. No payment. No catch." },
+    { "slug": "story-2026-07-11_03_quote", "type": "story", "category": "quote", "hook_1": "Read first. Then prescribe. Every time." },
+    { "slug": "story-2026-07-11_04_launch_reveal", "type": "story", "category": "launch_reveal", "label": "TWO DAYS", "date_line": "OPENS MONDAY 7AM", "hook_1": "The 14-Day Body Decode Challenge.", "sub_1": "Free. Set a reminder." },
+    { "slug": "story-2026-07-11_05_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 14", "hook_1": "The Body Decode Report. Your pattern, the mechanism, what it isn't, three actions.", "sub_1": "This is the read most people never get." },
+    { "slug": "story-2026-07-11_06_photo", "type": "story", "category": "photo_overlay", "photo": "10", "hook_1": "Two days from now, the read begins.", "sub_1": "13 July. Free." },
+
+    { "slug": "story-2026-07-12_01_countdown", "type": "story", "category": "countdown", "countdown": "1" },
+    { "slug": "story-2026-07-12_02_launch_reveal", "type": "story", "category": "launch_reveal", "label": "TOMORROW", "date_line": "OPENS TOMORROW", "hook_1": "Monday 7am AEST.", "sub_1": "The 14-Day Body Decode Challenge. Free." },
+    { "slug": "story-2026-07-12_03_hook", "type": "story", "category": "hook", "label": "TOMORROW", "hook_1": "Tomorrow at 7am. Free. 14 days.", "sub_1": "If you've been waiting for the right moment, tomorrow." },
+    { "slug": "story-2026-07-12_04_quote", "type": "story", "category": "quote", "hook_1": "If you've been waiting for the right moment, this is it." },
+    { "slug": "story-2026-07-12_05_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 1", "hook_1": "Tomorrow you set the baseline. Orientation. Morning reset. Eat clean. Walk.", "sub_1": "Then the 14-day read begins." },
+    { "slug": "story-2026-07-12_06_photo", "type": "story", "category": "photo_overlay", "photo": "1", "hook_1": "Tomorrow morning. Doors open.", "sub_1": "Free. 14 days. No catch." },
+
+    { "slug": "story-2026-07-13_01_launch_reveal", "type": "story", "category": "launch_reveal", "label": "TODAY", "date_line": "OPENS TODAY", "hook_1": "Doors are open.", "sub_1": "Take the 14 days." },
+    { "slug": "story-2026-07-13_02_hook", "type": "story", "category": "hook", "label": "LIVE NOW", "hook_1": "It's live. Take the Challenge.", "sub_1": "14 days. Free. Read your body first." },
+    { "slug": "story-2026-07-13_03_launch_reveal", "type": "story", "category": "launch_reveal", "label": "LIVE", "date_line": "DOORS OPEN", "hook_1": "14 days. Free. No payment.", "sub_1": "Link in bio. Take it whenever you're ready." },
+    { "slug": "story-2026-07-13_04_photo", "type": "story", "category": "photo_overlay", "photo": "5", "hook_1": "Built for the bodies that have been doing everything right.", "sub_1": "Live now. Free." },
+    { "slug": "story-2026-07-13_05_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 1", "hook_1": "You're here. Orientation. Set the baseline.", "sub_1": "Read the daily note. The 14-day arc starts now." },
+    { "slug": "story-2026-07-13_06_quote", "type": "story", "category": "quote", "hook_1": "The Challenge is open. Take it whenever you're ready." }
+  ]
+}
