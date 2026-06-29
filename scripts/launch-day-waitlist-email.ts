@@ -93,10 +93,11 @@ function buildBody(product: Product, firstName: string, includeAfNewstead: boole
     ? `Hi ${firstName},<br /><br />You joined the Blueprint waitlist. The Blueprint will open soon, but it lands harder when your pattern has already been identified. That is what the 14-Day Body Decode Challenge does, and it is now live. Free. Take it first.`
     : `Hi ${firstName},<br /><br />You joined the Membership waitlist. The Membership opens soon, but it works on a body that has already been read. The 14-Day Body Decode Challenge is the read, and it is now live. Free.`
 
-  // What the Challenge does - same for all
+  // What the Challenge does - same for all. Note: emailFeaturedCard is a
+  // WHITE card on the dark shell, so inner text must be DARK for legibility.
   const whatItDoes = emailFeaturedCard(`
-    <p style="margin:0 0 8px;font-size:18px;font-weight:800;color:#FFFFFF;letter-spacing:-0.015em;line-height:1.3;">Reads your body before it prescribes anything to it.</p>
-    <p style="margin:0;font-size:14px;color:#C7C7CC;line-height:1.7;">Fourteen days of structure designed to read what your body is actually doing. Day 7 you take a short Check-In. Day 14 the read reveals the pattern your biology has settled into, what it means, what it isnt (the most-common misreads), and the three actions specific to it. No payment.</p>
+    <p style="margin:0 0 10px;font-size:18px;font-weight:800;color:#1A1A1A;letter-spacing:-0.015em;line-height:1.3;">Reads your body before it prescribes anything to it.</p>
+    <p style="margin:0;font-size:15px;color:#3A3A3A;line-height:1.7;">Fourteen days of structure designed to read what your body is actually doing. Day 7 you take a short Check-In. Day 14 the read reveals the pattern your biology has settled into, what it means, what it isnt (the most-common misreads), and the three actions specific to it. No payment.</p>
   `, { eyebrow: 'What the Challenge does' })
 
   // AF Newstead founding-partner block (skipped with --no-af-newstead)
