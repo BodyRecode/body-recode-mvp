@@ -40,8 +40,8 @@
       "type": "authority",
       "hook_1": "The 14-Day Body Decode",
       "hook_2": "Challenge.",
-      "sub_1": "One week from today. Free.",
-      "sub_2": "The read your body has waited for."
+      "sub_1": "Training, nutrition, daily coaching.",
+      "sub_2": "Plus the read at Day 14. Free."
     },
     {
       "slug": "br-2026-07-07_contrarian_free",
@@ -61,12 +61,12 @@
       "type": "carousel",
       "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar",
       "slides": [
-        { "hook": "Day 1, Day 7, Day 14.", "hook_2": "What actually happens inside." },
-        { "hook": "Day 1: Setup.", "sub": "No training. You set the baseline. The body gets a clean signal to start from." },
-        { "hook": "Days 2-6: The reset.", "sub": "Training, nutrition, sleep all calibrated to one job - clear the noise." },
-        { "hook": "Day 7: Check-In.", "sub": "8 markers, 2 signal questions. 5 minutes. Result held until Day 14." },
-        { "hook": "Days 8-13: Consolidation.", "sub": "The body keeps settling. Patterns surface clearer." },
-        { "hook": "Day 14: The Report.", "blue": true, "sub": "Your pattern, named. What it means. What it isn't. Three actions specific to it." }
+        { "hook": "What's actually", "hook_2": "inside 14 days?" },
+        { "hook": "Day 1: Setup.", "sub": "Read the structure. Set the baseline. No training yet." },
+        { "hook": "Days 2-6: The reset.", "sub": "Training calibrated to state. Nutrition timed to clear noise." },
+        { "hook": "Day 7: Check-In.", "sub": "5 minutes. The signal that makes Day 14 possible." },
+        { "hook": "Days 8-13: Climb.", "sub": "Training intensity rises. Nutrition stays simple. The body settles." },
+        { "hook": "Day 14: The Report.", "blue": true, "sub": "Your pattern, named. What it means. Three actions specific to it." }
       ]
     },
     {
