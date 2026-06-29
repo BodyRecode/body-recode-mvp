@@ -2050,21 +2050,45 @@ export default function StrategyPage() {
 
           <div className="grid sm:grid-cols-3 gap-3">
             <Card>
-              <SectionLabel>Daily Budget</SectionLabel>
-              <p className="text-xl font-semibold text-[#1A1A1A]">$20–30</p>
-              <p className="text-xs text-stone-500 mt-1">AUD per day to start</p>
+              <SectionLabel>Daily Budget · Phase 1</SectionLabel>
+              <p className="text-xl font-semibold text-[#1A1A1A]">$25/day</p>
+              <p className="text-xs text-stone-500 mt-1">One ad set only (Stressed Exec). ABO not CBO.</p>
             </Card>
             <Card>
               <SectionLabel>Minimum Test Period</SectionLabel>
               <p className="text-xl font-semibold text-[#1A1A1A]">2 weeks</p>
-              <p className="text-xs text-stone-500 mt-1">Before judging any results</p>
+              <p className="text-xs text-stone-500 mt-1">Before judging the stage gate</p>
             </Card>
             <Card>
-              <SectionLabel>Initial Spend</SectionLabel>
-              <p className="text-xl font-semibold text-[#1A1A1A]">~$400</p>
-              <p className="text-xs text-stone-500 mt-1">First real data read</p>
+              <SectionLabel>Phase 1 Spend</SectionLabel>
+              <p className="text-xl font-semibold text-[#1A1A1A]">~$350</p>
+              <p className="text-xs text-stone-500 mt-1">Before scale-or-debug decision</p>
             </Card>
           </div>
+
+          {/* Budget Strategy — Option D Stage Gate (locked 2026-06-29) */}
+          <Card className="border-blue-500/30 bg-blue-500/5">
+            <SectionLabel>Budget Strategy · Option D · Stage Gate (locked 2026-06-29)</SectionLabel>
+            <Body>Don&apos;t run all 3 archetype ad sets concurrently at the locked $20-30/day budget — at $7-10/day each, Meta&apos;s algorithm can&apos;t converge (it needs ~50 conversions/week per ad set to optimise reliably). Same dollars, divided too thinly. Instead: <strong>stage gate</strong> — prove the dominant archetype first at full optimisation, then expand only on real data.</Body>
+
+            <div className="mt-3 space-y-2 text-xs">
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Phase 1 · Weeks 1-2 · Single archetype proof</p>
+                <p className="text-stone-700 leading-relaxed">One ad set: <strong>Stressed Executive Woman</strong> (dominant audience). ABO budget at <strong>$25/day on the one ad set</strong>. Other two ad sets (Perimenopausal, Slipping HP) created but PAUSED. 3 ad variants (001, 002, 003) running in that ad set so creative is tested in parallel within the archetype. Target: CPL low enough that Blueprint take-rate × $97 + Coaching conversion ≥ CPS. Approximate Phase 1 spend: $350.</p>
+              </div>
+
+              <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1">Stage gate decision · End of week 2</p>
+                <p className="text-stone-700 leading-relaxed mb-2"><strong>If CPL hits target:</strong> proceed to Phase 2 — unpause the other two ad sets at $25/day each (total run-rate $75/day). All 3 archetypes test in parallel for weeks 3-4. Additional spend ~$1050 over 2 weeks. By end of week 4 you have clean data across all 3 archetypes.</p>
+                <p className="text-stone-700 leading-relaxed"><strong>If CPL misses target:</strong> DO NOT expand budget. Debug Stressed Exec first — likely culprits in priority order: (1) creative variant mismatch, (2) Day 0 intake friction, (3) Challenge LP conversion, (4) audience interest set too narrow/broad. Fix the root cause, then re-test before spending Phase 2 dollars on the other two archetypes.</p>
+              </div>
+
+              <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1">Why not concurrent at locked budget</p>
+                <p className="text-stone-700 leading-relaxed">$25/day split across 3 ad sets = $8.30/day each. Meta needs ~$50/day per ad set for reliable optimisation. At $8/day, conversion volume is too low for Meta&apos;s algorithm to learn — it shows ads to suboptimal slices of the defined audience, CPL stays high, you spend $350 over 2 weeks and end up with directional noise, not actionable data. Worst-of-all-worlds outcome.</p>
+              </div>
+            </div>
+          </Card>
 
           <Card>
             <SectionLabel>Campaign Configuration — Meta Ads Manager</SectionLabel>
@@ -2074,7 +2098,10 @@ export default function StrategyPage() {
                 { k: 'Campaign name', v: 'BR-FunnelB-Leads-2026Q3' },
                 { k: 'Objective', v: 'Sales (Lead Generation)' },
                 { k: 'Pixel ID', v: '972772552072010' },
-                { k: 'Daily budget', v: '$20 AUD' },
+                { k: 'Budget level', v: 'ABO — Ad Set Budget Optimisation (NOT CBO)' },
+                { k: 'Phase 1 daily budget', v: '$25 AUD on Stressed Exec ad set only' },
+                { k: 'Phase 1 other ad sets', v: 'Perimenopausal + Slipping HP CREATED but PAUSED' },
+                { k: 'Phase 2 daily budget (post stage gate)', v: '$25 AUD per ad set × 3 = $75/day total' },
                 { k: 'Optimization event', v: 'CompleteRegistration → Lead (swap 24-48h post-flip)' },
                 { k: 'Action source', v: 'Website' },
                 { k: 'CTA button', v: 'Learn More' },
