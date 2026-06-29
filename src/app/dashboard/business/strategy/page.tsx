@@ -423,6 +423,10 @@ function ContentCalendar() {
           : []
         const isCarousel = graphicUrls.length > 1
         const isSingleGraphic = graphicUrls.length === 1
+        // Stories render at 1080×1920 (9:16). Feed posts/carousels at 1080×1350 (4:5).
+        // Match the preview frame to the source aspect so heads + text don't get cropped.
+        const isStory = activePost.type === 'story'
+        const previewAspect = isStory ? '9/16' : '4/5'
         return (
           <Card>
             <div className="flex items-start justify-between mb-5">
@@ -485,7 +489,7 @@ function ContentCalendar() {
                     </a>
                   )
                 })()}
-                <div className="rounded-xl overflow-hidden bg-stone-50 border border-stone-200" style={{ aspectRatio: '4/5', position: 'relative', minHeight: '350px' }}>
+                <div className="rounded-xl overflow-hidden bg-stone-50 border border-stone-200" style={{ aspectRatio: previewAspect, position: 'relative', minHeight: '350px' }}>
                   {isSingleGraphic ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={graphicUrls[0]} alt={activePost.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
