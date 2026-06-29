@@ -366,6 +366,14 @@ const MANUAL_AUTOMATIONS = [
     trigger: 'Type a message in the lead inbox view, click Send',
     steps: 1,
   },
+  // Terminal-triggered broadcast scripts (single-event launch comms)
+  {
+    id: 'launch-day-waitlist-email',
+    name: 'Launch-Day Waitlist Email (terminal script)',
+    description: 'Single-event broadcast on Mon 13 Jul 2026 7am AEST: every product_waitlist row gets a doors-open email, segmented by product. Includes AF Newstead founding-partner block (toggleable). Stamps notified_at to prevent double-send. Coach runs npx tsx scripts/launch-day-waitlist-email.ts (preview default, --live to broadcast).',
+    trigger: 'Terminal script run on launch day: `npx tsx scripts/launch-day-waitlist-email.ts --live`',
+    steps: 1,
+  },
 ]
 
 function AutomationRow({ a, href }: { a: typeof AUTOMATIC_AUTOMATIONS[0]; href: string }) {
