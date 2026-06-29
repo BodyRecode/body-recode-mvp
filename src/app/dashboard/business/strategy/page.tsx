@@ -423,7 +423,6 @@ function ContentCalendar() {
           : []
         const isCarousel = graphicUrls.length > 1
         const isSingleGraphic = graphicUrls.length === 1
-        const CAROUSEL_LABELS = ['Slide 1 - Depleted', 'Slide 2 - Transitioning', 'Slide 3 - Ready']
         return (
           <Card>
             <div className="flex items-start justify-between mb-5">
@@ -462,7 +461,7 @@ function ContentCalendar() {
                         download={`${dlName}.png`}
                         className="flex items-center justify-center gap-1.5 w-full mb-1.5 px-3 py-2 bg-stone-200 hover:bg-stone-300 border border-stone-300 rounded-lg text-xs font-medium text-stone-700 transition-colors"
                       >
-                        ↓ {CAROUSEL_LABELS[i] ?? `Slide ${i + 1}`}
+                        ↓ Slide {i + 1}
                       </a>
                       <div className="rounded-xl overflow-hidden bg-stone-50 border border-stone-200" style={{ aspectRatio: '4/5', position: 'relative', minHeight: '225px' }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
