@@ -44,6 +44,14 @@ interface ScheduledPost {
   caption?: string
   graphic?: string
   scheduled?: boolean
+  // Native IG publishing tracking (2026-06-30)
+  ig_container_id?: string | null
+  ig_post_id?: string | null
+  ig_post_url?: string | null
+  posted_at?: string | null
+  scheduled_publish_at?: string | null
+  publish_error?: string | null
+  publish_attempts?: number | null
 }
 
 const POST_TYPE_DEFAULT_TIMES: Record<PostType, string> = {
@@ -441,6 +449,10 @@ function ContentCalendar() {
                 <p className="text-base font-semibold text-[#1A1A1A]">{activePost.title}</p>
               </div>
               <div className="flex items-center gap-2">
+                <PostToIgButton post={activePost} onPublished={(updated) => {
+                  setPosts(ps => sortPosts(ps.map(p => p.id === updated.id ? { ...p, ...updated } : p)))
+                  setActivePost({ ...activePost, ...updated })
+                }} />
                 <button onClick={() => { setActivePost(null); startEdit(activePost) }} className="text-xs text-stone-500 hover:text-stone-700 transition-colors">Edit</button>
                 <button onClick={() => setActivePost(null)} className="text-stone-500 hover:text-[#1A1A1A] transition-colors text-xl leading-none">×</button>
               </div>
@@ -794,6 +806,97 @@ const COLD_ADS: ColdAd[] = [
 
 function destinationUrl(slug: string) {
   return `https://bodyrecode.au/challenge?utm_source=meta&utm_campaign=funnelb_cold&utm_content=${slug}`
+}
+
+// PostToIgButton - immediate publish OR schedule for future. Calls
+// /api/ig/publish, which validates the post, calls Meta Graph API, and
+// persists the resulting IG post id + URL back to calendar_posts.
+function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublished: (updated: Partial<ScheduledPost> & { id: string }) => void }) {
+  const [status, setStatus] = useState<'idle' | 'publishing' | 'scheduling' | 'done' | 'error'>('idle')
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
+
+  // Hide button if not posting to Instagram OR if it's a story (stories stay manual)
+  const platform = post.platform ?? 'instagram'
+  if (platform !== 'instagram') return null
+  if (post.type === 'story') return null
+
+  // Already posted: show URL link
+  if (post.posted_at && post.ig_post_url) {
+    return (
+      <a href={post.ig_post_url} target="_blank" rel="noopener noreferrer"
+        className="text-xs font-semibold text-green-600 hover:text-green-700 transition-colors flex items-center gap-1">
+        ✓ Posted
+      </a>
+    )
+  }
+  if (post.posted_at) {
+    return <span className="text-xs font-semibold text-green-600">✓ Posted</span>
+  }
+  if (post.scheduled_publish_at) {
+    const when = new Date(post.scheduled_publish_at).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+    return <span className="text-xs font-semibold text-blue-600">⏱ Scheduled {when}</span>
+  }
+
+  async function publish(schedule: boolean) {
+    setStatus(schedule ? 'scheduling' : 'publishing')
+    setErrorMsg(null)
+    try {
+      const res = await fetch('/api/ig/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ calendar_post_id: post.id, schedule }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setStatus('error')
+        setErrorMsg(data.message ?? data.error ?? 'Publish failed.')
+        return
+      }
+      setStatus('done')
+      // Optimistic update to parent
+      onPublished({
+        id: post.id,
+        ig_container_id: data.containerId,
+        ig_post_id: data.postId ?? null,
+        ig_post_url: data.postUrl ?? null,
+        posted_at: data.scheduled ? null : new Date().toISOString(),
+        scheduled_publish_at: data.scheduled ? new Date((post.scheduled_publish_at ?? `${post.date}T${post.time ?? '09:00'}:00+10:00`)).toISOString() : null,
+      })
+    } catch (e) {
+      setStatus('error')
+      setErrorMsg(e instanceof Error ? e.message : 'Network error.')
+    }
+  }
+
+  if (status === 'publishing') return <span className="text-xs font-semibold text-blue-600">Publishing...</span>
+  if (status === 'scheduling') return <span className="text-xs font-semibold text-blue-600">Scheduling...</span>
+  if (status === 'error') {
+    return (
+      <div className="flex flex-col gap-1 items-end">
+        <span className="text-xs text-red-600 font-semibold max-w-xs text-right" title={errorMsg ?? ''}>✗ {errorMsg?.slice(0, 60)}{(errorMsg?.length ?? 0) > 60 ? '...' : ''}</span>
+        <button onClick={() => publish(false)} className="text-xs text-stone-500 hover:text-stone-700 underline">retry</button>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-1.5">
+      <button
+        onClick={() => publish(false)}
+        title="Publish to Instagram immediately"
+        className="text-xs font-semibold px-2.5 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
+      >
+        Post now
+      </button>
+      <button
+        onClick={() => publish(true)}
+        title="Hand the post to Meta with the scheduled date+time. Meta publishes it automatically. Requires ≥10min in the future."
+        className="text-xs font-semibold px-2.5 py-1 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded transition-colors"
+      >
+        Schedule
+      </button>
+    </div>
+  )
 }
 
 function WaveStatusCard() {
