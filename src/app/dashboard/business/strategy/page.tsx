@@ -133,11 +133,21 @@ function ContentCalendar() {
       .from('calendar_posts')
       .select('*')
       .order('date', { ascending: true })
+      .order('time', { ascending: true, nullsFirst: false })
       .then(({ data }) => {
         if (data) setPosts(data as ScheduledPost[])
         setLoading(false)
       })
   }, [])
+
+  function sortPosts(ps: ScheduledPost[]): ScheduledPost[] {
+    return [...ps].sort((a, b) => {
+      if (a.date !== b.date) return a.date.localeCompare(b.date)
+      const at = a.time ?? '99:99'
+      const bt = b.time ?? '99:99'
+      return at.localeCompare(bt)
+    })
+  }
 
   const daysInMonth = getDaysInMonth(viewYear, viewMonth)
   const firstDay = getFirstDayOfMonth(viewYear, viewMonth)
@@ -174,7 +184,7 @@ function ContentCalendar() {
         .from('calendar_posts')
         .update({ date: form.date, time: form.time ?? null, brand: brandVal, platform: platformVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
         .eq('id', editId)
-      if (!error) setPosts(ps => ps.map(p => p.id === editId ? { ...p, ...form } as ScheduledPost : p))
+      if (!error) setPosts(ps => sortPosts(ps.map(p => p.id === editId ? { ...p, ...form } as ScheduledPost : p)))
       setEditId(null)
     } else {
       const { data, error } = await supabase
@@ -182,7 +192,7 @@ function ContentCalendar() {
         .insert({ date: form.date, time: form.time ?? null, brand: brandVal, platform: platformVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
         .select()
         .single()
-      if (!error && data) setPosts(ps => [...ps, data as ScheduledPost])
+      if (!error && data) setPosts(ps => sortPosts([...ps, data as ScheduledPost]))
     }
     setForm({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', platform: 'instagram', time: POST_TYPE_DEFAULT_TIMES['authority'] })
     setShowForm(false)
