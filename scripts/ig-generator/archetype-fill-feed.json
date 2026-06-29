@@ -1,0 +1,119 @@
+{
+  "_meta": {
+    "description": "Render graphics for the 11 archetype-hook BR feed posts that were seeded into calendar_posts without graphics. Fills out the launch-window content calendar.",
+    "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar"
+  },
+  "posts": [
+    {
+      "slug": "br-2026-07-01_pattern_stuck-not-discipline",
+      "type": "pattern",
+      "hook_1": "Stuck isn't a",
+      "hook_2": "discipline problem.",
+      "list": [
+        "More discipline doesn't change state",
+        "Same effort, different state, different result",
+        "Read the state. Then prescribe."
+      ],
+      "soft_cta": "Free 14-day read · opens 13 July"
+    },
+    {
+      "slug": "br-2026-07-03_coach_perimenopause-plan",
+      "type": "coach",
+      "photo": "1",
+      "hook_1": "Why I won't write your",
+      "hook_2": "perimenopause plan",
+      "sub_1": "until I've read your state.",
+      "sub_2": "Read first. Then prescribe."
+    },
+    {
+      "slug": "br-2026-07-05_diagnostic_three-years-postnatal",
+      "type": "diagnostic",
+      "photo": "2",
+      "cta_eyebrow": "FREE · 14 DAYS",
+      "hook_1": "Three years postnatal",
+      "hook_2": "and nothing moves?",
+      "sub_1": "Different body now.",
+      "sub_2": "It needs a different read.",
+      "cta_text": "→ Free read at Day 14"
+    },
+    {
+      "slug": "br-2026-07-06_authority_45-different-os",
+      "type": "authority",
+      "hook_1": "At 45 the body runs",
+      "hook_2": "a different OS.",
+      "sub_1": "Most men never read it.",
+      "sub_2": "They push the old playbook harder."
+    },
+    {
+      "slug": "br-2026-07-07_contrarian_disciplined",
+      "type": "contrarian",
+      "hook_1": "Discipline.",
+      "hook_2": "Not the problem.",
+      "sub_1": "The state you're applying it to is.",
+      "sub_2": "Read first. Then push."
+    },
+    {
+      "slug": "br-2026-07-08_pattern_wired-tired-middle",
+      "type": "pattern",
+      "hook_1": "Wired, tired,",
+      "hook_2": "weight at the middle?",
+      "list": [
+        "Hard to wind down at night",
+        "Hard to wake in the morning",
+        "Energy feels borrowed, not earned",
+        "Middle weight won't shift"
+      ],
+      "soft_cta": "Cortisol signature · Free read 13 July"
+    },
+    {
+      "slug": "br-2026-07-10_coach_mums-not-behind",
+      "type": "coach",
+      "photo": "3",
+      "hook_1": "The mothers I coach",
+      "hook_2": "aren't behind.",
+      "sub_1": "They were never read",
+      "sub_2": "for the body they have now."
+    },
+    {
+      "slug": "br-2026-07-12_diagnostic_every-protocol",
+      "type": "diagnostic",
+      "photo": "4",
+      "cta_eyebrow": "FREE · 14 DAYS",
+      "hook_1": "Every protocol tried.",
+      "hook_2": "Nothing held?",
+      "sub_1": "Read the state first.",
+      "sub_2": "Then prescribe.",
+      "cta_text": "→ Free read at Day 14"
+    },
+    {
+      "slug": "br-2026-07-13_authority_cortisol-decides",
+      "type": "authority",
+      "hook_1": "Cortisol decides",
+      "hook_2": "where you store fat.",
+      "sub_1": "Discipline doesn't override it.",
+      "sub_2": "Read the cortisol load first."
+    },
+    {
+      "slug": "br-2026-07-14_contrarian_more-cardio-peri",
+      "type": "contrarian",
+      "hook_1": "More cardio",
+      "hook_2": "in perimenopause?",
+      "hook_3": "Wrong move.",
+      "sub_1": "The system reads it as more stress.",
+      "sub_2": "Less cardio. More lifting. More food."
+    },
+    {
+      "slug": "br-2026-07-15_pattern_more-less-softer",
+      "type": "pattern",
+      "hook_1": "More training,",
+      "hook_2": "less food, got softer?",
+      "list": [
+        "Metabolic rate down to match intake",
+        "Fat storage prioritised over release",
+        "Hormonal output reduced",
+        "Recovery slows. Sleep frays."
+      ],
+      "soft_cta": "Metabolic adaptation · Read it free 13 July"
+    }
+  ]
+}
