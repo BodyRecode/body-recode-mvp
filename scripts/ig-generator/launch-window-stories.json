@@ -9,7 +9,7 @@
     { "slug": "story-2026-07-01_03_pattern", "type": "story", "category": "pattern", "label": "02 OF 04", "pattern_name": "Insulin-Drift", "pattern_color": "#B7791F", "hook_1": "Your body is storing easily and slow to release.", "sub_1": "Effort is going in but the signal that turns it into change has drifted." },
     { "slug": "story-2026-07-01_04_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 7", "hook_1": "Halfway. The Body Decode Check-In unlocks.", "sub_1": "8 markers + 2 signals. Result held until Day 14." },
     { "slug": "story-2026-07-01_05_quote", "type": "story", "category": "quote", "hook_1": "Most plans were written for the body you had, not the body you have now." },
-    { "slug": "story-2026-07-01_06_photo", "type": "story", "category": "photo_overlay", "photo": "9", "hook_1": "I built this for the people who feel like the rules just changed.", "sub_1": "Opens Monday 13 July. Free." },
+    { "slug": "story-2026-07-01_06_photo", "type": "story", "category": "photo_overlay", "photo": "11", "hook_1": "I built this for the people who feel like the rules just changed.", "sub_1": "Opens Monday 13 July. Free." },
 
     { "slug": "story-2026-07-02_01_countdown", "type": "story", "category": "countdown", "countdown": "11" },
     { "slug": "story-2026-07-02_02_hook", "type": "story", "category": "hook", "label": "READ THIS", "hook_1": "Train harder. Eat less. The body holds on harder.", "sub_1": "More effort on a stressed system is the trap most people fall into next." },
