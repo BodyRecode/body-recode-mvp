@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test:nutrition": "npx tsx scripts/test-nutrition-corpus.ts",
-    "test:research-lens": "npx tsx scripts/test-research-lens.ts"
+    "test:research-lens": "npx tsx scripts/test-research-lens.ts",
+    "check:launch": "set -a && source .env.local && set +a && npx tsx scripts/check-launch-readiness.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.79.0",
