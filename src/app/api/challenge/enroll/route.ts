@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
     // Fire automation trigger for challenge welcome sequence
     await fireTrigger('form_submitted', { leadId }, { form: 'challenge_signup' })
 
-    // Fire dedicated challenge sequence (coach notify + Day 5 Zoom + Day 14 ascension + SMS drip).
+    // Fire dedicated challenge sequence (coach notify + Day 5 session unlock + Day 14 ascension + SMS drip).
     // Welcome email is sent synchronously below — not via Inngest — so signup confirmation never
     // depends on the background pipeline.
     try {

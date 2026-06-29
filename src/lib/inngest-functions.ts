@@ -105,10 +105,14 @@ export const challengeSequenceFunction = inngest.createFunction(
     // /api/challenge/enroll/route.ts so confirmation never depends on Inngest pickup.
     // This function owns only the time-shifted steps below.
 
-    // ── Step 1: Wait 4 days → Day 5 Zoom invite ───────────────────────────
+    // ── Step 1: Wait 4 days → Day 5 Week One Progress Session unlock ─────
+    // Zoom was retired; the Day 5 deliverable is now the in-portal Week One
+    // Progress Session video. The email body + subject + CTA already point at
+    // the in-portal session (see buildDay5UnlockEmail). This step just gates
+    // the timing.
     await step.sleep('wait-for-day-5', '4d')
 
-    await step.run('send-day5-zoom-invite', async () => {
+    await step.run('send-day5-session-unlock', async () => {
       // Check enrollment is still active before sending
       const admin = createAdminClient()
       const { data: enrollment } = await admin
