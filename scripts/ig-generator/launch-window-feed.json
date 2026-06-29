@@ -1,0 +1,97 @@
+{
+  "_meta": {
+    "description": "10 launch-window feed posts (1 Jul - 15 Jul 2026). Replaces the existing July 1-12 ladder content for the launch window; original posts push to next cycle.",
+    "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar"
+  },
+  "posts": [
+    {
+      "slug": "br-2026-07-01_pattern_launch-tease",
+      "type": "carousel",
+      "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar",
+      "slides": [
+        { "hook": "What if your body", "hook_2": "could be decoded in 14 days?" },
+        { "hook": "You're doing the work.", "sub": "Training. Eating clean. Sleeping. The basics are in." },
+        { "hook": "And the body still won't move.", "sub": "Or won't recover. Or won't respond." },
+        { "hook": "Effort isn't the variable.", "sub": "Your body has settled into a specific pattern." },
+        { "hook": "Patterns can be read.", "sub": "Once you can name yours, the next move is obvious." },
+        { "hook": "Something's coming.", "blue": true, "sub": "Two weeks." }
+      ]
+    },
+    {
+      "slug": "br-2026-07-03_coach_origin",
+      "type": "coach",
+      "photo": "11",
+      "hook_1": "After 20 years of coaching,",
+      "hook_2": "this is what I should have built first.",
+      "sub_1": "The read that comes before the prescription.",
+      "sub_2": "Live Monday 13 July."
+    },
+    {
+      "slug": "br-2026-07-05_diagnostic_date-reveal",
+      "type": "diagnostic",
+      "photo": "12",
+      "hook_1": "I built something.",
+      "hook_2": "It opens 13 July.",
+      "sub_1": "14 days. Free. The read that should never sit behind a paywall."
+    },
+    {
+      "slug": "br-2026-07-06_authority_reveal",
+      "type": "authority",
+      "hook_1": "The 14-Day Body Decode",
+      "hook_2": "Challenge.",
+      "sub_1": "One week from today. Free.",
+      "sub_2": "The read your body has been waiting for."
+    },
+    {
+      "slug": "br-2026-07-07_contrarian_free",
+      "type": "carousel",
+      "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar",
+      "slides": [
+        { "hook": "Why I'm running this", "hook_2": "for free." },
+        { "hook": "Not 'free trial.'", "sub": "Not 'first week free.' Free." },
+        { "hook": "Here's why.", "sub": "The read should never sit behind a paywall." },
+        { "hook": "Most paid programmes", "sub": "bury the read inside the sales journey. By then you're locked in." },
+        { "hook": "Take the read first.", "blue": true, "sub": "If it lands, the next step is obvious." },
+        { "hook": "If it doesn't,", "sub": "you've lost nothing. You finish with a real read on your own body." }
+      ]
+    },
+    {
+      "slug": "br-2026-07-08_pattern_inside",
+      "type": "carousel",
+      "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar",
+      "slides": [
+        { "hook": "Day 1, Day 7, Day 14.", "hook_2": "What actually happens inside." },
+        { "hook": "Day 1: Setup.", "sub": "No training. You set the baseline. The body gets a clean signal to start from." },
+        { "hook": "Days 2-6: The reset.", "sub": "Training, nutrition, sleep all calibrated to one job - clear the noise." },
+        { "hook": "Day 7: Check-In.", "sub": "8 markers, 2 signal questions. 5 minutes. Result held until Day 14." },
+        { "hook": "Days 8-13: Consolidation.", "sub": "The body keeps settling. Patterns surface clearer." },
+        { "hook": "Day 14: The Report.", "blue": true, "sub": "Your pattern, named. What it means. What it isn't. Three actions specific to it." }
+      ]
+    },
+    {
+      "slug": "br-2026-07-10_coach_blueprint-tease",
+      "type": "coach",
+      "photo": "7",
+      "hook_1": "The Challenge reads",
+      "hook_2": "the pattern.",
+      "sub_1": "The correction comes next. The Blueprint is the six weeks that move it.",
+      "sub_2": "Read first. Then act."
+    },
+    {
+      "slug": "br-2026-07-12_diagnostic_tomorrow",
+      "type": "diagnostic",
+      "photo": "5",
+      "hook_1": "Tomorrow.",
+      "hook_2": "Doors open Monday.",
+      "sub_1": "14 days. Free. The first move when nothing else has worked."
+    },
+    {
+      "slug": "br-2026-07-15_pattern_doors-open",
+      "type": "authority",
+      "hook_1": "The 14-day read",
+      "hook_2": "is now open.",
+      "sub_1": "Take it whenever you're ready. Free. Evergreen.",
+      "sub_2": "Link in bio."
+    }
+  ]
+}
