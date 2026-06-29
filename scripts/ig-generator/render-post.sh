@@ -389,124 +389,130 @@ case "$TYPE" in
     case "$CATEGORY" in
       countdown)
         # Dark hero card. Massive countdown number + "DAYS TO GO" + Challenge name + date.
+        # Sizes bumped 2026-06-29 for accessibility (Kade flagged copy was too small).
         CMD+=( -size 1080x1920 xc:'#0F0F0F' )
         # Signal Blue glow top-right
         CMD+=( \( -size 1080x1920 xc:none -fill 'rgba(27,109,252,0.3)' -draw 'circle 780,400 780,180' -blur 0x90 \) -compose over -composite )
         CMD+=( "$LOGO_W_STORY" -gravity northwest -geometry +96+96 -compose over -composite )
         # Massive countdown number (centred high)
-        CMD+=( -font "$SANS_BOLD" -pointsize 360 -fill white -gravity center -annotate +0-300 "$COUNTDOWN" )
-        CMD+=( -font "$SANS_BOLD" -pointsize 38 -fill "#7BB3FF" -gravity center -annotate +0-60 "DAYS TO GO" )
-        # Divider rule
-        CMD+=( -fill "#1B6DFC" -draw "rectangle 480,40 600,46" -gravity center -draw "translate 0,30" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 420 -fill white -gravity center -annotate +0-280 "$COUNTDOWN" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 56 -fill "#7BB3FF" -gravity center -annotate +0-40 "DAYS TO GO" )
         # Locked sub
-        CMD+=( -font "$SANS_BOLD" -pointsize 56 -fill white -gravity center -annotate +0+120 "14-Day Body Decode" )
-        CMD+=( -font "$SANS_BOLD" -pointsize 56 -fill "#1B6DFC" -gravity center -annotate +0+200 "Challenge" )
-        CMD+=( -font "$SANS" -pointsize 32 -fill "#8A8A8E" -gravity center -annotate +0+320 "Opens Monday 13 July" )
-        # Handle bottom
-        CMD+=( -font "$SANS_BOLD" -pointsize 24 -fill "#5C5C5C" -gravity south -annotate +0+120 "$HANDLE" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 72 -fill white -gravity center -annotate +0+160 "14-Day Body Decode" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 72 -fill "#1B6DFC" -gravity center -annotate +0+250 "Challenge" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 44 -fill white -gravity center -annotate +0+400 "Opens Monday 13 July" )
+        # Handle bottom (bumped)
+        CMD+=( -font "$SANS_BOLD" -pointsize 30 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
         ;;
       hook)
         # White card. Big bold hook in centre. State-language for organic.
+        # Sizes bumped 2026-06-29 for accessibility.
         CMD+=( -size 1080x1920 xc:white )
         # Signal Blue accent strip top
         CMD+=( -fill "#1B6DFC" -draw "rectangle 0,0 1080,12" )
         CMD+=( "$LOGO_B_STORY" -gravity northwest -geometry +96+96 -compose over -composite )
         # Eyebrow + headline + sub via caption: auto-wrap
-        CMD+=( -font "$SANS_BOLD" -pointsize 24 -fill "#1B6DFC" -gravity center -annotate +0-440 "$LABEL" )
-        CMD+=( \( -background white -fill "#1A1A1A" -font "$SANS_BOLD" -pointsize 88 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0-120 -composite )
-        [ -n "$SUB1" ] && CMD+=( \( -background white -fill "#5C5C5C" -font "$SANS" -pointsize 32 -size 888x -gravity center caption:"$SUB1" \) -gravity center -geometry +0+220 -composite )
-        CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 36 -fill "#1B6DFC" -gravity center -annotate +0-460 "$LABEL" )
+        CMD+=( \( -background white -fill "#1A1A1A" -font "$SANS_BOLD" -pointsize 108 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0-100 -composite )
+        [ -n "$SUB1" ] && CMD+=( \( -background white -fill "#3A3A3A" -font "$SANS_BOLD" -pointsize 46 -size 888x -gravity center caption:"$SUB1" \) -gravity center -geometry +0+260 -composite )
+        CMD+=( -font "$SANS_BOLD" -pointsize 30 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
         ;;
       pattern)
         # Dark hero card with pattern name. State language.
+        # Sizes bumped 2026-06-29 for accessibility.
         PATTERN_COLOR="$(JN '.pattern_color')"
         [ -z "$PATTERN_COLOR" ] && PATTERN_COLOR="#1B6DFC"
         CMD+=( -size 1080x1920 xc:'#0F0F0F' )
         CMD+=( "$LOGO_W_STORY" -gravity northwest -geometry +96+96 -compose over -composite )
         # Pattern badge eyebrow
-        CMD+=( -font "$SANS_BOLD" -pointsize 24 -fill "$PATTERN_COLOR" -gravity center -annotate +0-480 "PATTERN $LABEL" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 36 -fill "$PATTERN_COLOR" -gravity center -annotate +0-500 "PATTERN $LABEL" )
         # Pattern name big
-        CMD+=( \( -background '#0F0F0F' -fill white -font "$SANS_BOLD" -pointsize 96 -size 888x -gravity center caption:"$PATTERN_NAME" \) -gravity center -geometry +0-280 -composite )
+        CMD+=( \( -background '#0F0F0F' -fill white -font "$SANS_BOLD" -pointsize 116 -size 888x -gravity center caption:"$PATTERN_NAME" \) -gravity center -geometry +0-280 -composite )
         # Hook body
-        CMD+=( \( -background '#0F0F0F' -fill "#C0C0C0" -font "$SANS" -pointsize 36 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0+40 -composite )
-        [ -n "$SUB1" ] && CMD+=( \( -background '#0F0F0F' -fill "#7BB3FF" -font "$SANS_BOLD" -pointsize 30 -size 888x -gravity center caption:"$SUB1" \) -gravity center -geometry +0+340 -composite )
-        CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill "#5C5C5C" -gravity south -annotate +0+120 "$HANDLE" )
+        CMD+=( \( -background '#0F0F0F' -fill white -font "$SANS_BOLD" -pointsize 50 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0+60 -composite )
+        [ -n "$SUB1" ] && CMD+=( \( -background '#0F0F0F' -fill "#7BB3FF" -font "$SANS_BOLD" -pointsize 42 -size 888x -gravity center caption:"$SUB1" \) -gravity center -geometry +0+380 -composite )
+        CMD+=( -font "$SANS_BOLD" -pointsize 30 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
         ;;
       inside_challenge)
         # Day X / Day Y card. White background, Signal Blue numbered badge.
+        # Sizes bumped 2026-06-29 for accessibility.
         DAY_NUM="$(JN '.day_num')"  # "Day 1", "Day 7", "Day 14"
         CMD+=( -size 1080x1920 xc:white )
         CMD+=( "$LOGO_B_STORY" -gravity northwest -geometry +96+96 -compose over -composite )
         # Eyebrow
-        CMD+=( -font "$SANS_BOLD" -pointsize 24 -fill "#1B6DFC" -gravity center -annotate +0-540 "INSIDE THE CHALLENGE" )
-        # Day badge
-        CMD+=( -fill "#1B6DFC" -draw "roundrectangle 380,540 700,720 16,16" )
-        CMD+=( -font "$SANS_BOLD" -pointsize 80 -fill white -gravity center -annotate +0-300 "$DAY_NUM" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 36 -fill "#1B6DFC" -gravity center -annotate +0-560 "INSIDE THE CHALLENGE" )
+        # Day badge (larger)
+        CMD+=( -fill "#1B6DFC" -draw "roundrectangle 340,460 740,660 18,18" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 100 -fill white -gravity center -annotate +0-360 "$DAY_NUM" )
         # Hook
-        CMD+=( \( -background white -fill "#1A1A1A" -font "$SANS_BOLD" -pointsize 72 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0+20 -composite )
+        CMD+=( \( -background white -fill "#1A1A1A" -font "$SANS_BOLD" -pointsize 88 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0+40 -composite )
         # Sub
-        [ -n "$SUB1" ] && CMD+=( \( -background white -fill "#5C5C5C" -font "$SANS" -pointsize 32 -size 888x -gravity center caption:"$SUB1" \) -gravity center -geometry +0+300 -composite )
-        CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
+        [ -n "$SUB1" ] && CMD+=( \( -background white -fill "#3A3A3A" -font "$SANS_BOLD" -pointsize 46 -size 888x -gravity center caption:"$SUB1" \) -gravity center -geometry +0+360 -composite )
+        CMD+=( -font "$SANS_BOLD" -pointsize 30 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
         ;;
       quote)
         # White card with large quoted text + attribution.
+        # Sizes bumped 2026-06-29 for accessibility.
         CMD+=( -size 1080x1920 xc:white )
         CMD+=( "$LOGO_B_STORY" -gravity northwest -geometry +96+96 -compose over -composite )
         # Big quote mark accent
-        CMD+=( -font "$SANS_BOLD" -pointsize 240 -fill "#1B6DFC" -gravity center -annotate +0-440 "\"" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 280 -fill "#1B6DFC" -gravity center -annotate +0-460 "\"" )
         # Quote body
-        CMD+=( \( -background white -fill "#1A1A1A" -font "$SANS_BOLD" -pointsize 64 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0-40 -composite )
+        CMD+=( \( -background white -fill "#1A1A1A" -font "$SANS_BOLD" -pointsize 78 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0-20 -composite )
         # Attribution
-        CMD+=( -font "$SANS" -pointsize 28 -fill "#5C5C5C" -gravity center -annotate +0+360 "Kade Dunstone" )
-        CMD+=( -font "$SANS" -pointsize 22 -fill "#8A8A8E" -gravity center -annotate +0+410 "Body Recode Founder" )
-        CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 40 -fill "#1A1A1A" -gravity center -annotate +0+380 "Kade Dunstone" )
+        CMD+=( -font "$SANS" -pointsize 30 -fill "#5C5C5C" -gravity center -annotate +0+440 "Body Recode Founder" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 30 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
         ;;
       photo_overlay)
         # Photo bleeds top 2/3, dark slab bottom 1/3 with overlay text.
+        # Sizes bumped 2026-06-29 for accessibility.
         PHOTO_FILE="$(photo_path "$PHOTO")"
         CMD+=( -size 1080x1920 xc:'#0F0F0F' )
         # Photo at top (cover, top-aligned to preserve face)
-        CMD+=( \( "$PHOTO_FILE" -resize 1080x1280^ -gravity north -crop 1080x1280+0+0 +repage \) -gravity north -compose over -composite )
+        CMD+=( \( "$PHOTO_FILE" -resize 1080x1180^ -gravity north -crop 1080x1180+0+0 +repage \) -gravity north -compose over -composite )
         # Dark gradient overlay at bottom for legibility
-        CMD+=( \( -size 1080x320 gradient:'rgba(15,15,15,0)-rgba(15,15,15,1)' \) -gravity north -geometry +0+960 -compose over -composite )
+        CMD+=( \( -size 1080x320 gradient:'rgba(15,15,15,0)-rgba(15,15,15,1)' \) -gravity north -geometry +0+860 -compose over -composite )
         CMD+=( "$LOGO_W_STORY" -gravity northwest -geometry +96+96 -compose over -composite )
         # Overlay text in bottom slab
-        CMD+=( \( -background '#0F0F0F' -fill white -font "$SANS_BOLD" -pointsize 64 -size 888x -gravity center caption:"$HOOK1" \) -gravity south -geometry +0+360 -composite )
-        [ -n "$SUB1" ] && CMD+=( \( -background '#0F0F0F' -fill "#7BB3FF" -font "$SANS" -pointsize 28 -size 888x -gravity center caption:"$SUB1" \) -gravity south -geometry +0+240 -composite )
-        CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
+        CMD+=( \( -background '#0F0F0F' -fill white -font "$SANS_BOLD" -pointsize 78 -size 888x -gravity center caption:"$HOOK1" \) -gravity south -geometry +0+380 -composite )
+        [ -n "$SUB1" ] && CMD+=( \( -background '#0F0F0F' -fill "#7BB3FF" -font "$SANS_BOLD" -pointsize 42 -size 888x -gravity center caption:"$SUB1" \) -gravity south -geometry +0+240 -composite )
+        CMD+=( -font "$SANS_BOLD" -pointsize 30 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
         ;;
       launch_reveal)
         # Big "OPENS [DATE]" hero. Signal Blue background, white type.
+        # Sizes bumped 2026-06-29 for accessibility.
         DATE_LINE="$(JN '.date_line')"  # "Monday 13 July" or "TOMORROW" or "TODAY"
         CMD+=( -size 1080x1920 xc:'#1B6DFC' )
         # Subtle vignette top-left for depth
         CMD+=( \( -size 1080x1920 xc:none -fill 'rgba(255,255,255,0.08)' -draw 'circle 200,200 200,0' -blur 0x100 \) -compose over -composite )
         CMD+=( "$LOGO_W_STORY" -gravity northwest -geometry +96+96 -compose over -composite )
-        CMD+=( -font "$SANS_BOLD" -pointsize 32 -fill "rgba(255,255,255,0.7)" -gravity center -annotate +0-440 "$LABEL" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 44 -fill white -gravity center -annotate +0-460 "$LABEL" )
         # Massive OPENS
-        CMD+=( -font "$SANS_BOLD" -pointsize 200 -fill white -gravity center -annotate +0-200 "OPENS" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 240 -fill white -gravity center -annotate +0-200 "OPENS" )
         # Date line
-        CMD+=( \( -background '#1B6DFC' -fill white -font "$SANS_BOLD" -pointsize 80 -size 888x -gravity center caption:"$DATE_LINE" \) -gravity center -geometry +0-20 -composite )
+        CMD+=( \( -background '#1B6DFC' -fill white -font "$SANS_BOLD" -pointsize 100 -size 888x -gravity center caption:"$DATE_LINE" \) -gravity center -geometry +0-20 -composite )
         # Hook + sub
-        [ -n "$HOOK1" ] && CMD+=( \( -background '#1B6DFC' -fill white -font "$SANS_BOLD" -pointsize 44 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0+220 -composite )
-        [ -n "$SUB1" ]  && CMD+=( \( -background '#1B6DFC' -fill "rgba(255,255,255,0.85)" -font "$SANS" -pointsize 30 -size 888x -gravity center caption:"$SUB1" \) -gravity center -geometry +0+380 -composite )
-        CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill "rgba(255,255,255,0.6)" -gravity south -annotate +0+120 "$HANDLE" )
+        [ -n "$HOOK1" ] && CMD+=( \( -background '#1B6DFC' -fill white -font "$SANS_BOLD" -pointsize 60 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0+240 -composite )
+        [ -n "$SUB1" ]  && CMD+=( \( -background '#1B6DFC' -fill white -font "$SANS_BOLD" -pointsize 42 -size 888x -gravity center caption:"$SUB1" \) -gravity center -geometry +0+420 -composite )
+        CMD+=( -font "$SANS_BOLD" -pointsize 30 -fill white -gravity south -annotate +0+120 "$HANDLE" )
         ;;
       disqualifier)
         # Two-panel card. Top "This is NOT for you" in muted, bottom "This IS for you" in Signal Blue.
+        # Sizes bumped 2026-06-29 for accessibility.
         NOT_LINE="$(JN '.not_line')"
         IS_LINE="$(JN '.is_line')"
         CMD+=( -size 1080x1920 xc:white )
         CMD+=( "$LOGO_B_STORY" -gravity northwest -geometry +96+96 -compose over -composite )
         # Top half - NOT
-        CMD+=( -font "$SANS_BOLD" -pointsize 28 -fill "#999999" -gravity center -annotate +0-380 "THIS IS NOT FOR YOU IF" )
-        CMD+=( \( -background white -fill "#5C5C5C" -font "$SANS" -pointsize 44 -size 888x -gravity center caption:"$NOT_LINE" \) -gravity center -geometry +0-200 -composite )
+        CMD+=( -font "$SANS_BOLD" -pointsize 38 -fill "#999999" -gravity center -annotate +0-420 "THIS IS NOT FOR YOU IF" )
+        CMD+=( \( -background white -fill "#3A3A3A" -font "$SANS_BOLD" -pointsize 58 -size 888x -gravity center caption:"$NOT_LINE" \) -gravity center -geometry +0-200 -composite )
         # Divider rule
         CMD+=( -fill "#E5E5E5" -draw "rectangle 96,1000 984,1004" )
         # Bottom half - IS
-        CMD+=( -font "$SANS_BOLD" -pointsize 28 -fill "#1B6DFC" -gravity center -annotate +0+120 "THIS IS FOR YOU IF" )
-        CMD+=( \( -background white -fill "#1A1A1A" -font "$SANS_BOLD" -pointsize 48 -size 888x -gravity center caption:"$IS_LINE" \) -gravity center -geometry +0+320 -composite )
-        CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
+        CMD+=( -font "$SANS_BOLD" -pointsize 38 -fill "#1B6DFC" -gravity center -annotate +0+140 "THIS IS FOR YOU IF" )
+        CMD+=( \( -background white -fill "#1A1A1A" -font "$SANS_BOLD" -pointsize 64 -size 888x -gravity center caption:"$IS_LINE" \) -gravity center -geometry +0+360 -composite )
+        CMD+=( -font "$SANS_BOLD" -pointsize 30 -fill "#7C7C7C" -gravity south -annotate +0+120 "$HANDLE" )
         ;;
       *)
         echo "unknown story category: $CATEGORY (need one of: countdown|hook|pattern|inside_challenge|quote|photo_overlay|launch_reveal|disqualifier)" >&2
