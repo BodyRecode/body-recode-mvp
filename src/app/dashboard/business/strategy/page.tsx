@@ -20,7 +20,7 @@ const TABS: { id: Tab; label: string }[] = [
 
 // ── CALENDAR ────────────────────────────────────────────────
 
-type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'ad' | 'prelaunch' | 'thread' | 'video'
+type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'ad' | 'prelaunch' | 'thread' | 'video' | 'story'
 type CampaignPhase = 'prelaunch' | 'ads' | 'optimise' | 'scale'
 type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder' | 'studio_of_ten'
 type Platform = 'instagram' | 'facebook' | 'linkedin'
@@ -56,6 +56,7 @@ const POST_TYPE_DEFAULT_TIMES: Record<PostType, string> = {
   prelaunch:  '07:00',
   thread:     '07:00',
   video:      '07:00',
+  story:      '09:00',
 }
 
 function isAicmPost(p: { title?: string; notes?: string }): boolean {
@@ -81,6 +82,7 @@ const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: str
   prelaunch:   { label: 'Pre-Launch',   color: '#6b7280', bg: 'rgba(107,114,128,0.12)', border: 'rgba(107,114,128,0.3)' },
   thread:      { label: 'Thread',       color: '#e879f9', bg: 'rgba(232,121,249,0.12)', border: 'rgba(232,121,249,0.3)' },
   video:       { label: 'Video/Reel',   color: '#f97316', bg: 'rgba(249,115,22,0.12)',  border: 'rgba(249,115,22,0.3)' },
+  story:       { label: 'IG Story',     color: '#ec4899', bg: 'rgba(236,72,153,0.12)',  border: 'rgba(236,72,153,0.3)' },
 }
 
 const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
