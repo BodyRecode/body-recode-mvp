@@ -695,31 +695,131 @@ function BulletList({ items }: { items: string[] }) {
   )
 }
 
-function ScriptBlock({ number, angle, hook, script, duration }: { number: number; angle: string; hook: string; script: string; duration: string }) {
-  const [expanded, setExpanded] = useState(false)
+// CopyButton — click-to-copy field for Meta Ads Manager paste workflow.
+// Shows brief "Copied" confirmation, then reverts. Used by every metadata
+// field in the Cold Ad Library so Kade can paste straight into Meta UI.
+function CopyButton({ value, label }: { value: string; label?: string }) {
+  const [copied, setCopied] = useState(false)
   return (
-    <Card>
-      <div className="flex items-start justify-between gap-4 mb-3">
-        <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-full bg-blue-50 border border-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-500 shrink-0">{number}</div>
-          <div>
-            <p className="text-sm font-semibold text-[#1A1A1A]">{angle}</p>
-            <p className="text-xs text-stone-500 mt-0.5 italic">&ldquo;{hook}&rdquo;</p>
-          </div>
+    <button
+      onClick={() => {
+        void navigator.clipboard.writeText(value)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 1500)
+      }}
+      className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded transition-colors ${
+        copied ? 'bg-blue-500 text-stone-50' : 'bg-stone-200 text-stone-600 hover:bg-stone-300'
+      }`}
+    >
+      {copied ? 'Copied' : (label ?? 'Copy')}
+    </button>
+  )
+}
+
+// COLD_ADS — the 9-variant cold paid Meta ad library. Source of truth for
+// the dashboard reference + the per-ad metadata Kade pastes into Meta Ads
+// Manager. Captions follow the Amanda-audited Cold Ad Copy Doctrine:
+// "Decode" terminology, audience-named hooks (no personal-attribute claims),
+// 2-sentence rhythm, locked CTA. Images are rendered from /public/ads/
+// (committed). Hooks here mirror the on-image hook copy.
+type ColdAd = {
+  slug: string; archetype: string; format: 'Statement' | 'Photo'; photo: string | null
+  hook: string; primaryText: string; headline: string; description: string
+}
+const COLD_ADS: ColdAd[] = [
+  // 01 Stressed Executive Woman
+  { slug: 'ad-001-stressed-exec-discipline', archetype: 'Stressed Executive Woman', format: 'Statement', photo: null,
+    hook: "Training hard. Eating clean. Body won't shift?",
+    primaryText: "When effort stops moving the needle, the answer isn't more effort. There's a specific pattern your body has settled into — and it can be decoded in 14 days. Free.",
+    headline: "Free 14-Day Body Decode Challenge",
+    description: "Find your pattern. No payment." },
+  { slug: 'ad-002-stressed-exec-doing-everything-right', archetype: 'Stressed Executive Woman', format: 'Photo', photo: 'kade-10',
+    hook: "Doing everything right. Nothing is working.",
+    primaryText: "Most high-performers who hit this wall assume the answer is to push harder. It's almost never the answer. There's a specific pattern in how your body's responding — decode it in 14 days, free.",
+    headline: "The pattern is the problem, not your effort.",
+    description: "Free 14-day diagnostic." },
+  { slug: 'ad-003-stressed-exec-cortisol-storage', archetype: 'Stressed Executive Woman', format: 'Statement', photo: null,
+    hook: "Stressed and over 40? Your body's rules just changed.",
+    primaryText: "At 40+, ongoing stress rewires how your body stores fat, recovers, and responds to training. The old rules stop working. There's a specific pattern underneath — decode yours in 14 days, free.",
+    headline: "Stress changes the rules. Decode yours.",
+    description: "Free 14-day Challenge." },
+  // 02 Perimenopausal Performer
+  { slug: 'ad-004-peri-same-training', archetype: 'Perimenopausal Performer', format: 'Statement', photo: null,
+    hook: "Perimenopause changed the rules. Most plans didn't.",
+    primaryText: "Most training and nutrition plans were written for a hormonal environment that perimenopause has quietly changed. That's why the same effort stopped producing the same results. There's a specific pattern that works now — decode yours in 14 days, free.",
+    headline: "Built for the body you have now.",
+    description: "Free 14-day diagnostic." },
+  { slug: 'ad-005-peri-fasted-cardio', archetype: 'Perimenopausal Performer', format: 'Statement', photo: null,
+    hook: "Fasted cardio used to work. Now it makes you tired.",
+    primaryText: "Fasted cardio at 30 and fasted cardio at 45 are not the same intervention. The same input lands on a different hormonal environment — and that's why it stopped working. Decode the new rules in 14 days, free.",
+    headline: "Same effort. Different body. Different rules.",
+    description: "Free 14-day Body Decode." },
+  { slug: 'ad-006-peri-bloods-fine', archetype: 'Perimenopausal Performer', format: 'Photo', photo: 'kade-11',
+    hook: "Bloods came back fine. You don't feel fine.",
+    primaryText: "Standard bloodwork is built to catch disease, not to read the pattern your body is operating in day to day. When everything reads 'normal' but nothing feels normal, there's usually a specific pattern underneath. Decode yours in 14 days, free.",
+    headline: "Normal bloods. Not-normal body.",
+    description: "Free 14-day pattern diagnostic." },
+  // 03 Slipping High Performer
+  { slug: 'ad-007-slipping-trt', archetype: 'Slipping High Performer', format: 'Statement', photo: null,
+    hook: "If recovery has changed, your plan should too.",
+    primaryText: "When recovery time doubles and capacity slips despite doing the same work, the body is signaling a specific pattern. Most men keep training to the old standard and wonder why the wheels are coming off. Decode yours in 14 days, free.",
+    headline: "Recovery changed. Your plan should too.",
+    description: "Free 14-day diagnostic for men 40+." },
+  { slug: 'ad-008-slipping-capacity-45', archetype: 'Slipping High Performer', format: 'Statement', photo: null,
+    hook: "Over 40 and training harder for less?",
+    primaryText: "At 40+, the gap between effort in and result out widens for a reason — and it's not just ageing. There's a specific pattern in how the body is responding to load, recovery, and fuel. Decode yours in 14 days, free.",
+    headline: "More effort, less result. Decode why.",
+    description: "Free 14-day Challenge." },
+  { slug: 'ad-009-slipping-every-protocol', archetype: 'Slipping High Performer', format: 'Photo', photo: 'kade-12',
+    hook: "If every protocol stalls, look at the starting point.",
+    primaryText: "When every protocol — cut, fast, TRT, peptide — produces the same diminishing returns, the issue isn't the protocol. The issue is the body it's being prescribed to. Read the starting point first. Decode your pattern in 14 days, free.",
+    headline: "Read the starting point before the next protocol.",
+    description: "Free 14-day diagnostic." },
+]
+
+function destinationUrl(slug: string) {
+  return `https://bodyrecode.au/challenge?utm_source=meta&utm_campaign=funnelb_cold&utm_content=${slug}`
+}
+
+function ColdAdCard({ ad }: { ad: ColdAd }) {
+  const url = destinationUrl(ad.slug)
+  return (
+    <div className="border border-stone-200 rounded-xl overflow-hidden bg-stone-50">
+      {/* Image preview */}
+      <div className="bg-stone-100 border-b border-stone-200" style={{ aspectRatio: '4 / 5' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`/ads/${ad.slug}.png`} alt={ad.hook} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+      </div>
+      {/* Metadata */}
+      <div className="p-3 space-y-2.5 text-xs">
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{ad.slug.split('-')[0].toUpperCase()} {ad.slug.split('-').slice(1).join(' ')}</span>
+          <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${ad.format === 'Photo' ? 'bg-blue-500/10 text-blue-700' : 'bg-stone-200 text-stone-700'}`}>{ad.format}</span>
+          {ad.photo && <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-800">{ad.photo}</span>}
         </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <Tag color="stone">{duration}</Tag>
-          <button onClick={() => setExpanded(e => !e)} className="text-xs text-blue-500 hover:text-blue-700 transition-colors font-medium">
-            {expanded ? 'Hide' : 'View script'}
-          </button>
+        <p className="text-stone-900 font-semibold leading-snug">&ldquo;{ad.hook}&rdquo;</p>
+
+        <div className="pt-1.5 border-t border-stone-200 space-y-2">
+          <div>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Primary text</p><CopyButton value={ad.primaryText} /></div>
+            <p className="text-stone-700 leading-relaxed">{ad.primaryText}</p>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Headline</p><CopyButton value={ad.headline} /></div>
+            <p className="text-stone-700">{ad.headline}</p>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Description</p><CopyButton value={ad.description} /></div>
+            <p className="text-stone-700">{ad.description}</p>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Destination URL</p><CopyButton value={url} /></div>
+            <p className="text-stone-700 break-all text-[11px] leading-relaxed">{url}</p>
+          </div>
+          <div className="flex items-center justify-between"><p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">CTA button</p><span className="text-stone-700 font-semibold">Learn More</span></div>
         </div>
       </div>
-      {expanded && (
-        <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 text-sm text-stone-700 leading-relaxed italic">
-          &ldquo;{script}&rdquo;
-        </div>
-      )}
-    </Card>
+    </div>
   )
 }
 
@@ -1966,6 +2066,34 @@ export default function StrategyPage() {
           </div>
 
           <Card>
+            <SectionLabel>Campaign Configuration — Meta Ads Manager</SectionLabel>
+            <Body>The exact values to paste into Meta Ads Manager when setting up the campaign. Click any value to copy.</Body>
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              {[
+                { k: 'Campaign name', v: 'BR-FunnelB-Leads-2026Q3' },
+                { k: 'Objective', v: 'Sales (Lead Generation)' },
+                { k: 'Pixel ID', v: '972772552072010' },
+                { k: 'Daily budget', v: '$20 AUD' },
+                { k: 'Optimization event', v: 'CompleteRegistration → Lead (swap 24-48h post-flip)' },
+                { k: 'Action source', v: 'Website' },
+                { k: 'CTA button', v: 'Learn More' },
+                { k: 'Schedule start', v: 'When NEXT_PUBLIC_CHALLENGE_LIVE flips to true' },
+                { k: 'Placements', v: 'IG feed + Reels + FB feed (start broad, let Meta optimise)' },
+                { k: 'Traffic type', v: 'Cold only (retargeting layer added Day 30+)' },
+                { k: 'CAPI test event code', v: 'See META_TEST_EVENT_CODE env (unset in prod)' },
+              ].map(row => (
+                <div key={row.k} className="flex items-start justify-between gap-2 bg-stone-50 border border-stone-200 rounded-lg p-2.5">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-0.5">{row.k}</p>
+                    <p className="text-stone-700 break-words">{row.v}</p>
+                  </div>
+                  <CopyButton value={row.v} />
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card>
             <SectionLabel>Ad Objective & Audience</SectionLabel>
             <div className="space-y-3">
               <div><Heading>Objective</Heading><Body>Cold traffic → Challenge LP direct. Cold paid Meta + gym-floor are the only surfaces that bypass the scorecard (locked rule, see feedback_scorecard_first_routing). Never ad direct to a paid checkout.</Body></div>
@@ -2045,110 +2173,27 @@ export default function StrategyPage() {
             ]} />
           </Card>
 
-          <div className="space-y-3">
-            <SectionLabel>3 Ad Angles - Test Simultaneously</SectionLabel>
-            <Card className="border-amber-500/30 bg-amber-500/5 mb-2">
-              <p className="text-xs font-bold text-amber-800 mb-1">⚠ Historical scripts (pre-Amanda audit)</p>
-              <p className="text-xs text-stone-700 leading-relaxed">Scripts below pre-date the 2026-06-27 Cold Ad Copy Doctrine. They route to /scorecard (now wrong — cold-paid goes direct to /challenge), use &quot;Body State&quot; vocabulary (now &quot;Body Decode&quot; locked), and use a one-line CTA (now two-sentence subs locked). The current locked creative is the 9-variant pipeline at <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">/public/ads/ad-001-...png</code> through <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">ad-009</code>. Keeping these scripts for historical reference of the angle/audience pairing logic, but DO NOT use as-is for new ads.</p>
-            </Card>
-            <p className="text-xs text-stone-700 mb-2">Each angle pairs with a specific archetype ad set above. Run all three at once, judge which combination of angle + audience produces lowest CPL and best scorecard completion. Cut the loser, scale the winner.</p>
-            <ScriptBlock
-              number={1}
-              angle="Silent Frustration — Stressed Executive Woman (01)"
-              hook="You're training. You're eating well. Nothing is moving. Here's why."
-              duration="~22 sec"
-              script="If you're training consistently, eating well, and your body has stopped responding - that's not a discipline problem. That's a body state problem. Your biology is in protection mode. And when it's there, adding more training and cutting more food makes it worse. Before I give anyone a program, I read their body first. Take the free Body State Scorecard - link in bio. Two minutes. Find out which state your body is in."
-            />
-            <ScriptBlock
-              number={2}
-              angle="Contrarian — Perimenopausal Performer (02)"
-              hook="More training and less food is making it worse."
-              duration="~20 sec"
-              script="The standard advice when fat loss stalls - train harder, eat less. That's also the advice that drives cortisol up, suppresses your metabolism, and locks your body into a state where it actively resists fat loss. I've seen it hundreds of times. The problem was never effort. The problem was that nobody read the body before prescribing to it. Take the free Body State Scorecard - link in bio. Two minutes."
-            />
-            <ScriptBlock
-              number={3}
-              angle="Diagnosis — Postnatal Athlete (03)"
-              hook="Your body is in one of three states right now. Find out which one."
-              duration="~23 sec"
-              script="Your body is operating in one of three states right now. Ready - it can respond to training and nutrition. Transitioning - mixed signals, inconsistent results. Or Depleted - in protection mode, actively resisting fat loss and performance. Most people who feel stuck are in Depleted and don't know it. Find out which state you're in. Take the free Body State Scorecard - link in bio. Two minutes. No cost."
-            />
-            <div className="p-3 bg-orange-50 rounded-lg border border-orange-200 text-xs text-stone-700 leading-relaxed">
-              <strong className="text-stone-900">Slipping High Performer (04)</strong> — male executive archetype — primarily reached via LinkedIn (organic) per the LinkedIn tab. If/when an ad-targeted angle for him is needed, script angle: <em className="text-stone-800">"Your capacity is slipping. Your bloods are normal. The system needs to be read, not your testosterone."</em>
-            </div>
+          {/* Cold Ad Library — the 9-variant pipeline shipped 2026-06-27 per
+              the Amanda-audited Cold Ad Copy Doctrine. Each card carries the
+              image preview + every piece of metadata Kade pastes into Meta
+              Ads Manager. Grouped 3 rows × 3 ads by archetype. */}
+          <div className="space-y-4">
+            <SectionLabel>Cold Ad Library — 9 variants (live)</SectionLabel>
+            <p className="text-xs text-stone-700 leading-relaxed">The current cold paid Meta ad pipeline. 3 archetypes × 3 hooks = 9 variants. Two formats: <strong>Statement</strong> (white card, no photo) and <strong>Photo</strong> (Kade portrait + dark slab). Captions follow the Cold Ad Copy Doctrine above (Decode terminology, no personal-attribute hooks, 2-sentence subs, locked CTA). Click any field to copy and paste into Meta Ads Manager.</p>
+
+            {[
+              { name: 'Archetype 01 · Stressed Executive Woman', ads: COLD_ADS.filter(a => a.archetype === 'Stressed Executive Woman') },
+              { name: 'Archetype 02 · Perimenopausal Performer', ads: COLD_ADS.filter(a => a.archetype === 'Perimenopausal Performer') },
+              { name: 'Archetype 03 · Slipping High Performer',  ads: COLD_ADS.filter(a => a.archetype === 'Slipping High Performer') },
+            ].map(group => (
+              <div key={group.name}>
+                <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">{group.name}</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {group.ads.map(ad => <ColdAdCard key={ad.slug} ad={ad} />)}
+                </div>
+              </div>
+            ))}
           </div>
-
-          {/* Ad Graphics */}
-          <Card>
-            <SectionLabel>Image Ad Graphics - Download</SectionLabel>
-            <p className="text-stone-500 text-xs mb-4">Ready-to-use 1080×1080 graphics for Meta image ads. Download and upload directly to Ads Manager. All point to the Body State Scorecard.</p>
-            <div className="space-y-6">
-
-              {/* Graphic 1 - Statement card */}
-              <div>
-                <p className="text-xs font-semibold text-[#1A1A1A] mb-1">Ad 1 - Statement</p>
-                <p className="text-xs text-stone-500 mb-3">Angle: Silent Frustration. Clean text card, no photo.</p>
-                <div className="grid sm:grid-cols-2 gap-3 items-start">
-                  <div className="rounded-xl overflow-hidden border border-stone-200 bg-stone-50" style={{ aspectRatio: '1/1' }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/api/content/graphic?style=insight&label=Body+State+Problem&text=Your+body+stopped+responding.+Here%27s+why.&sub=Training+consistently.+Eating+well.+Nothing+moving.+That%27s+not+a+discipline+problem.+Take+the+free+Body+State+Scorecard.+Link+in+bio." alt="Ad 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </div>
-                  <div className="space-y-2">
-                    <a href="/api/content/graphic?style=insight&label=Body+State+Problem&text=Your+body+stopped+responding.+Here%27s+why.&sub=Training+consistently.+Eating+well.+Nothing+moving.+That%27s+not+a+discipline+problem.+Take+the+free+Body+State+Scorecard.+Link+in+bio." download="ad-statement.png" className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-xs font-semibold rounded-lg transition-colors">↓ Download 1080×1080</a>
-                    <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 text-xs text-stone-600 leading-relaxed">
-                      <p className="text-stone-400 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
-                      Your body stopped responding. Here&apos;s why.<br /><br />Training consistently. Eating well. Nothing moving. That&apos;s not a discipline problem. That&apos;s a body state problem.<br /><br />Take the free Body State Scorecard. Link in bio. Two minutes.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Graphic 2 - Photo card */}
-              <div>
-                <p className="text-xs font-semibold text-[#1A1A1A] mb-1">Ad 2 - Photo</p>
-                <p className="text-xs text-stone-500 mb-3">Angle: Contrarian. Face + statement. Higher trust signal.</p>
-                <div className="grid sm:grid-cols-2 gap-3 items-start">
-                  <div className="rounded-xl overflow-hidden border border-stone-200 bg-stone-50" style={{ aspectRatio: '1/1' }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/api/content/graphic?style=photo-split&text=More+training+and+less+food+is+making+it+worse.&sub=Take+the+free+Body+State+Scorecard.+Link+in+bio." alt="Ad 2" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </div>
-                  <div className="space-y-2">
-                    <a href="/api/content/graphic?style=photo-split&text=More+training+and+less+food+is+making+it+worse.&sub=Take+the+free+Body+State+Scorecard.+Link+in+bio." download="ad-photo.png" className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-xs font-semibold rounded-lg transition-colors">↓ Download 1080×1080</a>
-                    <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 text-xs text-stone-600 leading-relaxed">
-                      <p className="text-stone-400 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
-                      More training and less food is making it worse.<br /><br />The standard advice when fat loss stalls drives cortisol up and locks your body into a state where it actively resists change.<br /><br />Take the free Body State Scorecard. Link in bio. Two minutes.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Graphic 3 - Body states carousel */}
-              <div>
-                <p className="text-xs font-semibold text-[#1A1A1A] mb-1">Ad 3 - Body States (3 slides)</p>
-                <p className="text-xs text-stone-500 mb-3">Angle: Diagnosis. Carousel ad - swipe to find your state.</p>
-                <div className="grid grid-cols-3 gap-2 mb-3">
-                  {[
-                    { accent: 'red', label: 'Depleted State | Score 5–8', text: 'Your body is in protection mode.', sub: 'Cortisol is elevated, metabolism is suppressed. Adding more training and less food will make this worse.' },
-                    { accent: 'amber', label: 'Transitioning State | Score 9–11', text: 'Mixed signals. Something is blocking your response.', sub: 'Sleep, stress, or a mismatch between training load and current biological state.' },
-                    { accent: 'teal', label: 'Ready State | Score 12–15', text: 'Your biology is in a position to respond.', sub: 'If fat loss or performance isn\'t happening at this score, the issue is in the prescription.' },
-                  ].map((s, i) => (
-                    <div key={i} className="space-y-1">
-                      <div className="rounded-xl overflow-hidden border border-stone-200" style={{ aspectRatio: '1/1' }}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={`/api/content/graphic?style=body-state&accent=${s.accent}&label=${encodeURIComponent(s.label)}&text=${encodeURIComponent(s.text)}&sub=${encodeURIComponent(s.sub)}`} alt={`Slide ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      </div>
-                      <a href={`/api/content/graphic?style=body-state&accent=${s.accent}&label=${encodeURIComponent(s.label)}&text=${encodeURIComponent(s.text)}&sub=${encodeURIComponent(s.sub)}`} download={`ad-body-state-slide-${i + 1}.png`} className="flex items-center justify-center w-full px-2 py-1.5 bg-stone-200 hover:bg-stone-300 text-stone-700 text-[10px] font-semibold rounded-lg transition-colors">↓ Slide {i + 1}</a>
-                    </div>
-                  ))}
-                </div>
-                <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 text-xs text-stone-600 leading-relaxed">
-                  <p className="text-stone-400 mb-1 font-semibold uppercase tracking-widest text-[10px]">Ad copy</p>
-                  Your body is operating in one of three states right now. Swipe to find out which one and what it means for your training and fat loss.<br /><br />Take the free Body State Scorecard. Link in bio. Two minutes. No cost.
-                </div>
-              </div>
-
-            </div>
-          </Card>
 
           <Card>
             <SectionLabel>Filming Guide - Gym Session</SectionLabel>
