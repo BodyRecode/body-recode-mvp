@@ -23,7 +23,7 @@
       "photo": "11",
       "hook_1": "After 20 years of coaching,",
       "hook_2": "this is what I should have built first.",
-      "sub_1": "The read that comes before the prescription.",
+      "sub_1": "The read before the prescription.",
       "sub_2": "Live Monday 13 July."
     },
     {
@@ -32,7 +32,8 @@
       "photo": "12",
       "hook_1": "I built something.",
       "hook_2": "It opens 13 July.",
-      "sub_1": "14 days. Free. The read that should never sit behind a paywall."
+      "sub_1": "14 days. Free.",
+      "sub_2": "The read should come first."
     },
     {
       "slug": "br-2026-07-06_authority_reveal",
@@ -40,7 +41,7 @@
       "hook_1": "The 14-Day Body Decode",
       "hook_2": "Challenge.",
       "sub_1": "One week from today. Free.",
-      "sub_2": "The read your body has been waiting for."
+      "sub_2": "The read your body has waited for."
     },
     {
       "slug": "br-2026-07-07_contrarian_free",
@@ -74,7 +75,7 @@
       "photo": "7",
       "hook_1": "The Challenge reads",
       "hook_2": "the pattern.",
-      "sub_1": "The correction comes next. The Blueprint is the six weeks that move it.",
+      "sub_1": "The Blueprint corrects it. Six weeks.",
       "sub_2": "Read first. Then act."
     },
     {
@@ -83,14 +84,15 @@
       "photo": "5",
       "hook_1": "Tomorrow.",
       "hook_2": "Doors open Monday.",
-      "sub_1": "14 days. Free. The first move when nothing else has worked."
+      "sub_1": "14 days. Free.",
+      "sub_2": "The first move that works."
     },
     {
       "slug": "br-2026-07-15_pattern_doors-open",
       "type": "authority",
       "hook_1": "The 14-day read",
       "hook_2": "is now open.",
-      "sub_1": "Take it whenever you're ready. Free. Evergreen.",
+      "sub_1": "Take it whenever you're ready. Free.",
       "sub_2": "Link in bio."
     }
   ]
