@@ -745,28 +745,28 @@ const COLD_ADS: ColdAd[] = [
   // 01 Stressed Executive Woman
   { slug: 'ad-001-stressed-exec-discipline', archetype: 'Stressed Executive Woman', format: 'Statement', photo: null,
     hook: "Training hard. Eating clean. Body won't shift?",
-    primaryText: "When effort stops moving the needle, the answer isn't more effort. There's a specific pattern your body has settled into — and it can be decoded in 14 days. Free.",
+    primaryText: "When effort stops moving the needle, the answer isn't more effort. There's a specific pattern your body has settled into - and it can be decoded in 14 days. Free.",
     headline: "Free 14-Day Body Decode Challenge",
     description: "Find your pattern. No payment." },
   { slug: 'ad-002-stressed-exec-doing-everything-right', archetype: 'Stressed Executive Woman', format: 'Photo', photo: 'kade-10',
     hook: "Doing everything right. Nothing is working.",
-    primaryText: "Most high-performers who hit this wall assume the answer is to push harder. It's almost never the answer. There's a specific pattern in how your body's responding — decode it in 14 days, free.",
+    primaryText: "Most high-performers who hit this wall assume the answer is to push harder. It's almost never the answer. There's a specific pattern in how your body's responding - decode it in 14 days, free.",
     headline: "The pattern is the problem, not your effort.",
     description: "Free 14-day diagnostic." },
   { slug: 'ad-003-stressed-exec-cortisol-storage', archetype: 'Stressed Executive Woman', format: 'Statement', photo: null,
     hook: "Stressed and over 40? Your body's rules just changed.",
-    primaryText: "At 40+, ongoing stress rewires how your body stores fat, recovers, and responds to training. The old rules stop working. There's a specific pattern underneath — decode yours in 14 days, free.",
+    primaryText: "At 40+, ongoing stress rewires how your body stores fat, recovers, and responds to training. The old rules stop working. There's a specific pattern underneath - decode yours in 14 days, free.",
     headline: "Stress changes the rules. Decode yours.",
     description: "Free 14-day Challenge." },
   // 02 Perimenopausal Performer
   { slug: 'ad-004-peri-same-training', archetype: 'Perimenopausal Performer', format: 'Statement', photo: null,
     hook: "Perimenopause changed the rules. Most plans didn't.",
-    primaryText: "Most training and nutrition plans were written for a hormonal environment that perimenopause has quietly changed. That's why the same effort stopped producing the same results. There's a specific pattern that works now — decode yours in 14 days, free.",
+    primaryText: "Most training and nutrition plans were written for a hormonal environment that perimenopause has quietly changed. That's why the same effort stopped producing the same results. There's a specific pattern that works now - decode yours in 14 days, free.",
     headline: "Built for the body you have now.",
     description: "Free 14-day diagnostic." },
   { slug: 'ad-005-peri-fasted-cardio', archetype: 'Perimenopausal Performer', format: 'Statement', photo: null,
     hook: "Fasted cardio used to work. Now it makes you tired.",
-    primaryText: "Fasted cardio at 30 and fasted cardio at 45 are not the same intervention. The same input lands on a different hormonal environment — and that's why it stopped working. Decode the new rules in 14 days, free.",
+    primaryText: "Fasted cardio at 30 and fasted cardio at 45 are not the same intervention. The same input lands on a different hormonal environment - and that's why it stopped working. Decode the new rules in 14 days, free.",
     headline: "Same effort. Different body. Different rules.",
     description: "Free 14-day Body Decode." },
   { slug: 'ad-006-peri-bloods-fine', archetype: 'Perimenopausal Performer', format: 'Photo', photo: 'kade-11',
@@ -782,12 +782,12 @@ const COLD_ADS: ColdAd[] = [
     description: "Free 14-day diagnostic for men 40+." },
   { slug: 'ad-008-slipping-capacity-45', archetype: 'Slipping High Performer', format: 'Statement', photo: null,
     hook: "Over 40 and training harder for less?",
-    primaryText: "At 40+, the gap between effort in and result out widens for a reason — and it's not just ageing. There's a specific pattern in how the body is responding to load, recovery, and fuel. Decode yours in 14 days, free.",
+    primaryText: "At 40+, the gap between effort in and result out widens for a reason - and it's not just ageing. There's a specific pattern in how the body is responding to load, recovery, and fuel. Decode yours in 14 days, free.",
     headline: "More effort, less result. Decode why.",
     description: "Free 14-day Challenge." },
   { slug: 'ad-009-slipping-every-protocol', archetype: 'Slipping High Performer', format: 'Photo', photo: 'kade-12',
     hook: "If every protocol stalls, look at the starting point.",
-    primaryText: "When every protocol — cut, fast, TRT, peptide — produces the same diminishing returns, the issue isn't the protocol. The issue is the body it's being prescribed to. Read the starting point first. Decode your pattern in 14 days, free.",
+    primaryText: "When every protocol - cut, fast, TRT, peptide - produces the same diminishing returns, the issue isn't the protocol. The issue is the body it's being prescribed to. Read the starting point first. Decode your pattern in 14 days, free.",
     headline: "Read the starting point before the next protocol.",
     description: "Free 14-day diagnostic." },
 ]
@@ -809,7 +809,7 @@ function WaveStatusCard() {
       <Card className="border-green-500/30 bg-green-500/5">
         <SectionLabel>Wave Status · Evergreen</SectionLabel>
         <p className="text-2xl font-bold text-[#1A1A1A] mt-1">Open enrolment</p>
-        <p className="text-xs text-stone-600 mt-2 leading-relaxed">All capped waves complete. Doors stay open — no cap, no cohort, evergreen as locked in the original spec.</p>
+        <p className="text-xs text-stone-600 mt-2 leading-relaxed">All capped waves complete. Doors stay open - no cap, no cohort, evergreen as locked in the original spec.</p>
       </Card>
     )
   }
