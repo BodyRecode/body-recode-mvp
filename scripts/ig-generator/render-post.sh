@@ -133,12 +133,12 @@ case "$TYPE" in
     Y=805
     for i in $(seq 0 $((LIST_COUNT - 1))); do
       ITEM="$(echo "$SPEC" | jq -r ".list[$i]")"
-      CMD+=( -font "$SANS_BOLD" -pointsize 26 -fill "#1B6DFC" -annotate "+96+${Y}" "→" )
-      CMD+=( -font "$SANS"      -pointsize 24 -fill "#2A2A2A" -annotate "+146+${Y}" "$ITEM" )
-      Y=$((Y + 50))
+      CMD+=( -font "$SANS_BOLD" -pointsize 32 -fill "#1B6DFC" -annotate "+96+${Y}" "→" )
+      CMD+=( -font "$SANS"      -pointsize 32 -fill "#2A2A2A" -annotate "+160+${Y}" "$ITEM" )
+      Y=$((Y + 60))
     done
-    # Soft CTA (optional): small Signal Blue italic line below the list.
-    [ -n "$SOFT_CTA" ] && CMD+=( -font "$SANS_BOLD" -pointsize 22 -fill "#1B6DFC" -annotate "+96+$((Y + 20))" "$SOFT_CTA" )
+    # Soft CTA (optional): Signal Blue line below the list.
+    [ -n "$SOFT_CTA" ] && CMD+=( -font "$SANS_BOLD" -pointsize 28 -fill "#1B6DFC" -annotate "+96+$((Y + 28))" "$SOFT_CTA" )
     CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "#7C7C7C" -gravity south -annotate +0+96 "$HANDLE" )
     ;;
 
