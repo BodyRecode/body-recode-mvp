@@ -427,7 +427,7 @@ case "$TYPE" in
         # Pattern badge eyebrow
         CMD+=( -font "$SANS_BOLD" -pointsize 36 -fill "$PATTERN_COLOR" -gravity center -annotate +0-500 "PATTERN $LABEL" )
         # Pattern name big
-        CMD+=( \( -background '#0F0F0F' -fill white -font "$SANS_BOLD" -pointsize 116 -size 888x -gravity center caption:"$PATTERN_NAME" \) -gravity center -geometry +0-280 -composite )
+        CMD+=( \( -background '#0F0F0F' -fill white -font "$SANS_BOLD" -pointsize 96 -size 888x -gravity center caption:"$PATTERN_NAME" \) -gravity center -geometry +0-280 -composite )
         # Hook body
         CMD+=( \( -background '#0F0F0F' -fill white -font "$SANS_BOLD" -pointsize 50 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0+60 -composite )
         [ -n "$SUB1" ] && CMD+=( \( -background '#0F0F0F' -fill "#7BB3FF" -font "$SANS_BOLD" -pointsize 42 -size 888x -gravity center caption:"$SUB1" \) -gravity center -geometry +0+380 -composite )
