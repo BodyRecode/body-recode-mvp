@@ -256,7 +256,7 @@ case "$TYPE" in
         SCMD+=( "$LOGO_W_180" -gravity northwest -geometry +96+96 -compose over -composite )
         SCMD+=( -font "$SANS_BOLD" -pointsize 70 -fill white -gravity center -annotate +0-120 "$S_HOOK" )
         [ -n "$S_HOOK2" ] && SCMD+=( -font "$SANS_BOLD" -pointsize 70 -fill white -gravity center -annotate +0-30 "$S_HOOK2" )
-        [ -n "$S_SUB"   ] && SCMD+=( -font "$SANS" -pointsize 26 -fill "rgba(255,255,255,0.75)" -gravity center -annotate +0+80 "$S_SUB" )
+        [ -n "$S_SUB"   ] && SCMD+=( -font "$SANS" -pointsize 36 -fill "rgba(255,255,255,0.92)" -gravity center -annotate +0+90 "$S_SUB" )
         # CTA pill (centered horizontally, shifted down for taller canvas)
         SCMD+=( -fill "#1B6DFC" -draw "roundrectangle 360,1090 720,1142 8,8" )
         SCMD+=( -font "$SANS_BOLD" -pointsize 22 -fill white -gravity north -annotate +0+1102 "$S_CTA_TXT" )
@@ -270,7 +270,7 @@ case "$TYPE" in
         if [ "$S_BLUE" = "true" ]; then HC="#1B6DFC"; else HC="#1A1A1A"; fi
         SCMD+=( -font "$SANS_BOLD" -pointsize 76 -fill "$HC" -gravity center -annotate +0-60 "$S_HOOK" )
         [ -n "$S_HOOK2" ] && SCMD+=( -font "$SANS_BOLD" -pointsize 76 -fill "$HC" -gravity center -annotate +0+40 "$S_HOOK2" )
-        [ -n "$S_SUB"   ] && SCMD+=( -font "$SANS" -pointsize 28 -fill "#5C5C5C" -gravity center -annotate +0+150 "$S_SUB" )
+        [ -n "$S_SUB"   ] && SCMD+=( -font "$SANS" -pointsize 36 -fill "#3A3A3A" -gravity center -annotate +0+170 "$S_SUB" )
         SCMD+=( -font "$SANS_BOLD" -pointsize 16 -fill "#7C7C7C" -gravity northeast -annotate +96+121 "$S_DISPLAY" )
         SCMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "#7C7C7C" -gravity south -annotate +0+96 "$HANDLE" )
       fi
