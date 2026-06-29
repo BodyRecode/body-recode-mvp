@@ -1968,7 +1968,7 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Ad Objective & Audience</SectionLabel>
             <div className="space-y-3">
-              <div><Heading>Objective</Heading><Body>Cold traffic → Scorecard. Never direct to purchase.</Body></div>
+              <div><Heading>Objective</Heading><Body>Cold traffic → Challenge LP direct. Cold paid Meta + gym-floor are the only surfaces that bypass the scorecard (locked rule, see feedback_scorecard_first_routing). Never ad direct to a paid checkout.</Body></div>
               <div>
                 <Heading>Audience — Archetype-Targeted</Heading>
                 <Body>Run 3 separate ad sets, one per archetype, instead of one broad set. Each set narrows on the interests + behaviours that index Depleted-state for that archetype. The scorecard catches and routes them regardless.</Body>
@@ -2021,6 +2021,19 @@ export default function StrategyPage() {
             </div>
           </Card>
 
+          <Card className="border-blue-500/30 bg-blue-500/5">
+            <SectionLabel>Cold Ad Copy Doctrine — Amanda-audited, locked 2026-06-27</SectionLabel>
+            <Body>Six locked rules for every cold paid Meta ad creative. Paid Meta only — these do NOT cascade to organic (organic keeps state language + scorecard CTAs; see Creative Principle #1 in the Marketing Strategy doc for the deliberate divergence). The current cold pipeline of 9 ad variants lives at <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">/public/ads/ad-001-...png</code> through <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">ad-009</code>, rendered via <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">scripts/ig-generator/render-post.sh</code> (template type <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">ad</code>).</Body>
+            <div className="mt-3 space-y-2 text-[12px] text-stone-700">
+              <p><span className="font-bold text-[#1A1A1A]">1. Meta personal-attributes policy.</span> Hooks name the audience or life stage, NEVER the viewer&apos;s body. &quot;Belly fat at 45?&quot; triggers Meta&apos;s policy — reframe to &quot;Over 40 and training harder for less?&quot;</p>
+              <p><span className="font-bold text-[#1A1A1A]">2. &quot;Decode&quot; terminology locked.</span> Use Body Decode / Decode / Find your pattern. NOT &quot;state&quot; / &quot;signalling&quot; / &quot;Fat Map&quot; — that vocabulary belongs to organic.</p>
+              <p><span className="font-bold text-[#1A1A1A]">3. Two-sentence subs.</span> Reframe + Challenge call. Not a tagline. Example: &quot;Ongoing stress can change how your body stores fat and recovers. Find your pattern in the free 14-day Body Decode Challenge.&quot;</p>
+              <p><span className="font-bold text-[#1A1A1A]">4. CTA locked.</span> &quot;Start the free 14-day Challenge.&quot; Outcome-specific, includes the 14-day timebox, names &quot;free&quot;.</p>
+              <p><span className="font-bold text-[#1A1A1A]">5. Banner sub locked.</span> &quot;FREE · 14-DAY BODY DECODE CHALLENGE&quot; label + &quot;Find your pattern in 14 days. No payment.&quot; sub. &quot;No payment&quot; removes freebie suspicion.</p>
+              <p><span className="font-bold text-[#1A1A1A]">6. Photo variant rule.</span> Don&apos;t reuse the same Kade photo across photo ads (face fatigue). kade-10 for question hooks, kade-11 for warm coach-mode, kade-12 for declarative.</p>
+            </div>
+          </Card>
+
           <Card>
             <SectionLabel>Creative Format</SectionLabel>
             <BulletList items={[
@@ -2034,6 +2047,10 @@ export default function StrategyPage() {
 
           <div className="space-y-3">
             <SectionLabel>3 Ad Angles - Test Simultaneously</SectionLabel>
+            <Card className="border-amber-500/30 bg-amber-500/5 mb-2">
+              <p className="text-xs font-bold text-amber-800 mb-1">⚠ Historical scripts (pre-Amanda audit)</p>
+              <p className="text-xs text-stone-700 leading-relaxed">Scripts below pre-date the 2026-06-27 Cold Ad Copy Doctrine. They route to /scorecard (now wrong — cold-paid goes direct to /challenge), use &quot;Body State&quot; vocabulary (now &quot;Body Decode&quot; locked), and use a one-line CTA (now two-sentence subs locked). The current locked creative is the 9-variant pipeline at <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">/public/ads/ad-001-...png</code> through <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">ad-009</code>. Keeping these scripts for historical reference of the angle/audience pairing logic, but DO NOT use as-is for new ads.</p>
+            </Card>
             <p className="text-xs text-stone-700 mb-2">Each angle pairs with a specific archetype ad set above. Run all three at once, judge which combination of angle + audience produces lowest CPL and best scorecard completion. Cut the loser, scale the winner.</p>
             <ScriptBlock
               number={1}
