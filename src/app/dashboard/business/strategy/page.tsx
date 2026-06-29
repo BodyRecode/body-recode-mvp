@@ -2105,7 +2105,7 @@ export default function StrategyPage() {
                 { k: 'Optimization event', v: 'CompleteRegistration → Lead (swap 24-48h post-flip)' },
                 { k: 'Action source', v: 'Website' },
                 { k: 'CTA button', v: 'Learn More' },
-                { k: 'Schedule start', v: 'When NEXT_PUBLIC_CHALLENGE_LIVE flips to true' },
+                { k: 'Schedule start', v: 'Monday 13 July 2026 (locked 2026-06-29) — same day NEXT_PUBLIC_CHALLENGE_LIVE flips' },
                 { k: 'Placements', v: 'IG feed + Reels + FB feed (start broad, let Meta optimise)' },
                 { k: 'Traffic type', v: 'Cold only (retargeting layer added Day 30+)' },
                 { k: 'CAPI test event code', v: 'See META_TEST_EVENT_CODE env (unset in prod)' },
