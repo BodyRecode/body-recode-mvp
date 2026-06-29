@@ -20,7 +20,8 @@
 //   cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live
 //   cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --product=challenge
 //   cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --no-af-newstead
-//   cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --wave=2  # wave-2 reopen after Wave 1 fills
+//   cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --wave=2  # wave-2 reopen after Wave 1 fills (variant A, scarcity-led)
+//   cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --wave=2 --variant=B  # wave-2 reopen, variant B (curiosity-led, no scarcity in subject)
 
 import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
@@ -39,6 +40,11 @@ const PRODUCT_FILTER = (process.argv.find(a => a.startsWith('--product='))?.spli
 // --wave=2/3 fire after the prior wave fills, telling waitlist signups the
 // next wave is now open. Defaults to 1 for backward compatibility.
 const WAVE = parseInt((process.argv.find(a => a.startsWith('--wave='))?.split('=')[1] ?? '1'), 10)
+// Wave-2+ A/B copy variants. Default (A) leads with scarcity ("25 spots,
+// first in first served"). B leads with curiosity ("the read your body
+// has been waiting for is open"). Run the same waitlist split-tested if
+// the audience is big enough OR pick the one that fits the moment.
+const VARIANT = (process.argv.find(a => a.startsWith('--variant='))?.split('=')[1] ?? 'A').toUpperCase()
 
 type Product = 'challenge' | 'blueprint' | 'membership'
 
@@ -59,6 +65,12 @@ const sleep = (ms: number) => new Promise(r => setTimeout(r, ms))
 
 function subjectFor(product: Product, firstName: string): string {
   if (WAVE >= 2) {
+    // VARIANT B: curiosity-led (no scarcity in subject)
+    if (VARIANT === 'B') {
+      if (WAVE === 4) return `${firstName}, the 14-Day Body Decode is now open enrolment.`
+      return `${firstName}, your wave just opened.`
+    }
+    // VARIANT A (default): scarcity-led
     if (product === 'challenge') return `${firstName}, Wave ${WAVE} just opened (${WAVE === 4 ? 'evergreen access' : '25 spots'}).`
     if (product === 'blueprint') return `${firstName}, Wave ${WAVE} of the Challenge just opened.`
     return `${firstName}, Wave ${WAVE} of the Challenge just opened.`
@@ -89,18 +101,22 @@ function ctaFor(product: Product): { label: string; href: string } {
 function buildBody(product: Product, firstName: string, includeAfNewstead: boolean): string {
   const cta = ctaFor(product)
 
-  // Headline block - product-aware + wave-aware
+  // Headline block - product-aware + wave-aware + variant-aware
   const headline = WAVE >= 2
-    ? `Wave ${WAVE} just opened.`
+    ? (VARIANT === 'B'
+        ? (WAVE === 4 ? 'The read your body has been waiting for is now open.' : 'Your wave just opened.')
+        : `Wave ${WAVE} just opened.`)
     : product === 'challenge'
     ? 'The 14-Day Body Decode Challenge is open.'
     : product === 'blueprint'
     ? 'The 14-Day Challenge is open (and it comes first).'
     : 'The 14-Day Challenge is open (and it comes before Membership).'
 
-  // Opening - product-aware + wave-aware. Direct, no hype.
+  // Opening - product-aware + wave-aware + variant-aware. Direct, no hype.
   const opening = WAVE >= 2
-    ? `Hi ${firstName},<br /><br />Wave ${WAVE - 1} filled. You joined the waitlist for what came next, and Wave ${WAVE} of the 14-Day Body Decode Challenge is now open. ${WAVE === 4 ? 'No cap from here - doors stay open.' : '25 spots, first in first served.'} Free. No payment.`
+    ? (VARIANT === 'B'
+        ? `Hi ${firstName},<br /><br />You joined the waitlist because the first wave was full when you came looking. Your wave is now open. The same 14-Day Body Decode - the read that comes before the prescription - is ready for you. Free. No payment. ${WAVE === 4 ? 'No cap from here on; doors stay open.' : 'When this wave fills, the next one opens.'}`
+        : `Hi ${firstName},<br /><br />Wave ${WAVE - 1} filled. You joined the waitlist for what came next, and Wave ${WAVE} of the 14-Day Body Decode Challenge is now open. ${WAVE === 4 ? 'No cap from here - doors stay open.' : '25 spots, first in first served.'} Free. No payment.`)
     : product === 'challenge'
     ? `Hi ${firstName},<br /><br />The 14-Day Body Decode Challenge is now live. Free. No payment. Take it whenever you are ready.`
     : product === 'blueprint'
@@ -158,7 +174,7 @@ async function main() {
   const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
   const includeAfNewstead = !NO_AF
 
-  console.log(`[launch-email] Wave ${WAVE} broadcast${WAVE >= 2 ? ` (wave-${WAVE} reopen, not initial launch)` : ' (initial launch)'}`)
+  console.log(`[launch-email] Wave ${WAVE} broadcast${WAVE >= 2 ? ` (wave-${WAVE} reopen, not initial launch)` : ' (initial launch)'}${WAVE >= 2 ? ` · variant ${VARIANT}` : ''}`)
   console.log(includeAfNewstead ? '[launch-email] AF Newstead founding-partner block: INCLUDED' : '[launch-email] AF Newstead founding-partner block: STRIPPED (--no-af-newstead)')
 
   if (!LIVE) {
