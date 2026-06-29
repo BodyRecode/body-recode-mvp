@@ -150,9 +150,9 @@ case "$TYPE" in
     [ -z "$PHOTO" ] && { echo "coach template requires .photo" >&2; exit 1; }
     PF="$(photo_path "$PHOTO")"
     CMD+=( "$PF" -resize 1080x1350^ -gravity center -extent 1080x1350 -colorspace gray -colorspace sRGB )
-    CMD+=( '(' -size 1080x1350 radial-gradient:'rgba(0,0,0,0)-rgba(0,0,0,0.85)' ')' -compose multiply -composite )
+    CMD+=( '(' -size 1080x1350 radial-gradient:'rgba(0,0,0,0)-rgba(0,0,0,0.62)' ')' -compose multiply -composite )
     # Bottom dark slab covers the text region (proportionally taller than the 1080² version)
-    CMD+=( -fill "rgba(0,0,0,0.55)" -draw "rectangle 0,900 1080,1350" )
+    CMD+=( -fill "rgba(0,0,0,0.48)" -draw "rectangle 0,900 1080,1350" )
     CMD+=( "$LOGO_W_180" -gravity northwest -geometry +96+96 -compose over -composite )
 
     # Build the line list with their fonts, then close the quote on the last one
@@ -189,7 +189,7 @@ case "$TYPE" in
 
     CMD+=( "$PF" -resize 1080x1350^ -gravity center -extent 1080x1350 -colorspace gray -colorspace sRGB )
     # Gradient at the bottom — covers ~625px from bottom edge (proportional scale of original 500/1080)
-    CMD+=( '(' -size 1080x625 gradient:'rgba(0,0,0,0)-rgba(0,0,0,0.95)' ')' -geometry +0+725 -compose over -composite )
+    CMD+=( '(' -size 1080x625 gradient:'rgba(0,0,0,0)-rgba(0,0,0,0.82)' ')' -geometry +0+725 -compose over -composite )
     CMD+=( "$LOGO_W_180" -gravity northwest -geometry +96+96 -compose over -composite )
     CMD+=( -fill "#1B6DFC" -draw "rectangle 96,855 160,863" )
     CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -gravity northwest -annotate +176+849 "$CTA_EYEBROW" )
