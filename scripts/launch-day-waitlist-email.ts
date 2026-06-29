@@ -20,6 +20,7 @@
 //   cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live
 //   cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --product=challenge
 //   cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --no-af-newstead
+//   cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --wave=2  # wave-2 reopen after Wave 1 fills
 
 import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
@@ -34,6 +35,10 @@ import { appUrl } from '../src/lib/app-url'
 const LIVE = process.argv.includes('--live')
 const NO_AF = process.argv.includes('--no-af-newstead')
 const PRODUCT_FILTER = (process.argv.find(a => a.startsWith('--product='))?.split('=')[1] ?? '')
+// Wave-tiered cap: --wave=1 is the original launch-day broadcast (founding 50).
+// --wave=2/3 fire after the prior wave fills, telling waitlist signups the
+// next wave is now open. Defaults to 1 for backward compatibility.
+const WAVE = parseInt((process.argv.find(a => a.startsWith('--wave='))?.split('=')[1] ?? '1'), 10)
 
 type Product = 'challenge' | 'blueprint' | 'membership'
 
@@ -53,6 +58,11 @@ const sleep = (ms: number) => new Promise(r => setTimeout(r, ms))
 // ── CONTENT PER PRODUCT ──────────────────────────────────────────────
 
 function subjectFor(product: Product, firstName: string): string {
+  if (WAVE >= 2) {
+    if (product === 'challenge') return `${firstName}, Wave ${WAVE} just opened (${WAVE === 4 ? 'evergreen access' : '25 spots'}).`
+    if (product === 'blueprint') return `${firstName}, Wave ${WAVE} of the Challenge just opened.`
+    return `${firstName}, Wave ${WAVE} of the Challenge just opened.`
+  }
   if (product === 'challenge') return `${firstName}, the 14-Day Body Decode Challenge is open.`
   if (product === 'blueprint') return `${firstName}, the 14-Day Challenge is open (Blueprint update inside).`
   return `${firstName}, the 14-Day Challenge is open (Membership update inside).`
@@ -79,15 +89,19 @@ function ctaFor(product: Product): { label: string; href: string } {
 function buildBody(product: Product, firstName: string, includeAfNewstead: boolean): string {
   const cta = ctaFor(product)
 
-  // Headline block - product-aware
-  const headline = product === 'challenge'
+  // Headline block - product-aware + wave-aware
+  const headline = WAVE >= 2
+    ? `Wave ${WAVE} just opened.`
+    : product === 'challenge'
     ? 'The 14-Day Body Decode Challenge is open.'
     : product === 'blueprint'
     ? 'The 14-Day Challenge is open (and it comes first).'
     : 'The 14-Day Challenge is open (and it comes before Membership).'
 
-  // Opening - product-aware. Direct, no hype.
-  const opening = product === 'challenge'
+  // Opening - product-aware + wave-aware. Direct, no hype.
+  const opening = WAVE >= 2
+    ? `Hi ${firstName},<br /><br />Wave ${WAVE - 1} filled. You joined the waitlist for what came next, and Wave ${WAVE} of the 14-Day Body Decode Challenge is now open. ${WAVE === 4 ? 'No cap from here - doors stay open.' : '25 spots, first in first served.'} Free. No payment.`
+    : product === 'challenge'
     ? `Hi ${firstName},<br /><br />The 14-Day Body Decode Challenge is now live. Free. No payment. Take it whenever you are ready.`
     : product === 'blueprint'
     ? `Hi ${firstName},<br /><br />You joined the Blueprint waitlist. The Blueprint will open soon, but it lands harder when your pattern has already been identified. That is what the 14-Day Body Decode Challenge does, and it is now live. Free. Take it first.`
@@ -144,6 +158,7 @@ async function main() {
   const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
   const includeAfNewstead = !NO_AF
 
+  console.log(`[launch-email] Wave ${WAVE} broadcast${WAVE >= 2 ? ` (wave-${WAVE} reopen, not initial launch)` : ' (initial launch)'}`)
   console.log(includeAfNewstead ? '[launch-email] AF Newstead founding-partner block: INCLUDED' : '[launch-email] AF Newstead founding-partner block: STRIPPED (--no-af-newstead)')
 
   if (!LIVE) {

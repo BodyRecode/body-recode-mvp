@@ -796,6 +796,63 @@ function destinationUrl(slug: string) {
   return `https://bodyrecode.au/challenge?utm_source=meta&utm_campaign=funnelb_cold&utm_content=${slug}`
 }
 
+function WaveStatusCard() {
+  const [data, setData] = useState<{ current: { number: number; label: string; cap: number | null }; taken: number; remaining: number | null; isFull: boolean; isEvergreen: boolean; nextWave: { number: number; label: string } | null } | null>(null)
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    fetch('/api/challenge/wave-status').then(r => r.json()).then(d => { setData(d); setLoading(false) }).catch(() => setLoading(false))
+  }, [])
+  if (loading) return <Card><SectionLabel>Wave Status</SectionLabel><p className="text-sm text-stone-500">Loading...</p></Card>
+  if (!data) return <Card><SectionLabel>Wave Status</SectionLabel><p className="text-sm text-stone-500">Could not load.</p></Card>
+  if (data.isEvergreen) {
+    return (
+      <Card className="border-green-500/30 bg-green-500/5">
+        <SectionLabel>Wave Status · Evergreen</SectionLabel>
+        <p className="text-2xl font-bold text-[#1A1A1A] mt-1">Open enrolment</p>
+        <p className="text-xs text-stone-600 mt-2 leading-relaxed">All capped waves complete. Doors stay open — no cap, no cohort, evergreen as locked in the original spec.</p>
+      </Card>
+    )
+  }
+  const cap = data.current.cap ?? 0
+  const pct = cap > 0 ? Math.min(100, (data.taken / cap) * 100) : 0
+  const accent = data.isFull ? 'border-red-500/40 bg-red-500/5' : pct > 70 ? 'border-amber-500/40 bg-amber-500/5' : 'border-blue-500/30 bg-blue-500/5'
+  const dot = data.isFull ? 'bg-red-500' : pct > 70 ? 'bg-amber-500' : 'bg-blue-500'
+  return (
+    <Card className={accent}>
+      <div className="flex items-center justify-between mb-3">
+        <SectionLabel>Wave {data.current.number} · {data.current.label}</SectionLabel>
+        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-700">
+          <span className={`w-2 h-2 rounded-full ${dot}`} />
+          {data.isFull ? 'FULL' : 'Open'}
+        </span>
+      </div>
+      <div className="flex items-baseline justify-between mb-2">
+        <p className="text-3xl font-bold text-[#1A1A1A]">{data.taken}<span className="text-base font-medium text-stone-500"> / {cap}</span></p>
+        <p className="text-xs text-stone-500">{data.remaining} spots left</p>
+      </div>
+      <div className="w-full h-2 bg-stone-200 rounded-full overflow-hidden">
+        <div className={`h-full rounded-full transition-all duration-300 ${data.isFull ? 'bg-red-500' : 'bg-blue-500'}`} style={{ width: `${pct}%` }} />
+      </div>
+      {data.isFull && data.nextWave && (
+        <p className="text-xs text-stone-700 mt-3 leading-relaxed">
+          <strong>Wave {data.current.number} is full.</strong> Set <code className="text-xs bg-stone-200 px-1.5 py-0.5 rounded">CHALLENGE_CURRENT_WAVE={data.nextWave.number}</code> in Vercel + redeploy to open <strong>{data.nextWave.label}</strong> ({data.nextWave.number === 4 ? 'evergreen' : `${CHALLENGE_WAVES_CLIENT.find(w => w.number === data.nextWave!.number)?.cap ?? '?'} spots`}). Then fire the wave-{data.nextWave.number} broadcast email via <code className="text-xs bg-stone-200 px-1.5 py-0.5 rounded">scripts/launch-day-waitlist-email.ts --live --wave={data.nextWave.number}</code>.
+        </p>
+      )}
+      {!data.isFull && (
+        <p className="text-xs text-stone-600 mt-3 leading-relaxed">Real urgency, not fake. When this fills, /challenge auto-shows the waitlist for {data.nextWave?.label ?? 'the next wave'}.</p>
+      )}
+    </Card>
+  )
+}
+
+// Mirror of CHALLENGE_WAVES from src/lib/challenge-waves.ts (caps only, for UI hints)
+const CHALLENGE_WAVES_CLIENT = [
+  { number: 1, cap: 50 },
+  { number: 2, cap: 25 },
+  { number: 3, cap: 25 },
+  { number: 4, cap: null },
+]
+
 function ColdAdCard({ ad }: { ad: ColdAd }) {
   const url = destinationUrl(ad.slug)
   return (
@@ -2052,6 +2109,8 @@ export default function StrategyPage() {
       {/* ── ADS ── */}
       {tab === 'ads' && (
         <div className="space-y-4">
+          <WaveStatusCard />
+
           <Card className="border-pink-500/30 bg-pink-500/5">
             <SectionLabel>Meta Ads Only</SectionLabel>
             <p className="text-sm text-stone-700 leading-relaxed">All paid spend goes to Meta (Instagram feed + Reels + Facebook). LinkedIn stays organic-only - the executive-reframe channel is a slow-burn brand-build, not a paid acquisition channel. No LinkedIn ads, no LinkedIn boost budget.</p>

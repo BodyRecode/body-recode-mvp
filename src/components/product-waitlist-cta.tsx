@@ -17,11 +17,20 @@ export function WaitlistCTA({
   productName,
   position = 'hero',
   darkBg = false,
+  eyebrow = 'Starting soon',
+  headline,
+  copy,
 }: {
   product: LaunchProduct
   productName: string
   position?: string
   darkBg?: boolean
+  /** Eyebrow chip text. Defaults to "Starting soon". Override for wave-full states like "Wave 1 is full". */
+  eyebrow?: string
+  /** Optional headline shown above the form. */
+  headline?: string
+  /** Optional explanatory copy shown above the form. */
+  copy?: string
 }) {
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', gender: '' })
   const [status, setStatus] = useState<'idle' | 'submitting' | 'done' | 'error'>('idle')
@@ -99,9 +108,19 @@ export function WaitlistCTA({
       }}>
         <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#1B6DFC' }} />
         <span style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: darkBg ? '#B5CFFC' : '#1056D6' }}>
-          Starting soon
+          {eyebrow}
         </span>
       </div>
+      {headline && (
+        <p style={{ fontSize: '20px', fontWeight: 800, color: darkBg ? '#FFFFFF' : '#1A1A1A', margin: '6px 0 4px', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
+          {headline}
+        </p>
+      )}
+      {copy && (
+        <p style={{ fontSize: '14px', color: darkBg ? '#B5CFFC' : '#5C5C5C', margin: '0 0 8px', lineHeight: 1.55 }}>
+          {copy}
+        </p>
+      )}
       <div style={{ display: 'flex', gap: '10px' }}>
         <input type="text" placeholder="First name" value={form.first_name} required
           onChange={e => setForm(f => ({ ...f, first_name: e.target.value }))} style={inputStyle} />

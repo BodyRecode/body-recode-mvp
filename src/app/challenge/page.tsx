@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Dumbbell, Salad, Sunrise, Moon, FileText, Video, Activity, LineChart, ChevronRight, Zap } from 'lucide-react'
 import { isProductLive } from '@/lib/product-launch'
 import { WaitlistCTA } from '@/components/product-waitlist-cta'
@@ -9,6 +9,36 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
   // Pre-launch: capture waitlist instead of live enrollment until NEXT_PUBLIC_CHALLENGE_LIVE=true.
   if (!isProductLive('challenge')) {
     return <WaitlistCTA product="challenge" productName="14-Day Body Decode Challenge" position={position} darkBg={darkBg} />
+  }
+  // Wave-tiered cap: if the current wave is full, render the waitlist form
+  // for the next wave instead of the live enrolment form. Polls the
+  // /api/challenge/wave-status endpoint on mount; also handles the 409
+  // race-condition fallback on submit.
+  const [waveFull, setWaveFull] = useState(false)
+  const [waveLabel, setWaveLabel] = useState('Wave 1')
+  const [nextWaveLabel, setNextWaveLabel] = useState('the next wave')
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/challenge/wave-status').then(r => r.json()).then(data => {
+      if (cancelled) return
+      if (data.isFull) {
+        setWaveFull(true)
+        setWaveLabel(data.current?.label ?? 'this wave')
+        setNextWaveLabel(data.nextWave?.label ?? 'the next wave')
+      }
+    }).catch(() => { /* fall through to enrolment form; 409 fallback will catch full state */ })
+    return () => { cancelled = true }
+  }, [])
+  if (waveFull) {
+    return <WaitlistCTA
+      product="challenge"
+      productName={`14-Day Body Decode Challenge - ${nextWaveLabel}`}
+      position={position}
+      darkBg={darkBg}
+      eyebrow={`${waveLabel} is full`}
+      headline={`Join the waitlist for ${nextWaveLabel}`}
+      copy="Doors reopen in days. Drop your details and you will be the first to know when the next wave opens. No payment. Free 14 days."
+    />
   }
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', gender: '' })
   const [submitting, setSubmitting] = useState(false)
@@ -28,6 +58,14 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
       })
       const data = await res.json()
       if (!res.ok) {
+        // Race-condition fallback: if the wave filled between page-load and
+        // submit, flip the form to waitlist mode instead of showing an error.
+        if (data.error === 'wave_full') {
+          setWaveFull(true)
+          if (data.message) setError(null)
+          setSubmitting(false)
+          return
+        }
         setError(data.error ?? 'Something went wrong. Please try again.')
         setSubmitting(false)
         return

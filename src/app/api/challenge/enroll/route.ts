@@ -6,6 +6,7 @@ import { fireTrigger } from '@/lib/automation-engine'
 import { inngest } from '@/lib/inngest'
 import { sendChallengeWelcomeEmail, sendCoachEnrollmentNotification } from '@/lib/challenge-welcome-email'
 import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
+import { reserveWaveSlot } from '@/lib/challenge-waves'
 
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
@@ -93,7 +94,19 @@ export async function POST(request: NextRequest) {
     token = existing.token
     isReturning = true
   } else {
-    // Create new enrollment
+    // Wave-tiered cap: reject new enrolments if the current wave is full.
+    // Returning enrolees (above) bypass this — they're already in.
+    const slot = await reserveWaveSlot(admin)
+    if (!slot.ok) {
+      return NextResponse.json({
+        error: 'wave_full',
+        message: `Wave ${slot.status.current.number} (${slot.status.current.label}) is full. Join the waitlist to be notified when the next wave opens.`,
+        wave: slot.status.current.number,
+        nextWave: slot.status.nextWave?.number ?? null,
+      }, { status: 409 })
+    }
+
+    // Create new enrollment with wave assignment
     const { data: enrollment, error: enrollError } = await admin
       .from('challenge_enrollments')
       .insert({
@@ -101,6 +114,7 @@ export async function POST(request: NextRequest) {
         enrolled_at: new Date().toISOString(),
         status: 'active',
         current_day: 1,
+        wave: slot.wave,
       })
       .select('token')
       .single()
