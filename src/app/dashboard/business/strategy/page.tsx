@@ -710,7 +710,7 @@ function BulletList({ items }: { items: string[] }) {
   )
 }
 
-// CopyButton — click-to-copy field for Meta Ads Manager paste workflow.
+// CopyButton - click-to-copy field for Meta Ads Manager paste workflow.
 // Shows brief "Copied" confirmation, then reverts. Used by every metadata
 // field in the Cold Ad Library so Kade can paste straight into Meta UI.
 function CopyButton({ value, label }: { value: string; label?: string }) {
@@ -731,7 +731,7 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
   )
 }
 
-// COLD_ADS — the 9-variant cold paid Meta ad library. Source of truth for
+// COLD_ADS - the 9-variant cold paid Meta ad library. Source of truth for
 // the dashboard reference + the per-ad metadata Kade pastes into Meta Ads
 // Manager. Captions follow the Amanda-audited Cold Ad Copy Doctrine:
 // "Decode" terminology, audience-named hooks (no personal-attribute claims),
@@ -1100,7 +1100,7 @@ export default function StrategyPage() {
             <div className="flex items-center gap-2 mb-2"><Tag color="teal">Performance Coaching</Tag></div>
             <Heading>Ongoing Acquisition</Heading>
             <Body>Cold traffic → Scorecard → Zoom 1 booking → Zoom 2 → client. Two channels feeding the same scorecard: Instagram (consumer funnel, Meta ads) and LinkedIn (executive reframe, organic only). Both attributed separately in the CRM.</Body>
-            <p className="text-xs text-stone-700 mt-3"><strong className="text-stone-900">Audience reality:</strong> 100% of paying clients classify as Remediation / Depleted by CFFS. Strategy is calibrated to 4 Depleted-leaning archetypes — see <strong className="text-stone-900">Positioning tab</strong>.</p>
+            <p className="text-xs text-stone-700 mt-3"><strong className="text-stone-900">Audience reality:</strong> 100% of paying clients classify as Remediation / Depleted by CFFS. Strategy is calibrated to 4 Depleted-leaning archetypes - see <strong className="text-stone-900">Positioning tab</strong>.</p>
           </Card>
 
           <Card>
@@ -1127,7 +1127,7 @@ export default function StrategyPage() {
           <Card className="border-red-500/30 bg-red-500/5">
             <SectionLabel>The Scorecard Underestimates Depletion</SectionLabel>
             <p className="text-sm text-stone-800 leading-relaxed mb-2"><strong className="text-red-700">High performers self-report better than they actually are.</strong> The 5-question scorecard is a coarse signal. The 200-question intake (post-purchase) is the real read.</p>
-            <p className="text-sm text-stone-800 leading-relaxed mb-3"><strong className="text-stone-900">Example:</strong> Michael scored 12 (Ready State) on the scorecard, then classified as Remediation / Depleted by CFFS once he became a client. Same pattern across the client base — discipline hides depletion in self-reporting.</p>
+            <p className="text-sm text-stone-800 leading-relaxed mb-3"><strong className="text-stone-900">Example:</strong> Michael scored 12 (Ready State) on the scorecard, then classified as Remediation / Depleted by CFFS once he became a client. Same pattern across the client base - discipline hides depletion in self-reporting.</p>
             <p className="text-sm text-stone-800 leading-relaxed"><strong className="text-stone-900">Implication for marketing:</strong> hooks must be sharp enough to catch high performers who would score themselves Ready on a 5-question quiz but are clinically Depleted. Don\'t soft-pedal the language because the audience self-image is "I\'m doing fine, just stuck."</p>
           </Card>
 
@@ -1267,8 +1267,8 @@ export default function StrategyPage() {
               {[
                 { label: 'Make them feel', value: '"Finally, someone gets it."' },
                 { label: 'Then make them think', value: '"I need to take that scorecard."' },
-                { label: 'CTA rule — Instagram', value: 'One CTA per post. Take the scorecard. One job per post.' },
-                { label: 'CTA rule — LinkedIn', value: 'CTA every 4-5 posts only. Most posts build credibility without selling.' },
+                { label: 'CTA rule - Instagram', value: 'One CTA per post. Take the scorecard. One job per post.' },
+                { label: 'CTA rule - LinkedIn', value: 'CTA every 4-5 posts only. Most posts build credibility without selling.' },
               ].map(({ label, value }) => (
                 <div key={label} className="flex items-start gap-3 py-2 border-b border-stone-200 last:border-0">
                   <span className="text-xs text-stone-500 w-44 shrink-0 mt-0.5">{label}</span>
@@ -1358,7 +1358,7 @@ export default function StrategyPage() {
               <li>Vary the entry (hook, archetype, signal). Always land on the state-first frame.</li>
               <li>Don't draft a post that ends without it. Different door, same room.</li>
               <li>Stop optimising for topic novelty. Optimise for the 100th way to say the same thing.</li>
-              <li>Reels, captions, ads, emails, landing pages, even error states — all bend back to state-first.</li>
+              <li>Reels, captions, ads, emails, landing pages, even error states - all bend back to state-first.</li>
               <li>"I said that already" is the wrong instinct. The next viewer is new. Say it again.</li>
             </ul>
           </Card>
@@ -1391,7 +1391,7 @@ export default function StrategyPage() {
           <Card className="border-amber-500/30 bg-amber-500/5">
             <SectionLabel>Per-post measurement ladder · diagnose where it broke</SectionLabel>
             <p className="text-sm text-stone-700 leading-relaxed mb-3">
-              Conversion is downstream of reach. Before blaming the caption or CTA, find which gate the post failed at. Fix the <strong>earliest broken step</strong> — don&apos;t rewrite the CTA on a post nobody saw.
+              Conversion is downstream of reach. Before blaming the caption or CTA, find which gate the post failed at. Fix the <strong>earliest broken step</strong> - don&apos;t rewrite the CTA on a post nobody saw.
             </p>
             <div className="space-y-2">
               {[
@@ -1400,9 +1400,9 @@ export default function StrategyPage() {
                   label: 'Reach',
                   metric: 'Views (reels) · Impressions (statics)',
                   bad: 'Reels <500 / Statics <300',
-                  diagnose: 'Distribution failure — algorithm didn&apos;t pick it up',
+                  diagnose: 'Distribution failure - algorithm didn&apos;t pick it up',
                   cause: 'Weak hook · wrong format for slot · time of day · hashtags off',
-                  fix: 'Rewrite the hook for the next post in the same slot. Don&apos;t touch the CTA — nobody saw it.',
+                  fix: 'Rewrite the hook for the next post in the same slot. Don&apos;t touch the CTA - nobody saw it.',
                   source: 'IG native analytics on the post',
                 },
                 {
@@ -1410,7 +1410,7 @@ export default function StrategyPage() {
                   label: 'Engagement → Click',
                   metric: 'Link clicks (bio) · Profile visits',
                   bad: 'Views >1K but link clicks = 0',
-                  diagnose: 'CTA failure — people saw it but didn&apos;t act',
+                  diagnose: 'CTA failure - people saw it but didn&apos;t act',
                   cause: 'CTA too subtle · &quot;Scorecard&quot; not named in caption · bio link unclear · friction in tap path',
                   fix: 'Strengthen CTA copy. Name &quot;Scorecard&quot; explicitly. Simplify bio link routing.',
                   source: 'IG analytics + Linktree/native bio clicks',
@@ -1420,7 +1420,7 @@ export default function StrategyPage() {
                   label: 'Click → Conversion',
                   metric: 'Scorecard signups (lead created)',
                   bad: 'Clicks happened but Scorecard signup = 0',
-                  diagnose: 'Landing page failure — people landed but bounced',
+                  diagnose: 'Landing page failure - people landed but bounced',
                   cause: '/scorecard intro page friction · first question off · mobile UX broken · loading too slow',
                   fix: 'Check Vercel analytics bounce rate. Review /scorecard intro copy. Test mobile journey.',
                   source: 'Supabase `leads` table · Vercel analytics',
@@ -1595,9 +1595,9 @@ export default function StrategyPage() {
                   color: 'teal' as const,
                   hooks: [
                     '"You\'re falling asleep at 9pm and wide awake at 3am. Your cortisol is telling you something."',
-                    '"The 3pm crash. The coffee. The afternoon scroll. That\'s not laziness — that\'s a depleted system."',
+                    '"The 3pm crash. The coffee. The afternoon scroll. That\'s not laziness - that\'s a depleted system."',
                     '"You can be the most disciplined person in your office and still have a body that won\'t change. Discipline isn\'t the variable."',
-                    '"If you\'re training before work, leading meetings all day, and still trying to be present at home — your body is in protection mode and you don\'t know it."',
+                    '"If you\'re training before work, leading meetings all day, and still trying to be present at home - your body is in protection mode and you don\'t know it."',
                   ],
                 },
                 {
@@ -1617,7 +1617,7 @@ export default function StrategyPage() {
                     '"You had kids three years ago and still carry the weight. The reason isn\'t time. It\'s recovery debt."',
                     '"You were a runner / netballer / triathlete. Now you can\'t lose 5kg. That\'s a state problem, not a training problem."',
                     '"You\'re training when you can, eating when you can, sleeping when you can. The system can\'t convert any of it because there isn\'t enough of anything."',
-                    '"Postnatal isn\'t a window. It\'s a state — and yours hasn\'t shifted yet."',
+                    '"Postnatal isn\'t a window. It\'s a state - and yours hasn\'t shifted yet."',
                   ],
                 },
                 {
@@ -2117,9 +2117,9 @@ export default function StrategyPage() {
           </Card>
 
           <Card className="border-amber-500/20 bg-amber-500/5">
-            <SectionLabel>Sequence Rule — by funnel</SectionLabel>
+            <SectionLabel>Sequence Rule - by funnel</SectionLabel>
             <Body><strong>Funnel A (organic IG → Scorecard → Zoom → Coaching):</strong> organic-first. Ads are a multiplier on a system that already converts; not a replacement for proving the funnel works. Run organic until consistent scorecard submissions from content. Funnel A doesn&apos;t take paid spend today.</Body>
-            <p className="text-xs text-stone-700 mt-2 leading-relaxed"><strong>Funnel B (cold paid → Challenge → Blueprint → Membership → Coaching):</strong> paid IS the engine. The whole ladder is designed for the cold ad to be the entry point. Don&apos;t wait for organic to prove Funnel B — the Challenge LP, the 14-day product, the Day 0 intake, the ascension cards and the Lead CAPI wire all exist precisely so paid can launch as the primary volume engine. Self-liquidation maths (Blueprint take-rate × $97 + Coaching conversion ≥ CPS) decides whether spend scales; organic doesn&apos;t gate the start.</p>
+            <p className="text-xs text-stone-700 mt-2 leading-relaxed"><strong>Funnel B (cold paid → Challenge → Blueprint → Membership → Coaching):</strong> paid IS the engine. The whole ladder is designed for the cold ad to be the entry point. Don&apos;t wait for organic to prove Funnel B - the Challenge LP, the 14-day product, the Day 0 intake, the ascension cards and the Lead CAPI wire all exist precisely so paid can launch as the primary volume engine. Self-liquidation maths (Blueprint take-rate × $97 + Coaching conversion ≥ CPS) decides whether spend scales; organic doesn&apos;t gate the start.</p>
           </Card>
 
           <div className="grid sm:grid-cols-3 gap-3">
@@ -2140,10 +2140,10 @@ export default function StrategyPage() {
             </Card>
           </div>
 
-          {/* Budget Strategy — Option D Stage Gate (locked 2026-06-29) */}
+          {/* Budget Strategy - Option D Stage Gate (locked 2026-06-29) */}
           <Card className="border-blue-500/30 bg-blue-500/5">
             <SectionLabel>Budget Strategy · Option D · Stage Gate (locked 2026-06-29)</SectionLabel>
-            <Body>Don&apos;t run all 3 archetype ad sets concurrently at the locked $20-30/day budget — at $7-10/day each, Meta&apos;s algorithm can&apos;t converge (it needs ~50 conversions/week per ad set to optimise reliably). Same dollars, divided too thinly. Instead: <strong>stage gate</strong> — prove the dominant archetype first at full optimisation, then expand only on real data.</Body>
+            <Body>Don&apos;t run all 3 archetype ad sets concurrently at the locked $20-30/day budget - at $7-10/day each, Meta&apos;s algorithm can&apos;t converge (it needs ~50 conversions/week per ad set to optimise reliably). Same dollars, divided too thinly. Instead: <strong>stage gate</strong> - prove the dominant archetype first at full optimisation, then expand only on real data.</Body>
 
             <div className="mt-3 space-y-2 text-xs">
               <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
@@ -2153,33 +2153,33 @@ export default function StrategyPage() {
 
               <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
                 <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1">Stage gate decision · End of week 2</p>
-                <p className="text-stone-700 leading-relaxed mb-2"><strong>If CPL hits target:</strong> proceed to Phase 2 — unpause the other two ad sets at $25/day each (total run-rate $75/day). All 3 archetypes test in parallel for weeks 3-4. Additional spend ~$1050 over 2 weeks. By end of week 4 you have clean data across all 3 archetypes.</p>
-                <p className="text-stone-700 leading-relaxed"><strong>If CPL misses target:</strong> DO NOT expand budget. Debug Stressed Exec first — likely culprits in priority order: (1) creative variant mismatch, (2) Day 0 intake friction, (3) Challenge LP conversion, (4) audience interest set too narrow/broad. Fix the root cause, then re-test before spending Phase 2 dollars on the other two archetypes.</p>
+                <p className="text-stone-700 leading-relaxed mb-2"><strong>If CPL hits target:</strong> proceed to Phase 2 - unpause the other two ad sets at $25/day each (total run-rate $75/day). All 3 archetypes test in parallel for weeks 3-4. Additional spend ~$1050 over 2 weeks. By end of week 4 you have clean data across all 3 archetypes.</p>
+                <p className="text-stone-700 leading-relaxed"><strong>If CPL misses target:</strong> DO NOT expand budget. Debug Stressed Exec first - likely culprits in priority order: (1) creative variant mismatch, (2) Day 0 intake friction, (3) Challenge LP conversion, (4) audience interest set too narrow/broad. Fix the root cause, then re-test before spending Phase 2 dollars on the other two archetypes.</p>
               </div>
 
               <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
                 <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1">Why not concurrent at locked budget</p>
-                <p className="text-stone-700 leading-relaxed">$25/day split across 3 ad sets = $8.30/day each. Meta needs ~$50/day per ad set for reliable optimisation. At $8/day, conversion volume is too low for Meta&apos;s algorithm to learn — it shows ads to suboptimal slices of the defined audience, CPL stays high, you spend $350 over 2 weeks and end up with directional noise, not actionable data. Worst-of-all-worlds outcome.</p>
+                <p className="text-stone-700 leading-relaxed">$25/day split across 3 ad sets = $8.30/day each. Meta needs ~$50/day per ad set for reliable optimisation. At $8/day, conversion volume is too low for Meta&apos;s algorithm to learn - it shows ads to suboptimal slices of the defined audience, CPL stays high, you spend $350 over 2 weeks and end up with directional noise, not actionable data. Worst-of-all-worlds outcome.</p>
               </div>
             </div>
           </Card>
 
           <Card>
-            <SectionLabel>Campaign Configuration — Meta Ads Manager</SectionLabel>
+            <SectionLabel>Campaign Configuration - Meta Ads Manager</SectionLabel>
             <Body>The exact values to paste into Meta Ads Manager when setting up the campaign. Click any value to copy.</Body>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               {[
                 { k: 'Campaign name', v: 'BR-FunnelB-Leads-2026Q3' },
                 { k: 'Objective', v: 'Sales (Lead Generation)' },
                 { k: 'Pixel ID', v: '972772552072010' },
-                { k: 'Budget level', v: 'ABO — Ad Set Budget Optimisation (NOT CBO)' },
+                { k: 'Budget level', v: 'ABO - Ad Set Budget Optimisation (NOT CBO)' },
                 { k: 'Phase 1 daily budget', v: '$25 AUD on Stressed Exec ad set only' },
                 { k: 'Phase 1 other ad sets', v: 'Perimenopausal + Slipping HP CREATED but PAUSED' },
                 { k: 'Phase 2 daily budget (post stage gate)', v: '$25 AUD per ad set × 3 = $75/day total' },
                 { k: 'Optimization event', v: 'CompleteRegistration → Lead (swap 24-48h post-flip)' },
                 { k: 'Action source', v: 'Website' },
                 { k: 'CTA button', v: 'Learn More' },
-                { k: 'Schedule start', v: 'Monday 13 July 2026 (locked 2026-06-29) — same day NEXT_PUBLIC_CHALLENGE_LIVE flips' },
+                { k: 'Schedule start', v: 'Monday 13 July 2026 (locked 2026-06-29) - same day NEXT_PUBLIC_CHALLENGE_LIVE flips' },
                 { k: 'Placements', v: 'IG feed + Reels + FB feed (start broad, let Meta optimise)' },
                 { k: 'Traffic type', v: 'Cold only (retargeting layer added Day 30+)' },
                 { k: 'CAPI test event code', v: 'See META_TEST_EVENT_CODE env (unset in prod)' },
@@ -2200,7 +2200,7 @@ export default function StrategyPage() {
             <div className="space-y-3">
               <div><Heading>Objective</Heading><Body>Cold traffic → Challenge LP direct. Cold paid Meta + gym-floor are the only surfaces that bypass the scorecard (locked rule, see feedback_scorecard_first_routing). Never ad direct to a paid checkout.</Body></div>
               <div>
-                <Heading>Audience — Archetype-Targeted</Heading>
+                <Heading>Audience - Archetype-Targeted</Heading>
                 <Body>Run 3 separate ad sets, one per archetype, instead of one broad set. Each set narrows on the interests + behaviours that index Depleted-state for that archetype. The scorecard catches and routes them regardless.</Body>
                 <div className="mt-3 space-y-2">
                   {[
@@ -2238,7 +2238,7 @@ export default function StrategyPage() {
                     )
                   })}
                 </div>
-                <p className="text-xs text-stone-700 mt-3">3 archetype ad sets running 3 ad variants each = 9 cold ads total (see Cold Ad Library below). Start with the Stressed Executive Woman set (dominant audience). Postnatal Athlete intentionally NOT in the cold pipeline — that archetype is reached organically via the IG calendar and Funnel A, not via cold paid Meta. Add a 4th archetype only if cold-paid economics justify expanding past the current 9 variants.</p>
+                <p className="text-xs text-stone-700 mt-3">3 archetype ad sets running 3 ad variants each = 9 cold ads total (see Cold Ad Library below). Start with the Stressed Executive Woman set (dominant audience). Postnatal Athlete intentionally NOT in the cold pipeline - that archetype is reached organically via the IG calendar and Funnel A, not via cold paid Meta. Add a 4th archetype only if cold-paid economics justify expanding past the current 9 variants.</p>
               </div>
               <div><Heading>Placement</Heading><Body>Instagram feed + Reels + Facebook feed. Start broad within each ad set, let Meta optimise within the constraints.</Body></div>
               <div><Heading>Traffic type</Heading><Body>Cold only for now. Retargeting layer added at Day 30+ once pixel has enough data.</Body></div>
@@ -2246,11 +2246,11 @@ export default function StrategyPage() {
           </Card>
 
           <Card className="border-blue-500/30 bg-blue-500/5">
-            <SectionLabel>Cold Ad Copy Doctrine — Amanda-audited, locked 2026-06-27</SectionLabel>
-            <Body>Six locked rules for every cold paid Meta ad creative. Paid Meta only — these do NOT cascade to organic (organic keeps state language + scorecard CTAs; see Creative Principle #1 in the Marketing Strategy doc for the deliberate divergence). The current cold pipeline of 9 ad variants lives at <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">/public/ads/ad-001-...png</code> through <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">ad-009</code>, rendered via <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">scripts/ig-generator/render-post.sh</code> (template type <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">ad</code>).</Body>
+            <SectionLabel>Cold Ad Copy Doctrine - Amanda-audited, locked 2026-06-27</SectionLabel>
+            <Body>Six locked rules for every cold paid Meta ad creative. Paid Meta only - these do NOT cascade to organic (organic keeps state language + scorecard CTAs; see Creative Principle #1 in the Marketing Strategy doc for the deliberate divergence). The current cold pipeline of 9 ad variants lives at <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">/public/ads/ad-001-...png</code> through <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">ad-009</code>, rendered via <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">scripts/ig-generator/render-post.sh</code> (template type <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">ad</code>).</Body>
             <div className="mt-3 space-y-2 text-[12px] text-stone-700">
-              <p><span className="font-bold text-[#1A1A1A]">1. Meta personal-attributes policy.</span> Hooks name the audience or life stage, NEVER the viewer&apos;s body. &quot;Belly fat at 45?&quot; triggers Meta&apos;s policy — reframe to &quot;Over 40 and training harder for less?&quot;</p>
-              <p><span className="font-bold text-[#1A1A1A]">2. &quot;Decode&quot; terminology locked.</span> Use Body Decode / Decode / Find your pattern. NOT &quot;state&quot; / &quot;signalling&quot; / &quot;Fat Map&quot; — that vocabulary belongs to organic.</p>
+              <p><span className="font-bold text-[#1A1A1A]">1. Meta personal-attributes policy.</span> Hooks name the audience or life stage, NEVER the viewer&apos;s body. &quot;Belly fat at 45?&quot; triggers Meta&apos;s policy - reframe to &quot;Over 40 and training harder for less?&quot;</p>
+              <p><span className="font-bold text-[#1A1A1A]">2. &quot;Decode&quot; terminology locked.</span> Use Body Decode / Decode / Find your pattern. NOT &quot;state&quot; / &quot;signalling&quot; / &quot;Fat Map&quot; - that vocabulary belongs to organic.</p>
               <p><span className="font-bold text-[#1A1A1A]">3. Two-sentence subs.</span> Reframe + Challenge call. Not a tagline. Example: &quot;Ongoing stress can change how your body stores fat and recovers. Find your pattern in the free 14-day Body Decode Challenge.&quot;</p>
               <p><span className="font-bold text-[#1A1A1A]">4. CTA locked.</span> &quot;Start the free 14-day Challenge.&quot; Outcome-specific, includes the 14-day timebox, names &quot;free&quot;.</p>
               <p><span className="font-bold text-[#1A1A1A]">5. Banner sub locked.</span> &quot;FREE · 14-DAY BODY DECODE CHALLENGE&quot; label + &quot;Find your pattern in 14 days. No payment.&quot; sub. &quot;No payment&quot; removes freebie suspicion.</p>
@@ -2261,7 +2261,7 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Creative Format</SectionLabel>
             <Body><strong>Live (Phase 1):</strong> 9 static 4:5 portrait creatives at 1080×1350 (the Cold Ad Library below). Statement + Photo variants. No reels.</Body>
-            <p className="text-xs text-stone-700 mt-2 leading-relaxed"><strong>Future (Phase 2):</strong> when reel production capacity is in place (Amanda + HeyGen, see Filming Guide below), add 15-30 sec talking-head reels alongside the static variants. Reels run in parallel, not as replacements — each ad set splits creative budget across formats so Meta can optimise. The doctrine + audiences + Campaign Configuration stay the same; only the asset type expands.</p>
+            <p className="text-xs text-stone-700 mt-2 leading-relaxed"><strong>Future (Phase 2):</strong> when reel production capacity is in place (Amanda + HeyGen, see Filming Guide below), add 15-30 sec talking-head reels alongside the static variants. Reels run in parallel, not as replacements - each ad set splits creative budget across formats so Meta can optimise. The doctrine + audiences + Campaign Configuration stay the same; only the asset type expands.</p>
             <BulletList items={[
               'Phase 1 (NOW): 9 static 4:5 images, no reels',
               'Phase 2 (future): 15-30 sec talking-head reels in parallel with static',
@@ -2271,12 +2271,12 @@ export default function StrategyPage() {
             ]} />
           </Card>
 
-          {/* Cold Ad Library — the 9-variant pipeline shipped 2026-06-27 per
+          {/* Cold Ad Library - the 9-variant pipeline shipped 2026-06-27 per
               the Amanda-audited Cold Ad Copy Doctrine. Each card carries the
               image preview + every piece of metadata Kade pastes into Meta
               Ads Manager. Grouped 3 rows × 3 ads by archetype. */}
           <div className="space-y-4">
-            <SectionLabel>Cold Ad Library — 9 variants (live)</SectionLabel>
+            <SectionLabel>Cold Ad Library - 9 variants (live)</SectionLabel>
             <p className="text-xs text-stone-700 leading-relaxed">The current cold paid Meta ad pipeline. 3 archetypes × 3 hooks = 9 variants. Two formats: <strong>Statement</strong> (white card, no photo) and <strong>Photo</strong> (Kade portrait + dark slab). Captions follow the Cold Ad Copy Doctrine above (Decode terminology, no personal-attribute hooks, 2-sentence subs, locked CTA). Click any field to copy and paste into Meta Ads Manager.</p>
 
             {[
@@ -2295,11 +2295,11 @@ export default function StrategyPage() {
 
           <Card className="border-stone-300 bg-stone-50">
             <SectionLabel>Phase 2 reel production reference (NOT active)</SectionLabel>
-            <Body>The two cards below are for when Phase 2 reel production kicks in (alongside Amanda + HeyGen). The current Phase 1 launch is static-only — these are NOT operational instructions for the current cold pipeline. Treat as filming + workflow reference for when reels get added later.</Body>
+            <Body>The two cards below are for when Phase 2 reel production kicks in (alongside Amanda + HeyGen). The current Phase 1 launch is static-only - these are NOT operational instructions for the current cold pipeline. Treat as filming + workflow reference for when reels get added later.</Body>
           </Card>
 
           <Card>
-            <SectionLabel>Filming Guide — Gym Session (Phase 2 reel production)</SectionLabel>
+            <SectionLabel>Filming Guide - Gym Session (Phase 2 reel production)</SectionLabel>
             <BulletList items={[
               'Film vertical (9:16) AND horizontal (16:9) for each script',
               'Clean background - rack of weights or open floor, not cluttered',
@@ -2340,7 +2340,7 @@ export default function StrategyPage() {
 
           {/* Overview */}
           <Card className="border-blue-200 bg-blue-500/5">
-            <SectionLabel>LinkedIn — Body Recode Channel</SectionLabel>
+            <SectionLabel>LinkedIn - Body Recode Channel</SectionLabel>
             <Body>Opened as a parallel funnel into the same scorecard, reaching the same demographic (high-functioning adults, executives, founders, professionals) through a different channel with different language. Instagram strategy stays locked. LinkedIn is additive, not a replacement.</Body>
             <div className="mt-4 grid grid-cols-2 gap-3">
               <div className="p-3 rounded-lg bg-stone-50 border border-stone-200">
@@ -2373,7 +2373,7 @@ export default function StrategyPage() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-stone-400 mt-3">BR slot rotates Tue or Thu morning (~7am Brisbane) — when executives scroll before work.</p>
+            <p className="text-xs text-stone-400 mt-3">BR slot rotates Tue or Thu morning (~7am Brisbane) - when executives scroll before work.</p>
           </Card>
 
           {/* Four pillars */}
@@ -2435,7 +2435,7 @@ export default function StrategyPage() {
                 )
               })}
             </div>
-            <p className="text-xs text-stone-700 mt-3">Each pillar has 8-12 angles in the bank. We don\'t burn them all in month one. Pillars 1 and 4 are workhorse — they fit both LinkedIn primary archetypes equally.</p>
+            <p className="text-xs text-stone-700 mt-3">Each pillar has 8-12 angles in the bank. We don\'t burn them all in month one. Pillars 1 and 4 are workhorse - they fit both LinkedIn primary archetypes equally.</p>
           </Card>
 
           {/* Tone */}
@@ -2465,7 +2465,7 @@ export default function StrategyPage() {
                     'Fat loss / weight loss / body composition language',
                     'Scorecard-funnel hooks ("your body is in 3 states")',
                     'Carousels (LinkedIn does not reward them)',
-                    'Links in post body (kills reach — put in profile)',
+                    'Links in post body (kills reach - put in profile)',
                     'A separate Body Recode LinkedIn page',
                   ].map(t => (
                     <div key={t} className="flex items-start gap-2 text-xs text-stone-500">
@@ -2516,7 +2516,7 @@ export default function StrategyPage() {
             <div className="space-y-2">
               {[
                 { num: '01', name: 'Stressed Executive Woman', strength: 'Primary on LinkedIn',     color: 'teal' as const,   note: 'LinkedIn morning scroll before work matches her schedule exactly.' },
-                { num: '02', name: 'Perimenopausal Performer',  strength: 'Rare on LinkedIn',        color: 'violet' as const, note: 'IG-dominant. Don\'t bias LinkedIn content to her — she will not see it.' },
+                { num: '02', name: 'Perimenopausal Performer',  strength: 'Rare on LinkedIn',        color: 'violet' as const, note: 'IG-dominant. Don\'t bias LinkedIn content to her - she will not see it.' },
                 { num: '03', name: 'Postnatal Athlete',         strength: 'Rare on LinkedIn',        color: 'amber' as const,  note: 'IG-dominant. Naptime / evening scroll, not LinkedIn morning.' },
                 { num: '04', name: 'Slipping High Performer',   strength: 'Primary on LinkedIn',     color: 'orange' as const, note: 'Male executive. LinkedIn is his natural channel. Hooks should target this archetype on roughly 1 in 4 BR LinkedIn posts.' },
               ].map(a => {
@@ -2533,7 +2533,7 @@ export default function StrategyPage() {
                       <div className="flex items-baseline gap-2 mb-1 flex-wrap">
                         <span className="text-stone-600 font-mono text-xs">{a.num}</span>
                         <p className={`text-sm font-medium ${colorMap.accent}`}>{a.name}</p>
-                        <span className="text-[11px] text-stone-600 italic">— {a.strength}</span>
+                        <span className="text-[11px] text-stone-600 italic">- {a.strength}</span>
                       </div>
                       <p className="text-[13px] text-stone-800 leading-relaxed">{a.note}</p>
                     </div>
