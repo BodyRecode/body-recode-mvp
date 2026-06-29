@@ -2043,8 +2043,9 @@ export default function StrategyPage() {
           </Card>
 
           <Card className="border-amber-500/20 bg-amber-500/5">
-            <SectionLabel>Sequence Rule</SectionLabel>
-            <Body>Organic first. Ads second. Ads are a multiplier on a system that already converts - not a replacement for proving the funnel works. Run organic until you have consistent scorecard submissions from content. Then add ads to scale what's working.</Body>
+            <SectionLabel>Sequence Rule — by funnel</SectionLabel>
+            <Body><strong>Funnel A (organic IG → Scorecard → Zoom → Coaching):</strong> organic-first. Ads are a multiplier on a system that already converts; not a replacement for proving the funnel works. Run organic until consistent scorecard submissions from content. Funnel A doesn&apos;t take paid spend today.</Body>
+            <p className="text-xs text-stone-700 mt-2 leading-relaxed"><strong>Funnel B (cold paid → Challenge → Blueprint → Membership → Coaching):</strong> paid IS the engine. The whole ladder is designed for the cold ad to be the entry point. Don&apos;t wait for organic to prove Funnel B — the Challenge LP, the 14-day product, the Day 0 intake, the ascension cards and the Lead CAPI wire all exist precisely so paid can launch as the primary volume engine. Self-liquidation maths (Blueprint take-rate × $97 + Coaching conversion ≥ CPS) decides whether spend scales; organic doesn&apos;t gate the start.</p>
           </Card>
 
           <div className="grid sm:grid-cols-3 gap-3">
@@ -2115,13 +2116,7 @@ export default function StrategyPage() {
                       color: 'violet' as const,
                     },
                     {
-                      arch: '03 Postnatal Athlete',
-                      demo: 'Women 32-42, Brisbane + remote AU, parents of young kids',
-                      interests: 'Postnatal recovery, postpartum fitness, mum-fitness, parenting, breastfeeding, MumSafe, running clubs',
-                      color: 'amber' as const,
-                    },
-                    {
-                      arch: '04 Slipping High Performer',
+                      arch: '03 Slipping High Performer',
                       demo: 'Men 42-55, Brisbane / interstate, executives + professionals',
                       interests: 'Executive burnout, TRT, men\'s health 40+, longevity, Huberman Lab, Peter Attia, Tim Ferriss, Bryan Johnson',
                       color: 'orange' as const,
@@ -2142,7 +2137,7 @@ export default function StrategyPage() {
                     )
                   })}
                 </div>
-                <p className="text-xs text-stone-700 mt-3">Start with the Stressed Executive Woman set (dominant audience). Add the others once that one is producing leads at a sustainable CPL.</p>
+                <p className="text-xs text-stone-700 mt-3">3 archetype ad sets running 3 ad variants each = 9 cold ads total (see Cold Ad Library below). Start with the Stressed Executive Woman set (dominant audience). Postnatal Athlete intentionally NOT in the cold pipeline — that archetype is reached organically via the IG calendar and Funnel A, not via cold paid Meta. Add a 4th archetype only if cold-paid economics justify expanding past the current 9 variants.</p>
               </div>
               <div><Heading>Placement</Heading><Body>Instagram feed + Reels + Facebook feed. Start broad within each ad set, let Meta optimise within the constraints.</Body></div>
               <div><Heading>Traffic type</Heading><Body>Cold only for now. Retargeting layer added at Day 30+ once pixel has enough data.</Body></div>
@@ -2164,12 +2159,14 @@ export default function StrategyPage() {
 
           <Card>
             <SectionLabel>Creative Format</SectionLabel>
+            <Body><strong>Live (Phase 1):</strong> 9 static 4:5 portrait creatives at 1080×1350 (the Cold Ad Library below). Statement + Photo variants. No reels.</Body>
+            <p className="text-xs text-stone-700 mt-2 leading-relaxed"><strong>Future (Phase 2):</strong> when reel production capacity is in place (Amanda + HeyGen, see Filming Guide below), add 15-30 sec talking-head reels alongside the static variants. Reels run in parallel, not as replacements — each ad set splits creative budget across formats so Meta can optimise. The doctrine + audiences + Campaign Configuration stay the same; only the asset type expands.</p>
             <BulletList items={[
-              'Primary: 15–30 sec talking head reel (face to camera, gym background)',
-              'Secondary: Static graphic card (scorecard-style or photo card)',
-              'No music on primary ads - calm and direct tone IS the differentiator',
+              'Phase 1 (NOW): 9 static 4:5 images, no reels',
+              'Phase 2 (future): 15-30 sec talking-head reels in parallel with static',
+              'No music on reels - calm and direct tone IS the differentiator',
               'No jump cuts every 2 seconds - this audience responds to calm authority',
-              'Vertical 9:16 for Reels/Stories, horizontal 16:9 for feed where possible',
+              'Vertical 9:16 for Reels/Stories. Static stays 4:5 for IG feed + FB feed.',
             ]} />
           </Card>
 
@@ -2195,8 +2192,13 @@ export default function StrategyPage() {
             ))}
           </div>
 
+          <Card className="border-stone-300 bg-stone-50">
+            <SectionLabel>Phase 2 reel production reference (NOT active)</SectionLabel>
+            <Body>The two cards below are for when Phase 2 reel production kicks in (alongside Amanda + HeyGen). The current Phase 1 launch is static-only — these are NOT operational instructions for the current cold pipeline. Treat as filming + workflow reference for when reels get added later.</Body>
+          </Card>
+
           <Card>
-            <SectionLabel>Filming Guide - Gym Session</SectionLabel>
+            <SectionLabel>Filming Guide — Gym Session (Phase 2 reel production)</SectionLabel>
             <BulletList items={[
               'Film vertical (9:16) AND horizontal (16:9) for each script',
               'Clean background - rack of weights or open floor, not cluttered',
@@ -2211,15 +2213,15 @@ export default function StrategyPage() {
           </Card>
 
           <Card>
-            <SectionLabel>What to Do With the Footage</SectionLabel>
+            <SectionLabel>What to Do With the Footage (Phase 2 reel production)</SectionLabel>
             <div className="space-y-2">
               {[
                 '1. Review takes - pick the best one per script',
                 '2. Add captions using CapCut (free) - body text, on-screen hook line',
                 '3. Upload best take to Content Engine → Generate Reel for AI avatar variations',
-                '4. Upload to Meta Ads Manager - create 3 separate ad sets, one per angle',
+                '4. Upload to Meta Ads Manager - add reel variants to the existing ad sets (BR-FunnelB-Leads-2026Q3, one ad set per archetype), in parallel with the existing static creatives. Each ad set runs both formats; Meta optimises within.',
                 '5. Run for 14 days at $20–30/day',
-                '6. Cut the 2 underperforming angles. Scale the winner.',
+                '6. Cut the underperforming creatives. Scale the winners.',
               ].map((step, i) => (
                 <div key={i} className="flex items-start gap-3 text-sm">
                   <span className="text-blue-500 font-bold shrink-0 text-xs mt-0.5">{i + 1}</span>
