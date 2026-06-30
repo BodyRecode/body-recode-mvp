@@ -400,9 +400,37 @@ function ContentCalendar() {
                         {isAicmPost(p) && <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${AICM_BADGE_CLASS}`}>AICM</span>}
                         {(() => { const pl = PLATFORM_STYLES[(p.platform ?? 'instagram') as Platform]; return <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${pl.badge}`}>{pl.label}</span> })()}
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <p className="text-sm font-medium text-[#1A1A1A]">{p.title}</p>
                         <span className="text-xs font-semibold text-blue-500 bg-blue-50 border border-blue-500/20 px-2 py-0.5 rounded-full shrink-0">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type]}</span>
+                        {p.posted_at && (
+                          <a
+                            href={p.ig_post_url ?? '#'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={e => e.stopPropagation()}
+                            className="text-xs font-semibold text-green-700 bg-green-50 border border-green-300 px-2 py-0.5 rounded-full shrink-0 hover:bg-green-100 transition-colors"
+                            title={`Posted ${new Date(p.posted_at).toLocaleString('en-AU')}${p.ig_post_url ? ' - click to open' : ''}`}
+                          >
+                            ✓ Posted
+                          </a>
+                        )}
+                        {!p.posted_at && p.scheduled_publish_at && (
+                          <span
+                            className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded-full shrink-0"
+                            title={`Will publish via our cron at ${new Date(p.scheduled_publish_at).toLocaleString('en-AU')}`}
+                          >
+                            ⏱ Scheduled
+                          </span>
+                        )}
+                        {!p.posted_at && p.publish_error && (
+                          <span
+                            className="text-xs font-semibold text-red-700 bg-red-50 border border-red-300 px-2 py-0.5 rounded-full shrink-0"
+                            title={p.publish_error}
+                          >
+                            ✗ Publish error
+                          </span>
+                        )}
                       </div>
                       {p.caption && <p className="text-xs text-stone-600 mt-1 line-clamp-2">{p.caption}</p>}
                     </div>
