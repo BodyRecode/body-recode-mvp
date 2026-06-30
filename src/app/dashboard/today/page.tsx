@@ -279,16 +279,20 @@ export default function TodayDashboardPage() {
                 {runbookEntry.notes?.map((n, i) => <p key={i} className="text-sm text-stone-700 leading-relaxed">{n}</p>)}
                 <div className="mt-3 space-y-1.5">
                   <RunbookLink
-                    label="Post-Launch Operational Runbook"
+                    label="Pre-Launch 12-Day Runbook (now → Sun 12 Jul)"
+                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-07-01_Pre_Launch_12_Day_Runbook.md"
+                  />
+                  <RunbookLink
+                    label="Launch Day Runbook (Mon 13 Jul)"
+                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-29_Launch_Day_Runbook_Mon_13_Jul.md"
+                  />
+                  <RunbookLink
+                    label="Post-Launch Operational Runbook (Tue 14 Jul → Sun 24 Aug)"
                     path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-30_Post_Launch_Operational_Runbook.md"
                   />
                   <RunbookLink
                     label="Post-Launch 6-Week Strategy"
                     path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-30_Post_Launch_6_Week_Strategy.md"
-                  />
-                  <RunbookLink
-                    label="Launch Day Runbook (Mon 13 Jul)"
-                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-29_Launch_Day_Runbook_Mon_13_Jul.md"
                   />
                 </div>
               </Section>
