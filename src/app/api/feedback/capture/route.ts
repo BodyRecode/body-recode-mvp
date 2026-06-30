@@ -13,25 +13,37 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { captureFeedback, hashIp } from '@/lib/feedback'
 
+// CORS - scorecard moment lives on performance.bodyrecode.au, so we accept
+// cross-origin POSTs. Matches the pattern used by /api/scorecard/submit.
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: CORS })
+}
+
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
   try {
     body = await request.json()
   } catch {
-    return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_body' }, { status: 400, headers: CORS })
   }
 
   const stage = body.stage as string | undefined
   const moment = body.moment as string | undefined
 
   if (!stage || !moment) {
-    return NextResponse.json({ error: 'stage and moment required' }, { status: 400 })
+    return NextResponse.json({ error: 'stage and moment required' }, { status: 400, headers: CORS })
   }
 
   // Validate stage enum
   const validStages = ['scorecard','challenge','blueprint','membership','coaching','churn']
   if (!validStages.includes(stage)) {
-    return NextResponse.json({ error: 'invalid stage', valid: validStages }, { status: 400 })
+    return NextResponse.json({ error: 'invalid stage', valid: validStages }, { status: 400, headers: CORS })
   }
 
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null
@@ -54,7 +66,7 @@ export async function POST(request: NextRequest) {
   })
 
   if (!result.ok) {
-    return NextResponse.json({ error: 'capture_failed', message: result.error }, { status: 500 })
+    return NextResponse.json({ error: 'capture_failed', message: result.error }, { status: 500, headers: CORS })
   }
 
   return NextResponse.json({
@@ -62,5 +74,5 @@ export async function POST(request: NextRequest) {
     id: result.id,
     // Don't return the permissionToken to the client - keep it server-side
     // (token only goes in the consent email link)
-  })
+  }, { headers: CORS })
 }

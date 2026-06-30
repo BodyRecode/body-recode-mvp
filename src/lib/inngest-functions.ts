@@ -16,6 +16,7 @@ import {
   buildDay14BodyDecodeReportEmail,
   buildDay5UnlockEmail,
   buildDay14FallbackEmail,
+  buildDay21FeedbackEmail,
 } from './challenge-checkin-emails'
 import {
   buildBlueprintCheckinPromptEmail,
@@ -177,7 +178,7 @@ export const challengeSequenceFunction = inngest.createFunction(
         })
       } else {
         // No Check-In on record. Plain ascension push, no result content.
-        const built = buildDay14FallbackEmail({ firstName })
+        const built = buildDay14FallbackEmail({ firstName, enrollmentToken: token })
         await resend.emails.send({
           from: 'Kade at Body Recode <kade@bodyrecode.au>',
           to: email,
@@ -209,6 +210,28 @@ export const challengeSequenceFunction = inngest.createFunction(
       await inngest.send({
         name: 'reengagement/challenge-no-ascension',
         data: { email, firstName, source: 'challenge' },
+      })
+    })
+
+    // Same 7d wait window above doubles as the gate for Day 21 feedback ask
+    // (Day 21 = 14 + 7). Lighter NPS + open-question prompt; runs whether
+    // or not they ascended to Blueprint.
+    await step.run('send-day21-feedback-email', async () => {
+      const admin = createAdminClient()
+      const { data: enrollment } = await admin
+        .from('challenge_enrollments')
+        .select('status')
+        .eq('token', token)
+        .single()
+      // Skip cancelled enrolments only - completed + active both get the ask.
+      if (enrollment?.status === 'cancelled') return
+
+      const built = buildDay21FeedbackEmail({ firstName, enrollmentToken: token })
+      await resend.emails.send({
+        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        to: email,
+        subject: built.subject,
+        html: built.html,
       })
     })
   }

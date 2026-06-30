@@ -421,11 +421,16 @@ ${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live 
 // the Check-In get buildDay14BodyDecodeReportEmail instead (above).
 export function buildDay14FallbackEmail({
   firstName,
+  enrollmentToken,
 }: {
   firstName: string
+  enrollmentToken?: string
 }): { subject: string; html: string } {
   const subject = `${firstName}, you finished the 14 days.`
   const blueprintUrl = 'https://bodyrecode.au/blueprint?source=challenge_day14_ascension'
+  const churnFeedbackLine = enrollmentToken
+    ? `${emailBody(`If something got in the way of completing the Check-In, <a href="https://bodyrecode.au/feedback/challenge-churn/${enrollmentToken}" style="color:#1B6DFC;text-decoration:underline;">tell me what (30 seconds)</a> - the most valuable thing for the next person is hearing what tripped you up.`, { size: 13, color: '#6B6B6B', bottom: 0 })}`
+    : ''
   const html = challengeArcShell(`
 ${emailEyebrow('Day 14 · Challenge Complete')}
 ${emailHeading(`14 days done, ${firstName}.`)}
@@ -443,7 +448,40 @@ ${emailStatusCard({
 })}
 ${emailCta({ href: blueprintUrl, label: 'Start the 6-Week Blueprint · $97' })}
 ${emailUrlFallback(blueprintUrl, 'Or paste this link into your browser')}
-${emailBody('Or just reply to this email and I will personally help you figure out the right next step.', { size: 14, bottom: 0 })}
+${emailBody('Or just reply to this email and I will personally help you figure out the right next step.', { size: 14, bottom: 12 })}
+${churnFeedbackLine}
+`)
+  return { subject, html }
+}
+
+// Day 21 (= 7 days after Day 14) feedback / NPS email. Lighter ask than the
+// in-portal Day 14 capture - by Day 21 the experience has had time to settle,
+// and we ask "would you recommend" with permission flow attached.
+export function buildDay21FeedbackEmail({
+  firstName,
+  enrollmentToken,
+}: {
+  firstName: string
+  enrollmentToken: string
+}): { subject: string; html: string } {
+  const subject = `${firstName}, one quick read on how the 14 days landed`
+  const feedbackUrl = `https://bodyrecode.au/feedback/day21/${enrollmentToken}`
+  const html = challengeArcShell(`
+${emailEyebrow('Day 21 · Feedback')}
+${emailHeading(`How did the 14 days actually land?`)}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('You finished the 14-Day Body Decode last week. A week is enough time to feel whether the read landed in your body, not just in your head.')}
+${emailBody('One ask. Two questions. Takes 30 seconds.', { bottom: 16 })}
+${emailFeaturedCard(`
+  <p style="margin:0 0 8px;font-size:15px;color:#1A1A1A;font-weight:700;">1. Would you recommend this to someone like you?</p>
+  <p style="margin:0 0 16px;font-size:13px;color:#5C5C5C;line-height:1.55;">0 = definitely not. 10 = absolutely.</p>
+  <p style="margin:0 0 8px;font-size:15px;color:#1A1A1A;font-weight:700;">2. Optional: in a sentence, what's the one thing you'd tell them?</p>
+  <p style="margin:0;font-size:13px;color:#5C5C5C;line-height:1.55;">If you say something we could share publicly, we will email you separately to ask permission first.</p>
+`, { eyebrow: 'Two questions' })}
+${emailCta({ href: feedbackUrl, label: 'Give 30-second feedback' })}
+${emailUrlFallback(feedbackUrl, 'Or paste this into your browser')}
+${emailBody('Your feedback shapes whether the read works for someone tomorrow. That is the only reason for the ask.', { size: 13, bottom: 0 })}
 `)
   return { subject, html }
 }
