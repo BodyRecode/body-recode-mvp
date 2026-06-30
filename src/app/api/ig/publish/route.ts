@@ -91,29 +91,51 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'caption_missing', message: 'No caption on this post - add one before publishing.' }, { status: 400 })
   }
 
-  // Resolve schedule time if --schedule passed
-  let scheduledPublishTime: number | undefined
+  // ── SCHEDULE MODE ──
+  // Meta's scheduled_publish_time hits an undocumented whitelist gate on Dev
+  // mode apps. Instead of fighting that, we use our OWN scheduler: the Schedule
+  // button just stamps scheduled_publish_at on the row, and `igPublisherCron`
+  // (Inngest, runs every 5 min) finds due rows + fires the immediate-publish
+  // path (which has no whitelist gate).
   if (body.schedule) {
     const scheduledIso = post.scheduled_publish_at ?? `${post.date}T${post.time ?? '09:00'}:00+10:00`
     const ms = Date.parse(scheduledIso)
     if (Number.isNaN(ms)) {
       return NextResponse.json({ error: 'invalid_schedule_time', message: `Could not parse scheduled time from ${scheduledIso}` }, { status: 400 })
     }
-    const minFuture = Date.now() + 10 * 60 * 1000
-    if (ms < minFuture) {
-      return NextResponse.json({ error: 'schedule_too_soon', message: 'Meta requires scheduled posts to be at least 10 minutes in the future. Use immediate publish instead.' }, { status: 400 })
+    // Allow scheduling in the past too — the cron will fire it on its next tick
+    // (catches "I forgot to schedule, just post the next 3 minutes ago"). The
+    // 10-min Meta minimum no longer applies since we control the publishing.
+    const scheduledIsoStored = new Date(ms).toISOString()
+    const { error: updErr } = await admin
+      .from('calendar_posts')
+      .update({
+        scheduled_publish_at: scheduledIsoStored,
+        publish_error: null, // clear stale errors
+      })
+      .eq('id', post.id)
+    if (updErr) {
+      return NextResponse.json({ error: 'schedule_persist_failed', message: updErr.message }, { status: 500 })
     }
-    scheduledPublishTime = Math.floor(ms / 1000)
+    return NextResponse.json({
+      ok: true,
+      containerId: null,
+      postId: null,
+      postUrl: null,
+      scheduled: true,
+      scheduledFor: scheduledIsoStored,
+      note: 'Queued in our scheduler. Will publish via Post-now path on the next cron tick (every 5 min) after scheduled time passes.',
+    })
   }
 
+  // ── IMMEDIATE PUBLISH MODE ──
   // Bump publish_attempts counter (so retries don't loop silently)
   await admin
     .from('calendar_posts')
     .update({ publish_attempts: (post.publish_attempts ?? 0) + 1, publish_error: null })
     .eq('id', post.id)
 
-  // Fire
-  const result = await publishToInstagram({ imageUrls, caption, scheduledPublishTime })
+  const result = await publishToInstagram({ imageUrls, caption })
 
   if (!result.ok) {
     await admin
@@ -130,8 +152,8 @@ export async function POST(request: NextRequest) {
       ig_container_id: result.containerId,
       ig_post_id: result.postId,
       ig_post_url: result.postUrl,
-      posted_at: result.scheduled ? null : new Date().toISOString(),
-      scheduled_publish_at: result.scheduled && scheduledPublishTime ? new Date(scheduledPublishTime * 1000).toISOString() : null,
+      posted_at: new Date().toISOString(),
+      scheduled_publish_at: null, // clear schedule flag, it fired
       publish_error: null,
     })
     .eq('id', post.id)
@@ -141,6 +163,6 @@ export async function POST(request: NextRequest) {
     containerId: result.containerId,
     postId: result.postId,
     postUrl: result.postUrl,
-    scheduled: result.scheduled,
+    scheduled: false,
   })
 }

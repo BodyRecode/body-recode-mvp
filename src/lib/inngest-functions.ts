@@ -1505,3 +1505,125 @@ export const weeklyPatternReportSequenceFunction = inngest.createFunction(
     return { ok: true, parent_purchase_id }
   }
 )
+
+// ── IG publisher cron ───────────────────────────────────────────────
+// Every 5 minutes, find Body Recode IG posts that are due to publish
+// (scheduled_publish_at <= now, not yet posted, brand=body_recode,
+// platform=instagram, type != story, attempts < 3) and fire the immediate
+// publishToInstagram() path. Replaces Meta's broken scheduled_publish_time
+// API which gate-keeps Dev-mode apps on an undocumented whitelist.
+//
+// See `project_instagram_native_publishing` for the why.
+export const igPublisherCron = inngest.createFunction(
+  {
+    id: 'ig-publisher-cron',
+    name: 'IG publisher cron · publish due posts',
+    triggers: [{ cron: '*/5 * * * *' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ step }: { step: any }) => {
+    const admin = createAdminClient()
+
+    const dueRows = await step.run('find-due-posts', async () => {
+      const nowIso = new Date().toISOString()
+      const { data, error } = await admin
+        .from('calendar_posts')
+        .select('id, title, caption, graphic, publish_attempts')
+        .eq('brand', 'body_recode')
+        .eq('platform', 'instagram')
+        .neq('type', 'story')
+        .is('posted_at', null)
+        .not('scheduled_publish_at', 'is', null)
+        .lte('scheduled_publish_at', nowIso)
+        .or('publish_attempts.is.null,publish_attempts.lt.3')
+        .limit(20) // safety cap per tick; large backlogs catch up on subsequent ticks
+      if (error) throw new Error(`Find due posts failed: ${error.message}`)
+      return (data ?? []) as Array<{ id: string; title: string; caption: string | null; graphic: string | null; publish_attempts: number | null }>
+    })
+
+    if (!dueRows.length) {
+      return { processed: 0, message: 'No due posts.' }
+    }
+
+    const { publishToInstagram } = await import('@/lib/instagram-publish')
+    const { appUrl } = await import('@/lib/app-url')
+
+    type RowResult = { id: string; title: string; ok: boolean; postUrl?: string | null; error?: string }
+    const results: RowResult[] = []
+
+    for (const row of dueRows) {
+      // Process each row in its own step so retries/replays stay clean
+      const result = await step.run(`publish-${row.id}`, async (): Promise<RowResult> => {
+        try {
+          // Validate inputs
+          const rawGraphic = (row.graphic ?? '').trim()
+          if (!rawGraphic) {
+            await admin.from('calendar_posts').update({
+              publish_error: '[validate] graphic_missing',
+              publish_attempts: (row.publish_attempts ?? 0) + 1,
+            }).eq('id', row.id)
+            return { id: row.id, title: row.title, ok: false, error: 'graphic_missing' }
+          }
+          const imageUrls: string[] = rawGraphic.split(',').map((s: string) => s.trim()).filter(Boolean).map((u: string) => {
+            if (u.startsWith('http://') || u.startsWith('https://')) return u
+            if (u.startsWith('/')) return `${appUrl()}${u}`
+            return u
+          })
+          if (imageUrls.some((u: string) => u.includes('/api/content/graphic'))) {
+            await admin.from('calendar_posts').update({
+              publish_error: '[validate] live_render_unsupported',
+              publish_attempts: (row.publish_attempts ?? 0) + 1,
+            }).eq('id', row.id)
+            return { id: row.id, title: row.title, ok: false, error: 'live_render_unsupported' }
+          }
+          const caption = (row.caption ?? '').trim()
+          if (!caption) {
+            await admin.from('calendar_posts').update({
+              publish_error: '[validate] caption_missing',
+              publish_attempts: (row.publish_attempts ?? 0) + 1,
+            }).eq('id', row.id)
+            return { id: row.id, title: row.title, ok: false, error: 'caption_missing' }
+          }
+
+          await admin.from('calendar_posts').update({
+            publish_attempts: (row.publish_attempts ?? 0) + 1,
+            publish_error: null,
+          }).eq('id', row.id)
+
+          // Fire (immediate path - no scheduled_publish_time -> no Meta whitelist gate)
+          const r = await publishToInstagram({ imageUrls, caption })
+
+          if (!r.ok) {
+            await admin.from('calendar_posts').update({
+              publish_error: `[${r.stage}] ${r.error}`,
+            }).eq('id', row.id)
+            return { id: row.id, title: row.title, ok: false, error: `${r.stage}: ${r.error}` }
+          }
+
+          await admin.from('calendar_posts').update({
+            ig_container_id: r.containerId,
+            ig_post_id: r.postId,
+            ig_post_url: r.postUrl,
+            posted_at: new Date().toISOString(),
+            scheduled_publish_at: null,
+            publish_error: null,
+          }).eq('id', row.id)
+
+          return { id: row.id, title: row.title, ok: true, postUrl: r.postUrl ?? null }
+        } catch (e) {
+          const msg = e instanceof Error ? e.message : String(e)
+          await admin.from('calendar_posts').update({
+            publish_error: `[exception] ${msg}`,
+            publish_attempts: (row.publish_attempts ?? 0) + 1,
+          }).eq('id', row.id)
+          return { id: row.id, title: row.title, ok: false, error: msg }
+        }
+      })
+      results.push(result)
+    }
+
+    const sent = results.filter(r => r.ok).length
+    const failed = results.filter(r => !r.ok).length
+    return { processed: results.length, sent, failed, results }
+  }
+)
