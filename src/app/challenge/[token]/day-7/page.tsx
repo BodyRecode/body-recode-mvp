@@ -133,48 +133,25 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
         </div>
       </div>
 
-      {/* Video placeholder */}
-      {/* Video placeholder — always renders the dark player block.
-          Day-gated CTAs below stay gated by `locked`; only the hero video
-          slot is unconditional, matching the pattern on /day-5 + /day-14. */}
+      {/* Pre-Check-In intro reel. Renders unconditionally; day-gated CTAs
+          below stay behind `locked`. */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px 24px' }}>
         <div style={{
           position: 'relative', width: '100%', aspectRatio: '16 / 9',
           background: '#1A1A1A', borderRadius: '14px', overflow: 'hidden',
           border: '1px solid #2C2C2C',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '14px',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
         }}>
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: 'radial-gradient(ellipse at center, rgba(27, 109, 252, 0.08) 0%, transparent 60%)',
-            pointerEvents: 'none',
-          }} />
-          <div style={{
-            width: '72px', height: '72px', borderRadius: '50%',
-            background: '#1B6DFC',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 16px rgba(27, 109, 252, 0.4)',
-            position: 'relative',
-          }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="#FFFFFF" stroke="none" style={{ marginLeft: '4px' }}>
-              <polygon points="6,4 22,12 6,20" />
-            </svg>
-          </div>
-          <p style={{
-            fontSize: '12px', fontWeight: 700, color: '#999999',
-            margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase',
-            position: 'relative',
-          }}>
-            Pre-Check-In Intro Reel · 60-75 sec
-          </p>
-          <p style={{
-            fontSize: '11px', color: '#6B6B6B',
-            margin: 0, fontStyle: 'italic', textAlign: 'center', padding: '0 16px',
-            position: 'relative',
-          }}>
-            Placeholder. Production in progress with Amanda.
-          </p>
+          <video
+            src="/challenge-day-7.mp4"
+            controls
+            playsInline
+            preload="metadata"
+            controlsList="nodownload noplaybackrate"
+            disablePictureInPicture
+            onContextMenu={(e) => e.preventDefault()}
+            style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
+          />
         </div>
       </div>
 
