@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { CoachingAscensionCTA } from '@/components/coaching-ascension-cta'
+import { FeedbackDay14Card } from '../feedback-day14-card'
 
 const card: React.CSSProperties = {
   background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px',
@@ -63,17 +64,30 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
   // Preview path: /challenge/preview/day-14 renders with mocked Day 14 data
   // for design review without requiring an active enrollment token.
   let currentDay: number
+  let enrollmentId: string | null = null
+  let leadId: string | null = null
+  let firstName: string | null = null
+  let lastInitial: string | null = null
   if (token === 'preview') {
     currentDay = 14
   } else {
     const admin = createAdminClient()
     const { data: enrollment } = await admin
       .from('challenge_enrollments')
-      .select('id, enrolled_at, status')
+      .select('id, enrolled_at, status, lead_id, leads(name)')
       .eq('token', token)
       .single()
 
     if (!enrollment || enrollment.status !== 'active') notFound()
+
+    enrollmentId = enrollment.id as string
+    leadId = (enrollment.lead_id as string | null) ?? null
+    const nameStr = (enrollment.leads && typeof enrollment.leads === 'object' && 'name' in enrollment.leads ? (enrollment.leads as { name: string | null }).name : null) ?? null
+    if (nameStr) {
+      const parts = nameStr.trim().split(/\s+/)
+      firstName = parts[0] ?? null
+      lastInitial = parts[1]?.[0]?.toUpperCase() ?? null
+    }
 
     const enrolledAt = new Date(enrollment.enrolled_at as string)
     const msPerDay = 1000 * 60 * 60 * 24
@@ -296,6 +310,18 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
       {!locked && (
         <div style={{ maxWidth: '720px', margin: '0 auto', padding: '8px 24px 0' }}>
           <CoachingAscensionCTA source="challenge_day14" variant="secondary" />
+        </div>
+      )}
+
+      {/* Day 14 feedback capture (PEAK testimonial moment) - only on real enrolments, only when unlocked */}
+      {!locked && enrollmentId && (
+        <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px 0' }}>
+          <FeedbackDay14Card
+            challengeEnrollmentId={enrollmentId}
+            leadId={leadId}
+            firstName={firstName}
+            lastInitial={lastInitial}
+          />
         </div>
       )}
 

@@ -82,6 +82,7 @@ const sections: NavSection[] = [
     label: 'Analyse',
     items: [
       { label: 'Analytics', href: '/dashboard/business/analytics', icon: BarChart2 },
+      { label: 'Feedback', href: '/dashboard/feedback', icon: BarChart2 },
     ],
   },
   {
