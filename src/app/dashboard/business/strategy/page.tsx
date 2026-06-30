@@ -816,9 +816,13 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   // Hide button if not posting to Instagram OR if it's a story (stories stay manual)
+  // OR if the post belongs to a brand whose IG account we're not authorized for
+  // (currently only @body_recode_ is wired; @kade_dunstone_ etc stay manual).
   const platform = post.platform ?? 'instagram'
+  const brand = post.brand ?? 'body_recode'
   if (platform !== 'instagram') return null
   if (post.type === 'story') return null
+  if (brand !== 'body_recode') return null
 
   // Already posted: show URL link
   if (post.posted_at && post.ig_post_url) {

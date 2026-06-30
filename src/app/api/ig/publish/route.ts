@@ -56,6 +56,16 @@ export async function POST(request: NextRequest) {
   if (post.type === 'story') {
     return NextResponse.json({ error: 'stories_not_supported', message: 'Instagram Stories must be posted manually - the API strips link stickers, countdown stickers, and polls, which kills the story value.' }, { status: 400 })
   }
+  // Brand routing: the configured token + IG Business Account ID belong to
+  // @body_recode_. Posts on other brands (e.g. personal_brand = @kade_dunstone_)
+  // must NOT publish through this route or they'd land on the wrong account.
+  if (post.brand && post.brand !== 'body_recode') {
+    return NextResponse.json({
+      error: 'wrong_brand',
+      brand: post.brand,
+      message: `This poster only publishes to @body_recode_. ${post.brand === 'personal_brand' ? 'Personal brand posts go to @kade_dunstone_ which is a different Instagram account - post manually from phone.' : 'Other brand posts stay manual.'}`,
+    }, { status: 400 })
+  }
 
   // Resolve graphic URLs (comma-separated for carousels). Convert relative
   // paths like /calendar/xxx.png to absolute public URLs Meta can fetch.
