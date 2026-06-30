@@ -423,6 +423,14 @@ function ContentCalendar() {
                             ⏱ Scheduled
                           </span>
                         )}
+                        {!p.posted_at && !p.scheduled_publish_at && p.scheduled && (
+                          <span
+                            className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded-full shrink-0"
+                            title="Marked as scheduled manually (you scheduled this in IG / Meta Business Suite / etc)"
+                          >
+                            ⏱ Scheduled
+                          </span>
+                        )}
                         {!p.posted_at && p.publish_error && (
                           <span
                             className="text-xs font-semibold text-red-700 bg-red-50 border border-red-300 px-2 py-0.5 rounded-full shrink-0"
@@ -839,18 +847,51 @@ function destinationUrl(slug: string) {
 // PostToIgButton - immediate publish OR schedule for future. Calls
 // /api/ig/publish, which validates the post, calls Meta Graph API, and
 // persists the resulting IG post id + URL back to calendar_posts.
+//
+// For posts where we can't auto-publish (personal brand → different IG
+// account, stories → API strips link stickers, LinkedIn → different
+// platform entirely), renders a "Mark as scheduled" toggle that just
+// flips the manual `scheduled` boolean so the day-view badge surfaces.
 function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublished: (updated: Partial<ScheduledPost> & { id: string }) => void }) {
   const [status, setStatus] = useState<'idle' | 'publishing' | 'scheduling' | 'done' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
-  // Hide button if not posting to Instagram OR if it's a story (stories stay manual)
-  // OR if the post belongs to a brand whose IG account we're not authorized for
-  // (currently only @body_recode_ is wired; @kade_dunstone_ etc stay manual).
   const platform = post.platform ?? 'instagram'
   const brand = post.brand ?? 'body_recode'
-  if (platform !== 'instagram') return null
-  if (post.type === 'story') return null
-  if (brand !== 'body_recode') return null
+  const canAutoPublish = platform === 'instagram' && post.type !== 'story' && brand === 'body_recode'
+
+  // ── Manual-schedule mode (for posts we can't auto-publish) ──
+  if (!canAutoPublish) {
+    const isMarked = !!post.scheduled
+    async function toggleMarked() {
+      const next = !isMarked
+      try {
+        const res = await fetch('/api/calendar-posts/toggle-scheduled', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: post.id, scheduled: next }),
+        })
+        if (!res.ok) {
+          const d = await res.json().catch(() => ({}))
+          setErrorMsg(d.error ?? 'Toggle failed.')
+          return
+        }
+        onPublished({ id: post.id, scheduled: next })
+      } catch (e) {
+        setErrorMsg(e instanceof Error ? e.message : 'Network error.')
+      }
+    }
+    if (errorMsg) return <span className="text-xs text-red-600 font-semibold" title={errorMsg}>✗ {errorMsg.slice(0, 40)}</span>
+    return (
+      <button
+        onClick={toggleMarked}
+        title={isMarked ? 'Mark this post as not yet scheduled' : 'Mark this post as scheduled (you scheduled it manually in IG / Meta Business Suite / etc)'}
+        className={`text-xs font-semibold px-2.5 py-1 rounded transition-colors ${isMarked ? 'bg-blue-50 text-blue-700 border border-blue-300 hover:bg-blue-100' : 'bg-stone-200 hover:bg-stone-300 text-stone-700'}`}
+      >
+        {isMarked ? '⏱ Marked scheduled' : 'Mark as scheduled'}
+      </button>
+    )
+  }
 
   // Already posted: show URL link
   if (post.posted_at && post.ig_post_url) {
