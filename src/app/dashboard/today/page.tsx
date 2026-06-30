@@ -280,19 +280,19 @@ export default function TodayDashboardPage() {
                 <div className="mt-3 space-y-1.5">
                   <RunbookLink
                     label="Pre-Launch 12-Day Runbook (now → Sun 12 Jul)"
-                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-07-01_Pre_Launch_12_Day_Runbook.pdf"
+                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/00_LAUNCH_2026_07_13_FUNNEL_B/2026-07-01_FunnelB_Pre_Launch_12_Day_Runbook.pdf"
                   />
                   <RunbookLink
                     label="Launch Day Runbook (Mon 13 Jul)"
-                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-29_Launch_Day_Runbook_Mon_13_Jul.pdf"
+                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/00_LAUNCH_2026_07_13_FUNNEL_B/2026-06-29_FunnelB_Launch_Day_Runbook_Mon_13_Jul.pdf"
                   />
                   <RunbookLink
                     label="Post-Launch Operational Runbook (Tue 14 Jul → Sun 24 Aug)"
-                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-30_Post_Launch_Operational_Runbook.pdf"
+                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/00_LAUNCH_2026_07_13_FUNNEL_B/2026-06-30_FunnelB_Post_Launch_Operational_Runbook.pdf"
                   />
                   <RunbookLink
                     label="Post-Launch 6-Week Strategy"
-                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-30_Post_Launch_6_Week_Strategy.pdf"
+                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/00_LAUNCH_2026_07_13_FUNNEL_B/2026-06-30_FunnelB_Post_Launch_6_Week_Strategy.pdf"
                   />
                 </div>
               </Section>
