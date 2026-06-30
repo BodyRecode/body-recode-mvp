@@ -149,7 +149,6 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
             preload="metadata"
             controlsList="nodownload noplaybackrate"
             disablePictureInPicture
-            onContextMenu={(e) => e.preventDefault()}
             style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
           />
         </div>
