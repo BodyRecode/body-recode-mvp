@@ -2576,6 +2576,19 @@ export default function HelpPage() {
             </ul>
             <Note>Calendar posts are saved to Supabase and persist across page refreshes and devices. Changes take effect immediately.</Note>
 
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Native Instagram Publishing (2026-06-30)</p>
+            <p>Feed posts and carousels now publish directly to <strong>@body_recode_</strong> from this calendar via Meta Graph API. No Meta Business Suite, no Later/Buffer, no copy-paste.</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
+              <li>Click any non-story Instagram post in the calendar to open the post detail modal.</li>
+              <li><strong>Post now</strong> button publishes immediately. ~5-10 sec round-trip. Returns a green <strong>✓ Posted</strong> badge with a link to the live IG post.</li>
+              <li><strong>Schedule</strong> button hands the post + the row&apos;s scheduled date+time to Meta. Meta publishes it automatically at that time (minimum 10 minutes in the future, maximum 75 days).</li>
+              <li>Carousels (multiple slides) publish natively as a single multi-slide post.</li>
+              <li>Posted state persists on the row (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">ig_post_id</code>, <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">ig_post_url</code>, <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">posted_at</code>) so re-clicking shows the live URL instead of re-publishing.</li>
+            </ul>
+            <p className="text-xs mt-2 text-[#3A3A3A]"><strong>Stories are NOT supported</strong> and the button is hidden for story-type posts. Reason: Meta&apos;s API strips link stickers, countdown stickers, and polls when posting Stories via API - which kills the value of launch stories. Stories stay phone-manual; the calendar tracks their scheduled times so they can be posted by hand at the right moment.</p>
+            <p className="text-xs mt-2 text-[#3A3A3A]">Token + IG Business Account ID configured one-time via <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">META_GRAPH_ACCESS_TOKEN</code> and <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">META_IG_BUSINESS_ACCOUNT_ID</code> env vars (Vercel body-recode project only). Token is a long-lived User Access Token with the 4 perms: <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">instagram_basic</code>, <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">instagram_content_publish</code>, <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">pages_show_list</code>, <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">pages_read_engagement</code>. Regenerate via Graph API Explorer every ~60 days. Full setup walkthrough in <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-30_Instagram_Native_Publishing.md</code>.</p>
+            <Note>Publish failures stamp <code>publish_error</code> on the row + bump <code>publish_attempts</code>. A <strong>retry</strong> link appears on the button. Common failure modes: token expired (regenerate), image URL not publicly fetchable by Meta (use static <code>/calendar/...</code> path, not live-render <code>/api/content/graphic</code>), caption empty or &gt;2200 chars.</Note>
+
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">The 5 Topics You Own</p>
             <p>Every piece of content maps to one of these five topics. Nothing outside these.</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
