@@ -11,22 +11,69 @@
 //
 // Edit this file when the docs change. The Today dashboard reads from here.
 
+// A check can be a plain string (just a tick item) OR an object with
+// instructions that render below the task on the Today dashboard.
+export type RunbookCheck = string | { task: string; instructions: string }
+
 export interface RunbookEntry {
   date: string // YYYY-MM-DD
   label: string // short title, e.g. "Pre-launch · Week before"
   phase: 'pre_launch' | 'launch_day' | 'week_1' | 'week_2' | 'week_3' | 'week_4' | 'week_5' | 'week_6' | 'post_arc'
-  checks: string[] // tickable items (DM sweep, dashboard check, log scan, etc.)
+  checks: RunbookCheck[] // tickable items (DM sweep, dashboard check, log scan, etc.)
   decisions: string[] // anything time-bound to decide today (or imminent)
   notes?: string[] // free-form context
 }
 
-// Recurring daily ritual that fires every weekday Tue 14 Jul onwards
-const DAILY_RITUAL: string[] = [
-  'AM dashboard Wave Status + Meta Events Manager Lead-event sweep',
-  'AM feedback triage dashboard - check unseen',
-  'AM DM / comment / email reply pass (last 12-18h)',
-  'Mid-afternoon Vercel runtime logs - scan for 5xx errors',
-  'Evening DM / comment sweep',
+// Recurring daily ritual that fires every weekday Tue 14 Jul onwards.
+// Each entry has detailed step-by-step instructions that render under
+// the task on the Today dashboard so Kade doesn't need to remember the
+// flow each morning.
+const DAILY_RITUAL: RunbookCheck[] = [
+  {
+    task: 'AM dashboard Wave Status + Meta Events Manager Lead-event sweep',
+    instructions: [
+      '1. Open Today dashboard → 📊 Live metrics card → confirm Wave fill is climbing as expected (target: blue/amber dot, not red).',
+      '2. Open /dashboard/business/strategy → Paid Ads tab → Wave Status card for spot count.',
+      '3. New tab: business.facebook.com → Events Manager → Overview tab → confirm Lead events firing in last 24h. If zero, check Vercel logs for /api/challenge/enroll errors AND check META_CAPI_ACCESS_TOKEN is set in Vercel env.',
+    ].join('\n'),
+  },
+  {
+    task: 'AM feedback triage dashboard - check unseen',
+    instructions: [
+      '1. Open /dashboard/feedback → filter chip "Unseen".',
+      '2. For each row: read the response. Click "✓ Mark seen". Tag sentiment (😊/😐/😟).',
+      '3. If a quote is publishable: click "📧 Send consent email" (fires the 2-step permission flow).',
+      '4. If churn risk signal: click "⚠ Flag churn risk".',
+      'Target: zero unseen by EOD.',
+    ].join('\n'),
+  },
+  {
+    task: 'AM DM / comment / email reply pass (last 12-18h)',
+    instructions: [
+      '1. Instagram app → @body_recode_ → notifications tab → reply to comments + DMs (priority: paying clients + recent enrolees).',
+      '2. kade@bodyrecode.au inbox → reply to any Challenge / Blueprint / coaching questions.',
+      '3. LinkedIn notifications → reply to comments on most recent executive-reframe post if any.',
+      'Target: <12h reply window during launch period. Active reply mode signals high-touch coaching.',
+    ].join('\n'),
+  },
+  {
+    task: 'Mid-afternoon Vercel runtime logs - scan for 5xx errors',
+    instructions: [
+      '1. Open vercel.com → body-recode project → Logs tab → Runtime filter.',
+      '2. Scan for any 5xx errors in last 4-6h (filter by status >= 500).',
+      '3. Common expected non-errors: 409 wave_full (after Wave N fills - this is correct rejection, not a bug).',
+      '4. If 5xx errors found: capture the route + timestamp + error message, paste in DM to me, I diagnose + fix.',
+      'Skip on weekends if no posts are firing.',
+    ].join('\n'),
+  },
+  {
+    task: 'Evening DM / comment sweep',
+    instructions: [
+      '1. Same as AM ritual - Instagram + email + LinkedIn pass.',
+      '2. Catches anything that landed during the work day.',
+      '3. Final tidy: any urgent items get scheduled for tomorrow AM if you can\'t address tonight.',
+    ].join('\n'),
+  },
 ]
 
 // Week-specific ops bumps that get added to the daily ritual

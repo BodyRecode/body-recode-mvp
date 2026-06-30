@@ -208,12 +208,20 @@ export default function TodayDashboardPage() {
                 {runbookEntry.checks.map((check, i) => {
                   const key = `check:${date}:${i}`
                   const checked = checkedItems.has(key)
+                  // Normalise: check can be a string OR { task, instructions }
+                  const task = typeof check === 'string' ? check : check.task
+                  const instructions = typeof check === 'string' ? null : check.instructions
                   return (
-                    <Row key={i} onClick={() => toggle(key)} interactive>
-                      <div className="flex items-start gap-2">
+                    <Row key={i} interactive>
+                      <div className="flex items-start gap-2" onClick={() => toggle(key)}>
                         <input type="checkbox" checked={checked} onChange={() => toggle(key)} className="cursor-pointer mt-0.5" />
-                        <span className={`text-sm ${checked ? 'line-through text-stone-400' : 'text-stone-800'}`}>{check}</span>
+                        <span className={`text-sm ${checked ? 'line-through text-stone-400' : 'text-stone-800 font-medium'}`}>{task}</span>
                       </div>
+                      {instructions && !checked && (
+                        <div className="mt-1.5 ml-6 text-xs text-stone-600 leading-relaxed whitespace-pre-line">
+                          {instructions}
+                        </div>
+                      )}
                     </Row>
                   )
                 })}
