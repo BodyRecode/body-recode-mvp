@@ -277,7 +277,20 @@ export default function TodayDashboardPage() {
               <Section title="📚 Runbook context" tone="default">
                 <p className="text-xs text-stone-600 mb-2">Phase: <strong>{runbookEntry.phase.replace('_', ' ')}</strong></p>
                 {runbookEntry.notes?.map((n, i) => <p key={i} className="text-sm text-stone-700 leading-relaxed">{n}</p>)}
-                <p className="text-xs text-stone-500 mt-3">Full runbook: <code>~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-30_Post_Launch_Operational_Runbook.md</code></p>
+                <div className="mt-3 space-y-1.5">
+                  <RunbookLink
+                    label="Post-Launch Operational Runbook"
+                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-30_Post_Launch_Operational_Runbook.md"
+                  />
+                  <RunbookLink
+                    label="Post-Launch 6-Week Strategy"
+                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-30_Post_Launch_6_Week_Strategy.md"
+                  />
+                  <RunbookLink
+                    label="Launch Day Runbook (Mon 13 Jul)"
+                    path="/Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-06-29_Launch_Day_Runbook_Mon_13_Jul.md"
+                  />
+                </div>
               </Section>
             )}
 
@@ -308,6 +321,37 @@ function Row({ children, onClick, interactive }: { children: React.ReactNode; on
   return (
     <div onClick={onClick} className={`py-2 ${interactive ? 'cursor-pointer hover:bg-stone-50 -mx-2 px-2 rounded' : ''}`}>
       {children}
+    </div>
+  )
+}
+
+// RunbookLink - clickable open + copy-path button.
+// Browsers block file:// from https:// origins for security, so the open link
+// usually only works in Safari (which is more permissive). Copy-path button
+// is the reliable fallback: paste into Finder ⌘+Shift+G to jump to the file.
+function RunbookLink({ label, path }: { label: string; path: string }) {
+  const [copied, setCopied] = useState(false)
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(path)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // navigator.clipboard fails in some contexts; user falls back to right-click
+    }
+  }
+  return (
+    <div className="flex items-center gap-2 text-xs">
+      <a
+        href={`file://${path}`}
+        className="text-blue-600 hover:text-blue-700 underline font-medium"
+        title="Click to open (works in Safari; if it does nothing, use the Copy button instead)"
+      >
+        {label}
+      </a>
+      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${copied ? 'bg-green-50 text-green-700 border-green-300' : 'bg-stone-100 text-stone-600 border-stone-300 hover:bg-stone-200'}`}>
+        {copied ? '✓ Copied path' : 'Copy path'}
+      </button>
     </div>
   )
 }
