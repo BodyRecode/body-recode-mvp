@@ -12,7 +12,6 @@ type NavCluster = { key: string; label: string; items: NavLink[] }
 const OVERVIEW: NavLink[] = [
   { href: '/dashboard/today', label: 'Today' },
   { href: '/dashboard', label: 'Live', exact: true },
-  { href: '/dashboard/scorecard', label: 'CEO' },
 ]
 
 const CRM_CLUSTER: NavCluster = {
@@ -59,6 +58,7 @@ const BUSINESS_CLUSTER: NavCluster = {
   label: 'Business',
   items: [
     { href: '/dashboard/business', label: 'Hub', exact: true },
+    { href: '/dashboard/scorecard', label: 'CEO' },
     { href: '/dashboard/business/bookings', label: 'Bookings' },
     { href: '/dashboard/business/payments', label: 'Payments' },
     { href: '/dashboard/business/availability', label: 'Availability' },
