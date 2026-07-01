@@ -294,7 +294,7 @@ export default function TodayDashboardPage() {
                   </Row>
                 ))}
                 <Row>
-                  <a href="/dashboard/feedback" className="text-xs font-semibold text-blue-600 hover:text-blue-700">→ Open feedback triage</a>
+                  <a href="/dashboard/feedback" target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-blue-600 hover:text-blue-700">→ Open feedback triage</a>
                 </Row>
               </Section>
             )}
@@ -371,13 +371,14 @@ function renderInstructionsWithLinks(text: string): React.ReactNode[] {
       nodes.push(text.slice(lastIndex, match.index))
     }
     const [, label, href] = match
-    const isExternal = /^https?:\/\//.test(href)
+    // Always open in a new tab so the Today dashboard stays intact as the "home base"
+    // Kade returns to between tasks (external URLs + internal dashboard routes both).
     nodes.push(
       <a
         key={key++}
         href={href}
-        target={isExternal ? '_blank' : undefined}
-        rel={isExternal ? 'noopener noreferrer' : undefined}
+        target="_blank"
+        rel="noopener noreferrer"
         className="text-blue-600 hover:text-blue-700 underline font-medium"
       >
         {label}
@@ -410,8 +411,10 @@ function RunbookLink({ label, path }: { label: string; path: string }) {
     <div className="flex items-center gap-2 text-xs">
       <a
         href={`file://${path}`}
+        target="_blank"
+        rel="noopener noreferrer"
         className="text-blue-600 hover:text-blue-700 underline font-medium"
-        title="Click to open (works in Safari; if it does nothing, use the Copy button instead)"
+        title="Click to open in new tab (works in Safari; if it does nothing, use the Copy button instead)"
       >
         {label}
       </a>
