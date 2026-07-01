@@ -77,11 +77,89 @@ const DAILY_RITUAL: RunbookCheck[] = [
 ]
 
 // Week-specific ops bumps that get added to the daily ritual
-const WEEK_2_OPS = ['Feedback dashboard daily sweep (Day 14 captures starting to land)']
-const WEEK_3_OPS = ['Watch Blueprint enrolment dashboard daily', 'Manually fire consent emails for high-signal feedback']
-const WEEK_4_OPS = ['Test Membership LP enrolment flow', 'Review Membership LP copy before Mon 10 Aug flip']
-const WEEK_5_OPS = ['Reply to Membership enrolment questions', 'Walk first new Members through their portal experience']
-const WEEK_6_OPS = ['Continue feedback dashboard sweeps', 'Publish granted testimonials on /blueprint LP']
+const WEEK_2_OPS: RunbookCheck[] = [
+  {
+    task: 'Feedback dashboard daily sweep (Day 14 captures starting to land)',
+    instructions: [
+      '1. Open [Feedback triage](/dashboard/feedback) → filter chip "Unseen".',
+      '2. Filter stage to "challenge" - launch-day cohort Day 14 captures start landing this week.',
+      '3. Each row: mark seen + tag sentiment. High-signal ones → fire consent email.',
+      'The Day 14 in-portal card is your PEAK testimonial moment - expect 30-60% capture rate.',
+    ].join('\n'),
+  },
+]
+const WEEK_3_OPS: RunbookCheck[] = [
+  {
+    task: 'Watch Blueprint enrolment dashboard daily',
+    instructions: [
+      '1. Open [Business dashboard](/dashboard/business) → confirm Blueprint sales counting up as Day 14 cohort ascends.',
+      '2. Target for Week 3: 5-15 Blueprint enrolments from launch-day Day 14 cohort.',
+      '3. If lagging: check Day 14 Report email open + click rates in Resend logs.',
+    ].join('\n'),
+  },
+  {
+    task: 'Manually fire consent emails for high-signal feedback',
+    instructions: [
+      '1. Open [Feedback triage](/dashboard/feedback) → filter "Granted unpublished".',
+      '2. For each granted quote: click "📌 Mark published" + note where you published (site homepage, IG story, etc).',
+      '3. Also filter "Awaiting consent" → for pending high-signal captures fire the consent email now.',
+    ].join('\n'),
+  },
+]
+const WEEK_4_OPS: RunbookCheck[] = [
+  {
+    task: 'Test Membership LP enrolment flow',
+    instructions: [
+      '1. Open [Membership LP](https://bodyrecode.au/membership) in incognito.',
+      '2. Walk through the enrolment form with throwaway email.',
+      '3. Verify: welcome email lands, portal access works, week-1 experience renders.',
+      'Do this BEFORE Mon 10 Aug flip. Any bug here blocks Membership launch.',
+    ].join('\n'),
+  },
+  {
+    task: 'Review Membership LP copy before Mon 10 Aug flip',
+    instructions: [
+      '1. Open [Membership LP](https://bodyrecode.au/membership) → read every headline + block.',
+      '2. Verify pricing matches locked strategy ($49/wk per memory).',
+      '3. Verify Blueprint→Membership ascension flow copy on Blueprint Week 6 completion page.',
+    ].join('\n'),
+  },
+]
+const WEEK_5_OPS: RunbookCheck[] = [
+  {
+    task: 'Reply to Membership enrolment questions',
+    instructions: [
+      '1. Same as daily DM ritual but priority: Membership questions.',
+      '2. Watch for "how is this different from Blueprint?" - answer per Membership LP framing.',
+      '3. First-week Members deserve high-touch onboarding - book a 15-min intro Loom for each if capacity allows.',
+    ].join('\n'),
+  },
+  {
+    task: 'Walk first new Members through their portal experience',
+    instructions: [
+      '1. Open [Business dashboard](/dashboard/business) → new Members list.',
+      '2. Impersonate 2-3 fresh Member portals - verify week-1 experience is clean.',
+      '3. If broken: file the issue in Vercel logs + fix same day (first week impressions matter).',
+    ].join('\n'),
+  },
+]
+const WEEK_6_OPS: RunbookCheck[] = [
+  {
+    task: 'Continue feedback dashboard sweeps',
+    instructions: [
+      'Same as Week 2-5 pattern. [Feedback triage](/dashboard/feedback) → Unseen → mark seen + tag sentiment + consent-email publishable quotes.',
+    ].join('\n'),
+  },
+  {
+    task: 'Publish granted testimonials on /blueprint LP',
+    instructions: [
+      '1. Open [Feedback triage](/dashboard/feedback) → filter "Granted unpublished".',
+      '2. Copy the quote + attribution.',
+      '3. Edit blueprint page (src/app/blueprint/page.tsx) → add testimonial to testimonial block → commit + push.',
+      '4. Back on dashboard → click "📌 Mark published" on the row, note location.',
+    ].join('\n'),
+  },
+]
 
 export const RUNBOOK: RunbookEntry[] = [
   // ── PRE-LAUNCH (now through Sun 12 Jul) ──
@@ -108,14 +186,77 @@ export const RUNBOOK: RunbookEntry[] = [
     label: 'LAUNCH DAY · Mon 13 Jul · Wave 1 opens 7am AEST',
     phase: 'launch_day',
     checks: [
-      '7:00 - Flip NEXT_PUBLIC_CHALLENGE_LIVE=true in Vercel + redeploy',
-      '7:00 - Same flip on performance-bodyrecode project',
-      '7:05 - Activate Stressed Exec ad set in Meta Ads Manager (keep other 2 PAUSED)',
-      '7:08 - Fire Wave 1 broadcast email: `npx tsx scripts/launch-day-waitlist-email.ts --live --wave=1`',
-      '7:15-end of day - Post stories per the Launch Day Story Posting Checklist',
-      '7:25 - Post Mon Authority feed post',
-      '7:30 - Kade personal email to inner circle (10-20 close contacts)',
-      'Active reply mode on DMs / comments / email all day',
+      {
+        task: '7:00 - Flip NEXT_PUBLIC_CHALLENGE_LIVE=true in Vercel + redeploy',
+        instructions: [
+          '1. Open [body-recode env vars](https://vercel.com/info-41827747s-projects/body-recode/settings/environment-variables).',
+          '2. Find NEXT_PUBLIC_CHALLENGE_LIVE → Edit → change from `false` to `true` → Save.',
+          '3. Open [Deployments tab](https://vercel.com/info-41827747s-projects/body-recode/deployments) → click ⋯ on latest → Redeploy.',
+          '4. Wait ~90 sec → open [bodyrecode.au/challenge](https://bodyrecode.au/challenge) in incognito → verify signup form shows (NOT waitlist).',
+        ].join('\n'),
+      },
+      {
+        task: '7:00 - Same flip on performance-bodyrecode project',
+        instructions: [
+          '1. Open [performance-bodyrecode env vars](https://vercel.com/info-41827747s-projects/performance-bodyrecode/settings/environment-variables).',
+          '2. Same NEXT_PUBLIC_CHALLENGE_LIVE flip → false → true → Save → redeploy.',
+          '3. Verify: [scorecard result page](https://performance.bodyrecode.au/scorecard) → Depleted state CTA now points at live Challenge, not waitlist.',
+        ].join('\n'),
+      },
+      {
+        task: '7:05 - Activate Stressed Exec ad set in Meta Ads Manager (keep other 2 PAUSED)',
+        instructions: [
+          '1. Open [Meta Ads Manager](https://adsmanager.facebook.com/adsmanager/manage/adsets) → BR-FunnelB-Leads-2026Q3 campaign.',
+          '2. Stressed Exec ad set → toggle to Active.',
+          '3. **Leave Perimenopausal + Slipping HP PAUSED** (Option D Phase 1 locked - only unpause them if Sat 19 Jul retro triggers Phase 2 unlock).',
+          '4. Verify ad set status column shows Active.',
+        ].join('\n'),
+      },
+      {
+        task: '7:08 - Fire Wave 1 broadcast email',
+        instructions: [
+          '1. Open Terminal.',
+          '2. Run: `cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --wave=1`',
+          '3. Expect console output: `[launch-email] Wave 1 broadcast (initial launch)` then `[launch-email] DONE. Sent N · Failed 0`',
+          '4. Spot-check kade@bodyrecode.au inbox for BCC copies arriving (should see ~N BCCs where N = waitlist row count).',
+          '5. If Aimee declined AF Newstead partnership: add `--no-af-newstead` flag to strip the founding-partner block.',
+        ].join('\n'),
+      },
+      {
+        task: '7:15-end of day - Post stories per the Launch Day Story Posting Checklist',
+        instructions: [
+          '1. Open the [Launch Day Story Posting Checklist PDF](file:///Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/00_LAUNCH_2026_07_13_FUNNEL_B/2026-06-30_Launch_Day_Story_Posting_Checklist.md) for time-by-time.',
+          '2. Also on this dashboard: 📸 Stories today section shows all 6 with tickable list.',
+          '3. iCal reminders on your phone fire 5min before each slot (all 6 today).',
+          'Story times: 7:30 / 10:00 / 12:30 / 15:00 / 17:30 / 20:00.',
+        ].join('\n'),
+      },
+      {
+        task: '7:25 - Post Mon Authority feed post',
+        instructions: [
+          '1. Open [Content Calendar](/dashboard/business/strategy) → Content Calendar tab → click on Mon 13 Jul.',
+          '2. Find the Mon Authority feed post → click Schedule button (or Post now if not already scheduled).',
+          'Alternative: since it should already be scheduled from Sun 6 Jul scheduling pass, it fires automatically via our IG publisher cron.',
+        ].join('\n'),
+      },
+      {
+        task: '7:30 - Kade personal email to inner circle (10-20 close contacts)',
+        instructions: [
+          '1. Open [Gmail](https://mail.google.com/mail/u/0/#inbox) → Compose.',
+          '2. Personal note (not templated) to 10-20 close contacts: family, friends, past clients who\'d want a direct heads-up.',
+          '3. Simple frame: "Doors are open today, would mean a lot to have you in the first wave. Take it or share it: bodyrecode.au/challenge"',
+          '4. Send individually, not BCC blast (feels different).',
+        ].join('\n'),
+      },
+      {
+        task: 'Active reply mode on DMs / comments / email all day',
+        instructions: [
+          '1. [Instagram @body_recode_](https://www.instagram.com/body_recode_/) - reply to every comment + DM within 30 min today.',
+          '2. [Gmail inbox](https://mail.google.com/mail/u/0/#inbox) - reply to every Challenge enrolment question same-day.',
+          '3. [LinkedIn](https://www.linkedin.com/notifications/) - reply to comments on the LinkedIn launch post.',
+          'Launch day = high-touch signal. Every reply seen by others creates social proof.',
+        ].join('\n'),
+      },
     ],
     decisions: ['Monitor Wave Status card every hour - if hitting cap fast, prep Wave 2 announcement'],
   },
@@ -136,7 +277,32 @@ export const RUNBOOK: RunbookEntry[] = [
     date: '2026-07-19',
     label: 'Week 1 · SAT RETRO',
     phase: 'week_1',
-    checks: ['Open 2026-06-30_Launch_Week_Retro_Template.md and fill in', 'Sunday Diagnostic post', 'Sleep early'],
+    checks: [
+      {
+        task: 'Open Launch Week Retro Template and fill in',
+        instructions: [
+          '1. Open the [Launch Week Retro Template](file:///Users/kadedunstone/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/00_LAUNCH_2026_07_13_FUNNEL_B/2026-06-30_Launch_Week_Retro_Template.md).',
+          '2. **Headline numbers**: Total enrolments, ad spend, CPL, completion rates, unseen feedback count.',
+          '3. **Wave dynamics**: Did Wave 1 fill? How many days? Fill rate curve?',
+          '4. **Ad-variant performance**: pull top 3 + bottom 3 from [Meta Ads Manager](https://adsmanager.facebook.com/adsmanager/manage/ads).',
+          '5. **Funnel drop-off**: where did leads disappear between click → enrolment → Day 0 intake completion?',
+          '6. Save as dated copy: `2026-07-19_Launch_Week_Retro.md` (do NOT overwrite the template).',
+        ].join('\n'),
+      },
+      {
+        task: 'Sunday Diagnostic post prep',
+        instructions: [
+          '1. Open [Content Calendar](/dashboard/business/strategy) → find Sun 20 Jul Diagnostic post.',
+          '2. Verify it\'s scheduled (⏱ badge). If not → click Schedule.',
+        ].join('\n'),
+      },
+      {
+        task: 'Sleep early',
+        instructions: [
+          'Week 2 starts Monday with high-signal decisions (Phase 2 budget unlock + Wave 2 announcement). Fresh Monday > exhausted Sunday.',
+        ].join('\n'),
+      },
+    ],
     decisions: [
       '🚦 Phase 2 budget gate (Option D): if CPL ≤ $5 AND Wave 1 filled <7 days → unpause Perimenopausal + Slipping HP ad sets at $25/day each. Otherwise hold at $25/day.',
       'Wave decision: if Wave 1 filled → announce + open Wave 2 Mon morning. If not → hold + reassess Sat 26 Jul.',
