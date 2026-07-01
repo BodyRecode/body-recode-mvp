@@ -1,41 +1,12 @@
 'use client'
 
-import Link from 'next/link'
 import { useState } from 'react'
 import {
-  Users,
-  MessageSquare,
-  Calendar,
-  CreditCard,
   Zap,
-  Layers,
-  Megaphone,
-  BarChart2,
-  TrendingUp,
-  Clapperboard,
-  ExternalLink,
   Check,
-  Clock,
-  ArrowUpRight,
-  Mail,
+  ExternalLink,
 } from 'lucide-react'
 import { PageHeader, Card, SectionLabel, Btn, MONO_FONT } from '@/components/dashboard/ui'
-
-const modules = [
-  { label: 'CRM',          description: 'Pipeline, contacts, opportunities',         href: '/dashboard/business/crm',          icon: Users },
-  { label: 'Waitlist',     description: 'Product launch waitlist signups',            href: '/dashboard/business/waitlist',     icon: Mail },
-  { label: 'Inbox',        description: 'Email threads per lead',                    href: '/dashboard/business/inbox',        icon: MessageSquare },
-  { label: 'Bookings',     description: 'Zoom 1, Zoom 2, calendar',                  href: '/dashboard/business/bookings',     icon: Calendar },
-  { label: 'Availability', description: 'Set days and times leads can book',         href: '/dashboard/business/availability', icon: Clock },
-  { label: 'Payments',     description: 'Products, invoices, subscriptions',         href: '/dashboard/business/payments',     icon: CreditCard },
-  { label: 'Funnels',      description: 'Landing pages, lead capture',               href: '/dashboard/business/funnels',      icon: Layers },
-  { label: 'Campaigns',    description: 'Email and SMS broadcasts',                  href: '/dashboard/business/campaigns',    icon: Megaphone },
-  { label: 'Content',      description: 'Generate copy, graphics, reels',            href: '/dashboard/business/content',      icon: Clapperboard },
-  { label: 'Automations',  description: 'Trigger sequences and workflows',           href: '/dashboard/business/automations',  icon: Zap },
-  { label: 'Ads',          description: 'Meta + Google performance tracking',        href: '/dashboard/business/ads',          icon: TrendingUp },
-  { label: 'Analytics',    description: 'Revenue, leads, conversions',               href: '/dashboard/business/analytics',    icon: BarChart2 },
-  { label: 'Website',      description: 'Traffic, conversions, page performance',    href: '/dashboard/business/website',      icon: ExternalLink },
-]
 
 const publicLinks = [
   { label: 'Booking page',         url: '/book',                 desc: 'Public Zoom booking' },
@@ -66,36 +37,10 @@ export default function BusinessHubPage() {
     <div className="max-w-[1100px]">
       <PageHeader
         eyebrow="Business Engine"
-        title="Business"
-        subtitle="The operating layer that feeds leads into the coaching system."
+        title="Business Hub"
+        subtitle="Quick actions + public links. Sub-pages live in the Business dropdown."
       />
 
-      {/* Modules grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-        {modules.map(mod => {
-          const Icon = mod.icon
-          return (
-            <Link
-              key={mod.href}
-              href={mod.href}
-              className="group bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 hover:border-[#D4D4D4] transition-colors"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-9 h-9 rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] flex items-center justify-center">
-                  <Icon size={15} className="text-[#1B6DFC]" strokeWidth={1.8} />
-                </div>
-                <ArrowUpRight size={14} className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors" />
-              </div>
-              <p className="text-[14px] font-semibold text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors mb-1">
-                {mod.label}
-              </p>
-              <p className="text-[12px] text-[#999999] leading-relaxed">{mod.description}</p>
-            </Link>
-          )
-        })}
-      </div>
-
-      {/* Public links */}
       <Card className="mb-4" padding="md">
         <SectionLabel>Public Links</SectionLabel>
         <div className="divide-y divide-[#E5E5E5]">
@@ -127,7 +72,6 @@ export default function BusinessHubPage() {
         </div>
       </Card>
 
-      {/* Scorecard automation setup */}
       <Card padding="md">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="min-w-0">
