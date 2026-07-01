@@ -33,14 +33,14 @@ const DAILY_RITUAL: RunbookCheck[] = [
     task: 'AM dashboard Wave Status + Meta Events Manager Lead-event sweep',
     instructions: [
       '1. Scroll down on this page to the 📊 Live metrics card. Confirm the Wave count is climbing as expected (target: blue/amber dot next to Wave label, not red).',
-      '2. Open dashboard → Business → Strategy → Paid Ads tab → Wave Status card for the full detail view + full spot count breakdown.',
-      '3. New browser tab → business.facebook.com → Events Manager → Overview tab → confirm Lead events are firing in the last 24h. If zero Lead events landing: check Vercel runtime logs for /api/challenge/enroll errors AND verify META_CAPI_ACCESS_TOKEN is set in the body-recode Vercel project env vars.',
+      '2. Open [Strategy → Paid Ads tab](/dashboard/business/strategy) → Wave Status card for the full detail view + full spot count breakdown.',
+      '3. Open [Meta Events Manager](https://business.facebook.com/events_manager2/list/pixel) → Overview tab → confirm Lead events are firing in the last 24h. If zero: check [Vercel runtime logs](https://vercel.com/info-41827747s-projects/body-recode/logs) for /api/challenge/enroll errors AND verify META_CAPI_ACCESS_TOKEN is set in [Vercel env vars](https://vercel.com/info-41827747s-projects/body-recode/settings/environment-variables).',
     ].join('\n'),
   },
   {
     task: 'AM feedback triage dashboard - check unseen',
     instructions: [
-      '1. Open /dashboard/feedback → filter chip "Unseen".',
+      '1. Open [Feedback triage](/dashboard/feedback) → filter chip "Unseen".',
       '2. For each row: read the response. Click "✓ Mark seen". Tag sentiment (😊/😐/😟).',
       '3. If a quote is publishable: click "📧 Send consent email" (fires the 2-step permission flow).',
       '4. If churn risk signal: click "⚠ Flag churn risk".',
@@ -50,16 +50,16 @@ const DAILY_RITUAL: RunbookCheck[] = [
   {
     task: 'AM DM / comment / email reply pass (last 12-18h)',
     instructions: [
-      '1. Instagram app → @body_recode_ → notifications tab → reply to comments + DMs (priority: paying clients + recent enrolees).',
-      '2. kade@bodyrecode.au inbox → reply to any Challenge / Blueprint / coaching questions.',
-      '3. LinkedIn notifications → reply to comments on most recent executive-reframe post if any.',
+      '1. Open [Instagram @body_recode_](https://www.instagram.com/body_recode_/) → notifications tab → reply to comments + DMs (priority: paying clients + recent enrolees).',
+      '2. Open [Gmail inbox](https://mail.google.com/mail/u/0/#inbox) → reply to any Challenge / Blueprint / coaching questions to kade@bodyrecode.au.',
+      '3. Open [LinkedIn notifications](https://www.linkedin.com/notifications/) → reply to comments on most recent executive-reframe post if any.',
       'Target: <12h reply window during launch period. Active reply mode signals high-touch coaching.',
     ].join('\n'),
   },
   {
     task: 'Mid-afternoon Vercel runtime logs - scan for 5xx errors',
     instructions: [
-      '1. Open vercel.com → body-recode project → Logs tab → Runtime filter.',
+      '1. Open [body-recode runtime logs](https://vercel.com/info-41827747s-projects/body-recode/logs) → Runtime filter.',
       '2. Scan for any 5xx errors in last 4-6h (filter by status >= 500).',
       '3. Common expected non-errors: 409 wave_full (after Wave N fills - this is correct rejection, not a bug).',
       '4. If 5xx errors found: capture the route + timestamp + error message, paste in DM to me, I diagnose + fix.',
@@ -69,7 +69,7 @@ const DAILY_RITUAL: RunbookCheck[] = [
   {
     task: 'Evening DM / comment sweep',
     instructions: [
-      '1. Same as AM ritual - Instagram + email + LinkedIn pass.',
+      '1. Same as AM ritual - [Instagram](https://www.instagram.com/body_recode_/) + [email](https://mail.google.com/mail/u/0/#inbox) + [LinkedIn](https://www.linkedin.com/notifications/) pass.',
       '2. Catches anything that landed during the work day.',
       '3. Final tidy: any urgent items get scheduled for tomorrow AM if you can\'t address tonight.',
     ].join('\n'),

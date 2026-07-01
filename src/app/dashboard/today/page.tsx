@@ -219,7 +219,7 @@ export default function TodayDashboardPage() {
                       </div>
                       {instructions && !checked && (
                         <div className="mt-1.5 ml-6 text-xs text-stone-600 leading-relaxed whitespace-pre-line">
-                          {instructions}
+                          {renderInstructionsWithLinks(instructions)}
                         </div>
                       )}
                     </Row>
@@ -335,6 +335,41 @@ function Row({ children, onClick, interactive }: { children: React.ReactNode; on
       {children}
     </div>
   )
+}
+
+// Parse [label](url) markdown-style links in a string into React elements.
+// Preserves newlines (each line rendered as a fragment with \n retained for
+// whitespace-pre-line to break on). External URLs open in a new tab; internal
+// paths (starting with /) open in-place.
+function renderInstructionsWithLinks(text: string): React.ReactNode[] {
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g
+  const nodes: React.ReactNode[] = []
+  let lastIndex = 0
+  let match
+  let key = 0
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(text.slice(lastIndex, match.index))
+    }
+    const [, label, href] = match
+    const isExternal = /^https?:\/\//.test(href)
+    nodes.push(
+      <a
+        key={key++}
+        href={href}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
+        className="text-blue-600 hover:text-blue-700 underline font-medium"
+      >
+        {label}
+      </a>
+    )
+    lastIndex = match.index + match[0].length
+  }
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex))
+  }
+  return nodes
 }
 
 // RunbookLink - clickable open + copy-path button.
