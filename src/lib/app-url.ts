@@ -60,3 +60,36 @@ export function intakeUrl(token: string): string {
 export function supplementaryIntakeUrl(token: string): string {
   return `${safe()}/intake-supplement/${token}`
 }
+
+// ═════════════════════════════════════════════════════════════════════════
+// Sister-domain helpers. Route through tenant config so a white-label
+// tenant's marketing/performance/scorecard site uses THEIR domain, not BR's.
+// Import from '@/config/tenant' at call-site to avoid a circular import here.
+// ═════════════════════════════════════════════════════════════════════════
+
+/** Marketing site apex, e.g. https://bodyrecode.au. */
+export function marketingUrl(): string {
+  // Lazy import to avoid circular dep at module init
+  const { brand } = require('@/config/tenant') as typeof import('@/config/tenant')
+  return brand().marketingDomain
+}
+
+/** Marketing site absolute URL for a path. */
+export function marketingUrlFor(path: string): string {
+  const base = marketingUrl()
+  const tail = path.startsWith('/') ? path : `/${path}`
+  return `${base}${tail}`
+}
+
+/** Performance/scorecard site apex, e.g. https://performance.bodyrecode.au. */
+export function performanceUrl(): string {
+  const { brand } = require('@/config/tenant') as typeof import('@/config/tenant')
+  return brand().performanceDomain
+}
+
+/** Performance site absolute URL for a path. */
+export function performanceUrlFor(path: string): string {
+  const base = performanceUrl()
+  const tail = path.startsWith('/') ? path : `/${path}`
+  return `${base}${tail}`
+}

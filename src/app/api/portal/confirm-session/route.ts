@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { appUrl } from '@/lib/app-url'
+import { appUrl, marketingUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
 import { logoUrl } from '@/config/tenant'
 
@@ -103,7 +103,7 @@ function confirmPage(message: string, success: boolean): string {
     </div>
     <p style="font-size:18px;font-weight:700;color:#1A1A1A;margin:0 0 12px;">${success ? 'You\'re confirmed' : 'Something went wrong'}</p>
     <p style="font-size:14px;color:#6B6B6B;line-height:1.7;margin:0 0 32px;">${message}</p>
-    <a href="https://bodyrecode.au" style="font-size:13px;color:#3F85FD;text-decoration:none;">bodyrecode.au</a>
+    <a href="${marketingUrl()}" style="font-size:13px;color:#3F85FD;text-decoration:none;">bodyrecode.au</a>
   </div>
 </body>
 </html>`

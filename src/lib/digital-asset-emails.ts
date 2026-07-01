@@ -11,6 +11,7 @@
 // see project_dark_email_shell_rename memory).
 
 import { darkEmailSignature } from './email-signature'
+import { marketingUrl } from '@/lib/app-url'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
@@ -88,7 +89,7 @@ export function ascensionCtaFor(
   target: AscensionTarget,
   source: string,
 ): { label: string; url: string } {
-  const base = 'https://bodyrecode.au'
+  const base = '${marketingUrl()}'
   switch (target) {
     case 'depleted':
       return {

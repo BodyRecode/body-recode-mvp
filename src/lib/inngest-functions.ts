@@ -1099,7 +1099,7 @@ ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody("This is the last email in this sequence. I don't want to keep showing up in your inbox if the timing isn't right.")}
 ${emailBody("If you ever want to come back, the door is open. The system works whenever you're ready for it.")}
-${emailBody('One other thing — if you know someone who would benefit from any of the Body Recode programmes, send them to <a href="https://app.bodyrecode.au" style="color:#1B6DFC;font-weight:600;text-decoration:none;">app.bodyrecode.au</a>. The challenge is free and a good starting point for anyone.')}
+${emailBody('One other thing — if you know someone who would benefit from any of the Body Recode programmes, send them to <a href="${appUrl()}" style="color:#1B6DFC;font-weight:600;text-decoration:none;">app.bodyrecode.au</a>. The challenge is free and a good starting point for anyone.')}
 ${emailBody('Take care of yourself.', { size: 14 })}
 `),
       })
