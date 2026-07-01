@@ -34,7 +34,7 @@ const DAILY_RITUAL: RunbookCheck[] = [
     instructions: [
       '1. Scroll down on this page to the 📊 Live metrics card. Confirm the Wave count is climbing as expected (target: blue/amber dot next to Wave label, not red).',
       '2. Open [Strategy → Paid Ads tab](/dashboard/business/strategy) → Wave Status card for the full detail view + full spot count breakdown.',
-      '3. Open [Meta Business Suite](https://business.facebook.com/) → left sidebar → "All tools" → "Events Manager" (Meta\'s direct Events Manager URLs are unstable + redirect to broken subdomains; entering via Business Suite is reliable). In Events Manager → Overview tab → confirm Lead events are firing in the last 24h. If zero: check [Vercel runtime logs](https://vercel.com/info-41827747s-projects/body-recode/logs) for /api/challenge/enroll errors AND verify META_CAPI_ACCESS_TOKEN is set in [Vercel env vars](https://vercel.com/info-41827747s-projects/body-recode/settings/environment-variables).',
+      '3. Open [Meta Business Suite (Body Recode)](https://business.facebook.com/latest/home?global_scope_id=1254275259802098&business_id=1254275259802098&page_id=882297731632982&asset_id=882297731632982) → left sidebar → "All tools" → "Events Manager". In Events Manager → Overview tab → confirm Lead events are firing in the last 24h. If zero: check [Vercel runtime logs](https://vercel.com/info-41827747s-projects/body-recode/logs) for /api/challenge/enroll errors AND verify META_CAPI_ACCESS_TOKEN is set in [Vercel env vars](https://vercel.com/info-41827747s-projects/body-recode/settings/environment-variables).',
     ].join('\n'),
   },
   {
