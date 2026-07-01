@@ -32,9 +32,9 @@ const DAILY_RITUAL: RunbookCheck[] = [
   {
     task: 'AM dashboard Wave Status + Meta Events Manager Lead-event sweep',
     instructions: [
-      '1. Open Today dashboard → 📊 Live metrics card → confirm Wave fill is climbing as expected (target: blue/amber dot, not red).',
-      '2. Open /dashboard/business/strategy → Paid Ads tab → Wave Status card for spot count.',
-      '3. New tab: business.facebook.com → Events Manager → Overview tab → confirm Lead events firing in last 24h. If zero, check Vercel logs for /api/challenge/enroll errors AND check META_CAPI_ACCESS_TOKEN is set in Vercel env.',
+      '1. Scroll down on this page to the 📊 Live metrics card. Confirm the Wave count is climbing as expected (target: blue/amber dot next to Wave label, not red).',
+      '2. Open dashboard → Business → Strategy → Paid Ads tab → Wave Status card for the full detail view + full spot count breakdown.',
+      '3. New browser tab → business.facebook.com → Events Manager → Overview tab → confirm Lead events are firing in the last 24h. If zero Lead events landing: check Vercel runtime logs for /api/challenge/enroll errors AND verify META_CAPI_ACCESS_TOKEN is set in the body-recode Vercel project env vars.',
     ].join('\n'),
   },
   {
