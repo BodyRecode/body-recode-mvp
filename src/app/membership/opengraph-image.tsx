@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { coach } from '@/config/tenant'
 
 export const runtime = 'edge'
 export const alt = "You do the work. The results come. They never last. The Body Recode Membership is the infrastructure for the long arc. $49/week."
@@ -6,6 +7,7 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 export default async function Image() {
+  const c = coach()
   return new ImageResponse(
     (
       <div
@@ -151,10 +153,10 @@ export default async function Image() {
                 marginBottom: '4px',
               }}
             >
-              Built by Kade Dunstone
+              Built by {c.fullName}
             </div>
             <div style={{ fontSize: '15px', color: '#6B6B6B' }}>
-              Sports Scientist · Business Entrepreneur · Body Recode Founder
+              {c.credentials}
             </div>
           </div>
           <div

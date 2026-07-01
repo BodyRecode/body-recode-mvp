@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { CheckCircle2, Mail, Clock, ShieldAlert, ArrowRight } from 'lucide-react'
+import { coach } from '@/config/tenant'
 
 const TIMELINE: { eyebrow: string; title: string; body: string; icon: typeof CheckCircle2 }[] = [
   {
@@ -41,6 +42,7 @@ const WHATS_NEXT: { eyebrow: string; title: string; body: string }[] = [
 ]
 
 export default function MembershipWelcomePage() {
+  const c = coach()
   return (
     <div style={{
       minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
@@ -212,8 +214,8 @@ export default function MembershipWelcomePage() {
           display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap',
         }}>
           <img
-            src="https://bodyrecode.au/kade.jpg"
-            alt="Kade Dunstone"
+            src={c.photoUrl}
+            alt={c.fullName}
             style={{
               width: '44px', height: '44px', borderRadius: '50%',
               objectFit: 'cover', objectPosition: 'top center',
@@ -222,10 +224,10 @@ export default function MembershipWelcomePage() {
           />
           <div style={{ flex: 1, minWidth: '200px' }}>
             <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
-              Written by Kade Dunstone
+              Written by {c.fullName}
             </p>
             <p style={{ fontSize: '11px', color: '#6B6B6B', margin: 0, lineHeight: 1.45 }}>
-              Sports Scientist · Business Entrepreneur · Body Recode Founder
+              {c.credentials}
             </p>
           </div>
         </div>

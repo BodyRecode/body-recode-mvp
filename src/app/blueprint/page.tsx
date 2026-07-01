@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Dna, Dumbbell, Salad, BookOpen, FileText, BarChart3, Compass, ArrowRight } from 'lucide-react'
 import { isProductLive } from '@/lib/product-launch'
 import { WaitlistCTA } from '@/components/product-waitlist-cta'
+import { coach } from '@/config/tenant'
 
 function CheckoutForm({ position, teal, darkBg }: { position: string; teal?: boolean; darkBg?: boolean }) {
   // Pre-launch: capture waitlist instead of Stripe checkout until NEXT_PUBLIC_BLUEPRINT_LIVE=true.
@@ -202,6 +203,7 @@ const PHASES = [
 ]
 
 export default function BlueprintPage() {
+  const c = coach()
   const formRef = useRef<HTMLDivElement>(null)
 
   function scrollToForm() {
@@ -258,7 +260,7 @@ export default function BlueprintPage() {
           }}>
             <img
               src="/kade.jpg"
-              alt="Kade Dunstone"
+              alt={c.fullName}
               style={{
                 width: '40px', height: '40px', borderRadius: '50%',
                 objectFit: 'cover', objectPosition: 'top center',
@@ -268,10 +270,10 @@ export default function BlueprintPage() {
             />
             <div>
               <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
-                Built by Kade Dunstone
+                Built by {c.fullName}
               </p>
               <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.3 }}>
-                Sports Scientist · Business Entrepreneur · Body Recode Founder
+                {c.credentials}
               </p>
             </div>
           </div>
@@ -747,7 +749,7 @@ export default function BlueprintPage() {
         }}>
           <img
             src="/kade-11.jpg"
-            alt="Kade Dunstone"
+            alt={c.fullName}
             style={{
               width: '100%', display: 'block',
               // Source is 561x701 (4:5). Match the frame so the image
@@ -762,9 +764,9 @@ export default function BlueprintPage() {
             background: 'linear-gradient(to bottom, transparent 50%, rgba(12,10,9,0.88) 100%)',
           }} />
           <div style={{ position: 'absolute', bottom: '22px', left: '24px', right: '24px' }}>
-            <p style={{ fontSize: '17px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 3px' }}>Kade Dunstone</p>
+            <p style={{ fontSize: '17px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 3px' }}>{c.fullName}</p>
             <p style={{ fontSize: '13px', color: '#1B6DFC', margin: 0, fontWeight: 600 }}>
-              Sports Scientist · Business Entrepreneur · Body Recode Founder
+              {c.credentials}
             </p>
           </div>
         </div>

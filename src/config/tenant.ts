@@ -104,7 +104,7 @@ const BODY_RECODE_TENANT: TenantConfig = {
     adminEmail: 'kade@bodyrecode.au',
     photoUrl: 'https://bodyrecode.au/kade.jpg',
     location: 'Brisbane',
-    credentials: 'Human Movement Science + Business',
+    credentials: 'Sports Scientist · Business Entrepreneur · Body Recode Founder',
     instagramHandle: '@body_recode_',
     personalInstagramHandle: '@kade_dunstone_',
     whatsAppNumber: '61400336284',

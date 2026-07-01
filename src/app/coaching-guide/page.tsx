@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { coach } from '@/config/tenant'
 
 const sections = [
   { id: 'coach', label: 'Note from Your Coach' },
@@ -24,6 +25,7 @@ const sections = [
 ]
 
 export default function CoachingGuidePage() {
+  const c = coach()
   const [activeId, setActiveId] = useState('coach')
   const observerRef = useRef<IntersectionObserver | null>(null)
 
@@ -100,14 +102,14 @@ export default function CoachingGuidePage() {
             <GuideSection id="coach" title="A Note from Your Coach">
               <div className="flex items-center gap-5 mb-6">
                 <img
-                  src="https://bodyrecode.au/kade.jpg"
-                  alt="Kade Dunstone"
+                  src={c.photoUrl}
+                  alt={c.fullName}
                   width={72}
                   height={72}
                   className="rounded-full object-cover object-top shrink-0"
                 />
                 <div>
-                  <p className="text-[#1A1A1A] font-semibold text-sm">Kade Dunstone</p>
+                  <p className="text-[#1A1A1A] font-semibold text-sm">{c.fullName}</p>
                   <p className="text-stone-500 text-xs mt-0.5">Performance Coach · Founder, Body Recode&trade;</p>
                 </div>
               </div>

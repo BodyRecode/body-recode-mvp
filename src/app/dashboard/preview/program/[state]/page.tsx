@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { markdownToHtml } from '@/lib/markdown'
 import fs from 'fs'
 import path from 'path'
+import { coach } from '@/config/tenant'
 
 const STATE_LABELS: Record<string, string> = {
   depleted: 'Depleted',
@@ -27,6 +28,7 @@ export default async function PreviewProgramPage({
 }: {
   params: Promise<{ state: string }>
 }) {
+  const c = coach()
   const { state } = await params
   const stateLabel = STATE_LABELS[state]
   if (!stateLabel) notFound()
@@ -307,8 +309,8 @@ export default async function PreviewProgramPage({
           display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap',
         }}>
           <img
-            src="https://bodyrecode.au/kade.jpg"
-            alt="Kade Dunstone"
+            src={c.photoUrl}
+            alt={c.fullName}
             style={{
               width: '44px', height: '44px', borderRadius: '50%',
               objectFit: 'cover', objectPosition: 'top center',
@@ -317,10 +319,10 @@ export default async function PreviewProgramPage({
           />
           <div style={{ flex: 1, minWidth: '200px' }}>
             <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
-              Written by Kade Dunstone
+              Written by {c.fullName}
             </p>
             <p style={{ fontSize: '11px', color: '#6B6B6B', margin: 0, lineHeight: 1.45 }}>
-              Sports Scientist · Business Entrepreneur · Body Recode Founder
+              {c.credentials}
             </p>
           </div>
         </div>

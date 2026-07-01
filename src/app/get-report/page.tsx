@@ -220,7 +220,7 @@ export default function GetReportPage() {
               Built by {c.fullName}
             </p>
             <p style={{ fontSize: '11px', color: '#6B6B6B', margin: 0, lineHeight: 1.45 }}>
-              Sports Scientist · Business Entrepreneur · Body Recode Founder
+              {c.credentials}
             </p>
           </div>
         </div>

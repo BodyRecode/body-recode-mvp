@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { coach } from '@/config/tenant'
 
 const SECTIONS = ['Energy', 'Sleep', 'Stress Load', 'Training Response', 'Fat Loss Response']
 const SECTION_KEYS = ['01', '02', '03', '04', '05']
@@ -124,6 +125,7 @@ export default function ReportClient({ report }: { report: {
   section_scores: Record<string, number>
   token: string
 } }) {
+  const c = coach()
   useEffect(() => {
     if (typeof window !== 'undefined' && (window as any).fbq) {
       (window as any).fbq('track', 'Lead')
@@ -201,8 +203,8 @@ export default function ReportClient({ report }: { report: {
           {/* Founder byline */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
             <img
-              src="https://bodyrecode.au/kade.jpg"
-              alt="Kade Dunstone"
+              src={c.photoUrl}
+              alt={c.fullName}
               style={{
                 width: '40px', height: '40px', borderRadius: '50%',
                 objectFit: 'cover', objectPosition: 'top center',
@@ -211,10 +213,10 @@ export default function ReportClient({ report }: { report: {
             />
             <div>
               <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
-                Prepared by Kade Dunstone
+                Prepared by {c.fullName}
               </p>
               <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.3 }}>
-                Sports Scientist · Business Entrepreneur · Body Recode Founder
+                {c.credentials}
               </p>
             </div>
           </div>
