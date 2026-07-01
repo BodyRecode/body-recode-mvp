@@ -65,7 +65,20 @@ export default function TodayDashboardPage() {
   const [enrolmentsLast24h, setEnrolmentsLast24h] = useState<number>(0)
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
-  const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set())
+  // Tick state persists to localStorage so refreshes don't lose progress.
+  // Keys are unique per date (check:${date}:${i}) and per story-row (story:${uuid}),
+  // so accumulation is bounded and old items self-expire when Kade views a different day.
+  const CHECKED_STORAGE_KEY = 'today-dashboard-checked-items'
+  const [checkedItems, setCheckedItems] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set()
+    try {
+      const raw = window.localStorage.getItem(CHECKED_STORAGE_KEY)
+      if (raw) return new Set(JSON.parse(raw))
+    } catch {
+      /* localStorage unavailable in some contexts (private windows, quota) - fall through */
+    }
+    return new Set()
+  })
 
   async function load() {
     setLoading(true)
@@ -106,6 +119,12 @@ export default function TodayDashboardPage() {
     setCheckedItems(s => {
       const n = new Set(s)
       if (n.has(key)) n.delete(key); else n.add(key)
+      // Persist immediately so refresh restores state.
+      try {
+        window.localStorage.setItem(CHECKED_STORAGE_KEY, JSON.stringify(Array.from(n)))
+      } catch {
+        /* quota / private window - state still works in-memory for this session */
+      }
       return n
     })
   }
