@@ -1,8 +1,8 @@
 import { darkEmailSignature } from '@/lib/email-signature'
 import Link from 'next/link'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
-const BOOKING_LINK = 'https://bodyrecode.au/book'
+const BOOKING_LINK = `${brand().marketingDomain}/book`
 const firstName = 'Sarah'
 const dateStr = 'Thursday, 17 April 2026'
 const timeStr = '10:00 am'

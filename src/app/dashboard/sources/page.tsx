@@ -2,10 +2,11 @@ import { createClient } from '@/lib/supabase/server'
 import { LEAD_SOURCES } from '@/lib/utils'
 import { PageHeader, Card, SectionLabel, Pill, MONO_FONT } from '@/components/dashboard/ui'
 import CopyButton from './copy-button'
+import { brand } from "@/config/tenant";
 
-const QR_BASE_URL = 'https://performance.bodyrecode.au/scorecard'
-const DIGITAL_BASE_URL = 'https://bodyrecode.au/performance-check-in-quiz'
-const SCORECARD_BASE_URL = 'https://performance.bodyrecode.au/scorecard'
+const QR_BASE_URL = `${brand().performanceDomain}/scorecard`
+const DIGITAL_BASE_URL = `${brand().marketingDomain}/performance-check-in-quiz`
+const SCORECARD_BASE_URL = `${brand().performanceDomain}/scorecard`
 
 const QR_SOURCES = [
   { value: 'qr_floor_banner', label: 'Floor Banner', desc: 'Large QR code on the gym floor banner near the entrance.' },

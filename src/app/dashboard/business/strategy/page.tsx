@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { brand } from "@/config/tenant";
 
 type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'organic' | 'ads' | 'linkedin' | 'timeline' | 'pages' | 'calendar'
 
@@ -841,7 +842,7 @@ const COLD_ADS: ColdAd[] = [
 ]
 
 function destinationUrl(slug: string) {
-  return `https://bodyrecode.au/challenge?utm_source=meta&utm_campaign=funnelb_cold&utm_content=${slug}`
+  return `${brand().marketingDomain}/challenge?utm_source=meta&utm_campaign=funnelb_cold&utm_content=${slug}`
 }
 
 // PostToIgButton - immediate publish OR schedule for future. Calls

@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { SLS_BLOCKS, RPS_BLOCKS, RILS_BLOCKS, FIXED_SECTIONS, selectBlocks } from './report-blocks'
 import { darkEmailSignature } from './email-signature'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, coach, brand } from '@/config/tenant'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailCta,
@@ -240,11 +240,11 @@ export async function buildReportEmail(
           <tr>
             <td bgcolor="#F7F7F7" style="background-color:#F7F7F7;padding:24px 40px;border-top:1px solid #E5E5E5;">
               <p style="margin:0 0 8px;font-size:12px;color:#6B6B6B;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-                To make sure you receive future emails from Body Recode™, add <strong style="color:#1A1A1A;">kade@bodyrecode.au</strong> to your contacts.
+                To make sure you receive future emails from Body Recode™, add <strong style="color:#1A1A1A;">${coach().email}</strong> to your contacts.
               </p>
               <p style="margin:0;font-size:12px;color:#6B6B6B;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
                 Body Recode™ · Anytime Fitness Newstead, Brisbane<br/>
-                <a href="mailto:info@bodyrecode.au" style="color:#1B6DFC;text-decoration:none;">info@bodyrecode.au</a>
+                <a href="mailto:${brand().supportEmail}" style="color:#1B6DFC;text-decoration:none;">${brand().supportEmail}</a>
               </p>
             </td>
           </tr>

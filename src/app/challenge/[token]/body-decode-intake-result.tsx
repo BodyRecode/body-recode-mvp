@@ -2,6 +2,7 @@
 
 import type { IntakeResult } from './body-decode-intake'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
+import { brand } from "@/config/tenant";
 
 // State-routed result card shown after the Day 0 Body Decode Intake. Goes
 // meaningfully deeper than just the state name + zone descriptor:
@@ -326,7 +327,7 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
             Transitioning bodies have capacity — what they need is the specific bottleneck identified and the right prescription. The 6-week Body Decode Blueprint ($97) does exactly that. The Challenge will still work; Blueprint is the higher-fit move.
           </p>
           <a
-            href="https://bodyrecode.au/blueprint?from=challenge_day_zero&state=transitioning"
+            href={`${brand().marketingDomain}/blueprint?from=challenge_day_zero&state=transitioning`}
             style={{
               display: 'block', width: '100%', boxSizing: 'border-box',
               padding: '14px 18px', borderRadius: '10px',
@@ -356,7 +357,7 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
             Ready bodies don&apos;t need a reset — they need a continuous optimisation rhythm. Membership ($49/wk) gives you the ongoing programming + check-in cycle that turns foundations into compounding results. The Challenge will still work; Membership is the higher-fit move.
           </p>
           <a
-            href="https://bodyrecode.au/membership?from=challenge_day_zero&state=ready"
+            href={`${brand().marketingDomain}/membership?from=challenge_day_zero&state=ready`}
             style={{
               display: 'block', width: '100%', boxSizing: 'border-box',
               padding: '14px 18px', borderRadius: '10px',

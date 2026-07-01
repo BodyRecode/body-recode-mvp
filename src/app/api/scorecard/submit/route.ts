@@ -24,7 +24,7 @@ import {
   fromBrand,
 } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { coach } from '@/config/tenant'
+import { coach, brand } from '@/config/tenant'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -369,7 +369,7 @@ ${darkEmailSignature()}
     const { clientIp, clientUserAgent } = extractClientContext(request)
     await fireMetaCapiEvent({
       eventName: 'CompleteRegistration',
-      eventSourceUrl: 'https://performance.bodyrecode.au/scorecard',
+      eventSourceUrl: `${brand().performanceDomain}/scorecard`,
       actionSource: 'website',
       userData: {
         email,

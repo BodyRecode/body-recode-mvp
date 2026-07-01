@@ -4,7 +4,7 @@ import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fromCoach } from '@/lib/email-shell'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 export async function POST(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
@@ -16,7 +16,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
   if (!lead?.email) return NextResponse.json({ error: 'Lead has no email' }, { status: 400 })
 
   const firstName = lead.name.split(' ')[0]
-  const bookingLink = 'https://bodyrecode.au/book'
+  const bookingLink = `${brand().marketingDomain}/book`
 
   if (!process.env.RESEND_API_KEY) return NextResponse.json({ error: 'Email not configured' }, { status: 500 })
 

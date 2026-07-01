@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach } from '@/lib/email-shell'
 import { coach, logoUrl } from '@/config/tenant'
+import { appUrl } from "@/lib/app-url";
 
 export async function POST(request: NextRequest) {
   const { secret, body_state } = await request.json()
@@ -36,7 +37,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to create report record' }, { status: 500 })
   }
 
-  const reportUrl = `https://app.bodyrecode.au/report/${report.token}`
+  const reportUrl = `${appUrl()}/report/${report.token}`
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   await resend.emails.send({

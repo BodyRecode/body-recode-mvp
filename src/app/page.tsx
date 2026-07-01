@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import LicensingEnquiryForm from '@/components/marketing/licensing-enquiry-form'
+import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
   title: 'Body Recode™ | Biological Interpretation Platform',
@@ -103,7 +104,7 @@ const ENVIRONMENTS = [
     kicker: 'Health & Fitness',
     title: 'Performance Coaching',
     desc: 'The origin environment and first proof of concept. General-population clients whose bodies have stopped responding to effort. Available online worldwide and face-to-face in Brisbane.',
-    link: { href: 'https://performance.bodyrecode.au', label: 'Visit Performance Coaching →' },
+    link: { href: brand().performanceDomain, label: 'Visit Performance Coaching →' },
   },
   {
     kicker: 'Corporate & Executive',
@@ -694,7 +695,7 @@ export default function HomePage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <FooterHead>Environments</FooterHead>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <a href="https://performance.bodyrecode.au" style={{ fontSize: 13, color: BLUE_LIGHT, fontWeight: 600, textDecoration: 'none' }}>Performance Coaching</a>
+                <a href={brand().performanceDomain} style={{ fontSize: 13, color: BLUE_LIGHT, fontWeight: 600, textDecoration: 'none' }}>Performance Coaching</a>
                 <span style={{ fontFamily: MONO, fontSize: 9, fontWeight: 700, background: BLUE, color: TXT, padding: '2px 7px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: '0.12em' }}>Live</span>
               </div>
               <span style={{ fontSize: 13, color: TXT_MUTE }}>Executive Performance</span>

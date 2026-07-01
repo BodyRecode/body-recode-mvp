@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, ArrowLeft } from 'lucide-react'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 export default function ProgramCancelledPage() {
   return (
@@ -94,7 +94,7 @@ export default function ProgramCancelledPage() {
 
       {/* Footer back link */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 80px' }}>
-        <Link href="https://performance.bodyrecode.au/scorecard" style={{
+        <Link href={`${brand().performanceDomain}/scorecard`} style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px',
           padding: '14px 24px', borderRadius: '10px',
           background: '#FFFFFF', border: '1px solid #E5E5E5', color: '#1A1A1A',

@@ -1,3 +1,5 @@
+import { brand } from "@/config/tenant";
+
 /**
  * Body Recode email signatures. Both functions render LIGHT — Pure White
  * background, Graphite Black text, Signal Blue link — matching the new
@@ -14,10 +16,10 @@
 // Matches the canonical signature we designed 2026-05-25
 // (06_SAAS_PLATFORM_BUILD/2026-05-25_Personal_Gmail_Signature_v3): B&W circle
 // headshot + name + credentials + performance link AND the Instagram handle.
-const PHOTO = 'https://bodyrecode.au/kade-circle.png'
+const PHOTO = `${brand().marketingDomain}/kade-circle.png`
 const NAME = 'Kade Dunstone'
 const CREDENTIALS = 'Sports Scientist · Business Entrepreneur · Body Recode Founder'
-const URL = 'https://performance.bodyrecode.au'
+const URL = brand().performanceDomain
 const URL_LABEL = 'performance.bodyrecode.au'
 const SITE_URL = '${marketingUrl()}'
 const SITE_LABEL = 'bodyrecode.au'
@@ -34,7 +36,7 @@ const LINK_ROW = `<a href="${URL}" style="${LINK_STYLE}">${URL_LABEL}</a>${SEP}<
 // Daily-rotating tagline strip under the signature (see src/app/api/sig-tag +
 // src/lib/sig-taglines.ts). One brand line per UTC day, so a recipient who gets
 // two emails in a week sees it change. Rendered 960x80, shown at 480x40.
-const SIG_TAG = `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td><a href="${SITE_URL}" style="text-decoration:none;display:block;"><img src="https://bodyrecode.au/api/sig-tag" width="480" height="40" alt="" style="display:block;border:0;width:100%;max-width:480px;height:auto;" /></a></td></tr></table>`
+const SIG_TAG = `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td><a href="${SITE_URL}" style="text-decoration:none;display:block;"><img src="${brand().marketingDomain}/api/sig-tag" width="480" height="40" alt="" style="display:block;border:0;width:100%;max-width:480px;height:auto;" /></a></td></tr></table>`
 
 export function emailSignature(): string {
   return `

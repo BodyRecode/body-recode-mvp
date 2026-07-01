@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Dna, Dumbbell, Salad, BookOpen, FileText, BarChart3, Compass, ArrowRight } from 'lucide-react'
 import { isProductLive } from '@/lib/product-launch'
 import { WaitlistCTA } from '@/components/product-waitlist-cta'
-import { coach, logoUrl } from '@/config/tenant'
+import { coach, logoUrl, brand } from '@/config/tenant'
 
 function CheckoutForm({ position, teal, darkBg }: { position: string; teal?: boolean; darkBg?: boolean }) {
   // Pre-launch: capture waitlist instead of Stripe checkout until NEXT_PUBLIC_BLUEPRINT_LIVE=true.
@@ -815,7 +815,7 @@ export default function BlueprintPage() {
                 state: 'No pattern read yet',
                 desc: 'Start with the free 2-minute Body State Scorecard. It captures your state and routes you into the free 14-Day Challenge if you are Depleted. By Day 14 of the Challenge your pattern is identified through the Body Decode Check-In. Then you come back here.',
                 cta: 'Start with the Scorecard',
-                href: 'https://performance.bodyrecode.au/scorecard?intent=challenge&source=blueprint_filter',
+                href: `${brand().performanceDomain}/scorecard?intent=challenge&source=blueprint_filter`,
               },
               {
                 state: 'Past Depleted (Ready State)',
@@ -827,7 +827,7 @@ export default function BlueprintPage() {
                 state: "Don't know your state yet?",
                 desc: 'Take the 2-minute scorecard first. It tells you which state you are in and which next step is built for you.',
                 cta: 'Take the Scorecard',
-                href: 'https://performance.bodyrecode.au/scorecard?source=blueprint_filter',
+                href: `${brand().performanceDomain}/scorecard?source=blueprint_filter`,
               },
             ].map(row => (
               <div key={row.state} style={{

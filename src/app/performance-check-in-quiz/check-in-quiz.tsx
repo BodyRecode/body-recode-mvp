@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { brand } from "@/config/tenant";
 
 type Answer = 0 | 1 | 2 | 3
 
@@ -152,7 +153,7 @@ export default function CheckInQuiz() {
             Your submission is being reviewed. Your report will be sent to your email within one business day. There is nothing further required.
           </p>
           <a
-            href="https://bodyrecode.au"
+            href={brand().marketingDomain}
             className="inline-block px-6 py-3 bg-[#1B6DFC] text-white text-sm font-bold rounded-lg hover:bg-[#1056D6] transition-colors"
           >
             Return to home
@@ -171,7 +172,7 @@ export default function CheckInQuiz() {
         </div>
 
         <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
-          <a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.15em] text-[#1A1A1A] uppercase hover:text-stone-600 transition-colors">Body Recode™</a>
+          <a href={brand().marketingDomain} className="text-[11px] font-bold tracking-[0.15em] text-[#1A1A1A] uppercase hover:text-stone-600 transition-colors">Body Recode™</a>
           <p className="text-[11px] font-medium text-stone-500">Last step</p>
         </div>
 

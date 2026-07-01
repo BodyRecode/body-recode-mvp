@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { appUrl } from '@/lib/app-url'
+import { brand } from "@/config/tenant";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 const CORS = {
-  'Access-Control-Allow-Origin': 'https://performance.bodyrecode.au',
+  'Access-Control-Allow-Origin': brand().performanceDomain,
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 }
@@ -47,7 +48,7 @@ export async function POST(request: NextRequest) {
       section_scores: JSON.stringify(section_scores ?? {}),
     },
     success_url: `${appUrl()}/report/pending?email=${encodeURIComponent(email)}`,
-    cancel_url: `https://performance.bodyrecode.au/scorecard`,
+    cancel_url: `${brand().performanceDomain}/scorecard`,
   })
 
   return NextResponse.json({ url: session.url }, { headers: CORS })

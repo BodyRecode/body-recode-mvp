@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { brand } from "@/config/tenant";
 
 /**
  * The canonical Body State Scorecard lives at performance.bodyrecode.au/scorecard
@@ -33,5 +34,5 @@ export default async function ScorecardRedirect({
     else qs.set(k, v)
   }
   const query = qs.toString()
-  redirect(`https://performance.bodyrecode.au/scorecard${query ? `?${query}` : ''}`)
+  redirect(`${brand().performanceDomain}/scorecard${query ? `?${query}` : ''}`)
 }

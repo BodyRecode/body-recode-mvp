@@ -5,13 +5,14 @@ import {
   buildMembershipCheckinPromptEmail,
   buildMembershipCheckinReminderEmail,
 } from '@/lib/membership-emails'
+import { brand } from "@/config/tenant";
 
 const SAMPLE = {
   firstName: 'Sarah',
   email: 'sarah@example.com',
   pattern: 'metabolic-drift',
   blueprintToken: 'sample-blueprint-token',
-  portalUrl: 'https://bodyrecode.au/membership/sample-token-here',
+  portalUrl: `${brand().marketingDomain}/membership/sample-token-here`,
   block: 'A',
   completedWeek: 3,
   newWeek: 4,

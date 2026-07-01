@@ -8,6 +8,7 @@ import {
   fromCoach,
 } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
+import { appUrl } from "@/lib/app-url";
 
 interface MedicalClearanceRequiredClient {
   id: string
@@ -45,7 +46,7 @@ export async function sendMedicalClearanceRequiredEmail({
   if (!process.env.RESEND_API_KEY) return false
 
   const firstName = client.name.split(' ')[0]
-  const portalUrl = `https://app.bodyrecode.au/portal/${client.onboarding_token}/medical-clearance`
+  const portalUrl = `${appUrl()}/portal/${client.onboarding_token}/medical-clearance`
   const subject = `${firstName}, one step before we start coaching`
 
   const resend = new Resend(process.env.RESEND_API_KEY)

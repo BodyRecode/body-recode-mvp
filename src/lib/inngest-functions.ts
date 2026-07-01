@@ -25,7 +25,7 @@ import {
   buildBlueprintWeek7FollowupEmail,
 } from './blueprint-emails'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
-import { coach, logoUrl } from '@/config/tenant'
+import { coach, logoUrl, brand } from '@/config/tenant'
 import {
   buildMembershipCheckinPromptEmail,
   buildMembershipCheckinReminderEmail,
@@ -101,7 +101,7 @@ export const challengeSequenceFunction = inngest.createFunction(
       phone?: string
     }
 
-    const portalUrl = `https://bodyrecode.au/challenge/${token}`
+    const portalUrl = `${brand().marketingDomain}/challenge/${token}`
     const resend = new Resend(process.env.RESEND_API_KEY)
 
     // Welcome email AND coach notification are sent synchronously by
@@ -258,7 +258,7 @@ export const challengeSmsFunction = inngest.createFunction(
     if (!phone) return
 
     const formattedPhone = formatPhone(phone)
-    const portalUrl = `https://bodyrecode.au/challenge/${token}`
+    const portalUrl = `${brand().marketingDomain}/challenge/${token}`
 
     // Wait 1 hour after enrollment before first message
     await step.sleep('sms-initial-wait', '1h')
@@ -501,7 +501,7 @@ export const blueprintEmailSequenceFunction = inngest.createFunction(
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const portalUrl = `https://bodyrecode.au/blueprint/${token}`
+    const portalUrl = `${brand().marketingDomain}/blueprint/${token}`
 
     for (let week = 1; week <= 6; week++) {
       // Week 1 fires after 1 day, subsequent weeks at 7-day intervals

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
   title: 'The Engine — Inside Body Recode™ Biological Interpretation (Layer 1)',
@@ -456,7 +457,7 @@ export default function EnginePage() {
         <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap' }}>
           <a href="/" style={navLink}>Home</a>
           <a href="/#engine" style={navLink}>The schematic</a>
-          <a href="https://performance.bodyrecode.au" style={{ ...navLink, color: BLUE_LIGHT }}>Performance Coaching →</a>
+          <a href={brand().performanceDomain} style={{ ...navLink, color: BLUE_LIGHT }}>Performance Coaching →</a>
         </div>
       </footer>
     </div>

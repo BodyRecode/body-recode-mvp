@@ -1,6 +1,7 @@
 import { serve } from 'inngest/next'
 import { inngest } from '@/lib/inngest'
 import { executeWorkflowFunction, challengeSequenceFunction, challengeSmsFunction, blueprintWeekAdvanceFunction, blueprintEmailSequenceFunction, membershipWeekAdvanceFunction, extensionWeekAdvanceFunction, reengagementSequenceFunction, digitalAssetEngineFulfilmentFunction, weeklyCheckinAutoResponseFunction, weeklyPatternReportSequenceFunction, igPublisherCron } from '@/lib/inngest-functions'
+import { appUrl } from "@/lib/app-url";
 
 // Pin the serve host to the canonical production URL so Inngest registers
 // against the stable domain instead of the per-deploy Vercel preview URL
@@ -23,5 +24,5 @@ import { executeWorkflowFunction, challengeSequenceFunction, challengeSmsFunctio
 export const { GET, POST, PUT } = serve({
   client: inngest,
   functions: [executeWorkflowFunction, challengeSequenceFunction, challengeSmsFunction, blueprintWeekAdvanceFunction, blueprintEmailSequenceFunction, membershipWeekAdvanceFunction, extensionWeekAdvanceFunction, reengagementSequenceFunction, digitalAssetEngineFulfilmentFunction, weeklyCheckinAutoResponseFunction, weeklyPatternReportSequenceFunction, igPublisherCron],
-  serveOrigin: process.env.VERCEL_ENV === 'production' ? 'https://app.bodyrecode.au' : undefined,
+  serveOrigin: process.env.VERCEL_ENV === 'production' ? appUrl() : undefined,
 })

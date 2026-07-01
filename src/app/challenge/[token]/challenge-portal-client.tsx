@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react'
 import BodyDecodeIntakeForm, { type IntakeResult } from './body-decode-intake'
 import BodyDecodeIntakeResult from './body-decode-intake-result'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
   1: {
@@ -915,7 +915,7 @@ export default function ChallengePortalClient({
               The 6-Week Body Recode Blueprint takes everything you have started here and adds structure, pattern recognition, and education to help you understand exactly why your body responds the way it does.
             </p>
             <a
-              href="https://bodyrecode.au/blueprint?source=challenge_day14_portal"
+              href={`${brand().marketingDomain}/blueprint?source=challenge_day14_portal`}
               style={{
                 display: 'inline-block', padding: '14px 24px', borderRadius: '10px',
                 background: '#1B6DFC', color: '#FFFFFF',

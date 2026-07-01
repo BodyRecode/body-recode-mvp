@@ -8,6 +8,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
+import { brand } from "@/config/tenant";
 
 type Product = 'challenge' | 'blueprint' | 'membership' | 'extension'
 
@@ -16,13 +17,13 @@ const ALLOWED_PRODUCTS: Product[] = ['challenge', 'blueprint', 'membership', 'ex
 // CORS: performance.bodyrecode.au and localhost (dev). Matches the pattern
 // already used by /api/scorecard/submit and /api/scorecard-report/checkout.
 const ALLOWED_ORIGINS = new Set([
-  'https://performance.bodyrecode.au',
+  brand().performanceDomain,
   'http://localhost:3000',
   'http://localhost:3001',
 ])
 
 function corsHeaders(origin: string | null): Record<string, string> {
-  const allowed = origin && ALLOWED_ORIGINS.has(origin) ? origin : 'https://performance.bodyrecode.au'
+  const allowed = origin && ALLOWED_ORIGINS.has(origin) ? origin : brand().performanceDomain
   return {
     'Access-Control-Allow-Origin': allowed,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -98,7 +99,7 @@ export async function POST(req: Request) {
     const { clientIp, clientUserAgent } = extractClientContext(req)
     await fireMetaCapiEvent({
       eventName: 'Lead',
-      eventSourceUrl: `https://bodyrecode.au/${product}`,
+      eventSourceUrl: `${brand().marketingDomain}/${product}`,
       actionSource: 'website',
       userData: {
         email,

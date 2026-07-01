@@ -3,6 +3,7 @@ import Link from 'next/link'
 import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
 import DnaHelix from '@/components/dna-helix'
+import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
   title: 'Performance Coaching | Body Recode™',
@@ -91,7 +92,7 @@ export default function PerformanceCoachingPage() {
               <p className="text-stone-600 text-base leading-relaxed mb-6">
                 Full 1:1 coaching delivered remotely. Same structured intake, same biological assessment, same program design. Everything lives in your client portal: your program, your synthesis documents, your weekly check-ins, your progress data.
               </p>
-              <a href="https://performance.bodyrecode.au/online" className="text-sm font-semibold text-[#1B6DFC] hover:underline">Online Coaching →</a>
+              <a href={`${brand().performanceDomain}/online`} className="text-sm font-semibold text-[#1B6DFC] hover:underline">Online Coaching →</a>
             </div>
             <div className="border border-stone-200 rounded-2xl p-8">
               <div className="flex items-center justify-between mb-6">
@@ -101,7 +102,7 @@ export default function PerformanceCoachingPage() {
               <p className="text-stone-600 text-base leading-relaxed mb-6">
                 The same Body Recode™ system delivered face-to-face at Anytime Fitness Newstead. One-on-one only. Availability is intentionally limited to maintain the coaching depth the system requires.
               </p>
-              <a href="https://performance.bodyrecode.au/brisbane" className="text-sm font-semibold text-stone-500 hover:text-stone-600 transition-colors">Brisbane Coaching →</a>
+              <a href={`${brand().performanceDomain}/brisbane`} className="text-sm font-semibold text-stone-500 hover:text-stone-600 transition-colors">Brisbane Coaching →</a>
             </div>
           </div>
         </div>
@@ -118,7 +119,7 @@ export default function PerformanceCoachingPage() {
             Performance Coaching is the first live deployment of the Body Recode™ system. Available online worldwide and face-to-face in Brisbane.
           </p>
           <a
-            href="https://performance.bodyrecode.au"
+            href={brand().performanceDomain}
             className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors mb-4"
           >
             Visit Performance Coaching

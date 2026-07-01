@@ -8,12 +8,13 @@ import {
   buildBlueprintCheckinReminderEmail,
   BLUEPRINT_PATTERN_LABELS,
 } from '@/lib/blueprint-emails'
+import { brand } from "@/config/tenant";
 
 const SAMPLE = {
   firstName: 'Sarah',
   name: 'Sarah Jenkins',
   email: 'sarah@example.com',
-  portalUrl: 'https://bodyrecode.au/blueprint/sample-token-here',
+  portalUrl: `${brand().marketingDomain}/blueprint/sample-token-here`,
   completedWeek: 3,
   newWeek: 4,
 }

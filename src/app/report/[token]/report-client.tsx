@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { coach } from '@/config/tenant'
+import { coach, brand } from '@/config/tenant'
 
 const SECTIONS = ['Energy', 'Sleep', 'Stress Load', 'Training Response', 'Fat Loss Response']
 const SECTION_KEYS = ['01', '02', '03', '04', '05']
@@ -358,7 +358,7 @@ export default function ReportClient({ report }: { report: {
             We go through your results together, identify the specific driver behind what is not working, and map out exactly what needs to change first. Free. 30 minutes. No pitch.
           </p>
           <a
-            href="https://bodyrecode.au/book"
+            href={`${brand().marketingDomain}/book`}
             style={{
               display: 'inline-block', padding: '14px 28px', borderRadius: '10px',
               background: '#1B6DFC', color: '#FFFFFF',

@@ -19,7 +19,7 @@
 import { darkEmailSignature } from './email-signature'
 import { CHECKIN_PATTERNS } from './checkin-patterns'
 import { PROGRESS_MARKERS, MARKER_RATING_META, type MarkerRating } from './checkin-markers'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
@@ -428,9 +428,9 @@ export function buildDay14FallbackEmail({
   enrollmentToken?: string
 }): { subject: string; html: string } {
   const subject = `${firstName}, you finished the 14 days.`
-  const blueprintUrl = 'https://bodyrecode.au/blueprint?source=challenge_day14_ascension'
+  const blueprintUrl = `${brand().marketingDomain}/blueprint?source=challenge_day14_ascension`
   const churnFeedbackLine = enrollmentToken
-    ? `${emailBody(`If something got in the way of completing the Check-In, <a href="https://bodyrecode.au/feedback/challenge-churn/${enrollmentToken}" style="color:#1B6DFC;text-decoration:underline;">tell me what (30 seconds)</a> - the most valuable thing for the next person is hearing what tripped you up.`, { size: 13, color: '#6B6B6B', bottom: 0 })}`
+    ? `${emailBody(`If something got in the way of completing the Check-In, <a href="${brand().marketingDomain}/feedback/challenge-churn/${enrollmentToken}" style="color:#1B6DFC;text-decoration:underline;">tell me what (30 seconds)</a> - the most valuable thing for the next person is hearing what tripped you up.`, { size: 13, color: '#6B6B6B', bottom: 0 })}`
     : ''
   const html = challengeArcShell(`
 ${emailEyebrow('Day 14 · Challenge Complete')}
@@ -466,7 +466,7 @@ export function buildDay21FeedbackEmail({
   enrollmentToken: string
 }): { subject: string; html: string } {
   const subject = `${firstName}, one quick read on how the 14 days landed`
-  const feedbackUrl = `https://bodyrecode.au/feedback/day21/${enrollmentToken}`
+  const feedbackUrl = `${brand().marketingDomain}/feedback/day21/${enrollmentToken}`
   const html = challengeArcShell(`
 ${emailEyebrow('Day 21 · Feedback')}
 ${emailHeading(`How did the 14 days actually land?`)}

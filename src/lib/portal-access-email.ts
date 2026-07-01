@@ -4,6 +4,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { logoUrl } from '@/config/tenant'
+import { appUrl } from "@/lib/app-url";
 
 interface PortalAccessClient {
   id: string
@@ -47,7 +48,7 @@ export async function sendPortalAccessEmail({
   if (!process.env.RESEND_API_KEY) return { ok: false, reason: 'no_api_key' }
 
   const firstName = client.name.split(' ')[0]
-  const portalUrl = `https://app.bodyrecode.au/portal/${client.onboarding_token}`
+  const portalUrl = `${appUrl()}/portal/${client.onboarding_token}`
   const subject = `${firstName}, your portal is ready`
 
   const resend = new Resend(process.env.RESEND_API_KEY)

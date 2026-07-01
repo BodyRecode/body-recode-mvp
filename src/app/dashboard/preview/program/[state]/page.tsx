@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { markdownToHtml } from '@/lib/markdown'
 import fs from 'fs'
 import path from 'path'
-import { coach, logoUrl } from '@/config/tenant'
+import { coach, logoUrl, brand } from '@/config/tenant'
 
 const STATE_LABELS: Record<string, string> = {
   depleted: 'Depleted',
@@ -287,7 +287,7 @@ export default async function PreviewProgramPage({
             The program tells you what to do. A free 30-minute call walks through why your body is in {stateLabel} State, what is driving it, and what would unstick it fastest. No pitch.
           </p>
           <a
-            href="https://bodyrecode.au/book?source=self_guided_downsell_preview"
+            href={`${brand().marketingDomain}/book?source=self_guided_downsell_preview`}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
               padding: '14px 26px', borderRadius: '10px',

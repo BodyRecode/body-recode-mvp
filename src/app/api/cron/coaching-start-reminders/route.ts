@@ -8,6 +8,7 @@ import {
   fromCoach,
 } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
+import { appUrl } from "@/lib/app-url";
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -42,8 +43,8 @@ export async function GET(request: NextRequest) {
     if (!client.email) continue
     const firstName = client.name.split(' ')[0]
     const portalUrl = client.onboarding_token
-      ? `https://app.bodyrecode.au/portal/${client.onboarding_token}`
-      : 'https://app.bodyrecode.au/portal/login'
+      ? `${appUrl()}/portal/${client.onboarding_token}`
+      : `${appUrl()}/portal/login`
 
     await resend.emails.send({
       from: fromCoach(),

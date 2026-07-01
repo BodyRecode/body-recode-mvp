@@ -7,12 +7,12 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach } from '@/lib/email-shell'
-import { coach, logoUrl } from '@/config/tenant'
+import { coach, logoUrl, brand } from '@/config/tenant'
 
 export const maxDuration = 300
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': 'https://performance.bodyrecode.au',
+  'Access-Control-Allow-Origin': brand().performanceDomain,
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 }

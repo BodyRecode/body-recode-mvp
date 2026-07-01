@@ -11,6 +11,7 @@ import {
   fromBrand,
 } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { appUrl } from "@/lib/app-url";
 
 const CODE_TTL_MINUTES = PORTAL_CODE_TTL_MINUTES
 
@@ -62,7 +63,7 @@ ${emailDivider()}
 ${emailBody('Enter the code below on the sign-in page to access your Body Recode coaching portal.')}
 ${codeBlock}
 ${emailBody(`This code expires in ${CODE_TTL_MINUTES} minutes. If you didn't request this, you can safely ignore it.`, { color: EMAIL_MUTED, size: 13, bottom: 16 })}
-${emailUrlFallback('https://app.bodyrecode.au/portal/login', 'Sign-in page')}
+${emailUrlFallback(`${appUrl()}/portal/login`, 'Sign-in page')}
 ${darkEmailSignature()}
 `
 

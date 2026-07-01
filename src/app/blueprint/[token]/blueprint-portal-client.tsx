@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 type Enrollment = {
   id: string
@@ -1617,7 +1617,7 @@ export default function BlueprintPortalClient({
                     Join the Membership - $49/week
                   </a>
                   <a
-                    href="https://bodyrecode.au/book?from=blueprint_week6"
+                    href={`${brand().marketingDomain}/book?from=blueprint_week6`}
                     style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#1B6DFC', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #1B6DFC' }}
                   >
                     Or skip to 1:1 coaching →

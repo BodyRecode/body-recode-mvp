@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Calendar, Clock, CheckCircle2, Loader2, ChevronLeft } from 'lucide-react'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 type Step = 'slots' | 'details' | 'confirmed' | 'request' | 'request_confirmed'
 
@@ -127,7 +127,7 @@ export default function BookPage() {
       <div className="border-b border-stone-200 px-6 py-5 flex items-center justify-between">
         <img src={logoUrl()} width="110" alt="Body Recode" />
         <a
-          href="https://performance.bodyrecode.au"
+          href={brand().performanceDomain}
           className="text-sm text-stone-500 hover:text-stone-700 transition-colors"
         >
           ← Back to website
@@ -300,7 +300,7 @@ export default function BookPage() {
               Check your email for your Zoom link and calendar invite.
             </p>
             <a
-              href="https://performance.bodyrecode.au"
+              href={brand().performanceDomain}
               className="text-sm text-blue-500 hover:text-blue-300 transition-colors"
             >
               ← Back to Body Recode
@@ -416,7 +416,7 @@ export default function BookPage() {
               Check your email for confirmation.
             </p>
             <a
-              href="https://performance.bodyrecode.au"
+              href={brand().performanceDomain}
               className="text-sm text-blue-500 hover:text-blue-300 transition-colors"
             >
               ← Back to Body Recode

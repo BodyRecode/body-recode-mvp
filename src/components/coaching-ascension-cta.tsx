@@ -1,3 +1,5 @@
+import { brand } from "@/config/tenant";
+
 // Stage 4 ascension CTA — surfaced at a product's completion / high-intent
 // moment so a client can go straight to 1:1 coaching from any stage
 // (Challenge / Blueprint / Membership). See the Stage 4 Ascension Spec.
@@ -14,7 +16,7 @@ export function CoachingAscensionCTA({
   variant?: 'primary' | 'secondary'
 }) {
   const primary = variant === 'primary'
-  const href = `https://bodyrecode.au/book?from=${source}`
+  const href = `${brand().marketingDomain}/book?from=${source}`
   return (
     <div style={{
       maxWidth: 640, margin: '0 auto', textAlign: 'center', boxSizing: 'border-box',

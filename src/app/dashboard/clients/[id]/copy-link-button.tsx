@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { appUrl } from "@/lib/app-url";
 
 export default function CopyLinkButton({
   token,
@@ -14,7 +15,7 @@ export default function CopyLinkButton({
   const [copied, setCopied] = useState(false)
 
   function copy() {
-    navigator.clipboard.writeText(`https://app.bodyrecode.au${path}/${token}`)
+    navigator.clipboard.writeText(`${appUrl()}${path}/${token}`)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }

@@ -7,6 +7,7 @@ import { inngest } from '@/lib/inngest'
 import { sendChallengeWelcomeEmail, sendCoachEnrollmentNotification } from '@/lib/challenge-welcome-email'
 import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
 import { reserveWaveSlot } from '@/lib/challenge-waves'
+import { brand } from "@/config/tenant";
 
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
@@ -159,7 +160,7 @@ export async function POST(request: NextRequest) {
   const firstName = first_name.trim()
   const trimmedEmail = email.toLowerCase().trim()
   const trimmedPhone = phone.trim()
-  const portalUrl = `https://bodyrecode.au/challenge/${token}`
+  const portalUrl = `${brand().marketingDomain}/challenge/${token}`
 
   const [welcome, coachNotify] = await Promise.all([
     sendChallengeWelcomeEmail({
@@ -209,7 +210,7 @@ export async function POST(request: NextRequest) {
     const [enrollFirstName, ...enrollLastNameParts] = fullName.split(' ')
     await fireMetaCapiEvent({
       eventName: 'Lead',
-      eventSourceUrl: 'https://bodyrecode.au/challenge',
+      eventSourceUrl: `${brand().marketingDomain}/challenge`,
       actionSource: 'website',
       userData: {
         email: trimmedEmail,

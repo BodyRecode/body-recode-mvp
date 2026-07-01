@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Dumbbell, Salad, Sunrise, Moon, FileText, Video, Activity, LineChart, ChevronRight, Zap } from 'lucide-react'
 import { isProductLive } from '@/lib/product-launch'
 import { WaitlistCTA } from '@/components/product-waitlist-cta'
-import { coach, logoUrl } from '@/config/tenant'
+import { coach, logoUrl, brand } from '@/config/tenant'
 
 function SignupForm({ position, teal, darkBg }: { position: string; teal?: boolean; darkBg?: boolean }) {
   // Pre-launch: capture waitlist instead of live enrollment until NEXT_PUBLIC_CHALLENGE_LIVE=true.
@@ -755,7 +755,7 @@ export default function ChallengePage() {
                 state: "Don't know your state yet?",
                 desc: 'Take the 2-minute scorecard first. It tells you which state you are in and which next step is built for you.',
                 cta: 'Take the Scorecard',
-                href: 'https://performance.bodyrecode.au/scorecard?source=challenge_filter',
+                href: `${brand().performanceDomain}/scorecard?source=challenge_filter`,
               },
             ].map(row => (
               <div key={row.state} style={{

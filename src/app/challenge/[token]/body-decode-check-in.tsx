@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { legacyLetterToSlug } from '@/lib/pattern-mapping'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
 import { PROGRESS_MARKERS, MARKER_RATING_META, type MarkerRating } from '@/lib/checkin-markers'
+import { brand } from "@/config/tenant";
 
 const SIGNAL_QUESTIONS = [
   {
@@ -152,7 +153,7 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
           You have read your pattern. The next dose is correction. The Blueprint takes the pattern you have just had read and runs six weeks of focused, pattern-specific corrective work.
         </p>
         <a
-          href="https://bodyrecode.au/blueprint?source=challenge_day14_report"
+          href={`${brand().marketingDomain}/blueprint?source=challenge_day14_report`}
           style={{
             display: 'inline-block',
             padding: '14px 24px',

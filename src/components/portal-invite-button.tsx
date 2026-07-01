@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { appUrl } from "@/lib/app-url";
 
 export default function PortalInviteButton({ clientId, onboardingToken }: { clientId: string; onboardingToken?: string }) {
   const [status, setStatus] = useState<'idle' | 'copied'>('idle')
@@ -9,7 +10,7 @@ export default function PortalInviteButton({ clientId, onboardingToken }: { clie
     const token = onboardingToken
     if (!token) return
 
-    const link = `https://app.bodyrecode.au/portal/${token}`
+    const link = `${appUrl()}/portal/${token}`
     await navigator.clipboard.writeText(link)
     setStatus('copied')
     setTimeout(() => setStatus('idle'), 3000)

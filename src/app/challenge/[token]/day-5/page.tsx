@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 const SIGNALS = [
   { name: 'Hunger', interpretation: 'If your hunger feels more predictable this week, that is your blood sugar stabilising. Your meals are arriving at consistent intervals and your body is learning to trust the rhythm.' },
@@ -350,7 +350,7 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
             On Day 14 your portal will show you the clear next step. You are further along than you think.
           </p>
           <a
-            href="https://bodyrecode.au/blueprint?source=challenge_day5_card5"
+            href={`${brand().marketingDomain}/blueprint?source=challenge_day5_card5`}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
               padding: '14px 24px', borderRadius: '10px',

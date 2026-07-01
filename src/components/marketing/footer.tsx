@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { brand } from "@/config/tenant";
 
 type Variant = 'ip' | 'consumer'
 
@@ -66,7 +67,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
               <>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <a
-                    href="https://performance.bodyrecode.au"
+                    href={brand().performanceDomain}
                     style={{
                       fontSize: 13,
                       color: TEAL,
@@ -101,7 +102,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
                 <a href="/performance-coaching" style={footerLink}>Online 1:1</a>
                 <a href="/scorecard" style={footerLink}>Body State Scorecard</a>
                 <a href="/book" style={footerLink}>Book a call</a>
-                <a href="https://bodyrecode.au" style={footerLinkMuted}>Body Recode™ Platform →</a>
+                <a href={brand().marketingDomain} style={footerLinkMuted}>Body Recode™ Platform →</a>
               </>
             )}
           </div>
@@ -125,7 +126,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
                 <a href="#enquire" style={footerLink}>Licensing enquiries</a>
                 <a href="mailto:info@bodyrecode.au" style={footerLink}>info@bodyrecode.au</a>
                 <a
-                  href="https://performance.bodyrecode.au"
+                  href={brand().performanceDomain}
                   style={{ ...footerLinkMuted, marginTop: 6 }}
                 >
                   performance.bodyrecode.au →

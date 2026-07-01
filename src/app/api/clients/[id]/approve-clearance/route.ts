@@ -6,6 +6,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { logoUrl } from '@/config/tenant'
+import { appUrl } from "@/lib/app-url";
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -26,7 +27,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
   if (client?.email && process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const firstName = client.name?.split(' ')[0] ?? 'there'
-    const portalUrl = `https://app.bodyrecode.au/portal/${client.onboarding_token}`
+    const portalUrl = `${appUrl()}/portal/${client.onboarding_token}`
     const subject = `${firstName}, medical clearance approved`
 
     await resend.emails.send({

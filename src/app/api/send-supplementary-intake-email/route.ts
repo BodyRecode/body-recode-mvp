@@ -6,6 +6,7 @@ import { fromCoach, darkEmailShell, emailUrlFallback, COACH_BCC } from '@/lib/em
 import { darkEmailSignature } from '@/lib/email-signature'
 import { logClientCommunication } from '@/lib/client-communications'
 import { logoUrl } from '@/config/tenant'
+import { appUrl } from "@/lib/app-url";
 
 /**
  * Sends the supplementary intake reminder email.
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest) {
   }
 
   const firstName = client.name.split(' ')[0]
-  const supplementUrl = `https://app.bodyrecode.au/intake-supplement/${invitation.token}`
+  const supplementUrl = `${appUrl()}/intake-supplement/${invitation.token}`
   const subject = `${firstName}, a quick follow-up intake (3 minutes)`
 
   const resend = new Resend(process.env.RESEND_API_KEY)

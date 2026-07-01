@@ -6,11 +6,12 @@ import {
   buildDay14FallbackEmail,
 } from '@/lib/challenge-checkin-emails'
 import { buildChallengeWelcomeEmail } from '@/lib/challenge-welcome-email'
+import { brand } from "@/config/tenant";
 
 const SAMPLE = {
   firstName: 'Sarah',
-  portalUrl: 'https://bodyrecode.au/challenge/sample-token-here',
-  sessionVideoUrl: 'https://bodyrecode.au/challenge/sample-token-here',
+  portalUrl: `${brand().marketingDomain}/challenge/sample-token-here`,
+  sessionVideoUrl: `${brand().marketingDomain}/challenge/sample-token-here`,
   progressScore: 6,
   markerRatings: {
     q1_energy: 'better',

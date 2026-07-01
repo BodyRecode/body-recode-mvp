@@ -5,8 +5,9 @@ import { buildZoom1DeclinedEmails, nextMorning9amBrisbane, daysAfter9amBrisbane 
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { sendDownsellOffer } from '@/lib/send-downsell-offer'
 import { fromCoach } from '@/lib/email-shell'
+import { brand } from "@/config/tenant";
 
-const BOOKING_LINK = `https://bodyrecode.au/book`
+const BOOKING_LINK = `${brand().marketingDomain}/book`
 
 export async function POST(
   _request: NextRequest,

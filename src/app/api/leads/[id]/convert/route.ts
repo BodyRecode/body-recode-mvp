@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendPortalAccessEmail } from '@/lib/portal-access-email'
 import { sendCoachAlert } from '@/lib/coach-alert'
+import { appUrl } from "@/lib/app-url";
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
@@ -72,7 +73,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   // intake already exist) but it must NEVER be silent: the result is returned
   // to the UI and, as a backup, an alert is emailed to the coach.
   const portalUrl = client.onboarding_token
-    ? `https://app.bodyrecode.au/portal/${client.onboarding_token}`
+    ? `${appUrl()}/portal/${client.onboarding_token}`
     : null
 
   const emailResult = await sendPortalAccessEmail({

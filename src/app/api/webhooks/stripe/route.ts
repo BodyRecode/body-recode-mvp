@@ -1365,7 +1365,7 @@ ${darkEmailSignature()}
     const resend = new Resend(process.env.RESEND_API_KEY)
     const firstName = lead.name.split(' ')[0]
     const portalUrl = `${appUrl()}/portal/${client.onboarding_token}`
-    const guideUrl = 'https://app.bodyrecode.au/coaching-guide'
+    const guideUrl = `${appUrl()}/coaching-guide`
 
     const welcomeInner = `
 ${emailLogo()}

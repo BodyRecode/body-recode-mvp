@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
   title: "The 14-Day Body Decode. Free.",
@@ -6,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The 14-Day Body Decode. Free.",
     description: "You're training. You're eating clean. The fat won't move. The 14-Day Body Decode reads your body first.",
-    url: 'https://bodyrecode.au/challenge',
+    url: `${brand().marketingDomain}/challenge`,
     siteName: 'Body Recode',
     type: 'website',
     // og image auto-generated from opengraph-image.tsx in this folder

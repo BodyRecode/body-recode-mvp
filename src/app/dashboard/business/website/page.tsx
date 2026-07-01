@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { brand } from "@/config/tenant";
 
 type DayData = { date: string; views: number; visitors: number }
 
@@ -144,7 +145,7 @@ export default function WebsitePage() {
             </button>
           ))}
           <a
-            href="https://performance.bodyrecode.au"
+            href={brand().performanceDomain}
             target="_blank"
             rel="noopener noreferrer"
             className="ml-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-200 border border-stone-300 text-stone-600 hover:text-[#1A1A1A] transition-colors"
@@ -244,7 +245,7 @@ export default function WebsitePage() {
           ].map(p => (
             <a
               key={p.path}
-              href={`https://performance.bodyrecode.au${p.path}`}
+              href={`${brand().performanceDomain}${p.path}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-start justify-between px-3 py-3 bg-stone-100 hover:bg-stone-200 border border-stone-200 rounded-lg transition-colors group"

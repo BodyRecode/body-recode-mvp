@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { CheckCircle2, Mail, Clock, ShieldAlert, ArrowRight } from 'lucide-react'
 import PurchaseTracker from './purchase-tracker'
-import { coach, logoUrl } from '@/config/tenant'
+import { coach, logoUrl, brand } from '@/config/tenant'
 
 const TIMELINE: { eyebrow: string; title: string; body: string; icon: typeof CheckCircle2 }[] = [
   {
@@ -165,7 +165,7 @@ export default function ReportPendingPage() {
             Free. 14 days of structured reset. Day 7 unlocks the Body Decode Check-In, Day 14 delivers the full Body Decode Report tied to your specific biological pattern. The Report you just bought is the depth read; the Challenge is where you act on it.
           </p>
           <Link
-            href="https://bodyrecode.au/challenge?source=report_pending"
+            href={`${brand().marketingDomain}/challenge?source=report_pending`}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
               padding: '14px 24px', borderRadius: '10px',

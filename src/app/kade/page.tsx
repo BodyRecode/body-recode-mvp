@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Source_Serif_4 } from 'next/font/google'
+import { brand } from "@/config/tenant";
 
 const serif = Source_Serif_4({
   subsets: ['latin'],
@@ -50,7 +51,7 @@ export default function KadePage() {
           </div>
 
           <a
-            href="https://bodyrecode.au/scorecard?intent=challenge&source=kade"
+            href={`${brand().marketingDomain}/scorecard?intent=challenge&source=kade`}
             className="group block w-full rounded-2xl px-7 py-8 transition-all shadow-lg hover:shadow-xl overflow-hidden relative"
             style={{
               background: 'radial-gradient(circle at 20% 0%, #3a2a1f 0%, #2A1E16 55%, #1d130c 100%)',
@@ -151,7 +152,7 @@ export default function KadePage() {
 
           {/* Performance Coaching */}
           <a
-            href="https://performance.bodyrecode.au"
+            href={brand().performanceDomain}
             className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>
@@ -163,7 +164,7 @@ export default function KadePage() {
 
           {/* Body Recode Platform */}
           <a
-            href="https://bodyrecode.au"
+            href={brand().marketingDomain}
             className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
+import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
   title: 'Free Performance Check-In | Body Recode™',
@@ -16,7 +17,7 @@ export default function PerformanceCheckInPage() {
       {/* Hero */}
       <section className="bg-white pt-44 pb-28 px-5">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4"><a href="https://bodyrecode.au" className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase">Body Recode™</a> Performance Coaching</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4"><a href={brand().marketingDomain} className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase">Body Recode™</a> Performance Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] leading-tight tracking-tight mb-12">
             Performance Check-In
           </h1>
