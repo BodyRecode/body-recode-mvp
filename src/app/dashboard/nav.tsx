@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 
@@ -192,10 +192,17 @@ function ClusterDropdown({
 
 export default function DashboardNav() {
   const pathname = usePathname() || '/dashboard'
-  const searchParams = useSearchParams()
   const [openKey, setOpenKey] = useState<string | null>(null)
+  const [devMode, setDevMode] = useState(false)
 
-  const devMode = searchParams?.get('dev') === '1'
+  useEffect(() => {
+    const check = () => {
+      setDevMode(new URLSearchParams(window.location.search).get('dev') === '1')
+    }
+    check()
+    window.addEventListener('popstate', check)
+    return () => window.removeEventListener('popstate', check)
+  }, [pathname])
 
   const brandsCluster: NavCluster = {
     key: 'brands',
