@@ -6,6 +6,7 @@ import {
   writeWeeklySnapshot, readSnapshotMap, priorWeekStartKey, buildWeeklyPulse,
 } from '@/lib/scorecard'
 import { buildWeeklyPulseEmail } from '@/lib/scorecard-pulse-email'
+import { coach } from '@/config/tenant'
 
 /**
  * Weekly Pulse — the CEO Dashboard's notification + pre-read.
@@ -47,7 +48,7 @@ export async function GET(request: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
     from: 'Body Recode System <kade@bodyrecode.au>',
-    to: 'kade@bodyrecode.au',
+    to: coach().email,
     subject,
     html,
   })

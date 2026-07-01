@@ -9,7 +9,7 @@ import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { writeRecoverySignalBlock, evaluateRouterAfterCheckin } from '@/lib/recovery-ingest'
 import { appUrl } from '@/lib/app-url'
 import { extractFirstJsonObject } from '@/lib/extract-json'
-import { logoUrl } from '@/config/tenant'
+import { coach, logoUrl } from '@/config/tenant'
 
 export const maxDuration = 300
 
@@ -140,7 +140,7 @@ async function sendNotifications(
   // Notify Kade
   await resend.emails.send({
     from: fromBrand(),
-    to: 'kade@bodyrecode.au',
+    to: coach().email,
     subject: `${client.name}, Week ${weekNumber} check-in submitted`,
     html: buildCoachNotificationEmail({
       eyebrow: `Week ${weekNumber} Check-In`,

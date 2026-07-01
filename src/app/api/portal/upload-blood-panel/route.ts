@@ -12,6 +12,7 @@ import {
   normaliseExtraction,
   type BloodPanelClientFacts,
 } from '@/lib/blood-panel-prompt'
+import { coach } from '@/config/tenant'
 
 /**
  * Client self-serve blood panel upload. Uploads the file to the private
@@ -197,7 +198,7 @@ export async function POST(req: NextRequest) {
       : `The automatic read did not land cleanly, so review the file and re-run extraction from their profile.`
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject: `${name} uploaded blood test results`,
       html: buildCoachNotificationEmail({
         eyebrow: 'Health Markers',

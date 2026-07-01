@@ -6,7 +6,7 @@ import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
-import { logoUrl } from '@/config/tenant'
+import { coach, logoUrl } from '@/config/tenant'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
     const baseUrl = appUrl()
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject: `${client.name} booked a session: ${displayDate} at ${displayTime}`,
       html: buildCoachNotificationEmail({
         eyebrow: 'Session Booked',

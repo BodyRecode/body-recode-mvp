@@ -12,6 +12,7 @@ import { darkEmailSignature } from './email-signature'
 import { appUrl } from './app-url'
 import { markPermissionRequested } from './feedback'
 import { fromCoach } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 interface ConsentEmailContext {
   feedbackId: string
@@ -110,7 +111,7 @@ export async function sendConsentEmail(feedbackId: string): Promise<{ ok: true }
   const r = await resend.emails.send({
     from: fromCoach(),
     to: email,
-    bcc: 'kade@bodyrecode.au',
+    bcc: coach().email,
     subject: built.subject,
     html: built.html,
   })

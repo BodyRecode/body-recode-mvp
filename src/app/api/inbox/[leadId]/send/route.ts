@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { fromCoach, darkEmailShell } from '@/lib/email-shell'
-import { logoUrl } from '@/config/tenant'
+import { brand, logoUrl } from '@/config/tenant'
 
 export async function POST(
   request: NextRequest,
@@ -43,7 +43,7 @@ export async function POST(
 
   const { data: sent, error } = await resend.emails.send({
     from: fromCoach(),
-    replyTo: 'kade@replies.bodyrecode.au',
+    replyTo: brand().replyToEmail,
     to: lead.email,
     subject,
     html: darkEmailShell(`

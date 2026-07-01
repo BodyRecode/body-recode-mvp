@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 export const maxDuration = 60
 
@@ -68,7 +69,7 @@ export async function POST(req: NextRequest) {
     const name = client?.name ?? 'A client'
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject: `${name} uploaded their medical clearance`,
       html: buildCoachNotificationEmail({
         eyebrow: 'Medical Clearance',

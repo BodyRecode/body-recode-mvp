@@ -13,6 +13,7 @@ import {
   fromCoach, fromBrand,
 } from '@/lib/email-shell'
 import { appUrl } from '@/lib/app-url'
+import { coach } from '@/config/tenant'
 
 function generateIcs({
   title, startTime, durationMinutes, location, description, uid,
@@ -260,7 +261,7 @@ ${darkEmailSignature()}
     // Email to coach — booking notification
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject: `Zoom booked — ${lead.name}`,
       html: darkEmailShell(`
 ${emailLogo()}

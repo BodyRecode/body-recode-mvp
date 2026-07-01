@@ -1,6 +1,7 @@
 import { Resend } from 'resend'
+import { coach } from '@/config/tenant'
 
-const ALERT_TO = 'kade@bodyrecode.au'
+const ALERT_TO = coach().email
 
 /**
  * Fire-and-forget internal ops alert to the coach. Use for "this should never

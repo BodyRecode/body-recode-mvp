@@ -24,6 +24,7 @@ import {
   fromBrand,
 } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
+import { coach } from '@/config/tenant'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -354,7 +355,7 @@ ${darkEmailSignature()}
 
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject: `New Scorecard — ${first_name} (${body_state}, ${score}/15)`,
       html: darkEmailShell(coachInner, { previewText: `${first_name} just completed the scorecard — ${body_state}, ${score}/15.` }),
     })

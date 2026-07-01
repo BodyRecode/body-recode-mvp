@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { fromBrand } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 export const runtime = 'nodejs'
 
@@ -127,7 +128,7 @@ export async function POST(request: Request) {
   try {
     const { error } = await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       replyTo: email,
       subject: subjectLine,
       html,

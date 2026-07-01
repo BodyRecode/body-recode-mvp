@@ -7,7 +7,7 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach } from '@/lib/email-shell'
-import { logoUrl } from '@/config/tenant'
+import { coach, logoUrl } from '@/config/tenant'
 
 export const maxDuration = 300
 
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
   // Notify Kade
   const { error } = await resend.emails.send({
     from: 'Body Recode™ <kade@bodyrecode.au>',
-    to: 'kade@bodyrecode.au',
+    to: coach().email,
     subject: `New Check-In: ${name}`,
     html: `
 <!DOCTYPE html>

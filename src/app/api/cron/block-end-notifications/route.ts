@@ -23,6 +23,7 @@ import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { daysUntilBlockEnd } from '@/lib/workout-logging'
 import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -49,7 +50,7 @@ export async function GET(request: NextRequest) {
   }
 
   const APP_URL = appUrl()
-  const COACH_EMAIL = 'kade@bodyrecode.au'
+  const COACH_EMAIL = coach().email
 
   let sent = 0
   let skipped = 0

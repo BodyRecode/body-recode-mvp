@@ -18,6 +18,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { buildCoachNotificationEmail } from './coach-notification-email'
 import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 export interface NotifyOptions {
   /** Which form was just submitted; lets the email name the trigger. */
@@ -92,7 +93,7 @@ export async function notifyOnboardingCompleteIfReady(
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject,
       html: buildCoachNotificationEmail({
         eyebrow,

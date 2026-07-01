@@ -6,7 +6,7 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
-import { logoUrl } from '@/config/tenant'
+import { coach, logoUrl } from '@/config/tenant'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     const leadUrl = `${appUrl()}/dashboard/leads/${lead.id}`
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       replyTo: cleanEmail,
       subject: `Custom time request — ${cleanName}`,
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>

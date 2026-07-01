@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 export async function POST(req: NextRequest) {
   const { clientId, fullName } = await req.json()
@@ -25,7 +26,7 @@ export async function POST(req: NextRequest) {
     const baseUrl = appUrl()
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject: `${fullName} signed their coaching agreement`,
       html: buildCoachNotificationEmail({
         eyebrow: 'Coaching Agreement',

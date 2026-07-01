@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 export const maxDuration = 60
 
@@ -160,7 +161,7 @@ export async function POST(request: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject: `${clientName} completed the supplementary intake`,
       html: buildCoachNotificationEmail({
         eyebrow: 'Supplementary Intake',

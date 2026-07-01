@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach } from '@/lib/email-shell'
-import { logoUrl } from '@/config/tenant'
+import { coach, logoUrl } from '@/config/tenant'
 
 export async function POST(request: NextRequest) {
   const { secret, body_state } = await request.json()
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     .from('scorecard_reports')
     .insert({
       name: 'Kade Dunstone',
-      email: 'kade@bodyrecode.au',
+      email: coach().email,
       score: state.score,
       body_state: body_state ?? 'Depleted State',
       section_scores: state.section_scores,
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
   await resend.emails.send({
     from: fromCoach(),
-    to: 'kade@bodyrecode.au',
+    to: coach().email,
     subject: `Your Body Decode Report is ready`,
     html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
 <body style="margin:0;padding:0;background-color:#FFFFFF;">

@@ -6,6 +6,7 @@ import {
 } from './email-shell'
 import { darkEmailSignature } from './email-signature'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 export interface ChallengeWelcomeParams {
   to: string
@@ -171,7 +172,7 @@ ${emailCta({ href: portalUrl, label: 'View their portal' })}
   try {
     const { data, error } = await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject,
       html,
     })

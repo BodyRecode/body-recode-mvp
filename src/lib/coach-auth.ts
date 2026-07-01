@@ -8,9 +8,10 @@
  * blocked from previewing what the client sees.
  *
  * Override via COACH_EMAILS env var (comma-separated). Default covers the
- * two emails Kade actually uses to sign into the dashboard.
+ * personal email + the tenant coach email.
  */
-const DEFAULT_COACH_EMAILS = ['kade.dunstone@gmail.com', 'kade@bodyrecode.au']
+import { coach } from '@/config/tenant'
+const DEFAULT_COACH_EMAILS = ['kade.dunstone@gmail.com', coach().email]
 
 const COACH_EMAILS: string[] = (process.env.COACH_EMAILS ?? '')
   .split(',')

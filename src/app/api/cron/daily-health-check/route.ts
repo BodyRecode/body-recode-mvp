@@ -10,6 +10,7 @@ import {
   EMAIL_BLUE, EMAIL_BLUE_DARK, EMAIL_BODY, EMAIL_BODY_SOFT, EMAIL_MUTED,
   EMAIL_HAIRLINE, EMAIL_FF,
 } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 type CheckStatus = 'ok' | 'fixed' | 'failed' | 'info'
 
@@ -967,7 +968,7 @@ ${darkEmailSignature()}
 
     await resend.emails.send({
       from: 'Body Recode System <kade@bodyrecode.au>',
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject,
       html: darkEmailShell(inner, { previewText: headline }),
     })

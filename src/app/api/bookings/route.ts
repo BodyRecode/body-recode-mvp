@@ -10,6 +10,7 @@ import {
   emailCta, emailStatusCard,
   fromCoach, fromBrand,
 } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 const typeLabel: Record<string, string> = {
   zoom: 'Zoom',
@@ -172,7 +173,7 @@ export async function POST(request: NextRequest) {
 
       await resend.emails.send({
         from: fromBrand(),
-        to: 'kade@bodyrecode.au',
+        to: coach().email,
         subject: `Booking confirmed — ${contactName} — ${typeLabel[body.type] ?? 'Session'}`,
         html: darkEmailShell(`
 ${emailLogo()}

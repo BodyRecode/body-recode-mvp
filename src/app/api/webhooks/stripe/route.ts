@@ -23,7 +23,7 @@ import {
   buildMembershipPurchaseWelcomeEmail,
   buildMembershipCoachNotificationEmail,
 } from '@/lib/membership-emails'
-import { logoUrl } from '@/config/tenant'
+import { coach, logoUrl } from '@/config/tenant'
 import {
   buildDigitalAssetDeliveryEmail,
   ascensionCtaFor,
@@ -216,7 +216,7 @@ export async function POST(request: NextRequest) {
                 const resend = new Resend(process.env.RESEND_API_KEY)
                 await resend.emails.send({
                   from: fromBrand(),
-                  to: 'kade@bodyrecode.au',
+                  to: coach().email,
                   subject: `Second commencement installment received — ${lead.name}`,
                   html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
   <img src="${logoUrl()}" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
@@ -375,7 +375,7 @@ ${darkEmailSignature()}
 `
           await resend.emails.send({
             from: 'Body Recode System <kade@bodyrecode.au>',
-            to: 'kade@bodyrecode.au',
+            to: coach().email,
             subject: `Payment failed — ${client.name}`,
             html: darkEmailShell(inner, { previewText: `${client.name}'s payment didn't go through.` }),
           })
@@ -449,7 +449,7 @@ ${darkEmailSignature()}
 `
         await resend.emails.send({
           from: 'Body Recode System <kade@bodyrecode.au>',
-          to: 'kade@bodyrecode.au',
+          to: coach().email,
           subject: `Duplicate subscription auto-cancelled - ${existingClient.name ?? 'client'}`,
           html: darkEmailShell(inner, { previewText: `Duplicate sub auto-cancelled for ${existingClient.name ?? 'a client'}` }),
         })
@@ -498,7 +498,7 @@ ${darkEmailSignature()}
 `
       await resend.emails.send({
         from: 'Body Recode System <kade@bodyrecode.au>',
-        to: 'kade@bodyrecode.au',
+        to: coach().email,
         subject: `Subscription started — ${existingClient.name ?? 'client'}`,
         html: darkEmailShell(inner, { previewText: `${existingClient.name ?? 'A client'} started their subscription.` }),
       })
@@ -583,7 +583,7 @@ ${darkEmailSignature()}
       // Notify Kade
       await resend.emails.send({
         from: fromBrand(),
-        to: 'kade@bodyrecode.au',
+        to: coach().email,
         subject: `Self-Guided Program sold - ${name}`,
         html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
   <img src="${logoUrl()}" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
@@ -849,7 +849,7 @@ ${darkEmailSignature()}
       const coachNotify = buildBlueprintCoachNotificationEmail({ name, email, pattern })
       await resend.emails.send({
         from: fromBrand(),
-        to: 'kade@bodyrecode.au',
+        to: coach().email,
         subject: coachNotify.subject,
         html: coachNotify.html,
       })
@@ -903,7 +903,7 @@ ${darkEmailSignature()}
       })
       await resend.emails.send({
         from: fromBrand(),
-        to: 'kade@bodyrecode.au',
+        to: coach().email,
         subject: coachNotify.subject,
         html: coachNotify.html,
       })
@@ -973,7 +973,7 @@ ${darkEmailSignature()}
 `
       await resend.emails.send({
         from: fromBrand(),
-        to: 'kade@bodyrecode.au',
+        to: coach().email,
         subject: `Extension purchased - ${first_name}`,
         html: darkEmailShell(extensionCoachInner, { previewText: `${first_name} bought the 90-Day Extension.` }),
       })
@@ -1212,7 +1212,7 @@ ${darkEmailSignature()}
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
         from: fromBrand(),
-        to: 'kade@bodyrecode.au',
+        to: coach().email,
         subject: `Commencement fee received — ${client.name}`,
         html: `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
@@ -1354,7 +1354,7 @@ ${darkEmailSignature()}
 `
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject: `Payment received - ${lead.name}`,
       html: darkEmailShell(coachInner, { previewText: `${lead.name} paid the commencement fee.` }),
     })

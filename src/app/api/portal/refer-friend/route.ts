@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -38,7 +39,7 @@ export async function POST(req: NextRequest) {
     try {
       await resend.emails.send({
         from: fromBrand(),
-        to: 'kade@bodyrecode.au',
+        to: coach().email,
         replyTo: client.email ?? undefined,
         subject: `Referral from ${client.name}: ${friendName}`,
         html: buildCoachNotificationEmail({

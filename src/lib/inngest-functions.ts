@@ -25,7 +25,7 @@ import {
   buildBlueprintWeek7FollowupEmail,
 } from './blueprint-emails'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
-import { logoUrl } from '@/config/tenant'
+import { coach, logoUrl } from '@/config/tenant'
 import {
   buildMembershipCheckinPromptEmail,
   buildMembershipCheckinReminderEmail,
@@ -40,7 +40,7 @@ import {
 // which duplicated the in-portal coaching notes.
 
 const SMS_MORNING: Record<number, string> = {
-  1: `Welcome %FIRST%. Day 1 is live in your portal. Today is for setup - read the training plan and nutrition guide, do the morning reset. The work begins gently. Portal: %URL%. To stop these nudges any time, email kade@bodyrecode.au.`,
+  1: `Welcome %FIRST%. Day 1 is live in your portal. Today is for setup - read the training plan and nutrition guide, do the morning reset. The work begins gently. Portal: %URL%. To stop these nudges any time, email ${coach().email}.`,
   2: `Day 2 %FIRST%. First training day. Open today's coaching note in the portal before you train: %URL%`,
   3: `Day 3 %FIRST%. Today's coaching note is in the portal: %URL%. The work compounds when the rhythm holds.`,
   4: `Day 4 %FIRST%. Rest day. Today's coaching note is in the portal: %URL%. Sleep is the highest leverage variable - protect it.`,
@@ -404,7 +404,7 @@ async function executeAction(
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
         from: fromBrand(),
-        to: 'kade@bodyrecode.au',
+        to: coach().email,
         subject: `Automation: ${interpolate(config.message ?? 'Action triggered', templateVars)}`,
         html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
           <img src="${logoUrl()}" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
@@ -1436,7 +1436,7 @@ export const weeklyCheckinAutoResponseFunction = inngest.createFunction(
         const resend = new Resend(process.env.RESEND_API_KEY)
         await resend.emails.send({
           from: 'Body Recode Platform <kade@bodyrecode.au>',
-          to: 'kade@bodyrecode.au',
+          to: coach().email,
           subject,
           html,
         })

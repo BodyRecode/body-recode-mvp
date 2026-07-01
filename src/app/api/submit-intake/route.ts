@@ -7,6 +7,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notifyOnboardingCompleteIfReady } from '@/lib/onboarding-complete-notification'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 export const maxDuration = 300
 
@@ -173,7 +174,7 @@ export async function POST(request: NextRequest) {
     // own notification right after this one.
     await resend.emails.send({
       from: fromBrand(),
-      to: 'kade@bodyrecode.au',
+      to: coach().email,
       subject: `${clientName} submitted their intake`,
       html: buildCoachNotificationEmail({
         eyebrow: 'Foundational Intake',
