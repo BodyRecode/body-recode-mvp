@@ -885,7 +885,7 @@ export default function BlueprintPage() {
           <div style={{ display: 'flex', gap: '20px' }}>
             <a href="/privacy" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Privacy Policy</a>
             <a href="/terms" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Terms</a>
-            <a href="mailto:info@bodyrecode.au" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Contact</a>
+            <a href={`mailto:${brand().supportEmail}`} style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Contact</a>
           </div>
         </div>
       </div>

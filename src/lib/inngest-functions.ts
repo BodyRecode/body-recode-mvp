@@ -1435,7 +1435,7 @@ export const weeklyCheckinAutoResponseFunction = inngest.createFunction(
 
         const resend = new Resend(process.env.RESEND_API_KEY)
         await resend.emails.send({
-          from: 'Body Recode Platform <kade@bodyrecode.au>',
+          from: `Body Recode Platform <${coach().email}>`,
           to: coach().email,
           subject,
           html,

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 const section = (n: number, title: string, children: React.ReactNode) => (
   <div style={{ marginBottom: '32px' }}>
@@ -134,7 +134,7 @@ export default function PrivacyPage() {
         </>)}
 
         {section(6, 'Your Rights (Australia)', <>
-          {p('You may request to access your personal information, correct your information, request deletion, or opt out of marketing. Email info@bodyrecode.au for any privacy-related requests.')}
+          {p(`You may request to access your personal information, correct your information, request deletion, or opt out of marketing. Email ${brand().supportEmail} for any privacy-related requests.`)}
         </>)}
 
         {section(7, "Children's Privacy", <>
@@ -154,7 +154,7 @@ export default function PrivacyPage() {
               Body Recode
             </p>
             <p style={{ fontSize: '14px', color: '#FFFFFF', fontWeight: 600, margin: '0 0 2px' }}>
-              Email: <a href="mailto:info@bodyrecode.au" style={{ color: '#5390FF', textDecoration: 'none' }}>info@bodyrecode.au</a>
+              Email: <a href={`mailto:${brand().supportEmail}`} style={{ color: '#5390FF', textDecoration: 'none' }}>{brand().supportEmail}</a>
             </p>
             <p style={{ fontSize: '14px', color: '#C5C8D2', margin: 0 }}>
               Website: <a href="https://www.bodyrecode.au" style={{ color: '#5390FF', textDecoration: 'none' }}>www.bodyrecode.au</a>

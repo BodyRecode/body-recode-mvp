@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
+import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
   title: 'Performance Coach Brisbane | Body Recode™',
@@ -270,7 +271,7 @@ export default function PerformanceCoachBrisbanePage() {
                 </p>
               </div>
               <p className="mt-10 text-sm text-stone-400 leading-relaxed">
-                <a href="https://www.anytimefitness.com/en-au/locations/newstead-queensland-au-1937" target="_blank" rel="noopener noreferrer" className="text-[#1B6DFC] hover:underline">Anytime Fitness Newstead</a> · Brisbane · <a href="mailto:info@bodyrecode.au" className="text-[#1B6DFC] hover:underline">info@bodyrecode.au</a>
+                <a href="https://www.anytimefitness.com/en-au/locations/newstead-queensland-au-1937" target="_blank" rel="noopener noreferrer" className="text-[#1B6DFC] hover:underline">Anytime Fitness Newstead</a> · Brisbane · <a href={`mailto:${brand().supportEmail}`} className="text-[#1B6DFC] hover:underline">{brand().supportEmail}</a>
               </p>
             </div>
           </div>

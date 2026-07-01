@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
 
   // Notify Kade
   const { error } = await resend.emails.send({
-    from: 'Body Recode™ <kade@bodyrecode.au>',
+    from: `Body Recode™ <${coach().email}>`,
     to: coach().email,
     subject: `New Check-In: ${name}`,
     html: `
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
   // Automated acknowledgement to submitter
   const firstName = name.trim().split(' ')[0]
   await resend.emails.send({
-    from: 'Body Recode™ <kade@bodyrecode.au>',
+    from: `Body Recode™ <${coach().email}>`,
     to: email,
     subject: 'Performance Check-In received',
     html: `

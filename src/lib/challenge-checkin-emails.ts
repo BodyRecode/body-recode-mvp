@@ -287,7 +287,7 @@ function blueprintCtaCard(): string {
   <p style="font-size:14px;color:#D5D5D5;line-height:1.75;margin:0 0 18px;">
     You have read your pattern. The next dose is correction. The Blueprint takes the pattern you have just had read and runs six weeks of focused, pattern-specific corrective work. Training calibrated. Nutrition timed. Weekly coaching written for your pattern.
   </p>
-  <a href="https://bodyrecode.au/blueprint?source=challenge_day14_report" style="display:inline-block;padding:14px 24px;border-radius:10px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:800;text-decoration:none;">
+  <a href="${brand().marketingDomain}/blueprint?source=challenge_day14_report" style="display:inline-block;padding:14px 24px;border-radius:10px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:800;text-decoration:none;">
     Start the 6-Week Blueprint · $97
   </a>
 </div>

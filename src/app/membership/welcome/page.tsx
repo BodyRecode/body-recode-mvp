@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { CheckCircle2, Mail, Clock, ShieldAlert, ArrowRight } from 'lucide-react'
-import { coach, logoUrl } from '@/config/tenant'
+import { coach, logoUrl, brand } from '@/config/tenant'
 
 const TIMELINE: { eyebrow: string; title: string; body: string; icon: typeof CheckCircle2 }[] = [
   {
@@ -18,7 +18,7 @@ const TIMELINE: { eyebrow: string; title: string; body: string; icon: typeof Che
   {
     eyebrow: 'Step 3 · Within a minute',
     title: 'Delivered to your inbox',
-    body: 'Branded email from kade@bodyrecode.au with your private portal link. Bookmark it - this is your home base from here.',
+    body: `Branded email from ${coach().email} with your private portal link. Bookmark it - this is your home base from here.`,
     icon: Mail,
   },
 ]
@@ -157,7 +157,7 @@ export default function MembershipWelcomePage() {
               If it does not arrive within 5 minutes
             </p>
             <p style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>
-              Check your spam or promotions folder for an email from <strong style={{ color: '#1A1A1A' }}>kade@bodyrecode.au</strong>. Some mail providers route first-time senders away from the inbox.
+              Check your spam or promotions folder for an email from <strong style={{ color: '#1A1A1A' }}>{coach().email}</strong>. Some mail providers route first-time senders away from the inbox.
             </p>
           </div>
         </div>
@@ -237,9 +237,9 @@ export default function MembershipWelcomePage() {
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 80px' }}>
         <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', lineHeight: 1.65, margin: 0 }}>
           Questions?{' '}
-          <a href="mailto:info@bodyrecode.au?subject=Membership%20question" style={{ color: '#1B6DFC', textDecoration: 'underline', fontWeight: 700 }}>
-            Email info@bodyrecode.au
-          </a>
+          <a href={`mailto:${brand().supportEmail}?subject=Membership%20question`} style={{ color: '#1B6DFC', textDecoration: 'underline', fontWeight: 700 }}>
+            Email {brand().supportEmail}
+                                </a>
         </p>
       </div>
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Source_Serif_4 } from 'next/font/google'
-import { brand } from "@/config/tenant";
+import { brand, coach } from "@/config/tenant";
 
 const serif = Source_Serif_4({
   subsets: ['latin'],
@@ -200,12 +200,12 @@ export default function KadePage() {
 
           {/* Contact */}
           <a
-            href="mailto:kade@bodyrecode.au"
+            href={`mailto:${coach().email}`}
             className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>
               <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">Get in touch</p>
-              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">kade@bodyrecode.au</p>
+              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">{coach().email}</p>
             </div>
             <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>
           </a>

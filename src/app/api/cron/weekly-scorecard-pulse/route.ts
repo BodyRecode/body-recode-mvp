@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
-    from: 'Body Recode System <kade@bodyrecode.au>',
+    from: `Body Recode System <${coach().email}>`,
     to: coach().email,
     subject,
     html,

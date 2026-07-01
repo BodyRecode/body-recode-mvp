@@ -2,6 +2,7 @@
 
 import { Zap, ChevronRight, Hand } from 'lucide-react'
 import Link from 'next/link'
+import { brand } from "@/config/tenant";
 
 const AUTOMATIC_AUTOMATIONS = [
   // Lead-stage automations
@@ -362,7 +363,7 @@ const MANUAL_AUTOMATIONS = [
   {
     id: 'inbox-reply',
     name: 'Inbox Reply (free-text)',
-    description: 'Manually compose a custom email to a lead from the inbox view. Reply-To is set to kade@replies.bodyrecode.au so threading works.',
+    description: `Manually compose a custom email to a lead from the inbox view. Reply-To is set to ${brand().replyToEmail} so threading works.`,
     trigger: 'Type a message in the lead inbox view, click Send',
     steps: 1,
   },

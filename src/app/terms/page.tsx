@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 const section = (n: number, title: string, children: React.ReactNode) => (
   <div style={{ marginBottom: '32px' }}>
@@ -155,7 +155,7 @@ export default function TermsPage() {
               Body Recode
             </p>
             <p style={{ fontSize: '14px', color: '#FFFFFF', fontWeight: 600, margin: '0 0 2px' }}>
-              Email: <a href="mailto:info@bodyrecode.au" style={{ color: '#5390FF', textDecoration: 'none' }}>info@bodyrecode.au</a>
+              Email: <a href={`mailto:${brand().supportEmail}`} style={{ color: '#5390FF', textDecoration: 'none' }}>{brand().supportEmail}</a>
             </p>
             <p style={{ fontSize: '14px', color: '#C5C8D2', margin: 0 }}>
               Website: <a href="https://www.bodyrecode.au" style={{ color: '#5390FF', textDecoration: 'none' }}>www.bodyrecode.au</a>

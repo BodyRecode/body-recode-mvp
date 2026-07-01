@@ -174,6 +174,72 @@ function transformTemplateLiteral(node: Node, filePath: string): boolean {
   return changed
 }
 
+/**
+ * Handles JSX text nodes: `<strong>kade@bodyrecode.au</strong>` where the
+ * text between tags contains a hardcoded pattern. Replace with JSX
+ * expression: `<strong>{coach().email}</strong>`.
+ *
+ * If the JSX text has surrounding text ("Email us at kade@bodyrecode.au for
+ * help"), splits it into text + expression + text.
+ */
+function transformJsxText(node: Node, filePath: string): boolean {
+  if (!Node.isJsxText(node)) return false
+  const text = node.getText()
+
+  // Find first matching replacement
+  for (const r of REPLACEMENTS) {
+    if (text.includes(r.literal)) {
+      // Split around the match and reconstruct with JSX expression
+      const idx = text.indexOf(r.literal)
+      const before = text.slice(0, idx)
+      const after = text.slice(idx + r.literal.length)
+      const replacement = `${before}{${r.expression}}${after}`
+      node.replaceWithText(replacement)
+      markImportNeeded(filePath, r.importFrom, r.importName)
+      return true
+    }
+  }
+  return false
+}
+
+/**
+ * Handles prefixed patterns: `"mailto:kade@bodyrecode.au?subject=..."`
+ * where the literal contains the pattern with a prefix (mailto:, tel:) or
+ * anywhere in the middle. Converts to template literal preserving surrounding text.
+ */
+function transformPrefixedLiteral(node: Node, filePath: string): boolean {
+  if (!Node.isStringLiteral(node) && !Node.isNoSubstitutionTemplateLiteral(node)) return false
+  const value = node.getLiteralValue()
+
+  // Skip if this literal was already handled by exact/path match earlier
+  // (exact match logic is in transformStringLiteral; here we handle "contains")
+
+  for (const r of REPLACEMENTS) {
+    // Exact match + path match handled elsewhere. Handle "contains but not at
+    // start" and "starts with prefix like mailto:".
+    const idx = value.indexOf(r.literal)
+    if (idx < 0) continue
+    if (idx === 0 && !value.includes('/', r.literal.length)) continue  // exact match, handled
+    if (idx === 0 && value.startsWith(r.literal + '/')) continue        // path match, handled
+
+    // Reconstruct as template literal with expression
+    const before = value.slice(0, idx)
+    const after = value.slice(idx + r.literal.length)
+    const safeBefore = before.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')
+    const safeAfter = after.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')
+    const templateStr = `\`${safeBefore}\${${r.expression}}${safeAfter}\``
+
+    const parent = node.getParent()
+    const isJsxAttribute = parent?.getKind() === SyntaxKind.JsxAttribute
+    const replacement = isJsxAttribute ? `{${templateStr}}` : templateStr
+
+    node.replaceWithText(replacement)
+    markImportNeeded(filePath, r.importFrom, r.importName)
+    return true
+  }
+  return false
+}
+
 function processFile(sf: SourceFile): number {
   const filePath = sf.getFilePath()
   if (shouldSkip(filePath)) return 0
@@ -207,12 +273,45 @@ function processFile(sf: SourceFile): number {
     }
   })
 
+  // Pass 3: JSX text nodes (text between JSX tags)
+  const jsxTextNodes: Node[] = []
+  sf.forEachDescendant((n) => {
+    if (Node.isJsxText(n)) {
+      const text = n.getText()
+      if (REPLACEMENTS.some((r) => text.includes(r.literal))) {
+        jsxTextNodes.push(n)
+      }
+    }
+  })
+
+  // Pass 4: prefixed string literals (mailto:, contains pattern with prefix/suffix)
+  const prefixedNodes: Node[] = []
+  sf.forEachDescendant((n) => {
+    if (Node.isStringLiteral(n) || Node.isNoSubstitutionTemplateLiteral(n)) {
+      const value = (n as any).getLiteralValue?.() as string | undefined
+      if (typeof value !== 'string') return
+      for (const r of REPLACEMENTS) {
+        const idx = value.indexOf(r.literal)
+        if (idx <= 0) continue  // exact match (idx 0 no path) handled in Pass 1
+        if (idx === 0 && value.startsWith(r.literal + '/')) continue  // path match handled
+        prefixedNodes.push(n)
+        return
+      }
+    }
+  })
+
   // Transform (reverse order preserves positions)
   for (const n of [...stringNodes].reverse()) {
     if (transformStringLiteral(n, filePath)) mutations++
   }
   for (const n of [...templateNodes].reverse()) {
     if (transformTemplateLiteral(n, filePath)) mutations++
+  }
+  for (const n of [...jsxTextNodes].reverse()) {
+    if (transformJsxText(n, filePath)) mutations++
+  }
+  for (const n of [...prefixedNodes].reverse()) {
+    if (transformPrefixedLiteral(n, filePath)) mutations++
   }
 
   return mutations

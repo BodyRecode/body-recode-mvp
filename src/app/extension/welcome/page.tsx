@@ -1,4 +1,4 @@
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 export default function ExtensionWelcomePage() {
   return (
@@ -13,7 +13,7 @@ export default function ExtensionWelcomePage() {
           Your 90-Day Extension portal is loading. Check your email for your personal portal link. Weeks 1-6 run Block A (Consolidate), Weeks 7-12 run Block B (Advance).
         </p>
         <p style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.6 }}>
-          Questions? <a href="mailto:info@bodyrecode.au" style={{ color: '#1B6DFC', textDecoration: 'none' }}>info@bodyrecode.au</a>
+          Questions? <a href={`mailto:${brand().supportEmail}`} style={{ color: '#1B6DFC', textDecoration: 'none' }}>{brand().supportEmail}</a>
         </p>
       </div>
     </div>

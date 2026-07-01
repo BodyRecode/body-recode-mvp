@@ -124,7 +124,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
             {isIp ? (
               <>
                 <a href="#enquire" style={footerLink}>Licensing enquiries</a>
-                <a href="mailto:info@bodyrecode.au" style={footerLink}>info@bodyrecode.au</a>
+                <a href={`mailto:${brand().supportEmail}`} style={footerLink}>{brand().supportEmail}</a>
                 <a
                   href={brand().performanceDomain}
                   style={{ ...footerLinkMuted, marginTop: 6 }}
@@ -134,7 +134,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
               </>
             ) : (
               <>
-                <a href="mailto:info@bodyrecode.au" style={footerLink}>info@bodyrecode.au</a>
+                <a href={`mailto:${brand().supportEmail}`} style={footerLink}>{brand().supportEmail}</a>
                 <a href="/privacy" style={footerLinkMuted}>Privacy</a>
                 <a href="/terms" style={footerLinkMuted}>Terms</a>
               </>

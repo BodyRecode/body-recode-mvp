@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { coach } from "@/config/tenant";
 
 export default async function LibraryPendingPage({
   searchParams,
@@ -89,7 +90,7 @@ export default async function LibraryPendingPage({
           textAlign: 'left',
         }}>
           <p style={{ fontSize: '13px', color: '#1A1A1A', margin: 0, lineHeight: 1.6 }}>
-            <strong style={{ color: '#DC2626' }}>If you do not see the email</strong>, check your spam / promotions folder and whitelist <strong>kade@bodyrecode.au</strong>. The delivery is automated and lands within a minute of payment.
+            <strong style={{ color: '#DC2626' }}>If you do not see the email</strong>, check your spam / promotions folder and whitelist <strong>{coach().email}</strong>. The delivery is automated and lands within a minute of payment.
           </p>
         </div>
 

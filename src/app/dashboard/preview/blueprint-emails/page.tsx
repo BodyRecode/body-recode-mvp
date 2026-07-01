@@ -8,7 +8,7 @@ import {
   buildBlueprintCheckinReminderEmail,
   BLUEPRINT_PATTERN_LABELS,
 } from '@/lib/blueprint-emails'
-import { brand } from "@/config/tenant";
+import { brand, coach } from "@/config/tenant";
 
 const SAMPLE = {
   firstName: 'Sarah',
@@ -31,7 +31,7 @@ type EmailKey =
 
 const EMAIL_TABS: { key: EmailKey; label: string; group: string; trigger: string; iframeHeight: number; usesPattern: boolean }[] = [
   { key: 'purchase-welcome', label: 'Purchase welcome', group: 'Purchase', trigger: 'Sent by Stripe webhook on successful $97 Blueprint purchase.', iframeHeight: 1200, usesPattern: true },
-  { key: 'coach-notification', label: 'Coach notification', group: 'Purchase', trigger: 'Sent to kade@bodyrecode.au on every Blueprint purchase. Internal only.', iframeHeight: 700, usesPattern: true },
+  { key: 'coach-notification', label: 'Coach notification', group: 'Purchase', trigger: `Sent to ${coach().email} on every Blueprint purchase. Internal only.`, iframeHeight: 700, usesPattern: true },
   { key: 'week-1', label: 'Week 1', group: 'Weekly programme', trigger: 'Sent by Inngest blueprintEmailSequenceFunction 1 day after enrollment.', iframeHeight: 1500, usesPattern: true },
   { key: 'week-2', label: 'Week 2', group: 'Weekly programme', trigger: 'Sent 7 days after Week 1 email.', iframeHeight: 1500, usesPattern: true },
   { key: 'week-3', label: 'Week 3', group: 'Weekly programme', trigger: 'Sent 7 days after Week 2 email. Marks the Adapt phase transition.', iframeHeight: 1500, usesPattern: true },

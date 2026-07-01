@@ -706,7 +706,7 @@ export default function HomePage() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <FooterHead>Contact</FooterHead>
-              <a href="mailto:info@bodyrecode.au" style={{ fontSize: 13, color: TXT_DIM, textDecoration: 'none' }}>info@bodyrecode.au</a>
+              <a href={`mailto:${brand().supportEmail}`} style={{ fontSize: 13, color: TXT_DIM, textDecoration: 'none' }}>{brand().supportEmail}</a>
               <a href="#enquire" style={{ fontSize: 13, color: TXT_DIM, textDecoration: 'none' }}>Licensing enquiry</a>
               <span style={{ fontSize: 13, color: TXT_MUTE }}>Brisbane, Australia</span>
             </div>

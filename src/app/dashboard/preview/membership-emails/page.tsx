@@ -5,7 +5,7 @@ import {
   buildMembershipCheckinPromptEmail,
   buildMembershipCheckinReminderEmail,
 } from '@/lib/membership-emails'
-import { brand } from "@/config/tenant";
+import { brand, coach } from "@/config/tenant";
 
 const SAMPLE = {
   firstName: 'Sarah',
@@ -26,7 +26,7 @@ type EmailKey =
 
 const EMAIL_TABS: { key: EmailKey; label: string; group: string; trigger: string; iframeHeight: number }[] = [
   { key: 'purchase-welcome', label: 'Purchase welcome', group: 'Purchase', trigger: 'Sent by Stripe webhook on successful $49/wk Membership subscription purchase.', iframeHeight: 1200 },
-  { key: 'coach-notification', label: 'Coach notification', group: 'Purchase', trigger: 'Sent to kade@bodyrecode.au on every Membership purchase. Internal only.', iframeHeight: 700 },
+  { key: 'coach-notification', label: 'Coach notification', group: 'Purchase', trigger: `Sent to ${coach().email} on every Membership purchase. Internal only.`, iframeHeight: 700 },
   { key: 'checkin-prompt', label: 'Check-in prompt', group: 'Check-in', trigger: 'Sent by membershipWeekAdvanceFunction at the start of each new week. Per Block × Week.', iframeHeight: 1000 },
   { key: 'checkin-reminder', label: 'Check-in reminder (2-day)', group: 'Check-in', trigger: 'Sent 2 days later if the participant has not submitted the prior week’s check-in.', iframeHeight: 900 },
 ]

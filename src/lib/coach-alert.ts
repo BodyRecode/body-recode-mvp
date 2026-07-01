@@ -31,7 +31,7 @@ export async function sendCoachAlert({
       .map((l) => `<p style="margin:0 0 10px;font-size:14px;line-height:1.6;color:#1A1A1A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">${l}</p>`)
       .join('')
     await resend.emails.send({
-      from: 'Body Recode Alerts <kade@bodyrecode.au>',
+      from: `Body Recode Alerts <${coach().email}>`,
       to: ALERT_TO,
       subject: `[ALERT] ${subject}`,
       html: `<div style="padding:24px;max-width:560px;">${body}</div>`,

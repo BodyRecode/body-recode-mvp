@@ -374,7 +374,7 @@ ${emailCta({ href: `${appUrl()}/dashboard/clients/${clientId}#payments`, label: 
 ${darkEmailSignature()}
 `
           await resend.emails.send({
-            from: 'Body Recode System <kade@bodyrecode.au>',
+            from: `Body Recode System <${coach().email}>`,
             to: coach().email,
             subject: `Payment failed — ${client.name}`,
             html: darkEmailShell(inner, { previewText: `${client.name}'s payment didn't go through.` }),
@@ -448,7 +448,7 @@ ${emailStatusCard({
 ${darkEmailSignature()}
 `
         await resend.emails.send({
-          from: 'Body Recode System <kade@bodyrecode.au>',
+          from: `Body Recode System <${coach().email}>`,
           to: coach().email,
           subject: `Duplicate subscription auto-cancelled - ${existingClient.name ?? 'client'}`,
           html: darkEmailShell(inner, { previewText: `Duplicate sub auto-cancelled for ${existingClient.name ?? 'a client'}` }),
@@ -497,7 +497,7 @@ ${emailCta({ href: `${appUrl()}/dashboard/clients/${session.client_reference_id}
 ${darkEmailSignature()}
 `
       await resend.emails.send({
-        from: 'Body Recode System <kade@bodyrecode.au>',
+        from: `Body Recode System <${coach().email}>`,
         to: coach().email,
         subject: `Subscription started — ${existingClient.name ?? 'client'}`,
         html: darkEmailShell(inner, { previewText: `${existingClient.name ?? 'A client'} started their subscription.` }),

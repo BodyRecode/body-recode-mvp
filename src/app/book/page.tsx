@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Calendar, Clock, CheckCircle2, Loader2, ChevronLeft } from 'lucide-react'
-import { logoUrl, brand } from '@/config/tenant'
+import { logoUrl, brand, coach } from '@/config/tenant'
 
 type Step = 'slots' | 'details' | 'confirmed' | 'request' | 'request_confirmed'
 
@@ -167,7 +167,7 @@ export default function BookPage() {
                 {days.length === 0 ? (
                   <div className="text-center py-12">
                     <p className="text-stone-600 text-base mb-2">No available times right now.</p>
-                    <p className="text-stone-400 text-sm">Request a time below or email kade@bodyrecode.au</p>
+                    <p className="text-stone-400 text-sm">Request a time below or email {coach().email}</p>
                   </div>
                 ) : (
                   <div className="space-y-6">

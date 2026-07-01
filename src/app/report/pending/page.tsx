@@ -19,7 +19,7 @@ const TIMELINE: { eyebrow: string; title: string; body: string; icon: typeof Che
   {
     eyebrow: 'Step 3 · Within a minute',
     title: 'Delivered to your inbox',
-    body: 'Branded email from kade@bodyrecode.au. Open the email to read the report. Yours to keep.',
+    body: `Branded email from ${coach().email}. Open the email to read the report. Yours to keep.`,
     icon: Mail,
   },
 ]
@@ -143,7 +143,7 @@ export default function ReportPendingPage() {
               If it does not arrive within 5 minutes
             </p>
             <p style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>
-              Check your spam or promotions folder for an email from <strong style={{ color: '#1A1A1A' }}>kade@bodyrecode.au</strong>. Some mail providers route first-time senders away from the inbox.
+              Check your spam or promotions folder for an email from <strong style={{ color: '#1A1A1A' }}>{coach().email}</strong>. Some mail providers route first-time senders away from the inbox.
             </p>
           </div>
         </div>
@@ -211,9 +211,9 @@ export default function ReportPendingPage() {
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 80px' }}>
         <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', lineHeight: 1.65, margin: 0 }}>
           Still nothing in 10 minutes?{' '}
-          <a href="mailto:kade@bodyrecode.au?subject=Body%20Decode%20Report%20not%20received" style={{ color: '#1B6DFC', textDecoration: 'underline', fontWeight: 700 }}>
-            Email kade@bodyrecode.au
-          </a>
+          <a href={`mailto:${coach().email}?subject=Body%20Decode%20Report%20not%20received`} style={{ color: '#1B6DFC', textDecoration: 'underline', fontWeight: 700 }}>
+            Email {coach().email}
+                                </a>
           {' '} and we will resend it.
         </p>
       </div>

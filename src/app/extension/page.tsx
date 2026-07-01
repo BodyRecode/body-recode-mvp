@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Play } from 'lucide-react'
 import { isProductLive } from '@/lib/product-launch'
 import { WaitlistCTA } from '@/components/product-waitlist-cta'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 function CheckoutForm({ teal }: { teal?: boolean }) {
   // Pre-launch: capture waitlist instead of Stripe checkout until NEXT_PUBLIC_EXTENSION_LIVE=true.
@@ -166,7 +166,7 @@ export default function ExtensionPage() {
           <div style={{ display: 'flex', gap: '20px' }}>
             <a href="/privacy" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Privacy</a>
             <a href="/terms" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Terms</a>
-            <a href="mailto:info@bodyrecode.au" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Contact</a>
+            <a href={`mailto:${brand().supportEmail}`} style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Contact</a>
           </div>
         </div>
       </div>

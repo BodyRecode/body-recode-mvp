@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import PrintTrigger from './print-trigger'
+import { brand } from "@/config/tenant";
 
 const TEAL = '#1B6DFC'
 const TEAL_HOVER = '#5390FF'
@@ -235,8 +236,8 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
           {/* Footer */}
           <div style={{ marginTop: 48, paddingTop: 24, borderTop: `2px solid ${INK}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <p style={{ fontSize: 10, fontWeight: 600, color: '#999999', letterSpacing: '0.05em' }}>
-              © Body Recode · www.bodyrecode.au · info@bodyrecode.au
-            </p>
+              © Body Recode · www.bodyrecode.au · {brand().supportEmail}
+                                      </p>
             <p style={{ fontSize: 10, fontWeight: 600, color: '#aaaaaa', letterSpacing: '0.05em' }}>
               Confidential. Coach Use Only.
             </p>

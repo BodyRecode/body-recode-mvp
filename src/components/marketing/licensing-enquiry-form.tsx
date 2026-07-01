@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { brand, coach } from "@/config/tenant";
 
 const BLUE = '#1B6DFC'
 const BLUE_LIGHT = '#5390FF'
@@ -97,9 +98,9 @@ export default function LicensingEnquiryForm() {
           Thank you. Your enquiry is in.
         </h3>
         <p style={{ fontSize: 14, color: TXT_DIM, lineHeight: 1.8 }}>
-          We will respond within two business days from kade@bodyrecode.au. If your enquiry is
-          time-sensitive, reply directly to that email.
-        </p>
+          We will respond within two business days from {coach().email}. If your enquiry is
+                          time-sensitive, reply directly to that email.
+                        </p>
       </div>
     )
   }
@@ -162,9 +163,9 @@ export default function LicensingEnquiryForm() {
         </button>
         <p style={{ fontSize: 12, color: TXT_DIM }}>
           Or email{' '}
-          <a href="mailto:info@bodyrecode.au" style={{ color: BLUE_LIGHT, textDecoration: 'underline' }}>
-            info@bodyrecode.au
-          </a>
+          <a href={`mailto:${brand().supportEmail}`} style={{ color: BLUE_LIGHT, textDecoration: 'underline' }}>
+            {brand().supportEmail}
+                                </a>
         </p>
       </div>
 

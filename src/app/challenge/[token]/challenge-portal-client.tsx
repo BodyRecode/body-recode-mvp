@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react'
 import BodyDecodeIntakeForm, { type IntakeResult } from './body-decode-intake'
 import BodyDecodeIntakeResult from './body-decode-intake-result'
-import { logoUrl, brand } from '@/config/tenant'
+import { logoUrl, brand, coach } from '@/config/tenant'
 
 const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
   1: {
@@ -323,8 +323,8 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
             Medical clearance required
           </p>
           <p style={{ fontSize: '13px', color: '#999999', lineHeight: 1.7, margin: 0 }}>
-            You have answered YES to one or more questions. Please consult your doctor before beginning the physical training component of this challenge. You can still access all other challenge resources. If your doctor clears you, please contact us at kade@bodyrecode.au.
-          </p>
+            You have answered YES to one or more questions. Please consult your doctor before beginning the physical training component of this challenge. You can still access all other challenge resources. If your doctor clears you, please contact us at {coach().email}.
+                                </p>
         </div>
       )}
 

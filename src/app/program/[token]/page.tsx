@@ -311,9 +311,9 @@ export default async function ProgramPage({
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 80px' }}>
         <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', lineHeight: 1.65, margin: 0 }}>
           Question about the program?{' '}
-          <a href="mailto:kade@bodyrecode.au?subject=12-Week%20Program%20question" style={{ color: '#1B6DFC', textDecoration: 'underline', fontWeight: 700 }}>
-            Email kade@bodyrecode.au
-          </a>
+          <a href={`mailto:${coach().email}?subject=12-Week%20Program%20question`} style={{ color: '#1B6DFC', textDecoration: 'underline', fontWeight: 700 }}>
+            Email {coach().email}
+                                </a>
         </p>
       </div>
 

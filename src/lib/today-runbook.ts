@@ -1,3 +1,5 @@
+import { coach, brand } from "@/config/tenant";
+
 // Per-day runbook config for the Today dashboard.
 //
 // Each date maps to a day-specific block: title (where in the arc),
@@ -51,7 +53,7 @@ const DAILY_RITUAL: RunbookCheck[] = [
     task: 'AM DM / comment / email reply pass (last 12-18h)',
     instructions: [
       '1. Open [Instagram @body_recode_](https://www.instagram.com/body_recode_/) → notifications tab → reply to comments + DMs (priority: paying clients + recent enrolees).',
-      '2. Open [Gmail inbox](https://mail.google.com/mail/u/0/#inbox) → reply to any Challenge / Blueprint / coaching questions to kade@bodyrecode.au.',
+      `2. Open [Gmail inbox](https://mail.google.com/mail/u/0/#inbox) → reply to any Challenge / Blueprint / coaching questions to ${coach().email}.`,
       '3. Open [LinkedIn notifications](https://www.linkedin.com/notifications/) → reply to comments on most recent executive-reframe post if any.',
       'Target: <12h reply window during launch period. Active reply mode signals high-touch coaching.',
     ].join('\n'),
@@ -110,7 +112,7 @@ const WEEK_4_OPS: RunbookCheck[] = [
   {
     task: 'Test Membership LP enrolment flow',
     instructions: [
-      '1. Open [Membership LP](https://bodyrecode.au/membership) in incognito.',
+      `1. Open [Membership LP](${brand().marketingDomain}/membership) in incognito.`,
       '2. Walk through the enrolment form with throwaway email.',
       '3. Verify: welcome email lands, portal access works, week-1 experience renders.',
       'Do this BEFORE Mon 10 Aug flip. Any bug here blocks Membership launch.',
@@ -119,7 +121,7 @@ const WEEK_4_OPS: RunbookCheck[] = [
   {
     task: 'Review Membership LP copy before Mon 10 Aug flip',
     instructions: [
-      '1. Open [Membership LP](https://bodyrecode.au/membership) → read every headline + block.',
+      `1. Open [Membership LP](${brand().marketingDomain}/membership) → read every headline + block.`,
       '2. Verify pricing matches locked strategy ($49/wk per memory).',
       '3. Verify Blueprint→Membership ascension flow copy on Blueprint Week 6 completion page.',
     ].join('\n'),
@@ -192,7 +194,7 @@ export const RUNBOOK: RunbookEntry[] = [
           '1. Open [body-recode env vars](https://vercel.com/info-41827747s-projects/body-recode/settings/environment-variables).',
           '2. Find NEXT_PUBLIC_CHALLENGE_LIVE → Edit → change from `false` to `true` → Save.',
           '3. Open [Deployments tab](https://vercel.com/info-41827747s-projects/body-recode/deployments) → click ⋯ on latest → Redeploy.',
-          '4. Wait ~90 sec → open [bodyrecode.au/challenge](https://bodyrecode.au/challenge) in incognito → verify signup form shows (NOT waitlist).',
+          `4. Wait ~90 sec → open [bodyrecode.au/challenge](${brand().marketingDomain}/challenge) in incognito → verify signup form shows (NOT waitlist).`,
         ].join('\n'),
       },
       {
@@ -200,7 +202,7 @@ export const RUNBOOK: RunbookEntry[] = [
         instructions: [
           '1. Open [performance-bodyrecode env vars](https://vercel.com/info-41827747s-projects/performance-bodyrecode/settings/environment-variables).',
           '2. Same NEXT_PUBLIC_CHALLENGE_LIVE flip → false → true → Save → redeploy.',
-          '3. Verify: [scorecard result page](https://performance.bodyrecode.au/scorecard) → Depleted state CTA now points at live Challenge, not waitlist.',
+          `3. Verify: [scorecard result page](${brand().performanceDomain}/scorecard) → Depleted state CTA now points at live Challenge, not waitlist.`,
         ].join('\n'),
       },
       {
@@ -218,7 +220,7 @@ export const RUNBOOK: RunbookEntry[] = [
           '1. Open Terminal.',
           '2. Run: `cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --wave=1`',
           '3. Expect console output: `[launch-email] Wave 1 broadcast (initial launch)` then `[launch-email] DONE. Sent N · Failed 0`',
-          '4. Spot-check kade@bodyrecode.au inbox for BCC copies arriving (should see ~N BCCs where N = waitlist row count).',
+          `4. Spot-check ${coach().email} inbox for BCC copies arriving (should see ~N BCCs where N = waitlist row count).`,
           '5. If Aimee declined AF Newstead partnership: add `--no-af-newstead` flag to strip the founding-partner block.',
         ].join('\n'),
       },

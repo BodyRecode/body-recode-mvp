@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Zap } from 'lucide-react'
+import { coach } from "@/config/tenant";
 
 type EmailStep = {
   day: string
@@ -277,7 +278,7 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
         cta: 'Join Zoom ↗',
       },
       {
-        day: 'Immediately to coach (kade@bodyrecode.au)',
+        day: `Immediately to coach (${coach().email})`,
         subject: 'Zoom booked: {name}',
         paragraphs: [
           'Zoom booked: {name}',

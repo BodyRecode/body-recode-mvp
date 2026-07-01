@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { brand } from "@/config/tenant";
 
 // GET /api/admin/resync-scorecard-workflow
 // Visit this URL in the browser while logged in — reads your user ID from
@@ -41,7 +42,7 @@ It is a written breakdown of the specific physiology behind your {{scorecard_sta
 
 $37. Delivered in 5 minutes. Yours to keep.
 
-Get your report: https://bodyrecode.au/get-report
+Get your report: ${brand().marketingDomain}/get-report
 
 If you would rather talk it through first, you can book a free 15-minute strategy call: https://bodyrecode.au/book
 
@@ -66,7 +67,7 @@ The Body Decode Report walks through what {{scorecard_state}} actually means for
 
 $37. Delivered in 5 minutes.
 
-Get your report: https://bodyrecode.au/get-report
+Get your report: ${brand().marketingDomain}/get-report
 
 Kade
 Body Recode`,
@@ -87,7 +88,7 @@ Knowing your state is the first piece. Knowing what to do about it is the second
 
 15 minutes. Free. No pitch. We go through your scorecard together, identify the specific bottleneck, and map out what to do first.
 
-Book here: https://bodyrecode.au/book
+Book here: ${brand().marketingDomain}/book
 
 If you would rather have the breakdown in writing first, the report is at https://bodyrecode.au/get-report.
 
@@ -110,7 +111,7 @@ A program built for a Ready state will make a Depleted state worse. That is not 
 
 The fastest way to address it is the call. 15 minutes, free, no pitch. We map out what your specific state needs first, and what to stop immediately.
 
-Book here: https://bodyrecode.au/book
+Book here: ${brand().marketingDomain}/book
 
 Kade
 Body Recode`,
@@ -131,7 +132,7 @@ Your scorecard result is still there whenever you want to act on it. Two doors b
 
 2. Free 15-minute call. Best if you would rather talk it through first.
 
-Get the report: https://bodyrecode.au/get-report
+Get the report: ${brand().marketingDomain}/get-report
 Book the call: https://bodyrecode.au/book
 
 No follow-up after this.

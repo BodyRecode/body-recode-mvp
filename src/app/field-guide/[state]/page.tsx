@@ -15,7 +15,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import FieldGuideCheckoutForm from './checkout-form'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, coach } from '@/config/tenant'
 
 const STATE_LABELS: Record<string, { title: string; subtitle: string; bodyLine: string }> = {
   depleted: {
@@ -166,7 +166,7 @@ export default async function FieldGuideLandingPage({
             textAlign: 'center',
           }}>
             <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.6 }}>
-              The {state.charAt(0).toUpperCase() + state.slice(1)} Field Guide is coming soon. Drop your email to <strong>kade@bodyrecode.au</strong> and I will send it the moment it lands.
+              The {state.charAt(0).toUpperCase() + state.slice(1)} Field Guide is coming soon. Drop your email to <strong>{coach().email}</strong> and I will send it the moment it lands.
             </p>
           </div>
         )}

@@ -10,7 +10,7 @@ import {
   EMAIL_BLUE, EMAIL_BLUE_DARK, EMAIL_BODY, EMAIL_BODY_SOFT, EMAIL_MUTED,
   EMAIL_HAIRLINE, EMAIL_FF,
 } from '@/lib/email-shell'
-import { coach } from '@/config/tenant'
+import { coach, brand } from '@/config/tenant'
 
 type CheckStatus = 'ok' | 'fixed' | 'failed' | 'info'
 
@@ -639,7 +639,26 @@ async function resyncScorecardWorkflow(
       position: 1, type: 'action', action_type: 'send_email',
       config: {
         subject: 'Your Body State result',
-        body: `Hi {{first_name}},\n\nYour scorecard result: {{scorecard_score}}/15. Body state: {{scorecard_state}}.\n\nThat result tells you one specific thing: which state your body is currently in.\n\nThat state determines what works. It also determines what makes things worse. Most people apply the same approach regardless of their state. That is why most people stay stuck.\n\nIf you want to understand exactly what is driving your result and what needs to change first, book a free 30-minute call. We go through your scorecard together, identify the specific bottleneck, and map out the first steps.\n\nBook here: https://bodyrecode.au/book\n\n---\n\nWant the written breakdown first? The Body Decode Report ($37) covers what your {{scorecard_state}} result means biologically, what is actively working against you right now, and what needs to change first.\n\nGet your report here: https://bodyrecode.au/get-report\n\nKade\nBody Recode`,
+        body: `Hi {{first_name}},
+
+Your scorecard result: {{scorecard_score}}/15. Body state: {{scorecard_state}}.
+
+That result tells you one specific thing: which state your body is currently in.
+
+That state determines what works. It also determines what makes things worse. Most people apply the same approach regardless of their state. That is why most people stay stuck.
+
+If you want to understand exactly what is driving your result and what needs to change first, book a free 30-minute call. We go through your scorecard together, identify the specific bottleneck, and map out the first steps.
+
+Book here: ${brand().marketingDomain}/book
+
+---
+
+Want the written breakdown first? The Body Decode Report ($37) covers what your {{scorecard_state}} result means biologically, what is actively working against you right now, and what needs to change first.
+
+Get your report here: https://bodyrecode.au/get-report
+
+Kade
+Body Recode`,
       },
     },
     { position: 2, type: 'wait', action_type: null, config: { unit: 'days', amount: '2' } },
@@ -647,7 +666,22 @@ async function resyncScorecardWorkflow(
       position: 3, type: 'action', action_type: 'send_email',
       config: {
         subject: 'What your {{scorecard_state}} result actually means',
-        body: `Hi {{first_name}},\n\nYour score was {{scorecard_score}}/15. Body state: {{scorecard_state}}.\n\nMost people look at that result and think they need to train harder or eat less. That is usually the wrong call.\n\nYour body state is a biological signal. It tells you how your body is currently handling load, how well it is recovering, and how much capacity it has to respond right now. The right prescription depends entirely on that state.\n\nThe Body Decode Report goes through exactly what {{scorecard_state}} means for your training, your nutrition, and your fat loss. It is written specifically to your result, not a generic guide.\n\n$37. Delivered to your inbox within minutes.\n\nGet your report here: https://bodyrecode.au/get-report\n\nKade\nBody Recode`,
+        body: `Hi {{first_name}},
+
+Your score was {{scorecard_score}}/15. Body state: {{scorecard_state}}.
+
+Most people look at that result and think they need to train harder or eat less. That is usually the wrong call.
+
+Your body state is a biological signal. It tells you how your body is currently handling load, how well it is recovering, and how much capacity it has to respond right now. The right prescription depends entirely on that state.
+
+The Body Decode Report goes through exactly what {{scorecard_state}} means for your training, your nutrition, and your fat loss. It is written specifically to your result, not a generic guide.
+
+$37. Delivered to your inbox within minutes.
+
+Get your report here: ${brand().marketingDomain}/get-report
+
+Kade
+Body Recode`,
       },
     },
     { position: 4, type: 'wait', action_type: null, config: { unit: 'days', amount: '2' } },
@@ -655,7 +689,22 @@ async function resyncScorecardWorkflow(
       position: 5, type: 'action', action_type: 'send_email',
       config: {
         subject: 'Re: your Body State Scorecard',
-        body: `Hi {{first_name}},\n\nFollowing up on your scorecard.\n\nThe most common thing I hear after someone takes it: "That finally explains why nothing has been working."\n\nKnowing your state is the first piece. The second is knowing exactly what to do about it. That is what the call is for.\n\n30 minutes. Free. No pitch.\n\nBook here: https://bodyrecode.au/book\n\nIf the timing is not right, no problem. The link will be there when you are ready.\n\nKade\nBody Recode`,
+        body: `Hi {{first_name}},
+
+Following up on your scorecard.
+
+The most common thing I hear after someone takes it: "That finally explains why nothing has been working."
+
+Knowing your state is the first piece. The second is knowing exactly what to do about it. That is what the call is for.
+
+30 minutes. Free. No pitch.
+
+Book here: ${brand().marketingDomain}/book
+
+If the timing is not right, no problem. The link will be there when you are ready.
+
+Kade
+Body Recode`,
       },
     },
     { position: 6, type: 'wait', action_type: null, config: { unit: 'days', amount: '4' } },
@@ -663,7 +712,26 @@ async function resyncScorecardWorkflow(
       position: 7, type: 'action', action_type: 'send_email',
       config: {
         subject: 'The prescription problem',
-        body: `Hi {{first_name}},\n\nMost coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state does not factor into it at all.\n\nYour scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.\n\nA program built for a Ready state will not work for a Depleted state. That is not a motivation problem. That is a prescription problem.\n\nThat is exactly what the call addresses. Building the approach around your actual state, not a generic template.\n\nBook here: https://bodyrecode.au/book\n\n---\n\nIf you would rather start with the written read of your state instead, the {{scorecard_state}} Field Guide is $19. 25 pages. What this state means, why standard moves are not landing, the first four moves to bring the load down. Instant delivery to your inbox.\n\nGet the {{scorecard_state}} Field Guide: https://bodyrecode.au/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day8\n\nKade\nBody Recode`,
+        body: `Hi {{first_name}},
+
+Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state does not factor into it at all.
+
+Your scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.
+
+A program built for a Ready state will not work for a Depleted state. That is not a motivation problem. That is a prescription problem.
+
+That is exactly what the call addresses. Building the approach around your actual state, not a generic template.
+
+Book here: ${brand().marketingDomain}/book
+
+---
+
+If you would rather start with the written read of your state instead, the {{scorecard_state}} Field Guide is $19. 25 pages. What this state means, why standard moves are not landing, the first four moves to bring the load down. Instant delivery to your inbox.
+
+Get the {{scorecard_state}} Field Guide: https://bodyrecode.au/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day8
+
+Kade
+Body Recode`,
       },
     },
     { position: 8, type: 'wait', action_type: null, config: { unit: 'days', amount: '5' } },
@@ -671,7 +739,20 @@ async function resyncScorecardWorkflow(
       position: 9, type: 'action', action_type: 'send_email',
       config: {
         subject: 'Last one from me, {{first_name}}',
-        body: `Hi {{first_name}},\n\nLast email from me on this.\n\nYour scorecard result is still there whenever you want to act on it. The call is still available. The report and the {{scorecard_state}} Field Guide are still there if you want the written breakdown first.\n\nNo follow-up after this.\n\nBook a call: https://bodyrecode.au/book\nGet the report + bundled Field Guide: https://bodyrecode.au/get-report\nOr just the Field Guide ($19): https://bodyrecode.au/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day13\n\nKade\nBody Recode`,
+        body: `Hi {{first_name}},
+
+Last email from me on this.
+
+Your scorecard result is still there whenever you want to act on it. The call is still available. The report and the {{scorecard_state}} Field Guide are still there if you want the written breakdown first.
+
+No follow-up after this.
+
+Book a call: ${brand().marketingDomain}/book
+Get the report + bundled Field Guide: https://bodyrecode.au/get-report
+Or just the Field Guide ($19): https://bodyrecode.au/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day13
+
+Kade
+Body Recode`,
       },
     },
   ]
@@ -967,7 +1048,7 @@ ${darkEmailSignature()}
 `
 
     await resend.emails.send({
-      from: 'Body Recode System <kade@bodyrecode.au>',
+      from: `Body Recode System <${coach().email}>`,
       to: coach().email,
       subject,
       html: darkEmailShell(inner, { previewText: headline }),

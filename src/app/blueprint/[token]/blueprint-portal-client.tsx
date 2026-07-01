@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { logoUrl, brand } from '@/config/tenant'
+import { logoUrl, brand, coach } from '@/config/tenant'
 
 type Enrollment = {
   id: string
@@ -1623,7 +1623,7 @@ export default function BlueprintPortalClient({
                     Or skip to 1:1 coaching →
                   </a>
                   <a
-                    href="mailto:kade@bodyrecode.au?subject=Blueprint complete - question about next step"
+                    href={`mailto:${coach().email}?subject=Blueprint complete - question about next step`}
                     style={{ display: 'inline-block', padding: '13px 24px', background: 'transparent', color: '#4A4A4A', fontWeight: 700, fontSize: 14, borderRadius: 8, textDecoration: 'none', border: '1px solid #D4D4D4' }}
                   >
                     Ask a question first
